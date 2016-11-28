@@ -45,13 +45,12 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>::UtilityTable(
-      const UtilityTable<GUM_SCALAR>& toCopy )
+  INLINE
+  UtilityTable<GUM_SCALAR>::UtilityTable( const UtilityTable<GUM_SCALAR>& toCopy )
       : MultiDimDecorator<GUM_SCALAR>(
             static_cast<MultiDimImplementation<GUM_SCALAR>*>(
                 toCopy.content()->newFactory() ) ) {
-    const Sequence<const DiscreteVariable*>& varSeq =
-        toCopy.variablesSequence();
+    const Sequence<const DiscreteVariable*>& varSeq = toCopy.variablesSequence();
 
     for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
               varSeq.beginSafe();
@@ -63,8 +62,7 @@ namespace gum {
     Instantiation i1( toCopy );
     Instantiation i2( *this );
 
-    for ( i1.setFirst(), i2.setFirstIn( i1 ); !i1.end();
-          ++i1, i2.incIn( i1 ) ) {
+    for ( i1.setFirst(), i2.setFirstIn( i1 ); !i1.end(); ++i1, i2.incIn( i1 ) ) {
       this->set( i2, toCopy[i1] );
     }
 
@@ -74,15 +72,13 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE UtilityTable<GUM_SCALAR>& UtilityTable<GUM_SCALAR>::
   operator=( const UtilityTable<GUM_SCALAR>& toCopy ) {
-    GUM_ERROR(
-        OperationNotAllowed,
-        "No copy for UtilityTable : how to choose the implementation ?" );
+    GUM_ERROR( OperationNotAllowed,
+               "No copy for UtilityTable : how to choose the implementation ?" );
     return *this;
   }
 
   template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>*
-  UtilityTable<GUM_SCALAR>::newFactory() const {
+  INLINE UtilityTable<GUM_SCALAR>* UtilityTable<GUM_SCALAR>::newFactory() const {
     return new UtilityTable<GUM_SCALAR>(
         static_cast<MultiDimImplementation<GUM_SCALAR>*>(
             this->content()->newFactory() ) );

@@ -175,7 +175,7 @@ namespace gum {
 
       /// the element read from the database
       union {
-        Idx __index;  // stores string indices
+        Idx  __index;  // stores string indices
         Real __value{0.0};
       };
 

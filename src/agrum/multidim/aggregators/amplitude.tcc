@@ -60,13 +60,12 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE MultiDimContainer<GUM_SCALAR>*
-    Amplitude<GUM_SCALAR>::newFactory() const {
+           Amplitude<GUM_SCALAR>::newFactory() const {
       return new Amplitude<GUM_SCALAR>();
     }
 
     template <typename GUM_SCALAR>
-    Idx
-    Amplitude<GUM_SCALAR>::_buildValue( const gum::Instantiation& i ) const {
+    Idx Amplitude<GUM_SCALAR>::_buildValue( const gum::Instantiation& i ) const {
       // we assume that every (parent) variable has the same domainSize
       if ( i.nbrDim() < 2 ) return 0;
 
@@ -74,7 +73,7 @@ namespace gum {
       Idx max = i.val( 1 );
 
       for ( Idx j = 2; j < this->nbrDim(); j++ ) {
-        Idx m              = i.val( j );
+        Idx m = i.val( j );
         if ( m < min ) min = m;
         if ( m > max ) max = m;
       }
@@ -83,8 +82,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Amplitude<GUM_SCALAR>::_fold( const DiscreteVariable& v,
-                                             Idx i1,
-                                             Idx i2,
+                                             Idx                     i1,
+                                             Idx                     i2,
                                              bool& stop_iteration ) const {
       return 0;
     }

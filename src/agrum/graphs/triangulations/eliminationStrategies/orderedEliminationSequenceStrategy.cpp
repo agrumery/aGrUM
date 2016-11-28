@@ -43,17 +43,16 @@ namespace gum {
 
   /// constructor for an a priori non empty graph
   OrderedEliminationSequenceStrategy::OrderedEliminationSequenceStrategy(
-      UndiGraph* graph,
-      const NodeProperty<Size>* dom_sizes,
+      UndiGraph*                 graph,
+      const NodeProperty<Size>*  dom_sizes,
       const std::vector<NodeId>* order )
       : EliminationSequenceStrategy( graph, dom_sizes ) {
     // check that the user passed appropriate graphs and orders
     if ( ( ( graph == nullptr ) && ( order != nullptr ) ) ||
          ( ( graph != nullptr ) && ( order == nullptr ) ) ) {
-      GUM_ERROR(
-          GraphError,
-          "OrderedEliminationSequenceStrategy needs either both nullptrs "
-          "or both non-nullptrs on graph and elimination ordering" );
+      GUM_ERROR( GraphError,
+                 "OrderedEliminationSequenceStrategy needs either both nullptrs "
+                 "or both non-nullptrs on graph and elimination ordering" );
     }
 
     setOrder( order );
@@ -158,7 +157,7 @@ namespace gum {
   void OrderedEliminationSequenceStrategy::clear() {
     EliminationSequenceStrategy::clear();
     __order_needed = true;
-    __order_index  = std::size_t( 0 );
+    __order_index = std::size_t( 0 );
   }
 
   /// returns the new node to be eliminated within the triangulation algorithm
@@ -191,8 +190,7 @@ namespace gum {
   }
 
   /// performs all the graph/fill-ins updates provided (if any)
-  void
-  OrderedEliminationSequenceStrategy::eliminationUpdate( const NodeId node ) {
+  void OrderedEliminationSequenceStrategy::eliminationUpdate( const NodeId node ) {
     // check whether there is something to update
     if ( !__order_needed ) {
       // check that node corresponds to the current index

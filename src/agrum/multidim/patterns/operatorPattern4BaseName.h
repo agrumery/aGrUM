@@ -109,16 +109,16 @@ namespace gum {
     // variables in each of the 3 sets. Given these data, we will be able to
     // parse both t1, t2 and the result table t1+t2.
     std::vector<const DiscreteVariable*> t1_alone_var;
-    std::vector<Idx> t1_alone_domain;
-    Idx t1_alone_domain_size = 1;
+    std::vector<Idx>                     t1_alone_domain;
+    Idx                                  t1_alone_domain_size = 1;
 
     std::vector<const DiscreteVariable*> t2_alone_var;
-    std::vector<Idx> t2_alone_domain;
-    Idx t2_alone_domain_size = 1;
+    std::vector<Idx>                     t2_alone_domain;
+    Idx                                  t2_alone_domain_size = 1;
 
     std::vector<const DiscreteVariable*> t1_and_t2_var;
-    std::vector<Idx> t1_and_t2_domain;
-    Idx t1_and_t2_domain_size = 1;
+    std::vector<Idx>                     t1_and_t2_domain;
+    Idx                                  t1_and_t2_domain_size = 1;
 
     {
       for ( const auto var : t1_vars )
@@ -156,13 +156,11 @@ namespace gum {
       if ( nb_t1_t2_vars == t1_and_t2_var.size() ) {
         nb_t1_t2_vars = 0;
 
-        for ( auto iter = t2_vars.begin();
-              nb_t1_t2_vars != t1_and_t2_var.size();
+        for ( auto iter = t2_vars.begin(); nb_t1_t2_vars != t1_and_t2_var.size();
               ++iter, ++nb_t1_t2_vars )
           if ( *iter != t1_and_t2_var[nb_t1_t2_vars] ) break;
 
-        if ( nb_t1_t2_vars == t1_and_t2_var.size() )
-          t1_and_t2_begin_vars = true;
+        if ( nb_t1_t2_vars == t1_and_t2_var.size() ) t1_and_t2_begin_vars = true;
       }
     }
 
@@ -175,8 +173,8 @@ namespace gum {
     // variable of the table should be increased (that is, this is similar to
     // increasing 9 to 10).
     std::vector<Idx> t1_and_t2_value = t1_and_t2_domain;
-    std::vector<Idx> t1_alone_value  = t1_alone_domain;
-    std::vector<Idx> t2_alone_value  = t2_alone_domain;
+    std::vector<Idx> t1_alone_value = t1_alone_domain;
+    std::vector<Idx> t2_alone_value = t2_alone_domain;
 
     // create a table "result" containing all the variables: the first
     // variables are those that belong to both t1 and t2. The next variables
@@ -202,7 +200,7 @@ namespace gum {
     // corresponds to the variables that belongs both to t1 and t2. The middle
     // loop to the variables that belong to t2 but not to t1. Finally, the
     // outer loop corresponds to the variables that belong to t1 but not t2.
-    Idx result_offset = 0;
+    Idx           result_offset = 0;
     Instantiation t2_inst( t2 );
     Instantiation t1_inst( t1 );
     Instantiation t1_alone_begin_inst( t1 );
@@ -219,9 +217,9 @@ namespace gum {
           t1_inst = t1_alone_begin_inst;
 
           for ( Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-            result->unsafeSet( result_offset,
-                               GUM_MULTI_DIM_OPERATOR( t1->get( t1_inst ),
-                                                       t2->get( t2_inst ) ) );
+            result->unsafeSet(
+                result_offset,
+                GUM_MULTI_DIM_OPERATOR( t1->get( t1_inst ), t2->get( t2_inst ) ) );
 
             ++result_offset;
 
@@ -240,9 +238,9 @@ namespace gum {
           t1_inst = t1_alone_begin_inst;
 
           for ( Idx z = 0; z < t1_and_t2_domain_size; ++z ) {
-            result->unsafeSet( result_offset,
-                               GUM_MULTI_DIM_OPERATOR( t1->get( t1_inst ),
-                                                       t2->get( t2_inst ) ) );
+            result->unsafeSet(
+                result_offset,
+                GUM_MULTI_DIM_OPERATOR( t1->get( t1_inst ), t2->get( t2_inst ) ) );
 
             ++result_offset;
 

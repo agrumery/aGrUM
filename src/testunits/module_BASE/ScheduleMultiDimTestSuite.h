@@ -37,7 +37,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 4 );
+        vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
       gum::Sequence<const gum::DiscreteVariable*> seq;
@@ -47,7 +47,7 @@ namespace gum_tests {
       TS_ASSERT( f1.isAbstract() );
       TS_ASSERT_THROWS( f1.multiDim(), gum::NotFound );
 
-      std::string s1 = f1.toString();
+      std::string       s1 = f1.toString();
       std::stringstream s2;
       s2 << "<" << f1.id() << ">";
       TS_ASSERT( s2.str() == s1 );
@@ -76,7 +76,7 @@ namespace gum_tests {
       TS_ASSERT( f4.id() == f5.id() );
       TS_ASSERT( f4.multiDim() == pot );
 
-      std::string s5 = f5.toString();
+      std::string       s5 = f5.toString();
       std::stringstream s6;
       s6 << "<" << pot.content() << ">";
       TS_ASSERT( s6.str() == s5 );
@@ -86,13 +86,12 @@ namespace gum_tests {
       f4.setMultiDim( pot2 );
       gum::ScheduleMultiDim<float> f6( f4 );
       TS_ASSERT( f5.multiDim() == *pot2.content() );
-      TS_ASSERT_THROWS( f3.setMultiDim( *pot2.content() ),
-                        gum::DuplicateElement );
+      TS_ASSERT_THROWS( f3.setMultiDim( *pot2.content() ), gum::DuplicateElement );
       TS_ASSERT( f6.multiDim() == *pot2.content() );
       TS_ASSERT( f6.multiDim() == *pot2.content() );
 
       std::string str = f3.toString();
-      f3              = f5;
+      f3 = f5;
       TS_ASSERT( f5 == f3 );
 
       for ( unsigned int i = 0; i < vars.size(); ++i )

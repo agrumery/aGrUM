@@ -72,7 +72,7 @@ namespace gum {
   const CliqueGraph& StaticTriangulation::junctionTree() {
     // checks if junctionTree already exists
     if ( !__has_junction_tree ) {
-      __junction_tree     = &( _junction_tree_strategy->junctionTree() );
+      __junction_tree = &( _junction_tree_strategy->junctionTree() );
       __has_junction_tree = true;
     }
 
@@ -110,8 +110,7 @@ namespace gum {
   /** @brief returns the Ids of the cliques of the junction tree created by the
    * elimination of the nodes */
   INLINE
-  const NodeProperty<NodeId>&
-  StaticTriangulation::createdJunctionTreeCliques() {
+  const NodeProperty<NodeId>& StaticTriangulation::createdJunctionTreeCliques() {
     return _junction_tree_strategy->createdCliques();
   }
 
@@ -133,14 +132,13 @@ namespace gum {
 
   /// returns the elimination sequence strategy used by the triangulation
   INLINE EliminationSequenceStrategy&
-  StaticTriangulation::eliminationSequenceStrategy() const {
+         StaticTriangulation::eliminationSequenceStrategy() const {
     return *_elimination_sequence_strategy;
   }
 
 
   /// returns the junction tree strategy used by the triangulation
-  INLINE JunctionTreeStrategy&
-  StaticTriangulation::junctionTreeStrategy() const {
+  INLINE JunctionTreeStrategy& StaticTriangulation::junctionTreeStrategy() const {
     return *_junction_tree_strategy;
   }
 

@@ -65,16 +65,15 @@ namespace gum {
      * @param eps The epsilon.
      * @throw OutOfBound if out of bounds (low<high, eps>0)
      */
-    LinearApproximationPolicy( GUM_SCALAR low  = (GUM_SCALAR)0.0,
+    LinearApproximationPolicy( GUM_SCALAR low = (GUM_SCALAR)0.0,
                                GUM_SCALAR high = (GUM_SCALAR)1.0,
-                               GUM_SCALAR eps  = (GUM_SCALAR)0.1 );
+                               GUM_SCALAR eps = (GUM_SCALAR)0.1 );
 
     /**
      * @brief Copy constructor.
      * @param md The gum::LinearApproximationPolicy to copy.
      */
-    LinearApproximationPolicy(
-        const LinearApproximationPolicy<GUM_SCALAR>* md );
+    LinearApproximationPolicy( const LinearApproximationPolicy<GUM_SCALAR>* md );
 
     /// @}
 

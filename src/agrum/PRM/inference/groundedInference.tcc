@@ -108,7 +108,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE MarginalTargetedInference<GUM_SCALAR>&
-    GroundedInference<GUM_SCALAR>::getBNInference() {
+           GroundedInference<GUM_SCALAR>::getBNInference() {
       if ( __inf != 0 ) {
         return *__inf;
       } else {
@@ -129,7 +129,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void GroundedInference<GUM_SCALAR>::_marginal(
         const typename PRMInference<GUM_SCALAR>::Chain& chain,
-        Potential<GUM_SCALAR>& m ) {
+        Potential<GUM_SCALAR>&                          m ) {
       if ( __inf == 0 ) {
         GUM_ERROR( OperationNotAllowed, "no inference engine defined" );
       }
@@ -153,7 +153,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE void GroundedInference<GUM_SCALAR>::_joint(
         const std::vector<typename PRMInference<GUM_SCALAR>::Chain>& queries,
-        Potential<GUM_SCALAR>& j ) {
+        Potential<GUM_SCALAR>&                                       j ) {
       GUM_ERROR( FatalError, "not yet implemented" );
     }
 

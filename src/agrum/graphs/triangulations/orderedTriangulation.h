@@ -59,7 +59,7 @@ namespace gum {
         const OrderedEliminationSequenceStrategy& elimSeq =
             OrderedEliminationSequenceStrategy(),
         const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-        bool minimality                        = false );
+        bool                        minimality = false );
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -80,13 +80,13 @@ namespace gum {
      * elimination sequence are not copied but only referenced by the
      * triangulation algorithm. */
     OrderedTriangulation(
-        const UndiGraph* graph,
-        const NodeProperty<Size>* domsizes,
-        const std::vector<NodeId>* sequence,
+        const UndiGraph*                          graph,
+        const NodeProperty<Size>*                 domsizes,
+        const std::vector<NodeId>*                sequence,
         const OrderedEliminationSequenceStrategy& elimSeq =
             OrderedEliminationSequenceStrategy(),
         const JunctionTreeStrategy& JTStrategy = DefaultJunctionTreeStrategy(),
-        bool minimality                        = false );
+        bool                        minimality = false );
 
     /// copy constructor
     OrderedTriangulation( const OrderedTriangulation& from );
@@ -123,7 +123,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not
      *  notcopied but only referenced by the triangulation algorithm. */
-    virtual void setGraph( const UndiGraph* graph,
+    virtual void setGraph( const UndiGraph*          graph,
                            const NodeProperty<Size>* domsizes ) final;
 
     /// sets the sequence of elimination (only the reference is stored)

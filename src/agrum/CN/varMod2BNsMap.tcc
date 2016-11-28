@@ -11,8 +11,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    VarMod2BNsMap<GUM_SCALAR>::VarMod2BNsMap(
-        const CredalNet<GUM_SCALAR>& cn ) {
+    VarMod2BNsMap<GUM_SCALAR>::VarMod2BNsMap( const CredalNet<GUM_SCALAR>& cn ) {
       setCNet( cn );
 
       GUM_CONSTRUCTOR( VarMod2BNsMap );
@@ -25,8 +24,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void VarMod2BNsMap<GUM_SCALAR>::setCNet( const CredalNet<GUM_SCALAR>& cn ) {
-      auto* cpt   = &cn.credalNet_currentCpt();
-      auto nNodes = cpt->size();
+      auto* cpt = &cn.credalNet_currentCpt();
+      auto  nNodes = cpt->size();
       _sampleDef.resize( nNodes );
 
       for ( NodeId node = 0; node < nNodes; node++ ) {
@@ -34,10 +33,10 @@ namespace gum {
         _sampleDef[node].resize( pConfs );
 
         for ( Size pconf = 0; pconf < pConfs; pconf++ ) {
-          Size nVertices = Size( ( *cpt )[node][pconf].size() );
+          Size          nVertices = Size( ( *cpt )[node][pconf].size() );
           unsigned long b, c;  // needed by superiorPow
           superiorPow( static_cast<unsigned long>( nVertices ), b, c );
-          Size nBits   = Size( b );
+          Size nBits = Size( b );
           Size newCard = Size( c );
           _sampleDef[node][pconf].resize( nBits );
         }
@@ -53,8 +52,7 @@ namespace gum {
       std::list<Size>& nets =
           _myVarHashs.getWithDefault( key, std::list<Size>() );  //[ key ];
 
-      for ( std::list<Size>::iterator it = nets.begin(); it != nets.end();
-            ++it ) {
+      for ( std::list<Size>::iterator it = nets.begin(); it != nets.end(); ++it ) {
         if ( *it == _currentHash ) return false;
       }
 
@@ -72,7 +70,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     bool VarMod2BNsMap<GUM_SCALAR>::insert( const std::vector<Size>& key,
-                                            const bool isBetter ) {
+                                            const bool               isBetter ) {
       if ( isBetter ) {
         // get all nets of this key (maybe entry does not exists)
         std::list<Size>& old_nets =
@@ -83,8 +81,8 @@ namespace gum {
               it != old_nets.end();
               ++it ) {
           // get all keys associated to this net
-          std::list<varKey>& netKeys = _myHashVars.getWithDefault(
-              *it, std::list<varKey>() );  //[ *it ];
+          std::list<varKey>& netKeys =
+              _myHashVars.getWithDefault( *it, std::list<varKey>() );  //[ *it ];
 
           // if we are the sole user, delete the net entry
           if ( netKeys.size() == 1 ) {
@@ -112,8 +110,7 @@ namespace gum {
         old_nets.push_back( _currentHash );
         // insert out key in the hash key list
         _myHashVars
-            .getWithDefault( _currentHash,
-                             std::list<varKey>() ) /*[_currentHash]*/
+            .getWithDefault( _currentHash, std::list<varKey>() ) /*[_currentHash]*/
             .push_back( key );
         return true;
 
@@ -178,11 +175,9 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     const std::vector<std::vector<bool>*>
-    VarMod2BNsMap<GUM_SCALAR>::getBNOptsFromKey(
-        const std::vector<Size>& key ) {
+    VarMod2BNsMap<GUM_SCALAR>::getBNOptsFromKey( const std::vector<Size>& key ) {
       // return something even if key does not exist
-      if ( !_myVarHashs.exists( key ) )
-        return std::vector<std::vector<bool>*>();
+      if ( !_myVarHashs.exists( key ) ) return std::vector<std::vector<bool>*>();
 
       std::list<Size>& netsHash = _myVarHashs[key];  //.at(key);
 
@@ -203,10 +198,9 @@ namespace gum {
     VarMod2BNsMap<GUM_SCALAR>::getFullBNOptsFromKey(
         const std::vector<Size>& key ) {
       if ( cnet == nullptr )
-        GUM_ERROR(
-            OperationNotAllowed,
-            "No CredalNet associated to me ! Can't get FullBNOptsFromKey : "
-                << key );
+        GUM_ERROR( OperationNotAllowed,
+                   "No CredalNet associated to me ! Can't get FullBNOptsFromKey : "
+                       << key );
 
       if ( !_myVarHashs.exists( key ) )
         return std::vector<std::vector<std::vector<std::vector<bool>>>>();

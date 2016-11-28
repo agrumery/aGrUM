@@ -229,10 +229,10 @@ namespace gum {
 
     virtual GUM_SCALAR get( const Instantiation& i ) const;
 
-    virtual void changeNotification( Instantiation& i,
+    virtual void changeNotification( Instantiation&                i,
                                      const DiscreteVariable* const var,
-                                     const Idx& oldval,
-                                     const Idx& newval );
+                                     const Idx&                    oldval,
+                                     const Idx&                    newval );
 
     virtual void setFirstNotification( Instantiation& i );
 

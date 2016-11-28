@@ -281,8 +281,7 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end();
+      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
             ++iter ) {
         s += *iter;
       }
@@ -294,8 +293,8 @@ namespace gum_tests {
       gum::UndiGraph graph = buildGraph();
 
       gum::List<gum::Size> list;
-      TS_ASSERT_THROWS_ANYTHING(
-          list = graph.listMapNodes( &twistedMapFunction ) );
+      TS_ASSERT_THROWS_ANYTHING( list =
+                                     graph.listMapNodes( &twistedMapFunction ) );
 
       TS_ASSERT_EQUALS( list.size(), (gum::Size)0 );
     }
@@ -322,8 +321,8 @@ namespace gum_tests {
       gum::UndiGraph graph = buildGraph();
 
       gum::NodeProperty<gum::Size> hashmap;
-      TS_ASSERT_THROWS_ANYTHING(
-          hashmap = graph.nodesProperty( &twistedMapFunction ) );
+      TS_ASSERT_THROWS_ANYTHING( hashmap =
+                                     graph.nodesProperty( &twistedMapFunction ) );
 
       TS_ASSERT_EQUALS( hashmap.size(), (gum::Size)0 );
     }
@@ -336,8 +335,7 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end();
+      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
             ++iter ) {
         s += *iter;
       }
@@ -366,8 +364,8 @@ namespace gum_tests {
 
     void testUndirectedPaths() {
       gum::UndiGraph graph = buildGraph();
-      gum::NodeId id6      = graph.addNode();
-      gum::NodeId id7      = graph.addNode();
+      gum::NodeId    id6 = graph.addNode();
+      gum::NodeId    id7 = graph.addNode();
       graph.addEdge( id6, id7 );
 
       std::vector<gum::NodeId> path = graph.undirectedPath( 0, 1 );

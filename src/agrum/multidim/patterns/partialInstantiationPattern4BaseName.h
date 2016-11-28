@@ -69,7 +69,7 @@ namespace gum {
     // Compute the offset of the variables. In addition, get the offset in
     // table induced by the instantiation inst_var
     Idx table_alone_offset = 0;
-    Idx offset             = 1;
+    Idx offset = 1;
     HashTable<const DiscreteVariable*, Idx> var1offset( table_vars.size() );
 
     for ( const auto var : table_vars ) {
@@ -89,11 +89,11 @@ namespace gum {
     // true, then we can fill result by parsing both table and result using
     // only 1-increments.
     Sequence<const DiscreteVariable*> result_varSeq;
-    std::vector<Idx> table_and_result_offset;
-    std::vector<Idx> table_and_result_domain;
-    Idx result_domain_size = 1;
-    bool has_before_incr   = true;
-    bool found_inst_var    = false;
+    std::vector<Idx>                  table_and_result_offset;
+    std::vector<Idx>                  table_and_result_domain;
+    Idx                               result_domain_size = 1;
+    bool                              has_before_incr = true;
+    bool                              found_inst_var = false;
 
     for ( const auto var : table_vars ) {
       if ( !inst_vars.exists( var ) ) {
@@ -118,7 +118,7 @@ namespace gum {
     // shall increment A once and decrease B by 10.  The value by which
     // variables shall be decreased is indicated in table_and_result_down
     std::vector<Idx> table_and_result_value = table_and_result_domain;
-    std::vector<Idx> table_and_result_down  = table_and_result_offset;
+    std::vector<Idx> table_and_result_down = table_and_result_offset;
 
     for ( unsigned int i = 0; i < table_and_result_down.size(); ++i )
       table_and_result_down[i] *= ( table_and_result_domain[i] - 1 );
@@ -141,7 +141,7 @@ namespace gum {
     // fill the matrix with any element
     {
       const Instantiation table_inst( table );
-      const GUM_SCALAR& any_element = *( table->get( table_inst ) );
+      const GUM_SCALAR&   any_element = *( table->get( table_inst ) );
 
       for ( Idx i = 0; i < result_domain_size; ++i ) {
         result->unsafeSet( i, new GUM_SCALAR( any_element ) );

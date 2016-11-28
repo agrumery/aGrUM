@@ -57,8 +57,8 @@ namespace gum {
     /// Default constructor
     RangeVariable( const std::string& aName,
                    const std::string& aDesc,
-                   long minVal = 0,
-                   long maxVal = 1 );
+                   long               minVal = 0,
+                   long               maxVal = 1 );
 
     /** Copy Constructor.
      *

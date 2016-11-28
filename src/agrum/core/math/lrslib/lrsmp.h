@@ -54,7 +54,7 @@ using namespace std;
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER
-typedef __int64 int64_t;
+typedef __int64          int64_t;
 typedef unsigned __int64 uint64_t;
 #else
 #include <stdint.h>
@@ -125,8 +125,7 @@ typedef unsigned __int64 uint64_t;
  *  convert between decimal and machine (longword digits). Notice lovely
  *  implementation of ceiling function :-)
  */
-#define DEC2DIG( d ) \
-  ( ( d ) % BASE_DIG ? ( d ) / BASE_DIG + 1 : ( d ) / BASE_DIG )
+#define DEC2DIG( d ) ( ( d ) % BASE_DIG ? ( d ) / BASE_DIG + 1 : ( d ) / BASE_DIG )
 #define DIG2DEC( d ) ( (d)*BASE_DIG )
 
 #include <stdlib.h>
@@ -157,9 +156,9 @@ extern FILE* lrs_ofp; /* output file pointer      */
 /*************/
 
 typedef int64_t
-    lrs_mp[MAX_DIGITS + 1]; /* type lrs_mp holds one multi-precision integer */
-typedef int64_t* lrs_mp_t;
-typedef int64_t** lrs_mp_vector;
+                   lrs_mp[MAX_DIGITS + 1]; /* type lrs_mp holds one multi-precision integer */
+typedef int64_t*   lrs_mp_t;
+typedef int64_t**  lrs_mp_vector;
 typedef int64_t*** lrs_mp_matrix;
 
 /*********************************************************/
@@ -169,14 +168,15 @@ typedef int64_t*** lrs_mp_matrix;
 /* next two functions are not used by lrsmp, but are for lrsgmp compatability */
 #define lrs_alloc_mp( a )
 #define lrs_clear_mp( a )
-lrs_mp_t lrs_alloc_mp_t(); /* dynamic allocation of lrs_mp                  */
+lrs_mp_t      lrs_alloc_mp_t(); /* dynamic allocation of lrs_mp                  */
 lrs_mp_vector lrs_alloc_mp_vector(
     int64_t n ); /* allocate lrs_mp_vector for n+1 lrs_mp numbers */
-lrs_mp_matrix lrs_alloc_mp_matrix(
-    int64_t m, int64_t n ); /* allocate lrs_mp_matrix for m+1 x n+1 lrs_mp */
+lrs_mp_matrix
+lrs_alloc_mp_matrix( int64_t m,
+                     int64_t n ); /* allocate lrs_mp_matrix for m+1 x n+1 lrs_mp */
 int64_t lrs_mp_init( int64_t dec_digits,
-                     FILE* lrs_ifp,
-                     FILE* lrs_ofp ); /* max number of decimal digits, fps   */
+                     FILE*   lrs_ifp,
+                     FILE*   lrs_ofp ); /* max number of decimal digits, fps   */
 void lrs_clear_mp_vector( lrs_mp_vector a, int64_t n );
 void lrs_clear_mp_matrix( lrs_mp_matrix a, int64_t m, int64_t n );
 
@@ -195,24 +195,22 @@ void gcd( lrs_mp u, lrs_mp v ); /* returns u=gcd(u,v) destroying v */
 int64_t mp_greater( lrs_mp a,
                     lrs_mp b );     /* tests if a > b and returns (TRUE=POS) */
 void itomp( int64_t in, lrs_mp a ); /* convert integer i to lrs_mp */
-void linint( lrs_mp a,
+void linint( lrs_mp  a,
              int64_t ka,
-             lrs_mp b,
+             lrs_mp  b,
              int64_t kb ); /* compute a*ka+b*kb --> a                        */
 void mptodouble( lrs_mp a, double* x ); /* convert lrs_mp to double */
 int64_t mptoi( lrs_mp a );              /* convert lrs_mp to long integer */
-void mulint( lrs_mp a,
-             lrs_mp b,
-             lrs_mp c );    /* multiply two integers a*b --> c                */
+void mulint( lrs_mp a, lrs_mp b, lrs_mp c ); /* multiply two integers a*b --> c */
 void normalize( lrs_mp a ); /* normalize lrs_mp after computation             */
 #ifdef PLRS
 string pmp( char name[], lrs_mp a ); /* print the long precision integer a */
 string prat( char name[], lrs_mp Nt, lrs_mp Dt ); /* reduce and print  Nt/Dt */
 char* cprat( char name[], lrs_mp Nt, lrs_mp Dt ); /* C version of prat */
-int64_t plrs_readrat(
-    lrs_mp Na,
-    lrs_mp Da,
-    const char* rat ); /* take a rational number and convert to lrs_mp   */
+int64_t
+plrs_readrat( lrs_mp      Na,
+              lrs_mp      Da,
+              const char* rat ); /* take a rational number and convert to lrs_mp */
 #else
 void pmp( char name[], lrs_mp a ); /* print the long precision integer a */
 void prat( char name[], lrs_mp Nt, lrs_mp Dt ); /* reduce and print  Nt/Dt */
@@ -231,40 +229,37 @@ void atoaa( char in[],
             char den[] ); /* convert rational string in to num/den strings  */
 void addint( lrs_mp a, lrs_mp b, lrs_mp c ); /* compute c=a+b */
 int64_t atos( char s[] ); /* convert s to integer                           */
-int64_t
-comprod( lrs_mp Na,
-         lrs_mp Nb,
-         lrs_mp Nc,
-         lrs_mp Nd ); /* +1 if Na*Nb > Nc*Nd,-1 if Na*Nb > Nc*Nd else 0 */
+int64_t comprod( lrs_mp Na,
+                 lrs_mp Nb,
+                 lrs_mp Nc,
+                 lrs_mp Nd ); /* +1 if Na*Nb > Nc*Nd,-1 if Na*Nb > Nc*Nd else 0 */
 void decint( lrs_mp a, lrs_mp b ); /* compute a=a-b */
 void divrat( lrs_mp Na, lrs_mp Da, lrs_mp Nb, lrs_mp Db, lrs_mp Nc, lrs_mp Dc );
 /* computes Nc/Dc = (Na/Da) /( Nb/Db ) and reduce */
-void getfactorial( lrs_mp factorial,
+void getfactorial( lrs_mp  factorial,
                    int64_t k ); /* compute k factorial in lrs_mp */
 /* NC/DC = ka*Na/Da + kb*Nb/Db */
-void linrat( lrs_mp Na,
-             lrs_mp Da,
+void linrat( lrs_mp  Na,
+             lrs_mp  Da,
              int64_t ka,
-             lrs_mp Nb,
-             lrs_mp Db,
+             lrs_mp  Nb,
+             lrs_mp  Db,
              int64_t kb,
-             lrs_mp Nc,
-             lrs_mp Dc );
-void lcm( lrs_mp a,
-          lrs_mp b ); /* a = least common multiple of a, b; b is saved  */
+             lrs_mp  Nc,
+             lrs_mp  Dc );
+void lcm( lrs_mp a, lrs_mp b ); /* a = least common multiple of a, b; b is saved */
 void mulrat( lrs_mp Na, lrs_mp Da, lrs_mp Nb, lrs_mp Db, lrs_mp Nc, lrs_mp Dc );
 /* computes Nc/Dc=(Na/Da)*(Nb/Db) and reduce      */
 int64_t
 myrandom( int64_t num,
           int64_t nrange ); /* return a random number in range 0..nrange-1 */
 void notimpl( char s[] );   /* bail out - help!                               */
-void rattodouble( lrs_mp a,
-                  lrs_mp b,
+void rattodouble( lrs_mp  a,
+                  lrs_mp  b,
                   double* x );          /* convert lrs_mp rational to double */
 void reduceint( lrs_mp Na, lrs_mp Da ); /* divide Na by Da and return it */
-void reducearray(
-    lrs_mp_vector p,
-    int64_t n ); /* find gcd of p[0]..p[n-1] and divide through by */
+void reducearray( lrs_mp_vector p,
+                  int64_t n ); /* find gcd of p[0]..p[n-1] and divide through by */
 void scalerat( lrs_mp Na, lrs_mp Da, int64_t ka ); /* scales rational by ka */
 void subint( lrs_mp a, lrs_mp b, lrs_mp c );       /* compute c=a-b */
 
@@ -274,8 +269,7 @@ void subint( lrs_mp a, lrs_mp b, lrs_mp c );       /* compute c=a-b */
 
 // void free (void *ptr);
 
-void lrs_getdigits( int64_t* a,
-                    int64_t* b ); /* send digit information to user */
+void lrs_getdigits( int64_t* a, int64_t* b ); /* send digit information to user */
 
 void stringcpy( char* s, char* t ); /* copy t to s pointer version */
 

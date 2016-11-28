@@ -43,8 +43,7 @@ namespace gum {
     }
 
     /// copy constructor
-    RowGeneratorIdentity::RowGeneratorIdentity(
-        const RowGeneratorIdentity& from )
+    RowGeneratorIdentity::RowGeneratorIdentity( const RowGeneratorIdentity& from )
         : FilteredRowGenerator( from ) {
       GUM_CONS_CPY( RowGeneratorIdentity );
     }

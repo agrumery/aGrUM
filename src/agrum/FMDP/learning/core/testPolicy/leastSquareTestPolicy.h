@@ -155,9 +155,7 @@ namespace gum {
     // ============================================================================
     /// Returns sum per modality table (needed for the merging)
     // ============================================================================
-    const HashTable<Idx, double>& sumAttrTable() const {
-      return __sumAttrTable;
-    }
+    const HashTable<Idx, double>& sumAttrTable() const { return __sumAttrTable; }
 
     // ============================================================================
     /// Returns global sum (needed for the merging)

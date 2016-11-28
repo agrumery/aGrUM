@@ -69,7 +69,7 @@ namespace gum {
   // (whatever their type). This is mainly what stroustrup suggests
   // in his C++ programming language, third edition, page 854
   static const ListConstIteratorSafe<Debug> __static_list_end_safe;
-  static const ListConstIterator<Debug> __static_list_end;
+  static const ListConstIterator<Debug>     __static_list_end;
 
   static constexpr const void* __get_list_end_safe() {
     return &__static_list_end_safe;
@@ -77,7 +77,7 @@ namespace gum {
   static constexpr const void* __get_list_end() { return &__static_list_end; }
 
   const void* const __list_end_safe = __get_list_end_safe();
-  const void* const __list_end      = __get_list_end();
+  const void* const __list_end = __get_list_end();
 
 } /* namespace gum */
 

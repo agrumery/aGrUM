@@ -37,8 +37,8 @@ namespace gum {
 
   // Default constructor
   template <typename GUM_SCALAR>
-  INLINE MultiDimLogit<GUM_SCALAR>::MultiDimLogit(
-      const MultiDimLogit<GUM_SCALAR>& from )
+  INLINE
+  MultiDimLogit<GUM_SCALAR>::MultiDimLogit( const MultiDimLogit<GUM_SCALAR>& from )
       : MultiDimICIModel<GUM_SCALAR>( from ) {
     GUM_CONS_CPY( MultiDimLogit );
   }
@@ -76,8 +76,7 @@ namespace gum {
                           this->variable( j ).numerical( i.val( v ) ) );
     }
 
-    fact =
-        1 / ( 1 + std::exp( -fact ) );  // or std::exp(fact)/(1+std::exp(fact))
+    fact = 1 / ( 1 + std::exp( -fact ) );  // or std::exp(fact)/(1+std::exp(fact))
     return ( i.val( C ) == 1 ) ? fact : (GUM_SCALAR)1.0 - fact;
   }
 
@@ -88,8 +87,8 @@ namespace gum {
       << this->externalWeight();
 
     for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
-      GUM_SCALAR c = this->causalWeight(
-          MultiDimImplementation<GUM_SCALAR>::variable( i ) );
+      GUM_SCALAR c =
+          this->causalWeight( MultiDimImplementation<GUM_SCALAR>::variable( i ) );
 
       if ( c != GUM_SCALAR( 0 ) ) {
         s << " ";
@@ -109,14 +108,14 @@ namespace gum {
 
   // For friendly displaying the content of the variable.
   template <typename GUM_SCALAR>
-  INLINE std::ostream& operator<<( std::ostream& s,
+  INLINE std::ostream& operator<<( std::ostream&                    s,
                                    const MultiDimLogit<GUM_SCALAR>& ag ) {
     return s << ag.toString();
   }
 
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>*
-  MultiDimLogit<GUM_SCALAR>::newFactory() const {
+         MultiDimLogit<GUM_SCALAR>::newFactory() const {
     return new MultiDimLogit<GUM_SCALAR>( this->__external_weight,
                                           this->__default_weight );
   }

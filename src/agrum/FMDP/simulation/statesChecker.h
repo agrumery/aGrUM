@@ -86,7 +86,7 @@ namespace gum {
     Idx __nbVisitedStates;
 
     MultiDimFunctionGraph<bool>* __checker;
-    NodeId __checkerTrueId, __checkerFalseId;
+    NodeId                       __checkerTrueId, __checkerFalseId;
 
     Set<Instantiation*> __visitedStates;
   };

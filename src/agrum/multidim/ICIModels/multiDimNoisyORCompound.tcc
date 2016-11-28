@@ -100,13 +100,12 @@ namespace gum {
   template <typename GUM_SCALAR>
   const std::string MultiDimNoisyORCompound<GUM_SCALAR>::toString() const {
     std::stringstream s;
-    s << MultiDimImplementation<GUM_SCALAR>::variable( 0 )
-      << "=noisyORCompound([" << this->externalWeight() << "],";
+    s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "=noisyORCompound(["
+      << this->externalWeight() << "],";
 
     for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
       s << MultiDimImplementation<GUM_SCALAR>::variable( i ) << "["
-        << this->causalWeight(
-               MultiDimImplementation<GUM_SCALAR>::variable( i ) )
+        << this->causalWeight( MultiDimImplementation<GUM_SCALAR>::variable( i ) )
         << "]";
     }
 
@@ -127,7 +126,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>*
-  MultiDimNoisyORCompound<GUM_SCALAR>::newFactory() const {
+         MultiDimNoisyORCompound<GUM_SCALAR>::newFactory() const {
     return new MultiDimNoisyORCompound<GUM_SCALAR>( this->__external_weight,
                                                     this->__default_weight );
   }

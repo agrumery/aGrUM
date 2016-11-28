@@ -84,7 +84,7 @@ namespace gum {
     private:
     // Returns a bloc defining a variable in the DSL format.
     std::string __variableBloc( const IBayesNet<GUM_SCALAR>& bn,
-                                const DiscreteVariable& var );
+                                const DiscreteVariable&      var );
   };
 
 

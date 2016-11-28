@@ -96,7 +96,7 @@ namespace gum {
        * A copy is made of var.
        * @throw OperationNotAllowed Raised if label_map is invalid.
        */
-      PRMType( PRMType& super_type,
+      PRMType( PRMType&                super_type,
                const std::vector<Idx>& label_map,
                const DiscreteVariable& var );
 

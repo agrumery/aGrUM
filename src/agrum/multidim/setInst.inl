@@ -77,8 +77,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos =
-          __vars.pos( v );  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
@@ -127,7 +126,7 @@ namespace gum {
   // modifies the value of a given variable of the sequence (external function)
 
   INLINE SetInst& SetInst::chgVals( const DiscreteVariable& v,
-                                    const Size newVals ) {
+                                    const Size              newVals ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
@@ -149,12 +148,11 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::chgVals( const DiscreteVariable* v,
-                                    const Size newVals ) {
+                                    const Size              newVals ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos =
-          __vars.pos( v );  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
       if ( newVals >= (Size)1 << v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
@@ -202,8 +200,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos =
-          __vars.pos( v );  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
@@ -251,12 +248,11 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::addVals( const DiscreteVariable* v,
-                                    const Size newVal ) {
+                                    const Size              newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos =
-          __vars.pos( v );  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
@@ -274,7 +270,7 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::addVals( const DiscreteVariable& v,
-                                    const Size newVal ) {
+                                    const Size              newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
@@ -310,8 +306,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos =
-          __vars.pos( v );  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
@@ -358,12 +353,11 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::remVals( const DiscreteVariable* v,
-                                    const Size newVal ) {
+                                    const Size              newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos =
-          __vars.pos( v );  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
@@ -381,7 +375,7 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::remVals( const DiscreteVariable& v,
-                                    const Size newVal ) {
+                                    const Size              newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
@@ -424,12 +418,11 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::interVals( const DiscreteVariable* v,
-                                      const Size newVal ) {
+                                      const Size              newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos =
-          __vars.pos( v );  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
       if ( newVal >= ( 1UL << __vars[varPos]->domainSize() ) )
 
@@ -447,7 +440,7 @@ namespace gum {
   }
 
   INLINE SetInst& SetInst::interVals( const DiscreteVariable& v,
-                                      const Size newVal ) {
+                                      const Size              newVal ) {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
@@ -483,8 +476,7 @@ namespace gum {
     try {
       // check that the variable does belong to the SetInst and that the new
       // value is possible.
-      Idx varPos =
-          __vars.pos( v );  // throws NotFound if v doesn't belong to this
+      Idx varPos = __vars.pos( v );  // throws NotFound if v doesn't belong to this
 
       if ( newVal >= v->domainSize() ) GUM_ERROR( OutOfBounds, "" );
 
@@ -618,7 +610,7 @@ namespace gum {
   }
 
   INLINE Idx SetInst::val( const DiscreteVariable* var ) const {
-    Idx n      = 0;
+    Idx  n = 0;
     Size value = __vals[__vars.pos( var )];
 
     if ( __vals[__vars.pos( var )] % 2 == 0 ) {
@@ -633,7 +625,7 @@ namespace gum {
   }
 
   INLINE Idx SetInst::nbrOccurences( const DiscreteVariable& var ) const {
-    Idx n    = 0;
+    Idx  n = 0;
     Size val = __vals[__vars.pos( &var )];
 
     while ( val ) {
@@ -645,7 +637,7 @@ namespace gum {
   }
 
   INLINE Idx SetInst::val( const DiscreteVariable& var ) const {
-    Idx n      = 0;
+    Idx  n = 0;
     Size value = __vals[__vars.pos( &var )];
 
     if ( nbrOccurences( var ) == 1 ) {
@@ -695,7 +687,7 @@ namespace gum {
 
   INLINE SetInst& SetInst::chgValIn( const SetInst& i ) {
     __overflow = false;
-    Idx s      = i.nbrDim();
+    Idx s = i.nbrDim();
 
     for ( Size p = 0; p < s; ++p )
       if ( contains( i.variable( p ) ) )
@@ -708,7 +700,7 @@ namespace gum {
   // returns the sequence of DiscreteVariable
 
   INLINE const Sequence<const DiscreteVariable*>&
-  SetInst::variablesSequence() const {
+               SetInst::variablesSequence() const {
     return __vars;
   }
 
@@ -732,7 +724,7 @@ namespace gum {
 
   INLINE void
   SetInst::reorder( const Sequence<const DiscreteVariable*>& original ) {
-    Idx max      = original.size();
+    Idx max = original.size();
     Idx position = 0;
 
     for ( Idx i = 0; i < max; ++i ) {

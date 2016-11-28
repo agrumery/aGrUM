@@ -136,8 +136,7 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleMultiDim<GUM_SCALAR>&
-    operator=( const ScheduleMultiDim<GUM_SCALAR>& );
+    ScheduleMultiDim<GUM_SCALAR>& operator=( const ScheduleMultiDim<GUM_SCALAR>& );
 
     /// checks whether two ScheduleMultiDim are related to the same table
     bool operator==( const ScheduleMultiDim<GUM_SCALAR>& ) const;
@@ -219,8 +218,7 @@ namespace gum {
     static HashTable<Idx, Idx>& __id2refs();
 
     /// returns a table with the variables of the table corresponding to id
-    static HashTable<Idx, const Sequence<const DiscreteVariable*>*>&
-    __id2vars();
+    static HashTable<Idx, const Sequence<const DiscreteVariable*>*>& __id2vars();
 
     /// returns a table with the domain size of the table corresponding to id
     static HashTable<Idx, Size>& __id2size();

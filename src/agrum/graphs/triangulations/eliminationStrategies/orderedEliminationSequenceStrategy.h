@@ -39,8 +39,7 @@ namespace gum {
    * \ingroup graph_group
    *
    */
-  class OrderedEliminationSequenceStrategy
-      : public EliminationSequenceStrategy {
+  class OrderedEliminationSequenceStrategy : public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -62,8 +61,8 @@ namespace gum {
      * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the order are not
      * copied but only referenced by the elimination sequence algorithm. */
-    OrderedEliminationSequenceStrategy( UndiGraph* graph,
-                                        const NodeProperty<Size>* dom_sizes,
+    OrderedEliminationSequenceStrategy( UndiGraph*                 graph,
+                                        const NodeProperty<Size>*  dom_sizes,
                                         const std::vector<NodeId>* order );
 
     /// copy constructor
@@ -106,7 +105,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the elimination sequence algorithm.
      */
-    virtual bool setGraph( UndiGraph* graph,
+    virtual bool setGraph( UndiGraph*                graph,
                            const NodeProperty<Size>* dom_sizes ) final;
 
     /// sets the sequence of elimination

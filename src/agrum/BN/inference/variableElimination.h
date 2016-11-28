@@ -30,10 +30,10 @@
 #include <cmath>
 #include <utility>
 
-#include <agrum/config.h>
-#include <agrum/BN/inference/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/jointTargetedInference.h>
+#include <agrum/BN/inference/relevantPotentialsFinderType.h>
+#include <agrum/config.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 namespace gum {
@@ -50,7 +50,7 @@ namespace gum {
   // the function used to combine two tables
   template <typename GUM_SCALAR>
   INLINE static Potential<GUM_SCALAR>*
-  VENewprojPotential( const Potential<GUM_SCALAR>& t1,
+  VENewprojPotential( const Potential<GUM_SCALAR>&        t1,
                       const Set<const DiscreteVariable*>& del_vars ) {
     return new Potential<GUM_SCALAR>( t1.margSumOut( del_vars ) );
   }
@@ -65,7 +65,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   class VariableElimination : public JointTargetedInference<GUM_SCALAR> {
-  public:
+    public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -75,7 +75,7 @@ namespace gum {
     VariableElimination(
         const IBayesNet<GUM_SCALAR>* BN,
         RelevantPotentialsFinderType relevant_type =
-        RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
+            RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
         FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES );
 
     /// destructor
@@ -101,7 +101,7 @@ namespace gum {
      * If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the
      * set of potentials d-connected to the variables of the separator are kept
      * for combination and projection. */
-    void setRelevantPotentialsFinderType(RelevantPotentialsFinderType type );
+    void setRelevantPotentialsFinderType( RelevantPotentialsFinderType type );
 
     /// sets how we determine barren nodes
     /** Barren nodes are unnecessary for probability inference, so they can
@@ -112,7 +112,7 @@ namespace gum {
     void setFindBarrenNodesType( FindBarrenNodesType type );
 
     /// returns the join tree used for compute the posterior of node id
-    const JunctionTree* junctionTree(const NodeId id);
+    const JunctionTree* junctionTree( const NodeId id );
 
     /// @}
 
@@ -210,7 +210,7 @@ namespace gum {
 
 
     private:
-    typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
+    typedef Set<const Potential<GUM_SCALAR>*>             __PotentialSet;
     typedef SetIteratorSafe<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
 
 
@@ -221,7 +221,7 @@ namespace gum {
      * combined to produce a message on a separator */
     void ( VariableElimination<GUM_SCALAR>::*__findRelevantPotentials )(
         Set<const Potential<GUM_SCALAR>*>& pot_list,
-        Set<const DiscreteVariable*>& kept_vars );
+        Set<const DiscreteVariable*>&      kept_vars );
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType __barren_nodes_type;
@@ -248,7 +248,7 @@ namespace gum {
     UndiGraph __graph;
 
     /// the junction tree used to answer the last inference query
-    JunctionTree* __JT { nullptr };
+    JunctionTree* __JT{nullptr};
 
     /// for each node of __graph (~ in the Bayes net), associate an ID in the JT
     HashTable<NodeId, NodeId> __node_to_clique;
@@ -261,7 +261,7 @@ namespace gum {
 
     /// the posterior computed during the last inference
     /** the posterior is owned by VariableElimination. */
-    Potential<GUM_SCALAR>* __target_posterior {nullptr};
+    Potential<GUM_SCALAR>* __target_posterior{nullptr};
 
     /// for comparisons with 1 - epsilon
     const GUM_SCALAR __1_minus_epsilon{GUM_SCALAR( 1.0 - 1e-6 )};
@@ -299,37 +299,37 @@ namespace gum {
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsGetAll( __PotentialSet& pot_list,
+    void __findRelevantPotentialsGetAll( __PotentialSet&               pot_list,
                                          Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsXX( __PotentialSet& pot_list,
+    void __findRelevantPotentialsXX( __PotentialSet&               pot_list,
                                      Set<const DiscreteVariable*>& kept_vars );
 
     // remove barren variables and return the newly created projected potentials
     __PotentialSet
-    __removeBarrenVariables( __PotentialSet& pot_list,
+    __removeBarrenVariables( __PotentialSet&               pot_list,
                              Set<const DiscreteVariable*>& del_vars );
 
     /// actually perform the collect phase
-    std::pair<__PotentialSet,__PotentialSet>
+    std::pair<__PotentialSet, __PotentialSet>
     __collectMessage( const NodeId id, const NodeId from );
 
     /// returns the CPT + evidence of a node projected w.r.t. hard evidence
-    std::pair<__PotentialSet,__PotentialSet>
-    __NodePotentials ( const NodeId node );
+    std::pair<__PotentialSet, __PotentialSet>
+    __NodePotentials( const NodeId node );
 
     /// creates the message sent by clique from_id to clique to_id
-    std::pair<__PotentialSet,__PotentialSet>
+    std::pair<__PotentialSet, __PotentialSet>
     __produceMessage( const NodeId from_id,
                       const NodeId to_id,
-                      std::pair<__PotentialSet,__PotentialSet>&& in_mess );
+                      std::pair<__PotentialSet, __PotentialSet>&& in_mess );
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    __PotentialSet __marginalizeOut( __PotentialSet pot_list,
+    __PotentialSet __marginalizeOut( __PotentialSet                pot_list,
                                      Set<const DiscreteVariable*>& del_vars,
                                      Set<const DiscreteVariable*>& kept_vars );
 

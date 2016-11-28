@@ -52,11 +52,11 @@ namespace gum {
 
 
     const ErrorsContainer& Parser::errors( void ) const { return __errors; }
-    ErrorsContainer& Parser::errors( void ) { return __errors; }
+    ErrorsContainer&       Parser::errors( void ) { return __errors; }
 
     void Parser::Get() {
       for ( ;; ) {
-        t  = la;
+        t = la;
         la = scanner->Scan();
 
         if ( la->kind <= maxT ) {
@@ -67,13 +67,13 @@ namespace gum {
 
         if ( dummyToken != t ) {
           dummyToken->kind = t->kind;
-          dummyToken->pos  = t->pos;
-          dummyToken->col  = t->col;
+          dummyToken->pos = t->pos;
+          dummyToken->col = t->col;
           dummyToken->line = t->line;
           dummyToken->next = NULL;
           coco_string_delete( dummyToken->val );
           dummyToken->val = coco_string_create( t->val );
-          t               = dummyToken;
+          t = dummyToken;
         }
 
         la = t;
@@ -137,7 +137,7 @@ namespace gum {
 
     void Parser::ACTION() {
       std::string name_of_action;
-      float tolerance;
+      float       tolerance;
       Expect( 10 /* "action" */ );
       __factory->startActionDeclaration();
       if ( la->kind == _ident ) {
@@ -286,7 +286,7 @@ namespace gum {
       __factory->startTransitionDeclaration();
       IDENT( name_of_var );
       std::string prime_name_of_var = name_of_var + "'";
-      __currentFunctionGraphVar     = prime_name_of_var;
+      __currentFunctionGraphVar = prime_name_of_var;
       if ( IsFollowedByIdent() ) {
         Expect( _lpar );
         SUB_TRANSITION_FUNCTION_GRAPH();
@@ -319,12 +319,11 @@ namespace gum {
     void Parser::SUB_TRANSITION_FUNCTION_GRAPH() {
       std::string name_of_var;
       std::string modality_of_var;
-      NodeId var_id;
+      NodeId      var_id;
       IDENT( name_of_var );
       var_id = __factory->addInternalNode( name_of_var );
       if ( !__parentNode.empty() )
-        __factory->addArc(
-            __parentNode.back(), var_id, __parentModality.back() );
+        __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
       else
         __factory->setRoot( var_id );
       while ( la->kind == _lpar ) {
@@ -350,12 +349,11 @@ namespace gum {
     }
 
     void Parser::TRANSITION_LEAF() {
-      float value;
-      gum::Idx i    = 0;
-      NodeId var_id = __factory->addInternalNode( __currentFunctionGraphVar );
+      float    value;
+      gum::Idx i = 0;
+      NodeId   var_id = __factory->addInternalNode( __currentFunctionGraphVar );
       if ( !__parentNode.empty() )
-        __factory->addArc(
-            __parentNode.back(), var_id, __parentModality.back() );
+        __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
       else
         __factory->setRoot( var_id );
       FLOAT( value );
@@ -372,12 +370,11 @@ namespace gum {
     void Parser::SUB_FUNCTION_GRAPH() {
       std::string name_of_var;
       std::string modality_of_var;
-      NodeId var_id;
+      NodeId      var_id;
       IDENT( name_of_var );
       var_id = __factory->addInternalNode( name_of_var );
       if ( !__parentNode.empty() )
-        __factory->addArc(
-            __parentNode.back(), var_id, __parentModality.back() );
+        __factory->addArc( __parentNode.back(), var_id, __parentModality.back() );
       else
         __factory->setRoot( var_id );
       while ( la->kind == _lpar ) {
@@ -410,8 +407,7 @@ namespace gum {
       while ( la->kind == _integer || la->kind == _number ) {
         FLOAT( value );
         NodeId val_id = __factory->addTerminalNode( value );
-        __factory->addArc(
-            __parentNode.back(), val_id, __parentModality.back() );
+        __factory->addArc( __parentNode.back(), val_id, __parentModality.back() );
       }
     }
 
@@ -450,8 +446,7 @@ namespace gum {
       static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
 
       enum {
-        InitExists =
-            ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
+        InitExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
       };
     };
 
@@ -503,8 +498,7 @@ namespace gum {
 
     // Generic case of the ParserDestroyCaller, gets used if the Destroy method
     // is missing
-    template <typename T,
-              bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+    template <typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
     struct ParserDestroyCaller {
       static void CallDestroy( T* t ) {
         // nothing to do
@@ -518,9 +512,9 @@ namespace gum {
       static void CallDestroy( T* t ) { t->Destroy(); }
     };
     void Parser::Parse() {
-      t  = NULL;
+      t = NULL;
       la = dummyToken = new Token();
-      la->val         = coco_string_create( L"Dummy Token" );
+      la->val = coco_string_create( L"Dummy Token" );
       Get();
       MDPDAT();
       Expect( 0 );
@@ -531,9 +525,9 @@ namespace gum {
 
       ParserInitCaller<Parser>::CallInit( this );
       dummyToken = NULL;
-      t = la        = NULL;
-      minErrDist    = 2;
-      errDist       = minErrDist;
+      t = la = NULL;
+      minErrDist = 2;
+      errDist = minErrDist;
       this->scanner = scanner;
     }
 
@@ -563,8 +557,7 @@ namespace gum {
       __errors.Warning( scanner->filename(), t->line, t->col, msg );
     }
 
-    void
-    Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
+    void Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
       wchar_t* s;
 
       switch ( n ) {

@@ -39,8 +39,7 @@ namespace gum {
   //
   // ==========================================================================
   template <typename GUM_SCALAR>
-  void Chi2TestPolicy<GUM_SCALAR>::addObservation( Idx iattr,
-                                                   GUM_SCALAR ivalue ) {
+  void Chi2TestPolicy<GUM_SCALAR>::addObservation( Idx iattr, GUM_SCALAR ivalue ) {
     ITestPolicy<GUM_SCALAR>::addObservation( iattr, ivalue );
     __conTab.add( iattr, ivalue );
   }
@@ -96,8 +95,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void
-  Chi2TestPolicy<GUM_SCALAR>::add( const Chi2TestPolicy<GUM_SCALAR>& src ) {
+  void Chi2TestPolicy<GUM_SCALAR>::add( const Chi2TestPolicy<GUM_SCALAR>& src ) {
     ITestPolicy<GUM_SCALAR>::add( src );
     __conTab += src.ct();
   }

@@ -69,8 +69,7 @@ namespace gum {
 
   /// destructor
   template <typename GUM_SCALAR>
-  ScheduleSeparatorStoreMultiDim<
-      GUM_SCALAR>::~ScheduleSeparatorStoreMultiDim() {
+  ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::~ScheduleSeparatorStoreMultiDim() {
     // for debugging purposes
     GUM_DESTRUCTOR( ScheduleSeparatorStoreMultiDim );
 
@@ -85,9 +84,9 @@ namespace gum {
     // avoid self assignment
     if ( &from != this ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );
-      __table                                = from.__table;
-      __tableSet                             = from.__tableSet;
-      __separator                            = from.__separator;
+      __table = from.__table;
+      __tableSet = from.__tableSet;
+      __separator = from.__separator;
 
       if ( __args ) {
         __args->clear();
@@ -140,22 +139,21 @@ namespace gum {
   /** @brief returns an estimation of the number of elementary operations
    * needed to perform the ScheduleOperation */
   template <typename GUM_SCALAR>
-  INLINE float
-  ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::nbOperations() const {
+  INLINE float ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::nbOperations() const {
     return 1.0f;
   }
 
   /// returns the memory consumption used during the operation
   template <typename GUM_SCALAR>
   INLINE std::pair<long, long>
-  ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::memoryUsage() const {
+         ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::memoryUsage() const {
     return std::pair<long, long>( 0, 0 );
   }
 
   /// returns the multidim to be stored
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::multiDimArgs() const {
+               ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::multiDimArgs() const {
     if ( !__args ) {
       __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __args->insert( &__table );
@@ -167,7 +165,7 @@ namespace gum {
   /// returns the set of multidims that should be the result of the operation
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::multiDimResults() const {
+               ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::multiDimResults() const {
     static Sequence<const ScheduleMultiDim<GUM_SCALAR>*> empty_seq;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
@@ -194,8 +192,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::string ScheduleSeparatorStoreMultiDim<GUM_SCALAR>::toString() const {
     std::stringstream s;
-    s << "store ( " << __table.toString() << ", separator " << __separator
-      << " )";
+    s << "store ( " << __table.toString() << ", separator " << __separator << " )";
     return s.str();
   }
 

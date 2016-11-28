@@ -46,9 +46,9 @@ namespace gum {
     template <typename GUM_SCALAR>
     class PRMFormAttribute : public PRMAttribute<GUM_SCALAR> {
       public:
-      PRMFormAttribute( const PRMClass<GUM_SCALAR>& c,
-                        const std::string& name,
-                        const PRMType<GUM_SCALAR>& type,
+      PRMFormAttribute( const PRMClass<GUM_SCALAR>&          c,
+                        const std::string&                   name,
+                        const PRMType<GUM_SCALAR>&           type,
                         MultiDimImplementation<std::string>* impl =
                             new MultiDimArray<std::string>() );
 
@@ -59,14 +59,13 @@ namespace gum {
       newFactory( const PRMClass<GUM_SCALAR>& c ) const;
 
       /// See gum::prm::PRMAttribute.
-      virtual PRMAttribute<GUM_SCALAR>*
-      copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
-          const;
+      virtual PRMAttribute<GUM_SCALAR>* copy(
+          Bijection<const DiscreteVariable*, const DiscreteVariable*> bij ) const;
 
       /// See gum::prm::PRMAttribute.
-      virtual void copyCpf( const Bijection<const DiscreteVariable*,
-                                            const DiscreteVariable*>& bif,
-                            const PRMAttribute<GUM_SCALAR>& source );
+      virtual void copyCpf(
+          const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bif,
+          const PRMAttribute<GUM_SCALAR>& source );
 
       /// See gum::prm::PRMAttribute.
       virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
@@ -94,7 +93,7 @@ namespace gum {
       virtual void setAsCastDescendant( PRMAttribute<GUM_SCALAR>* attr );
       virtual void becomeCastDescendant( PRMType<GUM_SCALAR>& subtype );
 
-      virtual MultiDimImplementation<std::string>& formulas();
+      virtual MultiDimImplementation<std::string>&       formulas();
       virtual const MultiDimImplementation<std::string>& formulas() const;
 
       /// Swap old_type with new_type in the PRMClassElement cpt.

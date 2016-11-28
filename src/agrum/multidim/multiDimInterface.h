@@ -116,8 +116,7 @@ namespace gum {
      * @brief Returns a const ref to the sequence of DiscreteVariable*.
      * @return Returns a const ref to the sequence of DiscreteVariable*.
      */
-    virtual const Sequence<const DiscreteVariable*>&
-    variablesSequence() const = 0;
+    virtual const Sequence<const DiscreteVariable*>& variablesSequence() const = 0;
 
     /**
      * @brief Returns a const ref to the ith var.
@@ -212,8 +211,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    virtual void _swap( const DiscreteVariable* x,
-                        const DiscreteVariable* y ) = 0;
+    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y ) = 0;
   };
 
   /**
@@ -234,8 +232,7 @@ namespace gum {
    * sequence of variables.
    * @throw OperationNotAllowed Raised if *this is non mutable.
    */
-  MultiDimInterface& operator<<( MultiDimInterface& c,
-                                 const DiscreteVariable& v );
+  MultiDimInterface& operator<<( MultiDimInterface& c, const DiscreteVariable& v );
 
   /**
    * @brief Removes a var from the variables of the MutliDimAdressing.
@@ -244,8 +241,7 @@ namespace gum {
    * @throw OperationNotAllowed Raised if this object is non mutable.
    * @throw NotFound Raised if v does not belong to this
    */
-  MultiDimInterface& operator>>( MultiDimInterface& c,
-                                 const DiscreteVariable& v );
+  MultiDimInterface& operator>>( MultiDimInterface& c, const DiscreteVariable& v );
 
 } /* namespace gum */
 

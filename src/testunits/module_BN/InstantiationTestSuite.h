@@ -31,13 +31,12 @@ namespace gum_tests {
 
   class InstantiationTestSuite : public CxxTest::TestSuite {
     gum::BayesNet<double>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::NodeId            i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<double>();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
-          n3( "3", "", 2 );
+      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
       gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 2 );
 
       i1 = bn->add( n1 );
@@ -65,8 +64,8 @@ namespace gum_tests {
     }
 
     void testInsertSupprVariables() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
       gum::Instantiation i;
 
       TS_GUM_ASSERT_THROWS_NOTHING( i << a << b << c );
@@ -93,8 +92,8 @@ namespace gum_tests {
     }
 
     void testIncrementations() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
       gum::Instantiation i;
       i << a << b << c;
       gum::Instantiation j;
@@ -129,8 +128,8 @@ namespace gum_tests {
     }
 
     void testDecrementations() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
       gum::Instantiation i;
       i << a << b << c;
       gum::Instantiation j;
@@ -164,8 +163,8 @@ namespace gum_tests {
     }
 
     void testReordering() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
       gum::Instantiation i;
       i << a << b << c;
       gum::Instantiation j;
@@ -219,8 +218,8 @@ namespace gum_tests {
     }
 
     void testSlavery() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
       gum::MultiDimArray<double> t;
       t << a << b << c;
       gum::MultiDimArray<double> t2;
@@ -254,9 +253,8 @@ namespace gum_tests {
     }
 
     void testChgValIn() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 ),
-          d( "d", "fourth var", 2 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
 
       gum::Instantiation i;
       i << b << c << d;
@@ -273,9 +271,8 @@ namespace gum_tests {
     }
 
     void testOperatorEgal() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 ),
-          d( "d", "fourth var", 2 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
       gum::MultiDimArray<char> p, q;
       p << a << b << c;
       q << c << d;
@@ -311,9 +308,8 @@ namespace gum_tests {
     }
 
     void testOffsetOperation() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 ),
-          d( "d", "fourth var", 2 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 ), d( "d", "fourth var", 2 );
       gum::MultiDimArray<char> p;
       p << a << b << c;
 

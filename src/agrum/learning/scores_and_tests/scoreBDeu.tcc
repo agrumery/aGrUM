@@ -36,7 +36,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ScoreBDeu<IdSetAlloc, CountAlloc>::ScoreBDeu(
-        const RowFilter& filter,
+        const RowFilter&         filter,
         const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         Size min_range,
@@ -94,19 +94,17 @@ namespace gum {
       }
 
       if ( weight == 0 ) {
-        GUM_ERROR(
-            PossiblyIncompatibleScoreApriori,
-            "The apriori is currently compatible with the BDeu score but "
-            "if you change the weight, it will become incompatible" );
+        GUM_ERROR( PossiblyIncompatibleScoreApriori,
+                   "The apriori is currently compatible with the BDeu score but "
+                   "if you change the weight, it will become incompatible" );
       }
 
       // known incompatible aprioris
       if ( ( apriori_type == AprioriDirichletType::type ) ||
            ( apriori_type == AprioriSmoothingType::type ) ) {
-        GUM_ERROR(
-            IncompatibleScoreApriori,
-            "The BDeu score already contains a different 'implicit' aprio"
-            "ri. Therefore, the learning will probably be meaningless." );
+        GUM_ERROR( IncompatibleScoreApriori,
+                   "The BDeu score already contains a different 'implicit' aprio"
+                   "ri. Therefore, the learning will probably be meaningless." );
       }
 
       // apriori types unsupported by the type checker
@@ -132,7 +130,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
-    ScoreBDeu<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
+                 ScoreBDeu<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
 
@@ -162,7 +160,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
       const Size targets_modal = Size( N_ijk.size() );
-      double score             = 0;
+      double     score = 0;
 
       // get the nodes involved in the score as well as their modalities
       const std::vector<Idx, IdSetAlloc>& all_nodes =
@@ -195,7 +193,7 @@ namespace gum {
           //     + sum_k=1^ri { gammlog2 ( N_ijk + N'_ijk + ESS / (r_i * q_i ) )
           //     -
           //     gammalog2 ( N'_ijk + ESS / (r_i * q_i ) ) } ]
-          const double ess_qi   = __ess / conditioning_modal;
+          const double ess_qi = __ess / conditioning_modal;
           const double ess_riqi = ess_qi / modalities[all_nodes.back()];
 
           for ( Idx j = 0; j < conditioning_modal; ++j ) {
@@ -214,8 +212,8 @@ namespace gum {
           // ]
 
           // precompute ess / qi and ess / ( ri * qi )
-          const double ri       = double( modalities[all_nodes.back()] );
-          const double ess_qi   = __ess / conditioning_modal;
+          const double ri = double( modalities[all_nodes.back()] );
+          const double ess_qi = __ess / conditioning_modal;
           const double ess_qiri = ess_qi / ri;
 
           score = conditioning_modal * __gammalog2( ess_qi ) -
@@ -253,10 +251,10 @@ namespace gum {
           //                - gammalog2 ( N'_i + ESS / ri ) }
 
           // precompute ess / ri
-          const double ri     = double( modalities[all_nodes.back()] );
+          const double ri = double( modalities[all_nodes.back()] );
           const double ess_ri = __ess / ri;
 
-          double N       = 0;
+          double N = 0;
           double N_prime = 0;
           for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + N_prime_ijk[k] + ess_ri ) -
@@ -264,8 +262,8 @@ namespace gum {
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
-          score += __gammalog2( N_prime + __ess ) -
-                   __gammalog2( N + N_prime + __ess );
+          score +=
+              __gammalog2( N_prime + __ess ) - __gammalog2( N + N_prime + __ess );
         } else {
           // the BDeu score can be computed as follows:
           // gammalog2 ( ess ) - ri * gammalog2 ( ess / ri )
@@ -273,10 +271,10 @@ namespace gum {
           // + sum_k=1^ri log [ gammalog2 ( N_ijk + ess / ri ) ]
 
           // precompute ess / ri
-          const double ri     = double( modalities[all_nodes.back()] );
+          const double ri = double( modalities[all_nodes.back()] );
           const double ess_ri = __ess / ri;
 
-          score    = __gammalog2( __ess ) - ri * __gammalog2( ess_ri );
+          score = __gammalog2( __ess ) - ri * __gammalog2( ess_ri );
           double N = 0;
           for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + ess_ri );

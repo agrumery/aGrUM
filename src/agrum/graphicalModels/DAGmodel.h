@@ -76,9 +76,8 @@ namespace gum {
      * Return the value of the property name of this DAGModel.
      * return byDefault if the property name is not found
      */
-    const std::string&
-    propertyWithDefault( const std::string& name,
-                         const std::string& byDefault ) const;
+    const std::string& propertyWithDefault( const std::string& name,
+                                            const std::string& byDefault ) const;
 
     /**
      * Add or change a property of this DAGModel.

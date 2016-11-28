@@ -237,9 +237,9 @@ namespace gum {
      * @return the id of the added variable.
      * @throws DuplicateElement if id(<>0) is already used
      */
-    NodeId addChanceNode( const DiscreteVariable& variable,
+    NodeId addChanceNode( const DiscreteVariable&             variable,
                           MultiDimImplementation<GUM_SCALAR>* aContent,
-                          NodeId id = 0 );
+                          NodeId                              id = 0 );
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -254,9 +254,9 @@ namespace gum {
      * @throw InvalidAgrument If variable has more than one label
      * @throws DuplicateElement if id(<>0) is already used
      */
-    NodeId addUtilityNode( const DiscreteVariable& variable,
+    NodeId addUtilityNode( const DiscreteVariable&             variable,
                            MultiDimImplementation<GUM_SCALAR>* aContent,
-                           NodeId id = 0 );
+                           NodeId                              id = 0 );
 
     /**
      * Erase a Variable from the network and remove the variable from

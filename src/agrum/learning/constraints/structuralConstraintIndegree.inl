@@ -45,8 +45,7 @@ namespace gum {
     INLINE bool
     StructuralConstraintIndegree::checkArcAdditionAlone( NodeId x,
                                                          NodeId y ) const {
-      return ( _Indegree__max_parents[y] >
-               _DiGraph__graph.parents( y ).size() );
+      return ( _Indegree__max_parents[y] > _DiGraph__graph.parents( y ).size() );
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
@@ -60,8 +59,7 @@ namespace gum {
     INLINE bool
     StructuralConstraintIndegree::checkArcReversalAlone( NodeId x,
                                                          NodeId y ) const {
-      return ( _Indegree__max_parents[x] >
-               _DiGraph__graph.parents( x ).size() );
+      return ( _Indegree__max_parents[x] > _DiGraph__graph.parents( x ).size() );
     }
 
     /// checks whether the constraints enable to add an arc
@@ -103,20 +101,20 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(
-        const ArcAddition& change ) {}
+    INLINE void
+    StructuralConstraintIndegree::modifyGraphAlone( const ArcAddition& change ) {}
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(
-        const ArcDeletion& change ) {}
+    INLINE void
+    StructuralConstraintIndegree::modifyGraphAlone( const ArcDeletion& change ) {}
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(
-        const ArcReversal& change ) {}
+    INLINE void
+    StructuralConstraintIndegree::modifyGraphAlone( const ArcReversal& change ) {}
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintIndegree::modifyGraphAlone(
-        const GraphChange& change ) {}
+    INLINE void
+    StructuralConstraintIndegree::modifyGraphAlone( const GraphChange& change ) {}
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintIndegree::isAlwaysInvalidAlone(
@@ -141,9 +139,8 @@ namespace gum {
     }
 
     /// resets the max indegree
-    INLINE void
-    StructuralConstraintIndegree::setMaxIndegree( Size max_indegree,
-                                                  bool update_all ) {
+    INLINE void StructuralConstraintIndegree::setMaxIndegree( Size max_indegree,
+                                                              bool update_all ) {
       if ( update_all ) {
         for ( auto& degree : _Indegree__max_parents ) {
           degree.second = max_indegree;

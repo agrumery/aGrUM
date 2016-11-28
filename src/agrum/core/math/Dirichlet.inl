@@ -55,8 +55,8 @@ namespace gum {
   INLINE Dirichlet& Dirichlet::operator=( const Dirichlet& from ) {
     if ( &from != this ) {
       __generator = from.__generator;
-      __gamma     = from.__gamma;
-      __params    = from.__params;
+      __gamma = from.__gamma;
+      __params = from.__params;
     }
     return *this;
   }
@@ -65,17 +65,17 @@ namespace gum {
   INLINE Dirichlet& Dirichlet::operator=( Dirichlet&& from ) {
     if ( &from != this ) {
       __generator = std::move( from.__generator );
-      __gamma     = std::move( from.__gamma );
-      __params    = std::move( from.__params );
+      __gamma = std::move( from.__gamma );
+      __params = std::move( from.__params );
     }
     return *this;
   }
 
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::operator()() {
-    Size size = Size( __params.size() );
+    Size        size = Size( __params.size() );
     result_type res( size );
-    float sum = 0.0f;
+    float       sum = 0.0f;
     while ( sum == 0.0f ) {
       for ( Idx i = 0; i < size; ++i ) {
         __gamma.param(
@@ -93,13 +93,12 @@ namespace gum {
   // returns a sample from the Dirichlet distribution
   INLINE Dirichlet::result_type Dirichlet::
   operator()( const Dirichlet::param_type& parm ) {
-    Size size = Size( parm.size() );
+    Size        size = Size( parm.size() );
     result_type res( size );
-    float sum = 0.0f;
+    float       sum = 0.0f;
     while ( sum == 0.0f ) {
       for ( Idx i = 0; i < size; ++i ) {
-        __gamma.param(
-            std::gamma_distribution<float>::param_type( parm[i], 1 ) );
+        __gamma.param( std::gamma_distribution<float>::param_type( parm[i], 1 ) );
         res[i] = __gamma( __generator );
         sum += res[i];
       }

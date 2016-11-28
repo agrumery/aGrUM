@@ -75,12 +75,12 @@ namespace gum {
 
       NodeId currentNodeId = filo.back();
       filo.pop_back();
-      Idx cvp = node2MinVar[currentNodeId];
+      Idx                 cvp = node2MinVar[currentNodeId];
       const InternalNode* currentNode =
           generatedFunctionGraph->node( currentNodeId );
 
       LinkedList<NodeId> potentialSons;
-      Idx nbPotentialSons = 0;
+      Idx                nbPotentialSons = 0;
       for ( Idx varPos = 0;
             varPos < generatedFunctionGraph->variablesSequence().size();
             varPos++ ) {
@@ -113,9 +113,9 @@ namespace gum {
                 generatedFunctionGraph->manager()->addTerminalNode(
                     (double)std::rand() / (double)RAND_MAX * 100 ) );
           } else {
-            Idx sonVarPos = __generateVarPos(
-                node2MinVar[currentNodeId] + 1,
-                __nbTotalVar - node2MinVar[currentNodeId] - 2 );
+            Idx sonVarPos =
+                __generateVarPos( node2MinVar[currentNodeId] + 1,
+                                  __nbTotalVar - node2MinVar[currentNodeId] - 2 );
             generatedFunctionGraph->manager()->setSon(
                 currentNodeId,
                 modality,
@@ -162,7 +162,7 @@ namespace gum {
     Idx randOut = 0;
 
     if ( span != 0 ) {
-      auto generator = gum::getRandomGenerator();
+      auto                              generator = gum::getRandomGenerator();
       std::weibull_distribution<double> distribution( double( span ), 1.0 );
       randOut = ( Idx )( distribution( generator ) * span / 2 );
       if ( randOut > span ) randOut = span;

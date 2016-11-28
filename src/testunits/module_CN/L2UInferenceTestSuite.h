@@ -45,7 +45,7 @@ namespace gum_tests {
   ////////////////////////////////////////////////////////////////////
   class L2UListener : public gum::ApproximationSchemeListener {
     private:
-    int __nbr;
+    int         __nbr;
     std::string __msg;
 
     protected:
@@ -55,10 +55,10 @@ namespace gum_tests {
         , __nbr( 0 )
         , __msg( "" ){};
 
-    void whenProgress( const void* buffer,
+    void whenProgress( const void*     buffer,
                        const gum::Size a,
-                       const double b,
-                       const double c ) {
+                       const double    b,
+                       const double    c ) {
       __nbr++;
     }
 
@@ -81,12 +81,12 @@ namespace gum_tests {
 #ifdef _OPENMP
       gum::setNumberOfThreads( 1 );
 #endif
-      gum::BayesNet<double> monBNa;
+      gum::BayesNet<double>  monBNa;
       gum::BIFReader<double> readera( &monBNa,
                                       GET_RESSOURCES_PATH( "cn/2Umin.bif" ) );
       readera.proceed();
 
-      gum::BayesNet<double> monBNb;
+      gum::BayesNet<double>  monBNb;
       gum::BIFReader<double> readerb( &monBNb,
                                       GET_RESSOURCES_PATH( "cn/2Umax.bif" ) );
       readerb.proceed();
@@ -102,12 +102,12 @@ namespace gum_tests {
 #ifdef _OPENMP
       gum::setNumberOfThreads( 1 );
 #endif
-      gum::BayesNet<double> monBNa;
+      gum::BayesNet<double>  monBNa;
       gum::BIFReader<double> readera(
           &monBNa, GET_RESSOURCES_PATH( "cn/dbn_bin_min.bif" ) );
       readera.proceed();
 
-      gum::BayesNet<double> monBNb;
+      gum::BayesNet<double>  monBNb;
       gum::BIFReader<double> readerb(
           &monBNb, GET_RESSOURCES_PATH( "cn/dbn_bin_max.bif" ) );
       readerb.proceed();
@@ -145,7 +145,7 @@ namespace gum_tests {
       std::vector<double> evi0( 2, 0 );
       evi0[0] = 1;
       std::vector<double> evi1( 2, 0 );
-      evi1[1]     = 1;
+      evi1[1] = 1;
       eviMap["L"] = evi1;
       eviMap["G"] = evi0;
 

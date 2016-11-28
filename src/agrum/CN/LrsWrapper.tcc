@@ -11,13 +11,13 @@ namespace gum {
       __state = __states::none;
 
       __vertices = 0;
-      __card     = 0;
+      __card = 0;
 
       __volume = 0;
 
       __getVolume = false;
-      __hull      = false;
-      __polytope  = false;
+      __hull = false;
+      __polytope = false;
 
       GUM_CONSTRUCTOR( LRSWrapper );
     }
@@ -66,10 +66,10 @@ namespace gum {
       __input = std::vector<std::vector<GUM_SCALAR>>(
           card * 2 + 2, std::vector<GUM_SCALAR>( card + 1, 0 ) );
 
-      __input[card * 2]    = std::vector<GUM_SCALAR>( card + 1, -1 );
+      __input[card * 2] = std::vector<GUM_SCALAR>( card + 1, -1 );
       __input[card * 2][0] = 1;
 
-      __input[card * 2 + 1]    = std::vector<GUM_SCALAR>( card + 1, 1 );
+      __input[card * 2 + 1] = std::vector<GUM_SCALAR>( card + 1, 1 );
       __input[card * 2 + 1][0] = -1;
 
       __output = std::vector<std::vector<GUM_SCALAR>>();
@@ -103,7 +103,7 @@ namespace gum {
 
       __state = __states::Vup;
 
-      __card     = card;
+      __card = card;
       __vertices = vertices;
     }
 
@@ -120,11 +120,11 @@ namespace gum {
       __volume = 0;
 
       __state = __states::none;
-      __card  = 0;
+      __card = 0;
 
       __getVolume = false;
-      __hull      = false;
-      __polytope  = false;
+      __hull = false;
+      __polytope = false;
     }
 
     template <typename GUM_SCALAR>
@@ -135,12 +135,12 @@ namespace gum {
       __vertex.clear();
       __vertex.resize( __card, 0 );
 
-      __volume   = 0;
+      __volume = 0;
       __vertices = 0;
 
       __getVolume = false;
-      __hull      = false;
-      __polytope  = false;
+      __hull = false;
+      __polytope = false;
 
       if ( __state == __states::H2Vready )
         __state = __states::Hup;
@@ -154,14 +154,14 @@ namespace gum {
       } else {
         __input.clear();
         __state = __states::none;
-        __card  = 0;
+        __card = 0;
         __vertex.clear();
       }
     }
 
     template <typename GUM_SCALAR>
-    void LRSWrapper<GUM_SCALAR>::fillH( const GUM_SCALAR& min,
-                                        const GUM_SCALAR& max,
+    void LRSWrapper<GUM_SCALAR>::fillH( const GUM_SCALAR&   min,
+                                        const GUM_SCALAR&   max,
                                         const unsigned int& modal ) {
       if ( __state != __states::Hup )
         GUM_ERROR(
@@ -178,10 +178,10 @@ namespace gum {
                        << " >= "
                        << __card );
 
-      __input[modal * 2][0]         = -min;
+      __input[modal * 2][0] = -min;
       __input[modal * 2][modal + 1] = 1;
 
-      __input[modal * 2 + 1][0]         = max;
+      __input[modal * 2 + 1][0] = max;
       __input[modal * 2 + 1][modal + 1] = -1;
 
       __vertex[modal] = max;
@@ -219,8 +219,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void
-    LRSWrapper<GUM_SCALAR>::fillV( const std::vector<GUM_SCALAR>& vertex ) {
+    void LRSWrapper<GUM_SCALAR>::fillV( const std::vector<GUM_SCALAR>& vertex ) {
       if ( __state != __states::Vup )
         GUM_ERROR(
             OperationNotAllowed,
@@ -229,11 +228,10 @@ namespace gum {
                 << __setUpStateNames[static_cast<int>( __state )] );
 
       if ( __insertedVertices.size() == __vertices )
-        GUM_ERROR(
-            OutOfBounds,
-            "LRSWrapper< GUM_SCALAR >::fillV : input is already full with "
-                << __vertices
-                << " vertices." );
+        GUM_ERROR( OutOfBounds,
+                   "LRSWrapper< GUM_SCALAR >::fillV : input is already full with "
+                       << __vertices
+                       << " vertices." );
 
       bool eq = true;
 
@@ -258,12 +256,11 @@ namespace gum {
       auto row = __insertedVertices.size();
 
       for ( decltype( __card ) mod = 0; mod < __card; mod++ )
-        __input[row][mod + 1]      = vertex[mod];
+        __input[row][mod + 1] = vertex[mod];
 
       __insertedVertices.push_back( vertex );
 
-      if ( __insertedVertices.size() == __vertices )
-        __state = __states::V2Hready;
+      if ( __insertedVertices.size() == __vertices ) __state = __states::V2Hready;
     }
 
     template <typename GUM_SCALAR>
@@ -323,17 +320,15 @@ namespace gum {
                          "Q-hull computation or not reading a vertex !" );
             } else
               for ( decltype( __dat->n ) i = 1, end = __dat->n; i < end; i++ )
-                __getLRSWrapperOutput(
-                    __lrsOutput[i], __lrsOutput[0], Num, Den );
+                __getLRSWrapperOutput( __lrsOutput[i], __lrsOutput[0], Num, Den );
           }
       } while ( lrs_getnextbasis( &__dic, __dat, 0L ) );
 
-      auto vtx = Num.size();
+      auto                    vtx = Num.size();
       std::vector<GUM_SCALAR> vertex( __card );
 
       for ( decltype( vtx ) i = 1; i <= vtx; i++ ) {
-        vertex[( i - 1 ) % __card] =
-            GUM_SCALAR( Num[i - 1] * 1.0 / Den[i - 1] );
+        vertex[( i - 1 ) % __card] = GUM_SCALAR( Num[i - 1] * 1.0 / Den[i - 1] );
 
         if ( i % __card == 0 ) {
           __output.push_back( vertex );
@@ -424,8 +419,7 @@ namespace gum {
 
       __initLrs();
 
-      int64_t*
-          redineq; /* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
+      int64_t* redineq; /* redineq[i]=0 if ineq i non-red,1 if red,2 linearity  */
 
       /*********************************************************************************/
       /* Test each row of the dictionary to see if it is redundant */
@@ -437,7 +431,7 @@ namespace gum {
       auto d = __dic->d;
       /* number of linearities in input */ /* should be 0 ! */
       auto nlinearity = __dat->nlinearity;
-      auto lastdv     = __dat->lastdv;
+      auto lastdv = __dat->lastdv;
 
       /* linearities are not considered for redundancy */
       redineq = (int64_t*)calloc( ( m + 1 ), sizeof( int64_t ) );
@@ -452,9 +446,8 @@ namespace gum {
             index++ ) {
         /* input inequality number of current index             */
         auto ineq =
-            __dat->inequality[index -
-                              lastdv]; /* the input inequality number corr.
-                                          to this index */
+            __dat->inequality[index - lastdv]; /* the input inequality number corr.
+                                                  to this index */
 
         redineq[ineq] = checkindex( __dic, __dat, index );
       }
@@ -492,8 +485,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void LRSWrapper<GUM_SCALAR>::__getLRSWrapperOutput(
-        lrs_mp Nin,
-        lrs_mp Din,
+        lrs_mp                Nin,
+        lrs_mp                Din,
         std::vector<int64_t>& Num,
         std::vector<int64_t>& Den ) const {
 
@@ -554,9 +547,8 @@ namespace gum {
     void LRSWrapper<GUM_SCALAR>::__fill() const {
       int64_t cols = int64_t( __input[0].size() );
 
-      int64_t* num =
-          new int64_t[cols];  // ISO C++ forbids variable length array,
-                              // we need to do this instead
+      int64_t* num = new int64_t[cols];  // ISO C++ forbids variable length array,
+                                         // we need to do this instead
       int64_t* den = new int64_t[cols];
 
       int64_t rows = int64_t( __input.size() );
@@ -597,7 +589,7 @@ namespace gum {
 
       //__coutOff();
 
-      std::string name = "\n*LrsWrapper:";
+      std::string       name = "\n*LrsWrapper:";
       std::vector<char> chars( name.c_str(), name.c_str() + name.size() + 1u );
       // use &chars[0] as a char*
 
@@ -608,24 +600,22 @@ namespace gum {
       }
 
       name = "LRSWrapper globals";
-      chars =
-          std::vector<char>( name.c_str(), name.c_str() + name.size() + 1u );
+      chars = std::vector<char>( name.c_str(), name.c_str() + name.size() + 1u );
 
       __dat = lrs_alloc_dat( &chars[0] );
 
       if ( __dat == nullptr ) {
         __coutOn();
-        GUM_ERROR(
-            FatalError,
-            "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dat" );
+        GUM_ERROR( FatalError,
+                   "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dat" );
       }
 
       __dat->n = Size( __input[0].size() );
       __dat->m = Size( __input.size() );
 
       __dat->getvolume = ( __getVolume ) ? 1L : 0L;
-      __dat->hull      = ( __hull ) ? 1L : 0L;
-      __dat->polytope  = ( __polytope ) ? 1L : 0L;
+      __dat->hull = ( __hull ) ? 1L : 0L;
+      __dat->polytope = ( __polytope ) ? 1L : 0L;
 
       __lrsOutput = lrs_alloc_mp_vector( __dat->n );
 
@@ -633,9 +623,8 @@ namespace gum {
 
       if ( __dic == nullptr ) {
         __coutOn();
-        GUM_ERROR(
-            FatalError,
-            "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dic" );
+        GUM_ERROR( FatalError,
+                   "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dic" );
       }
 
       __fill();
@@ -666,9 +655,8 @@ namespace gum {
                 col++ )
             lrs_printoutput( __dat, __Lin[col] );
 
-          GUM_ERROR(
-              FatalError,
-              "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
+          GUM_ERROR( FatalError,
+                     "LRSWrapper< GUM_SCALAR >::__initLrs : redundant columns !" );
         }
       }
       /*
@@ -709,7 +697,7 @@ namespace gum {
       __dat->m = savem;
       lrs_free_dat( __dat );
 
-      std::string name = "LrsWrapper:";
+      std::string       name = "LrsWrapper:";
       std::vector<char> chars( name.c_str(), name.c_str() + name.size() + 1u );
 
       lrs_close( &chars[0] );

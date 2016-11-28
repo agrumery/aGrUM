@@ -43,7 +43,7 @@ namespace gum_tests {
   class NetWriterTestSuite : public CxxTest::TestSuite {
     public:
     gum::BayesNet<double>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::NodeId            i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<double>();
@@ -129,8 +129,8 @@ namespace gum_tests {
       const gum::Potential<double>& p1 = bn.cpt( i1 );
       {
         // FILLING PARAMS
-        const double t[2] = {0.2, 0.8};
-        int n             = 2;
+        const double              t[2] = {0.2, 0.8};
+        int                       n = 2;
         const std::vector<double> v( t, t + n );
         p1.fillWith( v );
       }
@@ -138,8 +138,8 @@ namespace gum_tests {
       const gum::Potential<double>& p2 = bn.cpt( i2 );
       {
         // FILLING PARAMS
-        const double t[2] = {0.3, 0.7};
-        int n             = 2;
+        const double              t[2] = {0.3, 0.7};
+        int                       n = 2;
         const std::vector<double> v( t, t + n );
         p2.fillWith( v );
       }
@@ -147,8 +147,8 @@ namespace gum_tests {
       const gum::Potential<double>& p3 = bn.cpt( i3 );
       {
         // FILLING PARAMS
-        const double t[4] = {0.1, 0.9, 0.9, 0.1};
-        int n             = 4;
+        const double              t[4] = {0.1, 0.9, 0.9, 0.1};
+        int                       n = 4;
         const std::vector<double> v( t, t + n );
         p3.fillWith( v );
       }
@@ -156,8 +156,8 @@ namespace gum_tests {
       const gum::Potential<double>& p4 = bn.cpt( i4 );
       {
         // FILLING PARAMS
-        const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int n             = 8;
+        const double              t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+        int                       n = 8;
         const std::vector<double> v( t, t + n );
         p4.fillWith( v );
       }
@@ -182,7 +182,7 @@ namespace gum_tests {
                               0.0,
                               1.0};
 
-        int n = 16;
+        int                       n = 16;
         const std::vector<double> v( t, t + n );
         p5.fillWith( v );
       }

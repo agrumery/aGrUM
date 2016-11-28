@@ -36,8 +36,7 @@ namespace gum {
   // ###################################################################
   // Default constructor
   // ###################################################################
-  VariableSelector::VariableSelector(
-      Set<const DiscreteVariable*>& startingSet )
+  VariableSelector::VariableSelector( Set<const DiscreteVariable*>& startingSet )
       : __remainingVars( startingSet ) {
     GUM_CONSTRUCTOR( VariableSelector );
     __remainingScores.insert( 0.0, 0.0 );
@@ -62,8 +61,8 @@ namespace gum {
   //
   // ###################################################################
   void VariableSelector::updateScore( const DiscreteVariable* var,
-                                      double score,
-                                      double secondaryscore ) {
+                                      double                  score,
+                                      double                  secondaryscore ) {
     __removeVar( var );
     __remainingVarsScore[var] += score;
     __addVar( var );
@@ -75,8 +74,8 @@ namespace gum {
   //
   // ###################################################################
   void VariableSelector::downdateScore( const DiscreteVariable* var,
-                                        double score,
-                                        double secondaryscore ) {
+                                        double                  score,
+                                        double                  secondaryscore ) {
     __removeVar( var );
     __remainingVarsScore[var] -= score;
     __addVar( var );
@@ -89,9 +88,9 @@ namespace gum {
   // ###################################################################
   const DiscreteVariable* VariableSelector::select() {
 
-    double bestScore                      = __remainingScores.top();
+    double                        bestScore = __remainingScores.top();
     Set<const DiscreteVariable*>* bestSet = __remainingVarsByScore[bestScore];
-    const DiscreteVariable* bestVar       = nullptr;
+    const DiscreteVariable*       bestVar = nullptr;
 
     for ( auto varIter = bestSet->beginSafe(); varIter != bestSet->endSafe();
           ++varIter ) {
@@ -128,7 +127,7 @@ namespace gum {
   // Select the most relevant variable
   // ###################################################################
   void VariableSelector::__removeVar( const DiscreteVariable* var ) {
-    double varScore                      = __remainingVarsScore[var];
+    double                        varScore = __remainingVarsScore[var];
     Set<const DiscreteVariable*>* varSet = __remainingVarsByScore[varScore];
     *varSet >> var;
     if ( varSet->empty() ) {

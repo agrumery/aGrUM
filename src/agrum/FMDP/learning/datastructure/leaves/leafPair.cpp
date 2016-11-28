@@ -73,16 +73,14 @@ namespace gum {
 
   double LeafPair::likelyhood() {
     //      updateLikelyhood();
-    return 1 - ChiSquare::probaChi2( __likelyhood1 > __likelyhood2
-                                         ? __likelyhood1
-                                         : __likelyhood2,
+    return 1 - ChiSquare::probaChi2( __likelyhood1 > __likelyhood2 ? __likelyhood1
+                                                                   : __likelyhood2,
                                      ( __l1->nbModa() - 1 ) );
   }
 
   std::string LeafPair::toString() {
     std::stringstream ss;
-    ss << "\t[  Leaf1 : " << __l1->toString()
-       << " - Leaf2 : " << __l2->toString();
+    ss << "\t[  Leaf1 : " << __l1->toString() << " - Leaf2 : " << __l2->toString();
     //      ss << " - L1 Total : " << __l1->total() << " - L2 Total : " <<
     //      __l2->total();
     //      for( Idx moda = 0; moda < __l1->nbModa(); ++moda )

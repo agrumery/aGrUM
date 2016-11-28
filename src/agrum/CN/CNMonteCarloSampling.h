@@ -94,8 +94,7 @@ namespace gum {
        * passing argument (i.e. big enough to represent \c value)
        * @param value The constant integer we want to binarize.
        */
-      inline void __binaryRep( std::vector<bool>& toFill,
-                               const Idx value ) const;
+      inline void __binaryRep( std::vector<bool>& toFill, const Idx value ) const;
 
       /// @}
 

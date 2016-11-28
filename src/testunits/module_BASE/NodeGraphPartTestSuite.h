@@ -47,7 +47,7 @@ namespace gum_tests {
       ngp.addNode();
       TS_ASSERT_EQUALS( ngp.size(), (gum::Size)3 );
 
-      gum::NodeId next  = ngp.nextNodeId();
+      gum::NodeId next = ngp.nextNodeId();
       gum::NodeId next2 = ngp.addNode();
       TS_ASSERT_EQUALS( next, next2 );
 
@@ -93,13 +93,13 @@ namespace gum_tests {
 
     void testInsertionForcee() {
       gum::NodeGraphPart ngp;
-      gum::NodeId a = 1;
-      gum::NodeId b = 2;
-      gum::NodeId c = 3;
-      gum::NodeId d = 4;
-      gum::NodeId e = 5;
-      gum::NodeId f = 6;
-      gum::NodeId g = 7;
+      gum::NodeId        a = 1;
+      gum::NodeId        b = 2;
+      gum::NodeId        c = 3;
+      gum::NodeId        d = 4;
+      gum::NodeId        e = 5;
+      gum::NodeId        f = 6;
+      gum::NodeId        g = 7;
 
       ngp.addNode( c );
       TS_ASSERT( ngp.__inHoles( a ) );
@@ -147,7 +147,7 @@ namespace gum_tests {
 
     void testGarbageCollecting() {
       gum::NodeGraphPart ngp;
-      gum::NodeId node = 6;
+      gum::NodeId        node = 6;
 
       TS_ASSERT_EQUALS( ngp.bound(), ( gum::NodeId )( 0 ) );
       TS_ASSERT_EQUALS( ngp.__sizeHoles(), ( gum::Size( 0 ) ) );
@@ -237,7 +237,7 @@ namespace gum_tests {
 
     void testIteratorEraseNode() {
       gum::NodeGraphPart nodeset;
-      const gum::Size max_cpt = 100;
+      const gum::Size    max_cpt = 100;
 
       for ( gum::NodeId i = 0; i < max_cpt; ++i ) {
         nodeset.addNode();

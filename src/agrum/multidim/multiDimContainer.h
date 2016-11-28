@@ -241,7 +241,7 @@ namespace gum {
      * size than this MultiDimContainer.
      */
     virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                           Instantiation* p_i ) const;
+                           Instantiation*                       p_i ) const;
 
     /**
      * @brief Basic extraction of a MultiDimContainer.
@@ -255,7 +255,7 @@ namespace gum {
      * copy of data will use the values in this instantiation.
      */
     virtual void extractFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                              const Instantiation& mask );
+                              const Instantiation&                 mask );
 
     /**
     * @brief Returns the implementation for this object (may be *this).

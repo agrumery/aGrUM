@@ -59,7 +59,7 @@ namespace gum {
           make_DB_row_filter( __database, __raw_translators, __generators );
 
       __raw_translators = raw_filter.translatorSet();
-      __modalities      = raw_filter.modalities();
+      __modalities = raw_filter.modalities();
 
       // create the fast translators
       DBTransformCompactInt raw2fast_transfo;
@@ -79,7 +79,7 @@ namespace gum {
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames();
-      Idx id                                    = 0;
+      Idx                             id = 0;
 
       for ( const auto& name : var_names ) {
         __name2nodeId.insert( const_cast<std::string&>( name ), id );
@@ -88,9 +88,9 @@ namespace gum {
     }
 
     genericBNLearner::Database::Database(
-        std::string filename,
+        std::string                                filename,
         const NodeProperty<Sequence<std::string>>& modalities,
-        bool check_database )
+        bool                                       check_database )
         : __database( genericBNLearner::__readFile( filename ) )
         , __generators( RowGeneratorIdentity() ) {
       // create the RowFilter used for learning: we first generate a universal
@@ -104,10 +104,8 @@ namespace gum {
           dummy_translator, Col<0>(), __database.nbVariables() );
 
       // assign the user values to the raw translators
-      for ( auto iter = modalities.cbegin(); iter != modalities.cend();
-            ++iter ) {
-        __raw_translators[iter.key()].setUserValues( iter.val(),
-                                                     check_database );
+      for ( auto iter = modalities.cbegin(); iter != modalities.cend(); ++iter ) {
+        __raw_translators[iter.key()].setUserValues( iter.val(), check_database );
       }
 
       auto raw_filter =
@@ -122,18 +120,17 @@ namespace gum {
         const Size db_size = handler.DBSize();
 
         // determine the number of threads to use for the parsing
-        Size max_nb_threads =
-            std::max( Size( 1 ),
-                      std::min( db_size / __min_nb_rows_per_thread,
-                                __max_threads_number ) );
+        Size max_nb_threads = std::max(
+            Size( 1 ),
+            std::min( db_size / __min_nb_rows_per_thread, __max_threads_number ) );
 
         const Size max_size_per_thread =
             ( db_size + max_nb_threads - 1 ) / max_nb_threads;
 
         max_nb_threads = db_size / max_size_per_thread;
 
-        std::vector<DatabaseVectInRAM::Handler> handlers(
-            max_nb_threads, __database.handler() );
+        std::vector<DatabaseVectInRAM::Handler> handlers( max_nb_threads,
+                                                          __database.handler() );
 
         // as we shall not raise exception inside OMP threads, we shall keep
         // track of the errors and raise exceptions after OMP threads have
@@ -145,15 +142,13 @@ namespace gum {
         {
           // use the ith handler
           const Size num_threads = getNumberOfRunningThreads();
-          const int this_thread  = getThreadNumber();
+          const int  this_thread = getThreadNumber();
           DBHandler& the_handler = handlers[this_thread];
 
           // indicate to the filter which part of the database it must parse
-          const Size size_per_thread =
-              ( db_size + num_threads - 1 ) / num_threads;
+          const Size size_per_thread = ( db_size + num_threads - 1 ) / num_threads;
           const Size min_range = size_per_thread * this_thread;
-          const Size max_range =
-              std::min( min_range + size_per_thread, db_size );
+          const Size max_range = std::min( min_range + size_per_thread, db_size );
 
           if ( min_range < max_range ) {
             bool has_errors = false;
@@ -171,14 +166,14 @@ namespace gum {
                   case DBCell::EltType::STRING:
                     if ( !iter.val().exists( row[i].getString() ) ) {
                       std::stringstream str;
-                      str << "Column " << 1 + iter.key()
-                          << " contains modality '" << row[i].getString()
+                      str << "Column " << 1 + iter.key() << " contains modality '"
+                          << row[i].getString()
                           << "' which has not been specified by the user in "
                              "line "
                           << the_handler.numRow();
-                      errors[this_thread].first  = i;
+                      errors[this_thread].first = i;
                       errors[this_thread].second = str.str();
-                      has_errors                 = true;
+                      has_errors = true;
                     }
 
                     break;
@@ -192,14 +187,14 @@ namespace gum {
 
                     if ( !iter.val().exists( str.str() ) ) {
                       std::stringstream str2;
-                      str2 << "Column " << 1 + iter.key()
-                           << " contains modality '" << str.str()
+                      str2 << "Column " << 1 + iter.key() << " contains modality '"
+                           << str.str()
                            << "' which has not been specified by the user in "
                               "line "
                            << the_handler.numRow();
-                      errors[this_thread].first  = i;
+                      errors[this_thread].first = i;
                       errors[this_thread].second = str2.str();
-                      has_errors                 = true;
+                      has_errors = true;
                     } else {
                       row[i].setStringSafe( str.str() );
                     }
@@ -243,7 +238,7 @@ namespace gum {
 
       // fill the variable name -> nodeid hashtable
       const std::vector<std::string>& var_names = __database.variableNames();
-      Idx id                                    = 0;
+      Idx                             id = 0;
 
       for ( const auto& name : var_names ) {
         __name2nodeId.insert( const_cast<std::string&>( name ), id );
@@ -252,13 +247,12 @@ namespace gum {
     }
 
     genericBNLearner::Database::Database( std::string filename,
-                                          Database& score_database )
+                                          Database&   score_database )
         : __database( genericBNLearner::__readFile( filename ) )
         , __generators( RowGeneratorIdentity() ) {
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
-      if ( __database.nbVariables() <
-           score_database.__database.nbVariables() ) {
+      if ( __database.nbVariables() < score_database.__database.nbVariables() ) {
         GUM_ERROR( InvalidArgument,
                    "the a priori seems to have fewer variables "
                    "than the observed database" );
@@ -287,11 +281,11 @@ namespace gum {
       __raw_translators = score_database.__raw_translators;
       auto raw_filter =
           make_DB_row_filter( __database, __raw_translators, __generators );
-      __raw_translators                = raw_filter.translatorSet();
+      __raw_translators = raw_filter.translatorSet();
       score_database.__raw_translators = raw_filter.translatorSet();
 
       // update the modalities of the two databases
-      __modalities                = raw_filter.modalities();
+      __modalities = raw_filter.modalities();
       score_database.__modalities = __modalities;
 
       // create the fast translators
@@ -313,8 +307,8 @@ namespace gum {
     }
 
     genericBNLearner::Database::Database(
-        std::string filename,
-        Database& score_database,
+        std::string                                filename,
+        Database&                                  score_database,
         const NodeProperty<Sequence<std::string>>& modalities )
         : __database( genericBNLearner::__readFile( filename ) )
         , __generators( RowGeneratorIdentity() ) {
@@ -359,20 +353,20 @@ namespace gum {
     operator=( const Database& from ) {
       if ( this != &from ) {
         delete __row_filter;
-        __row_filter      = nullptr;
-        __database        = from.__database;
+        __row_filter = nullptr;
+        __database = from.__database;
         __raw_translators = from.__raw_translators;
-        __translators     = from.__translators;
-        __generators      = from.__generators;
-        __modalities      = from.__modalities;
-        __name2nodeId     = from.__name2nodeId;
+        __translators = from.__translators;
+        __generators = from.__generators;
+        __modalities = from.__modalities;
+        __name2nodeId = from.__name2nodeId;
 
         // create the row filter for the __database
-        __row_filter = new DBRowFilter<
-            DatabaseVectInRAM::Handler,
-            DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-            FilteredRowGeneratorSet<RowGeneratorIdentity>>(
-            __database.handler(), __translators, __generators );
+        __row_filter =
+            new DBRowFilter<DatabaseVectInRAM::Handler,
+                            DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                            FilteredRowGeneratorSet<RowGeneratorIdentity>>(
+                __database.handler(), __translators, __generators );
       }
 
       return *this;
@@ -382,20 +376,20 @@ namespace gum {
     operator=( Database&& from ) {
       if ( this != &from ) {
         delete __row_filter;
-        __row_filter      = nullptr;
-        __database        = std::move( from.__database );
+        __row_filter = nullptr;
+        __database = std::move( from.__database );
         __raw_translators = std::move( from.__raw_translators );
-        __translators     = std::move( from.__translators );
-        __generators      = std::move( from.__generators );
-        __modalities      = std::move( from.__modalities );
-        __name2nodeId     = std::move( from.__name2nodeId );
+        __translators = std::move( from.__translators );
+        __generators = std::move( from.__generators );
+        __modalities = std::move( from.__modalities );
+        __name2nodeId = std::move( from.__name2nodeId );
 
         // create the row filter for the __database
-        __row_filter = new DBRowFilter<
-            DatabaseVectInRAM::Handler,
-            DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-            FilteredRowGeneratorSet<RowGeneratorIdentity>>(
-            __database.handler(), __translators, __generators );
+        __row_filter =
+            new DBRowFilter<DatabaseVectInRAM::Handler,
+                            DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                            FilteredRowGeneratorSet<RowGeneratorIdentity>>(
+                __database.handler(), __translators, __generators );
       }
 
       return *this;
@@ -415,9 +409,9 @@ namespace gum {
     }
 
     genericBNLearner::genericBNLearner(
-        const std::string& filename,
+        const std::string&                         filename,
         const NodeProperty<Sequence<std::string>>& modalities,
-        bool parse_database )
+        bool                                       parse_database )
         : __score_database( filename, modalities, parse_database )
         , __user_modalities( modalities )
         , __modalities_parse_db( parse_database ) {
@@ -486,8 +480,7 @@ namespace gum {
       GUM_DESTRUCTOR( genericBNLearner );
     }
 
-    genericBNLearner& genericBNLearner::
-    operator=( const genericBNLearner& from ) {
+    genericBNLearner& genericBNLearner::operator=( const genericBNLearner& from ) {
       if ( this != &from ) {
         if ( __score ) {
           delete __score;
@@ -509,25 +502,25 @@ namespace gum {
           __apriori_database = nullptr;
         }
 
-        __score_type                  = from.__score_type;
-        __param_estimator_type        = from.__param_estimator_type;
-        __apriori_type                = from.__apriori_type;
-        __apriori_weight              = from.__apriori_weight;
-        __constraint_SliceOrder       = from.__constraint_SliceOrder;
-        __constraint_Indegree         = from.__constraint_Indegree;
-        __constraint_TabuList         = from.__constraint_TabuList;
-        __constraint_ForbiddenArcs    = from.__constraint_ForbiddenArcs;
-        __constraint_MandatoryArcs    = from.__constraint_MandatoryArcs;
-        __selected_algo               = from.__selected_algo;
-        __K2                          = from.__K2;
-        __greedy_hill_climbing        = from.__greedy_hill_climbing;
+        __score_type = from.__score_type;
+        __param_estimator_type = from.__param_estimator_type;
+        __apriori_type = from.__apriori_type;
+        __apriori_weight = from.__apriori_weight;
+        __constraint_SliceOrder = from.__constraint_SliceOrder;
+        __constraint_Indegree = from.__constraint_Indegree;
+        __constraint_TabuList = from.__constraint_TabuList;
+        __constraint_ForbiddenArcs = from.__constraint_ForbiddenArcs;
+        __constraint_MandatoryArcs = from.__constraint_MandatoryArcs;
+        __selected_algo = from.__selected_algo;
+        __K2 = from.__K2;
+        __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
-        __score_database              = from.__score_database;
-        __user_modalities             = from.__user_modalities;
-        __modalities_parse_db         = from.__modalities_parse_db;
-        __apriori_dbname              = from.__apriori_dbname;
-        __initial_dag                 = from.__initial_dag;
-        __current_algorithm           = nullptr;
+        __score_database = from.__score_database;
+        __user_modalities = from.__user_modalities;
+        __modalities_parse_db = from.__modalities_parse_db;
+        __apriori_dbname = from.__apriori_dbname;
+        __initial_dag = from.__initial_dag;
+        __current_algorithm = nullptr;
       }
 
       return *this;
@@ -555,28 +548,26 @@ namespace gum {
           __apriori_database = nullptr;
         }
 
-        __score_type            = from.__score_type;
-        __param_estimator_type  = from.__param_estimator_type;
-        __apriori_type          = from.__apriori_type;
-        __apriori_weight        = from.__apriori_weight;
+        __score_type = from.__score_type;
+        __param_estimator_type = from.__param_estimator_type;
+        __apriori_type = from.__apriori_type;
+        __apriori_weight = from.__apriori_weight;
         __constraint_SliceOrder = std::move( from.__constraint_SliceOrder );
-        __constraint_Indegree   = std::move( from.__constraint_Indegree );
-        __constraint_TabuList   = std::move( from.__constraint_TabuList );
-        __constraint_ForbiddenArcs =
-            std::move( from.__constraint_ForbiddenArcs );
-        __constraint_MandatoryArcs =
-            std::move( from.__constraint_MandatoryArcs );
-        __selected_algo        = from.__selected_algo;
-        __K2                   = from.__K2;
+        __constraint_Indegree = std::move( from.__constraint_Indegree );
+        __constraint_TabuList = std::move( from.__constraint_TabuList );
+        __constraint_ForbiddenArcs = std::move( from.__constraint_ForbiddenArcs );
+        __constraint_MandatoryArcs = std::move( from.__constraint_MandatoryArcs );
+        __selected_algo = from.__selected_algo;
+        __K2 = from.__K2;
         __greedy_hill_climbing = std::move( from.__greedy_hill_climbing );
         __local_search_with_tabu_list =
             std::move( from.__local_search_with_tabu_list );
-        __score_database      = std::move( from.__score_database );
-        __user_modalities     = std::move( from.__user_modalities );
+        __score_database = std::move( from.__score_database );
+        __user_modalities = std::move( from.__user_modalities );
         __modalities_parse_db = from.__modalities_parse_db;
-        __apriori_dbname      = std::move( from.__apriori_dbname );
-        __initial_dag         = std::move( from.__initial_dag );
-        __current_algorithm   = nullptr;
+        __apriori_dbname = std::move( from.__apriori_dbname );
+        __initial_dag = std::move( from.__initial_dag );
+        __current_algorithm = nullptr;
       }
 
       return *this;
@@ -605,8 +596,7 @@ namespace gum {
           "genericBNLearner does not support yet this type of database file" );
     }
 
-    DatabaseVectInRAM
-    genericBNLearner::__readFile( const std::string& filename ) {
+    DatabaseVectInRAM genericBNLearner::__readFile( const std::string& filename ) {
       // get the extension of the file
       Size filename_size = Size( filename.size() );
 
@@ -658,8 +648,7 @@ namespace gum {
           }
 
           __apriori = new AprioriDirichletFromDatabase<>(
-              __apriori_database->rowFilter(),
-              __apriori_database->modalities() );
+              __apriori_database->rowFilter(), __apriori_database->modalities() );
           break;
 
         default:
@@ -725,8 +714,7 @@ namespace gum {
       if ( old_score != nullptr ) delete old_score;
     }
 
-    void
-    genericBNLearner::__createParamEstimator( bool take_into_account_score ) {
+    void genericBNLearner::__createParamEstimator( bool take_into_account_score ) {
       // first, save the old estimator, to be delete if everything is ok
       ParamEstimator<>* old_estimator = __param_estimator;
 
@@ -774,11 +762,9 @@ namespace gum {
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
 
       for ( const auto& arc : mandatory_arcs ) {
-        if ( !init_graph.exists( arc.tail() ) )
-          init_graph.addNode( arc.tail() );
+        if ( !init_graph.exists( arc.tail() ) ) init_graph.addNode( arc.tail() );
 
-        if ( !init_graph.exists( arc.head() ) )
-          init_graph.addNode( arc.head() );
+        if ( !init_graph.exists( arc.head() ) ) init_graph.addNode( arc.head() );
 
         init_graph.addArc( arc.tail(), arc.head() );
       }
@@ -877,7 +863,7 @@ namespace gum {
               static_cast<StructuralConstraintMandatoryArcs&>( gen_constraint )
                   .arcs();
           const Sequence<NodeId>& order = __K2.order();
-          bool order_compatible         = true;
+          bool                    order_compatible = true;
 
           for ( const auto& arc : mandatory_arcs ) {
             if ( order.pos( arc.tail() ) >= order.pos( arc.head() ) ) {

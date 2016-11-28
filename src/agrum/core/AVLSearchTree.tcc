@@ -95,7 +95,7 @@ namespace gum {
         BinSearchTree<Val, Cmp, Node>::_root = node->rightChild();
         delete node;
       } else {
-        Node *parent = node->parent(), *child = node->rightChild();
+        Node *     parent = node->parent(), *child = node->rightChild();
         BinTreeDir dir = node->parentDir();
         parent->eraseLink( dir );
         node->eraseRightLink();
@@ -116,7 +116,7 @@ namespace gum {
         BinSearchTree<Val, Cmp, Node>::_root = node->leftChild();
         delete node;
       } else {
-        Node *parent = node->parent(), *child = node->leftChild();
+        Node *     parent = node->parent(), *child = node->leftChild();
         BinTreeDir dir = node->parentDir();
         parent->eraseLink( dir );
         node->eraseLeftLink();
@@ -155,7 +155,7 @@ namespace gum {
         if ( node->parent() ) {
           // rechain node's parent with its successor
           BinTreeDir par_dir = node->parentDir();
-          Node* parent       = node->parent();
+          Node*      parent = node->parent();
           parent->eraseLink( par_dir );
           parent->insertChild( *successor, par_dir );
         }
@@ -186,7 +186,7 @@ namespace gum {
         if ( node->parent() ) {
           // rechain node's parent with its successor
           BinTreeDir par_dir = node->parentDir();
-          Node* the_parent   = node->parent();
+          Node*      the_parent = node->parent();
           the_parent->eraseLink( par_dir );
           the_parent->insertChild( *successor, par_dir );
         }
@@ -223,8 +223,7 @@ namespace gum {
   }
 
   template <typename Val, class Cmp>
-  INLINE BinTreeNode4AVL<Val>*
-  AVLSearchTree<Val, Cmp>::_insert( const Val& val ) {
+  INLINE BinTreeNode4AVL<Val>* AVLSearchTree<Val, Cmp>::_insert( const Val& val ) {
     // insert the new value into the tree
     Node* new_node = BinSearchTree<Val, Cmp, Node>::_insert( val );
 

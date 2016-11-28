@@ -80,7 +80,7 @@ namespace gum {
      * @param infdiag The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::ostream& output,
+    virtual void write( std::ostream&                output,
                         const IBayesNet<GUM_SCALAR>& infdiag );
 
     /**
@@ -92,7 +92,7 @@ namespace gum {
      * @param infdiag The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::string filePath,
+    virtual void write( std::string                  filePath,
                         const IBayesNet<GUM_SCALAR>& infdiag );
 
     private:
@@ -115,7 +115,7 @@ namespace gum {
      * Returns a bloc defining a variable's table (if she has) in the BIF
      * format.
      */
-    std::string __variableDefinition( const NodeId& varNodeId,
+    std::string __variableDefinition( const NodeId&                varNodeId,
                                       const IBayesNet<GUM_SCALAR>& infdiag );
   };
 

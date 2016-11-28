@@ -84,7 +84,7 @@ namespace gum {
      * @param theThreshold the weight threshhold of the SimplicialSet included
      * in the DefaultEliminationSequenceStrategy */
     DefaultEliminationSequenceStrategy(
-        double theRatio     = GUM_QUASI_RATIO,
+        double theRatio = GUM_QUASI_RATIO,
         double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// constructor for an a priori non empty graph
@@ -101,11 +101,10 @@ namespace gum {
      * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not copied but only referenced by the elimination sequence algorithm. */
-    DefaultEliminationSequenceStrategy(
-        UndiGraph* graph,
-        const NodeProperty<Size>* dom_sizes,
-        double ratio     = GUM_QUASI_RATIO,
-        double threshold = GUM_WEIGHT_THRESHOLD );
+    DefaultEliminationSequenceStrategy( UndiGraph*                graph,
+                                        const NodeProperty<Size>* dom_sizes,
+                                        double ratio = GUM_QUASI_RATIO,
+                                        double threshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -164,7 +163,7 @@ namespace gum {
      * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not copied but only referenced by the elimination sequence algorithm. */
-    virtual bool setGraph( UndiGraph* graph,
+    virtual bool setGraph( UndiGraph*                graph,
                            const NodeProperty<Size>* dom_sizes ) final;
 
     /** @brief clears the sequence (to prepare, for instance, a new elimination

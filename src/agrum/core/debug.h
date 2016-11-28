@@ -129,11 +129,10 @@
               << std::endl;                                                    \
   }
 
-#define GUM_TRACE( x )                                            \
-  {                                                               \
-    std::cout << std::endl                                        \
-              << __FILE__ << ":" << __LINE__ << ": trace : " << x \
-              << std::endl;                                       \
+#define GUM_TRACE( x )                                                          \
+  {                                                                             \
+    std::cout << std::endl                                                      \
+              << __FILE__ << ":" << __LINE__ << ": trace : " << x << std::endl; \
   }
 #define GUM_TRACE_VAR( x )                                                    \
   {                                                                           \
@@ -161,23 +160,23 @@ namespace gum {
 
     void __show_trace( const char* zeKey,
                        const char* zeFile,
-                       long zeLine,
+                       long        zeLine,
                        const char* zeMsg,
                        const void* zePtr );
     void __inc_creation( const char* zeKey,
                          const char* zeFile,
-                         long zeLine,
+                         long        zeLine,
                          const char* zeMsg,
                          const void* zePtr,
-                         int zeSize = -1 );
+                         int         zeSize = -1 );
     void __inc_deletion( const char* zeKey,
                          const char* zeFile,
-                         long zeLine,
+                         long        zeLine,
                          const char* zeMsg,
                          const void* zePtr );
     void __dec_creation( const char* zeKey,
                          const char* zeFile,
-                         long zeLine,
+                         long        zeLine,
                          const char* zeMsg,
                          const void* zePtr );
     void __dumpObjects( void );

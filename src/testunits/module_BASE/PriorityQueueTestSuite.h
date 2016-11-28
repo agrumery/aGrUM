@@ -58,7 +58,7 @@ namespace gum_tests {
       queue1.insert( "CCC", 2 );
       queue1.emplace( "DDD", 23 );
       std::string xxx = "EEE";
-      int nb          = 24;
+      int         nb = 24;
       queue1.insert( xxx, nb );
 
       TS_ASSERT( queue1.size() == 5 );
@@ -114,8 +114,7 @@ namespace gum_tests {
       TS_ASSERT( queue3.topPriority() == 1 );
       TS_ASSERT( queue3.size() == 3 );
 
-      gum::PriorityQueue<int, int, std::less<int>, MyAlloc<int>> queue4(
-          queue1 );
+      gum::PriorityQueue<int, int, std::less<int>, MyAlloc<int>> queue4( queue1 );
       TS_ASSERT( queue4.top() == 2 );
       TS_ASSERT( queue4.topPriority() == 1 );
       TS_ASSERT( queue4.size() == 3 );
@@ -190,7 +189,7 @@ namespace gum_tests {
       queue1.insert( 3, 2 );
       queue1.emplace( 4, 23 );
       int xxx = 5;
-      int nb  = 24;
+      int nb = 24;
       queue1.insert( xxx, nb );
 
       TS_ASSERT( queue1.size() == 5 );
@@ -340,7 +339,7 @@ namespace gum_tests {
       queue1.insert( set5, 24 );
 
       gum::PriorityQueue<gum::Set<int>> queue2 = queue1;
-      queue2                                   = queue1;
+      queue2 = queue1;
       queue2.eraseTop();
       queue2 = queue1;
 
@@ -534,7 +533,7 @@ namespace gum_tests {
       queue1.insert( set1, 10 );
 
       gum::MultiPriorityQueue<gum::Set<int>> queue2 = queue1;
-      queue2                                        = queue1;
+      queue2 = queue1;
       queue2.eraseTop();
       queue2 = queue1;
 

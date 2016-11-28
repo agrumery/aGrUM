@@ -45,8 +45,7 @@ namespace gum {
      * class
      * @ingroup learning_group
      */
-    class StructuralConstraintDiGraph
-        : public virtual StructuralConstraintEmpty {
+    class StructuralConstraintDiGraph : public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -83,8 +82,7 @@ namespace gum {
       operator=( const StructuralConstraintDiGraph& from );
 
       /// move operator
-      StructuralConstraintDiGraph&
-      operator=( StructuralConstraintDiGraph&& from );
+      StructuralConstraintDiGraph& operator=( StructuralConstraintDiGraph&& from );
 
       /// @}
 

@@ -29,14 +29,13 @@ namespace gum_tests {
 
   class GSpanTestSuite : public CxxTest::TestSuite {
     private:
-    gum::prm::o3prm::O3prmReader<double>* __driver;
-    std::string dot_dir;
+    gum::prm::o3prm::O3prmReader<double>*    __driver;
+    std::string                              dot_dir;
     gum::prm::gspan::InterfaceGraph<double>* ig;
 
     void local__setUp() {
       __driver = new gum::prm::o3prm::O3prmReader<double>();
-      __driver->readFile(
-          GET_RESSOURCES_PATH( "o3prm/specialprinters.o3prm" ) );
+      __driver->readFile( GET_RESSOURCES_PATH( "o3prm/specialprinters.o3prm" ) );
 
       if ( __driver->errors() == 0 ) {
         ig = new gum::prm::gspan::InterfaceGraph<double>(

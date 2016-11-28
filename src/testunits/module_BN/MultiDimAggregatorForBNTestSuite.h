@@ -50,13 +50,13 @@ namespace gum_tests {
     public:
     void testBNwithMin() {
       gum::List<gum::NodeId> idList;
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>  bn;
 
       int nbr = 6;  // nbr=nbr of parents
 
-      std::string str;
-      const double t[4] = {0.1f, 0.1f, 0.1f, 0.7f};
-      int n             = 4;
+      std::string               str;
+      const double              t[4] = {0.1f, 0.1f, 0.1f, 0.7f};
+      int                       n = 4;
       const std::vector<double> v( t, t + n );
 
       for ( int i = 0; i <= nbr; i++ ) {
@@ -149,11 +149,11 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1( "OneMoreParent1", "", 2 );
       gum::LabelizedVariable oneMoreParent2( "OneMoreParent2", "", 2 );
 
-      gum::NodeId idCold           = bn.add( cold );
-      gum::NodeId idFlu            = bn.add( flu );
-      gum::NodeId idMalaria        = bn.add( malaria );
-      gum::NodeId idFever          = bn.addNoisyORNet( fever, 0.0f );
-      gum::NodeId idOneMore        = bn.add( oneMore );
+      gum::NodeId idCold = bn.add( cold );
+      gum::NodeId idFlu = bn.add( flu );
+      gum::NodeId idMalaria = bn.add( malaria );
+      gum::NodeId idFever = bn.addNoisyORNet( fever, 0.0f );
+      gum::NodeId idOneMore = bn.add( oneMore );
       gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
       gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 
@@ -194,7 +194,7 @@ namespace gum_tests {
       const gum::Potential<float>& p = bn.cpt( idFever );
 
       gum::Instantiation i( p );
-      float witness[] = {1.0f,
+      float              witness[] = {1.0f,
                          0.0f,
                          0.1f,
                          0.9f,
@@ -233,11 +233,11 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1( "OneMoreParent1", "", 2 );
       gum::LabelizedVariable oneMoreParent2( "OneMoreParent2", "", 2 );
 
-      gum::NodeId idCold           = bn.add( cold );
-      gum::NodeId idFlu            = bn.add( flu );
-      gum::NodeId idMalaria        = bn.add( malaria );
-      gum::NodeId idFever          = bn.addNoisyOR( fever, 0.0f );
-      gum::NodeId idOneMore        = bn.add( oneMore );
+      gum::NodeId idCold = bn.add( cold );
+      gum::NodeId idFlu = bn.add( flu );
+      gum::NodeId idMalaria = bn.add( malaria );
+      gum::NodeId idFever = bn.addNoisyOR( fever, 0.0f );
+      gum::NodeId idOneMore = bn.add( oneMore );
       gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
       gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 
@@ -281,7 +281,7 @@ namespace gum_tests {
       const gum::Potential<float>& p = bn.cpt( idFever );
 
       gum::Instantiation i( p );
-      float witness[] = {1.0f,
+      float              witness[] = {1.0f,
                          0.0f,
                          0.1f,
                          0.9f,
@@ -320,14 +320,14 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1( "OneMoreParent1", "", 2 );
       gum::LabelizedVariable oneMoreParent2( "OneMoreParent2", "", 2 );
 
-      gum::NodeId idCold    = bn.add( cold );
-      gum::NodeId idFlu     = bn.add( flu );
+      gum::NodeId idCold = bn.add( cold );
+      gum::NodeId idFlu = bn.add( flu );
       gum::NodeId idMalaria = bn.add( malaria );
-      gum::NodeId idFever   = 0;
+      gum::NodeId idFever = 0;
       TS_ASSERT_THROWS( idFever = bn.addNoisyAND( fever, 0.0f ),
                         gum::InvalidArgument );
       TS_GUM_ASSERT_THROWS_NOTHING( idFever = bn.addNoisyAND( fever, 0.999f ) );
-      gum::NodeId idOneMore        = bn.add( oneMore );
+      gum::NodeId idOneMore = bn.add( oneMore );
       gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
       gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 
@@ -371,7 +371,7 @@ namespace gum_tests {
       const gum::Potential<float>& p = bn.cpt( idFever );
 
       gum::Instantiation i( p );
-      float witness[] = {0.988012f,
+      float              witness[] = {0.988012f,
                          0.011988f,
                          0.892108f,
                          0.107892f,

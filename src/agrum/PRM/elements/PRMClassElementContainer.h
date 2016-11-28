@@ -179,8 +179,7 @@ namespace gum {
       /**
        * Add an arc between two PRMClassElement<GUM_SCALAR>.
        */
-      virtual void addArc( const std::string& tail,
-                           const std::string& head ) = 0;
+      virtual void addArc( const std::string& tail, const std::string& head ) = 0;
 
       /**
        * @brief Returns true if the node is an input node.
@@ -214,8 +213,7 @@ namespace gum {
        *nor
        *                          an PRMAggregate.
        */
-      virtual void setInputNode( const PRMClassElement<GUM_SCALAR>& elt,
-                                 bool b );
+      virtual void setInputNode( const PRMClassElement<GUM_SCALAR>& elt, bool b );
 
       /**
        * @brief Returns true if the node is an output node.
@@ -250,8 +248,7 @@ namespace gum {
        *nor
        *                          an PRMAggregate.
        */
-      virtual void setOutputNode( const PRMClassElement<GUM_SCALAR>& elt,
-                                  bool b );
+      virtual void setOutputNode( const PRMClassElement<GUM_SCALAR>& elt, bool b );
 
       /**
        * @brief Returns true if the node is an inner node.
@@ -341,8 +338,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const PRMClassElement<GUM_SCALAR>&
-      operator[]( NodeId id ) const = 0;
+      virtual const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const = 0;
 
       /**
        * Getter on a member of this PRMClassElementContainer.
@@ -462,7 +458,7 @@ namespace gum {
 /// Output in the graphviz-dot format.
 template <typename GUM_SCALAR>
 std::ostream&
-operator<<( std::ostream& output,
+operator<<( std::ostream&                                         output,
             const gum::prm::PRMClassElementContainer<GUM_SCALAR>& container );
 
 #include <agrum/PRM/elements/PRMClassElementContainer.tcc>

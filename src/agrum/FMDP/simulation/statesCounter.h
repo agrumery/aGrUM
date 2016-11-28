@@ -92,9 +92,7 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    bool isTerminal( NodeId ni ) const {
-      return __counter->isTerminalNode( ni );
-    }
+    bool isTerminal( NodeId ni ) const { return __counter->isTerminalNode( ni ); }
 
     // ==========================================================================
     ///
@@ -113,9 +111,7 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    Idx nodeNbObservation( NodeId ni ) const {
-      return __counter->nodeValue( ni );
-    }
+    Idx nodeNbObservation( NodeId ni ) const { return __counter->nodeValue( ni ); }
 
     void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
       for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =

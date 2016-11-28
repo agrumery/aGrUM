@@ -57,8 +57,8 @@ namespace gum {
        * @param value
        */
       PRMParameter( const std::string& name,
-                    ParameterType type,
-                    GUM_SCALAR value );
+                    ParameterType      type,
+                    GUM_SCALAR         value );
 
       /// Destructor.
       virtual ~PRMParameter();

@@ -318,21 +318,21 @@ namespace gum {
     NodeProperty<NodeProperty<Size>> __descendants;
 
     /// adds a weighted nodeset to another (weights are added)
-    void __addWeightedSet( NodeProperty<Size>& nodeset,
+    void __addWeightedSet( NodeProperty<Size>&       nodeset,
                            const NodeProperty<Size>& set_to_add,
-                           Size multiplier ) const;
+                           Size                      multiplier ) const;
 
     /// removes a weighted nodeset from another (weights are subtracted)
-    void __delWeightedSet( NodeProperty<Size>& nodeset,
+    void __delWeightedSet( NodeProperty<Size>&       nodeset,
                            const NodeProperty<Size>& set_to_del,
-                           Size multiplier ) const;
+                           Size                      multiplier ) const;
 
     /** @brief put into a weighted nodeset the nodes of another weighted set
      * that
      * belong to a set of arc extremities */
-    void __restrictWeightedSet( NodeProperty<Size>& result_set,
+    void __restrictWeightedSet( NodeProperty<Size>&       result_set,
                                 const NodeProperty<Size>& set_to_restrict,
-                                const NodeSet& extrmities ) const;
+                                const NodeSet&            extrmities ) const;
   };
 
 } /* namespace gum */

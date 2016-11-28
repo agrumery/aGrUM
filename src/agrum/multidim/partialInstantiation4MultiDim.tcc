@@ -42,8 +42,7 @@
 
 /// a specialized partial instantiation function for multiDimArrays
 
-#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME \
-  partialInstantiationMultiDimArray
+#define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME partialInstantiationMultiDimArray
 #include <agrum/multidim/patterns/partialInstantiationPattern4MultiDimArray.h>
 #undef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
 
@@ -126,9 +125,7 @@ namespace gum {
 
       // register base functions for multiDimArrays
       registerPartialInstantiation<GUM_SCALAR*>(
-          "i",
-          MultiDimArrayString,
-          &partialInstantiationMultiDimArray4Pointers );
+          "i", MultiDimArrayString, &partialInstantiationMultiDimArray4Pointers );
 
       // register default basename functions
       registerPartialInstantiation<GUM_SCALAR*>(

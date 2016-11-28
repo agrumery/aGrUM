@@ -102,8 +102,7 @@ namespace gum {
   /// set
   /// @throw DuplicateElement if node_id already is in clique_id
 
-  void CliqueGraph::addToClique( const NodeId clique_id,
-                                 const NodeId node_id ) {
+  void CliqueGraph::addToClique( const NodeId clique_id, const NodeId node_id ) {
     // get the current clique set
     NodeSet& clique = __cliques[clique_id];
 
@@ -144,8 +143,8 @@ namespace gum {
   /// DFS function for computing whether the running intersection property holds
 
   bool CliqueGraph::__runningIntersectionDFS(
-      const NodeId clique,
-      const NodeId from,
+      const NodeId                     clique,
+      const NodeId                     from,
       CliqueGraph::__RunningIntersect& infos_DFS ) const {
     // check that no node in the clique belongs to the set of nodes belonging to
     // other connected components of the cliqueGraph
@@ -179,7 +178,7 @@ namespace gum {
       if ( otherID != from ) {
         // update the list of forbidden nodes in the DFS, i.e., the nodes that
         // belong to the clique but not to the separator
-        const Edge edge( otherID, clique );
+        const Edge     edge( otherID, clique );
         const NodeSet& from_separ = __separators[edge];
 
         for ( const auto node : nodes_clique ) {
@@ -291,7 +290,7 @@ namespace gum {
 
   const std::string expandCliqueContent( const NodeSet& clique ) {
     std::stringstream stream;
-    bool first = true;
+    bool              first = true;
 
     for ( auto node : clique ) {
       if ( !first ) {
@@ -309,9 +308,9 @@ namespace gum {
     stream << '(' << n << ") " << expandCliqueContent( clique );
     return stream.str();
   }
-  const std::string expandSeparator( const NodeId n1,
+  const std::string expandSeparator( const NodeId   n1,
                                      const NodeSet& clique1,
-                                     const NodeId n2,
+                                     const NodeId   n2,
                                      const NodeSet& clique2 ) {
     std::stringstream stream;
     stream << expandClique( n1, clique1 ) << "^" << expandClique( n2, clique2 );
@@ -334,15 +333,14 @@ namespace gum {
 
     // separator as nodes
     for ( auto edge : edges() ) {
-      stream
-          << "  \"" << expandSeparator( edge.first(),
-                                        clique( edge.first() ),
-                                        edge.second(),
-                                        clique( edge.second() ) )
-          << "\" [label=\"" << expandCliqueContent( separator( edge ) ) << "\""
-          << ",shape=box,fillcolor=\"palegreen\",style=\"filled\",fontsize=8,"
-             "width=0,height=0];"
-          << std::endl;
+      stream << "  \"" << expandSeparator( edge.first(),
+                                           clique( edge.first() ),
+                                           edge.second(),
+                                           clique( edge.second() ) )
+             << "\" [label=\"" << expandCliqueContent( separator( edge ) ) << "\""
+             << ",shape=box,fillcolor=\"palegreen\",style=\"filled\",fontsize=8,"
+                "width=0,height=0];"
+             << std::endl;
     }
 
     stream << std::endl;
@@ -354,9 +352,8 @@ namespace gum {
                                              clique( edge.first() ),
                                              edge.second(),
                                              clique( edge.second() ) )
-             << "\"--\""
-             << expandClique( edge.second(), clique( edge.second() ) ) << "\";"
-             << std::endl;
+             << "\"--\"" << expandClique( edge.second(), clique( edge.second() ) )
+             << "\";" << std::endl;
 
     stream << "}" << std::endl;
 

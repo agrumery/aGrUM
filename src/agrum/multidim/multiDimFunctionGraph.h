@@ -73,8 +73,7 @@ namespace gum {
    * MultiDimFunctionGraph.
    */
   template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy =
-                ExactTerminalNodePolicy>
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
   class MultiDimFunctionGraph : public MultiDimImplementation<GUM_SCALAR>,
                                 public TerminalNodePolicy<GUM_SCALAR> {
 
@@ -108,8 +107,8 @@ namespace gum {
      * @param from The MultiDimFunctionGraph to copy.
      * @return Returns this MultiDimFunctionGraph.
      */
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& operator=(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
+    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>&
+    operator=( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
 
     /**
      * @brief Class destructor.
@@ -176,10 +175,10 @@ namespace gum {
 
     virtual Size realSize() const;
 
-    virtual void changeNotification( Instantiation& i,
+    virtual void changeNotification( Instantiation&                i,
                                      const DiscreteVariable* const var,
-                                     const Idx& oldval,
-                                     const Idx& newval );
+                                     const Idx&                    oldval,
+                                     const Idx&                    newval );
 
     virtual void setFirstNotification( Instantiation& i );
 
@@ -205,8 +204,7 @@ namespace gum {
      *
      * @param src The MultiDimFunctionGraph to copy.
      */
-    void
-    copy( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
+    void copy( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
 
     /**
      * @brief Copies src diagrams structure into this diagrams.

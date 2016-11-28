@@ -57,10 +57,9 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesSelector4DiGraph(
-          SCORE& score,
-          STRUCTURAL_CONSTRAINT& constraint,
-          GRAPH_CHANGES_GENERATOR& changes_generator );
+      GraphChangesSelector4DiGraph( SCORE&                   score,
+                                    STRUCTURAL_CONSTRAINT&   constraint,
+                                    GRAPH_CHANGES_GENERATOR& changes_generator );
 
       /// copy constructor
       GraphChangesSelector4DiGraph(
@@ -236,7 +235,7 @@ namespace gum {
 
       /// finds the changes that are affected by a given node modification
       void __findLegalChangesNeedingUpdate( Set<Idx>& changes_to_recompute,
-                                            NodeId target_node );
+                                            NodeId    target_node );
 
       /// perform the necessary updates of the scores
       void __updateScores( const Set<Idx>& changes_to_recompute );

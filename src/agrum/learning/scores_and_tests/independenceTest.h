@@ -79,7 +79,7 @@ namespace gum {
        * @param var_modalities the domain sizes of the variables in the database
        */
       template <typename RowFilter>
-      IndependenceTest( const RowFilter& filter,
+      IndependenceTest( const RowFilter&         filter,
                         const std::vector<Size>& var_modalities );
 
       /// destructor
@@ -140,9 +140,8 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
-      Idx addNodeSet( Idx var1,
-                      Idx var2,
-                      const std::vector<Idx>& conditioning_ids );
+      Idx
+      addNodeSet( Idx var1, Idx var2, const std::vector<Idx>& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -292,8 +291,7 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy constructor
-      IndependenceTest( const IndependenceTest<IdSetAlloc, CountAlloc>& ) =
-          delete;
+      IndependenceTest( const IndependenceTest<IdSetAlloc, CountAlloc>& ) = delete;
 
       /// prevent copy operator
       IndependenceTest&

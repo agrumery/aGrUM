@@ -141,8 +141,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& operator=(
-          const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from );
+      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
+      operator=( const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from );
 
       /// move operator
       GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&

@@ -36,9 +36,8 @@
 #define GUM_Z_MAX 6.0             // maximum meaningful z value
 #define GUM_CHI_EPSILON 0.000001  // accuracy of critchi approximation
 #define GUM_CHI_MAX 99999.0       // maximum chi square value
-#define GUM_LOG_SQRT_PI \
-  0.5723649429247000870717135                      // std::log (std::sqrt (pi))
-#define GUM_I_SQRT_PI 0.5641895835477562869480795  // 1 / std::sqrt (pi)
+#define GUM_LOG_SQRT_PI 0.5723649429247000870717135  // std::log (std::sqrt (pi))
+#define GUM_I_SQRT_PI 0.5641895835477562869480795    // 1 / std::sqrt (pi)
 #define GUM_BIGX 20.0  // max value to represent exp (x)
 #define gum__ex( x ) ( ( ( x ) < -GUM_BIGX ) ? 0.0 : std::exp( x ) )
 
@@ -95,8 +94,7 @@ namespace gum {
             y * 2.0;
       } else {
         y -= 2.0;
-        x = ( ( ( ( ( ( ( ( ( ( ( ( ( -0.000045255659 * y + 0.000152529290 ) *
-                                        y -
+        x = ( ( ( ( ( ( ( ( ( ( ( ( ( -0.000045255659 * y + 0.000152529290 ) * y -
                                     0.000019538132 ) *
                                       y -
                                   0.000676904986 ) *
@@ -132,7 +130,7 @@ namespace gum {
   double Chi2::__probaChi2( double x, Size df ) {
     double a, y = 0, s;
     double e, c, z;
-    int even; /* true if df is an even number */
+    int    even; /* true if df is an even number */
 
     if ( ( x <= 0.0 ) || ( df < 1 ) ) return ( 1.0 );
 

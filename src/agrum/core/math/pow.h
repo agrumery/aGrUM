@@ -69,7 +69,7 @@ namespace gum {
    * @param new_card The unsigned long integer used as a "return" value to get
    * the maximum number those bits can represent, i.e. \f$ 2^{num\_bits} \f$.
    */
-  void superiorPow( unsigned long card,
+  void superiorPow( unsigned long  card,
                     unsigned long& num_bits,
                     unsigned long& new_card );
 

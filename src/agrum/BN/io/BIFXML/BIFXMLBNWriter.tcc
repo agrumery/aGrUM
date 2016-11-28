@@ -49,7 +49,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE void
-  BIFXMLBNWriter<GUM_SCALAR>::write( std::ostream& output,
+  BIFXMLBNWriter<GUM_SCALAR>::write( std::ostream&                output,
                                      const IBayesNet<GUM_SCALAR>& bn ) {
     if ( !output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
@@ -89,7 +89,7 @@ namespace gum {
    */
   template <typename GUM_SCALAR>
   INLINE void
-  BIFXMLBNWriter<GUM_SCALAR>::write( std::string filePath,
+  BIFXMLBNWriter<GUM_SCALAR>::write( std::string                  filePath,
                                      const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
@@ -141,8 +141,8 @@ namespace gum {
 
     // Network declaration
     str << "<NETWORK>" << std::endl;
-    str << "<NAME>" << bn.propertyWithDefault( "name", "unnamedBN" )
-        << "</NAME>" << std::endl;
+    str << "<NAME>" << bn.propertyWithDefault( "name", "unnamedBN" ) << "</NAME>"
+        << std::endl;
     str << "<PROPERTY>software aGrUM</PROPERTY>" << std::endl;
 
     return str.str();
@@ -197,8 +197,7 @@ namespace gum {
     str << "<DEFINITION>" << std::endl;
 
     // Variable
-    str << "\t<FOR>" << bn.variable( varNodeId ).name() << "</FOR>"
-        << std::endl;
+    str << "\t<FOR>" << bn.variable( varNodeId ).name() << "</FOR>" << std::endl;
 
     // Table
     // For historical reason, the code is not the same betwen bIXML for BN and

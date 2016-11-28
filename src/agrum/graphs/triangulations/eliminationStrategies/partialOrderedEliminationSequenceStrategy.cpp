@@ -46,9 +46,9 @@ namespace gum {
   /// constructor for an a priori non empty graph
   PartialOrderedEliminationSequenceStrategy::
       PartialOrderedEliminationSequenceStrategy(
-          UndiGraph* graph,
+          UndiGraph*                graph,
           const NodeProperty<Size>* dom_sizes,
-          const List<NodeSet>* subsets ) {
+          const List<NodeSet>*      subsets ) {
     setGraph( graph, dom_sizes );
     setPartialOrder( subsets );
 

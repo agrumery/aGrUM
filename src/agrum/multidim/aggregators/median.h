@@ -87,9 +87,9 @@ namespace gum {
       // fold scheme is not used, these methods are neutralized
       virtual Idx _neutralElt( void ) const { return 0; };
       virtual Idx _fold( const DiscreteVariable& v,
-                         Idx i1,
-                         Idx i2,
-                         bool& stop_iteration ) const;
+                         Idx                     i1,
+                         Idx                     i2,
+                         bool&                   stop_iteration ) const;
 
       private:
       Idx __value;

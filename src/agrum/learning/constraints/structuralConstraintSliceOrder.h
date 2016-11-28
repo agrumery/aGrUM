@@ -78,12 +78,11 @@ namespace gum {
       StructuralConstraintSliceOrder( const NodeProperty<NodeId>& order );
 
       /// constructor starting with a given graph
-      StructuralConstraintSliceOrder( const DiGraph& graph,
+      StructuralConstraintSliceOrder( const DiGraph&              graph,
                                       const NodeProperty<NodeId>& order );
 
       /// copy constructor
-      StructuralConstraintSliceOrder(
-          const StructuralConstraintSliceOrder& from );
+      StructuralConstraintSliceOrder( const StructuralConstraintSliceOrder& from );
 
       /// move constructor
       StructuralConstraintSliceOrder( StructuralConstraintSliceOrder&& from );

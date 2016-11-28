@@ -39,13 +39,13 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
       pot1 << *( vars[0] ) << *( vars[2] ) << *( vars[3] ) << *( vars[4] );
       gum::ScheduleMultiDim<float> f1( pot1 );
-      gum::Potential<float> pot2;
+      gum::Potential<float>        pot2;
       pot2 << *( vars[0] ) << *( vars[2] ) << *( vars[3] ) << *( vars[4] );
       gum::ScheduleMultiDim<float> f2( pot2 );
 
@@ -87,9 +87,8 @@ namespace gum_tests {
       store4 = store1;
       TS_ASSERT( store4 == store1 );
 
-      TS_ASSERT(
-          store4.type() ==
-          gum::ScheduleOperation<float>::Type::SEPARATOR_STORE_MULTIDIM );
+      TS_ASSERT( store4.type() ==
+                 gum::ScheduleOperation<float>::Type::SEPARATOR_STORE_MULTIDIM );
 
       gum::ScheduleSeparatorStoreMultiDim<float>* store5 = store4.newFactory();
       TS_ASSERT( *store5 == store4 );

@@ -87,8 +87,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the elimination sequence algorithm.
      */
-    virtual bool setGraph( UndiGraph* graph,
-                           const NodeProperty<Size>* dom_sizes );
+    virtual bool setGraph( UndiGraph* graph, const NodeProperty<Size>* dom_sizes );
 
     /// returns the new node to be eliminated within the triangulation algorithm
     /** @throws NotFound exception is thrown if there is no more node to
@@ -169,7 +168,7 @@ namespace gum {
     EliminationSequenceStrategy();
 
     /// constructor for an a priori non empty graph
-    EliminationSequenceStrategy( UndiGraph* graph,
+    EliminationSequenceStrategy( UndiGraph*                graph,
                                  const NodeProperty<Size>* domain_sizes );
 
     /// copy constructor

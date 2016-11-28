@@ -83,7 +83,7 @@ namespace gum {
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
       CellTranslatorUniversal( Sequence<double> values = Sequence<double>(),
-                               bool check_database     = true );
+                               bool             check_database = true );
 
       /// default constructor
       /** @param values The user can specify the values which the cell
@@ -119,7 +119,7 @@ namespace gum {
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
       CellTranslatorUniversal( Sequence<std::string> values,
-                               bool check_database = true );
+                               bool                  check_database = true );
 
       /// copy constructor
       CellTranslatorUniversal( const CellTranslatorUniversal& from );
@@ -177,7 +177,7 @@ namespace gum {
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames( const std::vector<std::string>& db_var,
-                          std::vector<std::string>& output_vars ) const;
+                          std::vector<std::string>&       output_vars ) const;
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -218,7 +218,7 @@ namespace gum {
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
       void setUserValues( const Sequence<double>& values,
-                          bool check_database = true );
+                          bool                    check_database = true );
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -259,7 +259,7 @@ namespace gum {
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
       void setUserValues( const Sequence<std::string>& values,
-                          bool check_database = true );
+                          bool                         check_database = true );
 
       /// returns the set of translations for string values in the database
       const Bijection<Idx, Idx>& stringTranslations() const noexcept;

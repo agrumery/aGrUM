@@ -72,8 +72,7 @@ namespace gum {
             y * 2.0;
       } else {
         y -= 2.0;
-        x = ( ( ( ( ( ( ( ( ( ( ( ( ( -0.000045255659 * y + 0.000152529290 ) *
-                                        y -
+        x = ( ( ( ( ( ( ( ( ( ( ( ( ( -0.000045255659 * y + 0.000152529290 ) * y -
                                     0.000019538132 ) *
                                       y -
                                   0.000676904986 ) *
@@ -125,7 +124,7 @@ namespace gum {
 
     double a, y = 0, s;
     double e, c, z;
-    int even; /* true if df is an even number */
+    int    even; /* true if df is an even number */
 
     if ( ( x <= 0.0 ) || ( df < 1 ) ) {
       //          __chi2Cache.insert(conty,1.0);

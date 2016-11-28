@@ -36,11 +36,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
       const MultiDimImplementation<GUM_SCALAR>& ttable,
-      Instantiation* instantiation ) {
+      Instantiation*                            instantiation ) {
 #endif
 
-    typename CompleteProjectionRegister4MultiDim<
-        GUM_SCALAR>::CompleteProjectionPtr func;
+    typename CompleteProjectionRegister4MultiDim<GUM_SCALAR>::CompleteProjectionPtr
+        func;
 
     // get the appropriate function to perform the operation
     try {

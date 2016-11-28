@@ -43,8 +43,7 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
-            template <typename> class TerminalNodePolicy =
-                ExactTerminalNodePolicy>
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
   class Regress {
     public:
     // ============================================================================
@@ -57,8 +56,8 @@ namespace gum {
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vfunction,
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* probDist,
         const Set<const DiscreteVariable*>* primedVars,
-        const DiscreteVariable* targetVar,
-        const GUM_SCALAR neutral );
+        const DiscreteVariable*             targetVar,
+        const GUM_SCALAR                    neutral );
 
     /// Default destructor.
     ~Regress();
@@ -87,7 +86,7 @@ namespace gum {
     /// beneath it
     void __findRetrogradeVariables(
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
-        HashTable<NodeId, short int*>& dgInstNeed );
+        HashTable<NodeId, short int*>&                               dgInstNeed );
 
     /// The main recursion function
     NodeId __compute( O4DGContext& currentSituation, Idx lastInstVarPos );

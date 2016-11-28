@@ -30,8 +30,7 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    void
-    InstanceBayesNet<GUM_SCALAR>::__init( const PRMInstance<GUM_SCALAR>& i ) {
+    void InstanceBayesNet<GUM_SCALAR>::__init( const PRMInstance<GUM_SCALAR>& i ) {
       for ( const auto node : i.type().dag().nodes() ) {
         try {
           // Adding the attribute
@@ -62,8 +61,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE InstanceBayesNet<GUM_SCALAR>::InstanceBayesNet(
-        const InstanceBayesNet& from )
+    INLINE
+    InstanceBayesNet<GUM_SCALAR>::InstanceBayesNet( const InstanceBayesNet& from )
         : IBayesNet<GUM_SCALAR>( from )
         , __varNodeMap( from.__varNodeMap )
         , __inst( from.__inst ) {
@@ -95,7 +94,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const VariableNodeMap&
-    InstanceBayesNet<GUM_SCALAR>::variableNodeMap() const {
+                 InstanceBayesNet<GUM_SCALAR>::variableNodeMap() const {
       GUM_ERROR( NotFound, "no VariableNodeMap in an InstanceBayesNet" );
     }
 
@@ -118,8 +117,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const DiscreteVariable&
-    InstanceBayesNet<GUM_SCALAR>::variableFromName(
+    INLINE const DiscreteVariable& InstanceBayesNet<GUM_SCALAR>::variableFromName(
         const std::string& name ) const {
       return __get( name ).type().variable();
     }
@@ -142,7 +140,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const NodeProperty<Size>&
-    InstanceBayesNet<GUM_SCALAR>::modalities() const {
+                 InstanceBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
         for ( const auto node : this->nodes() ) {
           __modalities.insert( node, variable( node ).domainSize() );
@@ -154,7 +152,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::string InstanceBayesNet<GUM_SCALAR>::toDot() const {
-      std::string tab = "  ";
+      std::string       tab = "  ";
       std::stringstream output;
       output << "digraph \"";
       output << __inst->name() << "\" {" << std::endl;
@@ -168,8 +166,7 @@ namespace gum {
             output << "\"" << variable( chi ).name() << "\";" << std::endl;
           }
         } else if ( this->dag().parents( node ).size() == 0 ) {
-          output << tab << "\"" << variable( node ).name() << "\";"
-                 << std::endl;
+          output << tab << "\"" << variable( node ).name() << "\";" << std::endl;
         }
       }
 

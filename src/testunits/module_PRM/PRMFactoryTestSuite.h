@@ -37,7 +37,7 @@ namespace gum_tests {
       try {
 
         gum::prm::PRMFactory<double> f;
-        auto prm = f.prm();
+        auto                         prm = f.prm();
 
         f.startClass( "MyClass" );
         f.addParameter( "real", "lambda", 0.001 );
@@ -67,7 +67,7 @@ namespace gum_tests {
       try {
 
         gum::prm::PRMFactory<double> f;
-        auto prm = f.prm();
+        auto                         prm = f.prm();
 
         f.startClass( "MyClass" );
         f.addParameter( "real", "lambda", 0.001 );
@@ -82,7 +82,7 @@ namespace gum_tests {
         TS_ASSERT( prm->classes().size() == 2 );
 
         const auto& super_c = prm->getClass( "MyClass" );
-        const auto& c       = prm->getClass( "MyClass<lambda=0.001>" );
+        const auto& c = prm->getClass( "MyClass<lambda=0.001>" );
 
         TS_ASSERT( c.isSubTypeOf( super_c ) );
 
@@ -109,7 +109,7 @@ namespace gum_tests {
       try {
 
         gum::prm::PRMFactory<double> f;
-        auto prm = f.prm();
+        auto                         prm = f.prm();
 
         f.startClass( "MyClass" );
         f.addParameter( "real", "lambda", 0.001 );
@@ -143,7 +143,7 @@ namespace gum_tests {
       try {
 
         gum::prm::PRMFactory<double> f;
-        auto prm = f.prm();
+        auto                         prm = f.prm();
 
         f.startClass( "MyClass" );
         f.addParameter( "real", "lambda", 0.001 );
@@ -168,7 +168,7 @@ namespace gum_tests {
         const auto& k = s.get( "k" );
 
         const auto& super_c = prm->getClass( "MyClass" );
-        const auto& c       = prm->getClass( "MyClass<lambda=0.009>" );
+        const auto& c = prm->getClass( "MyClass<lambda=0.009>" );
 
         const auto& c_default = prm->getClass( "MyClass<lambda=0.001>" );
 

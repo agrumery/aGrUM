@@ -190,8 +190,7 @@
 #undef GUM_MULTI_DIM_PROJECTION
 #undef GUM_MULTI_DIM_PROJECTION_NEUTRAL
 
-#define GUM_MULTI_DIM_PROJECTION_POINTER_NAME \
-  projectProductMultiDimArray4Pointers
+#define GUM_MULTI_DIM_PROJECTION_POINTER_NAME projectProductMultiDimArray4Pointers
 #define GUM_MULTI_DIM_PROJECTION_EFFECTIVE_TYPE
 #define GUM_MULTI_DIM_PROJECTION( x, y ) ( *x ) *= ( *y )
 #define GUM_MULTI_DIM_PROJECTION_NEUTRAL (GUM_SCALAR)1
@@ -393,15 +392,12 @@ namespace gum {
           "product", MultiDimArrayString, &projectProductMultiDimArray );
 
       // register base functions for multiDimArrays
-      registerProjection<GUM_SCALAR>( "max",
-                                      MultiDimFunctionGraphString,
-                                      &projectMaxMultiDimFunctionGraph );
-      registerProjection<GUM_SCALAR>( "min",
-                                      MultiDimFunctionGraphString,
-                                      &projectMinMultiDimFunctionGraph );
-      registerProjection<GUM_SCALAR>( "sum",
-                                      MultiDimFunctionGraphString,
-                                      &projectSumMultiDimFunctionGraph );
+      registerProjection<GUM_SCALAR>(
+          "max", MultiDimFunctionGraphString, &projectMaxMultiDimFunctionGraph );
+      registerProjection<GUM_SCALAR>(
+          "min", MultiDimFunctionGraphString, &projectMinMultiDimFunctionGraph );
+      registerProjection<GUM_SCALAR>(
+          "sum", MultiDimFunctionGraphString, &projectSumMultiDimFunctionGraph );
       registerProjection<GUM_SCALAR>( "product",
                                       MultiDimFunctionGraphString,
                                       &projectProductMultiDimFunctionGraph );
@@ -436,9 +432,8 @@ namespace gum {
           "min", MultiDimArrayString, &projectMinMultiDimArray4Pointers );
       registerProjection<GUM_SCALAR*>(
           "sum", MultiDimArrayString, &projectSumMultiDimArray4Pointers );
-      registerProjection<GUM_SCALAR*>( "product",
-                                       MultiDimArrayString,
-                                       &projectProductMultiDimArray4Pointers );
+      registerProjection<GUM_SCALAR*>(
+          "product", MultiDimArrayString, &projectProductMultiDimArray4Pointers );
     }
   }
 

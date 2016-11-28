@@ -63,9 +63,9 @@ namespace gum {
     }
 
     /// insert a new score into the cache
-    INLINE void Cache4Score::insert( Idx var,
+    INLINE void Cache4Score::insert( Idx                     var,
                                      const std::vector<Idx>& conditioning_set,
-                                     double score ) {
+                                     double                  score ) {
       __scores.insert(
           std::pair<IdSet<>, Idx>( IdSet<>( conditioning_set, 0 ), var ),
           std::move( score ) );
@@ -73,16 +73,14 @@ namespace gum {
 
     /// insert a new score into the cache
     template <typename Alloc>
-    INLINE void Cache4Score::insert( Idx var,
-                                     IdSet<Alloc>& conditioning_set,
-                                     double score ) {
-      __scores.insert(
-          std::pair<IdSet<>, Idx>( IdSet<>( conditioning_set ), var ),
-          std::move( score ) );
+    INLINE void
+    Cache4Score::insert( Idx var, IdSet<Alloc>& conditioning_set, double score ) {
+      __scores.insert( std::pair<IdSet<>, Idx>( IdSet<>( conditioning_set ), var ),
+                       std::move( score ) );
     }
 
     /// removes a score (if it exists)
-    INLINE void Cache4Score::erase( Idx var,
+    INLINE void Cache4Score::erase( Idx                     var,
                                     const std::vector<Idx>& conditioning_set ) {
       __scores.erase(
           std::pair<IdSet<>, Idx>( IdSet<>( conditioning_set, 0 ), var ) );
@@ -90,21 +88,21 @@ namespace gum {
 
     /// removes a score (if it exists)
     template <typename Alloc>
-    INLINE void Cache4Score::erase( Idx var,
+    INLINE void Cache4Score::erase( Idx                 var,
                                     const IdSet<Alloc>& conditioning_set ) {
       __scores.erase( std::pair<IdSet<>, Idx>( conditioning_set, var ) );
     }
 
     /// indicates whether a given score exists
-    INLINE bool
-    Cache4Score::exists( Idx var, const std::vector<Idx>& conditioning_set ) {
+    INLINE bool Cache4Score::exists( Idx                     var,
+                                     const std::vector<Idx>& conditioning_set ) {
       return __scores.exists(
           std::pair<IdSet<>, Idx>( IdSet<>( conditioning_set, 0 ), var ) );
     }
 
     /// returns a given score
-    INLINE double
-    Cache4Score::score( Idx var, const std::vector<Idx>& conditioning_set ) {
+    INLINE double Cache4Score::score( Idx                     var,
+                                      const std::vector<Idx>& conditioning_set ) {
       return __scores[std::pair<IdSet<>, Idx>( IdSet<>( conditioning_set, 0 ),
                                                var )];
     }

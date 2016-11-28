@@ -81,20 +81,20 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintUndiGraph::modifyGraphAlone(
-        const EdgeAddition& change ) {
+    INLINE void
+    StructuralConstraintUndiGraph::modifyGraphAlone( const EdgeAddition& change ) {
       _UndiGraph__graph.addEdge( change.node1(), change.node2() );
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintUndiGraph::modifyGraphAlone(
-        const EdgeDeletion& change ) {
+    INLINE void
+    StructuralConstraintUndiGraph::modifyGraphAlone( const EdgeDeletion& change ) {
       _UndiGraph__graph.eraseEdge( Edge( change.node1(), change.node2() ) );
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintUndiGraph::modifyGraphAlone(
-        const GraphChange& change ) {
+    INLINE void
+    StructuralConstraintUndiGraph::modifyGraphAlone( const GraphChange& change ) {
       switch ( change.type() ) {
         case GraphChangeType::EDGE_ADDITION:
           modifyGraphAlone( reinterpret_cast<const EdgeAddition&>( change ) );

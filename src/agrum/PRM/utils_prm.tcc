@@ -28,17 +28,15 @@ namespace gum {
         const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
         const Potential<GUM_SCALAR>& source ) {
       const MultiDimImplementation<GUM_SCALAR>* impl = source.content();
-      Potential<GUM_SCALAR>* p                       = 0;
+      Potential<GUM_SCALAR>*                    p = 0;
 
       try {
         if ( dynamic_cast<const MultiDimReadOnly<GUM_SCALAR>*>( impl ) ) {
-          if ( dynamic_cast<const MultiDimNoisyORCompound<GUM_SCALAR>*>(
-                   impl ) ) {
-            p = new Potential<GUM_SCALAR>(
-                new MultiDimNoisyORCompound<GUM_SCALAR>(
-                    bij,
-                    static_cast<const MultiDimNoisyORCompound<GUM_SCALAR>&>(
-                        *impl ) ) );
+          if ( dynamic_cast<const MultiDimNoisyORCompound<GUM_SCALAR>*>( impl ) ) {
+            p = new Potential<GUM_SCALAR>( new MultiDimNoisyORCompound<GUM_SCALAR>(
+                bij,
+                static_cast<const MultiDimNoisyORCompound<GUM_SCALAR>&>(
+                    *impl ) ) );
           } else if ( dynamic_cast<const MultiDimNoisyORNet<GUM_SCALAR>*>(
                           impl ) ) {
             p = new Potential<GUM_SCALAR>( new MultiDimNoisyORNet<GUM_SCALAR>(
@@ -55,8 +53,7 @@ namespace gum {
                   iter != impl->end();
                   ++iter )
               p->add( *( bij.second( *iter ) ) );
-          } else if ( dynamic_cast<const MultiDimBucket<GUM_SCALAR>*>(
-                          impl ) ) {
+          } else if ( dynamic_cast<const MultiDimBucket<GUM_SCALAR>*>( impl ) ) {
             // This is necessary just to prevent non initialized arrays
             const_cast<MultiDimBucket<GUM_SCALAR>*>(
                 static_cast<const MultiDimBucket<GUM_SCALAR>*>( impl ) )
@@ -80,13 +77,10 @@ namespace gum {
           if ( dynamic_cast<const MultiDimArray<GUM_SCALAR>*>( impl ) ) {
             p = new Potential<GUM_SCALAR>( new MultiDimBijArray<GUM_SCALAR>(
                 bij, static_cast<const MultiDimArray<GUM_SCALAR>&>( *impl ) ) );
-          } else if ( dynamic_cast<const MultiDimBijArray<GUM_SCALAR>*>(
-                          impl ) ) {
+          } else if ( dynamic_cast<const MultiDimBijArray<GUM_SCALAR>*>( impl ) ) {
             p = new Potential<GUM_SCALAR>( new MultiDimBijArray<GUM_SCALAR>(
-                bij,
-                static_cast<const MultiDimBijArray<GUM_SCALAR>&>( *impl ) ) );
-          } else if ( dynamic_cast<const MultiDimSparse<GUM_SCALAR>*>(
-                          impl ) ) {
+                bij, static_cast<const MultiDimBijArray<GUM_SCALAR>&>( *impl ) ) );
+          } else if ( dynamic_cast<const MultiDimSparse<GUM_SCALAR>*>( impl ) ) {
             GUM_ERROR( FatalError,
                        "There is no MultiDimSparse in PRMs, normally..." );
           } else {
@@ -113,7 +107,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void eliminateNode( const DiscreteVariable* var,
+    void eliminateNode( const DiscreteVariable*      var,
                         Set<Potential<GUM_SCALAR>*>& pool,
                         Set<Potential<GUM_SCALAR>*>& trash ) {
       Potential<GUM_SCALAR>* pot = nullptr;
@@ -152,11 +146,11 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void eliminateNodes ( const std::vector<const DiscreteVariable*>& elim_order,
-                        Set<Potential<GUM_SCALAR>*>& pool,
-                        Set<Potential<GUM_SCALAR>*>& trash ) {
-      for (auto var: elim_order) {
-        eliminateNode(var, pool, trash);
+    void eliminateNodes( const std::vector<const DiscreteVariable*>& elim_order,
+                         Set<Potential<GUM_SCALAR>*>&                pool,
+                         Set<Potential<GUM_SCALAR>*>&                trash ) {
+      for ( auto var : elim_order ) {
+        eliminateNode( var, pool, trash );
       }
     }
 

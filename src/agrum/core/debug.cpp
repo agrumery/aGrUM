@@ -71,23 +71,23 @@ namespace gum {
 
     void __show_trace( const char* zeKey,
                        const char* zeFile,
-                       long zeLine,
+                       long        zeLine,
                        const char* zeMsg,
                        const void* zePtr ) {
 #ifdef GUM_DEEP_TRACE_ON
       std::cerr << std::setw( 40 ) << std::setfill( ' ' ) << __getFile( zeFile )
                 << "#" << std::setfill( '0' ) << std::setw( 5 ) << std::dec
-                << zeLine << " : " << zeMsg << " <" << zeKey << "> ["
-                << std::hex << zePtr << "]" << std::dec << std::endl;
+                << zeLine << " : " << zeMsg << " <" << zeKey << "> [" << std::hex
+                << zePtr << "]" << std::dec << std::endl;
 #endif  // TRACE_CONSTRUCTION_ON
     }
 
     void __inc_creation( const char* zeKey,
                          const char* zeFile,
-                         long zeLine,
+                         long        zeLine,
                          const char* zeMsg,
                          const void* zePtr,
-                         int zeSize ) {
+                         int         zeSize ) {
       __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
 
       __creation()[zeKey]++;
@@ -97,7 +97,7 @@ namespace gum {
     // to handle static element of agrum library
     void __dec_creation( const char* zeKey,
                          const char* zeFile,
-                         long zeLine,
+                         long        zeLine,
                          const char* zeMsg,
                          const void* zePtr ) {
       __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
@@ -106,7 +106,7 @@ namespace gum {
 
     void __inc_deletion( const char* zeKey,
                          const char* zeFile,
-                         long zeLine,
+                         long        zeLine,
                          const char* zeMsg,
                          const void* zePtr ) {
       __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
@@ -114,16 +114,16 @@ namespace gum {
     }
 
     void __dumpObjects( void ) {
-      Size nb_err       = 0;
+      Size   nb_err = 0;
       double total_size = 0.0;
 
-      char fillChar           = '_';
-      int widthColLibelle     = 50;
-      int widthColSizeOf      = 5;
-      int widthColItemsNumber = 8;
+      char fillChar = '_';
+      int  widthColLibelle = 50;
+      int  widthColSizeOf = 5;
+      int  widthColItemsNumber = 8;
 
-      std::cout << std::setfill( '=' ) << "|"
-                << std::setw( widthColLibelle + 2 ) << ""
+      std::cout << std::setfill( '=' ) << "|" << std::setw( widthColLibelle + 2 )
+                << ""
                 << "|" << std::setw( widthColSizeOf + 4 ) << ""
                 << "|" << std::setw( widthColItemsNumber + 2 ) << ""
                 << "|" << std::setw( widthColItemsNumber + 2 ) << ""
@@ -134,8 +134,8 @@ namespace gum {
                 << " | " << std::setw( widthColItemsNumber ) << "#Const"
                 << " | " << std::setw( widthColItemsNumber ) << "#Dest"
                 << " |" << std::endl;
-      std::cout << std::setfill( '-' ) << "|"
-                << std::setw( widthColLibelle + 2 ) << ""
+      std::cout << std::setfill( '-' ) << "|" << std::setw( widthColLibelle + 2 )
+                << ""
                 << "|" << std::setw( widthColSizeOf + 4 ) << ""
                 << "|" << std::setw( widthColItemsNumber + 2 ) << ""
                 << "|" << std::setw( widthColItemsNumber + 2 ) << ""
@@ -147,9 +147,9 @@ namespace gum {
             xx != __creation().end();
             ++xx ) {
         std::stringstream stream;
-        int zeCreatedObjs  = xx->second;
-        int zeDeletedObjts = -1;
-        int size           = __sizeof()[xx->first];
+        int               zeCreatedObjs = xx->second;
+        int               zeDeletedObjts = -1;
+        int               size = __sizeof()[xx->first];
 
         stream << std::setfill( fillChar = ( fillChar == '_' ) ? ' ' : '_' )
                << "| " << std::setw( widthColLibelle ) << std::left << xx->first
@@ -224,8 +224,7 @@ namespace gum {
                   << ""
                   << "|" << std::endl;
       } else {
-        std::cout << "| " << std::setw( widthColLibelle )
-                  << "Memory leaks found "
+        std::cout << "| " << std::setw( widthColLibelle ) << "Memory leaks found "
                   << ""
                   << " | "
                   << std::setw( widthColSizeOf + widthColItemsNumber * 2 - 6 )
@@ -239,11 +238,10 @@ namespace gum {
                 << std::setprecision( 2 ) << total_size << " Ko          "
                 << "|" << std::endl;
 
-      std::cout << std::setfill( '=' ) << "|"
-                << std::setw( widthColLibelle + 2 ) << ""
-                << "|"
-                << std::setw( widthColSizeOf + widthColItemsNumber * 2 + 10 )
+      std::cout << std::setfill( '=' ) << "|" << std::setw( widthColLibelle + 2 )
                 << ""
+                << "|"
+                << std::setw( widthColSizeOf + widthColItemsNumber * 2 + 10 ) << ""
                 << "|" << std::endl;
     }
 

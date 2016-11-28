@@ -66,15 +66,14 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p.realSize(), (gum::Size)4 );
 
       TS_GUM_ASSERT_THROWS_NOTHING( q.causalWeight( c, -1.3f ) );
-      TS_ASSERT_EQUALS(
-          q.toString(),
-          "a<0,1>=logit(0.2 +0.4*b<0,1> -1.3*c<0,1> +0.7*d<0,1>)" );
+      TS_ASSERT_EQUALS( q.toString(),
+                        "a<0,1>=logit(0.2 +0.4*b<0,1> -1.3*c<0,1> +0.7*d<0,1>)" );
     }
 
     void testComputationInLogit() {
       // from "Pratique de la Régression Logique" / Ricco Rakotomalala / p33
-      gum::RangeVariable age( "age", "", 35, 67 );
-      gum::RangeVariable taux( "taux", "", 115, 171 );
+      gum::RangeVariable     age( "age", "", 35, 67 );
+      gum::RangeVariable     taux( "taux", "", 115, 171 );
       gum::LabelizedVariable angine( "angine", "", 2 );
       gum::LabelizedVariable coeur( "coeur", "", 0 );
       coeur.addLabel( "NON" ).addLabel( "OUI" );
@@ -96,8 +95,7 @@ namespace gum_tests {
           "50", "49", "46", "49", "62", "35", "67", "65", "47"};
       std::string witness_taux[] = {
           "126", "126", "144", "139", "154", "156", "160", "140", "143"};
-      std::string witness_angine[] = {
-          "1", "0", "0", "0", "1", "1", "0", "0", "0"};
+      std::string witness_angine[] = {"1", "0", "0", "0", "1", "1", "0", "0", "0"};
       std::string witness_coeur[] = {
           "OUI", "OUI", "OUI", "OUI", "OUI", "OUI", "NON", "NON", "NON"};
       float witness_proba[] = {0.8786f,
@@ -159,7 +157,7 @@ namespace gum_tests {
       p.causalWeight( competition, 0.9f );
 
       gum::Instantiation i( p );
-      float witness[] = {
+      float              witness[] = {
           0.999880012f, 0.000119988f, 0.998920108f, 0.001079892f, 0.999520048f,
           0.000479952f, 0.995680432f, 0.004319568f, 0.998920108f, 0.001079892f,
           0.990280972f, 0.009719028f, 0.995680432f, 0.004319568f, 0.961123888f,
@@ -200,12 +198,12 @@ namespace gum_tests {
       gum::LabelizedVariable oneMoreParent1( "OneMoreParent1", "", 2 );
       gum::LabelizedVariable oneMoreParent2( "OneMoreParent2", "", 2 );
 
-      gum::NodeId idCold    = bn.add( cold );
-      gum::NodeId idFlu     = bn.add( flu );
+      gum::NodeId idCold = bn.add( cold );
+      gum::NodeId idFlu = bn.add( flu );
       gum::NodeId idMalaria = bn.add( malaria );
-      gum::NodeId idFever   = 0;
+      gum::NodeId idFever = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( idFever = bn.addLogit( fever, 0.3f ) );
-      gum::NodeId idOneMore        = bn.add( oneMore );
+      gum::NodeId idOneMore = bn.add( oneMore );
       gum::NodeId idOneMoreParent1 = bn.add( oneMoreParent1 );
       gum::NodeId idOneMoreParent2 = bn.add( oneMoreParent2 );
 

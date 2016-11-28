@@ -104,8 +104,7 @@ namespace gum {
      * amount of memory used during the execution of the Schedule and the second
      * one is the amount of memory still used at the end of the execution of
      * k first operations of the schedule */
-    std::pair<long, long> memoryUsage( const Schedule<GUM_SCALAR>&,
-                                       Size k ) const;
+    std::pair<long, long> memoryUsage( const Schedule<GUM_SCALAR>&, Size k ) const;
 
     /// @}
   };

@@ -42,8 +42,7 @@ namespace gum {
     }
 
     /// move constructor
-    DBTransformCompactInt::DBTransformCompactInt(
-        DBTransformCompactInt&& from ) {
+    DBTransformCompactInt::DBTransformCompactInt( DBTransformCompactInt&& from ) {
       GUM_CONS_MOV( DBTransformCompactInt );
     }
 

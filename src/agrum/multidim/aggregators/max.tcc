@@ -54,8 +54,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Max<GUM_SCALAR>::_fold( const DiscreteVariable& v,
-                                       Idx i1,
-                                       Idx i2,
+                                       Idx                     i1,
+                                       Idx                     i2,
                                        bool& stop_iteration ) const {
       return ( i1 > i2 ) ? i1 : i2;
     }

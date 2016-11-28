@@ -60,8 +60,7 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE DatabaseFromSQL& DatabaseFromSQL::
-    operator=( DatabaseFromSQL&& from ) {
+    INLINE DatabaseFromSQL& DatabaseFromSQL::operator=( DatabaseFromSQL&& from ) {
       DatabaseVectInRAM::operator=( std::move( from ) );
       return *this;
     }

@@ -137,14 +137,14 @@ namespace gum {
     /// @}
 
     protected:
-    FMDP<GUM_SCALAR>* __fmdp;
+    FMDP<GUM_SCALAR>*        __fmdp;
     FMDPFactory<GUM_SCALAR>* __factory;
-    MDPDAT::Scanner* __scanner;
-    MDPDAT::Parser* __parser;
+    MDPDAT::Scanner*         __scanner;
+    MDPDAT::Parser*          __parser;
 
     std::string __streamName;
-    bool __traceScanning;
-    bool __parseDone;
+    bool        __traceScanning;
+    bool        __parseDone;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()

@@ -53,10 +53,9 @@ namespace gum {
     /// copy operator
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-    __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
-    operator=(
-        const __StructuralConstraintSetStatic<CONSTRAINT1,
-                                              OTHER_CONSTRAINTS...>& from ) {
+           __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::operator=(
+        const __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
+            from ) {
       if ( this != &from ) {
         next_constraints::operator=( from );
         first_constraint::operator=( from );
@@ -67,9 +66,9 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE void __StructuralConstraintSetStatic<
-        CONSTRAINT1,
-        OTHER_CONSTRAINTS...>::setGraph( const DiGraph& graph ) {
+    INLINE void
+    __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::setGraph(
+        const DiGraph& graph ) {
       next_constraints::setGraph( graph );
       first_constraint::setGraphAlone( graph );
     }
@@ -112,9 +111,9 @@ namespace gum {
 
     /// indicates whether a change will always violate the constraint
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool
-    __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
-        isAlwaysInvalid( const GraphChange& change ) const {
+    INLINE bool __StructuralConstraintSetStatic<
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS...>::isAlwaysInvalid( const GraphChange& change ) const {
       return next_constraints::isAlwaysInvalid( change ) ||
              first_constraint::isAlwaysInvalidAlone( change );
     }
@@ -191,9 +190,9 @@ namespace gum {
 
     /// copy constructor
     template <typename CONSTRAINT>
-    INLINE __StructuralConstraintSetStatic<CONSTRAINT>::
-        __StructuralConstraintSetStatic(
-            const __StructuralConstraintSetStatic<CONSTRAINT>& from )
+    INLINE
+    __StructuralConstraintSetStatic<CONSTRAINT>::__StructuralConstraintSetStatic(
+        const __StructuralConstraintSetStatic<CONSTRAINT>& from )
         : CONSTRAINT( from ) {}
 
     /// destructor
@@ -204,7 +203,7 @@ namespace gum {
     /// copy operator
     template <typename CONSTRAINT>
     INLINE __StructuralConstraintSetStatic<CONSTRAINT>&
-    __StructuralConstraintSetStatic<CONSTRAINT>::
+           __StructuralConstraintSetStatic<CONSTRAINT>::
     operator=( const __StructuralConstraintSetStatic<CONSTRAINT>& from ) {
       if ( this != &from ) {
         CONSTRAINT::operator=( from );
@@ -215,8 +214,8 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     template <typename CONSTRAINT>
-    INLINE void __StructuralConstraintSetStatic<CONSTRAINT>::setGraph(
-        const DiGraph& graph ) {
+    INLINE void
+    __StructuralConstraintSetStatic<CONSTRAINT>::setGraph( const DiGraph& graph ) {
       first_constraint::setGraphAlone( graph );
     }
 
@@ -317,8 +316,8 @@ namespace gum {
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
         StructuralConstraintSetStatic(
-            const StructuralConstraintSetStatic<CONSTRAINT1,
-                                                OTHER_CONSTRAINTS...>& from )
+            const StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
+                from )
         : constraints( from ) {
       GUM_CONS_CPY( StructuralConstraintSetStatic );
     }
@@ -333,9 +332,9 @@ namespace gum {
     /// copy operator
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
     INLINE StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::operator=(
-        const StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-            from ) {
+           StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+    operator=( const StructuralConstraintSetStatic<CONSTRAINT1,
+                                                   OTHER_CONSTRAINTS...>& from ) {
       if ( this != &from ) {
         constraints::operator=( from );
       }
@@ -353,65 +352,58 @@ namespace gum {
 
     /// checks whether the constraints enable to add arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool StructuralConstraintSetStatic<
-        CONSTRAINT1,
-        OTHER_CONSTRAINTS...>::checkArcAddition( NodeId x, NodeId y ) const {
+    INLINE bool StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+        checkArcAddition( NodeId x, NodeId y ) const {
       return constraints::checkArcAddition( x, y );
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool StructuralConstraintSetStatic<
-        CONSTRAINT1,
-        OTHER_CONSTRAINTS...>::checkArcDeletion( NodeId x, NodeId y ) const {
+    INLINE bool StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+        checkArcDeletion( NodeId x, NodeId y ) const {
       return constraints::checkArcDeletion( x, y );
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool StructuralConstraintSetStatic<
-        CONSTRAINT1,
-        OTHER_CONSTRAINTS...>::checkArcReversal( NodeId x, NodeId y ) const {
+    INLINE bool StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+        checkArcReversal( NodeId x, NodeId y ) const {
       return constraints::checkArcReversal( x, y );
     }
 
     /// checks whether the constraints enable to add an arc
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool
-    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+    INLINE bool StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
         checkModification( const ArcAddition& change ) const {
       return constraints::checkModification( change );
     }
 
     /// checks whether the constraints enable to remove an arc
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool
-    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+    INLINE bool StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
         checkModification( const ArcDeletion& change ) const {
       return constraints::checkModification( change );
     }
 
     /// checks whether the constraints enable to reverse an arc
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool
-    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+    INLINE bool StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
         checkModification( const ArcReversal& change ) const {
       return constraints::checkModification( change );
     }
 
     /// checks whether the constraints enable to perform a graph change
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool
-    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+    INLINE bool StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
         checkModification( const GraphChange& change ) const {
       return constraints::checkModification( change );
     }
 
     /// notify the constraint of a modification of the graph
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE void StructuralConstraintSetStatic<
-        CONSTRAINT1,
-        OTHER_CONSTRAINTS...>::modifyGraph( const ArcAddition& change ) {
+    INLINE void
+    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::modifyGraph(
+        const ArcAddition& change ) {
       if ( checkModification( change ) ) {
         constraints::modifyGraph( change );
       } else {
@@ -422,9 +414,9 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE void StructuralConstraintSetStatic<
-        CONSTRAINT1,
-        OTHER_CONSTRAINTS...>::modifyGraph( const ArcDeletion& change ) {
+    INLINE void
+    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::modifyGraph(
+        const ArcDeletion& change ) {
       if ( checkModification( change ) ) {
         constraints::modifyGraph( change );
       } else {
@@ -435,9 +427,9 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE void StructuralConstraintSetStatic<
-        CONSTRAINT1,
-        OTHER_CONSTRAINTS...>::modifyGraph( const ArcReversal& change ) {
+    INLINE void
+    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::modifyGraph(
+        const ArcReversal& change ) {
       if ( checkModification( change ) ) {
         constraints::modifyGraph( change );
       } else {
@@ -448,9 +440,9 @@ namespace gum {
 
     /// notify the constraint of a modification of the graph
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE void StructuralConstraintSetStatic<
-        CONSTRAINT1,
-        OTHER_CONSTRAINTS...>::modifyGraph( const GraphChange& change ) {
+    INLINE void
+    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::modifyGraph(
+        const GraphChange& change ) {
       switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION:
           modifyGraph( reinterpret_cast<const ArcAddition&>( change ) );
@@ -473,8 +465,7 @@ namespace gum {
 
     /// indicates whether a change will always violate the constraint
     template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
-    INLINE bool
-    StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
+    INLINE bool StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>::
         isAlwaysInvalid( const GraphChange& change ) const {
       return constraints::isAlwaysInvalid( change );
     }
@@ -507,7 +498,7 @@ namespace gum {
     /// copy operator
     template <typename CONSTRAINT>
     INLINE StructuralConstraintSetStatic<CONSTRAINT>&
-    StructuralConstraintSetStatic<CONSTRAINT>::
+           StructuralConstraintSetStatic<CONSTRAINT>::
     operator=( const StructuralConstraintSetStatic<CONSTRAINT>& from ) {
       if ( this != &from ) {
         constraints::operator=( from );
@@ -518,29 +509,32 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     template <typename CONSTRAINT>
-    INLINE void StructuralConstraintSetStatic<CONSTRAINT>::setGraph(
-        const DiGraph& graph ) {
+    INLINE void
+    StructuralConstraintSetStatic<CONSTRAINT>::setGraph( const DiGraph& graph ) {
       constraints::setGraph( graph );
     }
 
     /// checks whether the constraints enable to add arc (x,y)
     template <typename CONSTRAINT>
-    INLINE bool StructuralConstraintSetStatic<CONSTRAINT>::checkArcAddition(
-        NodeId x, NodeId y ) const {
+    INLINE bool
+    StructuralConstraintSetStatic<CONSTRAINT>::checkArcAddition( NodeId x,
+                                                                 NodeId y ) const {
       return constraints::checkArcAddition( x, y );
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     template <typename CONSTRAINT>
-    INLINE bool StructuralConstraintSetStatic<CONSTRAINT>::checkArcDeletion(
-        NodeId x, NodeId y ) const {
+    INLINE bool
+    StructuralConstraintSetStatic<CONSTRAINT>::checkArcDeletion( NodeId x,
+                                                                 NodeId y ) const {
       return constraints::checkArcDeletion( x, y );
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     template <typename CONSTRAINT>
-    INLINE bool StructuralConstraintSetStatic<CONSTRAINT>::checkArcReversal(
-        NodeId x, NodeId y ) const {
+    INLINE bool
+    StructuralConstraintSetStatic<CONSTRAINT>::checkArcReversal( NodeId x,
+                                                                 NodeId y ) const {
       return constraints::checkArcReversal( x, y );
     }
 

@@ -31,8 +31,7 @@
 namespace gum {
 
   /// the hash function for tuple (unsigned int, unsigned int, unsigned int)
-  Size HashFunc<std::tuple<unsigned int, unsigned int, unsigned int>>::
-  operator()(
+  Size HashFunc<std::tuple<unsigned int, unsigned int, unsigned int>>::operator()(
       const std::tuple<unsigned int, unsigned int, unsigned int>& key ) const {
     Size h = 0;
     h += HashFuncConst::pi * std::get<0>( key );

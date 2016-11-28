@@ -62,11 +62,11 @@ namespace gum_tests {
     };
 
     void testtriangulatedGraph() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       fill( topo, idList );
-      const gum::UndiGraph& undiGraph = topo.moralGraph();
+      const gum::UndiGraph&        undiGraph = topo.moralGraph();
       gum::NodeProperty<gum::Size> modalities;
 
       // Builds a hashTable where the keys are the id of the variable,
@@ -89,12 +89,12 @@ namespace gum_tests {
     };
 
     void testjunctionTree() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       fill( topo, idList );
 
-      gum::UndiGraph undiGraph;
+      gum::UndiGraph               undiGraph;
       gum::NodeProperty<gum::Size> modalities;
 
       TS_GUM_ASSERT_THROWS_NOTHING( undiGraph = topo.moralGraph() );
@@ -277,8 +277,7 @@ namespace gum_tests {
         auto iter2 = iter;
 
         for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
-          if ( !graph.existsEdge( *iter, *iter2 ) )
-            graph.addEdge( *iter, *iter2 );
+          if ( !graph.existsEdge( *iter, *iter2 ) ) graph.addEdge( *iter, *iter2 );
         }
       }
     }

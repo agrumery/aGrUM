@@ -38,7 +38,7 @@ namespace gum {
 
   template <typename VAL>
   INLINE ArcProperty<VAL> ArcGraphPart::arcsProperty( const VAL& val,
-                                                      Size size ) const {
+                                                      Size       size ) const {
     return __arcs.hashMap( val, size );
   }
 

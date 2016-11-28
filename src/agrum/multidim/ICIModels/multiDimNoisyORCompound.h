@@ -128,7 +128,7 @@ namespace gum {
 
   /// For friendly displaying the content of the array.
   template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream& s,
+  std::ostream& operator<<( std::ostream&                              s,
                             const MultiDimNoisyORCompound<GUM_SCALAR>& ag );
 
 } /* namespace gum */

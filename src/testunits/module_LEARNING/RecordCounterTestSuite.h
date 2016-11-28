@@ -32,19 +32,18 @@ namespace gum_tests {
   class RecordCounterTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities( 8, 2 );
 
@@ -100,11 +99,11 @@ namespace gum_tests {
         std::vector<gum::Idx> set6{3, 1, 2};
         std::vector<gum::Idx> set7{3, 2, 1};
         std::vector<gum::Idx> set8{1, 3, 2};
-        gum::Idx id1 = counter.addNodeSet( set4 );
-        gum::Idx id2 = counter.addNodeSet( set5 );
-        gum::Idx id3 = counter.addNodeSet( set6 );
-        gum::Idx id4 = counter.addNodeSet( set7 );
-        gum::Idx id5 = counter.addNodeSet( set8 );
+        gum::Idx              id1 = counter.addNodeSet( set4 );
+        gum::Idx              id2 = counter.addNodeSet( set5 );
+        gum::Idx              id3 = counter.addNodeSet( set6 );
+        gum::Idx              id4 = counter.addNodeSet( set7 );
+        gum::Idx              id5 = counter.addNodeSet( set8 );
 
         counter.count();
 
@@ -120,15 +119,15 @@ namespace gum_tests {
       std::vector<gum::Idx> setx23{2, 3};
       std::vector<gum::Idx> setx2{2};
       std::vector<gum::Idx> setx3{3};
-      gum::Idx Idx13 = counter.addNodeSet( setx13 );
-      gum::Idx Idx23 = counter.addNodeSet( setx23 );
-      gum::Idx Idx2  = counter.addNodeSet( setx2 );
-      gum::Idx Idx3  = counter.addNodeSet( setx3 );
+      gum::Idx              Idx13 = counter.addNodeSet( setx13 );
+      gum::Idx              Idx23 = counter.addNodeSet( setx23 );
+      gum::Idx              Idx2 = counter.addNodeSet( setx2 );
+      gum::Idx              Idx3 = counter.addNodeSet( setx3 );
       counter.count();
       std::vector<double> vectx13 = counter.getCounts( Idx13 );
       std::vector<double> vectx23 = counter.getCounts( Idx23 );
-      std::vector<double> vectx2  = counter.getCounts( Idx2 );
-      std::vector<double> vectx3  = counter.getCounts( Idx3 );
+      std::vector<double> vectx2 = counter.getCounts( Idx2 );
+      std::vector<double> vectx3 = counter.getCounts( Idx3 );
 
       counter.clearNodeSets();
       {
@@ -138,13 +137,13 @@ namespace gum_tests {
         std::vector<gum::Idx> set8{2, 3};
         std::vector<gum::Idx> set9{3};
         std::vector<gum::Idx> set10{2};
-        gum::Idx id1 = counter.addNodeSet( set4 );
-        gum::Idx id2 = counter.addNodeSet( set5 );
-        gum::Idx id3 = counter.addNodeSet( set6 );
-        gum::Idx id4 = counter.addNodeSet( set7 );
-        gum::Idx id5 = counter.addNodeSet( set8 );
-        gum::Idx id6 = counter.addNodeSet( set9 );
-        gum::Idx id7 = counter.addNodeSet( set10 );
+        gum::Idx              id1 = counter.addNodeSet( set4 );
+        gum::Idx              id2 = counter.addNodeSet( set5 );
+        gum::Idx              id3 = counter.addNodeSet( set6 );
+        gum::Idx              id4 = counter.addNodeSet( set7 );
+        gum::Idx              id5 = counter.addNodeSet( set8 );
+        gum::Idx              id6 = counter.addNodeSet( set9 );
+        gum::Idx              id7 = counter.addNodeSet( set10 );
 
         counter.count();
 
@@ -159,19 +158,18 @@ namespace gum_tests {
     }
 
     void test_copy_move() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Idx> modalities( 8, 2 );
 
@@ -245,11 +243,11 @@ namespace gum_tests {
         std::vector<gum::Idx> set6{3, 1, 2};
         std::vector<gum::Idx> set7{3, 2, 1};
         std::vector<gum::Idx> set8{1, 3, 2};
-        gum::Idx id1 = counter.addNodeSet( set4 );
-        gum::Idx id2 = counter.addNodeSet( set5 );
-        gum::Idx id3 = counter.addNodeSet( set6 );
-        gum::Idx id4 = counter.addNodeSet( set7 );
-        gum::Idx id5 = counter.addNodeSet( set8 );
+        gum::Idx              id1 = counter.addNodeSet( set4 );
+        gum::Idx              id2 = counter.addNodeSet( set5 );
+        gum::Idx              id3 = counter.addNodeSet( set6 );
+        gum::Idx              id4 = counter.addNodeSet( set7 );
+        gum::Idx              id5 = counter.addNodeSet( set8 );
 
         gum::learning::RecordCounter<> counter2( counter );
         gum::learning::RecordCounter<> counter2bis( counter );
@@ -258,32 +256,22 @@ namespace gum_tests {
         counter2.count();
         counter3.count();
 
-        TS_ASSERT(
-            compare_vect3( vect, counter2.getCounts( id1 ), {1, 2, 3} ) );
-        TS_ASSERT(
-            compare_vect3( vect, counter2.getCounts( id2 ), {2, 1, 3} ) );
-        TS_ASSERT(
-            compare_vect3( vect, counter2.getCounts( id3 ), {3, 1, 2} ) );
-        TS_ASSERT(
-            compare_vect3( vect, counter2.getCounts( id4 ), {3, 2, 1} ) );
-        TS_ASSERT(
-            compare_vect3( vect, counter2.getCounts( id5 ), {1, 3, 2} ) );
+        TS_ASSERT( compare_vect3( vect, counter2.getCounts( id1 ), {1, 2, 3} ) );
+        TS_ASSERT( compare_vect3( vect, counter2.getCounts( id2 ), {2, 1, 3} ) );
+        TS_ASSERT( compare_vect3( vect, counter2.getCounts( id3 ), {3, 1, 2} ) );
+        TS_ASSERT( compare_vect3( vect, counter2.getCounts( id4 ), {3, 2, 1} ) );
+        TS_ASSERT( compare_vect3( vect, counter2.getCounts( id5 ), {1, 3, 2} ) );
 
-        TS_ASSERT(
-            compare_vect3( vect, counter3.getCounts( id1 ), {1, 2, 3} ) );
-        TS_ASSERT(
-            compare_vect3( vect, counter3.getCounts( id2 ), {2, 1, 3} ) );
-        TS_ASSERT(
-            compare_vect3( vect, counter3.getCounts( id3 ), {3, 1, 2} ) );
-        TS_ASSERT(
-            compare_vect3( vect, counter3.getCounts( id4 ), {3, 2, 1} ) );
-        TS_ASSERT(
-            compare_vect3( vect, counter3.getCounts( id5 ), {1, 3, 2} ) );
+        TS_ASSERT( compare_vect3( vect, counter3.getCounts( id1 ), {1, 2, 3} ) );
+        TS_ASSERT( compare_vect3( vect, counter3.getCounts( id2 ), {2, 1, 3} ) );
+        TS_ASSERT( compare_vect3( vect, counter3.getCounts( id3 ), {3, 1, 2} ) );
+        TS_ASSERT( compare_vect3( vect, counter3.getCounts( id4 ), {3, 2, 1} ) );
+        TS_ASSERT( compare_vect3( vect, counter3.getCounts( id5 ), {1, 3, 2} ) );
       }
     }
 
-    bool compare_vect3( const std::vector<double>& v1,
-                        const std::vector<double>& v2,
+    bool compare_vect3( const std::vector<double>&   v1,
+                        const std::vector<double>&   v2,
                         const std::vector<gum::Idx>& order ) {
       gum::Idx index1, index2;
       for ( gum::Idx k = 0; k < 2; ++k ) {
@@ -301,8 +289,8 @@ namespace gum_tests {
       return true;
     }
 
-    bool compare_vect2( const std::vector<double>& v1,
-                        const std::vector<double>& v2,
+    bool compare_vect2( const std::vector<double>&   v1,
+                        const std::vector<double>&   v2,
                         const std::vector<gum::Idx>& order ) {
       gum::Idx index1, index2;
       for ( gum::Idx j = 0; j < 2; ++j ) {

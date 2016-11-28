@@ -70,8 +70,7 @@ namespace gum {
      * or
      * compatible node sets.
      */
-    BruteForceKL( const IBayesNet<GUM_SCALAR>& P,
-                  const IBayesNet<GUM_SCALAR>& Q );
+    BruteForceKL( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
 
     /** copy constructor
      */

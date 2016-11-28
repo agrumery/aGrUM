@@ -38,14 +38,12 @@ namespace gum {
   // ###################################################################
   template <TESTNAME AttributeSelection, bool isScalar>
   NodeDatabase<AttributeSelection, isScalar>::NodeDatabase(
-      const Set<const DiscreteVariable*>* attrSet,
-      const DiscreteVariable* value )
+      const Set<const DiscreteVariable*>* attrSet, const DiscreteVariable* value )
       : __value( value ) {
 
     GUM_CONSTRUCTOR( NodeDatabase );
 
-    for ( SetIteratorSafe<const DiscreteVariable*> varIter =
-              attrSet->cbeginSafe();
+    for ( SetIteratorSafe<const DiscreteVariable*> varIter = attrSet->cbeginSafe();
           varIter != attrSet->cendSafe();
           ++varIter )
       __attrTable.insert( *varIter, new TestPolicy<ValueType>() );
@@ -60,8 +58,7 @@ namespace gum {
   template <TESTNAME AttributeSelection, bool isScalar>
   NodeDatabase<AttributeSelection, isScalar>::~NodeDatabase() {
 
-    for ( auto varIter = __attrTable.beginSafe();
-          varIter != __attrTable.endSafe();
+    for ( auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe();
           ++varIter )
       delete varIter.val();
 
@@ -135,8 +132,7 @@ namespace gum {
   operator+=( const NodeDatabase<AttributeSelection, isScalar>& src ) {
     this->__nbObservation += src.nbObservation();
 
-    for ( auto varIter = __attrTable.beginSafe();
-          varIter != __attrTable.endSafe();
+    for ( auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe();
           ++varIter )
       varIter.val()->add( *( src.testPolicy( varIter.key() ) ) );
 
@@ -156,8 +152,7 @@ namespace gum {
     std::stringstream ss;
 
     ss << "NbObservation : " << this->nbObservation() << std::endl;
-    for ( auto varIter = __attrTable.beginSafe();
-          varIter != __attrTable.endSafe();
+    for ( auto varIter = __attrTable.beginSafe(); varIter != __attrTable.endSafe();
           ++varIter )
       ss << "\t\tVariable : " << varIter.key()->name()
          << " - Associated Test : " << __attrTable[varIter.key()]->toString()

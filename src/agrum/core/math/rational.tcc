@@ -31,41 +31,41 @@
 namespace gum {
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::farey( int64_t& numerator,
-                                    int64_t& denominator,
+  void Rational<GUM_SCALAR>::farey( int64_t&          numerator,
+                                    int64_t&          denominator,
                                     const GUM_SCALAR& number,
-                                    const int64_t& den_max,
+                                    const int64_t&    den_max,
                                     const GUM_SCALAR& zero ) {
-    bool isNegative    = ( number < 0 ) ? true : false;
+    bool       isNegative = ( number < 0 ) ? true : false;
     GUM_SCALAR pnumber = ( isNegative ) ? -number : number;
 
     if ( std::abs( pnumber - GUM_SCALAR( 1. ) ) < zero ) {
-      numerator   = ( isNegative ) ? -1 : 1;
+      numerator = ( isNegative ) ? -1 : 1;
       denominator = 1;
       return;
     } else if ( pnumber < zero ) {
-      numerator   = 0;
+      numerator = 0;
       denominator = 1;
       return;
     }
 
     int64_t a( 0 ), b( 1 ), c( 1 ), d( 1 );
-    double mediant( 0.0F );
+    double  mediant( 0.0F );
 
     while ( b <= den_max && d <= den_max ) {
       mediant = ( GUM_SCALAR )( a + c ) / ( GUM_SCALAR )( b + d );
 
       if ( std::fabs( pnumber - mediant ) < zero ) {
         if ( b + d <= den_max ) {
-          numerator   = ( isNegative ) ? -( a + c ) : ( a + c );
+          numerator = ( isNegative ) ? -( a + c ) : ( a + c );
           denominator = b + d;
           return;
         } else if ( d > b ) {
-          numerator   = ( isNegative ) ? -c : c;
+          numerator = ( isNegative ) ? -c : c;
           denominator = d;
           return;
         } else {
-          numerator   = ( isNegative ) ? -a : a;
+          numerator = ( isNegative ) ? -a : a;
           denominator = b;
           return;
         }
@@ -79,21 +79,21 @@ namespace gum {
     }
 
     if ( b > den_max ) {
-      numerator   = ( isNegative ) ? -c : c;
+      numerator = ( isNegative ) ? -c : c;
       denominator = d;
       return;
     } else {
-      numerator   = ( isNegative ) ? -a : a;
+      numerator = ( isNegative ) ? -a : a;
       denominator = b;
       return;
     }
   }  /// end of farey func
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::continuedFracFirst( int64_t& numerator,
-                                                 int64_t& denominator,
+  void Rational<GUM_SCALAR>::continuedFracFirst( int64_t&          numerator,
+                                                 int64_t&          denominator,
                                                  const GUM_SCALAR& number,
-                                                 const double& zero ) {
+                                                 const double&     zero ) {
     const GUM_SCALAR pnumber = ( number > 0 ) ? number : -number;
 
     /// reciprocal over iterations
@@ -109,7 +109,7 @@ namespace gum {
     uint64_t p_tmp, q_tmp;
 
     uint64_t n;
-    double delta, delta_tmp;
+    double   delta, delta_tmp;
 
     /// we find all convergents until we found a best one
     /// since we look for a delta < zero, we can start looking for
@@ -124,9 +124,9 @@ namespace gum {
       delta = std::fabs( pnumber - (GUM_SCALAR)p.back() / q.back() );
 
       if ( delta < zero ) {
-        numerator                   = (int64_t)p.back();
+        numerator = (int64_t)p.back();
         if ( number < 0 ) numerator = -numerator;
-        denominator                 = q.back();
+        denominator = q.back();
         break;
       }
 
@@ -145,24 +145,24 @@ namespace gum {
     /// p.size() - 2
     /// for ( ; i < p.size() - 1; ++i ) {
     // Test n = a[i-1]/2 ( when a[i-1] is even )
-    n     = a[i - 1] / 2;
+    n = a[i - 1] / 2;
     p_tmp = n * p[i] + p[i - 1];
     q_tmp = n * q[i] + q[i - 1];
 
-    delta     = std::fabs( pnumber - ( (double)p[i] ) / q[i] );
+    delta = std::fabs( pnumber - ( (double)p[i] ) / q[i] );
     delta_tmp = std::fabs( pnumber - ( (double)p_tmp ) / q_tmp );
 
     if ( delta < zero ) {
-      numerator                   = (int64_t)p[i];
+      numerator = (int64_t)p[i];
       if ( number < 0 ) numerator = -numerator;
-      denominator                 = q[i];
+      denominator = q[i];
       return;
     }
 
     if ( delta_tmp < zero ) {
-      numerator                   = (int64_t)p_tmp;
+      numerator = (int64_t)p_tmp;
       if ( number < 0 ) numerator = -numerator;
-      denominator                 = q_tmp;
+      denominator = q_tmp;
       return;
     }
 
@@ -176,9 +176,9 @@ namespace gum {
       delta_tmp = std::fabs( pnumber - ( (double)p_tmp ) / q_tmp );
 
       if ( delta_tmp < zero ) {
-        numerator                   = (int64_t)p_tmp;
+        numerator = (int64_t)p_tmp;
         if ( number < 0 ) numerator = -numerator;
-        denominator                 = q_tmp;
+        denominator = q_tmp;
         return;
       }
     }  /// end of for
@@ -187,10 +187,10 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void Rational<GUM_SCALAR>::continuedFracBest( int64_t& numerator,
-                                                int64_t& denominator,
+  void Rational<GUM_SCALAR>::continuedFracBest( int64_t&          numerator,
+                                                int64_t&          denominator,
                                                 const GUM_SCALAR& number,
-                                                const int64_t& den_max ) {
+                                                const int64_t&    den_max ) {
     const GUM_SCALAR pnumber = ( number > 0 ) ? number : -number;
 
     const uint64_t denMax =
@@ -209,7 +209,7 @@ namespace gum {
     uint64_t p_tmp, q_tmp;
 
     uint64_t n;
-    double delta, delta_tmp;
+    double   delta, delta_tmp;
 
     /// we find all convergents until we met den_max
     while ( true ) {
@@ -229,9 +229,9 @@ namespace gum {
     }  /// end of while
 
     if ( a.size() < 2 || q.back() == denMax || p.back() == denMax ) {
-      numerator                   = p.back();
+      numerator = p.back();
       if ( number < 0 ) numerator = -numerator;
-      denominator                 = q.back();
+      denominator = q.back();
       return;
     }
 
@@ -250,26 +250,26 @@ namespace gum {
 
       if ( q_tmp > denMax || p_tmp > denMax ) continue;
 
-      numerator                   = (int64_t)p_tmp;
+      numerator = (int64_t)p_tmp;
       if ( number < 0 ) numerator = -numerator;
-      denominator                 = q_tmp;
+      denominator = q_tmp;
       return;
     }  // end of for
 
     // Test n = a[i-1]/2
-    n     = a[i - 1] / 2;
+    n = a[i - 1] / 2;
     p_tmp = n * p[i] + p[i - 1];
     q_tmp = n * q[i] + q[i - 1];
 
     delta_tmp = std::fabs( pnumber - ( (double)p_tmp ) / q_tmp );
-    delta     = std::fabs( pnumber - ( (double)p[i] ) / q[i] );
+    delta = std::fabs( pnumber - ( (double)p[i] ) / q[i] );
 
     if ( delta_tmp < delta && q_tmp <= denMax && p_tmp <= denMax ) {
-      numerator                   = (int64_t)p_tmp;
+      numerator = (int64_t)p_tmp;
       if ( number < 0 ) numerator = -numerator;
-      denominator                 = q_tmp;
+      denominator = q_tmp;
     } else {
-      numerator                   = (int64_t)p[i];
+      numerator = (int64_t)p[i];
       if ( number < 0 ) numerator = -numerator;
 
       denominator = q[i];

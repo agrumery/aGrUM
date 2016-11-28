@@ -60,19 +60,19 @@ namespace gum {
     class Parser {
       private:
       enum {
-        _EOF      = 0,
-        _integer  = 1,
-        _float    = 2,
+        _EOF = 0,
+        _integer = 1,
+        _float = 2,
         _scifloat = 3,
         _operator = 4,
-        _eol      = 5,
-        _ident    = 6
+        _eol = 5,
+        _ident = 6
       };
       int maxT;
 
       Token* dummyToken;
-      int errDist;
-      int minErrDist;
+      int    errDist;
+      int    minErrDist;
 
       void SynErr( int n );
       void Get();
@@ -111,7 +111,7 @@ namespace gum {
       void SynErr( const std::wstring& filename, int line, int col, int n );
       void Warning( const wchar_t* msg );
       const ErrorsContainer& errors() const;
-      ErrorsContainer& errors();
+      ErrorsContainer&       errors();
 
       void EVAL();
       void expression();

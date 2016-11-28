@@ -42,8 +42,7 @@
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code purposes only
-#define RECASTED( x ) \
-  reinterpret_cast<const MultiDimFunctionGraph<double>*>( x )
+#define RECASTED( x ) reinterpret_cast<const MultiDimFunctionGraph<double>*>( x )
 
 namespace gum {
 
@@ -59,10 +58,10 @@ namespace gum {
   // Default constructor
   // ===========================================================================
   AdaptiveRMaxPlaner::AdaptiveRMaxPlaner( IOperatorStrategy<double>* opi,
-                                          double discountFactor,
-                                          double epsilon,
+                                          double                   discountFactor,
+                                          double                   epsilon,
                                           const ILearningStrategy* learner,
-                                          bool verbose )
+                                          bool                     verbose )
       : StructuredPlaner( opi, discountFactor, epsilon, verbose )
       , IDecisionStrategy()
       , __fmdpLearner( learner )
@@ -150,8 +149,7 @@ namespace gum {
 
     // *****************************************************************************************
     // Loop reset
-    MultiDimFunctionGraph<double>* newVFunction =
-        _operator->getFunctionInstance();
+    MultiDimFunctionGraph<double>* newVFunction = _operator->getFunctionInstance();
     newVFunction->copyAndReassign( *_vFunction, _fmdp->mapMainPrime() );
 
     // *****************************************************************************************
@@ -169,8 +167,7 @@ namespace gum {
 
       qAction = this->_operator->maximize(
           __actionsRMaxTable[*actionIter],
-          this->_operator->multiply(
-              qAction, __actionsBoolTable[*actionIter], 1 ),
+          this->_operator->multiply( qAction, __actionsBoolTable[*actionIter], 1 ),
           2 );
 
       qActionsSet.push_back( qAction );
@@ -200,8 +197,7 @@ namespace gum {
 
     // *****************************************************************************************
     // Loop reset
-    MultiDimFunctionGraph<double>* newVFunction =
-        _operator->getFunctionInstance();
+    MultiDimFunctionGraph<double>* newVFunction = _operator->getFunctionInstance();
     newVFunction->copyAndReassign( *_vFunction, _fmdp->mapMainPrime() );
 
     std::vector<
@@ -220,8 +216,7 @@ namespace gum {
 
       qAction = this->_operator->maximize(
           __actionsRMaxTable[*actionIter],
-          this->_operator->multiply(
-              qAction, __actionsBoolTable[*actionIter], 1 ),
+          this->_operator->multiply( qAction, __actionsBoolTable[*actionIter], 1 ),
           2 );
 
       argMaxQActionsSet.push_back( _makeArgMax( qAction, *actionIter ) );
@@ -308,10 +303,8 @@ namespace gum {
       }
 
       //        std::cout << "Maximising" << std::endl;
-      __actionsRMaxTable.insert( *actionIter,
-                                 this->_maximiseQactions( rmaxs ) );
-      __actionsBoolTable.insert( *actionIter,
-                                 this->_minimiseFunctions( boolQs ) );
+      __actionsRMaxTable.insert( *actionIter, this->_maximiseQactions( rmaxs ) );
+      __actionsBoolTable.insert( *actionIter, this->_minimiseFunctions( boolQs ) );
     }
   }
 
@@ -319,8 +312,8 @@ namespace gum {
   //
   // ===========================================================================
   std::pair<NodeId, NodeId>
-  AdaptiveRMaxPlaner::__visitLearner( const IVisitableGraphLearner* visited,
-                                      NodeId currentNodeId,
+  AdaptiveRMaxPlaner::__visitLearner( const IVisitableGraphLearner*  visited,
+                                      NodeId                         currentNodeId,
                                       MultiDimFunctionGraph<double>* rmax,
                                       MultiDimFunctionGraph<double>* boolQ ) {
 
@@ -330,8 +323,7 @@ namespace gum {
           visited->nodeNbObservation( currentNodeId ) < __rThreshold ? __rmax
                                                                      : 0.0 );
       rep.second = boolQ->manager()->addTerminalNode(
-          visited->nodeNbObservation( currentNodeId ) < __rThreshold ? 0.0
-                                                                     : 1.0 );
+          visited->nodeNbObservation( currentNodeId ) < __rThreshold ? 0.0 : 1.0 );
       return rep;
     }
 
@@ -345,7 +337,7 @@ namespace gum {
       std::pair<NodeId, NodeId> sonp = __visitLearner(
           visited, visited->nodeSon( currentNodeId, moda ), rmax, boolQ );
       rmaxsons[moda] = sonp.first;
-      bqsons[moda]   = sonp.second;
+      bqsons[moda] = sonp.second;
     }
 
     rep.first = rmax->manager()->addInternalNode(

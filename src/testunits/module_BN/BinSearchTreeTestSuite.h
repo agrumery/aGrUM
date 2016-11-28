@@ -36,7 +36,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( gum::BinSearchTree<int> tree2( *tree ) );
       gum::BinSearchTree<int> tree3;
       gum::BinSearchTree<int> tree4 = *tree;
-      tree3                         = tree4;
+      tree3 = tree4;
 
       tree->insert( 3 );
       tree->insert( 4 );

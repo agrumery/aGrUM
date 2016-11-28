@@ -36,7 +36,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ScoreBIC<IdSetAlloc, CountAlloc>::ScoreBIC(
-        const RowFilter& filter,
+        const RowFilter&         filter,
         const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         Size min_range,
@@ -115,7 +115,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
-    ScoreBIC<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
+                 ScoreBIC<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
 
@@ -131,7 +131,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
       const Size targets_modal = Size( N_ijk.size() );
-      double score             = 0;
+      double     score = 0;
 
       // get the nodes involved in the score as well as their modalities
       const std::vector<Idx, IdSetAlloc>& all_nodes =

@@ -89,9 +89,7 @@ namespace gum {
   }
 
   INLINE
-  NodeId InternalNode::son( Idx modality ) const {
-    return __nodeSons[modality];
-  }
+  NodeId InternalNode::son( Idx modality ) const { return __nodeSons[modality]; }
 
   INLINE
   Idx InternalNode::nbSons() const { return __nodeVar->domainSize(); }

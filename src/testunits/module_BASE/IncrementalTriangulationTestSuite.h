@@ -33,7 +33,7 @@ namespace gum_tests {
   class IncrementalTriangulationTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
-      gum::DefaultTriangulation tr;
+      gum::DefaultTriangulation     tr;
       gum::IncrementalTriangulation triang( tr );
 
       triang.updateTriangulation();
@@ -118,7 +118,7 @@ namespace gum_tests {
     void testPaperError() {
       // check whether Incremental triangulations fix a bug in the paper by
       // Flores et al.
-      gum::DefaultTriangulation tr;
+      gum::DefaultTriangulation     tr;
       gum::IncrementalTriangulation triang( tr );
 
       triang.addNode( 0, 10 );
@@ -161,7 +161,7 @@ namespace gum_tests {
 
     void testRandom() {
       for ( gum::Idx k = 1; k < 100; ++k ) {
-        gum::DefaultTriangulation tr;
+        gum::DefaultTriangulation     tr;
         gum::IncrementalTriangulation triang( tr );
 
         for ( gum::Idx i = 0; i < 100; ++i ) {
@@ -198,7 +198,7 @@ namespace gum_tests {
     }
 
     void testElimSeq() {
-      gum::DefaultTriangulation tr;
+      gum::DefaultTriangulation     tr;
       gum::IncrementalTriangulation triang( tr );
 
       triang.updateTriangulation();
@@ -327,7 +327,7 @@ namespace gum_tests {
 
     private:
     void createClique( gum::IncrementalTriangulation& triang,
-                       const gum::NodeSet& clique ) {
+                       const gum::NodeSet&            clique ) {
       for ( auto iter = clique.begin(); iter != clique.end(); ++iter ) {
         auto iter2 = iter;
 

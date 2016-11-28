@@ -49,7 +49,7 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      GroundedInference( const PRM<GUM_SCALAR>& prm,
+      GroundedInference( const PRM<GUM_SCALAR>&       prm,
                          const PRMSystem<GUM_SCALAR>& system );
 
       /// Destructor.
@@ -107,15 +107,15 @@ namespace gum {
       ///          properly.
       virtual void
       _marginal( const typename PRMInference<GUM_SCALAR>::Chain& chain,
-                 Potential<GUM_SCALAR>& m );
+                 Potential<GUM_SCALAR>&                          m );
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param queries Set of pairs of PRMInstance and PRMAttribute.
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
-      virtual void _joint(
-          const std::vector<typename PRMInference<GUM_SCALAR>::Chain>& queries,
-          Potential<GUM_SCALAR>& j );
+      virtual void
+      _joint( const std::vector<typename PRMInference<GUM_SCALAR>::Chain>& queries,
+              Potential<GUM_SCALAR>&                                       j );
 
       /// @}
       private:

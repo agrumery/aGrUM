@@ -39,8 +39,8 @@ namespace gum_tests {
       gum::Potential<double> p( new gum::MultiDimArray<double>() );
       TS_ASSERT( p.empty() );
 
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
       TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c );
     }
 
@@ -48,8 +48,8 @@ namespace gum_tests {
 
       gum::Potential<double> p( new gum::MultiDimArray<double>() );
 
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
 
       p << a << b << c;
 
@@ -90,8 +90,8 @@ namespace gum_tests {
 
     void testAddAnyNumber() {
       gum::Potential<double> proba( new gum::MultiDimArray<double>() );
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
       proba << a << b << c;
 
       gum::Instantiation i( proba );
@@ -102,8 +102,8 @@ namespace gum_tests {
 
     void testCopyProba() {
       gum::Potential<double> m( new gum::MultiDimArray<double>() );
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
 
       m << a << b << c;
       gum::Instantiation i( m );
@@ -117,8 +117,8 @@ namespace gum_tests {
 
       gum::Potential<double> mm( new gum::MultiDimArray<double>() );
 
-      gum::LabelizedVariable x( "x", "first var", 2 ),
-          y( "y", "second var", 4 ), z( "z", "third var", 5 );
+      gum::LabelizedVariable x( "x", "first var", 2 ), y( "y", "second var", 4 ),
+          z( "z", "third var", 5 );
       mm << x << z;
       TS_ASSERT_THROWS_ANYTHING( mm.copyFrom( m ) );
       mm << y;
@@ -131,8 +131,8 @@ namespace gum_tests {
     }
 
     void testRegressionCopy() {
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
 
       {
         gum::Potential<double> P1, P2;
@@ -359,19 +359,15 @@ namespace gum_tests {
 
       auto joint = p * q;
 
-      TS_ASSERT(
-          ( joint.margSumOut( {&c, &d} ) == joint.margSumIn( {&a, &b} ) ) );
-      TS_ASSERT(
-          ( joint.margSumOut( {&c, &d} ) == joint.margSumIn( {&b, &a} ) ) );
+      TS_ASSERT( ( joint.margSumOut( {&c, &d} ) == joint.margSumIn( {&a, &b} ) ) );
+      TS_ASSERT( ( joint.margSumOut( {&c, &d} ) == joint.margSumIn( {&b, &a} ) ) );
 
       TS_ASSERT(
           ( joint.margProdOut( {&c, &d} ) == joint.margProdIn( {&a, &b} ) ) );
 
-      TS_ASSERT(
-          ( joint.margMinOut( {&c, &d} ) == joint.margMinIn( {&a, &b} ) ) );
+      TS_ASSERT( ( joint.margMinOut( {&c, &d} ) == joint.margMinIn( {&a, &b} ) ) );
 
-      TS_ASSERT(
-          ( joint.margMaxOut( {&c, &d} ) == joint.margMaxIn( {&a, &b} ) ) );
+      TS_ASSERT( ( joint.margMaxOut( {&c, &d} ) == joint.margMaxIn( {&a, &b} ) ) );
     }
 
     void testAbsPotential() {
@@ -419,7 +415,7 @@ namespace gum_tests {
     }
 
     void testEntropyPotential() {
-      auto a = gum::LabelizedVariable( "a", "afoo", 2 );
+      auto                  a = gum::LabelizedVariable( "a", "afoo", 2 );
       gum::Potential<float> p;
       p.add( a );
       TS_ASSERT_EQUALS( p.fillWith( {0, 1} ).entropy(), 0.0 );
@@ -466,8 +462,7 @@ namespace gum_tests {
       p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
 
       TS_ASSERT_DIFFERS( p.toString(), p.putFirst( &b ).toString() );
-      TS_ASSERT_EQUALS( p.toString(),
-                        p.putFirst( &b ).putFirst( &a ).toString() );
+      TS_ASSERT_EQUALS( p.toString(), p.putFirst( &b ).putFirst( &a ).toString() );
       TS_ASSERT_EQUALS( p.toString(), p.putFirst( &a ).toString() );
 
       TS_ASSERT_THROWS( p.putFirst( &c ), gum::InvalidArgument );

@@ -74,20 +74,24 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintSliceOrder::modifyGraphAlone(
-        const ArcAddition& change ) {}
+    INLINE void
+    StructuralConstraintSliceOrder::modifyGraphAlone( const ArcAddition& change ) {
+    }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintSliceOrder::modifyGraphAlone(
-        const ArcDeletion& change ) {}
+    INLINE void
+    StructuralConstraintSliceOrder::modifyGraphAlone( const ArcDeletion& change ) {
+    }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintSliceOrder::modifyGraphAlone(
-        const ArcReversal& change ) {}
+    INLINE void
+    StructuralConstraintSliceOrder::modifyGraphAlone( const ArcReversal& change ) {
+    }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintSliceOrder::modifyGraphAlone(
-        const GraphChange& change ) {}
+    INLINE void
+    StructuralConstraintSliceOrder::modifyGraphAlone( const GraphChange& change ) {
+    }
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintSliceOrder::isAlwaysInvalidAlone(
@@ -164,8 +168,7 @@ namespace gum {
     }
 
     /// sets the default time slice
-    INLINE void
-    StructuralConstraintSliceOrder::setDefaultSlice( NodeId slice ) {
+    INLINE void StructuralConstraintSliceOrder::setDefaultSlice( NodeId slice ) {
       for ( auto& node : _SliceOrder__order ) {
         node.second = slice;
       }
@@ -179,7 +182,7 @@ namespace gum {
 
     /// returns the current slice order
     INLINE const NodeProperty<NodeId>&
-    StructuralConstraintSliceOrder::sliceOrder() const {
+                 StructuralConstraintSliceOrder::sliceOrder() const {
       return _SliceOrder__order;
     }
 

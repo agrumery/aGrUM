@@ -34,32 +34,30 @@ namespace gum_tests {
   class ScoreBDTestSuite : public CxxTest::TestSuite {
     public:
     void test_BD() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBD<> score( filter, modalities, apriori );
+      gum::learning::ScoreBD<>          score( filter, modalities, apriori );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
       // to 1, then score BD = score K2
       apriori.setWeight( 1 );
 
-      TS_ASSERT_THROWS(
-          gum::learning::ScoreBD<>::isAprioriCompatible( apriori ),
-          gum::PossiblyIncompatibleScoreApriori );
+      TS_ASSERT_THROWS( gum::learning::ScoreBD<>::isAprioriCompatible( apriori ),
+                        gum::PossiblyIncompatibleScoreApriori );
       TS_ASSERT_THROWS( gum::learning::ScoreBD<>::isAprioriCompatible(
                             gum::learning::AprioriNoApriori<>::type::type ),
                         gum::IncompatibleScoreApriori );
@@ -119,19 +117,18 @@ namespace gum_tests {
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto translators = gum::learning::make_translators(
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      auto                           translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
-      std::vector<gum::Idx> modalities = filter.modalities();
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
+      std::vector<gum::Idx>             modalities = filter.modalities();
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBD<> score( filter, modalities, apriori );
+      gum::learning::ScoreBD<>          score( filter, modalities, apriori );
       // score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
@@ -159,19 +156,18 @@ namespace gum_tests {
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto translators = gum::learning::make_translators(
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      auto                           translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
-      std::vector<gum::Idx> modalities = filter.modalities();
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
+      std::vector<gum::Idx>             modalities = filter.modalities();
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBD<> score( filter, modalities, apriori );
+      gum::learning::ScoreBD<>          score( filter, modalities, apriori );
       // score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal

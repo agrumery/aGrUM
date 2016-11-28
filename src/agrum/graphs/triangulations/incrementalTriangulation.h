@@ -59,8 +59,8 @@ namespace gum {
      * produced by the triangulation algorithm will all have edges of type Edge.
      */
     IncrementalTriangulation( const UnconstrainedTriangulation& triang_algo,
-                              const UndiGraph* theGraph,
-                              const NodeProperty<Size>* modal );
+                              const UndiGraph*                  theGraph,
+                              const NodeProperty<Size>*         modal );
 
     /// default constructor: initialize the triangulation with en empty graph
     IncrementalTriangulation( const UnconstrainedTriangulation& triangAlgo );
@@ -146,7 +146,7 @@ namespace gum {
     void clear();
 
     /// changes the current graph
-    void setGraph( const UndiGraph* theGraph,
+    void setGraph( const UndiGraph*          theGraph,
                    const NodeProperty<Size>* domain_sizes );
 
     /// returns the triangulation algorithm (useful for fine tuning it)
@@ -221,7 +221,7 @@ namespace gum {
     /// mark the mps affected by the deletion of a given edge
     void __markAffectedMPSsByRemoveLink( const NodeId My,
                                          const NodeId Mz,
-                                         const Edge& edge );
+                                         const Edge&  edge );
 
     /// mark the mps affected by the insertion of a new edge
     int __markAffectedMPSsByAddLink( const NodeId My,
@@ -238,9 +238,9 @@ namespace gum {
 
     /// set-up the connected subgraph that needs be retriangulated
     void
-    __setUpConnectedTriangulation( NodeId Mx,
-                                   NodeId Mfrom,
-                                   UndiGraph& theGraph,
+    __setUpConnectedTriangulation( NodeId             Mx,
+                                   NodeId             Mfrom,
+                                   UndiGraph&         theGraph,
                                    std::vector<Edge>& notAffectedneighborClique,
                                    HashTable<NodeId, bool>& cliques_affected );
 
@@ -250,25 +250,25 @@ namespace gum {
         const NodeId from,
         std::vector<std::pair<NodeId, NodeId>>& merged_cliques,
         NodeProperty<bool>& mark,
-        const NodeSet& new_nodes_in_junction_tree ) const;
+        const NodeSet&      new_nodes_in_junction_tree ) const;
 
     /// update the junction tree
     void __updateJunctionTree( NodeProperty<bool>& all_cliques_affected,
-                               NodeSet& new_nodes_in_junction_tree );
+                               NodeSet&            new_nodes_in_junction_tree );
 
     /// update the max prime subgraph
     void __updateMaxPrimeSubgraph( NodeProperty<bool>& cliques_affected,
                                    const NodeSet& new_nodes_in_junction_tree );
 
     /// a collect algorithm to compute elimination orderings
-    void __collectEliminationOrder( const NodeId node,
-                                    const NodeId from,
+    void __collectEliminationOrder( const NodeId        node,
+                                    const NodeId        from,
                                     NodeProperty<bool>& examined,
-                                    Idx& index );
+                                    Idx&                index );
 
     /// a collect algorithm to compute, for each node, one container JT's clique
-    void __collectJTCliques( const NodeId clique,
-                             const NodeId from,
+    void __collectJTCliques( const NodeId        clique,
+                             const NodeId        from,
                              NodeProperty<bool>& examined );
 
     /// checks that the incremental triangulation works properly

@@ -46,8 +46,8 @@ namespace gum {
       __checker->add( **varIter );
 
     __nbVisitedStates = 1;
-    __checkerFalseId  = __checker->manager()->addTerminalNode( false );
-    __checkerTrueId   = __checker->manager()->addTerminalNode( true );
+    __checkerFalseId = __checker->manager()->addTerminalNode( false );
+    __checkerTrueId = __checker->manager()->addTerminalNode( true );
 
     __insertState( initialState, 0, 0 );
   }
@@ -57,30 +57,29 @@ namespace gum {
     __nbVisitedStates++;
 
     NodeId parId = __checker->root();
-    Idx parModa  = state.valFromPtr( __checker->node( parId )->nodeVar() );
+    Idx    parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
     while ( __checker->node( parId )->son( parModa ) != __checkerFalseId ) {
-      parId   = __checker->node( parId )->son( parModa );
+      parId = __checker->node( parId )->son( parModa );
       parModa = state.valFromPtr( __checker->node( parId )->nodeVar() );
     }
     __insertState( state, parId, parModa );
   }
 
   void StatesChecker::__insertState( const Instantiation& state,
-                                     NodeId parentId,
-                                     Idx parentModa ) {
+                                     NodeId               parentId,
+                                     Idx                  parentModa ) {
 
 
     Idx varIter = 0;
     if ( parentId )
-      varIter = state.variablesSequence().pos(
-                    __checker->node( parentId )->nodeVar() ) +
-                1;
+      varIter =
+          state.variablesSequence().pos( __checker->node( parentId )->nodeVar() ) +
+          1;
 
 
     for ( ; varIter < state.variablesSequence().size(); ++varIter ) {
 
-      const DiscreteVariable* curVar =
-          state.variablesSequence().atPos( varIter );
+      const DiscreteVariable* curVar = state.variablesSequence().atPos( varIter );
       NodeId varId = __checker->manager()->addInternalNode( curVar );
       if ( parentId )
         __checker->manager()->setSon( parentId, parentModa, varId );

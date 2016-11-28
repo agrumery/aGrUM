@@ -37,7 +37,7 @@ AlignOperands: true
 AlignEscapedNewlinesLeft: true
 AlignTrailingComments: true
 #for clang-format-3.9
-#AlignConsecutiveDeclarations: true
+AlignConsecutiveDeclarations: true
 
 BinPackArguments: false
 BinPackParameters: false

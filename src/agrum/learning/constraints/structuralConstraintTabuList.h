@@ -63,8 +63,7 @@ namespace gum {
      * list.
      * @ingroup learning_group
      */
-    class StructuralConstraintTabuList
-        : public virtual StructuralConstraintEmpty {
+    class StructuralConstraintTabuList : public virtual StructuralConstraintEmpty {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

@@ -91,13 +91,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type      = Val;
-    using reference       = Val&;
+    using value_type = Val;
+    using reference = Val&;
     using const_reference = const Val&;
-    using pointer         = Val*;
-    using const_pointer   = const Val*;
+    using pointer = Val*;
+    using const_pointer = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
+    using allocator_type = Alloc;
     /// @}
 
     // The allocator for the indices.
@@ -141,8 +141,7 @@ namespace gum {
      * @param from The gum::PriorityQueueImplementation to copy.
      */
     PriorityQueueImplementation(
-        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
-            from );
+        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>& from );
 
     /**
      * @brief Generalized copy constructor.
@@ -186,8 +185,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>& operator=(
-        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>&
-            from );
+        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, Gen>& from );
 
     /**
      * @brief Generalized copy operator.
@@ -509,13 +507,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type      = Val;
-    using reference       = Val&;
+    using value_type = Val;
+    using reference = Val&;
     using const_reference = const Val&;
-    using pointer         = Val*;
-    using const_pointer   = const Val*;
+    using pointer = Val*;
+    using const_pointer = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
+    using allocator_type = Alloc;
     /// @}
 
     // The allocator for the indices.
@@ -559,8 +557,7 @@ namespace gum {
      * @param from The gum::PriorityQueueImplementation to copy.
      */
     PriorityQueueImplementation(
-        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
-            from );
+        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>& from );
 
     /**
      * @brief Generalized copy constructor.
@@ -604,8 +601,7 @@ namespace gum {
      * @return Returns this gum::PriorityQueueImplementation.
      */
     PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>& operator=(
-        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>&
-            from );
+        const PriorityQueueImplementation<Val, Priority, Cmp, Alloc, true>& from );
 
     /**
      * @brief Generalized copy operator.
@@ -957,8 +953,8 @@ namespace gum {
    */
   template <typename Val,
             typename Priority = int,
-            typename Cmp      = std::less<Priority>,
-            typename Alloc    = std::allocator<Val>>
+            typename Cmp = std::less<Priority>,
+            typename Alloc = std::allocator<Val>>
   class PriorityQueue
       : public PriorityQueueImplementation<Val,
                                            Priority,
@@ -968,21 +964,20 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type      = Val;
-    using reference       = Val&;
+    using value_type = Val;
+    using reference = Val&;
     using const_reference = const Val&;
-    using pointer         = Val*;
-    using const_pointer   = const Val*;
+    using pointer = Val*;
+    using const_pointer = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
+    using allocator_type = Alloc;
     /// @}
 
-    using Implementation =
-        PriorityQueueImplementation<Val,
-                                    Priority,
-                                    Cmp,
-                                    Alloc,
-                                    std::is_scalar<Val>::value>;
+    using Implementation = PriorityQueueImplementation<Val,
+                                                       Priority,
+                                                       Cmp,
+                                                       Alloc,
+                                                       std::is_scalar<Val>::value>;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -998,9 +993,8 @@ namespace gum {
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables).
      */
-    explicit PriorityQueue(
-        Cmp compare   = Cmp(),
-        Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY );
+    explicit PriorityQueue( Cmp  compare = Cmp(),
+                            Size capacity = GUM_PRIORITY_QUEUE_DEFAULT_CAPACITY );
 
     /**
      * @brief Initializer list constructor.
@@ -1010,8 +1004,7 @@ namespace gum {
      *
      * @param list The initializer list.
      */
-    explicit PriorityQueue(
-        std::initializer_list<std::pair<Val, Priority>> list );
+    explicit PriorityQueue( std::initializer_list<std::pair<Val, Priority>> list );
 
     /**
      * @brief Copy constructor.

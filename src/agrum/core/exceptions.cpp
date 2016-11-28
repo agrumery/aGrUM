@@ -36,7 +36,7 @@
 namespace gum {
   const std::string __createMsg( const std::string& filename,
                                  const std::string& function,
-                                 const int line,
+                                 const int          line,
                                  const std::string& msg ) {
     std::stringstream stream;
     stream << std::endl
@@ -57,10 +57,10 @@ namespace gum {
 #ifndef NDEBUG
 #ifdef HAVE_EXECINFO_H
 #define callStackDepth 20
-    void* array[callStackDepth];
+    void*  array[callStackDepth];
     size_t size;
     char** strings;
-    size    = backtrace( array, callStackDepth );
+    size = backtrace( array, callStackDepth );
     strings = backtrace_symbols( array, size );
 
     std::stringstream stream;

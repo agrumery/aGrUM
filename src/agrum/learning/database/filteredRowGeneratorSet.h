@@ -169,8 +169,7 @@ namespace gum {
 
       /// move constructor
       FilteredRowGeneratorSet(
-          FilteredRowGeneratorSet<Generator, OtherGenerators...>&&
-              from ) noexcept;
+          FilteredRowGeneratorSet<Generator, OtherGenerators...>&& from ) noexcept;
 
       /// destructor
       ~FilteredRowGeneratorSet() noexcept;
@@ -184,8 +183,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      FilteredRowGeneratorSet<Generator, OtherGenerators...>& operator=(
-          const FilteredRowGeneratorSet<Generator, OtherGenerators...>& );
+      FilteredRowGeneratorSet<Generator, OtherGenerators...>&
+      operator=( const FilteredRowGeneratorSet<Generator, OtherGenerators...>& );
 
       /// move operator
       FilteredRowGeneratorSet<Generator, OtherGenerators...>&

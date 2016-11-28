@@ -95,12 +95,12 @@ namespace gum {
 
         virtual bool accept_root( const Pattern* r ) = 0;
 
-        virtual bool accept_growth( const Pattern* parent,
-                                    const Pattern* child,
+        virtual bool accept_growth( const Pattern*                parent,
+                                    const Pattern*                child,
                                     const EdgeGrowth<GUM_SCALAR>& growth ) = 0;
 
         virtual bool operator()( LabelData* i, LabelData* j ) = 0;
-        virtual bool operator()( Pattern* i, Pattern* j )     = 0;
+        virtual bool operator()( Pattern* i, Pattern* j ) = 0;
         /// @}
 
         protected:
@@ -145,8 +145,8 @@ namespace gum {
 
         virtual bool accept_root( const Pattern* r );
 
-        virtual bool accept_growth( const Pattern* parent,
-                                    const Pattern* child,
+        virtual bool accept_growth( const Pattern*                parent,
+                                    const Pattern*                child,
                                     const EdgeGrowth<GUM_SCALAR>& growth );
 
         virtual bool operator()( LabelData* i, LabelData* j );
@@ -194,8 +194,8 @@ namespace gum {
 
         virtual bool accept_root( const Pattern* r );
 
-        virtual bool accept_growth( const Pattern* parent,
-                                    const Pattern* child,
+        virtual bool accept_growth( const Pattern*                parent,
+                                    const Pattern*                child,
                                     const EdgeGrowth<GUM_SCALAR>& growth );
 
         virtual bool operator()( LabelData* i, LabelData* j );
@@ -203,7 +203,7 @@ namespace gum {
         /// @}
 
         private:
-        Size __freq;
+        Size   __freq;
         double __inner_cost( const Pattern* p );
         double __outer_cost( const Pattern* p );
         void __compute_costs( const Pattern* p );
@@ -229,19 +229,19 @@ namespace gum {
           NodeSet outputs;
         };
         std::string __dot;
-        std::string __str( const PRMInstance<GUM_SCALAR>* i,
+        std::string __str( const PRMInstance<GUM_SCALAR>*  i,
                            const PRMAttribute<GUM_SCALAR>* a ) const;
-        std::string __str( const PRMInstance<GUM_SCALAR>* i,
+        std::string __str( const PRMInstance<GUM_SCALAR>*  i,
                            const PRMAttribute<GUM_SCALAR>& a ) const;
-        std::string __str( const PRMInstance<GUM_SCALAR>* i,
+        std::string __str( const PRMInstance<GUM_SCALAR>*  i,
                            const PRMSlotChain<GUM_SCALAR>& a ) const;
         void
         __buildPatternGraph( typename StrictSearch<GUM_SCALAR>::PData& data,
-                             Set<Potential<GUM_SCALAR>*>& pool,
+                             Set<Potential<GUM_SCALAR>*>&              pool,
                              const Sequence<PRMInstance<GUM_SCALAR>*>& match );
         std::pair<Size, Size>
         __elimination_cost( typename StrictSearch<GUM_SCALAR>::PData& data,
-                            Set<Potential<GUM_SCALAR>*>& pool );
+                            Set<Potential<GUM_SCALAR>*>&              pool );
       };
 
       /**
@@ -282,8 +282,8 @@ namespace gum {
 
         virtual bool accept_root( const Pattern* r );
 
-        virtual bool accept_growth( const Pattern* parent,
-                                    const Pattern* child,
+        virtual bool accept_growth( const Pattern*                parent,
+                                    const Pattern*                child,
                                     const EdgeGrowth<GUM_SCALAR>& growth );
 
         virtual bool operator()( LabelData* i, LabelData* j );

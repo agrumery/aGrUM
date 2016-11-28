@@ -87,8 +87,7 @@ namespace gum {
 
         double score = 0;
 
-        for ( Idx x = 0, beg_zx = 0, zyx = 0; x < X_size;
-              ++x, beg_zx += Z_size ) {
+        for ( Idx x = 0, beg_zx = 0, zyx = 0; x < X_size; ++x, beg_zx += Z_size ) {
           for ( Idx y = 0, zy = 0, zx = beg_zx; y < Y_size; ++y, zx = beg_zx ) {
             for ( Idx z = 0; z < Z_size; ++z, ++zy, ++zx, ++zyx ) {
               const double tmp1 = Nzyx[zyx] * Nz[z];

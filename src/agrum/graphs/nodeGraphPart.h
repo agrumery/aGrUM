@@ -60,12 +60,12 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = NodeId;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = NodeId;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ############################################################################
@@ -95,8 +95,7 @@ namespace gum {
     /// @{
 
     /// copy assignment operator
-    NodeGraphPartIterator&
-    operator=( const NodeGraphPartIterator& it ) noexcept;
+    NodeGraphPartIterator& operator=( const NodeGraphPartIterator& it ) noexcept;
 
     /// move assignment operator
     NodeGraphPartIterator& operator=( NodeGraphPartIterator&& it ) noexcept;
@@ -136,8 +135,7 @@ namespace gum {
    * @class NodeGraphPartIteratorSafe
    * @brief Safe iterator on the node set of a graph.
    */
-  class NodeGraphPartIteratorSafe : public NodeGraphPartIterator,
-                                    public Listener {
+  class NodeGraphPartIteratorSafe : public NodeGraphPartIterator, public Listener {
 
     friend class NodeGraphPart;
 
@@ -145,12 +143,12 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = NodeId;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = NodeId;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ############################################################################
@@ -257,17 +255,17 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using node_iterator            = NodeGraphPartIterator;
-    using node_const_iterator      = NodeGraphPartIterator;
-    using node_iterator_safe       = NodeGraphPartIteratorSafe;
+    using node_iterator = NodeGraphPartIterator;
+    using node_const_iterator = NodeGraphPartIterator;
+    using node_iterator_safe = NodeGraphPartIteratorSafe;
     using node_const_iterator_safe = NodeGraphPartIteratorSafe;
     /// @}
 
     // something strange with SWIG (with "using", these definitions cored dump
     // the
     // swig process)
-    typedef NodeGraphPartIterator NodeIterator;
-    typedef NodeGraphPartIterator NodeConstIterator;
+    typedef NodeGraphPartIterator     NodeIterator;
+    typedef NodeGraphPartIterator     NodeConstIterator;
     typedef NodeGraphPartIteratorSafe NodeIteratorSafe;
     typedef NodeGraphPartIteratorSafe NodeConstIteratorSafe;
 

@@ -90,7 +90,7 @@ namespace gum {
      * @param theThreshold the weight threshhold of the SimplicialSet included
      * in the DefaultEliminationSequenceStrategy */
     DefaultPartialOrderedEliminationSequenceStrategy(
-        double theRatio     = GUM_QUASI_RATIO,
+        double theRatio = GUM_QUASI_RATIO,
         double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// constructor for an a priori non empty graph
@@ -110,11 +110,11 @@ namespace gum {
      * the sequence are not copied but only referenced by the elimination
      * sequence algorithm. */
     DefaultPartialOrderedEliminationSequenceStrategy(
-        UndiGraph* graph,
+        UndiGraph*                graph,
         const NodeProperty<Size>* dom_sizes,
-        const List<NodeSet>* subsets,
-        double ratio     = GUM_QUASI_RATIO,
-        double threshold = GUM_WEIGHT_THRESHOLD );
+        const List<NodeSet>*      subsets,
+        double                    ratio = GUM_QUASI_RATIO,
+        double                    threshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
     /** @warning The newly created elimination sequence strategy points toward
@@ -176,7 +176,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the elimination sequence algorithm.
      */
-    virtual bool setGraph( UndiGraph* graph,
+    virtual bool setGraph( UndiGraph*                graph,
                            const NodeProperty<Size>* dom_sizes ) final;
 
     /// clears the sequence (to prepare, for instance, a new elimination
@@ -240,8 +240,7 @@ namespace gum {
 
     /// returns the best possible node to be eliminated
     /** this function is used by method nextNodeToEliminate */
-    NodeId
-    __nodeToEliminate( const PriorityQueue<NodeId, double>& possibleNodes );
+    NodeId __nodeToEliminate( const PriorityQueue<NodeId, double>& possibleNodes );
 
     /// create a new simplicial set suited for the current graph
     void __createSimplicialSet();

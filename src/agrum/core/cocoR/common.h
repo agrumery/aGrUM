@@ -75,16 +75,13 @@ namespace gum {
   /// string handling, wide character
   wchar_t* coco_string_create( const wchar_t* value );
   wchar_t* coco_string_create( const wchar_t* value, int startIndex );
-  wchar_t*
-  coco_string_create( const wchar_t* value, int startIndex, int length );
+  wchar_t* coco_string_create( const wchar_t* value, int startIndex, int length );
   wchar_t* coco_string_create_upper( const wchar_t* data );
   wchar_t* coco_string_create_lower( const wchar_t* data );
   wchar_t*
   coco_string_create_lower( const wchar_t* data, int startIndex, int dataLen );
-  wchar_t* coco_string_create_append( const wchar_t* data1,
-                                      const wchar_t* data2 );
-  wchar_t* coco_string_create_append( const wchar_t* data,
-                                      const wchar_t value );
+  wchar_t* coco_string_create_append( const wchar_t* data1, const wchar_t* data2 );
+  wchar_t* coco_string_create_append( const wchar_t* data, const wchar_t value );
   void coco_string_delete( wchar_t*& data );
   int coco_string_length( const wchar_t* data );
   bool coco_string_endswith( const wchar_t* data, const wchar_t* value );
@@ -102,7 +99,7 @@ namespace gum {
 
   /// CocoR uses unicode, thus use this to cast string in wstring.
   inline std::wstring widen( const std::string& str ) {
-    std::wostringstream wstm;
+    std::wostringstream        wstm;
     const std::ctype<wchar_t>& ctfacet =
         std::use_facet<std::ctype<wchar_t>>( wstm.getloc() );
 
@@ -114,7 +111,7 @@ namespace gum {
 
   /// CocoR uses unicode, thus use this to cast wstring in string.
   inline std::string narrow( const std::wstring& str ) {
-    std::ostringstream stm;
+    std::ostringstream         stm;
     const std::ctype<wchar_t>& ctfacet =
         std::use_facet<std::ctype<wchar_t>>( stm.getloc() );
 
@@ -126,14 +123,14 @@ namespace gum {
   }
 
   inline float coco_atof( const wchar_t* c ) {
-    float res;
+    float              res;
     std::istringstream istr( narrow( c ) );
     istr.imbue( std::locale( "C" ) );
     istr >> res;
     return res;
   }
   inline int coco_atoi( const wchar_t* c ) {
-    int res;
+    int                res;
     std::istringstream istr( narrow( c ) );
     istr.imbue( std::locale( "C" ) );
     istr >> res;

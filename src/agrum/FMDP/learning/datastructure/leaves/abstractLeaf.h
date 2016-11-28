@@ -84,14 +84,12 @@ namespace gum {
     /// Gaves the leaf effectif for given modality
     // ###################################################################
     virtual double effectif( Idx ) const = 0;
-    virtual double total() const         = 0;
+    virtual double total() const = 0;
 
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    virtual bool contains( NodeId testedId ) const {
-      return __leafId == testedId;
-    }
+    virtual bool contains( NodeId testedId ) const { return __leafId == testedId; }
 
     NodeId id() { return __leafId; }
 

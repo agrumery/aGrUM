@@ -129,8 +129,7 @@ namespace gum {
     }
 
     /// assign a set of forbidden arcs
-    INLINE void
-    StructuralConstraintMandatoryArcs::setArcs( const ArcSet& set ) {
+    INLINE void StructuralConstraintMandatoryArcs::setArcs( const ArcSet& set ) {
       _MandatoryArcs__mandatory_arcs = set;
     }
 

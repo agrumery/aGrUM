@@ -32,8 +32,7 @@ namespace gum {
 
   // constructor
   template <typename GUM_SCALAR, template <typename> class TABLE>
-  MultiDimPartialInstantiation<GUM_SCALAR,
-                               TABLE>::MultiDimPartialInstantiation() {
+  MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::MultiDimPartialInstantiation() {
     // for debugging purposes
     GUM_CONSTRUCTOR( MultiDimPartialInstantiation );
   }
@@ -71,8 +70,7 @@ namespace gum {
 
   // creates and returns the partial instantiation of the table
   template <typename GUM_SCALAR, template <typename> class TABLE>
-  TABLE<GUM_SCALAR>*
-  MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::instantiate(
+  TABLE<GUM_SCALAR>* MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::instantiate(
       const TABLE<GUM_SCALAR>& table,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {
     MultiDimImplementation<GUM_SCALAR>* new_impl =
@@ -83,7 +81,7 @@ namespace gum {
   // creates and returns the partial instantiation of the table
   template <typename GUM_SCALAR, template <typename> class TABLE>
   void MultiDimPartialInstantiation<GUM_SCALAR, TABLE>::instantiate(
-      TABLE<GUM_SCALAR>& container,
+      TABLE<GUM_SCALAR>&       container,
       const TABLE<GUM_SCALAR>& table,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars ) {
     MultiDimImplementation<GUM_SCALAR>* new_impl =

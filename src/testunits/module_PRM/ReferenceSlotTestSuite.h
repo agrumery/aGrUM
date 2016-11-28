@@ -37,17 +37,17 @@ namespace gum_tests {
   class ReferenceSlotTestSuite : public CxxTest::TestSuite {
     private:
     typedef gum::prm::PRMReferenceSlot<double> PRMReferenceSlot;
-    ClassElementTestSuiteAbstract* __classEltTestSuite;
-    gum::prm::PRMClass<double>* __A;
-    gum::prm::PRMClass<double>* __B;
-    gum::prm::PRMType<double>* __boolean;
+    ClassElementTestSuiteAbstract*             __classEltTestSuite;
+    gum::prm::PRMClass<double>*                __A;
+    gum::prm::PRMClass<double>*                __B;
+    gum::prm::PRMType<double>*                 __boolean;
 
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract();
-      __A                 = new gum::prm::PRMClass<double>( "A" );
-      __B                 = new gum::prm::PRMClass<double>( "B" );
-      __boolean           = gum::prm::PRMType<double>::boolean();
+      __A = new gum::prm::PRMClass<double>( "A" );
+      __B = new gum::prm::PRMClass<double>( "B" );
+      __boolean = gum::prm::PRMType<double>::boolean();
     }
 
     void tearDown() {
@@ -62,7 +62,7 @@ namespace gum_tests {
     void testIsReferenceSlot() {
       // Arrange
       PRMReferenceSlot ref( "ref", *__A );
-      bool expected = true;
+      bool             expected = true;
       // Act & Assert
       __classEltTestSuite->testIsReferenceSlot( ref, expected );
     }
@@ -70,7 +70,7 @@ namespace gum_tests {
     void testIsAttribute() {
       // Arrange
       PRMReferenceSlot ref( "ref", *__A );
-      bool expected = false;
+      bool             expected = false;
       // Act & Assert
       __classEltTestSuite->testIsAttribute( ref, expected );
     }
@@ -78,7 +78,7 @@ namespace gum_tests {
     void testIsSlotChain() {
       // Arrange
       PRMReferenceSlot ref( "ref", *__A );
-      bool expected = false;
+      bool             expected = false;
       // Act & Assert
       __classEltTestSuite->testIsSlotChain( ref, expected );
     }
@@ -125,8 +125,7 @@ namespace gum_tests {
       // Arrange
       PRMReferenceSlot* ref = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING(
-          ref = new PRMReferenceSlot( "ref", *__A, false ) );
+      TS_ASSERT_THROWS_NOTHING( ref = new PRMReferenceSlot( "ref", *__A, false ) );
       delete ref;
     }
 
@@ -134,8 +133,7 @@ namespace gum_tests {
       // Arrange
       PRMReferenceSlot* ref = nullptr;
       // Act & Assert
-      TS_ASSERT_THROWS_NOTHING( ref =
-                                    new PRMReferenceSlot( "ref", *__A, true ) );
+      TS_ASSERT_THROWS_NOTHING( ref = new PRMReferenceSlot( "ref", *__A, true ) );
       delete ref;
     }
     /// @}
@@ -154,7 +152,7 @@ namespace gum_tests {
     void testSlotTypeConst() {
       // Arrange
       PRMReferenceSlot ref( "ref", *__A, false );
-      const auto& const_ref = ref;
+      const auto&      const_ref = ref;
       // Act
       const auto& type = const_ref.slotType();
       // Assert
@@ -185,7 +183,7 @@ namespace gum_tests {
     void testTypeConst() {
       // Arrange
       PRMReferenceSlot ref( "ref", *__A, false );
-      const auto& const_ref = ref;
+      const auto&      const_ref = ref;
       // Act & assert
       TS_ASSERT_THROWS( const_ref.type(), gum::OperationNotAllowed );
     }
@@ -200,7 +198,7 @@ namespace gum_tests {
     void testCPFConst() {
       // Arrange
       PRMReferenceSlot ref( "ref", *__A, false );
-      const auto& const_ref = ref;
+      const auto&      const_ref = ref;
       // Act & assert
       TS_ASSERT_THROWS( const_ref.cpf(), gum::OperationNotAllowed );
     }
@@ -211,7 +209,7 @@ namespace gum_tests {
     void testAddParentCheckChild() {
       // Arrange
       gum::prm::PRMScalarAttribute<double> parent( "attr", *__boolean );
-      PRMReferenceSlot child( "child", *__A );
+      PRMReferenceSlot                     child( "child", *__A );
       auto before = parent.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
@@ -222,7 +220,7 @@ namespace gum_tests {
 
     void testAddChild() {
       // Arrange
-      PRMReferenceSlot parent( "simple", *__A );
+      PRMReferenceSlot                     parent( "simple", *__A );
       gum::prm::PRMScalarAttribute<double> child( "attr", *__boolean );
       auto before = child.cpf().variablesSequence().size();
       // Act

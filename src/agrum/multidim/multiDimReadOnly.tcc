@@ -53,9 +53,8 @@ namespace gum {
   // @throw OperationNotAllowed Raised because this is a read only table.
 
   template <typename GUM_SCALAR>
-  INLINE void
-  MultiDimReadOnly<GUM_SCALAR>::set( const Instantiation& i,
-                                     const GUM_SCALAR& value ) const {
+  INLINE void MultiDimReadOnly<GUM_SCALAR>::set( const Instantiation& i,
+                                                 const GUM_SCALAR& value ) const {
     GUM_ERROR( OperationNotAllowed, "Write access to an aggregator" );
   }
 
@@ -69,8 +68,7 @@ namespace gum {
   // @throw OperationNotAllowed Raised because this is a read only table.
 
   template <typename GUM_SCALAR>
-  GUM_SCALAR&
-  MultiDimReadOnly<GUM_SCALAR>::_get( const Instantiation& i ) const {
+  GUM_SCALAR& MultiDimReadOnly<GUM_SCALAR>::_get( const Instantiation& i ) const {
     GUM_ERROR( OperationNotAllowed, "No (unconst) access to an aggregator" );
   }
 

@@ -89,9 +89,9 @@ namespace gum {
     /// the actual number of sampling for each modality by node
     NodeProperty<Potential<GUM_SCALAR>> __sampling_nbr;
 
-    void __unsetRequiredInference();
-    void __initStats();
-    void __updateStats_without_err();
+    void   __unsetRequiredInference();
+    void   __initStats();
+    void   __updateStats_without_err();
     double __updateStats_with_err( Size nbr );
   };
 

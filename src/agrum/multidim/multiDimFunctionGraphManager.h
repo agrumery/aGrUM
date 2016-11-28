@@ -138,7 +138,7 @@ namespace gum {
      * variable yet.
      */
     virtual NodeId addInternalNode( const DiscreteVariable* var,
-                                    NodeId* sons ) = 0;
+                                    NodeId*                 sons ) = 0;
 
     protected:
     /**
@@ -186,8 +186,7 @@ namespace gum {
      *
      * @throw NotFound Raised if node isn't in diagram.
      */
-    void
-    eraseNode( NodeId id, NodeId replacingId = 0, bool updateParents = true );
+    void eraseNode( NodeId id, NodeId replacingId = 0, bool updateParents = true );
 
     /// @}
     // =========================================================================
@@ -201,8 +200,7 @@ namespace gum {
      * @param modality The modality for which sonNode is added to node.
      * @param sonNode The node to add as a son to node.
      */
-    void
-    setSon( const NodeId& node, const Idx& modality, const NodeId& sonNode );
+    void setSon( const NodeId& node, const Idx& modality, const NodeId& sonNode );
 
 
     /**

@@ -165,8 +165,7 @@ namespace gum {
     /// Returns a reference to nDB test policy for given variable
     /// (so that test policy information can be merged too)
     // ###################################################################
-    const TestPolicy<ValueType>*
-    testPolicy( const DiscreteVariable* var ) const {
+    const TestPolicy<ValueType>* testPolicy( const DiscreteVariable* var ) const {
       return __attrTable[var];
     }
 

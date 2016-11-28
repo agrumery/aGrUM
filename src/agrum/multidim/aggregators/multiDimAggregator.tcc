@@ -52,8 +52,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    Idx MultiDimAggregator<GUM_SCALAR>::_buildValue(
-        const Instantiation& i ) const {
+    Idx
+    MultiDimAggregator<GUM_SCALAR>::_buildValue( const Instantiation& i ) const {
       if ( this->nbrDim() == 1 ) return _neutralElt();
 
       // is i equal to f(f(f(f...(j_,neutral_elt))))
@@ -82,7 +82,7 @@ namespace gum {
       }
 
       const DiscreteVariable& agg = this->variable( (Idx)0 );
-      auto current                = _buildValue( i );
+      auto                    current = _buildValue( i );
 
       // truncate to fit in aggreegator domain size
       if ( current >= agg.domainSize() ) current = agg.domainSize() - 1;
@@ -116,8 +116,8 @@ namespace gum {
 
     // For friendly displaying the content of the variable.
     template <typename GUM_SCALAR>
-    INLINE std::ostream&
-    operator<<( std::ostream& s, const MultiDimAggregator<GUM_SCALAR>& ag ) {
+    INLINE std::ostream& operator<<( std::ostream&                         s,
+                                     const MultiDimAggregator<GUM_SCALAR>& ag ) {
       return s << ag.toString();
     }
 

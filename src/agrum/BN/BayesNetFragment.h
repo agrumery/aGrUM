@@ -79,9 +79,9 @@ namespace gum {
     public:
     /// @name Constructors / Destructors
     /// @{
-    BayesNetFragment()                                               = delete;
+    BayesNetFragment() = delete;
     BayesNetFragment( const BayesNetFragment<GUM_SCALAR>& fragment ) = delete;
-    BayesNetFragment( BayesNetFragment<GUM_SCALAR>&& fragment )      = delete;
+    BayesNetFragment( BayesNetFragment<GUM_SCALAR>&& fragment ) = delete;
 
     BayesNetFragment( const IBayesNet<GUM_SCALAR>& bn );
 
@@ -99,8 +99,7 @@ namespace gum {
     /// the action to take when a node has just been removed from the graph
     /** @param src the object that sent the signal
      * @param id the id of the node has just been removed from the graph */
-    virtual void whenNodeDeleted( const void* src,
-                                  NodeId id ) noexcept override;
+    virtual void whenNodeDeleted( const void* src, NodeId id ) noexcept override;
 
     /// the action to take when a new arc is inserted into the graph
     /** @param src the object that sent the signal

@@ -46,8 +46,7 @@ namespace gum {
   // clang-format on
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
-            template <typename> class TerminalNodePolicy =
-                ExactTerminalNodePolicy>
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
   class MultiDimFunctionGraphProjector {
     public:
     // ============================================================================
@@ -61,7 +60,7 @@ namespace gum {
     MultiDimFunctionGraphProjector(
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* src,
         const Set<const DiscreteVariable*>& delVars,
-        const GUM_SCALAR neutral );
+        const GUM_SCALAR                    neutral );
 
     /**
      * @brief Default destructor.

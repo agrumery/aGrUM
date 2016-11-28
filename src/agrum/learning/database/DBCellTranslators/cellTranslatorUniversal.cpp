@@ -35,8 +35,8 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    CellTranslatorUniversal::CellTranslatorUniversal(
-        Sequence<std::string> values, bool check_database )
+    CellTranslatorUniversal::CellTranslatorUniversal( Sequence<std::string> values,
+                                                      bool check_database )
         : __check_database( check_database ) {
 
       if ( !check_database ) {
@@ -92,11 +92,11 @@ namespace gum {
         std::vector<int> no_user_vals;
         std::vector<std::pair<Idx, Idx>> user_vals;
         for ( auto iter = __strings.begin(); iter != __strings.end(); ++iter ) {
-          const int str_index    = iter.first();
+          const int          str_index = iter.first();
           const std::string& str = DBCell::getString( str_index );
           if ( __str_user_values->exists( str ) ) {
-            user_vals.push_back( std::pair<Idx, Idx>(
-                str_index, __str_user_values->pos( str ) ) );
+            user_vals.push_back(
+                std::pair<Idx, Idx>( str_index, __str_user_values->pos( str ) ) );
           } else {
             no_user_vals.push_back( str_index );
           }
@@ -124,7 +124,7 @@ namespace gum {
 
         // if there existed numbers, add them (in any order)
         std::vector<double> numbers( __numbers.size() );
-        Idx i = 0;
+        Idx                 i = 0;
         for ( auto iter = __numbers.begin(); iter != __numbers.end();
               ++iter, ++i ) {
           numbers[i] = iter.first();
@@ -175,7 +175,7 @@ namespace gum {
 
         // if there existed strings, add them (in any order)
         std::vector<int> strings( __strings.size() );
-        Idx i = 0;
+        Idx              i = 0;
         for ( auto iter = __strings.begin(); iter != __strings.end();
               ++iter, ++i ) {
           strings[i] = iter.first();

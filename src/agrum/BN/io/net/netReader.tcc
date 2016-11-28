@@ -26,12 +26,12 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   NetReader<GUM_SCALAR>::NetReader( BayesNet<GUM_SCALAR>* bn,
-                                    const std::string& filename )
+                                    const std::string&    filename )
       : BNReader<GUM_SCALAR>( bn, filename ) {
     GUM_CONSTRUCTOR( NetReader );
-    __bn         = bn;
+    __bn = bn;
     __streamName = filename;
-    __parseDone  = false;
+    __parseDone = false;
 
     __factory = new BayesNetFactory<GUM_SCALAR>( __bn );
 
@@ -39,7 +39,7 @@ namespace gum {
 
     try {
       __scanner = new net::Scanner( __streamName.c_str() );
-      __parser  = new net::Parser( __scanner );
+      __parser = new net::Parser( __scanner );
       __parser->setFactory( (IBayesNetFactory*)__factory );
     } catch ( IOError e ) {
       __ioerror = true;

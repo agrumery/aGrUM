@@ -52,11 +52,11 @@ namespace gum {
 
 
     const ErrorsContainer& Parser::errors( void ) const { return __errors; }
-    ErrorsContainer& Parser::errors( void ) { return __errors; }
+    ErrorsContainer&       Parser::errors( void ) { return __errors; }
 
     void Parser::Get() {
       for ( ;; ) {
-        t  = la;
+        t = la;
         la = scanner->Scan();
 
         if ( la->kind <= maxT ) {
@@ -67,13 +67,13 @@ namespace gum {
 
         if ( dummyToken != t ) {
           dummyToken->kind = t->kind;
-          dummyToken->pos  = t->pos;
-          dummyToken->col  = t->col;
+          dummyToken->pos = t->pos;
+          dummyToken->col = t->col;
           dummyToken->line = t->line;
           dummyToken->next = NULL;
           coco_string_delete( dummyToken->val );
           dummyToken->val = coco_string_create( t->val );
-          t               = dummyToken;
+          t = dummyToken;
         }
 
         la = t;
@@ -202,8 +202,7 @@ namespace gum {
       static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
 
       enum {
-        InitExists =
-            ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
+        InitExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
       };
     };
 
@@ -255,8 +254,7 @@ namespace gum {
 
     // Generic case of the ParserDestroyCaller, gets used if the Destroy method
     // is missing
-    template <typename T,
-              bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+    template <typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
     struct ParserDestroyCaller {
       static void CallDestroy( T* t ) {
         // nothing to do
@@ -270,9 +268,9 @@ namespace gum {
       static void CallDestroy( T* t ) { t->Destroy(); }
     };
     void Parser::Parse() {
-      t  = NULL;
+      t = NULL;
       la = dummyToken = new Token();
-      la->val         = coco_string_create( L"Dummy Token" );
+      la->val = coco_string_create( L"Dummy Token" );
       Get();
       EVAL();
     }
@@ -282,9 +280,9 @@ namespace gum {
 
       ParserInitCaller<Parser>::CallInit( this );
       dummyToken = NULL;
-      t = la        = NULL;
-      minErrDist    = 2;
-      errDist       = minErrDist;
+      t = la = NULL;
+      minErrDist = 2;
+      errDist = minErrDist;
       this->scanner = scanner;
     }
 
@@ -314,8 +312,7 @@ namespace gum {
       __errors.Warning( scanner->filename(), t->line, t->col, msg );
     }
 
-    void
-    Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
+    void Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
       wchar_t* s;
 
       switch ( n ) {

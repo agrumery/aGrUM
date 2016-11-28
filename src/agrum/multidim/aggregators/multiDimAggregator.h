@@ -110,22 +110,22 @@ namespace gum {
       virtual GUM_SCALAR get( const Instantiation& i ) const override;
 
       virtual std::string aggregatorName( void ) const = 0;
-      const std::string toString( void ) const override;
+      const std::string   toString( void ) const override;
 
       virtual void changeNotification( gum::Instantiation&,
                                        const gum::DiscreteVariable* const,
                                        const gum::Idx&,
                                        const gum::Idx& ) override{};
 
-      virtual void setFirstNotification( gum::Instantiation& ) override {};
+      virtual void setFirstNotification( gum::Instantiation& ) override{};
 
-      virtual void setLastNotification( gum::Instantiation& ) override {};
+      virtual void setLastNotification( gum::Instantiation& ) override{};
 
-      virtual void setIncNotification( gum::Instantiation& ) override {};
+      virtual void setIncNotification( gum::Instantiation& ) override{};
 
-      virtual void setDecNotification( gum::Instantiation& ) override {};
+      virtual void setDecNotification( gum::Instantiation& ) override{};
 
-      virtual void setChangeNotification( gum::Instantiation& ) override {};
+      virtual void setChangeNotification( gum::Instantiation& ) override{};
 
       const std::string toString( const gum::Instantiation* i ) const override {
         return i->toString();
@@ -167,9 +167,9 @@ namespace gum {
       /// precedent applications is i2.
       /// @return the new result for applications up to v.
       virtual Idx _fold( const DiscreteVariable& v,
-                         Idx i1,
-                         Idx i2,
-                         bool& stop_iteration ) const = 0;
+                         Idx                     i1,
+                         Idx                     i2,
+                         bool&                   stop_iteration ) const = 0;
 
       virtual void _swap( const DiscreteVariable* x,
                           const DiscreteVariable* y ) override;
@@ -181,7 +181,7 @@ namespace gum {
 
     /// For friendly displaying the content of the array.
     template <typename GUM_SCALAR>
-    std::ostream& operator<<( std::ostream& s,
+    std::ostream& operator<<( std::ostream&                         s,
                               const MultiDimAggregator<GUM_SCALAR>& ag );
 
   } /* namespace aggregator */

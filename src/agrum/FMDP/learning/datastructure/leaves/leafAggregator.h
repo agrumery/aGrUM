@@ -141,7 +141,7 @@ namespace gum {
     NodeGraphPart* __leavesCpt;
 
     double __similarityThreshold;
-    bool __needsUpdate;
+    bool   __needsUpdate;
   };
 
 

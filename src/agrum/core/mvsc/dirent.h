@@ -307,17 +307,17 @@ static void rewinddir( DIR* dirp );
 static WIN32_FIND_DATAW* dirent_first( _WDIR* dirp );
 static WIN32_FIND_DATAW* dirent_next( _WDIR* dirp );
 
-static int dirent_mbstowcs_s( size_t* pReturnValue,
-                              wchar_t* wcstr,
-                              size_t sizeInWords,
+static int dirent_mbstowcs_s( size_t*     pReturnValue,
+                              wchar_t*    wcstr,
+                              size_t      sizeInWords,
                               const char* mbstr,
-                              size_t count );
+                              size_t      count );
 
-static int dirent_wcstombs_s( size_t* pReturnValue,
-                              char* mbstr,
-                              size_t sizeInBytes,
+static int dirent_wcstombs_s( size_t*        pReturnValue,
+                              char*          mbstr,
+                              size_t         sizeInBytes,
                               const wchar_t* wcstr,
-                              size_t count );
+                              size_t         count );
 
 static void dirent_set_errno( int error );
 
@@ -328,7 +328,7 @@ static void dirent_set_errno( int error );
  */
 static _WDIR* _wopendir( const wchar_t* dirname ) {
   _WDIR* dirp = NULL;
-  int error;
+  int    error;
 
   /* Must have directory name */
   if ( dirname == NULL || dirname[0] == '\0' ) {
@@ -343,7 +343,7 @@ static _WDIR* _wopendir( const wchar_t* dirname ) {
 
     /* Reset _WDIR structure */
     dirp->handle = INVALID_HANDLE_VALUE;
-    dirp->patt   = NULL;
+    dirp->patt = NULL;
     dirp->cached = 0;
 
     /* Compute the length of full path plus zero terminator */
@@ -379,7 +379,7 @@ static _WDIR* _wopendir( const wchar_t* dirname ) {
           }
         }
         *p++ = '*';
-        *p   = '\0';
+        *p = '\0';
 
         /* Open directory stream and retrieve the first entry */
         if ( dirent_first( dirp ) ) {
@@ -424,13 +424,13 @@ static _WDIR* _wopendir( const wchar_t* dirname ) {
  */
 static struct _wdirent* _wreaddir( _WDIR* dirp ) {
   WIN32_FIND_DATAW* datap;
-  struct _wdirent* entp;
+  struct _wdirent*  entp;
 
   /* Read next directory entry */
   datap = dirent_next( dirp );
   if ( datap ) {
     size_t n;
-    DWORD attr;
+    DWORD  attr;
 
     /* Pointer to directory entry to return */
     entp = &dirp->ent;
@@ -461,7 +461,7 @@ static struct _wdirent* _wreaddir( _WDIR* dirp ) {
     }
 
     /* Reset dummy fields */
-    entp->d_ino    = 0;
+    entp->d_ino = 0;
     entp->d_reclen = sizeof( struct _wdirent );
 
   } else {
@@ -531,14 +531,14 @@ static WIN32_FIND_DATAW* dirent_first( _WDIR* dirp ) {
   if ( dirp->handle != INVALID_HANDLE_VALUE ) {
 
     /* a directory entry is now waiting in memory */
-    datap        = &dirp->data;
+    datap = &dirp->data;
     dirp->cached = 1;
 
   } else {
 
     /* Failed to re-open directory: no directory entry in memory */
     dirp->cached = 0;
-    datap        = NULL;
+    datap = NULL;
   }
   return datap;
 }
@@ -551,7 +551,7 @@ static WIN32_FIND_DATAW* dirent_next( _WDIR* dirp ) {
   if ( dirp->cached != 0 ) {
 
     /* A valid directory entry already in memory */
-    p            = &dirp->data;
+    p = &dirp->data;
     dirp->cached = 0;
 
   } else if ( dirp->handle != INVALID_HANDLE_VALUE ) {
@@ -564,7 +564,7 @@ static WIN32_FIND_DATAW* dirent_next( _WDIR* dirp ) {
       /* The very last entry has been processed or an error occured */
       FindClose( dirp->handle );
       dirp->handle = INVALID_HANDLE_VALUE;
-      p            = NULL;
+      p = NULL;
     }
 
   } else {
@@ -581,7 +581,7 @@ static WIN32_FIND_DATAW* dirent_next( _WDIR* dirp ) {
  */
 static DIR* opendir( const char* dirname ) {
   struct DIR* dirp;
-  int error;
+  int         error;
 
   /* Must have directory name */
   if ( dirname == NULL || dirname[0] == '\0' ) {
@@ -593,7 +593,7 @@ static DIR* opendir( const char* dirname ) {
   dirp = (DIR*)malloc( sizeof( struct DIR ) );
   if ( dirp ) {
     wchar_t wname[PATH_MAX];
-    size_t n;
+    size_t  n;
 
     /* Convert directory name to wide-character string */
     error = dirent_mbstowcs_s( &n, wname, PATH_MAX, dirname, PATH_MAX );
@@ -648,13 +648,13 @@ static DIR* opendir( const char* dirname ) {
  */
 static struct dirent* readdir( DIR* dirp ) {
   WIN32_FIND_DATAW* datap;
-  struct dirent* entp;
+  struct dirent*    entp;
 
   /* Read next directory entry */
   datap = dirent_next( dirp->wdirp );
   if ( datap ) {
     size_t n;
-    int error;
+    int    error;
 
     /* Attempt to convert file name to multi-byte string */
     error = dirent_wcstombs_s(
@@ -695,7 +695,7 @@ static struct dirent* readdir( DIR* dirp ) {
       }
 
       /* Reset dummy fields */
-      entp->d_ino    = 0;
+      entp->d_ino = 0;
       entp->d_reclen = sizeof( struct dirent );
 
     } else {
@@ -705,13 +705,13 @@ static struct dirent* readdir( DIR* dirp ) {
        * we cannot return NULL as that would stop the processing
        * of directory entries completely.
        */
-      entp            = &dirp->ent;
+      entp = &dirp->ent;
       entp->d_name[0] = '?';
       entp->d_name[1] = '\0';
-      entp->d_namlen  = 1;
-      entp->d_type    = DT_UNKNOWN;
-      entp->d_ino     = 0;
-      entp->d_reclen  = 0;
+      entp->d_namlen = 1;
+      entp->d_type = DT_UNKNOWN;
+      entp->d_ino = 0;
+      entp->d_reclen = 0;
     }
 
   } else {
@@ -730,7 +730,7 @@ static int closedir( DIR* dirp ) {
   if ( dirp ) {
 
     /* Close wide-character directory stream */
-    ok          = _wclosedir( dirp->wdirp );
+    ok = _wclosedir( dirp->wdirp );
     dirp->wdirp = NULL;
 
     /* Release multi-byte character version */
@@ -754,11 +754,11 @@ static void rewinddir( DIR* dirp ) {
 }
 
 /* Convert multi-byte string to wide character string */
-static int dirent_mbstowcs_s( size_t* pReturnValue,
-                              wchar_t* wcstr,
-                              size_t sizeInWords,
+static int dirent_mbstowcs_s( size_t*     pReturnValue,
+                              wchar_t*    wcstr,
+                              size_t      sizeInWords,
                               const char* mbstr,
-                              size_t count ) {
+                              size_t      count ) {
   int error;
 
 #if defined( _MSC_VER ) && _MSC_VER >= 1400
@@ -803,11 +803,11 @@ static int dirent_mbstowcs_s( size_t* pReturnValue,
 }
 
 /* Convert wide-character string to multi-byte string */
-static int dirent_wcstombs_s( size_t* pReturnValue,
-                              char* mbstr,
-                              size_t sizeInBytes, /* max size of mbstr */
+static int dirent_wcstombs_s( size_t*        pReturnValue,
+                              char*          mbstr,
+                              size_t         sizeInBytes, /* max size of mbstr */
                               const wchar_t* wcstr,
-                              size_t count ) {
+                              size_t         count ) {
   int error;
 
 #if defined( _MSC_VER ) && _MSC_VER >= 1400

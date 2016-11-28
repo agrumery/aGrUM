@@ -96,17 +96,17 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type          = Key;
-    using reference           = Key&;
-    using const_reference     = const Key&;
-    using pointer             = Key*;
-    using const_pointer       = const Key*;
-    using size_type           = std::size_t;
-    using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
-    using iterator            = SequenceIterator<Key>;
-    using const_iterator      = SequenceIterator<Key>;
-    using iterator_safe       = SequenceIteratorSafe<Key>;
+    using value_type = Key;
+    using reference = Key&;
+    using const_reference = const Key&;
+    using pointer = Key*;
+    using const_pointer = const Key*;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using allocator_type = Alloc;
+    using iterator = SequenceIterator<Key>;
+    using const_iterator = SequenceIterator<Key>;
+    using iterator_safe = SequenceIteratorSafe<Key>;
     using const_iterator_safe = SequenceIteratorSafe<Key>;
     /// @}
 
@@ -134,8 +134,7 @@ namespace gum {
      * @warning The elements of the newly constructed sequence are copies of
      * those in aSeq.
      */
-    SequenceImplementation(
-        const SequenceImplementation<Key, Alloc, Gen>& aSeq );
+    SequenceImplementation( const SequenceImplementation<Key, Alloc, Gen>& aSeq );
 
     /**
      * @brief Generalised copy constructor.
@@ -310,8 +309,7 @@ namespace gum {
      * @brief Returns true if both gum::SequenceImplementation are equal.
      */
     template <typename OtherAlloc>
-    bool
-    operator==( const SequenceImplementation<Key, OtherAlloc, Gen>& k ) const;
+    bool operator==( const SequenceImplementation<Key, OtherAlloc, Gen>& k ) const;
 
     /**
      * @brief Returns true if the content of k is different from that of *this.
@@ -324,8 +322,7 @@ namespace gum {
      * @brief Returns true if both gum::SequenceImplementation are not equal.
      */
     template <typename OtherAlloc>
-    bool
-    operator!=( const SequenceImplementation<Key, OtherAlloc, Gen>& k ) const;
+    bool operator!=( const SequenceImplementation<Key, OtherAlloc, Gen>& k ) const;
 
     /// @}
     // ============================================================================
@@ -570,13 +567,13 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type          = Key;
-    using size_type           = std::size_t;
-    using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
-    using iterator            = SequenceIterator<Key>;
-    using const_iterator      = SequenceIterator<Key>;
-    using iterator_safe       = SequenceIteratorSafe<Key>;
+    using value_type = Key;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using allocator_type = Alloc;
+    using iterator = SequenceIterator<Key>;
+    using const_iterator = SequenceIterator<Key>;
+    using iterator_safe = SequenceIteratorSafe<Key>;
     using const_iterator_safe = SequenceIteratorSafe<Key>;
     /// @}
 
@@ -604,8 +601,7 @@ namespace gum {
      * @warning The elements of the newly constructed sequence are copies of
      * those in aSeq.
      */
-    SequenceImplementation(
-        const SequenceImplementation<Key, Alloc, true>& aSeq );
+    SequenceImplementation( const SequenceImplementation<Key, Alloc, true>& aSeq );
 
     /**
      * @brief Generalised copy constructor.
@@ -1024,17 +1020,17 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type          = Key;
-    using reference           = Key&;
-    using const_reference     = const Key&;
-    using pointer             = Key*;
-    using const_pointer       = const Key*;
-    using size_type           = std::size_t;
-    using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
-    using iterator            = SequenceIterator<Key>;
-    using const_iterator      = SequenceIterator<Key>;
-    using iterator_safe       = SequenceIteratorSafe<Key>;
+    using value_type = Key;
+    using reference = Key&;
+    using const_reference = const Key&;
+    using pointer = Key*;
+    using const_pointer = const Key*;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using allocator_type = Alloc;
+    using iterator = SequenceIterator<Key>;
+    using const_iterator = SequenceIterator<Key>;
+    using iterator_safe = SequenceIteratorSafe<Key>;
     using const_iterator_safe = SequenceIteratorSafe<Key>;
     /// @}
 
@@ -1212,12 +1208,12 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Key;
-    using reference         = Key&;
-    using const_reference   = const Key&;
-    using pointer           = Key*;
-    using const_pointer     = const Key*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Key;
+    using reference = Key&;
+    using const_reference = const Key&;
+    using pointer = Key*;
+    using const_pointer = const Key*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     private:
@@ -1262,8 +1258,7 @@ namespace gum {
      * @tparam Alloc The sequence allocator.
      */
     template <typename Alloc>
-    SequenceIteratorSafe( const Sequence<Key, Alloc>& seq,
-                          Idx pos = 0 ) noexcept;
+    SequenceIteratorSafe( const Sequence<Key, Alloc>& seq, Idx pos = 0 ) noexcept;
 
     /**
      * @brief Copy constructor.
@@ -1435,8 +1430,7 @@ namespace gum {
 
   /// @brief A << operator for displaying the content of the Sequence.
   template <typename Key, typename Alloc>
-  std::ostream& operator<<( std::ostream& stream,
-                            const Sequence<Key, Alloc>& s );
+  std::ostream& operator<<( std::ostream& stream, const Sequence<Key, Alloc>& s );
 
 } /* namespace gum */
 

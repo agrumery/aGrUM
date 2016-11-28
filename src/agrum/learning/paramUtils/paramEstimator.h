@@ -81,7 +81,7 @@ namespace gum {
        * @param score_internal_apriori The score internal apriori.
        * */
       template <typename RowFilter>
-      ParamEstimator( const RowFilter& filter,
+      ParamEstimator( const RowFilter&         filter,
                       const std::vector<Size>& var_modalities,
                       Apriori<IdSetAlloc, CountAlloc>& apriori,
                       const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
@@ -222,8 +222,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& _getAllApriori( Idx index );
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<double, CountAlloc>&
-      _getConditioningApriori( Idx index );
+      const std::vector<double, CountAlloc>& _getConditioningApriori( Idx index );
 
       /// if needed insert the score apriori into the countings
       void _insertScoreApriori();

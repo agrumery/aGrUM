@@ -104,8 +104,7 @@ namespace gum {
     /**
      * Returns the primed variable associate to the given main variable
      */
-    const DiscreteVariable*
-    main2prime( const DiscreteVariable* mainVar ) const {
+    const DiscreteVariable* main2prime( const DiscreteVariable* mainVar ) const {
       return __main2primed.second( mainVar );
     }
 
@@ -113,7 +112,7 @@ namespace gum {
      * Returns the map binding main variables and prime variables
      */
     INLINE const Bijection<const DiscreteVariable*, const DiscreteVariable*>&
-    mapMainPrime() const {
+                 mapMainPrime() const {
       return __main2primed;
     }
 
@@ -140,9 +139,7 @@ namespace gum {
     /**
      * Returns an iterator reference to the end of the list of actions
      */
-    SequenceIteratorSafe<Idx> endActions() const {
-      return __actionSeq.endSafe();
-    }
+    SequenceIteratorSafe<Idx> endActions() const { return __actionSeq.endSafe(); }
 
     /// @}
 
@@ -157,17 +154,17 @@ namespace gum {
      * @throw DuplicateElement if variable already has a transition for this
      * action
      */
-    void addTransitionForAction(
-        Idx actionId,
-        const DiscreteVariable* var,
-        const MultiDimImplementation<GUM_SCALAR>* transition );
+    void
+    addTransitionForAction( Idx                                       actionId,
+                            const DiscreteVariable*                   var,
+                            const MultiDimImplementation<GUM_SCALAR>* transition );
 
     /**
      * Adds a default variable transition
      * @throw NotFound if var does not exists
      * @throw DuplicateElement if variable already has a default transition
      */
-    void addTransition( const DiscreteVariable* var,
+    void addTransition( const DiscreteVariable*                   var,
                         const MultiDimImplementation<GUM_SCALAR>* transition ) {
       this->addTransitionForAction( 0, var, transition );
     }
@@ -190,7 +187,7 @@ namespace gum {
      * Adds a cost table to specified action
      * @throw NotFound if action does not exists
      */
-    void addCostForAction( Idx actionId,
+    void addCostForAction( Idx                                       actionId,
                            const MultiDimImplementation<GUM_SCALAR>* cost );
 
     /**
@@ -217,7 +214,7 @@ namespace gum {
      * Adds a default variable reward
      * @throw DuplicateElement if a default reward exists already
      */
-    void addRewardForAction( Idx actionId,
+    void addRewardForAction( Idx                                       actionId,
                              const MultiDimImplementation<GUM_SCALAR>* reward );
 
     /**
@@ -283,8 +280,7 @@ namespace gum {
     HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*> __actionCostTable;
 
     /// Table which give for each action reward table
-    HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*>
-        __actionRewardTable;
+    HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*> __actionRewardTable;
 
     /// Boolean indicates whether or not main variables should be deleted on
     /// destruction of this instance

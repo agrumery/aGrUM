@@ -27,8 +27,8 @@ namespace gum {
     for ( auto varIter = __varInst.beginSafe(); varIter != __varInst.endSafe();
           ++varIter )
       if ( __rInst.exists( varIter.key() ) )
-        status << "| " << varIter.key()->name() << " : " << varIter.val()
-               << " -> " << __rInst[varIter.key()] << " |";
+        status << "| " << varIter.key()->name() << " : " << varIter.val() << " -> "
+               << __rInst[varIter.key()] << " |";
     status << std::endl;
     return status.str();
   }

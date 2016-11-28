@@ -43,13 +43,13 @@ namespace gum_tests {
     }
 
     void testRequisiteNodes() {
-      gum::BayesBall balls;
+      gum::BayesBall                      balls;
       gum::SimpleBayesNetGenerator<float> gen( 50, 200, 2 );
-      gum::BayesNet<float>* bn = new gum::BayesNet<float>();
+      gum::BayesNet<float>*               bn = new gum::BayesNet<float>();
       gen.generateBN( *bn );
       gum::Set<gum::NodeId> requisite;
 
-      gum::Set<gum::NodeId> query, hardEvidence, softEvidence;
+      gum::Set<gum::NodeId>      query, hardEvidence, softEvidence;
       gum::Sequence<gum::NodeId> nodes_seq;
 
       for ( const auto node : bn->nodes() )

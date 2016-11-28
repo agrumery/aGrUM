@@ -43,8 +43,7 @@ namespace gum {
   }
 
   template <typename Val>
-  INLINE
-  BinTreeNode4AVL<Val>::BinTreeNode4AVL( const BinTreeNode4AVL<Val>& from )
+  INLINE BinTreeNode4AVL<Val>::BinTreeNode4AVL( const BinTreeNode4AVL<Val>& from )
       : BinTreeNode<Val>( from )
       , __height( from.__height ) {
     GUM_CONS_CPY( BinTreeNode4AVL );
@@ -101,12 +100,12 @@ namespace gum {
 
   template <typename Val>
   INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::__rightRotation() {
-    BinTreeNode4AVL<Val>* node_P     = leftChild();
-    BinTreeNode4AVL<Val>* V          = node_P->rightChild();
+    BinTreeNode4AVL<Val>* node_P = leftChild();
+    BinTreeNode4AVL<Val>* V = node_P->rightChild();
     BinTreeNode4AVL<Val>* the_parent = parent();
-    BinTreeDir parent_dir            = parentDir();
-    unsigned int left_height         = 0;
-    unsigned int right_height = rightChild() ? rightChild()->__height : 0;
+    BinTreeDir            parent_dir = parentDir();
+    unsigned int          left_height = 0;
+    unsigned int          right_height = rightChild() ? rightChild()->__height : 0;
 
     eraseLeftLink();
 
@@ -124,7 +123,7 @@ namespace gum {
     }
 
     node_P->BinTreeNode<Val>::insertRightChild( *this );
-    left_height      = node_P->leftChild() ? node_P->leftChild()->__height : 0;
+    left_height = node_P->leftChild() ? node_P->leftChild()->__height : 0;
     node_P->__height = 1 + std::max( left_height, __height );
 
     return node_P;
@@ -132,12 +131,12 @@ namespace gum {
 
   template <typename Val>
   INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::__leftRotation() {
-    BinTreeNode4AVL<Val>* node_Q     = rightChild();
-    BinTreeNode4AVL<Val>* V          = node_Q->leftChild();
+    BinTreeNode4AVL<Val>* node_Q = rightChild();
+    BinTreeNode4AVL<Val>* V = node_Q->leftChild();
     BinTreeNode4AVL<Val>* the_parent = parent();
-    BinTreeDir parent_dir            = parentDir();
-    unsigned int right_height        = 0;
-    unsigned int left_height         = leftChild() ? leftChild()->__height : 0;
+    BinTreeDir            parent_dir = parentDir();
+    unsigned int          right_height = 0;
+    unsigned int          left_height = leftChild() ? leftChild()->__height : 0;
 
     eraseRightLink();
 
@@ -172,7 +171,7 @@ namespace gum {
       unsigned int right_height =
           node->rightChild() ? node->rightChild()->__height : 0;
       unsigned int old_height = node->__height;
-      node->__height          = 1 + std::max( left_height, right_height );
+      node->__height = 1 + std::max( left_height, right_height );
 
       // check whether we need a single or a double rotation
       // see the AVL trees literature to see what need be done
@@ -251,9 +250,8 @@ namespace gum {
   }
 
   template <typename Val>
-  INLINE void
-  BinTreeNode4AVL<Val>::insertChild( BinTreeNode4AVL<Val>& new_child,
-                                     BinTreeDir child_dir ) {
+  INLINE void BinTreeNode4AVL<Val>::insertChild( BinTreeNode4AVL<Val>& new_child,
+                                                 BinTreeDir child_dir ) {
     BinTreeNode<Val>::insertChild( new_child, child_dir );
   }
 
@@ -274,14 +272,12 @@ namespace gum {
 
   template <typename Val>
   INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::leftmostNode() const {
-    return static_cast<BinTreeNode4AVL<Val>*>(
-        BinTreeNode<Val>::leftmostNode() );
+    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::leftmostNode() );
   }
 
   template <typename Val>
   INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::rightmostNode() const {
-    return static_cast<BinTreeNode4AVL<Val>*>(
-        BinTreeNode<Val>::rightmostNode() );
+    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::rightmostNode() );
   }
 
   template <typename Val>

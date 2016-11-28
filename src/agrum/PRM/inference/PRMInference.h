@@ -60,8 +60,9 @@ namespace gum {
           EMapIterator;
 
       /// Code alias.
-      typedef typename NodeProperty<
-          const Potential<GUM_SCALAR>*>::const_iterator_safe EMapConstIterator;
+      typedef
+          typename NodeProperty<const Potential<GUM_SCALAR>*>::const_iterator_safe
+              EMapConstIterator;
 
       // ========================================================================
       /// @name Constructor & destructor.
@@ -69,7 +70,7 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      PRMInference( const PRM<GUM_SCALAR>& prm,
+      PRMInference( const PRM<GUM_SCALAR>&       prm,
                     const PRMSystem<GUM_SCALAR>& system );
 
       /// Copy constructor.
@@ -194,8 +195,7 @@ namespace gum {
       /// @param chain
       /// @param m CPF filled with the marginal of elt. It is initialized
       ///          properly.
-      virtual void _marginal( const Chain& chain,
-                              Potential<GUM_SCALAR>& m ) = 0;
+      virtual void _marginal( const Chain& chain, Potential<GUM_SCALAR>& m ) = 0;
 
       /// @brief Generic method to compute the marginal of given element.
       /// @param queries Set of pairs of PRMInstance<GUM_SCALAR> and
@@ -203,7 +203,7 @@ namespace gum {
       /// @param j CPF filled with the joint probability of queries. It is
       ///          initialized properly.
       virtual void _joint( const std::vector<Chain>& queries,
-                           Potential<GUM_SCALAR>& j ) = 0;
+                           Potential<GUM_SCALAR>&    j ) = 0;
 
       /// The PRM<GUM_SCALAR> on which inference is done.
       PRM<GUM_SCALAR> const* _prm;
@@ -223,9 +223,8 @@ namespace gum {
       typedef typename HashTable<const PRMInstance<GUM_SCALAR>*,
                                  EMap*>::iterator_safe EvidenceIterator;
       /// Code alias.
-      typedef
-          typename HashTable<const PRMInstance<GUM_SCALAR>*,
-                             EMap*>::const_iterator_safe EvidenceConstIterator;
+      typedef typename HashTable<const PRMInstance<GUM_SCALAR>*,
+                                 EMap*>::const_iterator_safe EvidenceConstIterator;
 
       /// Mapping of evidence over PRMInstance<GUM_SCALAR>'s nodes.
       HashTable<const PRMInstance<GUM_SCALAR>*, EMap*> __evidences;

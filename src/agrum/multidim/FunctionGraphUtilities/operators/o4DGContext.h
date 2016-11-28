@@ -123,14 +123,14 @@ namespace gum {
     /// Vector containing for each retrograde variable its current modality
     /// 0 meaning no instantiation done => there's an offset
     Idx* __varInstantiation;
-    Idx __nbVar;
+    Idx  __nbVar;
 
     /// The key use to store the context as a key in the hashtable
     double __key;
 
     /// Table containing the log2 of prime numbers
     static const double __logPrime[];
-    static const Idx __nbLogPrime, __offsetv, __offset1, __offset2;
+    static const Idx    __nbLogPrime, __offsetv, __offset1, __offset2;
   };
 }
 

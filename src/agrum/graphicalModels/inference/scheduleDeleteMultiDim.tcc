@@ -79,7 +79,7 @@ namespace gum {
     // avoid self assignment
     if ( &from != this ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );
-      __table                                = from.__table;
+      __table = from.__table;
 
       if ( __args ) {
         __args->clear();
@@ -131,7 +131,7 @@ namespace gum {
   /// returns the memory consumption used during the operation
   template <typename GUM_SCALAR>
   INLINE std::pair<long, long>
-  ScheduleDeleteMultiDim<GUM_SCALAR>::memoryUsage() const {
+         ScheduleDeleteMultiDim<GUM_SCALAR>::memoryUsage() const {
     long size_table = long( __table.domainSize() );
 
     if ( size_table < 0 ) {
@@ -144,7 +144,7 @@ namespace gum {
   /// returns the multidims to be deleted
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleDeleteMultiDim<GUM_SCALAR>::multiDimArgs() const {
+               ScheduleDeleteMultiDim<GUM_SCALAR>::multiDimArgs() const {
     if ( !__args ) {
       __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __args->insert( &__table );
@@ -156,7 +156,7 @@ namespace gum {
   /// returns the set of multidims that should be the result of the operation
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleDeleteMultiDim<GUM_SCALAR>::multiDimResults() const {
+               ScheduleDeleteMultiDim<GUM_SCALAR>::multiDimResults() const {
     static Sequence<const ScheduleMultiDim<GUM_SCALAR>*> empty_seq;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that

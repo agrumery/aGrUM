@@ -79,13 +79,13 @@ namespace gum {
         return *this;
       }
 
-      void setInputRow( const DBRow& ) noexcept {}
-      void setOutputRow( FilteredRow& ) noexcept {}
-      void translate() noexcept {}
-      void initialize() noexcept {}
-      void postInitialize() noexcept {}
-      bool requiresInitialization() const noexcept { return false; }
-      void modalities( std::vector<Size>& ) const noexcept {}
+      void        setInputRow( const DBRow& ) noexcept {}
+      void        setOutputRow( FilteredRow& ) noexcept {}
+      void        translate() noexcept {}
+      void        initialize() noexcept {}
+      void        postInitialize() noexcept {}
+      bool        requiresInitialization() const noexcept { return false; }
+      void        modalities( std::vector<Size>& ) const noexcept {}
       std::string translateBack( Idx, Idx ) const {
         GUM_ERROR( NotFound,
                    "the variable could not be translated back: it "
@@ -95,15 +95,12 @@ namespace gum {
 
     /** @brief the implementation of the wrapper of Create<>s (used to
      * translate the cells of a DBRow) */
-    template <int OUTPUT_SIZE,
-              typename Translator,
-              typename... OtherTranslators>
+    template <int OUTPUT_SIZE, typename Translator, typename... OtherTranslators>
     class BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
                                         Translator,
                                         OtherTranslators...>
         : public BasicDBRowTranslatorSetStatic<
-              OUTPUT_SIZE +
-                  std::remove_reference<Translator>::type::output_size,
+              OUTPUT_SIZE + std::remove_reference<Translator>::type::output_size,
               OtherTranslators...> {
       public:
       /// the type of the subsequent Create<>s to apply
@@ -125,9 +122,8 @@ namespace gum {
       /// default constructor
       /** @param first_translator the Create<> for the first translator to apply
        * @param next_translators all the other Create<>s to apply */
-      BasicDBRowTranslatorSetStatic(
-          const Translator& first_translator,
-          const OtherTranslators&... next_translators );
+      BasicDBRowTranslatorSetStatic( const Translator& first_translator,
+                                     const OtherTranslators&... next_translators );
 
       /// copy constructor
       BasicDBRowTranslatorSetStatic(
@@ -155,17 +151,13 @@ namespace gum {
 
       protected:
       /// copy operator
-      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
-                                    Translator,
-                                    OtherTranslators...>&
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator, OtherTranslators...>&
       operator=( const BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
                                                      Translator,
                                                      OtherTranslators...>& );
 
       /// move operator
-      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
-                                    Translator,
-                                    OtherTranslators...>&
+      BasicDBRowTranslatorSetStatic<OUTPUT_SIZE, Translator, OtherTranslators...>&
       operator=( BasicDBRowTranslatorSetStatic<OUTPUT_SIZE,
                                                Translator,
                                                OtherTranslators...>&& );
@@ -275,8 +267,7 @@ namespace gum {
     class DBRowTranslatorSetStatic
         : BasicDBRowTranslatorSetStatic<0, Translators...> {
       public:
-      using TranslatorSetStatic =
-          BasicDBRowTranslatorSetStatic<0, Translators...>;
+      using TranslatorSetStatic = BasicDBRowTranslatorSetStatic<0, Translators...>;
 
       /// the size of the output filtered row
       static constexpr Size output_size = TranslatorSetStatic::output_size;
@@ -296,8 +287,7 @@ namespace gum {
           const DBRowTranslatorSetStatic<Translators...>& from );
 
       /// move constructor
-      DBRowTranslatorSetStatic(
-          DBRowTranslatorSetStatic<Translators...>&& from );
+      DBRowTranslatorSetStatic( DBRowTranslatorSetStatic<Translators...>&& from );
 
       /// destructor
       ~DBRowTranslatorSetStatic() noexcept;

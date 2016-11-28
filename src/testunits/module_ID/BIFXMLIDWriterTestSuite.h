@@ -47,7 +47,7 @@ namespace gum_tests {
   class BIFXMLIDWriterTestSuite : public CxxTest::TestSuite {
     private:
     void fillTopo( gum::InfluenceDiagram<double>& infDiag,
-                   gum::List<gum::NodeId>& idList ) {
+                   gum::List<gum::NodeId>&        idList ) {
       try {
         idList.insert( infDiag.addDecisionNode( *decisionVar1 ) );  // 0
         idList.insert( infDiag.addDecisionNode( *decisionVar2 ) );  // 1
@@ -81,7 +81,7 @@ namespace gum_tests {
     }
 
     void fill( gum::InfluenceDiagram<double>& infDiag,
-               gum::List<gum::NodeId>& idList ) {
+               gum::List<gum::NodeId>&        idList ) {
       fillTopo( infDiag, idList );
 
       try {
@@ -102,28 +102,28 @@ namespace gum_tests {
 
     public:
     gum::InfluenceDiagram<double>* id;
-    gum::List<gum::NodeId>* idListPtr;
-    gum::LabelizedVariable *decisionVar1, *decisionVar2, *decisionVar3,
+    gum::List<gum::NodeId>*        idListPtr;
+    gum::LabelizedVariable *       decisionVar1, *decisionVar2, *decisionVar3,
         *decisionVar4;
     gum::LabelizedVariable *chanceVar1, *chanceVar2, *chanceVar3, *chanceVar4,
         *chanceVar5;
     gum::LabelizedVariable *utilityVar1, *utilityVar2;
 
     void setUp() {
-      id        = new gum::InfluenceDiagram<double>();
+      id = new gum::InfluenceDiagram<double>();
       idListPtr = new gum::List<gum::NodeId>();
 
       decisionVar1 = new gum::LabelizedVariable( "decisionVar1", "D1", 2 );
       decisionVar2 = new gum::LabelizedVariable( "decisionVar2", "D2", 2 );
       decisionVar3 = new gum::LabelizedVariable( "decisionVar3", "D3", 2 );
       decisionVar4 = new gum::LabelizedVariable( "decisionVar4", "D4", 2 );
-      chanceVar1   = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
-      chanceVar2   = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
-      chanceVar3   = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
-      chanceVar4   = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
-      chanceVar5   = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
-      utilityVar1  = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
-      utilityVar2  = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
+      chanceVar1 = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
+      chanceVar2 = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
+      chanceVar3 = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
+      chanceVar4 = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
+      chanceVar5 = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
+      utilityVar1 = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
+      utilityVar2 = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
 
       fill( *id, *idListPtr );
     }
@@ -146,14 +146,13 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::BIFXMLIDWriter<double>* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING( writer =
-                                        new gum::BIFXMLIDWriter<double>() );
+      TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::BIFXMLIDWriter<double>() );
       delete writer;
     }
 
     void testWriter_ostream() {
       gum::BIFXMLIDWriter<double> writer;
-      std::stringstream s;
+      std::stringstream           s;
 
       // Uncomment this to check the ouput
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( s /*cerr*/, *id ) );
@@ -165,7 +164,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *id ) );
 
       // For comparison with what readers will return
-      std::string dotfile = GET_RESSOURCES_PATH( "IDToDotWriter.dot" );
+      std::string   dotfile = GET_RESSOURCES_PATH( "IDToDotWriter.dot" );
       std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( !output.good() ) {

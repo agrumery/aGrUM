@@ -91,7 +91,7 @@ namespace gum {
        * @param parse_database if true, the modalities specified by the user
        * will be considered as a superset of the modalities of the variables.
        */
-      BNLearner( const std::string& filename,
+      BNLearner( const std::string&                         filename,
                  const NodeProperty<Sequence<std::string>>& modalities,
                  bool parse_database = false );
 
@@ -99,9 +99,9 @@ namespace gum {
        * Wrapper for BNLearner (filename,modalities,parse_database) using a bn
        * to find those modalities.
        **/
-      BNLearner( const std::string& filename,
+      BNLearner( const std::string&               filename,
                  const gum::BayesNet<GUM_SCALAR>& src,
-                 bool parse_database = false );
+                 bool                             parse_database = false );
 
       /// copy constructor
       BNLearner( const BNLearner& );
@@ -142,8 +142,8 @@ namespace gum {
        * specified by methods useAprioriXXX () + the implicit apriori of the
        * score, else we just take into account the apriori specified by
        * useAprioriXXX () */
-      BayesNet<GUM_SCALAR>
-      learnParameters( const DAG& dag, bool take_into_account_score = true );
+      BayesNet<GUM_SCALAR> learnParameters( const DAG& dag,
+                                            bool take_into_account_score = true );
 
       /// learns a BN (its parameters) when its structure is known
       /**
@@ -163,14 +163,13 @@ namespace gum {
        * @throw UnknownLabelInDatabase if a label is found in the databast that
        * do not correpond to the variable.
        */
-      BayesNet<GUM_SCALAR>
-      learnParameters( const BayesNet<GUM_SCALAR>& bn,
-                       bool take_into_account_score = true );
+      BayesNet<GUM_SCALAR> learnParameters( const BayesNet<GUM_SCALAR>& bn,
+                                            bool take_into_account_score = true );
 
       private:
       /// read the first line of a file to find column names
       NodeProperty<Sequence<std::string>>
-      __labelsFromBN( const std::string& filename,
+      __labelsFromBN( const std::string&          filename,
                       const BayesNet<GUM_SCALAR>& src );
     };
 

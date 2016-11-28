@@ -50,8 +50,7 @@ namespace gum {
     /// copy constructor
     StructuralConstraintMandatoryArcs::StructuralConstraintMandatoryArcs(
         const StructuralConstraintMandatoryArcs& from )
-        : _MandatoryArcs__mandatory_arcs(
-              from._MandatoryArcs__mandatory_arcs ) {
+        : _MandatoryArcs__mandatory_arcs( from._MandatoryArcs__mandatory_arcs ) {
       GUM_CONS_CPY( StructuralConstraintMandatoryArcs );
     }
 

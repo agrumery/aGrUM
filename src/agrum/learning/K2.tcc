@@ -35,14 +35,13 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template <typename GRAPH_CHANGES_SELECTOR>
-    DAG K2::learnStructure( GRAPH_CHANGES_SELECTOR& selector,
+    DAG K2::learnStructure( GRAPH_CHANGES_SELECTOR&  selector,
                             const std::vector<Size>& modal,
-                            DAG initial_dag ) {
+                            DAG                      initial_dag ) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
-          std::is_base_of<
-              __GraphChangesGenerator4K2,
-              typename GRAPH_CHANGES_SELECTOR::GeneratorType>::value,
+          std::is_base_of<__GraphChangesGenerator4K2,
+                          typename GRAPH_CHANGES_SELECTOR::GeneratorType>::value,
           "K2 must be called with a K2-compliant Graph Change Generator" );
 
       // check that the order passed in argument concerns all the nodes
@@ -61,17 +60,16 @@ namespace gum {
               typename GRAPH_CHANGES_SELECTOR,
               typename PARAM_ESTIMATOR,
               typename CELL_TRANSLATORS>
-    BayesNet<GUM_SCALAR> K2::learnBN( GRAPH_CHANGES_SELECTOR& selector,
-                                      PARAM_ESTIMATOR& estimator,
+    BayesNet<GUM_SCALAR> K2::learnBN( GRAPH_CHANGES_SELECTOR&         selector,
+                                      PARAM_ESTIMATOR&                estimator,
                                       const std::vector<std::string>& names,
-                                      const std::vector<Size>& modal,
-                                      const CELL_TRANSLATORS& translator,
+                                      const std::vector<Size>&        modal,
+                                      const CELL_TRANSLATORS&         translator,
                                       DAG initial_dag ) {
       // check that we used a selector compatible with the K2 algorithm
       static_assert(
-          std::is_base_of<
-              __GraphChangesGenerator4K2,
-              typename GRAPH_CHANGES_SELECTOR::GeneratorType>::value,
+          std::is_base_of<__GraphChangesGenerator4K2,
+                          typename GRAPH_CHANGES_SELECTOR::GeneratorType>::value,
           "K2 must be called with a K2-compliant Graph Change Generator" );
 
       // check that the order passed in argument concerns all the nodes

@@ -45,8 +45,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*>&
   ScheduleMultiDim<GUM_SCALAR>::__id2multidim() {
-    static HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*>
-        __multidims;
+    static HashTable<Idx, const MultiDimImplementation<GUM_SCALAR>*> __multidims;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that
     // the static hashtable used here will be removed at the end of the
@@ -55,11 +54,8 @@ namespace gum {
 
     if ( first_time ) {
       first_time = false;
-      __debug__::__inc_deletion( "HashTable",
-                                 __FILE__,
-                                 __LINE__,
-                                 "destructor of",
-                                 (void*)&__multidims );
+      __debug__::__inc_deletion(
+          "HashTable", __FILE__, __LINE__, "destructor of", (void*)&__multidims );
     }
 
 #endif /* NDEBUG */
@@ -343,7 +339,7 @@ namespace gum {
   /// ScheduleMultiDim
   template <typename GUM_SCALAR>
   INLINE const MultiDimImplementation<GUM_SCALAR>&
-  ScheduleMultiDim<GUM_SCALAR>::multiDim() const {
+               ScheduleMultiDim<GUM_SCALAR>::multiDim() const {
     return *( __id2multidim().operator[]( __id ) );
   }
 
@@ -363,7 +359,7 @@ namespace gum {
   /// returns the set of variables involved in the multidim
   template <typename GUM_SCALAR>
   INLINE const Sequence<const DiscreteVariable*>&
-  ScheduleMultiDim<GUM_SCALAR>::variablesSequence() const {
+               ScheduleMultiDim<GUM_SCALAR>::variablesSequence() const {
     return *( __id2vars().operator[]( __id ) );
   }
 
@@ -410,7 +406,7 @@ namespace gum {
 
       // update the variables of the scheduleMultiDim
       const Sequence<const DiscreteVariable*>& m_vars = m.variablesSequence();
-      Sequence<const DiscreteVariable*>* vars =
+      Sequence<const DiscreteVariable*>*       vars =
           const_cast<Sequence<const DiscreteVariable*>*>(
               __id2vars().operator[]( __id ) );
       *vars = m_vars;

@@ -75,7 +75,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimSparse<GUM_SCALAR>::set( const Instantiation& i,
-                                               const GUM_SCALAR& value ) const {
+                                               const GUM_SCALAR&    value ) const {
     Size key;
 
     if ( i.isMaster( this ) ) {
@@ -132,7 +132,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>*
-  MultiDimSparse<GUM_SCALAR>::newFactory() const {
+         MultiDimSparse<GUM_SCALAR>::newFactory() const {
     return new MultiDimSparse<GUM_SCALAR>( _default );
   }
 

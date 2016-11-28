@@ -32,7 +32,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::
-        AprioriDirichletFromDatabase( const RowFilter& filter,
+        AprioriDirichletFromDatabase( const RowFilter&         filter,
                                       const std::vector<Size>& var_modalities )
         : Counter<IdSetAlloc, CountAlloc>( filter, var_modalities ) {
       GUM_CONSTRUCTOR( AprioriDirichletFromDatabase );
@@ -61,21 +61,21 @@ namespace gum {
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>*
-    AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::copyFactory() const {
+           AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>( *this );
     }
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::
-        ~AprioriDirichletFromDatabase() {
+    INLINE
+        AprioriDirichletFromDatabase<IdSetAlloc,
+                                     CountAlloc>::~AprioriDirichletFromDatabase() {
       GUM_DESTRUCTOR( AprioriDirichletFromDatabase );
     }
 
     /// include the apriori into a given set of counts
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void
-    AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::compute() {
+    INLINE void AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::compute() {
       if ( this->_weight != 0 ) {
         // perform the countings
         Counter<IdSetAlloc, CountAlloc>::clear();
@@ -126,7 +126,7 @@ namespace gum {
     /// returns the type of the apriori
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::string&
-    AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::getType() const
+                 AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>::getType() const
         noexcept {
       return AprioriDirichletType::type;
     }

@@ -210,8 +210,7 @@ namespace gum {
   // diagram
 
   template <typename GUM_SCALAR>
-  INLINE Triangulation&
-  InfluenceDiagramInference<GUM_SCALAR>::getTriangulation() {
+  INLINE Triangulation& InfluenceDiagramInference<GUM_SCALAR>::getTriangulation() {
 
     return *__triangulation;
   }
@@ -248,8 +247,7 @@ namespace gum {
     // Then, we search for the first one to be eliminated in elimination order
     for ( size_t i = 0; i < eliminationOrder.size(); ++i )
       if ( idSet.contains( eliminationOrder[i] ) )
-        return __triangulation->createdJunctionTreeClique(
-            eliminationOrder[i] );
+        return __triangulation->createdJunctionTreeClique( eliminationOrder[i] );
 
     GUM_ERROR( FatalError, "No clique found for node " << id );
     //***********************************************************************************************************************************
@@ -280,8 +278,8 @@ namespace gum {
             this->influenceDiagram().variable( node ) );
 
       // Creation of clique own elimination order (based on the general one)
-      __cliquePropertiesMap[cli]->makeEliminationOrder(
-          elim, this->influenceDiagram() );
+      __cliquePropertiesMap[cli]->makeEliminationOrder( elim,
+                                                        this->influenceDiagram() );
     }
 
     // Second pass to add the potentials into good cliques
@@ -303,8 +301,7 @@ namespace gum {
     // "zero"
     // matrices for utilities.
     for ( const auto cliq : potentialsCliquesSet )
-      __cliquePropertiesMap[cliq]->addPotential(
-          *__makeDummyPotential( cliq ) );
+      __cliquePropertiesMap[cliq]->addPotential( *__makeDummyPotential( cliq ) );
 
     // Fourth pass to adress utility table to the good clique
     // We go trought all diagram's nodes in search of utility nodes since they
@@ -333,7 +330,7 @@ namespace gum {
       Sequence<NodeId> eliminationOrder =
           __cliquePropertiesMap[cli]->cliqueEliminationOrder();
       SequenceIterator<NodeId> cliqueNodesIter = eliminationOrder.begin();
-      bool validIndex                          = false;
+      bool                     validIndex = false;
 
       // On parcours chaque noeud de la clique par ordre d'élimination, ...
       while ( cliqueNodesIter != eliminationOrder.end() && !validIndex ) {
@@ -343,9 +340,8 @@ namespace gum {
 
         if ( cliqueRemainingNodesIter != eliminationOrder.end() ) {
 
-          NodeSet suspectedNodes(
-              __triangulation->triangulatedGraph().neighbours(
-                  *cliqueRemainingNodesIter ) );
+          NodeSet suspectedNodes( __triangulation->triangulatedGraph().neighbours(
+              *cliqueRemainingNodesIter ) );
 
           while ( cliqueRemainingNodesIter != eliminationOrder.end() &&
                   !suspectedNodes.empty() ) {
@@ -378,8 +374,7 @@ namespace gum {
         for ( std::vector<NodeId>::const_iterator
                   eliminationOrderIter =
                       __triangulation->eliminationOrder().begin();
-              eliminationOrderIter !=
-                  __triangulation->eliminationOrder().end() &&
+              eliminationOrderIter != __triangulation->eliminationOrder().end() &&
               *eliminationOrderIter != *cliqueNodesIter;
               ++eliminationOrderIter, ++index )
           ;
@@ -471,7 +466,7 @@ namespace gum {
     // absorbing one
     NodeSet separator = __getSeparator( absorbedCliqueId, absorbingCliqueId );
 
-    Potential<GUM_SCALAR>* potentialMarginal  = 0;
+    Potential<GUM_SCALAR>*    potentialMarginal = 0;
     UtilityTable<GUM_SCALAR>* utilityMarginal = 0;
 
     // First  we reduce absorbed clique by eleminating clique variables which
@@ -508,8 +503,7 @@ namespace gum {
     }
 
     // And then we can add the utility table.
-    __cliquePropertiesMap[absorbingCliqueId]->addUtility( *utilityMarginal,
-                                                          true );
+    __cliquePropertiesMap[absorbingCliqueId]->addUtility( *utilityMarginal, true );
   }
 
   // __reduceClique : Performs a clique reduction
@@ -525,9 +519,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void InfluenceDiagramInference<GUM_SCALAR>::__reduceClique(
       CliqueProperties<GUM_SCALAR>* absorbedClique,
-      NodeSet& separator,
-      Potential<GUM_SCALAR>*& potentialMarginal,
-      UtilityTable<GUM_SCALAR>*& utilityMarginal ) {
+      NodeSet&                      separator,
+      Potential<GUM_SCALAR>*&       potentialMarginal,
+      UtilityTable<GUM_SCALAR>*&    utilityMarginal ) {
 
     Instantiation cliqueInstance( absorbedClique->cliqueInstantiation() );
     Sequence<const DiscreteVariable*> cliqueRemainVarList(
@@ -540,7 +534,7 @@ namespace gum {
         // Initialisation Operations
 
         // First we create the tables that will result from variable elimination
-        Potential<GUM_SCALAR>* newPotential  = new Potential<GUM_SCALAR>();
+        Potential<GUM_SCALAR>*    newPotential = new Potential<GUM_SCALAR>();
         UtilityTable<GUM_SCALAR>* newUtility = new UtilityTable<GUM_SCALAR>();
 
         // Then we need to add all not yet eliminated variables of the clique in
@@ -573,7 +567,7 @@ namespace gum {
 
           // Various initialization
           GUM_SCALAR potentialValue = (GUM_SCALAR)0;
-          GUM_SCALAR utilityValue   = (GUM_SCALAR)0;
+          GUM_SCALAR utilityValue = (GUM_SCALAR)0;
 
           if ( this->influenceDiagram().isDecisionNode( node ) )
             utilityValue = -1 * ( std::numeric_limits<GUM_SCALAR>::max() );
@@ -600,8 +594,7 @@ namespace gum {
             } else {
               Instantiation potentialMarginalInst( potentialMarginal );
               potentialMarginalInst.setVals( cliqueInstance );
-              currentPotential =
-                  potentialMarginal->get( potentialMarginalInst );
+              currentPotential = potentialMarginal->get( potentialMarginalInst );
             }
 
             // Récupération de la valeur d'utilité de la clique pour cette
@@ -671,8 +664,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR>*
-  InfluenceDiagramInference<GUM_SCALAR>::__makeDummyPotential(
-      NodeId cliqueId ) {
+  InfluenceDiagramInference<GUM_SCALAR>::__makeDummyPotential( NodeId cliqueId ) {
 
     Potential<GUM_SCALAR>* pot = new Potential<GUM_SCALAR>(
         new MultiDimSparse<GUM_SCALAR>( (GUM_SCALAR)1 ) );
@@ -738,7 +730,7 @@ namespace gum {
   // @return returns List containing all variables contained in this clique
   template <typename GUM_SCALAR>
   INLINE const Sequence<const DiscreteVariable*>&
-  CliqueProperties<GUM_SCALAR>::cliqueVariables() {
+               CliqueProperties<GUM_SCALAR>::cliqueVariables() {
     return __allVarsInst.variablesSequence();
   }
 
@@ -777,7 +769,7 @@ namespace gum {
   // potentialBucket : Returns the potential bucket of this Clique
   template <typename GUM_SCALAR>
   INLINE const HashTable<const Potential<GUM_SCALAR>*, Instantiation*>&
-  CliqueProperties<GUM_SCALAR>::potentialBucket() {
+               CliqueProperties<GUM_SCALAR>::potentialBucket() {
     return __potentialBucket;
   }
 
@@ -809,7 +801,7 @@ namespace gum {
   //  utilityBucket : Returns the utiluty table bucket of this Clique
   template <typename GUM_SCALAR>
   INLINE const HashTable<const UtilityTable<GUM_SCALAR>*, Instantiation*>&
-  CliqueProperties<GUM_SCALAR>::utilityBucket() {
+               CliqueProperties<GUM_SCALAR>::utilityBucket() {
     return __utilityBucket;
   }
 
@@ -851,7 +843,7 @@ namespace gum {
   // The global elimination order is given by elim.
   template <typename GUM_SCALAR>
   void CliqueProperties<GUM_SCALAR>::makeEliminationOrder(
-      const std::vector<NodeId>& elim,
+      const std::vector<NodeId>&          elim,
       const InfluenceDiagram<GUM_SCALAR>& infDiag ) {
     for ( size_t i = 0; i < elim.size(); i++ ) {
       if ( __allVarsInst.contains( infDiag.variable( elim[i] ) ) )
@@ -862,7 +854,7 @@ namespace gum {
   // cliqueEliminationOrder : returns the elimination sequence for this clique
   template <typename GUM_SCALAR>
   INLINE const Sequence<NodeId>&
-  CliqueProperties<GUM_SCALAR>::cliqueEliminationOrder() {
+               CliqueProperties<GUM_SCALAR>::cliqueEliminationOrder() {
     return __eliminationOrder;
   }
 
@@ -902,7 +894,7 @@ namespace gum {
   // evidences : Returns the mapping of evidences on variables in this clique
   template <typename GUM_SCALAR>
   INLINE const HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>*>&
-  CliqueProperties<GUM_SCALAR>::evidences() const {
+               CliqueProperties<GUM_SCALAR>::evidences() const {
     return __evidences;
   }
 

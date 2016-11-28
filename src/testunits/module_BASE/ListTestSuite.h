@@ -50,8 +50,8 @@ namespace gum_tests {
       gum::List<int> liste3{1, 9, 10, 20, 30, 40};
 
       gum::List<int> liste4 = std::move( liste3 );
-      liste3                = std::move( liste2 );
-      liste2                = std::move( liste1 );
+      liste3 = std::move( liste2 );
+      liste2 = std::move( liste1 );
 
       TS_ASSERT( liste2.size() == 4 );
       TS_ASSERT( liste2.front() == 1 );
@@ -166,7 +166,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( list1, list2 );
 
       gum::List<int> list3{2, 4};
-      int x = 1, y = 3;
+      int            x = 1, y = 3;
       list3.insert( 0, x );
       list3.insert( 2, y );
       TS_ASSERT_EQUALS( list3, list1 );
@@ -176,7 +176,7 @@ namespace gum_tests {
       list2.insert( iter1, 5, gum::List<int>::location::AFTER );
       TS_ASSERT_EQUALS( list2, list1 );
 
-      gum::List<int> list4{1, 2, 3, 5};
+      gum::List<int>           list4{1, 2, 3, 5};
       gum::List<int>::iterator iter2 = list4.rbegin();
       list4.insert( iter2, 4 );
       TS_ASSERT_EQUALS( list4, list1 );
@@ -186,7 +186,7 @@ namespace gum_tests {
       list2.insert( iter3, 6, gum::List<int>::location::AFTER );
       TS_ASSERT_EQUALS( list2, list1 );
 
-      gum::List<int> list5{1, 2, 3, 4, 6};
+      gum::List<int>           list5{1, 2, 3, 4, 6};
       gum::List<int>::iterator iter4 = list5.rbegin();
       list5.insert( iter4, 5 );
       TS_ASSERT_EQUALS( list5, list1 );
@@ -298,7 +298,7 @@ namespace gum_tests {
 
     void testIteratorStep() {
       gum::List<int> list{1, 2, 3, 4, 5, 6};
-      auto iter = list.beginSafe();  // safe iterator needed here
+      auto           iter = list.beginSafe();  // safe iterator needed here
       list.erase( iter );
       TS_ASSERT_EQUALS( list.size(), (gum::Size)5 );
 
@@ -324,7 +324,7 @@ namespace gum_tests {
     }
 
     void testIteratorStep2() {
-      gum::List<int> xlist{1, 2, 3, 4, 5, 6, 7, 8};
+      gum::List<int>           xlist{1, 2, 3, 4, 5, 6, 7, 8};
       gum::List<int>::iterator iter = xlist.begin();
       iter += 4;
       TS_ASSERT_EQUALS( *iter, 5 );
@@ -380,7 +380,7 @@ namespace gum_tests {
 
     void testPopBack() {
       gum::List<int> list = initializeList( 7 );
-      int last            = list.back();
+      int            last = list.back();
       list.popBack();
 
       TS_ASSERT_DIFFERS( list.back(), last );
@@ -388,7 +388,7 @@ namespace gum_tests {
 
     void testPopFront() {
       gum::List<int> list = initializeList( 7 );
-      int first           = list.front();
+      int            first = list.front();
       list.popFront();
 
       TS_ASSERT_DIFFERS( list.front(), first );
@@ -396,7 +396,7 @@ namespace gum_tests {
 
     void testSTL() {
       gum::List<int> xlist{1, 2, 3, 4, 5, 6, 7, 8};
-      int xx = 0;
+      int            xx = 0;
       std::for_each( xlist.begin(), xlist.end(), [&xx]( int x ) { xx += x; } );
       TS_ASSERT_EQUALS( xx, 36 );
 
@@ -408,25 +408,25 @@ namespace gum_tests {
       std::copy( v.begin(), v.end(), back_inserter( list2 ) );
       TS_ASSERT_EQUALS( list2, xlist );
 
-      gum::List<int> list3{2, 1, 8, 5, 3, 6, 4, 7};
+      gum::List<int>                 list3{2, 1, 8, 5, 3, 6, 4, 7};
       gum::List<int>::const_iterator iter1 = list3.cbegin();
       gum::List<int>::const_iterator iter2 = list3.cbegin() + 4;
-      int d1                               = int( iter2 - iter1 );
+      int                            d1 = int( iter2 - iter1 );
       TS_ASSERT_EQUALS( d1, 4 );
 
       gum::List<int>::iterator iter3 = list3.begin();
       gum::List<int>::iterator iter4 = list3.begin() + 4;
-      int d2                         = int( iter4 - iter3 );
+      int                      d2 = int( iter4 - iter3 );
       TS_ASSERT_EQUALS( d2, 4 );
 
       gum::List<int>::const_iterator iter11 = list3.cbegin();
       gum::List<int>::const_iterator iter12 = list3.cbegin() + 4;
-      int d11                               = int( iter12 - iter11 );
+      int                            d11 = int( iter12 - iter11 );
       TS_ASSERT_EQUALS( d11, 4 );
 
       gum::List<int>::iterator iter13 = list3.begin();
       gum::List<int>::iterator iter14 = list3.begin() + 4;
-      int d12                         = int( iter14 - iter13 );
+      int                      d12 = int( iter14 - iter13 );
       TS_ASSERT_EQUALS( d12, 4 );
     }
 
@@ -436,10 +436,10 @@ namespace gum_tests {
       TS_ASSERT( MyAllocCount::hasMeroryLeak() == false );
 
       gum::List<int, MyAlloc<int>> xlist{1, 2, 3, 4, 5, 6, 7, 8};
-      gum::ListIterator<int> iter = xlist.begin();
-      gum::ListIterator<int> iter1( xlist );
+      gum::ListIterator<int>      iter = xlist.begin();
+      gum::ListIterator<int>      iter1( xlist );
       gum::ListConstIterator<int> iter2( xlist );
-      gum::ListIterator<int> iter3( xlist );
+      gum::ListIterator<int>      iter3( xlist );
       gum::ListConstIterator<int> iter4( xlist );
 
       gum::Size i;

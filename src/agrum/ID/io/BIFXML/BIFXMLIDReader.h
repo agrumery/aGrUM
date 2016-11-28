@@ -104,7 +104,7 @@ namespace gum {
      * Note that an ID as to be created before and given in parameter.
      */
     BIFXMLIDReader( InfluenceDiagram<GUM_SCALAR>* infdiag,
-                    const std::string& filePath );
+                    const std::string&            filePath );
 
     /**
      * Default destructor.

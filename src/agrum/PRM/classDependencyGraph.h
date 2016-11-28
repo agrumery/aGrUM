@@ -90,7 +90,7 @@ namespace gum {
       /// inherited PRMClassElement<GUM_SCALAR> are shared in the inheritance
       /// hierarchy.
       NodeId get( const PRMClassElementContainer<GUM_SCALAR>& c,
-                  const PRMClassElement<GUM_SCALAR>& elt ) const;
+                  const PRMClassElement<GUM_SCALAR>&          elt ) const;
 
       /// Returns a mapping between the ClassDependencyGraph<GUM_SCALAR>'s nodes
       /// and
@@ -105,13 +105,12 @@ namespace gum {
 
       /// Add nodes in __graph while updating consequently all the mappings.
       void __addNode( const PRMClassElementContainer<GUM_SCALAR>* c,
-                      const PRMClassElement<GUM_SCALAR>& elt );
+                      const PRMClassElement<GUM_SCALAR>&          elt );
 
       /// Add arcs in __graph.
-      void
-      __addArcs( const PRMClassElementContainer<GUM_SCALAR>& c,
-                 NodeId node,
-                 HashTable<const PRMClassElement<GUM_SCALAR>*, NodeId>& map );
+      void __addArcs( const PRMClassElementContainer<GUM_SCALAR>& c,
+                      NodeId                                      node,
+                      HashTable<const PRMClassElement<GUM_SCALAR>*, NodeId>& map );
 
       /// The graph itself.
       DAG __graph;

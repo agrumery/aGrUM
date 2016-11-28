@@ -539,12 +539,10 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS_ANYTHING( graph.container( 2 ) );
 
-      TS_ASSERT(
-          !( firstClique != A && firstClique != B && firstClique != D ) );
+      TS_ASSERT( !( firstClique != A && firstClique != B && firstClique != D ) );
       TS_ASSERT(
           !( secondClique != A && secondClique != B && secondClique != D ) );
-      TS_ASSERT(
-          !( thirdClique != A && thirdClique != B && thirdClique != D ) );
+      TS_ASSERT( !( thirdClique != A && thirdClique != B && thirdClique != D ) );
       TS_ASSERT( firstClique != secondClique && firstClique != thirdClique &&
                  secondClique != thirdClique );
     }

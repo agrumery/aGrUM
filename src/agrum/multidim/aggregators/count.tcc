@@ -56,8 +56,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Count<GUM_SCALAR>::_fold( const DiscreteVariable& v,
-                                         Idx i1,
-                                         Idx i2,
+                                         Idx                     i1,
+                                         Idx                     i2,
                                          bool& stop_iteration ) const {
       return ( i1 == __value ) ? 1 + i2 : i2;
     }
@@ -70,8 +70,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR>*
-    Count<GUM_SCALAR>::newFactory() const {
+    INLINE MultiDimContainer<GUM_SCALAR>* Count<GUM_SCALAR>::newFactory() const {
       return new Count<GUM_SCALAR>( __value );
     }
 

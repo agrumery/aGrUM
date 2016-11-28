@@ -39,8 +39,7 @@ namespace gum {
     INLINE bool
     StructuralConstraintDiGraph::checkArcAdditionAlone( NodeId x,
                                                         NodeId y ) const {
-      return _DiGraph__graph.existsNode( x ) &&
-             _DiGraph__graph.existsNode( y ) &&
+      return _DiGraph__graph.existsNode( x ) && _DiGraph__graph.existsNode( y ) &&
              !_DiGraph__graph.existsArc( x, y );
     }
 
@@ -140,8 +139,8 @@ namespace gum {
     }
 
     /// indicates whether a change will always violate the constraint
-    INLINE bool StructuralConstraintDiGraph::isAlwaysInvalidAlone(
-        const GraphChange& ) const {
+    INLINE bool
+    StructuralConstraintDiGraph::isAlwaysInvalidAlone( const GraphChange& ) const {
       return false;
     }
 

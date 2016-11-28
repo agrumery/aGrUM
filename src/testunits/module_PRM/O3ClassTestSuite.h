@@ -40,9 +40,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "class Bar { }";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -59,9 +59,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "clas Bar { }";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -78,9 +78,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "class { }";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -97,9 +97,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "class ++++/ze { }";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -118,9 +118,9 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -133,7 +133,7 @@ namespace gum_tests {
       const auto& state = bar.get( "state" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
       const auto& cpf = state.cpf();
-      auto i = gum::Instantiation( cpf );
+      auto        i = gum::Instantiation( cpf );
       i.setFirst();
       TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
       i.inc();
@@ -149,9 +149,9 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -164,7 +164,7 @@ namespace gum_tests {
       const auto& state = bar.get( "state" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
       const auto& cpf = state.cpf();
-      auto i = gum::Instantiation( cpf );
+      auto        i = gum::Instantiation( cpf );
       i.setFirst();
       TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
       i.inc();
@@ -184,9 +184,9 @@ namespace gum_tests {
             << "  {[0.2, 0.4,  // false" << std::endl
             << "   0.8, 0.6]}; // true" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -202,8 +202,7 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -229,9 +228,9 @@ namespace gum_tests {
             << "  {[0.2, 0.4,  // false" << std::endl
             << "    0.2, 0.6]}; // true" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -256,9 +255,9 @@ namespace gum_tests {
             << "  {[0.2, 0.4,  // false" << std::endl
             << "    0.2, 0.6]}; // true" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -282,9 +281,9 @@ namespace gum_tests {
             << "    0.2, 0.4,   // true" << std::endl
             << "    0.6, 0.2]}; // oops" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -308,9 +307,9 @@ namespace gum_tests {
             << "NOK: 0.8, 0.2;" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -326,8 +325,7 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -353,9 +351,9 @@ namespace gum_tests {
             << "*: 0.8, 0.2;" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -371,8 +369,7 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -398,9 +395,9 @@ namespace gum_tests {
             << "NOK: \"80/100\", \"20/100\";" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -416,8 +413,7 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -443,9 +439,9 @@ namespace gum_tests {
             << "NOK: '80/100', '20/100';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -461,8 +457,7 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -488,9 +483,9 @@ namespace gum_tests {
             << "NOK: '80/100', '20/100';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -514,9 +509,9 @@ namespace gum_tests {
             << "NOK, BAR: '80/100', '20/100';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -539,9 +534,9 @@ namespace gum_tests {
             << "NOK: 'FOO', '20/100';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -564,9 +559,9 @@ namespace gum_tests {
             << "[ 'exp(-lambda*t)', '1-exp(-lambda*t)' ]" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -578,8 +573,7 @@ namespace gum_tests {
       const auto& state = bar.get( "state" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
       const auto& cpf = state.cpf();
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)2 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -603,9 +597,9 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -620,8 +614,7 @@ namespace gum_tests {
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -643,9 +636,9 @@ namespace gum_tests {
             << "boolean state;" << std::endl
             << "}" << std::endl;
       input << "class Bar { " << std::endl << "Foo myFoo;" << std::endl << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -664,9 +657,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoo" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoo" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoo" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoo" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &( foo ) );
       TS_ASSERT( !myFoo.isArray() );
       TS_ASSERT_THROWS( bar.super(), gum::NotFound );
@@ -678,12 +670,10 @@ namespace gum_tests {
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      input << "class Bar { " << std::endl
-            << "Foo[] myFoo;" << std::endl
-            << "}";
-      std::stringstream output;
+      input << "class Bar { " << std::endl << "Foo[] myFoo;" << std::endl << "}";
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -702,9 +692,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoo" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoo" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoo" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoo" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &( foo ) );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT_THROWS( bar.super(), gum::NotFound );
@@ -726,9 +715,9 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -747,21 +736,18 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoo" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoo" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoo" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoo" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( !myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(
-          !cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( !cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT( bar.exists( "myFoo.state" ) );
       const auto& chain = bar.get( "myFoo.state" );
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( chain.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( chain.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -787,14 +773,13 @@ namespace gum_tests {
             << "real lambda default 0.003;" << std::endl
             << "Foo myFoo;" << std::endl
             << "boolean isWorking dependson myFoo.state {" << std::endl
-            << "OK: 'exp(-lambda*myFoo.t)', '1-exp(-lambda*myFoo.t)';"
-            << std::endl
+            << "OK: 'exp(-lambda*myFoo.t)', '1-exp(-lambda*myFoo.t)';" << std::endl
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -813,21 +798,18 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoo" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoo" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoo" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoo" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( !myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
       const auto& isWorking = bar.get( "isWorking" );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
       const auto& cpf = isWorking.cpf();
-      TS_ASSERT(
-          !cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT( !cpf.variablesSequence().exists( &( state.type().variable() ) ) );
       TS_ASSERT( bar.exists( "myFoo.state" ) );
       const auto& chain = bar.get( "myFoo.state" );
-      TS_ASSERT(
-          cpf.variablesSequence().exists( &( chain.type().variable() ) ) );
+      TS_ASSERT( cpf.variablesSequence().exists( &( chain.type().variable() ) ) );
       TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
       auto i = gum::Instantiation( cpf );
       i.setFirst();
@@ -857,9 +839,9 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -888,9 +870,9 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -918,9 +900,9 @@ namespace gum_tests {
             << "NOK: '1.0', '0.0';" << std::endl
             << "};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -950,9 +932,9 @@ namespace gum_tests {
             << "Bar myBar;" << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -983,9 +965,9 @@ namespace gum_tests {
             << "Bar myBar;" << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1007,9 +989,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = or(myFoos.state);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1029,9 +1011,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1052,12 +1033,11 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "boolean isWorking = or([myFoos.state, myBoos.state]);"
-            << std::endl
+            << "boolean isWorking = or([myFoos.state, myBoos.state]);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1077,9 +1057,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1101,9 +1080,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = and(myFoos.state);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1123,9 +1102,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1149,9 +1127,9 @@ namespace gum_tests {
             << "boolean isWorking = and([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1171,9 +1149,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1196,9 +1173,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = forall(myFoos.state, OK);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1218,9 +1195,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1245,9 +1221,9 @@ namespace gum_tests {
             << "boolean isWorking = forall([myFoos.state, myBoos.state], OK);"
             << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1267,9 +1243,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1292,9 +1267,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = exists(myFoos.state, OK);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1314,9 +1289,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1341,9 +1315,9 @@ namespace gum_tests {
             << "boolean isWorking = exists([myFoos.state, myBoos.state], OK);"
             << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1363,9 +1337,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1388,9 +1361,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = min(myFoos.state);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1410,9 +1383,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1434,12 +1406,11 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "state isWorking = min([myFoos.state, myBoos.state]);"
-            << std::endl
+            << "state isWorking = min([myFoos.state, myBoos.state]);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1459,9 +1430,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1484,9 +1454,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = max(myFoos.state);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1506,9 +1476,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1530,12 +1499,11 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "state isWorking = max([myFoos.state, myBoos.state]);"
-            << std::endl
+            << "state isWorking = max([myFoos.state, myBoos.state]);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1555,9 +1523,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1580,9 +1547,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = median(myFoos.state);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1602,9 +1569,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1629,9 +1595,9 @@ namespace gum_tests {
             << "state isWorking = median([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1651,9 +1617,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1676,9 +1641,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = amplitude(myFoos.state);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1698,9 +1663,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1708,9 +1672,8 @@ namespace gum_tests {
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
           static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
-      TS_ASSERT_EQUALS(
-          agg.agg_type(),
-          gum::prm::PRMAggregate<double>::AggregateType::AMPLITUDE );
+      TS_ASSERT_EQUALS( agg.agg_type(),
+                        gum::prm::PRMAggregate<double>::AggregateType::AMPLITUDE );
     }
 
     void testAmplitudeAggregateArray() {
@@ -1726,9 +1689,9 @@ namespace gum_tests {
             << "state isWorking = amplitude([myFoos.state, myBoos.state]);"
             << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1748,9 +1711,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1758,9 +1720,8 @@ namespace gum_tests {
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAggregate( isWorking ) );
       const auto& agg =
           static_cast<const gum::prm::PRMAggregate<double>&>( isWorking );
-      TS_ASSERT_EQUALS(
-          agg.agg_type(),
-          gum::prm::PRMAggregate<double>::AggregateType::AMPLITUDE );
+      TS_ASSERT_EQUALS( agg.agg_type(),
+                        gum::prm::PRMAggregate<double>::AggregateType::AMPLITUDE );
     }
 
     void testCountAggregate() {
@@ -1774,9 +1735,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = count(myFoos.state, 5);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1796,9 +1757,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1823,9 +1783,9 @@ namespace gum_tests {
             << "state isWorking = count([myFoos.state, myBoos.state], 5);"
             << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1845,9 +1805,8 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "myFoos" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
           bar.get( "myFoos" ) ) );
-      const auto& myFoo =
-          static_cast<const gum::prm::PRMReferenceSlot<double>&>(
-              bar.get( "myFoos" ) );
+      const auto& myFoo = static_cast<const gum::prm::PRMReferenceSlot<double>&>(
+          bar.get( "myFoos" ) );
       TS_ASSERT_EQUALS( &( myFoo.slotType() ), &foo );
       TS_ASSERT( myFoo.isArray() );
       TS_ASSERT( bar.exists( "isWorking" ) );
@@ -1869,9 +1828,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = or(myBoos.state);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1893,9 +1852,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = or(myFoos.st);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1917,9 +1876,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "boolean isWorking = or();" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1943,12 +1902,11 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Boo[] myBoos;" << std::endl
-            << "boolean isWorking = or([myFoos.state, myBoos.state]);"
-            << std::endl
+            << "boolean isWorking = or([myFoos.state, myBoos.state]);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1971,9 +1929,9 @@ namespace gum_tests {
             << "Foo[] myFoos;" << std::endl
             << "state isWorking = count(myFoos.state, foobar);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -1994,9 +1952,9 @@ namespace gum_tests {
       input << "class Bar implements Foo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2025,9 +1983,9 @@ namespace gum_tests {
       input << "class Bar implements Foo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2062,9 +2020,9 @@ namespace gum_tests {
             << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
             << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2095,9 +2053,9 @@ namespace gum_tests {
       input << "class Foo implements Bar { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2117,9 +2075,9 @@ namespace gum_tests {
       input << "class Foo implements iFoo { " << std::endl
             << "boolean stat {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2141,9 +2099,9 @@ namespace gum_tests {
       input << "class Foo implements iFoo { " << std::endl
             << "state state {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2164,9 +2122,9 @@ namespace gum_tests {
       input << "class Bar extends oo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2187,9 +2145,9 @@ namespace gum_tests {
       input << "class Bar extends Foo { " << std::endl
             << "state state {[0.2, 0.8]};" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2216,9 +2174,9 @@ namespace gum_tests {
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2255,9 +2213,9 @@ namespace gum_tests {
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2281,11 +2239,11 @@ namespace gum_tests {
 
     void testPrinters() {
       // Arrange
-      auto path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
+      auto                  path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
       gum::prm::PRM<double> prm;
-      auto input = std::ifstream( path );
-      std::stringstream output;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  input = std::ifstream( path );
+      std::stringstream     output;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2315,9 +2273,9 @@ namespace gum_tests {
                "state state {[ 0.1, 0.9 ]};"
                "}";
       input << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2342,8 +2300,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( foo.attributes().size(), (gum::Size)1 );
       TS_ASSERT( foo.exists( "state" ) );
       TS_ASSERT( foo.exists( "(boolean)state" ) );
-      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute(
-          foo.get( "state" ) ) );
+      TS_ASSERT(
+          gum::prm::PRMClassElement<double>::isAttribute( foo.get( "state" ) ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute(
           foo.get( "(boolean)state" ) ) );
       TS_ASSERT_EQUALS( &( foo.get( "state" ) ),
@@ -2363,14 +2321,13 @@ namespace gum_tests {
       TS_ASSERT( bar.exists( "state" ) );
       TS_ASSERT( bar.exists( "(boolean)state" ) );
       TS_ASSERT( bar.exists( "(state)state" ) );
-      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute(
-          bar.get( "state" ) ) );
+      TS_ASSERT(
+          gum::prm::PRMClassElement<double>::isAttribute( bar.get( "state" ) ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute(
           bar.get( "(boolean)state" ) ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute(
           bar.get( "(state)state" ) ) );
-      TS_ASSERT_EQUALS( &( bar.get( "state" ) ),
-                        &( bar.get( "(state)state" ) ) );
+      TS_ASSERT_EQUALS( &( bar.get( "state" ) ), &( bar.get( "(state)state" ) ) );
       TS_ASSERT_EQUALS( bar.referenceSlots().size(), (gum::Size)1 );
       TS_ASSERT( bar.exists( "plop" ) );
       TS_ASSERT( gum::prm::PRMClassElement<double>::isReferenceSlot(
@@ -2404,9 +2361,9 @@ namespace gum_tests {
                "state state {[ 0.1, 0.9 ]};"
                "}";
       input << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -2428,12 +2385,11 @@ namespace gum_tests {
       input << "class Bar { " << std::endl
             << "Foo[] myFoos;" << std::endl
             << "Foo[] myBoos;" << std::endl
-            << "state isWorking = count([myFoos, myBoos.state], 5);"
-            << std::endl
+            << "state isWorking = count([myFoos, myBoos.state], 5);" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert

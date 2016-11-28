@@ -164,14 +164,13 @@ namespace gum {
                  "KL : the 2 BNs are not compatible (not the same size)" );
 
     if ( std::fabs( _p.log10DomainSize() - _q.log10DomainSize() ) > 1e-14 ) {
-      GUM_ERROR(
-          OperationNotAllowed,
-          "KL : the 2 BNs are not compatible (not the same domainSize) : p="
-              << _p.log10DomainSize()
-              << " q="
-              << _q.log10DomainSize()
-              << " => "
-              << _p.log10DomainSize() - _q.log10DomainSize() );
+      GUM_ERROR( OperationNotAllowed,
+                 "KL : the 2 BNs are not compatible (not the same domainSize) : p="
+                     << _p.log10DomainSize()
+                     << " q="
+                     << _q.log10DomainSize()
+                     << " => "
+                     << _p.log10DomainSize() - _q.log10DomainSize() );
     }
 
     return true;

@@ -101,14 +101,14 @@ namespace gum {
 
   // clears the sequence (to prepare, for instance, a new elimination sequence)
   void EliminationSequenceStrategy::clear() {
-    _graph        = nullptr;
+    _graph = nullptr;
     _domain_sizes = nullptr;
     _log_domain_sizes.clear();
   }
 
   // sets a new graph to be triangulated
   bool
-  EliminationSequenceStrategy::setGraph( UndiGraph* graph,
+  EliminationSequenceStrategy::setGraph( UndiGraph*                graph,
                                          const NodeProperty<Size>* dom_sizes ) {
     // check that both the graph and the domain sizes are different from nullptr
     // or else that both are equal to nullptr
@@ -134,7 +134,7 @@ namespace gum {
       clear();
 
       // assign a new graph
-      _graph        = graph;
+      _graph = graph;
       _domain_sizes = dom_sizes;
 
       if ( _graph != nullptr ) {
@@ -142,8 +142,7 @@ namespace gum {
         _log_domain_sizes.resize( _graph->sizeNodes() / 2 );
 
         for ( const auto node : *_graph )
-          _log_domain_sizes.insert( node,
-                                    std::log( ( *_domain_sizes )[node] ) );
+          _log_domain_sizes.insert( node, std::log( ( *_domain_sizes )[node] ) );
       }
 
       return true;

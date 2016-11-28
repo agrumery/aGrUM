@@ -62,8 +62,7 @@ namespace gum {
     public:
     /// the type of functions used by the register
     typedef GUM_SCALAR ( *CompleteProjectionPtr )(
-        const MultiDimImplementation<GUM_SCALAR>*,
-        Instantiation* instantiation );
+        const MultiDimImplementation<GUM_SCALAR>*, Instantiation* instantiation );
 
     // =========================================================================
     /// @name Accessors / Modifiers
@@ -92,8 +91,8 @@ namespace gum {
      * MultiDimImplementations. This constraint is imposed by the C++ typing
      * system.
      */
-    void insert( const std::string& projection_name,
-                 const std::string& type_multidim,
+    void insert( const std::string&    projection_name,
+                 const std::string&    type_multidim,
                  CompleteProjectionPtr newFunction );
 
     /**

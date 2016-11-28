@@ -60,18 +60,18 @@ namespace gum {
     class Parser {
       private:
       enum {
-        _EOF         = 0,
-        _ident       = 1,
-        _integer     = 2,
-        _number      = 3,
-        _string      = 4,
+        _EOF = 0,
+        _ident = 1,
+        _integer = 2,
+        _number = 3,
+        _string = 4,
         _largestring = 5
       };
       int maxT;
 
       Token* dummyToken;
-      int errDist;
-      int minErrDist;
+      int    errDist;
+      int    minErrDist;
 
       void SynErr( int n );
       void Get();
@@ -105,13 +105,11 @@ namespace gum {
       }
 
       void __checkSizeOfProbabilityAssignation( const std::vector<float>& v,
-                                                const std::string& var ) {
+                                                const std::string&        var ) {
         gum::Size s = (gum::Size)0;
-        TRY(
-            s = factory().varInBN( factory().variableId( var ) ).domainSize() );
+        TRY( s = factory().varInBN( factory().variableId( var ) ).domainSize() );
         if ( v.size() < s )
-          Warning( "Not enough data in probability assignation for node " +
-                   var );
+          Warning( "Not enough data in probability assignation for node " + var );
         if ( v.size() > s )
           Warning( "Too many data in probability assignation for node " + var );
       }
@@ -125,7 +123,7 @@ namespace gum {
       void SynErr( const std::wstring& filename, int line, int col, int n );
       void Warning( const wchar_t* msg );
       const ErrorsContainer& errors() const;
-      ErrorsContainer& errors();
+      ErrorsContainer&       errors();
 
       void BIF();
       void NETWORK();
@@ -140,15 +138,15 @@ namespace gum {
       void IDENT_OR_INTEGER( std::string& name );
       void LISTE_PARENTS( std::vector<std::string>& parents );
       void RAW_PROBA( std::vector<float>& v );
-      void FACTORIZED_PROBA( std::string& var,
+      void FACTORIZED_PROBA( std::string&                    var,
                              const std::vector<std::string>& parents );
       void LISTE_FLOAT( std::vector<float>& v );
-      void ASSIGNATION( const std::string& var,
+      void ASSIGNATION( const std::string&              var,
                         const std::vector<std::string>& parents,
-                        bool is_first );
+                        bool                            is_first );
       void LISTE_LABELS( const std::vector<std::string>& parents,
-                         std::vector<std::string>& labels,
-                         Idx num_label );
+                         std::vector<std::string>&       labels,
+                         Idx                             num_label );
       void FLOAT( float& val );
 
       void Parse();

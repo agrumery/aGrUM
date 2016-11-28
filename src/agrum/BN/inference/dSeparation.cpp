@@ -35,11 +35,11 @@ namespace gum {
 
   // Fill 'requisite' with the requisite nodes in dag given a query and
   // evidence.
-  void dSeparation::requisiteNodes( const DAG& dag,
+  void dSeparation::requisiteNodes( const DAG&     dag,
                                     const NodeSet& query,
                                     const NodeSet& hardEvidence,
                                     const NodeSet& softEvidence,
-                                    NodeSet& requisite ) {
+                                    NodeSet&       requisite ) {
     // for the moment, no node is requisite
     requisite.clear();
 
@@ -82,7 +82,7 @@ namespace gum {
     while ( !nodes_to_visit.empty() ) {
       // get the next node to visit
       const NodeId node = nodes_to_visit.front().first;
-      const bool direction = nodes_to_visit.front().second;
+      const bool   direction = nodes_to_visit.front().second;
       nodes_to_visit.popFront();
 
       // check if the node has not already been visited in the same direction

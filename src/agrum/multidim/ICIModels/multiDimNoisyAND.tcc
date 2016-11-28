@@ -99,8 +99,7 @@ namespace gum {
 
     for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
       s << MultiDimImplementation<GUM_SCALAR>::variable( i ) << "["
-        << this->causalWeight(
-               MultiDimImplementation<GUM_SCALAR>::variable( i ) )
+        << this->causalWeight( MultiDimImplementation<GUM_SCALAR>::variable( i ) )
         << "]";
     }
 
@@ -114,14 +113,14 @@ namespace gum {
   // For friendly displaying the content of the variable.
 
   template <typename GUM_SCALAR>
-  INLINE std::ostream& operator<<( std::ostream& s,
+  INLINE std::ostream& operator<<( std::ostream&                       s,
                                    const MultiDimNoisyAND<GUM_SCALAR>& ag ) {
     return s << ag.toString();
   }
 
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>*
-  MultiDimNoisyAND<GUM_SCALAR>::newFactory() const {
+         MultiDimNoisyAND<GUM_SCALAR>::newFactory() const {
     return new MultiDimNoisyAND<GUM_SCALAR>( this->__external_weight,
                                              this->__default_weight );
   }

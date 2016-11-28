@@ -115,8 +115,7 @@ namespace gum {
     const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-    multiDimResults() const;
+    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;

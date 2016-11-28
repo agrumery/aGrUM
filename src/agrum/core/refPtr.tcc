@@ -89,11 +89,11 @@ namespace gum {
 
       // keep track of the current refcount and dumb pointer
       unsigned int* old_refcount = __refcount;
-      Val* old_val               = __val;
+      Val*          old_val = __val;
 
       // perform the copy
       __refcount = from.__refcount;
-      __val      = from.__val;
+      __val = from.__val;
 
       if ( __refcount ) ++*__refcount;
 
@@ -115,7 +115,7 @@ namespace gum {
 
       // keep track of the current refcount and dumb pointer
       unsigned int* old_refcount = __refcount;
-      Val* old_val               = __val;
+      Val*          old_val = __val;
 
       // perform the copy
       try {
@@ -133,7 +133,7 @@ namespace gum {
         }
 
         __refcount = 0;
-        __val      = 0;
+        __val = 0;
         throw;
       }
 
@@ -153,11 +153,11 @@ namespace gum {
     GUM_OP_CPY( RefPtr );
     // keep track of the current refcount and dumb pointer
     unsigned int* old_refcount = __refcount;
-    Val* old_val               = __val;
+    Val*          old_val = __val;
 
     // perform the copy
     __refcount = from.__refcount;
-    __val      = from.__val;
+    __val = from.__val;
 
     if ( __refcount ) ++*__refcount;
 
@@ -236,9 +236,9 @@ namespace gum {
   INLINE void RefPtr<Val>::clear() {
     // keep track of the old pointer and reference count
     unsigned int* old_refcount = __refcount;
-    Val* old_val               = __val;
+    Val*          old_val = __val;
     // set properly the dumb pointer and its refcount
-    __val      = 0;
+    __val = 0;
     __refcount = 0;
     // now try to dereference the old dumb pointer
     __destroy( old_refcount, old_val );
@@ -265,13 +265,13 @@ namespace gum {
   template <typename Val>
   void swap( RefPtr<Val>& ptr1, RefPtr<Val>& ptr2 ) {
     // save from's content
-    Val* tmp_val               = ptr2.__val;
+    Val*          tmp_val = ptr2.__val;
     unsigned int* tmp_refcount = ptr2.__refcount;
     // modify from's content
     ptr2.__refcount = ptr1.__refcount;
-    ptr2.__val      = ptr1.__val;
+    ptr2.__val = ptr1.__val;
     // modify this's content
-    ptr1.__val      = tmp_val;
+    ptr1.__val = tmp_val;
     ptr1.__refcount = tmp_refcount;
   }
 

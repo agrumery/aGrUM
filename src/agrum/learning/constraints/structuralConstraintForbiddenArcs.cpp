@@ -50,8 +50,7 @@ namespace gum {
     /// copy constructor
     StructuralConstraintForbiddenArcs::StructuralConstraintForbiddenArcs(
         const StructuralConstraintForbiddenArcs& from )
-        : _ForbiddenArcs__forbidden_arcs(
-              from._ForbiddenArcs__forbidden_arcs ) {
+        : _ForbiddenArcs__forbidden_arcs( from._ForbiddenArcs__forbidden_arcs ) {
       GUM_CONS_CPY( StructuralConstraintForbiddenArcs );
     }
 

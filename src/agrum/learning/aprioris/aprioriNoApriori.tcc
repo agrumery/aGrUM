@@ -54,7 +54,7 @@ namespace gum {
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>*
-    AprioriNoApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
+           AprioriNoApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new AprioriNoApriori<IdSetAlloc, CountAlloc>( *this );
     }
 
@@ -74,15 +74,15 @@ namespace gum {
 
     /// indicates whether an apriori is of a certain type
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE bool AprioriNoApriori<IdSetAlloc, CountAlloc>::isOfType(
-        const std::string& type ) {
+    INLINE bool
+    AprioriNoApriori<IdSetAlloc, CountAlloc>::isOfType( const std::string& type ) {
       return AprioriNoAprioriType::isOfType( type );
     }
 
     /// returns the type of the apriori
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::string&
-    AprioriNoApriori<IdSetAlloc, CountAlloc>::getType() const noexcept {
+                 AprioriNoApriori<IdSetAlloc, CountAlloc>::getType() const noexcept {
       return AprioriNoAprioriType::type;
     }
 

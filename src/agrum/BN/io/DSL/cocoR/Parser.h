@@ -60,18 +60,18 @@ namespace gum {
     class Parser {
       private:
       enum {
-        _EOF         = 0,
-        _ident       = 1,
-        _integer     = 2,
-        _number      = 3,
-        _string      = 4,
+        _EOF = 0,
+        _ident = 1,
+        _integer = 2,
+        _number = 3,
+        _string = 4,
         _largestring = 5
       };
       int maxT;
 
       Token* dummyToken;
-      int errDist;
-      int minErrDist;
+      int    errDist;
+      int    minErrDist;
 
       void SynErr( int n );
       void Get();
@@ -105,11 +105,10 @@ namespace gum {
       }
 
       void __checkSizeOfProbabilityAssignation( const std::vector<float>& v,
-                                                const std::string& var,
-                                                int res ) {
+                                                const std::string&        var,
+                                                int                       res ) {
         if ( (int)v.size() < res )
-          Warning( "Not enough data in probability assignation for node " +
-                   var );
+          Warning( "Not enough data in probability assignation for node " + var );
         if ( (int)v.size() > res )
           Warning( "Too many data in probability assignation for node " + var );
       }
@@ -123,7 +122,7 @@ namespace gum {
       void SynErr( const std::wstring& filename, int line, int col, int n );
       void Warning( const wchar_t* msg );
       const ErrorsContainer& errors() const;
-      ErrorsContainer& errors();
+      ErrorsContainer&       errors();
 
       void DSL();
       void IDENT( std::string& name );
@@ -141,17 +140,17 @@ namespace gum {
       void OBSERVATION_COST_PART();
       void HEADER();
       void PARENTS( std::vector<std::string>& parents );
-      void VARIABLE_DEFINITION( int& nbrMod,
-                                std::string& var,
+      void VARIABLE_DEFINITION( int&                            nbrMod,
+                                std::string&                    var,
                                 const std::vector<std::string>& parents );
       void EXTRA_DEFINITION_PART();
       void BLOC_PART();
       void PARENTS_LIST( std::vector<std::string>& parents );
       void MODALITY_LIST( int& nbrMod );
-      void PROBA( const std::string& var,
+      void PROBA( const std::string&              var,
                   const std::vector<std::string>& parents );
       void IDENT_OR_INTEGER( std::string& name );
-      void RAW_PROBA( const std::string& var,
+      void RAW_PROBA( const std::string&              var,
                       const std::vector<std::string>& parents );
       void FLOAT_LIST( std::vector<float>& v );
       void FLOAT( float& val );

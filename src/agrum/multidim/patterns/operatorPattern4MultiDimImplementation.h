@@ -41,7 +41,7 @@ namespace gum {
 #endif
 
     typename OperatorRegister4MultiDim<T>::OperatorPtr func;
-    bool swapped_names = false;
+    bool                                               swapped_names = false;
 
     // get the appropriate function to perform the operation
     try {
@@ -65,9 +65,7 @@ namespace gum {
 #endif /* GUM_MULTI_DIM_SYMMETRIC_OPERATOR */
 
         func = OperatorRegister4MultiDim<T>::Register().get(
-            GUM_MULTI_DIM_OPERATOR_FUNC_NAME,
-            impl1.basename(),
-            impl2.basename() );
+            GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.basename(), impl2.basename() );
 
 #ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
       }

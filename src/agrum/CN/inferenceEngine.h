@@ -57,13 +57,13 @@ namespace gum {
       private:
       //@beforeMerging swapping from typedef to using
       using credalSet = NodeProperty<std::vector<std::vector<GUM_SCALAR>>>;
-      using margi     = NodeProperty<std::vector<GUM_SCALAR>>;
-      using expe      = NodeProperty<GUM_SCALAR>;
+      using margi = NodeProperty<std::vector<GUM_SCALAR>>;
+      using expe = NodeProperty<GUM_SCALAR>;
 
       using dynExpe =
           typename gum::HashTable<std::string, std::vector<GUM_SCALAR>>;
 
-      using query   = NodeProperty<std::vector<bool>>;
+      using query = NodeProperty<std::vector<bool>>;
       using cluster = NodeProperty<std::vector<NodeId>>;
 
       protected:
@@ -200,7 +200,7 @@ namespace gum {
        * @param id The id of the node to be updated
        * @param vertex A (potential) vertex of the node credal set
        */
-      inline void _updateExpectations( const NodeId& id,
+      inline void _updateExpectations( const NodeId&                  id,
                                        const std::vector<GUM_SCALAR>& vertex );
 
       /**
@@ -214,7 +214,7 @@ namespace gum {
        * @param vertex A (potential) vertex of the node credal set
        * @param elimRedund remove redundant vertex (inside a facet)
        */
-      inline void _updateCredalSets( const NodeId& id,
+      inline void _updateCredalSets( const NodeId&                  id,
                                      const std::vector<GUM_SCALAR>& vertex,
                                      const bool& elimRedund = false );
 
@@ -331,8 +331,8 @@ namespace gum {
        * Insert variables modalities from map to compute expectations.
        * @param modals The map variable name - modalities.
        */
-      void insertModals(
-          const std::map<std::string, std::vector<GUM_SCALAR>>& modals );
+      void
+      insertModals( const std::map<std::string, std::vector<GUM_SCALAR>>& modals );
 
       /**
        * Insert evidence from file.
@@ -351,8 +351,7 @@ namespace gum {
        * Insert evidence from Property.
        * @param evidence The on nodes Property containing likelihoods.
        */
-      void
-      insertEvidence( const NodeProperty<std::vector<GUM_SCALAR>>& evidence );
+      void insertEvidence( const NodeProperty<std::vector<GUM_SCALAR>>& evidence );
 
       /**
        * Insert query variables states from file.

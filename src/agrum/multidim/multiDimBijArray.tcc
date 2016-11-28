@@ -84,7 +84,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE MultiDimBijArray<GUM_SCALAR>*
-  MultiDimBijArray<GUM_SCALAR>::newFactory() const {
+         MultiDimBijArray<GUM_SCALAR>::newFactory() const {
     return new MultiDimBijArray<GUM_SCALAR>( *this );
   }
 
@@ -132,9 +132,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void
-  MultiDimBijArray<GUM_SCALAR>::set( const Instantiation& i,
-                                     const GUM_SCALAR& value ) const {
+  INLINE void MultiDimBijArray<GUM_SCALAR>::set( const Instantiation& i,
+                                                 const GUM_SCALAR& value ) const {
     GUM_ERROR( OperationNotAllowed,
                "MultiDimBijArray<GUM_SCALAR> are read only." );
   }

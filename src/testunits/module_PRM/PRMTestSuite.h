@@ -69,14 +69,13 @@ namespace gum_tests {
                                         prm->getClass( "SafeComputer" ) ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete c );
       gum::prm::InstanceBayesNet<double>* inst = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          inst = new gum::prm::InstanceBayesNet<double>(
-              prm->getSystem( "aSys" ).get( "c1" ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( inst = new gum::prm::InstanceBayesNet<double>(
+                                        prm->getSystem( "aSys" ).get( "c1" ) ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete inst );
     }
 
     void testClassAccess() {
-      gum::prm::PRMClass<double>& c       = prm->getClass( "SafeComputer" );
+      gum::prm::PRMClass<double>&      c = prm->getClass( "SafeComputer" );
       gum::prm::ClassBayesNet<double>* bn = 0;
       TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::prm::ClassBayesNet<double>(
                                         prm->getClass( "SafeComputer" ) ) );
@@ -89,8 +88,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( id = bn->idFromName( attr->safeName() ) );
         TS_GUM_ASSERT_THROWS_NOTHING( bn->cpt( id ) );
         TS_ASSERT_EQUALS( attr->cpf().nbrDim(), bn->cpt( id ).nbrDim() );
-        TS_ASSERT_EQUALS( attr->cpf().domainSize(),
-                          bn->cpt( id ).domainSize() );
+        TS_ASSERT_EQUALS( attr->cpf().domainSize(), bn->cpt( id ).domainSize() );
       }
 
       TS_ASSERT( bn->modalities().size() > 0 );
@@ -99,7 +97,7 @@ namespace gum_tests {
 
     void testInstanceAccess() {
       gum::prm::InstanceBayesNet<double>* bn = 0;
-      gum::prm::PRMInstance<double>& i = prm->getSystem( "aSys" ).get( "c1" );
+      gum::prm::PRMInstance<double>&      i = prm->getSystem( "aSys" ).get( "c1" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           bn = new gum::prm::InstanceBayesNet<double>( i ) );
       TS_ASSERT_EQUALS( bn->size(), i.size() );
@@ -122,7 +120,7 @@ namespace gum_tests {
 
     void testGroundedBN() {
       gum::prm::PRMSystem<double>& sys = prm->getSystem( "aSys" );
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>        bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
       int count = 0;
@@ -139,10 +137,9 @@ namespace gum_tests {
 
       for ( const auto node : bn.nodes() ) {
         wount++;
-        std::string var = bn.variable( node ).name();
-        size_t pos      = var.find_first_of( '.' );
-        gum::prm::PRMInstance<double>& instance =
-            sys.get( var.substr( 0, pos ) );
+        std::string                     var = bn.variable( node ).name();
+        size_t                          pos = var.find_first_of( '.' );
+        gum::prm::PRMInstance<double>&  instance = sys.get( var.substr( 0, pos ) );
         gum::prm::PRMAttribute<double>& attr =
             instance.get( var.substr( pos + 1 ) );
         TS_ASSERT_DIFFERS( bn.cpt( node ).nbrDim(), (gum::Size)0 );
@@ -194,13 +191,13 @@ namespace gum_tests {
 
     void testNormalisedCPT() {
       gum::prm::PRMSystem<double>& sys = prm->getSystem( "aSys" );
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>        bn;
       gum::BayesNetFactory<double> bn_factory( &bn );
       TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( bn_factory ) );
 
       for ( const auto node : bn.nodes() ) {
         const gum::Potential<double>& cpt = bn.cpt( node );
-        gum::Instantiation i( cpt ), j;
+        gum::Instantiation            i( cpt ), j;
         j.add( bn.variable( node ) );
 
         for ( i.setFirstOut( j ); !i.end(); i.incOut( j ) ) {

@@ -42,8 +42,8 @@ namespace gum {
 
     // Build the class dependency graph.
     template <typename GUM_SCALAR>
-    void ClassDependencyGraph<GUM_SCALAR>::__buildGraph(
-        const PRM<GUM_SCALAR>& prm ) {
+    void
+    ClassDependencyGraph<GUM_SCALAR>::__buildGraph( const PRM<GUM_SCALAR>& prm ) {
       // First we add all nodes
       for ( const auto ci : prm.classes() ) {
         __node_map.insert(
@@ -72,7 +72,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     void ClassDependencyGraph<GUM_SCALAR>::__addArcs(
         const PRMClassElementContainer<GUM_SCALAR>& c,
-        NodeId node,
+        NodeId                                      node,
         HashTable<const PRMClassElement<GUM_SCALAR>*, NodeId>& map ) {
       switch ( c.get( node ).elt_type() ) {
         case PRMClassElement<GUM_SCALAR>::prm_slotchain: {
@@ -138,20 +138,20 @@ namespace gum {
     template <typename GUM_SCALAR>
     INLINE NodeId ClassDependencyGraph<GUM_SCALAR>::get(
         const PRMClassElementContainer<GUM_SCALAR>& c,
-        const PRMClassElement<GUM_SCALAR>& elt ) const {
+        const PRMClassElement<GUM_SCALAR>&          elt ) const {
       return ( *( __node_map[&c] ) )[&elt];
     }
 
     template <typename GUM_SCALAR>
     INLINE const NodeProperty<Size>&
-    ClassDependencyGraph<GUM_SCALAR>::modalities() const {
+                 ClassDependencyGraph<GUM_SCALAR>::modalities() const {
       return __modalitites;
     }
 
     template <typename GUM_SCALAR>
     INLINE void ClassDependencyGraph<GUM_SCALAR>::__addNode(
         const PRMClassElementContainer<GUM_SCALAR>* c,
-        const PRMClassElement<GUM_SCALAR>& elt ) {
+        const PRMClassElement<GUM_SCALAR>&          elt ) {
       switch ( elt.elt_type() ) {
         case PRMClassElement<GUM_SCALAR>::prm_attribute:
         case PRMClassElement<GUM_SCALAR>::prm_aggregate: {

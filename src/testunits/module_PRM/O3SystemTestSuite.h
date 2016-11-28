@@ -42,8 +42,7 @@ namespace gum_tests {
           // printers.o3prm
           auto path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
           simple_printers = new gum::prm::PRM<double>();
-          auto factory =
-              gum::prm::o3prm::O3prmReader<double>( *simple_printers );
+          auto factory = gum::prm::o3prm::O3prmReader<double>( *simple_printers );
           factory.readFile( path );
           if ( factory.errors() > 0 ) {
             factory.showElegantErrorsAndWarnings();
@@ -55,8 +54,7 @@ namespace gum_tests {
           // complex_printers.o3prm
           auto path = GET_RESSOURCES_PATH( "o3prm/complexprinters.o3prm" );
           complex_printers = new gum::prm::PRM<double>();
-          auto factory =
-              gum::prm::o3prm::O3prmReader<double>( *complex_printers );
+          auto factory = gum::prm::o3prm::O3prmReader<double>( *complex_printers );
           factory.readFile( path, "fr.lip6.printers" );
           if ( factory.errors() > 0 ) {
             factory.showElegantErrorsAndWarnings();

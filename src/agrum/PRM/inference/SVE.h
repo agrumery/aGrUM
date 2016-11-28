@@ -102,7 +102,7 @@ namespace gum {
 
       /// See PRMInference<GUM_SCALAR>::_joint().
       virtual void _joint( const std::vector<Chain>& queries,
-                           Potential<GUM_SCALAR>& j );
+                           Potential<GUM_SCALAR>&    j );
 
       /// @}
       private:
@@ -113,11 +113,10 @@ namespace gum {
           typename Set<Potential<GUM_SCALAR>*>::iterator_safe BucketSetIterator;
 
       /// Code alias
-      typedef typename Set<MultiDimArray<GUM_SCALAR>*>::iterator_safe
-          ArraySetIterator;
+      typedef
+          typename Set<MultiDimArray<GUM_SCALAR>*>::iterator_safe ArraySetIterator;
 
-      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*>
-          __elim_orders;
+      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
 
       HashTable<const PRMClass<GUM_SCALAR>*, BucketSet*> __lifted_pools;
 
@@ -140,44 +139,44 @@ namespace gum {
       /// @{
 
       void __eliminateNodes( const PRMInstance<GUM_SCALAR>* query,
-                             NodeId id,
-                             BucketSet& pool,
-                             BucketSet& trash );
-
-      void __eliminateNodesDownward(
-          const PRMInstance<GUM_SCALAR>* from,
-          const PRMInstance<GUM_SCALAR>* i,
-          BucketSet& pool,
-          BucketSet& trash,
-          List<const PRMInstance<GUM_SCALAR>*>& elim_list,
-          Set<const PRMInstance<GUM_SCALAR>*>& ignore,
-          Set<const PRMInstance<GUM_SCALAR>*>& eliminated );
+                             NodeId                         id,
+                             BucketSet&                     pool,
+                             BucketSet&                     trash );
 
       void
-      __eliminateNodesUpward( const PRMInstance<GUM_SCALAR>* i,
-                              BucketSet& pool,
-                              BucketSet& trash,
+      __eliminateNodesDownward( const PRMInstance<GUM_SCALAR>*        from,
+                                const PRMInstance<GUM_SCALAR>*        i,
+                                BucketSet&                            pool,
+                                BucketSet&                            trash,
+                                List<const PRMInstance<GUM_SCALAR>*>& elim_list,
+                                Set<const PRMInstance<GUM_SCALAR>*>&  ignore,
+                                Set<const PRMInstance<GUM_SCALAR>*>&  eliminated );
+
+      void
+      __eliminateNodesUpward( const PRMInstance<GUM_SCALAR>*        i,
+                              BucketSet&                            pool,
+                              BucketSet&                            trash,
                               List<const PRMInstance<GUM_SCALAR>*>& elim_list,
-                              Set<const PRMInstance<GUM_SCALAR>*>& ignore,
-                              Set<const PRMInstance<GUM_SCALAR>*>& eliminated );
+                              Set<const PRMInstance<GUM_SCALAR>*>&  ignore,
+                              Set<const PRMInstance<GUM_SCALAR>*>&  eliminated );
 
       void __eliminateNodesWithEvidence( const PRMInstance<GUM_SCALAR>* i,
-                                         BucketSet& pool,
-                                         BucketSet& trash,
+                                         BucketSet&                     pool,
+                                         BucketSet&                     trash,
                                          Set<NodeId>* delayedVars = 0 );
 
       void __eliminateDelayedVariables( const PRMInstance<GUM_SCALAR>* i,
-                                        BucketSet& pool,
-                                        BucketSet& trash );
+                                        BucketSet&                     pool,
+                                        BucketSet&                     trash );
 
       void __insertLiftedNodes( const PRMInstance<GUM_SCALAR>* i,
-                                BucketSet& pool,
-                                BucketSet& trash );
+                                BucketSet&                     pool,
+                                BucketSet&                     trash );
 
       void __variableElimination( const PRMInstance<GUM_SCALAR>* i,
-                                  BucketSet& pool,
-                                  BucketSet& trash,
-                                  Set<NodeId>* delayedVars = 0 );
+                                  BucketSet&                     pool,
+                                  BucketSet&                     trash,
+                                  Set<NodeId>*                   delayedVars = 0 );
 
       /// Returns true if second can be eliminated before first.
       bool __checkElimOrder( const PRMInstance<GUM_SCALAR>* first,
@@ -185,8 +184,7 @@ namespace gum {
 
       void __initElimOrder();
 
-      void __insertEvidence( const PRMInstance<GUM_SCALAR>* i,
-                             BucketSet& pool );
+      void __insertEvidence( const PRMInstance<GUM_SCALAR>* i, BucketSet& pool );
 
       /// When there is a loop in the references some variable elimination
       /// must be delayed, this methods add such variable to __delayedVariables
@@ -196,12 +194,12 @@ namespace gum {
       /// @param id The NodeId of the delayed variable.
       void __addDelayedVariable( const PRMInstance<GUM_SCALAR>* i,
                                  const PRMInstance<GUM_SCALAR>* j,
-                                 NodeId id );
+                                 NodeId                         id );
 
       std::vector<NodeId>& __getElimOrder( const PRMClass<GUM_SCALAR>& c );
 
       Potential<GUM_SCALAR>*
-      __getAggPotential( const PRMInstance<GUM_SCALAR>* i,
+      __getAggPotential( const PRMInstance<GUM_SCALAR>*  i,
                          const PRMAggregate<GUM_SCALAR>* agg );
 
       void __initLiftedNodes( const PRMClass<GUM_SCALAR>& c );

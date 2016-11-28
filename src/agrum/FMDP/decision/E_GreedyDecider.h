@@ -95,7 +95,7 @@ namespace gum {
 
     private:
     StatesChecker __statecpt;
-    double __sss;
+    double        __sss;
   };
 }
 #endif  // GUM_E_GREEDY_DECIDER_H

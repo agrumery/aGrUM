@@ -97,7 +97,7 @@ namespace gum {
               ++iter, ++jter ) {
           if ( ( **iter ) != ( **jter ) ) {
             EdgeCode& alpha = **iter;
-            EdgeCode& beta  = **jter;
+            EdgeCode& beta = **jter;
 
             if ( alpha.isBackward() ) {
               if ( beta.isForward() ) {
@@ -105,8 +105,7 @@ namespace gum {
               } else if ( alpha.j < beta.j ) {
                 // beta is a backward edge
                 return true;
-              } else if ( ( alpha.j == beta.j ) &&
-                          ( alpha.l_ij < beta.l_ij ) ) {
+              } else if ( ( alpha.j == beta.j ) && ( alpha.l_ij < beta.l_ij ) ) {
                 return true;
               }
 

@@ -42,7 +42,7 @@ namespace gum_tests {
 
   class aSimpleGibbsListener : public gum::ApproximationSchemeListener {
     private:
-    int __nbr;
+    int         __nbr;
     std::string __mess;
 
     public:
@@ -50,29 +50,28 @@ namespace gum_tests {
         : gum::ApproximationSchemeListener( sch )
         , __nbr( 0 )
         , __mess( "" ){};
-    void whenProgress( const void* buffer,
+    void whenProgress( const void*     buffer,
                        const gum::Size a,
-                       const double b,
-                       const double c ) {
+                       const double    b,
+                       const double    c ) {
       __nbr++;
     }
     void whenStop( const void* buffer, const std::string s ) { __mess = s; }
 
-    int getNbr() { return __nbr; }
+    int         getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
   };
 
   class GibbsInferenceTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<float>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::BayesNet<float>*  bn;
+    gum::NodeId            i1, i2, i3, i4, i5;
     gum::Potential<float> *e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
-          n3( "3", "", 2 );
+      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
       gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
       i1 = bn->add( n1 );
@@ -126,8 +125,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA( p3.get( j ), 1.0f, 1e-5 );
 
       TS_ASSERT( bn->cpt( i4 ).nbrDim() == 3 );
-      bn->cpt( i4 ).fillWith(
-          {0.4f, 0.6f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f, 0.0f} );
+      bn->cpt( i4 ).fillWith( {0.4f, 0.6f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f, 0.0f} );
       // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
       auto p4 = bn->cpt( i4 ).margSumOut( {&( bn->variable( i4 ) )} );
       for ( gum::Instantiation j( p4 ); !j.end(); ++j )

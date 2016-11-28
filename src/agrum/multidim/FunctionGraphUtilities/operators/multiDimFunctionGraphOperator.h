@@ -47,8 +47,7 @@ namespace gum {
   // clang-format on
   template <typename GUM_SCALAR,
             template <typename> class FUNCTOR,
-            template <typename> class TerminalNodePolicy =
-                ExactTerminalNodePolicy>
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
   class MultiDimFunctionGraphOperator {
     public:
     // ============================================================================
@@ -97,16 +96,15 @@ namespace gum {
 
     /// Heuristic methods to decide which of two retrograde variables should
     /// come first
-    Idx
-    __distance( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*,
-                const DiscreteVariable*,
-                const DiscreteVariable* );
+    Idx __distance( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*,
+                    const DiscreteVariable*,
+                    const DiscreteVariable* );
 
     /// Establish for each node in both function graph if it has retrograde
     /// variables beneath it
     void __findRetrogradeVariables(
         const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
-        HashTable<NodeId, short int*>& dgInstNeed );
+        HashTable<NodeId, short int*>&                               dgInstNeed );
 
     /// The main recursion function
     NodeId __compute( O4DGContext& currentSituation, Idx lastInstVarPos );

@@ -359,10 +359,10 @@ namespace gum {
    * Some typdefs and define for shortcuts ...
    */
   typedef Set<NodeId> NodeSet;
-  typedef Set<Edge> EdgeSet;
-  typedef Set<Arc> ArcSet;
+  typedef Set<Edge>   EdgeSet;
+  typedef Set<Arc>    ArcSet;
 
-  typedef ArcSet::const_iterator ArcSetIterator;
+  typedef ArcSet::const_iterator  ArcSetIterator;
   typedef EdgeSet::const_iterator EdgeSetIterator;
   typedef NodeSet::const_iterator NodeSetIterator;
   /** @} */

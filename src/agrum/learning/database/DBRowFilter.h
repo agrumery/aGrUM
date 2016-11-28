@@ -72,19 +72,19 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowFilter( const DBHandler& handler,
-                   const TranslatorSet& translator_set,
-                   const GeneratorSet& generator_set,
-                   Size initialization_range =
-                       std::numeric_limits<Size>::max() ) noexcept;
+      DBRowFilter(
+          const DBHandler&     handler,
+          const TranslatorSet& translator_set,
+          const GeneratorSet&  generator_set,
+          Size initialization_range = std::numeric_limits<Size>::max() ) noexcept;
 
       /// copy constructor
       DBRowFilter( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
                        filter ) noexcept;
 
       /// move constructor
-      DBRowFilter( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&&
-                       filter ) noexcept;
+      DBRowFilter(
+          DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& filter ) noexcept;
 
       /// destructor
       virtual ~DBRowFilter() noexcept;
@@ -226,20 +226,17 @@ namespace gum {
      * @endcode
      */
     template <typename Database, typename TranslatorSet, typename GeneratorSet>
-    constexpr DBRowFilter<typename Database::Handler,
-                          TranslatorSet,
-                          GeneratorSet>
+    constexpr DBRowFilter<typename Database::Handler, TranslatorSet, GeneratorSet>
     make_DB_row_filter(
-        const Database& database,
+        const Database&      database,
         const TranslatorSet& translator_set,
-        const GeneratorSet& generator_set,
+        const GeneratorSet&  generator_set,
         Size initialization_range = std::numeric_limits<Size>::max() ) {
-      return DBRowFilter<typename Database::Handler,
-                         TranslatorSet,
-                         GeneratorSet>( database.handler(),
-                                        translator_set,
-                                        generator_set,
-                                        initialization_range );
+      return DBRowFilter<typename Database::Handler, TranslatorSet, GeneratorSet>(
+          database.handler(),
+          translator_set,
+          generator_set,
+          initialization_range );
     }
 
   } /* namespace learning */

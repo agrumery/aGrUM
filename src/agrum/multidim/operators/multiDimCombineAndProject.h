@@ -65,8 +65,7 @@ namespace gum {
      * @return a new fresh MultiDimCombineAndProject with the same combination
      * and projection functions.
      */
-    virtual MultiDimCombineAndProject<GUM_SCALAR, TABLE>*
-    newFactory() const = 0;
+    virtual MultiDimCombineAndProject<GUM_SCALAR, TABLE>* newFactory() const = 0;
 
     /// @}
     // ========================================================================
@@ -86,7 +85,7 @@ namespace gum {
      */
     virtual Set<const TABLE<GUM_SCALAR>*>
     combineAndProject( Set<const TABLE<GUM_SCALAR>*> set,
-                       Set<const DiscreteVariable*> del_vars ) = 0;
+                       Set<const DiscreteVariable*>  del_vars ) = 0;
 
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction( TABLE<GUM_SCALAR>* ( *combine )(
@@ -110,7 +109,7 @@ namespace gum {
      */
     virtual float
     nbOperations( const Set<const TABLE<GUM_SCALAR>*>& set,
-                  const Set<const DiscreteVariable*>& del_vars ) const = 0;
+                  const Set<const DiscreteVariable*>&  del_vars ) const = 0;
     virtual std::pair<long, long>
     memoryUsage( const Set<const Sequence<const DiscreteVariable*>*>& set,
                  Set<const DiscreteVariable*> del_vars ) const = 0;

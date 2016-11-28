@@ -49,9 +49,9 @@ namespace gum {
       DBRow();
 
       /// constructor with a given size for the row
-      DBRow( Size size,
+      DBRow( Size          size,
              const DBCell& default_cell = DBCell(),
-             double weight              = 1.0f );
+             double        weight = 1.0f );
 
       /// initializer list constructor
       DBRow( std::initializer_list<DBCell>& list );

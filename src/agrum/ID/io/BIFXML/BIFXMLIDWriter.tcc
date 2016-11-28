@@ -65,8 +65,7 @@ namespace gum {
       else if ( infdiag.isUtilityNode( node ) )
         nodeType = 3;
 
-      output << __variableBloc( infdiag.variable( node ), nodeType )
-             << std::endl;
+      output << __variableBloc( infdiag.variable( node ), nodeType ) << std::endl;
     }
 
     output << "<!-- Probability distributions -->" << std::endl;
@@ -154,7 +153,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE std::string
   BIFXMLIDWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var,
-                                              int varType ) {
+                                              int                     varType ) {
     //<VARIABLE TYPE="nature|decision|utility">
     //<NAME>name</NAME>
     //<OUTCOME>outcome1</OUTCOME>

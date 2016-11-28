@@ -200,8 +200,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( frag.sizeArcs(), (gum::Size)2 );
 
       // uninstall node 3 (in the middle)
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          frag.uninstallNode( bn.idFromName( "v3" ) ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( frag.uninstallNode( bn.idFromName( "v3" ) ) );
       TS_ASSERT_EQUALS( frag.size(), (gum::Size)2 );
       TS_ASSERT_EQUALS( frag.sizeArcs(), (gum::Size)0 );
     }
@@ -479,8 +478,8 @@ namespace gum_tests {
                  << bn.variable( bn.idFromName( "v3" ) );
 
       const gum::Potential<float>& pot2 = bn2.cpt( bn2.idFromName( "v5" ) );
-      gum::Instantiation I( pot2 );
-      gum::Instantiation J( *newV5 );
+      gum::Instantiation           I( pot2 );
+      gum::Instantiation           J( *newV5 );
 
       for ( I.setFirst(), J.setFirst(); !I.end(); ++I, ++J )
         newV5->set( J, pot2[I] );

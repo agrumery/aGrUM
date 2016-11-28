@@ -473,8 +473,8 @@ namespace gum_tests {
 
       TS_ASSERT( t1 == obtained2 );
 
-      gum::Set<int>::iterator iter1;
-      gum::Set<int>::iterator iter2( t1 );
+      gum::Set<int>::iterator       iter1;
+      gum::Set<int>::iterator       iter2( t1 );
       gum::Set<int>::const_iterator iter3( iter1 );
       gum::Set<int>::const_iterator iter4( iter2 );
       TS_ASSERT( iter4 == iter2 );
@@ -528,8 +528,8 @@ namespace gum_tests {
 
       TS_ASSERT( t1 == obtained );
 
-      gum::Set<int>::iterator iter1;
-      gum::Set<int>::iterator iter2( t1 );
+      gum::Set<int>::iterator       iter1;
+      gum::Set<int>::iterator       iter2( t1 );
       gum::Set<int>::const_iterator iter3( iter1 );
       gum::Set<int>::const_iterator iter4( iter2 );
       TS_ASSERT( iter4 == iter2 );

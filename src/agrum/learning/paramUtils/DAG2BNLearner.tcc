@@ -33,7 +33,7 @@ namespace gum {
     /// copy a potential into another whose variables' sequence differs
     template <typename GUM_SCALAR>
     void DAG2BNLearner::__probaVarReordering(
-        gum::Potential<GUM_SCALAR>& pot,
+        gum::Potential<GUM_SCALAR>&       pot,
         const gum::Potential<GUM_SCALAR>& other_pot ) {
       // check that the variables are identical
       if ( !pot.variablesSequence()
@@ -57,11 +57,11 @@ namespace gum {
               typename PARAM_ESTIMATOR,
               typename CELL_TRANSLATORS>
     BayesNet<GUM_SCALAR>
-    DAG2BNLearner::createBN( PARAM_ESTIMATOR& estimator,
-                             const DAG& dag,
+    DAG2BNLearner::createBN( PARAM_ESTIMATOR&                estimator,
+                             const DAG&                      dag,
                              const std::vector<std::string>& names,
-                             const std::vector<Size>& modal,
-                             const CELL_TRANSLATORS& translator ) {
+                             const std::vector<Size>&        modal,
+                             const CELL_TRANSLATORS&         translator ) {
       BayesNet<GUM_SCALAR> bn;
 
       // create a bn with dummy parameters corresponding to the dag
@@ -86,8 +86,8 @@ namespace gum {
       estimator.clear();
       for ( const auto id : dag ) {
         // get the sequence of variables and make the targets be the last
-        const Potential<GUM_SCALAR>& pot       = bn.cpt( id );
-        const DiscreteVariable& var            = varmap.get( id );
+        const Potential<GUM_SCALAR>&      pot = bn.cpt( id );
+        const DiscreteVariable&           var = varmap.get( id );
         Sequence<const DiscreteVariable*> vars = pot.variablesSequence();
         if ( vars.pos( &var ) != vars.size() - 1 ) {
           vars.erase( &var );
@@ -112,7 +112,7 @@ namespace gum {
         // get the variables of the CPT of id in the correct order
         Potential<GUM_SCALAR>& pot =
             const_cast<Potential<GUM_SCALAR>&>( bn.cpt( id ) );
-        const DiscreteVariable& var            = varmap.get( id );
+        const DiscreteVariable&           var = varmap.get( id );
         Sequence<const DiscreteVariable*> vars = pot.variablesSequence();
         if ( vars.pos( &var ) != vars.size() - 1 ) {
           vars.erase( &var );

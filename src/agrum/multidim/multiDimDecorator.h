@@ -106,7 +106,7 @@ namespace gum {
     virtual void erase( const DiscreteVariable& var ) final;
 
     virtual const Sequence<const DiscreteVariable*>&
-    variablesSequence() const final;
+                                    variablesSequence() const final;
     virtual const DiscreteVariable& variable( Idx ) const final;
 
     virtual Idx pos( const DiscreteVariable& var ) const final;
@@ -125,10 +125,10 @@ namespace gum {
 
     virtual bool registerSlave( Instantiation& i ) final;
 
-    virtual void changeNotification( Instantiation& i,
+    virtual void changeNotification( Instantiation&                i,
                                      const DiscreteVariable* const var,
-                                     const Idx& oldval,
-                                     const Idx& newval ) final;
+                                     const Idx&                    oldval,
+                                     const Idx&                    newval ) final;
 
     virtual void setChangeNotification( Instantiation& i ) final;
 
@@ -154,7 +154,7 @@ namespace gum {
      * Calls _get as a r-value.
      */
     virtual void set( const Instantiation& i,
-                      const GUM_SCALAR& value ) const final;
+                      const GUM_SCALAR&    value ) const final;
 
     /**
      * @brief Default implementation of MultiDimContainer::get().

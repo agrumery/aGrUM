@@ -42,8 +42,8 @@ namespace gum {
 
   template <typename T_TICKS>
   Idx DiscretizedVariable<T_TICKS>::_dichotomy( const T_TICKS& target,
-                                                Idx min,
-                                                Idx max ) const {
+                                                Idx            min,
+                                                Idx            max ) const {
     Idx res;
     Idx mid = 0;
 
@@ -230,7 +230,7 @@ namespace gum {
     }
 
     std::istringstream i( label );
-    T_TICKS target;
+    T_TICKS            target;
 
     if ( !( i >> target ) ) {
       GUM_ERROR( NotFound, "Bad label : " << label << " for " << *this );
@@ -250,7 +250,7 @@ namespace gum {
 
   template <typename T_TICKS>
   INLINE DiscreteVariable::VarType
-  DiscretizedVariable<T_TICKS>::varType( void ) const {
+         DiscretizedVariable<T_TICKS>::varType( void ) const {
     return VarType::Discretized;
   }
 

@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class aSimpleBNLeanerListener : public gum::ApproximationSchemeListener {
     private:
-    int __nbr;
+    int         __nbr;
     std::string __mess;
 
     public:
@@ -41,15 +41,15 @@ namespace gum_tests {
         : gum::ApproximationSchemeListener( sch )
         , __nbr( 0 )
         , __mess( "" ){};
-    void whenProgress( const void* buffer,
+    void whenProgress( const void*     buffer,
                        const gum::Size a,
-                       const double b,
-                       const double c ) {
+                       const double    b,
+                       const double    c ) {
       __nbr++;
     }
     void whenStop( const void* buffer, const std::string s ) { __mess = s; }
 
-    int getNbr() { return __nbr; }
+    int         getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
   };
 
@@ -164,8 +164,8 @@ namespace gum_tests {
       modals[2].insert( "bigbigbig" );
       modals[2].insert( "false" );
 
-      gum::learning::BNLearner<double> learner(
-          GET_RESSOURCES_PATH( "asia3.csv" ), modals );
+      gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
+                                                modals );
 
       learner.useGreedyHillClimbing();
       learner.setMaxIndegree( 10 );
@@ -312,8 +312,8 @@ namespace gum_tests {
       modals[2].insert( "bigbigbig" );
       modals[2].insert( "0" );
 
-      gum::learning::BNLearner<double> learner(
-          GET_RESSOURCES_PATH( "asia.csv" ), modals );
+      gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia.csv" ),
+                                                modals );
       learner.useGreedyHillClimbing();
       learner.setMaxIndegree( 10 );
       learner.useScoreLog2Likelihood();
@@ -488,14 +488,14 @@ namespace gum_tests {
 #undef createBoolVar
 
       gum::BayesNet<double> bn;
-      gum::NodeId ns = bn.add( s );
-      gum::NodeId nl = bn.add( l );
-      gum::NodeId nb = bn.add( b );
-      gum::NodeId nv = bn.add( v );
-      gum::NodeId nt = bn.add( t );
-      gum::NodeId no = bn.add( o );
-      gum::NodeId nd = bn.add( d );
-      gum::NodeId np = bn.add( p );
+      gum::NodeId           ns = bn.add( s );
+      gum::NodeId           nl = bn.add( l );
+      gum::NodeId           nb = bn.add( b );
+      gum::NodeId           nv = bn.add( v );
+      gum::NodeId           nt = bn.add( t );
+      gum::NodeId           no = bn.add( o );
+      gum::NodeId           nd = bn.add( d );
+      gum::NodeId           np = bn.add( p );
 
       bn.addArc( ns, nl );
       bn.addArc( ns, nb );
@@ -506,8 +506,8 @@ namespace gum_tests {
       bn.addArc( no, nd );
       bn.addArc( no, np );
 
-      gum::learning::BNLearner<double> learner(
-          GET_RESSOURCES_PATH( "asia3.csv" ), bn );
+      gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
+                                                bn );
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -552,14 +552,13 @@ namespace gum_tests {
       bn.add( d );
       bn.add( p );
 
-      gum::learning::BNLearner<double> learner(
-          GET_RESSOURCES_PATH( "asia3.csv" ), bn );
+      gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
+                                                bn );
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
 
-      TS_ASSERT_THROWS( gum::BayesNet<double> bn2 =
-                            learner.learnParameters( bn ),
+      TS_ASSERT_THROWS( gum::BayesNet<double> bn2 = learner.learnParameters( bn ),
                         gum::MissingVariableInDatabase );
     }
 
@@ -573,17 +572,17 @@ namespace gum_tests {
 #undef createBoolVar
 
       gum::BayesNet<double> bn;
-      gum::NodeId ns = bn.add( s );
-      gum::NodeId nt = bn.add( t );
-      gum::NodeId no = bn.add( o );
-      gum::NodeId nd = bn.add( d );
+      gum::NodeId           ns = bn.add( s );
+      gum::NodeId           nt = bn.add( t );
+      gum::NodeId           no = bn.add( o );
+      gum::NodeId           nd = bn.add( d );
 
       bn.addArc( ns, nt );
       bn.addArc( nt, no );
       bn.addArc( no, nd );
 
-      gum::learning::BNLearner<double> learner(
-          GET_RESSOURCES_PATH( "asia3.csv" ), bn );
+      gum::learning::BNLearner<double> learner( GET_RESSOURCES_PATH( "asia3.csv" ),
+                                                bn );
 
       learner.useScoreLog2Likelihood();
       learner.useAprioriSmoothing();
@@ -601,10 +600,10 @@ namespace gum_tests {
 #undef createBoolVar
 
       gum::BayesNet<double> bn;
-      gum::NodeId ns = bn.add( s );
-      gum::NodeId nt = bn.add( t );
-      gum::NodeId no = bn.add( o );
-      gum::NodeId nd = bn.add( d );
+      gum::NodeId           ns = bn.add( s );
+      gum::NodeId           nt = bn.add( t );
+      gum::NodeId           no = bn.add( o );
+      gum::NodeId           nd = bn.add( d );
 
       bn.addArc( ns, nt );
       bn.addArc( nt, no );
@@ -690,15 +689,13 @@ namespace gum_tests {
     void test_DBNTonda() {
       gum::BayesNet<double> dbn;
       gum::NodeId bf_0 = dbn.add( gum::LabelizedVariable( "bf_0", "bf_0", 4 ) );
-      /*gum::NodeId bf_t =*/dbn.add(
-          gum::LabelizedVariable( "bf_t", "bf_t", 4 ) );
-      gum::NodeId c_0  = dbn.add( gum::LabelizedVariable( "c_0", "c_0", 5 ) );
-      gum::NodeId c_t  = dbn.add( gum::LabelizedVariable( "c_t", "c_t", 5 ) );
-      gum::NodeId h_0  = dbn.add( gum::LabelizedVariable( "h_0", "h_0", 5 ) );
-      gum::NodeId h_t  = dbn.add( gum::LabelizedVariable( "h_t", "h_t", 5 ) );
+      /*gum::NodeId bf_t =*/dbn.add( gum::LabelizedVariable( "bf_t", "bf_t", 4 ) );
+      gum::NodeId c_0 = dbn.add( gum::LabelizedVariable( "c_0", "c_0", 5 ) );
+      gum::NodeId c_t = dbn.add( gum::LabelizedVariable( "c_t", "c_t", 5 ) );
+      gum::NodeId h_0 = dbn.add( gum::LabelizedVariable( "h_0", "h_0", 5 ) );
+      gum::NodeId h_t = dbn.add( gum::LabelizedVariable( "h_t", "h_t", 5 ) );
       gum::NodeId tf_0 = dbn.add( gum::LabelizedVariable( "tf_0", "tf_0", 5 ) );
-      /*gum::NodeId tf_t =*/dbn.add(
-          gum::LabelizedVariable( "tf_t", "tf_t", 5 ) );
+      /*gum::NodeId tf_t =*/dbn.add( gum::LabelizedVariable( "tf_t", "tf_t", 5 ) );
       gum::NodeId wl_0 = dbn.add( gum::LabelizedVariable( "wl_0", "wl_0", 4 ) );
       gum::NodeId wl_t = dbn.add( gum::LabelizedVariable( "wl_t", "wl_t", 4 ) );
 
@@ -724,8 +721,7 @@ namespace gum_tests {
         try {
           gum::NodeProperty<gum::Sequence<std::string>> modals;
           auto ds = std::vector<unsigned int>( {4, 4, 5, 5, 5, 5, 5, 5, 4, 4} );
-          auto labels =
-              std::vector<std::string>( {"0", "1", "2", "3", "4", "5"} );
+          auto labels = std::vector<std::string>( {"0", "1", "2", "3", "4", "5"} );
 
           for ( auto i = 0U; i < ds.size(); i++ ) {
             modals.insert( i, gum::Sequence<std::string>() );
@@ -754,19 +750,16 @@ namespace gum_tests {
         learn3 = learner.learnParameters( dbn );
       }
 
-      TS_ASSERT_EQUALS(
-          learn1.variable( learn1.idFromName( "wl_0" ) ).toString(),
-          "wl_0<1,0,2,3>" );
-      TS_ASSERT_EQUALS(
-          learn2.variable( learn2.idFromName( "wl_0" ) ).toString(),
-          "wl_0<0,1,2,3>" );
-      TS_ASSERT_EQUALS(
-          learn2.variable( learn3.idFromName( "wl_0" ) ).toString(),
-          "wl_0<0,1,2,3>" );
+      TS_ASSERT_EQUALS( learn1.variable( learn1.idFromName( "wl_0" ) ).toString(),
+                        "wl_0<1,0,2,3>" );
+      TS_ASSERT_EQUALS( learn2.variable( learn2.idFromName( "wl_0" ) ).toString(),
+                        "wl_0<0,1,2,3>" );
+      TS_ASSERT_EQUALS( learn2.variable( learn3.idFromName( "wl_0" ) ).toString(),
+                        "wl_0<0,1,2,3>" );
 
-      auto& p1 = learn1.cpt( learn1.idFromName( "c_0" ) );
-      auto& p2 = learn2.cpt( learn2.idFromName( "c_0" ) );
-      auto& p3 = learn3.cpt( learn3.idFromName( "c_0" ) );
+      auto&              p1 = learn1.cpt( learn1.idFromName( "c_0" ) );
+      auto&              p2 = learn2.cpt( learn2.idFromName( "c_0" ) );
+      auto&              p3 = learn3.cpt( learn3.idFromName( "c_0" ) );
       gum::Instantiation I1( p1 ), I2( p2 ), I3( p3 );
 
       for ( I1.setFirst(), I2.setFirst(), I3.setFirst(); !I1.end();

@@ -123,11 +123,11 @@ namespace gum {
      * @warning If del_vars is precisely equal to the variables of table, the
      * result is an empty table.
      */
-    TABLE<GUM_SCALAR>* project( const TABLE<GUM_SCALAR>& table,
+    TABLE<GUM_SCALAR>* project( const TABLE<GUM_SCALAR>&            table,
                                 const Set<const DiscreteVariable*>& del_vars );
 
-    void project( TABLE<GUM_SCALAR>& container,
-                  const TABLE<GUM_SCALAR>& table,
+    void project( TABLE<GUM_SCALAR>&                   container,
+                  const TABLE<GUM_SCALAR>&             table,
                   const Set<const TABLE<GUM_SCALAR>*>& del_vars );
 
     /// Changes the function used for projecting TABLES
@@ -142,7 +142,7 @@ namespace gum {
      * @brief returns a rough estimate of the number of operations that will be
      * performed to compute the projection.
      */
-    float nbOperations( const TABLE<GUM_SCALAR>& table,
+    float nbOperations( const TABLE<GUM_SCALAR>&            table,
                         const Set<const DiscreteVariable*>& del_vars ) const;
 
     /**
@@ -150,7 +150,7 @@ namespace gum {
      * performed to compute the projection.
      */
     float nbOperations( const Sequence<const DiscreteVariable*>& vars,
-                        const Set<const DiscreteVariable*>& del_vars ) const;
+                        const Set<const DiscreteVariable*>&      del_vars ) const;
 
     /**
      * @brief Returns the memory consumption used during the projection.
@@ -165,7 +165,7 @@ namespace gum {
      * by the resulting table )
      */
     std::pair<long, long>
-    memoryUsage( const TABLE<GUM_SCALAR>& table,
+    memoryUsage( const TABLE<GUM_SCALAR>&            table,
                  const Set<const DiscreteVariable*>& del_vars ) const;
 
     /**
@@ -182,7 +182,7 @@ namespace gum {
      */
     std::pair<long, long>
     memoryUsage( const Sequence<const DiscreteVariable*>& vars,
-                 const Set<const DiscreteVariable*>& del_vars ) const;
+                 const Set<const DiscreteVariable*>&      del_vars ) const;
 
     /// @}
 

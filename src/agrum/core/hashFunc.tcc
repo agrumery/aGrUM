@@ -45,8 +45,8 @@ namespace gum {
     }
 
     _hash_log2_size = __hashTableLog2( new_size );
-    _hash_size      = Size( 1 ) << _hash_log2_size;
-    _hash_mask      = _hash_size - 1;
+    _hash_size = Size( 1 ) << _hash_log2_size;
+    _hash_mask = _hash_size - 1;
   }
 
   template <typename Key>
@@ -202,8 +202,7 @@ namespace gum {
   }
 
   template <typename Type>
-  INLINE Size HashFunc<RefPtr<Type>>::
-  operator()( const RefPtr<Type>& key ) const {
+  INLINE Size HashFunc<RefPtr<Type>>::operator()( const RefPtr<Type>& key ) const {
     static_assert( sizeof( RefPtr<Type> ) == sizeof( long ),
                    "Error: HashFunc<Type*> assumes that pointers have a size "
                    "equal to a long integer" );

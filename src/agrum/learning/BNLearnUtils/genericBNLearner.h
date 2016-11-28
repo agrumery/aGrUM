@@ -142,7 +142,7 @@ namespace gum {
          * @param check_database If true, the database will be checked.
          *
          */
-        Database( std::string filename,
+        Database( std::string                                filename,
                   const NodeProperty<Sequence<std::string>>& modalities,
                   bool check_database = false );
 
@@ -172,8 +172,8 @@ namespace gum {
          * of id 1 in the BN will have 3 modalities, the first one being True,
          * the second one being False, and the third bein Big.
          */
-        Database( std::string filename,
-                  Database& score_database,
+        Database( std::string                                filename,
+                  Database&                                  score_database,
                   const NodeProperty<Sequence<std::string>>& modalities );
 
         /// copy constructor
@@ -250,8 +250,8 @@ namespace gum {
         /// the filtered row that reads the database
         DBRowFilter<DatabaseVectInRAM::Handler,
                     DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
-                    FilteredRowGeneratorSet<RowGeneratorIdentity>>*
-            __row_filter{nullptr};
+                    FilteredRowGeneratorSet<RowGeneratorIdentity>>* __row_filter{
+            nullptr};
 
         /// the modalities of the variables
         std::vector<Size> __modalities;
@@ -303,7 +303,7 @@ namespace gum {
        * as being exactly those of the variables of the BN (as a consequence,
        * if we find other values in the database, an exception will be raised
        * during learning). */
-      genericBNLearner( const std::string& filename,
+      genericBNLearner( const std::string&                         filename,
                         const NodeProperty<Sequence<std::string>>& modalities,
                         bool parse_database = false );
 
@@ -419,7 +419,7 @@ namespace gum {
       /** @param tabu_size indicate the size of the tabu list
        * @param nb_decrease indicate the max number of changes decreasing the
        * score consecutively that we allow to apply */
-      void useLocalSearchWithTabuList( Size tabu_size   = 100,
+      void useLocalSearchWithTabuList( Size tabu_size = 100,
                                        Size nb_decrease = 2 ) noexcept;
 
       /// indicate that we wish to use K2
@@ -455,8 +455,7 @@ namespace gum {
       /// @{
       void eraseForbiddenArc( const Arc& arc );
       void eraseForbiddenArc( const NodeId tail, const NodeId head );
-      void eraseForbiddenArc( const std::string& tail,
-                              const std::string& head );
+      void eraseForbiddenArc( const std::string& tail, const std::string& head );
       ///@}
 
       /// assign a set of forbidden arcs
@@ -473,8 +472,7 @@ namespace gum {
       ///@{
       void eraseMandatoryArc( const Arc& arc );
       void eraseMandatoryArc( const NodeId tail, const NodeId head );
-      void eraseMandatoryArc( const std::string& tail,
-                              const std::string& head );
+      void eraseMandatoryArc( const std::string& tail, const std::string& head );
       /// @}
 
       ///@}
@@ -607,9 +605,9 @@ namespace gum {
 
       INLINE void
       distributeProgress( const ApproximationScheme* approximationScheme,
-                          Size pourcent,
-                          double error,
-                          double time ) {
+                          Size                       pourcent,
+                          double                     error,
+                          double                     time ) {
         setCurrentApproximationScheme( approximationScheme );
 
         if ( onProgress.hasListener() )
@@ -617,9 +615,8 @@ namespace gum {
       };
 
       /// distribute signals
-      INLINE void
-      distributeStop( const ApproximationScheme* approximationScheme,
-                      std::string message ) {
+      INLINE void distributeStop( const ApproximationScheme* approximationScheme,
+                                  std::string                message ) {
         setCurrentApproximationScheme( approximationScheme );
 
         if ( onStop.hasListener() ) GUM_EMIT1( onStop, message );

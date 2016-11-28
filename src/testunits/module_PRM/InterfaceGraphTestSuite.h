@@ -32,9 +32,9 @@ namespace gum_tests {
 
     private:
     gum::prm::PRM<double>* __prm;
-    std::string source_dir;
-    std::string ressource_dir;
-    std::string printers;
+    std::string            source_dir;
+    std::string            ressource_dir;
+    std::string            printers;
 
     public:
     void setUp() {
@@ -55,7 +55,7 @@ namespace gum_tests {
 
     void testMicroTopologie() {
       gum::prm::gspan::InterfaceGraph<double>* ig = 0;
-      gum::prm::PRMSystem<double>& m = __prm->getSystem( "microSys" );
+      gum::prm::PRMSystem<double>&             m = __prm->getSystem( "microSys" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           ig = new gum::prm::gspan::InterfaceGraph<double>( m ) );
       // Checking existing nodes
@@ -80,7 +80,7 @@ namespace gum_tests {
 
     void testMicroLabelsOnNodes() {
       gum::prm::gspan::InterfaceGraph<double>* ig = 0;
-      gum::prm::PRMSystem<double>& m = __prm->getSystem( "microSys" );
+      gum::prm::PRMSystem<double>&             m = __prm->getSystem( "microSys" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           ig = new gum::prm::gspan::InterfaceGraph<double>( m ) );
       // Testing power supply
@@ -109,7 +109,7 @@ namespace gum_tests {
 
     void testMicroLabelsOnEdges() {
       gum::prm::gspan::InterfaceGraph<double>* ig = 0;
-      gum::prm::PRMSystem<double>& m = __prm->getSystem( "microSys" );
+      gum::prm::PRMSystem<double>&             m = __prm->getSystem( "microSys" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           ig = new gum::prm::gspan::InterfaceGraph<double>( m ) );
       // Test difference
@@ -139,7 +139,7 @@ namespace gum_tests {
 
     void testSmallTopologie() {
       gum::prm::gspan::InterfaceGraph<double>* ig = 0;
-      gum::prm::PRMSystem<double>& m = __prm->getSystem( "smallSys" );
+      gum::prm::PRMSystem<double>&             m = __prm->getSystem( "smallSys" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           ig = new gum::prm::gspan::InterfaceGraph<double>( m ) );
       // Checking existing nodes
@@ -149,22 +149,18 @@ namespace gum_tests {
       node_count += 2;
 
       for ( int i = 0; i < 2; ++i, ++node_count ) {
-        TS_ASSERT(
-            ig->graph().existsNode( ig->id( m.get( getPrinter( i ) ) ) ) );
+        TS_ASSERT( ig->graph().existsNode( ig->id( m.get( getPrinter( i ) ) ) ) );
       }
 
-      TS_ASSERT(
-          ig->graph().existsNode( ig->id( m.get( "another_printer" ) ) ) );
+      TS_ASSERT( ig->graph().existsNode( ig->id( m.get( "another_printer" ) ) ) );
 
       ++node_count;
 
       for ( int i = 0; i < 4; ++i, ++node_count ) {
-        TS_ASSERT(
-            ig->graph().existsNode( ig->id( m.get( getComputer( i ) ) ) ) );
+        TS_ASSERT( ig->graph().existsNode( ig->id( m.get( getComputer( i ) ) ) ) );
       }
 
-      TS_ASSERT(
-          ig->graph().existsNode( ig->id( m.get( "another_computer" ) ) ) );
+      TS_ASSERT( ig->graph().existsNode( ig->id( m.get( "another_computer" ) ) ) );
 
       ++node_count;
       TS_ASSERT_EQUALS( ig->graph().size(), (gum::Size)node_count );
@@ -172,22 +168,22 @@ namespace gum_tests {
       int edge_count = 0;
 
       for ( int i = 0; i < 2; ++i, ++edge_count ) {
-        TS_ASSERT( ig->graph().existsEdge(
-            ig->id( m.get( "pow" ) ), ig->id( m.get( getPrinter( i ) ) ) ) );
+        TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "pow" ) ),
+                                           ig->id( m.get( getPrinter( i ) ) ) ) );
       }
 
-      TS_ASSERT( ig->graph().existsEdge(
-          ig->id( m.get( "pow" ) ), ig->id( m.get( "another_printer" ) ) ) );
+      TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "pow" ) ),
+                                         ig->id( m.get( "another_printer" ) ) ) );
 
       ++edge_count;
 
       for ( int i = 0; i < 4; ++i, ++edge_count ) {
-        TS_ASSERT( ig->graph().existsEdge(
-            ig->id( m.get( "pow" ) ), ig->id( m.get( getComputer( i ) ) ) ) );
+        TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "pow" ) ),
+                                           ig->id( m.get( getComputer( i ) ) ) ) );
       }
 
-      TS_ASSERT( ig->graph().existsEdge(
-          ig->id( m.get( "pow" ) ), ig->id( m.get( "another_computer" ) ) ) );
+      TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "pow" ) ),
+                                         ig->id( m.get( "another_computer" ) ) ) );
 
       ++edge_count;
       // Checking existing edges from printers
@@ -205,14 +201,12 @@ namespace gum_tests {
       }
 
       for ( int i = 0; i < 4; ++i, ++edge_count ) {
-        TS_ASSERT(
-            ig->graph().existsEdge( ig->id( m.get( "another_printer" ) ),
-                                    ig->id( m.get( getComputer( i ) ) ) ) );
+        TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "another_printer" ) ),
+                                           ig->id( m.get( getComputer( i ) ) ) ) );
       }
 
-      TS_ASSERT(
-          ig->graph().existsEdge( ig->id( m.get( "another_printer" ) ),
-                                  ig->id( m.get( "another_computer" ) ) ) );
+      TS_ASSERT( ig->graph().existsEdge( ig->id( m.get( "another_printer" ) ),
+                                         ig->id( m.get( "another_computer" ) ) ) );
 
       ++edge_count;
       TS_ASSERT_EQUALS( ig->graph().sizeEdges(), (gum::Size)edge_count );
@@ -221,7 +215,7 @@ namespace gum_tests {
 
     void testSmallLabelsOnNodes() {
       gum::prm::gspan::InterfaceGraph<double>* ig = 0;
-      gum::prm::PRMSystem<double>& m = __prm->getSystem( "smallSys" );
+      gum::prm::PRMSystem<double>&             m = __prm->getSystem( "smallSys" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           ig = new gum::prm::gspan::InterfaceGraph<double>( m ) );
       // Testing each labels size (the number of nodes with the given label)
@@ -240,28 +234,25 @@ namespace gum_tests {
 
     void testSmallLabelsOnEdges() {
       gum::prm::gspan::InterfaceGraph<double>* ig = 0;
-      gum::prm::PRMSystem<double>& m = __prm->getSystem( "smallSys" );
+      gum::prm::PRMSystem<double>&             m = __prm->getSystem( "smallSys" );
       TS_GUM_ASSERT_THROWS_NOTHING(
           ig = new gum::prm::gspan::InterfaceGraph<double>( m ) );
       // Test difference
       int edge_count = 0;
-      TS_ASSERT_EQUALS(
-          ig->size( ig->edge( ig->id( m.get( "pow" ) ),
-                              ig->id( m.get( "another_printer" ) ) )
-                        .l ),
-          (gum::Size)3 );
+      TS_ASSERT_EQUALS( ig->size( ig->edge( ig->id( m.get( "pow" ) ),
+                                            ig->id( m.get( "another_printer" ) ) )
+                                      .l ),
+                        (gum::Size)3 );
       edge_count += 3;
-      TS_ASSERT_EQUALS(
-          ig->size( ig->edge( ig->id( m.get( "pow" ) ),
-                              ig->id( m.get( "another_computer" ) ) )
-                        .l ),
-          (gum::Size)5 );
+      TS_ASSERT_EQUALS( ig->size( ig->edge( ig->id( m.get( "pow" ) ),
+                                            ig->id( m.get( "another_computer" ) ) )
+                                      .l ),
+                        (gum::Size)5 );
       edge_count += 5;
-      TS_ASSERT_EQUALS(
-          ig->size( ig->edge( ig->id( m.get( "another_printer" ) ),
-                              ig->id( m.get( "another_computer" ) ) )
-                        .l ),
-          (gum::Size)15 );
+      TS_ASSERT_EQUALS( ig->size( ig->edge( ig->id( m.get( "another_printer" ) ),
+                                            ig->id( m.get( "another_computer" ) ) )
+                                      .l ),
+                        (gum::Size)15 );
       edge_count += 15;
       TS_ASSERT_EQUALS( ig->graph().sizeEdges(), (gum::Size)edge_count );
       TS_GUM_ASSERT_THROWS_NOTHING( delete ig );
@@ -272,11 +263,11 @@ namespace gum_tests {
                    size_t layer_count ) {
       for ( size_t lvl = 0; lvl < layer_count; ++lvl ) {
         v.push_back( gum::prm::LayerGenerator<double>::LayerData() );
-        v[lvl].a              = 30;
-        v[lvl].g              = 2;
-        v[lvl].c              = 1;
-        v[lvl].o              = 10;
-        v[lvl].inner_density  = 0.2f;
+        v[lvl].a = 30;
+        v[lvl].g = 2;
+        v[lvl].c = 1;
+        v[lvl].o = 10;
+        v[lvl].inner_density = 0.2f;
         v[lvl].outter_density = 0.05f;
       }
     }
@@ -288,7 +279,7 @@ namespace gum_tests {
       generator.setLayers( layers );
       generator.setDomainSize( 2 );
       generator.setMaxParents( 5 );
-      gum::prm::PRM<double>* prm = generator.generate();
+      gum::prm::PRM<double>*       prm = generator.generate();
       gum::prm::PRMSystem<double>& sys =
           prm->getSystem( ( **( prm->systems().begin() ) ).name() );
       gum::prm::gspan::InterfaceGraph<double>* g = nullptr;

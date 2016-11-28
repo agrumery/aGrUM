@@ -45,7 +45,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -69,10 +69,10 @@ namespace gum_tests {
       randomInit( pot4 );
       gum::ScheduleMultiDim<float> f4( pot4 );
 
-      gum::ScheduleCombinationBasic<float> comb( schedule_comb_myadd );
+      gum::ScheduleCombinationBasic<float>          comb( schedule_comb_myadd );
       gum::Set<const gum::ScheduleMultiDim<float>*> set;
       set << &f1 << &f2 << &f2bis << &f3 << &f4;
-      gum::Schedule<float> schedule;
+      gum::Schedule<float>               schedule;
       const gum::ScheduleMultiDim<float> result = comb.combine( set, schedule );
 
       TS_ASSERT( comb.nbOperations( set, schedule ) == 120 );
@@ -91,13 +91,13 @@ namespace gum_tests {
       gum::ScheduleCombine<float> comb11( f1, f2, schedule_comb_myadd );
       comb11.execute();
       const gum::ScheduleMultiDim<float>& result11 = comb11.result();
-      gum::ScheduleCombine<float> comb12( f2, f3, schedule_comb_myadd );
+      gum::ScheduleCombine<float>         comb12( f2, f3, schedule_comb_myadd );
       comb12.execute();
       const gum::ScheduleMultiDim<float>& result12 = comb12.result();
       gum::ScheduleCombine<float> comb13( result12, f4, schedule_comb_myadd );
       comb13.execute();
       const gum::ScheduleMultiDim<float>& result13 = comb13.result();
-      gum::ScheduleCombine<float> comb14(
+      gum::ScheduleCombine<float>         comb14(
           result11, result13, schedule_comb_myadd );
       comb14.execute();
       const gum::ScheduleMultiDim<float>& result14 = comb14.result();
@@ -126,7 +126,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -147,9 +147,8 @@ namespace gum_tests {
 
       gum::ScheduleCombinationBasic<float> comb( schedule_comb_myadd );
       gum::Set<const gum::MultiDimImplementation<float>*> set;
-      set << pot1.content() << pot2.content() << pot3.content()
-          << pot4.content();
-      gum::Schedule<float> schedule;
+      set << pot1.content() << pot2.content() << pot3.content() << pot4.content();
+      gum::Schedule<float>               schedule;
       const gum::ScheduleMultiDim<float> result = comb.combine( set, schedule );
 
       TS_ASSERT( comb.nbOperations( set, schedule ) == 112 );
@@ -165,8 +164,8 @@ namespace gum_tests {
         }
       }
 
-      gum::MultiDimCombinationDefault<float, gum::MultiDimImplementation>
-          comb11( schedule_comb_myadd );
+      gum::MultiDimCombinationDefault<float, gum::MultiDimImplementation> comb11(
+          schedule_comb_myadd );
       gum::MultiDimImplementation<float>* res11 = comb11.combine( set );
 
       TS_ASSERT( *res11 == result.multiDim() );
@@ -186,7 +185,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -205,10 +204,10 @@ namespace gum_tests {
       pot4 << *( vars[3] ) << *( vars[4] ) << *( vars[5] );
       randomInit( pot4 );
 
-      gum::ScheduleCombinationBasic<float> comb( schedule_comb_myadd );
+      gum::ScheduleCombinationBasic<float>   comb( schedule_comb_myadd );
       gum::Set<const gum::Potential<float>*> set;
       set << &pot1 << &pot2 << &pot3 << &pot4;
-      gum::Schedule<float> schedule;
+      gum::Schedule<float>               schedule;
       const gum::ScheduleMultiDim<float> result = comb.combine( set, schedule );
 
       TS_ASSERT( comb.nbOperations( set, schedule ) == 112 );
@@ -224,11 +223,10 @@ namespace gum_tests {
         }
       }
 
-      gum::MultiDimCombinationDefault<float, gum::MultiDimImplementation>
-          comb11( schedule_comb_myadd );
+      gum::MultiDimCombinationDefault<float, gum::MultiDimImplementation> comb11(
+          schedule_comb_myadd );
       gum::Set<const gum::MultiDimImplementation<float>*> set2;
-      set2 << pot1.content() << pot2.content() << pot3.content()
-           << pot4.content();
+      set2 << pot1.content() << pot2.content() << pot3.content() << pot4.content();
       gum::MultiDimImplementation<float>* res11 = comb11.combine( set2 );
 
       TS_ASSERT( *res11 == result.multiDim() );
@@ -248,7 +246,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 4 );
+        vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
       gum::Potential<float> t1, t2, t3;
@@ -260,7 +258,7 @@ namespace gum_tests {
       randomInit( t2 );
       randomInit( t3 );
 
-      gum::ScheduleCombinationBasic<float> comb( schedule_comb_myadd );
+      gum::ScheduleCombinationBasic<float>   comb( schedule_comb_myadd );
       gum::Set<const gum::Potential<float>*> set;
       set << &t1 << &t2 << &t3;
       gum::Set<const gum::MultiDimImplementation<float>*> set2;

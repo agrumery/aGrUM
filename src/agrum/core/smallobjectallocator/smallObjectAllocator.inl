@@ -52,7 +52,7 @@ namespace gum {
       , __maxObjectSize( GUM_DEFAULT_MAX_OBJECT_SIZE ) {
     __pool.setKeyUniquenessPolicy( false );
     GUM_CONSTRUCTOR( SmallObjectAllocator );
-    nbAllocation   = 0;
+    nbAllocation = 0;
     nbDeallocation = 0;
   }
 
@@ -86,15 +86,15 @@ namespace gum {
     // If objectSize is greater than maxObjectSize, normal new is called
     if ( objectSize > __maxObjectSize ) return new unsigned char[objectSize];
 
-    void* ret;
+    void*   ret;
 #pragma omp critical( soa )
     {
       //
       if ( !__pool.exists( Size( objectSize ) ) ) {
         // Calcul du nombre de block par chunk pour des objets de cette taille
-        std::size_t nb           = __chunkSize / Size( objectSize );
+        std::size_t nb = __chunkSize / Size( objectSize );
         if ( nb > UCHAR_MAX ) nb = UCHAR_MAX;
-        unsigned char numBlocks  = static_cast<unsigned char>( nb );
+        unsigned char numBlocks = static_cast<unsigned char>( nb );
 
         FixedAllocator* newFa =
             new FixedAllocator( Size( objectSize ), numBlocks );
@@ -113,7 +113,7 @@ namespace gum {
   // @param objectSize is the size of that object (useful for faster
   // deallocation)
   // ============================================================================
-  INLINE void SmallObjectAllocator::deallocate( void* pDeallocatedObject,
+  INLINE void SmallObjectAllocator::deallocate( void*         pDeallocatedObject,
                                                 const size_t& objectSize ) {
 
     assert( objectSize > 0 &&

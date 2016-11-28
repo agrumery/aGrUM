@@ -93,8 +93,7 @@ namespace gum {
       virtual std::pair<Size, Size> range() const noexcept = 0;
 
       /// returns the names of the variables
-      virtual const std::vector<std::string>& variableNames() const
-          noexcept = 0;
+      virtual const std::vector<std::string>& variableNames() const noexcept = 0;
 
       /// returns the number of variables (columns) of the database
       virtual Size nbVariables() const noexcept = 0;

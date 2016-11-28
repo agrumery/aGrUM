@@ -120,9 +120,9 @@ namespace gum {
        * @param max_range The maximal range
        */
       template <typename RowFilter>
-      Counter( const RowFilter& filter,
+      Counter( const RowFilter&         filter,
                const std::vector<Size>& var_modalities,
-               Size min_range = 0,
+               Size                     min_range = 0,
                Size max_range = std::numeric_limits<Size>::max() );
       /// copy constructor
       Counter( const Counter<IdSetAlloc, CountAlloc>& );
@@ -250,9 +250,8 @@ namespace gum {
        * _getAllCounts and _getConditioningCounts to get the countings of
        * (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
-      Idx addNodeSet( Idx var1,
-                      Idx var2,
-                      const std::vector<Idx>& conditioning_ids );
+      Idx
+      addNodeSet( Idx var1, Idx var2, const std::vector<Idx>& conditioning_ids );
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -353,8 +352,7 @@ namespace gum {
       RecordCounter<IdSetAlloc, CountAlloc> _record_counter;
 
       /// the target id sets to count and their indices in the record counter
-      std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>
-          _target_nodesets;
+      std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*> _target_nodesets;
 
       /// the conditioning id sets to count and their indices in the record
       /// counter
@@ -383,8 +381,7 @@ namespace gum {
       /// returns the counting vector for a conditioning set
       /** @warning whenever you call this function, if the counts have not been
        * computed yet, they are computed before the function returns. */
-      const std::vector<double, CountAlloc>&
-      _getConditioningCounts( Idx index );
+      const std::vector<double, CountAlloc>& _getConditioningCounts( Idx index );
 
       /// returns all the countings performed (both targets and conditioned)
       /** this method returns the countings of the record counter. It should
@@ -396,8 +393,7 @@ namespace gum {
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      const std::vector<Idx, IdSetAlloc>& _getAllNodes( Idx index ) const
-          noexcept;
+      const std::vector<Idx, IdSetAlloc>& _getAllNodes( Idx index ) const noexcept;
 
       /// returns all the sets of target + cond nodes, and their counting
       /// indices
@@ -407,8 +403,8 @@ namespace gum {
       _getAllNodes() const noexcept;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      const std::vector<Idx, IdSetAlloc>*
-      _getConditioningNodes( Idx index ) const noexcept;
+      const std::vector<Idx, IdSetAlloc>* _getConditioningNodes( Idx index ) const
+          noexcept;
 
       /// returns all the sets of conditioning nodes
       const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&

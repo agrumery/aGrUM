@@ -141,10 +141,10 @@ namespace gum {
         */
         friend std::ostream&
         operator<<( std::ostream& out,
-                    const LpCol& col );  // calls col.toString(),
-                                         // friend is useless but
-                                         // good for documentation
-                                         // purpose
+                    const LpCol&  col );  // calls col.toString(),
+                                          // friend is useless but
+                                          // good for documentation
+                                          // purpose
 
         /// @}
 
@@ -227,9 +227,9 @@ namespace gum {
         * otherwise.
         */
         LpExpr( const LpExpr& expr,
-                bool copyLeft,
-                bool copyMiddle,
-                bool copyRight );
+                bool          copyLeft,
+                bool          copyMiddle,
+                bool          copyRight );
 
         /**
         * @brief Move copy constructor from temporary.
@@ -562,10 +562,10 @@ namespace gum {
         */
         friend std::ostream&
         operator<<( std::ostream& out,
-                    const LpRow& row );  // calls row.toString(),
-                                         // friend is useless but
-                                         // good for documentation
-                                         // purpose
+                    const LpRow&  row );  // calls row.toString(),
+                                          // friend is useless but
+                                          // good for documentation
+                                          // purpose
 
         /**
         * @brief Get the string representation of a calling row.
@@ -622,8 +622,7 @@ namespace gum {
         * @brief Copy compound assignment.
         * @param from The LpInterface to be copied.
         */
-        LpInterface<GUM_SCALAR>&
-        operator=( const LpInterface<GUM_SCALAR>& from );
+        LpInterface<GUM_SCALAR>& operator=( const LpInterface<GUM_SCALAR>& from );
 
         /**
         * @brief Move coumpound assignment.
@@ -644,7 +643,7 @@ namespace gum {
         */
         template <typename T>
         friend std::ostream& operator<<(
-            std::ostream& out,
+            std::ostream&         out,
             const LpInterface<T>& lpi );  // calls lpi.toString(), friend is
                                           // useless but good for documentation
                                           // purpose
@@ -836,7 +835,7 @@ namespace gum {
        */
       template <typename T1,
                 forbidden_type<T1, LpExpr> = 0,
-                forbidden_type<T1, LpCol>  = 0>
+                forbidden_type<T1, LpCol> = 0>
       LpExpr operator+( const T1& lhs, const LpCol& rhs );
       /// @}
 
@@ -924,7 +923,7 @@ namespace gum {
        */
       template <typename T1,
                 forbidden_type<T1, LpExpr> = 0,
-                forbidden_type<T1, LpCol>  = 0>
+                forbidden_type<T1, LpCol> = 0>
       LpExpr operator-( const T1& lhs, const LpCol& rhs );
       /// @}
 
@@ -991,11 +990,11 @@ namespace gum {
       LpExpr operator<=( const LpCol& lhs, T2&& rhs );
       template <typename T1,
                 forbidden_type<T1, LpExpr&> = 0,
-                forbidden_type<T1, LpCol&>  = 0>
+                forbidden_type<T1, LpCol&> = 0>
       LpExpr operator<=( T1&& lhs, const LpExpr& rhs );
       template <typename T1,
                 forbidden_type<T1, LpExpr&> = 0,
-                forbidden_type<T1, LpCol&>  = 0>
+                forbidden_type<T1, LpCol&> = 0>
       LpExpr operator<=( T1&& lhs, const LpCol& rhs );
 
       template <typename T2>
@@ -1004,11 +1003,11 @@ namespace gum {
       LpExpr operator<=( LpCol&& lhs, T2&& rhs );
       template <typename T1,
                 forbidden_type<T1, LpExpr> = 0,
-                forbidden_type<T1, LpCol>  = 0>
+                forbidden_type<T1, LpCol> = 0>
       LpExpr operator<=( T1&& lhs, LpExpr&& rhs );
       template <typename T1,
                 forbidden_type<T1, LpExpr> = 0,
-                forbidden_type<T1, LpCol>  = 0>
+                forbidden_type<T1, LpCol> = 0>
       LpExpr operator<=( T1&& lhs, LpCol&& rhs );
 
       /// @}

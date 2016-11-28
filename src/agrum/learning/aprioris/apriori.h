@@ -93,8 +93,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& getAllApriori( Idx index );
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<double, CountAlloc>&
-      getConditioningApriori( Idx index );
+      const std::vector<double, CountAlloc>& getConditioningApriori( Idx index );
 
       /// @}
 

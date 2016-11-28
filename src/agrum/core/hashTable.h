@@ -307,16 +307,16 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using key_type        = Key;
-    using mapped_type     = Val;
-    using value_type      = std::pair<const Key, Val>;
-    using reference       = value_type&;
+    using key_type = Key;
+    using mapped_type = Val;
+    using value_type = std::pair<const Key, Val>;
+    using reference = value_type&;
     using const_reference = const value_type&;
-    using pointer         = value_type*;
-    using const_pointer   = const value_type*;
-    using size_type       = std::size_t;
-    using allocator_type  = Alloc;
-    using Bucket          = HashTableBucket<Key, Val>;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using size_type = std::size_t;
+    using allocator_type = Alloc;
+    using Bucket = HashTableBucket<Key, Val>;
     /// @}
 
     /// The Bucket allocator.
@@ -680,19 +680,19 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using key_type            = Key;
-    using mapped_type         = Val;
-    using value_type          = std::pair<const Key, Val>;
-    using reference           = value_type&;
-    using const_reference     = const value_type&;
-    using pointer             = value_type*;
-    using const_pointer       = const value_type*;
-    using size_type           = std::size_t;
-    using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
-    using iterator            = HashTableIterator<Key, Val>;
-    using const_iterator      = HashTableConstIterator<Key, Val>;
-    using iterator_safe       = HashTableIteratorSafe<Key, Val>;
+    using key_type = Key;
+    using mapped_type = Val;
+    using value_type = std::pair<const Key, Val>;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using allocator_type = Alloc;
+    using iterator = HashTableIterator<Key, Val>;
+    using const_iterator = HashTableConstIterator<Key, Val>;
+    using iterator_safe = HashTableIteratorSafe<Key, Val>;
     using const_iterator_safe = HashTableConstIteratorSafe<Key, Val>;
     /// @}
 
@@ -725,8 +725,8 @@ namespace gum {
      * the same key more than once in the table?
      */
     explicit HashTable(
-        Size size_param         = HashTableConst::default_size,
-        bool resize_pol         = HashTableConst::default_resize_policy,
+        Size size_param = HashTableConst::default_size,
+        bool resize_pol = HashTableConst::default_resize_policy,
         bool key_uniqueness_pol = HashTableConst::default_uniqueness_policy );
 
     /**
@@ -1596,7 +1596,7 @@ namespace gum {
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
     map( Mount ( *f )( Val ),
-         Size size       = 0,
+         Size size = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1626,7 +1626,7 @@ namespace gum {
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
     map( Mount ( *f )( Val& ),
-         Size size       = 0,
+         Size size = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1656,7 +1656,7 @@ namespace gum {
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
     map( Mount ( *f )( const Val& ),
-         Size size       = 0,
+         Size size = 0,
          bool resize_pol = HashTableConst::default_resize_policy,
          bool key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
@@ -1688,9 +1688,9 @@ namespace gum {
                   typename Alloc::template rebind<std::pair<Key, Mount>>::other>
     HashTable<Key, Mount, OtherAlloc>
     map( const Mount& val,
-         Size size       = 0,
-         bool resize_pol = HashTableConst::default_resize_policy,
-         bool key_uniqueness_pol =
+         Size         size = 0,
+         bool         resize_pol = HashTableConst::default_resize_policy,
+         bool         key_uniqueness_pol =
              HashTableConst::default_uniqueness_policy ) const;
 
     /// @}
@@ -1707,8 +1707,8 @@ namespace gum {
 
     friend std::ostream& operator<<<>( std::ostream&,
                                        const HashTable<Key, Val, Alloc>& );
-    friend std::ostream&
-    operator<<<>( std::ostream& s, const HashTable<Key*, Val, Alloc>& table );
+    friend std::ostream& operator<<<>( std::ostream& s,
+                                       const HashTable<Key*, Val, Alloc>& table );
 
     /// For bijections to quickly access data.
     template <typename T1, typename T2, typename A>
@@ -1923,14 +1923,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type          = Key;
-    using mapped_type       = Val;
-    using value_type        = std::pair<const Key, Val>;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using key_type = Key;
+    using mapped_type = Val;
+    using value_type = std::pair<const Key, Val>;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -1973,8 +1973,7 @@ namespace gum {
      * @brief Copy constructor.
      * @param from The gum::HashTableConstIteratorSafe to copy.
      */
-    HashTableConstIteratorSafe(
-        const HashTableConstIteratorSafe<Key, Val>& from );
+    HashTableConstIteratorSafe( const HashTableConstIteratorSafe<Key, Val>& from );
 
     /**
      * @brief Copy constructor.
@@ -2226,14 +2225,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type          = Key;
-    using mapped_type       = Val;
-    using value_type        = std::pair<const Key, Val>;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using key_type = Key;
+    using mapped_type = Val;
+    using value_type = std::pair<const Key, Val>;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2267,8 +2266,7 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element cannot be found
      */
     template <typename Alloc>
-    HashTableIteratorSafe( const HashTable<Key, Val, Alloc>& tab,
-                           Size ind_elt );
+    HashTableIteratorSafe( const HashTable<Key, Val, Alloc>& tab, Size ind_elt );
 
     /**
      * @brief Copy constructor.
@@ -2384,8 +2382,7 @@ namespace gum {
      * @param from The gum::HashTableIteratorSafe to test for inequality.
      * @return Returns true if this and from are not equal.
      */
-    bool operator!=( const HashTableIteratorSafe<Key, Val>& from ) const
-        noexcept;
+    bool operator!=( const HashTableIteratorSafe<Key, Val>& from ) const noexcept;
 
     /**
      * @brief Checks whether two iterators are pointing toward equal
@@ -2393,8 +2390,7 @@ namespace gum {
      * @param from The gum::HashTableIteratorSafe to test for equality.
      * @return Returns true if this and from are equal.
      */
-    bool operator==( const HashTableIteratorSafe<Key, Val>& from ) const
-        noexcept;
+    bool operator==( const HashTableIteratorSafe<Key, Val>& from ) const noexcept;
 
     /**
      * @brief Returns the value pointed to by the iterator.
@@ -2474,14 +2470,14 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type          = Key;
-    using mapped_type       = Val;
-    using value_type        = std::pair<const Key, Val>;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using key_type = Key;
+    using mapped_type = Val;
+    using value_type = std::pair<const Key, Val>;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2515,8 +2511,7 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element cannot be found.
      */
     template <typename Alloc>
-    HashTableConstIterator( const HashTable<Key, Val, Alloc>& tab,
-                            Size ind_elt );
+    HashTableConstIterator( const HashTable<Key, Val, Alloc>& tab, Size ind_elt );
 
     /**
      * @brief Copy constructor.
@@ -2635,8 +2630,7 @@ namespace gum {
      * @param from The gum::HashTableConstIterator to test for inequality.
      * @return Returns true if this and from are not equal.
      */
-    bool operator!=( const HashTableConstIterator<Key, Val>& from ) const
-        noexcept;
+    bool operator!=( const HashTableConstIterator<Key, Val>& from ) const noexcept;
 
     /**
      * @brief Checks whether two iterators are pointing toward equal
@@ -2644,8 +2638,7 @@ namespace gum {
      * @param from The gum::HashTableConstIterator to test for equality.
      * @return Returns true if this and from are equal.
      */
-    bool operator==( const HashTableConstIterator<Key, Val>& from ) const
-        noexcept;
+    bool operator==( const HashTableConstIterator<Key, Val>& from ) const noexcept;
 
 
     /**
@@ -2762,14 +2755,14 @@ namespace gum {
     /// types for STL compliance
     /// @{
     using iterator_category = std::forward_iterator_tag;
-    using key_type          = Key;
-    using mapped_type       = Val;
-    using value_type        = std::pair<const Key, Val>;
-    using reference         = value_type&;
-    using const_reference   = const value_type&;
-    using pointer           = value_type*;
-    using const_pointer     = const value_type*;
-    using difference_type   = std::ptrdiff_t;
+    using key_type = Key;
+    using mapped_type = Val;
+    using value_type = std::pair<const Key, Val>;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+    using pointer = value_type*;
+    using const_pointer = const value_type*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ############################################################################

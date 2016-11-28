@@ -33,7 +33,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ParamEstimator<IdSetAlloc, CountAlloc>::ParamEstimator(
-        const RowFilter& filter,
+        const RowFilter&         filter,
         const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
@@ -66,8 +66,7 @@ namespace gum {
         , _score_internal_apriori( std::move( from._score_internal_apriori ) )
         , _is_normalized( std::move( from._is_normalized ) )
         , __apriori_computed( std::move( from.__apriori_computed ) )
-        , __score_apriori_inserted(
-              std::move( from.__score_apriori_inserted ) ) {
+        , __score_apriori_inserted( std::move( from.__score_apriori_inserted ) ) {
       from._score_internal_apriori = nullptr;
       GUM_CONS_MOV( ParamEstimator );
     }
@@ -91,8 +90,7 @@ namespace gum {
     INLINE Idx ParamEstimator<IdSetAlloc, CountAlloc>::addNodeSet(
         Idx var, const std::vector<Idx>& conditioning_ids ) {
       _is_normalized.push_back( false );
-      return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var,
-                                                          conditioning_ids );
+      return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var, conditioning_ids );
     }
 
     /// clears all the data structures from memory
@@ -100,7 +98,7 @@ namespace gum {
     INLINE void ParamEstimator<IdSetAlloc, CountAlloc>::clear() {
       Counter<IdSetAlloc, CountAlloc>::clear();
       _is_normalized.clear();
-      __apriori_computed       = false;
+      __apriori_computed = false;
       __score_apriori_inserted = false;
     }
 
@@ -140,8 +138,7 @@ namespace gum {
     /// returns the apriori vector for a conditioning set
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::vector<double, CountAlloc>&
-    ParamEstimator<IdSetAlloc, CountAlloc>::_getConditioningApriori(
-        Idx index ) {
+    ParamEstimator<IdSetAlloc, CountAlloc>::_getConditioningApriori( Idx index ) {
       if ( !__apriori_computed ) {
         _apriori->setParameters( this->_modalities,
                                  Counter<IdSetAlloc, CountAlloc>::_getCounts(),

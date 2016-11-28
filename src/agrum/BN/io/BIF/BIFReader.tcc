@@ -33,12 +33,12 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   BIFReader<GUM_SCALAR>::BIFReader( BayesNet<GUM_SCALAR>* bn,
-                                    const std::string& filename )
+                                    const std::string&    filename )
       : BNReader<GUM_SCALAR>( bn, filename ) {
     GUM_CONSTRUCTOR( BIFReader );
-    __bn         = bn;
+    __bn = bn;
     __streamName = filename;
-    __parseDone  = false;
+    __parseDone = false;
 
     __factory = new BayesNetFactory<GUM_SCALAR>( __bn );
 
@@ -46,7 +46,7 @@ namespace gum {
 
     try {
       __scanner = new BIF::Scanner( __streamName.c_str() );
-      __parser  = new BIF::Parser( __scanner );
+      __parser = new BIF::Parser( __scanner );
       __parser->setFactory( (IBayesNetFactory*)__factory );
     } catch ( IOError e ) {
       __ioerror = true;

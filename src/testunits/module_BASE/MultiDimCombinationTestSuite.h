@@ -45,9 +45,8 @@ namespace gum_tests {
     }
 
     // the function used to combine two tables
-    static gum::Potential<float>*
-    addPotential( const gum::Potential<float>& t1,
-                  const gum::Potential<float>& t2 ) {
+    static gum::Potential<float>* addPotential( const gum::Potential<float>& t1,
+                                                const gum::Potential<float>& t2 ) {
       return new gum::Potential<float>( t1 + t2 );
     }
 
@@ -66,7 +65,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 4 );
+        vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
       gum::Potential<float> t1, t2, t3;
@@ -86,8 +85,7 @@ namespace gum_tests {
       gum::Set<const gum::Potential<float>*> set;
       set << &t1 << &t2 << &t3;
 
-      gum::MultiDimCombinationDefault<float, gum::Potential> xxx(
-          addPotential );
+      gum::MultiDimCombinationDefault<float, gum::Potential> xxx( addPotential );
       t6 = xxx.combine( set );
       TS_ASSERT( t6 );
       TS_ASSERT( *t6 == *t5 );

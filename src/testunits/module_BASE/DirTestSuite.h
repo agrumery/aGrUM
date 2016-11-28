@@ -80,8 +80,7 @@ namespace gum_tests {
     }
 
     void testAbsolutePath() {
-      TS_ASSERT( gum::Directory( "./undossierauhasard/" ).absolutePath() ==
-                 "" );
+      TS_ASSERT( gum::Directory( "./undossierauhasard/" ).absolutePath() == "" );
       TS_ASSERT( gum::Directory( "./" ).absolutePath() ==
                  gum::Directory( "../dir/" ).absolutePath() );
       TS_ASSERT( gum::Directory( "/usr/" ).absolutePath() ==
@@ -105,47 +104,34 @@ namespace gum_tests {
       entries = d1.entries();
       TS_ASSERT_EQUALS( entries.size(), (gum::Size)5 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir2" ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir3" ) !=
-                 entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir2" ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir3" ) != entries.end() );
 
       gum::Directory d2( "../dir/" );
       entries = d2.entries();
       TS_ASSERT_EQUALS( entries.size(), (gum::Size)5 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir2" ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir3" ) !=
-                 entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir2" ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir3" ) != entries.end() );
 
       gum::Directory d3( "./dir1/../" );
       entries = d3.entries();
       TS_ASSERT_EQUALS( entries.size(), (gum::Size)5 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir2" ) !=
-                 entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), "dir3" ) !=
-                 entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir1" ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir2" ) != entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), "dir3" ) != entries.end() );
 
       gum::Directory d4( "./dir1/" );
       entries = d4.entries();
       TS_ASSERT_EQUALS( entries.size(), (gum::Size)3 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
-                 entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), "file1.txt" ) !=
                  entries.end() );
 
@@ -153,8 +139,7 @@ namespace gum_tests {
       entries = d5.entries();
       TS_ASSERT_EQUALS( entries.size(), (gum::Size)4 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
-                 entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), "file1.txt" ) !=
                  entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), "file2.txt" ) !=
@@ -164,8 +149,7 @@ namespace gum_tests {
       entries = d6.entries();
       TS_ASSERT_EQUALS( entries.size(), (gum::Size)5 );
       TS_ASSERT( find( entries.begin(), entries.end(), "." ) != entries.end() );
-      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) !=
-                 entries.end() );
+      TS_ASSERT( find( entries.begin(), entries.end(), ".." ) != entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), "file1.txt" ) !=
                  entries.end() );
       TS_ASSERT( find( entries.begin(), entries.end(), "file2.txt" ) !=
@@ -175,8 +159,7 @@ namespace gum_tests {
     }
 
     void testParent() {
-      TS_ASSERT( gum::Directory( "./undossierauhasard/" ).parent().path() ==
-                 "" );
+      TS_ASSERT( gum::Directory( "./undossierauhasard/" ).parent().path() == "" );
       TS_ASSERT( gum::Directory( "./" ).parent().absolutePath() ==
                  gum::Directory( "../dir/" ).parent().absolutePath() );
       TS_ASSERT( gum::Directory( "./" ).parent().absolutePath() ==

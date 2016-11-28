@@ -161,9 +161,9 @@ namespace gum {
     protected:
     // The Conditional Probability Table generator
     //  CPTGenerator * _cptGenerator;
-    Size _nbrNodes;
-    Size _maxArcs;
-    Size _maxModality;
+    Size                 _nbrNodes;
+    Size                 _maxArcs;
+    Size                 _maxModality;
     BayesNet<GUM_SCALAR> _bayesNet;
   };
 

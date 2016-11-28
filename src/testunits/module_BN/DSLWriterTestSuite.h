@@ -40,13 +40,12 @@ namespace gum_tests {
   class DSLWriterTestSuite : public CxxTest::TestSuite {
     public:
     gum::BayesNet<double>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::NodeId            i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<double>();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
-          n3( "3", "", 2 );
+      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
       gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
       i1 = bn->add( n1 );
@@ -105,8 +104,7 @@ namespace gum_tests {
                0.5, 0.5,
                0.5, 0.5,
                1.0, 0.0} );  // clang-format on
-      bn.cpt( i5 )
-          .fillWith(  // clang-format off
+      bn.cpt( i5 ).fillWith(  // clang-format off
               {0.3, 0.6, 0.1,
                0.5, 0.5, 0.0,
                0.5, 0.5, 0.0,
@@ -114,7 +112,8 @@ namespace gum_tests {
                0.4, 0.6, 0.0,
                0.5, 0.5, 0.0,
                0.5, 0.5, 0.0,
-               0.0, 0.0, 1.0} );  // clang-format on
+               0.0, 0.0, 1.0} );  // clang-format
+                                                                      // on
     }
   };
 }

@@ -45,31 +45,31 @@ namespace gum {
   namespace prm {
 
     template <typename GUM_SCALAR>
-    PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
-                                            AggregateType aggType,
+    PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string&         name,
+                                            AggregateType              aggType,
                                             const PRMType<GUM_SCALAR>& rvType )
         : PRMClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new PRMType<GUM_SCALAR>( rvType ) )
         , __label( std::shared_ptr<Idx>( new Idx( INT_MAX ) ) ) {
       GUM_CONSTRUCTOR( PRMAggregate );
-      this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
-                        PRMObject::RIGHT_CAST() + name;
+      this->_safeName =
+          PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
       this->__type->variable().setName( name );
     }
 
     template <typename GUM_SCALAR>
-    PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string& name,
-                                            AggregateType aggType,
+    PRMAggregate<GUM_SCALAR>::PRMAggregate( const std::string&         name,
+                                            AggregateType              aggType,
                                             const PRMType<GUM_SCALAR>& rvType,
-                                            Idx label )
+                                            Idx                        label )
         : PRMClassElement<GUM_SCALAR>( name )
         , __agg_type( aggType )
         , __type( new PRMType<GUM_SCALAR>( rvType ) )
         , __label( std::shared_ptr<Idx>( new Idx( label ) ) ) {
       GUM_CONSTRUCTOR( PRMAggregate );
-      this->_safeName = PRMObject::LEFT_CAST() + __type->name() +
-                        PRMObject::RIGHT_CAST() + name;
+      this->_safeName =
+          PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
       this->__type->variable().setName( name );
     }
 
@@ -91,8 +91,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     PRMAggregate<GUM_SCALAR>& PRMAggregate<GUM_SCALAR>::
     operator=( const PRMAggregate<GUM_SCALAR>& source ) {
-      GUM_ERROR( FatalError,
-                 "illegal call to gum::PRMAggregate copy operator." );
+      GUM_ERROR( FatalError, "illegal call to gum::PRMAggregate copy operator." );
     }
 
     template <typename GUM_SCALAR>
@@ -155,7 +154,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE MultiDimImplementation<GUM_SCALAR>*
-    PRMAggregate<GUM_SCALAR>::buildImpl() const {
+           PRMAggregate<GUM_SCALAR>::buildImpl() const {
       switch ( agg_type() ) {
         case AggregateType::MIN: {
           return new aggregator::Min<GUM_SCALAR>();
@@ -191,22 +190,22 @@ namespace gum {
 
     // See gum::PRMClassElement<GUM_SCALAR>::_addParent().
     template <typename GUM_SCALAR>
-    INLINE void PRMAggregate<GUM_SCALAR>::addParent(
-        const PRMClassElement<GUM_SCALAR>& elt ) {}
+    INLINE void
+    PRMAggregate<GUM_SCALAR>::addParent( const PRMClassElement<GUM_SCALAR>& elt ) {
+    }
 
     // See gum::PRMClassElement<GUM_SCALAR>::_addChild().
     template <typename GUM_SCALAR>
-    INLINE void PRMAggregate<GUM_SCALAR>::addChild(
-        const PRMClassElement<GUM_SCALAR>& elt ) {}
+    INLINE void
+    PRMAggregate<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
-    PRMAttribute<GUM_SCALAR>*
-    PRMAggregate<GUM_SCALAR>::getCastDescendant() const {
+    PRMAttribute<GUM_SCALAR>* PRMAggregate<GUM_SCALAR>::getCastDescendant() const {
       PRMScalarAttribute<GUM_SCALAR>* cast = 0;
 
       try {
-        cast = new PRMScalarAttribute<GUM_SCALAR>( this->name(),
-                                                   type().superType() );
+        cast =
+            new PRMScalarAttribute<GUM_SCALAR>( this->name(), type().superType() );
       } catch ( NotFound& ) {
         GUM_ERROR( OperationNotAllowed,
                    "this PRMAggregate can not have cast descendant" );
@@ -214,8 +213,8 @@ namespace gum {
 
       cast->addParent( *this );
       const DiscreteVariable& my_var = type().variable();
-      DiscreteVariable& cast_var     = cast->type().variable();
-      Instantiation inst( cast->cpf() );
+      DiscreteVariable&       cast_var = cast->type().variable();
+      Instantiation           inst( cast->cpf() );
 
       for ( inst.setFirst(); !inst.end(); inst.inc() ) {
         if ( type().label_map()[inst.val( my_var )] == inst.val( cast_var ) ) {

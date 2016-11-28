@@ -96,8 +96,8 @@ namespace gum {
      * by function \e newFunction.
      * @param newFunction A pointer to the new function to register.
      */
-    void insert( const std::string& instantiation_func_name,
-                 const std::string& type_multidim,
+    void insert( const std::string&      instantiation_func_name,
+                 const std::string&      type_multidim,
                  PartialInstantiationPtr newFunction );
 
     /**

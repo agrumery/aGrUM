@@ -71,11 +71,11 @@ namespace gum {
     /// copy operator
     template <typename Generator, typename... OtherGenerators>
     INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::operator=(
+           FilteredRowGeneratorSet<Generator, OtherGenerators...>::operator=(
         const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from ) {
       if ( this != &from ) {
         NextGenerators::operator=( from );
-        __first_generator       = from.__first_generator;
+        __first_generator = from.__first_generator;
       }
       return *this;
     }
@@ -83,11 +83,11 @@ namespace gum {
     /// move operator
     template <typename Generator, typename... OtherGenerators>
     INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::
+           FilteredRowGeneratorSet<Generator, OtherGenerators...>::
     operator=( FilteredRowGeneratorSet<Generator, OtherGenerators...>&& from ) {
       if ( this != &from ) {
         NextGenerators::operator=( std::move( from ) );
-        __first_generator       = std::move( from.__first_generator );
+        __first_generator = std::move( from.__first_generator );
       }
       return *this;
     }
@@ -123,7 +123,7 @@ namespace gum {
     /// generate new rows from the input row
     template <typename Generator, typename... OtherGenerators>
     INLINE FilteredRow&
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::generate() {
+           FilteredRowGeneratorSet<Generator, OtherGenerators...>::generate() {
       if ( !NextGenerators::hasRows() && __first_generator.hasRows() )
         NextGenerators::setInputRow( __first_generator.generate() );
       return NextGenerators::generate();
@@ -131,8 +131,7 @@ namespace gum {
 
     /// resets the filter
     template <typename Generator, typename... OtherGenerators>
-    INLINE void
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::reset() {
+    INLINE void FilteredRowGeneratorSet<Generator, OtherGenerators...>::reset() {
       __first_generator.reset();
       NextGenerators::reset();
     }

@@ -50,10 +50,10 @@ namespace gum_tests {
 
     void testMemoryCrash() {
       gum::MultiDimArray<double> m;
-      gum::LabelizedVariable* v[100];
+      gum::LabelizedVariable*    v[100];
 
       for ( int i = 0; i < 100; i++ )
-        v[i]      = new gum::LabelizedVariable( "x", "x" );
+        v[i] = new gum::LabelizedVariable( "x", "x" );
 
       TS_ASSERT_THROWS( feedMultiDimUntilOverflow( v, m ), gum::OutOfBounds );
 
@@ -62,7 +62,7 @@ namespace gum_tests {
     }
 
     private:
-    void feedMultiDimUntilOverflow( gum::LabelizedVariable* v[],
+    void feedMultiDimUntilOverflow( gum::LabelizedVariable*     v[],
                                     gum::MultiDimArray<double>& t ) {
       t.beginMultipleChanges();
 

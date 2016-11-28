@@ -62,7 +62,7 @@ namespace gum {
    *
    */
   template <typename Val,
-            class Cmp  = std::less<Val>,
+            class Cmp = std::less<Val>,
             class Node = BinTreeNode<Val>>
   class BinSearchTree {
     public:
@@ -123,7 +123,7 @@ namespace gum {
      * @return Returns an iterator at the begining of the gum::BinSearchTree.
      */
     /// @{
-    iterator begin();
+    iterator       begin();
     const_iterator begin() const;
     /// @}
 
@@ -133,7 +133,7 @@ namespace gum {
      * reverse iteration.
      */
     /// @{
-    iterator rbegin();
+    iterator       rbegin();
     const_iterator rbegin() const;
     /// @}
 
@@ -142,7 +142,7 @@ namespace gum {
      * @return Returns an iterator at the end of the gum::BinSearchTree.
      */
     /// @{
-    const iterator& end();
+    const iterator&       end();
     const const_iterator& end() const;
     /// @}
 
@@ -152,7 +152,7 @@ namespace gum {
      * reverse iteration.
      */
     /// @{
-    const iterator& rend();
+    const iterator&       rend();
     const const_iterator& rend() const;
     /// @}
 
@@ -161,7 +161,7 @@ namespace gum {
      * @return Returns an iterator at the root of the tree.
      */
     /// @{
-    iterator root();
+    iterator       root();
     const_iterator root() const;
     /// @}
 
@@ -334,8 +334,8 @@ namespace gum {
      * @param parent The node that should be the parent of the copy.
      * @param dir The direction of the edge parent->copy.
      */
-    Node* _copy( Node* root_from,
-                 Node* parent   = 0,
+    Node* _copy( Node*      root_from,
+                 Node*      parent = 0,
                  BinTreeDir dir = BinTreeDir::LEFT_CHILD );
 
     /**
@@ -630,7 +630,7 @@ namespace gum {
      */
     void _initialize( const BinSearchTree<Val, Cmp, Node>* tree,
                       const Node* current_node,
-                      bool add_to_iterator_list );
+                      bool        add_to_iterator_list );
 
     /**
      * @brief a method to detach the current iterator from its tree's

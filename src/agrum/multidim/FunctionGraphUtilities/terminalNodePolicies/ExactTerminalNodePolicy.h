@@ -121,7 +121,7 @@ namespace gum {
     /// @}
 
     private:
-    Bijection<NodeId, GUM_SCALAR> __map;
+    Bijection<NodeId, GUM_SCALAR>                     __map;
     mutable BijectionIteratorSafe<NodeId, GUM_SCALAR> __mappy;
   };
 

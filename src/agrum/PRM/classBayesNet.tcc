@@ -96,7 +96,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const VariableNodeMap&
-    ClassBayesNet<GUM_SCALAR>::variableNodeMap() const {
+                 ClassBayesNet<GUM_SCALAR>::variableNodeMap() const {
       GUM_ERROR( FatalError, "Sorry no VarMap in a ClassBayesNet." );
     }
 
@@ -119,8 +119,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE const DiscreteVariable& ClassBayesNet<GUM_SCALAR>::variableFromName(
-        const std::string& name ) const {
+    INLINE const DiscreteVariable&
+    ClassBayesNet<GUM_SCALAR>::variableFromName( const std::string& name ) const {
       return __get( name ).type().variable();
     }
 
@@ -146,7 +146,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const NodeProperty<Size>&
-    ClassBayesNet<GUM_SCALAR>::modalities() const {
+                 ClassBayesNet<GUM_SCALAR>::modalities() const {
       if ( __modalities.empty() ) {
         for ( const auto node : this->nodes() ) {
           __modalities.insert( node, (Size)variable( node ).domainSize() );
@@ -158,7 +158,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE std::string ClassBayesNet<GUM_SCALAR>::toDot() const {
-      std::string tab = "  ";
+      std::string       tab = "  ";
       std::stringstream output;
       output << "digraph \"";
       output << __class->name() << "\" {" << std::endl;
@@ -170,8 +170,7 @@ namespace gum {
             output << "\"" << variable( chi ).name() << "\";" << std::endl;
           }
         else if ( this->dag().parents( node ).size() == 0 ) {
-          output << tab << "\"" << variable( node ).name() << "\";"
-                 << std::endl;
+          output << tab << "\"" << variable( node ).name() << "\";" << std::endl;
         }
       }
 

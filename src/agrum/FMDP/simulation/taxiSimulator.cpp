@@ -41,8 +41,8 @@ namespace gum {
     // Défintion des variables du problème
 
     // Position TaxiSimulator
-    __xPos = new LabelizedVariable( "xPos",
-                                    "Position horizontale du TaxiSimulator" );
+    __xPos =
+        new LabelizedVariable( "xPos", "Position horizontale du TaxiSimulator" );
     __yPos =
         new LabelizedVariable( "yPos", "Position verticale du TaxiSimulator" );
     __xPos->eraseLabels();
@@ -69,8 +69,7 @@ namespace gum {
     __passengerDest->changeLabel( CLUB, "Club" );
     __passengerPos->changeLabel( TAXI, "Taxi" );
 
-    __fuelLevel =
-        new LabelizedVariable( "FuelLevel", "Niveau du réservoir", 14 );
+    __fuelLevel = new LabelizedVariable( "FuelLevel", "Niveau du réservoir", 14 );
 
     // Ajout à séquence
     __taxiVars.insert( __xPos );
@@ -112,9 +111,8 @@ namespace gum {
   TaxiSimulator::~TaxiSimulator() {
     GUM_DESTRUCTOR( TaxiSimulator )
 
-    for ( BijectionIteratorSafe<const DiscreteVariable*,
-                                const DiscreteVariable*> varIter =
-              __primeMap.beginSafe();
+    for ( BijectionIteratorSafe<const DiscreteVariable*, const DiscreteVariable*>
+              varIter = __primeMap.beginSafe();
           varIter != __primeMap.endSafe();
           ++varIter ) {
       delete varIter.first();
@@ -381,8 +379,7 @@ namespace gum {
       return;
     }
 
-    if ( _currentState.valFromPtr( __fuelLevel ) == 0 &&
-         __lastAction != FillUp ) {
+    if ( _currentState.valFromPtr( __fuelLevel ) == 0 && __lastAction != FillUp ) {
       __reward = 0.0;
       return;
     }
@@ -396,7 +393,7 @@ namespace gum {
     __reward = 10.0;  //-1.0;
   }
 
-  bool TaxiSimulator::__isAtDestination( TaxiSimulationLandmark passDest,
+  bool TaxiSimulator::__isAtDestination( TaxiSimulationLandmark  passDest,
                                          TaxiSimulationLandmarkX xCurPos,
                                          TaxiSimulationLandmarkY yCurPos ) {
     switch ( passDest ) {
@@ -422,7 +419,7 @@ namespace gum {
     return false;
   }
 
-  bool TaxiSimulator::__isAtMeetPoint( TaxiSimulationLandmark passPos,
+  bool TaxiSimulator::__isAtMeetPoint( TaxiSimulationLandmark  passPos,
                                        TaxiSimulationLandmarkX xCurPos,
                                        TaxiSimulationLandmarkY yCurPos ) {
     switch ( passPos ) {

@@ -112,7 +112,7 @@ namespace gum {
       }
 
       // set the comparison function
-      __cmp         = from.__cmp;
+      __cmp = from.__cmp;
       __nb_elements = from.__nb_elements;
 
       // for debugging purposes
@@ -144,7 +144,7 @@ namespace gum {
         throw;
       }
 
-      __cmp         = from.__cmp;
+      __cmp = from.__cmp;
       __nb_elements = from.__nb_elements;
 
       // for debugging purposes
@@ -160,9 +160,9 @@ namespace gum {
   operator=( Heap<Val, Cmp, Alloc>&& from ) noexcept {
     // avoid self assignment
     if ( this != &from ) {
-      __heap        = std::move( from.__heap );
+      __heap = std::move( from.__heap );
       __nb_elements = std::move( from.__nb_elements );
-      __cmp         = std::move( from.__cmp );
+      __cmp = std::move( from.__cmp );
     }
 
     return *this;
@@ -261,7 +261,7 @@ namespace gum {
   Size Heap<Val, Cmp, Alloc>::__restoreHeap() {
     // get the element at the end of the heap
     Size i = __nb_elements - 1;
-    Val v  = std::move( __heap[i] );
+    Val  v = std::move( __heap[i] );
 
     // restore the heap property
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( v, __heap[j] );
@@ -330,7 +330,7 @@ namespace gum {
   // displays the content of the heap
   template <typename Val, typename Cmp, typename Alloc>
   std::string Heap<Val, Cmp, Alloc>::toString() const {
-    bool deja = false;
+    bool              deja = false;
     std::stringstream stream;
     stream << "[";
 

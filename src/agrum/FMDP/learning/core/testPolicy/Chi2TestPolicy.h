@@ -64,8 +64,7 @@ namespace gum {
       return SmallObjectAllocator::instance().allocate( s );
     }
     void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p,
-                                                   sizeof( Chi2TestPolicy ) );
+      SmallObjectAllocator::instance().deallocate( p, sizeof( Chi2TestPolicy ) );
     }
 
     // ############################################################################

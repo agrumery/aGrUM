@@ -58,7 +58,7 @@ namespace gum {
     return *this;
   }
 
-  INLINE void LabelizedVariable::changeLabel( Idx pos,
+  INLINE void LabelizedVariable::changeLabel( Idx               pos,
                                               const std::string aLabel ) const {
     if ( __labels[pos] == aLabel ) return;
 
@@ -72,7 +72,7 @@ namespace gum {
 
   INLINE LabelizedVariable::LabelizedVariable( const std::string& aName,
                                                const std::string& aDesc,
-                                               const int nbrLabel )
+                                               const int          nbrLabel )
       : DiscreteVariable( aName, aDesc ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( LabelizedVariable );
@@ -139,8 +139,7 @@ namespace gum {
       return __labels.pos( aLabel );
     } catch ( ... ) {
       GUM_ERROR( OutOfBounds,
-                 "label '" << aLabel << "' is unknown in "
-                           << this->toString() );
+                 "label '" << aLabel << "' is unknown in " << this->toString() );
     }
   }
 

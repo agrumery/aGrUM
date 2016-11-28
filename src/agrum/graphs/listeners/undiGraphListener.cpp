@@ -33,12 +33,10 @@ namespace gum {
 
   UndiGraphListener::UndiGraphListener( const UndiGraphListener& d ) {
     GUM_CONS_CPY( UndiGraphListener );
-    GUM_ERROR( OperationNotAllowed,
-               "No copy constructor for UndiGraphListener" );
+    GUM_ERROR( OperationNotAllowed, "No copy constructor for UndiGraphListener" );
   }
 
-  UndiGraphListener& UndiGraphListener::
-  operator=( const UndiGraphListener& d ) {
+  UndiGraphListener& UndiGraphListener::operator=( const UndiGraphListener& d ) {
     GUM_OP_CPY( UndiGraphListener );
     GUM_ERROR( OperationNotAllowed, "No copy operator for UndiGraphListener" );
   }
@@ -66,8 +64,6 @@ namespace gum {
                  UndiGraphListener::whenEdgeDeleted );
   }
 
-  UndiGraphListener::~UndiGraphListener() {
-    GUM_DESTRUCTOR( UndiGraphListener );
-  }
+  UndiGraphListener::~UndiGraphListener() { GUM_DESTRUCTOR( UndiGraphListener ); }
 
 }  // namespace gum

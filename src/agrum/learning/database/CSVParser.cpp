@@ -28,10 +28,10 @@ namespace gum {
 
   namespace learning {
 
-    CSVParser::CSVParser( std::istream& instream,
+    CSVParser::CSVParser( std::istream&      instream,
                           const std::string& delimiter,
-                          const char commentmarker,
-                          const char quoteMarker )
+                          const char         commentmarker,
+                          const char         quoteMarker )
         : __line()
         , __delimiter( delimiter )
         , __spaces( " \t\r" )
@@ -55,10 +55,10 @@ namespace gum {
     */
 
     void CSVParser::__getNextTriplet( const std::string& str,
-                                      Size& first_letter_token,
-                                      Size& next_token,
-                                      Size& last_letter_token,
-                                      Size from ) const {
+                                      Size&              first_letter_token,
+                                      Size&              next_token,
+                                      Size&              last_letter_token,
+                                      Size               from ) const {
       first_letter_token = Size( str.find_first_not_of( __spaces, from ) );
 
       if ( first_letter_token == Size( std::string::npos ) ) {
@@ -67,12 +67,10 @@ namespace gum {
       }
 
       if ( str.at( first_letter_token ) == __quoteMarker ) {
-        last_letter_token =
-            __correspondingQuoteMarker( str, first_letter_token );
+        last_letter_token = __correspondingQuoteMarker( str, first_letter_token );
 
         if ( last_letter_token == Size( std::string::npos ) )
-          GUM_SYNTAX_ERROR(
-              "String quote missing", noLine(), first_letter_token );
+          GUM_SYNTAX_ERROR( "String quote missing", noLine(), first_letter_token );
 
         next_token =
             Size( str.find_first_of( __delimiter, last_letter_token + 1 ) );
@@ -83,12 +81,10 @@ namespace gum {
           GUM_SYNTAX_ERROR( "Delimiter missing at line", noLine(), next_char );
         }
       } else {
-        next_token =
-            Size( str.find_first_of( __delimiter, first_letter_token ) );
+        next_token = Size( str.find_first_of( __delimiter, first_letter_token ) );
 
         if ( next_token == Size( std::string::npos ) ) {
-          last_letter_token =
-              Size( str.find_last_not_of( __spaces, next_token ) );
+          last_letter_token = Size( str.find_last_not_of( __spaces, next_token ) );
         } else if ( next_token == first_letter_token ) {
           last_letter_token = first_letter_token;
         } else {
@@ -101,7 +97,7 @@ namespace gum {
     void CSVParser::__tokenize( const std::string& s ) {
       // looking for first commentMarker not in a string
       Size commentMarker = Size( s.find_first_of( __commentMarker, 0 ) );
-      Size quoteMarker   = Size( s.find_first_of( __quoteMarker, 0 ) );
+      Size quoteMarker = Size( s.find_first_of( __quoteMarker, 0 ) );
       Size quoteMarkerEnd;
 
       while ( quoteMarker < commentMarker ) {
@@ -110,14 +106,12 @@ namespace gum {
         if ( quoteMarkerEnd == Size( std::string::npos ) )
           GUM_SYNTAX_ERROR( "String quote missing", noLine(), quoteMarker );
 
-        while ( commentMarker <
-                quoteMarkerEnd ) {  // the comment was in the quote
+        while ( commentMarker < quoteMarkerEnd ) {  // the comment was in the quote
           commentMarker =
               Size( s.find_first_of( __commentMarker, commentMarker + 1 ) );
         }
 
-        quoteMarker =
-            Size( s.find_first_of( __quoteMarker, quoteMarkerEnd + 1 ) );
+        quoteMarker = Size( s.find_first_of( __quoteMarker, quoteMarkerEnd + 1 ) );
       }
 
       std::string str = s.substr( 0, commentMarker );

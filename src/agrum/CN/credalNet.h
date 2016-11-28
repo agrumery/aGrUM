@@ -65,7 +65,7 @@
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER
-typedef __int64 int64_t;
+typedef __int64          int64_t;
 typedef unsigned __int64 uint64_t;
 #else
 #include <stdint.h>
@@ -177,9 +177,8 @@ namespace gum {
        * Second is the credal set vertice index
        * Third is the vertex
        */
-      void
-      setCPTs( const NodeId& id,
-               const std::vector<std::vector<std::vector<GUM_SCALAR>>>& cpt );
+      void setCPTs( const NodeId&                                            id,
+                    const std::vector<std::vector<std::vector<GUM_SCALAR>>>& cpt );
 
       /**
        * @brief %Set the vertices of one credal set of a given node ( any
@@ -201,8 +200,8 @@ namespace gum {
        *credal net
        *!
        */
-      void setCPT( const NodeId& id,
-                   Size& entry,
+      void setCPT( const NodeId&                               id,
+                   Size&                                       entry,
                    const std::vector<std::vector<GUM_SCALAR>>& cpt );
 
       /**
@@ -226,8 +225,8 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void setCPT( const NodeId& id,
-                   Instantiation ins,
+      void setCPT( const NodeId&                               id,
+                   Instantiation                               ins,
                    const std::vector<std::vector<GUM_SCALAR>>& cpt );
 
       /**
@@ -245,7 +244,7 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void fillConstraints( const NodeId& id,
+      void fillConstraints( const NodeId&                  id,
                             const std::vector<GUM_SCALAR>& lower,
                             const std::vector<GUM_SCALAR>& upper );
 
@@ -267,8 +266,8 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void fillConstraint( const NodeId& id,
-                           const Idx& entry,
+      void fillConstraint( const NodeId&                  id,
+                           const Idx&                     entry,
                            const std::vector<GUM_SCALAR>& lower,
                            const std::vector<GUM_SCALAR>& upper );
 
@@ -288,8 +287,8 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void fillConstraint( const NodeId& id,
-                           Instantiation ins,
+      void fillConstraint( const NodeId&                  id,
+                           Instantiation                  ins,
                            const std::vector<GUM_SCALAR>& lower,
                            const std::vector<GUM_SCALAR>& upper );
 
@@ -350,8 +349,8 @@ namespace gum {
        *are not kept.
        */
       void bnToCredal( const GUM_SCALAR beta,
-                       const bool oneNet,
-                       const bool keepZeroes = false );
+                       const bool       oneNet,
+                       const bool       keepZeroes = false );
 
       /**
        * @deprecated Use intervalToCredal ( lrsWrapper with no input / output
@@ -668,8 +667,7 @@ namespace gum {
        * @return Returns the cardinality of the Decision Node.
        */
       int __find_dNode_card(
-          const std::vector<std::vector<std::vector<GUM_SCALAR>>>& var_cpt )
-          const;
+          const std::vector<std::vector<std::vector<GUM_SCALAR>>>& var_cpt ) const;
 
       /**
        * Computes the vertices of each credal set according to their interval
@@ -731,7 +729,7 @@ namespace gum {
        *set.
        */
       void __H2Vlrs( const std::vector<std::vector<GUM_SCALAR>>& h_rep,
-                     std::vector<std::vector<GUM_SCALAR>>& v_rep ) const;
+                     std::vector<std::vector<GUM_SCALAR>>&       v_rep ) const;
 
     };  // CredalNet
 

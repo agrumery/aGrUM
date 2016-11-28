@@ -44,7 +44,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -62,7 +62,7 @@ namespace gum_tests {
       randomInit( pot3 );
       gum::ScheduleMultiDim<float> f3( pot3 );
 
-      gum::ScheduleCombine<float> comb1( f1, f2, myadd );
+      gum::ScheduleCombine<float>         comb1( f1, f2, myadd );
       const gum::ScheduleMultiDim<float>& result1 = comb1.result();
 
       TS_ASSERT( comb1.nbOperations() == 32 );
@@ -74,7 +74,7 @@ namespace gum_tests {
          << f2.toString() << " )";
       TS_ASSERT( s1.str() == comb1.toString() );
 
-      gum::ScheduleCombine<float> comb2( result1, f3, myadd );
+      gum::ScheduleCombine<float>         comb2( result1, f3, myadd );
       const gum::ScheduleMultiDim<float>& result2 = comb2.result();
 
       TS_ASSERT( result1.isAbstract() );

@@ -32,12 +32,12 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template <typename GRAPH_CHANGES_SELECTOR>
-    DAG GreedyHillClimbing::learnStructure( GRAPH_CHANGES_SELECTOR& selector,
+    DAG GreedyHillClimbing::learnStructure( GRAPH_CHANGES_SELECTOR&  selector,
                                             const std::vector<Size>& modal,
-                                            DAG dag ) {
+                                            DAG                      dag ) {
       selector.setGraph( dag, modal );
 
-      Size nb_changes_applied = 1;
+      Size   nb_changes_applied = 1;
       double delta_score;
 
       initApproximationScheme();
@@ -48,7 +48,7 @@ namespace gum {
 
       do {
         nb_changes_applied = 0;
-        delta_score        = 0;
+        delta_score = 0;
 
         std::vector<std::pair<NodeId, double>> ordered_queues =
             selector.nodesSortedByBestScore();
@@ -112,16 +112,14 @@ namespace gum {
         selector.updateScoresAfterAppliedChanges();
 
         // reset the impacted queue and applied changes structures
-        for ( auto iter = impacted_queues.begin();
-              iter != impacted_queues.end();
+        for ( auto iter = impacted_queues.begin(); iter != impacted_queues.end();
               ++iter ) {
           *iter = false;
         }
 
         updateApproximationScheme( nb_changes_applied );
 
-      } while ( nb_changes_applied &&
-                continueApproximationScheme( delta_score ) );
+      } while ( nb_changes_applied && continueApproximationScheme( delta_score ) );
 
       stopApproximationScheme();  // just to be sure of the approximationScheme
                                   // has
@@ -136,12 +134,12 @@ namespace gum {
               typename PARAM_ESTIMATOR,
               typename CELL_TRANSLATORS>
     BayesNet<GUM_SCALAR>
-    GreedyHillClimbing::learnBN( GRAPH_CHANGES_SELECTOR& selector,
-                                 PARAM_ESTIMATOR& estimator,
+    GreedyHillClimbing::learnBN( GRAPH_CHANGES_SELECTOR&         selector,
+                                 PARAM_ESTIMATOR&                estimator,
                                  const std::vector<std::string>& names,
-                                 const std::vector<Idx>& modal,
-                                 const CELL_TRANSLATORS& translator,
-                                 DAG initial_dag ) {
+                                 const std::vector<Idx>&         modal,
+                                 const CELL_TRANSLATORS&         translator,
+                                 DAG                             initial_dag ) {
       return DAG2BNLearner::createBN<GUM_SCALAR,
                                      PARAM_ESTIMATOR,
                                      CELL_TRANSLATORS>(

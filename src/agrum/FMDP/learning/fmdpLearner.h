@@ -50,8 +50,8 @@ namespace gum {
    *
    */
 
-  template <TESTNAME VariableAttributeSelection,
-            TESTNAME RewardAttributeSelection,
+  template <TESTNAME    VariableAttributeSelection,
+            TESTNAME    RewardAttributeSelection,
             LEARNERNAME LearnerSelection>
   class FMDPLearner : public ILearningStrategy {
 
@@ -78,7 +78,7 @@ namespace gum {
     /// Default constructor
     // ###################################################################
     FMDPLearner( double learningThreshold,
-                 bool actionReward,
+                 bool   actionReward,
                  double similarityThreshold = 0.05 );
 
     // ###################################################################
@@ -123,16 +123,16 @@ namespace gum {
     // ==========================================================================
     VariableLearnerType*
     __instantiateVarLearner( MultiDimFunctionGraph<double>* target,
-                             Set<const DiscreteVariable*>& mainVariables,
-                             const DiscreteVariable* learnedVar ) {
+                             Set<const DiscreteVariable*>&  mainVariables,
+                             const DiscreteVariable*        learnedVar ) {
       return __instantiateVarLearner(
           target, mainVariables, learnedVar, Int2Type<LearnerSelection>() );
     }
 
     VariableLearnerType*
     __instantiateVarLearner( MultiDimFunctionGraph<double>* target,
-                             Set<const DiscreteVariable*>& mainVariables,
-                             const DiscreteVariable* learnedVar,
+                             Set<const DiscreteVariable*>&  mainVariables,
+                             const DiscreteVariable*        learnedVar,
                              Int2Type<IMDDILEARNER> ) {
       return new VariableLearnerType( target,
                                       __learningThreshold,
@@ -143,8 +143,8 @@ namespace gum {
 
     VariableLearnerType*
     __instantiateVarLearner( MultiDimFunctionGraph<double>* target,
-                             Set<const DiscreteVariable*>& mainVariables,
-                             const DiscreteVariable* learnedVar,
+                             Set<const DiscreteVariable*>&  mainVariables,
+                             const DiscreteVariable*        learnedVar,
                              Int2Type<ITILEARNER> ) {
       return new VariableLearnerType(
           target, __learningThreshold, mainVariables, learnedVar );
@@ -156,14 +156,14 @@ namespace gum {
     // ==========================================================================
     RewardLearnerType*
     __instantiateRewardLearner( MultiDimFunctionGraph<double>* target,
-                                Set<const DiscreteVariable*>& mainVariables ) {
+                                Set<const DiscreteVariable*>&  mainVariables ) {
       return __instantiateRewardLearner(
           target, mainVariables, Int2Type<LearnerSelection>() );
     }
 
     RewardLearnerType*
     __instantiateRewardLearner( MultiDimFunctionGraph<double>* target,
-                                Set<const DiscreteVariable*>& mainVariables,
+                                Set<const DiscreteVariable*>&  mainVariables,
                                 Int2Type<IMDDILEARNER> ) {
       return new RewardLearnerType(
           target, __learningThreshold, __similarityThreshold, mainVariables );
@@ -171,10 +171,9 @@ namespace gum {
 
     RewardLearnerType*
     __instantiateRewardLearner( MultiDimFunctionGraph<double>* target,
-                                Set<const DiscreteVariable*>& mainVariables,
+                                Set<const DiscreteVariable*>&  mainVariables,
                                 Int2Type<ITILEARNER> ) {
-      return new RewardLearnerType(
-          target, __learningThreshold, mainVariables );
+      return new RewardLearnerType( target, __learningThreshold, mainVariables );
     }
 
     /// @}
@@ -223,8 +222,8 @@ namespace gum {
     // ==========================================================================
     /// \brief extractCount
     // ==========================================================================
-    const IVisitableGraphLearner*
-    varLearner( Idx actionId, const DiscreteVariable* var ) const {
+    const IVisitableGraphLearner* varLearner( Idx                     actionId,
+                                              const DiscreteVariable* var ) const {
       return __actionLearners[actionId]->getWithDefault( var, nullptr );
     }
 

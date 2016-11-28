@@ -172,7 +172,7 @@ namespace gum_tests {
 
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
-      gum::Size arcCount  = graph.sizeArcs();
+      gum::Size arcCount = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id2 ) );
 
@@ -191,7 +191,7 @@ namespace gum_tests {
 
       gum::Size nodeCount = graph.size();
       gum::Size edgeCount = graph.sizeEdges();
-      gum::Size arcCount  = graph.sizeArcs();
+      gum::Size arcCount = graph.sizeArcs();
 
       TS_ASSERT_EQUALS( nodeCount, (gum::Size)5 );
       TS_ASSERT_EQUALS( edgeCount, (gum::Size)3 );
@@ -255,7 +255,7 @@ namespace gum_tests {
       TS_ASSERT( graph.existsArc( id5, id2 ) );
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount  = graph.sizeArcs();
+      gum::Size arcCount = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( gum::Arc( id5, id2 ) ) );
 
@@ -318,8 +318,7 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end();
+      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
             ++iter ) {
         s += *iter;
       }
@@ -331,8 +330,8 @@ namespace gum_tests {
       gum::MixedGraph graph = buildGraph();
 
       gum::List<gum::Size> list;
-      TS_ASSERT_THROWS_ANYTHING(
-          list = graph.listMapNodes( &twistedMapFunction ) );
+      TS_ASSERT_THROWS_ANYTHING( list =
+                                     graph.listMapNodes( &twistedMapFunction ) );
 
       TS_ASSERT_EQUALS( list.size(), (gum::Size)0 );
     }
@@ -359,8 +358,8 @@ namespace gum_tests {
       gum::MixedGraph graph = buildGraph();
 
       gum::NodeProperty<gum::Size> hashmap;
-      TS_ASSERT_THROWS_ANYTHING(
-          hashmap = graph.nodesProperty( &twistedMapFunction ) );
+      TS_ASSERT_THROWS_ANYTHING( hashmap =
+                                     graph.nodesProperty( &twistedMapFunction ) );
 
       TS_ASSERT_EQUALS( hashmap.size(), (gum::Size)0 );
     }
@@ -373,8 +372,7 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end();
+      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
             ++iter ) {
         s += *iter;
       }
@@ -415,8 +413,7 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end();
+      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
             ++iter ) {
         s += *iter;
       }

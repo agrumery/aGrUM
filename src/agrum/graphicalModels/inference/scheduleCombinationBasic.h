@@ -123,8 +123,8 @@ namespace gum {
     combine( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
              Schedule<GUM_SCALAR>& );
     template <template <typename> class TABLE>
-    ScheduleMultiDim<GUM_SCALAR>
-    combine( const Set<const TABLE<GUM_SCALAR>*>& set, Schedule<GUM_SCALAR>& );
+    ScheduleMultiDim<GUM_SCALAR> combine( const Set<const TABLE<GUM_SCALAR>*>& set,
+                                          Schedule<GUM_SCALAR>& );
 
     /// changes the function used for combining two TABLES
     virtual void setCombineFunction( MultiDimImplementation<GUM_SCALAR>* (
@@ -140,13 +140,12 @@ namespace gum {
      * performed to compute the combination */
     virtual float
     nbOperations( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
-                  const Schedule<GUM_SCALAR>& schedule );
-    float
-    nbOperations( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
-                  const Schedule<GUM_SCALAR>& schedule );
+                  const Schedule<GUM_SCALAR>&                     schedule );
+    float nbOperations( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
+                        const Schedule<GUM_SCALAR>& schedule );
     template <template <typename> class TABLE>
     float nbOperations( const Set<const TABLE<GUM_SCALAR>*>& set,
-                        const Schedule<GUM_SCALAR>& schedule );
+                        const Schedule<GUM_SCALAR>&          schedule );
 
     /// returns the memory consumption used during the combination
     /** Actually, this function does not return a precise account of the memory
@@ -159,10 +158,10 @@ namespace gum {
      * the resulting table ) */
     virtual std::pair<long, long>
     memoryUsage( const Set<const ScheduleMultiDim<GUM_SCALAR>*>& set,
-                 const Schedule<GUM_SCALAR>& schedule );
+                 const Schedule<GUM_SCALAR>&                     schedule );
     std::pair<long, long>
     memoryUsage( const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
-                 const Schedule<GUM_SCALAR>& schedule );
+                 const Schedule<GUM_SCALAR>&                           schedule );
     template <template <typename> class TABLE>
     std::pair<long, long> memoryUsage( const Set<const TABLE<GUM_SCALAR>*>& set,
                                        const Schedule<GUM_SCALAR>& schedule );

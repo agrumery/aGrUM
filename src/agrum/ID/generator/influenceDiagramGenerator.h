@@ -88,7 +88,7 @@ namespace gum {
      * @param utGenerator The policy used to generate UT.
      */
     InfluenceDiagramGenerator( ICPTGenerator<GUM_SCALAR>* cptGenerator,
-                               UTGenerator* utGenerator );
+                               UTGenerator*               utGenerator );
 
     /**
      * Destructor.
@@ -109,11 +109,11 @@ namespace gum {
      * @param max_modality Each DRV has from 2 to max_modality modalities
      * @return A IDs randomly generated.
      */
-    InfluenceDiagram<GUM_SCALAR>* generateID( Size nbrNodes,
+    InfluenceDiagram<GUM_SCALAR>* generateID( Size       nbrNodes,
                                               GUM_SCALAR arcDensity,
                                               GUM_SCALAR chanceNodeDensity,
                                               GUM_SCALAR utilityNodeDensity,
-                                              Size max_modality = 2 );
+                                              Size       max_modality = 2 );
 
     /// @}
     private:

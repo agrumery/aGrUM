@@ -48,8 +48,8 @@ namespace gum {
 
     /// add a new pair of target unconditioned variables to be counted
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx
-    IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet( Idx var1, Idx var2 ) {
+    INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet( Idx var1,
+                                                                     Idx var2 ) {
       if ( __use_cache ) {
         // check whether the score is already in the cache
         try {
@@ -74,8 +74,7 @@ namespace gum {
 
       __is_cached_score.push_back( false );
       __cached_score.push_back( 0 );
-      const Idx index =
-          Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1, var2 );
+      const Idx index = Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1, var2 );
 
       __is_cached_score.push_back( false );
       __cached_score.push_back( 0 );
@@ -172,8 +171,8 @@ namespace gum {
 
       __is_cached_score.push_back( false );
       __cached_score.push_back( 0 );
-      Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-          var1, std::move( conditioning_ids ) );
+      Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1,
+                                                   std::move( conditioning_ids ) );
       return index;
     }
 
@@ -181,8 +180,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
         const std::pair<Idx, Idx>& vars, std::vector<Idx>&& conditioning_ids ) {
-      return addNodeSet(
-          vars.first, vars.second, std::move( conditioning_ids ) );
+      return addNodeSet( vars.first, vars.second, std::move( conditioning_ids ) );
     }
 
     /// clears all the data structures from memory
@@ -195,16 +193,18 @@ namespace gum {
 
     /// indicates whether a score belongs to the cache
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE bool IndependenceTest<IdSetAlloc, CountAlloc>::_isInCache(
-        Idx nodeset_index ) const noexcept {
+    INLINE bool
+    IndependenceTest<IdSetAlloc, CountAlloc>::_isInCache( Idx nodeset_index ) const
+        noexcept {
       return ( ( nodeset_index < __is_cached_score.size() ) &&
                __is_cached_score[nodeset_index] );
     }
 
     /// inserts a new score into the cache
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void IndependenceTest<IdSetAlloc, CountAlloc>::_insertIntoCache(
-        Idx nodeset_index, double score ) {
+    INLINE void
+    IndependenceTest<IdSetAlloc, CountAlloc>::_insertIntoCache( Idx nodeset_index,
+                                                                double score ) {
       const std::vector<Idx, IdSetAlloc>& all_nodes =
           _getAllNodes( nodeset_index );
       std::vector<Idx, IdSetAlloc> conditioning_nodes =

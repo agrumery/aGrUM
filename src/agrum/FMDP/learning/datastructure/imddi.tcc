@@ -48,10 +48,10 @@ namespace gum {
   template <TESTNAME AttributeSelection, bool isScalar>
   IMDDI<AttributeSelection, isScalar>::IMDDI(
       MultiDimFunctionGraph<double>* target,
-      double attributeSelectionThreshold,
-      double pairSelectionThreshold,
-      Set<const DiscreteVariable*> attributeListe,
-      const DiscreteVariable* learnedValue )
+      double                         attributeSelectionThreshold,
+      double                         pairSelectionThreshold,
+      Set<const DiscreteVariable*>   attributeListe,
+      const DiscreteVariable*        learnedValue )
       : IncrementalGraphLearner<AttributeSelection, isScalar>(
             target, attributeListe, learnedValue )
       , __lg( &( this->_model ), pairSelectionThreshold )
@@ -67,9 +67,9 @@ namespace gum {
   template <TESTNAME AttributeSelection, bool isScalar>
   IMDDI<AttributeSelection, isScalar>::IMDDI(
       MultiDimFunctionGraph<double>* target,
-      double attributeSelectionThreshold,
-      double pairSelectionThreshold,
-      Set<const DiscreteVariable*> attributeListe )
+      double                         attributeSelectionThreshold,
+      double                         pairSelectionThreshold,
+      Set<const DiscreteVariable*>   attributeListe )
       : IncrementalGraphLearner<AttributeSelection, isScalar>(
             target, attributeListe, new LabelizedVariable( "Reward", "", 2 ) )
       , __lg( &( this->_model ), pairSelectionThreshold )
@@ -98,19 +98,19 @@ namespace gum {
   // ############################################################################
 
   template <TESTNAME AttributeSelection, bool isScalar>
-  void IMDDI<AttributeSelection, isScalar>::addObservation(
-      const Observation* obs ) {
+  void
+  IMDDI<AttributeSelection, isScalar>::addObservation( const Observation* obs ) {
     __nbTotalObservation++;
-    IncrementalGraphLearner<AttributeSelection, isScalar>::addObservation(
-        obs );
+    IncrementalGraphLearner<AttributeSelection, isScalar>::addObservation( obs );
   }
 
   template <TESTNAME AttributeSelection, bool isScalar>
   void IMDDI<AttributeSelection, isScalar>::_updateNodeWithObservation(
       const Observation* newObs, NodeId currentNodeId ) {
 
-    IncrementalGraphLearner<AttributeSelection, isScalar>::
-        _updateNodeWithObservation( newObs, currentNodeId );
+    IncrementalGraphLearner<AttributeSelection,
+                            isScalar>::_updateNodeWithObservation( newObs,
+                                                                   currentNodeId );
     if ( this->_nodeVarMap[currentNodeId] == this->_value )
       __lg.updateLeaf( __leafMap[currentNodeId] );
   }
@@ -177,10 +177,10 @@ namespace gum {
     if ( !this->_nodeId2Database[nody]->isTestRelevant( var ) ) return;
     double weight = (double)this->_nodeId2Database[nody]->nbObservation() /
                     (double)this->__nbTotalObservation;
-    vs.updateScore(
-        var,
-        weight * this->_nodeId2Database[nody]->testValue( var ),
-        weight * this->_nodeId2Database[nody]->testOtherCriterion( var ) );
+    vs.updateScore( var,
+                    weight * this->_nodeId2Database[nody]->testValue( var ),
+                    weight *
+                        this->_nodeId2Database[nody]->testOtherCriterion( var ) );
   }
 
   template <TESTNAME AttributeSelection, bool isScalar>
@@ -203,9 +203,9 @@ namespace gum {
   // ============================================================================
   template <TESTNAME AttributeSelection, bool isScalar>
   void IMDDI<AttributeSelection, isScalar>::__updateNodeSet(
-      Set<NodeId>& nodeSet,
+      Set<NodeId>&            nodeSet,
       const DiscreteVariable* selectedVar,
-      VariableSelector& vs ) {
+      VariableSelector&       vs ) {
 
     Set<NodeId> oldNodeSet( nodeSet );
     nodeSet.clear();
@@ -250,7 +250,7 @@ namespace gum {
   template <TESTNAME AttributeSelection, bool isScalar>
   NodeId IMDDI<AttributeSelection, isScalar>::_insertLeafNode(
       NodeDatabase<AttributeSelection, isScalar>* nDB,
-      const DiscreteVariable* boundVar,
+      const DiscreteVariable*  boundVar,
       Set<const Observation*>* obsSet ) {
 
     NodeId currentNodeId =
@@ -284,8 +284,7 @@ namespace gum {
   // Remove node from graph
   // ============================================================================
   template <TESTNAME AttributeSelection, bool isScalar>
-  void
-  IMDDI<AttributeSelection, isScalar>::_removeNode( NodeId currentNodeId ) {
+  void IMDDI<AttributeSelection, isScalar>::_removeNode( NodeId currentNodeId ) {
     if ( this->_nodeVarMap[currentNodeId] == this->_value )
       __removeLeaf( currentNodeId );
     IncrementalGraphLearner<AttributeSelection, isScalar>::_removeNode(
@@ -312,8 +311,7 @@ namespace gum {
   // Remove leaf from aggregator
   // ============================================================================
   template <TESTNAME AttributeSelection, bool isScalar>
-  void
-  IMDDI<AttributeSelection, isScalar>::__removeLeaf( NodeId currentNodeId ) {
+  void IMDDI<AttributeSelection, isScalar>::__removeLeaf( NodeId currentNodeId ) {
 
     __lg.removeLeaf( __leafMap[currentNodeId] );
     delete __leafMap[currentNodeId];
@@ -348,8 +346,7 @@ namespace gum {
     // *******************************************************************************************************
     // Reinitialisation du Graphe de Décision
     this->_target->clear();
-    for ( auto varIter = __varOrder.beginSafe();
-          varIter != __varOrder.endSafe();
+    for ( auto varIter = __varOrder.beginSafe(); varIter != __varOrder.endSafe();
           ++varIter )
       this->_target->add( **varIter );
     this->_target->add( *this->_value );
@@ -367,8 +364,8 @@ namespace gum {
 
       if ( !leaf2DGNode.exists( treeNodeIter.val() ) )
         leaf2DGNode.insert( treeNodeIter.val(),
-                            __insertLeafInFunctionGraph(
-                                treeNodeIter.val(), Int2Type<isScalar>() ) );
+                            __insertLeafInFunctionGraph( treeNodeIter.val(),
+                                                         Int2Type<isScalar>() ) );
 
       toTarget.insert( treeNodeIter.key(), leaf2DGNode[treeNodeIter.val()] );
     }
@@ -385,8 +382,7 @@ namespace gum {
             curNodeIter = curNodeIter->nextLink() ) {
         NodeId* sonsMap = static_cast<NodeId*>(
             SOA_ALLOCATE( sizeof( NodeId ) * ( *varIter )->domainSize() ) );
-        for ( Idx modality = 0; modality < ( *varIter )->domainSize();
-              ++modality )
+        for ( Idx modality = 0; modality < ( *varIter )->domainSize(); ++modality )
           sonsMap[modality] =
               toTarget[this->_nodeSonsMap[curNodeIter->element()][modality]];
         toTarget.insert(
@@ -412,8 +408,7 @@ namespace gum {
 
     double value = 0.0;
     for ( Idx moda = 0; moda < leaf->nbModa(); moda++ ) {
-      value +=
-          (double)leaf->effectif( moda ) * this->_valueAssumed.atPos( moda );
+      value += (double)leaf->effectif( moda ) * this->_valueAssumed.atPos( moda );
     }
     if ( leaf->total() ) value /= (double)leaf->total();
     return this->_target->manager()->addTerminalNode( value );
@@ -429,8 +424,7 @@ namespace gum {
 
     NodeId* sonsMap = static_cast<NodeId*>(
         SOA_ALLOCATE( sizeof( NodeId ) * this->_value->domainSize() ) );
-    for ( Idx modality = 0; modality < this->_value->domainSize();
-          ++modality ) {
+    for ( Idx modality = 0; modality < this->_value->domainSize(); ++modality ) {
       double newVal = 0.0;
       if ( leaf->total() )
         newVal = (double)leaf->effectif( modality ) / (double)leaf->total();

@@ -34,8 +34,8 @@ namespace gum {
   INLINE CliqueGraph& CliqueGraph::operator=( const CliqueGraph& g ) {
     if ( this != &g ) {
       UndiGraph::operator=( g );
-      __cliques          = g.__cliques;
-      __separators       = g.__separators;
+      __cliques = g.__cliques;
+      __separators = g.__separators;
     }
 
     return *this;
@@ -85,9 +85,7 @@ namespace gum {
     __cliques.insert( id, clique );
   }
 
-  INLINE void CliqueGraph::addNode( const NodeId id ) {
-    addNode( id, NodeSet() );
-  }
+  INLINE void CliqueGraph::addNode( const NodeId id ) { addNode( id, NodeSet() ); }
 
   /// removes a given clique from the clique graph
 
@@ -134,7 +132,7 @@ namespace gum {
   /// changes the set of nodes included into a given clique and returns the new
   /// set
 
-  INLINE void CliqueGraph::setClique( const NodeId id,
+  INLINE void CliqueGraph::setClique( const NodeId   id,
                                       const NodeSet& new_clique ) {
     // get the current clique set
     __cliques[id] = new_clique;

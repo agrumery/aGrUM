@@ -75,7 +75,7 @@ namespace gum_tests {
       p.causalWeight( malaria, 1.0f );
 
       gum::Instantiation i( p );
-      float witness[] = {1.0f,
+      float              witness[] = {1.0f,
                          0.0f,
                          0.0f,
                          1.0f,
@@ -112,7 +112,7 @@ namespace gum_tests {
       p.causalWeight( malaria, 0.9f );
 
       gum::Instantiation i( p );
-      float witness[] = {1,
+      float              witness[] = {1,
                          0,
                          0.1f,
                          0.9f,
@@ -162,7 +162,7 @@ namespace gum_tests {
       p.causalWeight( competition, 0.9f );
 
       gum::Instantiation i( p );
-      float witness[] = {
+      float              witness[] = {
           0.9999f,   0.0001f,   0.09999f,  0.90001f,  0.29997f,  0.70003f,
           0.029997f, 0.970003f, 0.49995f,  0.50005f,  0.049995f, 0.950005f,
           0.149985f, 0.850015f, 0.014999f, 0.985002f, 0.69993f,  0.30007f,

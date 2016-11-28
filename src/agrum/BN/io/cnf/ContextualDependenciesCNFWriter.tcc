@@ -61,9 +61,9 @@ namespace gum {
 
     std::stringstream strfile, strfile2;
 
-    Idx num    = 0;
-    Idx numvar = 0;
-    Idx clause = 0;
+    Idx               num = 0;
+    Idx               numvar = 0;
+    Idx               clause = 0;
     std::stringstream clausstr, clausstr2;
     gum::HashTable<std::string, Idx> vartable;
     gum::HashTable<std::string, Idx> protable;
@@ -74,7 +74,7 @@ namespace gum {
         cptparamval;
 
     for ( auto node : bn.nodes() ) {
-      std::stringstream str0;
+      std::stringstream       str0;
       const DiscreteVariable* var = &bn.variable( node );
 
       for ( Idx i = 0; i < var->domainSize(); i++ ) {
@@ -90,7 +90,7 @@ namespace gum {
       numvar++;
       clausstr2 << str0.str();
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
-      Instantiation inst( cpt );
+      Instantiation                inst( cpt );
       inst.forgetMaster();
       inst.reorder( Order );
       cptparamval.insert(
@@ -137,10 +137,9 @@ namespace gum {
     while ( !cptparamval.empty() ) {
       gum::HashTable<
           const DiscreteVariable*,
-          gum::HashTable<
-              std::string,
-              gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>*>::iterator
-          itvar = cptparamval.begin();
+          gum::HashTable<std::string,
+                         gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>*>::
+          iterator itvar = cptparamval.begin();
 
       while ( !( itvar.val() )->empty() ) {
         gum::HashTable<std::string,
@@ -161,9 +160,8 @@ namespace gum {
                 gum::Instantiation instpro( *seqv, false );
                 instpro.reorder( Order );
                 const gum::DiscreteVariable* var = &( seqv->variable( iInst ) );
-                instpro.erase(
-                    *var );  // reorder instance to optimize make sure
-                             // key unicity.
+                instpro.erase( *var );  // reorder instance to optimize make sure
+                                        // key unicity.
 
                 if ( !orderStruct.exists( instpro.toString() ) ) {
                   orderStruct.insert(
@@ -194,7 +192,7 @@ namespace gum {
             linecount += 1;
           }
 
-          gum::Set<gum::Idx> elimination;
+          gum::Set<gum::Idx>                  elimination;
           gum::Sequence<gum::Instantiation*>* newSeq = 0;
 
           for ( auto& elt : orderStruct ) {
@@ -202,8 +200,7 @@ namespace gum {
 
             for ( auto& elt2 : *elt.second ) {
               if ( elt2.second->second->size() == elt2.first->domainSize() ) {
-                if ( !newSeq )
-                  newSeq = new gum::Sequence<gum::Instantiation*>();
+                if ( !newSeq ) newSeq = new gum::Sequence<gum::Instantiation*>();
 
                 if ( !added ) {
                   added = true;
@@ -283,14 +280,12 @@ namespace gum {
       }
 
       delete ( itvar.val() );
-      cptparamval.erase(
-          cptparamval.beginSafe() );  // safe iterator needed here
+      cptparamval.erase( cptparamval.beginSafe() );  // safe iterator needed here
     }
 
     clausstr << str2.str();
 
-    output << "p cnf " << num << " " << clause << "\neclauses " << numvar
-           << "\n"
+    output << "p cnf " << num << " " << clause << "\neclauses " << numvar << "\n"
            << clausstr.str() << clausstr2.str() << std::endl;
     output.flush();
   }
@@ -307,8 +302,7 @@ namespace gum {
   ContextualDependenciesCNFWriter<GUM_SCALAR, IApproximationPolicy>::write(
       std::string filePath, const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
-    std::ofstream outputvar( ( filePath + ".var" ).c_str(),
-                             std::ios_base::trunc );
+    std::ofstream outputvar( ( filePath + ".var" ).c_str(), std::ios_base::trunc );
 
     if ( !output.good() )
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
@@ -318,9 +312,9 @@ namespace gum {
     if ( !outputvar.good() )
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
 
-    Idx num    = 0;
-    Idx numvar = 0;
-    Idx clause = 0;
+    Idx               num = 0;
+    Idx               numvar = 0;
+    Idx               clause = 0;
     std::stringstream clausstr, clausstr2;
     gum::HashTable<std::string, Idx> vartable;
     gum::HashTable<std::string, Idx> protable;
@@ -336,7 +330,7 @@ namespace gum {
       Order.add( bn.variable( node ) );
 
     for ( auto node : bn.nodes() ) {
-      std::stringstream str0;
+      std::stringstream       str0;
       const DiscreteVariable* var = &bn.variable( node );
 
       for ( Idx i = 0; i < bn.variable( node ).domainSize(); i++ ) {
@@ -352,7 +346,7 @@ namespace gum {
       numvar++;
       clausstr2 << str0.str();
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
-      Instantiation inst( cpt );
+      Instantiation                inst( cpt );
       inst.forgetMaster();
       inst.reorder( Order );
       cptparamval.insert(
@@ -404,10 +398,9 @@ namespace gum {
     while ( !cptparamval.empty() ) {
       gum::HashTable<
           const DiscreteVariable*,
-          gum::HashTable<
-              std::string,
-              gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>*>::iterator
-          itvar = cptparamval.begin();
+          gum::HashTable<std::string,
+                         gum::Sequence<gum::Sequence<gum::Instantiation*>*>*>*>::
+          iterator itvar = cptparamval.begin();
 
       while ( !( itvar.val() )->empty() ) {
         gum::HashTable<std::string,
@@ -525,8 +518,8 @@ namespace gum {
         }
 
         while ( !( itpvall.val() )->empty() ) {
-          gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator_safe
-              itpv = ( itpvall.val() )->begin();
+          gum::Sequence<gum::Sequence<gum::Instantiation*>*>::iterator_safe itpv =
+              ( itpvall.val() )->begin();
 
           while ( !( *itpv )->empty() ) {
             gum::Sequence<gum::Instantiation*>::iterator_safe itseqv =
@@ -556,8 +549,7 @@ namespace gum {
 
           delete ( *itpv );
           ( itpvall.val() )
-              ->erase(
-                  itpvall.val()->beginSafe() );  // safe iterator needed here
+              ->erase( itpvall.val()->beginSafe() );  // safe iterator needed here
         }
 
         delete ( itpvall.val() );
@@ -566,14 +558,12 @@ namespace gum {
       }
 
       delete ( itvar.val() );
-      cptparamval.erase(
-          cptparamval.beginSafe() );  // safe iterator needed here
+      cptparamval.erase( cptparamval.beginSafe() );  // safe iterator needed here
     }
 
     clausstr << str2.str();
 
-    output << "p cnf " << num << " " << clause << "\neclauses " << numvar
-           << "\n"
+    output << "p cnf " << num << " " << clause << "\neclauses " << numvar << "\n"
            << clausstr.str() << clausstr2.str() << std::endl;
     output.flush();
     outputvar << strfile.str();
@@ -585,8 +575,7 @@ namespace gum {
     if ( outputvar.fail() )
       GUM_ERROR( IOError, "Writting in the ostream failed." );
 
-    if ( output.fail() )
-      GUM_ERROR( IOError, "Writting in the ostream failed." );
+    if ( output.fail() ) GUM_ERROR( IOError, "Writting in the ostream failed." );
   }
 
 } /* namespace gum */

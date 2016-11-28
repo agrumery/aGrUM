@@ -72,7 +72,7 @@ namespace gum {
        * @param var_modalities the domain sizes of the variables in the database
        */
       template <typename RowFilter>
-      IndepTestG2( const RowFilter& filter,
+      IndepTestG2( const RowFilter&         filter,
                    const std::vector<Size>& var_modalities );
 
       /// destructor

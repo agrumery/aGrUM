@@ -71,8 +71,8 @@ namespace gum {
      * type of this gum::FormulaPart.
      */
     /// @{
-    double number;
-    char character;
+    double         number;
+    char           character;
     token_function function;
     /// @}
 
@@ -472,7 +472,7 @@ namespace gum {
      * @param item The operator or function to reduce.
      * @param stack The stack to evaluate.
      */
-    void __reduceOperatorOrFunction( FormulaPart item,
+    void __reduceOperatorOrFunction( FormulaPart              item,
                                      std::stack<FormulaPart>& stack ) const;
 
     /**

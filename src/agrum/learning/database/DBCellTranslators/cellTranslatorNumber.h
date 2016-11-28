@@ -83,7 +83,7 @@ namespace gum {
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
       CellTranslatorNumber( Sequence<double> values = Sequence<double>(),
-                            bool check_database     = true );
+                            bool             check_database = true );
 
       /// copy constructor
       CellTranslatorNumber( const CellTranslatorNumber& from );
@@ -141,7 +141,7 @@ namespace gum {
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames( const std::vector<std::string>& db_var,
-                          std::vector<std::string>& output_vars ) const;
+                          std::vector<std::string>&       output_vars ) const;
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -182,7 +182,7 @@ namespace gum {
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
       void setUserValues( const Sequence<double>& values,
-                          bool check_database = true );
+                          bool                    check_database = true );
 
       /// @}
 

@@ -190,9 +190,8 @@ extern template class gum::HashFunc<
 extern template class gum::HashFunc<
     std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx>>;
 extern template class gum::HashFunc<
-    std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>,
-               gum::Idx,
-               gum::Idx>>;
+    std::
+        tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx>>;
 
 
 // always include the template implementation

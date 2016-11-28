@@ -62,8 +62,7 @@ namespace gum {
       StructuralConstraintUndiGraph( const UndiGraph& graph );
 
       /// copy constructor
-      StructuralConstraintUndiGraph(
-          const StructuralConstraintUndiGraph& from );
+      StructuralConstraintUndiGraph( const StructuralConstraintUndiGraph& from );
 
       /// move constructor
       StructuralConstraintUndiGraph( StructuralConstraintUndiGraph&& from );

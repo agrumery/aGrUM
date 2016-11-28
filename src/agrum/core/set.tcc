@@ -581,7 +581,7 @@ namespace gum {
   template <typename Key, typename Alloc>
   template <typename OtherAlloc>
   INLINE bool Set<Key, Alloc>::isSubsetOf( const Set<Key, OtherAlloc>& s ) const {
-    if (this->size()>=s.size()) {
+    if ( this->size() >= s.size() ) {
       return false;
     }
 
@@ -713,7 +713,7 @@ namespace gum {
   operator*( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r = res.__inside;
+    HashTable<Key, bool, Alloc>&            h_r = res.__inside;
 
     if ( size() < h2.size() ) {
       for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
@@ -772,7 +772,7 @@ namespace gum {
   operator+( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res = *this;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r = res.__inside;
+    HashTable<Key, bool, Alloc>&            h_r = res.__inside;
 
     for ( HashTableConstIterator<Key, bool> iter = h2.cbegin(); iter != h2.cend();
           ++iter ) {
@@ -790,7 +790,7 @@ namespace gum {
   operator-( const Set<Key, OtherAlloc>& s2 ) const {
     Set<Key, Alloc> res;
     const HashTable<Key, bool, OtherAlloc>& h2 = s2.__inside;
-    HashTable<Key, bool, Alloc>& h_r = res.__inside;
+    HashTable<Key, bool, Alloc>&            h_r = res.__inside;
 
     for ( HashTableConstIterator<Key, bool> iter = __inside.cbegin();
           iter != __inside.cend();
@@ -804,7 +804,7 @@ namespace gum {
   template <typename Key, typename Alloc>
   INLINE std::string Set<Key, Alloc>::toString() const {
     std::stringstream out;
-    bool first = true;
+    bool              first = true;
     out << "{";
 
     for ( iterator iter = begin(); iter != end(); ++iter ) {
@@ -899,7 +899,7 @@ namespace gum {
   template <typename Alloc>
   Size HashFunc<Set<int, Alloc>>::operator()( const Set<int, Alloc>& key ) const {
     Size h = 0;
-    int i = 0;
+    int  i = 0;
     for ( const auto& k : key ) {
       h += ++i * k;
     }
@@ -912,7 +912,7 @@ namespace gum {
   template <typename Alloc>
   Size HashFunc<Set<unsigned int, Alloc>>::
   operator()( const Set<unsigned int, Alloc>& key ) const {
-    Size h = 0;
+    Size         h = 0;
     unsigned int i = 0;
     for ( const auto k : key ) {
       h += ++i * k;
@@ -940,7 +940,7 @@ namespace gum {
   template <typename Alloc>
   Size HashFunc<Set<unsigned long, Alloc>>::
   operator()( const Set<unsigned long, Alloc>& key ) const {
-    Size h = 0;
+    Size          h = 0;
     unsigned long i = 0;
     for ( const auto k : key ) {
       h += ++i * k;

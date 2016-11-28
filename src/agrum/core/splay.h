@@ -44,13 +44,13 @@ namespace gum {
   /// Display the node
 
   template <typename Element>
-  INLINE std::ostream& operator<<( std::ostream& out,
+  INLINE std::ostream& operator<<( std::ostream&                   out,
                                    const SplayBinaryNode<Element>& e );
 
   /// Display the tree
 
   template <typename Element>
-  INLINE std::ostream& operator<<( std::ostream& out,
+  INLINE std::ostream& operator<<( std::ostream&             out,
                                    const SplayTree<Element>& s );
 
   // =========================================================================

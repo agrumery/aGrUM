@@ -78,7 +78,7 @@ namespace gum {
 
     /// Creates and returns the projection of the table over all of its vars
     GUM_SCALAR project( const TABLE<GUM_SCALAR>& table,
-                        Instantiation* instantiation = 0 );
+                        Instantiation*           instantiation = 0 );
 
     /// Changes the function used for projecting TABLES
     void setProjectFunction( GUM_SCALAR ( *proj )( const TABLE<GUM_SCALAR>&,

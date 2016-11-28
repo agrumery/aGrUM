@@ -67,11 +67,11 @@ namespace gum {
      * @param line The line where the parsing error occured.
      * @param col The column where the parsing error occured.
      */
-    ParseError( bool is_error,
+    ParseError( bool               is_error,
                 const std::string& msg,
                 const std::string& filename,
-                Idx line,
-                Idx col = 0 );
+                Idx                line,
+                Idx                col = 0 );
 
     /**
      * @brief Class constructor.
@@ -82,12 +82,12 @@ namespace gum {
      * @param line The line where the parsing error occured.
      * @param col The column where the parsing error occured.
      */
-    ParseError( bool is_error,
+    ParseError( bool               is_error,
                 const std::string& msg,
                 const std::string& filename,
                 const std::string& code,
-                Idx line,
-                Idx col = 0 );
+                Idx                line,
+                Idx                col = 0 );
 
     /**
      * @brief Copy constructor.
@@ -218,8 +218,8 @@ namespace gum {
      */
     void addError( const std::string& msg,
                    const std::string& filename,
-                   Idx line,
-                   Idx col );
+                   Idx                line,
+                   Idx                col );
 
     /**
      * @brief Adds a warning.
@@ -230,8 +230,8 @@ namespace gum {
      */
     void addWarning( const std::string& msg,
                      const std::string& filename,
-                     Idx line,
-                     Idx col );
+                     Idx                line,
+                     Idx                col );
 
     /**
      * @brief Add an exception.
@@ -289,10 +289,8 @@ namespace gum {
      * @param col The error's column.
      * @param msg The error's message.
      */
-    void Error( const std::wstring& filename,
-                Idx line,
-                Idx col,
-                const wchar_t* msg );
+    void
+    Error( const std::wstring& filename, Idx line, Idx col, const wchar_t* msg );
 
     /**
      * @brief For adding warnings.
@@ -301,10 +299,8 @@ namespace gum {
      * @param col The warning's column.
      * @param msg The warning's message.
      */
-    void Warning( const std::wstring& filename,
-                  Idx line,
-                  Idx col,
-                  const wchar_t* msg );
+    void
+    Warning( const std::wstring& filename, Idx line, Idx col, const wchar_t* msg );
 
     /**
      * @brief For adding exceptions.

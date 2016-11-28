@@ -79,7 +79,7 @@ namespace gum {
   /// execute only k operations of a given schedule (default k = 1)
   template <typename GUM_SCALAR>
   bool SchedulerBasic<GUM_SCALAR>::execute( Schedule<GUM_SCALAR>& schedule,
-                                            Size k ) {
+                                            Size                  k ) {
     const NodeSet& available = schedule.availableOperations();
 
     while ( !available.empty() && k ) {
@@ -98,9 +98,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   float SchedulerBasic<GUM_SCALAR>::nbOperations(
       const Schedule<GUM_SCALAR>& schedule ) const {
-    NodeSet available   = schedule.availableOperations();
-    DAG dag             = schedule.dag();
-    float nb_operations = 0;
+    NodeSet available = schedule.availableOperations();
+    DAG     dag = schedule.dag();
+    float   nb_operations = 0;
 
     while ( !available.empty() ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
@@ -130,11 +130,12 @@ namespace gum {
   /** @bried returns an estimation of the number of elementary operations needed
    * to perform the k first ScheduleOperations of a given schedule */
   template <typename GUM_SCALAR>
-  float SchedulerBasic<GUM_SCALAR>::nbOperations(
-      const Schedule<GUM_SCALAR>& schedule, Size k ) const {
-    NodeSet available   = schedule.availableOperations();
-    DAG dag             = schedule.dag();
-    float nb_operations = 0;
+  float
+  SchedulerBasic<GUM_SCALAR>::nbOperations( const Schedule<GUM_SCALAR>& schedule,
+                                            Size                        k ) const {
+    NodeSet available = schedule.availableOperations();
+    DAG     dag = schedule.dag();
+    float   nb_operations = 0;
 
     while ( !available.empty() && k ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
@@ -165,10 +166,10 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::pair<long, long> SchedulerBasic<GUM_SCALAR>::memoryUsage(
       const Schedule<GUM_SCALAR>& schedule ) const {
-    NodeSet available   = schedule.availableOperations();
-    DAG dag             = schedule.dag();
-    long max_memory     = 0;
-    long current_memory = 0;
+    NodeSet available = schedule.availableOperations();
+    DAG     dag = schedule.dag();
+    long    max_memory = 0;
+    long    current_memory = 0;
 
     while ( !available.empty() ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();
@@ -214,11 +215,11 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::pair<long, long>
   SchedulerBasic<GUM_SCALAR>::memoryUsage( const Schedule<GUM_SCALAR>& schedule,
-                                           Size k ) const {
-    NodeSet available   = schedule.availableOperations();
-    DAG dag             = schedule.dag();
-    long max_memory     = 0;
-    long current_memory = 0;
+                                           Size                        k ) const {
+    NodeSet available = schedule.availableOperations();
+    DAG     dag = schedule.dag();
+    long    max_memory = 0;
+    long    current_memory = 0;
 
     while ( !available.empty() && k ) {
       for ( typename NodeSet::const_iterator_safe iter = available.beginSafe();

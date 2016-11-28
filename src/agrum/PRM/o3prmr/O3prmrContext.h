@@ -62,14 +62,14 @@ namespace gum {
             : line( c.line ) {}
         virtual ~O3prmrCommand() {}
 
-        virtual RequestType type() const     = 0;
+        virtual RequestType type() const = 0;
         virtual std::string toString() const = 0;
       };
 
       ///
       class ImportCommand {
         public:
-        ImportCommand( int line,
+        ImportCommand( int                line,
                        const std::string& value,
                        const std::string& alias )
             : line( line )
@@ -80,13 +80,12 @@ namespace gum {
             , value( c.value )
             , alias( c.alias ) {}
 
-        int line;
+        int         line;
         std::string value;
         std::string alias;
 
         std::string toString() const {
-          return "import " + value + ( alias.empty() ? "" : "as " + alias ) +
-                 ";";
+          return "import " + value + ( alias.empty() ? "" : "as " + alias ) + ";";
         }
       };
 
@@ -126,7 +125,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       class ObserveCommand : public O3prmrCommand {
         public:
-        ObserveCommand( int line,
+        ObserveCommand( int                line,
                         const std::string& leftValue,
                         const std::string& rightValue )
             : O3prmrCommand( line )
@@ -140,11 +139,11 @@ namespace gum {
             , system( c.system )
             , chain( c.chain ) {}
 
-        std::string leftValue;
-        std::string rightValue;
-        const PRMSystem<GUM_SCALAR>* system;
+        std::string                              leftValue;
+        std::string                              rightValue;
+        const PRMSystem<GUM_SCALAR>*             system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
-        Potential<GUM_SCALAR> potentiel;
+        Potential<GUM_SCALAR>                    potentiel;
 
         RequestType type() const { return RequestType::Observe; }
         std::string toString() const {
@@ -156,8 +155,8 @@ namespace gum {
       template <typename GUM_SCALAR>
       class UnobserveCommand : public O3prmrCommand {
         public:
-        std::string value;
-        const PRMSystem<GUM_SCALAR>* system;
+        std::string                              value;
+        const PRMSystem<GUM_SCALAR>*             system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
 
         UnobserveCommand( int line, const std::string& value )
@@ -183,8 +182,8 @@ namespace gum {
           this->value = value;
         }
 
-        std::string value;
-        const PRMSystem<GUM_SCALAR>* system;
+        std::string                              value;
+        const PRMSystem<GUM_SCALAR>*             system;
         typename PRMInference<GUM_SCALAR>::Chain chain;
 
         RequestType type() const { return RequestType::Query; }
@@ -212,7 +211,7 @@ namespace gum {
         std::string name() const;
 
         std::vector<O3prmrCommand*> commands() const;
-        void addObserve( int line,
+        void addObserve( int                line,
                          const std::string& leftValue,
                          const std::string& rightValue );
         void addUnobserve( int line, const std::string& value );
@@ -234,11 +233,11 @@ namespace gum {
        */
       template <typename GUM_SCALAR>
       class O3prmrContext {
-        std::string m_filename;
-        std::string m_package;
+        std::string                             m_filename;
+        std::string                             m_package;
         std::vector<O3prmrSession<GUM_SCALAR>*> m_sessions;
-        std::vector<ImportCommand*> m_imports;
-        ImportCommand* m_mainImport;
+        std::vector<ImportCommand*>             m_imports;
+        ImportCommand*                          m_mainImport;
 
         public:
         O3prmrContext( const std::string& filename = std::string() );
@@ -254,9 +253,8 @@ namespace gum {
 
         std::string aliasToImport( const std::string& alias );
         std::vector<ImportCommand*> imports() const;
-        void addImport( int line,
-                        const std::string& import,
-                        const std::string& alias );
+        void
+        addImport( int line, const std::string& import, const std::string& alias );
         void addImport( int line, const std::string& import, bool ismain );
         void addImport( const ImportCommand& i ) {
           m_imports.push_back( new ImportCommand( i.line, i.value, i.alias ) );

@@ -48,7 +48,7 @@ namespace gum {
    * @throws IOError Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  INLINE void UAIWriter<GUM_SCALAR>::write( std::ostream& output,
+  INLINE void UAIWriter<GUM_SCALAR>::write( std::ostream&                output,
                                             const IBayesNet<GUM_SCALAR>& bn ) {
     if ( !output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
@@ -78,7 +78,7 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  INLINE void UAIWriter<GUM_SCALAR>::write( std::string filePath,
+  INLINE void UAIWriter<GUM_SCALAR>::write( std::string                  filePath,
                                             const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
@@ -121,7 +121,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE std::string
   UAIWriter<GUM_SCALAR>::__cptBloc( const IBayesNet<GUM_SCALAR>& bn,
-                                    NodeId node ) {
+                                    NodeId                       node ) {
     std::stringstream str;
 
     const auto& p = bn.cpt( node );

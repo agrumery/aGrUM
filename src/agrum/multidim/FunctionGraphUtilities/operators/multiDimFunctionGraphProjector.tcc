@@ -39,7 +39,7 @@ namespace gum {
       MultiDimFunctionGraphProjector(
           const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* src,
           const Set<const DiscreteVariable*>& delVars,
-          const GUM_SCALAR neutral )
+          const GUM_SCALAR                    neutral )
       : __src( src )
       , __delVars( delVars )
       , __function()
@@ -72,8 +72,7 @@ namespace gum {
 
     __rd->copy( *__src );
 
-    for ( SetIteratorSafe<const DiscreteVariable*> varIter =
-              __delVars.beginSafe();
+    for ( SetIteratorSafe<const DiscreteVariable*> varIter = __delVars.beginSafe();
           varIter != __delVars.endSafe();
           ++varIter ) {
 
@@ -95,8 +94,7 @@ namespace gum {
         NodeId newSonId = __rd->manager()->addTerminalNode( newVal );
         __rd->manager()->setRootNode( newSonId );
 
-        if ( __rd->variablesSequence().exists( curVar ) )
-          __rd->erase( *curVar );
+        if ( __rd->variablesSequence().exists( curVar ) ) __rd->erase( *curVar );
         continue;
       }
 
@@ -105,7 +103,7 @@ namespace gum {
       if ( __rd->node( __rd->root() )->nodeVar() == curVar ) {
 
         const InternalNode* curVarNode = __rd->node( __rd->root() );
-        GUM_SCALAR newVal              = __neutral;
+        GUM_SCALAR          newVal = __neutral;
         for ( Idx curVarModality = 0; curVarModality < curVar->domainSize();
               ++curVarModality )
           newVal = __function(
@@ -115,14 +113,12 @@ namespace gum {
 
         __rd->manager()->eraseNode( __rd->root(), newSonId, false );
 
-        if ( __rd->variablesSequence().exists( curVar ) )
-          __rd->erase( *curVar );
+        if ( __rd->variablesSequence().exists( curVar ) ) __rd->erase( *curVar );
         continue;
       }
 
       // Cas général
-      HashTable<NodeId, NodeId> visitedNode(
-          2 * __rd->realSize(), true, false );
+      HashTable<NodeId, NodeId> visitedNode( 2 * __rd->realSize(), true, false );
       std::vector<NodeId> filo;
       filo.push_back( __rd->root() );
 
@@ -149,7 +145,7 @@ namespace gum {
               } else {
 
                 const InternalNode* curVarNode = __rd->node( oldSonId );
-                GUM_SCALAR newVal              = __neutral;
+                GUM_SCALAR          newVal = __neutral;
                 for ( Idx curVarModality = 0;
                       curVarModality < curVar->domainSize();
                       ++curVarModality )
@@ -165,10 +161,8 @@ namespace gum {
 
             } else {
 
-              GUM_SCALAR newVal = __neutral,
-                         oldVal = __rd->nodeValue( oldSonId );
-              for ( Idx curVarModality = 0;
-                    curVarModality < curVar->domainSize();
+              GUM_SCALAR newVal = __neutral, oldVal = __rd->nodeValue( oldSonId );
+              for ( Idx curVarModality = 0; curVarModality < curVar->domainSize();
                     ++curVarModality )
                 newVal = __function( newVal, oldVal );
 

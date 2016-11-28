@@ -44,8 +44,7 @@ namespace gum {
     CompleteProjectionSet* theset;
 
     if ( !__set.exists( projection_name ) ) {
-      theset =
-          __set.insert( projection_name, new CompleteProjectionSet ).second;
+      theset = __set.insert( projection_name, new CompleteProjectionSet ).second;
 #ifndef NDEBUG
       // for debugging purposes, we should inform the aGrUM's debugger that
       // the hashtable contained within the CompleteProjectionRegister4MultiDim
@@ -139,11 +138,11 @@ namespace gum {
 
   // a function to more easily register new projection functions in MultiDims
   template <typename GUM_SCALAR>
-  void registerCompleteProjection(
-      const std::string& projection_name,
-      const std::string& type_multidim,
-      typename CompleteProjectionRegister4MultiDim<
-          GUM_SCALAR>::CompleteProjectionPtr function ) {
+  void
+  registerCompleteProjection( const std::string& projection_name,
+                              const std::string& type_multidim,
+                              typename CompleteProjectionRegister4MultiDim<
+                                  GUM_SCALAR>::CompleteProjectionPtr function ) {
     CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().insert(
         projection_name, type_multidim, function );
   }

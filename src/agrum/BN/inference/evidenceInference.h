@@ -28,8 +28,8 @@
 #ifndef GUM_BAYES_NET_EVIDENCE_INFERENCE_H
 #define GUM_BAYES_NET_EVIDENCE_INFERENCE_H
 
-#include <agrum/config.h>
 #include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/config.h>
 
 
 namespace gum {

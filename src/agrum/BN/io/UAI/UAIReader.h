@@ -116,21 +116,21 @@ namespace gum {
     /// @}
 
     protected:
-    BayesNet<GUM_SCALAR>* __bn;
+    BayesNet<GUM_SCALAR>*        __bn;
     BayesNetFactory<GUM_SCALAR>* __factory;
-    UAI::Scanner* __scanner;
-    UAI::Parser* __parser;
+    UAI::Scanner*                __scanner;
+    UAI::Parser*                 __parser;
 
     std::string __streamName;
-    bool __traceScanning;
-    bool __parseDone;
+    bool        __traceScanning;
+    bool        __parseDone;
 
     // a boolean to throw the ioerror not in the constructor but in the
     // proceed()
     bool __ioerror;
 
-    void __addFatalError( int lig,
-                          int col,
+    void __addFatalError( int                lig,
+                          int                col,
                           const std::string& s );  // throw an exception
     void __addError( int lig, int col, const std::string& s );
     void __addWarning( int lig, int col, const std::string& s );

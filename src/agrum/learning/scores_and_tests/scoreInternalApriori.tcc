@@ -30,15 +30,13 @@ namespace gum {
 
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE
-    ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori() {
+    INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori() {
       GUM_CONSTRUCTOR( ScoreInternalApriori );
     }
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE
-        ScoreInternalApriori<IdSetAlloc, CountAlloc>::~ScoreInternalApriori() {
+    INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::~ScoreInternalApriori() {
       GUM_DESTRUCTOR( ScoreInternalApriori );
     }
 

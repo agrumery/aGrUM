@@ -43,7 +43,7 @@ namespace gum_tests {
 
     void run() {
 
-      gum::FMDP<float> fmdp( true );
+      gum::FMDP<float>          fmdp( true );
       gum::FMDPDatReader<float> reader( &fmdp, file );
 
       reader.trace( false );
@@ -89,7 +89,7 @@ namespace gum_tests {
     void testConstuctor() {
       std::string file = GET_RESSOURCES_PATH( "" );
 
-      gum::FMDP<float> fmdp( true );
+      gum::FMDP<float>           fmdp( true );
       gum::FMDPDatReader<float>* reader;
 
       TS_GUM_ASSERT_THROWS_NOTHING(

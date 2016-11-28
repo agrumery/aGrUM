@@ -32,7 +32,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ParamEstimatorML<IdSetAlloc, CountAlloc>::ParamEstimatorML(
-        const RowFilter& filter,
+        const RowFilter&         filter,
         const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
@@ -91,8 +91,7 @@ namespace gum {
           this->_getAllNodes( nodeset_index );
       const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
           this->_getConditioningNodes( nodeset_index );
-      const Idx target_modal =
-          this->modalities()[all_nodes[all_nodes.size() - 1]];
+      const Idx target_modal = this->modalities()[all_nodes[all_nodes.size() - 1]];
       std::vector<double, CountAlloc>& N_ijk =
           const_cast<std::vector<double, CountAlloc>&>(
               this->_getAllCounts( nodeset_index ) );

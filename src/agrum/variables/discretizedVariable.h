@@ -57,7 +57,7 @@ namespace gum {
   class DiscretizedVariable : public DiscreteVariable {
     private:
     std::vector<T_TICKS> __ticks;  // Array from 0 to domainSize-2
-    Size __ticks_size;
+    Size                 __ticks_size;
 
     protected:
     /**
@@ -159,11 +159,11 @@ namespace gum {
     /// @throws NotFound
     virtual Idx index( const std::string& label ) const;
 
-     /**
-     *
-     * @return the size of the random discrete variable domain
-     */
-    virtual Size domainSize( void ) const;
+    /**
+    *
+    * @return the size of the random discrete variable domain
+    */
+    virtual Size              domainSize( void ) const;
     virtual const std::string domain( void ) const;
 
     /// from the index to the tick.

@@ -47,9 +47,8 @@ namespace gum {
   class MultiPriorityQueue;
 
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
-  std::ostream&
-  operator<<( std::ostream&,
-              const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& );
+  std::ostream& operator<<( std::ostream&,
+                            const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& );
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -120,8 +119,8 @@ namespace gum {
    */
   template <typename Val,
             typename Priority = int,
-            typename Cmp      = std::less<Priority>,
-            typename Alloc    = std::allocator<Val>>
+            typename Cmp = std::less<Priority>,
+            typename Alloc = std::allocator<Val>>
   class MultiPriorityQueue {
 
     /// Making all MultiPriorityQueue friend with themselves.
@@ -131,18 +130,18 @@ namespace gum {
     public:
     /// types for STL compliance
     /// @{
-    using value_type      = Val;
-    using reference       = Val&;
+    using value_type = Val;
+    using reference = Val&;
     using const_reference = const Val&;
-    using pointer         = Val*;
-    using const_pointer   = const Val*;
+    using pointer = Val*;
+    using const_pointer = const Val*;
     using difference_type = std::ptrdiff_t;
-    using allocator_type  = Alloc;
+    using allocator_type = Alloc;
     /// @}
 
     /// The allocator for the indices.
-    using IndexAlloc = typename Alloc::template rebind<
-        std::pair<Val, std::vector<Size>>>::other;
+    using IndexAlloc =
+        typename Alloc::template rebind<std::pair<Val, std::vector<Size>>>::other;
 
     /// The allocator for the heap.
     using HeapAlloc =
@@ -163,7 +162,7 @@ namespace gum {
      * elements (could be for instance vectors or hashtables).
      */
     explicit MultiPriorityQueue(
-        Cmp compare   = Cmp(),
+        Cmp  compare = Cmp(),
         Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY );
 
     /**

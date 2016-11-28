@@ -66,7 +66,7 @@ namespace gum {
     }
 
     /// transforms a vector of DBrows
-    bool DBTransformIdentity::transform( std::vector<DBRow>& db,
+    bool DBTransformIdentity::transform( std::vector<DBRow>&      db,
                                          std::vector<std::string> miss ) const {
       return true;
     }

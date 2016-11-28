@@ -52,7 +52,7 @@ namespace gum_tests {
 
     private:
     void fillTopoOilWildcater( gum::InfluenceDiagram<float>& id,
-                               gum::List<gum::NodeId>& idList ) {
+                               gum::List<gum::NodeId>&       idList ) {
       try {
         idList.insert( id.addDecisionNode( *TestVar ) );            // 0
         idList.insert( id.addDecisionNode( *DrillVar ) );           // 1
@@ -76,7 +76,7 @@ namespace gum_tests {
     }
 
     void populateOilWildcater( gum::InfluenceDiagram<float>& id,
-                               gum::List<gum::NodeId>& idList ) {
+                               gum::List<gum::NodeId>&       idList ) {
       fillTopoOilWildcater( id, idList );
 
       try {

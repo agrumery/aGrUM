@@ -21,8 +21,8 @@ namespace gum {
     inline void
     MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_initThreadsData(
         const Size& num_threads,
-        const bool __storeVertices,
-        const bool __storeBNOpt ) {
+        const bool  __storeVertices,
+        const bool  __storeBNOpt ) {
       _workingSet.clear();
       _workingSet.resize( num_threads, nullptr );
       _workingSetE.clear();
@@ -65,34 +65,32 @@ namespace gum {
     template <typename GUM_SCALAR, class BNInferenceEngine>
     inline bool
     MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_updateThread(
-        const NodeId& id,
+        const NodeId&                  id,
         const std::vector<GUM_SCALAR>& vertex,
-        const bool& elimRedund ) {
+        const bool&                    elimRedund ) {
       int tId = getThreadNumber();
 
       // save E(X) if we don't save vertices
       if ( !__infE::_storeVertices && !_l_modal[tId].empty() ) {
         std::string var_name = _workingSet[tId]->variable( id ).name();
-        auto delim           = var_name.find_first_of( "_" );
-        var_name             = var_name.substr( 0, delim );
+        auto        delim = var_name.find_first_of( "_" );
+        var_name = var_name.substr( 0, delim );
 
         if ( _l_modal[tId].exists( var_name ) ) {
           GUM_SCALAR exp = 0;
-          Size vsize     = Size( vertex.size() );
+          Size       vsize = Size( vertex.size() );
 
           for ( Size mod = 0; mod < vsize; mod++ )
             exp += vertex[mod] * _l_modal[tId][var_name][mod];
 
-          if ( exp > _l_expectationMax[tId][id] )
-            _l_expectationMax[tId][id] = exp;
+          if ( exp > _l_expectationMax[tId][id] ) _l_expectationMax[tId][id] = exp;
 
-          if ( exp < _l_expectationMin[tId][id] )
-            _l_expectationMin[tId][id] = exp;
+          if ( exp < _l_expectationMin[tId][id] ) _l_expectationMin[tId][id] = exp;
         }
       }  // end of : if modal (map) not empty
 
       bool newOne = false;
-      bool added  = false;
+      bool added = false;
       bool result = false;
       // for burn in, we need to keep checking on local marginals and not global
       // ones
@@ -105,7 +103,7 @@ namespace gum {
       for ( Size mod = 0; mod < vsize; mod++ ) {
         if ( vertex[mod] < _l_marginalMin[tId][id][mod] ) {
           _l_marginalMin[tId][id][mod] = vertex[mod];
-          newOne                       = true;
+          newOne = true;
 
           if ( __infE::_storeBNOpt && !__infE::_evidence.exists( id ) ) {
             std::vector<Size> key( 3 );
@@ -119,7 +117,7 @@ namespace gum {
 
         if ( vertex[mod] > _l_marginalMax[tId][id][mod] ) {
           _l_marginalMax[tId][id][mod] = vertex[mod];
-          newOne                       = true;
+          newOne = true;
 
           if ( __infE::_storeBNOpt && !__infE::_evidence.exists( id ) ) {
             std::vector<Size> key( 3 );
@@ -172,12 +170,12 @@ namespace gum {
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
     inline void MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::
-        __updateThreadCredalSets( const NodeId& id,
+        __updateThreadCredalSets( const NodeId&                  id,
                                   const std::vector<GUM_SCALAR>& vertex,
-                                  const bool& elimRedund ) {
-      int tId             = getThreadNumber();
+                                  const bool&                    elimRedund ) {
+      int   tId = getThreadNumber();
       auto& nodeCredalSet = _l_marginalSets[tId][id];
-      Size dsize          = Size( vertex.size() );
+      Size  dsize = Size( vertex.size() );
 
       bool eq = true;
 
@@ -214,11 +212,11 @@ namespace gum {
           nodeCredalSet.begin(),
           nodeCredalSet.end(),
           [&]( const std::vector<GUM_SCALAR>& v ) -> bool {
-            for ( auto jt       = v.cbegin(),
-                       jtEnd    = v.cend(),
-                       minIt    = _l_marginalMin[tId][id].cbegin(),
+            for ( auto jt = v.cbegin(),
+                       jtEnd = v.cend(),
+                       minIt = _l_marginalMin[tId][id].cbegin(),
                        minItEnd = _l_marginalMin[tId][id].cend(),
-                       maxIt    = _l_marginalMax[tId][id].cbegin(),
+                       maxIt = _l_marginalMax[tId][id].cbegin(),
                        maxItEnd = _l_marginalMax[tId][id].cend();
                   jt != jtEnd && minIt != minItEnd && maxIt != maxItEnd;
                   ++jt, ++minIt, ++maxIt ) {
@@ -257,8 +255,8 @@ namespace gum {
     MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_updateMarginals() {
 #pragma omp parallel
       {
-        int threadId = getThreadNumber();
-        long nsize   = long( _workingSet[threadId]->size() );
+        int  threadId = getThreadNumber();
+        long nsize = long( _workingSet[threadId]->size() );
 
 #pragma omp for
 
@@ -285,12 +283,12 @@ namespace gum {
     inline const GUM_SCALAR
     MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_computeEpsilon() {
       GUM_SCALAR eps = 0;
-#pragma omp parallel
+#pragma omp      parallel
       {
         GUM_SCALAR tEps = 0;
         GUM_SCALAR delta;
 
-        int tId    = getThreadNumber();
+        int  tId = getThreadNumber();
         long nsize = long( _workingSet[tId]->size() );
 
 #pragma omp for
@@ -302,12 +300,12 @@ namespace gum {
             // on min
             delta = this->_marginalMin[i][j] - this->_oldMarginalMin[i][j];
             delta = ( delta < 0 ) ? ( -delta ) : delta;
-            tEps  = ( tEps < delta ) ? delta : tEps;
+            tEps = ( tEps < delta ) ? delta : tEps;
 
             // on max
             delta = this->_marginalMax[i][j] - this->_oldMarginalMax[i][j];
             delta = ( delta < 0 ) ? ( -delta ) : delta;
-            tEps  = ( tEps < delta ) ? delta : tEps;
+            tEps = ( tEps < delta ) ? delta : tEps;
 
             this->_oldMarginalMin[i][j] = this->_marginalMin[i][j];
             this->_oldMarginalMax[i][j] = this->_marginalMax[i][j];
@@ -325,12 +323,12 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR, class BNInferenceEngine>
-    void MultipleInferenceEngine<GUM_SCALAR,
-                                 BNInferenceEngine>::_updateOldMarginals() {
+    void
+    MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>::_updateOldMarginals() {
 #pragma omp parallel
       {
-        int threadId = getThreadNumber();
-        long nsize   = long( _workingSet[threadId]->size() );
+        int  threadId = getThreadNumber();
+        long nsize = long( _workingSet[threadId]->size() );
 
 #pragma omp for
 
@@ -361,8 +359,8 @@ namespace gum {
 
 #pragma omp parallel
       {
-        int threadId = getThreadNumber();
-        Size nsize   = Size( _workingSet[threadId]->size() );
+        int  threadId = getThreadNumber();
+        Size nsize = Size( _workingSet[threadId]->size() );
 
 #pragma omp for
 
@@ -409,9 +407,8 @@ namespace gum {
             for ( long i = 0; i < long( nsize );
                   i++ ) {  // i needs to be signed (due to omp with visual c++
                            // 15)
-              std::string var_name =
-                  _workingSet[threadId]->variable( i ).name();
-              auto delim = var_name.find_first_of( "_" );
+              std::string var_name = _workingSet[threadId]->variable( i ).name();
+              auto        delim = var_name.find_first_of( "_" );
               std::string time_step =
                   var_name.substr( delim + 1, var_name.size() );
               var_name = var_name.substr( 0, delim );
@@ -422,7 +419,7 @@ namespace gum {
 
               for ( const auto& vertex : __infE::_marginalSets[i] ) {
                 GUM_SCALAR exp = 0;
-                Size vsize     = Size( vertex.size() );
+                Size       vsize = Size( vertex.size() );
 
                 for ( Size mod = 0; mod < vsize; mod++ )
                   exp += vertex[mod] * _l_modal[threadId][var_name][mod];
@@ -449,9 +446,8 @@ namespace gum {
           for ( long i = 0; i < long( nsize );
                 i++ ) {  // long instead of Idx due to omp for visual C++15
             std::string var_name = _workingSet[threadId]->variable( i ).name();
-            auto delim           = var_name.find_first_of( "_" );
-            std::string time_step =
-                var_name.substr( delim + 1, var_name.size() );
+            auto        delim = var_name.find_first_of( "_" );
+            std::string time_step = var_name.substr( delim + 1, var_name.size() );
             var_name = var_name.substr( 0, delim );
 
             if ( !_l_modal[threadId].exists( var_name ) ) continue;

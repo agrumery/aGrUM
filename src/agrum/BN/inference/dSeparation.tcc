@@ -32,10 +32,10 @@ namespace gum {
   // query variables given evidence
   template <typename GUM_SCALAR, template <typename> class TABLE>
   void
-  dSeparation::relevantPotentials( const IBayesNet<GUM_SCALAR>& bn,
-                                   const NodeSet& query,
-                                   const NodeSet& hardEvidence,
-                                   const NodeSet& softEvidence,
+  dSeparation::relevantPotentials( const IBayesNet<GUM_SCALAR>&   bn,
+                                   const NodeSet&                 query,
+                                   const NodeSet&                 hardEvidence,
+                                   const NodeSet&                 softEvidence,
                                    Set<const TABLE<GUM_SCALAR>*>& potentials ) {
     const DAG& dag = bn.dag();
 
@@ -92,7 +92,7 @@ namespace gum {
     while ( !nodes_to_visit.empty() && !node2potentials.empty() ) {
       // get the next node to visit
       const NodeId node = nodes_to_visit.front().first;
-      const bool direction = nodes_to_visit.front().second;
+      const bool   direction = nodes_to_visit.front().second;
       nodes_to_visit.popFront();
 
       // check if the node has not already been visited in the same direction

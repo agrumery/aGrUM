@@ -30,11 +30,11 @@
 #include <cmath>
 #include <utility>
 
-#include <agrum/config.h>
-#include <agrum/BN/inference/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/evidenceInference.h>
 #include <agrum/BN/inference/jointTargetedInference.h>
+#include <agrum/BN/inference/relevantPotentialsFinderType.h>
+#include <agrum/config.h>
 #include <agrum/graphs/triangulations/defaultTriangulation.h>
 
 namespace gum {
@@ -51,7 +51,7 @@ namespace gum {
   // the function used to combine two tables
   template <typename GUM_SCALAR>
   INLINE static Potential<GUM_SCALAR>*
-  LPNewprojPotential( const Potential<GUM_SCALAR>& t1,
+  LPNewprojPotential( const Potential<GUM_SCALAR>&        t1,
                       const Set<const DiscreteVariable*>& del_vars ) {
     return new Potential<GUM_SCALAR>( t1.margSumOut( del_vars ) );
   }
@@ -76,7 +76,7 @@ namespace gum {
     /// default constructor
     LazyPropagation( const IBayesNet<GUM_SCALAR>* BN,
                      RelevantPotentialsFinderType =
-                     RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
+                         RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
                      FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES,
                      bool use_binary_join_tree = true );
 
@@ -225,7 +225,7 @@ namespace gum {
 
 
     private:
-    typedef Set<const Potential<GUM_SCALAR>*> __PotentialSet;
+    typedef Set<const Potential<GUM_SCALAR>*>             __PotentialSet;
     typedef SetIteratorSafe<const Potential<GUM_SCALAR>*> __PotentialSetIterator;
 
 
@@ -236,7 +236,7 @@ namespace gum {
      * combined to produce a message on a separator */
     void ( LazyPropagation<GUM_SCALAR>::*__findRelevantPotentials )(
         Set<const Potential<GUM_SCALAR>*>& pot_list,
-        Set<const DiscreteVariable*>& kept_vars );
+        Set<const DiscreteVariable*>&      kept_vars );
 
     /// the type of barren nodes computation we wish
     FindBarrenNodesType __barren_nodes_type;
@@ -380,7 +380,7 @@ namespace gum {
     /// invalidate all the messages sent from a given clique
     void __diffuseMessageInvalidations( const NodeId from,
                                         const NodeId to,
-                                        NodeSet& cliques_invalidated );
+                                        NodeSet&     cliques_invalidated );
 
     /// invalidate all messages, posteriors and created potentials
     void __invalidateAllMessages();
@@ -409,23 +409,23 @@ namespace gum {
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsGetAll( __PotentialSet& pot_list,
+    void __findRelevantPotentialsGetAll( __PotentialSet&               pot_list,
                                          Set<const DiscreteVariable*>& kept_vars );
 
     /** @brief update a set of potentials: the remaining are those to be
      * combined
      * to produce a message on a separator */
-    void __findRelevantPotentialsXX( __PotentialSet& pot_list,
+    void __findRelevantPotentialsXX( __PotentialSet&               pot_list,
                                      Set<const DiscreteVariable*>& kept_vars );
 
     // remove barren variables and return the newly created projected potentials
     __PotentialSet
-    __removeBarrenVariables( __PotentialSet& pot_list,
+    __removeBarrenVariables( __PotentialSet&               pot_list,
                              Set<const DiscreteVariable*>& del_vars );
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
-    __PotentialSet __marginalizeOut( __PotentialSet pot_list,
+    __PotentialSet __marginalizeOut( __PotentialSet                pot_list,
                                      Set<const DiscreteVariable*>& del_vars,
                                      Set<const DiscreteVariable*>& kept_vars );
 

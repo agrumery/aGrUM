@@ -66,8 +66,8 @@ namespace gum {
      * @param error The number of errors.
      * @param time The time.
      */
-    virtual void whenProgress( const void* src,
-                               const Size pourcent,
+    virtual void whenProgress( const void*  src,
+                               const Size   pourcent,
                                const double error,
                                const double time ) = 0;
 

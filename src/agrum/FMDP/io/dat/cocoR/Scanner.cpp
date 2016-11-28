@@ -43,10 +43,10 @@ namespace gum {
 
     Token::Token() {
       kind = 0;
-      pos  = 0;
-      col  = 0;
+      pos = 0;
+      col = 0;
       line = 0;
-      val  = NULL;
+      val = NULL;
       next = NULL;
     }
 
@@ -57,7 +57,7 @@ namespace gum {
 #if _MSC_VER >= 1300
       _setmode( _fileno( s ), _O_BINARY );
 #endif
-      stream             = s;
+      stream = s;
       this->isUserStream = isUserStream;
 
       if ( CanSeek() ) {
@@ -71,39 +71,38 @@ namespace gum {
       }
 
       bufCapacity = ( bufLen > 0 ) ? bufLen : MIN_BUFFER_LENGTH;
-      buf         = new unsigned char[bufCapacity];
+      buf = new unsigned char[bufCapacity];
 
       if ( fileLen > 0 )
         SetPos( 0 );  // setup  buffer to position 0 (start)
       else
-        bufPos =
-            0;  // index 0 is already after the file, thus Pos = 0 is invalid
+        bufPos = 0;  // index 0 is already after the file, thus Pos = 0 is invalid
 
       if ( bufLen == fileLen && CanSeek() ) Close();
     }
 
     Buffer::Buffer( Buffer* b ) {
-      buf          = b->buf;
-      bufCapacity  = b->bufCapacity;
-      b->buf       = NULL;
-      bufStart     = b->bufStart;
-      bufLen       = b->bufLen;
-      fileLen      = b->fileLen;
-      bufPos       = b->bufPos;
-      stream       = b->stream;
-      b->stream    = NULL;
+      buf = b->buf;
+      bufCapacity = b->bufCapacity;
+      b->buf = NULL;
+      bufStart = b->bufStart;
+      bufLen = b->bufLen;
+      fileLen = b->fileLen;
+      bufPos = b->bufPos;
+      stream = b->stream;
+      b->stream = NULL;
       isUserStream = b->isUserStream;
     }
 
     Buffer::Buffer( const unsigned char* buf, int len ) {
       this->isUserStream = false;
-      this->buf          = new unsigned char[len];
+      this->buf = new unsigned char[len];
       memcpy( this->buf, buf, len * sizeof( unsigned char ) );
-      bufStart    = 0;
+      bufStart = 0;
       bufCapacity = bufLen = len;
-      fileLen              = len;
-      bufPos               = 0;
-      stream               = NULL;
+      fileLen = len;
+      bufPos = 0;
+      stream = NULL;
     }
 
     Buffer::~Buffer() {
@@ -141,7 +140,7 @@ namespace gum {
 
     int Buffer::Peek() {
       int curPos = GetPos();
-      int ch     = Read();
+      int ch = Read();
       SetPos( curPos );
       return ch;
     }
@@ -149,9 +148,9 @@ namespace gum {
     // beg .. begin, zero-based, inclusive, in byte
     // end .. end, zero-based, exclusive, in byte
     wchar_t* Buffer::GetString( int beg, int end ) {
-      int len      = 0;
+      int      len = 0;
       wchar_t* buf = new wchar_t[end - beg];
-      int oldPos   = GetPos();
+      int      oldPos = GetPos();
       SetPos( beg );
 
       while ( GetPos() < end )
@@ -185,10 +184,10 @@ namespace gum {
         bufPos = value - bufStart;
       } else if ( stream != NULL ) {  // must be swapped in
         fseek( stream, value, SEEK_SET );
-        bufLen = (int)fread(
-            buf, int( sizeof( unsigned char ) ), bufCapacity, stream );
+        bufLen =
+            (int)fread( buf, int( sizeof( unsigned char ) ), bufCapacity, stream );
         bufStart = value;
-        bufPos   = 0;
+        bufPos = 0;
       } else {
         bufPos = fileLen - bufStart;  // make Pos return fileLen
       }
@@ -205,16 +204,16 @@ namespace gum {
         // we can neither seek in the stream, nor can we
         // foresee the maximum length, thus we must adapt
         // the buffer size on demand.
-        bufCapacity           = bufLen * 2;
+        bufCapacity = bufLen * 2;
         unsigned char* newBuf = new unsigned char[bufCapacity];
         memcpy( newBuf, buf, bufLen * sizeof( unsigned char ) );
         delete[] buf;
-        buf  = newBuf;
+        buf = newBuf;
         free = bufLen;
       }
 
-      int read = (int)fread(
-          buf + bufLen, int( sizeof( unsigned char ) ), free, stream );
+      int read =
+          (int)fread( buf + bufLen, int( sizeof( unsigned char ) ), free, stream );
 
       if ( read > 0 ) {
         fileLen = bufLen = ( bufLen + read );
@@ -243,39 +242,39 @@ namespace gum {
       } else if ( ( ch & 0xF0 ) == 0xF0 ) {
         // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
         int c1 = ch & 0x07;
-        ch     = Buffer::Read();
+        ch = Buffer::Read();
         int c2 = ch & 0x3F;
-        ch     = Buffer::Read();
+        ch = Buffer::Read();
         int c3 = ch & 0x3F;
-        ch     = Buffer::Read();
+        ch = Buffer::Read();
         int c4 = ch & 0x3F;
-        ch     = ( ( ( ( ( c1 << 6 ) | c2 ) << 6 ) | c3 ) << 6 ) | c4;
+        ch = ( ( ( ( ( c1 << 6 ) | c2 ) << 6 ) | c3 ) << 6 ) | c4;
       } else if ( ( ch & 0xE0 ) == 0xE0 ) {
         // 1110xxxx 10xxxxxx 10xxxxxx
         int c1 = ch & 0x0F;
-        ch     = Buffer::Read();
+        ch = Buffer::Read();
         int c2 = ch & 0x3F;
-        ch     = Buffer::Read();
+        ch = Buffer::Read();
         int c3 = ch & 0x3F;
-        ch     = ( ( ( c1 << 6 ) | c2 ) << 6 ) | c3;
+        ch = ( ( ( c1 << 6 ) | c2 ) << 6 ) | c3;
       } else if ( ( ch & 0xC0 ) == 0xC0 ) {
         // 110xxxxx 10xxxxxx
         int c1 = ch & 0x1F;
-        ch     = Buffer::Read();
+        ch = Buffer::Read();
         int c2 = ch & 0x3F;
-        ch     = ( c1 << 6 ) | c2;
+        ch = ( c1 << 6 ) | c2;
       }
 
       return ch;
     }
 
     Scanner::Scanner( const unsigned char* buf,
-                      int len,
-                      std::string filename,
-                      bool trace ) {
-      buffer      = new Buffer( buf, len );
+                      int                  len,
+                      std::string          filename,
+                      bool                 trace ) {
+      buffer = new Buffer( buf, len );
       __filenamne = widen( filename.c_str() );
-      __trace     = trace;
+      __trace = trace;
       Init();
     }
 
@@ -300,13 +299,13 @@ namespace gum {
       }
 
       coco_string_delete( chFileName );
-      buffer      = new Buffer( stream, false );
+      buffer = new Buffer( stream, false );
       __filenamne = std::wstring( fileName );
       Init();
     }
 
     Scanner::Scanner( FILE* s, bool trace ) {
-      buffer      = new Buffer( s, true );
+      buffer = new Buffer( s, true );
       __filenamne = L"FILE";
       Init();
       __trace = trace;
@@ -328,10 +327,10 @@ namespace gum {
 
     void Scanner::Init() {
       percent = -1;
-      EOL     = '\n';
-      eofSym  = 0;
-      maxT    = 18;
-      noSym   = 18;
+      EOL = '\n';
+      eofSym = 0;
+      maxT = 18;
+      noSym = 18;
       int i;
       for ( i = 65; i <= 90; ++i )
         start.set( i, 2 );
@@ -364,23 +363,23 @@ namespace gum {
 
 
       tvalLength = 128;
-      tval       = new wchar_t[tvalLength];  // text of current token
+      tval = new wchar_t[tvalLength];  // text of current token
 
       // HEAP_BLOCK_SIZE byte heap + pointer to next heap block
-      heap      = malloc( HEAP_BLOCK_SIZE + sizeof( void* ) );
+      heap = malloc( HEAP_BLOCK_SIZE + sizeof( void* ) );
       firstHeap = heap;
-      heapEnd   = (void**)( ( (char*)heap ) + HEAP_BLOCK_SIZE );
-      *heapEnd  = 0;
-      heapTop   = heap;
+      heapEnd = (void**)( ( (char*)heap ) + HEAP_BLOCK_SIZE );
+      *heapEnd = 0;
+      heapTop = heap;
 
       if ( sizeof( Token ) > HEAP_BLOCK_SIZE ) {
         wprintf( L"--- Too small HEAP_BLOCK_SIZE\n" );
         exit( 1 );
       }
 
-      pos     = -1;
-      line    = 1;
-      col     = 0;
+      pos = -1;
+      line = 1;
+      col = 0;
       charPos = -1;
       oldEols = 0;
       NextCh();
@@ -397,9 +396,9 @@ namespace gum {
         }
 
         Buffer* oldBuf = buffer;
-        buffer         = new UTF8Buffer( buffer );
-        col            = 0;
-        charPos        = -1;
+        buffer = new UTF8Buffer( buffer );
+        col = 0;
+        charPos = -1;
         delete oldBuf;
         oldBuf = NULL;
         NextCh();
@@ -414,8 +413,8 @@ namespace gum {
         ch = EOL;
         oldEols--;
       } else {
-        pos   = buffer->GetPos();
-        ch    = buffer->Read();
+        pos = buffer->GetPos();
+        ch = buffer->Read();
         int p = buffer->GetPercent();
 
         if ( ch == Buffer::EoF ) {
@@ -479,8 +478,8 @@ namespace gum {
       } else {
         buffer->SetPos( pos0 );
         NextCh();
-        line    = line0;
-        col     = col0;
+        line = line0;
+        col = col0;
         charPos = charPos0;
       }
       return false;
@@ -517,8 +516,8 @@ namespace gum {
       } else {
         buffer->SetPos( pos0 );
         NextCh();
-        line    = line0;
-        col     = col0;
+        line = line0;
+        col = col0;
         charPos = charPos0;
       }
       return false;
@@ -537,12 +536,12 @@ namespace gum {
       }
 
       // HEAP_BLOCK_SIZE byte heap + pointer to next heap block
-      newHeap  = malloc( HEAP_BLOCK_SIZE + sizeof( void* ) );
+      newHeap = malloc( HEAP_BLOCK_SIZE + sizeof( void* ) );
       *heapEnd = newHeap;
-      heapEnd  = (void**)( ( (char*)newHeap ) + HEAP_BLOCK_SIZE );
+      heapEnd = (void**)( ( (char*)newHeap ) + HEAP_BLOCK_SIZE );
       *heapEnd = 0;
-      heap     = newHeap;
-      heapTop  = heap;
+      heap = newHeap;
+      heapTop = heap;
     }
 
     Token* Scanner::CreateToken() {
@@ -552,9 +551,9 @@ namespace gum {
         CreateHeapBlock();
       }
 
-      t       = (Token*)heapTop;
+      t = (Token*)heapTop;
       heapTop = (void*)( (char*)heapTop + sizeof( Token ) );
-      t->val  = NULL;
+      t->val = NULL;
       t->next = NULL;
       return t;
     }
@@ -571,7 +570,7 @@ namespace gum {
         CreateHeapBlock();
       }
 
-      t->val  = (wchar_t*)heapTop;
+      t->val = (wchar_t*)heapTop;
       heapTop = (void*)( (char*)heapTop + reqMem );
 
       wcsncpy( t->val, tval, tlen );
@@ -585,14 +584,14 @@ namespace gum {
       if ( ( ch == L'/' && Comment0() ) || ( ch == L'/' && Comment1() ) )
         return NextToken();
       int recKind = noSym;
-      int recEnd  = pos;
-      t           = CreateToken();
-      t->pos      = pos;
-      t->col      = col;
-      t->line     = line;
-      t->charPos  = charPos;
-      int state   = start.state( ch );
-      tlen        = 0;
+      int recEnd = pos;
+      t = CreateToken();
+      t->pos = pos;
+      t->col = col;
+      t->line = line;
+      t->charPos = charPos;
+      int state = start.state( ch );
+      tlen = 0;
       AddCh();
 
       switch ( state ) {
@@ -619,7 +618,7 @@ namespace gum {
         }
         case 2:
         case_2:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 2;
           if ( ch == L'%' || ( ch >= L'-' && ch <= L'.' ) ||
                ( ch >= L'0' && ch <= L'9' ) || ch == L'?' ||
@@ -628,15 +627,15 @@ namespace gum {
             AddCh();
             goto case_2;
           } else {
-            t->kind          = 2;
+            t->kind = 2;
             wchar_t* literal = coco_string_create( tval, 0, tlen );
-            t->kind          = keywords.get( literal, t->kind );
+            t->kind = keywords.get( literal, t->kind );
             coco_string_delete( literal );
             break;
           }
         case 3:
         case_3:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 2;
           if ( ch == L'%' || ( ch >= L'-' && ch <= L'.' ) ||
                ( ch >= L'0' && ch <= L'9' ) || ch == L'?' ||
@@ -645,9 +644,9 @@ namespace gum {
             AddCh();
             goto case_3;
           } else {
-            t->kind          = 2;
+            t->kind = 2;
             wchar_t* literal = coco_string_create( tval, 0, tlen );
-            t->kind          = keywords.get( literal, t->kind );
+            t->kind = keywords.get( literal, t->kind );
             coco_string_delete( literal );
             break;
           }
@@ -661,7 +660,7 @@ namespace gum {
           }
         case 5:
         case_5:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 4;
           if ( ( ch >= L'0' && ch <= L'9' ) ) {
             AddCh();
@@ -694,7 +693,7 @@ namespace gum {
           }
         case 8:
         case_8:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 4;
           if ( ( ch >= L'0' && ch <= L'9' ) ) {
             AddCh();
@@ -724,7 +723,7 @@ namespace gum {
           }
         case 11:
         case_11:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 4;
           if ( ( ch >= L'0' && ch <= L'9' ) ) {
             AddCh();
@@ -771,7 +770,7 @@ namespace gum {
         }
         case 17:
         case_17:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 3;
           if ( ( ch >= L'A' && ch <= L'D' ) || ( ch >= L'F' && ch <= L'Z' ) ||
                ch == L'_' || ( ch >= L'a' && ch <= L'd' ) ||
@@ -792,7 +791,7 @@ namespace gum {
             break;
           }
         case 18:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 1;
           if ( ( ch >= L'0' && ch <= L'9' ) ) {
             AddCh();
@@ -802,7 +801,7 @@ namespace gum {
             break;
           }
         case 19:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 1;
           if ( ( ch >= L'0' && ch <= L'9' ) ) {
             AddCh();
@@ -813,7 +812,7 @@ namespace gum {
           }
         case 20:
         case_20:
-          recEnd  = pos;
+          recEnd = pos;
           recKind = 3;
           if ( ( ch >= L'0' && ch <= L'9' ) ) {
             AddCh();
@@ -849,8 +848,8 @@ namespace gum {
     void Scanner::SetScannerBehindT() {
       buffer->SetPos( t->pos );
       NextCh();
-      line    = t->line;
-      col     = t->col;
+      line = t->line;
+      col = t->col;
       charPos = t->charPos;
 
       for ( int i = 0; i < tlen; i++ )

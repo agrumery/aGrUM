@@ -140,7 +140,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   GUM_SCALAR* projectMaxMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0 );
+      Instantiation*                             instantiation = 0 );
 
   /// @}
   // ==========================================================================
@@ -249,7 +249,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   GUM_SCALAR* projectMinMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0 );
+      Instantiation*                             instantiation = 0 );
 
   /// @}
   // ==========================================================================
@@ -362,7 +362,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   GUM_SCALAR* projectSumMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0 );
+      Instantiation*                             instantiation = 0 );
 
   /// @}
   // ==========================================================================
@@ -392,9 +392,8 @@ namespace gum {
    * projection.
    */
   template <typename GUM_SCALAR>
-  GUM_SCALAR
-  projectProductMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
-                               Instantiation* instantiation = 0 );
+  GUM_SCALAR projectProductMultiDimArray( const MultiDimArray<GUM_SCALAR>* table,
+                                          Instantiation* instantiation = 0 );
 
   /**
    * @brief a function for projecting a multiDimArray using a Product operator
@@ -472,7 +471,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   GUM_SCALAR* projectProductMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
-      Instantiation* instantiation = 0 );
+      Instantiation*                             instantiation = 0 );
 
   /// @}
 

@@ -80,8 +80,8 @@ namespace gum {
        * @param strategy The search strategy used for pattern mining, the
        *                 default strategy is gspan::FrequenceSearch.
        */
-      GSpan( const PRM<GUM_SCALAR>& prm,
-             const PRMSystem<GUM_SCALAR>& sys,
+      GSpan( const PRM<GUM_SCALAR>&             prm,
+             const PRMSystem<GUM_SCALAR>&       sys,
              gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
       /// Destructor.
@@ -250,7 +250,7 @@ namespace gum {
       /// @param graph The interface graph used in this discovery process.
       /// @param p The pattern used as a base for discovery.
       void __subgraph_mining( gspan::InterfaceGraph<GUM_SCALAR>& graph,
-                              gspan::Pattern& p );
+                              gspan::Pattern&                    p );
 
       /// Returns the cost with respect to an interface size and its frequency.
       /// TODO replace this by a class to enable different cost policies.

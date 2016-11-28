@@ -160,7 +160,7 @@ namespace gum {
     void startTransitionDeclaration();
 
     /// Tells the factory to add a transition table to the current fmdp.
-    void addTransition( const std::string& var,
+    void addTransition( const std::string&        var,
                         const MultiDimAdressable* transition );
 
     /// Tells the factory to add a transition table to the current fmdp.

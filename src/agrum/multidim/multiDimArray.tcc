@@ -39,8 +39,7 @@ namespace gum {
 
   // copy constructor
   template <typename GUM_SCALAR>
-  MultiDimArray<GUM_SCALAR>::MultiDimArray(
-      const MultiDimArray<GUM_SCALAR>& src )
+  MultiDimArray<GUM_SCALAR>::MultiDimArray( const MultiDimArray<GUM_SCALAR>& src )
       : MultiDimWithOffset<GUM_SCALAR>( src )
       , _values( src._values ) {
     // for debugging purposes
@@ -113,7 +112,7 @@ namespace gum {
       if ( !this->_isInMultipleChangeMethod() ) _values.clear();
     } else {
       Size v_size = v.domainSize();
-      Size size   = this->domainSize();
+      Size size = this->domainSize();
       // here, the variable does belong to the array.
       // => if pos = variables.size() - 1 then we just have to extract the
       // beginning of the array (actually the first gap of variable v)
@@ -130,7 +129,7 @@ namespace gum {
           for ( Idx i = 0, j = 0; i < size; i += gap_w ) {
             Idx last = i + gap_v;
 
-            for ( Idx k  = i; k < last; ++k, ++j )
+            for ( Idx k = i; k < last; ++k, ++j )
               _values[j] = _values[k];
           }
         }
@@ -174,7 +173,7 @@ namespace gum {
   // virtual constructor
   template <typename GUM_SCALAR>
   INLINE MultiDimContainer<GUM_SCALAR>*
-  MultiDimArray<GUM_SCALAR>::newFactory() const {
+         MultiDimArray<GUM_SCALAR>::newFactory() const {
     return new MultiDimArray<GUM_SCALAR>;
   }
 
@@ -186,7 +185,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimArray<GUM_SCALAR>::unsafeSet( Idx offset,
+  INLINE void MultiDimArray<GUM_SCALAR>::unsafeSet( Idx               offset,
                                                     const GUM_SCALAR& data ) {
     _values[offset] = data;
   }
@@ -203,7 +202,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimArray<GUM_SCALAR>::setByOffset( Idx offset,
+  INLINE void MultiDimArray<GUM_SCALAR>::setByOffset( Idx               offset,
                                                       const GUM_SCALAR& data ) {
     if ( offset >= _values.size() ) {
       GUM_ERROR( OutOfBounds, "offset too large" );

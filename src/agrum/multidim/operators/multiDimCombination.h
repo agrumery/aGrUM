@@ -133,7 +133,7 @@ namespace gum {
      */
     virtual TABLE<GUM_SCALAR>*
     combine( const Set<const TABLE<GUM_SCALAR>*>& set ) = 0;
-    virtual void combine( TABLE<GUM_SCALAR>& container,
+    virtual void combine( TABLE<GUM_SCALAR>&                   container,
                           const Set<const TABLE<GUM_SCALAR>*>& set ) = 0;
 
     /// changes the function used for combining two TABLES

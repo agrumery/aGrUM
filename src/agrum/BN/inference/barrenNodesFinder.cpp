@@ -48,7 +48,7 @@ namespace gum {
       // barren
       // later on
       Sequence<NodeId> observed_anc( __dag->size() );
-      const Size non_barren = std::numeric_limits<Size>::max();
+      const Size       non_barren = std::numeric_limits<Size>::max();
       for ( const auto node : *__observed_nodes )
         observed_anc.insert( node );
       for ( Idx i = 0; i < observed_anc.size(); ++i ) {
@@ -204,8 +204,8 @@ namespace gum {
         } else {
           // find the child with the smallest number of parents
           const auto& children = sweep_dag.children( node );
-          NodeId smallest_child = 0;
-          Size smallest_nb_par = std::numeric_limits<Size>::max();
+          NodeId      smallest_child = 0;
+          Size        smallest_nb_par = std::numeric_limits<Size>::max();
           for ( const auto child : children ) {
             const auto new_nb = sweep_dag.parents( child ).size();
             if ( new_nb < smallest_nb_par ) {
@@ -228,7 +228,7 @@ namespace gum {
             }
           } else {
             const Size nb_match = Size( std::min( nb_parents, nb_children ) - 1 );
-            auto iter_par = parents.beginSafe();
+            auto       iter_par = parents.beginSafe();
             ++iter_par;  // skip the first parent, whose arc with node will
                          // remain
             auto iter_child = children.beginSafe();
@@ -317,7 +317,7 @@ namespace gum {
 
     // mark all the ancestors of the evidence and targets as non-barren
     List<NodeId> nodes_to_examine;
-    int nb_non_barren = 0;
+    int          nb_non_barren = 0;
     for ( const auto node : *__observed_nodes )
       nodes_to_examine.insert( node );
     for ( const auto node : *__target_nodes )

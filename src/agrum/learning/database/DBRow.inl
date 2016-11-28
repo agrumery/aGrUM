@@ -68,7 +68,7 @@ namespace gum {
     /// copy operator
     INLINE DBRow& DBRow::operator=( const DBRow& from ) {
       if ( this != &from ) {
-        _row    = from._row;
+        _row = from._row;
         _weight = from._weight;
       }
       return *this;
@@ -77,7 +77,7 @@ namespace gum {
     /// move operator
     INLINE DBRow& DBRow::operator=( DBRow&& from ) {
       if ( this != &from ) {
-        _row    = std::move( from._row );
+        _row = std::move( from._row );
         _weight = from._weight;
       }
       return *this;
@@ -90,9 +90,7 @@ namespace gum {
     INLINE const DBCell& DBRow::operator[]( Idx i ) const { return _row[i]; }
 
     /// returns the current row
-    INLINE const std::vector<DBCell>& DBRow::row() const noexcept {
-      return _row;
-    }
+    INLINE const std::vector<DBCell>& DBRow::row() const noexcept { return _row; }
 
     /// returns the current row
     INLINE std::vector<DBCell>& DBRow::row() noexcept { return _row; }

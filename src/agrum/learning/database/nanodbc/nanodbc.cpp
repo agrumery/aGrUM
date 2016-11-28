@@ -224,7 +224,7 @@ namespace {
   // Operates like strlen() on a character array.
   template <typename T, std::size_t N>
   inline std::size_t strarrlen( T ( &a )[N] ) {
-    const T* s    = &a[0];
+    const T*    s = &a[0];
     std::size_t i = 0;
     while ( *s++ && i < N )
       i++;
@@ -257,20 +257,20 @@ namespace {
 
   // Attempts to get the most recent ODBC error as a string.
   // Always returns std::string, even in unicode mode.
-  inline std::string recent_error( SQLHANDLE handle,
-                                   SQLSMALLINT handle_type,
-                                   long& native,
+  inline std::string recent_error( SQLHANDLE    handle,
+                                   SQLSMALLINT  handle_type,
+                                   long&        native,
                                    std::string& state ) {
-    nanodbc::string_type result;
-    std::string rvalue;
+    nanodbc::string_type         result;
+    std::string                  rvalue;
     std::vector<NANODBC_SQLCHAR> sql_message( SQL_MAX_MESSAGE_LENGTH );
     sql_message[0] = '\0';
 
-    SQLINTEGER i = 1;
-    SQLINTEGER native_error;
-    SQLSMALLINT total_bytes;
+    SQLINTEGER      i = 1;
+    SQLINTEGER      native_error;
+    SQLSMALLINT     total_bytes;
     NANODBC_SQLCHAR sql_state[6];
-    RETCODE rc;
+    RETCODE         rc;
 
     do {
       NANODBC_CALL_RC( NANODBC_UNICODE( SQLGetDiagRec ),
@@ -312,7 +312,7 @@ namespace {
     } while ( rc != SQL_NO_DATA );
 
     convert( result, rvalue );
-    state  = std::string( &sql_state[0], &sql_state[arrlen( sql_state ) - 1] );
+    state = std::string( &sql_state[0], &sql_state[arrlen( sql_state ) - 1] );
     native = native_error;
     std::string status = state;
     status += ": ";
@@ -355,8 +355,8 @@ namespace nanodbc {
     return std::runtime_error::what();
   }
 
-  database_error::database_error( void* handle,
-                                  short handle_type,
+  database_error::database_error( void*              handle,
+                                  short              handle_type,
                                   const std::string& info )
       : std::runtime_error( info )
       , native_error( 0 )
@@ -382,10 +382,8 @@ namespace nanodbc {
 // Throwing exceptions using NANODBC_THROW_DATABASE_ERROR enables file name
 // and line numbers to be inserted into the error message. Useful for debugging.
 #define NANODBC_THROW_DATABASE_ERROR( handle, handle_type ) \
-  throw nanodbc::database_error( handle,                    \
-                                 handle_type,               \
-                                 __FILE__                   \
-                                 ":" NANODBC_STRINGIZE( __LINE__ ) ": " ) /**/
+  throw nanodbc::database_error(                            \
+      handle, handle_type, __FILE__ ":" NANODBC_STRINGIZE( __LINE__ ) ": " ) /**/
 
 // 8888888b.           888             d8b 888
 // 888  "Y88b          888             Y8P 888
@@ -500,22 +498,21 @@ namespace {
 
     public:
     nanodbc::string_type name_;
-    short column_;
-    SQLSMALLINT sqltype_;
-    SQLULEN sqlsize_;
-    SQLSMALLINT scale_;
-    SQLSMALLINT ctype_;
-    SQLULEN clen_;
-    bool blob_;
-    nanodbc::null_type* cbdata_;
-    char* pdata_;
+    short                column_;
+    SQLSMALLINT          sqltype_;
+    SQLULEN              sqlsize_;
+    SQLSMALLINT          scale_;
+    SQLSMALLINT          ctype_;
+    SQLULEN              clen_;
+    bool                 blob_;
+    nanodbc::null_type*  cbdata_;
+    char*                pdata_;
   };
 
   // Allocates the native ODBC handles.
   inline void allocate_handle( SQLHENV& env, SQLHDBC& conn ) {
     RETCODE rc;
-    NANODBC_CALL_RC(
-        SQLAllocHandle, rc, SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env );
+    NANODBC_CALL_RC( SQLAllocHandle, rc, SQL_HANDLE_ENV, SQL_NULL_HANDLE, &env );
     if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( env, SQL_HANDLE_ENV );
 
     try {
@@ -576,7 +573,7 @@ namespace nanodbc {
     connection_impl( const string_type& dsn,
                      const string_type& user,
                      const string_type& pass,
-                     long timeout )
+                     long               timeout )
         : env_( 0 )
         , conn_( 0 )
         , connected_( false )
@@ -627,8 +624,7 @@ namespace nanodbc {
                        SQL_ATTR_ASYNC_DBC_FUNCTIONS_ENABLE,
                        (SQLPOINTER)SQL_ASYNC_DBC_ENABLE_ON,
                        SQL_IS_INTEGER );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
 
       NANODBC_CALL_RC( SQLSetConnectAttr,
                        rc,
@@ -636,8 +632,7 @@ namespace nanodbc {
                        SQL_ATTR_ASYNC_DBC_EVENT,
                        event_handle,
                        SQL_IS_POINTER );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
     }
 
     void async_complete() {
@@ -652,8 +647,7 @@ namespace nanodbc {
                        SQL_ATTR_ASYNC_ENABLE,
                        (SQLPOINTER)SQL_ASYNC_ENABLE_OFF,
                        SQL_IS_INTEGER );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
 
       connected_ = success( rc );
     }
@@ -662,18 +656,16 @@ namespace nanodbc {
     void connect( const string_type& dsn,
                   const string_type& user,
                   const string_type& pass,
-                  long timeout,
-                  void* event_handle = NULL ) {
+                  long               timeout,
+                  void*              event_handle = NULL ) {
       disconnect();
 
       RETCODE rc;
       NANODBC_CALL_RC( SQLFreeHandle, rc, SQL_HANDLE_DBC, conn_ );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
 
       NANODBC_CALL_RC( SQLAllocHandle, rc, SQL_HANDLE_DBC, env_, &conn_ );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( env_, SQL_HANDLE_ENV );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( env_, SQL_HANDLE_ENV );
 
       NANODBC_CALL_RC( SQLSetConnectAttr,
                        rc,
@@ -681,8 +673,7 @@ namespace nanodbc {
                        SQL_LOGIN_TIMEOUT,
                        ( SQLPOINTER )(std::intptr_t)timeout,
                        0 );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
 
 #ifdef SQL_ATTR_ASYNC_DBC_EVENT
       if ( event_handle != NULL ) enable_async( event_handle );
@@ -705,18 +696,16 @@ namespace nanodbc {
     }
 
     void connect( const string_type& connection_string,
-                  long timeout,
-                  void* event_handle = NULL ) {
+                  long               timeout,
+                  void*              event_handle = NULL ) {
       disconnect();
 
       RETCODE rc;
       NANODBC_CALL_RC( SQLFreeHandle, rc, SQL_HANDLE_DBC, conn_ );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
 
       NANODBC_CALL_RC( SQLAllocHandle, rc, SQL_HANDLE_DBC, env_, &conn_ );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( env_, SQL_HANDLE_ENV );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( env_, SQL_HANDLE_ENV );
 
       NANODBC_CALL_RC( SQLSetConnectAttr,
                        rc,
@@ -724,15 +713,14 @@ namespace nanodbc {
                        SQL_LOGIN_TIMEOUT,
                        ( SQLPOINTER )(std::intptr_t)timeout,
                        0 );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
 
 #ifdef SQL_ATTR_ASYNC_DBC_EVENT
       if ( event_handle != NULL ) enable_async( event_handle );
 #endif
 
       NANODBC_SQLCHAR dsn[1024];
-      SQLSMALLINT dsn_size = 0;
+      SQLSMALLINT     dsn_size = 0;
       NANODBC_CALL_RC( NANODBC_UNICODE( SQLDriverConnect ),
                        rc,
                        conn_,
@@ -770,8 +758,8 @@ namespace nanodbc {
 
     string_type driver_name() const {
       NANODBC_SQLCHAR name[1024];
-      SQLSMALLINT length;
-      RETCODE rc;
+      SQLSMALLINT     length;
+      RETCODE         rc;
       NANODBC_CALL_RC( NANODBC_UNICODE( SQLGetInfo ),
                        rc,
                        conn_,
@@ -779,8 +767,7 @@ namespace nanodbc {
                        name,
                        sizeof( name ) / sizeof( NANODBC_SQLCHAR ),
                        &length );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
       return string_type( &name[0], &name[strarrlen( name )] );
     }
 
@@ -791,8 +778,8 @@ namespace nanodbc {
       // PostgreSQL driver MAX_INFO_STIRNG=128
       // MFC CDatabase allocates buffer dynamically.
       NANODBC_SQLCHAR name[255] = {0};
-      SQLSMALLINT length( 0 );
-      RETCODE rc;
+      SQLSMALLINT     length( 0 );
+      RETCODE         rc;
       NANODBC_CALL_RC( NANODBC_UNICODE( SQLGetInfo ),
                        rc,
                        conn_,
@@ -800,15 +787,14 @@ namespace nanodbc {
                        name,
                        sizeof( name ) / sizeof( NANODBC_SQLCHAR ),
                        &length );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
       return string_type( &name[0], &name[strarrlen( name )] );
     }
 
     string_type catalog_name() const {
       NANODBC_SQLCHAR name[SQL_MAX_OPTION_STRING_LENGTH] = {0};
-      SQLINTEGER length( 0 );
-      RETCODE rc;
+      SQLINTEGER      length( 0 );
+      RETCODE         rc;
       NANODBC_CALL_RC( NANODBC_UNICODE( SQLGetConnectAttr ),
                        rc,
                        conn_,
@@ -816,8 +802,7 @@ namespace nanodbc {
                        name,
                        sizeof( name ) / sizeof( NANODBC_SQLCHAR ),
                        &length );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( conn_, SQL_HANDLE_DBC );
       return string_type( &name[0], &name[strarrlen( name )] );
     }
 
@@ -830,12 +815,12 @@ namespace nanodbc {
     void rollback( bool onoff ) { rollback_ = onoff; }
 
     private:
-    HENV env_;
-    HDBC conn_;
-    bool connected_;
+    HENV        env_;
+    HDBC        conn_;
+    bool        connected_;
     std::size_t transactions_;
-    bool rollback_;  // if true, this connection is marked for eventual
-                     // transaction rollback
+    bool        rollback_;  // if true, this connection is marked for eventual
+                            // transaction rollback
   };
 
 }  // namespace nanodbc
@@ -938,7 +923,7 @@ namespace nanodbc {
 
     private:
     class connection conn_;
-    bool committed_;
+    bool             committed_;
   };
 
 }  // namespace nanodbc
@@ -985,9 +970,9 @@ namespace nanodbc {
       open( conn );
     }
 
-    statement_impl( class connection& conn,
+    statement_impl( class connection&  conn,
                     const string_type& query,
-                    long timeout )
+                    long               timeout )
         : stmt_( 0 )
         , open_( false )
         , conn_()
@@ -1006,11 +991,8 @@ namespace nanodbc {
     void open( class connection& conn ) {
       close();
       RETCODE rc;
-      NANODBC_CALL_RC( SQLAllocHandle,
-                       rc,
-                       SQL_HANDLE_STMT,
-                       conn.native_dbc_handle(),
-                       &stmt_ );
+      NANODBC_CALL_RC(
+          SQLAllocHandle, rc, SQL_HANDLE_STMT, conn.native_dbc_handle(), &stmt_ );
       open_ = success( rc );
       if ( !open_ ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
       conn_ = conn;
@@ -1049,8 +1031,7 @@ namespace nanodbc {
     void cancel() {
       RETCODE rc;
       NANODBC_CALL_RC( SQLCancel, rc, stmt_ );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
     }
 
     void
@@ -1061,8 +1042,7 @@ namespace nanodbc {
 
     void prepare( const string_type& query, long timeout ) {
       if ( !open() )
-        throw programming_error(
-            "statement has no associated open connection" );
+        throw programming_error( "statement has no associated open connection" );
 
       RETCODE rc;
       NANODBC_CALL_RC( NANODBC_UNICODE( SQLPrepare ),
@@ -1070,8 +1050,7 @@ namespace nanodbc {
                        stmt_,
                        (NANODBC_SQLCHAR*)query.c_str(),
                        (SQLINTEGER)query.size() );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
 
       this->timeout( timeout );
     }
@@ -1100,8 +1079,7 @@ namespace nanodbc {
                        SQL_ATTR_ASYNC_ENABLE,
                        (SQLPOINTER)SQL_ASYNC_ENABLE_ON,
                        SQL_IS_INTEGER );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
 
       NANODBC_CALL_RC( SQLSetStmtAttr,
                        rc,
@@ -1109,16 +1087,15 @@ namespace nanodbc {
                        SQL_ATTR_ASYNC_STMT_EVENT,
                        event_handle,
                        SQL_IS_POINTER );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
     }
 
-    void async_execute_direct( class connection& conn,
-                               void* event_handle,
+    void async_execute_direct( class connection&  conn,
+                               void*              event_handle,
                                const string_type& query,
-                               long batch_operations,
-                               long timeout,
-                               statement& statement ) {
+                               long               batch_operations,
+                               long               timeout,
+                               statement&         statement ) {
       RETCODE rc = just_execute_direct(
           conn, query, batch_operations, timeout, statement, event_handle );
 
@@ -1138,21 +1115,20 @@ namespace nanodbc {
                        SQL_ATTR_ASYNC_ENABLE,
                        (SQLPOINTER)SQL_ASYNC_ENABLE_OFF,
                        SQL_IS_INTEGER );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
 
       return result( statement, batch_operations );
     }
 #endif  // SQL_ATTR_ASYNC_STMT_EVENT && SQL_API_SQLCOMPLETEASYNC
 
-    result execute_direct( class connection& conn,
+    result execute_direct( class connection&  conn,
                            const string_type& query,
-                           long batch_operations,
-                           long timeout,
-                           statement& statement ) {
+                           long               batch_operations,
+                           long               timeout,
+                           statement&         statement ) {
 #ifdef NANODBC_HANDLE_NODATA_BUG
-      const RETCODE rc = just_execute_direct(
-          conn, query, batch_operations, timeout, statement );
+      const RETCODE rc =
+          just_execute_direct( conn, query, batch_operations, timeout, statement );
       if ( rc == SQL_NO_DATA ) return result();
 #else
       just_execute_direct( conn, query, batch_operations, timeout, statement );
@@ -1160,10 +1136,10 @@ namespace nanodbc {
       return result( statement, batch_operations );
     }
 
-    RETCODE just_execute_direct( class connection& conn,
+    RETCODE just_execute_direct( class connection&  conn,
                                  const string_type& query,
-                                 long batch_operations,
-                                 long timeout,
+                                 long               batch_operations,
+                                 long               timeout,
                                  statement& /*statement*/
                                  ,
                                  void* event_handle = NULL ) {
@@ -1180,8 +1156,7 @@ namespace nanodbc {
                        SQL_ATTR_PARAMSET_SIZE,
                        ( SQLPOINTER )(std::intptr_t)batch_operations,
                        0 );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
 
       this->timeout( timeout );
 
@@ -1196,8 +1171,7 @@ namespace nanodbc {
       return rc;
     }
 
-    result
-    execute( long batch_operations, long timeout, statement& statement ) {
+    result execute( long batch_operations, long timeout, statement& statement ) {
 #ifdef NANODBC_HANDLE_NODATA_BUG
       const RETCODE rc = just_execute( batch_operations, timeout, statement );
       if ( rc == SQL_NO_DATA ) return result();
@@ -1207,9 +1181,8 @@ namespace nanodbc {
       return result( statement, batch_operations );
     }
 
-    RETCODE just_execute( long batch_operations,
-                          long timeout,
-                          statement& /*statement*/ ) {
+    RETCODE
+    just_execute( long batch_operations, long timeout, statement& /*statement*/ ) {
       RETCODE rc;
 
       if ( open() ) {
@@ -1252,10 +1225,9 @@ namespace nanodbc {
                               const string_type& schema,
                               const string_type& procedure,
                               const string_type& column,
-                              statement& statement ) {
+                              statement&         statement ) {
       if ( !open() )
-        throw programming_error(
-            "statement has no associated open connection" );
+        throw programming_error( "statement has no associated open connection" );
 
       RETCODE rc;
       NANODBC_CALL_RC(
@@ -1271,18 +1243,16 @@ namespace nanodbc {
           (NANODBC_SQLCHAR*)( column.empty() ? NULL : column.c_str() ),
           ( column.empty() ? 0 : SQL_NTS ) );
 
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
 
       return result( statement, 1 );
     }
 
     long affected_rows() const {
-      SQLLEN rows;
+      SQLLEN  rows;
       RETCODE rc;
       NANODBC_CALL_RC( SQLRowCount, rc, stmt_, &rows );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
       NANODBC_ASSERT( rows <=
                       static_cast<SQLLEN>( std::numeric_limits<long>::max() ) );
       return static_cast<long>( rows );
@@ -1290,10 +1260,9 @@ namespace nanodbc {
 
     short columns() const {
       SQLSMALLINT cols;
-      RETCODE rc;
+      RETCODE     rc;
       NANODBC_CALL_RC( SQLNumResultCols, rc, stmt_, &cols );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
       return cols;
     }
 
@@ -1302,9 +1271,9 @@ namespace nanodbc {
     }
 
     unsigned long parameter_size( short param ) const {
-      RETCODE rc;
+      RETCODE     rc;
       SQLSMALLINT data_type;
-      SQLULEN parameter_size;
+      SQLULEN     parameter_size;
       NANODBC_CALL_RC( SQLDescribeParam,
                        rc,
                        stmt_,
@@ -1313,8 +1282,7 @@ namespace nanodbc {
                        &parameter_size,
                        0,
                        0 );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
       NANODBC_ASSERT(
           parameter_size <=
           static_cast<SQLULEN>( std::numeric_limits<unsigned long>::max() ) );
@@ -1342,13 +1310,13 @@ namespace nanodbc {
     }
 
     // initializes bind_len_or_null_ and gets information for bind
-    void prepare_bind( short param,
-                       std::size_t elements,
+    void prepare_bind( short           param,
+                       std::size_t     elements,
                        param_direction direction,
-                       SQLSMALLINT& data_type,
-                       SQLSMALLINT& param_type,
-                       SQLULEN& parameter_size,
-                       SQLSMALLINT& scale ) {
+                       SQLSMALLINT&    data_type,
+                       SQLSMALLINT&    param_type,
+                       SQLULEN&        parameter_size,
+                       SQLSMALLINT&    scale ) {
       RETCODE rc;
       NANODBC_CALL_RC( SQLDescribeParam,
                        rc,
@@ -1358,8 +1326,7 @@ namespace nanodbc {
                        &parameter_size,
                        &scale,
                        0 );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
 
       param_type = param_type_from_direction( direction );
 
@@ -1376,13 +1343,13 @@ namespace nanodbc {
 
     // calls actual ODBC bind parameter function
     template <class T>
-    void bind_parameter( short param,
+    void bind_parameter( short    param,
                          const T* data,
                          std::size_t /*elements*/
                          ,
                          SQLSMALLINT data_type,
                          SQLSMALLINT param_type,
-                         SQLULEN parameter_size,
+                         SQLULEN     parameter_size,
                          SQLSMALLINT scale ) {
       RETCODE rc;
       NANODBC_CALL_RC( SQLBindParameter,
@@ -1408,24 +1375,23 @@ namespace nanodbc {
                        ,
                        bind_len_or_null_[param].data() );
 
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
     }
 
     // handles a single value (possibly a single string value), or multiple
     // non-string values
     template <class T>
-    void bind( short param,
-               const T* values,
-               std::size_t elements,
+    void bind( short           param,
+               const T*        values,
+               std::size_t     elements,
                param_direction direction );
 
     // handles multiple string values
-    void bind_strings( short param,
+    void bind_strings( short                          param,
                        const string_type::value_type* values,
                        std::size_t /*length*/
                        ,
-                       std::size_t elements,
+                       std::size_t     elements,
                        param_direction direction ) {
       bind( param, values, elements, direction );
     }
@@ -1434,7 +1400,7 @@ namespace nanodbc {
     void bind_null( short param, std::size_t elements ) {
       SQLSMALLINT data_type;
       SQLSMALLINT param_type;
-      SQLULEN parameter_size;
+      SQLULEN     parameter_size;
       SQLSMALLINT scale;
       prepare_bind( param,
                     elements,
@@ -1461,8 +1427,7 @@ namespace nanodbc {
                        0  // parameter_size
                        ,
                        bind_len_or_null_[param].data() );
-      if ( !success( rc ) )
-        NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+      if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
     }
 
     // comparator for null sentry values
@@ -1473,25 +1438,25 @@ namespace nanodbc {
 
     // handles multiple non-string values with a null sentry
     template <class T>
-    void bind( short param,
-               const T* values,
-               std::size_t elements,
-               const bool* nulls,
-               const T* null_sentry,
+    void bind( short           param,
+               const T*        values,
+               std::size_t     elements,
+               const bool*     nulls,
+               const T*        null_sentry,
                param_direction direction );
 
     // handles multiple string values
-    void bind_strings( short param,
+    void bind_strings( short                          param,
                        const string_type::value_type* values,
-                       std::size_t length,
-                       std::size_t elements,
-                       const bool* nulls,
+                       std::size_t                    length,
+                       std::size_t                    elements,
+                       const bool*                    nulls,
                        const string_type::value_type* null_sentry,
-                       param_direction direction );
+                       param_direction                direction );
 
     private:
-    HSTMT stmt_;
-    bool open_;
+    HSTMT            stmt_;
+    bool             open_;
     class connection conn_;
     std::map<short, std::vector<null_type>> bind_len_or_null_;
   };
@@ -1501,13 +1466,13 @@ namespace nanodbc {
   // SQLBindParameter().
   template <>
   void statement::statement_impl::bind_parameter<string_type::value_type>(
-      short param,
+      short                          param,
       const string_type::value_type* data,
-      std::size_t elements,
-      SQLSMALLINT data_type,
-      SQLSMALLINT param_type,
-      SQLULEN parameter_size,
-      SQLSMALLINT scale ) {
+      std::size_t                    elements,
+      SQLSMALLINT                    data_type,
+      SQLSMALLINT                    param_type,
+      SQLULEN                        parameter_size,
+      SQLSMALLINT                    scale ) {
     RETCODE rc;
     NANODBC_CALL_RC(
         SQLBindParameter,
@@ -1533,28 +1498,22 @@ namespace nanodbc {
         ,
         ( elements <= 1 ? NULL : bind_len_or_null_[param].data() ) );
 
-    if ( !success( rc ) )
-      NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
+    if ( !success( rc ) ) NANODBC_THROW_DATABASE_ERROR( stmt_, SQL_HANDLE_STMT );
   }
 
   template <class T>
-  void statement::statement_impl::bind( short param,
-                                        const T* values,
-                                        std::size_t elements,
+  void statement::statement_impl::bind( short           param,
+                                        const T*        values,
+                                        std::size_t     elements,
                                         param_direction direction ) {
     SQLSMALLINT data_type;
     SQLSMALLINT param_type;
-    SQLULEN parameter_size;
+    SQLULEN     parameter_size;
     SQLSMALLINT scale;
-    prepare_bind( param,
-                  elements,
-                  direction,
-                  data_type,
-                  param_type,
-                  parameter_size,
-                  scale );
+    prepare_bind(
+        param, elements, direction, data_type, param_type, parameter_size, scale );
 
-    for ( std::size_t i           = 0; i < elements; ++i )
+    for ( std::size_t i = 0; i < elements; ++i )
       bind_len_or_null_[param][i] = parameter_size;
 
     bind_parameter(
@@ -1562,23 +1521,18 @@ namespace nanodbc {
   }
 
   template <class T>
-  void statement::statement_impl::bind( short param,
-                                        const T* values,
-                                        std::size_t elements,
-                                        const bool* nulls,
-                                        const T* null_sentry,
+  void statement::statement_impl::bind( short           param,
+                                        const T*        values,
+                                        std::size_t     elements,
+                                        const bool*     nulls,
+                                        const T*        null_sentry,
                                         param_direction direction ) {
     SQLSMALLINT data_type;
     SQLSMALLINT param_type;
-    SQLULEN parameter_size;
+    SQLULEN     parameter_size;
     SQLSMALLINT scale;
-    prepare_bind( param,
-                  elements,
-                  direction,
-                  data_type,
-                  param_type,
-                  parameter_size,
-                  scale );
+    prepare_bind(
+        param, elements, direction, data_type, param_type, parameter_size, scale );
 
     for ( std::size_t i = 0; i < elements; ++i )
       if ( ( null_sentry && !equals( values[i], *null_sentry ) ) ||
@@ -1590,37 +1544,30 @@ namespace nanodbc {
   }
 
   void statement::statement_impl::bind_strings(
-      short param,
+      short                          param,
       const string_type::value_type* values,
-      std::size_t length,
-      std::size_t elements,
-      const bool* nulls,
+      std::size_t                    length,
+      std::size_t                    elements,
+      const bool*                    nulls,
       const string_type::value_type* null_sentry,
-      param_direction direction ) {
+      param_direction                direction ) {
     SQLSMALLINT data_type;
     SQLSMALLINT param_type;
-    SQLULEN parameter_size;
+    SQLULEN     parameter_size;
     SQLSMALLINT scale;
-    prepare_bind( param,
-                  elements,
-                  direction,
-                  data_type,
-                  param_type,
-                  parameter_size,
-                  scale );
+    prepare_bind(
+        param, elements, direction, data_type, param_type, parameter_size, scale );
 
     if ( null_sentry ) {
       const string_type rhs( null_sentry );
       for ( std::size_t i = 0; i < elements; ++i ) {
-        const string_type lhs( values + i * length,
-                               values + ( i + 1 ) * length );
+        const string_type lhs( values + i * length, values + ( i + 1 ) * length );
         if ( NANADBC_STRNCMP( lhs.c_str(), rhs.c_str(), length ) )
           bind_len_or_null_[param][i] = parameter_size;
       }
     } else if ( nulls ) {
       for ( std::size_t i = 0; i < elements; ++i ) {
-        if ( !nulls[i] )
-          bind_len_or_null_[param][i] = SQL_NTS;  // null terminated
+        if ( !nulls[i] ) bind_len_or_null_[param][i] = SQL_NTS;  // null terminated
       }
     }
 
@@ -1636,9 +1583,9 @@ namespace nanodbc {
   template <>
   bool statement::statement_impl::equals( const timestamp& lhs,
                                           const timestamp& rhs ) {
-    return lhs.year == rhs.year && lhs.month == rhs.month &&
-           lhs.day == rhs.day && lhs.hour == rhs.hour && lhs.min == rhs.min &&
-           lhs.sec == rhs.sec && lhs.fract == rhs.fract;
+    return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day &&
+           lhs.hour == rhs.hour && lhs.min == rhs.min && lhs.sec == rhs.sec &&
+           lhs.fract == rhs.fract;
   }
 
 }  // namespace nanodbc
@@ -1711,8 +1658,8 @@ namespace nanodbc {
     long affected_rows() const { return stmt_.affected_rows(); }
 
     long rows() const NANODBC_NOEXCEPT {
-      NANODBC_ASSERT( row_count_ <= static_cast<SQLULEN>(
-                                        std::numeric_limits<long>::max() ) );
+      NANODBC_ASSERT( row_count_ <=
+                      static_cast<SQLULEN>( std::numeric_limits<long>::max() ) );
       return static_cast<long>( row_count_ );
     }
 
@@ -1818,8 +1765,8 @@ namespace nanodbc {
     long column_size( short column ) const {
       if ( column >= bound_columns_size_ ) throw index_range_error();
       bound_column& col = bound_columns_[column];
-      NANODBC_ASSERT( col.sqlsize_ <= static_cast<SQLULEN>(
-                                          std::numeric_limits<long>::max() ) );
+      NANODBC_ASSERT( col.sqlsize_ <=
+                      static_cast<SQLULEN>( std::numeric_limits<long>::max() ) );
       return static_cast<long>( col.sqlsize_ );
     }
 
@@ -1837,8 +1784,8 @@ namespace nanodbc {
     }
 
     int column_datatype( const string_type& column_name ) const {
-      const short column = this->column( column_name );
-      bound_column& col  = bound_columns_[column];
+      const short   column = this->column( column_name );
+      bound_column& col = bound_columns_[column];
       return col.sqltype_;
     }
 
@@ -1849,8 +1796,8 @@ namespace nanodbc {
     }
 
     int column_c_datatype( const string_type& column_name ) const {
-      const short column = this->column( column_name );
-      bound_column& col  = bound_columns_[column];
+      const short   column = this->column( column_name );
+      bound_column& col = bound_columns_[column];
       return col.ctype_;
     }
 
@@ -1890,9 +1837,8 @@ namespace nanodbc {
     }
 
     template <class T>
-    void get_ref( const string_type& column_name,
-                  const T& fallback,
-                  T& result ) const {
+    void
+    get_ref( const string_type& column_name, const T& fallback, T& result ) const {
       const short column = this->column( column_name );
       if ( is_null( column ) ) {
         result = fallback;
@@ -1936,7 +1882,7 @@ namespace nanodbc {
     void before_move() NANODBC_NOEXCEPT {
       for ( short i = 0; i < bound_columns_size_; ++i ) {
         bound_column& col = bound_columns_[i];
-        for ( long j     = 0; j < rowset_size_; ++j )
+        for ( long j = 0; j < rowset_size_; ++j )
           col.cbdata_[j] = 0;
         if ( col.blob_ && col.pdata_ ) release_bound_resources( i );
       }
@@ -1947,13 +1893,13 @@ namespace nanodbc {
       bound_column& col = bound_columns_[column];
       delete[] col.pdata_;
       col.pdata_ = 0;
-      col.clen_  = 0;
+      col.clen_ = 0;
     }
 
     void cleanup_bound_columns() NANODBC_NOEXCEPT {
       before_move();
       delete[] bound_columns_;
-      bound_columns_      = NULL;
+      bound_columns_ = NULL;
       bound_columns_size_ = 0;
       bound_columns_by_name_.clear();
     }
@@ -1961,11 +1907,8 @@ namespace nanodbc {
     bool fetch( long rows, SQLUSMALLINT orientation ) {
       before_move();
       RETCODE rc;
-      NANODBC_CALL_RC( SQLFetchScroll,
-                       rc,
-                       stmt_.native_statement_handle(),
-                       orientation,
-                       rows );
+      NANODBC_CALL_RC(
+          SQLFetchScroll, rc, stmt_.native_statement_handle(), orientation, rows );
       if ( rc == SQL_NO_DATA ) return false;
       if ( !success( rc ) )
         NANODBC_THROW_DATABASE_ERROR( stmt_.native_statement_handle(),
@@ -1981,13 +1924,13 @@ namespace nanodbc {
 
       NANODBC_ASSERT( !bound_columns_ );
       NANODBC_ASSERT( !bound_columns_size_ );
-      bound_columns_      = new bound_column[n_columns];
+      bound_columns_ = new bound_column[n_columns];
       bound_columns_size_ = n_columns;
 
-      RETCODE rc;
+      RETCODE         rc;
       NANODBC_SQLCHAR column_name[1024];
-      SQLSMALLINT sqltype, scale, nullable, len;
-      SQLULEN sqlsize;
+      SQLSMALLINT     sqltype, scale, nullable, len;
+      SQLULEN         sqlsize;
 
       for ( SQLSMALLINT i = 0; i < n_columns; ++i ) {
         NANODBC_CALL_RC( NANODBC_UNICODE( SQLDescribeCol ),
@@ -2022,11 +1965,11 @@ namespace nanodbc {
         }
 
         bound_column& col = bound_columns_[i];
-        col.name_   = reinterpret_cast<string_type::value_type*>( column_name );
+        col.name_ = reinterpret_cast<string_type::value_type*>( column_name );
         col.column_ = i;
-        col.sqltype_                      = sqltype;
-        col.sqlsize_                      = sqlsize;
-        col.scale_                        = scale;
+        col.sqltype_ = sqltype;
+        col.sqlsize_ = sqlsize;
+        col.scale_ = scale;
         bound_columns_by_name_[col.name_] = &col;
 
         using namespace std;  // if int64_t is in std namespace (in c++11)
@@ -2036,11 +1979,11 @@ namespace nanodbc {
           case SQL_SMALLINT:
           case SQL_INTEGER:
             col.ctype_ = SQL_C_LONG;
-            col.clen_  = sizeof( int32_t );
+            col.clen_ = sizeof( int32_t );
             break;
           case SQL_BIGINT:
             col.ctype_ = SQL_C_SBIGINT;
-            col.clen_  = sizeof( int64_t );
+            col.clen_ = sizeof( int64_t );
             break;
           case SQL_DOUBLE:
           case SQL_FLOAT:
@@ -2048,22 +1991,22 @@ namespace nanodbc {
           case SQL_REAL:
           case SQL_NUMERIC:
             col.ctype_ = SQL_C_DOUBLE;
-            col.clen_  = sizeof( double );
+            col.clen_ = sizeof( double );
             break;
           case SQL_DATE:
           case SQL_TYPE_DATE:
             col.ctype_ = SQL_C_DATE;
-            col.clen_  = sizeof( date );
+            col.clen_ = sizeof( date );
             break;
           case SQL_TIMESTAMP:
           case SQL_TYPE_TIMESTAMP:
             col.ctype_ = SQL_C_TIMESTAMP;
-            col.clen_  = sizeof( timestamp );
+            col.clen_ = sizeof( timestamp );
             break;
           case SQL_CHAR:
           case SQL_VARCHAR:
             col.ctype_ = SQL_C_CHAR;
-            col.clen_  = ( col.sqlsize_ + 1 ) * sizeof( SQLCHAR );
+            col.clen_ = ( col.sqlsize_ + 1 ) * sizeof( SQLCHAR );
             if ( is_blob ) {
               col.clen_ = 0;
               col.blob_ = true;
@@ -2072,7 +2015,7 @@ namespace nanodbc {
           case SQL_WCHAR:
           case SQL_WVARCHAR:
             col.ctype_ = SQL_C_WCHAR;
-            col.clen_  = ( col.sqlsize_ + 1 ) * sizeof( SQLWCHAR );
+            col.clen_ = ( col.sqlsize_ + 1 ) * sizeof( SQLWCHAR );
             if ( is_blob ) {
               col.clen_ = 0;
               col.blob_ = true;
@@ -2080,29 +2023,29 @@ namespace nanodbc {
             break;
           case SQL_LONGVARCHAR:
             col.ctype_ = SQL_C_CHAR;
-            col.blob_  = true;
-            col.clen_  = 0;
+            col.blob_ = true;
+            col.clen_ = 0;
             break;
           case SQL_BINARY:
           case SQL_VARBINARY:
             col.ctype_ = SQL_C_BINARY;
-            col.clen_  = col.sqlsize_ + sizeof( NANODBC_SQLCHAR );
+            col.clen_ = col.sqlsize_ + sizeof( NANODBC_SQLCHAR );
             break;
           case SQL_LONGVARBINARY:
             col.ctype_ = SQL_C_BINARY;
-            col.blob_  = true;
-            col.clen_  = 0;
+            col.blob_ = true;
+            col.clen_ = 0;
             break;
           default:
             col.ctype_ = sql_ctype<string_type>::value;
-            col.clen_  = 128;
+            col.clen_ = 128;
             break;
         }
       }
 
       for ( SQLSMALLINT i = 0; i < n_columns; ++i ) {
         bound_column& col = bound_columns_[i];
-        col.cbdata_       = new null_type[rowset_size_];
+        col.cbdata_ = new null_type[rowset_size_];
         if ( col.blob_ ) {
           NANODBC_CALL_RC( SQLBindCol,
                            rc,
@@ -2137,12 +2080,12 @@ namespace nanodbc {
     }
 
     private:
-    statement stmt_;
-    const long rowset_size_;
-    SQLULEN row_count_;
+    statement     stmt_;
+    const long    rowset_size_;
+    SQLULEN       row_count_;
     bound_column* bound_columns_;
-    short bound_columns_size_;
-    long rowset_position_;
+    short         bound_columns_size_;
+    long          rowset_position_;
     std::map<string_type, bound_column*> bound_columns_by_name_;
   };
 
@@ -2167,14 +2110,14 @@ namespace nanodbc {
 
   template <>
   inline void
-  result::result_impl::get_ref_impl<timestamp>( short column,
+  result::result_impl::get_ref_impl<timestamp>( short      column,
                                                 timestamp& result ) const {
     bound_column& col = bound_columns_[column];
     switch ( col.ctype_ ) {
       case SQL_C_DATE: {
-        date d = *( (date*)( col.pdata_ + rowset_position_ * col.clen_ ) );
+        date      d = *( (date*)( col.pdata_ + rowset_position_ * col.clen_ ) );
         timestamp stamp = {d.year, d.month, d.day, 0, 0, 0, 0};
-        result          = stamp;
+        result = stamp;
         return;
       }
       case SQL_C_TIMESTAMP:
@@ -2186,9 +2129,9 @@ namespace nanodbc {
 
   template <>
   inline void
-  result::result_impl::get_ref_impl<string_type>( short column,
+  result::result_impl::get_ref_impl<string_type>( short        column,
                                                   string_type& result ) const {
-    bound_column& col         = bound_columns_[column];
+    bound_column& col = bound_columns_[column];
     const SQLULEN column_size = col.sqlsize_;
 
     switch ( col.ctype_ ) {
@@ -2197,11 +2140,11 @@ namespace nanodbc {
           // Input is always std::string, while output may be std::string or
           // std::wstring
           std::stringstream ss;
-          char buff[1024]       = {0};
-          std::size_t buff_size = sizeof( buff );
-          SQLLEN ValueLenOrInd;
-          SQLRETURN rc;
-          void* handle = native_statement_handle();
+          char              buff[1024] = {0};
+          std::size_t       buff_size = sizeof( buff );
+          SQLLEN            ValueLenOrInd;
+          SQLRETURN         rc;
+          void*             handle = native_statement_handle();
           do {
             NANODBC_CALL_RC( SQLGetData,
                              rc,
@@ -2236,11 +2179,11 @@ namespace nanodbc {
           // std::wstring.
           // Use a string builder to build the output string.
           std::wstringstream ss;
-          wchar_t buffer[512]     = {0};
-          std::size_t buffer_size = sizeof( buffer );
-          SQLLEN ValueLenOrInd;
-          SQLRETURN rc;
-          void* handle = native_statement_handle();
+          wchar_t            buffer[512] = {0};
+          std::size_t        buffer_size = sizeof( buffer );
+          SQLLEN             ValueLenOrInd;
+          SQLRETURN          rc;
+          void*              handle = native_statement_handle();
           do {
             NANODBC_CALL_RC( SQLGetData,
                              rc,
@@ -2287,8 +2230,7 @@ namespace nanodbc {
                  const_cast<string_type::value_type*>( result.data() ),
                  column_size,
                  NANODBC_TEXT( "%d" ),
-                 *(int32_t*)( col.pdata_ + rowset_position_ * col.clen_ ) ) ==
-             -1 )
+                 *(int32_t*)( col.pdata_ + rowset_position_ * col.clen_ ) ) == -1 )
           throw type_incompatible_error();
         result.resize( NANODBC_STRLEN( result.c_str() ) );
         return;
@@ -2301,8 +2243,8 @@ namespace nanodbc {
                  const_cast<string_type::value_type*>( result.data() ),
                  column_size,
                  NANODBC_TEXT( "%jd" ),
-                 ( intmax_t ) * (int64_t*)( col.pdata_ +
-                                            rowset_position_ * col.clen_ ) ) ==
+                 ( intmax_t ) *
+                     (int64_t*)( col.pdata_ + rowset_position_ * col.clen_ ) ) ==
              -1 )
           throw type_incompatible_error();
         result.resize( NANODBC_STRLEN( result.c_str() ) );
@@ -2315,8 +2257,7 @@ namespace nanodbc {
                  const_cast<string_type::value_type*>( result.data() ),
                  column_size,
                  NANODBC_TEXT( "%f" ),
-                 *(double*)( col.pdata_ + rowset_position_ * col.clen_ ) ) ==
-             -1 )
+                 *(double*)( col.pdata_ + rowset_position_ * col.clen_ ) ) == -1 )
           throw type_incompatible_error();
         result.resize( NANODBC_STRLEN( result.c_str() ) );
         return;
@@ -2331,25 +2272,23 @@ namespace nanodbc {
                  ,
                  col.scale_  // number of digits after the decimal point
                  ,
-                 *(double*)( col.pdata_ + rowset_position_ * col.clen_ ) ) ==
-             -1 )
+                 *(double*)( col.pdata_ + rowset_position_ * col.clen_ ) ) == -1 )
           throw type_incompatible_error();
         result.resize( NANODBC_STRLEN( result.c_str() ) );
         return;
       }
 
       case SQL_C_DATE: {
-        date d     = *( (date*)( col.pdata_ + rowset_position_ * col.clen_ ) );
+        date    d = *( (date*)( col.pdata_ + rowset_position_ * col.clen_ ) );
         std::tm st = {0};
         st.tm_year = d.year - 1900;
-        st.tm_mon  = d.month - 1;
+        st.tm_mon = d.month - 1;
         st.tm_mday = d.day;
         char* old_lc_time = std::setlocale( LC_TIME, NULL );
         std::setlocale( LC_TIME, "" );
         string_type::value_type date_str[512];
         NANODBC_STRFTIME( date_str,
-                          sizeof( date_str ) /
-                              sizeof( string_type::value_type ),
+                          sizeof( date_str ) / sizeof( string_type::value_type ),
                           NANODBC_TEXT( "%Y-%m-%d" ),
                           &st );
         std::setlocale( LC_TIME, old_lc_time );
@@ -2360,19 +2299,18 @@ namespace nanodbc {
       case SQL_C_TIMESTAMP: {
         timestamp stamp =
             *( (timestamp*)( col.pdata_ + rowset_position_ * col.clen_ ) );
-        std::tm st        = {0};
-        st.tm_year        = stamp.year - 1900;
-        st.tm_mon         = stamp.month - 1;
-        st.tm_mday        = stamp.day;
-        st.tm_hour        = stamp.hour;
-        st.tm_min         = stamp.min;
-        st.tm_sec         = stamp.sec;
+        std::tm st = {0};
+        st.tm_year = stamp.year - 1900;
+        st.tm_mon = stamp.month - 1;
+        st.tm_mday = stamp.day;
+        st.tm_hour = stamp.hour;
+        st.tm_min = stamp.min;
+        st.tm_sec = stamp.sec;
         char* old_lc_time = std::setlocale( LC_TIME, NULL );
         std::setlocale( LC_TIME, "" );
         string_type::value_type date_str[512];
         NANODBC_STRFTIME( date_str,
-                          sizeof( date_str ) /
-                              sizeof( string_type::value_type ),
+                          sizeof( date_str ) / sizeof( string_type::value_type ),
                           NANODBC_TEXT( "%Y-%m-%d %H:%M:%S %z" ),
                           &st );
         std::setlocale( LC_TIME, old_lc_time );
@@ -2444,18 +2382,18 @@ namespace nanodbc {
 
 namespace nanodbc {
 
-  result execute( connection& conn,
+  result execute( connection&        conn,
                   const string_type& query,
-                  long batch_operations,
-                  long timeout ) {
+                  long               batch_operations,
+                  long               timeout ) {
     class statement statement;
     return statement.execute_direct( conn, query, batch_operations, timeout );
   }
 
-  void just_execute( connection& conn,
+  void just_execute( connection&        conn,
                      const string_type& query,
-                     long batch_operations,
-                     long timeout ) {
+                     long               batch_operations,
+                     long               timeout ) {
     class statement statement;
     statement.just_execute_direct( conn, query, batch_operations, timeout );
   }
@@ -2470,7 +2408,7 @@ namespace nanodbc {
 
   result transact( statement& stmt, long batch_operations ) {
     class transaction transaction( stmt.connection() );
-    result rvalue = stmt.execute( batch_operations );
+    result            rvalue = stmt.execute( batch_operations );
     transaction.commit();
     return rvalue;
   }
@@ -2531,7 +2469,7 @@ namespace nanodbc {
   connection::connection( const string_type& dsn,
                           const string_type& user,
                           const string_type& pass,
-                          long timeout )
+                          long               timeout )
       : impl_( new connection_impl( dsn, user, pass, timeout ) ) {}
 
   connection::connection( const string_type& connection_string, long timeout )
@@ -2542,12 +2480,11 @@ namespace nanodbc {
   void connection::connect( const string_type& dsn,
                             const string_type& user,
                             const string_type& pass,
-                            long timeout ) {
+                            long               timeout ) {
     impl_->connect( dsn, user, pass, timeout );
   }
 
-  void connection::connect( const string_type& connection_string,
-                            long timeout ) {
+  void connection::connect( const string_type& connection_string, long timeout ) {
     impl_->connect( connection_string, timeout );
   }
 
@@ -2555,14 +2492,14 @@ namespace nanodbc {
   void connection::async_connect( const string_type& dsn,
                                   const string_type& user,
                                   const string_type& pass,
-                                  void* event_handle,
-                                  long timeout ) {
+                                  void*              event_handle,
+                                  long               timeout ) {
     impl_->connect( dsn, user, pass, timeout, event_handle );
   }
 
   void connection::async_connect( const string_type& connection_string,
-                                  void* event_handle,
-                                  long timeout ) {
+                                  void*              event_handle,
+                                  long               timeout ) {
     impl_->connect( connection_string, timeout, event_handle );
   }
 
@@ -2585,9 +2522,7 @@ namespace nanodbc {
 
   string_type connection::driver_name() const { return impl_->driver_name(); }
 
-  string_type connection::database_name() const {
-    return impl_->database_name();
-  }
+  string_type connection::database_name() const { return impl_->database_name(); }
 
   string_type connection::catalog_name() const { return impl_->catalog_name(); }
 
@@ -2697,9 +2632,9 @@ namespace nanodbc {
       : impl_( std::move( rhs.impl_ ) ) {}
 #endif
 
-  statement::statement( class connection& conn,
+  statement::statement( class connection&  conn,
                         const string_type& query,
-                        long timeout )
+                        long               timeout )
       : impl_( new statement_impl( conn, query, timeout ) ) {}
 
   statement::statement( const statement& rhs )
@@ -2739,9 +2674,9 @@ namespace nanodbc {
 
   void statement::cancel() { impl_->cancel(); }
 
-  void statement::prepare( class connection& conn,
+  void statement::prepare( class connection&  conn,
                            const string_type& query,
-                           long timeout ) {
+                           long               timeout ) {
     impl_->prepare( conn, query, timeout );
   }
 
@@ -2751,20 +2686,19 @@ namespace nanodbc {
 
   void statement::timeout( long timeout ) { impl_->timeout( timeout ); }
 
-  result statement::execute_direct( class connection& conn,
+  result statement::execute_direct( class connection&  conn,
                                     const string_type& query,
-                                    long batch_operations,
-                                    long timeout ) {
-    return impl_->execute_direct(
-        conn, query, batch_operations, timeout, *this );
+                                    long               batch_operations,
+                                    long               timeout ) {
+    return impl_->execute_direct( conn, query, batch_operations, timeout, *this );
   }
 
 #if defined( SQL_ATTR_ASYNC_STMT_EVENT ) && defined( SQL_API_SQLCOMPLETEASYNC )
-  void statement::async_execute_direct( class connection& conn,
-                                        void* event_handle,
+  void statement::async_execute_direct( class connection&  conn,
+                                        void*              event_handle,
                                         const string_type& query,
-                                        long batch_operations,
-                                        long timeout ) {
+                                        long               batch_operations,
+                                        long               timeout ) {
     impl_->async_execute_direct(
         conn, event_handle, query, batch_operations, timeout, *this );
   }
@@ -2774,10 +2708,10 @@ namespace nanodbc {
   }
 #endif
 
-  void statement::just_execute_direct( class connection& conn,
+  void statement::just_execute_direct( class connection&  conn,
                                        const string_type& query,
-                                       long batch_operations,
-                                       long timeout ) {
+                                       long               batch_operations,
+                                       long               timeout ) {
     impl_->just_execute_direct( conn, query, batch_operations, timeout, *this );
   }
 
@@ -2793,8 +2727,7 @@ namespace nanodbc {
                                        const string_type& schema,
                                        const string_type& procedure,
                                        const string_type& column ) {
-    return impl_->procedure_columns(
-        catalog, schema, procedure, column, *this );
+    return impl_->procedure_columns( catalog, schema, procedure, column, *this );
   }
 
   long statement::affected_rows() const { return impl_->affected_rows(); }
@@ -2843,61 +2776,60 @@ namespace nanodbc {
 #undef NANODBC_INSTANTIATE_BINDS
 
   template <class T>
-  void
-  statement::bind( short param, const T* value, param_direction direction ) {
+  void statement::bind( short param, const T* value, param_direction direction ) {
     impl_->bind( param, value, 1, direction );
   }
 
   template <class T>
-  void statement::bind( short param,
-                        const T* values,
-                        std::size_t elements,
+  void statement::bind( short           param,
+                        const T*        values,
+                        std::size_t     elements,
                         param_direction direction ) {
     impl_->bind( param, values, elements, direction );
   }
 
   template <class T>
-  void statement::bind( short param,
-                        const T* values,
-                        std::size_t elements,
-                        const T* null_sentry,
+  void statement::bind( short           param,
+                        const T*        values,
+                        std::size_t     elements,
+                        const T*        null_sentry,
                         param_direction direction ) {
     impl_->bind( param, values, elements, 0, null_sentry, direction );
   }
 
   template <class T>
-  void statement::bind( short param,
-                        const T* values,
-                        std::size_t elements,
-                        const bool* nulls,
+  void statement::bind( short           param,
+                        const T*        values,
+                        std::size_t     elements,
+                        const bool*     nulls,
                         param_direction direction ) {
     impl_->bind( param, values, elements, nulls, (T*)0, direction );
   }
 
-  void statement::bind_strings( short param,
+  void statement::bind_strings( short                          param,
                                 const string_type::value_type* values,
-                                std::size_t length,
-                                std::size_t elements,
-                                param_direction direction ) {
+                                std::size_t                    length,
+                                std::size_t                    elements,
+                                param_direction                direction ) {
     impl_->bind_strings( param, values, length, elements, direction );
   }
 
-  void statement::bind_strings( short param,
+  void statement::bind_strings( short                          param,
                                 const string_type::value_type* values,
-                                std::size_t length,
-                                std::size_t elements,
+                                std::size_t                    length,
+                                std::size_t                    elements,
                                 const string_type::value_type* null_sentry,
-                                param_direction direction ) {
+                                param_direction                direction ) {
     impl_->bind_strings(
         param, values, length, elements, (bool*)0, null_sentry, direction );
   }
 
-  void statement::bind_strings( short param,
+  void statement::bind_strings( short                          param,
                                 const string_type::value_type* values,
-                                std::size_t length,
-                                std::size_t elements,
-                                const bool* nulls,
-                                param_direction direction ) {
+                                std::size_t                    length,
+                                std::size_t                    elements,
+                                const bool*                    nulls,
+                                param_direction                direction ) {
     impl_->bind_strings( param,
                          values,
                          length,
@@ -3083,7 +3015,7 @@ namespace nanodbc {
                                         const string_type& schema,
                                         const string_type& catalog ) {
     statement stmt( conn_ );
-    RETCODE rc;
+    RETCODE   rc;
     NANODBC_CALL_RC(
         NANODBC_UNICODE( SQLTables ),
         rc,
@@ -3109,7 +3041,7 @@ namespace nanodbc {
                                           const string_type& schema,
                                           const string_type& catalog ) {
     statement stmt( conn_ );
-    RETCODE rc;
+    RETCODE   rc;
     NANODBC_CALL_RC(
         NANODBC_UNICODE( SQLColumns ),
         rc,
@@ -3130,12 +3062,11 @@ namespace nanodbc {
     return catalog::columns( find_result );
   }
 
-  catalog::primary_keys
-  catalog::find_primary_keys( const string_type& table,
-                              const string_type& schema,
-                              const string_type& catalog ) {
+  catalog::primary_keys catalog::find_primary_keys( const string_type& table,
+                                                    const string_type& schema,
+                                                    const string_type& catalog ) {
     statement stmt( conn_ );
-    RETCODE rc;
+    RETCODE   rc;
     NANODBC_CALL_RC(
         NANODBC_UNICODE( SQLPrimaryKeys ),
         rc,
@@ -3229,9 +3160,7 @@ namespace nanodbc {
 
   bool result::end() const NANODBC_NOEXCEPT { return impl_->end(); }
 
-  bool result::is_null( short column ) const {
-    return impl_->is_null( column );
-  }
+  bool result::is_null( short column ) const { return impl_->is_null( column ); }
 
   bool result::is_null( const string_type& column_name ) const {
     return impl_->is_null( column_name );
@@ -3284,8 +3213,8 @@ namespace nanodbc {
 
   template <class T>
   void result::get_ref( const string_type& column_name,
-                        const T& fallback,
-                        T& result ) const {
+                        const T&           fallback,
+                        T&                 result ) const {
     return impl_->get_ref<T>( column_name, fallback, result );
   }
 
@@ -3346,23 +3275,21 @@ namespace nanodbc {
                                  string_type::value_type& ) const;
   template void result::get_ref( short, const short&, short& ) const;
   template void
-  result::get_ref( short, const unsigned short&, unsigned short& ) const;
+                result::get_ref( short, const unsigned short&, unsigned short& ) const;
   template void result::get_ref( short, const int32_t&, int32_t& ) const;
   template void result::get_ref( short, const uint32_t&, uint32_t& ) const;
   template void result::get_ref( short, const int64_t&, int64_t& ) const;
   template void result::get_ref( short, const uint64_t&, uint64_t& ) const;
   template void result::get_ref( short, const float&, float& ) const;
   template void result::get_ref( short, const double&, double& ) const;
-  template void
-  result::get_ref( short, const string_type&, string_type& ) const;
+  template void result::get_ref( short, const string_type&, string_type& ) const;
   template void result::get_ref( short, const date&, date& ) const;
   template void result::get_ref( short, const timestamp&, timestamp& ) const;
 
   template void result::get_ref( const string_type&,
                                  const string_type::value_type&,
                                  string_type::value_type& ) const;
-  template void
-  result::get_ref( const string_type&, const short&, short& ) const;
+  template void result::get_ref( const string_type&, const short&, short& ) const;
   template void result::get_ref( const string_type&,
                                  const unsigned short&,
                                  unsigned short& ) const;
@@ -3373,75 +3300,73 @@ namespace nanodbc {
   template void
   result::get_ref( const string_type&, const int64_t&, int64_t& ) const;
   template void
-  result::get_ref( const string_type&, const uint64_t&, uint64_t& ) const;
-  template void
-  result::get_ref( const string_type&, const float&, float& ) const;
+                result::get_ref( const string_type&, const uint64_t&, uint64_t& ) const;
+  template void result::get_ref( const string_type&, const float&, float& ) const;
   template void
   result::get_ref( const string_type&, const double&, double& ) const;
   template void
-  result::get_ref( const string_type&, const string_type&, string_type& ) const;
+                result::get_ref( const string_type&, const string_type&, string_type& ) const;
   template void result::get_ref( const string_type&, const date&, date& ) const;
   template void
   result::get_ref( const string_type&, const timestamp&, timestamp& ) const;
 
   // The following are the only supported instantiations of result::get().
   template string_type::value_type result::get( short ) const;
-  template short result::get( short ) const;
-  template unsigned short result::get( short ) const;
-  template int32_t result::get( short ) const;
-  template uint32_t result::get( short ) const;
-  template int64_t result::get( short ) const;
-  template uint64_t result::get( short ) const;
-  template float result::get( short ) const;
-  template double result::get( short ) const;
-  template string_type result::get( short ) const;
-  template date result::get( short ) const;
-  template timestamp result::get( short ) const;
+  template short                   result::get( short ) const;
+  template unsigned short          result::get( short ) const;
+  template int32_t                 result::get( short ) const;
+  template uint32_t                result::get( short ) const;
+  template int64_t                 result::get( short ) const;
+  template uint64_t                result::get( short ) const;
+  template float                   result::get( short ) const;
+  template double                  result::get( short ) const;
+  template string_type             result::get( short ) const;
+  template date                    result::get( short ) const;
+  template timestamp               result::get( short ) const;
 
   template string_type::value_type result::get( const string_type& ) const;
-  template short result::get( const string_type& ) const;
-  template unsigned short result::get( const string_type& ) const;
-  template int32_t result::get( const string_type& ) const;
-  template uint32_t result::get( const string_type& ) const;
-  template int64_t result::get( const string_type& ) const;
-  template uint64_t result::get( const string_type& ) const;
-  template float result::get( const string_type& ) const;
-  template double result::get( const string_type& ) const;
-  template string_type result::get( const string_type& ) const;
-  template date result::get( const string_type& ) const;
-  template timestamp result::get( const string_type& ) const;
+  template short                   result::get( const string_type& ) const;
+  template unsigned short          result::get( const string_type& ) const;
+  template int32_t                 result::get( const string_type& ) const;
+  template uint32_t                result::get( const string_type& ) const;
+  template int64_t                 result::get( const string_type& ) const;
+  template uint64_t                result::get( const string_type& ) const;
+  template float                   result::get( const string_type& ) const;
+  template double                  result::get( const string_type& ) const;
+  template string_type             result::get( const string_type& ) const;
+  template date                    result::get( const string_type& ) const;
+  template timestamp               result::get( const string_type& ) const;
 
   // The following are the only supported instantiations of result::get() with
   // fallback.
   template string_type::value_type
-  result::get( short, const string_type::value_type& ) const;
-  template short result::get( short, const short& ) const;
+                          result::get( short, const string_type::value_type& ) const;
+  template short          result::get( short, const short& ) const;
   template unsigned short result::get( short, const unsigned short& ) const;
-  template int32_t result::get( short, const int32_t& ) const;
-  template uint32_t result::get( short, const uint32_t& ) const;
-  template int64_t result::get( short, const int64_t& ) const;
-  template uint64_t result::get( short, const uint64_t& ) const;
-  template float result::get( short, const float& ) const;
-  template double result::get( short, const double& ) const;
-  template string_type result::get( short, const string_type& ) const;
-  template date result::get( short, const date& ) const;
-  template timestamp result::get( short, const timestamp& ) const;
+  template int32_t        result::get( short, const int32_t& ) const;
+  template uint32_t       result::get( short, const uint32_t& ) const;
+  template int64_t        result::get( short, const int64_t& ) const;
+  template uint64_t       result::get( short, const uint64_t& ) const;
+  template float          result::get( short, const float& ) const;
+  template double         result::get( short, const double& ) const;
+  template string_type    result::get( short, const string_type& ) const;
+  template date           result::get( short, const date& ) const;
+  template timestamp      result::get( short, const timestamp& ) const;
 
   template string_type::value_type
-  result::get( const string_type&, const string_type::value_type& ) const;
-  template short result::get( const string_type&, const short& ) const;
+                          result::get( const string_type&, const string_type::value_type& ) const;
+  template short          result::get( const string_type&, const short& ) const;
   template unsigned short result::get( const string_type&,
                                        const unsigned short& ) const;
-  template int32_t result::get( const string_type&, const int32_t& ) const;
-  template uint32_t result::get( const string_type&, const uint32_t& ) const;
-  template int64_t result::get( const string_type&, const int64_t& ) const;
-  template uint64_t result::get( const string_type&, const uint64_t& ) const;
-  template float result::get( const string_type&, const float& ) const;
-  template double result::get( const string_type&, const double& ) const;
-  template string_type result::get( const string_type&,
-                                    const string_type& ) const;
-  template date result::get( const string_type&, const date& ) const;
-  template timestamp result::get( const string_type&, const timestamp& ) const;
+  template int32_t     result::get( const string_type&, const int32_t& ) const;
+  template uint32_t    result::get( const string_type&, const uint32_t& ) const;
+  template int64_t     result::get( const string_type&, const int64_t& ) const;
+  template uint64_t    result::get( const string_type&, const uint64_t& ) const;
+  template float       result::get( const string_type&, const float& ) const;
+  template double      result::get( const string_type&, const double& ) const;
+  template string_type result::get( const string_type&, const string_type& ) const;
+  template date        result::get( const string_type&, const date& ) const;
+  template timestamp   result::get( const string_type&, const timestamp& ) const;
 
 }  // namespace nanodbc
 

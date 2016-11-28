@@ -107,16 +107,15 @@ namespace gum {
           typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset,
           typename __ConcatConstraintSet<
               FIRST_CONSTRAINT,
-              typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset>::type>::
-          type;
-      using set = __StructuralConstraintSetStatic<FIRST_CONSTRAINT,
-                                                  OTHER_CONSTRAINTS...>;
+              typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset>::type>::type;
+      using set =
+          __StructuralConstraintSetStatic<FIRST_CONSTRAINT, OTHER_CONSTRAINTS...>;
     };
 
     template <typename CONSTRAINT>
     struct __ConstraintSet<CONSTRAINT> {
       using minset = __ConstraintSet<CONSTRAINT>;
-      using set    = __StructuralConstraintSetStatic<CONSTRAINT>;
+      using set = __StructuralConstraintSetStatic<CONSTRAINT>;
     };
 
     // ============================================================================
@@ -142,8 +141,7 @@ namespace gum {
     struct __ConcatConstraintSet<
         CONSTRAINT1,
         __ConstraintSet<CONSTRAINT2, OTHER_CONSTRAINT2...>> {
-      using type =
-          __ConstraintSet<CONSTRAINT1, CONSTRAINT2, OTHER_CONSTRAINT2...>;
+      using type = __ConstraintSet<CONSTRAINT1, CONSTRAINT2, OTHER_CONSTRAINT2...>;
     };
 
     template <typename CONSTRAINT1,
@@ -152,17 +150,15 @@ namespace gum {
     struct __ConcatConstraintSet<
         __ConstraintSet<CONSTRAINT1, OTHER_CONSTRAINT1...>,
         __ConstraintSet<CONSTRAINT2>> {
-      using type =
-          __ConstraintSet<CONSTRAINT1, OTHER_CONSTRAINT1..., CONSTRAINT2>;
+      using type = __ConstraintSet<CONSTRAINT1, OTHER_CONSTRAINT1..., CONSTRAINT2>;
     };
 
     template <typename CONSTRAINT1,
               typename CONSTRAINT2,
               typename... OTHER_CONSTR1,
               typename... OTHER_CONSTR2>
-    struct __ConcatConstraintSet<
-        __ConstraintSet<CONSTRAINT1, OTHER_CONSTR1...>,
-        __ConstraintSet<CONSTRAINT2, OTHER_CONSTR2...>> {
+    struct __ConcatConstraintSet<__ConstraintSet<CONSTRAINT1, OTHER_CONSTR1...>,
+                                 __ConstraintSet<CONSTRAINT2, OTHER_CONSTR2...>> {
       using type = __ConstraintSet<CONSTRAINT1,
                                    OTHER_CONSTR1...,
                                    CONSTRAINT2,

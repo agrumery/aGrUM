@@ -136,8 +136,7 @@ namespace gum {
    * MultiDimImplementation.
    */
   template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR*>*
-  partialInstantiationMultiDimArray4Pointers(
+  MultiDimImplementation<GUM_SCALAR*>* partialInstantiationMultiDimArray4Pointers(
       const MultiDimImplementation<GUM_SCALAR*>* table,
       const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
@@ -150,9 +149,9 @@ namespace gum {
    * MultiDimImplementation.
    */
   template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>* partialInstantiation(
-      const MultiDimImplementation<GUM_SCALAR>& table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
+  MultiDimImplementation<GUM_SCALAR>*
+  partialInstantiation( const MultiDimImplementation<GUM_SCALAR>& table,
+                        const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   /**
    * @brief Instantiate variables in a MultiDimDecorator.
@@ -163,9 +162,9 @@ namespace gum {
    * MultiDimImplementation.
    */
   template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>* partialInstantiation(
-      const MultiDimDecorator<GUM_SCALAR>& table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
+  MultiDimImplementation<GUM_SCALAR>*
+  partialInstantiation( const MultiDimDecorator<GUM_SCALAR>& table,
+                        const HashTable<const DiscreteVariable*, Idx>& inst_vars );
 
   // ==========================================================================
   // DO NOT FORGET TO REGISTER YOUR PARTIAL INSTANTIATION FUNCTIONS AT THE END

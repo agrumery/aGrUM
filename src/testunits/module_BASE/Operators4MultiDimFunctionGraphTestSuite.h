@@ -97,7 +97,7 @@ namespace gum_tests {
     /// Brassage aléatoire d'une liste de 10 variables
     // *****************************************************************************************************
     void __shuffleVarList( gum::Sequence<const gum::DiscreteVariable*>* varList,
-                           gum::Idx i ) {
+                           gum::Idx                                     i ) {
       for ( gum::Idx j = 0; j < 10; j++ )
         varList->swap( rand() % ( varList->size() ),
                        rand() % ( varList->size() ) );
@@ -186,8 +186,8 @@ namespace gum_tests {
     // *****************************************************************************************************
     gum::MultiDimFunctionGraph<double>* __generateRandomFunctionGraph(
         const gum::Sequence<const gum::DiscreteVariable*>* varList,
-        double lowLimit  = -100,
-        double highLimit = 100 ) {
+        double                                             lowLimit = -100,
+        double                                             highLimit = 100 ) {
 
       gum::MultiDimFunctionGraphGenerator gene( 2, 5, *varList );
 
@@ -202,7 +202,7 @@ namespace gum_tests {
                          gum::MultiDimFunctionGraph<double>* a2,
                          gum::MultiDimFunctionGraph<double>* a3 ) {
 
-      std::string dotfile = GET_RESSOURCES_PATH( "FunctionGraphError.log" );
+      std::string   dotfile = GET_RESSOURCES_PATH( "FunctionGraphError.log" );
       std::ofstream output( dotfile.c_str(), std::ios::out );
 
       if ( !output.good() )
@@ -259,14 +259,14 @@ namespace gum_tests {
     /// Evals given in parameter operation. Returned boolean parameter indicates
     /// if all went well or not
     // *****************************************************************************************************
-    bool __evalOperation( gum::Idx operationId,
+    bool __evalOperation( gum::Idx                            operationId,
                           gum::MultiDimFunctionGraph<double>* a1,
                           gum::MultiDimFunctionGraph<double>* a2,
-                          double& tempsCalcul,
-                          double& tempsEval,
-                          double delta = 0.01 ) {
+                          double&                             tempsCalcul,
+                          double&                             tempsEval,
+                          double                              delta = 0.01 ) {
 
-      bool hasNoError                        = true;
+      bool                                hasNoError = true;
       gum::MultiDimFunctionGraph<double>* a3 = nullptr;
 
       gum::Timer timy;
@@ -277,8 +277,8 @@ namespace gum_tests {
 
       switch ( operationId ) {
         case 1:  // Test addition
-          TS_GUM_ASSERT_THROWS_NOTHING(
-              a3 = add2MultiDimFunctionGraphs( a1, a2 ) );
+          TS_GUM_ASSERT_THROWS_NOTHING( a3 =
+                                            add2MultiDimFunctionGraphs( a1, a2 ) );
           break;
 
         case 2:  // Test Substraction
@@ -342,9 +342,8 @@ namespace gum_tests {
 
             case 4:  // Test Maximum
               TS_ASSERT_DELTA( a3->get( inst ),
-                               a1->get( inst ) > a2->get( inst )
-                                   ? a1->get( inst )
-                                   : a2->get( inst ),
+                               a1->get( inst ) > a2->get( inst ) ? a1->get( inst )
+                                                                 : a2->get( inst ),
                                delta );
 
               if ( a3->get( inst ) != ( a1->get( inst ) > a2->get( inst )
@@ -378,9 +377,9 @@ namespace gum_tests {
     void test_Operators_Functions_on_MultiDimFunctionGraphs() {
 
       gum::Timer time;
-      double tempsGene   = 0;
-      double tempsCalcul = 0;
-      double tempsEval   = 0;
+      double     tempsGene = 0;
+      double     tempsCalcul = 0;
+      double     tempsEval = 0;
 
 
       // First we try with a predefine structure
@@ -391,12 +390,10 @@ namespace gum_tests {
             __generateFixVarList();
 
         gum::MultiDimFunctionGraph<double>* a1 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( a1 =
-                                          __generateFunctionGraph1( varList ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( a1 = __generateFunctionGraph1( varList ) );
 
         gum::MultiDimFunctionGraph<double>* a2 = nullptr;
-        TS_GUM_ASSERT_THROWS_NOTHING( a2 =
-                                          __generateFunctionGraph2( varList ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( a2 = __generateFunctionGraph2( varList ) );
 
         //          std::cout << a1->toDot() << std::endl;
 
@@ -451,8 +448,8 @@ namespace gum_tests {
       gum::LabelizedVariable* v8 = new gum::LabelizedVariable( "8", "", 3 );
       gum::LabelizedVariable* v9 = new gum::LabelizedVariable( "9", "", 2 );
 
-      gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12,
-          n13, n14, n15, n16, n17, n18, n19, n20, n21,
+      gum::NodeId n01, n02, n03, n04, n05, n06, n07, n08, n09, n10, n11, n12, n13,
+          n14, n15, n16, n17, n18, n19, n20, n21,
           n22;  //,n23, n24, n25, n26;
 
 

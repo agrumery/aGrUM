@@ -290,9 +290,9 @@ class TiXmlBase
   static const int utf8ByteTable[256];
 
   virtual const char*
-  Parse( const char* p,
+  Parse( const char*       p,
          TiXmlParsingData* data,
-         TiXmlEncoding encoding /*= TIXML_ENCODING_UNKNOWN */ ) = 0;
+         TiXmlEncoding     encoding /*= TIXML_ENCODING_UNKNOWN */ ) = 0;
 
   /** Expands entities in a string. Note this should not contian the tag's '<',
     '>',
@@ -351,11 +351,11 @@ class TiXmlBase
     Wickedly complex options, but it keeps the (sensitive) code in one place.
   */
   static const char*
-  ReadText( const char* in,            // where to start
-            TIXML_STRING* text,        // the string read
-            bool ignoreWhiteSpace,     // whether to keep the white space
-            const char* endTag,        // what ends this text
-            bool ignoreCase,           // whether to ignore case in the end tag
+  ReadText( const char*   in,                // where to start
+            TIXML_STRING* text,              // the string read
+            bool          ignoreWhiteSpace,  // whether to keep the white space
+            const char*   endTag,            // what ends this text
+            bool          ignoreCase,  // whether to ignore case in the end tag
             TiXmlEncoding encoding );  // the current encoding
 
   // If an entity has been found, transform it into a character.
@@ -400,9 +400,9 @@ class TiXmlBase
   // Ignore case only works for english, and should only be relied on when
   // comparing
   // to English words: StringEqual( p, "version", true ) is fine.
-  static bool StringEqual( const char* p,
-                           const char* endTag,
-                           bool ignoreCase,
+  static bool StringEqual( const char*   p,
+                           const char*   endTag,
+                           bool          ignoreCase,
                            TiXmlEncoding encoding );
 
   static const char* errorString[TIXML_ERROR_STRING_COUNT];
@@ -425,25 +425,24 @@ class TiXmlBase
       return std::tolower( v );
     }
   }
-  static void
-  ConvertUTF32ToUTF8( unsigned long input, char* output, int* length );
+  static void ConvertUTF32ToUTF8( unsigned long input, char* output, int* length );
 
   private:
   TiXmlBase( const TiXmlBase& );            // not implemented.
   void operator=( const TiXmlBase& base );  // not allowed.
 
   struct Entity {
-    const char* str;
+    const char*  str;
     unsigned int strLength;
-    char chr;
+    char         chr;
   };
   enum {
-    NUM_ENTITY        = 5,
+    NUM_ENTITY = 5,
     MAX_ENTITY_LENGTH = 6
 
   };
   static Entity entity[NUM_ENTITY];
-  static bool condenseWhiteSpace;
+  static bool   condenseWhiteSpace;
 };
 
 /** The parent class for everything in the Document Object Model.
@@ -547,7 +546,7 @@ class TiXmlNode : public TiXmlBase {
   void Clear();
 
   /// One step up the DOM.
-  TiXmlNode* Parent() { return parent; }
+  TiXmlNode*       Parent() { return parent; }
   const TiXmlNode* Parent() const { return parent; }
 
   const TiXmlNode* FirstChild() const {
@@ -624,7 +623,7 @@ class TiXmlNode : public TiXmlBase {
 
   /// This flavor of IterateChildren searches for children with a particular
   /// 'value'
-  const TiXmlNode* IterateChildren( const char* value,
+  const TiXmlNode* IterateChildren( const char*      value,
                                     const TiXmlNode* previous ) const;
   TiXmlNode* IterateChildren( const char* _value, const TiXmlNode* previous ) {
     return const_cast<TiXmlNode*>( ( const_cast<const TiXmlNode*>( this ) )
@@ -633,11 +632,11 @@ class TiXmlNode : public TiXmlBase {
 
 #ifdef TIXML_USE_STL
   const TiXmlNode* IterateChildren( const std::string& _value,
-                                    const TiXmlNode* previous ) const {
+                                    const TiXmlNode*   previous ) const {
     return IterateChildren( _value.c_str(), previous );
   }  ///< STL std::string form.
   TiXmlNode* IterateChildren( const std::string& _value,
-                              const TiXmlNode* previous ) {
+                              const TiXmlNode*   previous ) {
     return IterateChildren( _value.c_str(), previous );
   }  ///< STL std::string form.
 #endif
@@ -661,8 +660,7 @@ class TiXmlNode : public TiXmlBase {
   /** Add a new node related to this. Adds a child before the specified child.
     Returns a pointer to the new object or nullptr if an error occured.
   */
-  TiXmlNode* InsertBeforeChild( TiXmlNode* beforeThis,
-                                const TiXmlNode& addThis );
+  TiXmlNode* InsertBeforeChild( TiXmlNode* beforeThis, const TiXmlNode& addThis );
 
   /** Add a new node related to this. Adds a child after the specified child.
     Returns a pointer to the new object or nullptr if an error occured.
@@ -679,7 +677,7 @@ class TiXmlNode : public TiXmlBase {
 
   /// Navigate to a sibling node.
   const TiXmlNode* PreviousSibling() const { return prev; }
-  TiXmlNode* PreviousSibling() { return prev; }
+  TiXmlNode*       PreviousSibling() { return prev; }
 
   /// Navigate to a sibling node.
   const TiXmlNode* PreviousSibling( const char* ) const;
@@ -705,7 +703,7 @@ class TiXmlNode : public TiXmlBase {
 
   /// Navigate to a sibling node.
   const TiXmlNode* NextSibling() const { return next; }
-  TiXmlNode* NextSibling() { return next; }
+  TiXmlNode*       NextSibling() { return next; }
 
   /// Navigate to a sibling node with the given 'value'.
   const TiXmlNode* NextSibling( const char* ) const;
@@ -719,7 +717,7 @@ class TiXmlNode : public TiXmlBase {
     nodes. Returns 0 if there is not another element.
   */
   const TiXmlElement* NextSiblingElement() const;
-  TiXmlElement* NextSiblingElement() {
+  TiXmlElement*       NextSiblingElement() {
     return const_cast<TiXmlElement*>(
         ( const_cast<const TiXmlNode*>( this ) )->NextSiblingElement() );
   }
@@ -745,7 +743,7 @@ class TiXmlNode : public TiXmlBase {
 
   /// Convenience function to get through elements.
   const TiXmlElement* FirstChildElement() const;
-  TiXmlElement* FirstChildElement() {
+  TiXmlElement*       FirstChildElement() {
     return const_cast<TiXmlElement*>(
         ( const_cast<const TiXmlNode*>( this ) )->FirstChildElement() );
   }
@@ -776,7 +774,7 @@ class TiXmlNode : public TiXmlBase {
     Returns null if not in a document.
   */
   const TiXmlDocument* GetDocument() const;
-  TiXmlDocument* GetDocument() {
+  TiXmlDocument*       GetDocument() {
     return const_cast<TiXmlDocument*>(
         ( const_cast<const TiXmlNode*>( this ) )->GetDocument() );
   }
@@ -893,7 +891,7 @@ class TiXmlNode : public TiXmlBase {
   TiXmlNode* Identify( const char* start, TiXmlEncoding encoding );
 
   TiXmlNode* parent;
-  NodeType type;
+  NodeType   type;
 
   TiXmlNode* firstChild;
   TiXmlNode* lastChild;
@@ -929,8 +927,8 @@ class TiXmlAttribute : public TiXmlBase {
 #ifdef TIXML_USE_STL
   /// std::string constructor.
   TiXmlAttribute( const std::string& _name, const std::string& _value ) {
-    name     = _name;
-    value    = _value;
+    name = _name;
+    value = _value;
     document = 0;
     prev = next = 0;
   }
@@ -938,8 +936,8 @@ class TiXmlAttribute : public TiXmlBase {
 
   /// Construct an attribute with a name and value.
   TiXmlAttribute( const char* _name, const char* _value ) {
-    name     = _name;
-    value    = _value;
+    name = _name;
+    value = _value;
     document = 0;
     prev = next = 0;
   }
@@ -993,21 +991,19 @@ class TiXmlAttribute : public TiXmlBase {
 
   /// Get the next sibling attribute in the DOM. Returns null at end.
   const TiXmlAttribute* Next() const;
-  TiXmlAttribute* Next() {
+  TiXmlAttribute*       Next() {
     return const_cast<TiXmlAttribute*>(
         ( const_cast<const TiXmlAttribute*>( this ) )->Next() );
   }
 
   /// Get the previous sibling attribute in the DOM. Returns null at beginning.
   const TiXmlAttribute* Previous() const;
-  TiXmlAttribute* Previous() {
+  TiXmlAttribute*       Previous() {
     return const_cast<TiXmlAttribute*>(
         ( const_cast<const TiXmlAttribute*>( this ) )->Previous() );
   }
 
-  bool operator==( const TiXmlAttribute& rhs ) const {
-    return rhs.name == name;
-  }
+  bool operator==( const TiXmlAttribute& rhs ) const { return rhs.name == name; }
   bool operator<( const TiXmlAttribute& rhs ) const { return name < rhs.name; }
   bool operator>( const TiXmlAttribute& rhs ) const { return name > rhs.name; }
 
@@ -1018,9 +1014,7 @@ class TiXmlAttribute : public TiXmlBase {
   Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
 
   // Prints this Attribute to a FILE stream.
-  virtual void Print( FILE* cfile, int depth ) const {
-    Print( cfile, depth, 0 );
-  }
+  virtual void Print( FILE* cfile, int depth ) const { Print( cfile, depth, 0 ); }
   void Print( FILE* cfile, int depth, TIXML_STRING* str ) const;
 
   // [internal use]
@@ -1031,10 +1025,9 @@ class TiXmlAttribute : public TiXmlBase {
   TiXmlAttribute( const TiXmlAttribute& );       // not implemented.
   void operator=( const TiXmlAttribute& base );  // not allowed.
 
-  TiXmlDocument*
-      document;  // A pointer back to a document, for error reporting.
-  TIXML_STRING name;
-  TIXML_STRING value;
+  TiXmlDocument*  document;  // A pointer back to a document, for error reporting.
+  TIXML_STRING    name;
+  TIXML_STRING    value;
   TiXmlAttribute* prev;
   TiXmlAttribute* next;
 };
@@ -1091,8 +1084,7 @@ class TiXmlAttributeSet {
   //(sentinel-element),
   //*ME:  this class must be also use a hidden/disabled copy-constructor !!!
   TiXmlAttributeSet( const TiXmlAttributeSet& );  // not allowed
-  void
-  operator=( const TiXmlAttributeSet& );  // not allowed (as TiXmlAttribute)
+  void operator=( const TiXmlAttributeSet& );  // not allowed (as TiXmlAttribute)
 
   TiXmlAttribute sentinel;
 };
@@ -1151,7 +1143,7 @@ class TiXmlElement : public TiXmlNode {
   /// QueryFloatAttribute examines the attribute - see QueryIntAttribute().
   int QueryFloatAttribute( const char* name, float* _value ) const {
     double d;
-    int result = QueryDoubleAttribute( name, &d );
+    int    result = QueryDoubleAttribute( name, &d );
 
     if ( result == TIXML_SUCCESS ) {
       *_value = (float)d;
@@ -1246,7 +1238,7 @@ const
   const TiXmlAttribute* FirstAttribute() const {
     return attributeSet.First();
   }  ///< Access the first attribute in this element.
-  TiXmlAttribute* FirstAttribute() { return attributeSet.First(); }
+  TiXmlAttribute*       FirstAttribute() { return attributeSet.First(); }
   const TiXmlAttribute* LastAttribute() const {
     return attributeSet.Last();
   }  ///< Access the last attribute in this element.
@@ -1327,9 +1319,8 @@ const
     Reads the "value" of the element -- another element, or text.
     This should terminate with the current end tag.
   */
-  const char* ReadValue( const char* in,
-                         TiXmlParsingData* prevData,
-                         TiXmlEncoding encoding );
+  const char*
+  ReadValue( const char* in, TiXmlParsingData* prevData, TiXmlEncoding encoding );
 
   private:
   TiXmlAttributeSet attributeSet;
@@ -1510,9 +1501,7 @@ class TiXmlDeclaration : public TiXmlNode {
   virtual TiXmlNode* Clone() const;
   // Print this declaration to a FILE stream.
   virtual void Print( FILE* cfile, int depth, TIXML_STRING* str ) const;
-  virtual void Print( FILE* cfile, int depth ) const {
-    Print( cfile, depth, 0 );
-  }
+  virtual void Print( FILE* cfile, int depth ) const { Print( cfile, depth, 0 ); }
 
   virtual const char*
   Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
@@ -1560,8 +1549,7 @@ class TiXmlStylesheetReference : public TiXmlNode {
 
 #ifdef TIXML_USE_STL
   /// Constructor.
-  TiXmlStylesheetReference( const std::string& _type,
-                            const std::string& _href );
+  TiXmlStylesheetReference( const std::string& _type, const std::string& _href );
 #endif
 
   /// Construct.
@@ -1581,9 +1569,7 @@ class TiXmlStylesheetReference : public TiXmlNode {
   virtual TiXmlNode* Clone() const;
   // Print this declaration to a FILE stream.
   virtual void Print( FILE* cfile, int depth, TIXML_STRING* str ) const;
-  virtual void Print( FILE* cfile, int depth ) const {
-    Print( cfile, depth, 0 );
-  }
+  virtual void Print( FILE* cfile, int depth ) const { Print( cfile, depth, 0 ); }
 
   virtual const char*
   Parse( const char* p, TiXmlParsingData* data, TiXmlEncoding encoding );
@@ -1694,7 +1680,7 @@ class TiXmlDocument : public TiXmlNode {
   /// Save a file using the current document value. Returns true if successful.
   bool SaveFile() const;
   /// Load a file using the given filename. Returns true if successful.
-  bool LoadFile( const char* filename,
+  bool LoadFile( const char*   filename,
                  TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
   /// Save a file using the given filename. Returns true if successful.
   bool SaveFile( const char* filename ) const;
@@ -1712,7 +1698,7 @@ class TiXmlDocument : public TiXmlNode {
 
 #ifdef TIXML_USE_STL
   bool LoadFile( const std::string& filename,
-                 TiXmlEncoding encoding =
+                 TiXmlEncoding      encoding =
                      TIXML_DEFAULT_ENCODING ) {  ///< STL std::string version.
     //    StringToBuffer f( filename );
     //    return ( f.buffer && LoadFile( f.buffer, encoding ));
@@ -1734,16 +1720,16 @@ class TiXmlDocument : public TiXmlNode {
     to use that encoding, regardless of what TinyXml might otherwise try to
     detect.
   */
-  virtual const char* Parse( const char* p,
+  virtual const char* Parse( const char*       p,
                              TiXmlParsingData* data = 0,
-                             TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
+                             TiXmlEncoding     encoding = TIXML_DEFAULT_ENCODING );
 
   /** Get the root element -- the only top level element -- of the document.
     In well formed XML, there should only be one. TinyXml is tolerant of
     multiple elements at the document level.
   */
   const TiXmlElement* RootElement() const { return FirstChildElement(); }
-  TiXmlElement* RootElement() { return FirstChildElement(); }
+  TiXmlElement*       RootElement() { return FirstChildElement(); }
 
   /** If an error occurs, Error will be set to true. Also,
     - The ErrorId() will contain the integer identifier of the error (not
@@ -1813,9 +1799,9 @@ class TiXmlDocument : public TiXmlNode {
     state is automatically cleared if you Parse a new XML block.
   */
   void ClearError() {
-    error             = false;
-    errorId           = 0;
-    errorDesc         = "";
+    error = false;
+    errorId = 0;
+    errorDesc = "";
     errorLocation.row = errorLocation.col = 0;
     // errorLocation.last = 0;
   }
@@ -1835,10 +1821,10 @@ class TiXmlDocument : public TiXmlNode {
   /// Print this Document to a FILE stream.
   virtual void Print( FILE* cfile, int depth = 0 ) const;
   // [internal use]
-  void SetError( int err,
-                 const char* errorLocation,
+  void SetError( int               err,
+                 const char*       errorLocation,
                  TiXmlParsingData* prevData,
-                 TiXmlEncoding encoding );
+                 TiXmlEncoding     encoding );
 
   virtual const TiXmlDocument* ToDocument() const {
     return this;
@@ -1863,11 +1849,11 @@ class TiXmlDocument : public TiXmlNode {
   private:
   void CopyTo( TiXmlDocument* target ) const;
 
-  bool error;
-  int errorId;
+  bool         error;
+  int          errorId;
   TIXML_STRING errorDesc;
-  int tabsize;
-  TiXmlCursor errorLocation;
+  int          tabsize;
+  TiXmlCursor  errorLocation;
   bool useMicrosoftBOM;  // the UTF-8 BOM were found when read. Note this, and
                          // try to
                          // write.
@@ -2095,7 +2081,7 @@ class TiXmlPrinter : public TiXmlVisitor {
   virtual bool VisitEnter( const TiXmlDocument& doc );
   virtual bool VisitExit( const TiXmlDocument& doc );
 
-  virtual bool VisitEnter( const TiXmlElement& element,
+  virtual bool VisitEnter( const TiXmlElement&   element,
                            const TiXmlAttribute* firstAttribute );
   virtual bool VisitExit( const TiXmlElement& element );
 
@@ -2126,7 +2112,7 @@ class TiXmlPrinter : public TiXmlVisitor {
     linebreaks. Common when the XML is needed for network transmission.
   */
   void SetStreamPrinting() {
-    indent    = "";
+    indent = "";
     lineBreak = "";
   }
   /// Return the result.
@@ -2146,8 +2132,8 @@ class TiXmlPrinter : public TiXmlVisitor {
   }
   void DoLineBreak() { buffer += lineBreak; }
 
-  int depth;
-  bool simpleTextPrint;
+  int          depth;
+  bool         simpleTextPrint;
   TIXML_STRING buffer;
   TIXML_STRING indent;
   TIXML_STRING lineBreak;

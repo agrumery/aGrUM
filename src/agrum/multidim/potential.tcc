@@ -37,8 +37,8 @@ namespace gum {
 
   // constructor using aContent as content
   template <typename GUM_SCALAR>
-  INLINE Potential<GUM_SCALAR>::Potential(
-      MultiDimImplementation<GUM_SCALAR>* aContent )
+  INLINE
+  Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR>* aContent )
       : MultiDimDecorator<GUM_SCALAR>( aContent ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
@@ -65,9 +65,8 @@ namespace gum {
 
   // complex copy constructor : we choose the implementation
   template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR>::Potential(
-      MultiDimImplementation<GUM_SCALAR>* aContent,
-      const MultiDimContainer<GUM_SCALAR>& src )
+  Potential<GUM_SCALAR>::Potential( MultiDimImplementation<GUM_SCALAR>*  aContent,
+                                    const MultiDimContainer<GUM_SCALAR>& src )
       : MultiDimDecorator<GUM_SCALAR>( aContent ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( Potential );
@@ -190,8 +189,8 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::fillWith(
-      std::initializer_list<GUM_SCALAR> list ) const {
+  INLINE const Potential<GUM_SCALAR>&
+  Potential<GUM_SCALAR>::fillWith( std::initializer_list<GUM_SCALAR> list ) const {
     this->populate( list );
     return *this;
   }
@@ -241,7 +240,7 @@ namespace gum {
     }
 
     Instantiation inst( *this );
-    const auto& v = this->variable( 0 );
+    const auto&   v = this->variable( 0 );
 
     for ( inst.setFirst(); !inst.end(); inst.incNotVar( v ) ) {
       GUM_SCALAR s = (GUM_SCALAR)0.0;
@@ -277,8 +276,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margSumOut(
       const Set<const DiscreteVariable*>& del_vars ) const {
-    return Potential<GUM_SCALAR>(
-        gum::projectSum( *this->content(), del_vars ) );
+    return Potential<GUM_SCALAR>( gum::projectSum( *this->content(), del_vars ) );
   }
 
   template <typename GUM_SCALAR>
@@ -291,15 +289,13 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margMinOut(
       const Set<const DiscreteVariable*>& del_vars ) const {
-    return Potential<GUM_SCALAR>(
-        gum::projectMin( *this->content(), del_vars ) );
+    return Potential<GUM_SCALAR>( gum::projectMin( *this->content(), del_vars ) );
   }
 
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margMaxOut(
       const Set<const DiscreteVariable*>& del_vars ) const {
-    return Potential<GUM_SCALAR>(
-        gum::projectMax( *this->content(), del_vars ) );
+    return Potential<GUM_SCALAR>( gum::projectMax( *this->content(), del_vars ) );
   }
   template <typename GUM_SCALAR>
   INLINE Potential<GUM_SCALAR> Potential<GUM_SCALAR>::margSumIn(
@@ -357,15 +353,13 @@ namespace gum {
       const std::vector<const DiscreteVariable*>& vars ) const {
     if ( vars.size() != this->nbrDim() )
       GUM_ERROR( InvalidArgument,
-                 "The vector contains " << vars.size()
-                                        << " variables instead of "
+                 "The vector contains " << vars.size() << " variables instead of "
                                         << this->nbrDim()
                                         << "." );
     for ( const auto var : vars ) {
       if ( !this->contains( *var ) )
-        GUM_ERROR(
-            InvalidArgument,
-            "A variable in the vector does not belong to the potential." );
+        GUM_ERROR( InvalidArgument,
+                   "A variable in the vector does not belong to the potential." );
     }
 
     Potential<GUM_SCALAR> p;

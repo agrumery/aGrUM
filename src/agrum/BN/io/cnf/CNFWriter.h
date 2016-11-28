@@ -88,7 +88,7 @@ namespace gum {
      * @param bn The Bayesian Network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write( std::ostream& output,
+    virtual void write( std::ostream&                output,
                         const IBayesNet<GUM_SCALAR>& bn ) = 0;
 
     /**
@@ -99,7 +99,7 @@ namespace gum {
      * @param bn The Bayesian Network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write( std::string filePath,
+    virtual void write( std::string                  filePath,
                         const IBayesNet<GUM_SCALAR>& bn ) = 0;
 
     inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {

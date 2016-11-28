@@ -33,8 +33,7 @@ namespace gum {
 
   MixedGraphListener::MixedGraphListener( const MixedGraphListener& d ) {
     GUM_CONS_CPY( MixedGraphListener );
-    GUM_ERROR( OperationNotAllowed,
-               "No copy constructor for MixedGraphListener" );
+    GUM_ERROR( OperationNotAllowed, "No copy constructor for MixedGraphListener" );
   }
 
   MixedGraphListener& MixedGraphListener::
@@ -52,24 +51,18 @@ namespace gum {
     GUM_CONSTRUCTOR( MixedGraphListener );
     _graph = g;
 
-    GUM_CONNECT( ( *_graph ),
-                 onNodeAdded,
-                 ( *this ),
-                 MixedGraphListener::whenNodeAdded );
+    GUM_CONNECT(
+        ( *_graph ), onNodeAdded, ( *this ), MixedGraphListener::whenNodeAdded );
     GUM_CONNECT( ( *_graph ),
                  onNodeDeleted,
                  ( *this ),
                  MixedGraphListener::whenNodeDeleted );
     GUM_CONNECT(
         ( *_graph ), onArcAdded, ( *this ), MixedGraphListener::whenArcAdded );
-    GUM_CONNECT( ( *_graph ),
-                 onArcDeleted,
-                 ( *this ),
-                 MixedGraphListener::whenArcDeleted );
-    GUM_CONNECT( ( *_graph ),
-                 onEdgeAdded,
-                 ( *this ),
-                 MixedGraphListener::whenEdgeAdded );
+    GUM_CONNECT(
+        ( *_graph ), onArcDeleted, ( *this ), MixedGraphListener::whenArcDeleted );
+    GUM_CONNECT(
+        ( *_graph ), onEdgeAdded, ( *this ), MixedGraphListener::whenEdgeAdded );
     GUM_CONNECT( ( *_graph ),
                  onEdgeDeleted,
                  ( *this ),

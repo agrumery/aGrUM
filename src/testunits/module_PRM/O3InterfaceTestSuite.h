@@ -40,9 +40,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "interface IBar { }";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -59,9 +59,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "interfaces IBar { }";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -78,9 +78,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "interface { }";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -97,9 +97,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "interface ++++/ze { }";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -118,9 +118,9 @@ namespace gum_tests {
       input << "interface IBar { " << std::endl
             << "boolean state;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -139,9 +139,9 @@ namespace gum_tests {
       input << "interface IBar { " << std::endl
             << "t_state state;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -164,9 +164,9 @@ namespace gum_tests {
       input << "interface IBar { " << std::endl
             << "=%+ state;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -183,9 +183,9 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "interface IBar { " << std::endl << "state;" << std::endl << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -204,9 +204,9 @@ namespace gum_tests {
       input << "interface IBar { " << std::endl
             << "boolean state" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -225,9 +225,9 @@ namespace gum_tests {
       input << "interface IBar { " << std::endl
             << "boolean +/+/;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -246,9 +246,9 @@ namespace gum_tests {
       input << "interface IBar { " << std::endl
             << "boolean state;" << std::endl
             << "};";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -268,9 +268,9 @@ namespace gum_tests {
             << "boolean state;" << std::endl
             << "boolean state;" << std::endl
             << "};";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -297,9 +297,9 @@ namespace gum_tests {
             << "IFoo myFoo;" << std::endl
             << "boolean state;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -326,9 +326,9 @@ namespace gum_tests {
       input << "interface IBar extends IFoo { " << std::endl
             << "boolean unstate;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -354,9 +354,9 @@ namespace gum_tests {
       input << "interface IBar extends IFooBar { " << std::endl
             << "boolean unstate;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -380,9 +380,9 @@ namespace gum_tests {
       input << "interface IBar extends t_state { " << std::endl
             << "boolean unstate;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -405,9 +405,9 @@ namespace gum_tests {
       input << "interface IBar extend IFoo { " << std::endl
             << "boolean unstate;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -430,9 +430,9 @@ namespace gum_tests {
       input << "interface IBar extends IFoo { " << std::endl
             << "t_state state;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -462,9 +462,9 @@ namespace gum_tests {
       input << "interface IPloc extends IPlop { " << std::endl
             << "IBar myFoo; " << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -489,9 +489,9 @@ namespace gum_tests {
             << "t_state state;" << std::endl
             << "}" << std::endl
             << "type t_state OK, NOK;";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -516,9 +516,9 @@ namespace gum_tests {
             << "}" << std::endl;
       input << "type t_state extends boolean" << std::endl
             << "OK:true, NOK:false;" << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -545,9 +545,9 @@ namespace gum_tests {
       input << "interface IFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -575,9 +575,9 @@ namespace gum_tests {
             << "IBar bar; " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -602,9 +602,9 @@ namespace gum_tests {
             << "IFoo foo;" << std::endl
             << "boolean state;" << std::endl
             << "}";
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -638,9 +638,9 @@ namespace gum_tests {
                "SubPlop plop;"
                "}";
       input << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -703,9 +703,9 @@ namespace gum_tests {
                "SubPlop plop;"
                "}";
       input << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert
@@ -729,9 +729,9 @@ namespace gum_tests {
                "state state;"
                "}";
       input << std::endl;
-      std::stringstream output;
+      std::stringstream     output;
       gum::prm::PRM<double> prm;
-      auto factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
       // Assert

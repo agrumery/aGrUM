@@ -241,7 +241,7 @@ namespace gum {
      * @param rawTable The raw table.
      */
     void rawConditionalTable( const std::vector<std::string>& variables,
-                              const std::vector<float>& rawTable );
+                              const std::vector<float>&       rawTable );
 
     /**
     * @brief Fills the variable's table with the values in rawTable.
@@ -368,9 +368,9 @@ namespace gum {
      * @throw OperationNotAllowed Raised if redefineParents == false and if
      * table is not a valid CPT for var in the current state of the BayesNet.
      */
-    void setVariableCPT( const std::string& varName,
+    void setVariableCPT( const std::string&  varName,
                          MultiDimAdressable* table,
-                         bool redefineParents = false );
+                         bool                redefineParents = false );
 
     /// @}
 
@@ -422,8 +422,7 @@ namespace gum {
 
     /// Check if var exists and if mod is one of it's modality, if not raise an
     /// NotFound exception.
-    Idx __checkVariableModality( const std::string& name,
-                                 const std::string& mod );
+    Idx __checkVariableModality( const std::string& name, const std::string& mod );
 
     /// Check if in __stringBag there is no other modality with the same name.
     void __checkModalityInBag( const std::string& mod );
@@ -431,19 +430,19 @@ namespace gum {
     /// Sub method of setVariableCPT() which redefine the BayesNet's DAG with
     /// respect to table.
     void __setCPTAndParents( const DiscreteVariable& var,
-                             Potential<GUM_SCALAR>* table );
+                             Potential<GUM_SCALAR>*  table );
 
     /// Reset the different parts used to constructed the BayesNet.
     void __resetParts();
 
     /// Fill a potential from a raw CPT.
     void __fillProbaWithValuesTable( const std::vector<std::string>& variables,
-                                     const std::vector<float>& rawTable );
+                                     const std::vector<float>&       rawTable );
     /// Fill a potential from a raw CPT.(using the canonical order of vars)
     void __fillProbaWithValuesTable( const std::vector<float>& rawTable );
 
     /// Increment a modality counter for the __fillProbaWithValuesTable method.
-    bool __increment( std::vector<gum::Idx>& modCounter,
+    bool __increment( std::vector<gum::Idx>&         modCounter,
                       List<const DiscreteVariable*>& varList );
   };
 

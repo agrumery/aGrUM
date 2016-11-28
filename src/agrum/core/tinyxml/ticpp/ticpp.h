@@ -92,7 +92,7 @@ It will take care of the conversion and throwing the exception.
 #define TICPPTHROW( message )                                          \
   {                                                                    \
     std::ostringstream full_message;                                   \
-    std::string file( __FILE__ );                                      \
+    std::string        file( __FILE__ );                               \
     file = file.substr( file.find_last_of( "\\/" ) + 1 );              \
     full_message << message << " <" << file << "@" << __LINE__ << ">"; \
     full_message << BuildDetailedErrorString();                        \
@@ -118,7 +118,7 @@ It will take care of the conversion and throwing the exception.
     /// @internal
     virtual bool VisitExit( const TiXmlDocument& doc );
     /// @internal
-    virtual bool VisitEnter( const TiXmlElement& element,
+    virtual bool VisitEnter( const TiXmlElement&   element,
                              const TiXmlAttribute* firstAttribute );
     /// @internal
     virtual bool VisitExit( const TiXmlElement& element );
@@ -266,10 +266,9 @@ It will take care of the conversion and throwing the exception.
     virtual ~Base() {}
 
     protected:
-    mutable TiCppRCImp*
-        m_impRC; /**< Holds status of internal TiXmlPointer - use
-                    this to determine if object has been deleted
-                    already */
+    mutable TiCppRCImp* m_impRC; /**< Holds status of internal TiXmlPointer - use
+                                    this to determine if object has been deleted
+                                    already */
 
     /**
     @internal
@@ -300,7 +299,7 @@ It will take care of the conversion and throwing the exception.
   class Attribute : public Base {
     private:
     TiXmlAttribute* m_tiXmlPointer;
-    TiXmlBase* GetBasePointer() const {
+    TiXmlBase*      GetBasePointer() const {
       ValidatePointer();
       return m_tiXmlPointer;
     }
@@ -553,7 +552,7 @@ It will take care of the conversion and throwing the exception.
     @see FirstChild( const char* value, bool throwIfNoChildren = true )
     */
     Node* FirstChild( const std::string& value,
-                      bool throwIfNoChildren = true ) const;
+                      bool               throwIfNoChildren = true ) const;
 
     /**
     The last child of this node.
@@ -596,7 +595,7 @@ It will take care of the conversion and throwing the exception.
     @see LastChild( const char* value, bool throwIfNoChildren = true )
     */
     Node* LastChild( const std::string& value,
-                     bool throwIfNoChildren = true ) const;
+                     bool               throwIfNoChildren = true ) const;
 
     /**
     An alternate way to walk the children of a node.
@@ -718,7 +717,7 @@ It will take care of the conversion and throwing the exception.
     @see PreviousSibling( bool throwIfNoSiblings )
     */
     Node* PreviousSibling( const std::string& value,
-                           bool throwIfNoSiblings = true ) const;
+                           bool               throwIfNoSiblings = true ) const;
 
     /**
     @internal
@@ -733,7 +732,7 @@ It will take care of the conversion and throwing the exception.
     @see PreviousSibling( const std::string& value, bool throwIfNoSiblings )
     */
     Node* PreviousSibling( const char* value,
-                           bool throwIfNoSiblings = true ) const;
+                           bool        throwIfNoSiblings = true ) const;
 
     /**
     Navigate to a sibling node.
@@ -761,7 +760,7 @@ It will take care of the conversion and throwing the exception.
     @see NextSibling( bool throwIfNoSiblings )
     */
     Node* NextSibling( const std::string& value,
-                       bool throwIfNoSiblings = true ) const;
+                       bool               throwIfNoSiblings = true ) const;
 
     /**
     @internal
@@ -789,7 +788,7 @@ It will take care of the conversion and throwing the exception.
       *first = 0;
 
       for ( Node* child = FirstChild( value, false ); child;
-            child       = child->NextSibling( value, false ) ) {
+            child = child->NextSibling( value, false ) ) {
         *first = dynamic_cast<T*>( child );
 
         if ( 0 != *first ) {
@@ -812,11 +811,11 @@ It will take care of the conversion and throwing the exception.
     template <class T>
     void IterateNext( const std::string& value, T** next ) const {
       Node* sibling = NextSibling( value, false );
-      *next         = dynamic_cast<T*>( sibling );
+      *next = dynamic_cast<T*>( sibling );
 
       while ( ( 0 != sibling ) && ( 0 == *next ) ) {
         sibling = sibling->NextSibling( value, false );
-        *next   = dynamic_cast<T*>( sibling );
+        *next = dynamic_cast<T*>( sibling );
       }
     }
 
@@ -830,10 +829,10 @@ It will take care of the conversion and throwing the exception.
     template <class T>
     void IteratePrevious( const std::string& value, T** previous ) const {
       Node* sibling = PreviousSibling( value, false );
-      *previous     = dynamic_cast<T*>( sibling );
+      *previous = dynamic_cast<T*>( sibling );
 
       while ( ( 0 != sibling ) && ( 0 == *previous ) ) {
-        sibling   = sibling->PreviousSibling( value, false );
+        sibling = sibling->PreviousSibling( value, false );
         *previous = dynamic_cast<T*>( sibling );
       }
     }
@@ -878,7 +877,7 @@ It will take care of the conversion and throwing the exception.
     @see NextSiblingElement( const std::string& value, bool throwIfNoSiblings )
     */
     Element* NextSiblingElement( const char* value,
-                                 bool throwIfNoSiblings = true ) const;
+                                 bool        throwIfNoSiblings = true ) const;
 
     /**
     The first child element of this node.
@@ -909,7 +908,7 @@ It will take care of the conversion and throwing the exception.
     @see FirstChildElement( bool throwIfNoChildren = true )
     */
     Element* FirstChildElement( const char* value,
-                                bool throwIfNoChildren = true ) const;
+                                bool        throwIfNoChildren = true ) const;
 
     /**
     The first child element of this node with the matching @a value.
@@ -967,11 +966,10 @@ It will take care of the conversion and throwing the exception.
       T* pointer = dynamic_cast<T*>( this );
 
       if ( 0 == pointer ) {
-        std::string thisType   = typeid( this ).name();
+        std::string thisType = typeid( this ).name();
         std::string targetType = typeid( T ).name();
-        std::string thatType   = typeid( *this ).name();
-        TICPPTHROW( "The " << thisType.substr( 6 )
-                           << " could not be casted to a "
+        std::string thatType = typeid( *this ).name();
+        TICPPTHROW( "The " << thisType.substr( 6 ) << " could not be casted to a "
                            << targetType.substr( 6 )
                            << " *, because the target object is not a "
                            << targetType.substr( 6 )
@@ -1083,8 +1081,8 @@ It will take care of the conversion and throwing the exception.
     Constructs the correct child of Node, based on the Type of the TiXmlNode*.
     */
     Node* NodeFactory( TiXmlNode* tiXmlNode,
-                       bool throwIfNull            = true,
-                       bool rememberSpawnedWrapper = true ) const;
+                       bool       throwIfNull = true,
+                       bool       rememberSpawnedWrapper = true ) const;
   };
 
   /** Iterator for conveniently stepping through Nodes and Attributes.
@@ -1117,7 +1115,7 @@ It will take care of the conversion and throwing the exception.
   template <class T = Node>
   class Iterator {
     private:
-    T* m_p;              /**< Internal Pointer */
+    T*          m_p;     /**< Internal Pointer */
     std::string m_value; /**< Value for NextSibling  calls */
 
     public:
@@ -1177,7 +1175,7 @@ It will take care of the conversion and throwing the exception.
 
     /** Sets internal pointer */
     Iterator& operator=( const Iterator& it ) {
-      m_p     = it.m_p;
+      m_p = it.m_p;
       m_value = it.m_value;
       return *this;
     }
@@ -1466,12 +1464,12 @@ It will take care of the conversion and throwing the exception.
     @throws Exception
     */
     void LoadFile( const std::string& filename,
-                   TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
+                   TiXmlEncoding      encoding = TIXML_DEFAULT_ENCODING );
 
     /**
     @copydoc Document::LoadFile( const std::string&, TiXmlEncoding )
     */
-    void LoadFile( const char* filename,
+    void LoadFile( const char*   filename,
                    TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
 
     /**
@@ -1491,8 +1489,8 @@ It will take care of the conversion and throwing the exception.
     @throws Exception
     */
     void Parse( const std::string& xml,
-                bool throwIfParseError = true,
-                TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
+                bool               throwIfParseError = true,
+                TiXmlEncoding      encoding = TIXML_DEFAULT_ENCODING );
   };
 
   /** Wrapper around TiXmlElement */
@@ -1565,7 +1563,7 @@ It will take care of the conversion and throwing the exception.
       *first = 0;
 
       for ( Attribute* child = FirstAttribute( false ); child;
-            child            = child->Next( false ) ) {
+            child = child->Next( false ) ) {
         *first = dynamic_cast<Attribute*>( child );
 
         if ( 0 != *first ) {
@@ -1750,8 +1748,8 @@ It will take care of the conversion and throwing the exception.
     */
     template <class T, class DefaulT>
     void GetAttributeOrDefault( const std::string& name,
-                                T* value,
-                                const DefaulT& defaultValue ) const {
+                                T*                 value,
+                                const DefaulT&     defaultValue ) const {
       // Get the attribute's value as a std::string
       std::string temp;
 
@@ -1792,11 +1790,10 @@ It will take care of the conversion and throwing the exception.
     @see GetAttributeOrDefault
     */
     template <class T>
-    T GetAttribute( const std::string& name,
-                    bool throwIfNotFound = true ) const {
+    T GetAttribute( const std::string& name, bool throwIfNotFound = true ) const {
       // Get the attribute's value as a std::string
       std::string temp;
-      T value;
+      T           value;
 
       if ( !GetAttributeImp( name, &temp ) ) {
         if ( throwIfNotFound ) {
@@ -1828,8 +1825,8 @@ It will take care of the conversion and throwing the exception.
     */
     template <class T>
     void GetAttribute( const std::string& name,
-                       T* value,
-                       bool throwIfNotFound = true ) const {
+                       T*                 value,
+                       bool               throwIfNotFound = true ) const {
       // Get the attribute's value as a std::string
       std::string temp;
 

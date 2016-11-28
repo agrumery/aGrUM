@@ -65,8 +65,8 @@ namespace gum {
 
   // returns the max of log10DomainSize of cliques in the junction tree
   double Triangulation::maxLog10CliqueDomainSize() {
-    double res = 0.0;
-    double dSize;
+    double              res = 0.0;
+    double              dSize;
     const JunctionTree& jt = junctionTree();  // here, the fact that we get
     // a junction tree ensures that _domain_sizes is different from nullptr
 

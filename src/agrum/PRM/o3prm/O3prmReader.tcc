@@ -144,8 +144,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void
-      O3prmReader<GUM_SCALAR>::setClassPath( const std::string& class_path ) {
+      void O3prmReader<GUM_SCALAR>::setClassPath( const std::string& class_path ) {
         __class_path = std::vector<std::string>();
         size_t i = 0;
         size_t j = class_path.find( ';' );
@@ -167,8 +166,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      void
-      O3prmReader<GUM_SCALAR>::addClassPath( const std::string& class_path ) {
+      void O3prmReader<GUM_SCALAR>::addClassPath( const std::string& class_path ) {
         auto path = class_path;
         if ( path[path.size() - 1] != '/' ) {
           path.append( "/" );
@@ -243,21 +241,20 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE const ErrorsContainer&
-      O3prmReader<GUM_SCALAR>::errorsContainer() const {
+                   O3prmReader<GUM_SCALAR>::errorsContainer() const {
         return __errors;
       }
 
       template <typename GUM_SCALAR>
-      INLINE Size
-      O3prmReader<GUM_SCALAR>::readString( const std::string& str ) {
+      INLINE Size O3prmReader<GUM_SCALAR>::readString( const std::string& str ) {
         std::stringstream sBuff( str );
         __readStream( sBuff, "" );
         return __errors.count();
       }
 
       template <typename GUM_SCALAR>
-      INLINE Size O3prmReader<GUM_SCALAR>::readFile(
-          const std::string& file, const std::string& module ) {
+      INLINE Size O3prmReader<GUM_SCALAR>::readFile( const std::string& file,
+                                                     const std::string& module ) {
         try {
           auto lastSlashIndex = file.find_last_of( '/' );
 
@@ -293,7 +290,7 @@ namespace gum {
       template <typename GUM_SCALAR>
       INLINE void O3prmReader<GUM_SCALAR>::parseStream( std::istream& input,
                                                         std::ostream& output,
-                                                        std::string module ) {
+                                                        std::string   module ) {
         __readStream( input, "", module );
 
         showElegantErrorsAndWarnings( output );
@@ -301,7 +298,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE void
-      O3prmReader<GUM_SCALAR>::__parseStream( std::istream& input,
+      O3prmReader<GUM_SCALAR>::__parseStream( std::istream&      input,
                                               const std::string& filename,
                                               const std::string& module ) {
         auto sBuff = __readStream( input );
@@ -319,7 +316,7 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE void
-      O3prmReader<GUM_SCALAR>::__parseImport( const O3Import& i,
+      O3prmReader<GUM_SCALAR>::__parseImport( const O3Import&    i,
                                               const std::string& module ) {
 
         if ( !__imported.exists( i.import().label() ) ) {
@@ -334,7 +331,7 @@ namespace gum {
           auto imported = false;
           for ( const auto& cp : __class_path ) {
 
-            auto file_path = cp + path + ".o3prm";
+            auto          file_path = cp + path + ".o3prm";
             std::ifstream file( file_path );
 
             if ( file.is_open() ) {
@@ -349,27 +346,24 @@ namespace gum {
 
             if ( file2.is_open() ) {
 
-              __parseStream(
-                  file2, file_path, module + "." + i.import().label() );
+              __parseStream( file2, file_path, module + "." + i.import().label() );
               imported = true;
               break;
             }
           }
 
           if ( !imported ) {
-            const auto& pos = i.import().position();
+            const auto&       pos = i.import().position();
             std::stringstream msg;
-            msg << "Import error: could not resolve import "
-                << i.import().label();
-            __errors.addError(
-                msg.str(), pos.file(), pos.line(), pos.column() );
+            msg << "Import error: could not resolve import " << i.import().label();
+            __errors.addError( msg.str(), pos.file(), pos.line(), pos.column() );
           }
         }
       }
 
       template <typename GUM_SCALAR>
       INLINE std::vector<const O3Import*>
-      O3prmReader<GUM_SCALAR>::__copyImports() {
+             O3prmReader<GUM_SCALAR>::__copyImports() {
         auto copy = std::vector<const O3Import*>();
         for ( const auto& i : __o3_prm->imports() ) {
           if ( !__imported.exists( i->import().label() ) ) {
@@ -380,8 +374,9 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE void O3prmReader<GUM_SCALAR>::__readStream(
-          std::istream& input, const std::string& file, std::string module ) {
+      INLINE void O3prmReader<GUM_SCALAR>::__readStream( std::istream&      input,
+                                                         const std::string& file,
+                                                         std::string module ) {
 
         if ( module.size() > 0 && module.back() != '.' ) {
           module.append( "." );
@@ -408,8 +403,8 @@ namespace gum {
           auto class_factory =
               O3ClassFactory<GUM_SCALAR>( *__prm, *__o3_prm, solver, __errors );
 
-          auto system_factory = O3SystemFactory<GUM_SCALAR>(
-              *__prm, *__o3_prm, solver, __errors );
+          auto system_factory =
+              O3SystemFactory<GUM_SCALAR>( *__prm, *__o3_prm, solver, __errors );
 
           try {
             type_factory.build();

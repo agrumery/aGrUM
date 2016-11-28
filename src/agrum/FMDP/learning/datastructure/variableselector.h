@@ -74,11 +74,11 @@ namespace gum {
     ///
     // ###################################################################
     void updateScore( const DiscreteVariable* var,
-                      double score,
-                      double secondaryscore );
+                      double                  score,
+                      double                  secondaryscore );
     void downdateScore( const DiscreteVariable* var,
-                        double score,
-                        double secondaryscore );
+                        double                  score,
+                        double                  secondaryscore );
 
 
     // ###################################################################
@@ -98,7 +98,7 @@ namespace gum {
     void __removeVar( const DiscreteVariable* var );
 
     /// The set of remaining vars to select among
-    Set<const DiscreteVariable*> __remainingVars;
+    Set<const DiscreteVariable*>             __remainingVars;
     SetIteratorSafe<const DiscreteVariable*> __rvi;
 
     /// Heap keeping best score on top for immediate access

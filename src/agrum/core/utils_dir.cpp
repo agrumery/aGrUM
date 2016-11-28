@@ -103,8 +103,7 @@ namespace gum {
 
     char absPath[255];
 
-    if ( getcwd( absPath, 254 ) != nullptr )
-      result = std::string( absPath ) + '/';
+    if ( getcwd( absPath, 254 ) != nullptr ) result = std::string( absPath ) + '/';
 
     if ( chdir( oldWD ) != 0 )
       std::cerr << "Warning : Could not go to previous working directory. ("

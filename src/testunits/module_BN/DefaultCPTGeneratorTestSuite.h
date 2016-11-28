@@ -36,13 +36,13 @@ namespace gum_tests {
     gum::LabelizedVariable* binVar3;
     gum::LabelizedVariable* binVar4;
 
-    gum::Potential<float>* rootPot1F;
+    gum::Potential<float>*  rootPot1F;
     gum::Potential<double>* rootPot1D;
 
-    gum::Potential<float>* pot1F;
+    gum::Potential<float>*  pot1F;
     gum::Potential<double>* pot1D;
 
-    gum::Potential<float>* pot2F;
+    gum::Potential<float>*  pot2F;
     gum::Potential<double>* pot2D;
 
     // n-ary variables
@@ -52,7 +52,7 @@ namespace gum_tests {
     gum::LabelizedVariable* nVar4;
     gum::LabelizedVariable* nVar5;
 
-    gum::Potential<float>* pot3F;
+    gum::Potential<float>*  pot3F;
     gum::Potential<double>* pot3D;
 
     void setUp() {
@@ -151,7 +151,7 @@ namespace gum_tests {
           aCPTGen.generateCPT( rootPot1F->pos( *binVar1 ), *rootPot1F ) );
 
       gum::Instantiation inst( *rootPot1F );
-      float sum = (float)0;
+      float              sum = (float)0;
 
       for ( inst.setFirst(); !inst.end(); inst.inc() ) {
         TS_ASSERT( ( ( *rootPot1F )[inst] >= (float)0 ) &&
@@ -168,7 +168,7 @@ namespace gum_tests {
           aCPTGen.generateCPT( rootPot1F->pos( *binVar1 ), *rootPot1D ) );
 
       gum::Instantiation inst( *rootPot1D );
-      double sum = (double)0;
+      double             sum = (double)0;
 
       for ( inst.setFirst(); !inst.end(); inst.inc() ) {
         TS_ASSERT( ( ( *rootPot1D )[inst] >= (double)0 ) &&
@@ -194,12 +194,10 @@ namespace gum_tests {
       // std::cout << std::endl << *pot1F << std::endl;
       // for (int i = 0; i < 80; ++i) std::cout << "#";
 
-      for ( inst.setFirstOut( instVar1 ); !inst.end();
-            inst.incOut( instVar1 ) ) {
+      for ( inst.setFirstOut( instVar1 ); !inst.end(); inst.incOut( instVar1 ) ) {
         float sum = (float)0;
 
-        for ( inst.setFirstIn( instVar1 ); !inst.end();
-              inst.incIn( instVar1 ) ) {
+        for ( inst.setFirstIn( instVar1 ); !inst.end(); inst.incIn( instVar1 ) ) {
           TS_ASSERT( ( ( *pot1F )[inst] >= (float)0 ) &&
                      ( ( *pot1F )[inst] <= (float)1 ) );
           sum += ( *pot1F )[inst];
@@ -226,12 +224,10 @@ namespace gum_tests {
       // std::cout << std::endl << *pot2F << std::endl;
       // for (int i = 0; i < 80; ++i) std::cout << "#";
 
-      for ( inst.setFirstOut( instVar1 ); !inst.end();
-            inst.incOut( instVar1 ) ) {
+      for ( inst.setFirstOut( instVar1 ); !inst.end(); inst.incOut( instVar1 ) ) {
         float sum = (float)0;
 
-        for ( inst.setFirstIn( instVar1 ); !inst.end();
-              inst.incIn( instVar1 ) ) {
+        for ( inst.setFirstIn( instVar1 ); !inst.end(); inst.incIn( instVar1 ) ) {
           TS_ASSERT( ( ( *pot2F )[inst] >= (float)0 ) &&
                      ( ( *pot2F )[inst] <= (float)1 ) );
           sum += ( *pot2F )[inst];
@@ -253,12 +249,10 @@ namespace gum_tests {
       gum::Instantiation instVar1;
       instVar1.add( *binVar1 );
 
-      for ( inst.setFirstOut( instVar1 ); !inst.end();
-            inst.incOut( instVar1 ) ) {
+      for ( inst.setFirstOut( instVar1 ); !inst.end(); inst.incOut( instVar1 ) ) {
         double sum = (double)0;
 
-        for ( inst.setFirstIn( instVar1 ); !inst.end();
-              inst.incIn( instVar1 ) ) {
+        for ( inst.setFirstIn( instVar1 ); !inst.end(); inst.incIn( instVar1 ) ) {
           TS_ASSERT( ( ( *pot1D )[inst] >= 0 ) && ( ( *pot1D )[inst] <= 1 ) );
           sum += ( *pot1D )[inst];
         }
@@ -279,12 +273,10 @@ namespace gum_tests {
       gum::Instantiation instVar1;
       instVar1.add( *binVar4 );
 
-      for ( inst.setFirstOut( instVar1 ); !inst.end();
-            inst.incOut( instVar1 ) ) {
+      for ( inst.setFirstOut( instVar1 ); !inst.end(); inst.incOut( instVar1 ) ) {
         double sum = (double)0;
 
-        for ( inst.setFirstIn( instVar1 ); !inst.end();
-              inst.incIn( instVar1 ) ) {
+        for ( inst.setFirstIn( instVar1 ); !inst.end(); inst.incIn( instVar1 ) ) {
           TS_ASSERT( ( ( *pot2D )[inst] >= 0 ) && ( ( *pot2D )[inst] <= 1 ) );
           sum += ( *pot2D )[inst];
         }
@@ -301,13 +293,13 @@ namespace gum_tests {
 
       for ( int i = 2; i < 100; ++i ) {
         gum::LabelizedVariable aVar( "aVar", "A discrete variable", i );
-        gum::Potential<float> aPot;
+        gum::Potential<float>  aPot;
         aPot.add( aVar );
         TS_GUM_ASSERT_THROWS_NOTHING(
             cptGen.generateCPT( aPot.pos( aVar ), aPot ) );
 
         gum::Instantiation inst( aPot );
-        float sum = (float)0;
+        float              sum = (float)0;
 
         for ( inst.setFirst(); !inst.end(); inst.inc() ) {
           sum += aPot[inst];
@@ -326,12 +318,10 @@ namespace gum_tests {
       instVar3.add( *nVar3 );
       gum::Instantiation inst( *pot3F );
 
-      for ( inst.setFirstOut( instVar3 ); !inst.end();
-            inst.incOut( instVar3 ) ) {
+      for ( inst.setFirstOut( instVar3 ); !inst.end(); inst.incOut( instVar3 ) ) {
         float sum = (float)0;
 
-        for ( inst.setFirstIn( instVar3 ); !inst.end();
-              inst.incIn( instVar3 ) ) {
+        for ( inst.setFirstIn( instVar3 ); !inst.end(); inst.incIn( instVar3 ) ) {
           sum += ( *pot3F )[inst];
         }
 
@@ -353,7 +343,7 @@ namespace gum_tests {
             cptGen.generateCPT( aPot.pos( aVar ), aPot ) );
 
         gum::Instantiation inst( aPot );
-        double sum = (double)0;
+        double             sum = (double)0;
 
         for ( inst.setFirst(); !inst.end(); inst.inc() ) {
           sum += aPot[inst];
@@ -373,12 +363,10 @@ namespace gum_tests {
       instVar3.add( *nVar3 );
       gum::Instantiation inst( *pot3D );
 
-      for ( inst.setFirstOut( instVar3 ); !inst.end();
-            inst.incOut( instVar3 ) ) {
+      for ( inst.setFirstOut( instVar3 ); !inst.end(); inst.incOut( instVar3 ) ) {
         double sum = (double)0;
 
-        for ( inst.setFirstIn( instVar3 ); !inst.end();
-              inst.incIn( instVar3 ) ) {
+        for ( inst.setFirstIn( instVar3 ); !inst.end(); inst.incIn( instVar3 ) ) {
           sum += ( *pot3D )[inst];
         }
 

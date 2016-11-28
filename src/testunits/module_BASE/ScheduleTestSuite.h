@@ -44,7 +44,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -67,13 +67,13 @@ namespace gum_tests {
       randomInit( pot4 );
       gum::ScheduleMultiDim<float> f4( pot4 );
 
-      gum::ScheduleCombine<float> comb1( f1, f2, schedule_myadd );
+      gum::ScheduleCombine<float>         comb1( f1, f2, schedule_myadd );
       const gum::ScheduleMultiDim<float>& result1 = comb1.result();
 
-      gum::ScheduleCombine<float> comb2( f2, f3, schedule_myadd );
+      gum::ScheduleCombine<float>         comb2( f2, f3, schedule_myadd );
       const gum::ScheduleMultiDim<float>& result2 = comb2.result();
 
-      gum::ScheduleCombine<float> comb3( result2, f4, schedule_myadd );
+      gum::ScheduleCombine<float>         comb3( result2, f4, schedule_myadd );
       const gum::ScheduleMultiDim<float>& result3 = comb3.result();
 
       gum::ScheduleCombine<float> comb4( result1, result3, schedule_myadd );
@@ -103,7 +103,7 @@ namespace gum_tests {
       TS_ASSERT( 3 == schedule.nodeId( comb1 ) );
 
       const gum::NodeSet& ops1 = schedule.operationsInvolving( result1 );
-      gum::NodeId del1_id      = schedule.insert( del1 );
+      gum::NodeId         del1_id = schedule.insert( del1 );
       schedule.forceAfter( del1_id, ops1 );
 
       schedule.insert( del2 );
@@ -140,10 +140,10 @@ namespace gum_tests {
       gum::ScheduleCombine<float> comb11( f1, f2, schedule_myadd );
       comb11.execute();
       const gum::ScheduleMultiDim<float>& result11 = comb11.result();
-      gum::ScheduleCombine<float> comb12( f2, f3, schedule_myadd );
+      gum::ScheduleCombine<float>         comb12( f2, f3, schedule_myadd );
       comb12.execute();
       const gum::ScheduleMultiDim<float>& result12 = comb12.result();
-      gum::ScheduleCombine<float> comb13( result12, f4, schedule_myadd );
+      gum::ScheduleCombine<float>         comb13( result12, f4, schedule_myadd );
       comb13.execute();
       const gum::ScheduleMultiDim<float>& result13 = comb13.result();
       gum::ScheduleCombine<float> comb14( result11, result13, schedule_myadd );
@@ -173,7 +173,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
@@ -196,13 +196,13 @@ namespace gum_tests {
       randomInit( pot4 );
       gum::ScheduleMultiDim<float> f4( pot4 );
 
-      gum::ScheduleCombine<float> comb1( f1, f2, schedule_myadd );
+      gum::ScheduleCombine<float>         comb1( f1, f2, schedule_myadd );
       const gum::ScheduleMultiDim<float>& result1 = comb1.result();
 
-      gum::ScheduleCombine<float> comb2( f2, f3, schedule_myadd );
+      gum::ScheduleCombine<float>         comb2( f2, f3, schedule_myadd );
       const gum::ScheduleMultiDim<float>& result2 = comb2.result();
 
-      gum::ScheduleCombine<float> comb3( result2, f4, schedule_myadd );
+      gum::ScheduleCombine<float>         comb3( result2, f4, schedule_myadd );
       const gum::ScheduleMultiDim<float>& result3 = comb3.result();
 
       gum::ScheduleCombine<float> comb4( result1, result3, schedule_myadd );
@@ -264,10 +264,10 @@ namespace gum_tests {
       gum::ScheduleCombine<float> comb11( f1, f2, schedule_myadd );
       comb11.execute();
       const gum::ScheduleMultiDim<float>& result11 = comb11.result();
-      gum::ScheduleCombine<float> comb12( f2, f3, schedule_myadd );
+      gum::ScheduleCombine<float>         comb12( f2, f3, schedule_myadd );
       comb12.execute();
       const gum::ScheduleMultiDim<float>& result12 = comb12.result();
-      gum::ScheduleCombine<float> comb13( result12, f4, schedule_myadd );
+      gum::ScheduleCombine<float>         comb13( result12, f4, schedule_myadd );
       comb13.execute();
       const gum::ScheduleMultiDim<float>& result13 = comb13.result();
       gum::ScheduleCombine<float> comb14( result11, result13, schedule_myadd );

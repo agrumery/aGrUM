@@ -87,8 +87,8 @@ namespace gum {
     // for debugging purposes
     GUM_CONS_CPY( SetInst );
     // copy the content of aI
-    __vars     = aI.__vars;
-    __vals     = aI.__vals;
+    __vars = aI.__vars;
+    __vals = aI.__vals;
     __overflow = aI.__overflow;
 
     // if ( aI.__master && notifyMaster ) actAsSlave( *aI.__master );
@@ -112,8 +112,8 @@ namespace gum {
   // operator=
   SetInst& SetInst::operator=( const SetInst& aI ) {
     // copy the content of aI
-    __vars     = aI.__vars;
-    __vals     = aI.__vals;
+    __vars = aI.__vars;
+    __vals = aI.__vals;
     __overflow = aI.__overflow;
 
     return *this;
@@ -135,7 +135,7 @@ namespace gum {
     if ( iter != __vars.end() ) {
       std::stringstream sstr2;
       sstr2.str( "" );
-      Size si   = variable( iter.pos() ).domainSize();
+      Size si = variable( iter.pos() ).domainSize();
       Size valb = vals( iter.pos() );
 
       while ( si-- != 0 ) {
@@ -181,22 +181,20 @@ namespace gum {
     aStream << i.toString();
     return aStream;
   }
-  gum::SetInst& operator<<( gum::SetInst& inst,
-                            const gum::DiscreteVariable& i ) {
+  gum::SetInst& operator<<( gum::SetInst& inst, const gum::DiscreteVariable& i ) {
     inst.add( i );
     return inst;
   }
-  gum::SetInst& operator>>( gum::SetInst& inst,
-                            const gum::DiscreteVariable& i ) {
+  gum::SetInst& operator>>( gum::SetInst& inst, const gum::DiscreteVariable& i ) {
     inst.erase( i );
     return inst;
   }
 
-  void gum::SetInst::assign_values(
-      gum::Bijection<const gum::DiscreteVariable*,
-                     const gum::DiscreteVariable*>& bij,
-      const gum::SetInst& i,
-      gum::SetInst& j ) {
+  void
+  gum::SetInst::assign_values( gum::Bijection<const gum::DiscreteVariable*,
+                                              const gum::DiscreteVariable*>& bij,
+                               const gum::SetInst&                           i,
+                               gum::SetInst&                                 j ) {
     try {
       for ( const auto var : i.variablesSequence() )
         j.chgVal( bij.second( var ), i.val( var ) );

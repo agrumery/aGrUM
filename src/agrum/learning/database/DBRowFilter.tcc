@@ -32,13 +32,12 @@ namespace gum {
     /// default constructor
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::DBRowFilter(
-        const DBHandler &handler,
+        const DBHandler &    handler,
         const TranslatorSet &translator_set,
-        const GeneratorSet &generator_set,
-        Size initialization_range ) noexcept
-        : __handler( handler ),
-          __translator_set( translator_set ),
-          __generator_set( generator_set ) {
+        const GeneratorSet & generator_set,
+        Size initialization_range ) noexcept : __handler( handler ),
+                                               __translator_set( translator_set ),
+                                               __generator_set( generator_set ) {
       if ( __translator_set.requiresInitialization() ) {
         __initCellFilters( initialization_range );
       }
@@ -76,12 +75,12 @@ namespace gum {
     /// copy operator
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::operator=(
+           DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::operator=(
         const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter ) {
       if ( this != &filter ) {
-        __handler        = filter.__handler;
+        __handler = filter.__handler;
         __translator_set = filter.__translator_set;
-        __generator_set  = filter.__generator_set;
+        __generator_set = filter.__generator_set;
       }
       return *this;
     }
@@ -89,12 +88,12 @@ namespace gum {
     /// move operator
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
+           DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::
     operator=( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& filter ) {
       if ( this != &filter ) {
-        __handler        = std::move( filter.__handler );
+        __handler = std::move( filter.__handler );
         __translator_set = std::move( filter.__translator_set );
-        __generator_set  = std::move( filter.__generator_set );
+        __generator_set = std::move( filter.__generator_set );
       }
       return *this;
     }
@@ -142,7 +141,7 @@ namespace gum {
     /// returns a new output row with its corresponding weight
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE FilteredRow&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::row() {
+           DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::row() {
       while ( !__generator_set.hasRows() ) {
         if ( !__handler.hasRows() ) {
           GUM_ERROR( NotFound, "There are no more rows to parse" );
@@ -172,7 +171,7 @@ namespace gum {
     // returns the handler used by the filter
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE DBHandler&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::handler() noexcept {
+           DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::handler() noexcept {
       return __handler;
     }
 
@@ -180,7 +179,7 @@ namespace gum {
      * into the cell filters */
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE std::vector<Size>
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::modalities() const {
+           DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::modalities() const {
       std::vector<Size> res;
       __translator_set.modalities( res );
       return res;
@@ -189,7 +188,7 @@ namespace gum {
     /// returns the names of the variables
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE const std::vector<std::string>&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::variableNames() const
+                 DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::variableNames() const
         noexcept {
       return __handler.variableNames();
     }
@@ -197,7 +196,7 @@ namespace gum {
     /// returns the number of variables
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE Size
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::nbVariables() const
+           DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::nbVariables() const
         noexcept {
       return __handler.variableNames().size();
     }
@@ -205,7 +204,7 @@ namespace gum {
     /// returns the translator set that is actually used
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE const TranslatorSet&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::translatorSet() const
+                 DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::translatorSet() const
         noexcept {
       return __translator_set;
     }
@@ -213,7 +212,7 @@ namespace gum {
     /// returns the generator set that is actually used
     template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
     INLINE const GeneratorSet&
-    DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::generatorSet() const
+                 DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>::generatorSet() const
         noexcept {
       return __generator_set;
     }

@@ -31,15 +31,15 @@
 
 namespace gum_tests {
 
-  static gum::MultiDimImplementation<float>* schedule_proj_mysum(
-      const gum::MultiDimImplementation<float>& t,
-      const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
+  static gum::MultiDimImplementation<float>*
+  schedule_proj_mysum( const gum::MultiDimImplementation<float>&     t,
+                       const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
     return projectSumMultiDimArray( &t, del_vars );
   }
 
-  static gum::MultiDimImplementation<float>* schedule_proj_mymin(
-      const gum::MultiDimImplementation<float>& t,
-      const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
+  static gum::MultiDimImplementation<float>*
+  schedule_proj_mymin( const gum::MultiDimImplementation<float>&     t,
+                       const gum::Set<const gum::DiscreteVariable*>& del_vars ) {
     return projectMinMultiDimArray( &t, del_vars );
   }
 
@@ -52,7 +52,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 4 );
+        vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
       gum::Potential<float> t1;
@@ -79,10 +79,9 @@ namespace gum_tests {
           mymultiproj.project( *( t1.content() ), del_vars );
 
       gum::ScheduleProjectionBasic<float> myproj( schedule_proj_mysum );
-      gum::Schedule<float> schedule;
-      gum::ScheduleMultiDim<float> tt2 =
-          myproj.project( t1, del_vars, schedule );
-      const gum::NodeSet& available = schedule.availableOperations();
+      gum::Schedule<float>                schedule;
+      gum::ScheduleMultiDim<float> tt2 = myproj.project( t1, del_vars, schedule );
+      const gum::NodeSet&          available = schedule.availableOperations();
 
       while ( !available.empty() ) {
         for ( gum::NodeSet::const_iterator_safe iter =
@@ -185,7 +184,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 4 );
+        vars[i] = new gum::LabelizedVariable( s, s, 4 );
       }
 
       gum::Potential<float> t1;
@@ -207,7 +206,7 @@ namespace gum_tests {
       del_vars.insert( vars[1] );
 
       gum::ScheduleProjectionBasic<float> myproj( schedule_proj_mysum );
-      gum::Schedule<float> schedule;
+      gum::Schedule<float>                schedule;
       std::pair<long, long> xxx = myproj.memoryUsage( t1, del_vars, schedule );
       TS_ASSERT( xxx.first == 16384 );
       TS_ASSERT( xxx.second == 16384 );

@@ -132,7 +132,7 @@ namespace gum {
 
   const std::string ArcGraphPart::toString() const {
     std::stringstream s;
-    bool first = true;
+    bool              first = true;
     s << "{";
 
     for ( const auto& arc : __arcs ) {
@@ -150,8 +150,8 @@ namespace gum {
     return s.str();
   }
 
-  const std::vector<NodeId>
-  ArcGraphPart::directedPath( const NodeId n1, const NodeId n2 ) const {
+  const std::vector<NodeId> ArcGraphPart::directedPath( const NodeId n1,
+                                                        const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
     nodeFIFO.pushBack( n2 );
@@ -193,8 +193,7 @@ namespace gum {
   }
 
   const std::vector<NodeId>
-  ArcGraphPart::directedUnorientedPath( const NodeId n1,
-                                        const NodeId n2 ) const {
+  ArcGraphPart::directedUnorientedPath( const NodeId n1, const NodeId n2 ) const {
     // not recursive version => use a FIFO for simulating the recursion
     List<NodeId> nodeFIFO;
     nodeFIFO.pushBack( n2 );

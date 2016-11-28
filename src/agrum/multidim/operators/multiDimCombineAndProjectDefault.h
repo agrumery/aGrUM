@@ -92,11 +92,12 @@ namespace gum {
      */
     virtual Set<const TABLE<GUM_SCALAR>*>
     combineAndProject( Set<const TABLE<GUM_SCALAR>*> set,
-                       Set<const DiscreteVariable*> del_vars );
+                       Set<const DiscreteVariable*>  del_vars );
 
     /// changes the function used for combining two TABLES
-    virtual void setCombineFunction( TABLE<GUM_SCALAR>* ( *combine )(
-        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>&));
+    virtual void
+    setCombineFunction( TABLE<GUM_SCALAR>* ( *combine )(const TABLE<GUM_SCALAR>&,
+                                                        const TABLE<GUM_SCALAR>&));
 
     /**
      * @brief changes the class that performs the combinations
@@ -116,8 +117,8 @@ namespace gum {
         const MultiDimCombination<GUM_SCALAR, TABLE>& comb_class );
 
     /// Returns the current combination function
-    virtual TABLE<GUM_SCALAR>* ( *combineFunction() )(
-        const TABLE<GUM_SCALAR>&, const TABLE<GUM_SCALAR>& );
+    virtual TABLE<GUM_SCALAR>* ( *combineFunction() )( const TABLE<GUM_SCALAR>&,
+                                                       const TABLE<GUM_SCALAR>& );
 
     /// Changes the function used for projecting TABLES
     virtual void setProjectFunction( TABLE<GUM_SCALAR>* ( *proj )(
@@ -129,8 +130,8 @@ namespace gum {
      * As for the combination class, it is possible to change the projection
      * class, thus defining a new projection behaviour.
      */
-    virtual void setProjectionClass(
-        const MultiDimProjection<GUM_SCALAR, TABLE>& proj_class );
+    virtual void
+    setProjectionClass( const MultiDimProjection<GUM_SCALAR, TABLE>& proj_class );
 
     /// returns the current projection function
     virtual TABLE<GUM_SCALAR>* ( *projectFunction() )(
@@ -142,7 +143,7 @@ namespace gum {
      */
     virtual float
     nbOperations( const Set<const TABLE<GUM_SCALAR>*>& set,
-                  const Set<const DiscreteVariable*>& del_vars ) const;
+                  const Set<const DiscreteVariable*>&  del_vars ) const;
 
     /**
      * @brief returns a rough estimate of the number of operations that will be
@@ -167,7 +168,7 @@ namespace gum {
      */
     virtual std::pair<long, long>
     memoryUsage( const Set<const TABLE<GUM_SCALAR>*>& set,
-                 const Set<const DiscreteVariable*>& del_vars ) const;
+                 const Set<const DiscreteVariable*>&  del_vars ) const;
 
     /**
      * @brief returns the memory consumption used during the combinations and

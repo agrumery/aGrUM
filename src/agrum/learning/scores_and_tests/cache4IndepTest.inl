@@ -62,8 +62,7 @@ namespace gum {
     }
 
     /// move operator
-    INLINE Cache4IndepTest& Cache4IndepTest::
-    operator=( Cache4IndepTest&& from ) {
+    INLINE Cache4IndepTest& Cache4IndepTest::operator=( Cache4IndepTest&& from ) {
       if ( &from != this ) {
         __scores = std::move( from.__scores );
       }
@@ -71,11 +70,10 @@ namespace gum {
     }
 
     /// insert a new score into the cache
-    INLINE void
-    Cache4IndepTest::insert( Idx var1,
-                             Idx var2,
-                             const std::vector<Idx>& conditioning_set,
-                             double score ) {
+    INLINE void Cache4IndepTest::insert( Idx                     var1,
+                                         Idx                     var2,
+                                         const std::vector<Idx>& conditioning_set,
+                                         double                  score ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
       __scores.insert( std::tuple<IdSet<>, Idx, Idx>(
                            IdSet<>( conditioning_set, 0 ), var1, var2 ),
@@ -84,14 +82,14 @@ namespace gum {
 
     /// insert a new score into the cache
     template <typename Alloc>
-    INLINE void Cache4IndepTest::insert( Idx var1,
-                                         Idx var2,
+    INLINE void Cache4IndepTest::insert( Idx           var1,
+                                         Idx           var2,
                                          IdSet<Alloc>& conditioning_set,
-                                         double score ) {
+                                         double        score ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
-      __scores.insert( std::tuple<IdSet<>, Idx, Idx>(
-                           IdSet<>( conditioning_set ), var1, var2 ),
-                       std::move( score ) );
+      __scores.insert(
+          std::tuple<IdSet<>, Idx, Idx>( IdSet<>( conditioning_set ), var1, var2 ),
+          std::move( score ) );
     }
 
     /// removes a score (if it exists)
@@ -104,8 +102,8 @@ namespace gum {
 
     /// removes a score (if it exists)
     template <typename Alloc>
-    INLINE void Cache4IndepTest::erase( Idx var1,
-                                        Idx var2,
+    INLINE void Cache4IndepTest::erase( Idx                 var1,
+                                        Idx                 var2,
                                         const IdSet<Alloc>& conditioning_set ) {
       if ( var1 > var2 ) std::swap( var1, var2 );
       __scores.erase(

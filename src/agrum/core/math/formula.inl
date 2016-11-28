@@ -211,9 +211,7 @@ namespace gum {
         return FormulaPart( token_type::NUMBER, __function_eval( args ) );
       }
 
-      default: {
-        GUM_ERROR( OperationNotAllowed, "cannot evaluate expression" );
-      }
+      default: { GUM_ERROR( OperationNotAllowed, "cannot evaluate expression" ); }
     }
   }
 
@@ -242,13 +240,11 @@ namespace gum {
       return false;
     }
 
-    if ( o.isLeftAssociative() &&
-         o.precedence() <= __stack.top().precedence() ) {
+    if ( o.isLeftAssociative() && o.precedence() <= __stack.top().precedence() ) {
       return true;
     }
 
-    if ( o.isRightAssociative() &&
-         o.precedence() < __stack.top().precedence() ) {
+    if ( o.isRightAssociative() && o.precedence() < __stack.top().precedence() ) {
       return true;
     }
 
@@ -358,7 +354,7 @@ namespace gum {
 
   INLINE
   void
-  Formula::__reduceOperatorOrFunction( FormulaPart item,
+  Formula::__reduceOperatorOrFunction( FormulaPart              item,
                                        std::stack<FormulaPart>& stack ) const {
 
     std::vector<FormulaPart> args;

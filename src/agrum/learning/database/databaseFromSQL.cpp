@@ -38,17 +38,16 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    DatabaseFromSQL::DatabaseFromSQL(
-        const std::string& dataSource,
-        const std::string& login,
-        const std::string& password,
-        const std::string& query,
-        long timeout,
-        const DBTransform& transform,
-        const std::vector<std::string> missingVal ) {
+    DatabaseFromSQL::DatabaseFromSQL( const std::string&             dataSource,
+                                      const std::string&             login,
+                                      const std::string&             password,
+                                      const std::string&             query,
+                                      long                           timeout,
+                                      const DBTransform&             transform,
+                                      const std::vector<std::string> missingVal ) {
       try {
         nanodbc::connection cn( dataSource, login, password, timeout );
-        nanodbc::result res = nanodbc::execute( cn, query );
+        nanodbc::result     res = nanodbc::execute( cn, query );
 
         NanodbcParser parser( res );
 

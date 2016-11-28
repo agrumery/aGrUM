@@ -131,7 +131,7 @@ namespace gum {
 
     private:
     /// The mapping between NodeIds and Value Sets
-    HashTable<NodeId, GUM_SCALAR*> __map;
+    HashTable<NodeId, GUM_SCALAR*>                          __map;
     mutable HashTableConstIteratorSafe<NodeId, GUM_SCALAR*> __mappy;
 
     const NodeId jocker = 0;

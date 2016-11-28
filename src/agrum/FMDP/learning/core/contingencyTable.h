@@ -77,8 +77,7 @@ namespace gum {
       return SmallObjectAllocator::instance().allocate( s );
     }
     void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p,
-                                                   sizeof( ContingencyTable ) );
+      SmallObjectAllocator::instance().deallocate( p, sizeof( ContingencyTable ) );
     }
 
     /// @}
@@ -108,18 +107,16 @@ namespace gum {
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx attrAMarginal( GUM_SCALAR_A valueA ) const {
-      return __attrAMarginalTable.exists( valueA )
-                 ? __attrAMarginalTable[valueA]
-                 : 0;
+      return __attrAMarginalTable.exists( valueA ) ? __attrAMarginalTable[valueA]
+                                                   : 0;
     }
 
 
     /// Returns the number of samples for case (iattr, ivalue)
 
     Idx attrBMarginal( GUM_SCALAR_B valueB ) const {
-      return __attrAMarginalTable.exists( valueB )
-                 ? __attrAMarginalTable[valueB]
-                 : 0;
+      return __attrAMarginalTable.exists( valueB ) ? __attrAMarginalTable[valueB]
+                                                   : 0;
     }
 
 

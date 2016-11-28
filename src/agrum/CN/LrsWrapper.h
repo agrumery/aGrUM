@@ -77,7 +77,7 @@ extern "C" {
 
 // 64 bits for windows (long is 32 bits)
 #ifdef _MSC_VER
-typedef __int64 int64_t;
+typedef __int64          int64_t;
 typedef unsigned __int64 uint64_t;
 #else
 #include <stdint.h>
@@ -138,9 +138,9 @@ namespace gum {
        * avoid
        * making - invisible - mistakes. */
       enum class __states : char {
-        none     = char( 0 ),
-        Hup      = char( 1 ),
-        Vup      = char( 2 ),
+        none = char( 0 ),
+        Hup = char( 1 ),
+        Vup = char( 2 ),
         H2Vready = char( 3 ),
         V2Hready = char( 4 ),
       };
@@ -241,8 +241,8 @@ namespace gum {
        * @param Num Output integer numerators.
        * @param Den Output integer denominators.
        */
-      void __getLRSWrapperOutput( lrs_mp Nin,
-                                  lrs_mp Din,
+      void __getLRSWrapperOutput( lrs_mp                Nin,
+                                  lrs_mp                Din,
                                   std::vector<int64_t>& Num,
                                   std::vector<int64_t>& Den ) const;
 
@@ -368,8 +368,8 @@ namespace gum {
        * @param max The upper value of p(X=modal | .).
        * @param modal The modality on which we put constraints.
        */
-      void fillH( const GUM_SCALAR& min,
-                  const GUM_SCALAR& max,
+      void fillH( const GUM_SCALAR&   min,
+                  const GUM_SCALAR&   max,
                   const unsigned int& modal );
 
       /**

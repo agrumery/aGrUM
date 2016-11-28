@@ -30,8 +30,7 @@
 //======================================================================
 #include <agrum/FMDP/fmdp.h>
 //======================================================================
-#define RECAST( x ) \
-  reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( x )
+#define RECAST( x ) reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( x )
 
 namespace gum {
 
@@ -91,8 +90,7 @@ namespace gum {
       if ( iterA.val() ) delete iterA.val();
 
     // Action Name deletion
-    for ( auto iterId = __actionMap.beginSafe();
-          iterId != __actionMap.endSafe();
+    for ( auto iterId = __actionMap.beginSafe(); iterId != __actionMap.endSafe();
           ++iterId )
       delete iterId.second();
 
@@ -151,7 +149,7 @@ namespace gum {
   // @throw DuplicateElement if an action with same name already exists
   // ===========================================================================
   template <typename GUM_SCALAR>
-  INLINE void FMDP<GUM_SCALAR>::addAction( Idx actionId,
+  INLINE void FMDP<GUM_SCALAR>::addAction( Idx                actionId,
                                            const std::string& action ) {
 
     if ( actionId == 0 )
@@ -162,11 +160,10 @@ namespace gum {
           actIter != __actionMap.endSafe();
           ++actIter )
       if ( *( actIter.second() ) == action )
-        GUM_ERROR(
-            DuplicateElement,
-            " Action "
-                << action
-                << " has already been inserted in FMDP with this name." );
+        GUM_ERROR( DuplicateElement,
+                   " Action "
+                       << action
+                       << " has already been inserted in FMDP with this name." );
 
     if ( __actionMap.existsFirst( actionId ) )
       GUM_ERROR( DuplicateElement,
@@ -199,14 +196,13 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE void FMDP<GUM_SCALAR>::addTransitionForAction(
-      Idx actionId,
-      const DiscreteVariable* var,
+      Idx                                       actionId,
+      const DiscreteVariable*                   var,
       const MultiDimImplementation<GUM_SCALAR>* transition ) {
 
     if ( !__varSeq.exists( var ) )
       GUM_ERROR( NotFound,
-                 " Variable " << var->name()
-                              << " has not been declared before." );
+                 " Variable " << var->name() << " has not been declared before." );
 
     if ( !__actionTransitionTable.exists( actionId ) )
       GUM_ERROR( NotFound,
@@ -230,8 +226,7 @@ namespace gum {
   // ===========================================================================
   template <typename GUM_SCALAR>
   INLINE const MultiDimImplementation<GUM_SCALAR>*
-  FMDP<GUM_SCALAR>::transition( Idx actionId,
-                                const DiscreteVariable* v ) const {
+  FMDP<GUM_SCALAR>::transition( Idx actionId, const DiscreteVariable* v ) const {
 
     if ( !__actionTransitionTable.exists( actionId ) )
       GUM_ERROR( NotFound,
@@ -359,8 +354,7 @@ namespace gum {
   INLINE const std::string& FMDP<GUM_SCALAR>::actionName( Idx actionId ) const {
 
     if ( !__actionMap.existsFirst( actionId ) )
-      GUM_ERROR( NotFound,
-                 "No action with " << actionId << " as identifiant." );
+      GUM_ERROR( NotFound, "No action with " << actionId << " as identifiant." );
 
     return *( __actionMap.second( actionId ) );
   }
@@ -371,8 +365,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Idx FMDP<GUM_SCALAR>::actionId( const std::string& action ) const {
 
-    for ( BijectionIterator<Idx, const std::string*> actIter =
-              __actionMap.begin();
+    for ( BijectionIterator<Idx, const std::string*> actIter = __actionMap.begin();
           actIter != __actionMap.end();
           ++actIter )
       if ( *( actIter.second() ) == action ) {
@@ -390,18 +383,15 @@ namespace gum {
 
     for ( auto actionIter = beginActions(); actionIter != endActions();
           ++actionIter ) {
-      for ( auto varIter = beginVariables(); varIter != endVariables();
-            ++varIter )
+      for ( auto varIter = beginVariables(); varIter != endVariables(); ++varIter )
         if ( this->transition( *actionIter, *varIter ) )
-          fmdpCore
-              << RECAST( this->transition( *actionIter, *varIter ) )->toDot()
-              << std::endl;
+          fmdpCore << RECAST( this->transition( *actionIter, *varIter ) )->toDot()
+                   << std::endl;
       if ( this->reward( *actionIter ) )
         fmdpCore << RECAST( this->reward( *actionIter ) )->toDot() << std::endl;
     }
 
-    for ( auto varIter = beginVariables(); varIter != endVariables();
-          ++varIter )
+    for ( auto varIter = beginVariables(); varIter != endVariables(); ++varIter )
       if ( this->transition( 0, *varIter ) )
         fmdpCore << RECAST( this->transition( 0, *varIter ) )->toDot()
                  << std::endl;
@@ -416,16 +406,14 @@ namespace gum {
     Size s = 0;
     for ( auto actionIter = beginActions(); actionIter != endActions();
           ++actionIter ) {
-      for ( auto varIter = beginVariables(); varIter != endVariables();
-            ++varIter )
+      for ( auto varIter = beginVariables(); varIter != endVariables(); ++varIter )
         if ( this->transition( *actionIter, *varIter ) )
           s += this->transition( *actionIter, *varIter )->realSize();
       if ( this->reward( *actionIter ) )
         s += this->reward( *actionIter )->realSize();
     }
 
-    for ( auto varIter = beginVariables(); varIter != endVariables();
-          ++varIter )
+    for ( auto varIter = beginVariables(); varIter != endVariables(); ++varIter )
       if ( this->transition( 0, *varIter ) )
         s += this->transition( 0, *varIter )->realSize();
     if ( this->reward() ) s += this->reward()->realSize();

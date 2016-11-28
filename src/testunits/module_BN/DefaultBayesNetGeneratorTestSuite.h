@@ -57,7 +57,7 @@ namespace gum_tests {
 
     void testGenerationFloat_1() {
       gum::SimpleBayesNetGenerator<float> gen( 10, 20 );
-      gum::BayesNet<float>* bn = new gum::BayesNet<float>();
+      gum::BayesNet<float>*               bn = new gum::BayesNet<float>();
 
       TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN( *bn ) );
 
@@ -72,8 +72,8 @@ namespace gum_tests {
       gen.generateBN( *bn );
       // Test for cicuits
       std::vector<gum::NodeId> stack;
-      gum::Set<gum::NodeId> passed;
-      const gum::DAG& dag = bn->dag();
+      gum::Set<gum::NodeId>    passed;
+      const gum::DAG&          dag = bn->dag();
 
       for ( const auto node : dag.nodes() ) {
         TS_ASSERT_THROWS( dag.directedPath( node, node ), gum::NotFound );
@@ -108,7 +108,7 @@ namespace gum_tests {
 
     void testGenerationFloat_5() {
       gum::SimpleBayesNetGenerator<float> gen( 10, 45 );
-      gum::BayesNet<float>* bn = 0;
+      gum::BayesNet<float>*               bn = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( bn = new gum::BayesNet<float>();
                                     gen.generateBN( *bn );
@@ -129,7 +129,7 @@ namespace gum_tests {
 
     void testGenerationDouble_1() {
       gum::SimpleBayesNetGenerator<double> gen( 10, 35 );
-      gum::BayesNet<double>* bn = new gum::BayesNet<double>();
+      gum::BayesNet<double>*               bn = new gum::BayesNet<double>();
 
       TS_GUM_ASSERT_THROWS_NOTHING( gen.generateBN( *bn ) );
 
@@ -140,12 +140,12 @@ namespace gum_tests {
 
       // Test for cicuits
       gum::SimpleBayesNetGenerator<double> gen( 10, 45 );
-      gum::BayesNet<double>* bn = new gum::BayesNet<double>();
+      gum::BayesNet<double>*               bn = new gum::BayesNet<double>();
       gen.generateBN( *bn );
 
       std::vector<gum::NodeId> stack;
-      gum::Set<gum::NodeId> passed;
-      const gum::DAG& dag = bn->dag();
+      gum::Set<gum::NodeId>    passed;
+      const gum::DAG&          dag = bn->dag();
 
       for ( const auto node : dag.nodes() ) {
         TS_ASSERT_THROWS( dag.directedPath( node, node ), gum::NotFound );
@@ -156,7 +156,7 @@ namespace gum_tests {
 
     void testGenerationDouble_3() {
       gum::SimpleBayesNetGenerator<double> gen( 10, 45 );
-      gum::BayesNet<double>* bn = new gum::BayesNet<double>();
+      gum::BayesNet<double>*               bn = new gum::BayesNet<double>();
       gen.generateBN( *bn );
       // Test for inference
       gum::ShaferShenoyInference<double> ssInf( bn );
@@ -167,7 +167,7 @@ namespace gum_tests {
 
     void testGenerationDouble_4() {
       gum::SimpleBayesNetGenerator<double> gen( 10, 45 );
-      gum::BayesNet<double>* bn = new gum::BayesNet<double>();
+      gum::BayesNet<double>*               bn = new gum::BayesNet<double>();
       gen.generateBN( *bn );
 
       // Test for inference

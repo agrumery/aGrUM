@@ -85,7 +85,7 @@ namespace gum {
      * @param aContent The implementation to use in this Potential.
      * @param src The MultiDimContainer to copy.
      */
-    Potential( MultiDimImplementation<GUM_SCALAR>* aContent,
+    Potential( MultiDimImplementation<GUM_SCALAR>*  aContent,
                const MultiDimContainer<GUM_SCALAR>& src );
     /**
      * @brief Copy constructor & assignment
@@ -302,8 +302,7 @@ namespace gum {
     /// the function to be used to subtract two Potentials
     Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p2 ) const {
       if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
-      if ( this->nbrDim() == 0 )
-        GUM_ERROR( FatalError, "Undefined substraction" );
+      if ( this->nbrDim() == 0 ) GUM_ERROR( FatalError, "Undefined substraction" );
 
       return Potential<GUM_SCALAR>( *this->content() - *p2.content() );
     }

@@ -34,15 +34,15 @@ namespace gum_tests {
     void test1() {
       gum::UndiGraph g;
 
-      gum::NodeId id1  = g.addNode();
-      gum::NodeId id2  = g.addNode();
-      gum::NodeId id3  = g.addNode();
-      gum::NodeId id4  = g.addNode();
-      gum::NodeId id5  = g.addNode();
-      gum::NodeId id6  = g.addNode();
-      gum::NodeId id7  = g.addNode();
-      gum::NodeId id8  = g.addNode();
-      gum::NodeId id9  = g.addNode();
+      gum::NodeId id1 = g.addNode();
+      gum::NodeId id2 = g.addNode();
+      gum::NodeId id3 = g.addNode();
+      gum::NodeId id4 = g.addNode();
+      gum::NodeId id5 = g.addNode();
+      gum::NodeId id6 = g.addNode();
+      gum::NodeId id7 = g.addNode();
+      gum::NodeId id8 = g.addNode();
+      gum::NodeId id9 = g.addNode();
       gum::NodeId id10 = g.addNode();
       gum::NodeId id11 = g.addNode();
       g.addNode();
@@ -97,7 +97,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( edges2.size(), 9U );
 
       gum::SpanningForestPrim prim3( &g, &cost );
-      const gum::EdgeSet& edges3 = prim3.edgesInSpanningForest();
+      const gum::EdgeSet&     edges3 = prim3.edgesInSpanningForest();
       TS_ASSERT_EQUALS( edges3.size(), 9U );
     }
   };

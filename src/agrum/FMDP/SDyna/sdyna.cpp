@@ -51,13 +51,13 @@ namespace gum {
    */
   // ###################################################################
 
-  SDYNA::SDYNA( ILearningStrategy* learner,
+  SDYNA::SDYNA( ILearningStrategy*         learner,
                 IPlanningStrategy<double>* planer,
-                IDecisionStrategy* decider,
-                Idx observationPhaseLenght,
-                Idx nbValueIterationStep,
-                bool actionReward,
-                bool verbose )
+                IDecisionStrategy*         decider,
+                Idx                        observationPhaseLenght,
+                Idx                        nbValueIterationStep,
+                bool                       actionReward,
+                bool                       verbose )
       : __learner( learner )
       , __planer( planer )
       , __decider( decider )
@@ -84,8 +84,7 @@ namespace gum {
 
     delete __planer;
 
-    for ( auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe();
-          ++obsIter )
+    for ( auto obsIter = __bin.beginSafe(); obsIter != __bin.endSafe(); ++obsIter )
       delete *obsIter;
 
     delete _fmdp;
@@ -131,10 +130,10 @@ namespace gum {
   // ###################################################################
   void SDYNA::feedback( const Instantiation& curState,
                         const Instantiation& prevState,
-                        Idx lastAction,
-                        double reward ) {
+                        Idx                  lastAction,
+                        double               reward ) {
     __lastAction = lastAction;
-    _lastState   = prevState;
+    _lastState = prevState;
     feedback( curState, reward );
   }
 
@@ -160,8 +159,7 @@ namespace gum {
     for ( auto varIter = newState.variablesSequence().beginSafe();
           varIter != newState.variablesSequence().endSafe();
           ++varIter ) {
-      obs->setModality( _fmdp->main2prime( *varIter ),
-                        newState.val( **varIter ) );
+      obs->setModality( _fmdp->main2prime( *varIter ), newState.val( **varIter ) );
 
       if ( this->__actionReward )
         obs->setRModality( *varIter, _lastState.val( **varIter ) );

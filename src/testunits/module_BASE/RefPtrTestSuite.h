@@ -46,7 +46,7 @@ namespace gum_tests {
     void testModify() {
       gum::RefPtr<int> ptr1( new int( 4 ) );
       gum::RefPtr<int> ptr2 = ptr1, ptr3;
-      ptr3                  = ptr1;
+      ptr3 = ptr1;
 
       TS_ASSERT_EQUALS( ptr1, ptr2 );
 

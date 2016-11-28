@@ -66,8 +66,8 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      StructuredInference( const PRM<GUM_SCALAR>& prm,
-                           const PRMSystem<GUM_SCALAR>& system,
+      StructuredInference( const PRM<GUM_SCALAR>&             prm,
+                           const PRMSystem<GUM_SCALAR>&       system,
                            gspan::SearchStrategy<GUM_SCALAR>* strategy = 0 );
 
       /// Copy constructor.
@@ -117,12 +117,12 @@ namespace gum {
       /// See PRMInference::_marginal().
       virtual void
       _marginal( const typename PRMInference<GUM_SCALAR>::Chain& chain,
-                 Potential<GUM_SCALAR>& m );
+                 Potential<GUM_SCALAR>&                          m );
 
       /// See PRMInference::_joint().
-      virtual void _joint(
-          const std::vector<typename PRMInference<GUM_SCALAR>::Chain>& queries,
-          Potential<GUM_SCALAR>& j );
+      virtual void
+      _joint( const std::vector<typename PRMInference<GUM_SCALAR>::Chain>& queries,
+              Potential<GUM_SCALAR>&                                       j );
 
       /// @}
       private:
@@ -176,7 +176,7 @@ namespace gum {
         /// Set of barren nodes
         Set<NodeId> barren;
         /// Default constructor.
-        PData( const gspan::Pattern& p,
+        PData( const gspan::Pattern&                         p,
                typename GSpan<GUM_SCALAR>::MatchedInstances& m );
         /// Copy constructor.
         PData( const PData& source );
@@ -236,10 +236,10 @@ namespace gum {
         inline std::vector<NodeId>& elim_order() { return __elim_order; }
 
         private:
-        std::vector<NodeId> __elim_order;
-        NodeSet __inners;
-        NodeSet __aggregators;
-        NodeSet __outputs;
+        std::vector<NodeId>         __elim_order;
+        NodeSet                     __inners;
+        NodeSet                     __aggregators;
+        NodeSet                     __outputs;
         Set<Potential<GUM_SCALAR>*> __trash;
       };
 
@@ -295,8 +295,8 @@ namespace gum {
       void __addEdgesInReducedGraph( RGData& data );
 
       void __removeNode( typename StructuredInference::PData& data,
-                         NodeId id,
-                         Set<Potential<GUM_SCALAR>*>& pool );
+                         NodeId                               id,
+                         Set<Potential<GUM_SCALAR>*>&         pool );
 
       /// Add the reduced potentials of instances not in any used patterns.
       void __reduceAloneInstances( RGData& data );
@@ -313,24 +313,23 @@ namespace gum {
       /// all the Potentials of all variables in data.pattern. The first match
       /// of
       /// data.pattern (aka data.match) is used.
-      void
-      __buildPatternGraph( PData& data,
-                           Set<Potential<GUM_SCALAR>*>& pool,
-                           const Sequence<PRMInstance<GUM_SCALAR>*>& match );
+      void __buildPatternGraph( PData&                                    data,
+                                Set<Potential<GUM_SCALAR>*>&              pool,
+                                const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       void
-      __insertNodeInElimLists( typename StructuredInference::PData& data,
+      __insertNodeInElimLists( typename StructuredInference::PData&      data,
                                const Sequence<PRMInstance<GUM_SCALAR>*>& match,
-                               PRMInstance<GUM_SCALAR>* inst,
-                               PRMAttribute<GUM_SCALAR>* attr,
-                               NodeId id,
+                               PRMInstance<GUM_SCALAR>*                  inst,
+                               PRMAttribute<GUM_SCALAR>*                 attr,
+                               NodeId                                    id,
                                std::pair<Idx, std::string>& v );
 
       bool __allInstanceNoRefAttr( typename StructuredInference::PData& data,
                                    std::pair<Idx, std::string> attr );
 
       void __removeBarrenNodes( typename StructuredInference::PData& data,
-                                Set<Potential<GUM_SCALAR>*>& pool );
+                                Set<Potential<GUM_SCALAR>*>&         pool );
 
       /// Add in data.queries() any queried variable in one of data.pattern
       /// matches.
@@ -339,21 +338,21 @@ namespace gum {
       /// Proceeds with the elimination of observed variables in math and then
       /// call __translatePotSet().
       Set<Potential<GUM_SCALAR>*>*
-      __eliminateObservedNodes( typename StructuredInference::PData& data,
-                                const Set<Potential<GUM_SCALAR>*>& pool,
+      __eliminateObservedNodes( typename StructuredInference::PData&      data,
+                                const Set<Potential<GUM_SCALAR>*>&        pool,
                                 const Sequence<PRMInstance<GUM_SCALAR>*>& match,
                                 const std::vector<NodeId>& elim_order );
 
       Set<Potential<GUM_SCALAR>*>* __eliminateObservedNodesInSource(
-          typename StructuredInference::PData& data,
-          const Set<Potential<GUM_SCALAR>*>& pool,
+          typename StructuredInference::PData&      data,
+          const Set<Potential<GUM_SCALAR>*>&        pool,
           const Sequence<PRMInstance<GUM_SCALAR>*>& match,
-          const std::vector<NodeId>& elim_order );
+          const std::vector<NodeId>&                elim_order );
 
       /// Translate a given Potential Set into one w.r.t. variables in match.
       Set<Potential<GUM_SCALAR>*>*
-      __translatePotSet( typename StructuredInference::PData& data,
-                         const Set<Potential<GUM_SCALAR>*>& pool,
+      __translatePotSet( typename StructuredInference::PData&      data,
+                         const Set<Potential<GUM_SCALAR>*>&        pool,
                          const Sequence<PRMInstance<GUM_SCALAR>*>& match );
 
       /// Unreduce the match containing the query.
@@ -363,23 +362,23 @@ namespace gum {
       // PRMClass<GUM_SCALAR>* c );
       /// Used to create strings
       std::string __dot;
-      std::string __str( const PRMInstance<GUM_SCALAR>* i,
+      std::string __str( const PRMInstance<GUM_SCALAR>*  i,
                          const PRMAttribute<GUM_SCALAR>* a ) const;
-      std::string __str( const PRMInstance<GUM_SCALAR>* i,
+      std::string __str( const PRMInstance<GUM_SCALAR>*  i,
                          const PRMAttribute<GUM_SCALAR>& a ) const;
-      std::string __str( const PRMInstance<GUM_SCALAR>* i,
+      std::string __str( const PRMInstance<GUM_SCALAR>*  i,
                          const PRMSlotChain<GUM_SCALAR>& a ) const;
 
       public:
       // For bench/debug purpose.
-      Timer timer;
-      Timer plopTimer;
-      double triang_time;
-      double mining_time;
-      double pattern_time;
-      double inner_time;
-      double obs_time;
-      double full_time;
+      Timer       timer;
+      Timer       plopTimer;
+      double      triang_time;
+      double      mining_time;
+      double      pattern_time;
+      double      inner_time;
+      double      obs_time;
+      double      full_time;
       std::string info() const;
     };
 

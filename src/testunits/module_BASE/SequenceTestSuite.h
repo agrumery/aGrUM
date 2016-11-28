@@ -119,8 +119,8 @@ namespace gum_tests {
       gum::Sequence<int> seq3{7, 8, 9, 6};
 
       gum::Sequence<int> seq4 = std::move( seq3 );
-      seq3                    = std::move( seq2 );
-      seq2                    = std::move( seq1 );
+      seq3 = std::move( seq2 );
+      seq2 = std::move( seq1 );
 
       TS_ASSERT( seq2.size() == 3 );
       TS_ASSERT( seq2.atPos( 1 ) == 2 );
@@ -326,8 +326,7 @@ namespace gum_tests {
       int n;
       n = 0;
 
-      for ( gum::Sequence<int>::iterator it = seq.begin(); it != seq.end();
-            ++it )
+      for ( gum::Sequence<int>::iterator it = seq.begin(); it != seq.end(); ++it )
         n++;
 
       TS_ASSERT_EQUALS( n, 0 );
@@ -455,8 +454,7 @@ namespace gum_tests {
 
       int n = 0;
 
-      for ( gum::Sequence<std::string>::iterator it = seq.begin();
-            it != seq.end();
+      for ( gum::Sequence<std::string>::iterator it = seq.begin(); it != seq.end();
             ++it )
         n++;
 
@@ -475,8 +473,7 @@ namespace gum_tests {
       n = 0;
       std::string str;
 
-      for ( gum::Sequence<std::string>::iterator it = seq.begin();
-            it != seq.end();
+      for ( gum::Sequence<std::string>::iterator it = seq.begin(); it != seq.end();
             ++it ) {
         str += *it;
       }

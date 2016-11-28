@@ -44,8 +44,8 @@ namespace gum_tests {
       gum::BayesNet<float> net;
 
       gum::UAIReader<float>* reader = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          reader = new gum::UAIReader<float>( &net, file ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( reader =
+                                        new gum::UAIReader<float>( &net, file ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete reader );
     }
 
@@ -56,7 +56,7 @@ namespace gum_tests {
       TS_ASSERT( net != nullptr );
 
       gum::UAIReader<float> reader( net, file );
-      auto err = reader.proceed();
+      auto                  err = reader.proceed();
 
       if ( net != nullptr ) {
         TS_ASSERT( net->empty() );
@@ -115,7 +115,7 @@ namespace gum_tests {
 
     void testRead_dog_double() {
       // from Charniak, Bayesian Networks Without Tears, AI Magazine, 1991
-      std::string file           = GET_RESSOURCES_PATH( "uai/dog.uai" );
+      std::string            file = GET_RESSOURCES_PATH( "uai/dog.uai" );
       gum::BayesNet<double>* net = new gum::BayesNet<double>();
       gum::UAIReader<double> reader( net, file );
 
@@ -128,8 +128,7 @@ namespace gum_tests {
       if ( net != nullptr ) {
         TS_ASSERT_EQUALS( net->size(), (gum::Size)5 );
 
-        const gum::Potential<double>& proba =
-            net->cpt( net->idFromName( "2" ) );
+        const gum::Potential<double>& proba = net->cpt( net->idFromName( "2" ) );
 
         TS_ASSERT_EQUALS( proba.domainSize(), (gum::Size)8 );
 

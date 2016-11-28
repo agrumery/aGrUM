@@ -56,7 +56,7 @@ namespace gum {
 
         public:
         O3NameSolver( PRM<GUM_SCALAR>& prm,
-                      O3PRM& o3_prm,
+                      O3PRM&           o3_prm,
                       ErrorsContainer& errors );
 
         O3NameSolver( const O3NameSolver<GUM_SCALAR>& src );
@@ -65,8 +65,7 @@ namespace gum {
 
         ~O3NameSolver();
 
-        O3NameSolver<GUM_SCALAR>&
-        operator=( const O3NameSolver<GUM_SCALAR>& src );
+        O3NameSolver<GUM_SCALAR>& operator=( const O3NameSolver<GUM_SCALAR>& src );
 
         O3NameSolver<GUM_SCALAR>& operator=( O3NameSolver<GUM_SCALAR>&& src );
 
@@ -82,7 +81,7 @@ namespace gum {
 
         private:
         PRM<GUM_SCALAR>* __prm;
-        O3PRM* __o3_prm;
+        O3PRM*           __o3_prm;
         ErrorsContainer* __errors;
 
         using NameMap = HashTable<std::string, std::string>;

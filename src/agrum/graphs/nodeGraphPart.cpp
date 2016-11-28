@@ -64,7 +64,7 @@ namespace gum {
 
   void NodeGraphPart::populateNodes( const NodeGraphPart& s ) {
     clear();  // "virtual" flush of the nodes set
-    __holes_size          = s.__holes_size;
+    __holes_size = s.__holes_size;
     __holes_resize_policy = s.__holes_resize_policy;
 
     if ( s.__holes ) __holes = new NodeSet( *s.__holes );
@@ -97,8 +97,7 @@ namespace gum {
 
       __updateEndIteratorSafe();
     } else {
-      if ( !__holes )
-        __holes = new NodeSet( __holes_size, __holes_resize_policy );
+      if ( !__holes ) __holes = new NodeSet( __holes_size, __holes_resize_policy );
 
       __holes->insert( node );
     }
@@ -106,7 +105,7 @@ namespace gum {
 
   std::string NodeGraphPart::toString() const {
     std::stringstream s;
-    bool first = true;
+    bool              first = true;
     s << "{";
 
     for ( NodeId id = 0; id < __boundVal; ++id ) {
@@ -156,7 +155,7 @@ namespace gum {
 
   void NodeGraphPart::__clearNodes( void ) {
     NodeId bound = __boundVal;
-    __boundVal   = 0;
+    __boundVal = 0;
 
     if ( onNodeDeleted.hasListener() ) {
       for ( NodeId n = 0; n < bound; ++n ) {
@@ -171,14 +170,13 @@ namespace gum {
     __holes = 0;
   }
 
-  void NodeGraphPartIteratorSafe::whenNodeDeleted( const void* src,
-                                                   NodeId id ) {
+  void NodeGraphPartIteratorSafe::whenNodeDeleted( const void* src, NodeId id ) {
     if ( id == _pos ) {  // we just deleted the _pos in NodeGraphPart
       _valid = false;
     }
 
     if ( _pos >= _nodes->bound() ) {  // moreover, it was the last position
-      _pos   = _nodes->bound();
+      _pos = _nodes->bound();
       _valid = false;
     }
   }

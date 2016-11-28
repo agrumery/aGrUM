@@ -93,7 +93,7 @@ namespace gum {
     void insert( const std::string& operation_name,
                  const std::string& type1,
                  const std::string& type2,
-                 OperatorPtr newFunction );
+                 OperatorPtr        newFunction );
 
     /**
      * @brief removes a given entry from the register
@@ -214,9 +214,9 @@ namespace gum {
   /// A function to more easily register new operators in MultiDims
   template <typename GUM_SCALAR>
   void registerOperator(
-      const std::string& operation_name,
-      const std::string& type1,
-      const std::string& type2,
+      const std::string&                                          operation_name,
+      const std::string&                                          type1,
+      const std::string&                                          type2,
       typename OperatorRegister4MultiDim<GUM_SCALAR>::OperatorPtr function );
 
 } /* namespace gum */

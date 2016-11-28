@@ -45,8 +45,7 @@ namespace gum {
         while ( _TabuList__changes.size() < new_size ) {
           --_TabuList__offset;
           _TabuList__changes.insert(
-              ArcAddition( std::numeric_limits<NodeId>::max() -
-                               _TabuList__offset,
+              ArcAddition( std::numeric_limits<NodeId>::max() - _TabuList__offset,
                            std::numeric_limits<NodeId>::max() ),
               _TabuList__offset );
         }
@@ -120,8 +119,8 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintTabuList::modifyGraphAlone(
-        const ArcAddition& change ) {
+    INLINE void
+    StructuralConstraintTabuList::modifyGraphAlone( const ArcAddition& change ) {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
       _TabuList__changes.insert(
@@ -129,8 +128,8 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintTabuList::modifyGraphAlone(
-        const ArcDeletion& change ) {
+    INLINE void
+    StructuralConstraintTabuList::modifyGraphAlone( const ArcDeletion& change ) {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
       _TabuList__changes.insert(
@@ -138,8 +137,8 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintTabuList::modifyGraphAlone(
-        const ArcReversal& change ) {
+    INLINE void
+    StructuralConstraintTabuList::modifyGraphAlone( const ArcReversal& change ) {
       _TabuList__changes.eraseSecond( _TabuList__offset );
       ++_TabuList__offset;
       _TabuList__changes.insert(
@@ -147,8 +146,8 @@ namespace gum {
     }
 
     /// notify the constraint of a modification of the graph
-    INLINE void StructuralConstraintTabuList::modifyGraphAlone(
-        const GraphChange& change ) {
+    INLINE void
+    StructuralConstraintTabuList::modifyGraphAlone( const GraphChange& change ) {
       switch ( change.type() ) {
         case GraphChangeType::ARC_ADDITION:
           modifyGraphAlone( static_cast<const ArcAddition&>( change ) );

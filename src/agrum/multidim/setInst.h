@@ -830,7 +830,7 @@ namespace gum {
     static void assign_values(
         Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
         const SetInst& i,
-        SetInst& j );
+        SetInst&       j );
 
     /// @}
 
@@ -925,8 +925,7 @@ namespace gum {
    * @return Returns a reference over inst.
    * @throw DuplicateElement If i is already in the SetInst.
    */
-  gum::SetInst& operator<<( gum::SetInst& inst,
-                            const gum::DiscreteVariable& i );
+  gum::SetInst& operator<<( gum::SetInst& inst, const gum::DiscreteVariable& i );
 
   /**
    * @brief Removes a variable to inst.
@@ -935,8 +934,7 @@ namespace gum {
    * @return Returns a reference over inst.
    * @throw NotFound Raised if i is not found in inst.
    */
-  gum::SetInst& operator>>( gum::SetInst& inst,
-                            const gum::DiscreteVariable& i );
+  gum::SetInst& operator>>( gum::SetInst& inst, const gum::DiscreteVariable& i );
 
 } /* namespace gum */
 

@@ -42,7 +42,7 @@ namespace gum {
     static bool first_time = true;
 
     if ( first_time ) {
-      first_time             = false;
+      first_time = false;
       __BijectionIterEndSafe = new BijectionIteratorSafe<int, int>;
 #ifndef NDEBUG
       __debug__::__dec_creation( "BijectionIteratorSafe",
@@ -66,7 +66,7 @@ namespace gum {
     static bool first_time = true;
 
     if ( first_time ) {
-      first_time         = false;
+      first_time = false;
       __BijectionIterEnd = new BijectionIterator<int, int>;
 #ifndef NDEBUG
       __debug__::__dec_creation( "BijectionIterator",

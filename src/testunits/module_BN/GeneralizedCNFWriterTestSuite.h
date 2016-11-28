@@ -42,13 +42,12 @@ namespace gum_tests {
   class GeneralizedCNFWriterTestSuite : public CxxTest::TestSuite {
     public:
     gum::BayesNet<double>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::NodeId            i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<double>();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
-          n3( "3", "", 2 );
+      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
       gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 2 );
 
       i1 = bn->add( n1 );
@@ -71,14 +70,14 @@ namespace gum_tests {
 
     void testConstuctor() {
       gum::GeneralizedCNFWriter<double>* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          writer = new gum::GeneralizedCNFWriter<double>() );
+      TS_GUM_ASSERT_THROWS_NOTHING( writer =
+                                        new gum::GeneralizedCNFWriter<double>() );
       delete writer;
     }
 
     void testConstuctor_With_Aproximation() {
       typedef gum::GeneralizedCNFWriter<double, gum::LinearApproximationPolicy>
-          typCNF;
+              typCNF;
       typCNF* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING( writer = new typCNF() );
       writer->setEpsilon( 0.2 );

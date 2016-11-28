@@ -67,7 +67,7 @@ namespace gum_tests {
     }
 
     void testInsertion() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       TS_GUM_ASSERT_THROWS_NOTHING( idList.insert( topo.add( *var1 ) ) );
@@ -85,20 +85,20 @@ namespace gum_tests {
                                     ind = topo.nodeId( varPtr ); );
       TS_ASSERT_EQUALS( idList[0], ind );
 
-      TS_ASSERT_EQUALS(
-          *( (gum::LabelizedVariable*)&topo.variable( idList[0] ) ), *var1 );
-      TS_ASSERT_EQUALS(
-          *( (gum::LabelizedVariable*)&topo.variable( idList[1] ) ), *var2 );
-      TS_ASSERT_EQUALS(
-          *( (gum::LabelizedVariable*)&topo.variable( idList[2] ) ), *var3 );
-      TS_ASSERT_EQUALS(
-          *( (gum::LabelizedVariable*)&topo.variable( idList[3] ) ), *var4 );
-      TS_ASSERT_EQUALS(
-          *( (gum::LabelizedVariable*)&topo.variable( idList[4] ) ), *var5 );
+      TS_ASSERT_EQUALS( *( (gum::LabelizedVariable*)&topo.variable( idList[0] ) ),
+                        *var1 );
+      TS_ASSERT_EQUALS( *( (gum::LabelizedVariable*)&topo.variable( idList[1] ) ),
+                        *var2 );
+      TS_ASSERT_EQUALS( *( (gum::LabelizedVariable*)&topo.variable( idList[2] ) ),
+                        *var3 );
+      TS_ASSERT_EQUALS( *( (gum::LabelizedVariable*)&topo.variable( idList[3] ) ),
+                        *var4 );
+      TS_ASSERT_EQUALS( *( (gum::LabelizedVariable*)&topo.variable( idList[4] ) ),
+                        *var5 );
     }
 
     void testArcInsertion() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       idList.insert( topo.add( *var1 ) );
@@ -118,7 +118,7 @@ namespace gum_tests {
     }
 
     void testEraseVar() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       TS_ASSERT( topo.empty() );
@@ -149,7 +149,7 @@ namespace gum_tests {
     }
 
     void testEraseArc() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       TS_ASSERT( topo.empty() );
@@ -185,7 +185,7 @@ namespace gum_tests {
     }
 
     void testIterator() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       for ( const auto node : topo.nodes() )
@@ -193,7 +193,7 @@ namespace gum_tests {
     }
 
     void testMoralGraph() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       fill( topo, idList );
@@ -204,7 +204,7 @@ namespace gum_tests {
     }
 
     void testTopologicalOrder() {
-      gum::BayesNet<float> topo;
+      gum::BayesNet<float>   topo;
       gum::List<gum::NodeId> idList;
 
       fill( topo, idList );
@@ -238,7 +238,7 @@ namespace gum_tests {
     }
 
     gum::UndiGraph getRealMoralGraph( const gum::BayesNet<float>& topo,
-                                      gum::List<gum::NodeId>& idList ) {
+                                      gum::List<gum::NodeId>&     idList ) {
       gum::UndiGraph graph;
 
       graph.populateNodes( topo.dag() );

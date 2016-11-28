@@ -173,7 +173,7 @@ namespace gum {
       /// @{
 
       /// default constructor
-      RecordCounterThread( const RowFilter& filter,
+      RecordCounterThread( const RowFilter&         filter,
                            const std::vector<Size>& var_modalities );
 
       /// copy constructor
@@ -253,9 +253,9 @@ namespace gum {
 
       /// default constructor
       template <typename RowFilter>
-      RecordCounter( const RowFilter& filter,
+      RecordCounter( const RowFilter&         filter,
                      const std::vector<Size>& var_modalities,
-                     Size min_range = 0,
+                     Size                     min_range = 0,
                      Size max_range = std::numeric_limits<Size>::max() );
 
       /// copy constructor
@@ -307,8 +307,7 @@ namespace gum {
       void count();
 
       /// returns the counts performed for a given idSet
-      const std::vector<double, CountAlloc>& getCounts( Idx idset ) const
-          noexcept;
+      const std::vector<double, CountAlloc>& getCounts( Idx idset ) const noexcept;
 
       /// resets the counter, i.e., remove all its sets of ids and counting
       /// vectors

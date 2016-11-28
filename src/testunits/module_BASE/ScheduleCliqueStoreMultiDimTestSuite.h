@@ -39,18 +39,17 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
       pot1 << *( vars[0] ) << *( vars[2] ) << *( vars[3] ) << *( vars[4] );
       gum::ScheduleMultiDim<float> f1( pot1 );
-      gum::Potential<float> pot2;
+      gum::Potential<float>        pot2;
       pot2 << *( vars[0] ) << *( vars[2] ) << *( vars[3] ) << *( vars[4] );
       gum::ScheduleMultiDim<float> f2( pot2 );
 
-      gum::NodeProperty<gum::Set<const gum::MultiDimImplementation<float>*>>
-          set;
+      gum::NodeProperty<gum::Set<const gum::MultiDimImplementation<float>*>> set;
       TS_ASSERT( set.size() == 0 );
       gum::ScheduleCliqueStoreMultiDim<float> store1( f1, set, 3 );
       gum::ScheduleCliqueStoreMultiDim<float> store2( f2, set, 3 );

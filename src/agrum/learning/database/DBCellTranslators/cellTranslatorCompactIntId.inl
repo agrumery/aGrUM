@@ -32,8 +32,7 @@ namespace gum {
 
     /// default constructor
     INLINE
-    CellTranslatorCompactIntId::CellTranslatorCompactIntId(
-        bool check_database )
+    CellTranslatorCompactIntId::CellTranslatorCompactIntId( bool check_database )
         : __check_database( check_database ) {}
 
     /// copy constructor
@@ -51,8 +50,7 @@ namespace gum {
         , __check_database( std::move( from.__check_database ) ) {}
 
     /// virtual copy constructor
-    INLINE CellTranslatorCompactIntId*
-    CellTranslatorCompactIntId::copyFactory() {
+    INLINE CellTranslatorCompactIntId* CellTranslatorCompactIntId::copyFactory() {
       return new CellTranslatorCompactIntId( *this );
     }
 
@@ -64,7 +62,7 @@ namespace gum {
     operator=( const CellTranslatorCompactIntId& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( from );
-        __values         = from.__values;
+        __values = from.__values;
         __check_database = from.__check_database;
       }
       return *this;
@@ -75,7 +73,7 @@ namespace gum {
     operator=( CellTranslatorCompactIntId&& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( std::move( from ) );
-        __values         = std::move( from.__values );
+        __values = std::move( from.__values );
         __check_database = std::move( from.__check_database );
       }
       return *this;
@@ -121,10 +119,9 @@ namespace gum {
       if ( __check_database ) {
         modal.push_back( __values.size() );
       } else {
-        GUM_ERROR(
-            OperationNotAllowed,
-            "the CellTranslatorCompactIntId has not "
-            "been initialized, so getting its modalities is impossible" );
+        GUM_ERROR( OperationNotAllowed,
+                   "the CellTranslatorCompactIntId has not "
+                   "been initialized, so getting its modalities is impossible" );
       }
     }
 
@@ -146,7 +143,7 @@ namespace gum {
     /// returns the name of the variable(s) the translator has processed
     INLINE void CellTranslatorCompactIntId::variableNames(
         const std::vector<std::string>& db_var,
-        std::vector<std::string>& output_vars ) const {
+        std::vector<std::string>&       output_vars ) const {
       output_vars.push_back( db_var[_input_cols[0]] );
     }
 

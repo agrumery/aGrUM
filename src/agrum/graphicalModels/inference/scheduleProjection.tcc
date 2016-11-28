@@ -57,8 +57,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE ScheduleMultiDim<GUM_SCALAR> ScheduleProjection<GUM_SCALAR>::project(
       const MultiDimImplementation<GUM_SCALAR>& table,
-      const Set<const DiscreteVariable*>& del_vars,
-      Schedule<GUM_SCALAR>& schedule ) {
+      const Set<const DiscreteVariable*>&       del_vars,
+      Schedule<GUM_SCALAR>&                     schedule ) {
     ScheduleMultiDim<GUM_SCALAR> sched_table( table );
     return project( sched_table, del_vars, schedule );
   }
@@ -67,9 +67,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   template <template <typename> class TABLE>
   INLINE ScheduleMultiDim<GUM_SCALAR> ScheduleProjection<GUM_SCALAR>::project(
-      const TABLE<GUM_SCALAR>& table,
+      const TABLE<GUM_SCALAR>&            table,
       const Set<const DiscreteVariable*>& del_vars,
-      Schedule<GUM_SCALAR>& schedule ) {
+      Schedule<GUM_SCALAR>&               schedule ) {
     ScheduleMultiDim<GUM_SCALAR> sched_table( *( table.content() ) );
     return project( sched_table, del_vars, schedule );
   }
@@ -79,8 +79,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE float ScheduleProjection<GUM_SCALAR>::nbOperations(
       const MultiDimImplementation<GUM_SCALAR>& table,
-      const Set<const DiscreteVariable*>& del_vars,
-      const Schedule<GUM_SCALAR>& schedule ) {
+      const Set<const DiscreteVariable*>&       del_vars,
+      const Schedule<GUM_SCALAR>&               schedule ) {
     ScheduleMultiDim<GUM_SCALAR> sched_table( table );
     return nbOperations( sched_table, del_vars, schedule );
   }
@@ -90,9 +90,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   template <template <typename> class TABLE>
   INLINE float ScheduleProjection<GUM_SCALAR>::nbOperations(
-      const TABLE<GUM_SCALAR>& table,
+      const TABLE<GUM_SCALAR>&            table,
       const Set<const DiscreteVariable*>& del_vars,
-      const Schedule<GUM_SCALAR>& schedule ) {
+      const Schedule<GUM_SCALAR>&         schedule ) {
     ScheduleMultiDim<GUM_SCALAR> sched_table( *( table.content() ) );
     return nbOperations( sched_table, del_vars, schedule );
   }
@@ -101,8 +101,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE std::pair<long, long> ScheduleProjection<GUM_SCALAR>::memoryUsage(
       const MultiDimImplementation<GUM_SCALAR>& table,
-      const Set<const DiscreteVariable*>& del_vars,
-      const Schedule<GUM_SCALAR>& schedule ) {
+      const Set<const DiscreteVariable*>&       del_vars,
+      const Schedule<GUM_SCALAR>&               schedule ) {
     ScheduleMultiDim<GUM_SCALAR> sched_table( table );
     return memoryUsage( sched_table, del_vars, schedule );
   }
@@ -111,9 +111,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   template <template <typename> class TABLE>
   INLINE std::pair<long, long> ScheduleProjection<GUM_SCALAR>::memoryUsage(
-      const TABLE<GUM_SCALAR>& table,
+      const TABLE<GUM_SCALAR>&            table,
       const Set<const DiscreteVariable*>& del_vars,
-      const Schedule<GUM_SCALAR>& schedule ) {
+      const Schedule<GUM_SCALAR>&         schedule ) {
     ScheduleMultiDim<GUM_SCALAR> sched_table( *( table.content() ) );
     return memoryUsage( sched_table, del_vars, schedule );
   }

@@ -86,7 +86,7 @@ namespace gum {
 
     private:
     StatesCounter __counter;
-    bool __initialized;
+    bool          __initialized;
   };
 }
 #endif  // GUM_STATISTICAL_LAZY_DECIDER_H

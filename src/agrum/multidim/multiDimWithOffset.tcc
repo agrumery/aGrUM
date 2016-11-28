@@ -79,8 +79,7 @@ namespace gum {
   // removes a dimension, needed for updating the _offsets & _gaps
 
   template <typename GUM_SCALAR>
-  INLINE void
-  MultiDimWithOffset<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
+  INLINE void MultiDimWithOffset<GUM_SCALAR>::erase( const DiscreteVariable& v ) {
     Sequence<const DiscreteVariable*> variables = this->variablesSequence();
     Idx pos = variables.pos( &v );  // throw a NotFound if necessary
 
@@ -103,10 +102,10 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimWithOffset<GUM_SCALAR>::changeNotification(
-      Instantiation& i,
+      Instantiation&                i,
       const DiscreteVariable* const var,
-      const Idx& oldval,
-      const Idx& newval ) {
+      const Idx&                    oldval,
+      const Idx&                    newval ) {
     GUM_ASSERT( _offsets.exists( &i ) );
     GUM_ASSERT( _offsets[&i] < this->domainSize() );
     GUM_ASSERT( newval < var->domainSize() );
@@ -171,8 +170,7 @@ namespace gum {
   // add a Instantiation as a slave
 
   template <typename GUM_SCALAR>
-  INLINE bool
-  MultiDimWithOffset<GUM_SCALAR>::registerSlave( Instantiation& i ) {
+  INLINE bool MultiDimWithOffset<GUM_SCALAR>::registerSlave( Instantiation& i ) {
     if ( MultiDimImplementation<GUM_SCALAR>::registerSlave( i ) ) {
       GUM_ASSERT( !_offsets.exists( &i ) );
       _offsets.insert( &i, _getOffs( i ) );
@@ -185,8 +183,7 @@ namespace gum {
   // remove a registered slave instantiation
 
   template <typename GUM_SCALAR>
-  INLINE bool
-  MultiDimWithOffset<GUM_SCALAR>::unregisterSlave( Instantiation& i ) {
+  INLINE bool MultiDimWithOffset<GUM_SCALAR>::unregisterSlave( Instantiation& i ) {
     MultiDimImplementation<GUM_SCALAR>::unregisterSlave( i );
     _offsets.erase( &i );
     return true;
@@ -231,7 +228,7 @@ namespace gum {
       Instantiation& result, Size indice ) const {
     for ( Idx i = 0; i < this->nbrDim(); ++i ) {
       const DiscreteVariable& var = this->variable( i );
-      Idx domainSize              = var.domainSize();
+      Idx                     domainSize = var.domainSize();
       result.chgVal( var, indice % domainSize );
       indice = indice / domainSize;
     }
@@ -265,7 +262,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE Instantiation&
   MultiDimWithOffset<GUM_SCALAR>::fromOffset( Instantiation& i,
-                                              Size offset ) const {
+                                              Size           offset ) const {
     this->_computeInstantiationValue( i, offset );
     return i;
   }

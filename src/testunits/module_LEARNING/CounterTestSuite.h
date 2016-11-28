@@ -33,7 +33,7 @@ namespace gum_tests {
     public:
     struct MyCounter : public gum::learning::Counter<> {
       template <typename RowFilter>
-      MyCounter( const RowFilter& filter,
+      MyCounter( const RowFilter&             filter,
                  const std::vector<gum::Idx>& var_modalities )
           : gum::learning::Counter<>( filter, var_modalities ) {}
 
@@ -49,8 +49,7 @@ namespace gum_tests {
         return gum::learning::Counter<>::_getCounts();
       }
 
-      const std::vector<gum::Idx>& getAllNodes( gum::Idx index ) const
-          noexcept {
+      const std::vector<gum::Idx>& getAllNodes( gum::Idx index ) const noexcept {
         return gum::learning::Counter<>::_getAllNodes( index );
       }
 
@@ -72,19 +71,18 @@ namespace gum_tests {
     };
 
     void test1() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities( 8, 2 );
 
@@ -128,7 +126,7 @@ namespace gum_tests {
       }
 
       counter.clear();
-      gum::Idx id               = counter.addNodeSet( 0, set4 );
+      gum::Idx            id = counter.addNodeSet( 0, set4 );
       std::vector<double> vectx = counter.getAllCounts( id );
       std::vector<double> vecty = counter.getConditioningCounts( id );
 
@@ -138,7 +136,7 @@ namespace gum_tests {
         std::vector<gum::Idx> set6{3, 1, 2};
         std::vector<gum::Idx> set7{3, 2, 1};
         std::vector<gum::Idx> set8{1, 3, 2};
-        gum::Idx id1 = counter.addNodeSet( 0, set4 );
+        gum::Idx              id1 = counter.addNodeSet( 0, set4 );
         counter.addEmptyNodeSet();
         gum::Idx id2 = counter.addNodeSet( 0, set5 );
         gum::Idx id3 = counter.addNodeSet( 0, set6 );
@@ -176,7 +174,7 @@ namespace gum_tests {
         std::vector<gum::Idx> set6{3, 1, 2};
         std::vector<gum::Idx> set7{3, 2, 1};
         std::vector<gum::Idx> set8{1, 3, 2};
-        gum::Idx id1 = counter.addNodeSet( 0, set4 );
+        gum::Idx              id1 = counter.addNodeSet( 0, set4 );
         counter.addEmptyNodeSet();
         gum::Idx id2 = counter.addNodeSet( 0, set5 );
         gum::Idx id3 = counter.addNodeSet( 0, set6 );
@@ -264,7 +262,7 @@ namespace gum_tests {
         std::vector<gum::Idx> set6{3, 1, 2};
         std::vector<gum::Idx> set7{3, 2, 1};
         std::vector<gum::Idx> set8{1, 3, 2};
-        gum::Idx id1 = counter.addNodeSet( 0, set4 );
+        gum::Idx              id1 = counter.addNodeSet( 0, set4 );
         counter.addEmptyNodeSet();
         gum::Idx id2 = counter.addNodeSet( 0, set5 );
         gum::Idx id3 = counter.addNodeSet( 0, set6 );
@@ -299,8 +297,8 @@ namespace gum_tests {
       }
     }
 
-    bool compare_vect3( const std::vector<double>& v1,
-                        const std::vector<double>& v2,
+    bool compare_vect3( const std::vector<double>&   v1,
+                        const std::vector<double>&   v2,
                         const std::vector<gum::Idx>& order ) {
       gum::Idx index1, index2;
       for ( gum::Idx k = 0; k < 2; ++k ) {
@@ -308,8 +306,7 @@ namespace gum_tests {
           for ( gum::Idx i = 0; i < 2; ++i ) {
             index2 = i + j * 2 + k * 4;
             index1 = i * ( 1 << ( order[0] - 1 ) ) +
-                     j * ( 1 << ( order[1] - 1 ) ) +
-                     k * ( 1 << ( order[2] - 1 ) );
+                     j * ( 1 << ( order[1] - 1 ) ) + k * ( 1 << ( order[2] - 1 ) );
             if ( v1[index1] != v2[index2] ) return false;
           }
         }
@@ -318,15 +315,14 @@ namespace gum_tests {
       return true;
     }
 
-    bool compare_vect2( const std::vector<double>& v1,
-                        const std::vector<double>& v2,
+    bool compare_vect2( const std::vector<double>&   v1,
+                        const std::vector<double>&   v2,
                         const std::vector<gum::Idx>& order ) {
       gum::Idx index1, index2;
       for ( gum::Idx j = 0; j < 2; ++j ) {
         for ( gum::Idx i = 0; i < 2; ++i ) {
           index2 = i + j * 2;
-          index1 =
-              i * ( 1 << ( order[0] - 1 ) ) + j * ( 1 << ( order[1] - 1 ) );
+          index1 = i * ( 1 << ( order[0] - 1 ) ) + j * ( 1 << ( order[1] - 1 ) );
           if ( v1[index1] != v2[index2] ) return false;
         }
       }

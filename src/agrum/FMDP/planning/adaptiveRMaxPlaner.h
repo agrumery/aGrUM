@@ -61,9 +61,9 @@ namespace gum {
     // ==========================================================================
     static AdaptiveRMaxPlaner*
     ReducedAndOrderedInstance( const ILearningStrategy* learner,
-                               double discountFactor = 0.9,
-                               double epsilon        = 0.00001,
-                               bool verbose          = true ) {
+                               double                   discountFactor = 0.9,
+                               double                   epsilon = 0.00001,
+                               bool                     verbose = true ) {
       return new AdaptiveRMaxPlaner( new MDDOperatorStrategy<double>(),
                                      discountFactor,
                                      epsilon,
@@ -76,8 +76,8 @@ namespace gum {
     // ==========================================================================
     static AdaptiveRMaxPlaner* TreeInstance( const ILearningStrategy* learner,
                                              double discountFactor = 0.9,
-                                             double epsilon        = 0.00001,
-                                             bool verbose          = true ) {
+                                             double epsilon = 0.00001,
+                                             bool   verbose = true ) {
       return new AdaptiveRMaxPlaner( new TreeOperatorStrategy<double>(),
                                      discountFactor,
                                      epsilon,
@@ -96,10 +96,10 @@ namespace gum {
     /// Default constructor
     // ==========================================================================
     AdaptiveRMaxPlaner( IOperatorStrategy<double>* opi,
-                        double discountFactor,
-                        double epsilon,
-                        const ILearningStrategy* learner,
-                        bool verbose );
+                        double                     discountFactor,
+                        double                     epsilon,
+                        const ILearningStrategy*   learner,
+                        bool                       verbose );
 
     // ==========================================================================
     /// Default destructor
@@ -206,7 +206,7 @@ namespace gum {
 
     private:
     HashTable<Idx, StatesCounter*> __counterTable;
-    HashTable<Idx, bool> __initializedTable;
+    HashTable<Idx, bool>           __initializedTable;
 
     bool __initialized;
     /// @}

@@ -105,9 +105,7 @@ namespace gum {
       /// @{
 
       /// transforms a vector of DBrows into a vector of compact int DBRows */
-      template <typename DBHandler,
-                typename TranslatorSet,
-                typename GeneratorSet>
+      template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
       bool transform(
           DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter ) const;
 

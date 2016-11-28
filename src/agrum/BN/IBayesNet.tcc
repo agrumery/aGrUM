@@ -154,7 +154,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE std::string IBayesNet<GUM_SCALAR>::toString( void ) const {
-    Size param   = 0;
+    Size   param = 0;
     double dSize = log10DomainSize();
 
     for ( auto node : nodes() )
@@ -202,9 +202,8 @@ namespace gum {
            << std::endl;
 
     for ( auto node : nodes() )
-      output << "\"" << variable( node ).name() << "\" [comment=\"" << node
-             << ":" << variable( node ).toStringWithDescription() << "\"];"
-             << std::endl;
+      output << "\"" << variable( node ).name() << "\" [comment=\"" << node << ":"
+             << variable( node ).toStringWithDescription() << "\"];" << std::endl;
 
     output << std::endl;
 
@@ -327,7 +326,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE std::ostream& operator<<( std::ostream& output,
+  INLINE std::ostream& operator<<( std::ostream&                output,
                                    const IBayesNet<GUM_SCALAR>& bn ) {
     output << bn.toString();
     return output;

@@ -160,7 +160,7 @@ namespace gum {
       if ( __varNameMap.exists( name ) )
         GUM_ERROR( DuplicateElement, "Name already used: " + name );
 
-      __foo_flag     = true;
+      __foo_flag = true;
       __stringBag[0] = name;
       //         VERBOSITY ( "  -- variable " << name );
     }
@@ -176,7 +176,7 @@ namespace gum {
     if ( state() != FMDPfactory_state::VARIABLE )
       __illegalStateError( "variableDescription" );
     else {
-      __bar_flag     = true;
+      __bar_flag = true;
       __stringBag[1] = desc;
     }
   }
@@ -343,12 +343,12 @@ namespace gum {
   // Tells the factory to add an action
 
   template <typename GUM_SCALAR>
-  INLINE void FMDPFactory<GUM_SCALAR>::addTransition(
-      const std::string& var, const MultiDimAdressable* transition ) {
+  INLINE void
+  FMDPFactory<GUM_SCALAR>::addTransition( const std::string&        var,
+                                          const MultiDimAdressable* transition ) {
 
     const MultiDimImplementation<GUM_SCALAR>* t =
-        reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>(
-            transition );
+        reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>( transition );
 
     if ( state() != FMDPfactory_state::TRANSITION )
       __illegalStateError( "addTransition" );
@@ -429,8 +429,7 @@ namespace gum {
   // Tells the factory to add a cost
 
   template <typename GUM_SCALAR>
-  INLINE void
-  FMDPFactory<GUM_SCALAR>::addCost( const MultiDimAdressable* cost ) {
+  INLINE void FMDPFactory<GUM_SCALAR>::addCost( const MultiDimAdressable* cost ) {
 
     const MultiDimImplementation<GUM_SCALAR>* c =
         reinterpret_cast<const MultiDimImplementation<GUM_SCALAR>*>( cost );
@@ -594,8 +593,8 @@ namespace gum {
 
           if ( temp != nullptr ) delete temp;
         }
-        reinterpret_cast<MultiDimFunctionGraph<GUM_SCALAR>*>( res )
-            ->setTableName( "Reward" );
+        reinterpret_cast<MultiDimFunctionGraph<GUM_SCALAR>*>( res )->setTableName(
+            "Reward" );
         __fmdp->addReward( res );
       }
 
@@ -670,8 +669,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE NodeId
   FMDPFactory<GUM_SCALAR>::addInternalNode( std::string name_of_var ) {
-    return __FunctionGraph->manager()->addInternalNode(
-        variable( name_of_var ) );
+    return __FunctionGraph->manager()->addInternalNode( variable( name_of_var ) );
   }
 
 

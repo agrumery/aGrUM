@@ -43,8 +43,9 @@ namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
   GibbsInference<GUM_SCALAR>::GibbsInference( const IBayesNet<GUM_SCALAR>* BN )
-      : ApproximationScheme(), MarginalTargetedInference<GUM_SCALAR>( BN ),
-        samplers::GibbsSampler<GUM_SCALAR>( *BN ) {
+      : ApproximationScheme()
+      , MarginalTargetedInference<GUM_SCALAR>( BN )
+      , samplers::GibbsSampler<GUM_SCALAR>( *BN ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( GibbsInference );
 
@@ -93,7 +94,7 @@ namespace gum {
   */
   template <typename GUM_SCALAR>
   INLINE double GibbsInference<GUM_SCALAR>::__updateStats_with_err( Size nb ) {
-    Size nbr = nb + 1;  // we compute the new iteration
+    Size   nbr = nb + 1;  // we compute the new iteration
     double sum_entropy = 0;
 
     for ( auto& elt : __sampling_nbr ) {
@@ -118,9 +119,9 @@ namespace gum {
     }
   }
 
-  INLINE void add_and_instancie( Instantiation& I,
+  INLINE void add_and_instancie( Instantiation&          I,
                                  const DiscreteVariable& v,
-                                 const Instantiation& __current_sample ) {
+                                 const Instantiation&    __current_sample ) {
     try {
       I << v;
       I.chgVal( v, __current_sample.val( v ) );
@@ -168,7 +169,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   GibbsInference<GUM_SCALAR>::_onEvidenceErased( const NodeId id,
-                                                 bool isHardEvidence ) {
+                                                 bool         isHardEvidence ) {
     if ( isHardEvidence ) {
       eraseHardEvidenceSampler( id );
     }

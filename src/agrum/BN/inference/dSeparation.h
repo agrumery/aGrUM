@@ -85,19 +85,19 @@ namespace gum {
      * Requisite nodes are those that are d-connected to at least one of the
      * query nodes given a set of hard and soft evidence
      */
-    void requisiteNodes( const DAG& dag,
+    void requisiteNodes( const DAG&     dag,
                          const NodeSet& query,
                          const NodeSet& hardEvidence,
                          const NodeSet& softEvidence,
-                         NodeSet& requisite );
+                         NodeSet&       requisite );
 
     /** @brief update a set of potentials, keeping only those d-connected with
      * query variables given evidence */
     template <typename GUM_SCALAR, template <typename> class TABLE>
-    void relevantPotentials( const IBayesNet<GUM_SCALAR>& bn,
-                             const NodeSet& query,
-                             const NodeSet& hardEvidence,
-                             const NodeSet& softEvidence,
+    void relevantPotentials( const IBayesNet<GUM_SCALAR>&   bn,
+                             const NodeSet&                 query,
+                             const NodeSet&                 hardEvidence,
+                             const NodeSet&                 softEvidence,
                              Set<const TABLE<GUM_SCALAR>*>& potentials );
 
     /// @}

@@ -50,14 +50,14 @@ namespace gum {
     pere = 0;
 
     if ( from.fg ) {
-      fg       = new SplayBinaryNode<Element>( *from.fg, addr );
+      fg = new SplayBinaryNode<Element>( *from.fg, addr );
       fg->pere = this;
     } else {
       fg = 0;
     }
 
     if ( from.fd ) {
-      fd       = new SplayBinaryNode<Element>( *from.fd, addr );
+      fd = new SplayBinaryNode<Element>( *from.fd, addr );
       fd->pere = this;
     } else {
       fd = 0;
@@ -327,8 +327,7 @@ namespace gum {
    */
 
   template <class Element>
-  INLINE const SplayBinaryNode<Element>*
-  SplayBinaryNode<Element>::getFg() const {
+  INLINE const SplayBinaryNode<Element>* SplayBinaryNode<Element>::getFg() const {
     return fg;
   }
 
@@ -338,8 +337,7 @@ namespace gum {
    */
 
   template <class Element>
-  INLINE const SplayBinaryNode<Element>*
-  SplayBinaryNode<Element>::getFd() const {
+  INLINE const SplayBinaryNode<Element>* SplayBinaryNode<Element>::getFd() const {
     return fd;
   }
 
@@ -439,8 +437,8 @@ namespace gum {
       // The element exists
       // Find it
       SplayBinaryNode<Element>* act = root;
-      int pos_act                   = val - 1;
-      bool next                     = true;
+      int                       pos_act = val - 1;
+      bool                      next = true;
 
       while ( next ) {
         if ( !act->fg )
@@ -476,8 +474,8 @@ namespace gum {
       // The element exists
       // Find it
       SplayBinaryNode<Element>* act = root;
-      int pos_act                   = val - 1;
-      bool next                     = true;
+      int                       pos_act = val - 1;
+      bool                      next = true;
 
       while ( next ) {
         if ( !act->fg )
@@ -697,7 +695,7 @@ namespace gum {
     } else {
       // We will find the node at position i
       SplayBinaryNode<Element>* act = root;
-      int pos                       = root->position();
+      int                       pos = root->position();
 
       while ( pos != i ) {
         GUM_ASSERT( act != 0 );
@@ -743,8 +741,7 @@ namespace gum {
   // Split the tree at the element
 
   template <typename Element>
-  INLINE SplayTree<Element>
-  SplayTree<Element>::split_by_val( const Element& e ) {
+  INLINE SplayTree<Element> SplayTree<Element>::split_by_val( const Element& e ) {
     GUM_ASSERT( root != 0 );
 
     if ( !addr.exists( e ) ) {
@@ -803,7 +800,7 @@ namespace gum {
   // Display the node
 
   template <typename Element>
-  std::ostream& operator<<( std::ostream& out,
+  std::ostream& operator<<( std::ostream&                   out,
                             const SplayBinaryNode<Element>& e ) {
     if ( e.fg ) out << *e.fg << ",";
 
@@ -817,7 +814,7 @@ namespace gum {
   // Display the tree
 
   template <typename Element>
-  INLINE std::ostream& operator<<( std::ostream& out,
+  INLINE std::ostream& operator<<( std::ostream&             out,
                                    const SplayTree<Element>& s ) {
     out << "|[";
 

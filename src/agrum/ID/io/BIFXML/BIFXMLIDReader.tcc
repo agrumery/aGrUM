@@ -36,7 +36,7 @@ namespace gum {
       InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath )
       : IDReader<GUM_SCALAR>( infdiag, filePath ) {
     GUM_CONSTRUCTOR( BIFXMLIDReader );
-    __infdiag  = infdiag;
+    __infdiag = infdiag;
     __filePath = filePath;
   }
 
@@ -65,9 +65,8 @@ namespace gum {
       xmlDoc.LoadFile();
 
       if ( xmlDoc.NoChildren() ) {
-        GUM_ERROR(
-            IOError,
-            ": Loading fail, please check the file for any syntax error." );
+        GUM_ERROR( IOError,
+                   ": Loading fail, please check the file for any syntax error." );
       }
 
       // Finding BIF element
@@ -80,8 +79,7 @@ namespace gum {
       status = "BIF Element reached. Now searching network ...";
       GUM_EMIT2( onProceed, 7, status );
 
-      ticpp::Element* networkElement =
-          bifElement->FirstChildElement( "NETWORK" );
+      ticpp::Element* networkElement = bifElement->FirstChildElement( "NETWORK" );
 
       // Finding id variables
       status = "Network found. Now proceeding variables instanciation...";
@@ -104,10 +102,10 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void BIFXMLIDReader<GUM_SCALAR>::__parsingVariables(
-      ticpp::Element* parentNetwork ) {
+  void
+  BIFXMLIDReader<GUM_SCALAR>::__parsingVariables( ticpp::Element* parentNetwork ) {
     // Counting the number of variable for the signal
-    int nbVar = 0;
+    int                             nbVar = 0;
     ticpp::Iterator<ticpp::Element> varIte( "VARIABLE" );
 
     for ( varIte = varIte.begin( parentNetwork ); varIte != varIte.end();
@@ -123,7 +121,7 @@ namespace gum {
 
       // Getting variable name
       ticpp::Element* varNameElement = currentVar->FirstChildElement( "NAME" );
-      std::string varName            = varNameElement->GetTextOrDefault( "" );
+      std::string     varName = varNameElement->GetTextOrDefault( "" );
 
       // Getting variable description
       ticpp::Element* varDescrElement =
@@ -162,10 +160,10 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void BIFXMLIDReader<GUM_SCALAR>::__fillingDiagram(
-      ticpp::Element* parentNetwork ) {
+  void
+  BIFXMLIDReader<GUM_SCALAR>::__fillingDiagram( ticpp::Element* parentNetwork ) {
     // Counting the number of variable for the signal
-    int nbDef = 0;
+    int                             nbDef = 0;
     ticpp::Iterator<ticpp::Element> definitionIte( "DEFINITION" );
 
     for ( definitionIte = definitionIte.begin( parentNetwork );
@@ -188,12 +186,12 @@ namespace gum {
 
       // Get Node's parents
       ticpp::Iterator<ticpp::Element> givenIte( "GIVEN" );
-      List<NodeId> parentList;
+      List<NodeId>                    parentList;
 
       for ( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end();
             ++givenIte ) {
         std::string parentNode = givenIte->GetTextOrDefault( "" );
-        NodeId parentId        = __infdiag->idFromName( parentNode );
+        NodeId      parentId = __infdiag->idFromName( parentNode );
         parentList.pushBack( parentId );
       }
 
@@ -204,19 +202,17 @@ namespace gum {
 
       // Recuperating tables values
       if ( !__infdiag->isDecisionNode( currentVarId ) ) {
-        ticpp::Element* tableElement = currentVar->FirstChildElement( "TABLE" );
-        std::istringstream issTableString(
-            tableElement->GetTextOrDefault( "" ) );
+        ticpp::Element*    tableElement = currentVar->FirstChildElement( "TABLE" );
+        std::istringstream issTableString( tableElement->GetTextOrDefault( "" ) );
         std::list<GUM_SCALAR> tablelist;
-        GUM_SCALAR value;
+        GUM_SCALAR            value;
 
         while ( !issTableString.eof() ) {
           issTableString >> value;
           tablelist.push_back( value );
         }
 
-        std::vector<GUM_SCALAR> tablevector( tablelist.begin(),
-                                             tablelist.end() );
+        std::vector<GUM_SCALAR> tablevector( tablelist.begin(), tablelist.end() );
 
         // Filling tables
         if ( __infdiag->isChanceNode( currentVarId ) ) {

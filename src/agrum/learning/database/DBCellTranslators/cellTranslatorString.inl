@@ -30,8 +30,7 @@ namespace gum {
 
     /// copy constructor
     INLINE
-    CellTranslatorString::CellTranslatorString(
-        const CellTranslatorString& from )
+    CellTranslatorString::CellTranslatorString( const CellTranslatorString& from )
         : DBCellTranslator<1, 1>( from )
         , __max_value( from.__max_value )
         , __strings( from.__strings )
@@ -71,8 +70,8 @@ namespace gum {
     operator=( const CellTranslatorString& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( from );
-        __max_value      = from.__max_value;
-        __strings        = from.__strings;
+        __max_value = from.__max_value;
+        __strings = from.__strings;
         __check_database = from.__check_database;
         if ( __user_values ) {
           delete __user_values;
@@ -90,8 +89,8 @@ namespace gum {
     operator=( CellTranslatorString&& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( std::move( from ) );
-        __max_value      = std::move( from.__max_value );
-        __strings        = std::move( from.__strings );
+        __max_value = std::move( from.__max_value );
+        __strings = std::move( from.__strings );
         __check_database = from.__check_database;
         if ( __user_values ) {
           delete __user_values;
@@ -120,8 +119,7 @@ namespace gum {
     }
 
     /// add the number of modalities discovered in the database into a vector
-    INLINE void
-    CellTranslatorString::modalities( std::vector<Size>& modal ) const
+    INLINE void CellTranslatorString::modalities( std::vector<Size>& modal ) const
         noexcept {
       modal.push_back( __max_value );
     }
@@ -142,7 +140,7 @@ namespace gum {
     /// returns the name of the variable(s) the translator has processed
     INLINE void CellTranslatorString::variableNames(
         const std::vector<std::string>& db_var,
-        std::vector<std::string>& output_vars ) const {
+        std::vector<std::string>&       output_vars ) const {
       output_vars.push_back( db_var[_input_cols[0]] );
     }
 

@@ -68,9 +68,7 @@ namespace gum {
     * @param maxArcs The number of maximum arcs imposed on the generator.
     * @param maxModality Each DRV has from 2 to maxModality modalities
     */
-    SimpleBayesNetGenerator( Size nbrNodes,
-                             Size maxArcs,
-                             Size maxModality = 2 );
+    SimpleBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
 
     /**
      * Destructor.

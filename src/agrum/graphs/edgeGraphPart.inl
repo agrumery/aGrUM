@@ -41,8 +41,7 @@ namespace gum {
 
   INLINE bool EdgeGraphPart::existsEdge( const NodeId first,
                                          const NodeId second ) const {
-    return __neighbours.exists( first ) &&
-           __neighbours[first]->exists( second );
+    return __neighbours.exists( first ) && __neighbours[first]->exists( second );
   }
 
   INLINE void EdgeGraphPart::__checkNeighbours( const NodeId id ) const {
@@ -51,8 +50,7 @@ namespace gum {
     }
   }
 
-  INLINE void EdgeGraphPart::addEdge( const NodeId first,
-                                      const NodeId second ) {
+  INLINE void EdgeGraphPart::addEdge( const NodeId first, const NodeId second ) {
     Edge edge( first, second );
     __edges.insert( edge );
     __checkNeighbours( first );

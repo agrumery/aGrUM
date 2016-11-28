@@ -42,20 +42,19 @@ namespace gum {
     }
 
     // returns the modalities of the variables
-    INLINE std::vector<Size>&
-    genericBNLearner::Database::modalities() noexcept {
+    INLINE std::vector<Size>& genericBNLearner::Database::modalities() noexcept {
       return __modalities;
     }
 
     // returns the names of the variables in the database
     INLINE const std::vector<std::string>&
-    genericBNLearner::Database::names() const noexcept {
+                 genericBNLearner::Database::names() const noexcept {
       return __database.variableNames();
     }
 
     // returns the node id corresponding to a variable name
-    INLINE NodeId genericBNLearner::Database::idFromName(
-        const std::string& var_name ) const {
+    INLINE NodeId
+    genericBNLearner::Database::idFromName( const std::string& var_name ) const {
       try {
         return __name2nodeId.second( const_cast<std::string&>( var_name ) );
       } catch ( gum::NotFound ) {
@@ -71,7 +70,7 @@ namespace gum {
 
     // returns the "raw" translators (needed for the aprioris)
     INLINE DBRowTranslatorSetDynamic<CellTranslatorUniversal>&
-    genericBNLearner::Database::rawTranslators() {
+           genericBNLearner::Database::rawTranslators() {
       return __raw_translators;
     }
 
@@ -135,8 +134,7 @@ namespace gum {
     }
 
     // indicate that we wish to use a K2 algorithm
-    INLINE void
-    genericBNLearner::useK2( const Sequence<NodeId>& order ) noexcept {
+    INLINE void genericBNLearner::useK2( const Sequence<NodeId>& order ) noexcept {
       __selected_algo = AlgoType::K2;
       __K2.setOrder( order );
     }
@@ -277,7 +275,7 @@ namespace gum {
     INLINE void
     genericBNLearner::useAprioriDirichlet( const std::string& filename ) {
       __apriori_dbname = filename;
-      __apriori_type   = AprioriType::DIRICHLET_FROM_DATABASE;
+      __apriori_type = AprioriType::DIRICHLET_FROM_DATABASE;
       __checkScoreAprioriCompatibility();
     }
 

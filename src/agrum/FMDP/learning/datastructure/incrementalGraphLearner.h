@@ -83,8 +83,8 @@ namespace gum {
      */
     // ==========================================================================
     IncrementalGraphLearner( MultiDimFunctionGraph<double>* target,
-                             Set<const DiscreteVariable*> attributesSet,
-                             const DiscreteVariable* learnVariable );
+                             Set<const DiscreteVariable*>   attributesSet,
+                             const DiscreteVariable*        learnVariable );
 
     // ==========================================================================
     /// Default destructor
@@ -134,8 +134,7 @@ namespace gum {
       __assumeValue( obs, Int2Type<isScalar>() );
     }
     void __assumeValue( const Observation* obs, Int2Type<true> ) {
-      if ( !_valueAssumed.exists( obs->reward() ) )
-        _valueAssumed << obs->reward();
+      if ( !_valueAssumed.exists( obs->reward() ) ) _valueAssumed << obs->reward();
     }
     void __assumeValue( const Observation* obs, Int2Type<false> ) {
       if ( !_valueAssumed.exists( obs->modality( _value ) ) )
@@ -151,12 +150,12 @@ namespace gum {
     Idx __branchObs( const Observation* obs, const DiscreteVariable* var ) {
       return __branchObs( obs, var, Int2Type<isScalar>() );
     }
-    Idx __branchObs( const Observation* obs,
+    Idx __branchObs( const Observation*      obs,
                      const DiscreteVariable* var,
                      Int2Type<true> ) {
       return obs->rModality( var );
     }
-    Idx __branchObs( const Observation* obs,
+    Idx __branchObs( const Observation*      obs,
                      const DiscreteVariable* var,
                      Int2Type<false> ) {
       return obs->modality( var );
@@ -172,7 +171,7 @@ namespace gum {
      */
     // ==========================================================================
     virtual void _updateNodeWithObservation( const Observation* newObs,
-                                             NodeId currentNodeId ) {
+                                             NodeId             currentNodeId ) {
       _nodeId2Database[currentNodeId]->addObservation( newObs );
     }
 
@@ -244,7 +243,7 @@ namespace gum {
     virtual NodeId
     _insertInternalNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
                          const DiscreteVariable* boundVar,
-                         NodeId* sonsMap );
+                         NodeId*                 sonsMap );
 
     // ==========================================================================
     /**
@@ -257,7 +256,7 @@ namespace gum {
     // ==========================================================================
     virtual NodeId
     _insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                     const DiscreteVariable* boundVar,
+                     const DiscreteVariable*  boundVar,
                      Set<const Observation*>* obsSet );
 
     // ==========================================================================
@@ -267,7 +266,7 @@ namespace gum {
      * @param desiredVar : its new associated variable
      */
     // ==========================================================================
-    virtual void _chgNodeBoundVar( NodeId chgedNodeId,
+    virtual void _chgNodeBoundVar( NodeId                  chgedNodeId,
                                    const DiscreteVariable* desiredVar );
 
     // ==========================================================================
@@ -314,9 +313,7 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    bool isTerminal( NodeId ni ) const {
-      return !this->_nodeSonsMap.exists( ni );
-    }
+    bool isTerminal( NodeId ni ) const { return !this->_nodeSonsMap.exists( ni ); }
 
     // ==========================================================================
     ///
@@ -408,7 +405,7 @@ namespace gum {
     Set<const DiscreteVariable*> _setOfVars;
 
     const DiscreteVariable* _value;
-    Sequence<ValueType> _valueAssumed;
+    Sequence<ValueType>     _valueAssumed;
 
     bool _needUpdate;
   };

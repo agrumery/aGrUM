@@ -64,10 +64,8 @@ namespace gum {
     }
 
     /// indicates whether a BDCell contains a missing value
-    bool
-    DBTransformUnifier::isMissing( const DBCell& cell,
-                                   const std::vector<std::string>& miss ) const
-        noexcept {
+    bool DBTransformUnifier::isMissing(
+        const DBCell& cell, const std::vector<std::string>& miss ) const noexcept {
       if ( cell.type() == DBCell::EltType::MISSING ) return true;
       if ( cell.type() == DBCell::EltType::STRING ) {
         for ( const auto& str : miss ) {
@@ -78,13 +76,13 @@ namespace gum {
     }
 
     /// transforms a vector of DBrows to unify the types of its columns
-    bool DBTransformUnifier::transform( std::vector<DBRow>& db,
+    bool DBTransformUnifier::transform( std::vector<DBRow>&      db,
                                         std::vector<std::string> miss ) const {
       if ( !db.size() ) return true;
 
       // transform each column
       bool conversion_ok = true;
-      Size cols          = db[0].size();
+      Size cols = db[0].size();
       for ( Idx i = 0; i < cols; ++i ) {
         // count all the observations to determine whether there exists
         // a type which appears much more frequently than the others
@@ -101,8 +99,7 @@ namespace gum {
         // get the type with the highest number of observations
         Idx pos = 0;
         for ( Idx j = 1; j < counts.size(); ++j ) {
-          if ( ( j != DBCell::EltType::MISSING ) &&
-               ( counts[j] > counts[pos] ) )
+          if ( ( j != DBCell::EltType::MISSING ) && ( counts[j] > counts[pos] ) )
             pos = j;
         }
         DBCell::EltType new_type = (DBCell::EltType)pos;

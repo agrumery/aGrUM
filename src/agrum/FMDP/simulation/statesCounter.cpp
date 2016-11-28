@@ -69,10 +69,10 @@ namespace gum {
     Idx nbVisits = __counter->get( state );
 
     NodeId parId = __counter->root();
-    Idx parModa  = state.valFromPtr( __counter->node( parId )->nodeVar() );
-    while ( !__counter->isTerminalNode(
-        __counter->node( parId )->son( parModa ) ) ) {
-      parId   = __counter->node( parId )->son( parModa );
+    Idx    parModa = state.valFromPtr( __counter->node( parId )->nodeVar() );
+    while (
+        !__counter->isTerminalNode( __counter->node( parId )->son( parModa ) ) ) {
+      parId = __counter->node( parId )->son( parModa );
       parModa = state.valFromPtr( __counter->node( parId )->nodeVar() );
     }
     __incState( state, parId, parModa, nbVisits );
@@ -83,21 +83,20 @@ namespace gum {
   //
   // =================================================================================================
   void StatesCounter::__incState( const Instantiation& state,
-                                  NodeId parentId,
-                                  Idx parentModa,
-                                  Size nbVisits ) {
+                                  NodeId               parentId,
+                                  Idx                  parentModa,
+                                  Size                 nbVisits ) {
 
     Idx varIter = 0;
     if ( parentId )
-      varIter = state.variablesSequence().pos(
-                    __counter->node( parentId )->nodeVar() ) +
-                1;
+      varIter =
+          state.variablesSequence().pos( __counter->node( parentId )->nodeVar() ) +
+          1;
 
 
     for ( ; varIter < state.variablesSequence().size(); ++varIter ) {
 
-      const DiscreteVariable* curVar =
-          state.variablesSequence().atPos( varIter );
+      const DiscreteVariable* curVar = state.variablesSequence().atPos( varIter );
       NodeId varId = __counter->manager()->addInternalNode( curVar );
       if ( parentId )
         __counter->manager()->setSon( parentId, parentModa, varId );

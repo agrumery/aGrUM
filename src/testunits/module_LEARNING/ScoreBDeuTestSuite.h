@@ -34,25 +34,24 @@ namespace gum_tests {
   class ScoreBDeuTestSuite : public CxxTest::TestSuite {
     public:
     void test_BDeu() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriNoApriori<> apriori;
       gum::learning::AprioriSmoothing<> apriori2;
-      gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
+      gum::learning::ScoreBDeu<>        score( filter, modalities, apriori );
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           gum::learning::ScoreBDeu<>::isAprioriCompatible(
@@ -118,17 +117,16 @@ namespace gum_tests {
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto translators = gum::learning::make_translators(
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      auto                           translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
-      std::vector<gum::Idx> modalities = filter.modalities();
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
+      std::vector<gum::Idx>             modalities = filter.modalities();
       gum::learning::AprioriSmoothing<> apriori;
       apriori.setWeight( 0 );
       gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
@@ -150,19 +148,18 @@ namespace gum_tests {
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto translators = gum::learning::make_translators(
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      auto                           translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
-      std::vector<gum::Idx> modalities = filter.modalities();
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
+      std::vector<gum::Idx>             modalities = filter.modalities();
       gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::ScoreBDeu<> score( filter, modalities, apriori );
+      gum::learning::ScoreBDeu<>        score( filter, modalities, apriori );
       score.setEffectiveSampleSize( 2 );
       // score.useCache ( false );
 

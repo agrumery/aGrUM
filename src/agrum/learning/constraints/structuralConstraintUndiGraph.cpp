@@ -41,8 +41,7 @@ namespace gum {
     }
 
     /// constructor starting with an empty graph with a given number of nodes
-    StructuralConstraintUndiGraph::StructuralConstraintUndiGraph(
-        Size nb_nodes ) {
+    StructuralConstraintUndiGraph::StructuralConstraintUndiGraph( Size nb_nodes ) {
       setGraph( nb_nodes );
       GUM_CONSTRUCTOR( StructuralConstraintUndiGraph );
     }

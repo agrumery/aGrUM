@@ -39,7 +39,7 @@ bool Visitor::VisitExit( const TiXmlDocument& doc ) {
   return VisitEnter( Document( const_cast<TiXmlDocument*>( &doc ) ) );
 }
 
-bool Visitor::VisitEnter( const TiXmlElement& element,
+bool Visitor::VisitEnter( const TiXmlElement&   element,
                           const TiXmlAttribute* firstAttribute ) {
   if ( 0 != firstAttribute ) {
     Attribute attribute( const_cast<TiXmlAttribute*>( firstAttribute ) );
@@ -71,9 +71,7 @@ bool Visitor::Visit( const TiXmlComment& comment ) {
   return Visit( Comment( const_cast<TiXmlComment*>( &comment ) ) );
 }
 
-bool Visitor::Visit( const TiXmlUnknown& x ) {
-  return TiXmlVisitor::Visit( x );
-}
+bool Visitor::Visit( const TiXmlUnknown& x ) { return TiXmlVisitor::Visit( x ); }
 
 Attribute::Attribute() {
   SetTiXmlPointer( new TiXmlAttribute() );
@@ -165,8 +163,7 @@ void Attribute::IterateNext( const std::string&, Attribute** next ) const {
   *next = Next( false );
 }
 
-void Attribute::IteratePrevious( const std::string&,
-                                 Attribute** previous ) const {
+void Attribute::IteratePrevious( const std::string&, Attribute** previous ) const {
   *previous = Previous( false );
 }
 
@@ -183,8 +180,8 @@ void Attribute::SetTiXmlPointer( TiXmlAttribute* newPointer ) {
 //*****************************************************************************
 
 Node* Node::NodeFactory( TiXmlNode* tiXmlNode,
-                         bool throwIfNull,
-                         bool rememberSpawnedWrapper ) const {
+                         bool       throwIfNull,
+                         bool       rememberSpawnedWrapper ) const {
   if ( 0 == tiXmlNode ) {
     if ( throwIfNull ) {
       TICPPTHROW( "tiXmlNode is nullptr" )
@@ -249,8 +246,7 @@ Node* Node::FirstChild( bool throwIfNoChildren ) const {
   return FirstChild( "", throwIfNoChildren );
 }
 
-Node* Node::FirstChild( const std::string& value,
-                        bool throwIfNoChildren ) const {
+Node* Node::FirstChild( const std::string& value, bool throwIfNoChildren ) const {
   return FirstChild( value.c_str(), throwIfNoChildren );
 }
 
@@ -274,8 +270,7 @@ Node* Node::LastChild( bool throwIfNoChildren ) const {
   return LastChild( "", throwIfNoChildren );
 }
 
-Node* Node::LastChild( const std::string& value,
-                       bool throwIfNoChildren ) const {
+Node* Node::LastChild( const std::string& value, bool throwIfNoChildren ) const {
   return LastChild( value.c_str(), throwIfNoChildren );
 }
 
@@ -313,8 +308,8 @@ Node* Node::IterateChildren( const std::string& value, Node* previous ) const {
   if ( 0 == previous ) {
     pointer = GetTiXmlPointer()->IterateChildren( value, 0 );
   } else {
-    pointer = GetTiXmlPointer()->IterateChildren( value,
-                                                  previous->GetTiXmlPointer() );
+    pointer =
+        GetTiXmlPointer()->IterateChildren( value, previous->GetTiXmlPointer() );
   }
 
   return NodeFactory( pointer, false );
@@ -418,7 +413,7 @@ Node* Node::PreviousSibling( bool throwIfNoSiblings ) const {
 }
 
 Node* Node::PreviousSibling( const std::string& value,
-                             bool throwIfNoSiblings ) const {
+                             bool               throwIfNoSiblings ) const {
   return PreviousSibling( value.c_str(), throwIfNoSiblings );
 }
 
@@ -445,8 +440,7 @@ Node* Node::NextSibling( bool throwIfNoSiblings ) const {
   return NextSibling( "", throwIfNoSiblings );
 }
 
-Node* Node::NextSibling( const std::string& value,
-                         bool throwIfNoSiblings ) const {
+Node* Node::NextSibling( const std::string& value, bool throwIfNoSiblings ) const {
   return NextSibling( value.c_str(), throwIfNoSiblings );
 }
 
@@ -474,12 +468,12 @@ Element* Node::NextSiblingElement( bool throwIfNoSiblings ) const {
 }
 
 Element* Node::NextSiblingElement( const std::string& value,
-                                   bool throwIfNoSiblings ) const {
+                                   bool               throwIfNoSiblings ) const {
   return NextSiblingElement( value.c_str(), throwIfNoSiblings );
 }
 
 Element* Node::NextSiblingElement( const char* value,
-                                   bool throwIfNoSiblings ) const {
+                                   bool        throwIfNoSiblings ) const {
   TiXmlElement* sibling;
 
   if ( 0 == strlen( value ) ) {
@@ -511,12 +505,12 @@ Element* Node::FirstChildElement( bool throwIfNoChildren ) const {
 }
 
 Element* Node::FirstChildElement( const std::string& value,
-                                  bool throwIfNoChildren ) const {
+                                  bool               throwIfNoChildren ) const {
   return FirstChildElement( value.c_str(), throwIfNoChildren );
 }
 
 Element* Node::FirstChildElement( const char* value,
-                                  bool throwIfNoChildren ) const {
+                                  bool        throwIfNoChildren ) const {
   TiXmlElement* element;
 
   if ( 0 == strlen( value ) ) {
@@ -527,11 +521,10 @@ Element* Node::FirstChildElement( const char* value,
 
   if ( 0 == element ) {
     if ( throwIfNoChildren ) {
-      TICPPTHROW( "Element ("
-                  << Value()
-                  << ") does NOT contain a child with the value of '"
-                  << value
-                  << "'" )
+      TICPPTHROW( "Element (" << Value()
+                              << ") does NOT contain a child with the value of '"
+                              << value
+                              << "'" )
     } else {
       return 0;
     }
@@ -550,8 +543,7 @@ Document* Node::GetDocument( bool throwIfNoDocument ) const {
 
   if ( 0 == doc ) {
     if ( throwIfNoDocument ) {
-      TICPPTHROW( "This node (" << Value()
-                                << ") is not linked under a document" )
+      TICPPTHROW( "This node (" << Value() << ") is not linked under a document" )
     } else {
       return 0;
     }
@@ -744,8 +736,8 @@ void Document::SaveFile( const std::string& filename ) const {
 }
 
 void Document::Parse( const std::string& xml,
-                      bool throwIfParseError,
-                      TiXmlEncoding encoding ) {
+                      bool               throwIfParseError,
+                      TiXmlEncoding      encoding ) {
   m_tiXmlPointer->Parse( xml.c_str(), 0, encoding );
 
   if ( throwIfParseError && m_tiXmlPointer->Error() ) {
@@ -845,7 +837,7 @@ void Element::RemoveAttribute( const std::string& name ) {
 }
 
 bool Element::GetAttributeImp( const std::string& name,
-                               std::string* value ) const {
+                               std::string*       value ) const {
   ValidatePointer();
 
   // Get value from TinyXML, if the attribute exists
@@ -942,8 +934,7 @@ TiCppRC::TiCppRC() {
 void TiCppRC::DeleteSpawnedWrappers() {
   std::vector<Base*>::reverse_iterator wrapper;
 
-  for ( wrapper = m_spawnedWrappers.rbegin();
-        wrapper != m_spawnedWrappers.rend();
+  for ( wrapper = m_spawnedWrappers.rbegin(); wrapper != m_spawnedWrappers.rend();
         ++wrapper ) {
     delete *wrapper;
   }

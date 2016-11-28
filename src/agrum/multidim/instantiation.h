@@ -965,8 +965,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if m is not hte master of this
      * instantiation.
      */
-    void addWithMaster( const MultiDimAdressable* m,
-                        const DiscreteVariable& v );
+    void addWithMaster( const MultiDimAdressable* m, const DiscreteVariable& v );
 
     /**
      * @brief Call Instantiation::__erase(const DiscreteVariable&) by master.
@@ -976,8 +975,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if m is not the master of this
      * instantiation.
      */
-    void eraseWithMaster( const MultiDimAdressable* m,
-                          const DiscreteVariable& v );
+    void eraseWithMaster( const MultiDimAdressable* m, const DiscreteVariable& v );
 
     /// @}
     // =========================================================================

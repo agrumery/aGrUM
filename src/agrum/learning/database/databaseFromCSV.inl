@@ -55,8 +55,7 @@ namespace gum {
     }
 
     /// move constructor
-    INLINE DatabaseFromCSV& DatabaseFromCSV::
-    operator=( DatabaseFromCSV&& from ) {
+    INLINE DatabaseFromCSV& DatabaseFromCSV::operator=( DatabaseFromCSV&& from ) {
       DatabaseVectInRAM::operator=( std::move( from ) );
       return *this;
     }

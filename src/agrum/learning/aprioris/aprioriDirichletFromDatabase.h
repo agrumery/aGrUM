@@ -43,9 +43,8 @@ namespace gum {
      */
     template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
-    class AprioriDirichletFromDatabase
-        : public Apriori<IdSetAlloc, CountAlloc>,
-          private Counter<IdSetAlloc, CountAlloc> {
+    class AprioriDirichletFromDatabase : public Apriori<IdSetAlloc, CountAlloc>,
+                                         private Counter<IdSetAlloc, CountAlloc> {
       public:
       using type = AprioriDirichletType;
 
@@ -56,7 +55,7 @@ namespace gum {
 
       /// default constructor
       template <typename RowFilter>
-      AprioriDirichletFromDatabase( const RowFilter& filter,
+      AprioriDirichletFromDatabase( const RowFilter&         filter,
                                     const std::vector<Size>& var_modalities );
 
       /// virtual copy constructor
@@ -94,9 +93,8 @@ namespace gum {
           AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>&& from );
 
       /// prevent copy operator
-      AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>&
-      operator=( const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& ) =
-          delete;
+      AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& operator=(
+          const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& ) = delete;
     };
 
   } /* namespace learning */

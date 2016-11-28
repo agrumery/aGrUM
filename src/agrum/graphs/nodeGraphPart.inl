@@ -83,7 +83,7 @@ namespace gum {
   INLINE NodeGraphPartIterator& NodeGraphPartIterator::
   operator=( const NodeGraphPartIterator& it ) noexcept {
     _nodes = it._nodes;
-    _pos   = it._pos;
+    _pos = it._pos;
     _valid = it._valid;
     GUM_OP_CPY( NodeGraphPartIterator );
 
@@ -94,7 +94,7 @@ namespace gum {
   INLINE NodeGraphPartIterator& NodeGraphPartIterator::
   operator=( NodeGraphPartIterator&& it ) noexcept {
     _nodes = it._nodes;
-    _pos   = it._pos;
+    _pos = it._pos;
     _valid = it._valid;
     GUM_OP_MOV( NodeGraphPartIterator );
 
@@ -103,16 +103,16 @@ namespace gum {
 
   /// checks whether two iterators point toward the same node
   INLINE
-  bool NodeGraphPartIterator::
-  operator==( const NodeGraphPartIterator& it ) const noexcept {
+  bool NodeGraphPartIterator::operator==( const NodeGraphPartIterator& it ) const
+      noexcept {
     return ( ( _pos == it._pos ) && ( _valid == it._valid ) &&
              ( _nodes == it._nodes ) );
   }
 
   /// checks whether two iterators point toward different nodes
   INLINE
-  bool NodeGraphPartIterator::
-  operator!=( const NodeGraphPartIterator& it ) const noexcept {
+  bool NodeGraphPartIterator::operator!=( const NodeGraphPartIterator& it ) const
+      noexcept {
     return !( operator==( it ) );
   }
 
@@ -137,7 +137,7 @@ namespace gum {
     _pos = id;
 
     if ( _pos >= _nodes->bound() ) {
-      _pos   = _nodes->bound();
+      _pos = _nodes->bound();
       _valid = false;
     } else {
       _valid = _nodes->exists( _pos );
@@ -193,7 +193,7 @@ namespace gum {
     //  avoid self assignment
     if ( &it != this ) {
       NodeGraphPartIterator::operator=( it );
-      Listener::operator             =( it );
+      Listener::operator=( it );
       GUM_OP_CPY( NodeGraphPartIteratorSafe );
     }
 
@@ -206,7 +206,7 @@ namespace gum {
     //  avoid self assignment
     if ( &it != this ) {
       NodeGraphPartIterator::operator=( std::move( it ) );
-      Listener::operator             =( std::move( it ) );
+      Listener::operator=( std::move( it ) );
       GUM_OP_MOV( NodeGraphPartIteratorSafe );
     }
 
@@ -317,8 +317,7 @@ namespace gum {
     __endIteratorSafe._setPos( __boundVal );
   }
 
-  INLINE const NodeGraphPartIteratorSafe& NodeGraphPart::endSafe() const
-      noexcept {
+  INLINE const NodeGraphPartIteratorSafe& NodeGraphPart::endSafe() const noexcept {
     return __endIteratorSafe;
   }
 

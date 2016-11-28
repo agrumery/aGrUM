@@ -32,12 +32,12 @@ namespace gum {
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
-    INLINE Score<IdSetAlloc, CountAlloc>::Score(
-        const RowFilter& filter,
-        const std::vector<Size>& var_modalities,
-        Apriori<IdSetAlloc, CountAlloc>& apriori,
-        Size min_range,
-        Size max_range )
+    INLINE
+    Score<IdSetAlloc, CountAlloc>::Score( const RowFilter& filter,
+                                          const std::vector<Size>& var_modalities,
+                                          Apriori<IdSetAlloc, CountAlloc>& apriori,
+                                          Size min_range,
+                                          Size max_range )
         : Counter<IdSetAlloc, CountAlloc>(
               filter, var_modalities, min_range, max_range )
         , _apriori( &apriori ) {
@@ -113,8 +113,7 @@ namespace gum {
       __is_cached_score.push_back( false );
       __cached_score.push_back( 0 );
       __apriori_computed = false;
-      return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var,
-                                                          conditioning_ids );
+      return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var, conditioning_ids );
     }
 
     /// clears all the data structures from memory
@@ -129,17 +128,15 @@ namespace gum {
     /// indicates whether a score belongs to the cache
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE bool
-    Score<IdSetAlloc, CountAlloc>::_isInCache( Idx nodeset_index ) const
-        noexcept {
+    Score<IdSetAlloc, CountAlloc>::_isInCache( Idx nodeset_index ) const noexcept {
       return ( ( nodeset_index < __is_cached_score.size() ) &&
                __is_cached_score[nodeset_index] );
     }
 
     /// inserts a new score into the cache
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void
-    Score<IdSetAlloc, CountAlloc>::_insertIntoCache( Idx nodeset_index,
-                                                     double score ) {
+    INLINE void Score<IdSetAlloc, CountAlloc>::_insertIntoCache( Idx nodeset_index,
+                                                                 double score ) {
       const std::vector<Idx, IdSetAlloc>& all_nodes =
           _getAllNodes( nodeset_index );
       const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
@@ -175,8 +172,7 @@ namespace gum {
 
     /// turn on/off the use of a cache of the previously computed score
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void
-    Score<IdSetAlloc, CountAlloc>::useCache( bool on_off ) noexcept {
+    INLINE void Score<IdSetAlloc, CountAlloc>::useCache( bool on_off ) noexcept {
       if ( !on_off ) clear();
       __use_cache = on_off;
     }

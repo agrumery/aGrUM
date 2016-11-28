@@ -80,7 +80,7 @@ namespace gum {
        * However neither of their children or parents are updated (i.e.
        * DiscreteVariable pointers are inconsistent).
        */
-      PRMInstance<GUM_SCALAR>( const std::string& name,
+      PRMInstance<GUM_SCALAR>( const std::string&    name,
                                PRMClass<GUM_SCALAR>& type );
 
       /// Destructor.
@@ -311,8 +311,7 @@ namespace gum {
 
       /// Alias to iterate over the gum::prm::PRMAttribute<GUM_SCALAR> in this
       /// PRMInstance<GUM_SCALAR>.
-      typedef
-          typename NodeProperty<PRMAttribute<GUM_SCALAR>*>::iterator iterator;
+      typedef typename NodeProperty<PRMAttribute<GUM_SCALAR>*>::iterator iterator;
 
       /// Returns an iterator at the begining of the list of
       /// gum::prm::PRMAttribute<GUM_SCALAR> in
@@ -365,7 +364,7 @@ namespace gum {
         PRMInstance<GUM_SCALAR>* operator->() const;
 
         private:
-        Set<PRMInstance<GUM_SCALAR>*>& __set;
+        Set<PRMInstance<GUM_SCALAR>*>&                   __set;
         typename Set<PRMInstance<GUM_SCALAR>*>::iterator __iter;
       };
 
@@ -416,7 +415,7 @@ namespace gum {
         const PRMInstance<GUM_SCALAR>* operator->() const;
 
         private:
-        const Set<PRMInstance<GUM_SCALAR>*>& __set;
+        const Set<PRMInstance<GUM_SCALAR>*>&                   __set;
         typename Set<PRMInstance<GUM_SCALAR>*>::const_iterator __iter;
       };
 
@@ -440,17 +439,17 @@ namespace gum {
        */
       RefConstIterator begin( NodeId id ) const;
 
-      typedef typename NodeProperty<std::vector<
-          std::pair<PRMInstance<GUM_SCALAR>*, std::string>>*>::iterator
+      typedef typename NodeProperty<
+          std::vector<std::pair<PRMInstance<GUM_SCALAR>*, std::string>>*>::iterator
           InvRefIterator;
       typedef typename NodeProperty<std::vector<
           std::pair<PRMInstance<GUM_SCALAR>*, std::string>>*>::const_iterator
           InvRefConstIterator;
 
-      InvRefIterator beginInvRef();
+      InvRefIterator        beginInvRef();
       const InvRefIterator& endInvRef();
 
-      InvRefConstIterator beginInvRef() const;
+      InvRefConstIterator        beginInvRef() const;
       const InvRefConstIterator& endInvRef() const;
 
       /// @}
@@ -496,7 +495,7 @@ namespace gum {
       /// @param sc A slot chain pointing over an attribute in i.
       /// @param i An instance holding an attribute pointed by sc.
       void __addReferingInstance( PRMSlotChain<GUM_SCALAR>* sc,
-                                  PRMInstance<GUM_SCALAR>* i );
+                                  PRMInstance<GUM_SCALAR>*  i );
 
       /// @}
       // ========================================================================

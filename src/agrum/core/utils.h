@@ -118,8 +118,7 @@ namespace gum {
    * @param size Number of bytes to copy.
    * @return Returns true if OK.
    */
-  bool
-  Memcmp( const void* const _in, const void* const _out, unsigned long size );
+  bool Memcmp( const void* const _in, const void* const _out, unsigned long size );
 
   /**
    * @brief Used for debug purpose.

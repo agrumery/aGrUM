@@ -39,7 +39,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    PRMType<GUM_SCALAR>::PRMType( PRMType<GUM_SCALAR>& super_type,
+    PRMType<GUM_SCALAR>::PRMType( PRMType<GUM_SCALAR>&    super_type,
                                   const std::vector<Idx>& label_map,
                                   const DiscreteVariable& var )
         : PRMObject( var.name() )

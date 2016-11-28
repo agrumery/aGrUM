@@ -472,12 +472,10 @@ namespace gum {
     std::ostream& operator<<( std::ostream& stream, const ArcReversal& change );
 
     /// a \c << operator for EdgeAddition
-    std::ostream& operator<<( std::ostream& stream,
-                              const EdgeAddition& change );
+    std::ostream& operator<<( std::ostream& stream, const EdgeAddition& change );
 
     /// a \c << operator for EdgeDeletion
-    std::ostream& operator<<( std::ostream& stream,
-                              const EdgeDeletion& change );
+    std::ostream& operator<<( std::ostream& stream, const EdgeDeletion& change );
 
   } /* namespace learning */
 

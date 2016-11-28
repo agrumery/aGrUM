@@ -45,7 +45,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( gum::AVLSearchTree<int> tree2( *tree ) );
       gum::AVLSearchTree<int> tree3;
       gum::AVLSearchTree<int> tree4 = *tree;
-      tree3                         = tree4;
+      tree3 = tree4;
       TS_ASSERT( tree->size() == 5 );
 
       tree3 = *tree;
@@ -224,10 +224,10 @@ namespace gum_tests {
 
     void testRandomErase() {
       gum::AVLSearchTree<int> tree;
-      std::vector<gum::Idx> vect( 4000 );
+      std::vector<gum::Idx>   vect( 4000 );
 
       for ( gum::Idx i = 0; i < 4000; ++i )
-        vect[i]        = rand();
+        vect[i] = rand();
 
       for ( gum::Idx i = 0; i < 4000; ++i ) {
         tree.insert( i );

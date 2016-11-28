@@ -115,8 +115,8 @@ namespace gum {
   // Compares two ArgMaxSet to check if they are equals
   // ============================================================================
   template <typename GUM_SCALAR_VAL, typename GUM_SCALAR_SEQ>
-  bool ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>::operator==(
-      const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
+  bool ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>::
+  operator==( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
     if ( __val != compared.value() ) return false;
     for ( auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter )
       if ( !__argMaxSeq->exists( *iter ) ) return false;

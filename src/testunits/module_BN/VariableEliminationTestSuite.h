@@ -43,15 +43,15 @@ namespace gum_tests {
 
   class VariableElimination : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<float>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::BayesNet<float>*  bn;
+    gum::NodeId            i1, i2, i3, i4, i5;
     gum::Potential<float> *e_i1, *e_i4;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
-          n3( "3", "", 2 ), n4( "4", "", 2 ), n5( "5", "", 3 );
+      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 ),
+          n4( "4", "", 2 ), n5( "5", "", 3 );
 
       i1 = bn->add( n1 );
       i2 = bn->add( n2 );
@@ -112,7 +112,7 @@ namespace gum_tests {
 
         const gum::Potential<float>* posterior_1 = 0;
         TS_GUM_ASSERT_THROWS_NOTHING( posterior_1 = &( inf->posterior( i1 ) ) );
-        
+
         if ( posterior_1 != 0 ) printProba( *posterior_1 );
 
         const gum::Potential<float>* posterior_2 = 0;
@@ -189,13 +189,13 @@ namespace gum_tests {
       }
     }
 
-    
+
     // testing information methods
     void testInformationMethods() {
       fill( *bn );
 
       gum::VariableElimination<float> inf( bn );
-      gum::NodeSet nodeset;
+      gum::NodeSet                    nodeset;
       nodeset.insert( 0 );
       nodeset.insert( 4 );
       inf.addJointTarget( nodeset );
@@ -210,9 +210,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)2, (gum::NodeId)2 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( inf.VI( (gum::NodeId)2, (gum::NodeId)4 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)0, (gum::NodeId)4 ) );
-      
+
       for ( const auto node : bn->dag() ) {
-        for ( const auto par : bn->dag().parents ( node ) ) {
+        for ( const auto par : bn->dag().parents( node ) ) {
           TS_GUM_ASSERT_THROWS_NOTHING( inf.I( node, par ) );
           TS_GUM_ASSERT_THROWS_NOTHING( inf.I( par, node ) );
         }
@@ -221,13 +221,13 @@ namespace gum_tests {
       //@TODO : test computations and not only good behaviour
     }
 
-    
+
     // Testing when there is no evidence
     void testJoint() {
       fill( *bn );
       // Testing the inference
       gum::VariableElimination<float> inf( bn );
-      gum::NodeSet nodeset;
+      gum::NodeSet                    nodeset;
       nodeset.insert( 2 );
       nodeset.insert( 4 );
       inf.addJointTarget( nodeset );
@@ -240,7 +240,7 @@ namespace gum_tests {
       fill( *bn );
       // Testing the inference
       gum::VariableElimination<float> inf( bn );
-      gum::NodeSet nodeset;
+      gum::NodeSet                    nodeset;
       nodeset.insert( 1 );
       nodeset.insert( 2 );
       nodeset.insert( 3 );
@@ -257,20 +257,20 @@ namespace gum_tests {
     }
 
     void testAlarm() {
-      std::string file = GET_RESSOURCES_PATH( "alarm.bif" );
-      gum::BayesNet<float> alarm;
-      gum::BIFReader<float> reader(&alarm, file );
+      std::string           file = GET_RESSOURCES_PATH( "alarm.bif" );
+      gum::BayesNet<float>  alarm;
+      gum::BIFReader<float> reader( &alarm, file );
       reader.proceed();
-      gum::VariableElimination<float> ve(&alarm);
-      gum::ShaferShenoyInference<float> shafer(&alarm);
-      TS_ASSERT_THROWS_NOTHING(shafer.makeInference());
+      gum::VariableElimination<float>   ve( &alarm );
+      gum::ShaferShenoyInference<float> shafer( &alarm );
+      TS_ASSERT_THROWS_NOTHING( shafer.makeInference() );
       for ( const auto node : alarm.dag() ) {
         const gum::Potential<float>* pot_1 = nullptr;
-        TS_ASSERT_THROWS_NOTHING(pot_1 = &(ve.posterior(node)));
+        TS_ASSERT_THROWS_NOTHING( pot_1 = &( ve.posterior( node ) ) );
         const gum::Potential<float>* pot_2 = nullptr;
-        TS_ASSERT_THROWS_NOTHING(pot_2 = &(shafer.posterior(node)));
-        if ((*pot_1) != (*pot_2)) {
-          TS_ASSERT(false);
+        TS_ASSERT_THROWS_NOTHING( pot_2 = &( shafer.posterior( node ) ) );
+        if ( ( *pot_1 ) != ( *pot_2 ) ) {
+          TS_ASSERT( false );
         }
       }
     }
@@ -498,7 +498,8 @@ namespace gum_tests {
                               0.5f, 0.5f,
                               1.0f, 0.0f}  // clang-format on
                              );
-      bn.cpt( i5 ).fillWith( {// clang-format off
+      bn.cpt( i5 ).fillWith(
+          {// clang-format off
                 0.3f, 0.6f, 0.1f,
                 0.5f, 0.5f, 0.0f,
                 0.5f, 0.5f, 0.0f,

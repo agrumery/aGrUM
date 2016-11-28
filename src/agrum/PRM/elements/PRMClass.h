@@ -75,9 +75,9 @@ namespace gum {
        * @param super The super Class<GUM_SCALAR> of this.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMClass( const std::string& name,
+      PRMClass( const std::string&    name,
                 PRMClass<GUM_SCALAR>& super,
-                bool delayInheritance = false );
+                bool                  delayInheritance = false );
 
       /**
        * Constructor for building a Class<GUM_SCALAR> implementing several each
@@ -87,9 +87,9 @@ namespace gum {
        * @param set The Set of implemented interfaces.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMClass( const std::string& name,
+      PRMClass( const std::string&                    name,
                 const Set<PRMInterface<GUM_SCALAR>*>& set,
-                bool delayInheritance = false );
+                bool                                  delayInheritance = false );
 
       /**
        * Constructor for building a subclass of super and implementing each
@@ -99,10 +99,10 @@ namespace gum {
        * @param set The Set of implemented interfaces.
        * @param delayInheritance If true, inheritance will be delayed.
        */
-      PRMClass( const std::string& name,
-                PRMClass<GUM_SCALAR>& super,
+      PRMClass( const std::string&                    name,
+                PRMClass<GUM_SCALAR>&                 super,
                 const Set<PRMInterface<GUM_SCALAR>*>& set,
-                bool delayInheritance = false );
+                bool                                  delayInheritance = false );
 
       /// Copy constructor.
       PRMClass( const PRMClass<GUM_SCALAR>& source ) = delete;
@@ -407,14 +407,14 @@ namespace gum {
 
       /// Check that a given element respects a specific interface
       void __checkInterface( PRMClassElement<GUM_SCALAR>* elt,
-                             PRMInterface<GUM_SCALAR>* i );
+                             PRMInterface<GUM_SCALAR>*    i );
 
       /// Check that a given element respects all the class interfaces
       void __checkRefInterfaces( PRMReferenceSlot<GUM_SCALAR>* elt );
 
       /// Check that a given element respects a specific interface
       void __checkRefInterface( PRMReferenceSlot<GUM_SCALAR>* elt,
-                                PRMInterface<GUM_SCALAR>* i );
+                                PRMInterface<GUM_SCALAR>*     i );
 
       /// Check if elt is present in an implementation. If it is, its IO flags
       /// are updated.
@@ -440,7 +440,7 @@ namespace gum {
                                 PRMAttribute<GUM_SCALAR>* overloaded );
 
       /// Overloads an aggregate.
-      void __overloadAggregate( PRMAggregate<GUM_SCALAR>* overloader,
+      void __overloadAggregate( PRMAggregate<GUM_SCALAR>*    overloader,
                                 PRMClassElement<GUM_SCALAR>* overloaded );
 
       /// Overloads a reference slot.

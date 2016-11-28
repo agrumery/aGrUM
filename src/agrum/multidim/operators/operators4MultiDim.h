@@ -489,9 +489,8 @@ namespace gum {
    * function if it is appropriate for your division.
    */
   template <typename T>
-  MultiDimArray<T*>*
-  divide2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
-                                  const MultiDimArray<T*>* t2 );
+  MultiDimArray<T*>* divide2MultiDimArrays4Pointers( const MultiDimArray<T*>* t1,
+                                                     const MultiDimArray<T*>* t2 );
 
   /**
    * @brief a specialized function for dividing two multiDimArrays

@@ -33,15 +33,14 @@ namespace gum {
 
     /// learns the structure of a Bayes net
     template <typename GRAPH_CHANGES_SELECTOR>
-    DAG
-    LocalSearchWithTabuList::learnStructure( GRAPH_CHANGES_SELECTOR& selector,
-                                             const std::vector<Size>& modal,
-                                             DAG dag ) {
+    DAG LocalSearchWithTabuList::learnStructure( GRAPH_CHANGES_SELECTOR&  selector,
+                                                 const std::vector<Size>& modal,
+                                                 DAG                      dag ) {
       selector.setGraph( dag, modal );
 
-      Size nb_changes_applied;
-      Idx applied_change_with_positive_score;
-      Idx current_N = 0;
+      Size   nb_changes_applied;
+      Idx    applied_change_with_positive_score;
+      Idx    current_N = 0;
       double delta_score;
 
       initApproximationScheme();
@@ -51,8 +50,8 @@ namespace gum {
       std::vector<bool> impacted_queues( dag.size(), false );
 
       // the best dag found so far with its score
-      DAG best_dag         = dag;
-      double best_score    = 0;
+      DAG    best_dag = dag;
+      double best_score = 0;
       double current_score = 0;
 
       while ( current_N <= __MaxNbDecreasing ) {
@@ -60,7 +59,7 @@ namespace gum {
 
         do {
           nb_changes_applied = 0;
-          delta_score        = 0;
+          delta_score = 0;
 
           std::vector<std::pair<NodeId, double>> ordered_queues =
               selector.nodesSortedByBestScore();
@@ -86,7 +85,7 @@ namespace gum {
                       ++applied_change_with_positive_score;
                     } else if ( current_score > best_score ) {
                       best_score = current_score;
-                      best_dag   = dag;
+                      best_dag = dag;
                     }
 
                     delta_score += selector.bestScore( i );
@@ -106,7 +105,7 @@ namespace gum {
                       ++applied_change_with_positive_score;
                     } else if ( current_score > best_score ) {
                       best_score = current_score;
-                      best_dag   = dag;
+                      best_dag = dag;
                     }
 
                     delta_score += selector.bestScore( i );
@@ -127,7 +126,7 @@ namespace gum {
                       ++applied_change_with_positive_score;
                     } else if ( current_score > best_score ) {
                       best_score = current_score;
-                      best_dag   = dag;
+                      best_dag = dag;
                     }
 
                     delta_score += selector.bestScore( i );
@@ -153,8 +152,7 @@ namespace gum {
           selector.updateScoresAfterAppliedChanges();
 
           // reset the impacted queue and applied changes structures
-          for ( auto iter = impacted_queues.begin();
-                iter != impacted_queues.end();
+          for ( auto iter = impacted_queues.begin(); iter != impacted_queues.end();
                 ++iter ) {
             *iter = false;
           }
@@ -191,11 +189,11 @@ namespace gum {
               typename PARAM_ESTIMATOR,
               typename CELL_TRANSLATORS>
     BayesNet<GUM_SCALAR>
-    LocalSearchWithTabuList::learnBN( GRAPH_CHANGES_SELECTOR& selector,
-                                      PARAM_ESTIMATOR& estimator,
+    LocalSearchWithTabuList::learnBN( GRAPH_CHANGES_SELECTOR&         selector,
+                                      PARAM_ESTIMATOR&                estimator,
                                       const std::vector<std::string>& names,
-                                      const std::vector<Size>& modal,
-                                      const CELL_TRANSLATORS& translator,
+                                      const std::vector<Size>&        modal,
+                                      const CELL_TRANSLATORS&         translator,
                                       DAG initial_dag ) {
       return DAG2BNLearner::createBN<GUM_SCALAR,
                                      PARAM_ESTIMATOR,

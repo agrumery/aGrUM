@@ -36,7 +36,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ScoreK2<IdSetAlloc, CountAlloc>::ScoreK2(
-        const RowFilter& filter,
+        const RowFilter&         filter,
         const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         Size min_range,
@@ -91,19 +91,17 @@ namespace gum {
       }
 
       if ( weight == 0 ) {
-        GUM_ERROR(
-            PossiblyIncompatibleScoreApriori,
-            "The apriori is currently compatible with the K2 score but if "
-            "you change the weight, it will become incompatible" );
+        GUM_ERROR( PossiblyIncompatibleScoreApriori,
+                   "The apriori is currently compatible with the K2 score but if "
+                   "you change the weight, it will become incompatible" );
       }
 
       // known incompatible aprioris
       if ( ( apriori_type == AprioriDirichletType::type ) ||
            ( apriori_type == AprioriSmoothingType::type ) ) {
-        GUM_ERROR(
-            IncompatibleScoreApriori,
-            "The K2 score already contains a different 'implicit' apriori."
-            " Therefore, the learning will probably be meaningless." );
+        GUM_ERROR( IncompatibleScoreApriori,
+                   "The K2 score already contains a different 'implicit' apriori."
+                   " Therefore, the learning will probably be meaningless." );
       }
 
       // apriori types unsupported by the type checker
@@ -129,7 +127,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
-    ScoreK2<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
+                 ScoreK2<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
 
@@ -145,7 +143,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
       const Size targets_modal = Size( N_ijk.size() );
-      double score             = 0;
+      double     score = 0;
 
       // get the nodes involved in the score as well as their modalities
       const std::vector<Idx, IdSetAlloc>& all_nodes =
@@ -191,7 +189,7 @@ namespace gum {
 
           // put the first term: qi log {(ri - 1)!} into the score
           const double r_i = double( modalities[all_nodes.back()] );
-          score            = conditioning_modal * __gammalog2( r_i );
+          score = conditioning_modal * __gammalog2( r_i );
 
           for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + 1 );
@@ -223,23 +221,22 @@ namespace gum {
           // + sum_k=1^ri { gammlog2 ( N_i + N'_i + 1 ) - gammalog2 ( N'_i + 1 )
           // }
           const double r_i = double( modalities[all_nodes.back()] );
-          double N         = 0;
-          double N_prime   = 0;
+          double       N = 0;
+          double       N_prime = 0;
           for ( Idx k = 0; k < targets_modal; ++k ) {
             score += __gammalog2( N_ijk[k] + N_prime_ijk[k] + 1 ) -
                      __gammalog2( N_prime_ijk[k] + 1 );
             N += N_ijk[k];
             N_prime += N_prime_ijk[k];
           }
-          score +=
-              __gammalog2( N_prime + r_i ) - __gammalog2( N + N_prime + r_i );
+          score += __gammalog2( N_prime + r_i ) - __gammalog2( N + N_prime + r_i );
         } else {
           // the K2 score can be computed as follows:
           // log {(ri - 1)!} - log {(N + ri-1)!} + sum_k=1^ri log { N_ijk! } ]
 
           // put the first term: log {(ri - 1)!} into the score
           const double r_i = double( modalities[all_nodes.back()] );
-          score            = __gammalog2( r_i );
+          score = __gammalog2( r_i );
 
           double N = 0;
           for ( Idx k = 0; k < targets_modal; ++k ) {

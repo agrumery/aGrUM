@@ -34,8 +34,8 @@ namespace gum_tests {
       gum::UtilityTable<double> p( new gum::MultiDimArray<double>() );
       TS_ASSERT( p.empty() );
 
-      gum::LabelizedVariable a( "a", "first var", 2 ),
-          b( "b", "second var", 4 ), c( "c", "third var", 5 );
+      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
+          c( "c", "third var", 5 );
       TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c );
     }
 

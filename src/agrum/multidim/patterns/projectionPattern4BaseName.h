@@ -39,9 +39,9 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_PROJECTION_NAME
 #define GUM_MULTI_DIM_PROJECTION_TYPE GUM_SCALAR
   template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>* GUM_MULTI_DIM_PROJECTION_NAME(
-      const MultiDimImplementation<GUM_SCALAR>* table,
-      const Set<const DiscreteVariable*>& del_vars )
+  MultiDimImplementation<GUM_SCALAR>*
+  GUM_MULTI_DIM_PROJECTION_NAME( const MultiDimImplementation<GUM_SCALAR>* table,
+                                 const Set<const DiscreteVariable*>& del_vars )
 #endif
 
 // clang-format off
@@ -100,16 +100,16 @@ namespace gum {
       // increments in the computation loops at the end of the function before
       // which the variables of the projection set need be incremented (vector
       // before incr).
-      std::vector<Idx> table_and_result_offset;
-      std::vector<Idx> table_and_result_domain;
-      std::vector<Idx> before_incr;
-      unsigned int nb_positive_before_incr = 0;
-      Idx table_alone_domain_size          = 1;
-      Idx result_domain_size               = 1;
-      Idx table_domain_size                = 1;
+      std::vector<Idx>                  table_and_result_offset;
+      std::vector<Idx>                  table_and_result_domain;
+      std::vector<Idx>                  before_incr;
+      unsigned int                      nb_positive_before_incr = 0;
+      Idx                               table_alone_domain_size = 1;
+      Idx                               result_domain_size = 1;
+      Idx                               table_domain_size = 1;
       Sequence<const DiscreteVariable*> result_varSeq;
       {
-        Idx tmp_before_incr  = 1;
+        Idx  tmp_before_incr = 1;
         bool has_before_incr = false;
 
         for ( const auto var : table_vars ) {
@@ -137,8 +137,8 @@ namespace gum {
         }
       }
       std::vector<Idx> table_and_result_value = table_and_result_domain;
-      std::vector<Idx> current_incr           = before_incr;
-      std::vector<Idx> table_and_result_down  = table_and_result_offset;
+      std::vector<Idx> current_incr = before_incr;
+      std::vector<Idx> table_and_result_down = table_and_result_offset;
 
       for ( unsigned int i = 0; i < table_and_result_down.size(); ++i ) {
         table_and_result_down[i] *= ( table_and_result_domain[i] - 1 );
@@ -186,14 +186,13 @@ namespace gum {
       // but before doing so, check whether there exist positive_before_incr.
       // If this is not the case, optimize by not using before_incr at all
       if ( !nb_positive_before_incr ) {
-        Idx result_offset = 0;
+        Idx           result_offset = 0;
         Instantiation table_inst( table );
 
         for ( Idx i = 0; i < table_alone_domain_size; ++i ) {
           for ( Idx j = 0; j < result_domain_size; ++j ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-            GUM_MULTI_DIM_PROJECTION_TYPE res =
-                result->unsafeGet( result_offset );
+            GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet( result_offset );
             *res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
 #else
             GUM_MULTI_DIM_PROJECTION_TYPE& res =
@@ -213,13 +212,12 @@ namespace gum {
       } else {
         // here there are positive before_incr and we should use them to know
         // when result_offset needs be changed
-        Idx result_offset = 0;
+        Idx           result_offset = 0;
         Instantiation table_inst( table );
 
         for ( Idx i = 0; i < table_domain_size; ++i ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-          GUM_MULTI_DIM_PROJECTION_TYPE res =
-              result->unsafeGet( result_offset );
+          GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet( result_offset );
           *res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
 #else
           GUM_MULTI_DIM_PROJECTION_TYPE& res =
@@ -269,8 +267,8 @@ namespace gum {
       // these variables.
       std::vector<Idx> table_alone_offset;
       std::vector<Idx> table_alone_domain;
-      Idx offset                  = 1;
-      Idx table_alone_domain_size = 1;
+      Idx              offset = 1;
+      Idx              table_alone_domain_size = 1;
       HashTable<const DiscreteVariable*, Idx> var1offset( table_vars.size() );
 
       for ( const auto var : table_vars ) {
@@ -285,7 +283,7 @@ namespace gum {
       }
 
       std::vector<Idx> table_alone_value = table_alone_domain;
-      std::vector<Idx> table_alone_down  = table_alone_offset;
+      std::vector<Idx> table_alone_down = table_alone_offset;
 
       for ( unsigned int i = 0; i < table_alone_down.size(); ++i )
         table_alone_down[i] *= ( table_alone_domain[i] - 1 );
@@ -300,11 +298,11 @@ namespace gum {
       // the variables of t1 cap t2. Keep as well the size of the Cartesian
       // product of these variables.
       Sequence<const DiscreteVariable*> result_varSeq;
-      std::vector<Idx> table_and_result_offset;
-      std::vector<Idx> table_and_result_domain;
-      Idx result_domain_size = 1;
-      bool has_before_incr   = false;
-      bool found_proj_var    = false;
+      std::vector<Idx>                  table_and_result_offset;
+      std::vector<Idx>                  table_and_result_domain;
+      Idx                               result_domain_size = 1;
+      bool                              has_before_incr = false;
+      bool                              found_proj_var = false;
 
       for ( const auto var : table_vars ) {
         if ( !del_vars.exists( var ) ) {
@@ -319,7 +317,7 @@ namespace gum {
       }
 
       std::vector<Idx> table_and_result_value = table_and_result_domain;
-      std::vector<Idx> table_and_result_down  = table_and_result_offset;
+      std::vector<Idx> table_and_result_down = table_and_result_offset;
 
       for ( unsigned int i = 0; i < table_and_result_down.size(); ++i ) {
         table_and_result_down[i] *= ( table_and_result_domain[i] - 1 );
@@ -365,14 +363,13 @@ namespace gum {
       // but before doing so, check whether there exist positive_before_incr.
       // If this is not the case, optimize by not using before_incr at all
       if ( !has_before_incr ) {
-        Idx result_offset = 0;
+        Idx           result_offset = 0;
         Instantiation table_inst( table );
 
         for ( Idx i = 0; i < result_domain_size; ++i ) {
           for ( Idx j = 0; j < table_alone_domain_size; ++j ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-            GUM_MULTI_DIM_PROJECTION_TYPE res =
-                result->unsafeGet( result_offset );
+            GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet( result_offset );
             *res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
 #else
             GUM_MULTI_DIM_PROJECTION_TYPE& res =
@@ -391,14 +388,13 @@ namespace gum {
       } else {
         // here there are positive before_incr and we should use them to know
         // when result_offset needs be changed
-        Idx result_offset = 0;
+        Idx           result_offset = 0;
         Instantiation table_inst( table );
 
         for ( Idx j = 0; j < result_domain_size; ++j ) {
           for ( Idx i = 0; i < table_alone_domain_size; ++i ) {
 #ifdef GUM_MULTI_DIM_PROJECTION_POINTER
-            GUM_MULTI_DIM_PROJECTION_TYPE res =
-                result->unsafeGet( result_offset );
+            GUM_MULTI_DIM_PROJECTION_TYPE res = result->unsafeGet( result_offset );
             *res = GUM_MULTI_DIM_PROJECTION( res, table->get( table_inst ) );
 #else
             GUM_MULTI_DIM_PROJECTION_TYPE& res =

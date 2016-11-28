@@ -77,11 +77,11 @@ namespace gum_tests {
 
     void testInsert1() {
       gum::DiGraph graph;
-      gum::NodeId id1 = 0;
-      gum::NodeId id2 = 0;
-      gum::NodeId id3 = 0;
-      gum::NodeId id4 = 0;
-      gum::NodeId id5 = 0;
+      gum::NodeId  id1 = 0;
+      gum::NodeId  id2 = 0;
+      gum::NodeId  id3 = 0;
+      gum::NodeId  id4 = 0;
+      gum::NodeId  id5 = 0;
 
       TS_GUM_ASSERT_THROWS_NOTHING( id1 = graph.addNode() );
       TS_GUM_ASSERT_THROWS_NOTHING( id2 = graph.addNode() );
@@ -174,7 +174,7 @@ namespace gum_tests {
       TS_ASSERT( !graph.existsArc( id1, id1 ) );
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount  = graph.sizeArcs();
+      gum::Size arcCount = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseNode( id2 ) );
 
@@ -190,7 +190,7 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount  = graph.sizeArcs();
+      gum::Size arcCount = graph.sizeArcs();
 
       TS_ASSERT_EQUALS( nodeCount, (gum::Size)5 );
       TS_ASSERT_EQUALS( arcCount, (gum::Size)6 );
@@ -216,7 +216,7 @@ namespace gum_tests {
       TS_ASSERT( graph.existsArc( id5, id2 ) );
 
       gum::Size nodeCount = graph.size();
-      gum::Size arcCount  = graph.sizeArcs();
+      gum::Size arcCount = graph.sizeArcs();
 
       TS_GUM_ASSERT_THROWS_NOTHING( graph.eraseArc( gum::Arc( id5, id2 ) ) );
 
@@ -264,22 +264,20 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end();
+      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
             ++iter ) {
         s += *iter;
       }
 
-      TS_ASSERT_EQUALS( s,
-                        ( gum::Size )( 2 * ( id1 + id2 + id3 + id4 + id5 ) ) );
+      TS_ASSERT_EQUALS( s, ( gum::Size )( 2 * ( id1 + id2 + id3 + id4 + id5 ) ) );
     }
 
     void testTwistedNodeListMapNodes() {
       gum::DiGraph graph = buildGraph();
 
       gum::List<gum::Size> list;
-      TS_ASSERT_THROWS_ANYTHING(
-          list = graph.listMapNodes( &twistedMapFunction ) );
+      TS_ASSERT_THROWS_ANYTHING( list =
+                                     graph.listMapNodes( &twistedMapFunction ) );
 
       TS_ASSERT_EQUALS( list.size(), (gum::Size)0 );
     }
@@ -306,8 +304,8 @@ namespace gum_tests {
       gum::DiGraph graph = buildGraph();
 
       gum::NodeProperty<gum::Size> hashmap;
-      TS_ASSERT_THROWS_ANYTHING(
-          hashmap = graph.nodesProperty( &twistedMapFunction ) );
+      TS_ASSERT_THROWS_ANYTHING( hashmap =
+                                     graph.nodesProperty( &twistedMapFunction ) );
 
       TS_ASSERT_EQUALS( hashmap.size(), (gum::Size)0 );
     }
@@ -320,8 +318,7 @@ namespace gum_tests {
 
       gum::Size s = 0;
 
-      for ( gum::List<gum::Size>::iterator iter = list.begin();
-            iter != list.end();
+      for ( gum::List<gum::Size>::iterator iter = list.begin(); iter != list.end();
             ++iter ) {
         s += *iter;
       }
@@ -354,7 +351,7 @@ namespace gum_tests {
     void testNodeId() {
       gum::DiGraph graph = buildGraph();
 
-      gum::NodeId id  = graph.nextNodeId();
+      gum::NodeId id = graph.nextNodeId();
       gum::NodeId id2 = graph.addNode();
       TS_ASSERT_EQUALS( id, id2 );
     }

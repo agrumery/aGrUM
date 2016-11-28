@@ -31,7 +31,7 @@ namespace gum_tests {
   class BinaryJoinTreeConverterTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
-      gum::CliqueGraph graph;
+      gum::CliqueGraph          graph;
       std::vector<gum::NodeSet> cliques( 11 );
 
       cliques[0] << 1 << 2;
@@ -68,12 +68,11 @@ namespace gum_tests {
       }
 
       gum::BinaryJoinTreeConverterDefault converter;
-      gum::NodeSet roots;
+      gum::NodeSet                        roots;
       roots << 9;
 
       try {
-        gum::CliqueGraph binTree =
-            converter.convert( graph, domain_sizes, roots );
+        gum::CliqueGraph binTree = converter.convert( graph, domain_sizes, roots );
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
       }

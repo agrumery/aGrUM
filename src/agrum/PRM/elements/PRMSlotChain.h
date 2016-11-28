@@ -92,7 +92,7 @@ namespace gum {
        * @throw WrongClassElement<GUM_SCALAR> Raised contains invalid
        *PRMClassElement<GUM_SCALAR>.
        */
-      PRMSlotChain( const std::string& name,
+      PRMSlotChain( const std::string&                            name,
                     const Sequence<PRMClassElement<GUM_SCALAR>*>& chain );
 
       /** @brief Tweak constructor.
@@ -113,7 +113,7 @@ namespace gum {
        *PRMClassElement<GUM_SCALAR>.
        */
       PRMSlotChain( Sequence<PRMClassElement<GUM_SCALAR>*>* chain,
-                    const std::string& name );
+                    const std::string&                      name );
 
       /**
        * Copy constructor.

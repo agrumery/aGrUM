@@ -34,10 +34,10 @@ namespace gum {
 
       template <typename GUM_SCALAR>
       INLINE O3SystemFactory<GUM_SCALAR>::O3SystemFactory(
-          PRM<GUM_SCALAR>& prm,
-          O3PRM& o3_prm,
+          PRM<GUM_SCALAR>&          prm,
+          O3PRM&                    o3_prm,
           O3NameSolver<GUM_SCALAR>& solver,
-          ErrorsContainer& errors )
+          ErrorsContainer&          errors )
           : __prm( &prm )
           , __o3_prm( &o3_prm )
           , __solver( &solver )
@@ -78,7 +78,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm    = src.__prm;
+        __prm = src.__prm;
         __o3_prm = src.__o3_prm;
         __solver = src.__solver;
         __errors = src.__errors;
@@ -91,7 +91,7 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm    = std::move( src.__prm );
+        __prm = std::move( src.__prm );
         __o3_prm = std::move( src.__o3_prm );
         __solver = std::move( src.__solver );
         __errors = std::move( src.__errors );
@@ -124,8 +124,9 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE void O3SystemFactory<GUM_SCALAR>::__addInstances(
-          PRMFactory<GUM_SCALAR>& factory, O3System& sys ) {
+      INLINE void
+      O3SystemFactory<GUM_SCALAR>::__addInstances( PRMFactory<GUM_SCALAR>& factory,
+                                                   O3System&               sys ) {
         for ( auto& i : sys.instances() ) {
 
           if ( i.parameters().size() > 0 ) {
@@ -155,12 +156,11 @@ namespace gum {
 
         for ( auto& ass : sys.assignments() ) {
 
-          auto leftInstance  = ass.leftInstance().label();
+          auto leftInstance = ass.leftInstance().label();
           auto leftReference = ass.leftReference().label();
           auto rightInstance = ass.rightInstance().label();
 
-          if ( ass.leftIndex().value() > -1 &&
-               real_sys.isArray( leftInstance ) ) {
+          if ( ass.leftIndex().value() > -1 && real_sys.isArray( leftInstance ) ) {
 
             std::stringstream sBuff;
             sBuff << leftInstance << "[" << ass.leftIndex().value() << "]";
@@ -175,8 +175,7 @@ namespace gum {
             rightInstance = sBuff.str();
           }
 
-          factory.setReferenceSlot(
-              leftInstance, leftReference, rightInstance );
+          factory.setReferenceSlot( leftInstance, leftReference, rightInstance );
         }
       }
 
@@ -186,12 +185,11 @@ namespace gum {
         const auto& real_sys = __prm->getSystem( sys.name().label() );
         for ( auto& inc : sys.increments() ) {
 
-          auto leftInstance  = inc.leftInstance().label();
+          auto leftInstance = inc.leftInstance().label();
           auto leftReference = inc.leftReference().label();
           auto rightInstance = inc.rightInstance().label();
 
-          if ( inc.leftIndex().value() > -1 &&
-               real_sys.isArray( leftInstance ) ) {
+          if ( inc.leftIndex().value() > -1 && real_sys.isArray( leftInstance ) ) {
 
             std::stringstream sBuff;
             sBuff << leftInstance << "[" << inc.leftIndex().value() << "]";
@@ -206,8 +204,7 @@ namespace gum {
             rightInstance = sBuff.str();
           }
 
-          factory.setReferenceSlot(
-              leftInstance, leftReference, rightInstance );
+          factory.setReferenceSlot( leftInstance, leftReference, rightInstance );
         }
       }
 
@@ -223,8 +220,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE bool
-      O3SystemFactory<GUM_SCALAR>::__checkInstance( O3System& sys ) {
+      INLINE bool O3SystemFactory<GUM_SCALAR>::__checkInstance( O3System& sys ) {
 
         for ( auto& i : sys.instances() ) {
 
@@ -310,9 +306,9 @@ namespace gum {
             return false;
           }
 
-          auto i           = __nameMap[ass.leftInstance().label()];
+          auto        i = __nameMap[ass.leftInstance().label()];
           const auto& type = __prm->getClass( i->type().label() );
-          const auto& ref  = ass.leftReference().label();
+          const auto& ref = ass.leftReference().label();
 
           if ( !( type.exists( ass.leftReference().label() ) &&
                   PRMClassElement<GUM_SCALAR>::isReferenceSlot(
@@ -324,8 +320,7 @@ namespace gum {
           }
 
           const auto& real_ref =
-              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
-                  type.get( ref ) );
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
 
           if ( !__nameMap.exists( ass.rightInstance().label() ) ) {
             O3PRM_SYSTEM_INSTANCE_NOT_FOUND( ass.rightInstance(), *__errors );
@@ -351,8 +346,7 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE bool
-      O3SystemFactory<GUM_SCALAR>::__checkIncrements( O3System& sys ) {
+      INLINE bool O3SystemFactory<GUM_SCALAR>::__checkIncrements( O3System& sys ) {
 
         for ( auto& inc : sys.increments() ) {
 
@@ -366,9 +360,9 @@ namespace gum {
             return false;
           }
 
-          auto i           = __nameMap[inc.leftInstance().label()];
+          auto        i = __nameMap[inc.leftInstance().label()];
           const auto& type = __prm->getClass( i->type().label() );
-          const auto& ref  = inc.leftReference().label();
+          const auto& ref = inc.leftReference().label();
 
           if ( !( type.exists( inc.leftReference().label() ) &&
                   PRMClassElement<GUM_SCALAR>::isReferenceSlot(
@@ -380,8 +374,7 @@ namespace gum {
           }
 
           const auto& real_ref =
-              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>(
-                  type.get( ref ) );
+              static_cast<const PRMReferenceSlot<GUM_SCALAR>&>( type.get( ref ) );
 
           if ( !real_ref.isArray() ) {
 

@@ -36,7 +36,7 @@ namespace gum {
 
     /// default constructor
     CellTranslatorNumber::CellTranslatorNumber( Sequence<double> values,
-                                                bool check_database )
+                                                bool             check_database )
         : __check_database( check_database ) {
 
       if ( !check_database ) {

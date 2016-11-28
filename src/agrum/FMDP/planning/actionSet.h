@@ -191,16 +191,13 @@ namespace gum {
     // ============================================================================
     /// Gives the ith element
     // ============================================================================
-    const Idx& operator[]( const Idx i ) const {
-      return __actionSeq->atPos( i );
-    }
+    const Idx& operator[]( const Idx i ) const { return __actionSeq->atPos( i ); }
 
     // ============================================================================
     /// Compares two ActionSet to check if they are equals
     // ============================================================================
     bool operator==( const ActionSet& compared ) const {
-      for ( auto iter = compared.beginSafe(); iter != compared.endSafe();
-            ++iter )
+      for ( auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter )
         if ( !__actionSeq->exists( *iter ) ) return false;
       for ( auto iter = this->beginSafe(); iter != this->endSafe(); ++iter )
         if ( !compared.exists( *iter ) ) return false;
@@ -223,7 +220,7 @@ namespace gum {
     /// The very bone of the ActionSet
     Sequence<Idx>* __actionSeq;
 
-    friend std::ostream& operator<<( std::ostream& streamy,
+    friend std::ostream& operator<<( std::ostream&    streamy,
                                      const ActionSet& objy ) {
       streamy << objy.__actionSeq->toString();
       return streamy;

@@ -42,8 +42,7 @@
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only
-#define RECAST( x ) \
-  reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( x )
+#define RECAST( x ) reinterpret_cast<const MultiDimFunctionGraph<GUM_SCALAR>*>( x )
 
 namespace gum {
 
@@ -91,9 +90,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::regress(
       const MultiDimFunctionGraph<GUM_SCALAR>* Vold,
-      Idx actionId,
-      const FMDP<GUM_SCALAR>* fmdp,
-      const Set<const DiscreteVariable*>& elVarSeq ) {
+      Idx                                      actionId,
+      const FMDP<GUM_SCALAR>*                  fmdp,
+      const Set<const DiscreteVariable*>&      elVarSeq ) {
     MultiDimFunctionGraph<GUM_SCALAR>* qAction =
         MultiDimFunctionGraph<GUM_SCALAR>::getReducedAndOrderedInstance();
     qAction->copy( *Vold );
@@ -108,7 +107,7 @@ namespace gum {
       MultiDimFunctionGraph<GUM_SCALAR>* temp = r.compute();
       delete qAction;
       qAction = temp;
-      xip     = this->_lastVar( qAction );
+      xip = this->_lastVar( qAction );
     }
 
     return qAction;
@@ -120,7 +119,7 @@ namespace gum {
   MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::maximize(
       const MultiDimFunctionGraph<GUM_SCALAR>* f1,
       const MultiDimFunctionGraph<GUM_SCALAR>* f2,
-      Idx del ) {
+      Idx                                      del ) {
     MultiDimFunctionGraph<GUM_SCALAR>* ret =
         maximize2MultiDimFunctionGraphs( f1, f2 );
     this->_deleteFunctionGraph( f1, f2, del );
@@ -133,7 +132,7 @@ namespace gum {
   MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::minimize(
       const MultiDimFunctionGraph<GUM_SCALAR>* f1,
       const MultiDimFunctionGraph<GUM_SCALAR>* f2,
-      Idx del ) {
+      Idx                                      del ) {
     MultiDimFunctionGraph<GUM_SCALAR>* ret =
         minimize2MultiDimFunctionGraphs( f1, f2 );
     this->_deleteFunctionGraph( f1, f2, del );
@@ -146,7 +145,7 @@ namespace gum {
   MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::multiply(
       const MultiDimFunctionGraph<GUM_SCALAR>* f1,
       const MultiDimFunctionGraph<GUM_SCALAR>* f2,
-      Idx del ) {
+      Idx                                      del ) {
     MultiDimFunctionGraph<GUM_SCALAR>* ret =
         multiply2MultiDimFunctionGraphs( f1, f2 );
     this->_deleteFunctionGraph( f1, f2, del );
@@ -163,14 +162,14 @@ namespace gum {
                                   SetTerminalNodePolicy>* f1,
       const MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>,
                                   SetTerminalNodePolicy>* f2,
-      Idx del ) {
+      Idx                                                 del ) {
 
     MultiDimFunctionGraphOperator<ArgMaxSet<GUM_SCALAR, Idx>,
                                   ArgumentMaximisesAction,
                                   SetTerminalNodePolicy>
         argmaxope( f1, f2 );
-    MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>*
-        ret = argmaxope.compute();
+    MultiDimFunctionGraph<ArgMaxSet<GUM_SCALAR, Idx>, SetTerminalNodePolicy>* ret =
+        argmaxope.compute();
     this->_deleteFunctionGraph( f1, f2, del );
     return ret;
   }
@@ -185,9 +184,8 @@ namespace gum {
   MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::add(
       const MultiDimFunctionGraph<GUM_SCALAR>* f1,
       const MultiDimFunctionGraph<GUM_SCALAR>* f2,
-      Idx del ) {
-    MultiDimFunctionGraph<GUM_SCALAR>* ret =
-        add2MultiDimFunctionGraphs( f1, f2 );
+      Idx                                      del ) {
+    MultiDimFunctionGraph<GUM_SCALAR>* ret = add2MultiDimFunctionGraphs( f1, f2 );
     this->_deleteFunctionGraph( f1, f2, del );
     return ret;
   }
@@ -202,7 +200,7 @@ namespace gum {
   MultiDimFunctionGraph<GUM_SCALAR>* MDDOperatorStrategy<GUM_SCALAR>::subtract(
       const MultiDimFunctionGraph<GUM_SCALAR>* f1,
       const MultiDimFunctionGraph<GUM_SCALAR>* f2,
-      Idx del ) {
+      Idx                                      del ) {
     MultiDimFunctionGraph<GUM_SCALAR>* ret =
         subtract2MultiDimFunctionGraphs( f1, f2 );
     this->_deleteFunctionGraph( f1, f2, del );

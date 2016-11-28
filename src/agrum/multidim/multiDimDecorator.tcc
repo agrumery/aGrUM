@@ -87,7 +87,7 @@ namespace gum {
 
     if ( this != &from ) {
       if ( _content != nullptr ) delete ( _content );  // should be the case
-      _content      = from._content;
+      _content = from._content;
       from._content = nullptr;
     }
 
@@ -102,7 +102,7 @@ namespace gum {
             std::forward<MultiDimContainer<GUM_SCALAR>>( from ) ) {
     GUM_CONS_MOV( MultiDimDecorator );
 
-    _content      = from._content;
+    _content = from._content;
     from._content = nullptr;
   }
 
@@ -144,9 +144,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void
-  MultiDimDecorator<GUM_SCALAR>::set( const Instantiation& i,
-                                      const GUM_SCALAR& value ) const {
+  INLINE void MultiDimDecorator<GUM_SCALAR>::set( const Instantiation& i,
+                                                  const GUM_SCALAR& value ) const {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->set( i, value );
   }
 
@@ -168,10 +167,10 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimDecorator<GUM_SCALAR>::changeNotification(
-      Instantiation& i,
+      Instantiation&                i,
       const DiscreteVariable* const var,
-      const Idx& oldval,
-      const Idx& newval ) {
+      const Idx&                    oldval,
+      const Idx&                    newval ) {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )
         ->changeNotification( i, var, oldval, newval );
   }
@@ -224,8 +223,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void
-  MultiDimDecorator<GUM_SCALAR>::erase( const DiscreteVariable& d ) {
+  INLINE void MultiDimDecorator<GUM_SCALAR>::erase( const DiscreteVariable& d ) {
     ( (MultiDimContainer<GUM_SCALAR>*)_content )->erase( d );
   }
 
@@ -253,8 +251,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE bool
-  MultiDimDecorator<GUM_SCALAR>::unregisterSlave( Instantiation& i ) {
+  INLINE bool MultiDimDecorator<GUM_SCALAR>::unregisterSlave( Instantiation& i ) {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->unregisterSlave( i );
   }
 
@@ -275,7 +272,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE const Sequence<const DiscreteVariable*>&
-  MultiDimDecorator<GUM_SCALAR>::variablesSequence() const {
+               MultiDimDecorator<GUM_SCALAR>::variablesSequence() const {
     return ( (MultiDimContainer<GUM_SCALAR>*)_content )->variablesSequence();
   }
 
@@ -314,14 +311,14 @@ namespace gum {
   // protected access to _content
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>*
-  MultiDimDecorator<GUM_SCALAR>::content() {
+         MultiDimDecorator<GUM_SCALAR>::content() {
     return _content;
   }
 
   // protected access to _content
   template <typename GUM_SCALAR>
   INLINE const MultiDimImplementation<GUM_SCALAR>*
-  MultiDimDecorator<GUM_SCALAR>::content() const {
+               MultiDimDecorator<GUM_SCALAR>::content() const {
     return _content;
   }
 
@@ -355,7 +352,7 @@ namespace gum {
       // TODO : frees all slave instantiations
       // TODO : control the dimensions ?
       MultiDimImplementation<GUM_SCALAR>* tmp = _content;
-      _content                                = aContent;
+      _content = aContent;
       // registers all instantiations
       delete ( tmp );
     }

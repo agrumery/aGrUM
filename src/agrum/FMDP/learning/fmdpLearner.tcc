@@ -37,13 +37,13 @@ namespace gum {
   // ###################################################################
   // Default constructor
   // ###################################################################
-  template <TESTNAME VariableAttributeSelection,
-            TESTNAME RewardAttributeSelection,
+  template <TESTNAME    VariableAttributeSelection,
+            TESTNAME    RewardAttributeSelection,
             LEARNERNAME LearnerSelection>
   FMDPLearner<VariableAttributeSelection,
               RewardAttributeSelection,
               LearnerSelection>::FMDPLearner( double lT,
-                                              bool actionReward,
+                                              bool   actionReward,
                                               double sT )
       : __actionReward( actionReward )
       , __learningThreshold( lT )
@@ -56,8 +56,8 @@ namespace gum {
   // ###################################################################
   // Default destructor
   // ###################################################################
-  template <TESTNAME VariableAttributeSelection,
-            TESTNAME RewardAttributeSelection,
+  template <TESTNAME    VariableAttributeSelection,
+            TESTNAME    RewardAttributeSelection,
             LEARNERNAME LearnerSelection>
   FMDPLearner<VariableAttributeSelection,
               RewardAttributeSelection,
@@ -88,17 +88,17 @@ namespace gum {
   // ###################################################################
   //
   // ###################################################################
-  template <TESTNAME VariableAttributeSelection,
-            TESTNAME RewardAttributeSelection,
+  template <TESTNAME    VariableAttributeSelection,
+            TESTNAME    RewardAttributeSelection,
             LEARNERNAME LearnerSelection>
-  void FMDPLearner<VariableAttributeSelection,
+  void                  FMDPLearner<VariableAttributeSelection,
                    RewardAttributeSelection,
                    LearnerSelection>::initialize( FMDP<double>* fmdp ) {
 
     __fmdp = fmdp;
 
     __modaMax = 0;
-    __rmax    = 0.0;
+    __rmax = 0.0;
 
     Set<const DiscreteVariable*> mainVariables;
     for ( auto varIter = __fmdp->beginVariables();
@@ -122,8 +122,7 @@ namespace gum {
             varIter != __fmdp->endVariables();
             ++varIter ) {
         MultiDimFunctionGraph<double>* varTrans = __instantiateFunctionGraph();
-        varTrans->setTableName( "ACTION : " +
-                                __fmdp->actionName( *actionIter ) +
+        varTrans->setTableName( "ACTION : " + __fmdp->actionName( *actionIter ) +
                                 " - VARIABLE : " + ( *varIter )->name() );
         __fmdp->addTransitionForAction( *actionIter, *varIter, varTrans );
         __actionLearners[*actionIter]->insert(
@@ -153,14 +152,13 @@ namespace gum {
   // ###################################################################
   //
   // ###################################################################
-  template <TESTNAME VariableAttributeSelection,
-            TESTNAME RewardAttributeSelection,
+  template <TESTNAME    VariableAttributeSelection,
+            TESTNAME    RewardAttributeSelection,
             LEARNERNAME LearnerSelection>
-  bool
-  FMDPLearner<VariableAttributeSelection,
-              RewardAttributeSelection,
-              LearnerSelection>::addObservation( Idx actionId,
-                                                 const Observation* newObs ) {
+  bool                  FMDPLearner<VariableAttributeSelection,
+                   RewardAttributeSelection,
+                   LearnerSelection>::addObservation( Idx                actionId,
+                                                      const Observation* newObs ) {
 
     for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
               __fmdp->beginVariables();
@@ -182,9 +180,8 @@ namespace gum {
       __rewardLearner->updateGraph();
     }
 
-    __rmax = __rmax < std::abs( newObs->reward() )
-                 ? std::abs( newObs->reward() )
-                 : __rmax;
+    __rmax = __rmax < std::abs( newObs->reward() ) ? std::abs( newObs->reward() )
+                                                   : __rmax;
 
     return false;
   }
@@ -192,10 +189,10 @@ namespace gum {
   // ###################################################################
   //
   // ###################################################################
-  template <TESTNAME VariableAttributeSelection,
-            TESTNAME RewardAttributeSelection,
+  template <TESTNAME    VariableAttributeSelection,
+            TESTNAME    RewardAttributeSelection,
             LEARNERNAME LearnerSelection>
-  Size FMDPLearner<VariableAttributeSelection,
+  Size                  FMDPLearner<VariableAttributeSelection,
                    RewardAttributeSelection,
                    LearnerSelection>::size() {
 
@@ -222,10 +219,10 @@ namespace gum {
   // ###################################################################
   //
   // ###################################################################
-  template <TESTNAME VariableAttributeSelection,
-            TESTNAME RewardAttributeSelection,
+  template <TESTNAME    VariableAttributeSelection,
+            TESTNAME    RewardAttributeSelection,
             LEARNERNAME LearnerSelection>
-  void FMDPLearner<VariableAttributeSelection,
+  void                  FMDPLearner<VariableAttributeSelection,
                    RewardAttributeSelection,
                    LearnerSelection>::updateFMDP() {
 

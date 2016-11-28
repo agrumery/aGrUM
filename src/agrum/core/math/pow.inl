@@ -53,7 +53,7 @@ namespace gum {
   // Given an integer, compute it's - superior - and closest power of two, i.e.
   // the number of bits necessary to represent this integer as well as the
   // maximum integer that can be represented by those bits.
-  INLINE void superiorPow( unsigned long card,
+  INLINE void superiorPow( unsigned long  card,
                            unsigned long& num_bits,
                            unsigned long& new_card ) {
     if ( card == 0 ) {

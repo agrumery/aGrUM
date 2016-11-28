@@ -44,8 +44,7 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <typename> class COMBINEOPERATOR,
             template <typename> class PROJECTOPERATOR,
-            template <typename> class TerminalNodePolicy =
-                ExactTerminalNodePolicy>
+            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
   class TreeRegress {
     public:
     // ============================================================================
@@ -82,9 +81,8 @@ namespace gum {
 
     /// The function graphs used for the operation
     const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
-    const Bijection<
-        const DiscreteVariable*,
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*>
+    const Bijection<const DiscreteVariable*,
+                    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*>
         __pxi;
     HashTable<const DiscreteVariable*, Idx> __context;
   };

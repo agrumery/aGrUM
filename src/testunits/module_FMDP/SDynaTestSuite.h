@@ -46,8 +46,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( sdyna = gum::SDYNA::spimddiInstance() );
 
       // Enregistrement des actions possibles auprès de SDyna
-      for ( auto actionIter = sim.beginActions();
-            actionIter != sim.endActions();
+      for ( auto actionIter = sim.beginActions(); actionIter != sim.endActions();
             ++actionIter ) {
         sdyna->addAction( *actionIter, sim.actionName( *actionIter ) );
       }

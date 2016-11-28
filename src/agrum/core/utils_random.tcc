@@ -33,7 +33,7 @@ namespace gum {
     if ( n < 2 ) n = 2;
 
     std::vector<GUM_SCALAR> v( n );
-    GUM_SCALAR s;
+    GUM_SCALAR              s;
 
     do {
       for ( Idx i = 0; i < n; i++ ) {

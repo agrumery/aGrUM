@@ -32,9 +32,9 @@
 #include <agrum/core/signal/signaler.h>
 
 #define MAKE_NAME( nom ) nom##7
-#define LIST_DECL_CLASSES                                          \
-  class type1, class type2, class type3, class type4, class type5, \
-      class type6, class type7
+#define LIST_DECL_CLASSES                                                       \
+  class type1, class type2, class type3, class type4, class type5, class type6, \
+      class type7
 #define LIST_CLASSES type1, type2, type3, type4, type5, type6, type7
 #define LIST_DECL_ARGS                                                    \
   type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6, \

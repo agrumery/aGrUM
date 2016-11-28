@@ -34,19 +34,18 @@ namespace gum_tests {
   class ScoreLog2LikelihoodTestSuite : public CxxTest::TestSuite {
     public:
     void test_LL() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities( 8, 2 );
 
@@ -58,8 +57,7 @@ namespace gum_tests {
           gum::learning::ScoreLog2Likelihood<>::isAprioriCompatible(
               gum::learning::AprioriSmoothing<>::type::type ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::learning::ScoreLog2Likelihood<>::isAprioriCompatible(
-              apriori ) );
+          gum::learning::ScoreLog2Likelihood<>::isAprioriCompatible( apriori ) );
       TS_GUM_ASSERT_THROWS_NOTHING( score.isAprioriCompatible(
           gum::learning::AprioriSmoothing<>::type::type ) );
       TS_GUM_ASSERT_THROWS_NOTHING( score.isAprioriCompatible( apriori ) );
@@ -104,17 +102,16 @@ namespace gum_tests {
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto translators = gum::learning::make_translators(
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      auto                           translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
-      std::vector<gum::Idx> modalities = filter.modalities();
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
+      std::vector<gum::Idx>             modalities = filter.modalities();
       gum::learning::AprioriSmoothing<> apriori;
       apriori.setWeight( 0 );
       gum::learning::ScoreLog2Likelihood<> score( filter, modalities, apriori );
@@ -141,17 +138,16 @@ namespace gum_tests {
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto translators = gum::learning::make_translators(
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      auto                           translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
-      std::vector<gum::Idx> modalities = filter.modalities();
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
+      std::vector<gum::Idx>             modalities = filter.modalities();
       gum::learning::AprioriSmoothing<> apriori;
       apriori.setWeight( 0 );
       gum::learning::ScoreLog2Likelihood<> score( filter, modalities, apriori );

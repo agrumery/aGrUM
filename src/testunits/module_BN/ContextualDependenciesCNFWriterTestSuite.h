@@ -42,7 +42,7 @@ namespace gum_tests {
   class ContextualDependenciesCNFWriterTestSuite : public CxxTest::TestSuite {
     public:
     gum::BayesNet<double>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::NodeId            i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<double>();
@@ -78,7 +78,7 @@ namespace gum_tests {
 
     void testConstuctor_With_Aproximation() {
       typedef gum::ContextualDependenciesCNFWriter<double, gum::ExactPolicy>
-          typCNF;
+              typCNF;
       typCNF* writer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING( writer = new typCNF() );
       //   writer->setEpsilon( 0.2 );
@@ -90,13 +90,12 @@ namespace gum_tests {
 
     void testWriter_ostream() {
       gum::ContextualDependenciesCNFWriter<double> writer;
-      std::stringstream sstream;
+      std::stringstream                            sstream;
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( sstream, *bn ) );
     }
 
     void testWriter_ostream_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter<double,
-                                           gum::LinearApproximationPolicy>
+      gum::ContextualDependenciesCNFWriter<double, gum::LinearApproximationPolicy>
           writer;
       writer.setEpsilon( 0.2 );
       writer.setLowLimit( 0 );
@@ -108,12 +107,12 @@ namespace gum_tests {
 
     void testWriter_string() {
       gum::ContextualDependenciesCNFWriter<double> writer;
-      std::string file =
+      std::string                                  file =
           GET_RESSOURCES_PATH( "ContextualDependenciesCNFWriter_TestFile.cnf" );
       TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
 
-      file = GET_RESSOURCES_PATH(
-          "ContextualDependenciesCNFWriter_RO_TestFile.cnf" );
+      file =
+          GET_RESSOURCES_PATH( "ContextualDependenciesCNFWriter_RO_TestFile.cnf" );
 
       try {
         writer.write( file, *bn );
@@ -124,8 +123,7 @@ namespace gum_tests {
     }
 
     void testWriter_string_With_Approximation() {
-      gum::ContextualDependenciesCNFWriter<double,
-                                           gum::LinearApproximationPolicy>
+      gum::ContextualDependenciesCNFWriter<double, gum::LinearApproximationPolicy>
           writer;
 
       writer.setEpsilon( 0.2 );

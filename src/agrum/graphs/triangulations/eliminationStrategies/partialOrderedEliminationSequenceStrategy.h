@@ -91,8 +91,7 @@ namespace gum {
      * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
-    virtual bool setGraph( UndiGraph* graph,
-                           const NodeProperty<Size>* dom_sizes );
+    virtual bool setGraph( UndiGraph* graph, const NodeProperty<Size>* dom_sizes );
 
     /// sets a new partial ordering constraint on the elimination sequence
     /** @param subsets the list of the subsets constituting the partial ordering
@@ -164,10 +163,9 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph, the domain sizes and
      * the sequence are not copied but only referenced by the elimination
      * sequence algorithm. */
-    PartialOrderedEliminationSequenceStrategy(
-        UndiGraph* graph,
-        const NodeProperty<Size>* dom_sizes,
-        const List<NodeSet>* subsets );
+    PartialOrderedEliminationSequenceStrategy( UndiGraph*                graph,
+                                               const NodeProperty<Size>* dom_sizes,
+                                               const List<NodeSet>*      subsets );
 
     /// copy constructor
     PartialOrderedEliminationSequenceStrategy(

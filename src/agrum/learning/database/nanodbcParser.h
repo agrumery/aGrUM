@@ -72,7 +72,7 @@ namespace gum {
       const Size noLine() const;
 
       private:
-      nanodbc::result& __result;
+      nanodbc::result&         __result;
       std::vector<std::string> __data;
     };
 

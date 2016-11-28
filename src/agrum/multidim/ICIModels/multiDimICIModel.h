@@ -103,15 +103,15 @@ namespace gum {
                                      const gum::Idx&,
                                      const gum::Idx& ) override{};
 
-    virtual void setFirstNotification( gum::Instantiation& ) override {};
+    virtual void setFirstNotification( gum::Instantiation& ) override{};
 
-    virtual void setLastNotification( gum::Instantiation& ) override {};
+    virtual void setLastNotification( gum::Instantiation& ) override{};
 
-    virtual void setIncNotification( gum::Instantiation& ) override {};
+    virtual void setIncNotification( gum::Instantiation& ) override{};
 
-    virtual void setDecNotification( gum::Instantiation& ) override {};
+    virtual void setDecNotification( gum::Instantiation& ) override{};
 
-    virtual void setChangeNotification( gum::Instantiation& ) override {};
+    virtual void setChangeNotification( gum::Instantiation& ) override{};
 
     const std::string toString( const gum::Instantiation* i ) const override {
       return i->toString();

@@ -154,9 +154,8 @@ namespace gum {
   template <typename GUM_SCALAR,
             template <typename> class ICPTGenerator = SimpleCPTGenerator,
             template <typename> class ICPTDisturber = SimpleCPTDisturber>
-  class MCBayesNetGenerator
-      : public IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>,
-        public ICPTDisturber<GUM_SCALAR> {
+  class MCBayesNetGenerator : public IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>,
+                              public ICPTDisturber<GUM_SCALAR> {
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -181,10 +180,10 @@ namespace gum {
      */
     MCBayesNetGenerator( Size nbrNodes,
                          Size maxArcs,
-                         Idx maxModality = 2,
-                         Size iteration  = 5000,
-                         Idx p           = 30,
-                         Idx q           = 40 );
+                         Idx  maxModality = 2,
+                         Size iteration = 5000,
+                         Idx  p = 30,
+                         Idx  q = 40 );
 
     /**
     * Constructor.
@@ -201,9 +200,9 @@ namespace gum {
     * )
     */
     MCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet,
-                         Size iteration = 5000,
-                         Idx p          = 30,
-                         Idx q          = 40 );
+                         Size                 iteration = 5000,
+                         Idx                  p = 30,
+                         Idx                  q = 40 );
 
     /**
     * Destructor.
@@ -281,9 +280,9 @@ namespace gum {
 
     /// @}
     protected:
-    Size _iteration;
-    Idx _p, _q;
-    bool _disturbing;
+    Size                 _iteration;
+    Idx                  _p, _q;
+    bool                 _disturbing;
     BayesNet<GUM_SCALAR> _bayesNettemp;
     HashTable<NodeId, Potential<GUM_SCALAR>*> _hashMarginal;
 
@@ -387,8 +386,7 @@ namespace gum {
      *existence of an oriented path between node i and node j avoiding passing
      *through nodes listed in excluded.
      **/
-    bool
-    __directedPath( const NodeId tail, const NodeId head, NodeSet& excluded );
+    bool __directedPath( const NodeId tail, const NodeId head, NodeSet& excluded );
 
     /**
      * The function that randomly choose two nodes of the graph.

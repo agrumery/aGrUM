@@ -51,12 +51,11 @@ namespace gum {
     ScheduleCliqueStoreMultiDim(
         const ScheduleMultiDim<GUM_SCALAR>& table,
         NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*>>&
-            clique_tables,
+               clique_tables,
         NodeId clique );
 
     /// copy constructor
-    ScheduleCliqueStoreMultiDim(
-        const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& );
+    ScheduleCliqueStoreMultiDim( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& );
 
     /// virtual copy constructor: creates a clone of the operation
     virtual ScheduleCliqueStoreMultiDim<GUM_SCALAR>* newFactory() const;
@@ -114,8 +113,7 @@ namespace gum {
     const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-    multiDimResults() const;
+    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;

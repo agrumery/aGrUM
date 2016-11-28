@@ -34,8 +34,7 @@
 
 namespace gum_tests {
 
-  class MaxInducedWidthMCBayesNetGeneratorTestSuite
-      : public CxxTest::TestSuite {
+  class MaxInducedWidthMCBayesNetGeneratorTestSuite : public CxxTest::TestSuite {
     public:
     void setUp() {}
 
@@ -125,8 +124,7 @@ namespace gum_tests {
 
     void testDisturbBNFloatCPT() {
 
-      gum::MaxInducedWidthMCBayesNetGenerator<float> gen(
-          30, 100, 8, 30, 40, 50 );
+      gum::MaxInducedWidthMCBayesNetGenerator<float> gen( 30, 100, 8, 30, 40, 50 );
       gum::BayesNet<float>* bn = new gum::BayesNet<float>();
       gen.generateBN( *bn );
       TS_GUM_ASSERT_THROWS_NOTHING( gen.disturbBN( *bn ) );

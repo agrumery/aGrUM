@@ -56,10 +56,10 @@ namespace gum {
       class O3SystemFactory {
 
         public:
-        O3SystemFactory( PRM<GUM_SCALAR>& prm,
-                         O3PRM& o3_prm,
+        O3SystemFactory( PRM<GUM_SCALAR>&          prm,
+                         O3PRM&                    o3_prm,
                          O3NameSolver<GUM_SCALAR>& solver,
-                         ErrorsContainer& errors );
+                         ErrorsContainer&          errors );
         O3SystemFactory( const O3SystemFactory<GUM_SCALAR>& src );
         O3SystemFactory( O3SystemFactory<GUM_SCALAR>&& src );
         ~O3SystemFactory();
@@ -71,10 +71,10 @@ namespace gum {
         void build();
 
         private:
-        PRM<GUM_SCALAR>* __prm;
-        O3PRM* __o3_prm;
+        PRM<GUM_SCALAR>*          __prm;
+        O3PRM*                    __o3_prm;
         O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer* __errors;
+        ErrorsContainer*          __errors;
 
         HashTable<std::string, O3Instance*> __nameMap;
 
@@ -89,7 +89,7 @@ namespace gum {
         bool __checkIncrements( O3System& sys );
 
         bool __checkParameters( const PRMClass<GUM_SCALAR>& type,
-                                const O3Instance& inst );
+                                const O3Instance&           inst );
 
         bool __checkInstance( O3System& sys );
 

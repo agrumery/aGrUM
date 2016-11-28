@@ -210,8 +210,8 @@ namespace gum {
 
   INLINE void Arc::operator-() {
     NodeId n_temp = n1;
-    n1            = n2;
-    n2            = n_temp;
+    n1 = n2;
+    n2 = n_temp;
   }
 
 } /* namespace gum */

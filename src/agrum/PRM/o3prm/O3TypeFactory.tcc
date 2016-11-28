@@ -33,11 +33,11 @@ namespace gum {
     namespace o3prm {
 
       template <typename GUM_SCALAR>
-      INLINE O3TypeFactory<GUM_SCALAR>::O3TypeFactory(
-          PRM<GUM_SCALAR>& prm,
-          O3PRM& o3_prm,
-          O3NameSolver<GUM_SCALAR>& solver,
-          ErrorsContainer& errors )
+      INLINE
+      O3TypeFactory<GUM_SCALAR>::O3TypeFactory( PRM<GUM_SCALAR>&          prm,
+                                                O3PRM&                    o3_prm,
+                                                O3NameSolver<GUM_SCALAR>& solver,
+                                                ErrorsContainer&          errors )
           : __prm( &prm )
           , __o3_prm( &o3_prm )
           , __solver( &solver )
@@ -58,8 +58,8 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
-      INLINE O3TypeFactory<GUM_SCALAR>::O3TypeFactory(
-          O3TypeFactory<GUM_SCALAR>&& src )
+      INLINE
+      O3TypeFactory<GUM_SCALAR>::O3TypeFactory( O3TypeFactory<GUM_SCALAR>&& src )
           : __prm( std::move( src.__prm ) )
           , __o3_prm( std::move( src.__o3_prm ) )
           , __solver( std::move( src.__solver ) )
@@ -79,11 +79,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm    = src.__prm;
+        __prm = src.__prm;
         __o3_prm = src.__o3_prm;
         __solver = src.__solver;
         __errors = src.__errors;
-        __build  = src.__build;
+        __build = src.__build;
         return *this;
       }
 
@@ -93,11 +93,11 @@ namespace gum {
         if ( this == &src ) {
           return *this;
         }
-        __prm    = std::move( src.__prm );
+        __prm = std::move( src.__prm );
         __o3_prm = std::move( src.__o3_prm );
         __solver = std::move( src.__solver );
         __errors = std::move( src.__errors );
-        __build  = std::move( src.__build );
+        __build = std::move( src.__build );
         return *this;
       }
 
@@ -308,15 +308,14 @@ namespace gum {
         for ( auto& pair : type.labels() ) {
 
           auto super_labels = Set<std::string>();
-          auto super        = __typeMap[type.superLabel().label()];
+          auto super = __typeMap[type.superLabel().label()];
 
           for ( auto& label : super->labels() ) {
             super_labels.insert( label.first.label() );
           }
 
           if ( !super_labels.contains( pair.second.label() ) ) {
-            O3PRM_TYPE_UNKNOWN_LABEL(
-                type.superLabel(), pair.second, *__errors );
+            O3PRM_TYPE_UNKNOWN_LABEL( type.superLabel(), pair.second, *__errors );
             return false;
           }
         }

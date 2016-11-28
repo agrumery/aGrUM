@@ -54,8 +54,6 @@ namespace gum {
     return gammaLog2( x );
   }
 
-  INLINE void GammaLog2::setPrecision( bool prec ) {
-    __requires_precision = prec;
-  }
+  INLINE void GammaLog2::setPrecision( bool prec ) { __requires_precision = prec; }
 
 } /* namespace gum */

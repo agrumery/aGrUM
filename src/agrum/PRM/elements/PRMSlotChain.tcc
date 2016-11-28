@@ -33,7 +33,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     PRMSlotChain<GUM_SCALAR>::PRMSlotChain(
-        const std::string& name,
+        const std::string&                            name,
         const Sequence<PRMClassElement<GUM_SCALAR>*>& chain )
         : PRMClassElement<GUM_SCALAR>( name )
         , __chain( new Sequence<PRMClassElement<GUM_SCALAR>*>( chain ) )
@@ -105,8 +105,7 @@ namespace gum {
               static_cast<const PRMAttribute<GUM_SCALAR>*>( __chain->back() );
 
           Bijection<const DiscreteVariable*, const DiscreteVariable*> bij;
-          for ( auto iter = old_attr->cpf().begin();
-                iter != old_attr->cpf().end();
+          for ( auto iter = old_attr->cpf().begin(); iter != old_attr->cpf().end();
                 ++iter ) {
             if ( ( *iter ) != &( old_attr->type().variable() ) ) {
 
@@ -147,8 +146,7 @@ namespace gum {
     PRMSlotChain<GUM_SCALAR>::PRMSlotChain(
         const PRMSlotChain<GUM_SCALAR>& source )
         : PRMClassElement<GUM_SCALAR>( source.name() )
-        , __chain(
-              new Sequence<PRMClassElement<GUM_SCALAR>*>( source.chain() ) )
+        , __chain( new Sequence<PRMClassElement<GUM_SCALAR>*>( source.chain() ) )
         , __isMultiple( source.isMultiple() ) {
       GUM_CONS_CPY( PRMSlotChain );
       __copyLastElt();
@@ -157,9 +155,8 @@ namespace gum {
     template <typename GUM_SCALAR>
     PRMSlotChain<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::
     operator=( const PRMSlotChain<GUM_SCALAR>& source ) {
-      GUM_ERROR(
-          FatalError,
-          "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor." );
+      GUM_ERROR( FatalError,
+                 "Illegal call to gum::SlotChain<GUM_SCALAR> copy constructor." );
     }
 
     template <typename GUM_SCALAR>
@@ -184,8 +181,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMClassElementContainer<GUM_SCALAR>&
-    PRMSlotChain<GUM_SCALAR>::end() {
+    INLINE PRMClassElementContainer<GUM_SCALAR>& PRMSlotChain<GUM_SCALAR>::end() {
       return static_cast<PRMReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
           ->slotType();
@@ -193,7 +189,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const PRMClassElementContainer<GUM_SCALAR>&
-    PRMSlotChain<GUM_SCALAR>::end() const {
+                 PRMSlotChain<GUM_SCALAR>::end() const {
       return static_cast<PRMReferenceSlot<GUM_SCALAR>*>(
                  __chain->atPos( __chain->size() - 2 ) )
           ->slotType();
@@ -206,29 +202,30 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const PRMClassElement<GUM_SCALAR>&
-    PRMSlotChain<GUM_SCALAR>::lastElt() const {
+                 PRMSlotChain<GUM_SCALAR>::lastElt() const {
       return *( __chain->back() );
     }
 
     template <typename GUM_SCALAR>
     INLINE Sequence<PRMClassElement<GUM_SCALAR>*>&
-    PRMSlotChain<GUM_SCALAR>::chain() {
+           PRMSlotChain<GUM_SCALAR>::chain() {
       return *__chain;
     }
 
     template <typename GUM_SCALAR>
     INLINE const Sequence<PRMClassElement<GUM_SCALAR>*>&
-    PRMSlotChain<GUM_SCALAR>::chain() const {
+                 PRMSlotChain<GUM_SCALAR>::chain() const {
       return *__chain;
     }
 
     template <typename GUM_SCALAR>
-    INLINE void PRMSlotChain<GUM_SCALAR>::addParent(
-        const PRMClassElement<GUM_SCALAR>& elt ) {}
+    INLINE void
+    PRMSlotChain<GUM_SCALAR>::addParent( const PRMClassElement<GUM_SCALAR>& elt ) {
+    }
 
     template <typename GUM_SCALAR>
-    INLINE void PRMSlotChain<GUM_SCALAR>::addChild(
-        const PRMClassElement<GUM_SCALAR>& elt ) {}
+    INLINE void
+    PRMSlotChain<GUM_SCALAR>::addChild( const PRMClassElement<GUM_SCALAR>& elt ) {}
 
     template <typename GUM_SCALAR>
     INLINE bool PRMSlotChain<GUM_SCALAR>::isMultiple() const {
@@ -237,7 +234,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE PRMAttribute<GUM_SCALAR>*
-    PRMSlotChain<GUM_SCALAR>::getCastDescendant() const {
+           PRMSlotChain<GUM_SCALAR>::getCastDescendant() const {
       GUM_ERROR( OperationNotAllowed, "This is a slotchain" );
     }
 

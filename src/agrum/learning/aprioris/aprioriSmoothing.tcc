@@ -53,7 +53,7 @@ namespace gum {
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE AprioriSmoothing<IdSetAlloc, CountAlloc>*
-    AprioriSmoothing<IdSetAlloc, CountAlloc>::copyFactory() const {
+           AprioriSmoothing<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new AprioriSmoothing<IdSetAlloc, CountAlloc>( *this );
     }
 
@@ -86,8 +86,8 @@ namespace gum {
                 ( *( this->_modalities ) )[( *( this->_target_nodesets ) )[i]
                                                ->first.back()];
             std::vector<double, CountAlloc>& apriori =
-                this->_apriori_counts
-                    [this->_conditioning_nodesets->operator[]( i )->second];
+                this->_apriori_counts[this->_conditioning_nodesets->operator[]( i )
+                                          ->second];
             for ( auto& count : apriori ) {
               count = weight;
             }
@@ -98,15 +98,15 @@ namespace gum {
 
     /// indicates whether an apriori is of a certain type
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE bool AprioriSmoothing<IdSetAlloc, CountAlloc>::isOfType(
-        const std::string& type ) {
+    INLINE bool
+    AprioriSmoothing<IdSetAlloc, CountAlloc>::isOfType( const std::string& type ) {
       return AprioriSmoothingType::isOfType( type );
     }
 
     /// returns the type of the apriori
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const std::string&
-    AprioriSmoothing<IdSetAlloc, CountAlloc>::getType() const noexcept {
+                 AprioriSmoothing<IdSetAlloc, CountAlloc>::getType() const noexcept {
       return AprioriSmoothingType::type;
     }
 

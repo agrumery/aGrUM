@@ -47,8 +47,7 @@ namespace gum {
    *
    */
 
-  typedef HashTableConstIteratorSafe<LeafPair*, std::vector<Size>>
-      pair_iterator;
+  typedef HashTableConstIteratorSafe<LeafPair*, std::vector<Size>> pair_iterator;
 
 
   template <bool isInitial = false>
@@ -126,9 +125,7 @@ namespace gum {
 
     private:
     bool __updateAssociatedLeaf( AbstractLeaf*, Int2Type<false> );
-    bool __updateAssociatedLeaf( AbstractLeaf*, Int2Type<true> ) {
-      return false;
-    }
+    bool __updateAssociatedLeaf( AbstractLeaf*, Int2Type<true> ) { return false; }
 
     public:
     bool updateAllAssociatedLeaves() {
@@ -191,9 +188,7 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    LeafPair* top() {
-      return !__pairsHeap.empty() ? __pairsHeap.top() : nullptr;
-    }
+    LeafPair* top() { return !__pairsHeap.empty() ? __pairsHeap.top() : nullptr; }
 
     // ###################################################################
     ///
@@ -231,9 +226,7 @@ namespace gum {
 
     private:
     Set<LeafPair*> __associatedPairs( Int2Type<false> );
-    Set<LeafPair*> __associatedPairs( Int2Type<true> ) {
-      return Set<LeafPair*>();
-    }
+    Set<LeafPair*> __associatedPairs( Int2Type<true> ) { return Set<LeafPair*>(); }
     /// @}
 
     public:

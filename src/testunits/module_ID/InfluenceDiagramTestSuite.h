@@ -52,7 +52,7 @@ namespace gum_tests {
 
     private:
     void fillTopo( gum::InfluenceDiagram<float>& id,
-                   gum::List<gum::NodeId>& idList ) {
+                   gum::List<gum::NodeId>&       idList ) {
       try {
         idList.insert( id.addDecisionNode( *decisionVar1 ) );  // 0
         idList.insert( id.addDecisionNode( *decisionVar2 ) );  // 1
@@ -85,16 +85,15 @@ namespace gum_tests {
       }
     }
 
-    void fill( gum::InfluenceDiagram<float>& id,
-               gum::List<gum::NodeId>& idList ) {
+    void fill( gum::InfluenceDiagram<float>& id, gum::List<gum::NodeId>& idList ) {
       fillTopo( id, idList );
 
       try {
         const gum::Potential<float>& p1 = id.cpt( idList[4] );
         {
           // FILLING PARAMS
-          const float t[4] = {0.2f, 0.8f, 0.5f, 0.5f};
-          int n            = 4;
+          const float              t[4] = {0.2f, 0.8f, 0.5f, 0.5f};
+          int                      n = 4;
           const std::vector<float> v( t, t + n );
           p1.populate( v );
         }
@@ -102,8 +101,8 @@ namespace gum_tests {
         const gum::Potential<float>& p2 = id.cpt( idList[5] );
         {
           // FILLING PARAMS
-          const float t[4] = {0.1f, 0.9f, 0.9f, 0.1f};
-          int n            = 4;
+          const float              t[4] = {0.1f, 0.9f, 0.9f, 0.1f};
+          int                      n = 4;
           const std::vector<float> v( t, t + n );
           p2.populate( v );
         }
@@ -111,8 +110,8 @@ namespace gum_tests {
         const gum::Potential<float>& p3 = id.cpt( idList[6] );
         {
           // FILLING PARAMS
-          const float t[4] = {0.35f, 0.65f, 0.19f, 0.81f};
-          int n            = 4;
+          const float              t[4] = {0.35f, 0.65f, 0.19f, 0.81f};
+          int                      n = 4;
           const std::vector<float> v( t, t + n );
           p3.populate( v );
         }
@@ -120,8 +119,8 @@ namespace gum_tests {
         const gum::Potential<float>& p4 = id.cpt( idList[7] );
         {
           // FILLING PARAMS
-          const float t[4] = {0.4f, 0.6f, 0.5f, 0.5f};
-          int n            = 4;
+          const float              t[4] = {0.4f, 0.6f, 0.5f, 0.5f};
+          int                      n = 4;
           const std::vector<float> v( t, t + n );
           p4.populate( v );
         }
@@ -130,7 +129,7 @@ namespace gum_tests {
         {
           // FILLING PARAMS
           const float t[8] = {0.4f, 0.6f, 0.8f, 0.2f, 0.4f, 0.6f, 0.3f, 0.7f};
-          int n            = 8;
+          int         n = 8;
           const std::vector<float> v( t, t + n );
           p5.populate( v );
         }
@@ -138,8 +137,8 @@ namespace gum_tests {
         const gum::UtilityTable<float>& u1 = id.utility( idList[9] );
         {
           // FILLING PARAMS
-          const float t[4] = {42.0f, 69.0f, 666.0f, 84.0f};
-          int n            = 4;
+          const float              t[4] = {42.0f, 69.0f, 666.0f, 84.0f};
+          int                      n = 4;
           const std::vector<float> v( t, t + n );
           u1.populate( v );
         }
@@ -147,8 +146,8 @@ namespace gum_tests {
         const gum::UtilityTable<float>& u2 = id.utility( idList[10] );
         {
           // FILLING PARAMS
-          const float t[4] = {42.0f, -69.0f, 666.0f, 84.0f};
-          int n            = 4;
+          const float              t[4] = {42.0f, -69.0f, 666.0f, 84.0f};
+          int                      n = 4;
           const std::vector<float> v( t, t + n );
           u2.populate( v );
         }
@@ -170,13 +169,13 @@ namespace gum_tests {
       decisionVar2 = new gum::LabelizedVariable( "decisionVar2", "D2", 2 );
       decisionVar3 = new gum::LabelizedVariable( "decisionVar3", "D3", 2 );
       decisionVar4 = new gum::LabelizedVariable( "decisionVar4", "D4", 2 );
-      chanceVar1   = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
-      chanceVar2   = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
-      chanceVar3   = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
-      chanceVar4   = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
-      chanceVar5   = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
-      utilityVar1  = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
-      utilityVar2  = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
+      chanceVar1 = new gum::LabelizedVariable( "chanceVar1", "C1", 2 );
+      chanceVar2 = new gum::LabelizedVariable( "chanceVar2", "C2", 2 );
+      chanceVar3 = new gum::LabelizedVariable( "chanceVar3", "C3", 2 );
+      chanceVar4 = new gum::LabelizedVariable( "chanceVar4", "C4", 2 );
+      chanceVar5 = new gum::LabelizedVariable( "chanceVar5", "C5", 2 );
+      utilityVar1 = new gum::LabelizedVariable( "utilityVar1", "U1", 1 );
+      utilityVar2 = new gum::LabelizedVariable( "utilityVar2", "U2", 1 );
     }
 
     void tearDown() {
@@ -209,7 +208,7 @@ namespace gum_tests {
 
     void testNodeType() {
       gum::InfluenceDiagram<float> topology;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
       TS_GUM_ASSERT_THROWS_NOTHING( fill( topology, idList ) );
 
       TS_ASSERT( topology.isDecisionNode( idList[0] ) );
@@ -255,11 +254,11 @@ namespace gum_tests {
 
     void testToDot() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
       fill( id, idList );
 
       // For comparison with what readers will return
-      std::string dotfile = GET_RESSOURCES_PATH( "IDToDotWriter.dot" );
+      std::string   dotfile = GET_RESSOURCES_PATH( "IDToDotWriter.dot" );
       std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( !output.good() ) {
@@ -279,7 +278,7 @@ namespace gum_tests {
 
     void testCopyConstructor() {
       gum::InfluenceDiagram<float> source;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
       TS_GUM_ASSERT_THROWS_NOTHING( fill( source, idList ) );
 
       gum::InfluenceDiagram<float>* copy = nullptr;
@@ -293,7 +292,7 @@ namespace gum_tests {
         TS_ASSERT( copy->dag().exists( node ) );
 
         const gum::DiscreteVariable& srcVar = source.variable( node );
-        const gum::DiscreteVariable& cpVar  = copy->variable( node );
+        const gum::DiscreteVariable& cpVar = copy->variable( node );
         TS_ASSERT_EQUALS( srcVar.name(), cpVar.name() );
 
         if ( srcVar.domainSize() == cpVar.domainSize() ) {
@@ -326,7 +325,7 @@ namespace gum_tests {
 
         } else if ( source.isUtilityNode( node ) ) {
           const gum::UtilityTable<float>& srcUT = source.utility( node );
-          const gum::UtilityTable<float>& cpUT  = copy->utility( node );
+          const gum::UtilityTable<float>& cpUT = copy->utility( node );
 
           gum::Instantiation srcInst( srcUT );
           gum::Instantiation cpInst( cpUT );
@@ -348,7 +347,7 @@ namespace gum_tests {
     void testInsertion_1() {
 
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           idList.insert( id.addDecisionNode( *decisionVar1 ) ) );
@@ -396,7 +395,7 @@ namespace gum_tests {
 
     void testInsertion_2() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           idList.insert( id.addDecisionNode( *decisionVar2 ) ) );
@@ -430,14 +429,13 @@ namespace gum_tests {
 
       gum::LabelizedVariable* utilityVar3 =
           new gum::LabelizedVariable( "utilityVar3", "U3", 2 );
-      TS_ASSERT_THROWS( id.addUtilityNode( *utilityVar3 ),
-                        gum::InvalidArgument );
+      TS_ASSERT_THROWS( id.addUtilityNode( *utilityVar3 ), gum::InvalidArgument );
       delete utilityVar3;
     }
 
     void testArcInsertion() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           idList.insert( id.addDecisionNode( *decisionVar2 ) ) );
@@ -465,7 +463,7 @@ namespace gum_tests {
 
     void testEraseVar() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       TS_ASSERT( id.empty() );
       TS_ASSERT( id.dag().emptyArcs() );
@@ -513,7 +511,7 @@ namespace gum_tests {
 
     void testEraseArc() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       TS_ASSERT( id.empty() );
       TS_ASSERT( id.dag().emptyArcs() );
@@ -561,7 +559,7 @@ namespace gum_tests {
 
     void testIterator() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       for ( const auto node : id.nodes() ) {
         TS_ASSERT( idList.exists( node ) );
@@ -570,7 +568,7 @@ namespace gum_tests {
 
     void testTopologicalOrder() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       fill( id, idList );
 
@@ -582,7 +580,7 @@ namespace gum_tests {
 
     void testTable() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       fill( id, idList );
       TS_ASSERT_EQUALS( id.cpt( idList[4] ).domainSize(), (gum::Size)4 );
@@ -596,7 +594,7 @@ namespace gum_tests {
 
     void testTableCoherencyVarRemoval() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       fill( id, idList );
 
@@ -638,12 +636,9 @@ namespace gum_tests {
       dmnSize_3 *= id.variable( idList[10] ).domainSize();
       TS_ASSERT_EQUALS( id.utility( idList[10] ).domainSize(), dmnSize_3 );
 
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[3] ) ) );
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[8] ) ) );
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[10] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[3] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[8] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[10] ) ) );
 
       TS_GUM_ASSERT_THROWS_NOTHING( id.erase( idList[3] ) );
 
@@ -655,17 +650,15 @@ namespace gum_tests {
       dmnSize_4 *= id.variable( idList[10] ).domainSize();
       TS_ASSERT_EQUALS( id.utility( idList[10] ).domainSize(), dmnSize_4 );
 
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[8] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[8] ) ) );
       TS_ASSERT_THROWS_ANYTHING(
           id.utility( idList[10] ).contains( id.variable( idList[3] ) ) );
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[10] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[10] ) ) );
     }
 
     void testTableCoherencyArcRemoval() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       fill( id, idList );
 
@@ -708,12 +701,9 @@ namespace gum_tests {
       dmnSize_3 *= id.variable( idList[10] ).domainSize();
       TS_ASSERT_EQUALS( id.utility( idList[10] ).domainSize(), dmnSize_3 );
 
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[3] ) ) );
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[8] ) ) );
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[10] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[3] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[8] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[10] ) ) );
 
       TS_GUM_ASSERT_THROWS_NOTHING(
           id.eraseArc( gum::Arc( idList[3], idList[10] ) ) );
@@ -726,17 +716,14 @@ namespace gum_tests {
       dmnSize_4 *= id.variable( idList[10] ).domainSize();
       TS_ASSERT_EQUALS( id.utility( idList[10] ).domainSize(), dmnSize_4 );
 
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[8] ) ) );
-      TS_ASSERT(
-          !id.utility( idList[10] ).contains( id.variable( idList[3] ) ) );
-      TS_ASSERT(
-          id.utility( idList[10] ).contains( id.variable( idList[10] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[8] ) ) );
+      TS_ASSERT( !id.utility( idList[10] ).contains( id.variable( idList[3] ) ) );
+      TS_ASSERT( id.utility( idList[10] ).contains( id.variable( idList[10] ) ) );
     }
 
     void testAccessorByName() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       fill( id, idList );
 
@@ -757,7 +744,7 @@ namespace gum_tests {
 
     void testDecisionPath() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       fill( id, idList );
 
@@ -768,11 +755,10 @@ namespace gum_tests {
       TS_ASSERT( id.decisionOrderExists() );
       TS_ASSERT_THROWS_NOTHING( id.getDecisionOrder() );
       TS_ASSERT_THROWS_NOTHING( id.getPartialTemporalOrder() );
-      gum::List<gum::NodeSet> partialTemporalOrder =
-          id.getPartialTemporalOrder();
+      gum::List<gum::NodeSet> partialTemporalOrder = id.getPartialTemporalOrder();
 
       gum::Size resultat[7][3] = {{8, 6, 4}, {3}, {7}, {1}, {2}, {5}, {0}};
-      int i                    = 0;
+      int       i = 0;
 
       for ( const auto nodeset : partialTemporalOrder ) {
         int j = 0;
@@ -788,7 +774,7 @@ namespace gum_tests {
 
     void testMoralisation() {
       gum::InfluenceDiagram<float> id;
-      gum::List<gum::NodeId> idList;
+      gum::List<gum::NodeId>       idList;
 
       gum::LabelizedVariable dVar1( "decisionVar1", "D1", 2 );
       gum::LabelizedVariable dVar2( "decisionVar2", "D2", 2 );
@@ -864,9 +850,8 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING( moralGraph = id.moralGraph( true ) );
 
       // For comparison with what readers will return
-      std::string dotfile = GET_RESSOURCES_PATH( "IDBeforeMoralisation.dot" );
-      std::ofstream idOutput( dotfile.c_str(),
-                              std::ios::out | std::ios::trunc );
+      std::string   dotfile = GET_RESSOURCES_PATH( "IDBeforeMoralisation.dot" );
+      std::ofstream idOutput( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( !idOutput.good() ) {
         GUM_ERROR( gum::IOError, "Stream states flags are not all unset." );

@@ -109,7 +109,7 @@ namespace gum {
 
       /// transforms a vector of DBrows
       /** @return true if the transformation could be performed successfully. */
-      virtual bool transform( std::vector<DBRow>& db,
+      virtual bool transform( std::vector<DBRow>&      db,
                               std::vector<std::string> miss ) const = 0;
 
       /// @}

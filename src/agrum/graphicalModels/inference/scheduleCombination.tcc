@@ -55,7 +55,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   ScheduleMultiDim<GUM_SCALAR> ScheduleCombination<GUM_SCALAR>::combine(
       const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
-      Schedule<GUM_SCALAR>& schedule ) {
+      Schedule<GUM_SCALAR>&                                 schedule ) {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
@@ -76,8 +76,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   template <template <typename> class TABLE>
   ScheduleMultiDim<GUM_SCALAR> ScheduleCombination<GUM_SCALAR>::combine(
-      const Set<const TABLE<GUM_SCALAR>*>& set,
-      Schedule<GUM_SCALAR>& schedule ) {
+      const Set<const TABLE<GUM_SCALAR>*>& set, Schedule<GUM_SCALAR>& schedule ) {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
@@ -99,7 +98,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   float ScheduleCombination<GUM_SCALAR>::nbOperations(
       const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
-      const Schedule<GUM_SCALAR>& schedule ) {
+      const Schedule<GUM_SCALAR>&                           schedule ) {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
@@ -122,7 +121,7 @@ namespace gum {
   template <template <typename> class TABLE>
   float ScheduleCombination<GUM_SCALAR>::nbOperations(
       const Set<const TABLE<GUM_SCALAR>*>& set,
-      const Schedule<GUM_SCALAR>& schedule ) {
+      const Schedule<GUM_SCALAR>&          schedule ) {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
@@ -143,7 +142,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::pair<long, long> ScheduleCombination<GUM_SCALAR>::memoryUsage(
       const Set<const MultiDimImplementation<GUM_SCALAR>*>& set,
-      const Schedule<GUM_SCALAR>& schedule ) {
+      const Schedule<GUM_SCALAR>&                           schedule ) {
     // first wrap the multidimimplementations into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 
@@ -166,7 +165,7 @@ namespace gum {
   template <template <typename> class TABLE>
   std::pair<long, long> ScheduleCombination<GUM_SCALAR>::memoryUsage(
       const Set<const TABLE<GUM_SCALAR>*>& set,
-      const Schedule<GUM_SCALAR>& schedule ) {
+      const Schedule<GUM_SCALAR>&          schedule ) {
     // first wrap the TABLES into ScheduleMultiDims
     Set<const ScheduleMultiDim<GUM_SCALAR>*> sched_set;
 

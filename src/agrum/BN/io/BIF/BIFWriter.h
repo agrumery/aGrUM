@@ -104,7 +104,7 @@ namespace gum {
     // Returns the modalities labels of the variables in varsSeq
     std::string
     __variablesLabels( const Sequence<const DiscreteVariable*>& varsSeq,
-                       const Instantiation& inst );
+                       const Instantiation&                     inst );
   };
 
 

@@ -36,7 +36,7 @@
 #include <agrum/core/cast_unicode.h>
 
 INLINE std::wstring widen( const std::string& str ) {
-  std::wostringstream wstm;
+  std::wostringstream        wstm;
   const std::ctype<wchar_t>& ctfacet =
       std::use_facet<std::ctype<wchar_t>>( wstm.getloc() );
 
@@ -48,7 +48,7 @@ INLINE std::wstring widen( const std::string& str ) {
 }
 
 INLINE std::string narrow( const std::wstring& str ) {
-  std::ostringstream stm;
+  std::ostringstream      stm;
   const std::ctype<char>& ctfacet =
       std::use_facet<std::ctype<char>>( stm.getloc() );
 

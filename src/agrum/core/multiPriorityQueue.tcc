@@ -69,7 +69,7 @@ namespace gum {
 
     // fill the heap structure
     for ( const auto& val_and_index : __indices ) {
-      const Val* val                = &( val_and_index.first );
+      const Val*               val = &( val_and_index.first );
       const std::vector<Size>& vect = val_and_index.second;
       for ( auto index : vect ) {
         __heap[index].second = val;
@@ -95,7 +95,7 @@ namespace gum {
         __heap.push_back( elt );
       }
       for ( const auto& val_and_index : __indices ) {
-        const Val* val                = &( val_and_index.first );
+        const Val*               val = &( val_and_index.first );
         const std::vector<Size>& vect = val_and_index.second;
         for ( auto index : vect ) {
           __heap[index].second = val;
@@ -136,13 +136,13 @@ namespace gum {
       __cmp = from.__cmp;
 
       // copy the indices and the heap
-      __indices     = from.__indices;
-      __heap        = from.__heap;
+      __indices = from.__indices;
+      __heap = from.__heap;
       __nb_elements = from.__nb_elements;
 
       // restore the link between __indices and __heap
       for ( const auto& val_and_index : __indices ) {
-        const Val* val                = &( val_and_index.first );
+        const Val*               val = &( val_and_index.first );
         const std::vector<Size>& vect = val_and_index.second;
         for ( auto index : vect ) {
           __heap[index].second = val;
@@ -173,7 +173,7 @@ namespace gum {
       __cmp = from.__cmp;
 
       // copy the indices and the heap
-      __indices     = from.__indices;
+      __indices = from.__indices;
       __nb_elements = from.__nb_elements;
 
       // restore the link between __indices and __heap
@@ -183,7 +183,7 @@ namespace gum {
         __heap.push_back( elt );
       }
       for ( const auto& val_and_index : __indices ) {
-        const Val* val                = &( val_and_index.first );
+        const Val*               val = &( val_and_index.first );
         const std::vector<Size>& vect = val_and_index.second;
         for ( auto index : vect ) {
           __heap[index].second = val;
@@ -210,9 +210,9 @@ namespace gum {
       // for debugging purposes
       GUM_OP_MOV( MultiPriorityQueue );
 
-      __cmp         = std::move( from.__cmp );
-      __indices     = std::move( from.__indices );
-      __heap        = std::move( from.__heap );
+      __cmp = std::move( from.__cmp );
+      __indices = std::move( from.__indices );
+      __heap = std::move( from.__heap );
       __nb_elements = std::move( from.__nb_elements );
     }
 
@@ -232,7 +232,7 @@ namespace gum {
   // returns the priority of the top element
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE const Priority&
-  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::topPriority() const {
+               MultiPriorityQueue<Val, Priority, Cmp, Alloc>::topPriority() const {
     if ( !__nb_elements ) {
       GUM_ERROR( NotFound, "empty priority queue" );
     }
@@ -278,7 +278,7 @@ namespace gum {
     if ( index >= __nb_elements ) return;
 
     // remove the element from the hashtable
-    const Val& del_val            = *( __heap[index].second );
+    const Val&         del_val = *( __heap[index].second );
     std::vector<Size>& vect_index = __indices[del_val];
     if ( vect_index.size() == 1 )
       __indices.erase( del_val );
@@ -313,7 +313,7 @@ namespace gum {
       if ( __cmp( last.first, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i]                     = std::move( __heap[j] );
+      __heap[i] = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& v_index : vect_index ) {
         if ( v_index == j ) {
@@ -324,7 +324,7 @@ namespace gum {
     }
 
     // put "last" back into the heap
-    __heap[i]                       = std::move( last );
+    __heap[i] = std::move( last );
     std::vector<Size>& last_indices = __indices[*( __heap[i].second )];
     for ( auto& v_index : last_indices ) {
       if ( v_index == __nb_elements ) {
@@ -366,9 +366,8 @@ namespace gum {
   // returns a hashtable the keys of which are the values stored in the queue
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE const HashTable<Val, std::vector<Size>>&
-  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::allValues() const {
-    return reinterpret_cast<const HashTable<Val, std::vector<Size>>&>(
-        __indices );
+               MultiPriorityQueue<Val, Priority, Cmp, Alloc>::allValues() const {
+    return reinterpret_cast<const HashTable<Val, std::vector<Size>>&>( __indices );
   }
 
   // inserts a new (a copy) element in the priority queue
@@ -376,14 +375,14 @@ namespace gum {
   Size MultiPriorityQueue<Val, Priority, Cmp, Alloc>::insert(
       const Val& val, const Priority& priority ) {
     // create the entry in the indices hashtable
-    const Val* new_val;
+    const Val*         new_val;
     std::vector<Size>* new_vect;
     if ( !__indices.exists( val ) ) {
       auto& new_elt = __indices.insert( val, std::vector<Size>() );
-      new_val       = &( new_elt.first );
-      new_vect      = &( new_elt.second );
+      new_val = &( new_elt.first );
+      new_vect = &( new_elt.second );
     } else {
-      new_val  = &( __indices.key( val ) );
+      new_val = &( __indices.key( val ) );
       new_vect = &( __indices[val] );
     }
 
@@ -415,7 +414,7 @@ namespace gum {
     for ( Size j = ( i - 1 ) >> 1;
           i && __cmp( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i]                     = std::move( __heap[j] );
+      __heap[i] = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& index : vect_index ) {
         if ( index == j ) {
@@ -426,7 +425,7 @@ namespace gum {
     }
 
     // put the new bucket into the heap
-    __heap[i].first  = std::move( new_heap_val.first );
+    __heap[i].first = std::move( new_heap_val.first );
     __heap[i].second = new_val;
     new_vect->back() = i;
 
@@ -439,14 +438,14 @@ namespace gum {
   MultiPriorityQueue<Val, Priority, Cmp, Alloc>::insert( Val&& val,
                                                          Priority&& priority ) {
     // create the entry in the indices hashtable
-    const Val* new_val;
+    const Val*         new_val;
     std::vector<Size>* new_vect;
     if ( !__indices.exists( val ) ) {
       auto& new_elt = __indices.insert( std::move( val ), std::vector<Size>() );
-      new_val       = &( new_elt.first );
-      new_vect      = &( new_elt.second );
+      new_val = &( new_elt.first );
+      new_vect = &( new_elt.second );
     } else {
-      new_val  = &( __indices.key( val ) );
+      new_val = &( __indices.key( val ) );
       new_vect = &( __indices[val] );
     }
 
@@ -479,7 +478,7 @@ namespace gum {
     for ( Size j = ( i - 1 ) >> 1;
           i && __cmp( new_heap_val.first, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i]                     = std::move( __heap[j] );
+      __heap[i] = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& index : vect_index ) {
         if ( index == j ) {
@@ -490,7 +489,7 @@ namespace gum {
     }
 
     // put the new bucket into the heap
-    __heap[i].first  = std::move( new_heap_val.first );
+    __heap[i].first = std::move( new_heap_val.first );
     __heap[i].second = new_val;
     new_vect->back() = i;
 
@@ -501,7 +500,7 @@ namespace gum {
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   template <typename... Args>
   INLINE Size
-  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::emplace( Args&&... args ) {
+         MultiPriorityQueue<Val, Priority, Cmp, Alloc>::emplace( Args&&... args ) {
     std::pair<Val, Priority> new_elt =
         std::make_pair<Val, Priority>( std::forward<Args>( args )... );
     return insert( std::move( new_elt.first ), std::move( new_elt.second ) );
@@ -516,8 +515,8 @@ namespace gum {
 
   // indicates whether the priority queue contains a given value
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
-  INLINE bool MultiPriorityQueue<Val, Priority, Cmp, Alloc>::contains(
-      const Val& val ) const {
+  INLINE bool
+  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::contains( const Val& val ) const {
     return __indices.exists( val );
   }
 
@@ -535,7 +534,7 @@ namespace gum {
   // displays the content of the queue
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   std::string MultiPriorityQueue<Val, Priority, Cmp, Alloc>::toString() const {
-    bool deja = false;
+    bool              deja = false;
     std::stringstream stream;
     stream << "[";
 
@@ -568,7 +567,7 @@ namespace gum {
     // move val upward if needed
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( new_priority, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i]                     = std::move( __heap[j] );
+      __heap[i] = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& idx : vect_index ) {
         if ( idx == j ) {
@@ -579,8 +578,7 @@ namespace gum {
     }
 
     // move val downward if needed
-    for ( Size j = ( i << 1 ) + 1; j < __nb_elements;
-          i = j, j = ( j << 1 ) + 1 ) {
+    for ( Size j = ( i << 1 ) + 1; j < __nb_elements; i = j, j = ( j << 1 ) + 1 ) {
       // let j be the max child
       if ( ( j + 1 < __nb_elements ) &&
            __cmp( __heap[j + 1].first, __heap[j].first ) )
@@ -590,7 +588,7 @@ namespace gum {
       if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i]                     = std::move( __heap[j] );
+      __heap[i] = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& idx : vect_index ) {
         if ( idx == j ) {
@@ -601,8 +599,8 @@ namespace gum {
     }
 
     // update the index of val
-    __heap[i].first               = new_priority;
-    __heap[i].second              = val;
+    __heap[i].first = new_priority;
+    __heap[i].second = val;
     std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
     for ( auto& idx : vect_index ) {
       if ( idx == index ) {
@@ -632,7 +630,7 @@ namespace gum {
     // move val upward if needed
     for ( Size j = ( i - 1 ) >> 1; i && __cmp( new_priority, __heap[j].first );
           i = j, j = ( j - 1 ) >> 1 ) {
-      __heap[i]                     = std::move( __heap[j] );
+      __heap[i] = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& idx : vect_index ) {
         if ( idx == j ) {
@@ -643,8 +641,7 @@ namespace gum {
     }
 
     // move val downward if needed
-    for ( Size j = ( i << 1 ) + 1; j < __nb_elements;
-          i = j, j = ( j << 1 ) + 1 ) {
+    for ( Size j = ( i << 1 ) + 1; j < __nb_elements; i = j, j = ( j << 1 ) + 1 ) {
       // let j be the max child
       if ( ( j + 1 < __nb_elements ) &&
            __cmp( __heap[j + 1].first, __heap[j].first ) )
@@ -654,7 +651,7 @@ namespace gum {
       if ( __cmp( new_priority, __heap[j].first ) ) break;
 
       // else pull up the jth node
-      __heap[i]                     = std::move( __heap[j] );
+      __heap[i] = std::move( __heap[j] );
       std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
       for ( auto& idx : vect_index ) {
         if ( idx == j ) {
@@ -665,8 +662,8 @@ namespace gum {
     }
 
     // update the index of val
-    __heap[i].first               = std::move( new_priority );
-    __heap[i].second              = val;
+    __heap[i].first = std::move( new_priority );
+    __heap[i].second = val;
     std::vector<Size>& vect_index = __indices[*( __heap[i].second )];
     for ( auto& idx : vect_index ) {
       if ( idx == index ) {
@@ -692,8 +689,7 @@ namespace gum {
   // modifies the priority of each instance of a given element
   template <typename Val, typename Priority, typename Cmp, typename Alloc>
   INLINE const Priority&
-  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::priority(
-      const Val& elt ) const {
+  MultiPriorityQueue<Val, Priority, Cmp, Alloc>::priority( const Val& elt ) const {
     return __heap[__indices[elt][0]].first;
   }
 

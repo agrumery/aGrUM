@@ -76,12 +76,11 @@ namespace gum {
       template <typename GUM_SCALAR = double,
                 typename PARAM_ESTIMATOR,
                 typename CELL_TRANSLATORS>
-      static BayesNet<GUM_SCALAR>
-      createBN( PARAM_ESTIMATOR& estimator,
-                const DAG& dag,
-                const std::vector<std::string>& names,
-                const std::vector<Size>& modal,
-                const CELL_TRANSLATORS& translator );
+      static BayesNet<GUM_SCALAR> createBN( PARAM_ESTIMATOR& estimator,
+                                            const DAG&       dag,
+                                            const std::vector<std::string>& names,
+                                            const std::vector<Size>&        modal,
+                                            const CELL_TRANSLATORS& translator );
 
       /// @}
 
@@ -91,7 +90,7 @@ namespace gum {
        * order differs */
       template <typename GUM_SCALAR = double>
       static void
-      __probaVarReordering( gum::Potential<GUM_SCALAR>& pot,
+      __probaVarReordering( gum::Potential<GUM_SCALAR>&       pot,
                             const gum::Potential<GUM_SCALAR>& other_pot );
     };
 

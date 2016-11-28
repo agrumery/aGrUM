@@ -192,7 +192,7 @@ namespace gum {
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
      */
-    NodeId add( const DiscreteVariable& variable,
+    NodeId add( const DiscreteVariable&             variable,
                 MultiDimImplementation<GUM_SCALAR>* aContent );
 
     /**
@@ -229,9 +229,9 @@ namespace gum {
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
      */
-    NodeId add( const DiscreteVariable& variable,
+    NodeId add( const DiscreteVariable&             variable,
                 MultiDimImplementation<GUM_SCALAR>* aContent,
-                NodeId id );
+                NodeId                              id );
 
     /**
      * @brief Remove a variable from the gum::BayesNet.
@@ -437,11 +437,11 @@ namespace gum {
      */
 
     NodeId addNoisyOR( const DiscreteVariable& variable,
-                       GUM_SCALAR externalWeight );
+                       GUM_SCALAR              externalWeight );
     NodeId addNoisyORNet( const DiscreteVariable& variable,
-                          GUM_SCALAR externalWeight );
+                          GUM_SCALAR              externalWeight );
     NodeId addNoisyORCompound( const DiscreteVariable& variable,
-                               GUM_SCALAR externalWeight );
+                               GUM_SCALAR              externalWeight );
     /** @} */
 
     /**
@@ -461,14 +461,14 @@ namespace gum {
      * @{
      */
     NodeId addNoisyOR( const DiscreteVariable& variable,
-                       GUM_SCALAR externalWeight,
-                       NodeId id );
+                       GUM_SCALAR              externalWeight,
+                       NodeId                  id );
     NodeId addNoisyORNet( const DiscreteVariable& variable,
-                          GUM_SCALAR externalWeight,
-                          NodeId id );
+                          GUM_SCALAR              externalWeight,
+                          NodeId                  id );
     NodeId addNoisyORCompound( const DiscreteVariable& variable,
-                               GUM_SCALAR externalWeight,
-                               NodeId id );
+                               GUM_SCALAR              externalWeight,
+                               NodeId                  id );
     /** @} */
 
     /**
@@ -482,8 +482,8 @@ namespace gum {
      * @return the id of the added variable.
      */
     NodeId addNoisyAND( const DiscreteVariable& variable,
-                        GUM_SCALAR externalWeight,
-                        NodeId id );
+                        GUM_SCALAR              externalWeight,
+                        NodeId                  id );
 
     /**
      * Add a variable, its associate node and a noisyAND implementation. The id
@@ -494,7 +494,7 @@ namespace gum {
      * @return the id of the added variable.
      */
     NodeId addNoisyAND( const DiscreteVariable& variable,
-                        GUM_SCALAR externalWeight );
+                        GUM_SCALAR              externalWeight );
 
     /**
      * Add a variable, its associate node and a Logit implementation.
@@ -507,8 +507,8 @@ namespace gum {
      * @return the id of the added variable.
      */
     NodeId addLogit( const DiscreteVariable& variable,
-                     GUM_SCALAR externalWeight,
-                     NodeId id );
+                     GUM_SCALAR              externalWeight,
+                     NodeId                  id );
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of
@@ -518,8 +518,7 @@ namespace gum {
      * @param externalWeight see gum::MultiDimLogit
      * @return the id of the added variable.
      */
-    NodeId addLogit( const DiscreteVariable& variable,
-                     GUM_SCALAR externalWeight );
+    NodeId addLogit( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
 
     /**
      * Add a variable, it's associate node and an OR implementation. The id of
@@ -588,7 +587,7 @@ namespace gum {
     /// @throw NotAllowed if newPot has not the same signature as
     /// __probaMap[NodeId]
     void changePotential( NodeId id, Potential<GUM_SCALAR>* newPot );
-    void changePotential( const std::string& name,
+    void changePotential( const std::string&     name,
                           Potential<GUM_SCALAR>* newPot ) {
       changePotential( idFromName( name ), newPot );
     }
@@ -622,7 +621,7 @@ namespace gum {
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream& output,
+  std::ostream& operator<<( std::ostream&               output,
                             const BayesNet<GUM_SCALAR>& map );
 
   extern template class BayesNet<float>;

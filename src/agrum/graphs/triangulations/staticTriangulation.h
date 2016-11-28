@@ -85,7 +85,7 @@ namespace gum {
      * it is compulsory that all the nodes of graph belong to dom_sizes
      * @warning the graph is not copied but only referenced by the elimination
      * sequence algorithm. */
-    virtual void setGraph( const UndiGraph* graph,
+    virtual void setGraph( const UndiGraph*          graph,
                            const NodeProperty<Size>* domsizes );
 
     /// returns the fill-ins added by the triangulation algorithm
@@ -172,8 +172,8 @@ namespace gum {
      * @param minimality a Boolean indicating whether we should enforce that
      * the triangulation is minimal w.r.t. inclusion */
     StaticTriangulation( const EliminationSequenceStrategy& elimSeq,
-                         const JunctionTreeStrategy& JTStrategy,
-                         bool minimality = false );
+                         const JunctionTreeStrategy&        JTStrategy,
+                         bool                               minimality = false );
 
     /// constructor with a given graph
     /** @param graph the graph to be triangulated, i.e., the nodes of which will
@@ -189,11 +189,11 @@ namespace gum {
      * the triangulation is minimal w.r.t. inclusion
      * @warning note that, by aGrUM's rule, the graph is not copied but only
      * referenced by the triangulation algorithm. */
-    StaticTriangulation( const UndiGraph* graph,
-                         const NodeProperty<Size>* dom_sizes,
+    StaticTriangulation( const UndiGraph*                   graph,
+                         const NodeProperty<Size>*          dom_sizes,
                          const EliminationSequenceStrategy& elimSeq,
-                         const JunctionTreeStrategy& JTStrategy,
-                         bool minimality = false );
+                         const JunctionTreeStrategy&        JTStrategy,
+                         bool                               minimality = false );
 
     /// forbid copy constructor except in newfactory
     StaticTriangulation( const StaticTriangulation& );
@@ -312,10 +312,10 @@ namespace gum {
     void __computeRecursiveThinning();
 
     /// used for computing the junction tree of the maximal prime subgraphs
-    void __computeMaxPrimeMergings( const NodeId node,
-                                    const NodeId from,
+    void __computeMaxPrimeMergings( const NodeId      node,
+                                    const NodeId      from,
                                     std::vector<Arc>& merged_cliques,
-                                    NodeSet& mark ) const;
+                                    NodeSet&          mark ) const;
 
     /// forbid copy operator
     StaticTriangulation& operator=( const StaticTriangulation& );

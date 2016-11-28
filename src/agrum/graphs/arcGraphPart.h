@@ -213,8 +213,7 @@ namespace gum {
      * half the number of arcs. If you do not specify this parameter, the method
      * will assign it for you. */
     template <typename VAL>
-    ArcProperty<VAL> arcsProperty( VAL ( *f )( const Arc& ),
-                                   Size size = 0 ) const;
+    ArcProperty<VAL> arcsProperty( VAL ( *f )( const Arc& ), Size size = 0 ) const;
 
     /** @brief a method to create a hashMap of VAL from a set of arcs
      * (using for every arc, say x, the VAL a)
@@ -245,8 +244,8 @@ namespace gum {
      * @param node2 the id to which the path ends
      * @throw NotFound exception is raised if no path can be found between the
      * two nodes */
-    const std::vector<NodeId>
-    directedUnorientedPath( const NodeId node1, const NodeId node2 ) const;
+    const std::vector<NodeId> directedUnorientedPath( const NodeId node1,
+                                                      const NodeId node2 ) const;
 
     /// @}
 

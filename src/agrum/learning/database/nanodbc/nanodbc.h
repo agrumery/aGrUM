@@ -260,15 +260,15 @@ namespace nanodbc {
     //! handle.
     //! \param info Additional information that will be appended to the
     //! beginning of the error message.
-    database_error( void* handle,
-                    short handle_type,
+    database_error( void*              handle,
+                    short              handle_type,
                     const std::string& info = "" );
-    const char* what() const NANODBC_NOEXCEPT;
-    const long native() const NANODBC_NOEXCEPT;
+    const char*       what() const NANODBC_NOEXCEPT;
+    const long        native() const NANODBC_NOEXCEPT;
     const std::string state() const NANODBC_NOEXCEPT;
 
     private:
-    long native_error;
+    long        native_error;
     std::string sql_state;
     std::string message;
   };
@@ -438,9 +438,9 @@ namespace nanodbc {
     //! indicating no timeout.
     //! \see execute(), just_execute(), execute_direct(), just_execute_direct(),
     //! open(), prepare()
-    statement( class connection& conn,
+    statement( class connection&  conn,
                const string_type& query,
-               long timeout = 0 );
+               long               timeout = 0 );
 
     //! Copy constructor.
     statement( const statement& rhs );
@@ -495,9 +495,8 @@ namespace nanodbc {
     //! indicating no timeout.
     //! \see open()
     //! \throws database_error
-    void prepare( class connection& conn,
-                  const string_type& query,
-                  long timeout = 0 );
+    void
+    prepare( class connection& conn, const string_type& query, long timeout = 0 );
 
     //! \brief Prepares the given statement to execute its associated
     //! connection.
@@ -527,10 +526,10 @@ namespace nanodbc {
     //! operations because it will prevent auto commits from occurring after
     //! each individual operation is executed.
     //! \see open(), prepare(), execute(), result, transaction
-    class result execute_direct( class connection& conn,
+    class result execute_direct( class connection&  conn,
                                  const string_type& query,
-                                 long batch_operations = 1,
-                                 long timeout          = 0 );
+                                 long               batch_operations = 1,
+                                 long               timeout = 0 );
 
     //! \brief Immediately opens, prepares, and executes the given query
     //! directly on the given connection, in asynchronous mode.
@@ -553,11 +552,11 @@ namespace nanodbc {
     //! operations because it will prevent auto commits from occurring after
     //! each individual operation is executed.
     //! \see open(), prepare(), execute(), result, transaction
-    void async_execute_direct( class connection& conn,
-                               void* event_handle,
+    void async_execute_direct( class connection&  conn,
+                               void*              event_handle,
                                const string_type& query,
-                               long batch_operations = 1,
-                               long timeout          = 0 );
+                               long               batch_operations = 1,
+                               long               timeout = 0 );
 
     //! \brief Completes a previously initiated asynchronous query operation,
     //! returning the result.
@@ -586,10 +585,10 @@ namespace nanodbc {
     //! operations because it will prevent auto commits from occurring after
     //! each individual operation is executed.
     //! \see open(), prepare(), execute(), execute_direct(), result, transaction
-    void just_execute_direct( class connection& conn,
+    void just_execute_direct( class connection&  conn,
                               const string_type& query,
-                              long batch_operations = 1,
-                              long timeout          = 0 );
+                              long               batch_operations = 1,
+                              long               timeout = 0 );
 
     //! \brief Execute the previously prepared query now.
     //! \param batch_operations Numbers of rows to fetch per rowset, or the
@@ -667,8 +666,7 @@ namespace nanodbc {
     //! \param direction ODBC parameter direction.
     //! \throws database_error
     template <class T>
-    void
-    bind( short param, const T* value, param_direction direction = PARAM_IN );
+    void bind( short param, const T* value, param_direction direction = PARAM_IN );
 
     //! \addtogroup bind_multi Binding multiple non-string values
     //! \brief Binds the given values to the given parameter placeholder number
@@ -693,27 +691,27 @@ namespace nanodbc {
     //! \brief Binds multiple values.
     //! \see bind_multi
     template <class T>
-    void bind( short param,
-               const T* values,
-               std::size_t elements,
+    void bind( short           param,
+               const T*        values,
+               std::size_t     elements,
                param_direction direction = PARAM_IN );
 
     //! \brief Binds multiple values.
     //! \see bind_multi
     template <class T>
-    void bind( short param,
-               const T* values,
-               std::size_t elements,
-               const T* null_sentry,
+    void bind( short           param,
+               const T*        values,
+               std::size_t     elements,
+               const T*        null_sentry,
                param_direction direction = PARAM_IN );
 
     //! \brief Binds multiple values.
     //! \see bind_multi
     template <class T>
-    void bind( short param,
-               const T* values,
-               std::size_t elements,
-               const bool* nulls,
+    void bind( short           param,
+               const T*        values,
+               std::size_t     elements,
+               const bool*     nulls,
                param_direction direction = PARAM_IN );
 
     //! @}
@@ -742,11 +740,11 @@ namespace nanodbc {
 
     //! \brief Binds multiple string values.
     //! \see bind_strings
-    void bind_strings( short param,
+    void bind_strings( short                          param,
                        const string_type::value_type* values,
-                       std::size_t length,
-                       std::size_t elements,
-                       param_direction direction = PARAM_IN );
+                       std::size_t                    length,
+                       std::size_t                    elements,
+                       param_direction                direction = PARAM_IN );
 
     //! \brief Binds multiple string values.
     //! \see bind_strings
@@ -763,12 +761,12 @@ namespace nanodbc {
 
     //! \brief Binds multiple string values.
     //! \see bind_strings
-    void bind_strings( short param,
+    void bind_strings( short                          param,
                        const string_type::value_type* values,
-                       std::size_t length,
-                       std::size_t elements,
+                       std::size_t                    length,
+                       std::size_t                    elements,
                        const string_type::value_type* null_sentry,
-                       param_direction direction = PARAM_IN );
+                       param_direction                direction = PARAM_IN );
 
     //! \brief Binds multiple string values.
     //! \see bind_strings
@@ -776,7 +774,7 @@ namespace nanodbc {
     void bind_strings( short param,
                        const string_type::value_type ( &values )[N][M],
                        const string_type::value_type* null_sentry,
-                       param_direction direction = PARAM_IN ) {
+                       param_direction                direction = PARAM_IN ) {
       bind_strings( param,
                     reinterpret_cast<const string_type::value_type*>( values ),
                     M,
@@ -787,19 +785,19 @@ namespace nanodbc {
 
     //! \brief Binds multiple string values.
     //! \see bind_strings
-    void bind_strings( short param,
+    void bind_strings( short                          param,
                        const string_type::value_type* values,
-                       std::size_t length,
-                       std::size_t elements,
-                       const bool* nulls,
-                       param_direction direction = PARAM_IN );
+                       std::size_t                    length,
+                       std::size_t                    elements,
+                       const bool*                    nulls,
+                       param_direction                direction = PARAM_IN );
 
     //! \brief Binds multiple string values.
     //! \see bind_strings
     template <std::size_t N, std::size_t M>
     void bind_strings( short param,
                        const string_type::value_type ( &values )[N][M],
-                       const bool* nulls,
+                       const bool*     nulls,
                        param_direction direction = PARAM_IN ) {
       bind_strings( param,
                     reinterpret_cast<const string_type::value_type*>( values ),
@@ -886,7 +884,7 @@ namespace nanodbc {
     connection( const string_type& dsn,
                 const string_type& user,
                 const string_type& pass,
-                long timeout = 0 );
+                long               timeout = 0 );
 
     //! \brief Create new connection object and immediately connect using the
     //! given connection string.
@@ -918,7 +916,7 @@ namespace nanodbc {
     void connect( const string_type& dsn,
                   const string_type& user,
                   const string_type& pass,
-                  long timeout = 0 );
+                  long               timeout = 0 );
 
     //! \brief Connect using the given connection string.
     //! \param connection_string The connection string for establishing a
@@ -950,8 +948,8 @@ namespace nanodbc {
     void async_connect( const string_type& dsn,
                         const string_type& user,
                         const string_type& pass,
-                        void* event_handle,
-                        long timeout = 0 );
+                        void*              event_handle,
+                        long               timeout = 0 );
 
     //! \brief Initiate an asynchronous connection operation using the given
     //! connection string.
@@ -971,8 +969,8 @@ namespace nanodbc {
     //! \throws database_error
     //! \see connected()
     void async_connect( const string_type& connection_string,
-                        void* event_handle,
-                        long timeout = 0 );
+                        void*              event_handle,
+                        long               timeout = 0 );
 
     //! \brief Completes a previously initiated asynchronous connection
     //! operation.
@@ -1012,7 +1010,7 @@ namespace nanodbc {
     private:
     std::size_t ref_transaction();
     std::size_t unref_transaction();
-    bool rollback() const;
+    bool        rollback() const;
     void rollback( bool onoff );
 
     private:
@@ -1157,9 +1155,8 @@ namespace nanodbc {
     //! \param result The column's value will be written to this parameter.
     //! \throws database_error, index_range_error, type_incompatible_error
     template <class T>
-    void get_ref( const string_type& column_name,
-                  const T& fallback,
-                  T& result ) const;
+    void
+    get_ref( const string_type& column_name, const T& fallback, T& result ) const;
 
     //! \brief Gets data from the given column of the current rowset.
     //!
@@ -1302,7 +1299,7 @@ namespace nanodbc {
     public:
     class tables {
       public:
-      bool next();
+      bool        next();
       string_type table_catalog() const;
       string_type table_schema() const;
       string_type table_name() const;
@@ -1386,7 +1383,7 @@ namespace nanodbc {
 
     class primary_keys {
       public:
-      bool next();
+      bool        next();
       string_type table_catalog() const;
       string_type table_schema() const;
       string_type table_name() const;
@@ -1421,9 +1418,9 @@ namespace nanodbc {
     //! Since this function is implemented in terms of the SQLTables, it returns
     //! result set ordered by TABLE_TYPE, TABLE_CAT, TABLE_SCHEM, and
     //! TABLE_NAME.
-    catalog::tables find_tables( const string_type& table   = string_type(),
-                                 const string_type& type    = string_type(),
-                                 const string_type& schema  = string_type(),
+    catalog::tables find_tables( const string_type& table = string_type(),
+                                 const string_type& type = string_type(),
+                                 const string_type& schema = string_type(),
                                  const string_type& catalog = string_type() );
 
     //! \brief Creates result set with columns information in specified tables.
@@ -1435,9 +1432,9 @@ namespace nanodbc {
     //! returns
     //! result set ordered by TABLE_CAT, TABLE_SCHEM, TABLE_NAME, and
     //! ORDINAL_POSITION.
-    catalog::columns find_columns( const string_type& column  = string_type(),
-                                   const string_type& table   = string_type(),
-                                   const string_type& schema  = string_type(),
+    catalog::columns find_columns( const string_type& column = string_type(),
+                                   const string_type& table = string_type(),
+                                   const string_type& schema = string_type(),
                                    const string_type& catalog = string_type() );
 
     //! \brief Creates result set with primary key information.
@@ -1450,7 +1447,7 @@ namespace nanodbc {
     //! connection.
     catalog::primary_keys
     find_primary_keys( const string_type& table,
-                       const string_type& schema  = string_type(),
+                       const string_type& schema = string_type(),
                        const string_type& catalog = string_type() );
 
     private:
@@ -1492,10 +1489,10 @@ namespace nanodbc {
   //! operations because it will prevent auto commits from occurring after each
   //! individual operation is executed.
   //! \see open(), prepare(), execute(), result, transaction
-  result execute( connection& conn,
+  result execute( connection&        conn,
                   const string_type& query,
-                  long batch_operations = 1,
-                  long timeout          = 0 );
+                  long               batch_operations = 1,
+                  long               timeout = 0 );
 
   //! \brief Immediately opens, prepares, and executes the given query directly
   //! on the given connection without creating result object.
@@ -1510,10 +1507,10 @@ namespace nanodbc {
   //! operations because it will prevent auto commits from occurring after each
   //! individual operation is executed.
   //! \see open(), prepare(), execute(), result, transaction
-  void just_execute( connection& conn,
+  void just_execute( connection&        conn,
                      const string_type& query,
-                     long batch_operations = 1,
-                     long timeout          = 0 );
+                     long               batch_operations = 1,
+                     long               timeout = 0 );
 
   //! \brief Execute the previously prepared query now.
   //! \param stmt The prepared statement that will be executed.

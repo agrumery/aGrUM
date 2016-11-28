@@ -42,7 +42,7 @@ namespace gum {
       GUM_ERROR( OutOfLowerBound, "eps should be >=0" );
     }
 
-    _eps         = eps;
+    _eps = eps;
     _enabled_eps = true;
   }
 
@@ -67,7 +67,7 @@ namespace gum {
       GUM_ERROR( OutOfLowerBound, "rate should be >=0" );
     }
 
-    _min_rate_eps         = rate;
+    _min_rate_eps = rate;
     _enabled_min_rate_eps = true;
   }
 
@@ -97,7 +97,7 @@ namespace gum {
     if ( max < 1 ) {
       GUM_ERROR( OutOfLowerBound, "max should be >=1" );
     }
-    _max_iter         = max;
+    _max_iter = max;
     _enabled_max_iter = true;
   }
 
@@ -105,9 +105,7 @@ namespace gum {
   INLINE Size ApproximationScheme::maxIter( void ) const { return _max_iter; }
 
   // Disable stopping criterion on max iterations
-  INLINE void ApproximationScheme::disableMaxIter() {
-    _enabled_max_iter = false;
-  }
+  INLINE void ApproximationScheme::disableMaxIter() { _enabled_max_iter = false; }
 
   // Enable stopping criterion on max iterations
   INLINE void ApproximationScheme::enableMaxIter() { _enabled_max_iter = true; }
@@ -124,7 +122,7 @@ namespace gum {
     if ( timeout <= 0. ) {
       GUM_ERROR( OutOfLowerBound, "timeout should be >0." );
     }
-    _max_time         = timeout;
+    _max_time = timeout;
     _enabled_max_time = true;
   }
 
@@ -137,9 +135,7 @@ namespace gum {
   }
 
   // Disable stopping criterion on timeout
-  INLINE void ApproximationScheme::disableMaxTime() {
-    _enabled_max_time = false;
-  }
+  INLINE void ApproximationScheme::disableMaxTime() { _enabled_max_time = false; }
 
   // Enable stopping criterion on timeout
   INLINE void ApproximationScheme::enableMaxTime() { _enabled_max_time = true; }
@@ -177,13 +173,11 @@ namespace gum {
   // verbosity
   INLINE void ApproximationScheme::setVerbosity( bool v ) { _verbosity = v; }
 
-  INLINE bool ApproximationScheme::verbosity( void ) const {
-    return _verbosity;
-  }
+  INLINE bool ApproximationScheme::verbosity( void ) const { return _verbosity; }
 
   // history
   INLINE IApproximationSchemeConfiguration::ApproximationSchemeSTATE
-  ApproximationScheme::stateApproximationScheme() const {
+         ApproximationScheme::stateApproximationScheme() const {
     return _current_state;
   }
 
@@ -213,8 +207,8 @@ namespace gum {
 
   // initialise the scheme
   INLINE void ApproximationScheme::initApproximationScheme() {
-    _current_state   = ApproximationSchemeSTATE::Continue;
-    _current_step    = 0;
+    _current_state = ApproximationSchemeSTATE::Continue;
+    _current_step = 0;
     _current_epsilon = _current_rate = -1.0;
     _history.clear();
     _timer.reset();
@@ -235,8 +229,7 @@ namespace gum {
   }
 
   // update the scheme w.r.t the new error and incr steps
-  INLINE void
-  ApproximationScheme::updateApproximationScheme( unsigned int incr ) {
+  INLINE void ApproximationScheme::updateApproximationScheme( unsigned int incr ) {
     _current_step += incr;
   }
 
@@ -290,7 +283,7 @@ namespace gum {
       }
     }
 
-    _last_epsilon    = _current_epsilon;
+    _last_epsilon = _current_epsilon;
     _current_epsilon = error;  // eps rate isEnabled needs it so affectation was
     // moved from eps isEnabled below
 
@@ -305,8 +298,8 @@ namespace gum {
       if ( _current_epsilon > .0 ) {
         // ! _current_epsilon can be 0. AND epsilon
         // isEnabled can be disabled !
-        _current_rate = std::fabs( ( _current_epsilon - _last_epsilon ) /
-                                   _current_epsilon );
+        _current_rate =
+            std::fabs( ( _current_epsilon - _last_epsilon ) / _current_epsilon );
       }
       // limit with current eps ---> 0 is | 1 - ( last_eps / 0 ) | --->
       // infinity the else means a return false if we isEnabled the rate below,

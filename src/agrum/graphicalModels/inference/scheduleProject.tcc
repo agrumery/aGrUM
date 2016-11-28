@@ -99,10 +99,10 @@ namespace gum {
     // avoid self assignment
     if ( this != &from ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );
-      __table                                = from.__table;
-      __del_vars                             = from.__del_vars;
-      *__result                              = *( from.__result );
-      __project                              = from.__project;
+      __table = from.__table;
+      __del_vars = from.__del_vars;
+      *__result = *( from.__result );
+      __project = from.__project;
 
       // update __args and __results if they were already created
       if ( __args ) {
@@ -150,7 +150,7 @@ namespace gum {
   void ScheduleProject<GUM_SCALAR>::execute() {
     if ( __result->isAbstract() ) {
       const MultiDimImplementation<GUM_SCALAR>& t = __table.multiDim();
-      MultiDimImplementation<GUM_SCALAR>* res     = __project( t, __del_vars );
+      MultiDimImplementation<GUM_SCALAR>*       res = __project( t, __del_vars );
       __result->setMultiDim( *res );
     }
   }
@@ -165,13 +165,12 @@ namespace gum {
   /// returns the memory consumption used during the operation
   template <typename GUM_SCALAR>
   std::pair<long, long> ScheduleProject<GUM_SCALAR>::memoryUsage() const {
-    long size                                    = 1;
+    long                                     size = 1;
     const Sequence<const DiscreteVariable*>& seq = __table.variablesSequence();
 
     for ( const auto var : seq )
       if ( !__del_vars.contains( var ) ) {
-        if ( std::numeric_limits<long>::max() / (long)var->domainSize() <
-             size ) {
+        if ( std::numeric_limits<long>::max() / (long)var->domainSize() < size ) {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
@@ -184,14 +183,14 @@ namespace gum {
   /// returns the scheduleMultidim resulting from the execution of the operation
   template <typename GUM_SCALAR>
   INLINE const ScheduleMultiDim<GUM_SCALAR>&
-  ScheduleProject<GUM_SCALAR>::result() const {
+               ScheduleProject<GUM_SCALAR>::result() const {
     return *__result;
   }
 
   /// returns the set of multidims passed in argument to the operation
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleProject<GUM_SCALAR>::multiDimArgs() const {
+               ScheduleProject<GUM_SCALAR>::multiDimArgs() const {
     if ( !__args ) {
       __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __args->insert( &__table );
@@ -203,7 +202,7 @@ namespace gum {
   /// returns the set of multidims that should be the result of the operation
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleProject<GUM_SCALAR>::multiDimResults() const {
+               ScheduleProject<GUM_SCALAR>::multiDimResults() const {
     if ( !__results ) {
       __results = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __results->insert( __result );

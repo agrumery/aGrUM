@@ -71,7 +71,7 @@ namespace gum_tests {
       file2.seekg( 0, std::ios::beg );
 
       char string1[256], string2[256];
-      int j = 0;
+      int  j = 0;
       while ( !file1.eof() ) {
         file1.getline( string1, 256 );
         file2.getline( string2, 256 );
@@ -112,13 +112,12 @@ namespace gum_tests {
 
     public:
     gum::BayesNet<double>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::NodeId            i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<double>();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
-          n3( "3", "", 2 );
+      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
       gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
       i1 = bn->add( n1 );

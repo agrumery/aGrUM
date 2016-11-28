@@ -175,8 +175,7 @@ namespace gum {
      * nothing. In particular, it does not throw any exception.
      * @throws NotFound exception is thrown if clique_id does not exist */
 
-    virtual void eraseFromClique( const NodeId clique_id,
-                                  const NodeId node_id );
+    virtual void eraseFromClique( const NodeId clique_id, const NodeId node_id );
 
     /// returns the separator included in a given edge
     /** @throw NotFound exception is thrown if the edge does not belong to the
@@ -289,8 +288,8 @@ namespace gum {
 
     /// function used for the computation of the running intersection property
 
-    bool __runningIntersectionDFS( const NodeId clique,
-                                   const NodeId from,
+    bool __runningIntersectionDFS( const NodeId        clique,
+                                   const NodeId        from,
                                    __RunningIntersect& infos_DFS ) const;
   };
 

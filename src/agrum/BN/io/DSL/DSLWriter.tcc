@@ -51,14 +51,13 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  void DSLWriter<GUM_SCALAR>::write( std::ostream& output,
+  void DSLWriter<GUM_SCALAR>::write( std::ostream&                output,
                                      const IBayesNet<GUM_SCALAR>& bn ) {
     if ( !output.good() ) {
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
     }
 
-    output << "net " << bn.propertyWithDefault( "name", "unnamedBN" )
-           << std::endl
+    output << "net " << bn.propertyWithDefault( "name", "unnamedBN" ) << std::endl
            << "{" << std::endl;
 
     output << "// property softwar aGrUM " << GUM_VERSION << std::endl
@@ -85,7 +84,7 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template <typename GUM_SCALAR>
-  void DSLWriter<GUM_SCALAR>::write( std::string filePath,
+  void DSLWriter<GUM_SCALAR>::write( std::string                  filePath,
                                      const IBayesNet<GUM_SCALAR>& bn ) {
     std::filebuf fb;
     fb.open( filePath.c_str(), std::ios::out );
@@ -102,9 +101,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   std::string
   DSLWriter<GUM_SCALAR>::__variableBloc( const IBayesNet<GUM_SCALAR>& bn,
-                                         const DiscreteVariable& var ) {
-    NodeId id;
-    gum::Size i = 0;
+                                         const DiscreteVariable&      var ) {
+    NodeId             id;
+    gum::Size          i = 0;
     std::ostringstream oss;
 
     std::string val( "" );

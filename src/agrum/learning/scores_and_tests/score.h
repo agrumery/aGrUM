@@ -87,7 +87,7 @@ namespace gum {
        * @param max_range The maximal range.
        */
       template <typename RowFilter>
-      Score( const RowFilter& filter,
+      Score( const RowFilter&         filter,
              const std::vector<Size>& var_modalities,
              Apriori<IdSetAlloc, CountAlloc>& apriori,
              Size min_range = 0,
@@ -244,8 +244,7 @@ namespace gum {
       const std::vector<double, CountAlloc>& _getAllApriori( Idx index );
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<double, CountAlloc>&
-      _getConditioningApriori( Idx index );
+      const std::vector<double, CountAlloc>& _getConditioningApriori( Idx index );
 
       /// indicates whether a score belongs to the cache
       bool _isInCache( Idx nodeset_index ) const noexcept;

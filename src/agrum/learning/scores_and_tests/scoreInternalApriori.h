@@ -115,8 +115,7 @@ namespace gum {
           const ScoreInternalApriori<IdSetAlloc, CountAlloc>& from );
 
       /// move constructor
-      ScoreInternalApriori(
-          ScoreInternalApriori<IdSetAlloc, CountAlloc>&& from );
+      ScoreInternalApriori( ScoreInternalApriori<IdSetAlloc, CountAlloc>&& from );
     };
 
   } /* namespace learning */

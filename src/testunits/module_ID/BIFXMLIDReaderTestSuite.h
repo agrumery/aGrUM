@@ -94,7 +94,7 @@ namespace gum_tests {
       TS_ASSERT( net != 0 );
 
       // For comparison with what have wrote Writer
-      std::string dotfile = GET_RESSOURCES_PATH( "IDToDotReader.dot" );
+      std::string   dotfile = GET_RESSOURCES_PATH( "IDToDotReader.dot" );
       std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( !output.good() ) {
@@ -231,8 +231,7 @@ namespace gum_tests {
         TS_ASSERT( !net->isDecisionNode( utilityVar1Id ) );
         TS_ASSERT( net->isUtilityNode( utilityVar1Id ) );
         TS_ASSERT( !net->isChanceNode( utilityVar1Id ) );
-        const gum::DiscreteVariable& utilityVar1 =
-            net->variable( utilityVar1Id );
+        const gum::DiscreteVariable& utilityVar1 = net->variable( utilityVar1Id );
         TS_ASSERT_EQUALS( utilityVar1.name(), "utilityVar1" );
         TS_ASSERT_EQUALS( utilityVar1.domainSize(), (gum::Size)1 );
         TS_ASSERT_EQUALS( utilityVar1.label( 0 ), "0" );
@@ -241,8 +240,7 @@ namespace gum_tests {
         TS_ASSERT( !net->isDecisionNode( utilityVar2Id ) );
         TS_ASSERT( net->isUtilityNode( utilityVar2Id ) );
         TS_ASSERT( !net->isChanceNode( utilityVar2Id ) );
-        const gum::DiscreteVariable& utilityVar2 =
-            net->variable( utilityVar2Id );
+        const gum::DiscreteVariable& utilityVar2 = net->variable( utilityVar2Id );
         TS_ASSERT_EQUALS( utilityVar2.name(), "utilityVar2" );
         TS_ASSERT_EQUALS( utilityVar2.domainSize(), (gum::Size)1 );
         TS_ASSERT_EQUALS( utilityVar2.label( 0 ), "0" );

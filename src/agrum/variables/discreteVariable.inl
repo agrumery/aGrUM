@@ -59,15 +59,12 @@ namespace gum {
   }
 
   // equality operator
-  INLINE bool DiscreteVariable::
-  operator==( const DiscreteVariable& aRV ) const {
-    return ( Variable::operator==( aRV ) &&
-             ( domainSize() == aRV.domainSize() ) );
+  INLINE bool DiscreteVariable::operator==( const DiscreteVariable& aRV ) const {
+    return ( Variable::operator==( aRV ) && ( domainSize() == aRV.domainSize() ) );
   }
 
   // inequality operator
-  INLINE bool DiscreteVariable::
-  operator!=( const DiscreteVariable& aRV ) const {
+  INLINE bool DiscreteVariable::operator!=( const DiscreteVariable& aRV ) const {
     return ( !operator==( aRV ) );
   }
 

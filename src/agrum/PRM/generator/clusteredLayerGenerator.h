@@ -63,8 +63,7 @@ namespace gum {
       /// Copy constructor.
       ClusteredLayerGenerator( const ClusteredLayerGenerator& source );
       /// Copy operator.
-      ClusteredLayerGenerator&
-      operator=( const ClusteredLayerGenerator& source );
+      ClusteredLayerGenerator& operator=( const ClusteredLayerGenerator& source );
       /// Destructor.
       virtual ~ClusteredLayerGenerator();
 
@@ -101,8 +100,8 @@ namespace gum {
        * instances in the i-th layer.
        * @param v A vector describing each layer.
        */
-      void setLayers( const std::vector<
-                      typename LayerGenerator<GUM_SCALAR>::LayerData>& v );
+      void setLayers(
+          const std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>& v );
 
       std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>& getLayer();
       const std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData>&
@@ -114,44 +113,44 @@ namespace gum {
       /// @}
       private:
       std::vector<typename LayerGenerator<GUM_SCALAR>::LayerData> __layers;
-      Size __domain_size;
-      Size __max_parents;
-      double __cluster_ratio;
+      Size                                                        __domain_size;
+      Size                                                        __max_parents;
+      double                                                      __cluster_ratio;
       HashTable<std::string, std::vector<std::string>*> __cluster_map;
 
       struct MyData {
         // interface name
-        std::string i;
+        std::string              i;
         std::vector<std::string> a;
         std::vector<std::string> g;
-        std::string r;
+        std::string              r;
         std::vector<std::string> c;
       };
 
       std::string __generateType( PRMFactory<GUM_SCALAR>& f );
 
       void __generateInterfaces( PRMFactory<GUM_SCALAR>& f,
-                                 const std::string& type,
-                                 std::vector<MyData>& l );
+                                 const std::string&      type,
+                                 std::vector<MyData>&    l );
 
       void __generateClasses(
-          PRMFactory<GUM_SCALAR>& f,
-          const std::string& type,
+          PRMFactory<GUM_SCALAR>&                                f,
+          const std::string&                                     type,
           std::vector<typename ClusteredLayerGenerator::MyData>& l );
 
-      void __generateCluster(
-          PRMFactory<GUM_SCALAR>& f,
-          const std::string& type,
-          std::vector<typename ClusteredLayerGenerator::MyData>& l,
-          Size lvl,
-          Set<std::string>& i );
+      void
+      __generateCluster( PRMFactory<GUM_SCALAR>& f,
+                         const std::string&      type,
+                         std::vector<typename ClusteredLayerGenerator::MyData>& l,
+                         Size              lvl,
+                         Set<std::string>& i );
 
       void
-      __generateClass( PRMFactory<GUM_SCALAR>& f,
-                       const std::string& type,
+      __generateClass( PRMFactory<GUM_SCALAR>&                                f,
+                       const std::string&                                     type,
                        std::vector<typename ClusteredLayerGenerator::MyData>& l,
-                       Size lvl,
-                       Set<std::string>& i );
+                       Size                                                   lvl,
+                       Set<std::string>&                                      i );
 
       void __generateClassDag(
           Size lvl,
@@ -159,9 +158,9 @@ namespace gum {
           Bijection<std::string, NodeId>& names,
           std::vector<typename ClusteredLayerGenerator::MyData>& l );
 
-      void __generateSystem(
-          PRMFactory<GUM_SCALAR>& factory,
-          std::vector<typename ClusteredLayerGenerator::MyData>& l );
+      void
+      __generateSystem( PRMFactory<GUM_SCALAR>& factory,
+                        std::vector<typename ClusteredLayerGenerator::MyData>& l );
     };
 
   } /* namespace prm */

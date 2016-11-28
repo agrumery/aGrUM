@@ -55,20 +55,19 @@ namespace gum {
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
       typedef InferenceEngine<GUM_SCALAR> __infE;
 
-      typedef NodeProperty<std::vector<NodeId>> __cluster;
+      typedef NodeProperty<std::vector<NodeId>>                  __cluster;
       typedef NodeProperty<std::vector<std::vector<GUM_SCALAR>>> __credalSet;
-      typedef NodeProperty<std::vector<GUM_SCALAR>> __margi;
-      typedef NodeProperty<GUM_SCALAR> __expe;
+      typedef NodeProperty<std::vector<GUM_SCALAR>>              __margi;
+      typedef NodeProperty<GUM_SCALAR>                           __expe;
 
-      typedef IBayesNet<GUM_SCALAR> __bnet;
-      typedef std::vector<__margi> __margis;
-      typedef std::vector<__expe> __expes;
-      typedef std::vector<__credalSet> __credalSets;
+      typedef IBayesNet<GUM_SCALAR>               __bnet;
+      typedef std::vector<__margi>                __margis;
+      typedef std::vector<__expe>                 __expes;
+      typedef std::vector<__credalSet>            __credalSets;
       typedef std::vector<std::vector<__cluster>> __clusters;
 
-      typedef
-          typename std::vector<HashTable<std::string, std::vector<GUM_SCALAR>>>
-              __modals;
+      typedef typename std::vector<HashTable<std::string, std::vector<GUM_SCALAR>>>
+          __modals;
 
       /**
        * @brief Ask for redundancy elimination of a node credal set of a calling
@@ -83,10 +82,9 @@ namespace gum {
        *\c
        *false otherwise and by default.
        */
-      inline void
-      __updateThreadCredalSets( const NodeId& id,
-                                const std::vector<GUM_SCALAR>& vertex,
-                                const bool& elimRedund );
+      inline void __updateThreadCredalSets( const NodeId&                  id,
+                                            const std::vector<GUM_SCALAR>& vertex,
+                                            const bool& elimRedund );
 
       protected:
       /** Threads lower marginals, one per thread. */
@@ -135,8 +133,8 @@ namespace gum {
        *otherwise.
        */
       void _initThreadsData( const Size& num_threads,
-                             const bool __storeVertices,
-                             const bool __storeBNOpt );
+                             const bool  __storeVertices,
+                             const bool  __storeBNOpt );
 
       /// @}
 
@@ -154,7 +152,7 @@ namespace gum {
        *false otherwise and by default.
        * @return \c True if the IBayesNet is kept (for now), \c False otherwise.
        */
-      inline bool _updateThread( const NodeId& id,
+      inline bool _updateThread( const NodeId&                  id,
                                  const std::vector<GUM_SCALAR>& vertex,
                                  const bool& elimRedund = false );
 

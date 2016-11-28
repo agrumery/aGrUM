@@ -145,8 +145,7 @@ namespace gum {
      * produce in the output vector.
      */
     template <int Nb_inputs, int Nb_outputs>
-    class DBCellTranslator<Nb_inputs, Nb_outputs>
-        : public BaseDBCellTranslator {
+    class DBCellTranslator<Nb_inputs, Nb_outputs> : public BaseDBCellTranslator {
       public:
       /// the number of DBRow cells read by the translator
       static constexpr Size input_size = Nb_inputs;
@@ -164,8 +163,7 @@ namespace gum {
       DBCellTranslator() noexcept;
 
       /// copy constructor
-      DBCellTranslator(
-          const DBCellTranslator<Nb_inputs, Nb_outputs>& ) noexcept;
+      DBCellTranslator( const DBCellTranslator<Nb_inputs, Nb_outputs>& ) noexcept;
 
       /// move constructor
       DBCellTranslator( DBCellTranslator<Nb_inputs, Nb_outputs>&& ) noexcept;
@@ -210,7 +208,7 @@ namespace gum {
 
       /// sets the input DBRow's columns read by the translator
       template <int Col1, int... OtherCols>
-      void setInputCols( const Col<Col1, OtherCols...>& ) noexcept;
+      void          setInputCols( const Col<Col1, OtherCols...>& ) noexcept;
 
       /// sets the output FilteredRow's columns written by the translator
       /** If the DBCellTranslator outputs N columns, then those will be written
@@ -273,8 +271,7 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      virtual std::string translateBack( Idx col,
-                                         Idx translated_val ) const = 0;
+      virtual std::string translateBack( Idx col, Idx translated_val ) const = 0;
 
       /// returns the size of the input for this cell translator
       Size inputSize() const noexcept;

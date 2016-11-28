@@ -31,11 +31,7 @@
 namespace gum {
 
   /// The direction of a given edge in a binary tree.
-  enum class BinTreeDir : char {
-    LEFT_CHILD  = 0,
-    RIGHT_CHILD = 1,
-    NO_PARENT   = 2
-  };
+  enum class BinTreeDir : char { LEFT_CHILD = 0, RIGHT_CHILD = 1, NO_PARENT = 2 };
 
   // ===========================================================================
   // ===                   GENERIC NODE FOR A BINARY TREE                    ===

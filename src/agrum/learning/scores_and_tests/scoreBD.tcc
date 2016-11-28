@@ -36,7 +36,7 @@ namespace gum {
     template <typename IdSetAlloc, typename CountAlloc>
     template <typename RowFilter>
     INLINE ScoreBD<IdSetAlloc, CountAlloc>::ScoreBD(
-        const RowFilter& filter,
+        const RowFilter&         filter,
         const std::vector<Size>& var_modalities,
         Apriori<IdSetAlloc, CountAlloc>& apriori,
         Size min_range,
@@ -88,15 +88,13 @@ namespace gum {
     bool ScoreBD<IdSetAlloc, CountAlloc>::isAprioriCompatible(
         const std::string& apriori_type, double weight ) {
       if ( apriori_type == AprioriNoAprioriType::type ) {
-        GUM_ERROR( IncompatibleScoreApriori,
-                   "The BD score requires an apriori" );
+        GUM_ERROR( IncompatibleScoreApriori, "The BD score requires an apriori" );
       }
 
       if ( weight != 0 ) {
-        GUM_ERROR(
-            PossiblyIncompatibleScoreApriori,
-            "The apriori is currently compatible with the BD score but if "
-            "you change the weight, it may become incompatible" );
+        GUM_ERROR( PossiblyIncompatibleScoreApriori,
+                   "The apriori is currently compatible with the BD score but if "
+                   "you change the weight, it may become incompatible" );
       }
 
       // apriori types unsupported by the type checker
@@ -122,7 +120,7 @@ namespace gum {
     /// returns the internal apriori of the score
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
-    ScoreBD<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
+                 ScoreBD<IdSetAlloc, CountAlloc>::internalApriori() const noexcept {
       return __internal_apriori;
     }
 
@@ -136,16 +134,15 @@ namespace gum {
 
       // if the weight of the apriori is 0, then gammaLog2 will fail
       if ( this->_apriori->weight() == 0 ) {
-        GUM_ERROR(
-            OutOfBounds,
-            "The BD score requires the apriori to be strictly positive" );
+        GUM_ERROR( OutOfBounds,
+                   "The BD score requires the apriori to be strictly positive" );
       }
 
       // get the counts for all the targets and the conditioning nodes
       const std::vector<double, CountAlloc>& N_ijk =
           this->_getAllCounts( nodeset_index );
       const Size targets_modal = Size( N_ijk.size() );
-      double score             = 0;
+      double     score = 0;
 
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
@@ -181,7 +178,7 @@ namespace gum {
         // gammalog2 ( N' ) - gammalog2 ( N + N' )
         // + sum_k=1^ri { gammlog2 ( N_i + N'_i ) - gammalog2 ( N'_i ) }
 
-        double N       = 0;
+        double N = 0;
         double N_prime = 0;
         for ( Idx k = 0; k < targets_modal; ++k ) {
           score += __gammalog2( N_ijk[k] + N_prime_ijk[k] ) -

@@ -39,14 +39,13 @@ namespace gum {
    * the computations.
    */
   enum class RelevantPotentialsFinderType {
-    FIND_ALL,                  // do not perform d-separation analysis
-    DSEP_BAYESBALL_NODES,      // BayesBall requisite nodes -> potentials
-    DSEP_BAYESBALL_POTENTIALS, // BayesBall requisite potentials (directly)
-    DSEP_KOLLER_FRIEDMAN_2009  // Koller & Friedman 2009 requisite potentials
+    FIND_ALL,                   // do not perform d-separation analysis
+    DSEP_BAYESBALL_NODES,       // BayesBall requisite nodes -> potentials
+    DSEP_BAYESBALL_POTENTIALS,  // BayesBall requisite potentials (directly)
+    DSEP_KOLLER_FRIEDMAN_2009   // Koller & Friedman 2009 requisite potentials
   };
 
-} // namespace gum
+}  // namespace gum
 
 
-#endif // GUM_RELEVANT_POTENTIAL_FINDER_TYPE_H
-
+#endif  // GUM_RELEVANT_POTENTIAL_FINDER_TYPE_H

@@ -180,7 +180,7 @@ namespace gum {
   /// returns the list of target sets
   template <typename GUM_SCALAR>
   INLINE const Set<NodeSet>&
-  JointTargetedInference<GUM_SCALAR>::jointTargets() const noexcept {
+               JointTargetedInference<GUM_SCALAR>::jointTargets() const noexcept {
     return __joint_targets;
   }
 
@@ -202,7 +202,7 @@ namespace gum {
   JointTargetedInference<GUM_SCALAR>::jointPosterior( const NodeSet& vars ) {
     // try to get the smallest set of targets that contains "vars"
     NodeSet set;
-    bool found_exact_target;
+    bool    found_exact_target;
 
     if ( __joint_targets.contains( vars ) ) {
       set = vars;
@@ -288,7 +288,7 @@ namespace gum {
     }
 
     Instantiation i( *pXY );
-    GUM_SCALAR res = (GUM_SCALAR)0;
+    GUM_SCALAR    res = (GUM_SCALAR)0;
 
     for ( i.setFirst(); !i.end(); ++i ) {
       GUM_SCALAR vXY = ( *pXY )[i];

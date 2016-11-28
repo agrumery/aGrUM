@@ -76,7 +76,7 @@ namespace gum {
         /// Default constructor.
         // DFSTree(InterfaceGraph<GUM_SCALAR>* graph);
         DFSTree( const InterfaceGraph<GUM_SCALAR>& graph,
-                 SearchStrategy<GUM_SCALAR>* strategy = 0 );
+                 SearchStrategy<GUM_SCALAR>*       strategy = 0 );
 
         /// Destructor.
         ~DFSTree();
@@ -165,9 +165,9 @@ namespace gum {
          * @throw OperationNotAllowed Raised if the grow is found to be not
          *minimal.
          */
-        Pattern& growPattern( Pattern& p,
+        Pattern& growPattern( Pattern&                p,
                               EdgeGrowth<GUM_SCALAR>& edge_growth,
-                              Size min_freq );
+                              Size                    min_freq );
 
         /// @}
         // =========================================================================
@@ -218,7 +218,7 @@ namespace gum {
          * @throw NotFound Raised if p or node does not exists.
          */
         Sequence<PRMInstance<GUM_SCALAR>*>& iso_map( const Pattern& p,
-                                                     NodeId node );
+                                                     NodeId         node );
 
         /**
          * @brief Returns the maximal independent set of p isomorphism graph.
@@ -280,30 +280,29 @@ namespace gum {
         SearchStrategy<GUM_SCALAR>* __strategy;
 
         /// Raise different exceptions if child is invalid or illegal
-        void __checkGrowth( Pattern& p,
-                            Pattern* child,
+        void __checkGrowth( Pattern&                p,
+                            Pattern*                child,
                             EdgeGrowth<GUM_SCALAR>& edge_growth );
 
         /// Add a child to this DFSTree.
-        void __addChild( Pattern& p,
-                         Pattern* child,
+        void __addChild( Pattern&                p,
+                         Pattern*                child,
                          EdgeGrowth<GUM_SCALAR>& edge_growth );
 
         /// Check if an instance match is redundant.
-        bool __is_new_seq(
-            Sequence<PRMInstance<GUM_SCALAR>*>& seq,
-            NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& iso_map );
+        bool
+        __is_new_seq( Sequence<PRMInstance<GUM_SCALAR>*>&                seq,
+                      NodeProperty<Sequence<PRMInstance<GUM_SCALAR>*>*>& iso_map );
 
         /// This initialize the DSFTree with a new root.
         /// @param p A Pattern.
         /// @param seq A sequence of EdgeData<GUM_SCALAR>.
-        void __initialiaze_root( Pattern* p,
+        void __initialiaze_root( Pattern*                         p,
                                  Sequence<EdgeData<GUM_SCALAR>*>& seq );
 
         // Used by __find_sub_pattern.
-        bool
-        __test_equality( HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,
-                         HashTable<PRMClassElement<GUM_SCALAR>*, Size>& y );
+        bool __test_equality( HashTable<PRMClassElement<GUM_SCALAR>*, Size>& x,
+                              HashTable<PRMClassElement<GUM_SCALAR>*, Size>& y );
       };
 
 

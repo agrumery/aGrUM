@@ -61,7 +61,7 @@ namespace gum_tests {
       for ( int i = 0; ( i < 3 ) && !test_pass; ++i ) {
         gum::Timer t;
         gum::Timer tt;
-        int w = 0;
+        int        w = 0;
 
         begin_test_waiting();
         t.reset();

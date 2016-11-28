@@ -29,7 +29,7 @@ namespace gum {
     CredalNet<GUM_SCALAR>::CredalNet() {
       __initParams();
 
-      __src_bn     = BayesNet<GUM_SCALAR>();
+      __src_bn = BayesNet<GUM_SCALAR>();
       __src_bn_min = BayesNet<GUM_SCALAR>();
       __src_bn_max = BayesNet<GUM_SCALAR>();
 
@@ -38,7 +38,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     NodeId CredalNet<GUM_SCALAR>::addNode( const std::string& name,
-                                           const Size& card ) {
+                                           const Size&        card ) {
       LabelizedVariable var( name, "node " + name, card );
 
       NodeId a = __src_bn.add( var );
@@ -56,8 +56,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void CredalNet<GUM_SCALAR>::addArc( const NodeId& tail,
-                                        const NodeId& head ) {
+    void CredalNet<GUM_SCALAR>::addArc( const NodeId& tail, const NodeId& head ) {
       __src_bn.addArc( tail, head );
       __src_bn_min.addArc( tail, head );
       __src_bn_max.addArc( tail, head );
@@ -65,11 +64,11 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void CredalNet<GUM_SCALAR>::setCPTs(
-        const NodeId& id,
+        const NodeId&                                            id,
         const std::vector<std::vector<std::vector<GUM_SCALAR>>>& cpt ) {
       const Potential<GUM_SCALAR>* const potential( &__src_bn.cpt( id ) );
 
-      auto var_dSize  = __src_bn.variable( id ).domainSize();
+      auto var_dSize = __src_bn.variable( id ).domainSize();
       auto entry_size = potential->domainSize() / var_dSize;
 
       if ( cpt.size() != entry_size )
@@ -123,12 +122,12 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void CredalNet<GUM_SCALAR>::setCPT(
-        const NodeId& id,
-        Size& entry,
+        const NodeId&                               id,
+        Size&                                       entry,
         const std::vector<std::vector<GUM_SCALAR>>& cpt ) {
       const Potential<GUM_SCALAR>* const potential( &__src_bn.cpt( id ) );
 
-      auto var_dSize  = __src_bn.variable( id ).domainSize();
+      auto var_dSize = __src_bn.variable( id ).domainSize();
       auto entry_size = potential->domainSize() / var_dSize;
 
       if ( entry >= entry_size )
@@ -140,8 +139,7 @@ namespace gum {
                        << entry_size );
 
       if ( cpt.size() == 0 )
-        GUM_ERROR( SizeError,
-                   "setCPT : empty credal set for entry : " << entry );
+        GUM_ERROR( SizeError, "setCPT : empty credal set for entry : " << entry );
 
       for ( const auto& vertex : cpt ) {
         if ( vertex.size() != var_dSize )
@@ -194,12 +192,12 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void CredalNet<GUM_SCALAR>::setCPT(
-        const NodeId& id,
-        Instantiation ins,
+        const NodeId&                               id,
+        Instantiation                               ins,
         const std::vector<std::vector<GUM_SCALAR>>& cpt ) {
       const Potential<GUM_SCALAR>* const potential( &__src_bn.cpt( id ) );
 
-      auto var_dSize  = __src_bn.variable( id ).domainSize();
+      auto var_dSize = __src_bn.variable( id ).domainSize();
       auto entry_size = potential->domainSize() / var_dSize;
 
       // to be sure of entry index reorder ins according to the bayes net
@@ -220,15 +218,14 @@ namespace gum {
         ins.reorder( ref );
 
         if ( ins.variablesSequence() != vseq )
-          GUM_ERROR(
-              OperationNotAllowed,
-              "setCPT : instantiation : "
-                  << ins
-                  << " is not valid for node id "
-                  << id
-                  << " which accepts instantiations such as (order is not "
-                     "important) : "
-                  << ref );
+          GUM_ERROR( OperationNotAllowed,
+                     "setCPT : instantiation : "
+                         << ins
+                         << " is not valid for node id "
+                         << id
+                         << " which accepts instantiations such as (order is not "
+                            "important) : "
+                         << ref );
       }
 
       Idx entry = 0, jump = 1;
@@ -250,8 +247,7 @@ namespace gum {
                        << entry_size );
 
       if ( cpt.size() == 0 )
-        GUM_ERROR( SizeError,
-                   "setCPT : empty credal set for entry : " << entry );
+        GUM_ERROR( SizeError, "setCPT : empty credal set for entry : " << entry );
 
       for ( const auto& vertex : cpt ) {
         if ( vertex.size() != var_dSize )
@@ -303,7 +299,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     void CredalNet<GUM_SCALAR>::fillConstraints(
-        const NodeId& id,
+        const NodeId&                  id,
         const std::vector<GUM_SCALAR>& lower,
         const std::vector<GUM_SCALAR>& upper ) {
       try {
@@ -318,11 +314,11 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void CredalNet<GUM_SCALAR>::fillConstraint(
-        const NodeId& id,
-        const Idx& entry,
-        const std::vector<GUM_SCALAR>& lower,
-        const std::vector<GUM_SCALAR>& upper ) {
+    void
+    CredalNet<GUM_SCALAR>::fillConstraint( const NodeId&                  id,
+                                           const Idx&                     entry,
+                                           const std::vector<GUM_SCALAR>& lower,
+                                           const std::vector<GUM_SCALAR>& upper ) {
       Potential<GUM_SCALAR>* const potential_min(
           const_cast<Potential<GUM_SCALAR>* const>( &__src_bn_min.cpt( id ) ) );
       Potential<GUM_SCALAR>* const potential_max(
@@ -374,11 +370,11 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void CredalNet<GUM_SCALAR>::fillConstraint(
-        const NodeId& id,
-        Instantiation ins,
-        const std::vector<GUM_SCALAR>& lower,
-        const std::vector<GUM_SCALAR>& upper ) {
+    void
+    CredalNet<GUM_SCALAR>::fillConstraint( const NodeId&                  id,
+                                           Instantiation                  ins,
+                                           const std::vector<GUM_SCALAR>& lower,
+                                           const std::vector<GUM_SCALAR>& upper ) {
       const Potential<GUM_SCALAR>* const potential( &__src_bn.cpt( id ) );
       /*
       auto var_dSize = __src_bn.variable ( id ).domainSize();
@@ -402,15 +398,14 @@ namespace gum {
         ins.reorder( ref );
 
         if ( ins.variablesSequence() != vseq )
-          GUM_ERROR(
-              OperationNotAllowed,
-              "setCPT : instantiation : "
-                  << ins
-                  << " is not valid for node id "
-                  << id
-                  << " which accepts instantiations such as (order is not "
-                     "important) : "
-                  << ref );
+          GUM_ERROR( OperationNotAllowed,
+                     "setCPT : instantiation : "
+                         << ins
+                         << " is not valid for node id "
+                         << id
+                         << " which accepts instantiations such as (order is not "
+                            "important) : "
+                         << ref );
       }
 
       Idx entry = 0, jump = 1;
@@ -445,8 +440,7 @@ namespace gum {
     /// bnet accessors / shortcuts
 
     template <typename GUM_SCALAR>
-    INLINE Instantiation
-    CredalNet<GUM_SCALAR>::instantiation( const NodeId& id ) {
+    INLINE Instantiation CredalNet<GUM_SCALAR>::instantiation( const NodeId& id ) {
       return Instantiation( __src_bn.cpt( id ) );
     }
 
@@ -472,9 +466,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    CredalNet<GUM_SCALAR>::CredalNet(
-        const BayesNet<GUM_SCALAR>& src_min_num,
-        const BayesNet<GUM_SCALAR>& src_max_den ) {
+    CredalNet<GUM_SCALAR>::CredalNet( const BayesNet<GUM_SCALAR>& src_min_num,
+                                      const BayesNet<GUM_SCALAR>& src_max_den ) {
       try {
         __initParams();
         __initCNNets( src_min_num, src_max_den );
@@ -500,8 +493,8 @@ namespace gum {
     // from BNs with numerators & denominators or cpts & denominators to credal
     template <typename GUM_SCALAR>
     void CredalNet<GUM_SCALAR>::bnToCredal( const GUM_SCALAR beta,
-                                            const bool oneNet,
-                                            const bool keepZeroes ) {
+                                            const bool       oneNet,
+                                            const bool       keepZeroes ) {
       GUM_SCALAR epsi_min = 1.;
       GUM_SCALAR epsi_max = 0.;
       GUM_SCALAR epsi_moy = 0.;
@@ -517,7 +510,7 @@ namespace gum {
             const_cast<Potential<GUM_SCALAR>* const>(
                 &__src_bn_max.cpt( node ) ) );
 
-        Size var_dSize  = __src_bn.variable( node ).domainSize();
+        Size var_dSize = __src_bn.variable( node ).domainSize();
         Size entry_size = potential->domainSize() / var_dSize;
 
         Instantiation ins( potential );
@@ -643,7 +636,7 @@ namespace gum {
       for ( auto node : __src_bn.nodes() ) {
         const Potential<GUM_SCALAR>* const potential( &__src_bn.cpt( node ) );
 
-        auto var_dSize  = __src_bn.variable( node ).domainSize();
+        auto var_dSize = __src_bn.variable( node ).domainSize();
         auto entry_size = potential->domainSize() / var_dSize;
 
         Instantiation ins( potential );
@@ -654,8 +647,8 @@ namespace gum {
 
         for ( Size entry = 0; entry < entry_size; entry++ ) {
 
-          GUM_SCALAR den         = 0;
-          bool zeroes            = false;
+          GUM_SCALAR    den = 0;
+          bool          zeroes = false;
           Instantiation ins_prev = ins;
 
           for ( Size modality = 0; modality < var_dSize; modality++ ) {
@@ -691,8 +684,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void CredalNet<GUM_SCALAR>::idmLearning( const Idx s,
-                                             const bool keepZeroes ) {
+    void CredalNet<GUM_SCALAR>::idmLearning( const Idx s, const bool keepZeroes ) {
       for ( auto node : __src_bn.nodes() ) {
         const Potential<GUM_SCALAR>* const potential( &__src_bn.cpt( node ) );
 
@@ -703,7 +695,7 @@ namespace gum {
             const_cast<Potential<GUM_SCALAR>* const>(
                 &__src_bn_max.cpt( node ) ) );
 
-        Size var_dSize  = __src_bn.variable( node ).domainSize();
+        Size var_dSize = __src_bn.variable( node ).domainSize();
         Size entry_size = potential->domainSize() / var_dSize;
 
         Instantiation ins( potential );
@@ -718,7 +710,7 @@ namespace gum {
 
         for ( Size entry = 0; entry < entry_size; entry++ ) {
           GUM_SCALAR den = 0;
-          Size nbm       = 0;
+          Size       nbm = 0;
 
           for ( Size modality = 0; modality < var_dSize; modality++ ) {
             vertex[modality] = potential->get( ins );
@@ -780,7 +772,7 @@ namespace gum {
         const Potential<GUM_SCALAR>* const potential_max(
             &__src_bn_max.cpt( node ) );
 
-        Size var_dSize  = __src_bn.variable( node ).domainSize();
+        Size var_dSize = __src_bn.variable( node ).domainSize();
         Size entry_size = potential_min->domainSize() / var_dSize;
 
         std::vector<std::vector<std::vector<GUM_SCALAR>>> var_cpt( entry_size );
@@ -801,12 +793,11 @@ namespace gum {
             upper[modality] = potential_max->get( ins_max );
           }
 
-          bool all_equals = true;
+          bool                                 all_equals = true;
           std::vector<std::vector<GUM_SCALAR>> vertices;
 
           for ( Size modality = 0; modality < var_dSize; modality++ ) {
-            if ( std::fabs( upper[modality] - lower[modality] ) < 1e-6 )
-              continue;
+            if ( std::fabs( upper[modality] - lower[modality] ) < 1e-6 ) continue;
 
             all_equals = false;
             std::vector<GUM_SCALAR> vertex( var_dSize );
@@ -837,7 +828,7 @@ namespace gum {
             std::vector<GUM_SCALAR> vertex( var_dSize );
 
             for ( Size modality = 0; modality < var_dSize; modality++ )
-              vertex[modality]  = lower[modality];
+              vertex[modality] = lower[modality];
 
             GUM_SCALAR total = 0.;
 
@@ -883,7 +874,7 @@ namespace gum {
         const Potential<GUM_SCALAR>* const potential_max(
             &__src_bn_max.cpt( node ) );
 
-        Size var_dSize  = __src_bn.variable( node ).domainSize();
+        Size var_dSize = __src_bn.variable( node ).domainSize();
         Size entry_size = potential_min->domainSize() / var_dSize;
 
         std::vector<std::vector<std::vector<GUM_SCALAR>>> var_cpt( entry_size );
@@ -932,7 +923,7 @@ namespace gum {
         const Potential<GUM_SCALAR>* const potential_max(
             &__src_bn_max.cpt( node ) );
 
-        auto var_dSize  = __src_bn.variable( node ).domainSize();
+        auto var_dSize = __src_bn.variable( node ).domainSize();
         auto entry_size = potential_min->domainSize() / var_dSize;
 
         std::vector<std::vector<std::vector<GUM_SCALAR>>> var_cpt( entry_size );
@@ -959,9 +950,9 @@ namespace gum {
           bool isInterval = false;
 
           for ( Size modality = 0; modality < var_dSize; modality++ ) {
-            inequalities[modality * 2][0]     = -potential_min->get( ins_min );
+            inequalities[modality * 2][0] = -potential_min->get( ins_min );
             inequalities[modality * 2 + 1][0] = potential_max->get( ins_max );
-            inequalities[modality * 2][modality + 1]     = 1;
+            inequalities[modality * 2][modality + 1] = 1;
             inequalities[modality * 2 + 1][modality + 1] = -1;
 
             vertex[modality] = inequalities[modality * 2 + 1][0];
@@ -991,7 +982,7 @@ namespace gum {
           }  // end of : is interval
 
           if ( entry == 0 && vertices.size() >= 2 ) {
-            auto tmp    = vertices[0];
+            auto tmp = vertices[0];
             vertices[0] = vertices[1];
             vertices[1] = tmp;
           }
@@ -1021,23 +1012,23 @@ namespace gum {
                                           const std::string& max_path ) const {
       BIFWriter<GUM_SCALAR> writer;
 
-      std::string minfilename = min_path;  //"min.bif";
-      std::string maxfilename = max_path;  //"max.bif";
+      std::string   minfilename = min_path;  //"min.bif";
+      std::string   maxfilename = max_path;  //"max.bif";
       std::ofstream min_file( minfilename.c_str(),
                               std::ios::out | std::ios::trunc );
       std::ofstream max_file( maxfilename.c_str(),
                               std::ios::out | std::ios::trunc );
 
       if ( !min_file.good() )
-        GUM_ERROR( IOError,
-                   "bnToCredal() : could not open stream : min_file : "
-                       << minfilename );
+        GUM_ERROR(
+            IOError,
+            "bnToCredal() : could not open stream : min_file : " << minfilename );
 
       if ( !max_file.good() ) {
         min_file.close();
-        GUM_ERROR( IOError,
-                   "bnToCredal() : could not open stream : min_file : "
-                       << maxfilename );
+        GUM_ERROR(
+            IOError,
+            "bnToCredal() : could not open stream : min_file : " << maxfilename );
       }
 
       try {
@@ -1100,7 +1091,7 @@ namespace gum {
           Size nb_bits{Size( b )};
           Size new_card{Size( c )};
 
-          std::string bit_name;
+          std::string         bit_name;
           std::vector<NodeId> bits( nb_bits );
 
           for ( Size bit = 0; bit < nb_bits; bit++ ) {
@@ -1110,7 +1101,7 @@ namespace gum {
             bit_name += ss.str();
 
             LabelizedVariable var_bit( bit_name, "node " + bit_name, 2 );
-            NodeId iD = __bin_bn->add( var_bit );
+            NodeId            iD = __bin_bn->add( var_bit );
 
             bits[bit] = iD;
           }  // end of : for each bit
@@ -1119,9 +1110,9 @@ namespace gum {
 
         }  // end of : if variable is not binary
         else {
-          std::string bit_name = __current_bn->variable( node ).name();
+          std::string       bit_name = __current_bn->variable( node ).name();
           LabelizedVariable var_bit( bit_name, "node " + bit_name, 2 );
-          NodeId iD = __bin_bn->add( var_bit );
+          NodeId            iD = __bin_bn->add( var_bit );
 
           __var_bits.insert( node, std::vector<NodeId>( 1, iD ) );
         }
@@ -1149,8 +1140,7 @@ namespace gum {
 
         for ( Size bit_c = 1; bit_c < bitsize; bit_c++ )
           for ( Size bit_p = 0; bit_p < bit_c; bit_p++ )
-            __bin_bn->addArc( __var_bits[node][bit_p],
-                              __var_bits[node][bit_c] );
+            __bin_bn->addArc( __var_bits[node][bit_p], __var_bits[node][bit_c] );
 
       }  // end of : for each original variable
 
@@ -1170,18 +1160,15 @@ namespace gum {
           ins.setFirst();
 
           auto entry_size = potential->domainSize() / 2;
-          std::vector<std::vector<std::vector<GUM_SCALAR>>> var_cpt(
-              entry_size );
+          std::vector<std::vector<std::vector<GUM_SCALAR>>> var_cpt( entry_size );
 
           Size old_conf = 0;
 
           for ( Size conf = 0; conf < entry_size; conf++ ) {
             std::vector<std::vector<GUM_SCALAR>> pvar_cpt;
-            auto verticessize =
-                ( *__credalNet_current_cpt )[var][old_conf].size();
+            auto verticessize = ( *__credalNet_current_cpt )[var][old_conf].size();
 
-            for ( Size old_distri = 0; old_distri < verticessize;
-                  old_distri++ ) {
+            for ( Size old_distri = 0; old_distri < verticessize; old_distri++ ) {
               const std::vector<GUM_SCALAR>& vertex =
                   ( *__credalNet_current_cpt )[var][old_conf][old_distri];
               auto vertexsize = vertex.size();
@@ -1212,7 +1199,7 @@ namespace gum {
               Size pas = Size( int2Pow( i ) );
 
               std::vector<GUM_SCALAR> distri( 2, 0 );
-              int pos = 1;
+              int                     pos = 1;
 
               for ( Size elem = 0; elem < vertexsize; elem++ ) {
                 if ( elem % pas == 0 ) pos = -pos;
@@ -1299,7 +1286,7 @@ namespace gum {
           s += ss.str();
 
           LabelizedVariable var( s, "node " + s, 2 );
-          const NodeId indic = __bin_bn->add( var );
+          const NodeId      indic = __bin_bn->add( var );
 
           // arcs from one's bits
           for ( Size bit = 0; bit < bitsize; bit++ )
@@ -1339,8 +1326,7 @@ namespace gum {
 
       this->__credalNet_current_cpt = __credalNet_bin_cpt;
 
-      if ( this->__current_nodeType != nullptr )
-        delete this->__current_nodeType;
+      if ( this->__current_nodeType != nullptr ) delete this->__current_nodeType;
 
       this->__current_nodeType = __bin_nodeType;
 
@@ -1365,8 +1351,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     typename CredalNet<GUM_SCALAR>::NodeType
     CredalNet<GUM_SCALAR>::currentNodeType( const NodeId& id ) const {
-      if ( __current_nodeType != nullptr )
-        return ( *( __current_nodeType ) )[id];
+      if ( __current_nodeType != nullptr ) return ( *( __current_nodeType ) )[id];
 
       return __original_nodeType[id];
     }
@@ -1394,7 +1379,7 @@ namespace gum {
       __binCptMax.resize( current_bn().size() );
 
       for ( auto node : current_bn().nodes() ) {
-        auto pConf = credalNet_currentCpt()[node].size();
+        auto                    pConf = credalNet_currentCpt()[node].size();
         std::vector<GUM_SCALAR> min( pConf );
         std::vector<GUM_SCALAR> max( pConf );
 
@@ -1408,8 +1393,8 @@ namespace gum {
             v2 = v1;
 
           GUM_SCALAR delta = v1 - v2;
-          min[pconf]       = ( delta >= 0 ) ? v2 : v1;
-          max[pconf]       = ( delta >= 0 ) ? v1 : v2;
+          min[pconf] = ( delta >= 0 ) ? v2 : v1;
+          max[pconf] = ( delta >= 0 ) ? v1 : v2;
         }
 
         __binCptMin[node] = min;
@@ -1448,7 +1433,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     std::string CredalNet<GUM_SCALAR>::toString() const {
-      std::stringstream output;
+      std::stringstream           output;
       const BayesNet<GUM_SCALAR>* __current_bn;
       const NodeProperty<std::vector<std::vector<std::vector<GUM_SCALAR>>>>*
           __credalNet_current_cpt;
@@ -1465,8 +1450,8 @@ namespace gum {
 
       for ( auto node : __current_bn->nodes() ) {
         const Potential<GUM_SCALAR>* potential( &__current_bn->cpt( node ) );
-        auto pconfs = potential->domainSize() /
-                      __current_bn->variable( node ).domainSize();
+        auto                         pconfs =
+            potential->domainSize() / __current_bn->variable( node ).domainSize();
 
         output << "\n" << __current_bn->variable( node ) << "\n";
 
@@ -1513,20 +1498,20 @@ namespace gum {
       __epsRedund = GUM_SCALAR( 1e-6 );
 
       // farey algorithm
-      __epsF   = GUM_SCALAR( 1e-6 );
+      __epsF = GUM_SCALAR( 1e-6 );
       __denMax = GUM_SCALAR( 1e6 );  // beware LRSWrapper
 
       // continued fractions, beware LRSWrapper
       // decimal paces (__epsC * __precisionC == 1)
       __precisionC = GUM_SCALAR( 1e6 );
-      __deltaC     = 5;
+      __deltaC = 5;
 
       // old custom algorithm
       __precision = GUM_SCALAR( 1e6 );  // beware LRSWrapper
 
-      __current_bn            = nullptr;
+      __current_bn = nullptr;
       __credalNet_current_cpt = nullptr;
-      __current_nodeType      = nullptr;
+      __current_nodeType = nullptr;
 
       __hasComputedCPTMinMax = false;
     }
@@ -1535,7 +1520,7 @@ namespace gum {
     void CredalNet<GUM_SCALAR>::__initCNNets( const std::string& src_min_num,
                                               const std::string& src_max_den ) {
       BIFReader<GUM_SCALAR> reader( &__src_bn, src_min_num );
-      std::string other;
+      std::string           other;
 
       if ( src_max_den.compare( "" ) != 0 )
         other = src_max_den;
@@ -1571,7 +1556,7 @@ namespace gum {
     void CredalNet<GUM_SCALAR>::__initCNNets(
         const BayesNet<GUM_SCALAR>& src_min_num,
         const BayesNet<GUM_SCALAR>& src_max_den ) {
-      __src_bn     = src_min_num;
+      __src_bn = src_min_num;
       __src_bn_min = src_min_num;
 
       if ( src_max_den.size() > 0 )
@@ -1582,15 +1567,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     int CredalNet<GUM_SCALAR>::__find_dNode_card(
-        const std::vector<std::vector<std::vector<GUM_SCALAR>>>& var_cpt )
-        const {
+        const std::vector<std::vector<std::vector<GUM_SCALAR>>>& var_cpt ) const {
       Size vertices_size = 0;
 
       for ( auto entry = var_cpt.cbegin(), theEnd = var_cpt.cend();
             entry != theEnd;
             ++entry ) {
-        if ( entry->size() > vertices_size )
-          vertices_size = Size( entry->size() );
+        if ( entry->size() > vertices_size ) vertices_size = Size( entry->size() );
       }
 
       return vertices_size;
@@ -1612,7 +1595,7 @@ namespace gum {
 
       for ( auto node : __current_bn->nodes() ) {
         for ( auto parent_idIt = __current_bn->cpt( node ).begin(),
-                   theEnd2     = __current_bn->cpt( node ).end();
+                   theEnd2 = __current_bn->cpt( node ).end();
               parent_idIt != theEnd2;
               ++parent_idIt ) {
           if ( __current_bn->nodeId( **parent_idIt ) != node )
@@ -1678,15 +1661,14 @@ namespace gum {
     template <typename GUM_SCALAR>
     void CredalNet<GUM_SCALAR>::__H2Vlrs(
         const std::vector<std::vector<GUM_SCALAR>>& h_rep,
-        std::vector<std::vector<GUM_SCALAR>>& v_rep ) const {
+        std::vector<std::vector<GUM_SCALAR>>&       v_rep ) const {
       // write H rep file
       int64_t num, den;
 
-      std::string sinefile =
-          getUniqueFileName();  // generate unique file name, we
-                                // need to add .ine or .ext for lrs
-                                // to know which input it is (Hrep
-                                // to Vrep or Vrep to Hrep)
+      std::string sinefile = getUniqueFileName();  // generate unique file name, we
+      // need to add .ine or .ext for lrs
+      // to know which input it is (Hrep
+      // to Vrep or Vrep to Hrep)
       sinefile += ".ine";
 
       std::ofstream h_file( sinefile.c_str(), std::ios::out | std::ios::trunc );
@@ -1699,8 +1681,7 @@ namespace gum {
       h_file << "begin\n";
       h_file << h_rep.size() << ' ' << h_rep[0].size() << " rational\n";
 
-      for ( auto it = h_rep.cbegin(), theEnd = h_rep.cend(); it != theEnd;
-            ++it ) {
+      for ( auto it = h_rep.cbegin(), theEnd = h_rep.cend(); it != theEnd; ++it ) {
         for ( auto it2 = it->cbegin(), theEnd2 = it->cend(); it2 != theEnd2;
               ++it2 ) {
           // get integer fraction from decimal value
@@ -1765,11 +1746,11 @@ namespace gum {
         GUM_ERROR( IOError, "__H2Vlrs : could not open lrs ouput file : " );
 
       std::string line, tmp;
-      char *cstr, *p;
-      GUM_SCALAR probability;
+      char *      cstr, *p;
+      GUM_SCALAR  probability;
 
       std::string::size_type pos;
-      bool keep_going = true;
+      bool                   keep_going = true;
       // int vertices;
 
       std::vector<GUM_SCALAR> vertex;
@@ -1830,7 +1811,7 @@ namespace gum {
           int num_threads = getNumberOfRunningThreads();
 
           auto begin_pos = ( this_thread + 0 ) * v_rep.size() / num_threads;
-          auto end_pos   = ( this_thread + 1 ) * v_rep.size() / num_threads;
+          auto end_pos = ( this_thread + 1 ) * v_rep.size() / num_threads;
 
           for ( auto p = begin_pos; p < end_pos; p++ ) {
 #pragma omp flush( is_redund )
@@ -1903,11 +1884,11 @@ namespace gum {
 
         bool precise = true, vacuous = true;
 
-        for ( auto entry   = ( *__credalNet_current_cpt )[node].cbegin(),
+        for ( auto entry = ( *__credalNet_current_cpt )[node].cbegin(),
                    theEnd2 = ( *__credalNet_current_cpt )[node].cend();
               entry != theEnd2;
               ++entry ) {
-          auto vertices  = entry->size();
+          auto vertices = entry->size();
           auto var_dSize = ( *entry )[0].size();
 
           if ( precise && vertices > 1 ) precise = false;

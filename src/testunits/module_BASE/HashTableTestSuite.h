@@ -34,8 +34,7 @@ namespace gum_tests {
     public:
     void testConstructor() {
       gum::HashTable<int, int>* table = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          ( table = new gum::HashTable<int, int>() ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( ( table = new gum::HashTable<int, int>() ) );
       TS_GUM_ASSERT_THROWS_NOTHING( delete table );
 
       gum::HashTable<int, int> t2{std::pair<int, int>( 3, 4 )};
@@ -87,7 +86,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 5, "e" ) );
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( 6, "f" ) );
 
-      int nb          = 7;
+      int         nb = 7;
       std::string str = "kkk";
       TS_GUM_ASSERT_THROWS_NOTHING( table.insert( nb, str ) );
       TS_ASSERT( table.exists( 1 ) );
@@ -488,7 +487,7 @@ namespace gum_tests {
 
     void testMapAlloc() {
       gum::HashTable<int, std::string> t1, map1, map2, map4;
-      gum::HashTable<int, int> map3, map5;
+      gum::HashTable<int, int>         map3, map5;
       fill( t1 );
 
       TS_GUM_ASSERT_THROWS_NOTHING( map1 = t1.map( &mappingTestFunc_1 ) );
@@ -673,7 +672,7 @@ namespace gum_tests {
         table.insert( 6, "f" );
 
         std::string s;
-        int k = 0;
+        int         k = 0;
 
         for ( auto iter = table.cbeginSafe(); iter != table.cendSafe();
               ++iter ) {  // safe iterator needed here
@@ -720,8 +719,8 @@ namespace gum_tests {
 
         TS_ASSERT_EQUALS( k, 21 );
 
-        gum::HashTableConstIterator<int, std::string> iter1 = table.cbegin();
-        gum::HashTableIterator<int, std::string> iter2      = table.begin();
+        gum::HashTableConstIterator<int, std::string>     iter1 = table.cbegin();
+        gum::HashTableIterator<int, std::string>          iter2 = table.begin();
         gum::HashTableConstIteratorSafe<int, std::string> iter3 =
             table.cbeginSafe();  // safe iterator needed here
         gum::HashTableIteratorSafe<int, std::string> iter4 =
@@ -784,8 +783,7 @@ namespace gum_tests {
       return inter;
     }
 
-    gum::HashTable<int, std::string>
-    getUnion( gum::HashTable<int, bool> table ) {
+    gum::HashTable<int, std::string> getUnion( gum::HashTable<int, bool> table ) {
       gum::HashTable<int, std::string> full;
       fill( full );
       gum::HashTable<int, std::string> unionTable;
@@ -803,9 +801,7 @@ namespace gum_tests {
       return s + ".foo";
     }
 
-    static std::string mappingTestFunc_2( std::string& s ) {
-      return s + ".bar";
-    }
+    static std::string mappingTestFunc_2( std::string& s ) { return s + ".bar"; }
 
     static std::string mappingTestFunc_3( std::string s ) { return s + ".42"; }
 

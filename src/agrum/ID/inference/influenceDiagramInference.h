@@ -59,8 +59,7 @@ namespace gum {
    * The class used for the triangulation is partialOrderedTriangulation.
    */
   template <typename GUM_SCALAR>
-  class InfluenceDiagramInference
-      : public IInfluenceDiagramInference<GUM_SCALAR> {
+  class InfluenceDiagramInference : public IInfluenceDiagramInference<GUM_SCALAR> {
 
     public:
     // ====================================================================
@@ -175,8 +174,7 @@ namespace gum {
     const NodeSet& __getSeparator( NodeId clique_1, NodeId clique_2 );
 
     /// @return Returns the clique in which the node's potentials must be stored
-    NodeId __getClique( const std::vector<NodeId>& eliminationOrder,
-                        NodeId id );
+    NodeId __getClique( const std::vector<NodeId>& eliminationOrder, NodeId id );
 
     /// @}
     // ====================================================================
@@ -203,9 +201,9 @@ namespace gum {
 
     /// Reduces a clique down to her separator from another clique elements
     void __reduceClique( CliqueProperties<GUM_SCALAR>* absorbedClique,
-                         NodeSet& separator,
-                         Potential<GUM_SCALAR>*& potentialMarginal,
-                         UtilityTable<GUM_SCALAR>*& utilityMarginal );
+                         NodeSet&                      separator,
+                         Potential<GUM_SCALAR>*&       potentialMarginal,
+                         UtilityTable<GUM_SCALAR>*&    utilityMarginal );
 
     /// Returns a pointer over a "dummy" potential, which is a CPT filled with
     /// one MultiDimSparse filled with 1. This is used by empty cliques.
@@ -249,7 +247,7 @@ namespace gum {
 
     /// Determines in which order nodes will be eliminated from clique
     /// @param elim the global elimination order.
-    void makeEliminationOrder( const std::vector<NodeId>& elim,
+    void makeEliminationOrder( const std::vector<NodeId>&          elim,
                                const InfluenceDiagram<GUM_SCALAR>& infDiag );
 
     /// Add a potential to this clique
@@ -257,16 +255,14 @@ namespace gum {
     /// @param removable for cleaning purpose after inference, we have to keep
     /// track
     /// of adding potential during inference
-    void addPotential( const Potential<GUM_SCALAR>& cpt,
-                       bool removable = false );
+    void addPotential( const Potential<GUM_SCALAR>& cpt, bool removable = false );
 
     /// Add a potential to this clique
     /// @param cpt v's cpt.
     /// @param removable for cleaning purpose after inference, we have to keep
     /// track
     /// of adding potential during inference
-    void addUtility( const UtilityTable<GUM_SCALAR>& ut,
-                     bool removable = false );
+    void addUtility( const UtilityTable<GUM_SCALAR>& ut, bool removable = false );
 
     /// Removes all potential and utility table added during an inference
     void cleanFromInference();
@@ -310,8 +306,7 @@ namespace gum {
 
     private:
     /// Evidences on the variables in this clique
-    HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>*>
-        __evidences;
+    HashTable<const DiscreteVariable*, const Potential<GUM_SCALAR>*> __evidences;
 
     /// The potential bucket of this clique with evidences
     HashTable<const Potential<GUM_SCALAR>*, Instantiation*> __potentialBucket;

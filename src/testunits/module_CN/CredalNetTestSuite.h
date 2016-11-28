@@ -71,7 +71,7 @@ namespace gum_tests {
       auto c8 = lp.addCol();
 
       gum::Timer tim;
-      gum::Size tmp = 0;
+      gum::Size  tmp = 0;
 
       while ( tim.step() < 10 ) {
         gum::credal::lp::LpExpr expr( c1 + c2 + c3 + c4 + c5 + c6 + c7 + c8 );
@@ -122,7 +122,7 @@ namespace gum_tests {
 
       /// hardcoded lps to check solutions
       std::vector<std::vector<gum::credal::lp::LpInterface<double>>> lps( 3 );
-      std::vector<std::vector<std::vector<std::vector<double>>>> lps_sols( 3 );
+      std::vector<std::vector<std::vector<std::vector<double>>>>     lps_sols( 3 );
 
       lps[0] = std::vector<gum::credal::lp::LpInterface<double>>( 1 );  // A lp
       lps_sols[0] = std::vector<std::vector<std::vector<double>>>( 1 );
@@ -142,8 +142,7 @@ namespace gum_tests {
       lps[0][0].addRow( 0.1 <= A[0] <= 0.7 );
       lps[0][0].addRow( 0.1 <= A[1] <= 0.5 );
       lps[0][0].addRow( 0.1 <= A[2] <= 0.6 );
-      lps[0]
-         [0].addSumIsOne();  // positivity constraints are obviously redundant
+      lps[0][0].addSumIsOne();  // positivity constraints are obviously redundant
 
       lps_sols[0][0] = {{7. / 10, 1. / 5, 1. / 10},
                         {7. / 10, 1. / 10, 1. / 5},
@@ -201,8 +200,7 @@ namespace gum_tests {
       A = lps[2][3].addCols( 3 );
       lps[2][3].addProba();
 
-      lps_sols[2]
-              [3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:0 B:1
+      lps_sols[2][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:0 B:1
 
       /// C : ins idx = 4, A:1 B:1
       /// x0 <= x1 <= x2
@@ -244,8 +242,7 @@ namespace gum_tests {
       A = lps[2][7].addCols( 3 );
       lps[2][7].addProba();
 
-      lps_sols[2]
-              [7] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:1 B:2
+      lps_sols[2][7] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};  // C lp solution A:1 B:2
 
       /// C : ins idx = 8, A:2 B:2
       /// x2 = 1 / 3 * x0 + 2 / 3 * x1
@@ -277,8 +274,7 @@ namespace gum_tests {
             for ( gum::Size sol = 0; sol < sols_size; sol++ ) {
               bool eq = true;
 
-              for ( gum::Size i = 0, end = cn->domainSize( id ); i < end;
-                    i++ ) {
+              for ( gum::Size i = 0, end = cn->domainSize( id ); i < end; i++ ) {
                 if ( fabs( vertex[i] - lps_sols[id][entry][sol][i] ) > 1e-6 ) {
                   eq = false;
                   break;
@@ -303,8 +299,7 @@ namespace gum_tests {
 
           cn->setCPT( id, ins, vertices );
 
-          ins +=
-              cn->domainSize( id );  // next instantiation without taking into
+          ins += cn->domainSize( id );  // next instantiation without taking into
           // account the head variable; ins increased by
           // cardinality of head variable
           entry++;

@@ -42,7 +42,7 @@ namespace gum_tests {
 
     private:
     void __fillFactory( gum::MultiDimFunctionGraph<float>* factory,
-                        gum::List<gum::NodeId>* idList ) {
+                        gum::List<gum::NodeId>*            idList ) {
 
 
       factory->add( *Cprimevar );
@@ -119,13 +119,13 @@ namespace gum_tests {
         *BOvar, *Cprimevar;
 
     void setUp() {
-      Cvar      = new gum::LabelizedVariable( "C", "C", 2 );
-      PLvar     = new gum::LabelizedVariable( "PL", "PL", 2 );
-      APUvar    = new gum::LabelizedVariable( "APU", "APU", 2 );
-      BPUvar    = new gum::LabelizedVariable( "BPU", "BPU", 2 );
-      ADRvar    = new gum::LabelizedVariable( "ADR", "ADR", 2 );
-      BDRvar    = new gum::LabelizedVariable( "BDR", "BDR", 2 );
-      BOvar     = new gum::LabelizedVariable( "BO", "BO", 2 );
+      Cvar = new gum::LabelizedVariable( "C", "C", 2 );
+      PLvar = new gum::LabelizedVariable( "PL", "PL", 2 );
+      APUvar = new gum::LabelizedVariable( "APU", "APU", 2 );
+      BPUvar = new gum::LabelizedVariable( "BPU", "BPU", 2 );
+      ADRvar = new gum::LabelizedVariable( "ADR", "ADR", 2 );
+      BDRvar = new gum::LabelizedVariable( "BDR", "BDR", 2 );
+      BOvar = new gum::LabelizedVariable( "BO", "BO", 2 );
       Cprimevar = new gum::LabelizedVariable( "C'", "C'", 2 );
     }
 
@@ -153,8 +153,8 @@ namespace gum_tests {
       gum::MultiDimFunctionGraph<float>* functionGraph = NULL;
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-          functionGraph = gum::MultiDimFunctionGraph<
-              float>::getReducedAndOrderedInstance() );
+          functionGraph =
+              gum::MultiDimFunctionGraph<float>::getReducedAndOrderedInstance() );
 
       // *********************************************************************
       // Testing the insertion of nodes and arcs in the graph
@@ -243,7 +243,7 @@ namespace gum_tests {
       __fillFactory( functionGraph, &idList );
 
       // For comparison with what readers will return
-      std::string dotfile = GET_RESSOURCES_PATH( "FMDP/FunctionGraph.dot" );
+      std::string   dotfile = GET_RESSOURCES_PATH( "FMDP/FunctionGraph.dot" );
       std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
 
       if ( !output.good() ) {
@@ -367,8 +367,7 @@ namespace gum_tests {
       // Testing variablesSequence(), and if all variables are indeed present
       // *********************************************************************
       gum::Sequence<const gum::DiscreteVariable*> varSeq;
-      TS_GUM_ASSERT_THROWS_NOTHING( varSeq =
-                                        functionGraph->variablesSequence() );
+      TS_GUM_ASSERT_THROWS_NOTHING( varSeq = functionGraph->variablesSequence() );
       TS_ASSERT_EQUALS( varSeq.exists( Cprimevar ), true );
       TS_ASSERT_EQUALS( varSeq.exists( Cvar ), true );
       TS_ASSERT_EQUALS( varSeq.exists( PLvar ), true );
@@ -402,14 +401,12 @@ namespace gum_tests {
       for ( float i = 0; i < 128; i++ )
         v.push_back( i );
 
-      TS_ASSERT_THROWS( functionGraph->populate( v ),
-                        gum::OperationNotAllowed );
+      TS_ASSERT_THROWS( functionGraph->populate( v ), gum::OperationNotAllowed );
 
       for ( float i = 128; i < 256; i++ )
         v.push_back( i );
 
-      TS_ASSERT_THROWS( functionGraph->populate( v ),
-                        gum::OperationNotAllowed );
+      TS_ASSERT_THROWS( functionGraph->populate( v ), gum::OperationNotAllowed );
 
       TS_ASSERT_THROWS( functionGraph->populate( {1, 2, 3} ),
                         gum::OperationNotAllowed );
@@ -641,8 +638,7 @@ namespace gum_tests {
       // *********************************************************************
       gum::MultiDimArray<float>* array = new gum::MultiDimArray<float>();
 
-      TS_ASSERT_THROWS( functionGraph2->copy( *array ),
-                        gum::OperationNotAllowed )
+      TS_ASSERT_THROWS( functionGraph2->copy( *array ), gum::OperationNotAllowed )
       TS_ASSERT_THROWS( functionGraph2->copyFrom( *array ),
                         gum::OperationNotAllowed )
 
@@ -663,16 +659,12 @@ namespace gum_tests {
       // *********************************************************************
       gum::LabelizedVariable *Bijouvar, *Caillouvar, *Chouvar, *Genouvar,
           *Hibouvar, *Joujouvar, *Pouvar, *Bijouprimevar;
-      Bijouvar =
-          new gum::LabelizedVariable( "Bijou", "Un bijou, des bijoux", 2 );
-      Caillouvar = new gum::LabelizedVariable(
-          "Caillou", "Un caillou, des cailloux", 2 );
-      Chouvar =
-          new gum::LabelizedVariable( "Chouvar", "Un chou, des choux", 2 );
-      Genouvar =
-          new gum::LabelizedVariable( "Genou", "Un genou, des genoux", 2 );
-      Hibouvar =
-          new gum::LabelizedVariable( "Hibou", "Un hibou, des hiboux", 2 );
+      Bijouvar = new gum::LabelizedVariable( "Bijou", "Un bijou, des bijoux", 2 );
+      Caillouvar =
+          new gum::LabelizedVariable( "Caillou", "Un caillou, des cailloux", 2 );
+      Chouvar = new gum::LabelizedVariable( "Chouvar", "Un chou, des choux", 2 );
+      Genouvar = new gum::LabelizedVariable( "Genou", "Un genou, des genoux", 2 );
+      Hibouvar = new gum::LabelizedVariable( "Hibou", "Un hibou, des hiboux", 2 );
       Joujouvar =
           new gum::LabelizedVariable( "Joujou", "Un joujou, des joujoux", 2 );
       Pouvar = new gum::LabelizedVariable( "Pouvar", "Un pou, des poux", 2 );
@@ -799,8 +791,7 @@ namespace gum_tests {
           Cprimevar, functionGraph->variablesSequence().pos( BOvar ) ) );
 
       // For comparison with what readers will return
-      std::string dotfile =
-          GET_RESSOURCES_PATH( "FMDP/FunctionGraphMVBOvar.dot" );
+      std::string dotfile = GET_RESSOURCES_PATH( "FMDP/FunctionGraphMVBOvar.dot" );
       std::ofstream output( dotfile.c_str(), std::ios::out | std::ios::trunc );
       if ( !output.good() ) {
         GUM_ERROR( gum::IOError, "Stream states flags are not all unset." );

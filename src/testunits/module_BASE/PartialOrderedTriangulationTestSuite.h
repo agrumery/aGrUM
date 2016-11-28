@@ -113,7 +113,7 @@ namespace gum_tests {
       const gum::NodeSet& clique1 = JT.clique( 0 );
       const gum::NodeSet& clique2 = JT.clique( 1 );
       const gum::NodeSet& clique3 = JT.clique( 3 );
-      gum::NodeSet cc1, cc2, cc3;
+      gum::NodeSet        cc1, cc2, cc3;
       cc1 << 10 << 20 << 30 << 40 << 80;
       cc2 << 20 << 30 << 40 << 50 << 70 << 80;
       cc3 << 40 << 50 << 60 << 70 << 80;
@@ -234,8 +234,7 @@ namespace gum_tests {
         auto iter2 = iter;
 
         for ( ++iter2; iter2 != clique.end(); ++iter2 ) {
-          if ( !graph.existsEdge( *iter, *iter2 ) )
-            graph.addEdge( *iter, *iter2 );
+          if ( !graph.existsEdge( *iter, *iter2 ) ) graph.addEdge( *iter, *iter2 );
         }
       }
     }

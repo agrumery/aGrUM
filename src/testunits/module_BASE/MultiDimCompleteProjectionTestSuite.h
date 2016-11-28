@@ -117,10 +117,10 @@ namespace gum_tests {
     }
 
     float local_projmax( const gum::MultiDimArray<float>& table,
-                         gum::Instantiation& instantiation ) {
+                         gum::Instantiation&              instantiation ) {
       gum::Instantiation inst( table );
-      float result     = table[inst];
-      gum::Size offset = 0, i = 0;
+      float              result = table[inst];
+      gum::Size          offset = 0, i = 0;
 
       for ( inst.setFirst(); !inst.end(); ++inst, ++i ) {
         float xxx = table[inst];
@@ -136,18 +136,17 @@ namespace gum_tests {
     }
 
     float local_projmax( const gum::Potential<float>& table,
-                         gum::Instantiation& instantiation ) {
+                         gum::Instantiation&          instantiation ) {
       const gum::MultiDimArray<float>& impl =
-          dynamic_cast<const gum::MultiDimArray<float>&>(
-              *( table.content() ) );
+          dynamic_cast<const gum::MultiDimArray<float>&>( *( table.content() ) );
       return local_projmax( impl, instantiation );
     }
 
     float* local_projmax( const gum::MultiDimArray<float*>& table,
-                          gum::Instantiation& instantiation ) {
+                          gum::Instantiation&               instantiation ) {
       gum::Instantiation inst( table );
-      float* result    = table[inst];
-      gum::Size offset = 0, i = 0;
+      float*             result = table[inst];
+      gum::Size          offset = 0, i = 0;
 
       for ( inst.setFirst(); !inst.end(); ++inst, ++i ) {
         float* xxx = table[inst];
@@ -163,16 +162,15 @@ namespace gum_tests {
     }
 
     float* local_projmax( const gum::Potential<float*>& table,
-                          gum::Instantiation& instantiation ) {
+                          gum::Instantiation&           instantiation ) {
       const gum::MultiDimArray<float*>& impl =
-          dynamic_cast<const gum::MultiDimArray<float*>&>(
-              *( table.content() ) );
+          dynamic_cast<const gum::MultiDimArray<float*>&>( *( table.content() ) );
       return local_projmax( impl, instantiation );
     }
 
     float local_projsum( const gum::MultiDimArray<float>& table ) {
       gum::Instantiation inst( table );
-      float result = 0;
+      float              result = 0;
 
       for ( inst.setFirst(); !inst.end(); ++inst )
         result += table[inst];
@@ -199,7 +197,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
+        vars[i] = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -210,8 +208,8 @@ namespace gum_tests {
       randomInit( &t1 );
 
       gum::Instantiation inst( t1 );
-      float t2 = projectMaxMultiDimArray( &t1 );
-      float t3 = local_projmax( t1, inst );
+      float              t2 = projectMaxMultiDimArray( &t1 );
+      float              t3 = local_projmax( t1, inst );
 
       TS_ASSERT( t2 == t3 );
 
@@ -234,7 +232,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
+        vars[i] = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> tt1;
@@ -247,8 +245,8 @@ namespace gum_tests {
       gum::MultiDimImplementation<float>& t1 = tt1;
 
       gum::Instantiation inst( t1 );
-      float t2 = projectMaxMultiDimArray( &t1 );
-      float t3 = local_projmax( tt1, inst );
+      float              t2 = projectMaxMultiDimArray( &t1 );
+      float              t3 = local_projmax( tt1, inst );
 
       TS_ASSERT( t2 == t3 );
 
@@ -274,7 +272,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
+        vars[i] = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* t1 = new gum::MultiDimArray<float*>;
@@ -285,8 +283,8 @@ namespace gum_tests {
       randomInitPointer( t1 );
 
       gum::Instantiation inst( t1 );
-      float* t2 = projectMaxMultiDimArray4Pointers( t1 );
-      float* t3 = local_projmax( *t1, inst );
+      float*             t2 = projectMaxMultiDimArray4Pointers( t1 );
+      float*             t3 = local_projmax( *t1, inst );
 
       TS_ASSERT( *t2 == *t3 );
       TS_ASSERT( t2 == t3 );
@@ -309,7 +307,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
+        vars[i] = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* tt1 = new gum::MultiDimArray<float*>;
@@ -321,8 +319,8 @@ namespace gum_tests {
       gum::MultiDimImplementation<float*>* t1 = tt1;
 
       gum::Instantiation inst( *t1 );
-      float* t2 = projectMaxMultiDimArray4Pointers( t1 );
-      float* t3 = local_projmax( *tt1, inst );
+      float*             t2 = projectMaxMultiDimArray4Pointers( t1 );
+      float*             t3 = local_projmax( *tt1, inst );
 
       TS_ASSERT( *t2 == *t3 );
       TS_ASSERT( t2 == t3 );
@@ -349,7 +347,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
+        vars[i] = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float> t1;
@@ -360,8 +358,8 @@ namespace gum_tests {
       randomInit( &t1 );
 
       gum::Instantiation inst( t1 );
-      float t2 = projectMax( t1 );
-      float t3 = local_projmax( t1, inst );
+      float              t2 = projectMax( t1 );
+      float              t3 = local_projmax( t1, inst );
       TS_ASSERT( t2 == t3 );
 
       gum::Instantiation inst2( t1 );
@@ -380,7 +378,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
+        vars[i] = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::Potential<float> t1;
@@ -391,8 +389,8 @@ namespace gum_tests {
       randomInitP( t1 );
 
       gum::Instantiation inst( t1 );
-      float t2 = t1.max();
-      float t3 = local_projmax( t1, inst );
+      float              t2 = t1.max();
+      float              t3 = local_projmax( t1, inst );
       TS_ASSERT( t2 == t3 );
 
       for ( gum::Idx i = 0; i < vars.size(); ++i )
@@ -410,7 +408,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
+        vars[i] = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::MultiDimArray<float*>* t1 = new gum::MultiDimArray<float*>;
@@ -421,8 +419,8 @@ namespace gum_tests {
       randomInitPointer( t1 );
 
       gum::Instantiation inst( t1 );
-      float* t2 = projectMax( *t1 );
-      float* t3 = local_projmax( *t1, inst );
+      float*             t2 = projectMax( *t1 );
+      float*             t3 = local_projmax( *t1, inst );
 
       TS_ASSERT( *t2 == *t3 );
       TS_ASSERT( t2 == t3 );
@@ -439,7 +437,7 @@ namespace gum_tests {
     }
 
     static float myMax( const gum::Potential<float>& table,
-                        gum::Instantiation* inst ) {
+                        gum::Instantiation*          inst ) {
       return table.max();
     }
 
@@ -449,7 +447,7 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 3 );
+        vars[i] = new gum::LabelizedVariable( s, s, 3 );
       }
 
       gum::Potential<float> t1;
@@ -461,8 +459,8 @@ namespace gum_tests {
       gum::MultiDimCompleteProjection<float, gum::Potential> Proj( myMax );
 
       gum::Instantiation inst( t1 );
-      float t2 = Proj.project( t1 );
-      float t3 = local_projmax( t1, inst );
+      float              t2 = Proj.project( t1 );
+      float              t3 = local_projmax( t1, inst );
 
       TS_ASSERT( t2 == t3 );
 

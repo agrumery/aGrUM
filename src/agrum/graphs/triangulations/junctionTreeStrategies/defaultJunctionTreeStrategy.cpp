@@ -87,8 +87,7 @@ namespace gum {
       //    the new strategy has not computed anything yet
       if ( ( _triangulation != nullptr ) &&
            ( tr->originalGraph() == _triangulation->originalGraph() ) ) {
-        auto new_strategy =
-            new DefaultJunctionTreeStrategy( *this );  // case 1/
+        auto new_strategy = new DefaultJunctionTreeStrategy( *this );  // case 1/
         new_strategy->_triangulation = tr;
         return new_strategy;
       } else {  // case 2/
@@ -104,8 +103,7 @@ namespace gum {
   bool DefaultJunctionTreeStrategy::requiresFillIns() const { return false; }
 
   // assign the triangulation to the junction tree strategy
-  void
-  DefaultJunctionTreeStrategy::setTriangulation( StaticTriangulation* tr ) {
+  void DefaultJunctionTreeStrategy::setTriangulation( StaticTriangulation* tr ) {
     clear();
     _triangulation = tr;
   }
@@ -165,7 +163,7 @@ namespace gum {
     // process. Then, in the vector below, substitution[j] = k.
     const std::vector<NodeId>& elim_order = _triangulation->eliminationOrder();
 
-    auto size = elim_order.size();
+    auto                size = elim_order.size();
     std::vector<NodeId> substitution( size );
     std::iota( substitution.begin(), substitution.end(), 0 );
 
@@ -177,8 +175,8 @@ namespace gum {
     // such neighbor can be included in C_j (and conversely).
     if ( size > 0 ) {
       for ( auto i = size; i >= 1; --i ) {
-        const NodeId C_i           = NodeId( i - 1 );
-        const auto card_C_i_plus_1 = __junction_tree.clique( C_i ).size() + 1;
+        const NodeId C_i = NodeId( i - 1 );
+        const auto   card_C_i_plus_1 = __junction_tree.clique( C_i ).size() + 1;
 
         // search for C_j such that |C_j| = [C_i| + 1
         NodeId C_j = C_i;
@@ -208,7 +206,7 @@ namespace gum {
 
     // compute the transitive closure of vector substitution
     for ( std::size_t i = 0; i < size; ++i )
-      substitution[i]   = substitution[substitution[i]];
+      substitution[i] = substitution[substitution[i]];
 
     // using the transitive closure of vector substitution, compute for each
     // node the clique of the junction tree that was created by its

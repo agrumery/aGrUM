@@ -64,8 +64,7 @@ namespace gum {
 #ifndef SWIG  // SWIG cannot read these lines
   /// an << operator for List
   template <typename Val, typename Alloc>
-  std::ostream& operator<<( std::ostream& stream,
-                            const List<Val, Alloc>& list );
+  std::ostream& operator<<( std::ostream& stream, const List<Val, Alloc>& list );
 #endif  // SWIG
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -369,17 +368,17 @@ namespace gum {
     public:
     /// Types for STL compliance.
     /// @{
-    using value_type          = Val;
-    using reference           = Val&;
-    using const_reference     = const Val&;
-    using pointer             = Val*;
-    using const_pointer       = const Val*;
-    using size_type           = std::size_t;
-    using difference_type     = std::ptrdiff_t;
-    using allocator_type      = Alloc;
-    using iterator            = ListIterator<Val>;
-    using const_iterator      = ListConstIterator<Val>;
-    using iterator_safe       = ListIteratorSafe<Val>;
+    using value_type = Val;
+    using reference = Val&;
+    using const_reference = const Val&;
+    using pointer = Val*;
+    using const_pointer = const Val*;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using allocator_type = Alloc;
+    using iterator = ListIterator<Val>;
+    using const_iterator = ListConstIterator<Val>;
+    using iterator_safe = ListIteratorSafe<Val>;
     using const_iterator_safe = ListConstIteratorSafe<Val>;
     /// @}
 
@@ -910,8 +909,8 @@ namespace gum {
      * Rather, it is a copy of val that is inserted.
      */
     Val& insert( const const_iterator_safe& iter,
-                 const Val& val,
-                 location place = location::BEFORE );
+                 const Val&                 val,
+                 location                   place = location::BEFORE );
 
     /**
      * @brief Inserts an rvalue before or after a given iterator.
@@ -924,8 +923,8 @@ namespace gum {
      * it is a copy of val that is inserted.
      */
     Val& insert( const const_iterator_safe& iter,
-                 Val&& val,
-                 location place = location::BEFORE );
+                 Val&&                      val,
+                 location                   place = location::BEFORE );
 
     /**
      * @brief Inserts a new element before or after a given iterator.
@@ -938,8 +937,8 @@ namespace gum {
      * Rather, it is a copy of val that is inserted.
      */
     Val& insert( const const_iterator& iter,
-                 const Val& val,
-                 location place = location::BEFORE );
+                 const Val&            val,
+                 location              place = location::BEFORE );
 
     /**
      * @brief Inserts an rvalue before or after a given iterator.
@@ -952,8 +951,8 @@ namespace gum {
      * it is a copy of val that is inserted.
      */
     Val& insert( const const_iterator& iter,
-                 Val&& val,
-                 location place = location::BEFORE );
+                 Val&&                 val,
+                 location              place = location::BEFORE );
 
     /**
      * @brief Emplace a new element before a given iterator.
@@ -1403,8 +1402,7 @@ namespace gum {
      * @param current_elt The element before which new_elt will be inserted.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insertBefore( ListBucket<Val>* new_elt,
-                         ListBucket<Val>* current_elt );
+    Val& __insertBefore( ListBucket<Val>* new_elt, ListBucket<Val>* current_elt );
 
     /**
      * @brief Insert a new bucket after another one.
@@ -1412,8 +1410,7 @@ namespace gum {
      * @param current_elt The element before which new_elt will be inserted.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insertAfter( ListBucket<Val>* new_elt,
-                        ListBucket<Val>* current_elt );
+    Val& __insertAfter( ListBucket<Val>* new_elt, ListBucket<Val>* current_elt );
 
     /**
      * @brief Inserts a new bucket before or after the location pointed to by
@@ -1424,8 +1421,8 @@ namespace gum {
      * @return Returns a reference over the value stored in the gum::List.
      */
     Val& __insert( const const_iterator_safe& iter,
-                   ListBucket<Val>* new_elt,
-                   location place );
+                   ListBucket<Val>*           new_elt,
+                   location                   place );
 
     /**
      * @brief Inserts a new bucket before or after the location pointed to by
@@ -1436,8 +1433,8 @@ namespace gum {
      * @return Returns a reference over the value stored in the gum::List.
      */
     Val& __insert( const const_iterator& iter,
-                   ListBucket<Val>* new_elt,
-                   location place );
+                   ListBucket<Val>*      new_elt,
+                   location              place );
 
     /// ListIterator should be a friend to optimize access to elements
     /// @{
@@ -1506,12 +1503,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Val;
-    using reference         = Val&;
-    using const_reference   = const Val&;
-    using pointer           = Val*;
-    using const_pointer     = const Val*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Val;
+    using reference = Val&;
+    using const_reference = const Val&;
+    using pointer = Val*;
+    using const_pointer = const Val*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -1791,12 +1788,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Val;
-    using reference         = Val&;
-    using const_reference   = const Val&;
-    using pointer           = Val*;
-    using const_pointer     = const Val*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Val;
+    using reference = Val&;
+    using const_reference = const Val&;
+    using pointer = Val*;
+    using const_pointer = const Val*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2026,12 +2023,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Val;
-    using reference         = Val&;
-    using const_reference   = const Val&;
-    using pointer           = Val*;
-    using const_pointer     = const Val*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Val;
+    using reference = Val&;
+    using const_reference = const Val&;
+    using pointer = Val*;
+    using const_pointer = const Val*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ============================================================================
@@ -2068,8 +2065,7 @@ namespace gum {
      * the list.
      */
     template <typename Alloc>
-    ListConstIteratorSafe( const List<Val, Alloc>& theList,
-                           unsigned int ind_elt );
+    ListConstIteratorSafe( const List<Val, Alloc>& theList, unsigned int ind_elt );
 
     /**
      * @brief Move constructor.
@@ -2125,8 +2121,7 @@ namespace gum {
      * @param src The gum::ListConstIteratorSafe to copy.
      * @return Returns this gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val>&
-    operator=( const ListConstIteratorSafe<Val>& src );
+    ListConstIteratorSafe<Val>& operator=( const ListConstIteratorSafe<Val>& src );
 
     /**
      * @brief Move operator.
@@ -2338,12 +2333,12 @@ namespace gum {
     /// Types for STL compliance.
     /// @{
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type        = Val;
-    using reference         = Val&;
-    using const_reference   = const Val&;
-    using pointer           = Val*;
-    using const_pointer     = const Val*;
-    using difference_type   = std::ptrdiff_t;
+    using value_type = Val;
+    using reference = Val&;
+    using const_reference = const Val&;
+    using pointer = Val*;
+    using const_pointer = const Val*;
+    using difference_type = std::ptrdiff_t;
     /// @}
 
     // ============================================================================

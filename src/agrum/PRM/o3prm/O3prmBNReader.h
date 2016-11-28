@@ -55,9 +55,9 @@ namespace gum {
   class O3prmBNReader : public BNReader<GUM_SCALAR> {
     public:
     O3prmBNReader( BayesNet<GUM_SCALAR>* bn,
-                   const std::string& filename,
-                   const std::string& entityName = "",
-                   const std::string& classPath  = "" );
+                   const std::string&    filename,
+                   const std::string&    entityName = "",
+                   const std::string&    classPath = "" );
 
     ~O3prmBNReader();
 
@@ -105,7 +105,7 @@ namespace gum {
     std::string __entityName;
 
     BayesNet<GUM_SCALAR>* __bn;
-    ErrorsContainer __errors;
+    ErrorsContainer       __errors;
 
     void __generateBN( prm::PRMSystem<GUM_SCALAR>& system );
     static std::string __getVariableName( const std::string& path,

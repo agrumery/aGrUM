@@ -44,8 +44,7 @@
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME \
-  projectMaxMultiDimArray
+#define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME projectMaxMultiDimArray
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION( x, y ) \
   if ( y > x ) x = y
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
@@ -89,8 +88,7 @@
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME \
-  projectMinMultiDimArray
+#define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME projectMinMultiDimArray
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION( x, y ) \
   if ( x > y ) x = y
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL \
@@ -132,8 +130,7 @@
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME \
-  projectSumMultiDimArray
+#define GUM_MULTI_DIM_COMPLETE_PROJECTION_IMPL2ARRAY_NAME projectSumMultiDimArray
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION( x, y ) x += y
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)0
 #include <agrum/multidim/patterns/completeProjectionPattern4MultiDimArray.h>
@@ -257,8 +254,7 @@
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION
 #undef GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL
 
-#define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME \
-  projectProductMultiDimImplementation
+#define GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME projectProductMultiDimImplementation
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION( x, y ) x *= y
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL (GUM_SCALAR)1
 #include <agrum/multidim/patterns/completeProjectionPattern4BaseName.h>
@@ -324,9 +320,7 @@ namespace gum {
       registerCompleteProjection<GUM_SCALAR*>(
           "sum", MultiDimArrayString, &projectSumMultiDimArray4Pointers );
       registerCompleteProjection<GUM_SCALAR*>(
-          "product",
-          MultiDimArrayString,
-          &projectProductMultiDimArray4Pointers );
+          "product", MultiDimArrayString, &projectProductMultiDimArray4Pointers );
     }
   }
 

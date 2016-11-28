@@ -136,8 +136,8 @@ namespace gum {
        * from deb_cols by applying increment ColsIncr. */
       template <typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator( Cols deb_cols = Cols(),
-                             Size nb_times = 1,
+      void insertTranslator( Cols     deb_cols = Cols(),
+                             Size     nb_times = 1,
                              ColsIncr incr = ColsIncr() );
 
       /// inserts new translators at the end of the set
@@ -149,9 +149,9 @@ namespace gum {
                 typename Cols,
                 typename ColsIncr = typename Make_Default_Incr<Cols>::type>
       void insertTranslator( const NewTranslator& translator,
-                             Cols deb_cols = Cols(),
-                             Size nb_times = 1,
-                             ColsIncr incr = ColsIncr() );
+                             Cols                 deb_cols = Cols(),
+                             Size                 nb_times = 1,
+                             ColsIncr             incr = ColsIncr() );
 
       /// inserts new translators at the end of the set
       /** insert a new translator that will read only one column, namely
@@ -159,8 +159,7 @@ namespace gum {
        * If we wish to insert several translators, use an nb_times different
        * from 1. In this case, the other translators will read columns of the
        * database deduced from deb_col by applying increment "increment". */
-      void
-      insertTranslator( Idx deb_col, Size nb_times = 1, Idx increment = 1 );
+      void insertTranslator( Idx deb_col, Size nb_times = 1, Idx increment = 1 );
 
       /// execute all the translations on the current database row
       void translate();

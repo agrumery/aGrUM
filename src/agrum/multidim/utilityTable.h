@@ -77,8 +77,7 @@ namespace gum {
      * @param toCopy The UtilityTable to copy.
      * @return This UtilityTable.
      */
-    UtilityTable<GUM_SCALAR>&
-    operator=( const UtilityTable<GUM_SCALAR>& toCopy );
+    UtilityTable<GUM_SCALAR>& operator=( const UtilityTable<GUM_SCALAR>& toCopy );
 
     virtual UtilityTable<GUM_SCALAR>* newFactory() const;
 

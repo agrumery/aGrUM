@@ -64,8 +64,8 @@ namespace gum {
      * @throw OperationNotAllowed Raised if an evidence is over more than one
      * variable.
      */
-    virtual void insertEvidence(
-        const List<const Potential<GUM_SCALAR>*>& evidenceList ) = 0;
+    virtual void
+    insertEvidence( const List<const Potential<GUM_SCALAR>*>& evidenceList ) = 0;
 
     /**
      * Remove a given evidence from the graph.

@@ -118,9 +118,8 @@ namespace gum {
     /** @brief adds a constraint indicating that an operation cannot be
      * performed
      * before a set of operations */
-    void
-    forceAfter( const ScheduleOperation<GUM_SCALAR>& op_to_force,
-                const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_before );
+    void forceAfter( const ScheduleOperation<GUM_SCALAR>&             op_to_force,
+                     const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_before );
     void forceAfter( NodeId op_to_force, const NodeSet& ops_before );
 
     /** @brief adds a constraint indicating that an operation must be performed
@@ -131,9 +130,8 @@ namespace gum {
 
     /** @brief adds a constraint indicating that an operation must be performed
      * before a set of operations */
-    void
-    forceBefore( const ScheduleOperation<GUM_SCALAR>& op_to_force,
-                 const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_after );
+    void forceBefore( const ScheduleOperation<GUM_SCALAR>&             op_to_force,
+                      const Set<const ScheduleOperation<GUM_SCALAR>*>& ops_after );
     void forceBefore( NodeId op_to_force, const NodeSet& ops_after );
 
     /// returns a DAG indicating in which order the operations can be performed
@@ -152,8 +150,7 @@ namespace gum {
     NodeId nodeId( const ScheduleOperation<GUM_SCALAR>& ) const;
 
     /// resturns the association between operations anf nodeIds
-    const NodeProperty<const ScheduleOperation<GUM_SCALAR>*>&
-    operations() const;
+    const NodeProperty<const ScheduleOperation<GUM_SCALAR>*>& operations() const;
 
     /// returns the set of operations involving a given multidim table
     const NodeSet&

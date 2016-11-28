@@ -40,14 +40,13 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    DatabaseFromCSV::DatabaseFromCSV(
-        const std::string filename,
-        bool fileContainsNames,
-        const DBTransform& transform,
-        const std::string delimiter,
-        const char commentmarker,
-        const char quoteMarker,
-        const std::vector<std::string> missingVal ) {
+    DatabaseFromCSV::DatabaseFromCSV( const std::string  filename,
+                                      bool               fileContainsNames,
+                                      const DBTransform& transform,
+                                      const std::string  delimiter,
+                                      const char         commentmarker,
+                                      const char         quoteMarker,
+                                      const std::vector<std::string> missingVal ) {
       // open the file and create the CSVParser that will parse it
       std::ifstream in( filename, std::ifstream::in );
 

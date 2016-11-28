@@ -35,41 +35,37 @@ namespace gum_tests {
   class ScoreK2TestSuite : public CxxTest::TestSuite {
     public:
     void test_k2() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriNoApriori<> apriori;
       gum::learning::AprioriSmoothing<> apriori2;
-      gum::learning::ScoreK2<> score( filter, modalities, apriori );
+      gum::learning::ScoreK2<>          score( filter, modalities, apriori );
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::learning::ScoreK2<>::isAprioriCompatible(
-              gum::learning::AprioriNoApriori<>::type::type ) );
+      TS_GUM_ASSERT_THROWS_NOTHING( gum::learning::ScoreK2<>::isAprioriCompatible(
+          gum::learning::AprioriNoApriori<>::type::type ) );
       TS_GUM_ASSERT_THROWS_NOTHING(
           gum::learning::ScoreK2<>::isAprioriCompatible( apriori ) );
-      TS_ASSERT_THROWS(
-          gum::learning::ScoreK2<>::isAprioriCompatible( apriori2 ),
-          gum::IncompatibleScoreApriori );
+      TS_ASSERT_THROWS( gum::learning::ScoreK2<>::isAprioriCompatible( apriori2 ),
+                        gum::IncompatibleScoreApriori );
       TS_ASSERT_THROWS( gum::learning::ScoreK2<>::isAprioriCompatible(
                             gum::learning::AprioriSmoothing<>::type::type ),
                         gum::IncompatibleScoreApriori );
       apriori2.setWeight( 0 );
-      TS_ASSERT_THROWS(
-          gum::learning::ScoreK2<>::isAprioriCompatible( apriori2 ),
-          gum::PossiblyIncompatibleScoreApriori );
+      TS_ASSERT_THROWS( gum::learning::ScoreK2<>::isAprioriCompatible( apriori2 ),
+                        gum::PossiblyIncompatibleScoreApriori );
 
       gum::Idx id1 = score.addNodeSet( 3 );
       gum::Idx id2 = score.addNodeSet( 1 );
@@ -115,19 +111,18 @@ namespace gum_tests {
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto translators = gum::learning::make_translators(
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      auto                           translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
-      std::vector<gum::Idx> modalities = filter.modalities();
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
+      std::vector<gum::Idx>             modalities = filter.modalities();
       gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::ScoreK2<> score( filter, modalities, apriori );
+      gum::learning::ScoreK2<>          score( filter, modalities, apriori );
       // score.useCache ( false );
 
       gum::Idx id1, id2, id3, id4, id5, id6, id7;
@@ -151,19 +146,18 @@ namespace gum_tests {
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto translators = gum::learning::make_translators(
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      auto                           translators = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
-      std::vector<gum::Idx> modalities = filter.modalities();
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
+      std::vector<gum::Idx>             modalities = filter.modalities();
       gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::ScoreK2<> score( filter, modalities, apriori );
+      gum::learning::ScoreK2<>          score( filter, modalities, apriori );
 
       gum::Idx id1, id2, id3, id4, id5, id6, id7;
       for ( gum::Idx i = 0; i < 4; ++i ) {

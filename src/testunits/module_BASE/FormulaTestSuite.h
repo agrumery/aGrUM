@@ -37,8 +37,8 @@ namespace gum_tests {
     void testConstantInt() {
       try {
         // Arrange
-        std::string eq = "1";
-        double expected = 1;
+        std::string  eq = "1";
+        double       expected = 1;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -52,8 +52,8 @@ namespace gum_tests {
     void testConstantFloat() {
       try {
         // Arrange
-        std::string eq = "0.99";
-        double expected = 0.99;
+        std::string  eq = "0.99";
+        double       expected = 0.99;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -67,8 +67,8 @@ namespace gum_tests {
     void testMultiplication() {
       try {
         // Arrange
-        std::string eq = "10 * 2";
-        double expected = 20.0;
+        std::string  eq = "10 * 2";
+        double       expected = 20.0;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -82,8 +82,8 @@ namespace gum_tests {
     void testDivision() {
       try {
         // Arrange
-        std::string eq = "10 / 2";
-        double expected = 5.0;
+        std::string  eq = "10 / 2";
+        double       expected = 5.0;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -97,8 +97,8 @@ namespace gum_tests {
     void testAddition() {
       try {
         // Arrange
-        std::string eq = "10 + 2";
-        double expected = 12.0;
+        std::string  eq = "10 + 2";
+        double       expected = 12.0;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -112,8 +112,8 @@ namespace gum_tests {
     void testSubstraction() {
       try {
         // Arrange
-        std::string eq = "10 - 2";
-        double expected = 8.0;
+        std::string  eq = "10 - 2";
+        double       expected = 8.0;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -127,8 +127,8 @@ namespace gum_tests {
     void testSimplePriority1() {
       try {
         // Arrange
-        std::string eq = "10 - 2 * 5";
-        double expected = 0.0;
+        std::string  eq = "10 - 2 * 5";
+        double       expected = 0.0;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -142,8 +142,8 @@ namespace gum_tests {
     void testSimplePriority2() {
       try {
         // Arrange
-        std::string eq = "10 * 2 - 5";
-        double expected = 15.0;
+        std::string  eq = "10 * 2 - 5";
+        double       expected = 15.0;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -157,8 +157,8 @@ namespace gum_tests {
     void testComplexPriority() {
       try {
         // Arrange
-        std::string eq = "5 + ( ( 1 + 2 ) * 4 ) - 3";
-        double expected = 14.0;
+        std::string  eq = "5 + ( ( 1 + 2 ) * 4 ) - 3";
+        double       expected = 14.0;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -172,8 +172,8 @@ namespace gum_tests {
     void testMinusSign() {
       try {
         // Arrange
-        std::string eq = "-3";
-        double expected = -3.0;
+        std::string  eq = "-3";
+        double       expected = -3.0;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -187,8 +187,8 @@ namespace gum_tests {
     void testExp() {
       try {
         // Arrange
-        std::string eq = "exp(0.001)";
-        double expected = 1.0010005;
+        std::string  eq = "exp(0.001)";
+        double       expected = 1.0010005;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -202,8 +202,8 @@ namespace gum_tests {
     void testLog() {
       try {
         // Arrange
-        std::string eq = "1 + log(1)";
-        double expected = 1;
+        std::string  eq = "1 + log(1)";
+        double       expected = 1;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -217,8 +217,8 @@ namespace gum_tests {
     void testLn() {
       try {
         // Arrange
-        std::string eq = "2 + ln(1)";
-        double expected = 2;
+        std::string  eq = "2 + ln(1)";
+        double       expected = 2;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -232,8 +232,8 @@ namespace gum_tests {
     void testSqrt() {
       try {
         // Arrange
-        std::string eq = "1 + sqrt(4)";
-        double expected = 3;
+        std::string  eq = "1 + sqrt(4)";
+        double       expected = 3;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -247,8 +247,8 @@ namespace gum_tests {
     void testPow() {
       try {
         // Arrange
-        std::string eq = "1 + pow(2,2)";
-        double expected = 5;
+        std::string  eq = "1 + pow(2,2)";
+        double       expected = 5;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -262,8 +262,8 @@ namespace gum_tests {
     void testGoal() {
       try {
         // Arrange
-        std::string eq = "1-exp(-0.001*2)";
-        double expected = 1 - std::exp( -0.001 * 2 );
+        std::string  eq = "1-exp(-0.001*2)";
+        double       expected = 1 - std::exp( -0.001 * 2 );
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -277,11 +277,11 @@ namespace gum_tests {
     void testVariables() {
       try {
         // Arrange
-        double lambda = 0.001;
-        double t = 2;
-        double unused = 10;
-        std::string eq = "1-exp(-lambda*t)";
-        double expected = 1 - std::exp( -lambda * t );
+        double       lambda = 0.001;
+        double       t = 2;
+        double       unused = 10;
+        std::string  eq = "1-exp(-lambda*t)";
+        double       expected = 1 - std::exp( -lambda * t );
         gum::Formula formula( eq );
         formula.variables().insert( "lambda", lambda );
         formula.variables().insert( "t", t );
@@ -301,8 +301,8 @@ namespace gum_tests {
     void testScientificNotation1() {
       try {
         // Arrange
-        std::string eq = "3.72663E-06";
-        double expected = 3.72663E-06;
+        std::string  eq = "3.72663E-06";
+        double       expected = 3.72663E-06;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -316,8 +316,8 @@ namespace gum_tests {
     void testScientificNotation2() {
       try {
         // Arrange
-        std::string eq = "1 - 1.0e-9";
-        double expected = 1 - 1e-9;
+        std::string  eq = "1 - 1.0e-9";
+        double       expected = 1 - 1e-9;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -331,8 +331,8 @@ namespace gum_tests {
     void testScientificNotation3() {
       try {
         // Arrange
-        std::string eq = "1 - 1e-9";
-        double expected = 1 - 1e-9;
+        std::string  eq = "1 - 1e-9";
+        double       expected = 1 - 1e-9;
         gum::Formula formula( eq );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( formula.result() );
@@ -478,8 +478,8 @@ namespace gum_tests {
 
     void testToStream() {
       // Arrange
-      auto f = gum::Formula( "2*5+6" );
-      auto expected = std::to_string( 2 * 5 + 6 );
+      auto              f = gum::Formula( "2*5+6" );
+      auto              expected = std::to_string( 2 * 5 + 6 );
       std::stringstream result;
       // Act
       TS_GUM_ASSERT_THROWS_NOTHING( result << f );

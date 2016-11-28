@@ -31,7 +31,7 @@
 namespace gum {
   namespace prm {
     template <typename GUM_SCALAR>
-    PRMInstance<GUM_SCALAR>::PRMInstance( const std::string& name,
+    PRMInstance<GUM_SCALAR>::PRMInstance( const std::string&    name,
                                           PRMClass<GUM_SCALAR>& type )
         : PRMObject( name )
         , __instantiated( false )
@@ -93,8 +93,8 @@ namespace gum {
             attr.addParent( get( node ) );
           } catch ( NotFound& ) {
 
-            auto elt = &( type().get( node ) );
-            auto sc  = static_cast<PRMSlotChain<GUM_SCALAR>*>( elt );
+            auto        elt = &( type().get( node ) );
+            auto        sc = static_cast<PRMSlotChain<GUM_SCALAR>*>( elt );
             const auto& instances = getInstances( sc->id() );
 
             for ( const auto inst : instances ) {
@@ -150,15 +150,14 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void PRMInstance<GUM_SCALAR>::add( NodeId id,
+    void PRMInstance<GUM_SCALAR>::add( NodeId                   id,
                                        PRMInstance<GUM_SCALAR>& instance ) {
       PRMClassElement<GUM_SCALAR>* elt = 0;
 
       try {
         elt = &( type().get( id ) );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound,
-                   "no ClassElement<GUM_SCALAR> matches the given id" );
+        GUM_ERROR( NotFound, "no ClassElement<GUM_SCALAR> matches the given id" );
       }
 
       switch ( elt->elt_type() ) {
@@ -230,12 +229,11 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void PRMInstance<GUM_SCALAR>::__copyAggregates(
-        PRMAggregate<GUM_SCALAR>* source ) {
+    INLINE void
+    PRMInstance<GUM_SCALAR>::__copyAggregates( PRMAggregate<GUM_SCALAR>* source ) {
       auto attr = new PRMScalarAttribute<GUM_SCALAR>(
           source->name(), source->type(), source->buildImpl() );
-      GUM_ASSERT( &( attr->type().variable() ) !=
-                  &( source->type().variable() ) );
+      GUM_ASSERT( &( attr->type().variable() ) != &( source->type().variable() ) );
       attr->setId( source->id() );
       __nodeIdMap.insert( attr->id(), attr );
       __bijection.insert( &( source->type().variable() ),
@@ -243,12 +241,11 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void PRMInstance<GUM_SCALAR>::__copyAttribute(
-        PRMAttribute<GUM_SCALAR>* source ) {
+    INLINE void
+    PRMInstance<GUM_SCALAR>::__copyAttribute( PRMAttribute<GUM_SCALAR>* source ) {
       auto attr =
           new PRMScalarAttribute<GUM_SCALAR>( source->name(), source->type() );
-      GUM_ASSERT( &( attr->type().variable() ) !=
-                  &( source->type().variable() ) );
+      GUM_ASSERT( &( attr->type().variable() ) != &( source->type().variable() ) );
       // The potential is copied when instantiate() is called
       attr->cpf().fill( (GUM_SCALAR)0 );
       attr->setId( source->id() );
@@ -258,8 +255,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE PRMInstance<GUM_SCALAR>::PRMInstance(
-        const PRMInstance<GUM_SCALAR>& source )
+    INLINE
+    PRMInstance<GUM_SCALAR>::PRMInstance( const PRMInstance<GUM_SCALAR>& source )
         : PRMObject( source )
         , __type( source.__type ) {
       GUM_CONS_CPY( PRMInstance );
@@ -293,8 +290,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool
-    PRMInstance<GUM_SCALAR>::exists( const std::string& name ) const {
+    INLINE bool PRMInstance<GUM_SCALAR>::exists( const std::string& name ) const {
       return __type->exists( name ) && exists( __type->get( name ).id() );
     }
 
@@ -303,8 +299,7 @@ namespace gum {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound,
-                   "no PRMAttribute<GUM_SCALAR> with the given NodeId" );
+        GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId" );
       }
     }
 
@@ -314,8 +309,7 @@ namespace gum {
       try {
         return *( __nodeIdMap[id] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound,
-                   "no PRMAttribute<GUM_SCALAR> with the given NodeId" );
+        GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given NodeId" );
       }
     }
 
@@ -325,8 +319,7 @@ namespace gum {
       try {
         return *( __nodeIdMap[type().get( name ).id()] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound,
-                   "no PRMAttribute<GUM_SCALAR> with the given name" );
+        GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given name" );
       }
     }
 
@@ -336,15 +329,15 @@ namespace gum {
       try {
         return *( __nodeIdMap[type().get( name ).id()] );
       } catch ( NotFound& ) {
-        GUM_ERROR( NotFound,
-                   "no PRMAttribute<GUM_SCALAR> with the given name" );
+        GUM_ERROR( NotFound, "no PRMAttribute<GUM_SCALAR> with the given name" );
       }
     }
 
     template <typename GUM_SCALAR>
-    INLINE void PRMInstance<GUM_SCALAR>::__addReferingInstance(
-        PRMSlotChain<GUM_SCALAR>* sc, PRMInstance<GUM_SCALAR>* i ) {
-      NodeId id        = i->get( sc->lastElt().safeName() ).id();
+    INLINE void
+    PRMInstance<GUM_SCALAR>::__addReferingInstance( PRMSlotChain<GUM_SCALAR>* sc,
+                                                    PRMInstance<GUM_SCALAR>*  i ) {
+      NodeId      id = i->get( sc->lastElt().safeName() ).id();
       std::string name = sc->lastElt().safeName();
 
       try {
@@ -362,7 +355,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const Bijection<const DiscreteVariable*, const DiscreteVariable*>&
-    PRMInstance<GUM_SCALAR>::bijection() const {
+                 PRMInstance<GUM_SCALAR>::bijection() const {
       return __bijection;
     }
 
@@ -559,13 +552,13 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const PRMInstance<GUM_SCALAR>&
-        PRMInstance<GUM_SCALAR>::RefConstIterator::operator*() const {
+                 PRMInstance<GUM_SCALAR>::RefConstIterator::operator*() const {
       return **__iter;
     }
 
     template <typename GUM_SCALAR>
     INLINE const PRMInstance<GUM_SCALAR>*
-        PRMInstance<GUM_SCALAR>::RefConstIterator::operator->() const {
+                 PRMInstance<GUM_SCALAR>::RefConstIterator::operator->() const {
       return *__iter;
     }
 
@@ -611,8 +604,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void PRMInstance<GUM_SCALAR>::__copyAttributeCPF(
-        PRMAttribute<GUM_SCALAR>* attr ) {
+    INLINE void
+    PRMInstance<GUM_SCALAR>::__copyAttributeCPF( PRMAttribute<GUM_SCALAR>* attr ) {
       const auto& type_attr = static_cast<const PRMAttribute<GUM_SCALAR>&>(
           type().get( attr->safeName() ) );
       attr->copyCpf( bijection(), type_attr );

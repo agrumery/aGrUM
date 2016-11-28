@@ -56,8 +56,7 @@
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_NAME
 #undef GUM_MULTI_DIM_OPERATOR
 
-#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME \
-  add2MultiDimArrays4Pointers
+#define GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME add2MultiDimArrays4Pointers
 #define GUM_MULTI_DIM_OPERATOR( x, y ) new T( ( *x ) + ( *y ) )
 #include <agrum/multidim/patterns/operatorPattern4MultiDimArray.h>
 #undef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
@@ -158,8 +157,7 @@
 #include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_NAME
 
-#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME \
-  add2MultiDimFunctionGraphs
+#define GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME add2MultiDimFunctionGraphs
 #include <agrum/multidim/patterns/operatorPattern4MultiDimFunctionGraph.h>
 #undef GUM_MULTI_DIM_OPERATOR_IMPL2DECISION_GRAPH_NAME
 
@@ -348,10 +346,8 @@ namespace gum {
                                     MultiDimArrayString,
                                     MultiDimArrayString,
                                     &multiply2MultiDimArrays );
-      registerOperator<GUM_SCALAR>( "/",
-                                    MultiDimArrayString,
-                                    MultiDimArrayString,
-                                    &divide2MultiDimArrays );
+      registerOperator<GUM_SCALAR>(
+          "/", MultiDimArrayString, MultiDimArrayString, &divide2MultiDimArrays );
 
       // register base functions for multiDimFunctionGraphs
       registerOperator<GUM_SCALAR>( "+",
@@ -374,18 +370,12 @@ namespace gum {
       // register default basename functions
       registerOperator<GUM_SCALAR>(
           "+", BaseNameString, BaseNameString, &add2MultiDimImplementations );
-      registerOperator<GUM_SCALAR>( "-",
-                                    BaseNameString,
-                                    BaseNameString,
-                                    &subtract2MultiDimImplementations );
-      registerOperator<GUM_SCALAR>( "*",
-                                    BaseNameString,
-                                    BaseNameString,
-                                    &multiply2MultiDimImplementations );
-      registerOperator<GUM_SCALAR>( "/",
-                                    BaseNameString,
-                                    BaseNameString,
-                                    &divide2MultiDimImplementations );
+      registerOperator<GUM_SCALAR>(
+          "-", BaseNameString, BaseNameString, &subtract2MultiDimImplementations );
+      registerOperator<GUM_SCALAR>(
+          "*", BaseNameString, BaseNameString, &multiply2MultiDimImplementations );
+      registerOperator<GUM_SCALAR>(
+          "/", BaseNameString, BaseNameString, &divide2MultiDimImplementations );
     }
   }
 

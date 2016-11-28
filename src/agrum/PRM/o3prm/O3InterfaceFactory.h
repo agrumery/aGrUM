@@ -57,10 +57,10 @@ namespace gum {
       class O3InterfaceFactory {
 
         public:
-        O3InterfaceFactory( PRM<GUM_SCALAR>& prm,
-                            O3PRM& o3_prm,
+        O3InterfaceFactory( PRM<GUM_SCALAR>&          prm,
+                            O3PRM&                    o3_prm,
                             O3NameSolver<GUM_SCALAR>& solver,
-                            ErrorsContainer& errors );
+                            ErrorsContainer&          errors );
         O3InterfaceFactory( const O3InterfaceFactory<GUM_SCALAR>& src );
         O3InterfaceFactory( O3InterfaceFactory<GUM_SCALAR>&& src );
         ~O3InterfaceFactory();
@@ -74,16 +74,16 @@ namespace gum {
         void buildElements();
 
         private:
-        PRM<GUM_SCALAR>* __prm;
-        O3PRM* __o3_prm;
+        PRM<GUM_SCALAR>*          __prm;
+        O3PRM*                    __o3_prm;
         O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer* __errors;
+        ErrorsContainer*          __errors;
 
-        HashTable<std::string, std::string> __eltName;
-        HashTable<std::string, gum::NodeId> __nameMap;
+        HashTable<std::string, std::string>  __eltName;
+        HashTable<std::string, gum::NodeId>  __nameMap;
         HashTable<std::string, O3Interface*> __interfaceMap;
-        HashTable<NodeId, O3Interface*> __nodeMap;
-        DAG __dag;
+        HashTable<NodeId, O3Interface*>      __nodeMap;
+        DAG                       __dag;
         std::vector<O3Interface*> __o3Interface;
 
         bool __addInterface2Dag();
@@ -98,10 +98,10 @@ namespace gum {
 
         bool __checkOverloadLegality( O3Interface& i, O3InterfaceElement& elt );
 
-        bool __checkAttributeOverloadLegality( O3Interface& i,
+        bool __checkAttributeOverloadLegality( O3Interface&        i,
                                                O3InterfaceElement& elt );
 
-        bool __checkReferenceOverloadLegality( O3Interface& i,
+        bool __checkReferenceOverloadLegality( O3Interface&        i,
                                                O3InterfaceElement& elt );
 
         bool __checkCyclicReference( O3Interface& i, O3InterfaceElement& elt );

@@ -37,8 +37,8 @@ namespace gum {
   // ==========================================================================
   RangeVariable::RangeVariable( const std::string& aName,
                                 const std::string& aDesc,
-                                long minVal,
-                                long maxVal )
+                                long               minVal,
+                                long               maxVal )
       : DiscreteVariable( aName, aDesc )
       , __minBound( minVal )
       , __maxBound( maxVal ) {

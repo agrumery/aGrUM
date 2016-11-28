@@ -193,20 +193,20 @@ class TiXmlString {
   TiXmlString& append( const char* str, size_type len );
 
   void swap( TiXmlString& other ) {
-    Rep* r     = rep_;
-    rep_       = other.rep_;
+    Rep* r = rep_;
+    rep_ = other.rep_;
     other.rep_ = r;
   }
 
   private:
   void init( size_type sz ) { init( sz, sz ); }
   void set_size( size_type sz ) { rep_->str[rep_->size = sz] = '\0'; }
-  char* start() const { return rep_->str; }
-  char* finish() const { return rep_->str + rep_->size; }
+  char*                    start() const { return rep_->str; }
+  char*                    finish() const { return rep_->str + rep_->size; }
 
   struct Rep {
     size_type size, capacity;
-    char str[1];
+    char      str[1];
   };
 
   void init( size_type sz, size_type cap ) {
@@ -222,7 +222,7 @@ class TiXmlString {
       rep_ = reinterpret_cast<Rep*>( new int[intsNeeded] );
 
       rep_->str[rep_->size = sz] = '\0';
-      rep_->capacity             = cap;
+      rep_->capacity = cap;
     } else {
       rep_ = &nullrep_;
     }
@@ -237,7 +237,7 @@ class TiXmlString {
     }
   }
 
-  Rep* rep_;
+  Rep*       rep_;
   static Rep nullrep_;
 };
 

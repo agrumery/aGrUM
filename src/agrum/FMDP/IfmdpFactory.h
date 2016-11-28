@@ -121,8 +121,7 @@ namespace gum {
 
     /// Returns a constant reference on a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    virtual const DiscreteVariable*
-    variable( const std::string& name ) const = 0;
+    virtual const DiscreteVariable* variable( const std::string& name ) const = 0;
 
     /// @}
     // ==========================================================================
@@ -174,7 +173,7 @@ namespace gum {
     virtual void startTransitionDeclaration() = 0;
 
     /// Tells the factory to add a transition table to the current fmdp.
-    virtual void addTransition( const std::string& var,
+    virtual void addTransition( const std::string&        var,
                                 const MultiDimAdressable* transition ) = 0;
 
     /// Tells the factory to add a transition table to the current fmdp.

@@ -31,13 +31,13 @@
 
 namespace gum {
 
-  MultiDimInterface& operator<<( MultiDimInterface& c,
+  MultiDimInterface& operator<<( MultiDimInterface&      c,
                                  const DiscreteVariable& v ) {
     c.add( v );
     return c;
   }
 
-  MultiDimInterface& operator>>( MultiDimInterface& c,
+  MultiDimInterface& operator>>( MultiDimInterface&      c,
                                  const DiscreteVariable& v ) {
     c.erase( v );
     return c;

@@ -124,7 +124,7 @@ namespace gum {
     // should be pure virtual but using KL directly is a way to delay the choice
     // between different computation scheme (@see BruteForceKL)
     virtual void _computeKL( void );
-    void _process();
+    void         _process();
 
     const IBayesNet<GUM_SCALAR>& _p;
     const IBayesNet<GUM_SCALAR>& _q;
@@ -138,9 +138,9 @@ namespace gum {
     Size _errorQP;
 
     private:
-    bool __checkCompatibility() const;
+    bool       __checkCompatibility() const;
     Complexity __difficulty;
-    bool __done;
+    bool       __done;
   };
 
 

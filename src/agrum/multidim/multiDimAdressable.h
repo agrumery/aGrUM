@@ -123,10 +123,10 @@ namespace gum {
      * @param oldval The old value.
      * @param newval The changed value.
      */
-    virtual void changeNotification( Instantiation& i,
+    virtual void changeNotification( Instantiation&                i,
                                      const DiscreteVariable* const var,
-                                     const Idx& oldval,
-                                     const Idx& newval ) = 0;
+                                     const Idx&                    oldval,
+                                     const Idx&                    newval ) = 0;
 
     /**
      * @brief Listen to setFirst in a given Instantiation.

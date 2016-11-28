@@ -59,10 +59,10 @@ namespace gum {
       class O3TypeFactory {
 
         public:
-        O3TypeFactory( PRM<GUM_SCALAR>& prm,
-                       O3PRM& o3_prm,
+        O3TypeFactory( PRM<GUM_SCALAR>&          prm,
+                       O3PRM&                    o3_prm,
                        O3NameSolver<GUM_SCALAR>& solver,
-                       ErrorsContainer& errors );
+                       ErrorsContainer&          errors );
         O3TypeFactory( const O3TypeFactory<GUM_SCALAR>& src );
         O3TypeFactory( O3TypeFactory<GUM_SCALAR>&& src );
         ~O3TypeFactory();
@@ -72,20 +72,20 @@ namespace gum {
         void build();
 
         private:
-        PRM<GUM_SCALAR>* __prm;
-        O3PRM* __o3_prm;
+        PRM<GUM_SCALAR>*          __prm;
+        O3PRM*                    __o3_prm;
         O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer* __errors;
+        ErrorsContainer*          __errors;
 
         bool __build;
 
-        HashTable<std::string, O3Type*> __superMap;
+        HashTable<std::string, O3Type*>     __superMap;
         HashTable<std::string, gum::NodeId> __nameMap;
-        HashTable<std::string, O3Type*> __typeMap;
-        HashTable<NodeId, O3Type*> __nodeMap;
-        DAG __dag;
-        std::vector<O3Type*> __o3Types;
-        std::vector<O3IntType*> __o3IntTypes;
+        HashTable<std::string, O3Type*>     __typeMap;
+        HashTable<NodeId, O3Type*>          __nodeMap;
+        DAG                      __dag;
+        std::vector<O3Type*>     __o3Types;
+        std::vector<O3IntType*>  __o3IntTypes;
         std::vector<O3RealType*> __o3RealTypes;
 
         void __buildTypes();

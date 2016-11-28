@@ -30,17 +30,17 @@
 
 namespace gum {
 
-  void BayesBall::requisiteNodes( const DAG& dag,
+  void BayesBall::requisiteNodes( const DAG&     dag,
                                   const NodeSet& query,
                                   const NodeSet& hardEvidence,
                                   const NodeSet& softEvidence,
-                                  NodeSet& requisite ) {
+                                  NodeSet&       requisite ) {
     // for the moment, no node is requisite
     requisite.clear();
 
     // create the marks (top = first and bottom = second )
     NodeProperty<std::pair<bool, bool>> marks( dag.size() );
-    const std::pair<bool, bool> empty_mark( false, false );
+    const std::pair<bool, bool>         empty_mark( false, false );
 
     // indicate that we will send the ball to all the query nodes (as children):
     // in list nodes_to_visit, the first element is the next node to send the

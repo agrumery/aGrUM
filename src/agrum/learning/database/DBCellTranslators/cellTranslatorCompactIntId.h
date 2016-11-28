@@ -97,8 +97,7 @@ namespace gum {
       operator=( const CellTranslatorCompactIntId& from );
 
       /// move operator
-      CellTranslatorCompactIntId&
-      operator=( CellTranslatorCompactIntId&& from );
+      CellTranslatorCompactIntId& operator=( CellTranslatorCompactIntId&& from );
 
       /// @}
 
@@ -130,7 +129,7 @@ namespace gum {
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames( const std::vector<std::string>& db_var,
-                          std::vector<std::string>& output_vars ) const;
+                          std::vector<std::string>&       output_vars ) const;
 
       /// @}
 

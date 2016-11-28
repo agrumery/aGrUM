@@ -55,8 +55,7 @@ namespace gum_tests {
   class LocalSearchWithTabuListTestSuite : public CxxTest::TestSuite {
     public:
     void test_asia() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators1 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -70,25 +69,25 @@ namespace gum_tests {
           translators;
       translators.insertTranslator( gum::learning::Col<0>(), 8 );
 
-      auto generators1 = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators1 =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
       auto generators = generators1;
 
-      auto filter1 = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto filter1 =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       auto filter = filter1;
 
-      auto filter2 = gum::learning::make_DB_row_filter(
-          database, translators, generators1 );
+      auto filter2 =
+          gum::learning::make_DB_row_filter( database, translators, generators1 );
 
       filter = std::move( filter2 );
 
       std::vector<gum::Size> modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<> score( filter, modalities, apriori );
+      gum::learning::ScoreK2<>          score( filter, modalities, apriori );
 
       gum::learning::StructuralConstraintSetStatic<
           gum::learning::StructuralConstraintDAG,
@@ -100,17 +99,14 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree( 2 );
       struct_constraint.setTabuListSize( 100 );
 
-      gum::NodeProperty<gum::NodeId> slices{
-          std::make_pair( gum::NodeId( 0 ), 0 ),
-          std::make_pair( gum::NodeId( 1 ), 0 )};
+      gum::NodeProperty<gum::NodeId> slices{std::make_pair( gum::NodeId( 0 ), 0 ),
+                                            std::make_pair( gum::NodeId( 1 ), 0 )};
       struct_constraint.setSliceOrder( slices );
       struct_constraint.setDefaultSlice( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator(
-          filter, modalities, apriori );
+      gum::learning::ParamEstimatorML<> estimator( filter, modalities, apriori );
 
-      gum::learning::GraphChangesGenerator4DiGraph<decltype(
-          struct_constraint )>
+      gum::learning::GraphChangesGenerator4DiGraph<decltype( struct_constraint )>
           op_set( struct_constraint );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
@@ -122,12 +118,11 @@ namespace gum_tests {
       search.setMaxNbDecreasingChanges( 2 );
 
       try {
-        gum::BayesNet<float> bn =
-            search.learnBN<float>( selector,
-                                   estimator,
-                                   database.variableNames(),
-                                   modalities,
-                                   filter.translatorSet() );
+        gum::BayesNet<float> bn = search.learnBN<float>( selector,
+                                                         estimator,
+                                                         database.variableNames(),
+                                                         modalities,
+                                                         filter.translatorSet() );
         gum::BayesNet<double> bn2 =
             search.learnBN<double>( selector,
                                     estimator,
@@ -148,10 +143,10 @@ namespace gum_tests {
                                 gum::learning::Col<0>,
                                 37>() );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities = filter.modalities();
 
@@ -169,17 +164,14 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
 
-      gum::NodeProperty<gum::NodeId> slices{
-          std::make_pair( gum::NodeId( 0 ), 0 ),
-          std::make_pair( gum::NodeId( 1 ), 0 )};
+      gum::NodeProperty<gum::NodeId> slices{std::make_pair( gum::NodeId( 0 ), 0 ),
+                                            std::make_pair( gum::NodeId( 1 ), 0 )};
       struct_constraint.setSliceOrder( slices );
       struct_constraint.setDefaultSlice( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator(
-          filter, modalities, apriori );
+      gum::learning::ParamEstimatorML<> estimator( filter, modalities, apriori );
 
-      gum::learning::GraphChangesGenerator4DiGraph<decltype(
-          struct_constraint )>
+      gum::learning::GraphChangesGenerator4DiGraph<decltype( struct_constraint )>
           op_set( struct_constraint );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
@@ -191,7 +183,7 @@ namespace gum_tests {
 
       try {
         gum::Timer timer;
-        gum::DAG bn = search.learnStructure( selector, modalities );
+        gum::DAG   bn = search.learnStructure( selector, modalities );
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn << std::endl;
       } catch ( gum::Exception& e ) {
@@ -209,10 +201,10 @@ namespace gum_tests {
                                     gum::learning::Col<0>(),
                                     37 );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities = filter.modalities();
 
@@ -230,17 +222,14 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
 
-      gum::NodeProperty<gum::NodeId> slices{
-          std::make_pair( gum::NodeId( 0 ), 0 ),
-          std::make_pair( gum::NodeId( 1 ), 0 )};
+      gum::NodeProperty<gum::NodeId> slices{std::make_pair( gum::NodeId( 0 ), 0 ),
+                                            std::make_pair( gum::NodeId( 1 ), 0 )};
       struct_constraint.setSliceOrder( slices );
       struct_constraint.setDefaultSlice( 1 );
 
-      gum::learning::ParamEstimatorML<> estimator(
-          filter, modalities, apriori );
+      gum::learning::ParamEstimatorML<> estimator( filter, modalities, apriori );
 
-      gum::learning::GraphChangesGenerator4DiGraph<decltype(
-          struct_constraint )>
+      gum::learning::GraphChangesGenerator4DiGraph<decltype( struct_constraint )>
           op_set( struct_constraint );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
@@ -252,7 +241,7 @@ namespace gum_tests {
 
       try {
         gum::Timer timer;
-        gum::DAG bn = search.learnStructure( selector, modalities );
+        gum::DAG   bn = search.learnStructure( selector, modalities );
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn << std::endl;
       } catch ( gum::Exception& e ) {
@@ -270,10 +259,10 @@ namespace gum_tests {
                                     gum::learning::Col<0>(),
                                     37 );
 
-      auto generators = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
-      auto filter = gum::learning::make_DB_row_filter(
-          database, translators, generators );
+      auto generators =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      auto filter =
+          gum::learning::make_DB_row_filter( database, translators, generators );
 
       std::vector<gum::Size> modalities = filter.modalities();
 
@@ -291,18 +280,15 @@ namespace gum_tests {
       struct_constraint.setMaxIndegree( 4 );
       struct_constraint.setTabuListSize( 100 );
 
-      gum::NodeProperty<gum::NodeId> slices{
-          std::make_pair( gum::NodeId( 0 ), 0 ),
-          std::make_pair( gum::NodeId( 1 ), 0 )};
+      gum::NodeProperty<gum::NodeId> slices{std::make_pair( gum::NodeId( 0 ), 0 ),
+                                            std::make_pair( gum::NodeId( 1 ), 0 )};
       struct_constraint.setSliceOrder( slices );
       struct_constraint.setDefaultSlice( 1 );
 
       apriori.setWeight( 0 );
-      gum::learning::ParamEstimatorML<> estimator(
-          filter, modalities, apriori );
+      gum::learning::ParamEstimatorML<> estimator( filter, modalities, apriori );
 
-      gum::learning::GraphChangesGenerator4DiGraph<decltype(
-          struct_constraint )>
+      gum::learning::GraphChangesGenerator4DiGraph<decltype( struct_constraint )>
           op_set( struct_constraint );
 
       gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
@@ -314,7 +300,7 @@ namespace gum_tests {
 
       try {
         gum::Timer timer;
-        gum::DAG bn = search.learnStructure( selector, modalities );
+        gum::DAG   bn = search.learnStructure( selector, modalities );
         std::cout << timer.step() << " : " << std::endl;
         std::cout << bn << std::endl;
       } catch ( gum::Exception& e ) {

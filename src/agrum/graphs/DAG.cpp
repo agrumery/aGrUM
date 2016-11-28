@@ -37,8 +37,7 @@ namespace gum {
             Size arcs_size,
             bool arcs_resize_policy )
       : NodeGraphPart( nodes_size, nodes_resize_policy )
-      , DiGraph(
-            nodes_size, nodes_resize_policy, arcs_size, arcs_resize_policy ) {
+      , DiGraph( nodes_size, nodes_resize_policy, arcs_size, arcs_resize_policy ) {
     GUM_CONSTRUCTOR( DAG );
   }
 

@@ -29,7 +29,7 @@ namespace gum_tests {
   class O3prmBNReaderTestSuite : public CxxTest::TestSuite {
     public:
     void testClassWithoutSystem() {
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>      bn;
       gum::O3prmBNReader<double> reader(
           &bn, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
       gum::Size res = 0;
@@ -40,7 +40,7 @@ namespace gum_tests {
     }
 
     void testDoublingClassWithoutSystem() {
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>      bn;
       gum::O3prmBNReader<double> reader(
           &bn, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
       gum::Size res = 0;
@@ -50,7 +50,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)8 );
 
 
-      gum::BayesNet<double> bn2;
+      gum::BayesNet<double>      bn2;
       gum::O3prmBNReader<double> reader2(
           &bn2, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
       gum::Size res2 = 0;
@@ -74,7 +74,7 @@ namespace gum_tests {
     }
 
     void testClassesWithSystem() {
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>      bn;
       gum::O3prmBNReader<double> reader(
           &bn,
           GET_RESSOURCES_PATH( "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" ),
@@ -86,7 +86,7 @@ namespace gum_tests {
     }
 
     void testWithError() {
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>      bn;
       gum::O3prmBNReader<double> reader(
           &bn, GET_RESSOURCES_PATH( "o3prm/DoesNotExists.o3prm" ), "Asia" );
       gum::Size res = 0;
@@ -106,7 +106,7 @@ namespace gum_tests {
     }
 
     void testWithCplxFile() {
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>      bn;
       gum::O3prmBNReader<double> reader(
           &bn, GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ), "aSys" );
       gum::Size res = 0;
@@ -117,7 +117,7 @@ namespace gum_tests {
 
 
     void testWithClassPathAndSystem() {
-      gum::BayesNet<double> bn;
+      gum::BayesNet<double>      bn;
       gum::O3prmBNReader<double> reader(
           &bn,
           GET_RESSOURCES_PATH(

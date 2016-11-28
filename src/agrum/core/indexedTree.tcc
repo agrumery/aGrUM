@@ -168,7 +168,7 @@ namespace gum {
             new IndexedTree<Key, Data>( index[i], (Data*)0 );
         current_node->children.insert( index[i], new_node );
         new_node->parent = this;
-        current_node     = new_node;
+        current_node = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -195,8 +195,7 @@ namespace gum {
     } else {
       // here, the node to be inserted is the root of the tree (so it already
       // exists)
-      GUM_ERROR( DuplicateElement,
-                 "the indexed tree already contains the node" );
+      GUM_ERROR( DuplicateElement, "the indexed tree already contains the node" );
     }
   }
 
@@ -222,7 +221,7 @@ namespace gum {
             new IndexedTree<Key, Data>( index[i], (Data*)0 );
         current_node->children.insert( index[i], new_node );
         new_node->parent = this;
-        current_node     = new_node;
+        current_node = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -249,8 +248,7 @@ namespace gum {
     } else {
       // here, the node to be inserted is the root of the tree (so it already
       // exists)
-      GUM_ERROR( DuplicateElement,
-                 "the indexed tree already contains the node" );
+      GUM_ERROR( DuplicateElement, "the indexed tree already contains the node" );
     }
   }
 
@@ -276,7 +274,7 @@ namespace gum {
             new IndexedTree<Key, Data>( index[i], (Data*)0 );
         current_node->children.insert( index[i], new_node );
         new_node->parent = this;
-        current_node     = new_node;
+        current_node = new_node;
       } else
         current_node = current_node->children[index[i]];
     }
@@ -332,7 +330,7 @@ namespace gum {
             new IndexedTree<Key, Data>( index[i], (Data*)0 );
         current_node->children.insert( index[i], new_node );
         new_node->parent = this;
-        current_node     = new_node;
+        current_node = new_node;
       } else
         current_node = current_node->children[index[i]];
     }

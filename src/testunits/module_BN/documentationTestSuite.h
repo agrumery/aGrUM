@@ -125,7 +125,7 @@ namespace gum_tests {
 
     void testBayesNetFactory() {
       try {
-        auto asia    = gum::BayesNet<double>();
+        auto asia = gum::BayesNet<double>();
         auto factory = gum::BayesNetFactory<double>( &asia );
         // Visit to Asia
         factory.startVariableDeclaration();
@@ -220,7 +220,7 @@ namespace gum_tests {
         // CPT of Visit To Asia
         factory.startRawProbabilityDeclaration( "Visit To Asia" );
         auto variables = std::vector<std::string>{"Visit To Asia"};
-        auto values    = std::vector<float>{0.01f, 0.99f};
+        auto values = std::vector<float>{0.01f, 0.99f};
         factory.rawConditionalTable( variables, values );
         factory.endRawProbabilityDeclaration();
 
@@ -243,8 +243,7 @@ namespace gum_tests {
         factory.endRawProbabilityDeclaration();
 
         // Factorized CPT of Tuberculosis or Cancer
-        factory.startFactorizedProbabilityDeclaration(
-            "Tuberculosis or Cancer" );
+        factory.startFactorizedProbabilityDeclaration( "Tuberculosis or Cancer" );
         // Setting [ 1.00, 0.00 ] as the default distribution
         factory.startFactorizedEntry();
         // Tuberculosis or Cancer -> True | False
@@ -302,8 +301,7 @@ namespace gum_tests {
         asia.cpt( hasTuberculosis ).fillWith( {0.05f, 0.01f, 0.95f, 0.99f} );
         asia.cpt( hasLungCancer ).fillWith( {0.10f, 0.90f, 0.01f, 0.99f} );
         asia.cpt( tubOrCancer )
-            .fillWith(
-                {1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f} )
+            .fillWith( {1.00f, 0.00f, 1.00f, 0.00f, 1.00f, 0.00f, 0.00f, 1.00f} )
             .translate( 1e-5 )
             .normalizeAsCPT();
         asia.cpt( xray ).fillWith( {0.98f, 0.02f, 0.05f, 0.95f} );
@@ -313,8 +311,8 @@ namespace gum_tests {
 
       try {
         gum::LazyPropagation<double> inference( &asia );
-        auto id              = asia.idFromName( "Has Lung Cancer" );
-        const auto& marginal = inference.posterior( id );
+        auto                         id = asia.idFromName( "Has Lung Cancer" );
+        const auto&                  marginal = inference.posterior( id );
         TS_FAIL( "Inference should not be correct with a undefined CPT" );
       } catch ( gum::IncompatibleEvidence& e ) {
         // OK to be here : CPT of Has Bronchitis has not been defined.
@@ -327,7 +325,7 @@ namespace gum_tests {
       try {
         // To prevent warning for unused variable
         gum::LazyPropagation<double> inference( &asia );
-        auto id              = asia.idFromName( "Has Lung Cancer" );
+        auto                         id = asia.idFromName( "Has Lung Cancer" );
         const auto& marginal = inference.posterior( "Has Lung Cancer" );
         TS_ASSERT_EQUALS( marginal.domainSize(), gum::Size( 2 ) );
 
@@ -350,7 +348,7 @@ namespace gum_tests {
         auto asia = gum::BayesNet<double>( "Asia" );
         // One implementation of the gum::BNReader class
         std::string file = GET_RESSOURCES_PATH( "asia.bif" );
-        auto reader      = gum::BIFReader<double>( &asia, file );
+        auto        reader = gum::BIFReader<double>( &asia, file );
         try {
           reader.proceed();
         } catch ( gum::IOError& e ) {

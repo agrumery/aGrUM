@@ -33,10 +33,9 @@ namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
   ScheduleCliqueStoreMultiDim<GUM_SCALAR>::ScheduleCliqueStoreMultiDim(
-      const ScheduleMultiDim<GUM_SCALAR>& table,
-      NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*>>&
-          clique_tables,
-      NodeId clique )
+      const ScheduleMultiDim<GUM_SCALAR>&                           table,
+      NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*>>& clique_tables,
+      NodeId                                                        clique )
       : ScheduleOperation<GUM_SCALAR>(
             ScheduleOperation<GUM_SCALAR>::Type::CLIQUE_STORE_MULTIDIM )
       , __table( table )
@@ -84,9 +83,9 @@ namespace gum {
     // avoid self assignment
     if ( &from != this ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );
-      __table                                = from.__table;
-      __tableSet                             = from.__tableSet;
-      __clique                               = from.__clique;
+      __table = from.__table;
+      __tableSet = from.__tableSet;
+      __clique = from.__clique;
 
       if ( __args ) {
         __args->clear();
@@ -146,14 +145,14 @@ namespace gum {
   /// returns the memory consumption used during the operation
   template <typename GUM_SCALAR>
   INLINE std::pair<long, long>
-  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::memoryUsage() const {
+         ScheduleCliqueStoreMultiDim<GUM_SCALAR>::memoryUsage() const {
     return std::pair<long, long>( 0, 0 );
   }
 
   /// returns the multidim to be stored
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::multiDimArgs() const {
+               ScheduleCliqueStoreMultiDim<GUM_SCALAR>::multiDimArgs() const {
     if ( !__args ) {
       __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __args->insert( &__table );
@@ -165,7 +164,7 @@ namespace gum {
   /// returns the set of multidims that should be the result of the operation
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleCliqueStoreMultiDim<GUM_SCALAR>::multiDimResults() const {
+               ScheduleCliqueStoreMultiDim<GUM_SCALAR>::multiDimResults() const {
     static Sequence<const ScheduleMultiDim<GUM_SCALAR>*> empty_seq;
 #ifndef NDEBUG
     // for debugging purposes, we should inform the aGrUM's debugger that

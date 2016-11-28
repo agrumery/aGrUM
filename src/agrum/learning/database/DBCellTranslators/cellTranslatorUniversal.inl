@@ -38,8 +38,7 @@ namespace gum {
         , __strings( from.__strings )
         , __check_database( from.__check_database ) {
       if ( from.__str_user_values != nullptr ) {
-        __str_user_values =
-            new Sequence<std::string>( *from.__str_user_values );
+        __str_user_values = new Sequence<std::string>( *from.__str_user_values );
       }
 
       if ( from.__num_user_values != nullptr ) {
@@ -88,9 +87,9 @@ namespace gum {
     operator=( const CellTranslatorUniversal& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( from );
-        __max_value      = from.__max_value;
-        __numbers        = from.__numbers;
-        __strings        = from.__strings;
+        __max_value = from.__max_value;
+        __numbers = from.__numbers;
+        __strings = from.__strings;
         __check_database = from.__check_database;
 
         if ( __str_user_values ) {
@@ -104,8 +103,7 @@ namespace gum {
         }
 
         if ( from.__str_user_values != nullptr ) {
-          __str_user_values =
-              new Sequence<std::string>( *from.__str_user_values );
+          __str_user_values = new Sequence<std::string>( *from.__str_user_values );
         }
 
         if ( from.__num_user_values != nullptr ) {
@@ -121,9 +119,9 @@ namespace gum {
     operator=( CellTranslatorUniversal&& from ) {
       if ( this != &from ) {
         DBCellTranslator<1, 1>::operator=( std::move( from ) );
-        __max_value      = std::move( from.__max_value );
-        __numbers        = std::move( from.__numbers );
-        __strings        = std::move( from.__strings );
+        __max_value = std::move( from.__max_value );
+        __numbers = std::move( from.__numbers );
+        __strings = std::move( from.__strings );
         __check_database = from.__check_database;
 
         if ( __str_user_values ) {
@@ -196,15 +194,13 @@ namespace gum {
     }
 
     /// returns whether the translator needs a DB parsing to initialize itself
-    INLINE bool CellTranslatorUniversal::requiresInitialization() const
-        noexcept {
+    INLINE bool CellTranslatorUniversal::requiresInitialization() const noexcept {
       return __check_database;
     }
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorUniversal::translateBack( Idx col,
-                                            Idx translated_val ) const {
+    CellTranslatorUniversal::translateBack( Idx col, Idx translated_val ) const {
       std::stringstream str;
 
       if ( __numbers.existsSecond( translated_val ) )
@@ -218,19 +214,19 @@ namespace gum {
     /// returns the name of the variable(s) the translator has processed
     INLINE void CellTranslatorUniversal::variableNames(
         const std::vector<std::string>& db_var,
-        std::vector<std::string>& output_vars ) const {
+        std::vector<std::string>&       output_vars ) const {
       output_vars.push_back( db_var[_input_cols[0]] );
     }
 
     /// returns the set of translations for string values in the database
     INLINE const Bijection<Idx, Idx>&
-    CellTranslatorUniversal::stringTranslations() const noexcept {
+                 CellTranslatorUniversal::stringTranslations() const noexcept {
       return __strings;
     }
 
     /// returns the set of translations for number values in the database
     INLINE const Bijection<double, Idx>&
-    CellTranslatorUniversal::numberTranslations() const noexcept {
+                 CellTranslatorUniversal::numberTranslations() const noexcept {
       return __numbers;
     }
 

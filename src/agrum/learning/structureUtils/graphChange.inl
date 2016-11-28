@@ -33,7 +33,7 @@ namespace gum {
 
     /// default constructor
     INLINE GraphChange::GraphChange( GraphChangeType type,
-                                     NodeId node1,
+                                     NodeId          node1,
                                      NodeId node2 ) noexcept : __type{type},
                                                                __node1{node1},
                                                                __node2{node2} {
@@ -57,14 +57,12 @@ namespace gum {
     }
 
     /// destructor
-    INLINE GraphChange::~GraphChange() noexcept {
-      GUM_DESTRUCTOR( GraphChange );
-    }
+    INLINE GraphChange::~GraphChange() noexcept { GUM_DESTRUCTOR( GraphChange ); }
 
     /// copy constructor
     INLINE GraphChange& GraphChange::
     operator=( const GraphChange& from ) noexcept {
-      __type  = from.__type;
+      __type = from.__type;
       __node1 = from.__node1;
       __node2 = from.__node2;
       return *this;
@@ -72,7 +70,7 @@ namespace gum {
 
     /// move operator
     INLINE GraphChange& GraphChange::operator=( GraphChange&& from ) noexcept {
-      __type  = from.__type;
+      __type = from.__type;
       __node1 = from.__node1;
       __node2 = from.__node2;
       return *this;
@@ -88,15 +86,13 @@ namespace gum {
     INLINE NodeId GraphChange::node2() const noexcept { return __node2; }
 
     /// returns whether two graph changes are identical or not
-    INLINE bool GraphChange::operator==( const GraphChange& from ) const
-        noexcept {
+    INLINE bool GraphChange::operator==( const GraphChange& from ) const noexcept {
       return ( ( __node1 == from.__node1 ) && ( __node2 == from.__node2 ) &&
                ( __type == from.__type ) );
     }
 
     /// returns whether two graph changes are different or not
-    INLINE bool GraphChange::operator!=( const GraphChange& from ) const
-        noexcept {
+    INLINE bool GraphChange::operator!=( const GraphChange& from ) const noexcept {
       return !operator==( from );
     }
 
@@ -143,14 +139,12 @@ namespace gum {
     }
 
     /// returns whether two graph changes are identical or not
-    INLINE bool ArcAddition::operator==( const ArcAddition& from ) const
-        noexcept {
+    INLINE bool ArcAddition::operator==( const ArcAddition& from ) const noexcept {
       return ( ( node1() == from.node1() ) && ( node2() == from.node2() ) );
     }
 
     /// returns whether two graph changes are different or not
-    INLINE bool ArcAddition::operator!=( const ArcAddition& from ) const
-        noexcept {
+    INLINE bool ArcAddition::operator!=( const ArcAddition& from ) const noexcept {
       return !operator==( from );
     }
 
@@ -197,14 +191,12 @@ namespace gum {
     }
 
     /// returns whether two graph changes are identical or not
-    INLINE bool ArcDeletion::operator==( const ArcDeletion& from ) const
-        noexcept {
+    INLINE bool ArcDeletion::operator==( const ArcDeletion& from ) const noexcept {
       return ( ( node1() == from.node1() ) && ( node2() == from.node2() ) );
     }
 
     /// returns whether two graph changes are different or not
-    INLINE bool ArcDeletion::operator!=( const ArcDeletion& from ) const
-        noexcept {
+    INLINE bool ArcDeletion::operator!=( const ArcDeletion& from ) const noexcept {
       return !operator==( from );
     }
 
@@ -251,14 +243,12 @@ namespace gum {
     }
 
     /// returns whether two arc reversals are identical or not
-    INLINE bool ArcReversal::operator==( const ArcReversal& from ) const
-        noexcept {
+    INLINE bool ArcReversal::operator==( const ArcReversal& from ) const noexcept {
       return ( ( node1() == from.node1() ) && ( node2() == from.node2() ) );
     }
 
     /// returns whether two arc reversals are different or not
-    INLINE bool ArcReversal::operator!=( const ArcReversal& from ) const
-        noexcept {
+    INLINE bool ArcReversal::operator!=( const ArcReversal& from ) const noexcept {
       return !operator==( from );
     }
 
@@ -299,8 +289,7 @@ namespace gum {
     }
 
     /// move operator
-    INLINE EdgeAddition& EdgeAddition::
-    operator=( EdgeAddition&& from ) noexcept {
+    INLINE EdgeAddition& EdgeAddition::operator=( EdgeAddition&& from ) noexcept {
       GraphChange::operator=( std::move( from ) );
       return *this;
     }
@@ -355,8 +344,7 @@ namespace gum {
     }
 
     /// move operator
-    INLINE EdgeDeletion& EdgeDeletion::
-    operator=( EdgeDeletion&& from ) noexcept {
+    INLINE EdgeDeletion& EdgeDeletion::operator=( EdgeDeletion&& from ) noexcept {
       GraphChange::operator=( std::move( from ) );
       return *this;
     }

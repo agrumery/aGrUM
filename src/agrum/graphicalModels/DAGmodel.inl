@@ -53,8 +53,7 @@ namespace gum {
   }
 
   INLINE
-  void DAGmodel::setProperty( const std::string& name,
-                              const std::string& value ) {
+  void DAGmodel::setProperty( const std::string& name, const std::string& value ) {
     try {
       __properties()[name] = value;
     } catch ( NotFound& ) {

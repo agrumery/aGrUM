@@ -51,15 +51,13 @@ namespace gum_tests {
       // doing the right stuf :)
       TS_GUM_ASSERT_THROWS_NOTHING( p.causalWeight( b, 0.4f ) );
       TS_GUM_ASSERT_THROWS_NOTHING( p.causalWeight( d, 0.7f ) );
-      TS_ASSERT_EQUALS(
-          p.toString(),
-          "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+      TS_ASSERT_EQUALS( p.toString(),
+                        "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
       TS_ASSERT_EQUALS( p.realSize(), (gum::Size)4 );
 
       gum::MultiDimNoisyAND<float> q( p );
-      TS_ASSERT_EQUALS(
-          q.toString(),
-          "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
+      TS_ASSERT_EQUALS( q.toString(),
+                        "a<0,1>=noisyAND([0.2],b<0,1>[0.4]c<0,1>[1]d<0,1>[0.7])" );
       TS_ASSERT_EQUALS( p.realSize(), (gum::Size)4 );
 
       // trying a noisyAND with 0 as external weight (not allowed)
@@ -80,7 +78,7 @@ namespace gum_tests {
       p.causalWeight( malaria, 1.0f );
 
       gum::Instantiation i( p );
-      float witness[] = {1.0f,
+      float              witness[] = {1.0f,
                          0.0f,
                          1.0f,
                          0.0f,
@@ -118,7 +116,7 @@ namespace gum_tests {
       p.causalWeight( malaria, 0.9f );
 
       gum::Instantiation i( p );
-      float witness[] = {0.988f,
+      float              witness[] = {0.988f,
                          0.012f,
                          0.892f,
                          0.108f,
@@ -168,7 +166,7 @@ namespace gum_tests {
       p.causalWeight( competition, 0.9f );
 
       gum::Instantiation i( p );
-      float witness[] = {
+      float              witness[] = {
           0.999880012f, 0.000119988f, 0.998920108f, 0.001079892f, 0.999520048f,
           0.000479952f, 0.995680432f, 0.004319568f, 0.998920108f, 0.001079892f,
           0.990280972f, 0.009719028f, 0.995680432f, 0.004319568f, 0.961123888f,

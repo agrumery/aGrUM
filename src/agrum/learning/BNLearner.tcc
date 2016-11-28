@@ -52,15 +52,15 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     BNLearner<GUM_SCALAR>::BNLearner(
-        const std::string& filename,
+        const std::string&                         filename,
         const NodeProperty<Sequence<std::string>>& modalities,
-        bool parse_database )
+        bool                                       parse_database )
         : genericBNLearner( filename, modalities, parse_database ) {
       GUM_CONSTRUCTOR( BNLearner );
     }
 
     template <typename GUM_SCALAR>
-    BNLearner<GUM_SCALAR>::BNLearner( const std::string& filename,
+    BNLearner<GUM_SCALAR>::BNLearner( const std::string&               filename,
                                       const gum::BayesNet<GUM_SCALAR>& src,
                                       bool parse_database )
         : BNLearner( filename,
@@ -137,7 +137,7 @@ namespace gum {
     template <typename GUM_SCALAR>
     BayesNet<GUM_SCALAR>
     BNLearner<GUM_SCALAR>::learnParameters( const DAG& dag,
-                                            bool take_into_account_score ) {
+                                            bool       take_into_account_score ) {
       // create the apriori and the estimator
       __createApriori();
       __createParamEstimator( take_into_account_score );
@@ -163,9 +163,9 @@ namespace gum {
       __createParamEstimator( take_into_account_score );
 
       // create a DAG with node ids coherent with those of the database
-      DAG newDAG;
+      DAG                  newDAG;
       NodeProperty<NodeId> mapIds( bn.size() );
-      auto mods = modalities();
+      auto                 mods = modalities();
 
       for ( auto node : bn.nodes() ) {
         const NodeId new_id = idFromName( bn.variable( node ).name() );
@@ -196,7 +196,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     NodeProperty<Sequence<std::string>>
-    BNLearner<GUM_SCALAR>::__labelsFromBN( const std::string& filename,
+    BNLearner<GUM_SCALAR>::__labelsFromBN( const std::string&          filename,
                                            const BayesNet<GUM_SCALAR>& src ) {
       std::ifstream in( filename, std::ifstream::in );
 

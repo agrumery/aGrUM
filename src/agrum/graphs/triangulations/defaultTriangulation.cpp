@@ -33,12 +33,11 @@
 namespace gum {
 
   /// basic constructor. initialize the triangulation
-  DefaultTriangulation::DefaultTriangulation(
-      const UndiGraph* theGraph,
-      const NodeProperty<Size>* domsizes,
-      bool minimality,
-      double theRatio,
-      double theThreshold )
+  DefaultTriangulation::DefaultTriangulation( const UndiGraph*          theGraph,
+                                              const NodeProperty<Size>* domsizes,
+                                              bool                      minimality,
+                                              double                    theRatio,
+                                              double theThreshold )
       : UnconstrainedTriangulation( theGraph,
                                     domsizes,
                                     DefaultEliminationSequenceStrategy(),
@@ -51,7 +50,7 @@ namespace gum {
   }
 
   /// default constructor: initialize the triangulation for an empty graph
-  DefaultTriangulation::DefaultTriangulation( bool minimality,
+  DefaultTriangulation::DefaultTriangulation( bool   minimality,
                                               double theRatio,
                                               double theThreshold )
       : UnconstrainedTriangulation( DefaultEliminationSequenceStrategy(),

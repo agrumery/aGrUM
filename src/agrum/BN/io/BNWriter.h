@@ -69,7 +69,7 @@ namespace gum {
      * @param bn The Bayesian Network writed in output.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::ostream& output,
+    virtual void write( std::ostream&                output,
                         const IBayesNet<GUM_SCALAR>& bn ) = 0;
 
     /**
@@ -81,7 +81,7 @@ namespace gum {
      * @param bn The Bayesian Network writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::string filePath,
+    virtual void write( std::string                  filePath,
                         const IBayesNet<GUM_SCALAR>& bn ) = 0;
   };
 

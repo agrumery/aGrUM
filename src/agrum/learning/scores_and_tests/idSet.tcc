@@ -57,8 +57,7 @@ namespace gum {
     /// default constructor
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE IdSet<Alloc>::IdSet( const std::vector<Idx, OtherAlloc>& ids,
-                                Size sz )
+    INLINE IdSet<Alloc>::IdSet( const std::vector<Idx, OtherAlloc>& ids, Size sz )
         : __ids( ids )
         , __size( sz ) {
       GUM_CONSTRUCTOR( IdSet );
@@ -105,7 +104,7 @@ namespace gum {
     template <typename Alloc>
     INLINE IdSet<Alloc>& IdSet<Alloc>::operator=( const IdSet<Alloc>& from ) {
       if ( this != &from ) {
-        __ids  = from.__ids;
+        __ids = from.__ids;
         __size = from.__size;
       }
 
@@ -115,8 +114,7 @@ namespace gum {
     /// generalized copy operator
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE IdSet<Alloc>& IdSet<Alloc>::
-    operator=( const IdSet<OtherAlloc>& from ) {
+    INLINE IdSet<Alloc>& IdSet<Alloc>::operator=( const IdSet<OtherAlloc>& from ) {
       __ids.clear();
 
       for ( auto id : from.__ids ) {
@@ -132,7 +130,7 @@ namespace gum {
     template <typename Alloc>
     INLINE IdSet<Alloc>& IdSet<Alloc>::operator=( IdSet<Alloc>&& from ) {
       if ( this != &from ) {
-        __ids  = std::move( from.__ids );
+        __ids = std::move( from.__ids );
         __size = from.__size;
       }
 
@@ -240,13 +238,13 @@ namespace gum {
     /// indicates wether the current object is a subset of 'otherset'
     template <typename Alloc>
     template <typename OtherAlloc>
-    INLINE bool
-    IdSet<Alloc>::isSubset( const IdSet<OtherAlloc>& otherset ) const noexcept {
+    INLINE bool IdSet<Alloc>::isSubset( const IdSet<OtherAlloc>& otherset ) const
+        noexcept {
       Size min_index = Size( 0 ), max_index = Size( otherset.__ids.size() );
       Size size = Size( __ids.size() );
       for ( Idx i = 0; i < size; ++i ) {
         Size middle, tmp_max_index = max_index;
-        Idx nb = __ids[i];
+        Idx  nb = __ids[i];
 
         // search for nb by dichotomy
         while ( tmp_max_index > min_index ) {
@@ -272,8 +270,7 @@ namespace gum {
 
     // the display operator
     template <typename Alloc>
-    std::ostream& operator<<( std::ostream& stream,
-                              const IdSet<Alloc>& idset ) {
+    std::ostream& operator<<( std::ostream& stream, const IdSet<Alloc>& idset ) {
       return stream << idset.toString();
     }
 
@@ -297,7 +294,7 @@ namespace gum {
   Size HashFunc<std::pair<learning::IdSet<Alloc>, Idx>>::
   operator()( const std::pair<learning::IdSet<Alloc>, Idx>& key ) const {
     Size h = 0;
-    Idx i;
+    Idx  i;
     const std::vector<Idx, Alloc>& vect = key.first.ids();
 
     for ( i = 0; i < Size( vect.size() ); ++i )

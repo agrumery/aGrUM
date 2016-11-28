@@ -59,7 +59,7 @@ namespace gum {
   /// returns the triangulation algorithm (useful for fine tuning it)
 
   INLINE const UnconstrainedTriangulation&
-  IncrementalTriangulation::triangulationAlgo() const {
+               IncrementalTriangulation::triangulationAlgo() const {
     return *__triangulation;
   }
 

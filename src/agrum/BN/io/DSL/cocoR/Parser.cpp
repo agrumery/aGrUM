@@ -48,11 +48,11 @@ namespace gum {
     }
 
     const ErrorsContainer& Parser::errors( void ) const { return __errors; }
-    ErrorsContainer& Parser::errors( void ) { return __errors; }
+    ErrorsContainer&       Parser::errors( void ) { return __errors; }
 
     void Parser::Get() {
       for ( ;; ) {
-        t  = la;
+        t = la;
         la = scanner->Scan();
 
         if ( la->kind <= maxT ) {
@@ -62,13 +62,13 @@ namespace gum {
 
         if ( dummyToken != t ) {
           dummyToken->kind = t->kind;
-          dummyToken->pos  = t->pos;
-          dummyToken->col  = t->col;
+          dummyToken->pos = t->pos;
+          dummyToken->col = t->col;
           dummyToken->line = t->line;
           dummyToken->next = NULL;
           coco_string_delete( dummyToken->val );
           dummyToken->val = coco_string_create( t->val );
-          t               = dummyToken;
+          t = dummyToken;
         }
 
         la = t;
@@ -221,9 +221,9 @@ namespace gum {
     }
 
     void Parser::NODE() {
-      std::string var;
+      std::string              var;
       std::vector<std::string> parents;
-      int nbrMod = 0;
+      int                      nbrMod = 0;
 
       Expect( 13 /* "node" */ );
       IDENT( var );
@@ -279,10 +279,9 @@ namespace gum {
       Expect( 9 /* ";" */ );
     }
 
-    void
-    Parser::VARIABLE_DEFINITION( int& nbrMod,
-                                 std::string& var,
-                                 const std::vector<std::string>& parents ) {
+    void Parser::VARIABLE_DEFINITION( int&                            nbrMod,
+                                      std::string&                    var,
+                                      const std::vector<std::string>& parents ) {
       Expect( 29 /* "DEFINITION" */ );
       Expect( 7 /* "{" */ );
       Expect( 30 /* "NAMESTATES" */ );
@@ -306,8 +305,7 @@ namespace gum {
 
       PROBA( var, parents );
       int nbr = 0;
-      TRY( nbr =
-               factory().varInBN( factory().variableId( var ) ).domainSize() );
+      TRY( nbr = factory().varInBN( factory().variableId( var ) ).domainSize() );
       if ( nbrMod < nbr ) SemErr( "Too much modalities for variable " + var );
       if ( nbrMod > nbr ) SemErr( "Too many modalities for variable " + var );
 
@@ -359,7 +357,7 @@ namespace gum {
       }
     }
 
-    void Parser::PROBA( const std::string& var,
+    void Parser::PROBA( const std::string&              var,
                         const std::vector<std::string>& parents ) {
       Expect( 31 /* "PROBABILITIES" */ );
       Expect( 26 /* "(" */ );
@@ -378,12 +376,12 @@ namespace gum {
         SynErr( 35 );
     }
 
-    void Parser::RAW_PROBA( const std::string& var,
+    void Parser::RAW_PROBA( const std::string&              var,
                             const std::vector<std::string>& parents ) {
       std::vector<float> v;
       std::vector<float> prob;
-      gum::Size i, j, k;
-      gum::Size res, max, nbLabels;
+      gum::Size          i, j, k;
+      gum::Size          res, max, nbLabels;
 
       res = factory().varInBN( factory().variableId( var ) ).domainSize();
 
@@ -398,7 +396,7 @@ namespace gum {
 
       FLOAT_LIST( v );
       nbLabels = factory().varInBN( factory().variableId( var ) ).domainSize();
-      max      = res / nbLabels;
+      max = res / nbLabels;
 
       j = 0;
       k = 0;
@@ -483,8 +481,7 @@ namespace gum {
       static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
 
       enum {
-        InitExists =
-            ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
+        InitExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
       };
     };
 
@@ -538,8 +535,7 @@ namespace gum {
     // Generic case of the ParserDestroyCaller, gets used if the Destroy method
     // is
     // missing
-    template <typename T,
-              bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+    template <typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
     struct ParserDestroyCaller {
       static void CallDestroy( T* t ) {
         // nothing to do
@@ -553,9 +549,9 @@ namespace gum {
       static void CallDestroy( T* t ) { t->Destroy(); }
     };
     void Parser::Parse() {
-      t  = NULL;
+      t = NULL;
       la = dummyToken = new Token();
-      la->val         = coco_string_create( L"Dummy Token" );
+      la->val = coco_string_create( L"Dummy Token" );
       Get();
       DSL();
       Expect( 0 );
@@ -566,9 +562,9 @@ namespace gum {
 
       ParserInitCaller<Parser>::CallInit( this );
       dummyToken = NULL;
-      t = la        = NULL;
-      minErrDist    = 2;
-      errDist       = minErrDist;
+      t = la = NULL;
+      minErrDist = 2;
+      errDist = minErrDist;
       this->scanner = scanner;
     }
 
@@ -576,15 +572,15 @@ namespace gum {
       const bool T = true;
       const bool x = false;
 
-      static bool set[4][35] = {
-          {T, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x,
-           x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x},
-          {x, T, T, T, T, T, T, T, x, T, T, T, T, T, T, T, T, T,
-           T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, x},
-          {x, T, T, T, T, T, T, x, x, T, T, T, T, T, T, T, T, T,
-           T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, x},
-          {x, x, T, T, x, x, x, x, x, x, x, x, x, x, x, x, x, x,
-           x, x, x, x, x, x, x, x, x, x, T, x, x, x, T, x, x}};
+      static bool set[4]
+                     [35] = {{T, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x,
+                              x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x, x},
+                             {x, T, T, T, T, T, T, T, x, T, T, T, T, T, T, T, T, T,
+                              T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, x},
+                             {x, T, T, T, T, T, T, x, x, T, T, T, T, T, T, T, T, T,
+                              T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, x},
+                             {x, x, T, T, x, x, x, x, x, x, x, x, x, x, x, x, x, x,
+                              x, x, x, x, x, x, x, x, x, x, T, x, x, x, T, x, x}};
 
       return set[s][la->kind];
     }
@@ -604,8 +600,7 @@ namespace gum {
       __errors.Warning( scanner->filename(), t->line, t->col, msg );
     }
 
-    void
-    Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
+    void Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
       wchar_t* s;
 
       switch ( n ) {

@@ -65,7 +65,7 @@ namespace gum {
      * in this.
      * @param array The MultiDimArray decorated by this MultiDimBijArray.
      */
-    MultiDimBijArray( const VarBijection& bijection,
+    MultiDimBijArray( const VarBijection&              bijection,
                       const MultiDimArray<GUM_SCALAR>& array );
 
     /**
@@ -75,7 +75,7 @@ namespace gum {
      * in this.
      * @param array The MultiDimBijArray decorated by this MultiDimBijArray.
      */
-    MultiDimBijArray( const VarBijection& bijection,
+    MultiDimBijArray( const VarBijection&                 bijection,
                       const MultiDimBijArray<GUM_SCALAR>& array );
 
     /**

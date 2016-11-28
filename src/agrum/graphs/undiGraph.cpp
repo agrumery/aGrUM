@@ -65,7 +65,7 @@ namespace gum {
         examined_nodes[node] = true;
 
         // check recursively all the nodes of node's connected component
-        thePair.first  = node;
+        thePair.first = node;
         thePair.second = node;
         open_nodes.insert( thePair );
 
@@ -74,7 +74,7 @@ namespace gum {
           thePair = open_nodes.front();
           open_nodes.popFront();
 
-          current      = thePair.first;
+          current = thePair.first;
           from_current = thePair.second;
 
           // check the neighbours
@@ -86,8 +86,8 @@ namespace gum {
                 return true;
               else {
                 examined_nodes[new_node] = true;
-                thePair.first            = new_node;
-                thePair.second           = current;
+                thePair.first = new_node;
+                thePair.second = current;
                 open_nodes.insert( thePair );
               }
             }
@@ -109,7 +109,7 @@ namespace gum {
     std::stringstream output;
     std::stringstream nodeStream;
     std::stringstream edgeStream;
-    List<NodeId> treatedNodes;
+    List<NodeId>      treatedNodes;
     output << "digraph \""
            << "no_name\" {" << std::endl
            << "edge [dir=none]" << std::endl;

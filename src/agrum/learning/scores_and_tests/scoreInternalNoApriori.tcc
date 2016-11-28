@@ -37,8 +37,7 @@ namespace gum {
 
     /// copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE
-    ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::ScoreInternalNoApriori(
+    INLINE ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::ScoreInternalNoApriori(
         const ScoreInternalNoApriori<IdSetAlloc, CountAlloc>& from )
         : ScoreInternalApriori<IdSetAlloc, CountAlloc>( from ) {
       GUM_CONS_CPY( ScoreInternalNoApriori );
@@ -46,8 +45,7 @@ namespace gum {
 
     /// move constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE
-    ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::ScoreInternalNoApriori(
+    INLINE ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::ScoreInternalNoApriori(
         ScoreInternalNoApriori<IdSetAlloc, CountAlloc>&& from )
         : ScoreInternalApriori<IdSetAlloc, CountAlloc>( std::move( from ) ) {
       GUM_CONS_MOV( ScoreInternalNoApriori );
@@ -56,21 +54,20 @@ namespace gum {
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ScoreInternalNoApriori<IdSetAlloc, CountAlloc>*
-    ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
+           ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new ScoreInternalNoApriori<IdSetAlloc, CountAlloc>( *this );
     }
 
     /// destructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalNoApriori<IdSetAlloc,
-                                  CountAlloc>::~ScoreInternalNoApriori() {
+    INLINE
+        ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::~ScoreInternalNoApriori() {
       GUM_DESTRUCTOR( ScoreInternalNoApriori );
     }
 
     /// insert the internal score apriori into a set of countings
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void
-    ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
+    INLINE void ScoreInternalNoApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
         const std::vector<Size>& modalities,
         std::vector<std::vector<double, CountAlloc>>& counts,
         const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&

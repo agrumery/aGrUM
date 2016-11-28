@@ -47,8 +47,9 @@ namespace gum {
   // @param cpt A reference on the CPT to fill.
 
   template <typename GUM_SCALAR>
-  void SimpleCPTGenerator<GUM_SCALAR>::generateCPT(
-      const Idx& varId, const Potential<GUM_SCALAR>& cpt ) {
+  void
+  SimpleCPTGenerator<GUM_SCALAR>::generateCPT( const Idx&                   varId,
+                                               const Potential<GUM_SCALAR>& cpt ) {
     std::vector<GUM_SCALAR> v;
 
     for ( Size i = 0; i < cpt.domainSize(); ++i ) {

@@ -46,8 +46,8 @@ namespace gum {
       BNLearnerListener( genericBNLearner* bnl, ApproximationScheme& sch );
       virtual ~BNLearnerListener();
 
-      virtual void whenProgress( const void* src,
-                                 const Size pourcent,
+      virtual void whenProgress( const void*  src,
+                                 const Size   pourcent,
                                  const double error,
                                  const double time ) final;
       virtual void whenStop( const void* src, const std::string message ) final;

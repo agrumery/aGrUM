@@ -57,8 +57,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Forall<GUM_SCALAR>::_fold( const DiscreteVariable& v,
-                                          Idx i1,
-                                          Idx i2,
+                                          Idx                     i1,
+                                          Idx                     i2,
                                           bool& stop_iteration ) const {
       if ( i1 == __value ) {
         return (Idx)1;
@@ -79,8 +79,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR>*
-    Forall<GUM_SCALAR>::newFactory() const {
+    INLINE MultiDimContainer<GUM_SCALAR>* Forall<GUM_SCALAR>::newFactory() const {
       return new Forall<GUM_SCALAR>( __value );
     }
 

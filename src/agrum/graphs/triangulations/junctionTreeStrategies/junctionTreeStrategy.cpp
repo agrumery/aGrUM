@@ -56,8 +56,8 @@ namespace gum {
 
   /** @brief assigns a new triangulation to the junction tree strategy
    * during a move construction */
-  void JunctionTreeStrategy::moveTriangulation(
-      StaticTriangulation* triangulation ) {
+  void
+  JunctionTreeStrategy::moveTriangulation( StaticTriangulation* triangulation ) {
     _triangulation = triangulation;
   }
 

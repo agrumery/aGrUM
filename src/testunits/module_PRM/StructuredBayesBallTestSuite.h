@@ -30,27 +30,26 @@
 namespace gum_tests {
   class StructuredBayesBallTestSuite : public CxxTest::TestSuite {
     private:
-    gum::prm::PRM<double>* prm;
+    gum::prm::PRM<double>*          prm;
     gum::prm::PRMInference<double>* prm_inf;
-    gum::prm::PRMSystem<double>* sys;
-    gum::prm::PRM<double>* small;
+    gum::prm::PRMSystem<double>*    sys;
+    gum::prm::PRM<double>*          small;
     gum::prm::PRMInference<double>* small_inf;
-    gum::prm::PRMSystem<double>* small_sys;
+    gum::prm::PRMSystem<double>*    small_sys;
 
     public:
     void setUp() {
       {
         gum::prm::o3prm::O3prmReader<double> reader;
         reader.readFile( GET_RESSOURCES_PATH( "o3prm/inference.o3prm" ) );
-        prm     = reader.prm();
-        sys     = &( prm->getSystem( "aSys" ) );
+        prm = reader.prm();
+        sys = &( prm->getSystem( "aSys" ) );
         prm_inf = new gum::prm::SVE<double>( *prm, *sys );
       }
       {
         gum::prm::o3prm::O3prmReader<double> reader;
-        reader.readFile(
-            GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) );
-        small     = reader.prm();
+        reader.readFile( GET_RESSOURCES_PATH( "o3prm/printers_systems.o3prm" ) );
+        small = reader.prm();
         small_sys = &( small->getSystem( "smallSys" ) );
         small_inf = new gum::prm::SVE<double>( *small, *small_sys );
       }

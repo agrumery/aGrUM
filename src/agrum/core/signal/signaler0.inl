@@ -68,7 +68,7 @@ namespace gum {
 
     INLINE
     void BasicSignaler0::_duplicateTarget( const Listener* oldtarget,
-                                           Listener* newtarget ) {
+                                           Listener*       newtarget ) {
       auto it = std::find_if(
           _connectors.begin(), _connectors.end(), __find_target( oldtarget ) );
 

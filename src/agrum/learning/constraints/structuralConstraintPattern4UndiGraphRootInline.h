@@ -35,20 +35,17 @@ INLINE void GUM_CONSTRAINT_CLASS_NAME::setGraph( const UndiGraph& graph ) {
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void
-GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const EdgeAddition& change ) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const EdgeAddition& change ) {
   modifyGraphAlone( change );
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void
-GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const EdgeDeletion& change ) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const EdgeDeletion& change ) {
   modifyGraphAlone( change );
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void
-GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
   modifyGraphAlone( change );
 }
 
@@ -65,20 +62,20 @@ INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeDeletion( NodeId x,
 }
 
 /// checks whether the constraints enable to add an arc
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
-    const EdgeAddition& change ) const {
+INLINE bool
+GUM_CONSTRAINT_CLASS_NAME::checkModification( const EdgeAddition& change ) const {
   return checkModificationAlone( change );
 }
 
 /// checks whether the constraints enable to remove an arc
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
-    const EdgeDeletion& change ) const {
+INLINE bool
+GUM_CONSTRAINT_CLASS_NAME::checkModification( const EdgeDeletion& change ) const {
   return checkModificationAlone( change );
 }
 
 /// checks whether the constraints enable to perform a graph change
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
-    const GraphChange& change ) const {
+INLINE bool
+GUM_CONSTRAINT_CLASS_NAME::checkModification( const GraphChange& change ) const {
   return checkModificationAlone( change );
 }
 

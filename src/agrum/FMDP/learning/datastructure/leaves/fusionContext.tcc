@@ -99,8 +99,7 @@ namespace gum {
   //
   // ============================================================================
   template <bool isInitial>
-  bool
-      FusionContext<isInitial>::__updateAllAssociatedLeaves( Int2Type<false> ) {
+  bool FusionContext<isInitial>::__updateAllAssociatedLeaves( Int2Type<false> ) {
 
     LeafPair* ptop = __pairsHeap.empty() ? nullptr : __pairsHeap.top();
     ;
@@ -184,8 +183,7 @@ namespace gum {
   //
   // ============================================================================
   template <bool isInitial>
-  Set<LeafPair*>
-      FusionContext<isInitial>::__associatedPairs( Int2Type<false> ) {
+  Set<LeafPair*> FusionContext<isInitial>::__associatedPairs( Int2Type<false> ) {
 
     Set<LeafPair*> retBag;
     for ( auto pairIter = __leaf2Pair.beginSafe();
@@ -198,7 +196,7 @@ namespace gum {
 
 
   template <bool isInitial>
-  std::string FusionContext<isInitial>::toString() {
+  std::string    FusionContext<isInitial>::toString() {
 
     std::stringstream ss;
     if ( __leaf )

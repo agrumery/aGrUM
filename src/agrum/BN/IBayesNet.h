@@ -221,7 +221,7 @@ namespace gum {
 
   /// Prints map's DAG in output using the Graphviz-dot format.
   template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream& output,
+  std::ostream& operator<<( std::ostream&                output,
                             const IBayesNet<GUM_SCALAR>& map );
 
 } /* namespace gum */

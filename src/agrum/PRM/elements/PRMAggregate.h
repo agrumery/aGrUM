@@ -123,8 +123,8 @@ namespace gum {
        * @param rvType The random variable type of this aggregate, which is
        * copied.
        */
-      PRMAggregate( const std::string& name,
-                    AggregateType aggType,
+      PRMAggregate( const std::string&         name,
+                    AggregateType              aggType,
                     const PRMType<GUM_SCALAR>& rvType );
 
       /**
@@ -135,10 +135,10 @@ namespace gum {
        * copied.
        * @param label The index of the label on which this aggregate applies.
        */
-      PRMAggregate( const std::string& name,
-                    AggregateType aggType,
+      PRMAggregate( const std::string&         name,
+                    AggregateType              aggType,
                     const PRMType<GUM_SCALAR>& rvType,
-                    Idx label );
+                    Idx                        label );
 
       /// Destructor.
       virtual ~PRMAggregate();
@@ -161,7 +161,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if the aggregate does not applies
        *                            on a label.
        */
-      Idx label() const;
+      Idx                label() const;
       const std::string& labelValue() const;
 
       /**

@@ -310,7 +310,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void addEvidence( const NodeId id,
+    virtual void addEvidence( const NodeId                   id,
                               const std::vector<GUM_SCALAR>& vals ) final;
 
     /// adds a new evidence on node named nodeName (might be soft or hard)
@@ -321,7 +321,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node nodeName
      */
-    virtual void addEvidence( const std::string& nodeName,
+    virtual void addEvidence( const std::string&             nodeName,
                               const std::vector<GUM_SCALAR>& vals ) final;
 
     /// adds a new evidence on node id (might be soft or hard)
@@ -411,7 +411,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void chgEvidence( const NodeId id,
+    virtual void chgEvidence( const NodeId                   id,
                               const std::vector<GUM_SCALAR>& vals ) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
@@ -422,7 +422,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void chgEvidence( const std::string& nodeName,
+    virtual void chgEvidence( const std::string&             nodeName,
                               const std::vector<GUM_SCALAR>& vals ) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
@@ -509,7 +509,7 @@ namespace gum {
      *
      */
     virtual void _onEvidenceChanged( const NodeId id,
-                                     bool hasChangedSoftHard ) = 0;
+                                     bool         hasChangedSoftHard ) = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
     virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn ) = 0;

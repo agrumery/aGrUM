@@ -39,15 +39,14 @@ namespace gum {
     GUM_CONSTRUCTOR( IBayesNetGenerator );
     _nbrNodes = nbrNodes;
 
-    if ( maxArcs < nbrNodes - 1 ||
-         maxArcs > ( nbrNodes * ( nbrNodes - 1 ) ) / 2 )
+    if ( maxArcs < nbrNodes - 1 || maxArcs > ( nbrNodes * ( nbrNodes - 1 ) ) / 2 )
       GUM_ERROR( OperationNotAllowed, " maxArcs value not possible " );
 
     if ( maxModality < 2 )
       GUM_ERROR( OperationNotAllowed,
                  " maxModality must be at least equal to two " );
 
-    _maxArcs     = maxArcs;
+    _maxArcs = maxArcs;
     _maxModality = maxModality;
   }
 
@@ -61,14 +60,12 @@ namespace gum {
   template <typename GUM_SCALAR, template <typename> class ICPTGenerator>
   void IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::fillCPT() {
     for ( auto node : _bayesNet.nodes() )
-      this->generateCPT(
-          _bayesNet.cpt( node ).pos( _bayesNet.variable( node ) ),
-          _bayesNet.cpt( node ) );  // TODO ASSERT THE LINE
+      this->generateCPT( _bayesNet.cpt( node ).pos( _bayesNet.variable( node ) ),
+                         _bayesNet.cpt( node ) );  // TODO ASSERT THE LINE
   }
 
   template <typename GUM_SCALAR, template <typename> class ICPTGenerator>
-  INLINE Size
-  IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::maxModality() const {
+  INLINE Size IBayesNetGenerator<GUM_SCALAR, ICPTGenerator>::maxModality() const {
     return _maxModality;
   }
 

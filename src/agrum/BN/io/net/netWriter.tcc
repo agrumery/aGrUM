@@ -46,7 +46,7 @@ namespace gum {
   // @param bn The Bayesian Network writen in output.
   // @throws Raised if an I/O error occurs.
   template <typename GUM_SCALAR>
-  INLINE void NetWriter<GUM_SCALAR>::write( std::ostream& output,
+  INLINE void NetWriter<GUM_SCALAR>::write( std::ostream&                output,
                                             const IBayesNet<GUM_SCALAR>& bn ) {
     if ( !output.good() )
       GUM_ERROR( IOError, "Stream states flags are not all unset." );
@@ -76,7 +76,7 @@ namespace gum {
   // @param bn The Bayesian Network writed in the file.
   // @throws Raised if an I/O error occurs.
   template <typename GUM_SCALAR>
-  INLINE void NetWriter<GUM_SCALAR>::write( std::string filePath,
+  INLINE void NetWriter<GUM_SCALAR>::write( std::string                  filePath,
                                             const IBayesNet<GUM_SCALAR>& bn ) {
     std::ofstream output( filePath.c_str(), std::ios_base::trunc );
 
@@ -107,7 +107,7 @@ namespace gum {
   INLINE std::string
   NetWriter<GUM_SCALAR>::__variableCPT( const Potential<GUM_SCALAR>& cpt ) {
     std::stringstream str;
-    std::string tab = "   ";  // poor tabulation
+    std::string       tab = "   ";  // poor tabulation
 
     if ( cpt.nbrDim() == 1 ) {
       Instantiation inst( cpt );
@@ -122,8 +122,7 @@ namespace gum {
     } else if ( cpt.domainSize() > 1 ) {
       // Instantiation inst( cpt );
       Instantiation condVars;  // Instantiation on the conditioning variables
-      const Sequence<const DiscreteVariable*>& varsSeq =
-          cpt.variablesSequence();
+      const Sequence<const DiscreteVariable*>& varsSeq = cpt.variablesSequence();
       str << "potential ( " << ( varsSeq[(Idx)0] )->name() << " | ";
 
       for ( Idx i = 0; i < varsSeq.size(); i++ ) {
@@ -180,7 +179,7 @@ namespace gum {
   INLINE std::string
   NetWriter<GUM_SCALAR>::__header( const IBayesNet<GUM_SCALAR>& bn ) {
     std::stringstream str;
-    std::string tab = "   ";  // poor tabulation
+    std::string       tab = "   ";  // poor tabulation
     str << std::endl << "net {" << std::endl;
     str << "  name = " << bn.propertyWithDefault( "name", "unnamedBN" ) << ";"
         << std::endl;
@@ -196,7 +195,7 @@ namespace gum {
   INLINE std::string
   NetWriter<GUM_SCALAR>::__variableBloc( const DiscreteVariable& var ) {
     std::stringstream str;
-    std::string tab = "   ";  // poor tabulation
+    std::string       tab = "   ";  // poor tabulation
     str << "node " << var.name() << " {" << std::endl;
     str << tab << "states = (";
 

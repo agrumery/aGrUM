@@ -77,9 +77,9 @@ namespace gum {
      */
     // ==========================================================================
     ITI( MultiDimFunctionGraph<double>* target,
-         double attributeSelectionThreshold,
-         Set<const DiscreteVariable*> attributeListe,
-         const DiscreteVariable* learnedValue );
+         double                         attributeSelectionThreshold,
+         Set<const DiscreteVariable*>   attributeListe,
+         const DiscreteVariable*        learnedValue );
 
     // ==========================================================================
     /**
@@ -93,8 +93,8 @@ namespace gum {
      */
     // ==========================================================================
     ITI( MultiDimFunctionGraph<double>* target,
-         double attributeSelectionThreshold,
-         Set<const DiscreteVariable*> attributeListe );
+         double                         attributeSelectionThreshold,
+         Set<const DiscreteVariable*>   attributeListe );
 
     // ==========================================================================
     /// Default destructor
@@ -126,7 +126,7 @@ namespace gum {
      */
     // ==========================================================================
     void _updateNodeWithObservation( const Observation* newObs,
-                                     NodeId currentNodeId );
+                                     NodeId             currentNodeId );
 
     /// @}
 
@@ -159,7 +159,7 @@ namespace gum {
      * @param desiredVar : its new associated variable
      */
     // ==========================================================================
-    void _chgNodeBoundVar( NodeId chgedNodeId,
+    void _chgNodeBoundVar( NodeId                  chgedNodeId,
                            const DiscreteVariable* desiredVar );
 
     // ==========================================================================

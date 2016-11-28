@@ -30,8 +30,8 @@ namespace gum {
 
     /// default constructor
     template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalBDeuApriori<IdSetAlloc,
-                                    CountAlloc>::ScoreInternalBDeuApriori() {
+    INLINE
+    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori() {
       GUM_CONSTRUCTOR( ScoreInternalBDeuApriori );
     }
 
@@ -58,7 +58,7 @@ namespace gum {
     /// virtual copy constructor
     template <typename IdSetAlloc, typename CountAlloc>
     INLINE ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>*
-    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
+           ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
       return new ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>( *this );
     }
 

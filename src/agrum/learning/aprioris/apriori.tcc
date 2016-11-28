@@ -76,13 +76,13 @@ namespace gum {
         const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
             conditioning_nodesets ) {
       if ( _weight != 0 ) {
-        _modalities            = &modalities;
-        _unapriori_counts      = &counts;
-        _target_nodesets       = &target_nodesets;
+        _modalities = &modalities;
+        _unapriori_counts = &counts;
+        _target_nodesets = &target_nodesets;
         _conditioning_nodesets = &conditioning_nodesets;
 
         // reserve the _apriori_counts
-        Size apriori_size     = Size( _apriori_counts.size() );
+        Size       apriori_size = Size( _apriori_counts.size() );
         const Size count_size = Size( counts.size() );
 
         while ( apriori_size > count_size ) {
@@ -97,8 +97,8 @@ namespace gum {
         if ( apriori_size < count_size ) {
           _apriori_counts.reserve( count_size );
           do {
-            _apriori_counts.push_back( std::vector<double, CountAlloc>(
-                counts[apriori_size].size() ) );
+            _apriori_counts.push_back(
+                std::vector<double, CountAlloc>( counts[apriori_size].size() ) );
             ++apriori_size;
           } while ( apriori_size < count_size );
         }
@@ -127,10 +127,9 @@ namespace gum {
       if ( _weight ) {
         return _apriori_counts[_target_nodesets->operator[]( index )->second];
       } else {
-        GUM_ERROR(
-            OperationNotAllowed,
-            "Scores and Parameter estimators should "
-            "not get a priori countings when the apriori weight is zero" );
+        GUM_ERROR( OperationNotAllowed,
+                   "Scores and Parameter estimators should "
+                   "not get a priori countings when the apriori weight is zero" );
       }
     }
 
@@ -142,10 +141,9 @@ namespace gum {
         return _apriori_counts[_conditioning_nodesets->operator[]( index )
                                    ->second];
       } else {
-        GUM_ERROR(
-            OperationNotAllowed,
-            "Scores and Parameter estimators should "
-            "not get a priori countings when the apriori weight is zero" );
+        GUM_ERROR( OperationNotAllowed,
+                   "Scores and Parameter estimators should "
+                   "not get a priori countings when the apriori weight is zero" );
       }
     }
 

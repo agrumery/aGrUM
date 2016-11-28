@@ -103,8 +103,8 @@ namespace gum_tests {
         si->setSyntaxMode( false );
         si->addPath( GET_RESSOURCES_PATH( "o3prmr/" ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile( GET_RESSOURCES_PATH(
-            "o3prmr/requests/queryObserveTest.o3prmr" ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
+            GET_RESSOURCES_PATH( "o3prmr/requests/queryObserveTest.o3prmr" ) ) );
 
         TS_ASSERT_EQUALS( si->errors(), (gum::Size)0 );
         TS_ASSERT_EQUALS( si->warnings(), (gum::Size)0 );
@@ -121,18 +121,18 @@ namespace gum_tests {
         TS_ASSERT(
             si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
                 &c2, &c2.get( "equipState" ) ) ) );
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain(
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
                 &c1, &c1.get( "equipState" ) ) ) );
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain( &c2,
-                                                   &c2.get( "can_print" ) ) ) );
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
+                &c2, &c2.get( "can_print" ) ) ) );
 
         const auto& e = si->inference()->evidence( c2 );
-        const auto p  = e[c1.get( "equipState" ).id()];
+        const auto  p = e[c1.get( "equipState" ).id()];
 
         gum::Instantiation j( *p );
-        const auto& c2_equipState = c2.get( "equipState" );
+        const auto&        c2_equipState = c2.get( "equipState" );
 
         for ( j.setFirst(); !j.end(); j.inc() ) {
           if ( c2_equipState.type().variable().label( j.val(
@@ -156,8 +156,8 @@ namespace gum_tests {
         si->setSyntaxMode( false );
         si->addPath( GET_RESSOURCES_PATH( "o3prmr/" ) );
 
-        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile( GET_RESSOURCES_PATH(
-            "o3prmr/requests/queryUnobserveTest.o3prmr" ) ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( si->interpretFile(
+            GET_RESSOURCES_PATH( "o3prmr/requests/queryUnobserveTest.o3prmr" ) ) );
 
         TS_ASSERT_EQUALS( si->errors(), (gum::Size)0 );
         TS_ASSERT_EQUALS( si->warnings(), (gum::Size)0 );
@@ -168,18 +168,18 @@ namespace gum_tests {
         const gum::prm::PRMInstance<double>& c2 =
             si->prm()->getSystem( "systems.MySystem.MySystem" ).get( "c2" );
 
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain( &c1,
-                                                   &c1.get( "can_print" ) ) ) );
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain(
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
+                &c1, &c1.get( "can_print" ) ) ) );
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
                 &c2, &c2.get( "equipState" ) ) ) );
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain(
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
                 &c1, &c1.get( "equipState" ) ) ) );
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain( &c2,
-                                                   &c2.get( "can_print" ) ) ) );
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
+                &c2, &c2.get( "can_print" ) ) ) );
 
         delete si;
       } catch ( gum::Exception& ) {
@@ -206,18 +206,18 @@ namespace gum_tests {
         const gum::prm::PRMInstance<double>& c2 =
             si->prm()->getSystem( "systems.MySystem.MySystem" ).get( "c2" );
 
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain( &c1,
-                                                   &c1.get( "can_print" ) ) ) );
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
+                &c1, &c1.get( "can_print" ) ) ) );
         TS_ASSERT(
             si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
                 &c2, &c2.get( "equipState" ) ) ) );
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain(
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
                 &c1, &c1.get( "equipState" ) ) ) );
-        TS_ASSERT( !si->inference()->hasEvidence(
-            gum::prm::PRMInference<double>::Chain( &c2,
-                                                   &c2.get( "can_print" ) ) ) );
+        TS_ASSERT(
+            !si->inference()->hasEvidence( gum::prm::PRMInference<double>::Chain(
+                &c2, &c2.get( "can_print" ) ) ) );
 
         // Est-ce que la valeur Dysfonctionnal de l'attribut can_print de
         // l'instance c1 est à 1.0
@@ -226,7 +226,7 @@ namespace gum_tests {
             si->inference()->evidence( c2 );
         const gum::Potential<double>* p = e[c1.get( "equipState" ).id()];
 
-        gum::Instantiation j( *p );
+        gum::Instantiation                    j( *p );
         const gum::prm::PRMAttribute<double>& c2_equipState =
             c2.get( "equipState" );
 
@@ -251,9 +251,8 @@ namespace gum_tests {
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
         si->addPath( GET_RESSOURCES_PATH( "o3prmr/Asia/" ) );
-        si->interpretFile(
-            GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
-        auto prm                               = si->prm();
+        si->interpretFile( GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
+        auto                              prm = si->prm();
         gum::prm::PRMClass<double> const* asia = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING( asia = &( prm->getClass( "Asia.Asia" ) ) );
@@ -272,11 +271,10 @@ namespace gum_tests {
         auto si = new gum::prm::o3prmr::O3prmrInterpreter();
         si->setSyntaxMode( false );
         si->addPath( GET_RESSOURCES_PATH( "o3prmr/Asia/" ) );
-        si->interpretFile(
-            GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
-        auto prm        = si->prm();
-        const auto& sys = prm->getSystem( "system.Asia" );
-        auto bn         = new gum::BayesNet<double>( "plop" );
+        si->interpretFile( GET_RESSOURCES_PATH( "o3prmr/Asia/myRequest.o3prmr" ) );
+        auto                         prm = si->prm();
+        const auto&                  sys = prm->getSystem( "system.Asia" );
+        auto                         bn = new gum::BayesNet<double>( "plop" );
         gum::BayesNetFactory<double> factory( bn );
         // Act
         TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
@@ -302,9 +300,9 @@ namespace gum_tests {
         // si->showElegantErrorsAndWarnings();
         TS_ASSERT_EQUALS( si->count(), (gum::Size)0 );
         if ( !si->count() ) {
-          auto prm        = si->prm();
-          const auto& sys = prm->getSystem( "Asia.Asia" );
-          auto bn         = new gum::BayesNet<double>( "plop" );
+          auto                         prm = si->prm();
+          const auto&                  sys = prm->getSystem( "Asia.Asia" );
+          auto                         bn = new gum::BayesNet<double>( "plop" );
           gum::BayesNetFactory<double> factory( bn );
           // Act
           TS_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );
@@ -329,9 +327,9 @@ namespace gum_tests {
         si->addPath( GET_RESSOURCES_PATH( "o3prmr/ComplexPrinters/" ) );
         si->interpretFile( GET_RESSOURCES_PATH(
             "o3prmr/ComplexPrinters/fr/lip6/printers/request.o3prmr" ) );
-        auto prm        = si->prm();
+        auto        prm = si->prm();
         const auto& sys = prm->getSystem( "fr.lip6.printers.system.Work" );
-        auto bn         = new gum::BayesNet<double>( "plop" );
+        auto        bn = new gum::BayesNet<double>( "plop" );
         gum::BayesNetFactory<double> factory( bn );
         // Act
         TS_GUM_ASSERT_THROWS_NOTHING( sys.groundedBN( factory ) );

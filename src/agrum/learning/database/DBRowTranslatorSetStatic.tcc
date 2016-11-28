@@ -31,8 +31,7 @@ namespace gum {
 
     /// default constructor
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE
-    BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
+    INLINE BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
         BasicDBRowTranslatorSetStatic(
             const Translator& first_translator,
             const OtherTranslators&... next_translators )
@@ -44,8 +43,7 @@ namespace gum {
 
     /// copy constructor
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE
-    BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
+    INLINE BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
         BasicDBRowTranslatorSetStatic(
             const BasicDBRowTranslatorSetStatic<ColIdx,
                                                 Translator,
@@ -58,8 +56,7 @@ namespace gum {
 
     /// move constructor
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE
-    BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
+    INLINE BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
         BasicDBRowTranslatorSetStatic(
             BasicDBRowTranslatorSetStatic<ColIdx,
                                           Translator,
@@ -72,24 +69,21 @@ namespace gum {
 
     /// destructor
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE
-        BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
-            ~BasicDBRowTranslatorSetStatic() noexcept {
+    INLINE BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
+        ~BasicDBRowTranslatorSetStatic() noexcept {
       GUM_DESTRUCTOR( BasicDBRowTranslatorSetStatic );
     }
 
     /// copy operator
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE
-        BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>&
-        BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
-        operator=(
-            const BasicDBRowTranslatorSetStatic<ColIdx,
-                                                Translator,
-                                                OtherTranslators...>& from ) {
+    INLINE BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>&
+           BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
+    operator=( const BasicDBRowTranslatorSetStatic<ColIdx,
+                                                   Translator,
+                                                   OtherTranslators...>& from ) {
       if ( this != &from ) {
         NextTranslators::operator=( from );
-        __translator             = from.__translator;
+        __translator = from.__translator;
         __translator.setOutputCols( ColIdx );
       }
       return *this;
@@ -97,15 +91,14 @@ namespace gum {
 
     /// move operator
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE
-        BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>&
-        BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
-        operator=( BasicDBRowTranslatorSetStatic<ColIdx,
-                                                 Translator,
-                                                 OtherTranslators...>&& from ) {
+    INLINE BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>&
+           BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
+    operator=(
+        BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>&&
+            from ) {
       if ( this != &from ) {
         NextTranslators::operator=( std::move( from ) );
-        __translator             = std::move( from.__translator );
+        __translator = std::move( from.__translator );
         __translator.setOutputCols( ColIdx );
       }
       return *this;
@@ -131,8 +124,8 @@ namespace gum {
 
     /// returns the current input DBRow
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE const DBRow&
-    BasicDBRowTranslatorSetStatic<ColIdx,
+    INLINE const  DBRow&
+                  BasicDBRowTranslatorSetStatic<ColIdx,
                                   Translator,
                                   OtherTranslators...>::inputRow() const {
       return __translator.inputRow();
@@ -140,8 +133,8 @@ namespace gum {
 
     /// returns the current output row
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE FilteredRow&
-    BasicDBRowTranslatorSetStatic<ColIdx,
+    INLINE        FilteredRow&
+                  BasicDBRowTranslatorSetStatic<ColIdx,
                                   Translator,
                                   OtherTranslators...>::outputRow() {
       return __translator.outputRow();
@@ -159,8 +152,8 @@ namespace gum {
 
     /// returns the name of the jth value of the ith column
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE std::string
-    BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
+    INLINE        std::string
+                  BasicDBRowTranslatorSetStatic<ColIdx, Translator, OtherTranslators...>::
         translateBack( Idx col, Idx translated_val ) const {
       if ( col < Translator::output_size ) {
         return __translator.translateBack( col, translated_val );
@@ -212,8 +205,8 @@ namespace gum {
 
     /// returns the size of the input as used by the cell translators
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE Size
-    BasicDBRowTranslatorSetStatic<ColIdx,
+    INLINE        Size
+                  BasicDBRowTranslatorSetStatic<ColIdx,
                                   Translator,
                                   OtherTranslators...>::inputSize() const
         noexcept {
@@ -222,8 +215,8 @@ namespace gum {
 
     /// returns the size of the output of the cell translators
     template <int ColIdx, typename Translator, typename... OtherTranslators>
-    INLINE Size
-    BasicDBRowTranslatorSetStatic<ColIdx,
+    INLINE        Size
+                  BasicDBRowTranslatorSetStatic<ColIdx,
                                   Translator,
                                   OtherTranslators...>::outputSize() const
         noexcept {
@@ -277,7 +270,7 @@ namespace gum {
     /// copy operator
     template <typename... Translators>
     INLINE DBRowTranslatorSetStatic<Translators...>&
-    DBRowTranslatorSetStatic<Translators...>::
+           DBRowTranslatorSetStatic<Translators...>::
     operator=( const DBRowTranslatorSetStatic<Translators...>& from ) {
       if ( this != &from ) {
         TranslatorSetStatic::operator=( from );
@@ -290,11 +283,11 @@ namespace gum {
     /// move operator
     template <typename... Translators>
     INLINE DBRowTranslatorSetStatic<Translators...>&
-    DBRowTranslatorSetStatic<Translators...>::
+           DBRowTranslatorSetStatic<Translators...>::
     operator=( DBRowTranslatorSetStatic<Translators...>&& from ) {
       if ( this != &from ) {
         TranslatorSetStatic::operator=( std::move( from ) );
-        __output_row                 = std::move( from.__output_row );
+        __output_row = std::move( from.__output_row );
         TranslatorSetStatic::setOutputRow( __output_row );
       }
       return *this;
@@ -309,7 +302,7 @@ namespace gum {
     /// back-translate a given output (i.e., returns its input)
     template <typename... Translators>
     ALWAYS_INLINE std::string
-    DBRowTranslatorSetStatic<Translators...>::translateBack(
+                  DBRowTranslatorSetStatic<Translators...>::translateBack(
         Idx col, Idx translated_val ) const {
       return TranslatorSetStatic::translateBack( col, translated_val );
     }
@@ -354,14 +347,14 @@ namespace gum {
     /// returns the current output row
     template <typename... Translators>
     INLINE FilteredRow&
-    DBRowTranslatorSetStatic<Translators...>::outputRow() noexcept {
+           DBRowTranslatorSetStatic<Translators...>::outputRow() noexcept {
       return __output_row;
     }
 
     /// returns the current input DBRow
     template <typename... Translators>
     INLINE const DBRow&
-    DBRowTranslatorSetStatic<Translators...>::inputRow() const {
+                 DBRowTranslatorSetStatic<Translators...>::inputRow() const {
       return TranslatorSetStatic::inputRow();
     }
 

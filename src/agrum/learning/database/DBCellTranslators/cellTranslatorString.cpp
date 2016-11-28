@@ -68,7 +68,7 @@ namespace gum {
         std::vector<int> no_user_vals;
         std::vector<std::pair<Idx, Idx>> user_vals;
         for ( Idx i = 0; i < __max_value; ++i ) {
-          const Idx str_index    = __strings.first( i );
+          const Idx          str_index = __strings.first( i );
           const std::string& str = DBCell::getString( str_index );
           if ( __user_values->exists( str ) ) {
             user_vals.push_back(
@@ -106,9 +106,8 @@ namespace gum {
 
     /// specify the set of possible values (to do before creating the row
     /// filter)
-    void
-    CellTranslatorString::setUserValues( const Sequence<std::string>& values,
-                                         bool check_database ) {
+    void CellTranslatorString::setUserValues( const Sequence<std::string>& values,
+                                              bool check_database ) {
       // clear all current data
       __strings.clear();
       __max_value = 0;

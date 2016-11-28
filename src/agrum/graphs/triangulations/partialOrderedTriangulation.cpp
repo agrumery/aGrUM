@@ -33,8 +33,8 @@ namespace gum {
   // default constructor
   PartialOrderedTriangulation::PartialOrderedTriangulation(
       const PartialOrderedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy,
-      bool minimality )
+      const JunctionTreeStrategy&                      JTStrategy,
+      bool                                             minimality )
       : StaticTriangulation( elimSeq, JTStrategy, minimality ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( PartialOrderedTriangulation );
@@ -42,12 +42,12 @@ namespace gum {
 
   // constructor with a given graph
   PartialOrderedTriangulation::PartialOrderedTriangulation(
-      const UndiGraph* theGraph,
-      const NodeProperty<Size>* dom,
-      const List<NodeSet>* partial_order,
+      const UndiGraph*                                 theGraph,
+      const NodeProperty<Size>*                        dom,
+      const List<NodeSet>*                             partial_order,
       const PartialOrderedEliminationSequenceStrategy& elimSeq,
-      const JunctionTreeStrategy& JTStrategy,
-      bool minimality )
+      const JunctionTreeStrategy&                      JTStrategy,
+      bool                                             minimality )
       : StaticTriangulation( theGraph, dom, elimSeq, JTStrategy, minimality )
       , __partial_order( partial_order ) {
     static_cast<PartialOrderedEliminationSequenceStrategy*>(
@@ -85,8 +85,7 @@ namespace gum {
   }
 
   /// virtual copy constructor
-  PartialOrderedTriangulation*
-  PartialOrderedTriangulation::copyFactory() const {
+  PartialOrderedTriangulation* PartialOrderedTriangulation::copyFactory() const {
     return new PartialOrderedTriangulation( *this );
   }
 
@@ -98,7 +97,7 @@ namespace gum {
 
   /// initialize the triangulation data structures for a new graph
   void
-  PartialOrderedTriangulation::setGraph( const UndiGraph* graph,
+  PartialOrderedTriangulation::setGraph( const UndiGraph*          graph,
                                          const NodeProperty<Size>* domsizes ) {
     StaticTriangulation::setGraph( graph, domsizes );
     static_cast<PartialOrderedEliminationSequenceStrategy*>(

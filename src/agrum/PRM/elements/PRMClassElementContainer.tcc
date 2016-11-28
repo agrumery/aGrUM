@@ -51,7 +51,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE PRMClassElementContainer<GUM_SCALAR>&
-    PRMClassElementContainer<GUM_SCALAR>::
+           PRMClassElementContainer<GUM_SCALAR>::
     operator=( const PRMClassElementContainer<GUM_SCALAR>& source ) {
       GUM_ERROR( FatalError,
                  "illegal call to ClassElementContainer copy operator" );
@@ -136,8 +136,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE std::pair<bool, bool>&
-    PRMClassElementContainer<GUM_SCALAR>::_getIOFlag(
+    INLINE std::pair<bool, bool>& PRMClassElementContainer<GUM_SCALAR>::_getIOFlag(
         const PRMClassElement<GUM_SCALAR>& elt ) {
       try {
         return __IOFlags[elt.safeName()];
@@ -149,7 +148,7 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE const std::pair<bool, bool>&
-    PRMClassElementContainer<GUM_SCALAR>::_getIOFlag(
+                 PRMClassElementContainer<GUM_SCALAR>::_getIOFlag(
         const PRMClassElement<GUM_SCALAR>& elt ) const {
       try {
         return __IOFlags[elt.safeName()];
@@ -171,14 +170,13 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool
-    PRMClassElementContainer<GUM_SCALAR>::exists( NodeId id ) const {
+    INLINE bool PRMClassElementContainer<GUM_SCALAR>::exists( NodeId id ) const {
       return dag().exists( id );
     }
 
     template <typename GUM_SCALAR>
-    INLINE bool PRMClassElementContainer<GUM_SCALAR>::exists(
-        const std::string& name ) const {
+    INLINE bool
+    PRMClassElementContainer<GUM_SCALAR>::exists( const std::string& name ) const {
       try {
         get( name );
         return true;
@@ -207,7 +205,7 @@ namespace gum {
 
 template <typename GUM_SCALAR>
 std::ostream&
-operator<<( std::ostream& output,
+operator<<( std::ostream&                                         output,
             const gum::prm::PRMClassElementContainer<GUM_SCALAR>& container ) {
   std::string tab = "  ";
   output << "digraph \"" << container.name() << "\" {" << std::endl;
@@ -219,8 +217,7 @@ operator<<( std::ostream& output,
                << "\"" << container.get( chi ).name() << "\";" << std::endl;
       }
     } else if ( container.dag().parents( node ).size() == 0 ) {
-      output << tab << "\"" << container.get( node ).name() << "\";"
-             << std::endl;
+      output << tab << "\"" << container.get( node ).name() << "\";" << std::endl;
     }
   }
 

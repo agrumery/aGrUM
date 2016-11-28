@@ -60,9 +60,8 @@ namespace gum {
   //
   // ==========================================================================
   template <typename GUM_SCALAR_A, typename GUM_SCALAR_B>
-  void
-  ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::add( GUM_SCALAR_A valueA,
-                                                     GUM_SCALAR_B valueB ) {
+  void ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>::add( GUM_SCALAR_A valueA,
+                                                          GUM_SCALAR_B valueB ) {
 
     // Updating
     if ( __attrAMarginalTable.exists( valueA ) )
@@ -88,8 +87,7 @@ namespace gum {
   operator+=( const ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& src ) {
 
     // Ajout dans marginal A et table joint des valeurs pour src
-    for ( auto aTer = src.attrABeginSafe(); aTer != src.attrAEndSafe();
-          ++aTer ) {
+    for ( auto aTer = src.attrABeginSafe(); aTer != src.attrAEndSafe(); ++aTer ) {
 
       if ( __attrAMarginalTable.exists( aTer.key() ) )
         __attrAMarginalTable[aTer.key()] += aTer.val();
@@ -108,8 +106,7 @@ namespace gum {
     }
 
     // Ajout dans marginal B des valeurs de src
-    for ( auto bTer = src.attrBBeginSafe(); bTer != src.attrBEndSafe();
-          ++bTer ) {
+    for ( auto bTer = src.attrBBeginSafe(); bTer != src.attrBEndSafe(); ++bTer ) {
 
       if ( __attrBMarginalTable.exists( bTer.key() ) )
         __attrBMarginalTable[bTer.key()] += bTer.val();

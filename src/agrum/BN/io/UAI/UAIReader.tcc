@@ -24,18 +24,18 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   UAIReader<GUM_SCALAR>::UAIReader( BayesNet<GUM_SCALAR>* bn,
-                                    const std::string& filename )
+                                    const std::string&    filename )
       : BNReader<GUM_SCALAR>( bn, filename ) {
     GUM_CONSTRUCTOR( UAIReader );
-    __bn         = bn;
+    __bn = bn;
     __streamName = filename;
-    __parseDone  = false;
+    __parseDone = false;
 
     __ioerror = false;
 
     try {
       __scanner = new UAI::Scanner( __streamName.c_str() );
-      __parser  = new UAI::Parser( __scanner );
+      __parser = new UAI::Parser( __scanner );
     } catch ( IOError e ) {
       __ioerror = true;
     }
@@ -102,7 +102,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void UAIReader<GUM_SCALAR>::buildFromQuartets(
       std::vector<std::tuple<float, int, int, int>> quartets ) {
-    Idx current;
+    Idx  current;
     Size max = Size( quartets.size() );
     if ( max == 0 ) {
       __addWarning( 1, 1, "Empty BayesNet" );
@@ -129,7 +129,7 @@ namespace gum {
         this->__addFatalError( lig(), col(), "Not enough data in UAI file" );
     };
 
-    current      = 0;
+    current = 0;
     Size nbrNode = getInt();
 
     for ( NodeId i = 0; i < nbrNode; i++ ) {
@@ -144,9 +144,8 @@ namespace gum {
     incCurrent();
     Size nbrPot = getInt();
     if ( nbrPot != nbrNode )
-      __addWarning( lig(),
-                    col(),
-                    "Number of CPTs should be the same as number of nodes" );
+      __addWarning(
+          lig(), col(), "Number of CPTs should be the same as number of nodes" );
 
     Set<NodeId> s;
     for ( NodeId i = 0; i < nbrPot; i++ ) {
@@ -277,8 +276,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void UAIReader<GUM_SCALAR>::__addFatalError( int lig,
-                                                      int col,
+  INLINE void UAIReader<GUM_SCALAR>::__addFatalError( int                lig,
+                                                      int                col,
                                                       const std::string& s ) {
     __parser->errors().addError( s, __streamName, lig, col );
     GUM_ERROR( gum::OperationNotAllowed, "" );
@@ -289,9 +288,8 @@ namespace gum {
     __parser->errors().addError( s, __streamName, lig, col );
   }
   template <typename GUM_SCALAR>
-  INLINE void UAIReader<GUM_SCALAR>::__addWarning( int lig,
-                                                   int col,
-                                                   const std::string& s ) {
+  INLINE void
+  UAIReader<GUM_SCALAR>::__addWarning( int lig, int col, const std::string& s ) {
     __parser->errors().addWarning( s, __streamName, lig, col );
   }
 

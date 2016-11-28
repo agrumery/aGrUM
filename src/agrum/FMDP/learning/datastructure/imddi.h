@@ -63,18 +63,18 @@ namespace gum {
     /// Variable Learner constructor
     // ==========================================================================
     IMDDI( MultiDimFunctionGraph<double>* target,
-           double attributeSelectionThreshold,
-           double pairSelectionThreshold,
-           Set<const DiscreteVariable*> attributeListe,
-           const DiscreteVariable* learnedValue );
+           double                         attributeSelectionThreshold,
+           double                         pairSelectionThreshold,
+           Set<const DiscreteVariable*>   attributeListe,
+           const DiscreteVariable*        learnedValue );
 
     // ==========================================================================
     /// Reward Learner constructor
     // ==========================================================================
     IMDDI( MultiDimFunctionGraph<double>* target,
-           double attributeSelectionThreshold,
-           double pairSelectionThreshold,
-           Set<const DiscreteVariable*> attributeListe );
+           double                         attributeSelectionThreshold,
+           double                         pairSelectionThreshold,
+           Set<const DiscreteVariable*>   attributeListe );
 
     // ==========================================================================
     /// Default destructor
@@ -95,7 +95,7 @@ namespace gum {
 
     protected:
     void _updateNodeWithObservation( const Observation* newObs,
-                                     NodeId currentNodeId );
+                                     NodeId             currentNodeId );
 
     public:
     // ==========================================================================
@@ -105,10 +105,10 @@ namespace gum {
 
     protected:
     NodeId _insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                            const DiscreteVariable* boundVar,
+                            const DiscreteVariable*  boundVar,
                             Set<const Observation*>* sonsMap );
 
-    void _chgNodeBoundVar( NodeId chgedNodeId,
+    void _chgNodeBoundVar( NodeId                  chgedNodeId,
                            const DiscreteVariable* desiredVar );
 
     void _removeNode( NodeId removedNodeId );
@@ -129,8 +129,7 @@ namespace gum {
     /// Computes the score of the given variables for the given node
     // ==========================================================================
     void __updateScore( const DiscreteVariable*, NodeId, VariableSelector& vs );
-    void
-    __downdateScore( const DiscreteVariable*, NodeId, VariableSelector& vs );
+    void __downdateScore( const DiscreteVariable*, NodeId, VariableSelector& vs );
 
     // ==========================================================================
     /// For each node in the given set, this methods checks whether or not
@@ -148,7 +147,7 @@ namespace gum {
     void updateFunctionGraph();
 
     private:
-    void __rebuildFunctionGraph();
+    void   __rebuildFunctionGraph();
     NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<true> );
     NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<false> );
 

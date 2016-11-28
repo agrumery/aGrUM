@@ -37,8 +37,8 @@ namespace gum {
 
 
   /// returns the current domain sizes
-  INLINE const NodeProperty<Size>*
-  EliminationSequenceStrategy::domainSizes() const noexcept {
+  INLINE const NodeProperty<Size>* EliminationSequenceStrategy::domainSizes() const
+      noexcept {
     return _domain_sizes;
   }
 

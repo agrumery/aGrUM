@@ -38,17 +38,17 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
       pot1 << *( vars[0] ) << *( vars[2] ) << *( vars[3] ) << *( vars[4] );
       randomInit( pot1 );
-      gum::ScheduleMultiDim<float> f1( pot1 );
+      gum::ScheduleMultiDim<float>           f1( pot1 );
       gum::Set<const gum::DiscreteVariable*> del_vars;
       del_vars << vars[0] << vars[3];
 
-      gum::ScheduleProject<float> myproj( f1, del_vars, gum::projectMax );
+      gum::ScheduleProject<float>         myproj( f1, del_vars, gum::projectMax );
       const gum::ScheduleMultiDim<float>& res = myproj.result();
       TS_ASSERT( res.isAbstract() );
 
@@ -109,9 +109,9 @@ namespace gum_tests {
 
     // projection of a table over a set
     gum::Potential<float>*
-    proj( const gum::Potential<float>& table,
+    proj( const gum::Potential<float>&                  table,
           const gum::Set<const gum::DiscreteVariable*>& del_vars,
-          float neutral_elt ) {
+          float                                         neutral_elt ) {
       gum::Potential<float>* result = new gum::Potential<float>;
       const gum::Sequence<const gum::DiscreteVariable*>& vars =
           table.variablesSequence();

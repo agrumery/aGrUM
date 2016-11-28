@@ -31,9 +31,7 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    DAG2BNLearner::DAG2BNLearner() {
-      GUM_CONSTRUCTOR( learning::DAG2BNLearner );
-    }
+    DAG2BNLearner::DAG2BNLearner() { GUM_CONSTRUCTOR( learning::DAG2BNLearner ); }
 
     /// copy constructor
     DAG2BNLearner::DAG2BNLearner( const DAG2BNLearner& from ) {
@@ -46,9 +44,7 @@ namespace gum {
     }
 
     /// destructor
-    DAG2BNLearner::~DAG2BNLearner() {
-      GUM_DESTRUCTOR( learning::DAG2BNLearner );
-    }
+    DAG2BNLearner::~DAG2BNLearner() { GUM_DESTRUCTOR( learning::DAG2BNLearner ); }
 
   } /* namespace learning */
 

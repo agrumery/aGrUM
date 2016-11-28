@@ -75,8 +75,7 @@ namespace gum_tests {
       // Demande du 51ème élément
       TS_ASSERT_THROWS_NOTHING( vVoid.push_back( fa->allocate() ) );
       // Désallocation de tous les éléments.
-      for ( std::vector<void*>::iterator vite = vVoid.begin();
-            vite != vVoid.end();
+      for ( std::vector<void*>::iterator vite = vVoid.begin(); vite != vVoid.end();
             ++vite )
         TS_ASSERT_THROWS_NOTHING( fa->deallocate( *vite ) );
       TS_ASSERT_THROWS_NOTHING( delete fa );
@@ -140,12 +139,11 @@ namespace gum_tests {
     // ==============================================================================
     void test_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM() {
       void* pVoid;
-      TS_ASSERT_THROWS_NOTHING(
-          pVoid = gum::SmallObjectAllocator::instance().allocate(
-              5 * sizeof( gum::Idx ) ) );
-      TS_ASSERT_THROWS_NOTHING(
-          gum::SmallObjectAllocator::instance().deallocate(
-              pVoid, 5 * sizeof( gum::Idx ) ) );
+      TS_ASSERT_THROWS_NOTHING( pVoid =
+                                    gum::SmallObjectAllocator::instance().allocate(
+                                        5 * sizeof( gum::Idx ) ) );
+      TS_ASSERT_THROWS_NOTHING( gum::SmallObjectAllocator::instance().deallocate(
+          pVoid, 5 * sizeof( gum::Idx ) ) );
     }
 
     // ==============================================================================
@@ -161,10 +159,8 @@ namespace gum_tests {
 
       std::vector<std::size_t> dv = {12, 6, 3, 9, 4, 11, 2, 7, 1, 5, 8, 10};
       for ( int i = 0; i < 12; ++i )
-        TS_ASSERT_THROWS_NOTHING(
-            gum::SmallObjectAllocator::instance().deallocate(
-                vVoid[dv[i] - 1],
-                gum::Size( 2 * dv[i] * sizeof( gum::Idx ) ) ) );
+        TS_ASSERT_THROWS_NOTHING( gum::SmallObjectAllocator::instance().deallocate(
+            vVoid[dv[i] - 1], gum::Size( 2 * dv[i] * sizeof( gum::Idx ) ) ) );
     }
 
     // ==============================================================================

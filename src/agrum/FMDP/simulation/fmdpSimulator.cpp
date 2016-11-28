@@ -75,8 +75,7 @@ namespace gum {
   void FMDPSimulator::perform( Idx actionId ) {
 
     Instantiation newState;
-    for ( auto varIter = this->beginVariables();
-          varIter != this->endVariables();
+    for ( auto varIter = this->beginVariables(); varIter != this->endVariables();
           ++varIter ) {
 
       newState.add( **varIter );
@@ -84,7 +83,7 @@ namespace gum {
       transit.add( *( this->primeVar( *varIter ) ) );
 
       double proba = (double)std::rand() / (double)RAND_MAX;
-      double cdd   = 0.0;
+      double cdd = 0.0;
       for ( transit.setFirstOut( _currentState ); !transit.end();
             transit.incOut( _currentState ) ) {
         cdd += this->_transitionProbability( *varIter, transit, actionId );

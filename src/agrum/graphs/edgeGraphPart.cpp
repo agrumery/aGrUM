@@ -104,7 +104,7 @@ namespace gum {
 
   const std::string EdgeGraphPart::toString() const {
     std::stringstream s;
-    bool first = true;
+    bool              first = true;
     s << "{";
 
     for ( const auto edge : __edges ) {

@@ -34,9 +34,8 @@ namespace gum {
   // ============================================================================
   // Initializes a Chunk object
   // ============================================================================
-  INLINE void
-  FixedAllocator::__Chunk::__init( const std::size_t& blockSize,
-                                   const unsigned char& numBlocks ) {
+  INLINE void FixedAllocator::__Chunk::__init( const std::size_t&   blockSize,
+                                               const unsigned char& numBlocks ) {
 
     // Chunk memory space allocation. A chunk allocates a memory of blockSize *
     // numBlocks size.
@@ -55,8 +54,7 @@ namespace gum {
     // Since we're at the beginning, next free block is the next one simply.
     // Following code initiate those number for each block
     unsigned char* p = __pData;
-    for ( unsigned char indexBlock = 0; indexBlock != numBlocks;
-          p += blockSize )
+    for ( unsigned char indexBlock = 0; indexBlock != numBlocks; p += blockSize )
       *p = ++indexBlock;
   }
 
@@ -91,7 +89,7 @@ namespace gum {
   // Deallocates a block of memory
   // ============================================================================
   INLINE void
-  FixedAllocator::__Chunk::__deallocat( void* pDeallocatedBlock,
+  FixedAllocator::__Chunk::__deallocat( void*              pDeallocatedBlock,
                                         const std::size_t& blockSize ) {
 
     // first, ensure that deallocated is in this chunk
@@ -131,12 +129,12 @@ namespace gum {
   // ============================================================================
   // Constructor.
   // ============================================================================
-  INLINE FixedAllocator::FixedAllocator( const std::size_t& blockSize,
+  INLINE FixedAllocator::FixedAllocator( const std::size_t&   blockSize,
                                          const unsigned char& numBlocks ) {
     //    GUM_CONSTRUCTOR(FixedAllocator)
-    __blockSize    = blockSize;
-    __numBlocks    = numBlocks;
-    __allocChunk   = __chunks.begin();
+    __blockSize = blockSize;
+    __numBlocks = numBlocks;
+    __allocChunk = __chunks.begin();
     __deallocChunk = __chunks.begin();
   }
 

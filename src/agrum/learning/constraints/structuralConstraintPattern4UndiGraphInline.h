@@ -35,34 +35,29 @@ INLINE void GUM_CONSTRAINT_CLASS_NAME::setGraph( const UndiGraph& graph ) {
 /// checks whether the constraints enable to add edge (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeAddition( NodeId x,
                                                           NodeId y ) const {
-  return constraints::checkEdgeAddition( x, y ) &&
-         checkEdgeAdditionAlone( x, y );
+  return constraints::checkEdgeAddition( x, y ) && checkEdgeAdditionAlone( x, y );
 }
 
 /// checks whether the constraints enable to remove edge (x,y)
 INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkEdgeDeletion( NodeId x,
                                                           NodeId y ) const {
-  return constraints::checkEdgeDeletion( x, y ) &&
-         checkEdgeDeletionAlone( x, y );
+  return constraints::checkEdgeDeletion( x, y ) && checkEdgeDeletionAlone( x, y );
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void
-GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const EdgeAddition& change ) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const EdgeAddition& change ) {
   constraints::modifyGraph( change );
   modifyGraphAlone( change );
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void
-GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const EdgeDeletion& change ) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const EdgeDeletion& change ) {
   constraints::modifyGraph( change );
   modifyGraphAlone( change );
 }
 
 /// notify the constraint of a modification of the graph
-INLINE void
-GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
+INLINE void GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
   constraints::modifyGraph( change );
   modifyGraphAlone( change );
 }
@@ -70,25 +65,24 @@ GUM_CONSTRAINT_CLASS_NAME::modifyGraph( const GraphChange& change ) {
 /// indicates whether a change will always violate the constraint
 INLINE bool
 GUM_CONSTRAINT_CLASS_NAME::isAlwaysInvalid( const GraphChange& ) const {
-  return constraints::isAlwaysInvalid( change ) ||
-         isAlwaysInvalidAlone( change );
+  return constraints::isAlwaysInvalid( change ) || isAlwaysInvalidAlone( change );
 }
 
 /// checks whether the constraints enable to add an edge
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
-    const EdgeAddition& change ) const {
+INLINE bool
+GUM_CONSTRAINT_CLASS_NAME::checkModification( const EdgeAddition& change ) const {
   return checkEdgeAddition( change.node1(), change.node2() );
 }
 
 /// checks whether the constraints enable to remove an edge
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
-    const EdgeDeletion& change ) const {
+INLINE bool
+GUM_CONSTRAINT_CLASS_NAME::checkModification( const EdgeDeletion& change ) const {
   return checkEdgeDeletion( change.node1(), change.node2() );
 }
 
 /// checks whether the constraints enable to perform a graph change
-INLINE bool GUM_CONSTRAINT_CLASS_NAME::checkModification(
-    const GraphChange& change ) const {
+INLINE bool
+GUM_CONSTRAINT_CLASS_NAME::checkModification( const GraphChange& change ) const {
   switch ( change.type() ) {
     case GraphChangeType::EDGE_ADDITION:
       return checkEdgeAddition( change.node1(), change.node2() );

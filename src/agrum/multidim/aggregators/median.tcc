@@ -60,8 +60,7 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE MultiDimContainer<GUM_SCALAR>*
-    Median<GUM_SCALAR>::newFactory() const {
+    INLINE MultiDimContainer<GUM_SCALAR>* Median<GUM_SCALAR>::newFactory() const {
       return new Median<GUM_SCALAR>();
     }
 
@@ -99,8 +98,8 @@ namespace gum {
 
     template <typename GUM_SCALAR>
     INLINE Idx Median<GUM_SCALAR>::_fold( const DiscreteVariable& v,
-                                          Idx i1,
-                                          Idx i2,
+                                          Idx                     i1,
+                                          Idx                     i2,
                                           bool& stop_iteration ) const {
       return 0;
     }

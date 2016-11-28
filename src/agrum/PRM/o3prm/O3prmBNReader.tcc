@@ -29,10 +29,8 @@
 
 namespace gum {
   template <typename GUM_SCALAR>
-  INLINE std::string
-  O3prmBNReader<GUM_SCALAR>::__getVariableName( const std::string& path,
-                                                const std::string& type,
-                                                const std::string& name ) {
+  INLINE std::string O3prmBNReader<GUM_SCALAR>::__getVariableName(
+      const std::string& path, const std::string& type, const std::string& name ) {
     return path + name;  // path ends up with a "."
   }
 
@@ -55,15 +53,15 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   O3prmBNReader<GUM_SCALAR>::O3prmBNReader( BayesNet<GUM_SCALAR>* bn,
-                                            const std::string& filename,
-                                            const std::string& entityName,
-                                            const std::string& classpath )
+                                            const std::string&    filename,
+                                            const std::string&    entityName,
+                                            const std::string&    classpath )
       : BNReader<GUM_SCALAR>( bn, filename ) {
     GUM_CONSTRUCTOR( O3prmBNReader );
-    __bn         = bn;
-    __filename   = filename;
+    __bn = bn;
+    __filename = filename;
     __entityName = entityName == "" ? __getEntityName( filename ) : entityName;
-    __classpath  = classpath;
+    __classpath = classpath;
   }
 
   template <typename GUM_SCALAR>
@@ -82,7 +80,7 @@ namespace gum {
     }
     reader.readFile( __filename );
     gum::prm::PRM<GUM_SCALAR>* prm = reader.prm();
-    __errors                       = reader.errorsContainer();
+    __errors = reader.errorsContainer();
 
     if ( errors() == 0 ) {
       if ( prm->isSystem( __entityName ) ) {
@@ -97,8 +95,7 @@ namespace gum {
           __errors.add( warn );
           gum::prm::PRMSystem<GUM_SCALAR> s( "S_" + __entityName );
           auto i = new gum::prm::PRMInstance<GUM_SCALAR>(
-              __getInstanceName( __entityName ),
-              prm->getClass( __entityName ) );
+              __getInstanceName( __entityName ), prm->getClass( __entityName ) );
           s.add( i );
           __generateBN( s );
         } else {
@@ -112,8 +109,8 @@ namespace gum {
 
       // renaming varible in th BN
 
-      std::regex re( "([^\\(]+)(\\([^\\)]+\\))(.*)" );
-      std::smatch match;
+      std::regex            re( "([^\\(]+)(\\([^\\)]+\\))(.*)" );
+      std::smatch           match;
       gum::Set<std::string> names;
       for ( auto node : __bn->nodes() ) {
         // keeping the complete name in description
@@ -150,8 +147,8 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  void O3prmBNReader<GUM_SCALAR>::__generateBN(
-      prm::PRMSystem<GUM_SCALAR>& system ) {
+  void
+  O3prmBNReader<GUM_SCALAR>::__generateBN( prm::PRMSystem<GUM_SCALAR>& system ) {
     system.instantiate();
     BayesNetFactory<GUM_SCALAR> factory( __bn );
     system.groundedBN( factory );

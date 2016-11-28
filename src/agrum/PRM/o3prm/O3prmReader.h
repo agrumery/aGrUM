@@ -74,8 +74,7 @@ namespace gum {
 
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
-        Size readFile( const std::string& file,
-                       const std::string& module = "" );
+        Size readFile( const std::string& file, const std::string& module = "" );
 
         /// With readString method, you must set the current path
         /// to search from import yourself, using addClassPath.
@@ -83,7 +82,7 @@ namespace gum {
 
         void parseStream( std::istream& input,
                           std::ostream& output,
-                          std::string module = "" );
+                          std::string   module = "" );
         /**
          * @brief This methods defines the list of paths to look for o3prm
          * files.
@@ -104,7 +103,7 @@ namespace gum {
          */
         void addClassPath( const std::string& class_path );
 
-        gum::prm::PRM<GUM_SCALAR>* prm() { return __prm; }
+        gum::prm::PRM<GUM_SCALAR>*       prm() { return __prm; }
         const gum::prm::PRM<GUM_SCALAR>* prm() const { return __prm; }
 
         /// @{
@@ -140,21 +139,21 @@ namespace gum {
         /// @}
 
         private:
-        PRM<GUM_SCALAR>* __prm;
-        std::unique_ptr<O3PRM> __o3_prm;
+        PRM<GUM_SCALAR>*         __prm;
+        std::unique_ptr<O3PRM>   __o3_prm;
         std::vector<std::string> __class_path;
-        Set<std::string> __imported;
+        Set<std::string>         __imported;
 
         // Needed when file can't be parse (can not open it for exemple)
         ErrorsContainer __errors;
 
-        void __readStream( std::istream& input,
+        void __readStream( std::istream&      input,
                            const std::string& file,
-                           std::string module = "" );
+                           std::string        module = "" );
 
         void __parseImport( const O3Import& i, const std::string& module_path );
 
-        void __parseStream( std::istream& input,
+        void __parseStream( std::istream&      input,
                             const std::string& filename,
                             const std::string& module );
 

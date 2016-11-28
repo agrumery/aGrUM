@@ -73,13 +73,13 @@ namespace gum {
     /// copy operator
     template <typename STRUCT_CONSTRAINT>
     GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::operator=(
-        const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from ) {
+    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::
+    operator=( const GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>& from ) {
       if ( this != &from ) {
-        _constraint          = from._constraint;
-        _target_nodes        = from._target_nodes;
-        _tail_nodes          = from._tail_nodes;
-        _legal_changes       = from._legal_changes;
+        _constraint = from._constraint;
+        _target_nodes = from._target_nodes;
+        _tail_nodes = from._tail_nodes;
+        _legal_changes = from._legal_changes;
         __max_threads_number = from.__max_threads_number;
       }
       return *this;
@@ -91,10 +91,10 @@ namespace gum {
     GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::
     operator=( GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>&& from ) {
       if ( this != &from ) {
-        _constraint          = std::move( from._constraint );
-        _target_nodes        = std::move( from._target_nodes );
-        _tail_nodes          = std::move( from._tail_nodes );
-        _legal_changes       = std::move( from._legal_changes );
+        _constraint = std::move( from._constraint );
+        _target_nodes = std::move( from._target_nodes );
+        _tail_nodes = std::move( from._tail_nodes );
+        _legal_changes = std::move( from._legal_changes );
         __max_threads_number = from.__max_threads_number;
       }
       return *this;
@@ -102,8 +102,7 @@ namespace gum {
 
     /// create the set of legal and illegal changes from a given graph
     template <typename STRUCT_CONSTRAINT>
-    void
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::_createChanges() {
+    void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::_createChanges() {
       _legal_changes.clear();
 
       // for all the pairs of nodes, consider adding, reverse and removing arcs
@@ -170,8 +169,7 @@ namespace gum {
 
     /// assign a set of target nodes
     template <typename STRUCT_CONSTRAINT>
-    INLINE void
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::setTargets(
+    INLINE void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::setTargets(
         const NodeSet& nodes ) {
       _target_nodes = nodes;
     }
@@ -185,8 +183,7 @@ namespace gum {
 
     /// removes a target
     template <typename STRUCT_CONSTRAINT>
-    INLINE void
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::eraseTarget(
+    INLINE void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::eraseTarget(
         NodeId node ) {
       _target_nodes.erase( node );
     }
@@ -210,8 +207,8 @@ namespace gum {
 
     /// adds a new "tail" node
     template <typename STRUCT_CONSTRAINT>
-    INLINE void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::addTail(
-        NodeId node ) {
+    INLINE void
+    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::addTail( NodeId node ) {
       _tail_nodes = node;
     }
 
@@ -224,16 +221,15 @@ namespace gum {
 
     /// empty the set of possible change operators that can be applied
     template <typename STRUCT_CONSTRAINT>
-    INLINE void GraphChangesGeneratorOnSubDiGraph<
-        STRUCT_CONSTRAINT>::clearChanges() noexcept {
+    INLINE void
+    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::clearChanges() noexcept {
       _legal_changes.clear();
     }
 
     /// returns an (unsafe) iterator on the beginning of the list of operators
     template <typename STRUCT_CONSTRAINT>
-    INLINE
-        typename GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::iterator
-        GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::begin() const {
+    INLINE typename GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::iterator
+    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::begin() const {
       return _legal_changes.cbegin();
     }
 
@@ -247,26 +243,22 @@ namespace gum {
 
     /// notify the operator set of a change applied to the graph
     template <typename STRUCT_CONSTRAINT>
-    INLINE void
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::modifyGraph(
+    INLINE void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::modifyGraph(
         const ArcAddition& change ) {}
 
     /// notify the operator set of a change applied to the graph
     template <typename STRUCT_CONSTRAINT>
-    INLINE void
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::modifyGraph(
+    INLINE void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::modifyGraph(
         const ArcDeletion& change ) {}
 
     /// notify the operator set of a change applied to the graph
     template <typename STRUCT_CONSTRAINT>
-    INLINE void
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::modifyGraph(
+    INLINE void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::modifyGraph(
         const ArcReversal& change ) {}
 
     /// notify the operator set of a change applied to the graph
     template <typename STRUCT_CONSTRAINT>
-    INLINE void
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::modifyGraph(
+    INLINE void GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::modifyGraph(
         const GraphChange& change ) {}
 
     /// notifies the generator that we have parsed all its legal changes
@@ -282,7 +274,7 @@ namespace gum {
     GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::setMaxNbThreads(
         Size nb ) noexcept {
 #if defined( _OPENMP ) && defined( NDEBUG )
-      if ( nb == 0 ) nb    = getMaxNumberOfThreads();
+      if ( nb == 0 ) nb = getMaxNumberOfThreads();
       __max_threads_number = nb;
 #else
       __max_threads_number = 1;
@@ -292,7 +284,7 @@ namespace gum {
     /// returns the constraint that is used by the generator
     template <typename STRUCT_CONSTRAINT>
     INLINE STRUCT_CONSTRAINT&
-    GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::constraint() const
+           GraphChangesGeneratorOnSubDiGraph<STRUCT_CONSTRAINT>::constraint() const
         noexcept {
       return *_constraint;
     }

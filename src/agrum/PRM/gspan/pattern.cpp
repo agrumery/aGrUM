@@ -55,8 +55,8 @@ namespace gum {
       bool Pattern::isMinimal() {
         for ( const auto node : nodes() ) {
           for ( const auto next : parents( node ) ) {
-            Size u = label( node ).id;
-            Size v = label( next ).id;
+            Size     u = label( node ).id;
+            Size     v = label( next ).id;
             EdgeCode edge_code( 1, 2, u, label( next, node ).id, v );
 
             if ( edge_code < *( code().codes.front() ) ) {
@@ -69,8 +69,8 @@ namespace gum {
           }
 
           for ( const auto next : children( node ) ) {
-            Size u = label( node ).id;
-            Size v = label( next ).id;
+            Size     u = label( node ).id;
+            Size     v = label( next ).id;
             EdgeCode edge_code( 1, 2, u, label( node, next ).id, v );
 
             if ( edge_code < *( code().codes.front() ) ) {
@@ -182,12 +182,10 @@ namespace gum {
 
           for ( const auto node : r_path ) {
             for ( const auto nei : children( node_map.first( node ) ) )
-              if ( __rec( p, node_map, node_map.first( node ), nei ) )
-                return true;
+              if ( __rec( p, node_map, node_map.first( node ), nei ) ) return true;
 
             for ( const auto nei : parents( node_map.first( node ) ) )
-              if ( __rec( p, node_map, node_map.first( node ), nei ) )
-                return true;
+              if ( __rec( p, node_map, node_map.first( node ), nei ) ) return true;
           }
         }
 
@@ -206,12 +204,12 @@ namespace gum {
         stack.push_back( std::make_pair( a_u, a_v ) );
         NodeId u = 0;
         NodeId v = 0;
-        bool go  = true;
+        bool   go = true;
 
         while ( !stack.empty() ) {
           go = true;
-          u  = stack.back().first;
-          v  = stack.back().second;
+          u = stack.back().first;
+          v = stack.back().second;
           stack.pop_back();
 
           if ( ( u == 0 ) && ( v == 0 ) ) {
@@ -282,8 +280,7 @@ namespace gum {
                   }
                 }
 
-                if ( p.code().codes.back()->isForward() )
-                  node_map.eraseFirst( v );
+                if ( p.code().codes.back()->isForward() ) node_map.eraseFirst( v );
               }
             }
           }

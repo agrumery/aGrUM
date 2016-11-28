@@ -44,13 +44,12 @@ namespace gum_tests {
   class ShaferShenoyInferenceBNTestSuite : public CxxTest::TestSuite {
     public:
     gum::BayesNet<float>* bn;
-    gum::NodeId i1, i2, i3, i4, i5;
+    gum::NodeId           i1, i2, i3, i4, i5;
 
     void setUp() {
       bn = new gum::BayesNet<float>();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
-          n3( "3", "", 2 );
+      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
       gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
 
       i1 = bn->add( n1 );
@@ -104,8 +103,8 @@ namespace gum_tests {
     void testMarginalWithEvidence() {
       fill( *bn );
       gum::List<const gum::Potential<float>*> e_list;
-      e_list.insert( const_cast<gum::Potential<float>*> ( &( bn->cpt( i1 ) ) ) );
-      e_list.insert( const_cast<gum::Potential<float>*> ( &( bn->cpt( i2 ) ) ) );
+      e_list.insert( const_cast<gum::Potential<float>*>( &( bn->cpt( i1 ) ) ) );
+      e_list.insert( const_cast<gum::Potential<float>*>( &( bn->cpt( i2 ) ) ) );
 
       gum::ShaferShenoyInference<float> inf( bn );
 
@@ -119,13 +118,13 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i4 ) );
       TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( i5 ) );
     }
-    
+
     // Testing when there is no evidence
     void testJoint() {
       fill( *bn );
       // Testing the inference
       gum::ShaferShenoyInference<float> inf( bn );
-      gum::NodeSet nodeset;
+      gum::NodeSet                      nodeset;
       nodeset.insert( 2 );
       nodeset.insert( 4 );
       inf.addJointTarget( nodeset );
@@ -138,7 +137,7 @@ namespace gum_tests {
       fill( *bn );
       // Testing the inference
       gum::ShaferShenoyInference<float> inf( bn );
-      gum::NodeSet nodeset;
+      gum::NodeSet                      nodeset;
       nodeset.insert( 1 );
       nodeset.insert( 2 );
       nodeset.insert( 3 );
@@ -159,7 +158,7 @@ namespace gum_tests {
       fill( *bn );
 
       gum::ShaferShenoyInference<float> inf( bn );
-      gum::NodeSet nodeset;
+      gum::NodeSet                      nodeset;
       nodeset.insert( 0 );
       nodeset.insert( 4 );
       inf.addJointTarget( nodeset );
@@ -176,7 +175,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( inf.I( (gum::NodeId)0, (gum::NodeId)4 ) );
 
       for ( const auto node : bn->dag() ) {
-        for ( const auto par : bn->dag().parents ( node ) ) {
+        for ( const auto par : bn->dag().parents( node ) ) {
           TS_GUM_ASSERT_THROWS_NOTHING( inf.I( node, par ) );
           TS_GUM_ASSERT_THROWS_NOTHING( inf.I( par, node ) );
         }
@@ -188,7 +187,7 @@ namespace gum_tests {
 
     void testWithGenerator() {
       gum::Size density[] = {9, 18, 27, 36, 45};
-      int trial_nb        = 5;
+      int       trial_nb = 5;
 
       for ( int i = 0; i < trial_nb; ++i ) {
         gum::SimpleBayesNetGenerator<float> bnGen( 10, density[i] );

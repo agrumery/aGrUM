@@ -38,13 +38,13 @@ namespace gum {
 
   template <typename VAL>
   INLINE NodeProperty<VAL> NodeGraphPart::nodesProperty( const VAL& val,
-                                                         Size size ) const {
+                                                         Size       size ) const {
     return asNodeSet().hashMap( val, size );
   }
 
   template <typename VAL>
   INLINE List<VAL>
-  NodeGraphPart::listMapNodes( VAL ( *f )( const NodeId& ) ) const {
+         NodeGraphPart::listMapNodes( VAL ( *f )( const NodeId& ) ) const {
     return asNodeSet().listMap( f );
   }
 
@@ -56,8 +56,7 @@ namespace gum {
       NodeId new_one = iter.key();
 
       if ( existsNode( new_one ) ) {
-        GUM_ERROR( DuplicateElement,
-                   new_one << " already exists in the graph" );
+        GUM_ERROR( DuplicateElement, new_one << " already exists in the graph" );
       }
 
       addNode( new_one );

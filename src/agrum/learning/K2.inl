@@ -53,7 +53,7 @@ namespace gum {
     INLINE K2& K2::operator=( const K2& from ) {
       if ( this != &from ) {
         GreedyHillClimbing::operator=( from );
-        __order                     = from.__order;
+        __order = from.__order;
       }
       return *this;
     }
@@ -62,15 +62,13 @@ namespace gum {
     INLINE K2& K2::operator=( K2&& from ) {
       if ( this != &from ) {
         GreedyHillClimbing::operator=( std::move( from ) );
-        __order                     = std::move( from.__order );
+        __order = std::move( from.__order );
       }
       return *this;
     }
 
     /// sets the order on the variables
-    INLINE void K2::setOrder( const Sequence<NodeId>& order ) {
-      __order = order;
-    }
+    INLINE void K2::setOrder( const Sequence<NodeId>& order ) { __order = order; }
 
     /// sets the order on the variables
     INLINE void K2::setOrder( const std::vector<NodeId>& order ) {
@@ -81,9 +79,7 @@ namespace gum {
     }
 
     /// returns the current order
-    INLINE const Sequence<NodeId>& K2::order() const noexcept {
-      return __order;
-    }
+    INLINE const Sequence<NodeId>& K2::order() const noexcept { return __order; }
 
     /** @brief checks that the order passed to K2 is coherent with the variables
      * as specified by their modalities */

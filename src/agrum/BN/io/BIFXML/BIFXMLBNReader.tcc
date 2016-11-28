@@ -28,12 +28,11 @@ namespace gum {
    * Note that an BN as to be created before and given in parameter.
    */
   template <typename GUM_SCALAR>
-  INLINE
-  BIFXMLBNReader<GUM_SCALAR>::BIFXMLBNReader( BayesNet<GUM_SCALAR>* bn,
-                                              const std::string& filePath )
+  INLINE BIFXMLBNReader<GUM_SCALAR>::BIFXMLBNReader( BayesNet<GUM_SCALAR>* bn,
+                                                     const std::string& filePath )
       : BNReader<GUM_SCALAR>( bn, filePath ) {
     GUM_CONSTRUCTOR( BIFXMLBNReader );
-    __bn       = bn;
+    __bn = bn;
     __filePath = filePath;
   }
 
@@ -62,9 +61,8 @@ namespace gum {
       xmlDoc.LoadFile();
 
       if ( xmlDoc.NoChildren() ) {
-        GUM_ERROR(
-            IOError,
-            ": Loading fail, please check the file for any syntax error." );
+        GUM_ERROR( IOError,
+                   ": Loading fail, please check the file for any syntax error." );
       }
 
       // Finding BIF element
@@ -77,8 +75,7 @@ namespace gum {
       status = "BIF Element reached. Now searching network ...";
       GUM_EMIT2( onProceed, 7, status );
 
-      ticpp::Element* networkElement =
-          bifElement->FirstChildElement( "NETWORK" );
+      ticpp::Element* networkElement = bifElement->FirstChildElement( "NETWORK" );
 
       // Finding id variables
       status = "Network found. Now proceedind variables instanciation...";
@@ -103,10 +100,10 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void BIFXMLBNReader<GUM_SCALAR>::__parsingVariables(
-      ticpp::Element* parentNetwork ) {
+  void
+  BIFXMLBNReader<GUM_SCALAR>::__parsingVariables( ticpp::Element* parentNetwork ) {
     // Counting the number of variable for the signal
-    int nbVar = 0;
+    int                             nbVar = 0;
     ticpp::Iterator<ticpp::Element> varIte( "VARIABLE" );
 
     for ( varIte = varIte.begin( parentNetwork ); varIte != varIte.end();
@@ -122,7 +119,7 @@ namespace gum {
 
       // Getting variable name
       ticpp::Element* varNameElement = currentVar->FirstChildElement( "NAME" );
-      std::string varName            = varNameElement->GetTextOrDefault( "" );
+      std::string     varName = varNameElement->GetTextOrDefault( "" );
 
       // Getting variable description
       ticpp::Element* varDescrElement =
@@ -158,10 +155,9 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  void
-  BIFXMLBNReader<GUM_SCALAR>::__fillingBN( ticpp::Element* parentNetwork ) {
+  void BIFXMLBNReader<GUM_SCALAR>::__fillingBN( ticpp::Element* parentNetwork ) {
     // Counting the number of variable for the signal
-    int nbDef = 0;
+    int                             nbDef = 0;
     ticpp::Iterator<ticpp::Element> definitionIte( "DEFINITION" );
 
     for ( definitionIte = definitionIte.begin( parentNetwork );
@@ -184,12 +180,12 @@ namespace gum {
 
       // Get Node's parents
       ticpp::Iterator<ticpp::Element> givenIte( "GIVEN" );
-      List<NodeId> parentList;
+      List<NodeId>                    parentList;
 
       for ( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end();
             ++givenIte ) {
         std::string parentNode = givenIte->GetTextOrDefault( "" );
-        NodeId parentId        = __bn->idFromName( parentNode );
+        NodeId      parentId = __bn->idFromName( parentNode );
         parentList.pushBack( parentId );
       }
 
@@ -199,10 +195,10 @@ namespace gum {
         __bn->addArc( *parentListIte, currentVarId );
 
       // Recuperating tables values
-      ticpp::Element* tableElement = currentVar->FirstChildElement( "TABLE" );
+      ticpp::Element*    tableElement = currentVar->FirstChildElement( "TABLE" );
       std::istringstream issTableString( tableElement->GetTextOrDefault( "" ) );
       std::list<GUM_SCALAR> tablelist;
-      GUM_SCALAR value;
+      GUM_SCALAR            value;
 
       while ( !issTableString.eof() ) {
         issTableString >> value;

@@ -64,11 +64,11 @@ namespace gum {
 
       INLINE
       EdgeCode& EdgeCode::operator=( const EdgeCode& source ) {
-        i    = source.i;
-        j    = source.j;
-        l_i  = source.l_i;
+        i = source.i;
+        j = source.j;
+        l_i = source.l_i;
         l_ij = source.l_ij;
-        l_j  = source.l_j;
+        l_j = source.l_j;
         return *this;
       }
 

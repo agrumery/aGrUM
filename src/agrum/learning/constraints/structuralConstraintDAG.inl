@@ -58,20 +58,20 @@ namespace gum {
     }
 
     /// checks whether the constraints enable to add arc (x,y)
-    INLINE bool
-    StructuralConstraintDAG::checkArcAdditionAlone( NodeId x, NodeId y ) const {
+    INLINE bool StructuralConstraintDAG::checkArcAdditionAlone( NodeId x,
+                                                                NodeId y ) const {
       return !_DAG__cycle_detector.hasCycleFromAddition( x, y );
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
-    INLINE bool
-    StructuralConstraintDAG::checkArcDeletionAlone( NodeId x, NodeId y ) const {
+    INLINE bool StructuralConstraintDAG::checkArcDeletionAlone( NodeId x,
+                                                                NodeId y ) const {
       return !_DAG__cycle_detector.hasCycleFromDeletion( x, y );
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
-    INLINE bool
-    StructuralConstraintDAG::checkArcReversalAlone( NodeId x, NodeId y ) const {
+    INLINE bool StructuralConstraintDAG::checkArcReversalAlone( NodeId x,
+                                                                NodeId y ) const {
       return !_DAG__cycle_detector.hasCycleFromReversal( x, y );
     }
 
@@ -148,9 +148,8 @@ namespace gum {
           break;
 
         default:
-          GUM_ERROR(
-              OperationNotAllowed,
-              "edge modifications are not supported by DAG constraints" );
+          GUM_ERROR( OperationNotAllowed,
+                     "edge modifications are not supported by DAG constraints" );
       }
     }
 

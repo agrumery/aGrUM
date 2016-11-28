@@ -144,30 +144,30 @@ namespace gum {
     // ============================================================================
     /// Compares two ArgMaxSet to check if they are equals
     // ============================================================================
-    bool operator==(
-        const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const;
-    bool operator!=(
-        const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
+    bool
+    operator==( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const;
+    bool
+    operator!=( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
       return !( *this == compared );
     }
 
     // ============================================================================
     /// Checks if val is lower or higher from the compared ArgMaxSet val
     // ============================================================================
-    bool operator<(
-        const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
+    bool
+    operator<( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
       return __val < compared.value() ? true : false;
     }
-    bool operator>(
-        const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
+    bool
+    operator>( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
       return compared < *this;
     }
-    bool operator<=(
-        const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
+    bool
+    operator<=( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
       return !( *this > compared );
     }
-    bool operator>=(
-        const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
+    bool
+    operator>=( const ArgMaxSet<GUM_SCALAR_VAL, GUM_SCALAR_SEQ>& compared ) const {
       return !( *this < compared );
     }
 
@@ -190,10 +190,10 @@ namespace gum {
     private:
     /// The very bone of the ArgMaxSet
     Sequence<GUM_SCALAR_SEQ>* __argMaxSeq;
-    GUM_SCALAR_VAL __val;
+    GUM_SCALAR_VAL            __val;
 
     public:
-    friend std::ostream& operator<<( std::ostream& streamy,
+    friend std::ostream& operator<<( std::ostream&    streamy,
                                      const ArgMaxSet& objy ) {
       streamy << "Value : " << objy.value()
               << " - Set : " << objy.__argMaxSeq->toString();

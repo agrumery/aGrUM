@@ -40,16 +40,16 @@ namespace gum_tests {
         std::stringstream str;
         str << "x" << i;
         std::string s = str.str();
-        vars[i]       = new gum::LabelizedVariable( s, s, 2 );
+        vars[i] = new gum::LabelizedVariable( s, s, 2 );
       }
 
       gum::Potential<float> pot1;
       pot1 << *( vars[0] ) << *( vars[2] ) << *( vars[3] ) << *( vars[4] );
       randomInit( pot1 );
-      gum::ScheduleMultiDim<float> f1( pot1 );
+      gum::ScheduleMultiDim<float>           f1( pot1 );
       gum::Set<const gum::DiscreteVariable*> del_vars;
       del_vars << vars[0] << vars[3];
-      gum::ScheduleProject<float> myproj( f1, del_vars, gum::projectMax );
+      gum::ScheduleProject<float>         myproj( f1, del_vars, gum::projectMax );
       const gum::ScheduleMultiDim<float>& res = myproj.result();
 
       gum::ScheduleDeleteMultiDim<float> del1( f1 );
@@ -67,8 +67,7 @@ namespace gum_tests {
       TS_ASSERT( xxx.first == -16 );
       TS_ASSERT( xxx.second == -16 );
 
-      gum::Sequence<const gum::ScheduleMultiDim<float>*> seq =
-          del2.multiDimArgs();
+      gum::Sequence<const gum::ScheduleMultiDim<float>*> seq = del2.multiDimArgs();
       TS_ASSERT( seq.size() == 1 );
       TS_ASSERT( *( seq.atPos( 0 ) ) == res );
 

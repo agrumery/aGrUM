@@ -94,7 +94,7 @@ namespace gum {
     /// @name Class constructors & destructors
     // ====================================================================
     /// @{
-    Exception( const std::string aMsg  = "",
+    Exception( const std::string aMsg = "",
                const std::string aType = "Generic error" );
 
     Exception( const Exception& e );
@@ -450,7 +450,7 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   const std::string __createMsg( const std::string& filename,
                                  const std::string& function,
-                                 const int line,
+                                 const int          line,
                                  const std::string& msg );
   GUM_MAKE_ERROR( IdError, Exception, "ID error" )
   GUM_MAKE_ERROR( FatalError, Exception, "Fatal error" )
@@ -514,9 +514,9 @@ namespace gum {
 
     public:
     SyntaxError( const std::string& aMsg,
-                 Size nol,
-                 Size noc,
-                 std::string aType = "Syntax Error" )
+                 Size               nol,
+                 Size               noc,
+                 std::string        aType = "Syntax Error" )
         : IOError( aMsg, aType )
         , _noLine( nol )
         , _noCol( noc ){

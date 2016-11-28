@@ -24,14 +24,13 @@ namespace gum {
   /// protected copy
 
   INLINE void Variable::_copy( const Variable& aRV ) {
-    __name        = aRV.__name;
+    __name = aRV.__name;
     __description = aRV.__description;
   }
 
   /// constructor
 
-  INLINE Variable::Variable( const std::string& aName,
-                             const std::string& aDesc )
+  INLINE Variable::Variable( const std::string& aName, const std::string& aDesc )
       : __name( aName )
       , __description( aDesc ) {
     // for debugging purposes
@@ -81,9 +80,7 @@ namespace gum {
 
   /// returns the __description of the variable
 
-  INLINE const std::string& Variable::description() const {
-    return __description;
-  }
+  INLINE const std::string& Variable::description() const { return __description; }
 
   /// equality operator
 

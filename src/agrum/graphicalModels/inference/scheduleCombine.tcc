@@ -50,9 +50,8 @@ namespace gum {
     GUM_CONSTRUCTOR( ScheduleCombine );
 
     // compute the variables of the resulting table
-    Sequence<const DiscreteVariable*> vars = __table1.variablesSequence();
-    const Sequence<const DiscreteVariable*>& vars2 =
-        __table2.variablesSequence();
+    Sequence<const DiscreteVariable*>        vars = __table1.variablesSequence();
+    const Sequence<const DiscreteVariable*>& vars2 = __table2.variablesSequence();
 
     for ( typename Sequence<const DiscreteVariable*>::const_iterator_safe iter =
               vars2.beginSafe();
@@ -108,10 +107,10 @@ namespace gum {
     // avoid self assignment
     if ( this != &from ) {
       ScheduleOperation<GUM_SCALAR>::operator=( from );
-      __table1                               = from.__table1;
-      __table2                               = from.__table2;
-      *__result                              = *( from.__result );
-      __combine                              = from.__combine;
+      __table1 = from.__table1;
+      __table2 = from.__table2;
+      *__result = *( from.__result );
+      __combine = from.__combine;
 
       // update __args and __results if they were already created
       if ( __args ) {
@@ -169,10 +168,8 @@ namespace gum {
    * needed to perform the ScheduleOperation */
   template <typename GUM_SCALAR>
   float ScheduleCombine<GUM_SCALAR>::nbOperations() const {
-    const Sequence<const DiscreteVariable*>& seq1 =
-        __table1.variablesSequence();
-    const Sequence<const DiscreteVariable*>& seq2 =
-        __table2.variablesSequence();
+    const Sequence<const DiscreteVariable*>& seq1 = __table1.variablesSequence();
+    const Sequence<const DiscreteVariable*>& seq2 = __table2.variablesSequence();
 
     if ( seq1.empty() && seq2.empty() ) return 0.0f;
 
@@ -190,10 +187,8 @@ namespace gum {
   /// returns the memory consumption used during the operation
   template <typename GUM_SCALAR>
   std::pair<long, long> ScheduleCombine<GUM_SCALAR>::memoryUsage() const {
-    const Sequence<const DiscreteVariable*>& seq1 =
-        __table1.variablesSequence();
-    const Sequence<const DiscreteVariable*>& seq2 =
-        __table2.variablesSequence();
+    const Sequence<const DiscreteVariable*>& seq1 = __table1.variablesSequence();
+    const Sequence<const DiscreteVariable*>& seq2 = __table2.variablesSequence();
 
     if ( seq1.empty() && seq2.empty() ) return std::pair<long, long>( 0, 0 );
 
@@ -209,8 +204,7 @@ namespace gum {
 
     for ( const auto var : seq2 )
       if ( !seq1.exists( var ) ) {
-        if ( std::numeric_limits<long>::max() / (long)var->domainSize() <
-             size ) {
+        if ( std::numeric_limits<long>::max() / (long)var->domainSize() < size ) {
           GUM_ERROR( OutOfBounds, "memory usage out of long int range" );
         }
 
@@ -223,7 +217,7 @@ namespace gum {
   /// returns the set of multidims passed in argument to the operation
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleCombine<GUM_SCALAR>::multiDimArgs() const {
+               ScheduleCombine<GUM_SCALAR>::multiDimArgs() const {
     if ( !__args ) {
       __args = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __args->insert( &__table1 );
@@ -236,7 +230,7 @@ namespace gum {
   /// returns the set of multidims that should be the result of the operation
   template <typename GUM_SCALAR>
   INLINE const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
-  ScheduleCombine<GUM_SCALAR>::multiDimResults() const {
+               ScheduleCombine<GUM_SCALAR>::multiDimResults() const {
     if ( !__results ) {
       __results = new Sequence<const ScheduleMultiDim<GUM_SCALAR>*>;
       __results->insert( __result );
@@ -248,14 +242,14 @@ namespace gum {
   /// displays the content of the operation
   template <typename GUM_SCALAR>
   std::string ScheduleCombine<GUM_SCALAR>::toString() const {
-    return __result->toString() + " = combine ( " + __table1.toString() +
-           " , " + __table2.toString() + " )";
+    return __result->toString() + " = combine ( " + __table1.toString() + " , " +
+           __table2.toString() + " )";
   }
 
   /// returns the scheduleMultidim resulting from the execution of the operation
   template <typename GUM_SCALAR>
   INLINE const ScheduleMultiDim<GUM_SCALAR>&
-  ScheduleCombine<GUM_SCALAR>::result() const {
+               ScheduleCombine<GUM_SCALAR>::result() const {
     return *__result;
   }
 

@@ -32,7 +32,7 @@ namespace gum_tests {
     gum::Size __noParsedLine;
 
     gum::Size testParseString( std::string csvstring, std::string& res ) {
-      std::istringstream in( csvstring );
+      std::istringstream       in( csvstring );
       gum::learning::CSVParser parser( in );
 
       // no data parser for now
@@ -40,7 +40,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( parser.noLine(), gum::NullElement )
 
       gum::Size count = 0;
-      res             = "";
+      res = "";
 
       while ( parser.next() ) {
         count++;
@@ -59,7 +59,7 @@ namespace gum_tests {
     public:
     void testSimpleCSV() {
       std::string res;
-      gum::Size count;
+      gum::Size   count;
 
       // simpleCSV
 
@@ -76,8 +76,7 @@ namespace gum_tests {
 
       // simpleCSV
 
-      count =
-          testParseString( "1,2\t,3,4 \n 5,\t6,,8  \n\n\t\n 9,10,11,12", res );
+      count = testParseString( "1,2\t,3,4 \n 5,\t6,,8  \n\n\t\n 9,10,11,12", res );
       TS_ASSERT_EQUALS( count, (gum::Size)3 );
       TS_ASSERT_EQUALS( __noParsedLine, (gum::Size)5 );
       TS_ASSERT_EQUALS( res, std::string( "1:2:3:4|5:6::8|9:10:11:12|" ) );
@@ -92,7 +91,7 @@ namespace gum_tests {
 
     void testSimpleCSVwithComment() {
       std::string res;
-      gum::Size count;
+      gum::Size   count;
 
       // simpleCSV with comment line
 
@@ -139,7 +138,7 @@ namespace gum_tests {
 
     void testSimpleCSVwithDoubleQuote() {
       std::string res;
-      gum::Size count;
+      gum::Size   count;
 
       // simpleCSV with double quoted token
       count = testParseString(
@@ -147,8 +146,8 @@ namespace gum_tests {
           res );
       TS_ASSERT_EQUALS( count, (gum::Size)3 );
       TS_ASSERT_EQUALS( __noParsedLine, (gum::Size)4 );
-      TS_ASSERT_EQUALS(
-          res, std::string( "1:\"fjkdls2\":3:4|5:6:7:8|9:10:11:12|" ) );
+      TS_ASSERT_EQUALS( res,
+                        std::string( "1:\"fjkdls2\":3:4|5:6:7:8|9:10:11:12|" ) );
 
       // simpleCSV with double quoted token with separator in the double-quoted
       // token
@@ -158,8 +157,8 @@ namespace gum_tests {
           res );
       TS_ASSERT_EQUALS( count, (gum::Size)3 );
       TS_ASSERT_EQUALS( __noParsedLine, (gum::Size)4 );
-      TS_ASSERT_EQUALS(
-          res, std::string( "1:\"fjk,dls2\":3:4|5:6:7:8|9:10:11:12|" ) );
+      TS_ASSERT_EQUALS( res,
+                        std::string( "1:\"fjk,dls2\":3:4|5:6:7:8|9:10:11:12|" ) );
 
       // simpleCSV with double quoted token with # in the double-quoted token
       count = testParseString(
@@ -167,16 +166,15 @@ namespace gum_tests {
           res );
       TS_ASSERT_EQUALS( count, (gum::Size)3 );
       TS_ASSERT_EQUALS( __noParsedLine, (gum::Size)4 );
-      TS_ASSERT_EQUALS(
-          res, std::string( "1:\"fjk,dl#s2\":3:4|5:6:7:8|9:10:11:12|" ) );
+      TS_ASSERT_EQUALS( res,
+                        std::string( "1:\"fjk,dl#s2\":3:4|5:6:7:8|9:10:11:12|" ) );
 
       // simpleCSV with double quoted token with double quote in the
       // double-quoted
       // token
-      count =
-          testParseString( "1,\"fjk,dl\\\"s2\",3,4 \n# this is a comment \n "
-                           "5,6,7,8 \n 9,10,11,12",
-                           res );
+      count = testParseString( "1,\"fjk,dl\\\"s2\",3,4 \n# this is a comment \n "
+                               "5,6,7,8 \n 9,10,11,12",
+                               res );
       TS_ASSERT_EQUALS( count, (gum::Size)3 );
       TS_ASSERT_EQUALS( __noParsedLine, (gum::Size)4 );
       TS_ASSERT_EQUALS(
@@ -202,17 +200,17 @@ namespace gum_tests {
       }
 
       // simpleCSV with double quoted following by something
-      TS_ASSERT_THROWS( count = testParseString(
-                            "1,\"fjkdls2\" nothing should be here,3,4 \n# "
-                            "this is a comment \n 5,6,7,8 \n 9,10,11,12",
-                            res ),
-                        gum::SyntaxError );
+      TS_ASSERT_THROWS(
+          count = testParseString( "1,\"fjkdls2\" nothing should be here,3,4 \n# "
+                                   "this is a comment \n 5,6,7,8 \n 9,10,11,12",
+                                   res ),
+          gum::SyntaxError );
 
       try {
-        count = testParseString(
-            "1,\"fjkdls2\" nothing should be here,3,4 \n# this "
-            "is a comment \n 5,6,7,8 \n 9,10,11,12",
-            res );
+        count =
+            testParseString( "1,\"fjkdls2\" nothing should be here,3,4 \n# this "
+                             "is a comment \n 5,6,7,8 \n 9,10,11,12",
+                             res );
         TS_FAIL( "gum::FatalError should have been thrown" );
       } catch ( gum::SyntaxError& f ) {
         TS_ASSERT_DIFFERS( f.errorContent().find( "Delimiter missing", 0 ),

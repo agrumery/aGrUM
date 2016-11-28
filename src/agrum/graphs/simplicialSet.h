@@ -99,10 +99,10 @@ namespace gum {
      * nodes/variables that do not belong to graph. These sizes will simply be
      * ignored. However, it is compulsory that all the nodes of graph belong to
      * log_domain_sizes. */
-    explicit SimplicialSet( UndiGraph* graph,
+    explicit SimplicialSet( UndiGraph*                  graph,
                             const NodeProperty<double>* log_domain_sizes,
-                            NodeProperty<double>* log_weights,
-                            double theRatio     = GUM_QUASI_RATIO,
+                            NodeProperty<double>*       log_weights,
+                            double                      theRatio = GUM_QUASI_RATIO,
                             double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// copy constructor
@@ -144,11 +144,11 @@ namespace gum {
      * log_domain_sizes or the log_weights are null pointers, or if these data
      * are
      * different from those stored into simplicial_from */
-    SimplicialSet( const SimplicialSet& simplicial_from,
-                   UndiGraph* graph,
+    SimplicialSet( const SimplicialSet&        simplicial_from,
+                   UndiGraph*                  graph,
                    const NodeProperty<double>* log_domain_sizes,
-                   NodeProperty<double>* log_weights,
-                   bool avoid_check = false );
+                   NodeProperty<double>*       log_weights,
+                   bool                        avoid_check = false );
 
     /// move constructor
     SimplicialSet( SimplicialSet&& from );
@@ -278,10 +278,10 @@ namespace gum {
      * @warning  Note that, by the aGrUM's constructor parameter's rule, the
      * fact that an argument is passed as a pointer means that it is not copied
      * within the SimplicialSet, but rather it is only referenced within it. */
-    void setGraph( UndiGraph* graph,
+    void setGraph( UndiGraph*                  graph,
                    const NodeProperty<double>* log_domain_sizes,
-                   NodeProperty<double>* log_weights,
-                   double theRatio     = GUM_QUASI_RATIO,
+                   NodeProperty<double>*       log_weights,
+                   double                      theRatio = GUM_QUASI_RATIO,
                    double theThreshold = GUM_WEIGHT_THRESHOLD );
 
     /// reassigns a new set of cliques' log weights (with the same content)

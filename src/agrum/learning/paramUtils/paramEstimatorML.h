@@ -77,13 +77,12 @@ namespace gum {
        * @param score_internal_apriori The score internal apriori.
        */
       template <typename RowFilter>
-      ParamEstimatorML(
-          const RowFilter& filter,
-          const std::vector<Size>& var_modalities,
-          Apriori<IdSetAlloc, CountAlloc>& apriori,
-          const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
-              score_internal_apriori =
-                  ScoreInternalNoApriori<IdSetAlloc, CountAlloc>() );
+      ParamEstimatorML( const RowFilter&         filter,
+                        const std::vector<Size>& var_modalities,
+                        Apriori<IdSetAlloc, CountAlloc>& apriori,
+                        const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
+                            score_internal_apriori =
+                                ScoreInternalNoApriori<IdSetAlloc, CountAlloc>() );
 
       /// copy constructor
       ParamEstimatorML( const ParamEstimatorML<IdSetAlloc, CountAlloc>& );

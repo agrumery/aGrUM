@@ -39,30 +39,29 @@ namespace gum_tests {
   class TranslatorsGeneratorsTestSuite : public CxxTest::TestSuite {
     public:
     void test_asia1() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators1 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
                                 gum::learning::Col<0>,
                                 8>() );
 
-      auto generators1 = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators1 =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter1 = gum::learning::make_DB_row_filter(
-          database, translators1, generators1 );
+      auto filter1 =
+          gum::learning::make_DB_row_filter( database, translators1, generators1 );
 
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorCompactIntId>
           translators2;
       translators2.insertTranslator( gum::learning::Col<0>(), 8 );
 
-      auto generators2 = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators2 =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto filter2 = gum::learning::make_DB_row_filter(
-          database, translators2, generators2 );
+      auto filter2 =
+          gum::learning::make_DB_row_filter( database, translators2, generators2 );
 
       unsigned nb1 = 0;
       while ( filter1.hasRows() ) {
@@ -92,8 +91,7 @@ namespace gum_tests {
     }
 
     void test_asia2() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       auto translators1 = gum::learning::make_translators(
           gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
@@ -111,11 +109,11 @@ namespace gum_tests {
       translators1 = std::move( translators2 );
       translators2 = std::move( translators3 );
 
-      auto generators1 = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators1 =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto generators2 = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators2 =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
       auto generators3 = generators2;
 
@@ -123,11 +121,11 @@ namespace gum_tests {
       generators1 = std::move( generators2 );
       generators2 = std::move( generators3 );
 
-      auto filter1 = gum::learning::make_DB_row_filter(
-          database, translators1, generators1 );
+      auto filter1 =
+          gum::learning::make_DB_row_filter( database, translators1, generators1 );
 
-      auto filter2 = gum::learning::make_DB_row_filter(
-          database, translators2, generators2 );
+      auto filter2 =
+          gum::learning::make_DB_row_filter( database, translators2, generators2 );
 
       unsigned nb1 = 0;
       while ( filter1.hasRows() ) {
@@ -157,8 +155,7 @@ namespace gum_tests {
     }
 
     void test_asia3() {
-      gum::learning::DatabaseFromCSV database(
-          GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorCompactIntId>
@@ -175,11 +172,11 @@ namespace gum_tests {
       translators1 = std::move( translators2 );
       translators2 = std::move( translators3 );
 
-      auto generators1 = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators1 =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
-      auto generators2 = gum::learning::make_generators(
-          gum::learning::RowGeneratorIdentity() );
+      auto generators2 =
+          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
       auto generators3 = generators2;
 
@@ -187,11 +184,11 @@ namespace gum_tests {
       generators1 = std::move( generators2 );
       generators2 = std::move( generators3 );
 
-      auto filter1 = gum::learning::make_DB_row_filter(
-          database, translators1, generators1 );
+      auto filter1 =
+          gum::learning::make_DB_row_filter( database, translators1, generators1 );
 
-      auto filter2 = gum::learning::make_DB_row_filter(
-          database, translators2, generators2 );
+      auto filter2 =
+          gum::learning::make_DB_row_filter( database, translators2, generators2 );
 
       unsigned nb1 = 0;
       while ( filter1.hasRows() ) {

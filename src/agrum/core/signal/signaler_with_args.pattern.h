@@ -44,7 +44,7 @@ namespace gum {
       virtual ~MAKE_NAME( IConnector )() {}
 
       virtual Listener* target() const = 0;
-      virtual void notify( const void*, LIST_DECL_ARGS ) = 0;
+      virtual void      notify( const void*, LIST_DECL_ARGS ) = 0;
       virtual MAKE_NAME( IConnector )<LIST_CLASSES>* clone() = 0;
       virtual MAKE_NAME( IConnector )<LIST_CLASSES>* duplicate(
           Listener* target ) = 0;
@@ -199,16 +199,14 @@ namespace gum {
       GUM_CONS_CPY( MAKE_NAME( Signaler ) );
     }
 
-    virtual ~MAKE_NAME( Signaler )() {
-      GUM_DESTRUCTOR( MAKE_NAME( Signaler ) );
-    }
+    virtual ~MAKE_NAME( Signaler )() { GUM_DESTRUCTOR( MAKE_NAME( Signaler ) ); }
 
     template <class TargetClass>
     void attach( TargetClass* target,
                  void ( TargetClass::*action )( const void*, LIST_CLASSES ) ) {
       __sig__::MAKE_NAME( Connector )<TargetClass, LIST_CLASSES>* conn =
-          new __sig__::MAKE_NAME( Connector )<TargetClass, LIST_CLASSES>(
-              target, action );
+          new __sig__::MAKE_NAME( Connector )<TargetClass, LIST_CLASSES>( target,
+                                                                          action );
       this->_connectors.pushBack( conn );
       target->attachSignal__( this );
     }

@@ -32,8 +32,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#define GET_CN_PATH_STR( x ) \
-  xstrfy( GUM_SRC_PATH ) "/testunits/ressources/cn/" #x
+#define GET_CN_PATH_STR( x ) xstrfy( GUM_SRC_PATH ) "/testunits/ressources/cn/" #x
 
 /**
  * @file
@@ -47,7 +46,7 @@ namespace gum_tests {
   ////////////////////////////////////////////////////////////////////
   class CNMonteCarloSamplingListener : public gum::ApproximationSchemeListener {
     private:
-    int __nbr;
+    int         __nbr;
     std::string __msg;
 
     protected:
@@ -57,10 +56,10 @@ namespace gum_tests {
         , __nbr( 0 )
         , __msg( "" ){};
 
-    void whenProgress( const void* buffer,
+    void whenProgress( const void*     buffer,
                        const gum::Size a,
-                       const double b,
-                       const double c ) {
+                       const double    b,
+                       const double    c ) {
       __nbr++;
     }
 
@@ -85,11 +84,11 @@ namespace gum_tests {
       GUM_DEBUG_ONLY( gum::setNumberOfThreads( 1 ); )
 #endif
 
-      gum::BayesNet<double> monBNa;
+      gum::BayesNet<double>  monBNa;
       gum::BIFReader<double> readera( &monBNa, GET_CN_PATH_STR( 2Umin.bif ) );
       readera.proceed();
 
-      gum::BayesNet<double> monBNb;
+      gum::BayesNet<double>  monBNb;
       gum::BIFReader<double> readerb( &monBNb, GET_CN_PATH_STR( 2Umax.bif ) );
       readerb.proceed();
 
@@ -104,11 +103,11 @@ namespace gum_tests {
       GUM_DEBUG_ONLY( gum::setNumberOfThreads( 1 ); )
 #endif
 
-      gum::BayesNet<double> monBNa;
+      gum::BayesNet<double>  monBNa;
       gum::BIFReader<double> readera( &monBNa, GET_CN_PATH_STR( bn_c_3.bif ) );
       readera.proceed();
 
-      gum::BayesNet<double> monBNb;
+      gum::BayesNet<double>  monBNb;
       gum::BIFReader<double> readerb( &monBNb, GET_CN_PATH_STR( den_c_3.bif ) );
       readerb.proceed();
 
@@ -124,8 +123,8 @@ namespace gum_tests {
     void testCNMonteCarloSamplingInference() {
       initCNet();
 
-      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>>
-          mcs( *cn );
+      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>> mcs(
+          *cn );
 
       // evidence from file
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -139,7 +138,7 @@ namespace gum_tests {
       std::vector<double> evi0( 2, 0 );
       evi0[0] = 1;
       std::vector<double> evi1( 2, 0 );
-      evi1[1]     = 1;
+      evi1[1] = 1;
       eviMap["L"] = evi1;
       eviMap["G"] = evi0;
 
@@ -183,14 +182,13 @@ namespace gum_tests {
         for ( const auto node : cn->current_bn().nodes() ) {
           std::vector<double> inf( mcs.marginalMin( node ) );
           std::vector<double> sup( mcs.marginalMax( node ) );
-          double e_inf = mcs.expectationMin( node );
-          double e_sup = mcs.expectationMax( node );
+          double              e_inf = mcs.expectationMin( node );
+          double              e_sup = mcs.expectationMax( node );
         }
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
-
 
 
       TS_GUM_ASSERT_THROWS_NOTHING( mcs.eraseAllEvidence(); );
@@ -207,8 +205,8 @@ namespace gum_tests {
 
       typedef std::vector<double> exp;
 
-      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>>
-          mcs( *cn );
+      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>> mcs(
+          *cn );
 
       //////////////////////////////////////////////////////
       // strong independence
@@ -230,8 +228,8 @@ namespace gum_tests {
 
       try {
         for ( const auto node : cn->current_bn().nodes() ) {
-          exp inf( mcs.marginalMin( node ) );
-          exp sup( mcs.marginalMax( node ) );
+          exp    inf( mcs.marginalMin( node ) );
+          exp    sup( mcs.marginalMax( node ) );
           double e_inf = mcs.expectationMin( node );
           double e_sup = mcs.expectationMax( node );
         }
@@ -265,8 +263,8 @@ namespace gum_tests {
       initDCNet();
       typedef std::vector<double> exp;
 
-      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>>
-          mcs( *cn );
+      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>> mcs(
+          *cn );
 
       //////////////////////////////////////////////////////
       // repetitive independence
@@ -287,8 +285,8 @@ namespace gum_tests {
 
       try {
         for ( const auto node : cn->current_bn().nodes() ) {
-          exp inf( mcs.marginalMin( node ) );
-          exp sup( mcs.marginalMax( node ) );
+          exp    inf( mcs.marginalMin( node ) );
+          exp    sup( mcs.marginalMax( node ) );
           double e_inf = mcs.expectationMin( node );
           double e_sup = mcs.expectationMax( node );
         }
@@ -319,8 +317,8 @@ namespace gum_tests {
     // with dynamic network
     void testCNMonteCarloSamplingListener() {
       initDCNet();
-      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>>
-          mcs( *cn );
+      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>> mcs(
+          *cn );
 
       // evidence from file
       TS_GUM_ASSERT_THROWS_NOTHING(

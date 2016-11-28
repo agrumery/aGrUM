@@ -91,10 +91,8 @@ namespace gum {
   {
 
 #ifdef GUM_MULTI_DIM_OPERATOR_IMPL2ARRAY_NAME
-    const MultiDimArray<T>* t1 =
-        reinterpret_cast<const MultiDimArray<T>*>( tt1 );
-    const MultiDimArray<T>* t2 =
-        reinterpret_cast<const MultiDimArray<T>*>( tt2 );
+    const MultiDimArray<T>*  t1 = reinterpret_cast<const MultiDimArray<T>*>( tt1 );
+    const MultiDimArray<T>*  t2 = reinterpret_cast<const MultiDimArray<T>*>( tt2 );
 #endif
 
 #ifdef GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME
@@ -140,17 +138,17 @@ namespace gum {
     // resorting to instantiations.
     std::vector<Idx> t1_alone_offset;
     std::vector<Idx> t1_alone_domain;
-    Idx t1_alone_domain_size = 1;
+    Idx              t1_alone_domain_size = 1;
 
     std::vector<Idx> t2_alone_offset;
     std::vector<Idx> t2_alone_domain;
-    Idx t2_alone_domain_size = 1;
+    Idx              t2_alone_domain_size = 1;
 
-    std::vector<Idx> t1_and_t2_1_offset;
-    std::vector<Idx> t1_and_t2_2_offset;
-    std::vector<Idx> t1_and_t2_domain;
+    std::vector<Idx>                     t1_and_t2_1_offset;
+    std::vector<Idx>                     t1_and_t2_2_offset;
+    std::vector<Idx>                     t1_and_t2_domain;
     std::vector<const DiscreteVariable*> t1_and_t2_vars;
-    Idx t1_and_t2_domain_size = 1;
+    Idx                                  t1_and_t2_domain_size = 1;
 
     {
       for ( const auto var : t1_vars )
@@ -189,8 +187,7 @@ namespace gum {
       if ( nb_t1_t2_vars == t1_and_t2_vars.size() ) {
         nb_t1_t2_vars = 0;
 
-        for ( auto iter = t2_vars.begin();
-              nb_t1_t2_vars != t1_and_t2_vars.size();
+        for ( auto iter = t2_vars.begin(); nb_t1_t2_vars != t1_and_t2_vars.size();
               ++iter, ++nb_t1_t2_vars )
           if ( *iter != t1_and_t2_vars[nb_t1_t2_vars] ) break;
 
@@ -211,7 +208,7 @@ namespace gum {
     // 10). As such the offset of txxx should be decreased by txxx_offset * the
     // domain size of the variable.  This quantity is precisely what is stored
     // into variables txxx_down.
-    std::vector<Idx> t1_and_t2_value  = t1_and_t2_domain;
+    std::vector<Idx> t1_and_t2_value = t1_and_t2_domain;
     std::vector<Idx> t1_and_t2_1_down = t1_and_t2_1_offset;
     std::vector<Idx> t1_and_t2_2_down = t1_and_t2_2_offset;
 
@@ -221,14 +218,14 @@ namespace gum {
     }
 
     std::vector<Idx> t1_alone_value = t1_alone_domain;
-    std::vector<Idx> t1_alone_down  = t1_alone_offset;
+    std::vector<Idx> t1_alone_down = t1_alone_offset;
 
     for ( unsigned int i = 0; i < t1_alone_domain.size(); ++i ) {
       t1_alone_down[i] *= ( t1_alone_domain[i] - 1 );
     }
 
     std::vector<Idx> t2_alone_value = t2_alone_domain;
-    std::vector<Idx> t2_alone_down  = t2_alone_offset;
+    std::vector<Idx> t2_alone_down = t2_alone_offset;
 
     for ( unsigned int i = 0; i < t2_alone_domain.size(); ++i ) {
       t2_alone_down[i] *= ( t2_alone_domain[i] - 1 );
@@ -272,7 +269,7 @@ namespace gum {
     // incrementation processes
     if ( t1_and_t2_begin_vars ) {
       for ( Idx i = 0; i < t1_alone_domain_size; ++i ) {
-        pt2             = pt2_deb;
+        pt2 = pt2_deb;
         pt1_alone_begin = pt1;
 
         for ( Idx j = 0; j < t2_alone_domain_size; ++j ) {
@@ -289,12 +286,12 @@ namespace gum {
         }
       }
     } else {
-      Idx t1_offset             = 0;
-      Idx t2_offset             = 0;
+      Idx t1_offset = 0;
+      Idx t2_offset = 0;
       Idx t1_alone_begin_offset = 0;
 
       for ( Idx i = 0; i < t1_alone_domain_size; ++i ) {
-        t2_offset             = 0;
+        t2_offset = 0;
         t1_alone_begin_offset = t1_offset;
 
         for ( Idx j = 0; j < t2_alone_domain_size; ++j ) {

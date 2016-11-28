@@ -48,7 +48,7 @@ namespace gum {
       class SingleResult {
         public:
         std::string label;
-        float p;
+        float       p;
       };
 
       /**
@@ -56,8 +56,8 @@ namespace gum {
        * */
       class QueryResult {
         public:
-        double time;
-        std::string command;
+        double                    time;
+        std::string               command;
         std::vector<SingleResult> values;
       };
 
@@ -151,10 +151,10 @@ namespace gum {
         void setGndEngine( const SetGndEngineCommand* command );
 
         std::string findSystemName( std::string& s );
-        std::string findInstanceName( std::string& s,
+        std::string findInstanceName( std::string&                       s,
                                       const gum::prm::PRMSystem<double>& sys );
         std::string
-        findAttributeName( const std::string& s,
+        findAttributeName( const std::string&                   s,
                            const gum::prm::PRMInstance<double>& instance );
         const PRMSystem<double>& system( std::string& ident );
         void generateInfEngine( const gum::prm::PRMSystem<double>& sys );
@@ -164,21 +164,21 @@ namespace gum {
 
         std::string __readFile( const std::string& file );
 
-        O3prmrContext<double>* m_context;
+        O3prmrContext<double>*                m_context;
         gum::prm::o3prm::O3prmReader<double>* m_reader;
-        std::vector<std::string> m_paths;
-        gum::BayesNet<double>* m_bn;
+        std::vector<std::string>              m_paths;
+        gum::BayesNet<double>*                m_bn;
         // Don't delete this, the m_inf_map will do it
         gum::prm::PRMInference<double>* m_inf;
         HashTable<const PRMSystem<double>*, PRMInference<double>*> m_inf_map;
-        std::string m_engine;
-        std::string m_bn_engine;
+        std::string              m_engine;
+        std::string              m_bn_engine;
         std::vector<QueryResult> m_results;
-        gum::ErrorsContainer m_errors;
-        bool m_syntax_flag;
-        bool m_verbose;
-        std::ostream& m_log;
-        int m_current_line;
+        gum::ErrorsContainer     m_errors;
+        bool                     m_syntax_flag;
+        bool                     m_verbose;
+        std::ostream&            m_log;
+        int                      m_current_line;
 
         //// We need this when using grounded inference
         // gum::BayesNetInference<gum::prm::prm_float>* bn;

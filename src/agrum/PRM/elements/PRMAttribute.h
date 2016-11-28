@@ -73,15 +73,14 @@ namespace gum {
       // ========================================================================
       /// @{
 
-      virtual PRMAttribute*
-      newFactory( const PRMClass<GUM_SCALAR>& c ) const = 0;
+      virtual PRMAttribute* newFactory( const PRMClass<GUM_SCALAR>& c ) const = 0;
       virtual PRMAttribute*
       copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
           const = 0;
 
-      virtual void copyCpf( const Bijection<const DiscreteVariable*,
-                                            const DiscreteVariable*>& bif,
-                            const PRMAttribute<GUM_SCALAR>& source ) = 0;
+      virtual void copyCpf(
+          const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bif,
+          const PRMAttribute<GUM_SCALAR>& source ) = 0;
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
@@ -174,7 +173,7 @@ namespace gum {
       protected:
       PRMAttribute( const PRMAttribute<GUM_SCALAR>& source );
 
-      virtual PRMType<GUM_SCALAR>* _type()         = 0;
+      virtual PRMType<GUM_SCALAR>* _type() = 0;
       virtual void _type( PRMType<GUM_SCALAR>* t ) = 0;
     };
 

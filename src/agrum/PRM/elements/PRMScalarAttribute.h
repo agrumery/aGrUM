@@ -77,8 +77,8 @@ namespace gum {
        * of this PRMAttribute.
        *             it will be deleted after the call of ~PRMAttribute.
        */
-      PRMScalarAttribute( const std::string& name,
-                          const PRMType<GUM_SCALAR>& type,
+      PRMScalarAttribute( const std::string&                  name,
+                          const PRMType<GUM_SCALAR>&          type,
                           MultiDimImplementation<GUM_SCALAR>* impl =
                               new MultiDimArray<GUM_SCALAR>() );
 
@@ -93,13 +93,12 @@ namespace gum {
 
       virtual PRMAttribute<GUM_SCALAR>*
       newFactory( const PRMClass<GUM_SCALAR>& c ) const;
-      virtual PRMAttribute<GUM_SCALAR>*
-      copy( Bijection<const DiscreteVariable*, const DiscreteVariable*> bij )
-          const;
+      virtual PRMAttribute<GUM_SCALAR>* copy(
+          Bijection<const DiscreteVariable*, const DiscreteVariable*> bij ) const;
 
-      virtual void copyCpf( const Bijection<const DiscreteVariable*,
-                                            const DiscreteVariable*>& bif,
-                            const PRMAttribute<GUM_SCALAR>& source );
+      virtual void copyCpf(
+          const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bif,
+          const PRMAttribute<GUM_SCALAR>& source );
 
       /// See gum::PRMClassElement::elt_type().
       virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType

@@ -41,10 +41,10 @@ namespace gum {
 
   /// constructor for an a priori non empty graph
   DefaultEliminationSequenceStrategy::DefaultEliminationSequenceStrategy(
-      UndiGraph* graph,
+      UndiGraph*                graph,
       const NodeProperty<Size>* domain_sizes,
-      double ratio,
-      double threshold )
+      double                    ratio,
+      double                    threshold )
       : __simplicial_ratio( ratio )
       , __simplicial_threshold( threshold ) {
     setGraph( graph, domain_sizes );
@@ -176,13 +176,13 @@ namespace gum {
       if ( iter_heuristic == __log_weights.cend() )
         GUM_ERROR( NotFound, "there exists no more node to eliminate" );
 
-      double min_weight     = iter_heuristic.val();
+      double min_weight = iter_heuristic.val();
       NodeId removable_node = iter_heuristic.key();
       for ( ++iter_heuristic; iter_heuristic != __log_weights.cend();
             ++iter_heuristic ) {
         if ( iter_heuristic.val() < min_weight ) {
           removable_node = iter_heuristic.key();
-          min_weight     = iter_heuristic.val();
+          min_weight = iter_heuristic.val();
         }
       }
 
@@ -214,8 +214,7 @@ namespace gum {
   }
 
   /// performs all the graph/fill-ins updates provided
-  void
-  DefaultEliminationSequenceStrategy::eliminationUpdate( const NodeId id ) {
+  void DefaultEliminationSequenceStrategy::eliminationUpdate( const NodeId id ) {
     if ( __simplicial_set != nullptr ) {
       __simplicial_set->makeClique( id );
       __simplicial_set->eraseClique( id );

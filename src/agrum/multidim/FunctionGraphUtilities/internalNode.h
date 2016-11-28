@@ -47,7 +47,7 @@ namespace gum {
   // clang-format on
   struct Parent {
     NodeId parentId;
-    Idx modality;
+    Idx    modality;
 
     /**
      * @brief Class constructor.

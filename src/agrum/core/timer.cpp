@@ -48,8 +48,8 @@ namespace gum {
 
   Timer& Timer::operator=( const Timer& from ) {
     GUM_OP_CPY( Timer );
-    _start    = from._start;
-    _pause    = from._pause;
+    _start = from._start;
+    _pause = from._pause;
     _sleeping = from._sleeping;
     return *this;
   }

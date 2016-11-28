@@ -73,8 +73,8 @@ namespace gum {
        * @param delayInheritance If true, inheritance will be delayed.
        */
       PRMInterface( const std::string& name,
-                    PRMInterface& super,
-                    bool delayInheritance = false );
+                    PRMInterface&      super,
+                    bool               delayInheritance = false );
 
       /// Copy constructor.
       PRMInterface( const PRMInterface& source );
@@ -268,14 +268,13 @@ namespace gum {
       /// @{
 
       typedef typename NodeProperty<PRMClassElement<GUM_SCALAR>*>::iterator
-          ClassEltIterator;
-      ClassEltIterator begin();
+                              ClassEltIterator;
+      ClassEltIterator        begin();
       const ClassEltIterator& end();
 
-      typedef
-          typename NodeProperty<PRMClassElement<GUM_SCALAR>*>::const_iterator
-              const_ClassEltIterator;
-      const_ClassEltIterator begin() const;
+      typedef typename NodeProperty<PRMClassElement<GUM_SCALAR>*>::const_iterator
+                                    const_ClassEltIterator;
+      const_ClassEltIterator        begin() const;
       const const_ClassEltIterator& end() const;
 
       /// @}

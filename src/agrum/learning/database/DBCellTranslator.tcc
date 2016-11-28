@@ -31,8 +31,7 @@ namespace gum {
 
     /// default constructor
     template <int Nb_inputs, int Nb_outputs>
-    INLINE
-    DBCellTranslator<Nb_inputs, Nb_outputs>::DBCellTranslator() noexcept {
+    INLINE DBCellTranslator<Nb_inputs, Nb_outputs>::DBCellTranslator() noexcept {
       GUM_CONSTRUCTOR( DBCellTranslator );
     }
 
@@ -45,8 +44,7 @@ namespace gum {
       GUM_CONS_CPY( DBCellTranslator );
 
       memcpy( _input_cols, translator._input_cols, Nb_inputs * sizeof( Idx ) );
-      memcpy(
-          _output_cols, translator._output_cols, Nb_outputs * sizeof( Idx ) );
+      memcpy( _output_cols, translator._output_cols, Nb_outputs * sizeof( Idx ) );
     }
 
     /// move constructor
@@ -58,27 +56,24 @@ namespace gum {
       GUM_CONS_MOV( DBCellTranslator );
 
       memcpy( _input_cols, translator._input_cols, Nb_inputs * sizeof( Idx ) );
-      memcpy(
-          _output_cols, translator._output_cols, Nb_outputs * sizeof( Idx ) );
+      memcpy( _output_cols, translator._output_cols, Nb_outputs * sizeof( Idx ) );
     }
 
     /// destructor
     template <int Nb_inputs, int Nb_outputs>
-    INLINE
-        DBCellTranslator<Nb_inputs, Nb_outputs>::~DBCellTranslator() noexcept {
+    INLINE DBCellTranslator<Nb_inputs, Nb_outputs>::~DBCellTranslator() noexcept {
       GUM_DESTRUCTOR( DBCellTranslator );
     }
 
     /// copy operator
     template <int Nb_inputs, int Nb_outputs>
     INLINE DBCellTranslator<Nb_inputs, Nb_outputs>&
-    DBCellTranslator<Nb_inputs, Nb_outputs>::
+           DBCellTranslator<Nb_inputs, Nb_outputs>::
     operator=( const DBCellTranslator<Nb_inputs, Nb_outputs>& translator ) {
       if ( this != &translator ) {
-        _input_row  = translator._input_row;
+        _input_row = translator._input_row;
         _output_row = translator._output_row;
-        memcpy(
-            _input_cols, translator._input_cols, Nb_inputs * sizeof( Idx ) );
+        memcpy( _input_cols, translator._input_cols, Nb_inputs * sizeof( Idx ) );
         memcpy(
             _output_cols, translator._output_cols, Nb_outputs * sizeof( Idx ) );
       }
@@ -88,13 +83,12 @@ namespace gum {
     /// move operator
     template <int Nb_inputs, int Nb_outputs>
     INLINE DBCellTranslator<Nb_inputs, Nb_outputs>&
-    DBCellTranslator<Nb_inputs, Nb_outputs>::
+           DBCellTranslator<Nb_inputs, Nb_outputs>::
     operator=( DBCellTranslator<Nb_inputs, Nb_outputs>&& translator ) {
       if ( this != &translator ) {
-        _input_row  = translator._input_row;
+        _input_row = translator._input_row;
         _output_row = translator._output_row;
-        memcpy(
-            _input_cols, translator._input_cols, Nb_inputs * sizeof( Idx ) );
+        memcpy( _input_cols, translator._input_cols, Nb_inputs * sizeof( Idx ) );
         memcpy(
             _output_cols, translator._output_cols, Nb_outputs * sizeof( Idx ) );
       }
@@ -118,7 +112,7 @@ namespace gum {
     /// sets the input DBRow's columns read by the translator
     template <int Nb_inputs, int Nb_outputs>
     template <int Col1, int... OtherCols>
-    INLINE void DBCellTranslator<Nb_inputs, Nb_outputs>::setInputCols(
+    INLINE void   DBCellTranslator<Nb_inputs, Nb_outputs>::setInputCols(
         const Col<Col1, OtherCols...>& ) noexcept {
       static_assert( sizeof...( OtherCols ) + 1 == Nb_inputs,
                      "you set a wrong number of translator's input columns" );
@@ -127,8 +121,8 @@ namespace gum {
 
     /// sets the output FilteredRow's columns written by the translator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE void DBCellTranslator<Nb_inputs, Nb_outputs>::setOutputCols(
-        Idx start ) noexcept {
+    INLINE void
+    DBCellTranslator<Nb_inputs, Nb_outputs>::setOutputCols( Idx start ) noexcept {
       for ( Idx i = 0; i < Nb_outputs; ++i ) {
         _output_cols[i] = start + i;
       }
@@ -136,22 +130,22 @@ namespace gum {
 
     /// returns the current input DBRow
     template <int Nb_inputs, int Nb_outputs>
-    INLINE const DBRow&
-    DBCellTranslator<Nb_inputs, Nb_outputs>::inputRow() const noexcept {
+    INLINE const DBRow& DBCellTranslator<Nb_inputs, Nb_outputs>::inputRow() const
+        noexcept {
       return *_input_row;
     }
 
     /// returns the current output FilteredRow
     template <int Nb_inputs, int Nb_outputs>
     INLINE FilteredRow&
-    DBCellTranslator<Nb_inputs, Nb_outputs>::outputFilteredRow() noexcept {
+           DBCellTranslator<Nb_inputs, Nb_outputs>::outputFilteredRow() noexcept {
       return *_output_row;
     }
 
     /// returns the row of unsigned int of the current output FilteredRow
     template <int Nb_inputs, int Nb_outputs>
     INLINE std::vector<Idx>&
-    DBCellTranslator<Nb_inputs, Nb_outputs>::outputRow() noexcept {
+           DBCellTranslator<Nb_inputs, Nb_outputs>::outputRow() noexcept {
       return _output_row->row();
     }
 
@@ -165,15 +159,15 @@ namespace gum {
     /// returns the set of output FilteredRow's columns written by the
     /// translator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE const Idx*
-    DBCellTranslator<Nb_inputs, Nb_outputs>::outputCols() const noexcept {
+    INLINE const Idx* DBCellTranslator<Nb_inputs, Nb_outputs>::outputCols() const
+        noexcept {
       return _output_cols;
     }
 
     /// returns the DBCell read at the ith input column of translator
     template <int Nb_inputs, int Nb_outputs>
-    INLINE const DBCell&
-    DBCellTranslator<Nb_inputs, Nb_outputs>::in( Idx i ) const noexcept {
+    INLINE const DBCell& DBCellTranslator<Nb_inputs, Nb_outputs>::in( Idx i ) const
+        noexcept {
       return _input_row->operator[]( _input_cols[i] );
     }
 
@@ -199,9 +193,8 @@ namespace gum {
 
     /// for friendly displaying the content of translators
     template <int Nb_inputs, int Nb_outputs>
-    std::ostream&
-    operator<<( std::ostream& stream,
-                const DBCellTranslator<Nb_inputs, Nb_outputs>& tr ) {
+    std::ostream& operator<<( std::ostream& stream,
+                              const DBCellTranslator<Nb_inputs, Nb_outputs>& tr ) {
       stream << tr.toString();
       return stream;
     }

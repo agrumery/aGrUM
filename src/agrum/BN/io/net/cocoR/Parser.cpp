@@ -48,11 +48,11 @@ namespace gum {
     }
 
     const ErrorsContainer& Parser::errors( void ) const { return __errors; }
-    ErrorsContainer& Parser::errors( void ) { return __errors; }
+    ErrorsContainer&       Parser::errors( void ) { return __errors; }
 
     void Parser::Get() {
       for ( ;; ) {
-        t  = la;
+        t = la;
         la = scanner->Scan();
 
         if ( la->kind <= maxT ) {
@@ -62,13 +62,13 @@ namespace gum {
 
         if ( dummyToken != t ) {
           dummyToken->kind = t->kind;
-          dummyToken->pos  = t->pos;
-          dummyToken->col  = t->col;
+          dummyToken->pos = t->pos;
+          dummyToken->col = t->col;
           dummyToken->line = t->line;
           dummyToken->next = NULL;
           coco_string_delete( dummyToken->val );
           dummyToken->val = coco_string_create( t->val );
-          t               = dummyToken;
+          t = dummyToken;
         }
 
         la = t;
@@ -184,7 +184,7 @@ namespace gum {
       factory().startNetworkDeclaration();
 
       Expect( 7 /* "net" */ );
-      std::string prop, val;
+      std::string              prop, val;
       std::vector<std::string> vals;
 
       Expect( 8 /* "{" */ );
@@ -228,10 +228,10 @@ namespace gum {
 
       Expect( 12 /* "node" */ );
       IDENT( var );
-      std::string prop;
-      std::string val;
+      std::string              prop;
+      std::string              val;
       std::vector<std::string> vals;
-      bool labels_done = false;
+      bool                     labels_done = false;
       ;
 
       TRY( factory().startVariableDeclaration() );
@@ -265,8 +265,8 @@ namespace gum {
     }
 
     void Parser::POTENTIAL() {
-      std::string variable;
-      std::vector<float> probas;
+      std::string              variable;
+      std::vector<float>       probas;
       std::vector<std::string> var_seq;
 
       Expect( 16 /* "potential" */ );
@@ -279,7 +279,7 @@ namespace gum {
       Expect( 11 /* "}" */ );
     }
 
-    void Parser::PARENTS_DEFINITION( std::string& name,
+    void Parser::PARENTS_DEFINITION( std::string&              name,
                                      std::vector<std::string>& var_seq ) {
       std::vector<std::string> parents;
       Expect( 5 /* "(" */ );
@@ -341,7 +341,7 @@ namespace gum {
       Expect( 6 /* ")" */ );
     }
 
-    void Parser::RAW_DATA( std::string& variable,
+    void Parser::RAW_DATA( std::string&              variable,
                            std::vector<std::string>& var_seq ) {
       std::vector<float> probas;
       Expect( 14 /* "data" */ );
@@ -364,7 +364,7 @@ namespace gum {
 
     void Parser::EXPERIENCE() {
       std::vector<std::string> vals;
-      std::string val;
+      std::string              val;
       Expect( 15 /* "experience" */ );
       Expect( 9 /* "=" */ );
       GARBAGE_NESTED_LIST();
@@ -400,8 +400,7 @@ namespace gum {
       static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
 
       enum {
-        InitExists =
-            ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
+        InitExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) )
       };
     };
 
@@ -455,8 +454,7 @@ namespace gum {
     // Generic case of the ParserDestroyCaller, gets used if the Destroy method
     // is
     // missing
-    template <typename T,
-              bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
+    template <typename T, bool = ParserDestroyExistsRecognizer<T>::DestroyExists>
     struct ParserDestroyCaller {
       static void CallDestroy( T* t ) {
         // nothing to do
@@ -470,9 +468,9 @@ namespace gum {
       static void CallDestroy( T* t ) { t->Destroy(); }
     };
     void Parser::Parse() {
-      t  = NULL;
+      t = NULL;
       la = dummyToken = new Token();
-      la->val         = coco_string_create( L"Dummy Token" );
+      la->val = coco_string_create( L"Dummy Token" );
       Get();
       Net();
       Expect( 0 );
@@ -483,9 +481,9 @@ namespace gum {
 
       ParserInitCaller<Parser>::CallInit( this );
       dummyToken = NULL;
-      t = la        = NULL;
-      minErrDist    = 2;
-      errDist       = minErrDist;
+      t = la = NULL;
+      minErrDist = 2;
+      errDist = minErrDist;
       this->scanner = scanner;
     }
 
@@ -515,8 +513,7 @@ namespace gum {
       __errors.Warning( scanner->filename(), t->line, t->col, msg );
     }
 
-    void
-    Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
+    void Parser::SynErr( const std::wstring& filename, int line, int col, int n ) {
       wchar_t* s;
 
       switch ( n ) {

@@ -21,7 +21,7 @@ s
 
 namespace gum {
   namespace learning {
-    BNLearnerListener::BNLearnerListener( genericBNLearner* bnl,
+    BNLearnerListener::BNLearnerListener( genericBNLearner*    bnl,
                                           ApproximationScheme& sch )
         : ApproximationSchemeListener( sch )
         , __bnlearner( bnl ) {
@@ -48,18 +48,15 @@ namespace gum {
     }
 
     void BNLearnerListener::whenProgress( const void* src,
-                                          Size pourcent,
-                                          double error,
-                                          double time ) {
+                                          Size        pourcent,
+                                          double      error,
+                                          double      time ) {
       __bnlearner->distributeProgress(
-          static_cast<const ApproximationScheme*>( src ),
-          pourcent,
-          error,
-          time );
+          static_cast<const ApproximationScheme*>( src ), pourcent, error, time );
     }
     void BNLearnerListener::whenStop( const void* src, std::string message ) {
-      __bnlearner->distributeStop(
-          static_cast<const ApproximationScheme*>( src ), message );
+      __bnlearner->distributeStop( static_cast<const ApproximationScheme*>( src ),
+                                   message );
     }
   }
 }

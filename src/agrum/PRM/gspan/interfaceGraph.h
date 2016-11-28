@@ -103,7 +103,7 @@ namespace gum {
        * @return Returns out.
        */
       template <typename GUM_SCALAR>
-      std::ostream& operator<<( std::ostream& out,
+      std::ostream& operator<<( std::ostream&               out,
                                 const NodeData<GUM_SCALAR>& data );
 
       /**
@@ -143,7 +143,7 @@ namespace gum {
        * @return Returns out.
        */
       template <typename GUM_SCALAR>
-      std::ostream& operator<<( std::ostream& out,
+      std::ostream& operator<<( std::ostream&               out,
                                 const EdgeData<GUM_SCALAR>& data );
 
       /**
@@ -223,8 +223,7 @@ namespace gum {
 
         /// Returns data about a node.
         /// @throw NotFound
-        const NodeData<GUM_SCALAR>&
-        node( const PRMInstance<GUM_SCALAR>* i ) const;
+        const NodeData<GUM_SCALAR>& node( const PRMInstance<GUM_SCALAR>* i ) const;
 
         /// Returns data about a node.
         /// @throw NotFound

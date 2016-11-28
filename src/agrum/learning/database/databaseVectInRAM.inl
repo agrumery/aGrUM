@@ -103,10 +103,10 @@ namespace gum {
         __attachHandler();
       }
 
-      __row         = h.__row;
-      __index       = h.__index;
+      __row = h.__row;
+      __index = h.__index;
       __begin_index = h.__begin_index;
-      __end_index   = h.__end_index;
+      __end_index = h.__end_index;
       return *this;
     }
 
@@ -120,10 +120,10 @@ namespace gum {
         __attachHandler();
       }
 
-      __row         = h.__row;
-      __index       = h.__index;
+      __row = h.__row;
+      __index = h.__index;
       __begin_index = h.__begin_index;
-      __end_index   = h.__end_index;
+      __end_index = h.__end_index;
       return *this;
     }
 
@@ -195,8 +195,8 @@ namespace gum {
       }
 
       __begin_index = begin;
-      __end_index   = end;
-      __index       = begin;
+      __end_index = end;
+      __index = begin;
     }
 
     /// returns the current range of the handler
@@ -207,7 +207,7 @@ namespace gum {
 
     /// returns the names of the variables
     INLINE const std::vector<std::string>&
-    DatabaseVectInRAM::Handler::variableNames() const noexcept {
+                 DatabaseVectInRAM::Handler::variableNames() const noexcept {
       return __db->variableNames();
     }
 
@@ -243,10 +243,10 @@ namespace gum {
     INLINE DatabaseVectInRAM::~DatabaseVectInRAM() {
       // indicate to all the handlers that we are destructing the database
       for ( auto handler : __list_of_handlers ) {
-        handler->__db        = nullptr;
-        handler->__row       = nullptr;
+        handler->__db = nullptr;
+        handler->__row = nullptr;
         handler->__end_index = 0;
-        handler->__index     = 0;
+        handler->__index = 0;
       }
 
       GUM_DESTRUCTOR( DatabaseVectInRAM );
@@ -258,13 +258,13 @@ namespace gum {
       if ( this != &from ) {
         // invalidate the current handlers
         for ( auto handler : __list_of_handlers ) {
-          handler->__db        = nullptr;
-          handler->__row       = nullptr;
+          handler->__db = nullptr;
+          handler->__row = nullptr;
           handler->__end_index = 0;
-          handler->__index     = 0;
+          handler->__index = 0;
         }
 
-        __data           = from.__data;
+        __data = from.__data;
         __variable_names = from.__variable_names;
       }
 
@@ -277,13 +277,13 @@ namespace gum {
       if ( this != &from ) {
         // invalidate the current handlers
         for ( auto handler : __list_of_handlers ) {
-          handler->__db        = nullptr;
-          handler->__row       = nullptr;
+          handler->__db = nullptr;
+          handler->__row = nullptr;
           handler->__end_index = 0;
-          handler->__index     = 0;
+          handler->__index = 0;
         }
 
-        __data           = std::move( from.__data );
+        __data = std::move( from.__data );
         __variable_names = std::move( from.__variable_names );
       }
 
@@ -291,8 +291,7 @@ namespace gum {
     }
 
     /// returns the content of the database
-    INLINE const std::vector<DBRow>& DatabaseVectInRAM::content() const
-        noexcept {
+    INLINE const std::vector<DBRow>& DatabaseVectInRAM::content() const noexcept {
       return __data;
     }
 
@@ -302,20 +301,19 @@ namespace gum {
     }
 
     /// returns the variable names for all the columns
-    INLINE const std::vector<std::string>&
-    DatabaseVectInRAM::variableNames() const noexcept {
+    INLINE const std::vector<std::string>& DatabaseVectInRAM::variableNames() const
+        noexcept {
       return __variable_names;
     }
 
     /// returns the variable names for all the columns
-    INLINE std::vector<std::string>&
-    DatabaseVectInRAM::_variableNames() noexcept {
+    INLINE std::vector<std::string>& DatabaseVectInRAM::_variableNames() noexcept {
       return __variable_names;
     }
 
     /// sets the names of the variables
-    INLINE void DatabaseVectInRAM::setVariableNames(
-        const std::vector<std::string>& names ) {
+    INLINE void
+    DatabaseVectInRAM::setVariableNames( const std::vector<std::string>& names ) {
       if ( __data.empty() || ( names.size() == __data[0].size() ) ) {
         __variable_names = names;
       } else {
@@ -440,8 +438,7 @@ namespace gum {
     }
 
     /// insert a set of new DBRow at the end of the database
-    INLINE void
-    DatabaseVectInRAM::insertDBRows( std::vector<DBRow>&& new_rows ) {
+    INLINE void DatabaseVectInRAM::insertDBRows( std::vector<DBRow>&& new_rows ) {
       if ( new_rows.empty() ) return;
 
       // check that all the rows have the same size

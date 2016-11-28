@@ -92,8 +92,7 @@ namespace gum {
   INLINE
   void SimplicialSet::__updateAllNodes() {
     // check if a node can enter the simplicial list
-    for ( auto iter =
-              __changed_status.beginSafe();  // safe iterator needed here
+    for ( auto iter = __changed_status.beginSafe();  // safe iterator needed here
           iter != __changed_status.endSafe();
           ++iter ) {
       __updateList( *iter );
@@ -111,8 +110,7 @@ namespace gum {
 
   /// returns all the almost simplicial nodes
   INLINE
-  const PriorityQueue<NodeId, double>&
-  SimplicialSet::allAlmostSimplicialNodes() {
+  const PriorityQueue<NodeId, double>& SimplicialSet::allAlmostSimplicialNodes() {
     __updateAllNodes();
     return __almost_simplicial_nodes;
   }
@@ -120,8 +118,7 @@ namespace gum {
 
   /// returns all the quasi simplicial nodes
   INLINE
-  const PriorityQueue<NodeId, double>&
-  SimplicialSet::allQuasiSimplicialNodes() {
+  const PriorityQueue<NodeId, double>& SimplicialSet::allQuasiSimplicialNodes() {
     __updateAllNodes();
     return __quasi_simplicial_nodes;
   }

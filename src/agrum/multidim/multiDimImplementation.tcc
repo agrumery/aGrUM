@@ -38,8 +38,8 @@ namespace gum {
       , __slaveInstantiations() {
     GUM_CONSTRUCTOR( MultiDimImplementation );
     __internalChangeMethod = __InternalChangeMethod::DIRECT_CHANGE;
-    __internalChangeState  = __InternalChangeState::NO_CHANGE;
-    __domainSize           = 1;
+    __internalChangeState = __InternalChangeState::NO_CHANGE;
+    __domainSize = 1;
   }
 
   // Copy constructor
@@ -78,8 +78,7 @@ namespace gum {
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
     if ( __vars.exists( &v ) ) {
-      GUM_ERROR( DuplicateElement,
-                 "Var already exists in this implementation" );
+      GUM_ERROR( DuplicateElement, "Var already exists in this implementation" );
     }
 
     __domainSize *= v.domainSize();
@@ -129,7 +128,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>&
   operator<<( MultiDimImplementation<GUM_SCALAR>& array,
-              const DiscreteVariable& v ) {
+              const DiscreteVariable&             v ) {
     array.add( v );
     return array;
   }
@@ -188,8 +187,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE bool MultiDimImplementation<GUM_SCALAR>::contains(
-      const DiscreteVariable& v ) const {
+  INLINE bool
+  MultiDimImplementation<GUM_SCALAR>::contains( const DiscreteVariable& v ) const {
     return __vars.exists( &v );
   }
 
@@ -197,7 +196,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE const Sequence<const DiscreteVariable*>&
-  MultiDimImplementation<GUM_SCALAR>::variablesSequence( void ) const {
+               MultiDimImplementation<GUM_SCALAR>::variablesSequence( void ) const {
     return __vars;
   }
 
@@ -215,8 +214,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void MultiDimImplementation<GUM_SCALAR>::endMultipleChanges( void ) {
-    if ( __internalChangeState ==
-         __InternalChangeState::NOT_COMMITTED_CHANGE ) {
+    if ( __internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE ) {
       _commitMultipleChanges();
       __internalChangeState = __InternalChangeState::NO_CHANGE;
     }
@@ -225,10 +223,9 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimImplementation<GUM_SCALAR>::endMultipleChanges(
-      const GUM_SCALAR& x ) {
-    if ( __internalChangeState ==
-         __InternalChangeState::NOT_COMMITTED_CHANGE ) {
+  INLINE void
+  MultiDimImplementation<GUM_SCALAR>::endMultipleChanges( const GUM_SCALAR& x ) {
+    if ( __internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE ) {
       _commitMultipleChanges( x );
       __internalChangeState = __InternalChangeState::NO_CHANGE;
     }
@@ -237,14 +234,13 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void
-  MultiDimImplementation<GUM_SCALAR>::_commitMultipleChanges( void ) {
+  INLINE void MultiDimImplementation<GUM_SCALAR>::_commitMultipleChanges( void ) {
     // empty!
   }
 
   template <typename GUM_SCALAR>
-  INLINE void MultiDimImplementation<GUM_SCALAR>::_commitMultipleChanges(
-      const GUM_SCALAR& ) {
+  INLINE void
+  MultiDimImplementation<GUM_SCALAR>::_commitMultipleChanges( const GUM_SCALAR& ) {
     // empty!
   }
 
@@ -252,8 +248,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE bool
   MultiDimImplementation<GUM_SCALAR>::_isInMultipleChangeMethod() const {
-    return ( __internalChangeMethod ==
-             __InternalChangeMethod::MULTIPLE_CHANGE );
+    return ( __internalChangeMethod == __InternalChangeMethod::MULTIPLE_CHANGE );
   }
 
   // get the actual state of *this
@@ -266,7 +261,7 @@ namespace gum {
   // Returns a constant reference over the list of slaved instantiations.
   template <typename GUM_SCALAR>
   INLINE const List<Instantiation*>&
-  MultiDimImplementation<GUM_SCALAR>::_slaves() const {
+               MultiDimImplementation<GUM_SCALAR>::_slaves() const {
     return __slaveInstantiations;
   }
 
@@ -311,7 +306,7 @@ namespace gum {
   // for friendly displaying the content of the array
   template <typename GUM_SCALAR>
   INLINE std::ostream&
-  operator<<( std::ostream& out,
+  operator<<( std::ostream&                             out,
               const MultiDimImplementation<GUM_SCALAR>& array ) {
     return out << static_cast<const MultiDimContainer<GUM_SCALAR>&>( array );
   }
@@ -320,14 +315,14 @@ namespace gum {
   // protected access to _content
   template <typename GUM_SCALAR>
   INLINE MultiDimImplementation<GUM_SCALAR>*
-  MultiDimImplementation<GUM_SCALAR>::content() {
+         MultiDimImplementation<GUM_SCALAR>::content() {
     return this;
   }
 
   // protected access to _content
   template <typename GUM_SCALAR>
   INLINE const MultiDimImplementation<GUM_SCALAR>*
-  MultiDimImplementation<GUM_SCALAR>::content() const {
+               MultiDimImplementation<GUM_SCALAR>::content() const {
     return this;
   }
 } /* namespace gum */
