@@ -40,6 +40,7 @@
 #include <agrum/BN/samplers/GibbsSampler.h>
 
 namespace gum {
+
   /// default constructor
   template <typename GUM_SCALAR>
   GibbsInference<GUM_SCALAR>::GibbsInference( const IBayesNet<GUM_SCALAR>* BN )
@@ -116,17 +117,6 @@ namespace gum {
   INLINE void GibbsInference<GUM_SCALAR>::__updateStats_without_err() {
     for ( auto& elt : __sampling_nbr ) {
       elt.second.set( particle(), elt.second.get( particle() ) + 1 );
-    }
-  }
-
-  INLINE void add_and_instancie( Instantiation&          I,
-                                 const DiscreteVariable& v,
-                                 const Instantiation&    __current_sample ) {
-    try {
-      I << v;
-      I.chgVal( v, __current_sample.val( v ) );
-    } catch ( DuplicateElement e ) {
-      // do nothing, it's OK
     }
   }
 
