@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -41,8 +40,8 @@ namespace gum {
 
   /*
    * @variable The default maximal size under which an object is considered
-   * small.
-   * If an object size is over this limit, the normal new allocator is called.
+   * small. If an object size is over this limit, the normal new allocator is
+   * called.
    */
   const size_t SmallObjectAllocator::GUM_DEFAULT_MAX_OBJECT_SIZE = 512;
 

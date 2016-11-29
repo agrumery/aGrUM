@@ -54,6 +54,12 @@ namespace gum {
     GUM_CONSTRUCTOR( SmallObjectAllocator );
     nbAllocation = 0;
     nbDeallocation = 0;
+
+    // SmallObjectAllocator::Instance will create a static SmallObjectAllocator and
+    // a HashTable that will not be deleted ...
+    // so we inform our leak detector not to count those 2 objects
+    GUM_DESTRUCTOR( SmallObjectAllocator );
+    GUM_DESTRUCTOR( HashTable );
   }
 
   // ============================================================================
@@ -61,13 +67,13 @@ namespace gum {
   // ============================================================================
   INLINE SmallObjectAllocator::~SmallObjectAllocator() {
     GUM_DESTRUCTOR( SmallObjectAllocator )
-
     for ( __Pool::iterator pit = __pool.begin(); pit != __pool.end(); ++pit )
       delete pit.val();
   }
 
   INLINE SmallObjectAllocator& SmallObjectAllocator::instance() {
     static SmallObjectAllocator soa;
+
     return soa;
   }
 

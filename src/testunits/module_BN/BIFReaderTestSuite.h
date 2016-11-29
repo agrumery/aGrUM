@@ -76,6 +76,7 @@ namespace gum_tests {
     void testRead_file2_float() {
       std::string           file = GET_RESSOURCES_PATH( "BIFReader_file2.bif" );
       gum::BayesNet<float>* net = new gum::BayesNet<float>();
+
       gum::BIFReader<float> reader( net, file );
 
       int nbrErr = 0;

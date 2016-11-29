@@ -44,8 +44,7 @@ namespace gum {
    * @brief Allocates objects of any size
    *
    * SmallObjectAllocator does so by aggregating several FixedAllocator objects.
-   * When SmallObjectAllocator receives an allocation request, it either
-   * forwards
+   * When SmallObjectAllocator receives an allocation request, it either forwards
    * it to the best matching FixedAllocator object or passes it to the default
    * operator new
    *
@@ -85,7 +84,7 @@ namespace gum {
     // ============================================================================
     /// Copy Constructor (does nothing since we use a Singleton)
     // ============================================================================
-    SmallObjectAllocator( const SmallObjectAllocator& ) {}
+    SmallObjectAllocator( const SmallObjectAllocator& )  {};
 
     // ============================================================================
     /// Operator = (does nothing since we use a Singleton)
