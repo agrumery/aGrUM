@@ -126,7 +126,7 @@ set(AGRUM_FILE_VERSION "${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 include(${AGRUM_FILE_VERSION})
 include("${AGRUM_SOURCE_DIR}/cmake/Config.agrum.cmake")
 configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/agrum/config.h")
-file(GLOB_RECURSE AGRUM_SOURCES "${AGRUM_SOURCE_DIR}/agrum/*.cpp"  ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c)
+#file(GLOB_RECURSE AGRUM_SOURCES "${AGRUM_SOURCE_DIR}/agrum/*.cpp"  ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/core/math/lrslib/lrsmp.c)
 
 #==
 #== Adding files in build tree
@@ -139,10 +139,10 @@ file(GLOB PYAGRUM_EXTENSIONS ${CMAKE_CURRENT_SOURCE_DIR}/extensions/*.h)
 #==
 #== Adding agrum sources
 #==
-foreach(AGRUMFILE ${AGRUM_SOURCES})
-  set_source_files_properties(${AGRUMFILE} PROPERTIES CPLUSPLUS ON)
-  list(APPEND BUILDSWIGFILES ${AGRUMFILE})
-endforeach(AGRUMFILE ${AGRUM_SOURCES})
+#foreach(AGRUMFILE ${AGRUM_SOURCES})
+#  set_source_files_properties(${AGRUMFILE} PROPERTIES CPLUSPLUS ON)
+#  list(APPEND BUILDSWIGFILES ${AGRUMFILE})
+#endforeach(AGRUMFILE ${AGRUM_SOURCES})
 
 foreach(PYFILE ${PYAGRUMFILES})
   set_source_files_properties(${PYFILE} PROPERTIES CPLUSPLUS ON)
@@ -175,12 +175,12 @@ set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 
 if (SWIG_FOUND)
   gum_swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
-  #swig_link_libraries(pyAgrum ${LIBAGRUM})
+  swig_link_libraries(pyAgrum ${LIBAGRUM})
   swig_link_libraries(pyAgrum ${PYTHON_LIBRARY})  #for Apple ?
 else (SWIG_FOUND)
   file(GLOB SWIG_GENERATED_FILES "${GENERATED_PYTHON}/*.cxx")
   add_library (${_PYAGRUMLIB} MODULE ${SWIG_GENERATED_FILES})
-  #target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
+  target_link_libraries (${_PYAGRUMLIB} ${LIBAGRUM})
   target_link_libraries (${_PYAGRUMLIB} ${PYTHON_LIBRARY})
   set_target_properties(${_PYAGRUMLIB} PROPERTIES PREFIX "")
   set_target_properties(${_PYAGRUMLIB} PROPERTIES LINKER_LANGUAGE CXX)

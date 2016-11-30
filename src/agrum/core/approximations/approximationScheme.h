@@ -112,7 +112,7 @@ namespace gum {
 
     ApproximationScheme( bool v = false );
 
-    ~ApproximationScheme();
+    virtual ~ApproximationScheme();
 
     /// @}
     // ========================================================================
