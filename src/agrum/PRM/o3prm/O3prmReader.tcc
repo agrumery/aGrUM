@@ -37,9 +37,9 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__clean( std::string text ) const {
         auto match = std::regex( "Syntax error" );
         if ( std::regex_search( text, match ) ) {
-          text = std::regex_replace( text, match, "Error" );
+          text = std::regex_replace( text, match, std::string("Error") );
           auto regex = std::regex{"[A-Z_][A-Z_]+"};
-          text = std::regex_replace( text, regex, "declaration" );
+          text = std::regex_replace( text, regex, std::string("declaration") );
           return text;
         }
         return text;
