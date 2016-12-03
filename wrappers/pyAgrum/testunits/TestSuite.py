@@ -18,14 +18,14 @@ import VariablesTestSuite
 import BayesNetTestSuite
 import PythonBNListenerTestSuite
 import PotentialTestSuite
-import LazyPropagationTestSuite
+import JTInferenceTestSuite
 import JunctionTreeTestSuite
 import GibbsTestSuite
 import ICIModelsForBNTestSuite
 import BNLearnerTestSuite
 import AggregatorsForBNTestSuite
 import PRMexplorerTestSuite
-import IncrementalLazyPropagationTestSuite
+import AllIncrementalInferenceTestSuite
 
 import time
 
@@ -34,8 +34,8 @@ tests.append(VariablesTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)
 tests.append(PythonBNListenerTestSuite.ts)
 tests.append(PotentialTestSuite.ts)
-tests.append(LazyPropagationTestSuite.ts)
-tests.append(IncrementalLazyPropagationTestSuite.ts)
+tests.append(JTInferenceTestSuite.ts)
+tests.append(AllIncrementalInferenceTestSuite.ts)
 tests.append(JunctionTreeTestSuite.ts)
 tests.append(GibbsTestSuite.ts)
 tests.append(ICIModelsForBNTestSuite.ts)

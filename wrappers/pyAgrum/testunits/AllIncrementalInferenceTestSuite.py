@@ -19,7 +19,7 @@ from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
 class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
-  def setUp(self):
+  def _buildBN(self):
     self.bn = gum.BayesNet()
     self.bn.add("A", 2)
     self.bn.add("B", 3)
@@ -76,7 +76,8 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
                  self.bn.cpt("G") * \
                  self.bn.cpt("H")
 
-    self.ie = gum.LazyPropagation(self.bn)
+  def setUp(self):
+    raise(NotImplementedError("This class is a generic class for Incremental Inference"))
 
   def testPrior(self):
     self.assertEqual(self.ie.posterior("A"), self.joint.margSumIn(["A"]))
@@ -330,6 +331,17 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
 
-ts = unittest.TestSuite()
+class IncrementalLazyPropagationTestCase(IncrementalLazyPropagationTestCase):
+  def setUp(self):
+    self._buildBN()
+    self.ie = gum.LazyPropagation(self.bn)
 
+class IncrementalShaferShenoyTestCase(IncrementalLazyPropagationTestCase):
+  def setUp(self):
+    self._buildBN()
+    self.ie = gum.ShaferShenoyInference(self.bn)
+
+
+ts = unittest.TestSuite()
 addTests(ts, IncrementalLazyPropagationTestCase)
+addTests(ts, IncrementalShaferShenoyTestCase)
