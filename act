@@ -37,22 +37,31 @@ def main():
 
   (options, args)=parseCommandLine(current)
   
-  noFunForced=False
+  msvcForced=False
   if options.mvsc:
     options.static_lib=True
     options.no_fun=True
-    noFunForced=True
+    msvcForced=True
+    
+  pyAgrumForced=False
+  if "pyAgrum" in args:
+    options.static_lib=True
+    pyAgrumForced=True
     
   # colors, fun & verbosity partly controlled by options (--no-fun, ...)
   configureOutputs(options)
 
   about()
 
-  if noFunForced:  
+  if msvcForced:  
     notif("Options [static] and [no-fun] forced by option [mvsc]")
     print()
     
-  configureTools()
+  if pyAgrumForced:  
+    notif("Options [static] forced by target [pyAgrum]")
+    print()
+    
+  configureTools(options)
 
   # check current consistency and update it if necessary
   checkCurrent(current,options,args)

@@ -1,170 +1,183 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#***************************************************************************
-#*   Copyright (C) 2015 by Pierre-Henri WUILLEMIN                          *
-#*   {prenom.nom}_at_lip6.fr                                               *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License as published by  *
-#*   the Free Software Foundation; either version 2 of the License, or     *
-#*   (at your option) any later version.                                   *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU General Public License for more details.                          *
-#*                                                                         *
-#*   You should have received a copy of the GNU General Public License     *
-#*   along with this program; if not, write to the                         *
-#*   Free Software Foundation, Inc.,                                       *
-#*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (C) 2015 by Pierre-Henri WUILLEMIN                          *
+# *   {prenom.nom}_at_lip6.fr                                               *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU General Public License as published by  *
+# *   the Free Software Foundation; either version 2 of the License, or     *
+# *   (at your option) any later version.                                   *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU General Public License for more details.                          *
+# *                                                                         *
+# *   You should have received a copy of the GNU General Public License     *
+# *   along with this program; if not, write to the                         *
+# *   Free Software Foundation, Inc.,                                       *
+# *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+# ***************************************************************************
 import platform
+
 from .configuration import cfg
-from .utils import trace,setifyString,safe_cd,critic,notif
 from .multijobs import execCde
+from .utils import trace, setifyString, critic
 
-def getCmake(current,target):
-    line=cfg.cmake+" ../.." # we are in build/[release|target]
 
-    if current["mode"]=="release":
-        line+=" -DCMAKE_BUILD_TYPE=RELEASE"
-    else:
-        line+=" -DCMAKE_BUILD_TYPE=DEBUG"
+def getCmake(current, target):
+  line = cfg.cmake + " ../.."  # we are in build/[release|target]
 
-    if current["python"]=="3":
-        line+=" -DFOR_PYTHON2=OFF"
-    else:
-        line+=" -DFOR_PYTHON2=ON"
-
-    if current["withSQL"]==True:
-        line+=" -DUSE_NANODBC=ON"
-    else:
-        line+=" -DUSE_NANODBC=OFF"
-
-    line+=" -DCMAKE_INSTALL_PREFIX="+current["destination"]
-
-    if current["verbose"]:
-        line+=" -DCMAKE_VERBOSE_MAKEFILE=ON"
-    else:
-        line+=" -DCMAKE_VERBOSE_MAKEFILE=OFF"
-
-    if current["static_lib"]:
-        line+=" -DBUILD_SHARED_LIBS=OFF"
-    else:
-        line+=" -DBUILD_SHARED_LIBS=ON"
-
-    if current["coverage"]:
-      line+=" -DGUM_COVERAGE=ON"
-    else:
-      line+=" -DGUM_COVERAGE=OFF"
-
-    line+=" -DBUILD_ALL=OFF"
-    for module in setifyString(current["modules"]):
-        line+=" -DBUILD_"+module+"=ON"
-
-    if current["fixed_seed"]:
-        line+=" -DGUM_RANDOMSEED="+cfg.fixedSeedValue
-    else:
-        line+=" -DGUM_RANDOMSEED=0"
-
-    if target != "pyAgrum":
-      line+=" -DBUILD_PYTHON=OFF"
-    else:
-      line+=" -DBUILD_PYTHON=ON"
-
-    if platform.system() == "Windows":
-      if current["mvsc"]:
-        line += ' -G "Visual Studio 14 2015 Win64"'
-      else:
-        line += ' -G "MinGW Makefiles"'
-
-    return line
-
-def buildCmake(current,target):
-  line=getCmake(current,target)
-  execFromLine(current,line)
-
-def getMake(current,target):
-  if current["mvsc"]:
-      return getForMsBuildSystem(current,target)
+  if current["mode"] == "release":
+    line += " -DCMAKE_BUILD_TYPE=RELEASE"
   else:
-      return getForMakeSystem(current,target)
+    line += " -DCMAKE_BUILD_TYPE=DEBUG"
 
-def getForMsBuildSystem(current,target):
+
+  if current["withSQL"] == True:
+    line += " -DUSE_NANODBC=ON"
+  else:
+    line += " -DUSE_NANODBC=OFF"
+
+  line += " -DCMAKE_INSTALL_PREFIX=" + current["destination"]
+
+  if current["verbose"]:
+    line += " -DCMAKE_VERBOSE_MAKEFILE=ON"
+  else:
+    line += " -DCMAKE_VERBOSE_MAKEFILE=OFF"
+
+  if current["static_lib"]:
+    line += " -DBUILD_SHARED_LIBS=OFF"
+  else:
+    line += " -DBUILD_SHARED_LIBS=ON"
+
+  if current["coverage"]:
+    line += " -DGUM_COVERAGE=ON"
+  else:
+    line += " -DGUM_COVERAGE=OFF"
+
+  line += " -DBUILD_ALL=OFF"
+  for module in setifyString(current["modules"]):
+    line += " -DBUILD_" + module + "=ON"
+
+  if current["fixed_seed"]:
+    line += " -DGUM_RANDOMSEED=" + cfg.fixedSeedValue
+  else:
+    line += " -DGUM_RANDOMSEED=0"
+
+  if target != "pyAgrum":
+    line += " -DBUILD_PYTHON=OFF"
+  else:
+    if current["python"] == "3":
+      line += " -DFOR_PYTHON2=OFF"
+    else:
+      line += " -DFOR_PYTHON2=ON"
+    line += " -DBUILD_PYTHON=ON"
+    line += " -DPYTHON_TARGET="+cfg.python
+
+  if platform.system() == "Windows":
+    if current["mvsc"]:
+      line += ' -G "Visual Studio 14 2015 Win64"'
+    else:
+      line += ' -G "MinGW Makefiles"'
+
+  return line
+
+
+def buildCmake(current, target):
+  line = getCmake(current, target)
+  execFromLine(current, line)
+
+
+def getMake(current, target):
+  if current["mvsc"]:
+    return getForMsBuildSystem(current, target)
+  else:
+    return getForMakeSystem(current, target)
+
+
+def getForMsBuildSystem(current, target):
   if cfg.msbuild is None:
     critic("MsBuild not found")
   else:
-    if current["action"]=="test":
-      if target =="aGrUM":
-        line=cfg.msbuild+' agrum.sln /t:gumTest /p:Configuration="Release"'
+    if current["action"] == "test":
+      if target == "aGrUM":
+        line = cfg.msbuild + ' agrum.sln /t:gumTest /p:Configuration="Release"'
       elif target == "pyAgrum":
-        line=cfg.msbuild+' agrum.sln /t:_pyAgrum /p:Configuration="Release"'
-      else: #if target!= "pyAgrum":
-        critic("Action '"+current["action"]+"' not treated for target '"+target+"' for now in windows weird world.")
-    elif current["action"]=="install":
-      line=cfg.msbuild+' INSTALL.vcxproj /p:Configuration="Release"'
+        line = cfg.msbuild + ' agrum.sln /t:_pyAgrum /p:Configuration="Release"'
+      else:  # if target!= "pyAgrum":
+        critic(
+            "Action '" + current[
+              "action"] + "' not treated for target '" + target + "' for now in windows weird world.")
+    elif current["action"] == "install":
+      line = cfg.msbuild + ' INSTALL.vcxproj /p:Configuration="Release"'
     else:
-      critic("Action '"+current["action"]+"' not treated for now in windows weird world.")
-    line+=' /p:BuildInParallel=true /maxcpucount:'+str(current["jobs"])
+      critic("Action '" + current["action"] + "' not treated for now in windows weird world.")
+    line += ' /p:BuildInParallel=true /maxcpucount:' + str(current["jobs"])
   return line
 
-def getForMakeSystem(current,target):
-    line=cfg.make
 
-    if current["action"]=="test":
-      if target =="aGrUM":
-        line+=" gumTest"
-      elif target!= "pyAgrum":
-        critic("Action '"+current["action"]+"' not treated for target '"+target+"'.")
-    elif current["action"]=="install":
-      line+=" install"
-    elif current["action"]=="uninstall":
-      line+=" uninstall"
-    elif current["action"]=="lib":
-      pass
-    elif current["action"]=="doc":
-      line+=" doc"
-    else:
-      critic("Action '"+current["action"]+"' not treated for now")
+def getForMakeSystem(current, target):
+  line = cfg.make
 
-    line+=" -j "+str(current["jobs"])
+  if current["action"] == "test":
+    if target == "aGrUM":
+      line += " gumTest"
+    elif target != "pyAgrum":
+      critic("Action '" + current["action"] + "' not treated for target '" + target + "'.")
+  elif current["action"] == "install":
+    line += " install"
+  elif current["action"] == "uninstall":
+    line += " uninstall"
+  elif current["action"] == "lib":
+    pass
+  elif current["action"] == "doc":
+    line += " doc"
+  else:
+    critic("Action '" + current["action"] + "' not treated for now")
 
-    if target=="pyAgrum":
-      line+=" -C wrappers/pyAgrum"
+  line += " -j " + str(current["jobs"])
 
-    return line
+  if target == "pyAgrum":
+    line += " -C wrappers/pyAgrum"
 
-def buildMake(current,target):
-  line=getMake(current,target)
-  execFromLine(current,line)
+  return line
 
-def getPost(current,target):
-  if current["action"]=="test":
-    if target=="aGrUM":
-      if cfg.os_platform=="win32":
-        line="src\\Release\\gumTest.exe" #debug or release create Release folder
+
+def buildMake(current, target):
+  line = getMake(current, target)
+  execFromLine(current, line)
+
+
+def getPost(current, target):
+  if current["action"] == "test":
+    if target == "aGrUM":
+      if cfg.os_platform == "win32":
+        line = "src\\Release\\gumTest.exe"  # debug or release create Release folder
       else:
-        line="src/gumTest"
-      return line,True
-    elif target=="pyAgrum":
-      if cfg.os_platform=="win32":
-        line='copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & '+cfg.python+" ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py wrappers"
+        line = "src/gumTest"
+      return line, True
+    elif target == "pyAgrum":
+      if cfg.os_platform == "win32":
+        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py wrappers"
       else:
-        line="PYTHONPATH=wrappers "+cfg.python+" ../../wrappers/pyAgrum/testunits/TestSuite.py"
-      return line,False
-  return "",False
+        line = "PYTHONPATH=wrappers " + cfg.python + " ../../wrappers/pyAgrum/testunits/TestSuite.py"
+      return line, False
+  return "", False
 
-def buildPost(current,target):
-  line,checkRC=getPost(current,target)
-  if line!="":
-    execFromLine(current,line,checkRC)
 
-def execFromLine(current,line,checkRC=True):
-  trace(current,line)
+def buildPost(current, target):
+  line, checkRC = getPost(current, target)
+  if line != "":
+    execFromLine(current, line, checkRC)
+
+
+def execFromLine(current, line, checkRC=True):
+  trace(current, line)
   if not current['dry_run']:
-    rc=execCde(line,current)
+    rc = execCde(line, current)
     if checkRC:
-      if rc>0:
-        critic("Received error {0}".format(rc),rc=rc)
+      if rc > 0:
+        critic("Received error {0}".format(rc), rc=rc)

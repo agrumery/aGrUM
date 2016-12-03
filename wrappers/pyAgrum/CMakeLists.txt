@@ -7,40 +7,33 @@ endif ()
 
 option(FOR_PYTHON2 "ON if pyAgrum will be compiler agains python2. Python3 is uses by default" "OFF")
 
-# PYTHON 2 OR 3
-if (FOR_PYTHON2) # we use 3 by default
-  # hackish
-  if( WIN32)
-    find_program(PYTHON_EXECUTABLE NAMES "python.exe")
-  else(WIN32)
-    if (APPLE)
-      set(PYTHON_EXECUTABLE "/usr/local/bin/python2")
-    else(APPLE)
-      set(PYTHON_EXECUTABLE "/usr/bin/python2")
-    endif(APPLE)
-	  find_package(PythonInterp 2 REQUIRED)
-  endif(WIN32)
-else (FOR_PYTHON2)
-  # hackish
-  if(WIN32)
-    find_program(PYTHON_EXECUTABLE NAMES "python.exe")
-  else(WIN32)
-    if (APPLE)
-      set(PYTHON_EXECUTABLE "/usr/local/bin/python3")
-    else(APPLE)
-      set(PYTHON_EXECUTABLE "/usr/bin/python3")
-    endif(APPLE)
-	  find_package(PythonInterp 3 REQUIRED)
-  endif(WIN32)
-endif (FOR_PYTHON2)
+if (PYTHON_TARGET)
+  set(PYTHON_EXECUTABLE ${PYTHON_TARGET})
+endif (PYTHON_TARGET)
 
+if (FOR_PYTHON2)
+  find_package(PythonInterp 2 REQUIRED)
+  find_package(PythonLibs   2 REQUIRED)
+  
+  set(PYAGRUM_MODULE "pyAgrum")
+  set(PYAGRUM_FUNCTIONS "functions")
+else()
+  find_package(PythonInterp 3 REQUIRED)
+  find_package(PythonLibs   3 REQUIRED)
+  
+  set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
 
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
-  OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
+  #change in module naming from inside module between python2 and python3
+  set(PYAGRUM_MODULE ".pyAgrum")
+  set(PYAGRUM_FUNCTIONS ".functions")
+endif()
+# 
+# execute_process(
+#   COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
+#   OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
+#   OUTPUT_STRIP_TRAILING_WHITESPACE
+# )
+# 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('VERSION')[0])[0:1])"
   OUTPUT_VARIABLE PYTHON_VERSION
@@ -60,52 +53,19 @@ execute_process(
   OUTPUT_VARIABLE PYTHON_COMPLETE_VERSION
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-
-# maybe something to do for MAC ???
- if (APPLE) # let's assume that PYTHON is there
-   execute_process(
-     COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('prefix'))[0])"
-     OUTPUT_VARIABLE PYTHON_LOCAL_PATH
-     OUTPUT_STRIP_TRAILING_WHITESPACE
-   )
-   execute_process(
-     COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('LIBDIR'))[0])"
-     OUTPUT_VARIABLE PYTHON_LIBPATH
-     OUTPUT_STRIP_TRAILING_WHITESPACE
-   )
-
-  set(PYTHON_LIBRARY "${PYTHON_LIBPATH}/libPython${PYTHON_COMPLETE_VERSION}.dylib")
-  set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
- else()
-   if (WIN32)
-	   execute_process(
-		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-		 OUTPUT_VARIABLE PYTHON_LOCAL_PATH
-		 OUTPUT_STRIP_TRAILING_WHITESPACE
-	   )
-	   execute_process(
-		 COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-		 OUTPUT_VARIABLE PYTHON_LIBPATH
-		 OUTPUT_STRIP_TRAILING_WHITESPACE
-	   )
-	  set(PYTHON_LIBRARY "${PYTHON_LOCAL_PATH}/libs/python${PYTHON_COMPLETE_VERSION}.lib")
-    set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
-   else()
-	find_package(PythonLibs ${PYTHON_COMPLETE_VERSION} REQUIRED)
-   endif()
- endif()
-
-if (${PYTHON_VERSION} EQUAL "2")
-  #change in module naming from inside module between python2 and python3
-  set(PYAGRUM_MODULE "pyAgrum")
-  set(PYAGRUM_FUNCTIONS "functions")
-else ()
-  set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
-
-  #change in module naming from inside module between python2 and python3
-  set(PYAGRUM_MODULE ".pyAgrum")
-  set(PYAGRUM_FUNCTIONS ".functions")
-endif ()
+# 
+# execute_process(
+# COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+# OUTPUT_VARIABLE PYTHON_LOCAL_PATH
+# OUTPUT_STRIP_TRAILING_WHITESPACE
+# )
+# execute_process(
+# COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+# OUTPUT_VARIABLE PYTHON_LIBPATH
+# OUTPUT_STRIP_TRAILING_WHITESPACE
+# )
+# set(PYTHON_LIBRARY "${PYTHON_LOCAL_PATH}/libs/python${PYTHON_COMPLETE_VERSION}.lib")
+# set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
 
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION}")
 set(_PYAGRUMLIB "_pyAgrum")

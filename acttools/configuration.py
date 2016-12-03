@@ -1,25 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#***************************************************************************
-#*   Copyright (C) 2015 by Pierre-Henri WUILLEMIN                          *
-#*   {prenom.nom}_at_lip6.fr                                               *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License as published by  *
-#*   the Free Software Foundation; either version 2 of the License, or     *
-#*   (at your option) any later version.                                   *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU General Public License for more details.                          *
-#*                                                                         *
-#*   You should have received a copy of the GNU General Public License     *
-#*   along with this program; if not, write to the                         *
-#*   Free Software Foundation, Inc.,                                       *
-#*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (C) 2015 by Pierre-Henri WUILLEMIN                          *
+# *   {prenom.nom}_at_lip6.fr                                               *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU General Public License as published by  *
+# *   the Free Software Foundation; either version 2 of the License, or     *
+# *   (at your option) any later version.                                   *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU General Public License for more details.                          *
+# *                                                                         *
+# *   You should have received a copy of the GNU General Public License     *
+# *   along with this program; if not, write to the                         *
+# *   Free Software Foundation, Inc.,                                       *
+# *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+# ***************************************************************************
 from optparse import OptionParser
 from sys import platform
 
@@ -29,167 +29,173 @@ from .tools import check_tools
 
 try:
   import colorama
+
   colorama.init()
-  cfg.withColour=True
+  cfg.withColour = True
 except:
   try:
     import tendo.ansiterm
-    cfg.withColour=True
+
+    cfg.withColour = True
   except:
-    cfg.withColour=True
+    cfg.withColour = True
     pass
 
-cfg.numversion="2.0"
-cfg.modulesFile="src/modules.txt" # the file to parse to find the modules
-cfg.configFile=".options.act2.py" #
-cfg.fixedSeedValue="10"
+cfg.numversion = "2.0"
+cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
+cfg.configFile = ".options.act2.py"  #
+cfg.fixedSeedValue = "10"
 
-cfg.nbr_tests_for_stats=20
+cfg.nbr_tests_for_stats = 20
 
-#for message
-cfg.prefixe_line="-- "
-cfg.prefixe_trace="==> "
+# for message
+cfg.prefixe_line = "-- "
+cfg.prefixe_trace = "==> "
 
-cfg.os_platform=platform
+cfg.os_platform = platform
+
 
 def initParams():
-    cfg.default={}
-    cfg.default['action']="lib"
-    cfg.default['targets']=set(["aGrUM"])
-    cfg.default['modules']='ALL'
-    cfg.default['mode']="release"
-    cfg.default['verbose']=False
-    cfg.default['destination']="/usr"
-    cfg.default['jobs']=5
-    cfg.default['static_lib']=False
-    cfg.default['fixed_seed']=False
-    cfg.default['no_fun']=False
-    cfg.default['stats']=False
-    cfg.default['oneByOne']=False
-    cfg.default['tests']='all'
-    cfg.default['python']="3"
-    cfg.default['dry_run']=False
-    cfg.default['coverage']=False
-    cfg.default['withSQL']=True
-    cfg.default['mvsc']=False
-    cfg.default['build']="all"
+  cfg.default = {}
+  cfg.default['action'] = "lib"
+  cfg.default['targets'] = set(["aGrUM"])
+  cfg.default['modules'] = 'ALL'
+  cfg.default['mode'] = "release"
+  cfg.default['verbose'] = False
+  cfg.default['destination'] = "/usr"
+  cfg.default['jobs'] = 5
+  cfg.default['static_lib'] = False
+  cfg.default['fixed_seed'] = False
+  cfg.default['no_fun'] = False
+  cfg.default['stats'] = False
+  cfg.default['oneByOne'] = False
+  cfg.default['tests'] = 'all'
+  cfg.default['python'] = "3"
+  cfg.default['dry_run'] = False
+  cfg.default['coverage'] = False
+  cfg.default['withSQL'] = True
+  cfg.default['mvsc'] = False
+  cfg.default['build'] = "all"
 
-    cfg.actions=set("lib test install doc clean show uninstall package autoindent".split())
-    cfg.modes=set("debug release".split())
-    cfg.targets=set("aGrUM pyAgrum jAgrum".split())
-    cfg.moduleLabels=parseModulesTxt()
-    cfg.modules=set(cfg.moduleLabels)
+  cfg.actions = set("lib test install doc clean show uninstall package autoindent".split())
+  cfg.modes = set("debug release".split())
+  cfg.targets = set("aGrUM pyAgrum jAgrum".split())
+  cfg.moduleLabels = parseModulesTxt()
+  cfg.modules = set(cfg.moduleLabels)
 
-    cfg.non_persistent=["fixed_seed","stats","no_fun","static_lib","oneByOne","dry_run","coverage"]
-    cfg.mains=["action","targets","mode"]
-    cfg.specialActions=["show","clean","autoindent"]
-    cfg.swapOptions={
-        "verbose" : {
-            True: "verbose",
-            False: "quiet"
-        },
-        "withSQL" : {
-            True: "withSQL",
-            False: "withoutSQL"
-        }
+  cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage"]
+  cfg.mains = ["action", "targets", "mode"]
+  cfg.specialActions = ["show", "clean", "autoindent"]
+  cfg.swapOptions = {
+    "verbose": {
+      True : "verbose",
+      False: "quiet"
+    },
+    "withSQL": {
+      True : "withSQL",
+      False: "withoutSQL"
     }
+  }
+
 
 def configureOptions(current):
-    us="%prog [options] ["+"|".join(sorted(cfg.actions))+"] ["+"|".join(cfg.modes)+"] ["+"|".join(cfg.targets)+"]"
-    cfg.parser=OptionParser(usage=us,description="Compilation tools for aGrUM and wrappers",
-                        version="%prog v"+cfg.numversion)
-    cfg.parser.add_option("", "--no-fun",
-                                        help="no fancy output parser.",
-                                        action="store_true",
-                                        dest="no_fun",
-                                        default=False)
-    cfg.parser.add_option("-v", "--verbose",
-                                        help="more message on what is happening.",
-                                        action="store_true",
-                                        dest="verbose",
-                                        default=current['verbose'])
-    cfg.parser.add_option("-q", "--quiet",
-                                        help="please be quiet.",
-                                        action="store_false",
-                                        dest="verbose",
-                                        default=current['verbose'])
-    cfg.parser.add_option("", "--withSQL",
-                                        help="connection to SQL datasource via ODBC.",
-                                        action="store_true",
-                                        dest="withSQL",
-                                        default=current['withSQL'])
-    cfg.parser.add_option("", "--withoutSQL",
-                                        help="no connection to SQL datasource via ODBC.",
-                                        action="store_false",
-                                        dest="withSQL",
-                                        default=current['withSQL'])
-    cfg.parser.add_option("", "--fixed_seed",
-                                        help="random seed is fixed once for all. Hence random algorithms should be time-normalized.",
-                                        action="store_true",
-                                        dest="fixed_seed",
-                                        default=False)
-    cfg.parser.add_option("", "--stats",
-                                        help="consolidation on "+str(cfg.nbr_tests_for_stats)+" runs.",
-                                        action="store_true",
-                                        dest="stats",
-                                        default=False)
-    cfg.parser.add_option("", "--oneByOne",
-                                        help="aGrUM debug tests one by one (searching leaks).",
-                                        action="store_true",
-                                        dest="oneByOne",
-                                        default=False)
-    cfg.parser.add_option("-d", "--destination",
-                                        help="destination folder when installing.",
-                                        metavar="FOLDER",
-                                        dest="destination",
-                                        default=current['destination'])
-    cfg.parser.add_option("-j", "--jobs",
-                                        help="number of jobs.",
-                                        type='int',
-                                        dest="jobs",
-                                        default=current['jobs'])
-    cfg.parser.add_option("-t","--tests",
-                                        help="tests management : {show|all|test1+test2+test3}.",
-                                        metavar="TESTS-COMMAND",
-                                        dest="tests",
-                                        default=current['tests'])
-    cfg.parser.add_option("-m","--modules",
-                                        help="module management : {show|all|module1+module2+module3}.",
-                                        metavar="MODULES-COMMAND",
-                                        dest="modules",
-                                        default=current['modules'])
-    cfg.parser.add_option("", "--static_lib",
-                                        help="build static library.",
-                                        action="store_true",
-                                        dest="static_lib",
-                                        default=False)
-    cfg.parser.add_option("", "--python",
-                                        help="defines against wich version of python to build: {2|3}.",
-                                        type="choice",
-                                        choices=["2", "3"],
-                                        dest="python",
-                                        default="3")
-    cfg.parser.add_option("", "--dry-run",
-                                        help="dry run and prints cmake invocation with the current options.",
-                                        action="store_true",
-                                        dest="dry_run",
-                                        default=False)
-    cfg.parser.add_option("", "--coverage",
-                                        help="build with code coverage options enable (debug only).",
-                                        action="store_true",
-                                        dest="coverage",
-                                        default=False)
-    cfg.parser.add_option("", "--mvsc",
-                                        help="use Microsoft Visual Studio C++ compiler (Windows only).",
-                                        action="store_true",
-                                        dest="mvsc",
-                                        default=False)
-    cfg.parser.add_option("","--build",
-                                        help="build options : {all|no-cmake|no-make}.",
-                                        type="choice",
-                                        choices=["all","no-cmake","no-make"],
-                                        dest="build",
-                                        default="all")                                        
+  us = "%prog [options] [" + "|".join(sorted(cfg.actions)) + "] [" + "|".join(cfg.modes) + "] [" + "|".join(
+      cfg.targets) + "]"
+  cfg.parser = OptionParser(usage=us, description="Compilation tools for aGrUM and wrappers",
+                            version="%prog v" + cfg.numversion)
+  cfg.parser.add_option("", "--no-fun",
+                        help="no fancy output parser.",
+                        action="store_true",
+                        dest="no_fun",
+                        default=False)
+  cfg.parser.add_option("-v", "--verbose",
+                        help="more message on what is happening.",
+                        action="store_true",
+                        dest="verbose",
+                        default=current['verbose'])
+  cfg.parser.add_option("-q", "--quiet",
+                        help="please be quiet.",
+                        action="store_false",
+                        dest="verbose",
+                        default=current['verbose'])
+  cfg.parser.add_option("", "--withSQL",
+                        help="connection to SQL datasource via ODBC.",
+                        action="store_true",
+                        dest="withSQL",
+                        default=current['withSQL'])
+  cfg.parser.add_option("", "--withoutSQL",
+                        help="no connection to SQL datasource via ODBC.",
+                        action="store_false",
+                        dest="withSQL",
+                        default=current['withSQL'])
+  cfg.parser.add_option("", "--fixed_seed",
+                        help="random seed is fixed once for all. Hence random algorithms should be time-normalized.",
+                        action="store_true",
+                        dest="fixed_seed",
+                        default=False)
+  cfg.parser.add_option("", "--stats",
+                        help="consolidation on " + str(cfg.nbr_tests_for_stats) + " runs.",
+                        action="store_true",
+                        dest="stats",
+                        default=False)
+  cfg.parser.add_option("", "--oneByOne",
+                        help="aGrUM debug tests one by one (searching leaks).",
+                        action="store_true",
+                        dest="oneByOne",
+                        default=False)
+  cfg.parser.add_option("-d", "--destination",
+                        help="destination folder when installing.",
+                        metavar="FOLDER",
+                        dest="destination",
+                        default=current['destination'])
+  cfg.parser.add_option("-j", "--jobs",
+                        help="number of jobs.",
+                        type='int',
+                        dest="jobs",
+                        default=current['jobs'])
+  cfg.parser.add_option("-t", "--tests",
+                        help="tests management : {show|all|test1+test2+test3}.",
+                        metavar="TESTS-COMMAND",
+                        dest="tests",
+                        default=current['tests'])
+  cfg.parser.add_option("-m", "--modules",
+                        help="module management : {show|all|module1+module2+module3}.",
+                        metavar="MODULES-COMMAND",
+                        dest="modules",
+                        default=current['modules'])
+  cfg.parser.add_option("", "--static_lib",
+                        help="build static library.",
+                        action="store_true",
+                        dest="static_lib",
+                        default=False)
+  cfg.parser.add_option("", "--python",
+                        help="defines against wich version of python to build: {2|3}.",
+                        type="choice",
+                        choices=["2", "3"],
+                        dest="python",
+                        default="3")
+  cfg.parser.add_option("", "--dry-run",
+                        help="dry run and prints cmake invocation with the current options.",
+                        action="store_true",
+                        dest="dry_run",
+                        default=False)
+  cfg.parser.add_option("", "--coverage",
+                        help="build with code coverage options enable (debug only).",
+                        action="store_true",
+                        dest="coverage",
+                        default=False)
+  cfg.parser.add_option("", "--mvsc",
+                        help="use Microsoft Visual Studio C++ compiler (Windows only).",
+                        action="store_true",
+                        dest="mvsc",
+                        default=False)
+  cfg.parser.add_option("", "--build",
+                        help="build options : {all|no-cmake|no-make}.",
+                        type="choice",
+                        choices=["all", "no-cmake", "no-make"],
+                        dest="build",
+                        default="all")
+
 
 def configureColors(no_fun=False):
   if no_fun or not cfg.withColour:
@@ -197,17 +203,19 @@ def configureColors(no_fun=False):
     cfg.C_WARNING = ''
     cfg.C_ERROR = ''
     cfg.C_END = ''
-    cfg.C_MSG=''
+    cfg.C_MSG = ''
   else:
     cfg.C_VALUE = '\033[1m\033[32m'
     cfg.C_WARNING = '\033[1m\033[33m'
     cfg.C_ERROR = '\033[1m\033[31m'
     cfg.C_END = '\033[0m'
-    cfg.C_MSG='\033[1m\033[34m'
+    cfg.C_MSG = '\033[1m\033[34m'
+
 
 def configureOutputs(options):
-  cfg.verbosity=options.verbose
+  cfg.verbosity = options.verbose
   configureColors(options.no_fun)
 
-def configureTools():
-    (cfg.python2,cfg.python3,cfg.cmake,cfg.make,cfg.clangformat,cfg.msbuild)=check_tools()
+
+def configureTools(options):
+  (cfg.python, cfg.cmake, cfg.make, cfg.clangformat, cfg.msbuild) = check_tools(options)
