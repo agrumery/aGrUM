@@ -35,8 +35,7 @@ def getCmake(current, target):
   else:
     line += " -DCMAKE_BUILD_TYPE=DEBUG"
 
-
-  if current["withSQL"] == True:
+  if current["withSQL"]:
     line += " -DUSE_NANODBC=ON"
   else:
     line += " -DUSE_NANODBC=OFF"
@@ -75,7 +74,7 @@ def getCmake(current, target):
     else:
       line += " -DFOR_PYTHON2=ON"
     line += " -DBUILD_PYTHON=ON"
-    line += " -DPYTHON_TARGET="+cfg.python
+    line += " -DPYTHON_TARGET=" + cfg.python
 
   if platform.system() == "Windows":
     if current["mvsc"]:

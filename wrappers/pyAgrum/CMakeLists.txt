@@ -9,74 +9,88 @@ option(FOR_PYTHON2 "ON if pyAgrum will be compiler agains python2. Python3 is us
 
 if (PYTHON_TARGET)
   set(PYTHON_EXECUTABLE ${PYTHON_TARGET})
+  unset(PYTHON_INCLUDE_DIR CACHE)
+  unset(PYTHON_LIBRARY CACHE)
+  unset(PYTHON_VERSION_STRING CACHE)
+  unset(PYTHON_VERSION_MAJOR CACHE)
 endif (PYTHON_TARGET)
 
+
 if (FOR_PYTHON2)
-  find_package(PythonInterp 2 REQUIRED)
-  find_package(PythonLibs   2 REQUIRED)
-  
   set(PYAGRUM_MODULE "pyAgrum")
   set(PYAGRUM_FUNCTIONS "functions")
 else()
-  find_package(PythonInterp 3 REQUIRED)
-  find_package(PythonLibs   3 REQUIRED)
-  
   set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
 
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE ".pyAgrum")
   set(PYAGRUM_FUNCTIONS ".functions")
 endif()
-# 
-# execute_process(
-#   COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
-#   OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
-#   OUTPUT_STRIP_TRAILING_WHITESPACE
-# )
-# 
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('VERSION')[0])[0:1])"
-  OUTPUT_VARIABLE PYTHON_VERSION
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
 
-if (NOT DEFINED PYTHON_INSTALL)
+
+if(NOT APPLE)
+  if (FOR_PYTHON2)
+    find_package(PythonInterp 2 REQUIRED)
+    find_package(PythonLibs   2 REQUIRED)
+  else(FOR_PYTHON2)
+    find_package(PythonInterp 3 REQUIRED)
+    find_package(PythonLibs   3 REQUIRED)
+  endif(FOR_PYTHON2)
+else(NOT APPLE)
+  # PYTHON_VERSION_MAJOR
   execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
-    OUTPUT_VARIABLE PYTHON_INSTALL
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('VERSION')[0])[0:1])"
+    OUTPUT_VARIABLE PYTHON_VERSION_MAJOR
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-endif ()
 
+
+  # PYTHON_VERSION_STRING
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_config_vars('VERSION')[0])"
+    OUTPUT_VARIABLE PYTHON_VERSION_STRING
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+
+  # PYTHON_INCLUDE_DIR
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
+    OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  
+  # PYTHON_LIBRARY
+  execute_process(
+  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+  OUTPUT_VARIABLE PYTHON_LOCAL_PATH
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  execute_process(
+  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
+  OUTPUT_VARIABLE PYTHON_LIBPATH
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  set(PYTHON_LIBRARY "${PYTHON_LOCAL_PATH}/libs/python${PYTHON_VERSION_STRING}.lib")
+
+endif(NOT APPLE)
+
+
+# PYTHON_INSTALL
 execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_config_vars('VERSION')[0])"
-  OUTPUT_VARIABLE PYTHON_COMPLETE_VERSION
+  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
+  OUTPUT_VARIABLE PYTHON_INSTALL
   OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-# 
-# execute_process(
-# COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-# OUTPUT_VARIABLE PYTHON_LOCAL_PATH
-# OUTPUT_STRIP_TRAILING_WHITESPACE
-# )
-# execute_process(
-# COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-# OUTPUT_VARIABLE PYTHON_LIBPATH
-# OUTPUT_STRIP_TRAILING_WHITESPACE
-# )
-# set(PYTHON_LIBRARY "${PYTHON_LOCAL_PATH}/libs/python${PYTHON_COMPLETE_VERSION}.lib")
-# set(PYTHONLIBS_VERSION_STRING ${PYTHON_COMPLETE_VERSION})
 
-set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION}")
+set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION_MAJOR}")
 set(_PYAGRUMLIB "_pyAgrum")
 
 
 message(STATUS "================================")
-message(STATUS "python version : ${PYTHON_COMPLETE_VERSION}")
+message(STATUS "python version : ${PYTHON_VERSION_STRING}")
 message(STATUS "python installation : ${PYTHON_INSTALL}")
 message(STATUS "python include : ${PYTHON_INCLUDE_DIR}")
 message(STATUS "python library : ${PYTHON_LIBRARY}")
-#message(STATUS "libagrum : ${LIBAGRUM}")
 message(STATUS "================================")
 
 
@@ -163,7 +177,7 @@ file(GLOB GUMLIB_UTILS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/lib/_utils/*.py")
 
 #include("${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 set(PYAGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
-set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION}.egg-info")
+set(PYAGRUM_EGGFILE "pyAgrum-${PYAGRUM_VERSION}-py${PYTHON_VERSION_MAJOR}.egg-info")
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/__init__.in.py" "${CMAKE_CURRENT_BINARY_DIR}/__init__.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.in.py" "${CMAKE_CURRENT_BINARY_DIR}/functions.py")
@@ -178,3 +192,9 @@ install(TARGETS ${_PYAGRUMLIB} DESTINATION ${PYTHON_INSTALL}/pyAgrum)
 
 install(FILES ${GUMLIB_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib)
 install(FILES ${GUMLIB_UTILS_FILES} DESTINATION ${PYTHON_INSTALL}/pyAgrum/lib/_utils)
+
+# # show all cmake variables
+# get_cmake_property(_variableNames VARIABLES)
+# foreach (_variableName ${_variableNames})
+#     message(STATUS "${_variableName}=${${_variableName}}")
+# endforeach()

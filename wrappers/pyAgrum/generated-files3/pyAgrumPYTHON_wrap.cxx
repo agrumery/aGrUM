@@ -6359,10 +6359,10 @@ SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__margMinIn(gum::P
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margMinIn(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg____truediv____SWIG_1(gum::Potential< double > *self,gum::Potential< double > const &b){
+SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg____truediv__(gum::Potential< double > *self,gum::Potential< double > const &b){
       return *self /b;
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg____div__(gum::Potential< double > *self,gum::Potential< double > const &b){
+SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg____div____SWIG_1(gum::Potential< double > *self,gum::Potential< double > const &b){
       return *self/b;
     }
 SWIGINTERN bool gum_Potential_Sl_double_Sg____eq____SWIG_1(gum::Potential< double > *self,gum::Potential< double > const &b){
@@ -39506,7 +39506,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___truediv____SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Potential_double___div____SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
   gum::Potential< double > *arg2 = 0 ;
@@ -39518,18 +39518,18 @@ SWIGINTERN PyObject *_wrap_Potential_double___truediv____SWIG_0(PyObject *SWIGUN
   PyObject * obj1 = 0 ;
   gum::Potential< double > result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double___truediv__",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double___div__",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___truediv__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___div__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
   res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double___truediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double___div__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double___truediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double___div__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
   }
   arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
   {
@@ -39670,7 +39670,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___itruediv__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Potential_double___idiv__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
   gum::Potential< double > *arg2 = 0 ;
@@ -39682,18 +39682,18 @@ SWIGINTERN PyObject *_wrap_Potential_double___itruediv__(PyObject *SWIGUNUSEDPAR
   PyObject * obj1 = 0 ;
   gum::Potential< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double___itruediv__",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double___idiv__",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___itruediv__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___idiv__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
   res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double___itruediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double___idiv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double___itruediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double___idiv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
   }
   arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
   {
@@ -40239,7 +40239,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___truediv____SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Potential_double___truediv__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
   gum::Potential< double > *arg2 = 0 ;
@@ -40267,7 +40267,7 @@ SWIGINTERN PyObject *_wrap_Potential_double___truediv____SWIG_1(PyObject *SWIGUN
   arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
   {
     try {
-      result = gum_Potential_Sl_double_Sg____truediv____SWIG_1(arg1,(gum::Potential< double > const &)*arg2);
+      result = gum_Potential_Sl_double_Sg____truediv__(arg1,(gum::Potential< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -40280,55 +40280,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___truediv__(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Potential_double___truediv____SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Potential_double___truediv____SWIG_0(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Potential_double___truediv__'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::operator /(gum::Potential< double > const &) const\n"
-    "    gum::Potential< double >::__truediv__(gum::Potential< double > const &)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_Potential_double___div__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Potential_double___div____SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
   gum::Potential< double > *arg2 = 0 ;
@@ -40356,7 +40308,7 @@ SWIGINTERN PyObject *_wrap_Potential_double___div__(PyObject *SWIGUNUSEDPARM(sel
   arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
   {
     try {
-      result = gum_Potential_Sl_double_Sg____div__(arg1,(gum::Potential< double > const &)*arg2);
+      result = gum_Potential_Sl_double_Sg____div____SWIG_1(arg1,(gum::Potential< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -40366,6 +40318,51 @@ SWIGINTERN PyObject *_wrap_Potential_double___div__(PyObject *SWIGUNUSEDPARM(sel
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Potential_double___div__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Potential_double___div____SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Potential_double___div____SWIG_0(self, args);
+      }
+    }
+  }
+  
+fail:
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -74428,8 +74425,8 @@ static PyMethodDef SwigMethods[] = {
 		"r: gum::Potential< double > const &\n"
 		"\n"
 		""},
-	 { (char *)"Potential_double___itruediv__", _wrap_Potential_double___itruediv__, METH_VARARGS, (char *)"\n"
-		"Potential_double___itruediv__(Potential_double self, Potential_double r) -> Potential_double\n"
+	 { (char *)"Potential_double___idiv__", _wrap_Potential_double___idiv__, METH_VARARGS, (char *)"\n"
+		"Potential_double___idiv__(Potential_double self, Potential_double r) -> Potential_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -74549,12 +74546,6 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"Potential_double___truediv__", _wrap_Potential_double___truediv__, METH_VARARGS, (char *)"\n"
-		"__truediv__(Potential_double p2) -> Potential_double\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"p2: gum::Potential< double > const &\n"
-		"\n"
 		"Potential_double___truediv__(Potential_double self, Potential_double b) -> Potential_double\n"
 		"\n"
 		"Parameters\n"
@@ -74564,6 +74555,12 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"Potential_double___div__", _wrap_Potential_double___div__, METH_VARARGS, (char *)"\n"
+		"__div__(Potential_double p2) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"p2: gum::Potential< double > const &\n"
+		"\n"
 		"Potential_double___div__(Potential_double self, Potential_double b) -> Potential_double\n"
 		"\n"
 		"Parameters\n"
