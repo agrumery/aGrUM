@@ -3572,48 +3572,49 @@ namespace Swig {
 #define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[116]
 #define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[117]
 #define SWIGTYPE_p_gum__Variable swig_types[118]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[119]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[120]
-#define SWIGTYPE_p_gum__WrongType swig_types[121]
-#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[122]
-#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[123]
-#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[124]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[125]
-#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[126]
-#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[127]
-#define SWIGTYPE_p_iterator_category swig_types[128]
-#define SWIGTYPE_p_msg swig_types[129]
-#define SWIGTYPE_p_node_const_iterator swig_types[130]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[131]
-#define SWIGTYPE_p_node_iterator swig_types[132]
-#define SWIGTYPE_p_node_iterator_safe swig_types[133]
-#define SWIGTYPE_p_p_PyObject swig_types[134]
-#define SWIGTYPE_p_pointer swig_types[135]
-#define SWIGTYPE_p_reference swig_types[136]
-#define SWIGTYPE_p_size_type swig_types[137]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[138]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[139]
-#define SWIGTYPE_p_std__default_random_engine swig_types[140]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[141]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[142]
-#define SWIGTYPE_p_std__invalid_argument swig_types[143]
-#define SWIGTYPE_p_std__ostream swig_types[144]
-#define SWIGTYPE_p_std__string swig_types[145]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[146]
-#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[147]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[148]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[149]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[150]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[151]
-#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[152]
-#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[153]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[154]
-#define SWIGTYPE_p_unsigned_int swig_types[155]
-#define SWIGTYPE_p_unsigned_long swig_types[156]
-#define SWIGTYPE_p_value_type swig_types[157]
-#define SWIGTYPE_p_void swig_types[158]
-static swig_type_info *swig_types[160];
-static swig_module_info swig_module = {swig_types, 159, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[119]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[120]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[121]
+#define SWIGTYPE_p_gum__WrongType swig_types[122]
+#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[123]
+#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[124]
+#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[125]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[126]
+#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[127]
+#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[128]
+#define SWIGTYPE_p_iterator_category swig_types[129]
+#define SWIGTYPE_p_msg swig_types[130]
+#define SWIGTYPE_p_node_const_iterator swig_types[131]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[132]
+#define SWIGTYPE_p_node_iterator swig_types[133]
+#define SWIGTYPE_p_node_iterator_safe swig_types[134]
+#define SWIGTYPE_p_p_PyObject swig_types[135]
+#define SWIGTYPE_p_pointer swig_types[136]
+#define SWIGTYPE_p_reference swig_types[137]
+#define SWIGTYPE_p_size_type swig_types[138]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[139]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[140]
+#define SWIGTYPE_p_std__default_random_engine swig_types[141]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[142]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[143]
+#define SWIGTYPE_p_std__invalid_argument swig_types[144]
+#define SWIGTYPE_p_std__ostream swig_types[145]
+#define SWIGTYPE_p_std__string swig_types[146]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[147]
+#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[148]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[149]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[150]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[151]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[152]
+#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[153]
+#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[154]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[155]
+#define SWIGTYPE_p_unsigned_int swig_types[156]
+#define SWIGTYPE_p_unsigned_long swig_types[157]
+#define SWIGTYPE_p_value_type swig_types[158]
+#define SWIGTYPE_p_void swig_types[159]
+static swig_type_info *swig_types[161];
+static swig_module_info swig_module = {swig_types, 160, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4676,8 +4677,11 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
 #include <agrum/core/approximations/approximationScheme.h>
 
 #include <agrum/BN/inference/BayesNetInference.h>
+
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/variableElimination.h>
+
 #include <agrum/BN/inference/GibbsInference.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
@@ -7054,6 +7058,132 @@ SWIGINTERN double gum_ShaferShenoyInference_Sl_double_Sg__I(gum::ShaferShenoyInf
 SWIGINTERN double gum_ShaferShenoyInference_Sl_double_Sg__VI(gum::ShaferShenoyInference< double > *self,gum::NodeId const X,gum::NodeId const Y){
     return self->gum::JointTargetedInference<double>::VI(X,Y);
   }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__setEvidence(gum::VariableElimination< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__updateEvidence(gum::VariableElimination< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__setTargets(gum::VariableElimination< double > *self,PyObject *targets){}
+SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__hardEvidenceList(gum::VariableElimination< double > *self){
+      return PyAgrumHelper::PyListFromNodeSet(self->hardEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__softEvidenceList(gum::VariableElimination< double > *self){
+      return PyAgrumHelper::PyListFromNodeSet(self->softEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__targetList(gum::VariableElimination< double > *self){
+      return PyAgrumHelper::PyListFromNodeSet(self->targets() );
+    }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__makeInference(gum::VariableElimination< double > *self){
+    self->gum::BayesNetInference<double>::makeInference();
+  }
+SWIGINTERN gum::Potential< double > const gum_VariableElimination_Sl_double_Sg__posterior__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const var){
+    return self->MarginalTargetedInference<double>::posterior(var);
+  }
+SWIGINTERN gum::Potential< double > const gum_VariableElimination_Sl_double_Sg__posterior__SWIG_1(gum::VariableElimination< double > *self,std::string const nodeName){
+    return self->MarginalTargetedInference<double>::posterior(nodeName);
+  }
+SWIGINTERN gum::IBayesNet< double > const &gum_VariableElimination_Sl_double_Sg__BayesNet(gum::VariableElimination< double > const *self){
+    return self->BayesNetInference<double>::BayesNet();
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_1(gum::VariableElimination< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_2(gum::VariableElimination< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_3(gum::VariableElimination< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_4(gum::VariableElimination< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::addEvidence(id,vals);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_5(gum::VariableElimination< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,vals);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_1(gum::VariableElimination< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_2(gum::VariableElimination< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_3(gum::VariableElimination< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_4(gum::VariableElimination< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::chgEvidence(id,vals);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_5(gum::VariableElimination< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,vals);
+  }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasEvidence__SWIG_0(gum::VariableElimination< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasEvidence(id);
+  }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasEvidence__SWIG_1(gum::VariableElimination< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasEvidence(nodeName);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseAllEvidence(gum::VariableElimination< double > *self){
+    self->gum::BayesNetInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseEvidence__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const id){
+    self->gum::BayesNetInference<double>::eraseEvidence(id);
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseEvidence__SWIG_1(gum::VariableElimination< double > *self,std::string const &nodeName){
+    self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
+  }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::VariableElimination< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(id);
+  }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasHardEvidence(gum::VariableElimination< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasHardEvidence(nodeName);
+  }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::VariableElimination< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(nodeName);
+  }
+SWIGINTERN gum::Size gum_VariableElimination_Sl_double_Sg__nbrEvidence(gum::VariableElimination< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrEvidence();
+  }
+SWIGINTERN gum::Size gum_VariableElimination_Sl_double_Sg__nbrHardEvidence(gum::VariableElimination< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrHardEvidence();
+  }
+SWIGINTERN gum::Size gum_VariableElimination_Sl_double_Sg__nbrSoftEvidence(gum::VariableElimination< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrSoftEvidence();
+  }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseAllTargets(gum::VariableElimination< double > *self){
+      self->gum::MarginalTargetedInference<double>::eraseAllTargets();
+    }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addAllTargets(gum::VariableElimination< double > *self){
+      self->gum::MarginalTargetedInference<double>::addAllTargets();
+    }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addTarget__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::addTarget(target);
+    }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addTarget__SWIG_1(gum::VariableElimination< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::addTarget(nodeName);
+    }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseTarget__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(target);
+    }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseTarget__SWIG_1(gum::VariableElimination< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(nodeName);
+    }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__isTarget__SWIG_0(gum::VariableElimination< double > const *self,gum::NodeId const variable){
+      return self->gum::MarginalTargetedInference<double>::isTarget(variable);
+    }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__isTarget__SWIG_1(gum::VariableElimination< double > const *self,std::string const &nodeName){
+      return self->gum::MarginalTargetedInference<double>::isTarget(nodeName);
+    }
+SWIGINTERN gum::Size gum_VariableElimination_Sl_double_Sg__nbrTargets(gum::VariableElimination< double > const *self){
+      return self->gum::MarginalTargetedInference<double>::nbrTargets();
+    }
+SWIGINTERN double gum_VariableElimination_Sl_double_Sg__H__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const X){
+     return self->gum::MarginalTargetedInference<double>::H(X);
+   }
+SWIGINTERN double gum_VariableElimination_Sl_double_Sg__H__SWIG_1(gum::VariableElimination< double > *self,std::string const &nodeName){
+     return self->gum::MarginalTargetedInference<double>::H(nodeName);
+   }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setEvidence(gum::GibbsInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__updateEvidence(gum::GibbsInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setTargets(gum::GibbsInference< double > *self,PyObject *targets){}
@@ -57282,6 +57412,2856 @@ SWIGINTERN PyObject *ShaferShenoyInference_double_swigregister(PyObject *SWIGUNU
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_VariableElimination_double__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  gum::RelevantPotentialsFinderType arg2 ;
+  gum::FindBarrenNodesType arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::VariableElimination< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:new_VariableElimination_double",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_VariableElimination_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RelevantPotentialsFinderType,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_VariableElimination_double" "', argument " "2"" of type '" "gum::RelevantPotentialsFinderType""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_VariableElimination_double" "', argument " "2"" of type '" "gum::RelevantPotentialsFinderType""'");
+    } else {
+      gum::RelevantPotentialsFinderType * temp = reinterpret_cast< gum::RelevantPotentialsFinderType * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_VariableElimination_double" "', argument " "3"" of type '" "gum::FindBarrenNodesType""'");
+  } 
+  arg3 = static_cast< gum::FindBarrenNodesType >(val3);
+  {
+    try {
+      result = (gum::VariableElimination< double > *)new gum::VariableElimination< double >((gum::IBayesNet< double > const *)arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__VariableEliminationT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_VariableElimination_double__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  gum::RelevantPotentialsFinderType arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::VariableElimination< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:new_VariableElimination_double",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_VariableElimination_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RelevantPotentialsFinderType,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_VariableElimination_double" "', argument " "2"" of type '" "gum::RelevantPotentialsFinderType""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_VariableElimination_double" "', argument " "2"" of type '" "gum::RelevantPotentialsFinderType""'");
+    } else {
+      gum::RelevantPotentialsFinderType * temp = reinterpret_cast< gum::RelevantPotentialsFinderType * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  {
+    try {
+      result = (gum::VariableElimination< double > *)new gum::VariableElimination< double >((gum::IBayesNet< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__VariableEliminationT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_VariableElimination_double__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::VariableElimination< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_VariableElimination_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_VariableElimination_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (gum::VariableElimination< double > *)new gum::VariableElimination< double >((gum::IBayesNet< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__VariableEliminationT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_VariableElimination_double(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__IBayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_VariableElimination_double__SWIG_2(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__IBayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RelevantPotentialsFinderType, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_new_VariableElimination_double__SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__IBayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_RelevantPotentialsFinderType, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_VariableElimination_double__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_VariableElimination_double'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::VariableElimination(gum::IBayesNet< double > const *,gum::RelevantPotentialsFinderType,gum::FindBarrenNodesType)\n"
+    "    gum::VariableElimination< double >::VariableElimination(gum::IBayesNet< double > const *,gum::RelevantPotentialsFinderType)\n"
+    "    gum::VariableElimination< double >::VariableElimination(gum::IBayesNet< double > const *)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_VariableElimination_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_VariableElimination_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_VariableElimination_double" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_setTriangulation(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::Triangulation *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_setTriangulation",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_setTriangulation" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_Triangulation,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_setTriangulation" "', argument " "2"" of type '" "gum::Triangulation const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_setTriangulation" "', argument " "2"" of type '" "gum::Triangulation const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::Triangulation * >(argp2);
+  {
+    try {
+      (arg1)->setTriangulation((gum::Triangulation const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_setRelevantPotentialsFinderType(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::RelevantPotentialsFinderType arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_setRelevantPotentialsFinderType",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_setRelevantPotentialsFinderType" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_RelevantPotentialsFinderType,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_setRelevantPotentialsFinderType" "', argument " "2"" of type '" "gum::RelevantPotentialsFinderType""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_setRelevantPotentialsFinderType" "', argument " "2"" of type '" "gum::RelevantPotentialsFinderType""'");
+    } else {
+      gum::RelevantPotentialsFinderType * temp = reinterpret_cast< gum::RelevantPotentialsFinderType * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  {
+    try {
+      (arg1)->setRelevantPotentialsFinderType(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_setFindBarrenNodesType(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::FindBarrenNodesType arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_setFindBarrenNodesType",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_setFindBarrenNodesType" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_setFindBarrenNodesType" "', argument " "2"" of type '" "gum::FindBarrenNodesType""'");
+  } 
+  arg2 = static_cast< gum::FindBarrenNodesType >(val2);
+  {
+    try {
+      (arg1)->setFindBarrenNodesType(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_junctionTree(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::JunctionTree *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_junctionTree",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_junctionTree" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_junctionTree" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (gum::JunctionTree *)(arg1)->junctionTree(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__CliqueGraph, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_setEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_setEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_setEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__setEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_updateEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_updateEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_updateEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__updateEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_setTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_setTargets",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_setTargets" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__setTargets(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_hardEvidenceList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_hardEvidenceList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_hardEvidenceList" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_VariableElimination_Sl_double_Sg__hardEvidenceList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_softEvidenceList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_softEvidenceList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_softEvidenceList" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_VariableElimination_Sl_double_Sg__softEvidenceList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_targetList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_targetList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_targetList" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_VariableElimination_Sl_double_Sg__targetList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_makeInference",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_makeInference" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__makeInference(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_posterior__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_posterior" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_posterior" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = gum_VariableElimination_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_posterior__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_posterior" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "VariableElimination_double_posterior" "', argument " "2"" of type '" "std::string const""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_VariableElimination_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_posterior(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_VariableElimination_double_posterior__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_VariableElimination_double_posterior__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_posterior'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::posterior(gum::NodeId const)\n"
+    "    gum::VariableElimination< double >::posterior(std::string const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IBayesNet< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_BayesNet",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_BayesNet" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (gum::IBayesNet< double > *) &gum_VariableElimination_Sl_double_Sg__BayesNet((gum::VariableElimination< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_VariableElimination_double_addEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_VariableElimination_double_addEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_VariableElimination_double_addEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_VariableElimination_double_addEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_VariableElimination_double_addEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_VariableElimination_double_addEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_addEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::addEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::VariableElimination< double >::addEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::VariableElimination< double >::addEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::VariableElimination< double >::addEvidence(std::string const &,std::string const &)\n"
+    "    gum::VariableElimination< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::VariableElimination< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_chgEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_chgEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_chgEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_chgEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_chgEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_chgEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_chgEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_chgEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_chgEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_chgEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_chgEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VariableElimination_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_chgEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__chgEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_chgEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_VariableElimination_double_chgEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_VariableElimination_double_chgEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_VariableElimination_double_chgEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_VariableElimination_double_chgEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_VariableElimination_double_chgEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_VariableElimination_double_chgEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_chgEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::chgEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::VariableElimination< double >::chgEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::VariableElimination< double >::chgEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::VariableElimination< double >::chgEvidence(std::string const &,std::string const &)\n"
+    "    gum::VariableElimination< double >::chgEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::VariableElimination< double >::chgEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_hasEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_hasEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_hasEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__hasEvidence__SWIG_0((gum::VariableElimination< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_hasEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_hasEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__hasEvidence__SWIG_1((gum::VariableElimination< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_hasEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_VariableElimination_double_hasEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_VariableElimination_double_hasEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_hasEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::hasEvidence(gum::NodeId const) const\n"
+    "    gum::VariableElimination< double >::hasEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseAllEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_eraseAllEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_eraseAllEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_eraseEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_eraseEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_VariableElimination_double_eraseEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_VariableElimination_double_eraseEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_eraseEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::eraseEvidence(gum::NodeId const)\n"
+    "    gum::VariableElimination< double >::eraseEvidence(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_hasSoftEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_hasSoftEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__hasSoftEvidence__SWIG_0((gum::VariableElimination< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_hasHardEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__hasHardEvidence((gum::VariableElimination< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_hasSoftEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__hasSoftEvidence__SWIG_1((gum::VariableElimination< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_hasSoftEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_VariableElimination_double_hasSoftEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_VariableElimination_double_hasSoftEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_hasSoftEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::hasSoftEvidence(gum::NodeId const) const\n"
+    "    gum::VariableElimination< double >::hasSoftEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_nbrEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_nbrEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_nbrEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_VariableElimination_Sl_double_Sg__nbrEvidence((gum::VariableElimination< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_nbrHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_nbrHardEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_nbrHardEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_VariableElimination_Sl_double_Sg__nbrHardEvidence((gum::VariableElimination< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_nbrSoftEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_nbrSoftEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_nbrSoftEvidence" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_VariableElimination_Sl_double_Sg__nbrSoftEvidence((gum::VariableElimination< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_eraseAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_eraseAllTargets" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__eraseAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_addAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addAllTargets" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_addTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_VariableElimination_double_addTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_VariableElimination_double_addTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_addTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::addTarget(gum::NodeId const)\n"
+    "    gum::VariableElimination< double >::addTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_eraseTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_eraseTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__eraseTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_eraseTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__eraseTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_VariableElimination_double_eraseTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_VariableElimination_double_eraseTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_eraseTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::eraseTarget(gum::NodeId const)\n"
+    "    gum::VariableElimination< double >::eraseTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_isTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_isTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_isTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__isTarget__SWIG_0((gum::VariableElimination< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_isTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_isTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__isTarget__SWIG_1((gum::VariableElimination< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_isTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_VariableElimination_double_isTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_VariableElimination_double_isTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_isTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::isTarget(gum::NodeId const) const\n"
+    "    gum::VariableElimination< double >::isTarget(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_nbrTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_nbrTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_nbrTargets" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_VariableElimination_Sl_double_Sg__nbrTargets((gum::VariableElimination< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_H__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_H" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VariableElimination_double_H" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (double)gum_VariableElimination_Sl_double_Sg__H__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_H__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_H" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VariableElimination_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VariableElimination_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (double)gum_VariableElimination_Sl_double_Sg__H__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_H(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_VariableElimination_double_H__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__VariableEliminationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_VariableElimination_double_H__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'VariableElimination_double_H'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::VariableElimination< double >::H(gum::NodeId const)\n"
+    "    gum::VariableElimination< double >::H(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *VariableElimination_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__VariableEliminationT_double_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_GibbsInference_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
@@ -80602,6 +83582,416 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"ShaferShenoyInference_double_swigregister", ShaferShenoyInference_double_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_VariableElimination_double", _wrap_new_VariableElimination_double, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double(IBayesNet_double BN, gum::RelevantPotentialsFinderType relevant_type, gum::FindBarrenNodesType arg4)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"BN: gum::IBayesNet< double > const *\n"
+		"relevant_type: gum::RelevantPotentialsFinderType\n"
+		"arg4: enum gum::FindBarrenNodesType\n"
+		"\n"
+		"VariableElimination_double(IBayesNet_double BN, gum::RelevantPotentialsFinderType relevant_type)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"BN: gum::IBayesNet< double > const *\n"
+		"relevant_type: gum::RelevantPotentialsFinderType\n"
+		"\n"
+		"new_VariableElimination_double(IBayesNet_double BN) -> VariableElimination_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"BN: gum::IBayesNet< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"delete_VariableElimination_double", _wrap_delete_VariableElimination_double, METH_VARARGS, (char *)"\n"
+		"delete_VariableElimination_double(VariableElimination_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_setTriangulation", _wrap_VariableElimination_double_setTriangulation, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_setTriangulation(VariableElimination_double self, gum::Triangulation const & new_triangulation)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"new_triangulation: gum::Triangulation const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_setRelevantPotentialsFinderType", _wrap_VariableElimination_double_setRelevantPotentialsFinderType, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_setRelevantPotentialsFinderType(VariableElimination_double self, gum::RelevantPotentialsFinderType type)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"type: gum::RelevantPotentialsFinderType\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_setFindBarrenNodesType", _wrap_VariableElimination_double_setFindBarrenNodesType, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_setFindBarrenNodesType(VariableElimination_double self, gum::FindBarrenNodesType type)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"type: enum gum::FindBarrenNodesType\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_junctionTree", _wrap_VariableElimination_double_junctionTree, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_junctionTree(VariableElimination_double self, gum::NodeId const id) -> CliqueGraph\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_setEvidence", _wrap_VariableElimination_double_setEvidence, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_setEvidence(VariableElimination_double self, PyObject * evidces)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"evidces: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_updateEvidence", _wrap_VariableElimination_double_updateEvidence, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_updateEvidence(VariableElimination_double self, PyObject * evidces)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"evidces: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_setTargets", _wrap_VariableElimination_double_setTargets, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_setTargets(VariableElimination_double self, PyObject * targets)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"targets: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_hardEvidenceList", _wrap_VariableElimination_double_hardEvidenceList, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_hardEvidenceList(VariableElimination_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_softEvidenceList", _wrap_VariableElimination_double_softEvidenceList, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_softEvidenceList(VariableElimination_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_targetList", _wrap_VariableElimination_double_targetList, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_targetList(VariableElimination_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_makeInference", _wrap_VariableElimination_double_makeInference, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_makeInference(VariableElimination_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_posterior", _wrap_VariableElimination_double_posterior, METH_VARARGS, (char *)"\n"
+		"posterior(gum::NodeId const var) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"var: gum::NodeId const\n"
+		"\n"
+		"VariableElimination_double_posterior(VariableElimination_double self, std::string const nodeName) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"nodeName: std::string const\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_BayesNet", _wrap_VariableElimination_double_BayesNet, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_BayesNet(VariableElimination_double self) -> IBayesNet_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_addEvidence", _wrap_VariableElimination_double_addEvidence, METH_VARARGS, (char *)"\n"
+		"addEvidence(gum::NodeId const id, gum::Idx const val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"val: gum::Idx const\n"
+		"\n"
+		"addEvidence(std::string const & nodeName, gum::Idx const val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"nodeName: std::string const &\n"
+		"val: gum::Idx const\n"
+		"\n"
+		"addEvidence(gum::NodeId const id, std::string const & val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"val: std::string const &\n"
+		"\n"
+		"addEvidence(std::string const & nodeName, std::string const & val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"nodeName: std::string const &\n"
+		"val: std::string const &\n"
+		"\n"
+		"addEvidence(gum::NodeId const id, Vector_double vals)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"vals: std::vector< double,std::allocator< double > > const &\n"
+		"\n"
+		"VariableElimination_double_addEvidence(VariableElimination_double self, std::string const & nodeName, Vector_double vals)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"nodeName: std::string const &\n"
+		"vals: std::vector< double,std::allocator< double > > const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_chgEvidence", _wrap_VariableElimination_double_chgEvidence, METH_VARARGS, (char *)"\n"
+		"chgEvidence(gum::NodeId const id, gum::Idx const val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"val: gum::Idx const\n"
+		"\n"
+		"chgEvidence(std::string const & nodeName, gum::Idx const val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"nodeName: std::string const &\n"
+		"val: gum::Idx const\n"
+		"\n"
+		"chgEvidence(gum::NodeId const id, std::string const & val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"val: std::string const &\n"
+		"\n"
+		"chgEvidence(std::string const & nodeName, std::string const & val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"nodeName: std::string const &\n"
+		"val: std::string const &\n"
+		"\n"
+		"chgEvidence(gum::NodeId const id, Vector_double vals)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"vals: std::vector< double,std::allocator< double > > const &\n"
+		"\n"
+		"VariableElimination_double_chgEvidence(VariableElimination_double self, std::string const & nodeName, Vector_double vals)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"nodeName: std::string const &\n"
+		"vals: std::vector< double,std::allocator< double > > const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_hasEvidence", _wrap_VariableElimination_double_hasEvidence, METH_VARARGS, (char *)"\n"
+		"hasEvidence(gum::NodeId const id) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		"VariableElimination_double_hasEvidence(VariableElimination_double self, std::string const & nodeName) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_eraseAllEvidence", _wrap_VariableElimination_double_eraseAllEvidence, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_eraseAllEvidence(VariableElimination_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_eraseEvidence", _wrap_VariableElimination_double_eraseEvidence, METH_VARARGS, (char *)"\n"
+		"eraseEvidence(gum::NodeId const id)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		"VariableElimination_double_eraseEvidence(VariableElimination_double self, std::string const & nodeName)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_hasHardEvidence", _wrap_VariableElimination_double_hasHardEvidence, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_hasHardEvidence(VariableElimination_double self, std::string const & nodeName) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_hasSoftEvidence", _wrap_VariableElimination_double_hasSoftEvidence, METH_VARARGS, (char *)"\n"
+		"hasSoftEvidence(gum::NodeId const id) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		"VariableElimination_double_hasSoftEvidence(VariableElimination_double self, std::string const & nodeName) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_nbrEvidence", _wrap_VariableElimination_double_nbrEvidence, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_nbrEvidence(VariableElimination_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_nbrHardEvidence", _wrap_VariableElimination_double_nbrHardEvidence, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_nbrHardEvidence(VariableElimination_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_nbrSoftEvidence", _wrap_VariableElimination_double_nbrSoftEvidence, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_nbrSoftEvidence(VariableElimination_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_eraseAllTargets", _wrap_VariableElimination_double_eraseAllTargets, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_eraseAllTargets(VariableElimination_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_addAllTargets", _wrap_VariableElimination_double_addAllTargets, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_addAllTargets(VariableElimination_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_addTarget", _wrap_VariableElimination_double_addTarget, METH_VARARGS, (char *)"\n"
+		"addTarget(gum::NodeId const target)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeId const\n"
+		"\n"
+		"VariableElimination_double_addTarget(VariableElimination_double self, std::string const & nodeName)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_eraseTarget", _wrap_VariableElimination_double_eraseTarget, METH_VARARGS, (char *)"\n"
+		"eraseTarget(gum::NodeId const target)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeId const\n"
+		"\n"
+		"VariableElimination_double_eraseTarget(VariableElimination_double self, std::string const & nodeName)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_isTarget", _wrap_VariableElimination_double_isTarget, METH_VARARGS, (char *)"\n"
+		"isTarget(gum::NodeId const variable) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"variable: gum::NodeId const\n"
+		"\n"
+		"VariableElimination_double_isTarget(VariableElimination_double self, std::string const & nodeName) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_nbrTargets", _wrap_VariableElimination_double_nbrTargets, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_nbrTargets(VariableElimination_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_H", _wrap_VariableElimination_double_H, METH_VARARGS, (char *)"\n"
+		"H(gum::NodeId const X) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"X: gum::NodeId const\n"
+		"\n"
+		"VariableElimination_double_H(VariableElimination_double self, std::string const & nodeName) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_swigregister", VariableElimination_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_GibbsInference_double", _wrap_new_GibbsInference_double, METH_VARARGS, (char *)"\n"
 		"new_GibbsInference_double(IBayesNet_double BN) -> GibbsInference_double\n"
 		"\n"
@@ -83774,6 +87164,7 @@ static swig_type_info _swigt__p_gum__UndiGraph = {"_p_gum__UndiGraph", "gum::Und
 static swig_type_info _swigt__p_gum__UnknownLabelInDatabase = {"_p_gum__UnknownLabelInDatabase", "gum::UnknownLabelInDatabase *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__UtilityTableT_double_t = {"_p_gum__UtilityTableT_double_t", "gum::UtilityTable< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__Variable = {"_p_gum__Variable", "gum::Variable *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__VariableEliminationT_double_t = {"_p_gum__VariableEliminationT_double_t", "gum::VariableElimination< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__VariableNodeMap = {"_p_gum__VariableNodeMap", "gum::VariableNodeMap *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__WrongClassElement = {"_p_gum__WrongClassElement", "gum::WrongClassElement *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__WrongType = {"_p_gum__WrongType", "gum::WrongType *", 0, 0, (void*)0, 0};
@@ -83935,6 +87326,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__UnknownLabelInDatabase,
   &_swigt__p_gum__UtilityTableT_double_t,
   &_swigt__p_gum__Variable,
+  &_swigt__p_gum__VariableEliminationT_double_t,
   &_swigt__p_gum__VariableNodeMap,
   &_swigt__p_gum__WrongClassElement,
   &_swigt__p_gum__WrongType,
@@ -84096,6 +87488,7 @@ static swig_cast_info _swigc__p_gum__UndiGraph[] = {  {&_swigt__p_gum__UndiGraph
 static swig_cast_info _swigc__p_gum__UnknownLabelInDatabase[] = {  {&_swigt__p_gum__UnknownLabelInDatabase, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__UtilityTableT_double_t[] = {  {&_swigt__p_gum__UtilityTableT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Variable[] = {  {&_swigt__p_gum__Variable, 0, 0, 0},  {&_swigt__p_gum__DiscreteVariable, _p_gum__DiscreteVariableTo_p_gum__Variable, 0, 0},  {&_swigt__p_gum__LabelizedVariable, _p_gum__LabelizedVariableTo_p_gum__Variable, 0, 0},  {&_swigt__p_gum__RangeVariable, _p_gum__RangeVariableTo_p_gum__Variable, 0, 0},  {&_swigt__p_gum__DiscretizedVariableT_double_t, _p_gum__DiscretizedVariableT_double_tTo_p_gum__Variable, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__VariableEliminationT_double_t[] = {  {&_swigt__p_gum__VariableEliminationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__VariableNodeMap[] = {  {&_swigt__p_gum__VariableNodeMap, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__WrongClassElement[] = {  {&_swigt__p_gum__WrongClassElement, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__WrongType[] = {  {&_swigt__p_gum__WrongType, 0, 0, 0},{0, 0, 0, 0}};
@@ -84257,6 +87650,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__UnknownLabelInDatabase,
   _swigc__p_gum__UtilityTableT_double_t,
   _swigc__p_gum__Variable,
+  _swigc__p_gum__VariableEliminationT_double_t,
   _swigc__p_gum__VariableNodeMap,
   _swigc__p_gum__WrongClassElement,
   _swigc__p_gum__WrongType,

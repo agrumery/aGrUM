@@ -190,6 +190,11 @@ class ShaferShenoyTestCase(JTInferenceTestCase):
   def _getInference(self,bn):
     return gum.ShaferShenoyInference(bn)
 
+class VariableEliminationTestCase(JTInferenceTestCase):
+  def _getInference(self,bn):
+    return gum.VariableElimination(bn)
+
 ts = unittest.TestSuite()
 addTests(ts, LazyPropagationTestCase)
 addTests(ts, ShaferShenoyTestCase)
+addTests(ts, VariableEliminationTestCase)

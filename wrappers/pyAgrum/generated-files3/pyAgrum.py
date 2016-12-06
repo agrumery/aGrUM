@@ -11986,6 +11986,524 @@ class ShaferShenoyInference_double(_object):
 ShaferShenoyInference_double_swigregister = _pyAgrum.ShaferShenoyInference_double_swigregister
 ShaferShenoyInference_double_swigregister(ShaferShenoyInference_double)
 
+class VariableElimination_double(_object):
+    """Proxy of C++ gum::VariableElimination<(double)> class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, VariableElimination_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, VariableElimination_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(gum::VariableElimination<(double)> self, IBayesNet_double BN, RelevantPotentialsFinderType relevant_type, gum::FindBarrenNodesType arg4) -> VariableElimination_double
+
+        Parameters
+        ----------
+        BN: gum::IBayesNet< double > const *
+        relevant_type: RelevantPotentialsFinderType
+        arg4: enum gum::FindBarrenNodesType
+
+        __init__(gum::VariableElimination<(double)> self, IBayesNet_double BN, RelevantPotentialsFinderType relevant_type) -> VariableElimination_double
+
+        Parameters
+        ----------
+        BN: gum::IBayesNet< double > const *
+        relevant_type: RelevantPotentialsFinderType
+
+        __init__(gum::VariableElimination<(double)> self, IBayesNet_double BN) -> VariableElimination_double
+
+        Parameters
+        ----------
+        BN: gum::IBayesNet< double > const *
+
+        """
+        this = _pyAgrum.new_VariableElimination_double(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_VariableElimination_double
+    __del__ = lambda self: None
+
+    def setTriangulation(self, new_triangulation: 'Triangulation const &') -> "void":
+        """
+        setTriangulation(VariableElimination_double self, Triangulation const & new_triangulation)
+
+        Parameters
+        ----------
+        new_triangulation: Triangulation const &
+
+        """
+        return _pyAgrum.VariableElimination_double_setTriangulation(self, new_triangulation)
+
+
+    def setRelevantPotentialsFinderType(self, type: 'RelevantPotentialsFinderType') -> "void":
+        """
+        setRelevantPotentialsFinderType(VariableElimination_double self, RelevantPotentialsFinderType type)
+
+        Parameters
+        ----------
+        type: RelevantPotentialsFinderType
+
+        """
+        return _pyAgrum.VariableElimination_double_setRelevantPotentialsFinderType(self, type)
+
+
+    def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
+        """
+        setFindBarrenNodesType(VariableElimination_double self, gum::FindBarrenNodesType type)
+
+        Parameters
+        ----------
+        type: enum gum::FindBarrenNodesType
+
+        """
+        return _pyAgrum.VariableElimination_double_setFindBarrenNodesType(self, type)
+
+
+    def junctionTree(self, id: 'gum::NodeId const') -> "gum::JunctionTree const *":
+        """
+        junctionTree(VariableElimination_double self, gum::NodeId const id) -> CliqueGraph
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.VariableElimination_double_junctionTree(self, id)
+
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceList(self) -> "PyObject *":
+        """
+        hardEvidenceList(VariableElimination_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > *
+
+        """
+        return _pyAgrum.VariableElimination_double_hardEvidenceList(self)
+
+
+    def softEvidenceList(self) -> "PyObject *":
+        """
+        softEvidenceList(VariableElimination_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > *
+
+        """
+        return _pyAgrum.VariableElimination_double_softEvidenceList(self)
+
+
+    def targetList(self) -> "PyObject *":
+        """
+        targetList(VariableElimination_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > *
+
+        """
+        return _pyAgrum.VariableElimination_double_targetList(self)
+
+
+    def makeInference(self) -> "void":
+        """
+        makeInference(VariableElimination_double self)
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > *
+
+        """
+        return _pyAgrum.VariableElimination_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        """
+        posterior(VariableElimination_double self, gum::NodeId const var) -> Potential_double
+
+        Parameters
+        ----------
+        var: gum::NodeId const
+
+        posterior(VariableElimination_double self, std::string const nodeName) -> Potential_double
+
+        Parameters
+        ----------
+        nodeName: std::string const
+
+        """
+        return _pyAgrum.VariableElimination_double_posterior(self, *args)
+
+
+    def BayesNet(self) -> "gum::IBayesNet< double > const &":
+        """
+        BayesNet(VariableElimination_double self) -> IBayesNet_double
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > const *
+
+        """
+        return _pyAgrum.VariableElimination_double_BayesNet(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(VariableElimination_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        addEvidence(VariableElimination_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(VariableElimination_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        addEvidence(VariableElimination_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        addEvidence(VariableElimination_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(VariableElimination_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.VariableElimination_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(VariableElimination_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        chgEvidence(VariableElimination_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        chgEvidence(VariableElimination_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        chgEvidence(VariableElimination_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        chgEvidence(VariableElimination_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(VariableElimination_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.VariableElimination_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(VariableElimination_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasEvidence(VariableElimination_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.VariableElimination_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """
+        eraseAllEvidence(VariableElimination_double self)
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > *
+
+        """
+        return _pyAgrum.VariableElimination_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args) -> "void":
+        """
+        eraseEvidence(VariableElimination_double self, gum::NodeId const id)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        eraseEvidence(VariableElimination_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.VariableElimination_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
+        """
+        hasHardEvidence(VariableElimination_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.VariableElimination_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(VariableElimination_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasSoftEvidence(VariableElimination_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.VariableElimination_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """
+        nbrEvidence(VariableElimination_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > const *
+
+        """
+        return _pyAgrum.VariableElimination_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """
+        nbrHardEvidence(VariableElimination_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > const *
+
+        """
+        return _pyAgrum.VariableElimination_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """
+        nbrSoftEvidence(VariableElimination_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > const *
+
+        """
+        return _pyAgrum.VariableElimination_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """
+        eraseAllTargets(VariableElimination_double self)
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > *
+
+        """
+        return _pyAgrum.VariableElimination_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """
+        addAllTargets(VariableElimination_double self)
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > *
+
+        """
+        return _pyAgrum.VariableElimination_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(VariableElimination_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        addTarget(VariableElimination_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.VariableElimination_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(VariableElimination_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        eraseTarget(VariableElimination_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.VariableElimination_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(VariableElimination_double self, gum::NodeId const variable) -> bool
+
+        Parameters
+        ----------
+        variable: gum::NodeId const
+
+        isTarget(VariableElimination_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.VariableElimination_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """
+        nbrTargets(VariableElimination_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > const *
+
+        """
+        return _pyAgrum.VariableElimination_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(VariableElimination_double self, gum::NodeId const X) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+
+        H(VariableElimination_double self, std::string const & nodeName) -> double
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.VariableElimination_double_H(self, *args)
+
+VariableElimination_double_swigregister = _pyAgrum.VariableElimination_double_swigregister
+VariableElimination_double_swigregister(VariableElimination_double)
+
 class GibbsInference_double(_object):
     """Proxy of C++ gum::GibbsInference<(double)> class."""
 
@@ -15650,8 +16168,11 @@ randomDistribution = randomDistribution_double
 
 SimpleBayesNet = IBayesNet_double
 BayesNet = BayesNet_double
+
 LazyPropagation = LazyPropagation_double
 ShaferShenoyInference = ShaferShenoyInference_double
+VariableElimination = VariableElimination_double
+
 GibbsInference = GibbsInference_double
 
 BruteForceKL = BruteForceKL_double

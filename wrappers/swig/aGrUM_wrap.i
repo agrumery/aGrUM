@@ -77,8 +77,11 @@
 #include <agrum/core/approximations/approximationScheme.h>
 
 #include <agrum/BN/inference/BayesNetInference.h>
+
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/variableElimination.h>
+
 #include <agrum/BN/inference/GibbsInference.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
@@ -322,6 +325,8 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
 %include <agrum/BN/inference/ShaferShenoyInference.h>
+%include <agrum/BN/inference/variableElimination.h>
+
 %include <agrum/BN/inference/GibbsInference.h>
 
 %import <agrum/BN/algorithms/divergence/KL.h>
@@ -365,8 +370,11 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template (IBayesNet_double ) gum::IBayesNet<double>;
 %template ( BayesNet_double ) gum::BayesNet<double>;
 %template ( BayesNetInference_double ) gum::BayesNetInference<double>;
+
 %template ( LazyPropagation_double ) gum::LazyPropagation<double>;
 %template ( ShaferShenoyInference_double ) gum::ShaferShenoyInference<double>;
+%template ( VariableElimination_double ) gum::VariableElimination<double>;
+
 %template ( GibbsInference_double ) gum::GibbsInference<double>;
 
 %template ( BruteForceKL_double ) gum::BruteForceKL<double>;

@@ -341,7 +341,13 @@ class IncrementalShaferShenoyTestCase(IncrementalLazyPropagationTestCase):
     self._buildBN()
     self.ie = gum.ShaferShenoyInference(self.bn)
 
+class IncrementalVariableEliminationTestCase(IncrementalLazyPropagationTestCase):
+  def setUp(self):
+    self._buildBN()
+    self.ie = gum.VariableElimination(self.bn)
+
 
 ts = unittest.TestSuite()
 addTests(ts, IncrementalLazyPropagationTestCase)
 addTests(ts, IncrementalShaferShenoyTestCase)
+addTests(ts, IncrementalVariableEliminationTestCase)

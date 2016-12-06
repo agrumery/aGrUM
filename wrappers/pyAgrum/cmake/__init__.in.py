@@ -42,7 +42,7 @@ from @PYAGRUM_MODULE@ import BayesNet
 from @PYAGRUM_MODULE@ import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from @PYAGRUM_MODULE@ import Potential, Instantiation, UtilityTable
 from @PYAGRUM_MODULE@ import BruteForceKL, GibbsKL
-from @PYAGRUM_MODULE@ import GibbsInference, LazyPropagation, ShaferShenoyInference
+from @PYAGRUM_MODULE@ import GibbsInference, LazyPropagation, ShaferShenoyInference, VariableElimination
 from @PYAGRUM_MODULE@ import PythonApproximationListener, PythonBNListener, PythonLoadListener
 from @PYAGRUM_MODULE@ import BNGenerator, IDGenerator, JTGenerator
 from @PYAGRUM_MODULE@ import BNLearner
@@ -65,7 +65,7 @@ __all__=[
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
   'Potential','Instantiation','UtilityTable',
   'BruteForceKL','GibbsKL',
-  'GibbsInference','LazyPropagation','ShaferShenoyInference',
+  'GibbsInference','LazyPropagation','ShaferShenoyInference','VariableElimination',
   'PythonApproximationListener','PythonBNListener','PythonLoadListener',
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',

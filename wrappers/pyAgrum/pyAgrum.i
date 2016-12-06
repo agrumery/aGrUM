@@ -75,8 +75,11 @@ randomDistribution = randomDistribution_double
 
 SimpleBayesNet = IBayesNet_double
 BayesNet = BayesNet_double
+
 LazyPropagation = LazyPropagation_double
 ShaferShenoyInference = ShaferShenoyInference_double
+VariableElimination = VariableElimination_double
+
 GibbsInference = GibbsInference_double
 
 BruteForceKL = BruteForceKL_double
