@@ -15,65 +15,22 @@ if (PYTHON_TARGET)
   unset(PYTHON_VERSION_MAJOR CACHE)
 endif (PYTHON_TARGET)
 
-
 if (FOR_PYTHON2)
+  find_package(PythonInterp 2 REQUIRED)
+  find_package(PythonLibs   2 REQUIRED)
+
   set(PYAGRUM_MODULE "pyAgrum")
   set(PYAGRUM_FUNCTIONS "functions")
-else()
+else(FOR_PYTHON2)
+  find_package(PythonInterp 3 REQUIRED)
+  find_package(PythonLibs   3 REQUIRED)
+
   set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
 
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE ".pyAgrum")
   set(PYAGRUM_FUNCTIONS ".functions")
-endif()
-
-
-if(NOT APPLE)
-  if (FOR_PYTHON2)
-    find_package(PythonInterp 2 REQUIRED)
-    find_package(PythonLibs   2 REQUIRED)
-  else(FOR_PYTHON2)
-    find_package(PythonInterp 3 REQUIRED)
-    find_package(PythonLibs   3 REQUIRED)
-  endif(FOR_PYTHON2)
-else(NOT APPLE)
-  # PYTHON_VERSION_MAJOR
-  execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('VERSION')[0])[0:1])"
-    OUTPUT_VARIABLE PYTHON_VERSION_MAJOR
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-
-
-  # PYTHON_VERSION_STRING
-  execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_config_vars('VERSION')[0])"
-    OUTPUT_VARIABLE PYTHON_VERSION_STRING
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-
-  # PYTHON_INCLUDE_DIR
-  execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())"
-    OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-  
-  # PYTHON_LIBRARY
-  execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-  OUTPUT_VARIABLE PYTHON_LOCAL_PATH
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-  execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print((sysconfig.get_config_vars('BINDIR'))[0])"
-  OUTPUT_VARIABLE PYTHON_LIBPATH
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-  set(PYTHON_LIBRARY "${PYTHON_LOCAL_PATH}/libs/python${PYTHON_VERSION_STRING}.lib")
-
-endif(NOT APPLE)
-
+endif(FOR_PYTHON2)
 
 # PYTHON_INSTALL
 execute_process(
