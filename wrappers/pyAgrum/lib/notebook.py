@@ -710,7 +710,7 @@ def getPotential(pot, digits=4, varnames=None):
   return _reprPotential(pot, digits, varnames, asString=True)
 
 
-def getSideBySide(*args, captions=None):
+def getSideBySide(*args, **kwargs):
   """
   create an HTML table for args as string (using string, _repr_html_() or str())
 
@@ -718,6 +718,16 @@ def getSideBySide(*args, captions=None):
   :param captions: list of strings (captions)
   :return: a string representing the table
   """
+
+  for k in kwargs:
+    if k != "captions":
+      raise TypeError("sideBySide() got an unexpected keyword argument '{}'".format(k))
+
+  if 'captions' in kwargs:
+    captions = kwargs['captions']
+  else:
+    captions = None
+
   s = '<table style="border-style: hidden; border-collapse: collapse;" width="100%">'
 
   def reprHTML(s):
@@ -743,14 +753,18 @@ def getSideBySide(*args, captions=None):
   return s
 
 
-def sideBySide(*args, captions=None):
+def sideBySide(*args, **kwargs):
   """
   display side by side args as HMTL fragment (using string, _repr_html_() or str())
 
   :param args: HMTL fragments as string arg, arg._repr_html_() or str(arg)
   :param captions: list of strings (captions)
   """
-  display(HTML(getSideBySide(*args, captions=captions)))
+  for k in kwargs:
+    if k != "captions":
+      raise TypeError("sideBySide() got an unexpected keyword argument '{}'".format(k))
+
+  display(HTML(getSideBySide(*args, **kwargs)))
 
 
 def getInferenceEngine(ie, inferenceCaption):

@@ -6,7 +6,7 @@ It provides a high-level interface to the part of aGrUM allowing to create, hand
 The module is generated using the `SWIG <https://www.swig.org>`_ interface generator. Custom-written code was added to make the interface more friendly.
 
 pyAgrum includes :
-  * API documentation, 
+  * API documentation,
   * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/>`_,
   * a `website <https://forge.lip6.fr/projects/pyagrum/wiki>`_.
 """
@@ -42,14 +42,14 @@ from @PYAGRUM_MODULE@ import BayesNet
 from @PYAGRUM_MODULE@ import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from @PYAGRUM_MODULE@ import Potential, Instantiation, UtilityTable
 from @PYAGRUM_MODULE@ import BruteForceKL, GibbsKL
-from @PYAGRUM_MODULE@ import GibbsInference, LazyPropagation
+from @PYAGRUM_MODULE@ import GibbsInference, LazyPropagation, ShaferShenoyInference
 from @PYAGRUM_MODULE@ import PythonApproximationListener, PythonBNListener, PythonLoadListener
 from @PYAGRUM_MODULE@ import BNGenerator, IDGenerator, JTGenerator
 from @PYAGRUM_MODULE@ import BNLearner
 from @PYAGRUM_MODULE@ import InfluenceDiagram, InfluenceDiagramInference
 from @PYAGRUM_MODULE@ import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 from @PYAGRUM_MODULE@ import PRMexplorer
-  
+
 from @PYAGRUM_MODULE@ import initRandom, randomProba, randomDistribution
 from @PYAGRUM_MODULE@ import isOMP, setNumberOfThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads
 
@@ -59,25 +59,25 @@ from @PYAGRUM_MODULE@ import DefaultInLabel, DuplicateElement, DuplicateLabel, E
 __all__=[
   '__version__','__license__','__project_url__',        # here
   'about','availableBNExts','loadBN','saveBN','loadID','getPosterior' # in fuctions.py
-  
+
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
   'BayesNet',
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
   'Potential','Instantiation','UtilityTable',
   'BruteForceKL','GibbsKL',
-  'GibbsInference','LazyPropagation',
+  'GibbsInference','LazyPropagation','ShaferShenoyInference',
   'PythonApproximationListener','PythonBNListener','PythonLoadListener',
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',
   'InfluenceDiagram','InfluenceDiagramInference',
-  
+
   'initRandom','randomProba','randomDistribution',
   'isOMP','setNumberOfThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads',
-  
+
   'CredalNet','CNMonteCarloSampling','CNLoopyPropagation',
-  
+
   'PRMexplorer',
-  
+
   'DefaultInLabel','DuplicateElement','DuplicateLabel','EmptyBSTree','EmptySet','GumException','FatalError','FormatNotFound','GraphError','IOError','IdError','InvalidArc','InvalidArgument','InvalidArgumentsNumber','InvalidDirectedCycle','InvalidEdge','InvalidNode','NoChild','NoNeighbour','NoParent','NotFound','NullElement','OperationNotAllowed','OutOfBounds','OutOfLowerBound','OutOfUpperBound','ReferenceError','SizeError','SyntaxError','UndefinedElement','UndefinedIteratorKey','UndefinedIteratorValue','UnknownLabelInDatabase'
   ]
 

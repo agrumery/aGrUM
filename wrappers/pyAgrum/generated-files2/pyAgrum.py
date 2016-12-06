@@ -11334,6 +11334,658 @@ class LazyPropagation_double(_object):
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
+class ShaferShenoyInference_double(_object):
+    """Proxy of C++ gum::ShaferShenoyInference<(double)> class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, ShaferShenoyInference_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, ShaferShenoyInference_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(gum::ShaferShenoyInference<(double)> self, IBayesNet_double BN, gum::FindBarrenNodesType barren_type, bool use_binary_join_tree=True) -> ShaferShenoyInference_double
+
+        Parameters
+        ----------
+        BN: gum::IBayesNet< double > const *
+        barren_type: enum gum::FindBarrenNodesType
+        use_binary_join_tree: bool
+
+        __init__(gum::ShaferShenoyInference<(double)> self, IBayesNet_double BN, gum::FindBarrenNodesType barren_type) -> ShaferShenoyInference_double
+
+        Parameters
+        ----------
+        BN: gum::IBayesNet< double > const *
+        barren_type: enum gum::FindBarrenNodesType
+
+        __init__(gum::ShaferShenoyInference<(double)> self, IBayesNet_double BN) -> ShaferShenoyInference_double
+
+        Parameters
+        ----------
+        BN: gum::IBayesNet< double > const *
+
+        """
+        this = _pyAgrum.new_ShaferShenoyInference_double(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_ShaferShenoyInference_double
+    __del__ = lambda self: None
+
+    def setTriangulation(self, new_triangulation):
+        """
+        setTriangulation(ShaferShenoyInference_double self, Triangulation const & new_triangulation)
+
+        Parameters
+        ----------
+        new_triangulation: Triangulation const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_setTriangulation(self, new_triangulation)
+
+
+    def setFindBarrenNodesType(self, type):
+        """
+        setFindBarrenNodesType(ShaferShenoyInference_double self, gum::FindBarrenNodesType type)
+
+        Parameters
+        ----------
+        type: enum gum::FindBarrenNodesType
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_setFindBarrenNodesType(self, type)
+
+
+    def joinTree(self):
+        """
+        joinTree(ShaferShenoyInference_double self) -> CliqueGraph
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_joinTree(self)
+
+
+    def junctionTree(self):
+        """
+        junctionTree(ShaferShenoyInference_double self) -> CliqueGraph
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_junctionTree(self)
+
+
+    def evidenceProbability(self):
+        """
+        evidenceProbability(ShaferShenoyInference_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_evidenceProbability(self)
+
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceList(self):
+        """
+        hardEvidenceList(ShaferShenoyInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_hardEvidenceList(self)
+
+
+    def softEvidenceList(self):
+        """
+        softEvidenceList(ShaferShenoyInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_softEvidenceList(self)
+
+
+    def targetList(self):
+        """
+        targetList(ShaferShenoyInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_targetList(self)
+
+
+    def jointPosterior(self, list):
+        """
+        jointPosterior(ShaferShenoyInference_double self, PyObject * list) -> Potential_double
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_jointPosterior(self, list)
+
+
+    def addJointTarget(self, list):
+        """
+        addJointTarget(ShaferShenoyInference_double self, PyObject * list)
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_addJointTarget(self, list)
+
+
+    def eraseJointTarget(self, list):
+        """
+        eraseJointTarget(ShaferShenoyInference_double self, PyObject * list)
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_eraseJointTarget(self, list)
+
+
+    def isJointTarget(self, list):
+        """
+        isJointTarget(ShaferShenoyInference_double self, PyObject * list) -> bool
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_isJointTarget(self, list)
+
+
+    def jointTargets(self):
+        """
+        jointTargets(ShaferShenoyInference_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > const *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_jointTargets(self)
+
+
+    def makeInference(self):
+        """
+        makeInference(ShaferShenoyInference_double self)
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_makeInference(self)
+
+
+    def posterior(self, *args):
+        """
+        posterior(ShaferShenoyInference_double self, gum::NodeId const var) -> Potential_double
+
+        Parameters
+        ----------
+        var: gum::NodeId const
+
+        posterior(ShaferShenoyInference_double self, std::string const nodeName) -> Potential_double
+
+        Parameters
+        ----------
+        nodeName: std::string const
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_posterior(self, *args)
+
+
+    def BayesNet(self):
+        """
+        BayesNet(ShaferShenoyInference_double self) -> IBayesNet_double
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > const *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_BayesNet(self)
+
+
+    def addEvidence(self, *args):
+        """
+        addEvidence(ShaferShenoyInference_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        addEvidence(ShaferShenoyInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(ShaferShenoyInference_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        addEvidence(ShaferShenoyInference_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        addEvidence(ShaferShenoyInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(ShaferShenoyInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args):
+        """
+        chgEvidence(ShaferShenoyInference_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        chgEvidence(ShaferShenoyInference_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        chgEvidence(ShaferShenoyInference_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        chgEvidence(ShaferShenoyInference_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        chgEvidence(ShaferShenoyInference_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(ShaferShenoyInference_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args):
+        """
+        hasEvidence(ShaferShenoyInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasEvidence(ShaferShenoyInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self):
+        """
+        eraseAllEvidence(ShaferShenoyInference_double self)
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args):
+        """
+        eraseEvidence(ShaferShenoyInference_double self, gum::NodeId const id)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        eraseEvidence(ShaferShenoyInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName):
+        """
+        hasHardEvidence(ShaferShenoyInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args):
+        """
+        hasSoftEvidence(ShaferShenoyInference_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasSoftEvidence(ShaferShenoyInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self):
+        """
+        nbrEvidence(ShaferShenoyInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > const *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self):
+        """
+        nbrHardEvidence(ShaferShenoyInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > const *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self):
+        """
+        nbrSoftEvidence(ShaferShenoyInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > const *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self):
+        """
+        eraseAllTargets(ShaferShenoyInference_double self)
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self):
+        """
+        addAllTargets(ShaferShenoyInference_double self)
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_addAllTargets(self)
+
+
+    def addTarget(self, *args):
+        """
+        addTarget(ShaferShenoyInference_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        addTarget(ShaferShenoyInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args):
+        """
+        eraseTarget(ShaferShenoyInference_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        eraseTarget(ShaferShenoyInference_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args):
+        """
+        isTarget(ShaferShenoyInference_double self, gum::NodeId const variable) -> bool
+
+        Parameters
+        ----------
+        variable: gum::NodeId const
+
+        isTarget(ShaferShenoyInference_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_isTarget(self, *args)
+
+
+    def nbrTargets(self):
+        """
+        nbrTargets(ShaferShenoyInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > const *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_nbrTargets(self)
+
+
+    def H(self, *args):
+        """
+        H(ShaferShenoyInference_double self, gum::NodeId const X) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+
+        H(ShaferShenoyInference_double self, std::string const & nodeName) -> double
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_H(self, *args)
+
+
+    def eraseAllJointTargets(self):
+        """
+        eraseAllJointTargets(ShaferShenoyInference_double self)
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_eraseAllJointTargets(self)
+
+
+    def eraseAllMarginalTargets(self):
+        """
+        eraseAllMarginalTargets(ShaferShenoyInference_double self)
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_eraseAllMarginalTargets(self)
+
+
+    def nbrJointTargets(self):
+        """
+        nbrJointTargets(ShaferShenoyInference_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ShaferShenoyInference< double > *
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_nbrJointTargets(self)
+
+
+    def I(self, X, Y):
+        """
+        I(ShaferShenoyInference_double self, gum::NodeId const X, gum::NodeId const Y) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+        Y: gum::NodeId const
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_I(self, X, Y)
+
+
+    def VI(self, X, Y):
+        """
+        VI(ShaferShenoyInference_double self, gum::NodeId const X, gum::NodeId const Y) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+        Y: gum::NodeId const
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_VI(self, X, Y)
+
+ShaferShenoyInference_double_swigregister = _pyAgrum.ShaferShenoyInference_double_swigregister
+ShaferShenoyInference_double_swigregister(ShaferShenoyInference_double)
+
 class GibbsInference_double(_object):
     """Proxy of C++ gum::GibbsInference<(double)> class."""
 
@@ -14999,6 +15651,7 @@ randomDistribution = randomDistribution_double
 SimpleBayesNet = IBayesNet_double
 BayesNet = BayesNet_double
 LazyPropagation = LazyPropagation_double
+ShaferShenoyInference = ShaferShenoyInference_double
 GibbsInference = GibbsInference_double
 
 BruteForceKL = BruteForceKL_double

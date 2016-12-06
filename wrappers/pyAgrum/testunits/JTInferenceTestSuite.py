@@ -2,10 +2,14 @@
 import unittest
 
 import pyAgrum as gum
-from pyAgrumTestSuite import pyAgrumTestCase
+from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
-class LazyPropagationTestCase(pyAgrumTestCase):
+class JTInferenceTestCase(pyAgrumTestCase):
+
+  def _getInference(self,bn):
+    raise(NotImplementedError("This class is a generic class for JT Inference"))
+
   def setUp(self):
     self.bn = gum.BayesNet()
 
@@ -74,12 +78,11 @@ class LazyPropagationTestCase(pyAgrumTestCase):
     self.bn2.cpt(self.w2)[1, 1, :] = [0.01, 0.99]
 
 
-class TestDictFeature(LazyPropagationTestCase):
   def testSimpleInference(self):
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.makeInference()
 
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.setEvidence({self.s: [0, 1], self.w: (1, 0)})
     ie.makeInference()
     result = ie.posterior(self.r)
@@ -87,12 +90,12 @@ class TestDictFeature(LazyPropagationTestCase):
     self.assertListsAlmostEqual(result.tolist(), [0.95890411, 0.04109589])
 
   def testDictOfLabels(self):
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.setEvidence({'s': 0, 'w': 1})
     ie.makeInference()
     result = ie.posterior(self.r)
 
-    ie2 = gum.LazyPropagation(self.bn)
+    ie2 = self._getInference(self.bn)
     ie2.setEvidence({'s': 'no', 'w': 'yes'})
     ie2.makeInference()
     result2 = ie2.posterior(self.r)
@@ -100,12 +103,12 @@ class TestDictFeature(LazyPropagationTestCase):
     self.assertListsAlmostEqual(result.tolist(), result2.tolist())
 
   def testDictOfLabelsWithId(self):
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.setEvidence({self.s: 0, self.w: 1})
     ie.makeInference()
     result = ie.posterior(self.r)
 
-    ie2 = gum.LazyPropagation(self.bn)
+    ie2 = self._getInference(self.bn)
     ie2.setEvidence({self.s: 'no', self.w: 'yes'})
     ie2.makeInference()
     result2 = ie2.posterior(self.r)
@@ -113,81 +116,80 @@ class TestDictFeature(LazyPropagationTestCase):
     self.assertListsAlmostEqual(result.tolist(), result2.tolist())
 
   def testWithDifferentVariables(self):
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.setEvidence({'r': [0, 1], 'w': (1, 0)})
     ie.makeInference()
     result = ie.posterior(self.s).tolist()
-    ie = gum.LazyPropagation(self.bni)
+    ie = self._getInference(self.bni)
     ie.setEvidence({'ri': [0, 1], 'wi': (1, 0)})
     ie.makeInference()
     result2 = ie.posterior(self.si).tolist()
     self.assertListsAlmostEqual(result, result2)
 
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.setEvidence({'r': 1, 'w': 0})
     ie.makeInference()
     result = ie.posterior(self.s).tolist()
     self.assertListsAlmostEqual(result, result2)
 
-    ie = gum.LazyPropagation(self.bni)
+    ie = self._getInference(self.bni)
     ie.setEvidence({'ri': "6", 'wi': "0.33"})
     ie.makeInference()
     result = ie.posterior(self.si).tolist()
     self.assertListsAlmostEqual(result, result2)
 
   def testWithDifferentVariablesWithId(self):
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.setEvidence({self.r: [0, 1], self.w: (1, 0)})
     ie.makeInference()
     result = ie.posterior(self.s).tolist()
-    ie = gum.LazyPropagation(self.bni)
+    ie = self._getInference(self.bni)
     ie.setEvidence({self.ri: [0, 1], self.wi: (1, 0)})
     ie.makeInference()
     result2 = ie.posterior(self.si).tolist()
     self.assertListsAlmostEqual(result, result2)
 
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.setEvidence({self.r: 1, self.w: 0})
     ie.makeInference()
     result = ie.posterior(self.s).tolist()
     self.assertListsAlmostEqual(result, result2)
 
-    ie = gum.LazyPropagation(self.bni)
+    ie = self._getInference(self.bni)
     ie.setEvidence({self.ri: "6", self.wi: "0.33"})
     ie.makeInference()
     result2 = ie.posterior(self.si).tolist()
     self.assertListsAlmostEqual(result, result2)
 
-
-class TestInferenceResults(LazyPropagationTestCase):
   def testOpenBayesSiteExamples(self):
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.makeInference()
     result = ie.posterior(self.w)
     self.assertListsAlmostEqual(result.tolist(), [0.3529, 0.6471],
                                 places=4)
 
-    ie = gum.LazyPropagation(self.bn)
+    ie = self._getInference(self.bn)
     ie.setEvidence({'s': 1, 'c': 0})
     ie.makeInference()
     result = ie.posterior(self.w)
     self.assertListsAlmostEqual(result.tolist(), [0.082, 0.918], places=4)
 
   def testWikipediaExample(self):
-    ie = gum.LazyPropagation(self.bn2)
+    ie = self._getInference(self.bn2)
     ie.setEvidence({'w2': 1})
     ie.makeInference()
     result = ie.posterior(self.r2)
     expected = [1 - 0.3577, 0.3577]
     self.assertListsAlmostEqual(result.tolist(), expected, places=4)
 
+class LazyPropagationTestCase(JTInferenceTestCase):
+  def _getInference(self,bn):
+    return gum.LazyPropagation(bn)
+
+class ShaferShenoyTestCase(JTInferenceTestCase):
+  def _getInference(self,bn):
+    return gum.ShaferShenoyInference(bn)
 
 ts = unittest.TestSuite()
-ts.addTest(TestDictFeature('testSimpleInference'))
-ts.addTest(TestDictFeature('testDictOfLabels'))
-ts.addTest(TestDictFeature('testDictOfLabelsWithId'))
-ts.addTest(TestDictFeature('testWithDifferentVariables'))
-ts.addTest(TestDictFeature('testWithDifferentVariables'))
-ts.addTest(TestDictFeature('testWithDifferentVariablesWithId'))
-ts.addTest(TestInferenceResults('testOpenBayesSiteExamples'))
-ts.addTest(TestInferenceResults('testWikipediaExample'))
+addTests(ts, LazyPropagationTestCase)
+addTests(ts, ShaferShenoyTestCase)

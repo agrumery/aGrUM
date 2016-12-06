@@ -161,6 +161,7 @@ def getPosterior(bn, evs, target):
   """
   inf = LazyPropagation(bn)
   inf.setEvidence(evs)
+  inf.setTarget([target])
   inf.makeInference()
   return Potential(inf.posterior(bn.idFromName(target)))
 #creating a new Potential from posterior( will disappear with ie )

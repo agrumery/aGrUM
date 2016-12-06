@@ -256,6 +256,7 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
 }
 %enddef
 ADD_INFERENCE_API(gum::LazyPropagation<double>)
+ADD_INFERENCE_API(gum::ShaferShenoyInference<double>)
 ADD_INFERENCE_API(gum::GibbsInference<double>)
 
 %define ADD_JOINT_INFERENCE_API(classname)
@@ -289,5 +290,6 @@ ADD_INFERENCE_API(gum::GibbsInference<double>)
 }
 %enddef
 ADD_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
+ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
 
 
