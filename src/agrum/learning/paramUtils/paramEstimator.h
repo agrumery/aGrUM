@@ -140,6 +140,9 @@ namespace gum {
       /// returns the modalities of the variables
       using Counter<IdSetAlloc, CountAlloc>::modalities;
 
+      /// sets the maximum number of threads used to compute the scores
+      using Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads;
+
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
        * distribution of the dimensions of the CPT within the vector is as
