@@ -23,7 +23,7 @@ Helping functions and consts for pyAgrum
 from @PYAGRUM_MODULE@ import BayesNet
 from @PYAGRUM_MODULE@ import Potential
 from @PYAGRUM_MODULE@ import InfluenceDiagram
-from @PYAGRUM_MODULE@ import LazyPropagation
+from @PYAGRUM_MODULE@ import VariableElimination
 
 def about():
   """
@@ -147,21 +147,25 @@ def fastBN(arcs,domain_size=2):
 
 def getPosterior(bn, evs, target):
   """
-  Compute the posterior of a single target (variable) in a BN given evidence using Lazy Propagation (for now).
+  Compute the posterior of a single target (variable) in a BN given evidence
+
+
+  getPosterior uses a VariableElimination inference.
+  If more than one target is needed with the same set of evidence or if the same
+  target is needed with more than one set of evidence, this function is not
+  relevant since it creates a new inference engine every time it is called.
 
   :param bn:
   :type bn: pyAgrum.BayesNet
-  :param evs: events map {
-  name;
-  val, name : [ val1, val2 ], ...}
+  :param evs: events map {name:val, name : [ val1, val2 ], ...}
   :type evs: dictionary
   :param target: variable name
   :type target: str
   :return: posterior Potential
   """
-  inf = LazyPropagation(bn)
+  inf = VariableElimination(bn)
   inf.setEvidence(evs)
   inf.setTarget([target])
   inf.makeInference()
-  return Potential(inf.posterior(bn.idFromName(target)))
+  return Potential(inf.posterior(target))
 #creating a new Potential from posterior( will disappear with ie )
