@@ -7070,6 +7070,34 @@ SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__softEvidenceList(gum:
 SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__targetList(gum::VariableElimination< double > *self){
       return PyAgrumHelper::PyListFromNodeSet(self->targets() );
     }
+SWIGINTERN gum::Potential< double > gum_VariableElimination_Sl_double_Sg__jointPosterior(gum::VariableElimination< double > *self,PyObject *list){
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      return self->jointPosterior(nodeset);
+    }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addJointTarget(gum::VariableElimination< double > *self,PyObject *list){
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
+    }
+SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseJointTarget(gum::VariableElimination< double > *self,PyObject *list){
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
+    }
+SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__isJointTarget(gum::VariableElimination< double > *self,PyObject *list){
+      gum::NodeSet nodeset;
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
+    }
+SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__jointTargets(gum::VariableElimination< double > const *self){
+      PyObject* q = PyList_New( 0 );
+
+      for ( auto ns : self->JointTargetedInference<double>::jointTargets()) {
+        PyList_Append( q,PyAgrumHelper::PyListFromNodeSet(ns));
+      }
+      return q;
+    }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__makeInference(gum::VariableElimination< double > *self){
     self->gum::BayesNetInference<double>::makeInference();
   }
@@ -57974,6 +58002,161 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_VariableElimination_double_jointPosterior(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_jointPosterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_jointPosterior" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      result = gum_VariableElimination_Sl_double_Sg__jointPosterior(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_addJointTarget(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_addJointTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_addJointTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__addJointTarget(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_eraseJointTarget(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_eraseJointTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_eraseJointTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_VariableElimination_Sl_double_Sg__eraseJointTarget(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_isJointTarget(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VariableElimination_double_isJointTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_isJointTarget" "', argument " "1"" of type '" "gum::VariableElimination< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      result = (bool)gum_VariableElimination_Sl_double_Sg__isJointTarget(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VariableElimination_double_jointTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_jointTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_jointTargets" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_VariableElimination_Sl_double_Sg__jointTargets((gum::VariableElimination< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_VariableElimination_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
@@ -83698,6 +83881,50 @@ static PyMethodDef SwigMethods[] = {
 		"Parameters\n"
 		"----------\n"
 		"self: gum::VariableElimination< double > *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_jointPosterior", _wrap_VariableElimination_double_jointPosterior, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_jointPosterior(VariableElimination_double self, PyObject * list) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"list: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_addJointTarget", _wrap_VariableElimination_double_addJointTarget, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_addJointTarget(VariableElimination_double self, PyObject * list)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"list: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_eraseJointTarget", _wrap_VariableElimination_double_eraseJointTarget, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_eraseJointTarget(VariableElimination_double self, PyObject * list)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"list: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_isJointTarget", _wrap_VariableElimination_double_isJointTarget, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_isJointTarget(VariableElimination_double self, PyObject * list) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > *\n"
+		"list: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"VariableElimination_double_jointTargets", _wrap_VariableElimination_double_jointTargets, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_jointTargets(VariableElimination_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::VariableElimination< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"VariableElimination_double_makeInference", _wrap_VariableElimination_double_makeInference, METH_VARARGS, (char *)"\n"

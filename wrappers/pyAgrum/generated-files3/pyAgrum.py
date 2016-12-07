@@ -12142,6 +12142,66 @@ class VariableElimination_double(_object):
         return _pyAgrum.VariableElimination_double_targetList(self)
 
 
+    def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
+        """
+        jointPosterior(VariableElimination_double self, PyObject * list) -> Potential_double
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.VariableElimination_double_jointPosterior(self, list)
+
+
+    def addJointTarget(self, list: 'PyObject *') -> "void":
+        """
+        addJointTarget(VariableElimination_double self, PyObject * list)
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.VariableElimination_double_addJointTarget(self, list)
+
+
+    def eraseJointTarget(self, list: 'PyObject *') -> "void":
+        """
+        eraseJointTarget(VariableElimination_double self, PyObject * list)
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.VariableElimination_double_eraseJointTarget(self, list)
+
+
+    def isJointTarget(self, list: 'PyObject *') -> "bool":
+        """
+        isJointTarget(VariableElimination_double self, PyObject * list) -> bool
+
+        Parameters
+        ----------
+        list: PyObject *
+
+        """
+        return _pyAgrum.VariableElimination_double_isJointTarget(self, list)
+
+
+    def jointTargets(self) -> "PyObject *":
+        """
+        jointTargets(VariableElimination_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::VariableElimination< double > const *
+
+        """
+        return _pyAgrum.VariableElimination_double_jointTargets(self)
+
+
     def makeInference(self) -> "void":
         """
         makeInference(VariableElimination_double self)
