@@ -93,4 +93,4 @@ IMPROVE_INFERENCE_API(gum::GibbsInference<double>)
 %enddef
 IMPROVE_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
 IMPROVE_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
-IMPROVE_JOINT_INFERENCE_API(gum::VariableEliminatio<double>)
+IMPROVE_JOINT_INFERENCE_API(gum::VariableElimination<double>)

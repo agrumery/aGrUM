@@ -182,6 +182,7 @@ class JTInferenceTestCase(pyAgrumTestCase):
     expected = [1 - 0.3577, 0.3577]
     self.assertListsAlmostEqual(result.tolist(), expected, places=4)
 
+
 class LazyPropagationTestCase(JTInferenceTestCase):
   def _getInference(self,bn):
     return gum.LazyPropagation(bn)

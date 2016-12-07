@@ -77,7 +77,7 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
                  self.bn.cpt("H")
 
   def setUp(self):
-    raise(NotImplementedError("This class is a generic class for Incremental Inference"))
+    raise (NotImplementedError("This class is a generic class for Incremental Inference"))
 
   def testPrior(self):
     self.assertEqual(self.ie.posterior("A"), self.joint.margSumIn(["A"]))
@@ -330,16 +330,29 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
     self.assertEqual(self.ie.posterior("A"), posterior_joint.margSumIn(["A"]).normalize())
     self.assertEqual(self.ie.posterior("D"), posterior_joint.margSumIn(["D"]).normalize())
 
+  def testJointTarget(self):
+    self.ie.eraseAllTargets()
+    self.ie.addJointTarget(["A", "D"])
+    self.ie.addEvidence("A", [0.3, 0.7])
+
+    pjoint = self.joint * gum.Potential().add(self.bn.variable("A")).fillWith([0.3, 0.7])
+    self.assertEqual(self.ie.jointPosterior(['A', 'D']), pjoint.margSumIn(["A", "D"]).normalize())
+
+    with self.assertRaises(gum.UndefinedElement):
+      self.ie.jointPosterior(['A', 'C'])
+
 
 class IncrementalLazyPropagationTestCase(IncrementalLazyPropagationTestCase):
   def setUp(self):
     self._buildBN()
     self.ie = gum.LazyPropagation(self.bn)
 
+
 class IncrementalShaferShenoyTestCase(IncrementalLazyPropagationTestCase):
   def setUp(self):
     self._buildBN()
     self.ie = gum.ShaferShenoyInference(self.bn)
+
 
 class IncrementalVariableEliminationTestCase(IncrementalLazyPropagationTestCase):
   def setUp(self):
