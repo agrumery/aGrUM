@@ -79,6 +79,27 @@ class IncrementalLazyPropagationTestCase(pyAgrumTestCase):
   def setUp(self):
     raise (NotImplementedError("This class is a generic class for Incremental Inference"))
 
+  def testGetPosterior(self):
+    self.assertEqual(gum.getPosterior(self.bn,{},"A"), self.joint.margSumIn(["A"]))
+    self.assertEqual(gum.getPosterior(self.bn,{},2), self.joint.margSumIn(["C"]))
+    self.assertEqual(gum.getPosterior(self.bn,{},'D'), self.joint.margSumIn(["D"]))
+    
+    self.ie.eraseAllTargets()
+    self.ie.addTarget("A")
+    self.ie.addTarget("F")
+
+    self.ie.addEvidence("B", 2)
+    self.ie.addEvidence("D", [0.2, 0.6, 0.6])
+
+    self.ie.makeInference()
+
+    posterior_joint = self.joint * \
+                      gum.Potential().add(self.bn.variable("B")).fillWith([0, 0, 1]) * \
+                      gum.Potential().add(self.bn.variable("D")).fillWith([0.2, 0.6, 0.6])
+
+    self.assertEqual(gum.getPosterior(self.bn,{1:2,"D":[0.2,0.6,0.6]},"A"), posterior_joint.margSumIn(["A"]).normalize())
+    self.assertEqual(gum.getPosterior(self.bn,{"B":2,3:[0.2,0.6,0.6]},"F"), posterior_joint.margSumIn(["F"]).normalize())
+
   def testPrior(self):
     self.assertEqual(self.ie.posterior("A"), self.joint.margSumIn(["A"]))
     self.assertEqual(self.ie.posterior("C"), self.joint.margSumIn(["C"]))

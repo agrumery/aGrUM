@@ -165,7 +165,7 @@ def getPosterior(bn, evs, target):
   """
   inf = VariableElimination(bn)
   inf.setEvidence(evs)
-  inf.setTarget([target])
+  inf.addTarget(target)
   inf.makeInference()
   return Potential(inf.posterior(target))
 #creating a new Potential from posterior( will disappear with ie )
