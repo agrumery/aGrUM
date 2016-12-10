@@ -70,9 +70,9 @@ def getCmake(current, target):
     line += " -DBUILD_PYTHON=OFF"
   else:
     if current["python"] == "3":
-      line += " -DFOR_PYTHON2=OFF"
+      line += " -DFOR_PYTHON3=ON"
     else:
-      line += " -DFOR_PYTHON2=ON"
+      line += " -DFOR_PYTHON3=OFF"
     line += " -DBUILD_PYTHON=ON"
     line += " -DPYTHON_TARGET=" + cfg.python
 

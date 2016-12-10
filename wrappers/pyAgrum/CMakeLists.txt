@@ -5,7 +5,7 @@ if (POLICY CMP0018)
   cmake_policy(SET CMP0018 OLD)
 endif ()
 
-option(FOR_PYTHON2 "ON if pyAgrum will be compiler agains python2. Python3 is uses by default" "OFF")
+option (FOR_PYTHON3 "ON if pyAgrum uses python3. Python3 is used by default" ON)
 
 if (PYTHON_TARGET)
   set(PYTHON_EXECUTABLE ${PYTHON_TARGET})
@@ -15,13 +15,7 @@ if (PYTHON_TARGET)
   unset(PYTHON_VERSION_MAJOR CACHE)
 endif (PYTHON_TARGET)
 
-if (FOR_PYTHON2)
-  find_package(PythonInterp 2 REQUIRED)
-  find_package(PythonLibs   2 REQUIRED)
-
-  set(PYAGRUM_MODULE "pyAgrum")
-  set(PYAGRUM_FUNCTIONS "functions")
-else(FOR_PYTHON2)
+if (FOR_PYTHON3)
   find_package(PythonInterp 3 REQUIRED)
   find_package(PythonLibs   3 REQUIRED)
 
@@ -30,7 +24,13 @@ else(FOR_PYTHON2)
   #change in module naming from inside module between python2 and python3
   set(PYAGRUM_MODULE ".pyAgrum")
   set(PYAGRUM_FUNCTIONS ".functions")
-endif(FOR_PYTHON2)
+else ()
+  find_package(PythonInterp 2 REQUIRED)
+  find_package(PythonLibs   2 REQUIRED)
+
+  set(PYAGRUM_MODULE "pyAgrum")
+  set(PYAGRUM_FUNCTIONS "functions")
+endif()
 
 # PYTHON_INSTALL
 if (NOT DEFINED PYTHON_INSTALL)
