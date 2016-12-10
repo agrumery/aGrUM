@@ -33,11 +33,13 @@ else(FOR_PYTHON2)
 endif(FOR_PYTHON2)
 
 # PYTHON_INSTALL
-execute_process(
-  COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
-  OUTPUT_VARIABLE PYTHON_INSTALL
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+if (NOT DEFINED PYTHON_INSTALL)
+  execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
+    OUTPUT_VARIABLE PYTHON_INSTALL
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+endif ()
 
 set(GENERATED_PYTHON "${CMAKE_CURRENT_SOURCE_DIR}/generated-files${PYTHON_VERSION_MAJOR}")
 set(_PYAGRUMLIB "_pyAgrum")
