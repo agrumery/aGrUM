@@ -49,14 +49,13 @@ def is_tool(prog, longpath=False):
 
 def check_tools(options):
   notif("options.python={}".format(options.python))
+  exe_py=None
   if options.python == "3":
     exe_py = is_tool('python3', True)
-    if exe_py is None:
-      exe_py = is_tool('python', True)
   else:
     exe_py = is_tool('python2', True)
-    if exe_py is None:
-      exe_py = is_tool('python', True)
+  if exe_py is None:
+    exe_py = is_tool('python', True)
 
   version = cmdline(exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[0])"')[0]
 

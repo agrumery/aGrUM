@@ -69,12 +69,13 @@ def getCmake(current, target):
   if target != "pyAgrum":
     line += " -DBUILD_PYTHON=OFF"
   else:
-    if current["python"] == "3":
-      line += " -DFOR_PYTHON3=ON"
-    else:
-      line += " -DFOR_PYTHON3=OFF"
     line += " -DBUILD_PYTHON=ON"
-    line += " -DPYTHON_TARGET=" + cfg.python
+  
+  if current["python"] == "3":
+    line += " -DFOR_PYTHON3=ON"
+  else:
+    line += " -DFOR_PYTHON3=OFF"
+  line += " -DPYTHON_TARGET=" + cfg.python
 
   if platform.system() == "Windows":
     if current["mvsc"]:
