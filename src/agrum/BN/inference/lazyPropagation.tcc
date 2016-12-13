@@ -1044,13 +1044,12 @@ namespace gum {
     }
 
     // determine the set of potentials d-connected with the kept variables
-    NodeSet   requisite_nodes;
-    BayesBall bb;
-    bb.requisiteNodes( bn.dag(),
-                       kept_ids,
-                       this->hardEvidenceNodes(),
-                       this->softEvidenceNodes(),
-                       requisite_nodes );
+    NodeSet requisite_nodes;
+    BayesBall::requisiteNodes( bn.dag(),
+                               kept_ids,
+                               this->hardEvidenceNodes(),
+                               this->softEvidenceNodes(),
+                               requisite_nodes );
     for ( auto iter = pot_list.beginSafe(); iter != pot_list.endSafe(); ++iter ) {
       const Sequence<const DiscreteVariable*>& vars =
           ( **iter ).variablesSequence();
@@ -1082,12 +1081,11 @@ namespace gum {
     }
 
     // determine the set of potentials d-connected with the kept variables
-    BayesBall bb;
-    bb.relevantPotentials( bn,
-                           kept_ids,
-                           this->hardEvidenceNodes(),
-                           this->softEvidenceNodes(),
-                           pot_list );
+    BayesBall::relevantPotentials( bn,
+                                   kept_ids,
+                                   this->hardEvidenceNodes(),
+                                   this->softEvidenceNodes(),
+                                   pot_list );
   }
 
 

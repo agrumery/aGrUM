@@ -50,7 +50,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-
+  private:
     /// Default constructor.
     BayesBall();
 
@@ -58,7 +58,7 @@ namespace gum {
     ~BayesBall();
 
     /// @}
-
+  public:
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -71,7 +71,7 @@ namespace gum {
      * Requisite nodes are those that are d-connected to at least one of the
      * query nodes given a set of hard and soft evidence
      */
-    void requisiteNodes( const DAG&     dag,
+    static void requisiteNodes( const DAG&     dag,
                          const NodeSet& query,
                          const NodeSet& hardEvidence,
                          const NodeSet& softEvidence,
@@ -80,7 +80,7 @@ namespace gum {
     /** @brief update a set of potentials, keeping only those d-connected with
      * query variables given evidence */
     template <typename GUM_SCALAR, template <typename> class TABLE>
-    void relevantPotentials( const IBayesNet<GUM_SCALAR>&   bn,
+    static void relevantPotentials( const IBayesNet<GUM_SCALAR>&   bn,
                              const NodeSet&                 query,
                              const NodeSet&                 hardEvidence,
                              const NodeSet&                 softEvidence,
