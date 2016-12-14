@@ -171,7 +171,7 @@ namespace gum {
   void MultiDimContainer<GUM_SCALAR>::populate(
       const std::vector<GUM_SCALAR>& v ) const {
     if ( domainSize() != v.size() ) {
-      GUM_ERROR( SizeError, "Sizes does not match in fillWith" );
+      GUM_ERROR( SizeError, "Sizes do not match in populate" );
     }
 
     Size cpt = 0;
@@ -186,7 +186,7 @@ namespace gum {
   void MultiDimContainer<GUM_SCALAR>::populate(
       std::initializer_list<GUM_SCALAR> l ) const {
     if ( domainSize() != l.size() ) {
-      GUM_ERROR( SizeError, "Sizes does not match in fillWith" );
+      GUM_ERROR( SizeError, "Sizes do not match in populate" );
     }
 
     Instantiation i( *this );

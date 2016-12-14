@@ -64,7 +64,8 @@ namespace gum {
      * @brief Class constructor.
      * @param aContent The implementation used by this MultiDimDecorator.
      */
-    MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent = nullptr );
+    MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent = nullptr,
+                       GUM_SCALAR empty_value = (GUM_SCALAR)0 );
 
     /**
      * @brief copy constructor & assignment
@@ -268,7 +269,13 @@ namespace gum {
      * @throw NullElement
      * @throw NotFound
      */
-    GUM_SCALAR& _get( const Instantiation& i ) const;
+    GUM_SCALAR& _get( const Instantiation& i ) const final;
+
+    /**
+     * value of the MultiDimDecorator if no dimension.
+     *
+     */
+    mutable GUM_SCALAR _empty_value;
   };
 
 } /* namespace gum */

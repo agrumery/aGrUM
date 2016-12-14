@@ -113,8 +113,6 @@ namespace gum {
 
     virtual Potential<GUM_SCALAR>* newFactory() const;
 
-    virtual const std::string toString() const;
-
     /// @}
     // ========================================================================
     /// @name Class operation for Potential instances
@@ -199,8 +197,10 @@ namespace gum {
     /// min of all elements in the Potential
     GUM_SCALAR min() const;
     /// max of all non one elements in the Potential
+    /// @throw NotFound if all value == 1.0
     GUM_SCALAR maxNonOne() const;
     /// min of all non zero elements in the Potential
+    /// @throw NotFound if all value == 0.0
     GUM_SCALAR minNonZero() const;
 
     /// entropy of the Potential
