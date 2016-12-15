@@ -35,7 +35,7 @@ namespace gum_tests {
 
     void tearDown() {}
 
-    void /*test*/ Creation() {
+    void testCreation() {
       gum::Potential<double> p( new gum::MultiDimArray<double>() );
       TS_ASSERT( p.empty() );
 
@@ -44,7 +44,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c );
     }
 
-    void /*test*/ Normalisation() {
+    void testNormalisation() {
 
       gum::Potential<double> p( new gum::MultiDimArray<double>() );
 
@@ -77,7 +77,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ DomainSizeChanges() {
+    void testDomainSizeChanges() {
       gum::Potential<double> p1( new gum::MultiDimArray<double>() );
       gum::LabelizedVariable var1( "var1", "first var", 2 ),
           var2( "var2", "second var", 2 ), var3( "var3", "third var", 2 );
@@ -88,7 +88,7 @@ namespace gum_tests {
           ( var1.domainSize() * var2.domainSize() * var3.domainSize() ) );
     }
 
-    void /*test*/ AddAnyNumber() {
+    void testAddAnyNumber() {
       gum::Potential<double> proba( new gum::MultiDimArray<double>() );
       gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
           c( "c", "third var", 5 );
@@ -100,7 +100,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING( proba.set( i, (double)-1 ) );
     }
 
-    void /*test*/ CopyProba() {
+    void testCopyProba() {
       gum::Potential<double> m( new gum::MultiDimArray<double>() );
       gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
           c( "c", "third var", 5 );
@@ -130,7 +130,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( m[i], mm[j] );
     }
 
-    void /*test*/ RegressionCopy() {
+    void testRegressionCopy() {
       gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
           c( "c", "third var", 5 );
 
@@ -156,7 +156,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ Equality() {
+    void testEquality() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
       auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
@@ -183,7 +183,7 @@ namespace gum_tests {
       TS_ASSERT( p == u );
     }
 
-    void /*test*/ MinMax() {
+    void testMinMax() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
 
@@ -203,7 +203,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( p.minNonZero(), gum::NotFound );
     }
 
-    void /*test*/ IsNonZeroMap() {
+    void testIsNonZeroMap() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
 
@@ -216,7 +216,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p.isNonZeroMap(), q );
     }
 
-    void /*test*/ Operators() {
+    void testOperators() {
       auto a = gum::LabelizedVariable( "a", "afoo" );
       auto b = gum::LabelizedVariable( "b", "bfoo" );
       auto c = gum::LabelizedVariable( "c", "cfoo" );
@@ -300,7 +300,7 @@ namespace gum_tests {
                         "<b:1|a:1|c:1> :: 34" );
     }
 
-    void /*test*/ MargOutFunctions() {
+    void testMargOutFunctions() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
       auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
@@ -349,7 +349,7 @@ namespace gum_tests {
                         "<a:0> :: 1 /<a:1> :: 2 /<a:2> :: 3" );
     }
 
-    void /*test*/ MargInFunctions() {
+    void testMargInFunctions() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
       auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
@@ -376,7 +376,7 @@ namespace gum_tests {
       TS_ASSERT( ( joint.margMaxOut( {&c, &d} ) == joint.margMaxIn( {&a, &b} ) ) );
     }
 
-    void /*test*/ AbsPotential() {
+    void testAbsPotential() {
       auto a = gum::LabelizedVariable( "a", "afoo", 2 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 2 );
 
@@ -398,7 +398,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( ( q - p ).abs().min(), 0 );
     }
 
-    void /*test*/ SqPotential() {
+    void testSqPotential() {
       auto a = gum::LabelizedVariable( "a", "afoo", 2 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 2 );
 
@@ -420,7 +420,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( ( q - p ).sq().min(), 0 );
     }
 
-    void /*test*/ EntropyPotential() {
+    void testEntropyPotential() {
       auto                  a = gum::LabelizedVariable( "a", "afoo", 2 );
       gum::Potential<float> p;
       p.add( a );
@@ -429,7 +429,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p.fillWith( {0.5, 0.5} ).entropy(), 1.0 );
     }
 
-    void /*test*/ ReorganizePotential() {
+    void testReorganizePotential() {
 
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
@@ -458,7 +458,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( p.reorganize( {&a} ), gum::InvalidArgument );
     }
 
-    void /*test*/ PutFirst() {
+    void testPutFirst() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
       auto c = gum::LabelizedVariable( "b", "bfoo", 3 );
@@ -474,7 +474,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS( p.putFirst( &c ), gum::InvalidArgument );
     }
 
-    void /*test*/ Extraction() {
+    void testExtraction() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
       auto c = gum::LabelizedVariable( "c", "cfoo", 3 );
@@ -499,7 +499,7 @@ namespace gum_tests {
       r.fillWith( {3, 6, 9, 12, 15, 18, 21, 24, 27} );
       TS_ASSERT( pot.reorganize( {&b, &c, &a} ).extract( I ) == r );
     }
-    void /*test*/ OperatorEqual() {
+    void testOperatorEqual() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
 
@@ -541,7 +541,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/ ScaleAndTranslate() {
+    void testScaleAndTranslate() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
 
       gum::Potential<float> p;
@@ -575,7 +575,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p, p1 );
     }
 
-    void /*test*/ NormalizeAsCPT() {
+    void testNormalizeAsCPT() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
 
@@ -589,7 +589,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( q, p );
 
       gum::Potential<float> p2;
-      TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
       p2 << a << b;
       p2.fill( 0.0f );
       TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
@@ -691,6 +690,152 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p.fillWith( 1.0f ).isNonZeroMap()[inst], 1.0f );
       TS_ASSERT_EQUALS( p.fillWith( 0.5f ).isNonZeroMap()[inst], 1.0f );
       TS_ASSERT_EQUALS( p.fillWith( -0.5f ).isNonZeroMap()[inst], 1.0f );
+    }
+
+    void testOperationForEmptyPotential() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<float> res;
+      res << a << b;
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      gum::Potential<float> q;
+      q.fill( 2 );
+
+      gum::Potential<float> tmp;
+
+      res.fillWith( {3, 4, 5, 6, 7, 8, 9, 10, 11} );
+      TS_ASSERT_EQUALS( p + q, res );
+      tmp = p;
+      tmp += q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      TS_ASSERT_EQUALS( q + p, res );
+      tmp = q;
+      tmp += p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {2, 4, 6, 8, 10, 12, 14, 16, 18} );
+      TS_ASSERT_EQUALS( p * q, res );
+      tmp = p;
+      tmp *= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      TS_ASSERT_EQUALS( q * p, res );
+      tmp = q;
+      tmp *= p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {-1, 0, 1, 2, 3, 4, 5, 6, 7} );
+      TS_ASSERT_EQUALS( p - q, res );
+      tmp = p;
+      tmp -= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {1, 0, -1, -2, -3, -4, -5, -6, -7} );
+      TS_ASSERT_EQUALS( q - p, res );
+      tmp = q;
+      tmp -= p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {1 / 2.0,
+                     2 / 2.0,
+                     3 / 2.0,
+                     4 / 2.0,
+                     5 / 2.0,
+                     6 / 2.0,
+                     7 / 2.0,
+                     8 / 2.0,
+                     9 / 2.0} );
+      TS_ASSERT_EQUALS( p / q, res );
+      tmp = p;
+      tmp /= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {2.0 / 1,
+                     2.0 / 2,
+                     2.0 / 3,
+                     2.0 / 4,
+                     2.0 / 5,
+                     2.0 / 6,
+                     2.0 / 7,
+                     2.0 / 8,
+                     2.0 / 9} );
+      TS_ASSERT_EQUALS( q / p, res );
+      tmp = q;
+      tmp /= p;
+      TS_ASSERT_EQUALS( tmp, res );
+    }
+
+    void testOperationForTwoEmptyPotentials() {
+      gum::Potential<float> p;
+      p.fill( 3 );
+
+      gum::Potential<float> q;
+      q.fill( 2 );
+
+      gum::Potential<float> res, tmp;
+      res.fill( 5 );
+      TS_ASSERT_EQUALS( p + q, res );
+      tmp = p;
+      tmp += q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      TS_ASSERT_EQUALS( q + p, res );
+      tmp = q;
+      tmp += p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {6} );
+      TS_ASSERT_EQUALS( p * q, res );
+      tmp = p;
+      tmp *= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      TS_ASSERT_EQUALS( q * p, res );
+      tmp = q;
+      tmp *= p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {1} );
+      TS_ASSERT_EQUALS( p - q, res );
+      tmp = p;
+      tmp -= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {-1} );
+      TS_ASSERT_EQUALS( q - p, res );
+      tmp = q;
+      tmp -= p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {3 / 2.0} );
+      TS_ASSERT_EQUALS( p / q, res );
+      tmp = p;
+      tmp /= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {2.0 / 3} );
+      TS_ASSERT_EQUALS( q / p, res );
+      tmp = q;
+      tmp /= p;
+      TS_ASSERT_EQUALS( tmp, res );
+    }
+
+
+    void testEliminatationOffAllVariables() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      TS_ASSERT_EQUALS( p.margSumOut( {&a, &b} ),
+                        gum::Potential<float>().fillWith( {45} ) );
     }
   };
 }

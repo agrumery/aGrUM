@@ -168,9 +168,12 @@ namespace gum {
     } else {
       res = this->reduce(
           []( GUM_SCALAR z, GUM_SCALAR p ) {
-            return ( p == static_cast<GUM_SCALAR>( 1 ) ) ? z : ( z > p ? z : p );
+            return ( p == static_cast<GUM_SCALAR>( 1 ) )
+                       ? z
+                       : ( z == static_cast<GUM_SCALAR>( 1 ) ) ? p
+                                                               : ( p > z ? p : z );
           },
-          0.0 );
+          static_cast<GUM_SCALAR>( 1 ) );
     }
 
     if ( res == static_cast<GUM_SCALAR>( 1 ) )
@@ -190,9 +193,12 @@ namespace gum {
     } else {
       res = this->reduce(
           []( GUM_SCALAR z, GUM_SCALAR p ) {
-            return ( p == static_cast<GUM_SCALAR>( 0 ) ) ? z : ( z < p ? z : p );
+            return ( p == static_cast<GUM_SCALAR>( 0 ) )
+                       ? z
+                       : ( z == static_cast<GUM_SCALAR>( 0 ) ) ? p
+                                                               : ( p < z ? p : z );
           },
-          1.0 );
+          static_cast<GUM_SCALAR>( 0 ) );
     }
 
     if ( res == static_cast<GUM_SCALAR>( 0 ) )
