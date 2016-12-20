@@ -831,11 +831,10 @@ namespace gum_tests {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
 
-      gum::Potential<float> p;
+      gum::Potential<int> p;
       p << a << b;
       p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
-      TS_ASSERT_EQUALS( p.margSumOut( {&a, &b} ),
-                        gum::Potential<float>().fillWith( {45} ) );
+      TS_ASSERT_EQUALS( p.margSumOut( {&a, &b} ).toString(), "<> :: 45" );
     }
   };
 }

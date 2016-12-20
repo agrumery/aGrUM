@@ -577,19 +577,20 @@ class TestOperators(pyAgrumTestCase):
     q = p / p.margSumOut(["a"])
     p.normalizeAsCPT()
     self.assertTrue(p == q)
+    print("ok1")
 
     p2 = gum.Potential()
-    try:
-      p2.normalizeAsCPT()
-      self.assertTrue(False)
-    except gum.FatalError:
-      self.assertTrue(True)
     p2.add(a).add(b).fill(0)
+    print("ok2")
     try:
       p2.normalizeAsCPT()
+      print("ok3")
       self.assertTrue(False)
     except gum.FatalError:
       self.assertTrue(True)
+    except gum.Exception as e:
+      print(e)
+    print("ok2")
 
     p3 = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 0, 0, 0, 7, 8, 9])
     try:
@@ -597,11 +598,32 @@ class TestOperators(pyAgrumTestCase):
       self.assertTrue(False)
     except gum.FatalError:
       self.assertTrue(True)
+    print("ok")
 
     p4 = gum.Potential().add(a).fillWith([1, 3, 6])
     witness = gum.Potential().add(a).fillWith([0.1, 0.3, 0.6])
     p4.normalizeAsCPT()
     self.assertTrue(p4 == witness)
+    print("ok")
+
+  def testOperationForEmptyPotential(self):
+    a, b = [gum.LabelizedVariable(s, s, 3) for s in "ab"]
+
+    p = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    q = gum.Potential().fillWith([1])
+    print(q)
+    print(p)
+    self.assertEqual(p + q, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
+    tmp = p
+    print(tmp)
+    tmp += q
+    self.assertEqual(tmp, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
+    p = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    q = gum.Potential().fillWith([1])
+    print("hop")
+    e=str(q+p)
+    print("hip")
+    #self.assertEqual(tmp, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
 
 
 ts = unittest.TestSuite()

@@ -8217,6 +8217,18 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___itruediv__(self, r)
 
 
+    def __str__(self) -> "std::string const":
+        """
+        __str__(Potential_double self) -> std::string const
+
+        Parameters
+        ----------
+        self: gum::Potential< double > const *
+
+        """
+        return _pyAgrum.Potential_double___str__(self)
+
+
     def extract(self, *args) -> "gum::Potential< double >":
         """
         extract(Potential_double self, Instantiation inst) -> Potential_double
@@ -8443,10 +8455,13 @@ class Potential_double(_object):
         self._notSync=False
         self._var_names = []
         self._var_dims = []
-        content = []
         if self.empty():
+            i = Instantiation(self)
+            content = [self.get(i)]
             self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
             return
+
+        content = []
         i = Instantiation(self)
         i.setFirst()
         while not i.end():
@@ -8481,19 +8496,6 @@ class Potential_double(_object):
 
 
 
-    def __str__(self, *args) -> "char const *":
-        """
-        __str__(Potential_double self) -> std::string const
-        __str__(Potential_double self) -> char const *
-
-        Parameters
-        ----------
-        self: gum::Potential< double > *
-
-        """
-        return _pyAgrum.Potential_double___str__(self, *args)
-
-
     def tolist(self):
         self.__fill_distrib__()
         return self.__distrib__.tolist()
@@ -8508,7 +8510,8 @@ class Potential_double(_object):
     def __getitem__(self, id):
         self.__fill_distrib__()
         if self.empty():
-            raise IndexError("%s is empty !!"%(str(self)))
+            return self.__distrib__[0]
+
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
@@ -8520,7 +8523,10 @@ class Potential_double(_object):
     def __setitem__(self, id, value):
         self.__fill_distrib__()
         if self.empty():
-            raise IndexError("%s is empty !!"%(str(self)))
+            self.fill(value)
+            self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
+            return 
+
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:

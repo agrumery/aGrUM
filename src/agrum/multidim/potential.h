@@ -373,6 +373,10 @@ namespace gum {
       return !operator==( r );
     }
 
+    virtual const std::string toString() const {
+      return static_cast<const MultiDimDecorator<GUM_SCALAR> *>( this )->toString();
+    }
+
     ///@}
 
     protected:

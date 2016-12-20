@@ -6379,14 +6379,6 @@ SWIGINTERN bool gum_Potential_Sl_double_Sg____ne____SWIG_1(gum::Potential< doubl
     }
 SWIGINTERN void gum_Potential_Sl_double_Sg____fill_distrib__(gum::Potential< double > *self){}
 SWIGINTERN PyObject *gum_Potential_Sl_double_Sg____indexfromdict__(gum::Potential< double > *self,PyObject *id_dict){ return NULL; }
-SWIGINTERN char const *gum_Potential_Sl_double_Sg____str____SWIG_1(gum::Potential< double > *self){ return NULL; }
-
-SWIGINTERNINLINE PyObject * 
-SWIG_FromCharPtr(const char *cptr)
-{ 
-  return SWIG_FromCharPtrAndSize(cptr, (cptr ? strlen(cptr) : 0));
-}
-
 SWIGINTERN PyObject *gum_Potential_Sl_double_Sg__tolist(gum::Potential< double > *self){ return NULL; }
 SWIGINTERN PyObject *gum_Potential_Sl_double_Sg__toarray(gum::Potential< double > *self){ return NULL; }
 SWIGINTERN void gum_Potential_Sl_double_Sg____getitem__(gum::Potential< double > *self,PyObject *id){}
@@ -6429,6 +6421,13 @@ SWIGINTERN void gum_Potential_Sl_double_Sg__add(gum::Potential< double > *self,g
 SWIGINTERN void gum_UtilityTable_Sl_double_Sg____fill_distrib__(gum::UtilityTable< double > *self){}
 SWIGINTERN PyObject *gum_UtilityTable_Sl_double_Sg____indexfromdict__(gum::UtilityTable< double > *self,PyObject *id_dict){ return NULL; }
 SWIGINTERN char const *gum_UtilityTable_Sl_double_Sg____str__(gum::UtilityTable< double > *self){ return NULL; }
+
+SWIGINTERNINLINE PyObject * 
+SWIG_FromCharPtr(const char *cptr)
+{ 
+  return SWIG_FromCharPtrAndSize(cptr, (cptr ? strlen(cptr) : 0));
+}
+
 SWIGINTERN PyObject *gum_UtilityTable_Sl_double_Sg__tolist(gum::UtilityTable< double > *self){ return NULL; }
 SWIGINTERN PyObject *gum_UtilityTable_Sl_double_Sg__toarray(gum::UtilityTable< double > *self){ return NULL; }
 SWIGINTERN void gum_UtilityTable_Sl_double_Sg____getitem__(gum::UtilityTable< double > *self,PyObject *id){}
@@ -39043,35 +39042,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___str____SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  std::string result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double___str__",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___str__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  {
-    try {
-      result = ((gum::Potential< double > const *)arg1)->toString();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_Potential_double_isNonZeroMap(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
@@ -40122,6 +40092,35 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Potential_double___str__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double___str__",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___str__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  {
+    try {
+      result = ((gum::Potential< double > const *)arg1)->toString();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Potential_double_extract__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
@@ -40927,75 +40926,6 @@ SWIGINTERN PyObject *_wrap_Potential_double___indexfromdict__(PyObject *SWIGUNUS
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Potential_double___str____SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  char *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double___str__",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___str__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  {
-    try {
-      result = (char *)gum_Potential_Sl_double_Sg____str____SWIG_1(arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_FromCharPtr((const char *)result);
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Potential_double___str__(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[2] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_Potential_double___str____SWIG_0(self, args);
-    }
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_Potential_double___str____SWIG_1(self, args);
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Potential_double___str__'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::toString() const\n"
-    "    gum::Potential< double >::__str__()\n");
-  return 0;
 }
 
 
@@ -80947,6 +80877,14 @@ static PyMethodDef SwigMethods[] = {
 		"r: gum::Potential< double > const &\n"
 		"\n"
 		""},
+	 { (char *)"Potential_double___str__", _wrap_Potential_double___str__, METH_VARARGS, (char *)"\n"
+		"Potential_double___str__(Potential_double self) -> std::string const\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
+		"\n"
+		""},
 	 { (char *)"Potential_double_extract", _wrap_Potential_double_extract, METH_VARARGS, (char *)"\n"
 		"extract(Instantiation inst) -> Potential_double\n"
 		"\n"
@@ -81127,15 +81065,6 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"self: gum::Potential< double > *\n"
 		"id_dict: PyObject *\n"
-		"\n"
-		""},
-	 { (char *)"Potential_double___str__", _wrap_Potential_double___str__, METH_VARARGS, (char *)"\n"
-		"__str__() -> std::string const\n"
-		"Potential_double___str__(Potential_double self) -> char const *\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"self: gum::Potential< double > *\n"
 		"\n"
 		""},
 	 { (char *)"Potential_double_tolist", _wrap_Potential_double_tolist, METH_VARARGS, (char *)"\n"
