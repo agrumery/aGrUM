@@ -282,7 +282,6 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE void Potential<GUM_SCALAR>::normalizeAsCPT() const {
-    std::cout << "GO1" << std::endl;
     if ( static_cast<MultiDimContainer<GUM_SCALAR>*>( this->_content )->empty() ) {
       if ( this->_empty_value != static_cast<GUM_SCALAR>( 0 ) ) {
         this->_empty_value = static_cast<GUM_SCALAR>( 1.0 );
@@ -291,32 +290,24 @@ namespace gum {
                    "Normalization for a potential that sum to 0 in " << *this );
       }
     } else {
-      std::cout << "GO2" << std::endl;
       Instantiation inst( *this );
       const auto&   v = this->variable( 0 );
 
       for ( inst.setFirst(); !inst.end(); inst.incNotVar( v ) ) {
-        std::cout << "GO3" << std::endl;
         GUM_SCALAR s = (GUM_SCALAR)0.0;
         for ( inst.setFirstVar( v ); !inst.end(); inst.incVar( v ) )
           s += this->get( inst );
         if ( s == (GUM_SCALAR)0.0 ) {
-          std::cout << "GO4" << std::endl;
-          std::cout << "Normalization for a potential that sum to 0 in " << *this
-                    << std::endl;
           GUM_ERROR( FatalError,
                      "Normalization for a potential that sum to 0 in " << *this );
         }
         if ( s != (GUM_SCALAR)1.0 ) {
-          std::cout << "GO5" << std::endl;
           for ( inst.setFirstVar( v ); !inst.end(); inst.incVar( v ) )
             this->set( inst, this->get( inst ) / s );
         }
         inst.setFirstVar( v );  // to remove inst.end()
-        std::cout << "GO6" << std::endl;
       }
     }
-    std::cout << "GO8" << std::endl;
   }
 
   template <typename GUM_SCALAR>

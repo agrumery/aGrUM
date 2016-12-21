@@ -415,8 +415,7 @@ namespace gum {
   INLINE const std::string MultiDimDecorator<GUM_SCALAR>::toString() const {
     if ( static_cast<MultiDimContainer<GUM_SCALAR>*>( _content )->empty() ) {
       std::stringstream ss;
-      ss << "< > :: " << _empty_value;
-      std::cout << "[] :: " << _empty_value << std::endl;
+      std::cout << "<> :: " << _empty_value << std::endl;
       return ss.str();
     } else {
       return _content->toString();

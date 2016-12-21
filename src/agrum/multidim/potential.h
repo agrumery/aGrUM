@@ -374,7 +374,7 @@ namespace gum {
     }
 
     virtual const std::string toString() const {
-      return static_cast<const MultiDimDecorator<GUM_SCALAR> *>( this )->toString();
+      return MultiDimDecorator<GUM_SCALAR>::toString();
     }
 
     ///@}
