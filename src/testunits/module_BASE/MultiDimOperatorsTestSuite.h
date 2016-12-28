@@ -519,88 +519,7 @@ namespace gum_tests {
         delete vars[i];
     }
 
-    void test_potentials4Pointers() {
-      std::vector<gum::LabelizedVariable*> vars( 10 );
-
-      for ( gum::Idx i = 0; i < 10; ++i ) {
-        std::stringstream str;
-        str << "x" << i;
-        std::string s = str.str();
-        vars[i] = new gum::LabelizedVariable( s, s, 4 );
-      }
-
-      gum::Potential<double *> t1, t2, t3;
-
-      t1 << *( vars[0] ) << *( vars[1] ) << *( vars[2] );
-      t2 << *( vars[0] ) << *( vars[1] ) << *( vars[5] );
-      t3 << *( vars[6] ) << *( vars[4] ) << *( vars[3] );
-
-      randomInitPPointer( t1 );
-      randomInitPPointer( t2 );
-      randomInitPPointer( t3 );
-
-      gum::Potential<double *> *t4, *t6;
-      gum::Potential<double *> *t5, *t7;
-
-      t4 = new gum::Potential<double*>( t1 + t2 );
-      t5 = add_test_potentials4Pointers( t1, t2 );
-      TS_ASSERT( equal( *t4, *t5 ) );
-      mydelete( t4 );
-      mydelete( t5 );
-      t4 = new gum::Potential<double*>( t3 + t2 );
-      t5 = add_test_potentials4Pointers( t3, t2 );
-      TS_ASSERT( equal( *t4, *t5 ) );
-      mydelete( t4 );
-      t4 = new gum::Potential<double*>( t2 + t3 );
-      TS_ASSERT( equal( *t4, *t5 ) );
-      mydelete( t4 );
-      mydelete( t5 );
-
-      t4 = new gum::Potential<double*>( t1 - t2 );
-      t5 = sub_test_potentials4Pointers( t1, t2 );
-      TS_ASSERT( equal( *t4, *t5 ) );
-      t6 = new gum::Potential<double*>( t2 - t1 );
-      t7 = sub_test_potentials4Pointers( t2, t1 );
-      TS_ASSERT( equal( *t6, *t7 ) );
-      TS_ASSERT( !equal( *t5, *t7 ) );
-      TS_ASSERT( !equal( *t6, *t4 ) );
-      mydelete( t4 );
-      mydelete( t5 );
-      mydelete( t6 );
-      mydelete( t7 );
-
-      t4 = new gum::Potential<double*>( t1 * t2 );
-      t5 = mult_test_potentials4Pointers( t1, t2 );
-      TS_ASSERT( equal( *t4, *t5 ) );
-      mydelete( t4 );
-      mydelete( t5 );
-      t4 = new gum::Potential<double*>( t3 * t2 );
-      t5 = mult_test_potentials4Pointers( t3, t2 );
-      TS_ASSERT( equal( *t4, *t5 ) );
-      mydelete( t4 );
-      t4 = new gum::Potential<double*>( t2 * t3 );
-      TS_ASSERT( equal( *t4, *t5 ) );
-      mydelete( t4 );
-      mydelete( t5 );
-
-      t4 = new gum::Potential<double*>( t1 / t2 );
-      t5 = div_test_potentials4Pointers( t1, t2 );
-      TS_ASSERT( equal( *t4, *t5 ) );
-      t6 = new gum::Potential<double*>( t2 / t1 );
-      t7 = div_test_potentials4Pointers( t2, t1 );
-      TS_ASSERT( equal( *t6, *t7 ) );
-      TS_ASSERT( !equal( *t5, *t7 ) );
-      TS_ASSERT( !equal( *t6, *t4 ) );
-      mydelete( t4 );
-      mydelete( t5 );
-      mydelete( t6 );
-      mydelete( t7 );
-
-      for ( gum::Idx i = 0; i < vars.size(); ++i )
-        delete vars[i];
-    }
-
-    void test_op_optimizeArrays() {
+        void test_op_optimizeArrays() {
       std::vector<gum::LabelizedVariable*> vars( 10 );
 
       for ( gum::Idx i = 0; i < 10; ++i ) {
@@ -855,19 +774,6 @@ namespace gum_tests {
     // ==========================================================================
     // ==========================================================================
     template <typename T>
-    void mydelete( gum::Potential<T*>* t ) {
-      gum::Instantiation inst( *t );
-
-      for ( inst.setFirst(); !inst.end(); ++inst ) {
-        delete ( *t )[inst];
-      }
-
-      delete t;
-    }
-
-    // ==========================================================================
-    // ==========================================================================
-    template <typename T>
     bool equal( const gum::MultiDimImplementation<T*>& t1,
                 const gum::MultiDimImplementation<T*>& t2 ) {
       if ( ( t1.nbrDim() == t2.nbrDim() ) &&
@@ -889,28 +795,6 @@ namespace gum_tests {
       }
     }
 
-    // ==========================================================================
-    // ==========================================================================
-    template <typename T>
-    bool equal( const gum::Potential<T*>& t1, const gum::Potential<T*>& t2 ) {
-      if ( ( t1.nbrDim() == t2.nbrDim() ) &&
-           ( t1.domainSize() == t2.domainSize() ) ) {
-        for ( const auto var : t1.variablesSequence() )
-          if ( !t2.variablesSequence().exists( var ) ) return false;
-
-        gum::Instantiation i( t1 );
-
-        for ( i.setFirst(); !i.end(); ++i ) {
-          if ( *( t1.get( i ) ) != *( t2.get( i ) ) ) {
-            return false;
-          }
-        }
-
-        return true;
-      } else {
-        return false;
-      }
-    }
 
     // ==========================================================================
     /// initialize randomly a table
@@ -939,18 +823,9 @@ namespace gum_tests {
       gum::Instantiation i( t );
 
       for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, rand() * 100000.0 / RAND_MAX );
+        t.set( i, gum::randomProba() );
     }
 
-    // ==========================================================================
-    /// initialize randomly a table
-    // ==========================================================================
-    void randomInitPPointer( gum::Potential<double*>& t ) {
-      gum::Instantiation i( t );
-
-      for ( i.setFirst(); !i.end(); ++i )
-        t.set( i, new double( (int)( ( (double)rand() / RAND_MAX ) * 100000 ) ) );
-    }
 
     // ==========================================================================
     // ==========================================================================
@@ -1359,142 +1234,5 @@ namespace gum_tests {
 
       return result;
     }
-
-    // ==========================================================================
-    // ==========================================================================
-    gum::Potential<double*>*
-    add_test_potentials4Pointers( const gum::Potential<double*>& t1,
-                                  const gum::Potential<double*>& t2 ) {
-      // creation of the resulting variable list
-      gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
-      const gum::Sequence<const gum::DiscreteVariable*>& seq2 =
-          t2.variablesSequence();
-
-      for ( const auto var : seq2 )
-        if ( !seq.exists( var ) ) seq << var;
-
-      // creation of the resulting table
-      gum::Potential<double*>* result = new gum::Potential<double*>;
-
-      result->beginMultipleChanges();
-
-      for ( const auto var : seq )
-        *result << *var;
-
-      result->endMultipleChanges();
-
-      gum::Instantiation inst( *result );
-
-      // compute the addition
-
-      for ( inst.setFirst(); !inst.end(); ++inst ) {
-        result->set( inst, new double( *( t1[inst] ) + *( t2[inst] ) ) );
-      }
-
-      return result;
-    }
-
-    // ==========================================================================
-    // ==========================================================================
-    gum::Potential<double*>*
-    sub_test_potentials4Pointers( const gum::Potential<double*>& t1,
-                                  const gum::Potential<double*>& t2 ) {
-      // creation of the resulting variable list
-      gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
-      const gum::Sequence<const gum::DiscreteVariable*>& seq2 =
-          t2.variablesSequence();
-
-      for ( const auto var : seq2 )
-        if ( !seq.exists( var ) ) seq << var;
-
-      // creation of the resulting table
-      gum::Potential<double*>* result = new gum::Potential<double*>;
-
-      result->beginMultipleChanges();
-
-      for ( const auto var : seq )
-        *result << *var;
-
-      result->endMultipleChanges();
-
-      gum::Instantiation inst( *result );
-
-      // compute the addition
-
-      for ( inst.setFirst(); !inst.end(); ++inst ) {
-        result->set( inst, new double( *( t1[inst] ) - *( t2[inst] ) ) );
-      }
-
-      return result;
-    }
-
-    // ==========================================================================
-    // ==========================================================================
-    gum::Potential<double*>*
-    mult_test_potentials4Pointers( const gum::Potential<double*>& t1,
-                                   const gum::Potential<double*>& t2 ) {
-      // creation of the resulting variable list
-      gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
-      const gum::Sequence<const gum::DiscreteVariable*>& seq2 =
-          t2.variablesSequence();
-
-      for ( const auto var : seq2 )
-        if ( !seq.exists( var ) ) seq << var;
-
-      // creation of the resulting table
-      gum::Potential<double*>* result = new gum::Potential<double*>;
-
-      result->beginMultipleChanges();
-
-      for ( const auto var : seq )
-        *result << *var;
-
-      result->endMultipleChanges();
-
-      gum::Instantiation inst( *result );
-
-      // compute the addition
-
-      for ( inst.setFirst(); !inst.end(); ++inst ) {
-        result->set( inst, new double( *( t1[inst] ) * *( t2[inst] ) ) );
-      }
-
-      return result;
-    }
-
-    // ==========================================================================
-    // ==========================================================================
-    gum::Potential<double*>*
-    div_test_potentials4Pointers( const gum::Potential<double*>& t1,
-                                  const gum::Potential<double*>& t2 ) {
-      // creation of the resulting variable list
-      gum::Sequence<const gum::DiscreteVariable*> seq = t1.variablesSequence();
-      const gum::Sequence<const gum::DiscreteVariable*>& seq2 =
-          t2.variablesSequence();
-
-      for ( const auto var : seq2 )
-        if ( !seq.exists( var ) ) seq << var;
-
-      // creation of the resulting table
-      gum::Potential<double*>* result = new gum::Potential<double*>;
-
-      result->beginMultipleChanges();
-
-      for ( const auto var : seq )
-        *result << *var;
-
-      result->endMultipleChanges();
-
-      gum::Instantiation inst( *result );
-
-      // compute the addition
-
-      for ( inst.setFirst(); !inst.end(); ++inst ) {
-        result->set( inst, new double( *( t1[inst] ) / *( t2[inst] ) ) );
-      }
-
-      return result;
-    }
   };
-
 } /* namespace gum_tests */

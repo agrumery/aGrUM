@@ -827,7 +827,31 @@ namespace gum_tests {
     }
 
 
-    void testEliminatationOffAllVariables() {
+    void testLoopsForEmptyPotential() {
+      gum::Potential<float> p;
+      gum::Instantiation    inst( p );
+      p.fill( 3 );
+
+      gum::Size cpt = 0;
+      float     total = 0.0;
+      for ( inst.setFirst(); !inst.end(); ++inst ) {
+        cpt++;
+        total += p[inst];
+      }
+      TS_ASSERT_EQUALS( cpt, gum::Size( 1 ) );
+      TS_ASSERT_EQUALS( total, 3 );
+
+      cpt = 0;
+      total = 0.0;
+      for ( inst.setLast(); !inst.end(); --inst ) {
+        cpt++;
+        total += p[inst];
+      }
+      TS_ASSERT_EQUALS( cpt, gum::Size( 1 ) );
+      TS_ASSERT_EQUALS( total, 3 );
+    }
+
+    void /*test*/ EliminatationOffAllVariables() {
       auto a = gum::LabelizedVariable( "a", "afoo", 3 );
       auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
 

@@ -4,9 +4,6 @@
 # Do not make changes to this file unless you know what you are doing--modify
 # the SWIG interface file instead.
 
-
-
-
 """
 pyAgrum is a Python wrapper for the C++ aGrUM library. It provides a high-level
 interface to the part of agrum allowing to create, handle and make computations
@@ -48,6 +45,7 @@ elif _swig_python_version_info >= (2, 6, 0):
 else:
     import _pyAgrum
 del _swig_python_version_info
+
 try:
     _swig_property = property
 except NameError:
@@ -8205,16 +8203,10 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___isub__(self, r)
 
 
-    def __itruediv__(self, r: 'Potential_double') -> "gum::Potential< double > &":
-        """
-        __itruediv__(Potential_double self, Potential_double r) -> Potential_double
+    def __itruediv__(self, *args):
+        return _pyAgrum.Potential_double___itruediv__(self, *args)
+    __idiv__ = __itruediv__
 
-        Parameters
-        ----------
-        r: gum::Potential< double > const &
-
-        """
-        return _pyAgrum.Potential_double___itruediv__(self, r)
 
 
     def __str__(self) -> "std::string const":
@@ -10274,9 +10266,9 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_BayesNet(self)
 
 
-    def domainSizes(self) -> "NodeProperty< gum::Size > const &":
+    def domainSizes(self) -> "gum::NodeProperty< gum::Size > const &":
         """
-        domainSizes(BayesNetInference_double self) -> NodeProperty< gum::Size > const &
+        domainSizes(BayesNetInference_double self) -> gum::NodeProperty< gum::Size > const &
 
         Parameters
         ----------
@@ -10617,9 +10609,9 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_nbrSoftEvidence(self)
 
 
-    def evidence(self) -> "NodeProperty< gum::Potential< double > const * > const &":
+    def evidence(self) -> "gum::NodeProperty< gum::Potential< double > const * > const &":
         """
-        evidence(BayesNetInference_double self) -> NodeProperty< gum::Potential< double > const * > const &
+        evidence(BayesNetInference_double self) -> gum::NodeProperty< gum::Potential< double > const * > const &
 
         Parameters
         ----------
@@ -10653,9 +10645,9 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_hardEvidenceNodes(self)
 
 
-    def hardEvidence(self) -> "NodeProperty< gum::Idx > const &":
+    def hardEvidence(self) -> "gum::NodeProperty< gum::Idx > const &":
         """
-        hardEvidence(BayesNetInference_double self) -> NodeProperty< gum::Idx > const &
+        hardEvidence(BayesNetInference_double self) -> gum::NodeProperty< gum::Idx > const &
 
         Parameters
         ----------
@@ -13880,9 +13872,9 @@ class CredalNet_double(_object):
         return _pyAgrum.CredalNet_double_current_bn(self)
 
 
-    def credalNet_currentCpt(self) -> "NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &":
+    def credalNet_currentCpt(self) -> "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &":
         """
-        credalNet_currentCpt(CredalNet_double self) -> NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
+        credalNet_currentCpt(CredalNet_double self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
 
         Parameters
         ----------
@@ -13892,9 +13884,9 @@ class CredalNet_double(_object):
         return _pyAgrum.CredalNet_double_credalNet_currentCpt(self)
 
 
-    def credalNet_srcCpt(self) -> "NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &":
+    def credalNet_srcCpt(self) -> "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &":
         """
-        credalNet_srcCpt(CredalNet_double self) -> NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
+        credalNet_srcCpt(CredalNet_double self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
 
         Parameters
         ----------
@@ -15530,20 +15522,20 @@ class BNLearner_double(_object):
         ----------
         db: gum::learning::DatabaseVectInRAM const &
 
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, NodeProperty< gum::Sequence< std::string > > const & modalities, bool parse_database=False) -> BNLearner_double
+        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, gum::NodeProperty< gum::Sequence< std::string > > const & modalities, bool parse_database=False) -> BNLearner_double
 
         Parameters
         ----------
         filename: std::string const &
-        modalities: NodeProperty< gum::Sequence< std::string > > const &
+        modalities: gum::NodeProperty< gum::Sequence< std::string > > const &
         parse_database: bool
 
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, NodeProperty< gum::Sequence< std::string > > const & modalities) -> BNLearner_double
+        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, gum::NodeProperty< gum::Sequence< std::string > > const & modalities) -> BNLearner_double
 
         Parameters
         ----------
         filename: std::string const &
-        modalities: NodeProperty< gum::Sequence< std::string > > const &
+        modalities: gum::NodeProperty< gum::Sequence< std::string > > const &
 
         __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, BayesNet_double src, bool parse_database=False) -> BNLearner_double
 
@@ -16094,11 +16086,11 @@ class BNLearner_double(_object):
         ----------
         l: PyObject *
 
-        setSliceOrder(BNLearner_double self, NodeProperty< gum::NodeId > const & slice_order)
+        setSliceOrder(BNLearner_double self, gum::NodeProperty< gum::NodeId > const & slice_order)
 
         Parameters
         ----------
-        slice_order: NodeProperty< gum::NodeId > const &
+        slice_order: gum::NodeProperty< gum::NodeId > const &
 
         """
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)

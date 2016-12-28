@@ -4,9 +4,6 @@
 # Do not make changes to this file unless you know what you are doing--modify
 # the SWIG interface file instead.
 
-
-
-
 """
 pyAgrum is a Python wrapper for the C++ aGrUM library. It provides a high-level
 interface to the part of agrum allowing to create, handle and make computations
@@ -48,6 +45,7 @@ elif _swig_python_version_info >= (2, 6, 0):
 else:
     import _pyAgrum
 del _swig_python_version_info
+
 try:
     _swig_property = property
 except NameError:
@@ -8205,16 +8203,22 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double___isub__(self, r)
 
 
-    def __idiv__(self, r):
+    def __itruediv__(self, *args):
+        return _pyAgrum.Potential_double___itruediv__(self, *args)
+    __idiv__ = __itruediv__
+
+
+
+    def __str__(self):
         """
-        __idiv__(Potential_double self, Potential_double r) -> Potential_double
+        __str__(Potential_double self) -> std::string const
 
         Parameters
         ----------
-        r: gum::Potential< double > const &
+        self: gum::Potential< double > const *
 
         """
-        return _pyAgrum.Potential_double___idiv__(self, r)
+        return _pyAgrum.Potential_double___str__(self)
 
 
     def extract(self, *args):
@@ -8361,8 +8365,14 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_margMinIn(self, varnames)
 
 
-    def __truediv__(self, b):
+    def __truediv__(self, *args):
         """
+        __truediv__(Potential_double self, Potential_double p2) -> Potential_double
+
+        Parameters
+        ----------
+        p2: gum::Potential< double > const &
+
         __truediv__(Potential_double self, Potential_double b) -> Potential_double
 
         Parameters
@@ -8370,17 +8380,11 @@ class Potential_double(_object):
         b: gum::Potential< double > const &
 
         """
-        return _pyAgrum.Potential_double___truediv__(self, b)
+        return _pyAgrum.Potential_double___truediv__(self, *args)
 
 
-    def __div__(self, *args):
+    def __div__(self, b):
         """
-        __div__(Potential_double self, Potential_double p2) -> Potential_double
-
-        Parameters
-        ----------
-        p2: gum::Potential< double > const &
-
         __div__(Potential_double self, Potential_double b) -> Potential_double
 
         Parameters
@@ -8388,7 +8392,7 @@ class Potential_double(_object):
         b: gum::Potential< double > const &
 
         """
-        return _pyAgrum.Potential_double___div__(self, *args)
+        return _pyAgrum.Potential_double___div__(self, b)
 
 
     def __eq__(self, *args):
@@ -8443,10 +8447,13 @@ class Potential_double(_object):
         self._notSync=False
         self._var_names = []
         self._var_dims = []
-        content = []
         if self.empty():
+            i = Instantiation(self)
+            content = [self.get(i)]
             self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
             return
+
+        content = []
         i = Instantiation(self)
         i.setFirst()
         while not i.end():
@@ -8481,19 +8488,6 @@ class Potential_double(_object):
 
 
 
-    def __str__(self, *args):
-        """
-        __str__(Potential_double self) -> std::string const
-        __str__(Potential_double self) -> char const *
-
-        Parameters
-        ----------
-        self: gum::Potential< double > *
-
-        """
-        return _pyAgrum.Potential_double___str__(self, *args)
-
-
     def tolist(self):
         self.__fill_distrib__()
         return self.__distrib__.tolist()
@@ -8508,7 +8502,8 @@ class Potential_double(_object):
     def __getitem__(self, id):
         self.__fill_distrib__()
         if self.empty():
-            raise IndexError("%s is empty !!"%(str(self)))
+            return self.__distrib__[0]
+
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
@@ -8520,7 +8515,10 @@ class Potential_double(_object):
     def __setitem__(self, id, value):
         self.__fill_distrib__()
         if self.empty():
-            raise IndexError("%s is empty !!"%(str(self)))
+            self.fill(value)
+            self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
+            return 
+
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
@@ -10270,7 +10268,7 @@ class BayesNetInference_double(_object):
 
     def domainSizes(self):
         """
-        domainSizes(BayesNetInference_double self) -> NodeProperty< gum::Size > const &
+        domainSizes(BayesNetInference_double self) -> gum::NodeProperty< gum::Size > const &
 
         Parameters
         ----------
@@ -10613,7 +10611,7 @@ class BayesNetInference_double(_object):
 
     def evidence(self):
         """
-        evidence(BayesNetInference_double self) -> NodeProperty< gum::Potential< double > const * > const &
+        evidence(BayesNetInference_double self) -> gum::NodeProperty< gum::Potential< double > const * > const &
 
         Parameters
         ----------
@@ -10649,7 +10647,7 @@ class BayesNetInference_double(_object):
 
     def hardEvidence(self):
         """
-        hardEvidence(BayesNetInference_double self) -> NodeProperty< gum::Idx > const &
+        hardEvidence(BayesNetInference_double self) -> gum::NodeProperty< gum::Idx > const &
 
         Parameters
         ----------
@@ -13876,7 +13874,7 @@ class CredalNet_double(_object):
 
     def credalNet_currentCpt(self):
         """
-        credalNet_currentCpt(CredalNet_double self) -> NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
+        credalNet_currentCpt(CredalNet_double self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
 
         Parameters
         ----------
@@ -13888,7 +13886,7 @@ class CredalNet_double(_object):
 
     def credalNet_srcCpt(self):
         """
-        credalNet_srcCpt(CredalNet_double self) -> NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
+        credalNet_srcCpt(CredalNet_double self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
 
         Parameters
         ----------
@@ -15524,20 +15522,20 @@ class BNLearner_double(_object):
         ----------
         db: gum::learning::DatabaseVectInRAM const &
 
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, NodeProperty< gum::Sequence< std::string > > const & modalities, bool parse_database=False) -> BNLearner_double
+        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, gum::NodeProperty< gum::Sequence< std::string > > const & modalities, bool parse_database=False) -> BNLearner_double
 
         Parameters
         ----------
         filename: std::string const &
-        modalities: NodeProperty< gum::Sequence< std::string > > const &
+        modalities: gum::NodeProperty< gum::Sequence< std::string > > const &
         parse_database: bool
 
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, NodeProperty< gum::Sequence< std::string > > const & modalities) -> BNLearner_double
+        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, gum::NodeProperty< gum::Sequence< std::string > > const & modalities) -> BNLearner_double
 
         Parameters
         ----------
         filename: std::string const &
-        modalities: NodeProperty< gum::Sequence< std::string > > const &
+        modalities: gum::NodeProperty< gum::Sequence< std::string > > const &
 
         __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, BayesNet_double src, bool parse_database=False) -> BNLearner_double
 
@@ -16088,11 +16086,11 @@ class BNLearner_double(_object):
         ----------
         l: PyObject *
 
-        setSliceOrder(BNLearner_double self, NodeProperty< gum::NodeId > const & slice_order)
+        setSliceOrder(BNLearner_double self, gum::NodeProperty< gum::NodeId > const & slice_order)
 
         Parameters
         ----------
-        slice_order: NodeProperty< gum::NodeId > const &
+        slice_order: gum::NodeProperty< gum::NodeId > const &
 
         """
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)

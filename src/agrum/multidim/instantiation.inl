@@ -237,11 +237,15 @@ namespace gum {
 
   // operator ++
   INLINE void Instantiation::inc() {
-    Size p = nbrDim() - 1;
-    Idx  cpt = 0;
-    // if we are in overflow, do nothing
+    Size p = nbrDim();
+    if ( p == 0 ) {
+      __overflow = true;
+    }
 
     if ( __overflow ) return;
+    p -= 1;
+    Idx cpt = 0;
+    // if we are in overflow, do nothing
 
     // perform the increment
     while ( true ) {
@@ -269,11 +273,15 @@ namespace gum {
 
   // operator --
   INLINE void Instantiation::dec() {
-    Size p = nbrDim() - 1;
-    Idx  cpt = 0;
-    // if we are in overflow, do nothing
+    Size p = nbrDim();
+    if ( p == 0 ) {
+      __overflow = true;
+    }
 
     if ( __overflow ) return;
+    p -= 1;
+    Idx  cpt = 0;
+    // if we are in overflow, do nothing
 
     // perform the increment
     while ( true ) {
