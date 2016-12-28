@@ -222,11 +222,47 @@ class TestFeatures(BayesNetTestCase):
     self.assertEquals(bn.minNonZeroParam(), 0.1)
     self.assertEquals(bn.maxNonOneParam(), 0.9)
 
+  def test_minimalCondSet(self):
+    bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
+    iA, iB, iC, iD, iE, iF, iG, iH = [bn.idFromName(s) for s in
+                                      "ABCDEFGH"]
+    tous = set([iA, iB, iC, iD, iE, iF, iG, iH])
+
+    r = bn.minimalCondSet(iA, tous)
+    self.assertEqual(r, set([iA]))
+
+    r = bn.minimalCondSet(iA, tous - set([iA]))
+    self.assertEqual(r, set([iB, iC]))
+
+    r = bn.minimalCondSet(iA, set([iE, iF, iG]))
+    self.assertEqual(r, set([iE]))
+
+    r = bn.minimalCondSet(iA, set([iB, iC, iE, iF, iG]))
+    self.assertEqual(r, set([iB, iC]))
+
+    r = bn.minimalCondSet(iA, set([iC, iE, iF, iG]))
+    self.assertEqual(r, set([iC, iE, iF]))
+
+    r = bn.minimalCondSet(iC, tous)
+    self.assertEqual(r, set([iC]))
+
+    r = bn.minimalCondSet(iC, tous - set([iC]))
+    self.assertEqual(r, set([iA, iB, iH, iE]))
+
+    r = bn.minimalCondSet(iC, set([iE, iF, iG]))
+    self.assertEqual(r, set([iE, iF]))
+
+    r = bn.minimalCondSet(iC, set([iB, iE, iF, iG]))
+    self.assertEqual(r, set([iE, iB]))
+
+    r = bn.minimalCondSet(iC, set([iC, iE, iF, iG]))
+    self.assertEqual(r, set([iC]))
+
 
 class TestLoadBN(BayesNetTestCase):
   def listen(self, percent):
     if not percent > 100:
-      if (percent % 10 == 0):
+      if percent % 10 == 0:
         self.bufferlisten += "#"
 
   def ecoute(self, pourcent):
@@ -356,4 +392,6 @@ class TestLoadBN(BayesNetTestCase):
 
 ts = unittest.TestSuite()
 addTests(ts, TestConstructors)
+addTests(ts,TestInsertions)
+addTests(ts,TestFeatures)
 addTests(ts, TestLoadBN)

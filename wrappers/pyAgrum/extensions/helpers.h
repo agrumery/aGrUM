@@ -147,28 +147,41 @@ class PyAgrumHelper {
       }
     }
 
-    static void populateNodeSetFromPySequenceOfIntOrString(gum::NodeSet& nodeset,PyObject* list,const gum::IBayesNet<double>& bn) {
-      if (! PySequence_Check(list)) {
-        GUM_ERROR(gum::InvalidArgument,"Argument is not a sequence");
-        return;
+    static gum::NodeId idFromNameOrInt(PyObject *n,const gum::IBayesNet<double>& bn) {
+      std::string name= PyAgrumHelper::stringFromPyObject(n);
+      if (name!=""){
+        return bn.idFromName(name);
+      } else {
+        if (!PyInt_Check(n)) {
+          GUM_ERROR(gum::InvalidArgument, "A value is neither a node name nor an node id");
+        } else {
+          return gum::NodeId(PyInt_AsLong(n));
+        }
       }
-
-      auto siz=PySequence_Size(list);
-      for (int i=0 ;i<siz ;i++) {
-            gum::NodeId nid;
-            PyObject* n=PySequence_GetItem(list,i);
-            std::string name= PyAgrumHelper::stringFromPyObject(n);
-            if (name!=""){
-              nid=bn.idFromName(name);
-            } else {
-              if (!PyInt_Check(n)) {
-                GUM_ERROR(gum::InvalidArgument, "A value in the list argument is neither a node name nor an node id");
-                return;
-              }
-              nid=gum::NodeId(PyInt_AsLong(n));
-            }
-            nodeset.insert(nid);
+    }
+    
+    static void populateNodeSetFromPySequenceOfIntOrString(gum::NodeSet& nodeset,PyObject* seq,const gum::IBayesNet<double>& bn) {
+        /*
+      if (PySequence_Check(list)) {
+        auto siz=PySequence_Size(list);
+        for (int i=0 ;i<siz ;i++) 
+          nodeset.insert(idFromNameOrInt(PySequence_GetItem(list,i),bn));
       }
+      if (PyAnySet_Check(list)) {
+        auto siz=PySet_Size(list);
+        for (int i=0 ;i<siz ;i++) 
+          nodeset.insert(idFromNameOrInt(PySequence_GetItem(list,i),bn));
+        
+      }*/
+      PyObject *iter = PyObject_GetIter(seq);
+      if (iter!=NULL) {
+        PyObject *item;
+        while((item=PyIter_Next(iter))) {
+          nodeset.insert(idFromNameOrInt(item,bn));          
+        }
+      } else {
+        GUM_ERROR(gum::InvalidArgument,"Argument <list> is not a sequence nor a set");
+      }  
     }
 
     static PyObject* PyListFromNodeSet(const gum::NodeSet& nodeset) {
@@ -176,6 +189,15 @@ class PyAgrumHelper {
 
       for ( auto node : nodeset) {
         PyList_Append( q, PyLong_FromUnsignedLong((unsigned long)node));
+      }
+
+      return q;
+    }
+    static PyObject* PySetFromNodeSet(const gum::NodeSet& nodeset) {
+      PyObject* q = PySet_New( 0 );
+
+      for ( auto node : nodeset) {
+        PySet_Add( q, PyLong_FromUnsignedLong((unsigned long)node));
       }
 
       return q;

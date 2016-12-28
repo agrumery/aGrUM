@@ -848,6 +848,52 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( bn.minNonZeroParam(), 0.1f );
       TS_ASSERT_EQUALS( bn.maxNonOneParam(), 0.9f );
     }
+
+    void testMinimalCondSet() {
+      /*
+       A   B
+        \ / \
+      H  C   D
+       \ |   |
+         E   |
+          \ /
+           F
+           |
+           G
+       */
+      gum::BayesNet<int> bn;
+
+      auto a = bn.add( "A", 2 );
+      auto b = bn.add( "B", 2 );
+      auto c = bn.add( "C", 2 );
+      auto d = bn.add( "D", 2 );
+      auto e = bn.add( "E", 2 );
+      auto f = bn.add( "F", 2 );
+      auto g = bn.add( "G", 2 );
+      auto h = bn.add( "H", 2 );
+
+      bn.addArc( a, c );
+      bn.addArc( b, c );
+      bn.addArc( b, d );
+      bn.addArc( c, e );
+      bn.addArc( d, f );
+      bn.addArc( e, f );
+      bn.addArc( f, g );
+      bn.addArc( h, e );
+
+      TS_ASSERT_EQUALS(
+          bn.minimalCondSet( c, gum::NodeSet( {a, b, c, d, e, f, g, h} ) ),
+          gum::NodeSet( {c} ) );
+      TS_ASSERT_EQUALS(
+          bn.minimalCondSet( c, gum::NodeSet( {a, b, d, e, f, g, h} ) ),
+          gum::NodeSet( {a, b, e, h} ) );
+      TS_ASSERT_EQUALS( bn.minimalCondSet( c, gum::NodeSet( {e, f, g} ) ),
+                        gum::NodeSet( {e, f} ) );
+      TS_ASSERT_EQUALS( bn.minimalCondSet( c, gum::NodeSet( {b, e, f, g} ) ),
+                        gum::NodeSet( {e, b} ) );
+      TS_ASSERT_EQUALS( bn.minimalCondSet( c, gum::NodeSet( {a, e, f, g} ) ),
+                        gum::NodeSet( {a, e, f} ) );
+    }
   };
 
 }  // tests

@@ -6462,103 +6462,77 @@ SWIGINTERN void gum_UtilityTable_Sl_double_Sg__remove(gum::UtilityTable< double 
 SWIGINTERN void gum_UtilityTable_Sl_double_Sg__add(gum::UtilityTable< double > *self,gum::DiscreteVariable const &v){
     self->gum::MultiDimDecorator<double>::add(v);
   }
-SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__names(gum::IBayesNet< double > const *self){
-      PyObject* q=PyList_New(0);
-
-      const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
-        PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
-      }
-      return q;
-    }
 SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__ids(gum::IBayesNet< double > *self){
-      PyObject* q=PyList_New(0);
-
-      const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator  node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
-        PyList_Append(q,PyInt_FromLong(*node_iter));
-      }
-
-      return q;
+    PyObject* q=PyList_New(0);
+    for ( auto node : self->dag().nodes()) {
+      PyList_Append(q,PyLong_FromUnsignedLong((unsigned long)node));
     }
-SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__arcs(gum::IBayesNet< double > *self){
-      PyObject* q=PyList_New(0);
-
-      const gum::DAG& dag=self->dag();
-      for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
-        PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
-      }
-
-      return q;
-    }
-SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__parents(gum::IBayesNet< double > const *self,gum::NodeId const id){
+    return q;
+  }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__names(gum::IBayesNet< double > const *self){
     PyObject* q=PyList_New(0);
 
-    const gum::NodeSet& p=self->dag().parents(id);
-    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
-      PyList_Append(q,PyInt_FromLong(*it));
+    for ( auto node : self->dag().nodes()) {
+      PyList_Append(q,PyString_FromString(self->variable(node).name().c_str()));
+    }
+    return q;
+  }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__arcs(gum::IBayesNet< double > *self){
+    PyObject* q=PyList_New(0);
+
+    const gum::DAG& dag=self->dag();
+    for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
+      PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
     }
 
     return q;
   }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__parents(gum::IBayesNet< double > const *self,gum::NodeId const id){
+    return PyAgrumHelper::PyListFromNodeSet(self->dag().parents(id));
+  }
 SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__children(gum::IBayesNet< double > const *self,gum::NodeId const id){
+    return PyAgrumHelper::PyListFromNodeSet(self->dag().children(id));
+  }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_1(gum::IBayesNet< double > const *self,gum::NodeId target,PyObject *list){
+    gum::NodeSet soids;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
+    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+  }
+SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__ids(gum::BayesNet< double > *self){
     PyObject* q=PyList_New(0);
-
-    const gum::NodeSet& p=self->dag().children(id);
-    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
-      PyList_Append(q,PyInt_FromLong(*it));
+    for ( auto node : self->dag().nodes()) {
+      PyList_Append(q,PyLong_FromUnsignedLong((unsigned long)node));
     }
-
     return q;
   }
 SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__names(gum::BayesNet< double > const *self){
-      PyObject* q=PyList_New(0);
-
-      const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
-        PyList_Append(q,PyString_FromString(self->variable(*node_iter).name().c_str()));
-      }
-      return q;
-    }
-SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__ids(gum::BayesNet< double > *self){
-      PyObject* q=PyList_New(0);
-
-      const gum::DAG& dag=self->dag();
-      for ( gum::NodeGraphPartIterator  node_iter = dag.nodes().begin();node_iter != dag.nodes().end(); ++node_iter ) {
-        PyList_Append(q,PyInt_FromLong(*node_iter));
-      }
-
-      return q;
-    }
-SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__arcs(gum::BayesNet< double > *self){
-      PyObject* q=PyList_New(0);
-
-      const gum::DAG& dag=self->dag();
-      for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
-        PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
-      }
-
-      return q;
-    }
-SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__parents(gum::BayesNet< double > const *self,gum::NodeId const id){
     PyObject* q=PyList_New(0);
 
-    const gum::NodeSet& p=self->dag().parents(id);
-    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
-      PyList_Append(q,PyInt_FromLong(*it));
+    for ( auto node : self->dag().nodes()) {
+      PyList_Append(q,PyString_FromString(self->variable(node).name().c_str()));
+    }
+    return q;
+  }
+SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__arcs(gum::BayesNet< double > *self){
+    PyObject* q=PyList_New(0);
+
+    const gum::DAG& dag=self->dag();
+    for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
+      PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
     }
 
     return q;
   }
+SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__parents(gum::BayesNet< double > const *self,gum::NodeId const id){
+    return PyAgrumHelper::PyListFromNodeSet(self->dag().parents(id));
+  }
 SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__children(gum::BayesNet< double > const *self,gum::NodeId const id){
-    PyObject* q=PyList_New(0);
-
-    const gum::NodeSet& p=self->dag().children(id);
-    for(gum::NodeSet::const_iterator it=p.begin();it!=p.end();++it) {
-      PyList_Append(q,PyInt_FromLong(*it));
-    }
-
-    return q;
+    return PyAgrumHelper::PyListFromNodeSet(self->dag().children(id));
+  }
+SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__minimalCondSet(gum::BayesNet< double > const *self,gum::NodeId target,PyObject *list){
+    gum::NodeSet soids;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
+    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
   }
 SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadBIF__SWIG_0(gum::BayesNet< double > *self,std::string name,PyObject *l=(PyObject *) 0){
       std::stringstream stream;
@@ -43089,29 +43063,50 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_IBayesNet_double_names(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeSet *arg3 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
   PyObject * obj0 = 0 ;
-  PyObject *result = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::NodeSet result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_names",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:IBayesNet_double_minimalCondSet",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_names" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_SetT_unsigned_int_t,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "3"" of type '" "gum::NodeSet const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "IBayesNet_double_minimalCondSet" "', argument " "3"" of type '" "gum::NodeSet const &""'"); 
+  }
+  arg3 = reinterpret_cast< gum::NodeSet * >(argp3);
   {
     try {
-      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__names((gum::IBayesNet< double > const *)arg1);
+      result = ((gum::IBayesNet< double > const *)arg1)->minimalCondSet(arg2,(gum::NodeSet const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = result;
+  resultobj = SWIG_NewPointerObj((new gum::NodeSet(static_cast< const gum::NodeSet& >(result))), SWIGTYPE_p_SetT_unsigned_int_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -43135,6 +43130,35 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double_ids(PyObject *SWIGUNUSEDPARM(self), 
   {
     try {
       result = (PyObject *)gum_IBayesNet_Sl_double_Sg__ids(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_names(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:IBayesNet_double_names",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_names" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__names((gum::IBayesNet< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -43249,6 +43273,106 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double_children(PyObject *SWIGUNUSEDPARM(se
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  gum::NodeId arg2 ;
+  PyObject *arg3 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:IBayesNet_double_minimalCondSet",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  arg3 = obj2;
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_1((gum::IBayesNet< double > const *)arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__IBayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_SetT_unsigned_int_t, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_IBayesNet_double_minimalCondSet__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__IBayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        _v = (argv[2] != 0);
+        if (_v) {
+          return _wrap_IBayesNet_double_minimalCondSet__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'IBayesNet_double_minimalCondSet'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::IBayesNet< double >::minimalCondSet(gum::NodeId,gum::NodeSet const &) const\n"
+    "    gum::IBayesNet< double >::minimalCondSet(gum::NodeId,PyObject *) const\n");
+  return 0;
 }
 
 
@@ -47244,35 +47368,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_double_names(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:BayesNet_double_names",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_names" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
-  {
-    try {
-      result = (PyObject *)gum_BayesNet_Sl_double_Sg__names((gum::BayesNet< double > const *)arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = result;
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_BayesNet_double_ids(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
@@ -47290,6 +47385,35 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_ids(PyObject *SWIGUNUSEDPARM(self), P
   {
     try {
       result = (PyObject *)gum_BayesNet_Sl_double_Sg__ids(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_double_names(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:BayesNet_double_names",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_names" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_BayesNet_Sl_double_Sg__names((gum::BayesNet< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -47395,6 +47519,47 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_children(PyObject *SWIGUNUSEDPARM(sel
   {
     try {
       result = (PyObject *)gum_BayesNet_Sl_double_Sg__children((gum::BayesNet< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_double_minimalCondSet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
+  gum::NodeId arg2 ;
+  PyObject *arg3 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:BayesNet_double_minimalCondSet",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_minimalCondSet" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BayesNet_double_minimalCondSet" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  arg3 = obj2;
+  {
+    try {
+      result = (PyObject *)gum_BayesNet_Sl_double_Sg__minimalCondSet((gum::BayesNet< double > const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -81576,20 +81741,20 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::IBayesNet< double > const *\n"
 		"\n"
 		""},
-	 { (char *)"IBayesNet_double_names", _wrap_IBayesNet_double_names, METH_VARARGS, (char *)"\n"
-		"IBayesNet_double_names(IBayesNet_double self) -> PyObject *\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"self: gum::IBayesNet< double > const *\n"
-		"\n"
-		""},
 	 { (char *)"IBayesNet_double_ids", _wrap_IBayesNet_double_ids, METH_VARARGS, (char *)"\n"
 		"IBayesNet_double_ids(IBayesNet_double self) -> PyObject *\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"self: gum::IBayesNet< double > *\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_names", _wrap_IBayesNet_double_names, METH_VARARGS, (char *)"\n"
+		"IBayesNet_double_names(IBayesNet_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"IBayesNet_double_arcs", _wrap_IBayesNet_double_arcs, METH_VARARGS, (char *)"\n"
@@ -81616,6 +81781,23 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"self: gum::IBayesNet< double > const *\n"
 		"id: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"IBayesNet_double_minimalCondSet", _wrap_IBayesNet_double_minimalCondSet, METH_VARARGS, (char *)"\n"
+		"minimalCondSet(gum::NodeId target, gum::NodeSet const & soids) -> gum::NodeSet\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeId\n"
+		"soids: gum::NodeSet const &\n"
+		"\n"
+		"IBayesNet_double_minimalCondSet(IBayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::IBayesNet< double > const *\n"
+		"target: gum::NodeId\n"
+		"list: PyObject *\n"
 		"\n"
 		""},
 	 { (char *)"IBayesNet_double_swigregister", IBayesNet_double_swigregister, METH_VARARGS, NULL},
@@ -82129,20 +82311,20 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::BayesNet< double > const *\n"
 		"\n"
 		""},
-	 { (char *)"BayesNet_double_names", _wrap_BayesNet_double_names, METH_VARARGS, (char *)"\n"
-		"BayesNet_double_names(BayesNet_double self) -> PyObject *\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"self: gum::BayesNet< double > const *\n"
-		"\n"
-		""},
 	 { (char *)"BayesNet_double_ids", _wrap_BayesNet_double_ids, METH_VARARGS, (char *)"\n"
 		"BayesNet_double_ids(BayesNet_double self) -> PyObject *\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"self: gum::BayesNet< double > *\n"
+		"\n"
+		""},
+	 { (char *)"BayesNet_double_names", _wrap_BayesNet_double_names, METH_VARARGS, (char *)"\n"
+		"BayesNet_double_names(BayesNet_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::BayesNet< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"BayesNet_double_arcs", _wrap_BayesNet_double_arcs, METH_VARARGS, (char *)"\n"
@@ -82169,6 +82351,16 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"self: gum::BayesNet< double > const *\n"
 		"id: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"BayesNet_double_minimalCondSet", _wrap_BayesNet_double_minimalCondSet, METH_VARARGS, (char *)"\n"
+		"BayesNet_double_minimalCondSet(BayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::BayesNet< double > const *\n"
+		"target: gum::NodeId\n"
+		"list: PyObject *\n"
 		"\n"
 		""},
 	 { (char *)"BayesNet_double_loadBIF", _wrap_BayesNet_double_loadBIF, METH_VARARGS, (char *)"\n"

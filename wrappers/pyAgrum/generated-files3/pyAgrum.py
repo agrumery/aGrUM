@@ -9268,18 +9268,6 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double___str__(self)
 
 
-    def names(self) -> "PyObject *":
-        """
-        names(IBayesNet_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
-        return _pyAgrum.IBayesNet_double_names(self)
-
-
     def ids(self) -> "PyObject *":
         """
         ids(IBayesNet_double self) -> PyObject *
@@ -9290,6 +9278,18 @@ class IBayesNet_double(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_double_ids(self)
+
+
+    def names(self) -> "PyObject *":
+        """
+        names(IBayesNet_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::IBayesNet< double > const *
+
+        """
+        return _pyAgrum.IBayesNet_double_names(self)
 
 
     def arcs(self) -> "PyObject *":
@@ -9326,6 +9326,26 @@ class IBayesNet_double(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_double_children(self, id)
+
+
+    def minimalCondSet(self, *args) -> "PyObject *":
+        """
+        minimalCondSet(IBayesNet_double self, gum::NodeId target, gum::NodeSet const & soids) -> gum::NodeSet
+
+        Parameters
+        ----------
+        target: gum::NodeId
+        soids: gum::NodeSet const &
+
+        minimalCondSet(IBayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject *
+
+        Parameters
+        ----------
+        target: gum::NodeId
+        list: PyObject *
+
+        """
+        return _pyAgrum.IBayesNet_double_minimalCondSet(self, *args)
 
 IBayesNet_double_swigregister = _pyAgrum.IBayesNet_double_swigregister
 IBayesNet_double_swigregister(IBayesNet_double)
@@ -9971,18 +9991,6 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_log10DomainSize(self)
 
 
-    def names(self) -> "PyObject *":
-        """
-        names(BayesNet_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > const *
-
-        """
-        return _pyAgrum.BayesNet_double_names(self)
-
-
     def ids(self) -> "PyObject *":
         """
         ids(BayesNet_double self) -> PyObject *
@@ -9993,6 +10001,18 @@ class BayesNet_double(IBayesNet_double):
 
         """
         return _pyAgrum.BayesNet_double_ids(self)
+
+
+    def names(self) -> "PyObject *":
+        """
+        names(BayesNet_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::BayesNet< double > const *
+
+        """
+        return _pyAgrum.BayesNet_double_names(self)
 
 
     def arcs(self) -> "PyObject *":
@@ -10029,6 +10049,19 @@ class BayesNet_double(IBayesNet_double):
 
         """
         return _pyAgrum.BayesNet_double_children(self, id)
+
+
+    def minimalCondSet(self, target: 'gum::NodeId', list: 'PyObject *') -> "PyObject *":
+        """
+        minimalCondSet(BayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject *
+
+        Parameters
+        ----------
+        target: gum::NodeId
+        list: PyObject *
+
+        """
+        return _pyAgrum.BayesNet_double_minimalCondSet(self, target, list)
 
 
     def loadBIF(self, *args) -> "std::string":

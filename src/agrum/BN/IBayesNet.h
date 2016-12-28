@@ -155,8 +155,7 @@ namespace gum {
     /**
      * This operator compares 2 BNs !
      * @warning To identify nodes between BNs, it is assumed that they share the
-     *same
-     *name.
+     *same name.
      *
      * @return true if the src and this are equal.
      */
@@ -212,6 +211,19 @@ namespace gum {
 
     /// @return Returns a string representation of this IBayesNet.
     std::string toString( void ) const;
+
+    /***
+     * @return the minimal subset of soids that conditions the target
+     *
+     * i.e. P(target| soids)=P(target|@return)
+     */
+    NodeSet minimalCondSet( NodeId target, const NodeSet& soids ) const;
+
+    private:
+    void __minimalCondSetVisit( NodeId         node,
+                                const NodeSet& soids,
+                                NodeSet&       minimal,
+                                NodeSet&       alreadyVisited ) const;
   };
 
 

@@ -325,6 +325,43 @@ namespace gum {
     return !this->operator==( from );
   }
 
+  // visit the nodes and add some of node from soids in minimal
+  template <typename GUM_SCALAR>
+  void
+  IBayesNet<GUM_SCALAR>::__minimalCondSetVisit( NodeId         node,
+                                                const NodeSet& soids,
+                                                NodeSet&       minimal,
+                                                NodeSet& alreadyVisited ) const {
+    if ( alreadyVisited.contains( node ) ) return;
+    alreadyVisited << node;
+    if ( soids.contains( node ) ) {
+      minimal << node;
+      for ( auto fath : _dag.parents( node ) )
+        __minimalCondSetVisit( fath, soids, minimal, alreadyVisited );
+    } else {
+      for ( auto chil : _dag.children( node ) )
+        __minimalCondSetVisit( chil, soids, minimal, alreadyVisited );
+    }
+  }
+
+  template <typename GUM_SCALAR>
+  NodeSet IBayesNet<GUM_SCALAR>::minimalCondSet( NodeId         target,
+                                                 const NodeSet& soids ) const {
+
+    if ( soids.contains( target ) ) return NodeSet( {target} );
+
+    NodeSet res;
+    NodeSet alreadyVisited;
+    for ( auto pere : _dag.parents( target ) ) {
+      __minimalCondSetVisit( pere, soids, res, alreadyVisited );
+    }
+
+    for ( auto fils : _dag.children( target ) ) {
+      __minimalCondSetVisit( fils, soids, res, alreadyVisited );
+    }
+    return res;
+  }
+
   template <typename GUM_SCALAR>
   INLINE std::ostream& operator<<( std::ostream&                output,
                                    const IBayesNet<GUM_SCALAR>& bn ) {
