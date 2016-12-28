@@ -6,6 +6,9 @@ from __future__ import print_function
 import os
 import sys
 
+import platform
+from sys import platform as os_platform
+
 if len(sys.argv) > 1:
   p = os.getcwd() + "\\" + sys.argv[1]
   sys.path.insert(1, p)  # to force to use local pyAgrum for the tests (and not installed one)
@@ -53,6 +56,10 @@ PyAgrum Test Unit Module
 using python unittest
 """, end='\n', file=sys.stdout)
 
+print("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform), end='\n', file=sys.stdout)
+print("pyAgrum p  th : {}".format(gum.__file__), end='\n', file=sys.stdout)
+print("", end='\n', file=sys.stdout)
+
 runner = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)
 
 result = runner._makeResult()
@@ -74,12 +81,12 @@ import gc
 gc.collect()
 gum.statsObj()  # reporting on objects in debug mode
 
-import platform
-from sys import platform as os_platform
-
-print()
-print("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform), end='\n', file=sys.stdout)
 print("## Profiling : %5.0f ms ##" % (1000.0 * duration), end='\n', file=sys.stdout)
 print("Failed %d of %d tests" % (errs, result.testsRun), end='\n', file=sys.stdout)
 print("Success rate: %d%%" % (((result.testsRun - errs) * 100) / result.testsRun), end='\n', file=sys.stdout)
 print("", end='\n', file=sys.stdout)
+print("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform), end='\n', file=sys.stdout)
+print("pyAgrum path : {}".format(gum.__file__), end='\n', file=sys.stdout)
+print("", end='\n', file=sys.stdout)
+
+sys.exit(1 if errs>0 else 0)

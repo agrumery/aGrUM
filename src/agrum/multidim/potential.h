@@ -113,8 +113,6 @@ namespace gum {
 
     virtual Potential<GUM_SCALAR>* newFactory() const;
 
-    virtual const std::string toString() const;
-
     /// @}
     // ========================================================================
     /// @name Class operation for Potential instances
@@ -199,8 +197,10 @@ namespace gum {
     /// min of all elements in the Potential
     GUM_SCALAR min() const;
     /// max of all non one elements in the Potential
+    /// @throw NotFound if all value == 1.0
     GUM_SCALAR maxNonOne() const;
     /// min of all non zero elements in the Potential
+    /// @throw NotFound if all value == 0.0
     GUM_SCALAR minNonZero() const;
 
     /// entropy of the Potential
@@ -293,33 +293,45 @@ namespace gum {
 
     /// the function to be used to add two Potentials
     Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p2 ) const {
-      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
-      if ( this->nbrDim() == 0 ) return Potential<GUM_SCALAR>( p2 );
+      if ( p2.empty() )
+        return Potential<GUM_SCALAR>( *this ).translate( p2._empty_value );
+      if ( this->empty() )
+        return Potential<GUM_SCALAR>( p2 ).translate( this->_empty_value );
 
       return Potential<GUM_SCALAR>( *this->content() + *p2.content() );
     }
 
     /// the function to be used to subtract two Potentials
     Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p2 ) const {
-      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
-      if ( this->nbrDim() == 0 ) GUM_ERROR( FatalError, "Undefined substraction" );
-
+      if ( p2.empty() )
+        return Potential<GUM_SCALAR>( *this ).translate( -p2._empty_value );
+      if ( this->empty() ) {
+        auto p = Potential<GUM_SCALAR>( p2 );
+        p.apply( [this]( GUM_SCALAR x ) { return this->_empty_value - x; } );
+        return p;
+      }
       return Potential<GUM_SCALAR>( *this->content() - *p2.content() );
     }
 
     /// the function to be used to multiply two Potentials
     Potential<GUM_SCALAR> operator*( const Potential<GUM_SCALAR>& p2 ) const {
-      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
-      if ( this->nbrDim() == 0 ) return Potential<GUM_SCALAR>( p2 );
+      if ( p2.empty() )
+        return Potential<GUM_SCALAR>( *this ).scale( p2._empty_value );
+      if ( this->empty() )
+        return Potential<GUM_SCALAR>( p2 ).scale( this->_empty_value );
 
       return Potential<GUM_SCALAR>( *this->content() * *p2.content() );
     }
 
     /// the function to be used to divide two Potentials
     Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p2 ) const {
-      if ( p2.nbrDim() == 0 ) return Potential<GUM_SCALAR>( *this );
-      if ( this->nbrDim() == 0 ) GUM_ERROR( FatalError, "Undefined division" );
-
+      if ( p2.empty() )
+        return Potential<GUM_SCALAR>( *this ).scale( 1 / p2._empty_value );
+      if ( this->empty() ) {
+        auto p = Potential<GUM_SCALAR>( p2 );
+        p.apply( [this]( GUM_SCALAR x ) { return this->_empty_value / x; } );
+        return p;
+      }
       return Potential<GUM_SCALAR>( *this->content() / *p2.content() );
     }
 
@@ -344,11 +356,25 @@ namespace gum {
     }
 
     bool operator==( const Potential<GUM_SCALAR>& r ) const {
-      return ( *this->_content ) == ( *r._content );
+      if ( this->empty() ) {
+        if ( r.empty() )
+          return this->_empty_value == r._empty_value;
+        else
+          return false;
+      } else {
+        if ( r.empty() )
+          return false;
+        else
+          return ( *this->_content ) == ( *r._content );
+      }
     }
 
     bool operator!=( const Potential<GUM_SCALAR>& r ) const {
       return !operator==( r );
+    }
+
+    virtual const std::string toString() const {
+      return MultiDimDecorator<GUM_SCALAR>::toString();
     }
 
     ///@}

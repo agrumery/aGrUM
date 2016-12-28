@@ -162,10 +162,13 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         self._notSync=False
         self._var_names = []
         self._var_dims = []
-        content = []
         if self.empty():
+            i = Instantiation(self)
+            content = [self.get(i)]
             self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
             return
+            
+        content = []
         i = Instantiation(self)
         i.setFirst()
         while not i.end():
@@ -224,7 +227,8 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
     def __getitem__(self, id):
         self.__fill_distrib__()
         if self.empty():
-            raise IndexError("%s is empty !!"%(str(self)))
+            return self.__distrib__[0]
+            
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
@@ -237,7 +241,10 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
     def __setitem__(self, id, value):
         self.__fill_distrib__()
         if self.empty():
-            raise IndexError("%s is empty !!"%(str(self)))
+            self.fill(value)
+            self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
+            return 
+            
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
@@ -267,7 +274,6 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 %extend gum::Potential<double> {
     void __fill_distrib__() {}
     PyObject * __indexfromdict__(PyObject *id_dict) { return NULL; }
-    const char * __str__() { return NULL; }
     PyObject *tolist() { return NULL; }
     PyObject *toarray() { return NULL; }
     void __getitem__(PyObject *id) {}

@@ -140,7 +140,7 @@ namespace gum {
      * @brief Returns the value pointed by i.
      *
      * @warning If i variables set is disjoint with this MultiDimContainer
-     * then 0 is assumed for dimensions (i.e. variables) not prensent in the
+     * then 0 is assumed for dimensions (i.e. variables) not present in the
      * instantiation.
      *
      * @param i An Instantiation of this MultiDimContainer.
@@ -392,10 +392,11 @@ namespace gum {
      * @brief Return a data, given a Instantiation.
      *
      * Note that get allows to change a value in the container.
-     * The method is still tagged as const.
+     * The method is tagged as const since a multidim is not const if its dimension
+     * changed.
      *
      * @warning If i variables set is disjoint with this MultiDimContainer
-     * then 0 is assumed for dimensions (i.e. variables) not prensent in the
+     * then 0 is assumed for dimensions (i.e. variables) not present in the
      * instantiation.
      *
      * @param i The instantiation used to find the data.

@@ -579,29 +579,33 @@ class TestOperators(pyAgrumTestCase):
     self.assertTrue(p == q)
 
     p2 = gum.Potential()
-    try:
-      p2.normalizeAsCPT()
-      self.assertTrue(False)
-    except gum.FatalError:
-      self.assertTrue(True)
     p2.add(a).add(b).fill(0)
-    try:
+
+    with self.assertRaises(gum.FatalError):
       p2.normalizeAsCPT()
-      self.assertTrue(False)
-    except gum.FatalError:
-      self.assertTrue(True)
 
     p3 = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 0, 0, 0, 7, 8, 9])
-    try:
+    with self.assertRaises(gum.FatalError):
       p3.normalizeAsCPT()
-      self.assertTrue(False)
-    except gum.FatalError:
-      self.assertTrue(True)
 
     p4 = gum.Potential().add(a).fillWith([1, 3, 6])
     witness = gum.Potential().add(a).fillWith([0.1, 0.3, 0.6])
     p4.normalizeAsCPT()
     self.assertTrue(p4 == witness)
+
+  def testOperationForEmptyPotential(self):
+    a, b = [gum.LabelizedVariable(s, s, 3) for s in "ab"]
+
+    p = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    q = gum.Potential().fillWith([1])
+    self.assertEqual(p + q, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
+    tmp = p
+    tmp += q
+    self.assertEqual(tmp, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
+    p = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    q = gum.Potential().fillWith([1])
+    e=str(q+p)
+    self.assertEqual(tmp, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
 
 
 ts = unittest.TestSuite()

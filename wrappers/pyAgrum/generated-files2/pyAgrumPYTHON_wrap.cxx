@@ -3462,159 +3462,154 @@ namespace Swig {
 #define SWIGTYPE_p_NodeConstIteratorSafe swig_types[6]
 #define SWIGTYPE_p_NodeIterator swig_types[7]
 #define SWIGTYPE_p_NodeIteratorSafe swig_types[8]
-#define SWIGTYPE_p_NodePropertyT_gum__PotentialT_double_t_const_p_t swig_types[9]
-#define SWIGTYPE_p_NodePropertyT_gum__SequenceT_std__string_t_t swig_types[10]
-#define SWIGTYPE_p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[11]
-#define SWIGTYPE_p_NodePropertyT_unsigned_int_t swig_types[12]
-#define SWIGTYPE_p_NodePropertyT_unsigned_long_t swig_types[13]
-#define SWIGTYPE_p_PRMexplorer swig_types[14]
-#define SWIGTYPE_p_PythonApproximationListener swig_types[15]
-#define SWIGTYPE_p_PythonBNListener swig_types[16]
-#define SWIGTYPE_p_PythonLoadListener swig_types[17]
-#define SWIGTYPE_p_RelevantPotentialsFinderType swig_types[18]
-#define SWIGTYPE_p_SetT_gum__Arc_t swig_types[19]
-#define SWIGTYPE_p_SetT_gum__Arc_t__const_iterator swig_types[20]
-#define SWIGTYPE_p_SetT_gum__Edge_t swig_types[21]
-#define SWIGTYPE_p_SetT_gum__Edge_t__const_iterator swig_types[22]
-#define SWIGTYPE_p_SetT_gum__PotentialT_double_t_const_p_t swig_types[23]
-#define SWIGTYPE_p_SetT_unsigned_int_t swig_types[24]
-#define SWIGTYPE_p_SetT_unsigned_int_t__const_iterator swig_types[25]
-#define SWIGTYPE_p_Triangulation swig_types[26]
-#define SWIGTYPE_p_allocator_type swig_types[27]
-#define SWIGTYPE_p_cArcP swig_types[28]
-#define SWIGTYPE_p_char swig_types[29]
-#define SWIGTYPE_p_const_pointer swig_types[30]
-#define SWIGTYPE_p_const_reference swig_types[31]
-#define SWIGTYPE_p_difference_type swig_types[32]
-#define SWIGTYPE_p_gum__ApproximationScheme swig_types[33]
-#define SWIGTYPE_p_gum__Arc swig_types[34]
-#define SWIGTYPE_p_gum__ArcGraphPart swig_types[35]
-#define SWIGTYPE_p_gum__BayesNetInferenceT_double_t swig_types[36]
-#define SWIGTYPE_p_gum__BayesNetT_double_t swig_types[37]
-#define SWIGTYPE_p_gum__BruteForceKLT_double_t swig_types[38]
-#define SWIGTYPE_p_gum__CPTError swig_types[39]
-#define SWIGTYPE_p_gum__CPTNoSumTo1 swig_types[40]
-#define SWIGTYPE_p_gum__CliqueGraph swig_types[41]
-#define SWIGTYPE_p_gum__DAG swig_types[42]
-#define SWIGTYPE_p_gum__DAGmodel swig_types[43]
-#define SWIGTYPE_p_gum__DatabaseError swig_types[44]
-#define SWIGTYPE_p_gum__DefaultInLabel swig_types[45]
-#define SWIGTYPE_p_gum__DiGraph swig_types[46]
-#define SWIGTYPE_p_gum__DiscreteVariable swig_types[47]
-#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[48]
-#define SWIGTYPE_p_gum__DuplicateElement swig_types[49]
-#define SWIGTYPE_p_gum__DuplicateLabel swig_types[50]
-#define SWIGTYPE_p_gum__Edge swig_types[51]
-#define SWIGTYPE_p_gum__EdgeGraphPart swig_types[52]
-#define SWIGTYPE_p_gum__EmptyBSTree swig_types[53]
-#define SWIGTYPE_p_gum__EmptySet swig_types[54]
-#define SWIGTYPE_p_gum__Exception swig_types[55]
-#define SWIGTYPE_p_gum__FactoryError swig_types[56]
-#define SWIGTYPE_p_gum__FactoryInvalidState swig_types[57]
-#define SWIGTYPE_p_gum__FatalError swig_types[58]
-#define SWIGTYPE_p_gum__FormatNotFound swig_types[59]
-#define SWIGTYPE_p_gum__GibbsInferenceT_double_t swig_types[60]
-#define SWIGTYPE_p_gum__GibbsKLT_double_t swig_types[61]
-#define SWIGTYPE_p_gum__GraphError swig_types[62]
-#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[63]
-#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[64]
-#define SWIGTYPE_p_gum__IOError swig_types[65]
-#define SWIGTYPE_p_gum__IdError swig_types[66]
-#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[67]
-#define SWIGTYPE_p_gum__IncompatibleScoreApriori swig_types[68]
-#define SWIGTYPE_p_gum__InfluenceDiagramInferenceT_double_t swig_types[69]
-#define SWIGTYPE_p_gum__InfluenceDiagramT_double_t swig_types[70]
-#define SWIGTYPE_p_gum__Instantiation swig_types[71]
-#define SWIGTYPE_p_gum__InvalidArc swig_types[72]
-#define SWIGTYPE_p_gum__InvalidArgument swig_types[73]
-#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[74]
-#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[75]
-#define SWIGTYPE_p_gum__InvalidEdge swig_types[76]
-#define SWIGTYPE_p_gum__InvalidNode swig_types[77]
-#define SWIGTYPE_p_gum__KLT_double_t swig_types[78]
-#define SWIGTYPE_p_gum__LabelizedVariable swig_types[79]
-#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[80]
-#define SWIGTYPE_p_gum__LearningError swig_types[81]
-#define SWIGTYPE_p_gum__ListT_gum__PotentialT_double_t_const_p_t swig_types[82]
-#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[83]
-#define SWIGTYPE_p_gum__MixedGraph swig_types[84]
-#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[85]
-#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[86]
-#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[87]
-#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[88]
-#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[89]
-#define SWIGTYPE_p_gum__MultiDimInterface swig_types[90]
-#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[91]
-#define SWIGTYPE_p_gum__NoChild swig_types[92]
-#define SWIGTYPE_p_gum__NoNeighbour swig_types[93]
-#define SWIGTYPE_p_gum__NoParent swig_types[94]
-#define SWIGTYPE_p_gum__NodeGraphPart swig_types[95]
-#define SWIGTYPE_p_gum__NotFound swig_types[96]
-#define SWIGTYPE_p_gum__NullElement swig_types[97]
-#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[98]
-#define SWIGTYPE_p_gum__OutOfBounds swig_types[99]
-#define SWIGTYPE_p_gum__OutOfLowerBound swig_types[100]
-#define SWIGTYPE_p_gum__OutOfUpperBound swig_types[101]
-#define SWIGTYPE_p_gum__PossiblyIncompatibleScoreApriori swig_types[102]
-#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[103]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[104]
-#define SWIGTYPE_p_gum__ReferenceError swig_types[105]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[106]
-#define SWIGTYPE_p_gum__SequenceT_unsigned_int_t swig_types[107]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[108]
-#define SWIGTYPE_p_gum__SizeError swig_types[109]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[110]
-#define SWIGTYPE_p_gum__TypeError swig_types[111]
-#define SWIGTYPE_p_gum__UndefinedElement swig_types[112]
-#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[113]
-#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[114]
-#define SWIGTYPE_p_gum__UndiGraph swig_types[115]
-#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[116]
-#define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[117]
-#define SWIGTYPE_p_gum__Variable swig_types[118]
-#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[119]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[120]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[121]
-#define SWIGTYPE_p_gum__WrongType swig_types[122]
-#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[123]
-#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[124]
-#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[125]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[126]
-#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[127]
-#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[128]
-#define SWIGTYPE_p_iterator_category swig_types[129]
-#define SWIGTYPE_p_msg swig_types[130]
-#define SWIGTYPE_p_node_const_iterator swig_types[131]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[132]
-#define SWIGTYPE_p_node_iterator swig_types[133]
-#define SWIGTYPE_p_node_iterator_safe swig_types[134]
-#define SWIGTYPE_p_p_PyObject swig_types[135]
-#define SWIGTYPE_p_pointer swig_types[136]
-#define SWIGTYPE_p_reference swig_types[137]
-#define SWIGTYPE_p_size_type swig_types[138]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[139]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[140]
-#define SWIGTYPE_p_std__default_random_engine swig_types[141]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[142]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[143]
-#define SWIGTYPE_p_std__invalid_argument swig_types[144]
-#define SWIGTYPE_p_std__ostream swig_types[145]
-#define SWIGTYPE_p_std__string swig_types[146]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[147]
-#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[148]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[149]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[150]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[151]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[152]
-#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[153]
-#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[154]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[155]
-#define SWIGTYPE_p_unsigned_int swig_types[156]
-#define SWIGTYPE_p_unsigned_long swig_types[157]
-#define SWIGTYPE_p_value_type swig_types[158]
-#define SWIGTYPE_p_void swig_types[159]
-static swig_type_info *swig_types[161];
-static swig_module_info swig_module = {swig_types, 160, 0, 0, 0, 0};
+#define SWIGTYPE_p_PRMexplorer swig_types[9]
+#define SWIGTYPE_p_PythonApproximationListener swig_types[10]
+#define SWIGTYPE_p_PythonBNListener swig_types[11]
+#define SWIGTYPE_p_PythonLoadListener swig_types[12]
+#define SWIGTYPE_p_RelevantPotentialsFinderType swig_types[13]
+#define SWIGTYPE_p_SetT_gum__Arc_t swig_types[14]
+#define SWIGTYPE_p_SetT_gum__Arc_t__const_iterator swig_types[15]
+#define SWIGTYPE_p_SetT_gum__Edge_t swig_types[16]
+#define SWIGTYPE_p_SetT_gum__Edge_t__const_iterator swig_types[17]
+#define SWIGTYPE_p_SetT_gum__PotentialT_double_t_const_p_t swig_types[18]
+#define SWIGTYPE_p_SetT_unsigned_int_t swig_types[19]
+#define SWIGTYPE_p_SetT_unsigned_int_t__const_iterator swig_types[20]
+#define SWIGTYPE_p_Triangulation swig_types[21]
+#define SWIGTYPE_p_allocator_type swig_types[22]
+#define SWIGTYPE_p_char swig_types[23]
+#define SWIGTYPE_p_difference_type swig_types[24]
+#define SWIGTYPE_p_gum__ApproximationScheme swig_types[25]
+#define SWIGTYPE_p_gum__Arc swig_types[26]
+#define SWIGTYPE_p_gum__ArcGraphPart swig_types[27]
+#define SWIGTYPE_p_gum__BayesNetInferenceT_double_t swig_types[28]
+#define SWIGTYPE_p_gum__BayesNetT_double_t swig_types[29]
+#define SWIGTYPE_p_gum__BruteForceKLT_double_t swig_types[30]
+#define SWIGTYPE_p_gum__CPTError swig_types[31]
+#define SWIGTYPE_p_gum__CPTNoSumTo1 swig_types[32]
+#define SWIGTYPE_p_gum__CliqueGraph swig_types[33]
+#define SWIGTYPE_p_gum__DAG swig_types[34]
+#define SWIGTYPE_p_gum__DAGmodel swig_types[35]
+#define SWIGTYPE_p_gum__DatabaseError swig_types[36]
+#define SWIGTYPE_p_gum__DefaultInLabel swig_types[37]
+#define SWIGTYPE_p_gum__DiGraph swig_types[38]
+#define SWIGTYPE_p_gum__DiscreteVariable swig_types[39]
+#define SWIGTYPE_p_gum__DiscretizedVariableT_double_t swig_types[40]
+#define SWIGTYPE_p_gum__DuplicateElement swig_types[41]
+#define SWIGTYPE_p_gum__DuplicateLabel swig_types[42]
+#define SWIGTYPE_p_gum__Edge swig_types[43]
+#define SWIGTYPE_p_gum__EdgeGraphPart swig_types[44]
+#define SWIGTYPE_p_gum__EmptyBSTree swig_types[45]
+#define SWIGTYPE_p_gum__EmptySet swig_types[46]
+#define SWIGTYPE_p_gum__Exception swig_types[47]
+#define SWIGTYPE_p_gum__FactoryError swig_types[48]
+#define SWIGTYPE_p_gum__FactoryInvalidState swig_types[49]
+#define SWIGTYPE_p_gum__FatalError swig_types[50]
+#define SWIGTYPE_p_gum__FormatNotFound swig_types[51]
+#define SWIGTYPE_p_gum__GibbsInferenceT_double_t swig_types[52]
+#define SWIGTYPE_p_gum__GibbsKLT_double_t swig_types[53]
+#define SWIGTYPE_p_gum__GraphError swig_types[54]
+#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[55]
+#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[56]
+#define SWIGTYPE_p_gum__IOError swig_types[57]
+#define SWIGTYPE_p_gum__IdError swig_types[58]
+#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[59]
+#define SWIGTYPE_p_gum__IncompatibleScoreApriori swig_types[60]
+#define SWIGTYPE_p_gum__InfluenceDiagramInferenceT_double_t swig_types[61]
+#define SWIGTYPE_p_gum__InfluenceDiagramT_double_t swig_types[62]
+#define SWIGTYPE_p_gum__Instantiation swig_types[63]
+#define SWIGTYPE_p_gum__InvalidArc swig_types[64]
+#define SWIGTYPE_p_gum__InvalidArgument swig_types[65]
+#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[66]
+#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[67]
+#define SWIGTYPE_p_gum__InvalidEdge swig_types[68]
+#define SWIGTYPE_p_gum__InvalidNode swig_types[69]
+#define SWIGTYPE_p_gum__KLT_double_t swig_types[70]
+#define SWIGTYPE_p_gum__LabelizedVariable swig_types[71]
+#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[72]
+#define SWIGTYPE_p_gum__LearningError swig_types[73]
+#define SWIGTYPE_p_gum__ListT_gum__PotentialT_double_t_const_p_t swig_types[74]
+#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[75]
+#define SWIGTYPE_p_gum__MixedGraph swig_types[76]
+#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[77]
+#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[78]
+#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[79]
+#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[80]
+#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[81]
+#define SWIGTYPE_p_gum__MultiDimInterface swig_types[82]
+#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[83]
+#define SWIGTYPE_p_gum__NoChild swig_types[84]
+#define SWIGTYPE_p_gum__NoNeighbour swig_types[85]
+#define SWIGTYPE_p_gum__NoParent swig_types[86]
+#define SWIGTYPE_p_gum__NodeGraphPart swig_types[87]
+#define SWIGTYPE_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t swig_types[88]
+#define SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t swig_types[89]
+#define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[90]
+#define SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t swig_types[91]
+#define SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t swig_types[92]
+#define SWIGTYPE_p_gum__NotFound swig_types[93]
+#define SWIGTYPE_p_gum__NullElement swig_types[94]
+#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[95]
+#define SWIGTYPE_p_gum__OutOfBounds swig_types[96]
+#define SWIGTYPE_p_gum__OutOfLowerBound swig_types[97]
+#define SWIGTYPE_p_gum__OutOfUpperBound swig_types[98]
+#define SWIGTYPE_p_gum__PossiblyIncompatibleScoreApriori swig_types[99]
+#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[100]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[101]
+#define SWIGTYPE_p_gum__ReferenceError swig_types[102]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[103]
+#define SWIGTYPE_p_gum__SequenceT_unsigned_int_t swig_types[104]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[105]
+#define SWIGTYPE_p_gum__SizeError swig_types[106]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[107]
+#define SWIGTYPE_p_gum__TypeError swig_types[108]
+#define SWIGTYPE_p_gum__UndefinedElement swig_types[109]
+#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[110]
+#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[111]
+#define SWIGTYPE_p_gum__UndiGraph swig_types[112]
+#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[113]
+#define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[114]
+#define SWIGTYPE_p_gum__Variable swig_types[115]
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[116]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[117]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[118]
+#define SWIGTYPE_p_gum__WrongType swig_types[119]
+#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[120]
+#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[121]
+#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[122]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[123]
+#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[124]
+#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[125]
+#define SWIGTYPE_p_iterator_category swig_types[126]
+#define SWIGTYPE_p_msg swig_types[127]
+#define SWIGTYPE_p_node_const_iterator swig_types[128]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[129]
+#define SWIGTYPE_p_node_iterator swig_types[130]
+#define SWIGTYPE_p_node_iterator_safe swig_types[131]
+#define SWIGTYPE_p_p_PyObject swig_types[132]
+#define SWIGTYPE_p_size_type swig_types[133]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[134]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[135]
+#define SWIGTYPE_p_std__default_random_engine swig_types[136]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[137]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[138]
+#define SWIGTYPE_p_std__invalid_argument swig_types[139]
+#define SWIGTYPE_p_std__ostream swig_types[140]
+#define SWIGTYPE_p_std__string swig_types[141]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[142]
+#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[143]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[144]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[145]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[146]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[147]
+#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[148]
+#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[149]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[150]
+#define SWIGTYPE_p_unsigned_int swig_types[151]
+#define SWIGTYPE_p_unsigned_long swig_types[152]
+#define SWIGTYPE_p_value_type swig_types[153]
+#define SWIGTYPE_p_void swig_types[154]
+static swig_type_info *swig_types[156];
+static swig_module_info swig_module = {swig_types, 155, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4480,7 +4475,7 @@ SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
 	if (*alloc == SWIG_NEWOBJ) 
 #endif
 	{
-	  *cptr = reinterpret_cast< char* >(memcpy((new char[len + 1]), cstr, sizeof(char)*(len + 1)));
+	  *cptr = reinterpret_cast< char* >(memcpy(new char[len + 1], cstr, sizeof(char)*(len + 1)));
 	  *alloc = SWIG_NEWOBJ;
 	} else {
 	  *cptr = cstr;
@@ -4518,7 +4513,7 @@ SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
       if (PyString_AsStringAndSize(obj, &cstr, &len) != -1) {
         if (cptr) {
           if (alloc) *alloc = SWIG_NEWOBJ;
-          *cptr = reinterpret_cast< char* >(memcpy((new char[len + 1]), cstr, sizeof(char)*(len + 1)));
+          *cptr = reinterpret_cast< char* >(memcpy(new char[len + 1], cstr, sizeof(char)*(len + 1)));
         }
         if (psize) *psize = len + 1;
 
@@ -5826,7 +5821,7 @@ namespace swig {
 #ifdef SWIG_PYTHON_EXTRA_NATIVE_CONTAINERS
       swig_type_info *desc = swig::type_info<sequence>();
       if (desc && desc->clientdata) {
-	return SWIG_NewPointerObj(new sequence(seq), desc, SWIG_POINTER_OWN);
+	return SWIG_InternalNewPointerObj(new sequence(seq), desc, SWIG_POINTER_OWN);
       }
 #endif
       size_type size = seq.size();
@@ -6365,10 +6360,10 @@ SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg__margMinIn(gum::P
       PyAgrumHelper::fillDVSetFromPyObject(self,s,varnames); //from helpers.h
       return self->margMinIn(s);
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg____truediv__(gum::Potential< double > *self,gum::Potential< double > const &b){
+SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg____truediv____SWIG_1(gum::Potential< double > *self,gum::Potential< double > const &b){
       return *self /b;
     }
-SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg____div____SWIG_1(gum::Potential< double > *self,gum::Potential< double > const &b){
+SWIGINTERN gum::Potential< double > gum_Potential_Sl_double_Sg____div__(gum::Potential< double > *self,gum::Potential< double > const &b){
       return *self/b;
     }
 SWIGINTERN bool gum_Potential_Sl_double_Sg____eq____SWIG_1(gum::Potential< double > *self,gum::Potential< double > const &b){
@@ -6379,14 +6374,6 @@ SWIGINTERN bool gum_Potential_Sl_double_Sg____ne____SWIG_1(gum::Potential< doubl
     }
 SWIGINTERN void gum_Potential_Sl_double_Sg____fill_distrib__(gum::Potential< double > *self){}
 SWIGINTERN PyObject *gum_Potential_Sl_double_Sg____indexfromdict__(gum::Potential< double > *self,PyObject *id_dict){ return NULL; }
-SWIGINTERN char const *gum_Potential_Sl_double_Sg____str____SWIG_1(gum::Potential< double > *self){ return NULL; }
-
-SWIGINTERNINLINE PyObject * 
-SWIG_FromCharPtr(const char *cptr)
-{ 
-  return SWIG_FromCharPtrAndSize(cptr, (cptr ? strlen(cptr) : 0));
-}
-
 SWIGINTERN PyObject *gum_Potential_Sl_double_Sg__tolist(gum::Potential< double > *self){ return NULL; }
 SWIGINTERN PyObject *gum_Potential_Sl_double_Sg__toarray(gum::Potential< double > *self){ return NULL; }
 SWIGINTERN void gum_Potential_Sl_double_Sg____getitem__(gum::Potential< double > *self,PyObject *id){}
@@ -6429,6 +6416,13 @@ SWIGINTERN void gum_Potential_Sl_double_Sg__add(gum::Potential< double > *self,g
 SWIGINTERN void gum_UtilityTable_Sl_double_Sg____fill_distrib__(gum::UtilityTable< double > *self){}
 SWIGINTERN PyObject *gum_UtilityTable_Sl_double_Sg____indexfromdict__(gum::UtilityTable< double > *self,PyObject *id_dict){ return NULL; }
 SWIGINTERN char const *gum_UtilityTable_Sl_double_Sg____str__(gum::UtilityTable< double > *self){ return NULL; }
+
+SWIGINTERNINLINE PyObject * 
+SWIG_FromCharPtr(const char *cptr)
+{ 
+  return SWIG_FromCharPtrAndSize(cptr, (cptr ? strlen(cptr) : 0));
+}
+
 SWIGINTERN PyObject *gum_UtilityTable_Sl_double_Sg__tolist(gum::UtilityTable< double > *self){ return NULL; }
 SWIGINTERN PyObject *gum_UtilityTable_Sl_double_Sg__toarray(gum::UtilityTable< double > *self){ return NULL; }
 SWIGINTERN void gum_UtilityTable_Sl_double_Sg____getitem__(gum::UtilityTable< double > *self,PyObject *id){}
@@ -39043,35 +39037,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___str____SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  std::string result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double___str__",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___str__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  {
-    try {
-      result = ((gum::Potential< double > const *)arg1)->toString();
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_Potential_double_isNonZeroMap(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
@@ -39835,7 +39800,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___div____SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Potential_double___truediv____SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
   gum::Potential< double > *arg2 = 0 ;
@@ -39847,18 +39812,18 @@ SWIGINTERN PyObject *_wrap_Potential_double___div____SWIG_0(PyObject *SWIGUNUSED
   PyObject * obj1 = 0 ;
   gum::Potential< double > result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double___div__",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double___truediv__",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___div__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___truediv__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
   res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double___div__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double___truediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double___div__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double___truediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
   }
   arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
   {
@@ -39999,7 +39964,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___idiv__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Potential_double___itruediv__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
   gum::Potential< double > *arg2 = 0 ;
@@ -40011,18 +39976,18 @@ SWIGINTERN PyObject *_wrap_Potential_double___idiv__(PyObject *SWIGUNUSEDPARM(se
   PyObject * obj1 = 0 ;
   gum::Potential< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double___idiv__",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double___itruediv__",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___idiv__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___itruediv__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
   res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double___idiv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double___itruediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
   }
   if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double___idiv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double___itruediv__" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
   }
   arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
   {
@@ -40116,6 +40081,35 @@ SWIGINTERN PyObject *_wrap_Potential_double___ne____SWIG_0(PyObject *SWIGUNUSEDP
     }
   }
   resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Potential_double___str__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double___str__",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___str__" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  {
+    try {
+      result = ((gum::Potential< double > const *)arg1)->toString();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
   return resultobj;
 fail:
   return NULL;
@@ -40568,7 +40562,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___truediv__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Potential_double___truediv____SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
   gum::Potential< double > *arg2 = 0 ;
@@ -40596,7 +40590,7 @@ SWIGINTERN PyObject *_wrap_Potential_double___truediv__(PyObject *SWIGUNUSEDPARM
   arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
   {
     try {
-      result = gum_Potential_Sl_double_Sg____truediv__(arg1,(gum::Potential< double > const &)*arg2);
+      result = gum_Potential_Sl_double_Sg____truediv____SWIG_1(arg1,(gum::Potential< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -40609,7 +40603,52 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Potential_double___div____SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Potential_double___truediv__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Potential_double___truediv____SWIG_1(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Potential_double___truediv____SWIG_0(self, args);
+      }
+    }
+  }
+  
+fail:
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_Potential_double___div__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
   gum::Potential< double > *arg2 = 0 ;
@@ -40637,7 +40676,7 @@ SWIGINTERN PyObject *_wrap_Potential_double___div____SWIG_1(PyObject *SWIGUNUSED
   arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
   {
     try {
-      result = gum_Potential_Sl_double_Sg____div____SWIG_1(arg1,(gum::Potential< double > const &)*arg2);
+      result = gum_Potential_Sl_double_Sg____div__(arg1,(gum::Potential< double > const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -40647,51 +40686,6 @@ SWIGINTERN PyObject *_wrap_Potential_double___div____SWIG_1(PyObject *SWIGUNUSED
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Potential_double___div__(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Potential_double___div____SWIG_1(self, args);
-      }
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_Potential_double___div____SWIG_0(self, args);
-      }
-    }
-  }
-  
-fail:
-  Py_INCREF(Py_NotImplemented);
-  return Py_NotImplemented;
 }
 
 
@@ -40924,75 +40918,6 @@ SWIGINTERN PyObject *_wrap_Potential_double___indexfromdict__(PyObject *SWIGUNUS
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Potential_double___str____SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  char *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double___str__",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double___str__" "', argument " "1"" of type '" "gum::Potential< double > *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
-  {
-    try {
-      result = (char *)gum_Potential_Sl_double_Sg____str____SWIG_1(arg1);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_FromCharPtr((const char *)result);
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Potential_double___str__(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[2] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = args ? PyObject_Length(args) : 0;
-  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_Potential_double___str____SWIG_0(self, args);
-    }
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__PotentialT_double_t, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_Potential_double___str____SWIG_1(self, args);
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'Potential_double___str__'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::Potential< double >::toString() const\n"
-    "    gum::Potential< double >::__str__()\n");
-  return 0;
 }
 
 
@@ -48787,7 +48712,7 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_domainSizes(PyObject *SWIGUN
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_NodePropertyT_unsigned_long_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -50840,7 +50765,7 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_evidence(PyObject *SWIGUNUSE
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_NodePropertyT_gum__PotentialT_double_t_const_p_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -50927,7 +50852,7 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_hardEvidence(PyObject *SWIGU
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_NodePropertyT_unsigned_long_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -66185,7 +66110,7 @@ SWIGINTERN PyObject *_wrap_CredalNet_double_credalNet_currentCpt(PyObject *SWIGU
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -66214,7 +66139,7 @@ SWIGINTERN PyObject *_wrap_CredalNet_double_credalNet_srcCpt(PyObject *SWIGUNUSE
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0 |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -71882,7 +71807,7 @@ SWIGINTERN PyObject *_wrap_new_BNLearner_double__SWIG_2(PyObject *SWIGUNUSEDPARM
     }
     arg1 = ptr;
   }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_NodePropertyT_gum__SequenceT_std__string_t_t,  0  | 0);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_BNLearner_double" "', argument " "2"" of type '" "gum::NodeProperty< gum::Sequence< std::string > > const &""'"); 
   }
@@ -71935,7 +71860,7 @@ SWIGINTERN PyObject *_wrap_new_BNLearner_double__SWIG_3(PyObject *SWIGUNUSEDPARM
     }
     arg1 = ptr;
   }
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_NodePropertyT_gum__SequenceT_std__string_t_t,  0  | 0);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_BNLearner_double" "', argument " "2"" of type '" "gum::NodeProperty< gum::Sequence< std::string > > const &""'"); 
   }
@@ -72179,7 +72104,7 @@ SWIGINTERN PyObject *_wrap_new_BNLearner_double(PyObject *self, PyObject *args) 
     int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
     _v = SWIG_CheckState(res);
     if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_NodePropertyT_gum__SequenceT_std__string_t_t, 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t, 0);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_new_BNLearner_double__SWIG_3(self, args);
@@ -72221,7 +72146,7 @@ SWIGINTERN PyObject *_wrap_new_BNLearner_double(PyObject *self, PyObject *args) 
     int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
     _v = SWIG_CheckState(res);
     if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_NodePropertyT_gum__SequenceT_std__string_t_t, 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t, 0);
       _v = SWIG_CheckState(res);
       if (_v) {
         {
@@ -74273,7 +74198,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_double_setSliceOrder__SWIG_1_0(PyObject *SW
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_double_setSliceOrder" "', argument " "1"" of type '" "gum::learning::BNLearner< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_NodePropertyT_unsigned_int_t,  0  | 0);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t,  0  | 0);
   if (!SWIG_IsOK(res2)) {
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BNLearner_double_setSliceOrder" "', argument " "2"" of type '" "gum::NodeProperty< gum::NodeId > const &""'"); 
   }
@@ -74314,7 +74239,7 @@ SWIGINTERN PyObject *_wrap_BNLearner_double_setSliceOrder(PyObject *self, PyObje
     int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_NodePropertyT_unsigned_int_t, 0);
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t, 0);
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_BNLearner_double_setSliceOrder__SWIG_1_0(self, args);
@@ -80935,13 +80860,21 @@ static PyMethodDef SwigMethods[] = {
 		"r: gum::Potential< double > const &\n"
 		"\n"
 		""},
-	 { (char *)"Potential_double___idiv__", _wrap_Potential_double___idiv__, METH_VARARGS, (char *)"\n"
-		"Potential_double___idiv__(Potential_double self, Potential_double r) -> Potential_double\n"
+	 { (char *)"Potential_double___itruediv__", _wrap_Potential_double___itruediv__, METH_VARARGS, (char *)"\n"
+		"Potential_double___itruediv__(Potential_double self, Potential_double r) -> Potential_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"self: gum::Potential< double > *\n"
 		"r: gum::Potential< double > const &\n"
+		"\n"
+		""},
+	 { (char *)"Potential_double___str__", _wrap_Potential_double___str__, METH_VARARGS, (char *)"\n"
+		"Potential_double___str__(Potential_double self) -> std::string const\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"Potential_double_extract", _wrap_Potential_double_extract, METH_VARARGS, (char *)"\n"
@@ -81056,6 +80989,12 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"Potential_double___truediv__", _wrap_Potential_double___truediv__, METH_VARARGS, (char *)"\n"
+		"__truediv__(Potential_double p2) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"p2: gum::Potential< double > const &\n"
+		"\n"
 		"Potential_double___truediv__(Potential_double self, Potential_double b) -> Potential_double\n"
 		"\n"
 		"Parameters\n"
@@ -81065,12 +81004,6 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"Potential_double___div__", _wrap_Potential_double___div__, METH_VARARGS, (char *)"\n"
-		"__div__(Potential_double p2) -> Potential_double\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"p2: gum::Potential< double > const &\n"
-		"\n"
 		"Potential_double___div__(Potential_double self, Potential_double b) -> Potential_double\n"
 		"\n"
 		"Parameters\n"
@@ -81124,15 +81057,6 @@ static PyMethodDef SwigMethods[] = {
 		"----------\n"
 		"self: gum::Potential< double > *\n"
 		"id_dict: PyObject *\n"
-		"\n"
-		""},
-	 { (char *)"Potential_double___str__", _wrap_Potential_double___str__, METH_VARARGS, (char *)"\n"
-		"__str__() -> std::string const\n"
-		"Potential_double___str__(Potential_double self) -> char const *\n"
-		"\n"
-		"Parameters\n"
-		"----------\n"
-		"self: gum::Potential< double > *\n"
 		"\n"
 		""},
 	 { (char *)"Potential_double_tolist", _wrap_Potential_double_tolist, METH_VARARGS, (char *)"\n"
@@ -86876,6 +86800,9 @@ static void *_p_gum__MixedGraphTo_p_gum__UndiGraph(void *x, int *SWIGUNUSEDPARM(
 static void *_p_gum__CliqueGraphTo_p_gum__UndiGraph(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::UndiGraph *)  ((gum::CliqueGraph *) x));
 }
+static void *_p_gum__BayesNetT_double_tTo_p_gum__IBayesNetT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((gum::IBayesNet< double > *)  ((gum::BayesNet< double > *) x));
+}
 static void *_p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimContainerT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimContainer< double > *)  ((gum::MultiDimImplementation< double > *) x));
 }
@@ -86893,9 +86820,6 @@ static void *_p_gum__PotentialT_double_tTo_p_gum__MultiDimContainerT_double_t(vo
 }
 static void *_p_gum__UtilityTableT_double_tTo_p_gum__MultiDimContainerT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimContainer< double > *) (gum::MultiDimDecorator< double > *) ((gum::UtilityTable< double > *) x));
-}
-static void *_p_gum__BayesNetT_double_tTo_p_gum__IBayesNetT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((gum::IBayesNet< double > *)  ((gum::BayesNet< double > *) x));
 }
 static void *_p_gum__PotentialT_double_tTo_p_gum__MultiDimDecoratorT_double_t(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimDecorator< double > *)  ((gum::Potential< double > *) x));
@@ -87281,11 +87205,6 @@ static swig_type_info _swigt__p_NodeConstIterator = {"_p_NodeConstIterator", "No
 static swig_type_info _swigt__p_NodeConstIteratorSafe = {"_p_NodeConstIteratorSafe", "NodeConstIteratorSafe *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_NodeIterator = {"_p_NodeIterator", "NodeIterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_NodeIteratorSafe = {"_p_NodeIteratorSafe", "NodeIteratorSafe *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_NodePropertyT_gum__PotentialT_double_t_const_p_t = {"_p_NodePropertyT_gum__PotentialT_double_t_const_p_t", "gum::NodeProperty< gum::Potential< double > const * > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_NodePropertyT_gum__SequenceT_std__string_t_t = {"_p_NodePropertyT_gum__SequenceT_std__string_t_t", "gum::NodeProperty< gum::Sequence< std::string > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t = {"_p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t", "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_NodePropertyT_unsigned_int_t = {"_p_NodePropertyT_unsigned_int_t", "gum::NodeProperty< gum::NodeId > *|gum::NodeProperty< unsigned int > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_NodePropertyT_unsigned_long_t = {"_p_NodePropertyT_unsigned_long_t", "gum::NodeProperty< gum::Idx > *|gum::NodeProperty< unsigned long > *|gum::NodeProperty< gum::Size > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_PRMexplorer = {"_p_PRMexplorer", "PRMexplorer *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_PythonApproximationListener = {"_p_PythonApproximationListener", "PythonApproximationListener *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_PythonBNListener = {"_p_PythonBNListener", "PythonBNListener *", 0, 0, (void*)0, 0};
@@ -87300,10 +87219,7 @@ static swig_type_info _swigt__p_SetT_unsigned_int_t = {"_p_SetT_unsigned_int_t",
 static swig_type_info _swigt__p_SetT_unsigned_int_t__const_iterator = {"_p_SetT_unsigned_int_t__const_iterator", "gum::Set< unsigned int >::const_iterator *|gum::NodeSetIterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Triangulation = {"_p_Triangulation", "gum::Triangulation *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_allocator_type = {"_p_allocator_type", "allocator_type *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_cArcP = {"_p_cArcP", "cArcP *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_const_pointer = {"_p_const_pointer", "const_pointer *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_const_reference = {"_p_const_reference", "const_reference *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_difference_type = {"_p_difference_type", "difference_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ApproximationScheme = {"_p_gum__ApproximationScheme", "gum::ApproximationScheme *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__Arc = {"_p_gum__Arc", "gum::Arc *", 0, 0, (void*)0, 0};
@@ -87368,6 +87284,11 @@ static swig_type_info _swigt__p_gum__NoChild = {"_p_gum__NoChild", "gum::NoChild
 static swig_type_info _swigt__p_gum__NoNeighbour = {"_p_gum__NoNeighbour", "gum::NoNeighbour *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__NoParent = {"_p_gum__NoParent", "gum::NoParent *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__NodeGraphPart = {"_p_gum__NodeGraphPart", "gum::NodeGraphPart *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t = {"_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t", "gum::NodeProperty< gum::Potential< double > const * > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__NodePropertyT_gum__SequenceT_std__string_t_t = {"_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t", "gum::NodeProperty< gum::Sequence< std::string > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t = {"_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t", "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__NodePropertyT_unsigned_int_t = {"_p_gum__NodePropertyT_unsigned_int_t", "gum::NodeProperty< gum::NodeId > *|gum::NodeProperty< unsigned int > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__NodePropertyT_unsigned_long_t = {"_p_gum__NodePropertyT_unsigned_long_t", "gum::NodeProperty< gum::Idx > *|gum::NodeProperty< unsigned long > *|gum::NodeProperty< gum::Size > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__NotFound = {"_p_gum__NotFound", "gum::NotFound *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__NullElement = {"_p_gum__NullElement", "gum::NullElement *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__OperationNotAllowed = {"_p_gum__OperationNotAllowed", "gum::OperationNotAllowed *", 0, 0, (void*)0, 0};
@@ -87408,8 +87329,6 @@ static swig_type_info _swigt__p_node_const_iterator_safe = {"_p_node_const_itera
 static swig_type_info _swigt__p_node_iterator = {"_p_node_iterator", "node_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_node_iterator_safe = {"_p_node_iterator_safe", "node_iterator_safe *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_p_PyObject = {"_p_p_PyObject", "PyObject **", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_pointer = {"_p_pointer", "pointer *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_reference = {"_p_reference", "reference *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_size_type = {"_p_size_type", "size_type *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__allocatorT_double_t = {"_p_std__allocatorT_double_t", "std::vector< double >::allocator_type *|std::allocator< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__allocatorT_std__string_t = {"_p_std__allocatorT_std__string_t", "std::vector< std::string >::allocator_type *|std::allocator< std::string > *", 0, 0, (void*)0, 0};
@@ -87443,11 +87362,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_NodeConstIteratorSafe,
   &_swigt__p_NodeIterator,
   &_swigt__p_NodeIteratorSafe,
-  &_swigt__p_NodePropertyT_gum__PotentialT_double_t_const_p_t,
-  &_swigt__p_NodePropertyT_gum__SequenceT_std__string_t_t,
-  &_swigt__p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t,
-  &_swigt__p_NodePropertyT_unsigned_int_t,
-  &_swigt__p_NodePropertyT_unsigned_long_t,
   &_swigt__p_PRMexplorer,
   &_swigt__p_PythonApproximationListener,
   &_swigt__p_PythonBNListener,
@@ -87462,10 +87376,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_SetT_unsigned_int_t__const_iterator,
   &_swigt__p_Triangulation,
   &_swigt__p_allocator_type,
-  &_swigt__p_cArcP,
   &_swigt__p_char,
-  &_swigt__p_const_pointer,
-  &_swigt__p_const_reference,
   &_swigt__p_difference_type,
   &_swigt__p_gum__ApproximationScheme,
   &_swigt__p_gum__Arc,
@@ -87530,6 +87441,11 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__NoNeighbour,
   &_swigt__p_gum__NoParent,
   &_swigt__p_gum__NodeGraphPart,
+  &_swigt__p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t,
+  &_swigt__p_gum__NodePropertyT_gum__SequenceT_std__string_t_t,
+  &_swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t,
+  &_swigt__p_gum__NodePropertyT_unsigned_int_t,
+  &_swigt__p_gum__NodePropertyT_unsigned_long_t,
   &_swigt__p_gum__NotFound,
   &_swigt__p_gum__NullElement,
   &_swigt__p_gum__OperationNotAllowed,
@@ -87570,8 +87486,6 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_node_iterator,
   &_swigt__p_node_iterator_safe,
   &_swigt__p_p_PyObject,
-  &_swigt__p_pointer,
-  &_swigt__p_reference,
   &_swigt__p_size_type,
   &_swigt__p_std__allocatorT_double_t,
   &_swigt__p_std__allocatorT_std__string_t,
@@ -87605,11 +87519,6 @@ static swig_cast_info _swigc__p_NodeConstIterator[] = {  {&_swigt__p_NodeConstIt
 static swig_cast_info _swigc__p_NodeConstIteratorSafe[] = {  {&_swigt__p_NodeConstIteratorSafe, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_NodeIterator[] = {  {&_swigt__p_NodeIterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_NodeIteratorSafe[] = {  {&_swigt__p_NodeIteratorSafe, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_NodePropertyT_gum__PotentialT_double_t_const_p_t[] = {  {&_swigt__p_NodePropertyT_gum__PotentialT_double_t_const_p_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_NodePropertyT_gum__SequenceT_std__string_t_t[] = {  {&_swigt__p_NodePropertyT_gum__SequenceT_std__string_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t[] = {  {&_swigt__p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_NodePropertyT_unsigned_int_t[] = {  {&_swigt__p_NodePropertyT_unsigned_int_t, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_NodePropertyT_unsigned_long_t[] = {  {&_swigt__p_NodePropertyT_unsigned_long_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_PRMexplorer[] = {  {&_swigt__p_PRMexplorer, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_PythonApproximationListener[] = {  {&_swigt__p_PythonApproximationListener, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_PythonBNListener[] = {  {&_swigt__p_PythonBNListener, 0, 0, 0},{0, 0, 0, 0}};
@@ -87624,10 +87533,7 @@ static swig_cast_info _swigc__p_SetT_unsigned_int_t[] = {  {&_swigt__p_SetT_unsi
 static swig_cast_info _swigc__p_SetT_unsigned_int_t__const_iterator[] = {  {&_swigt__p_SetT_unsigned_int_t__const_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Triangulation[] = {  {&_swigt__p_Triangulation, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_allocator_type[] = {  {&_swigt__p_allocator_type, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_cArcP[] = {  {&_swigt__p_cArcP, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_const_pointer[] = {  {&_swigt__p_const_pointer, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_const_reference[] = {  {&_swigt__p_const_reference, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ApproximationScheme[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, _p_gum__GibbsInferenceT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__ApproximationScheme, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Arc[] = {  {&_swigt__p_gum__Arc, 0, 0, 0},{0, 0, 0, 0}};
@@ -87692,6 +87598,11 @@ static swig_cast_info _swigc__p_gum__NoChild[] = {  {&_swigt__p_gum__NoChild, 0,
 static swig_cast_info _swigc__p_gum__NoNeighbour[] = {  {&_swigt__p_gum__NoNeighbour, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__NoParent[] = {  {&_swigt__p_gum__NoParent, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__NodeGraphPart[] = {  {&_swigt__p_gum__DiGraph, _p_gum__DiGraphTo_p_gum__NodeGraphPart, 0, 0},  {&_swigt__p_gum__UndiGraph, _p_gum__UndiGraphTo_p_gum__NodeGraphPart, 0, 0},  {&_swigt__p_gum__DAG, _p_gum__DAGTo_p_gum__NodeGraphPart, 0, 0},  {&_swigt__p_gum__MixedGraph, _p_gum__MixedGraphTo_p_gum__NodeGraphPart, 0, 0},  {&_swigt__p_gum__NodeGraphPart, 0, 0, 0},  {&_swigt__p_gum__CliqueGraph, _p_gum__CliqueGraphTo_p_gum__NodeGraphPart, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t[] = {  {&_swigt__p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__NodePropertyT_gum__SequenceT_std__string_t_t[] = {  {&_swigt__p_gum__NodePropertyT_gum__SequenceT_std__string_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t[] = {  {&_swigt__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__NodePropertyT_unsigned_int_t[] = {  {&_swigt__p_gum__NodePropertyT_unsigned_int_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__NodePropertyT_unsigned_long_t[] = {  {&_swigt__p_gum__NodePropertyT_unsigned_long_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__NotFound[] = {  {&_swigt__p_gum__NotFound, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__NullElement[] = {  {&_swigt__p_gum__NullElement, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__OperationNotAllowed[] = {  {&_swigt__p_gum__OperationNotAllowed, 0, 0, 0},{0, 0, 0, 0}};
@@ -87732,8 +87643,6 @@ static swig_cast_info _swigc__p_node_const_iterator_safe[] = {  {&_swigt__p_node
 static swig_cast_info _swigc__p_node_iterator[] = {  {&_swigt__p_node_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_node_iterator_safe[] = {  {&_swigt__p_node_iterator_safe, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_p_PyObject[] = {  {&_swigt__p_p_PyObject, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_pointer[] = {  {&_swigt__p_pointer, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_reference[] = {  {&_swigt__p_reference, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_size_type[] = {  {&_swigt__p_size_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__allocatorT_double_t[] = {  {&_swigt__p_std__allocatorT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__allocatorT_std__string_t[] = {  {&_swigt__p_std__allocatorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -87767,11 +87676,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_NodeConstIteratorSafe,
   _swigc__p_NodeIterator,
   _swigc__p_NodeIteratorSafe,
-  _swigc__p_NodePropertyT_gum__PotentialT_double_t_const_p_t,
-  _swigc__p_NodePropertyT_gum__SequenceT_std__string_t_t,
-  _swigc__p_NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t,
-  _swigc__p_NodePropertyT_unsigned_int_t,
-  _swigc__p_NodePropertyT_unsigned_long_t,
   _swigc__p_PRMexplorer,
   _swigc__p_PythonApproximationListener,
   _swigc__p_PythonBNListener,
@@ -87786,10 +87690,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_SetT_unsigned_int_t__const_iterator,
   _swigc__p_Triangulation,
   _swigc__p_allocator_type,
-  _swigc__p_cArcP,
   _swigc__p_char,
-  _swigc__p_const_pointer,
-  _swigc__p_const_reference,
   _swigc__p_difference_type,
   _swigc__p_gum__ApproximationScheme,
   _swigc__p_gum__Arc,
@@ -87854,6 +87755,11 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__NoNeighbour,
   _swigc__p_gum__NoParent,
   _swigc__p_gum__NodeGraphPart,
+  _swigc__p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t,
+  _swigc__p_gum__NodePropertyT_gum__SequenceT_std__string_t_t,
+  _swigc__p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t,
+  _swigc__p_gum__NodePropertyT_unsigned_int_t,
+  _swigc__p_gum__NodePropertyT_unsigned_long_t,
   _swigc__p_gum__NotFound,
   _swigc__p_gum__NullElement,
   _swigc__p_gum__OperationNotAllowed,
@@ -87894,8 +87800,6 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_node_iterator,
   _swigc__p_node_iterator_safe,
   _swigc__p_p_PyObject,
-  _swigc__p_pointer,
-  _swigc__p_reference,
   _swigc__p_size_type,
   _swigc__p_std__allocatorT_double_t,
   _swigc__p_std__allocatorT_std__string_t,
@@ -88528,13 +88432,13 @@ SWIG_init(void) {
   static PyGetSetDef thisown_getset_def = {
     (char *)"thisown", SwigPyBuiltin_GetterClosure, SwigPyBuiltin_SetterClosure, NULL, &thisown_getset_closure
   };
-  PyObject *metatype_args;
   PyTypeObject *builtin_pytype;
   int builtin_base_count;
   swig_type_info *builtin_basetype;
   PyObject *tuple;
   PyGetSetDescrObject *static_getset;
   PyTypeObject *metatype;
+  PyTypeObject *swigpyobject;
   SwigPyClientData *cd;
   PyObject *public_interface, *public_symbol;
   PyObject *this_descr;
@@ -88549,14 +88453,9 @@ SWIG_init(void) {
   (void)static_getset;
   (void)self;
   
-  /* metatype is used to implement static member variables. */
-  metatype_args = Py_BuildValue("(s(O){})", "SwigPyObjectType", &PyType_Type);
-  assert(metatype_args);
-  metatype = (PyTypeObject *) PyType_Type.tp_call((PyObject *) &PyType_Type, metatype_args, NULL);
+  /* Metaclass is used to implement static member variables */
+  metatype = SwigPyObjectType();
   assert(metatype);
-  Py_DECREF(metatype_args);
-  metatype->tp_setattro = (setattrofunc) &SwigPyObjectType_setattro;
-  assert(PyType_Ready(metatype) >= 0);
 #endif
   
   /* Fix SwigMethods to carry the callback ptrs when needed */
@@ -88574,13 +88473,15 @@ SWIG_init(void) {
   SWIG_InitializeModule(0);
   
 #ifdef SWIGPYTHON_BUILTIN
+  swigpyobject = SwigPyObject_TypeOnce();
+  
   SwigPyObject_stype = SWIG_MangledTypeQuery("_p_SwigPyObject");
   assert(SwigPyObject_stype);
   cd = (SwigPyClientData*) SwigPyObject_stype->clientdata;
   if (!cd) {
     SwigPyObject_stype->clientdata = &SwigPyObject_clientdata;
-    SwigPyObject_clientdata.pytype = SwigPyObject_TypeOnce();
-  } else if (SwigPyObject_TypeOnce()->tp_basicsize != cd->pytype->tp_basicsize) {
+    SwigPyObject_clientdata.pytype = swigpyobject;
+  } else if (swigpyobject->tp_basicsize != cd->pytype->tp_basicsize) {
     PyErr_SetString(PyExc_RuntimeError, "Import error: attempted to load two incompatible swig-generated modules.");
 # if PY_VERSION_HEX >= 0x03000000
     return NULL;

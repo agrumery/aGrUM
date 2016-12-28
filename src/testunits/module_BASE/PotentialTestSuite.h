@@ -195,6 +195,12 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( p.max(), 1.0 );
       TS_ASSERT_EQUALS( p.minNonZero(), 1.0 / 13.0 );
       TS_ASSERT_EQUALS( p.maxNonOne(), 9.0 / 13.0 );
+
+      p.fillWith( {1, 1, 1, 1, 1, 1, 1, 1, 1} );
+      TS_ASSERT_THROWS( p.maxNonOne(), gum::NotFound );
+
+      p.fillWith( {0, 0, 0, 0, 0, 0, 0, 0, 0} );
+      TS_ASSERT_THROWS( p.minNonZero(), gum::NotFound );
     }
 
     void testIsNonZeroMap() {
@@ -583,7 +589,6 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( q, p );
 
       gum::Potential<float> p2;
-      TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
       p2 << a << b;
       p2.fill( 0.0f );
       TS_ASSERT_THROWS( p2.normalizeAsCPT(), gum::FatalError );
@@ -601,6 +606,259 @@ namespace gum_tests {
       witness << a;
       witness.fillWith( {0.1f, 0.3f, 0.6f} );
       TS_ASSERT_EQUALS( p4, witness );
+    }
+
+    void testEmptyPotential() {
+      gum::Potential<float> p;
+      gum::Instantiation    inst( p );
+      float                 a;
+      auto                  var_a = gum::LabelizedVariable( "a", "afoo", 3 );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( a = p[inst]; );
+      TS_ASSERT_EQUALS( a, 1.0f )
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.set( inst, a + (float)3.0f ); );
+      TS_ASSERT_EQUALS( p[inst], 4.0f );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.populate( {1.0f} ) );
+      TS_ASSERT_EQUALS( p[inst], 1.0f );
+      TS_GUM_ASSERT_THROWS_NOTHING( p.populate( std::vector<float>{2.0f} ) );
+      TS_ASSERT_EQUALS( p[inst], 2.0f );
+      TS_ASSERT_THROWS( p.populate( std::vector<float>{2.0f, 3.0f} ),
+                        gum::SizeError )
+
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          p.apply( []( float x ) { return x * 2.0f + 1.0f; } ); );
+      TS_ASSERT_EQUALS( p[inst], 5.0f );
+
+      a = 0.3f;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          a = p.reduce( []( float x, float y ) { return x + y; }, 0.0f ); );
+      TS_ASSERT_EQUALS( a, 0.0f );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.populate( {33.0f} ) );
+      TS_ASSERT_EQUALS( p.toString(), "<> :: 33" );
+
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.set( inst, (float)3.0f ); );
+      TS_ASSERT_EQUALS( p.sum(), 3.0f );
+      TS_ASSERT_EQUALS( p.product(), 3.0f );
+      TS_ASSERT_EQUALS( p.max(), 3.0f );
+      TS_ASSERT_EQUALS( p.min(), 3.0f );
+      TS_ASSERT_EQUALS( p.minNonZero(), 3.0f );
+      TS_ASSERT_EQUALS( p.maxNonOne(), 3.0f );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.set( inst, (float)0.0f ); );
+      TS_ASSERT_THROWS( p.minNonZero(), gum::NotFound );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.set( inst, (float)1.0f ); );
+      TS_ASSERT_THROWS( p.maxNonOne(), gum::NotFound );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( p.fill( 2.0f ); );
+      TS_ASSERT_EQUALS( p[inst], 2.0f );
+      TS_GUM_ASSERT_THROWS_NOTHING( p.fillWith( 3.0f ); );
+      TS_ASSERT_EQUALS( p[inst], 3.0f );
+      TS_GUM_ASSERT_THROWS_NOTHING( p.fillWith( {4.0f} ); );
+      TS_ASSERT_EQUALS( p[inst], 4.0f );
+      TS_GUM_ASSERT_THROWS_NOTHING( p.fillWith( std::vector<float>( {5.0f} ) ); );
+      TS_ASSERT_EQUALS( p[inst], 5.0f );
+
+      TS_ASSERT_EQUALS( p.entropy(), 0.0f );
+
+      TS_ASSERT_EQUALS( p.fillWith( 2.0f ).sq()[inst], 4.0f );
+      TS_ASSERT_EQUALS( p.fillWith( -2.0f ).sq()[inst], 4.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 2.0f ).abs()[inst], 2.0f );
+      TS_ASSERT_EQUALS( p.fillWith( -2.0f ).abs()[inst], 2.0f );
+
+      TS_ASSERT_EQUALS( p.fillWith( 2.0f ).normalize()[inst], 1.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 0.0f ).normalize()[inst], 0.0f );
+
+      TS_ASSERT_EQUALS( p.fillWith( 2.0f ).scale( 4 )[inst], 8.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 2.0f ).translate( 4 )[inst], 6.0f );
+
+
+      TS_ASSERT_EQUALS( p.fillWith( 2.0f ).margSumOut( {&var_a} )[inst], 2.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 3.0f ).margSumIn( {&var_a} )[inst], 3.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 4.0f ).margProdOut( {&var_a} )[inst], 4.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 5.0f ).margProdIn( {&var_a} )[inst], 5.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 6.0f ).margMaxIn( {&var_a} )[inst], 6.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 7.0f ).margMaxOut( {&var_a} )[inst], 7.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 8.0f ).margMinOut( {&var_a} )[inst], 8.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 9.0f ).margMinOut( {&var_a} )[inst], 9.0f );
+
+      TS_ASSERT_EQUALS( p.fillWith( 0.0f ).isNonZeroMap()[inst], 0.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 1.0f ).isNonZeroMap()[inst], 1.0f );
+      TS_ASSERT_EQUALS( p.fillWith( 0.5f ).isNonZeroMap()[inst], 1.0f );
+      TS_ASSERT_EQUALS( p.fillWith( -0.5f ).isNonZeroMap()[inst], 1.0f );
+    }
+
+    void testOperationForEmptyPotential() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<float> res;
+      res << a << b;
+
+      gum::Potential<float> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+
+      gum::Potential<float> q;
+      q.fill( 2 );
+
+      gum::Potential<float> tmp;
+
+      res.fillWith( {3, 4, 5, 6, 7, 8, 9, 10, 11} );
+      TS_ASSERT_EQUALS( p + q, res );
+      tmp = p;
+      tmp += q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      TS_ASSERT_EQUALS( q + p, res );
+      tmp = q;
+      tmp += p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {2, 4, 6, 8, 10, 12, 14, 16, 18} );
+      TS_ASSERT_EQUALS( p * q, res );
+      tmp = p;
+      tmp *= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      TS_ASSERT_EQUALS( q * p, res );
+      tmp = q;
+      tmp *= p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {-1, 0, 1, 2, 3, 4, 5, 6, 7} );
+      TS_ASSERT_EQUALS( p - q, res );
+      tmp = p;
+      tmp -= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {1, 0, -1, -2, -3, -4, -5, -6, -7} );
+      TS_ASSERT_EQUALS( q - p, res );
+      tmp = q;
+      tmp -= p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {1 / 2.0,
+                     2 / 2.0,
+                     3 / 2.0,
+                     4 / 2.0,
+                     5 / 2.0,
+                     6 / 2.0,
+                     7 / 2.0,
+                     8 / 2.0,
+                     9 / 2.0} );
+      TS_ASSERT_EQUALS( p / q, res );
+      tmp = p;
+      tmp /= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {2.0 / 1,
+                     2.0 / 2,
+                     2.0 / 3,
+                     2.0 / 4,
+                     2.0 / 5,
+                     2.0 / 6,
+                     2.0 / 7,
+                     2.0 / 8,
+                     2.0 / 9} );
+      TS_ASSERT_EQUALS( q / p, res );
+      tmp = q;
+      tmp /= p;
+      TS_ASSERT_EQUALS( tmp, res );
+    }
+
+    void testOperationForTwoEmptyPotentials() {
+      gum::Potential<float> p;
+      p.fill( 3 );
+
+      gum::Potential<float> q;
+      q.fill( 2 );
+
+      gum::Potential<float> res, tmp;
+      res.fill( 5 );
+      TS_ASSERT_EQUALS( p + q, res );
+      tmp = p;
+      tmp += q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      TS_ASSERT_EQUALS( q + p, res );
+      tmp = q;
+      tmp += p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {6} );
+      TS_ASSERT_EQUALS( p * q, res );
+      tmp = p;
+      tmp *= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      TS_ASSERT_EQUALS( q * p, res );
+      tmp = q;
+      tmp *= p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {1} );
+      TS_ASSERT_EQUALS( p - q, res );
+      tmp = p;
+      tmp -= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {-1} );
+      TS_ASSERT_EQUALS( q - p, res );
+      tmp = q;
+      tmp -= p;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {3 / 2.0} );
+      TS_ASSERT_EQUALS( p / q, res );
+      tmp = p;
+      tmp /= q;
+      TS_ASSERT_EQUALS( tmp, res );
+
+      res.fillWith( {2.0 / 3} );
+      TS_ASSERT_EQUALS( q / p, res );
+      tmp = q;
+      tmp /= p;
+      TS_ASSERT_EQUALS( tmp, res );
+    }
+
+
+    void testLoopsForEmptyPotential() {
+      gum::Potential<float> p;
+      gum::Instantiation    inst( p );
+      p.fill( 3 );
+
+      gum::Size cpt = 0;
+      float     total = 0.0;
+      for ( inst.setFirst(); !inst.end(); ++inst ) {
+        cpt++;
+        total += p[inst];
+      }
+      TS_ASSERT_EQUALS( cpt, gum::Size( 1 ) );
+      TS_ASSERT_EQUALS( total, 3 );
+
+      cpt = 0;
+      total = 0.0;
+      for ( inst.setLast(); !inst.end(); --inst ) {
+        cpt++;
+        total += p[inst];
+      }
+      TS_ASSERT_EQUALS( cpt, gum::Size( 1 ) );
+      TS_ASSERT_EQUALS( total, 3 );
+    }
+
+    void /*test*/ EliminatationOffAllVariables() {
+      auto a = gum::LabelizedVariable( "a", "afoo", 3 );
+      auto b = gum::LabelizedVariable( "b", "bfoo", 3 );
+
+      gum::Potential<int> p;
+      p << a << b;
+      p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
+      TS_ASSERT_EQUALS( p.margSumOut( {&a, &b} ).toString(), "<> :: 45" );
     }
   };
 }
