@@ -26,6 +26,7 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <algorithm>
 
 #include <agrum/BN/inference/BayesBall.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
@@ -37,8 +38,6 @@
 
 
 namespace gum {
-
-
   // default constructor
   template <typename GUM_SCALAR>
   INLINE LazyPropagation<GUM_SCALAR>::LazyPropagation(
@@ -1699,8 +1698,66 @@ namespace gum {
     return prob_ev;
   }
 
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>
+  LazyPropagation<GUM_SCALAR>::evidenceImpact( const BayesNet<GUM_SCALAR>& bn,
+                                               NodeId                      target,
+                                               const std::vector<NodeId>   evs ) {
+    const auto& vtarget = bn.variable( target );
+
+    NodeSet soids( evs.size() );
+    for ( const auto& e : evs )
+      soids << e;
+    if ( soids.contains( target ) ) {
+      GUM_ERROR( InvalidArgument,
+                 "Target <" << vtarget.name() << "> (" << target
+                            << ") can not be in evs ("
+                            << evs
+                            << ")." );
+    }
+    auto condset = bn.minimalCondSet( target, soids );
+
+    Potential<GUM_SCALAR>       res;
+    LazyPropagation<GUM_SCALAR> ie( &bn );
+    res.add( bn.variable( target ) );
+    ie.addTarget( target );
+    for ( const auto& n : condset ) {
+      res.add( bn.variable( n ) );
+      ie.addEvidence( n, 0 );
+    }
+
+    Instantiation inst( res );
+    for ( inst.setFirst(); !inst.end(); inst.incNotVar( vtarget ) ) {
+      // inferring
+      for ( const auto& n : condset )
+        ie.chgEvidence( n, inst.val( bn.variable( n ) ) );
+      ie.makeInference();
+      // populate res
+      for ( inst.setFirstVar( vtarget ); !inst.end(); inst.incVar( vtarget ) ) {
+        res.set( inst, ie.posterior( target )[inst] );
+      }
+      inst.setFirstVar( vtarget );  // remove inst.end() flag
+    }
+
+    return res;
+  }
+
+
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR> LazyPropagation<GUM_SCALAR>::evidenceImpact(
+      const BayesNet<GUM_SCALAR>&    bn,
+      std::string                    target,
+      const std::vector<std::string> evs ) {
+    std::vector<NodeId> evsId;
+    evsId.reserve( evs.size() );
+
+    std::transform( std::begin( evs ),
+                    std::end( evs ),
+                    std::back_inserter( evsId ),
+                    [&bn]( std::string s ) { return bn.idFromName( s ); } );
+    return evidenceImpact( bn, bn.idFromName( target ), evsId );
+  }
 
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

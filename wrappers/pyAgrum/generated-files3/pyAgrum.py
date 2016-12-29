@@ -10701,6 +10701,29 @@ class LazyPropagation_double(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, LazyPropagation_double, name)
     __repr__ = _swig_repr
 
+    def evidenceImpact(*args) -> "gum::Potential< double >":
+        """
+        evidenceImpact(BayesNet_double bn, gum::NodeId target, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs) -> Potential_double
+
+        Parameters
+        ----------
+        bn: gum::BayesNet< double > const &
+        target: gum::NodeId
+        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+
+        evidenceImpact(BayesNet_double bn, std::string target, Vector_string evs) -> Potential_double
+
+        Parameters
+        ----------
+        bn: gum::BayesNet< double > const &
+        target: std::string
+        evs: std::vector< std::string,std::allocator< std::string > > const
+
+        """
+        return _pyAgrum.LazyPropagation_double_evidenceImpact(*args)
+
+    evidenceImpact = staticmethod(evidenceImpact)
+
     def __init__(self, *args):
         """
         __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4, bool use_binary_join_tree=True) -> LazyPropagation_double
@@ -11364,6 +11387,27 @@ class LazyPropagation_double(_object):
 
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
+
+def LazyPropagation_double_evidenceImpact(*args) -> "gum::Potential< double >":
+    """
+    evidenceImpact(BayesNet_double bn, gum::NodeId target, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs) -> Potential_double
+
+    Parameters
+    ----------
+    bn: gum::BayesNet< double > const &
+    target: gum::NodeId
+    evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+
+    LazyPropagation_double_evidenceImpact(BayesNet_double bn, std::string target, Vector_string evs) -> Potential_double
+
+    Parameters
+    ----------
+    bn: gum::BayesNet< double > const &
+    target: std::string
+    evs: std::vector< std::string,std::allocator< std::string > > const
+
+    """
+    return _pyAgrum.LazyPropagation_double_evidenceImpact(*args)
 
 class ShaferShenoyInference_double(_object):
     """Proxy of C++ gum::ShaferShenoyInference<(double)> class."""

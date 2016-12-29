@@ -51031,6 +51031,174 @@ SWIGINTERN PyObject *BayesNetInference_double_swigregister(PyObject *SWIGUNUSEDP
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_evidenceImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = 0 ;
+  gum::NodeId arg2 ;
+  SwigValueWrapper< std::vector< unsigned int,std::allocator< unsigned int > > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  void *argp3 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LazyPropagation_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_gum__BayesNetT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "1"" of type '" "gum::BayesNet< double > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "1"" of type '" "gum::BayesNet< double > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t,  0  | 0);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const""'"); 
+    }  
+    if (!argp3) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const""'");
+    } else {
+      std::vector< gum::NodeId,std::allocator< gum::NodeId > > * temp = reinterpret_cast< std::vector< gum::NodeId,std::allocator< gum::NodeId > > * >(argp3);
+      arg3 = *temp;
+      if (SWIG_IsNewObj(res3)) delete temp;
+    }
+  }
+  {
+    try {
+      result = gum::LazyPropagation< double >::SWIGTEMPLATEDISAMBIGUATOR evidenceImpact((gum::BayesNet< double > const &)*arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_evidenceImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = 0 ;
+  std::string arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LazyPropagation_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_gum__BayesNetT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "1"" of type '" "gum::BayesNet< double > const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "1"" of type '" "gum::BayesNet< double > const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LazyPropagation_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum::LazyPropagation< double >::SWIGTEMPLATEDISAMBIGUATOR evidenceImpact((gum::BayesNet< double > const &)*arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_evidenceImpact(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LazyPropagation_double_evidenceImpact__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__BayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LazyPropagation_double_evidenceImpact__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LazyPropagation_double_evidenceImpact'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LazyPropagation< double >::evidenceImpact(gum::BayesNet< double > const &,gum::NodeId,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const)\n"
+    "    gum::LazyPropagation< double >::evidenceImpact(gum::BayesNet< double > const &,std::string,std::vector< std::string,std::allocator< std::string > > const)\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap_new_LazyPropagation_double__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
@@ -82855,6 +83023,24 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"BayesNetInference_double_swigregister", BayesNetInference_double_swigregister, METH_VARARGS, NULL},
+	 { (char *)"LazyPropagation_double_evidenceImpact", _wrap_LazyPropagation_double_evidenceImpact, METH_VARARGS, (char *)"\n"
+		"evidenceImpact(BayesNet_double bn, gum::NodeId target, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"bn: gum::BayesNet< double > const &\n"
+		"target: gum::NodeId\n"
+		"evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const\n"
+		"\n"
+		"LazyPropagation_double_evidenceImpact(BayesNet_double bn, std::string target, Vector_string evs) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"bn: gum::BayesNet< double > const &\n"
+		"target: std::string\n"
+		"evs: std::vector< std::string,std::allocator< std::string > > const\n"
+		"\n"
+		""},
 	 { (char *)"new_LazyPropagation_double", _wrap_new_LazyPropagation_double, METH_VARARGS, (char *)"\n"
 		"LazyPropagation_double(IBayesNet_double BN, gum::RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4, bool use_binary_join_tree=True)\n"
 		"\n"
