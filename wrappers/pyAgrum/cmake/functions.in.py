@@ -145,7 +145,7 @@ def fastBN(arcs,domain_size=2):
   bn.generateCPTs()
   return bn
 
-def getPosterior(bn, evs, target):
+def getPosterior(bn, target, evs):
   """
   Compute the posterior of a single target (variable) in a BN given evidence
 
@@ -157,10 +157,9 @@ def getPosterior(bn, evs, target):
 
   :param bn:
   :type bn: pyAgrum.BayesNet
-  :param evs: events map {name:val, name : [ val1, val2 ], ...}
+  :param target: variable name or id
+  :param evs: events map {name/id:val, name/id : [ val1, val2 ], ...}
   :type evs: dictionary
-  :param target: variable name
-  :type target: str
   :return: posterior Potential
   """
   inf = VariableElimination(bn)

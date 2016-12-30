@@ -1656,6 +1656,483 @@ class Vector_double(_object):
 Vector_double_swigregister = _pyAgrum.Vector_double_swigregister
 Vector_double_swigregister(Vector_double)
 
+class Vector_int(_object):
+    """Proxy of C++ std::vector<(unsigned int)> class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_int, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Vector_int, name)
+    __repr__ = _swig_repr
+
+    def iterator(self) -> "swig::SwigPyIterator *":
+        """
+        iterator(Vector_int self) -> SwigPyIterator
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > *
+
+        """
+        return _pyAgrum.Vector_int_iterator(self)
+
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self) -> "bool":
+        """
+        __nonzero__(Vector_int self) -> bool
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int___nonzero__(self)
+
+
+    def __bool__(self) -> "bool":
+        """
+        __bool__(Vector_int self) -> bool
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int___bool__(self)
+
+
+    def __len__(self) -> "std::vector< unsigned int >::size_type":
+        """
+        __len__(Vector_int self) -> std::vector< unsigned int >::size_type
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int___len__(self)
+
+
+    def __getslice__(self, i: 'std::vector< unsigned int >::difference_type', j: 'std::vector< unsigned int >::difference_type') -> "std::vector< unsigned int,std::allocator< unsigned int > > *":
+        """
+        __getslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j) -> Vector_int
+
+        Parameters
+        ----------
+        i: std::vector< unsigned int >::difference_type
+        j: std::vector< unsigned int >::difference_type
+
+        """
+        return _pyAgrum.Vector_int___getslice__(self, i, j)
+
+
+    def __setslice__(self, *args) -> "void":
+        """
+        __setslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j)
+
+        Parameters
+        ----------
+        i: std::vector< unsigned int >::difference_type
+        j: std::vector< unsigned int >::difference_type
+
+        __setslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j, Vector_int v)
+
+        Parameters
+        ----------
+        i: std::vector< unsigned int >::difference_type
+        j: std::vector< unsigned int >::difference_type
+        v: std::vector< unsigned int,std::allocator< unsigned int > > const &
+
+        """
+        return _pyAgrum.Vector_int___setslice__(self, *args)
+
+
+    def __delslice__(self, i: 'std::vector< unsigned int >::difference_type', j: 'std::vector< unsigned int >::difference_type') -> "void":
+        """
+        __delslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j)
+
+        Parameters
+        ----------
+        i: std::vector< unsigned int >::difference_type
+        j: std::vector< unsigned int >::difference_type
+
+        """
+        return _pyAgrum.Vector_int___delslice__(self, i, j)
+
+
+    def __delitem__(self, *args) -> "void":
+        """
+        __delitem__(Vector_int self, std::vector< unsigned int >::difference_type i)
+
+        Parameters
+        ----------
+        i: std::vector< unsigned int >::difference_type
+
+        __delitem__(Vector_int self, PySliceObject * slice)
+
+        Parameters
+        ----------
+        slice: PySliceObject *
+
+        """
+        return _pyAgrum.Vector_int___delitem__(self, *args)
+
+
+    def __getitem__(self, *args) -> "std::vector< unsigned int >::value_type const &":
+        """
+        __getitem__(Vector_int self, PySliceObject * slice) -> Vector_int
+
+        Parameters
+        ----------
+        slice: PySliceObject *
+
+        __getitem__(Vector_int self, std::vector< unsigned int >::difference_type i) -> std::vector< unsigned int >::value_type const &
+
+        Parameters
+        ----------
+        i: std::vector< unsigned int >::difference_type
+
+        """
+        return _pyAgrum.Vector_int___getitem__(self, *args)
+
+
+    def __setitem__(self, *args) -> "void":
+        """
+        __setitem__(Vector_int self, PySliceObject * slice, Vector_int v)
+
+        Parameters
+        ----------
+        slice: PySliceObject *
+        v: std::vector< unsigned int,std::allocator< unsigned int > > const &
+
+        __setitem__(Vector_int self, PySliceObject * slice)
+
+        Parameters
+        ----------
+        slice: PySliceObject *
+
+        __setitem__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::value_type const & x)
+
+        Parameters
+        ----------
+        i: std::vector< unsigned int >::difference_type
+        x: std::vector< unsigned int >::value_type const &
+
+        """
+        return _pyAgrum.Vector_int___setitem__(self, *args)
+
+
+    def pop(self) -> "std::vector< unsigned int >::value_type":
+        """
+        pop(Vector_int self) -> std::vector< unsigned int >::value_type
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > *
+
+        """
+        return _pyAgrum.Vector_int_pop(self)
+
+
+    def append(self, x: 'std::vector< unsigned int >::value_type const &') -> "void":
+        """
+        append(Vector_int self, std::vector< unsigned int >::value_type const & x)
+
+        Parameters
+        ----------
+        x: std::vector< unsigned int >::value_type const &
+
+        """
+        return _pyAgrum.Vector_int_append(self, x)
+
+
+    def empty(self) -> "bool":
+        """
+        empty(Vector_int self) -> bool
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int_empty(self)
+
+
+    def size(self) -> "std::vector< unsigned int >::size_type":
+        """
+        size(Vector_int self) -> std::vector< unsigned int >::size_type
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int_size(self)
+
+
+    def swap(self, v: 'Vector_int') -> "void":
+        """
+        swap(Vector_int self, Vector_int v)
+
+        Parameters
+        ----------
+        v: std::vector< unsigned int > &
+
+        """
+        return _pyAgrum.Vector_int_swap(self, v)
+
+
+    def begin(self) -> "std::vector< unsigned int >::iterator":
+        """
+        begin(Vector_int self) -> std::vector< unsigned int >::iterator
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > *
+
+        """
+        return _pyAgrum.Vector_int_begin(self)
+
+
+    def end(self) -> "std::vector< unsigned int >::iterator":
+        """
+        end(Vector_int self) -> std::vector< unsigned int >::iterator
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > *
+
+        """
+        return _pyAgrum.Vector_int_end(self)
+
+
+    def rbegin(self) -> "std::vector< unsigned int >::reverse_iterator":
+        """
+        rbegin(Vector_int self) -> std::vector< unsigned int >::reverse_iterator
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > *
+
+        """
+        return _pyAgrum.Vector_int_rbegin(self)
+
+
+    def rend(self) -> "std::vector< unsigned int >::reverse_iterator":
+        """
+        rend(Vector_int self) -> std::vector< unsigned int >::reverse_iterator
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > *
+
+        """
+        return _pyAgrum.Vector_int_rend(self)
+
+
+    def clear(self) -> "void":
+        """
+        clear(Vector_int self)
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > *
+
+        """
+        return _pyAgrum.Vector_int_clear(self)
+
+
+    def get_allocator(self) -> "std::vector< unsigned int >::allocator_type":
+        """
+        get_allocator(Vector_int self) -> std::vector< unsigned int >::allocator_type
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int_get_allocator(self)
+
+
+    def pop_back(self) -> "void":
+        """
+        pop_back(Vector_int self)
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > *
+
+        """
+        return _pyAgrum.Vector_int_pop_back(self)
+
+
+    def erase(self, *args) -> "std::vector< unsigned int >::iterator":
+        """
+        erase(Vector_int self, std::vector< unsigned int >::iterator pos) -> std::vector< unsigned int >::iterator
+
+        Parameters
+        ----------
+        pos: std::vector< unsigned int >::iterator
+
+        erase(Vector_int self, std::vector< unsigned int >::iterator first, std::vector< unsigned int >::iterator last) -> std::vector< unsigned int >::iterator
+
+        Parameters
+        ----------
+        first: std::vector< unsigned int >::iterator
+        last: std::vector< unsigned int >::iterator
+
+        """
+        return _pyAgrum.Vector_int_erase(self, *args)
+
+
+    def __init__(self, *args):
+        """
+        __init__(std::vector<(unsigned int)> self) -> Vector_int
+        __init__(std::vector<(unsigned int)> self, Vector_int arg2) -> Vector_int
+
+        Parameters
+        ----------
+        arg2: std::vector< unsigned int > const &
+
+        __init__(std::vector<(unsigned int)> self, std::vector< unsigned int >::size_type size) -> Vector_int
+
+        Parameters
+        ----------
+        size: std::vector< unsigned int >::size_type
+
+        __init__(std::vector<(unsigned int)> self, std::vector< unsigned int >::size_type size, std::vector< unsigned int >::value_type const & value) -> Vector_int
+
+        Parameters
+        ----------
+        size: std::vector< unsigned int >::size_type
+        value: std::vector< unsigned int >::value_type const &
+
+        """
+        this = _pyAgrum.new_Vector_int(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def push_back(self, x: 'std::vector< unsigned int >::value_type const &') -> "void":
+        """
+        push_back(Vector_int self, std::vector< unsigned int >::value_type const & x)
+
+        Parameters
+        ----------
+        x: std::vector< unsigned int >::value_type const &
+
+        """
+        return _pyAgrum.Vector_int_push_back(self, x)
+
+
+    def front(self) -> "std::vector< unsigned int >::value_type const &":
+        """
+        front(Vector_int self) -> std::vector< unsigned int >::value_type const &
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int_front(self)
+
+
+    def back(self) -> "std::vector< unsigned int >::value_type const &":
+        """
+        back(Vector_int self) -> std::vector< unsigned int >::value_type const &
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int_back(self)
+
+
+    def assign(self, n: 'std::vector< unsigned int >::size_type', x: 'std::vector< unsigned int >::value_type const &') -> "void":
+        """
+        assign(Vector_int self, std::vector< unsigned int >::size_type n, std::vector< unsigned int >::value_type const & x)
+
+        Parameters
+        ----------
+        n: std::vector< unsigned int >::size_type
+        x: std::vector< unsigned int >::value_type const &
+
+        """
+        return _pyAgrum.Vector_int_assign(self, n, x)
+
+
+    def resize(self, *args) -> "void":
+        """
+        resize(Vector_int self, std::vector< unsigned int >::size_type new_size)
+
+        Parameters
+        ----------
+        new_size: std::vector< unsigned int >::size_type
+
+        resize(Vector_int self, std::vector< unsigned int >::size_type new_size, std::vector< unsigned int >::value_type const & x)
+
+        Parameters
+        ----------
+        new_size: std::vector< unsigned int >::size_type
+        x: std::vector< unsigned int >::value_type const &
+
+        """
+        return _pyAgrum.Vector_int_resize(self, *args)
+
+
+    def insert(self, *args) -> "void":
+        """
+        insert(Vector_int self, std::vector< unsigned int >::iterator pos, std::vector< unsigned int >::value_type const & x) -> std::vector< unsigned int >::iterator
+
+        Parameters
+        ----------
+        pos: std::vector< unsigned int >::iterator
+        x: std::vector< unsigned int >::value_type const &
+
+        insert(Vector_int self, std::vector< unsigned int >::iterator pos, std::vector< unsigned int >::size_type n, std::vector< unsigned int >::value_type const & x)
+
+        Parameters
+        ----------
+        pos: std::vector< unsigned int >::iterator
+        n: std::vector< unsigned int >::size_type
+        x: std::vector< unsigned int >::value_type const &
+
+        """
+        return _pyAgrum.Vector_int_insert(self, *args)
+
+
+    def reserve(self, n: 'std::vector< unsigned int >::size_type') -> "void":
+        """
+        reserve(Vector_int self, std::vector< unsigned int >::size_type n)
+
+        Parameters
+        ----------
+        n: std::vector< unsigned int >::size_type
+
+        """
+        return _pyAgrum.Vector_int_reserve(self, n)
+
+
+    def capacity(self) -> "std::vector< unsigned int >::size_type":
+        """
+        capacity(Vector_int self) -> std::vector< unsigned int >::size_type
+
+        Parameters
+        ----------
+        self: std::vector< unsigned int > const *
+
+        """
+        return _pyAgrum.Vector_int_capacity(self)
+
+    __swig_destroy__ = _pyAgrum.delete_Vector_int
+    __del__ = lambda self: None
+Vector_int_swigregister = _pyAgrum.Vector_int_swigregister
+Vector_int_swigregister(Vector_int)
+
 class Vector_string(_object):
     """Proxy of C++ std::vector<(std::string)> class."""
 
@@ -5899,7 +6376,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def mixedOrientedPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
         """
-        mixedOrientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+        mixedOrientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> Vector_int
 
         Parameters
         ----------
@@ -5912,7 +6389,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def mixedUnorientedPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
         """
-        mixedUnorientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+        mixedUnorientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> Vector_int
 
         Parameters
         ----------
@@ -6354,7 +6831,7 @@ class CliqueGraph(UndiGraph):
 
     def containerPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > >":
         """
-        containerPath(CliqueGraph self, gum::NodeId const node1, gum::NodeId const node2) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > >
+        containerPath(CliqueGraph self, gum::NodeId const node1, gum::NodeId const node2) -> Vector_int
 
         Parameters
         ----------
@@ -10703,7 +11180,7 @@ class LazyPropagation_double(_object):
 
     def evidenceImpact(*args) -> "gum::Potential< double >":
         """
-        evidenceImpact(BayesNet_double bn, gum::NodeId target, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs) -> Potential_double
+        evidenceImpact(BayesNet_double bn, gum::NodeId target, Vector_int evs) -> Potential_double
 
         Parameters
         ----------
@@ -11390,7 +11867,7 @@ LazyPropagation_double_swigregister(LazyPropagation_double)
 
 def LazyPropagation_double_evidenceImpact(*args) -> "gum::Potential< double >":
     """
-    evidenceImpact(BayesNet_double bn, gum::NodeId target, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs) -> Potential_double
+    evidenceImpact(BayesNet_double bn, gum::NodeId target, Vector_int evs) -> Potential_double
 
     Parameters
     ----------
@@ -15236,7 +15713,7 @@ class InfluenceDiagram_double(DAGmodel):
 
     def getDecisionOrder(self) -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > *":
         """
-        getDecisionOrder(InfluenceDiagram_double self) -> std::vector< gum::NodeId,std::allocator< gum::NodeId > > *
+        getDecisionOrder(InfluenceDiagram_double self) -> Vector_int
 
         Parameters
         ----------
@@ -16133,7 +16610,7 @@ class BNLearner_double(_object):
         ----------
         order: gum::Sequence< gum::NodeId > const &
 
-        useK2(BNLearner_double self, std::vector< gum::NodeId,std::allocator< gum::NodeId > > const & order)
+        useK2(BNLearner_double self, Vector_int order)
 
         Parameters
         ----------

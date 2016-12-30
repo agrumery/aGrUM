@@ -116,6 +116,7 @@
 
 namespace std {
     %template ( Vector_double) vector<double>;
+    %template ( Vector_int) vector<unsigned int>;
     %template ( Vector_string) vector<string>;
 }
 

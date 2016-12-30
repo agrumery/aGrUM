@@ -29,6 +29,7 @@ import BNLearnerTestSuite
 import AggregatorsForBNTestSuite
 import PRMexplorerTestSuite
 import AllIncrementalInferenceTestSuite
+import LazyPropagationTestSuite
 
 import time
 
@@ -40,6 +41,7 @@ tests.append(PotentialTestSuite.ts)
 tests.append(JTInferenceTestSuite.ts)
 tests.append(AllIncrementalInferenceTestSuite.ts)
 tests.append(JunctionTreeTestSuite.ts)
+tests.append(LazyPropagationTestSuite.ts)
 tests.append(GibbsTestSuite.ts)
 tests.append(ICIModelsForBNTestSuite.ts)
 tests.append(BNLearnerTestSuite.ts)
