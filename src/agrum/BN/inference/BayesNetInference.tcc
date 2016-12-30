@@ -678,7 +678,7 @@ namespace gum {
       _updateOutdatedBNStructure();
     else
       _updateOutdatedBNPotentials();
-
+      
     __state = StateOfInference::Ready4Inference;
   }
 

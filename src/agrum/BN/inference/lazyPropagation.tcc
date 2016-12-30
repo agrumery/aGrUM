@@ -665,9 +665,8 @@ namespace gum {
 
     // put all the CPT's of the Bayes net nodes into the cliques
     // here, beware: all the potentials that are defined over some nodes
-    // including
-    // hard evidence must be projected so that these nodes are removed from the
-    // potential
+    // including hard evidence must be projected so that these nodes are
+    // removed from the potential
     const auto& evidence = this->evidence();
     const auto& hard_evidence = this->hardEvidence();
     for ( const auto node : dag ) {
@@ -675,7 +674,7 @@ namespace gum {
         const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
 
         // get the list of nodes with hard evidence in cpt
-        NodeSet     hard_nodes;
+        NodeSet hard_nodes;
         const auto& variables = cpt.variablesSequence();
         for ( const auto var : variables ) {
           const NodeId xnode = bn.nodeId( *var );
@@ -687,7 +686,8 @@ namespace gum {
         // directly cpt into the clique
         if ( hard_nodes.empty() ) {
           __clique_potentials[__node_to_clique[node]].insert( &cpt );
-        } else {
+        }
+        else {
           // marginalize out the hard evidence nodes: if the cpt is defined
           // only over nodes that received hard evidence, do not consider it
           // as a potential anymore but as a constant
@@ -698,7 +698,8 @@ namespace gum {
                            hard_evidence[bn.nodeId( *( variables[i] ) )] );
             }
             __constants.insert( node, cpt[inst] );
-          } else {
+          }
+          else {
             // perform the projection with a combine and project instance
             Set<const DiscreteVariable*> hard_variables;
             __PotentialSet               marg_cpt_set{&cpt};
@@ -708,7 +709,7 @@ namespace gum {
             }
             // perform the combination of those potentials and their projection
             MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
-                           combine_and_project( __combination_op, LPNewprojPotential );
+                       combine_and_project( __combination_op, LPNewprojPotential );
             __PotentialSet new_cpt_list = combine_and_project.combineAndProject(
                 marg_cpt_set, hard_variables );
 
@@ -801,17 +802,17 @@ namespace gum {
     for ( const auto node : __hard_ev_nodes )
       if ( __evidence_changes.exists( node ) ) hard_nodes_changed.insert( node );
 
-    NodeSet     nodes_with_projected_CPTs_changed;
+    NodeSet nodes_with_projected_CPTs_changed;
     const auto& bn = this->BayesNet();
     for ( auto pot_iter = __hard_ev_projected_CPTs.beginSafe();
           pot_iter != __hard_ev_projected_CPTs.endSafe();
           ++pot_iter ) {
-      const auto  pot = pot_iter.val();
-      const auto& variables = pot->variablesSequence();
-      for ( const auto var : variables ) {
+      for ( const auto var : bn.cpt ( pot_iter.key() ).variablesSequence() ) {
         if ( hard_nodes_changed.contains( bn.nodeId( *var ) ) ) {
           nodes_with_projected_CPTs_changed.insert( pot_iter.key() );
-          delete pot;
+          delete pot_iter.val();
+          __clique_potentials[__node_to_clique[pot_iter.key()]].erase(
+                 pot_iter.val() );
           __hard_ev_projected_CPTs.erase( pot_iter );
           break;
         }
@@ -823,7 +824,7 @@ namespace gum {
     // the nodes whose soft evidence has changed and perform a diffusion from
     // the clique into which the soft evidence has been entered, indicating that
     // the messages spreading from this clique are now invalid. At the same time,
-    // if there were potentials created on the arcs over wich the messages were
+    // if there were potentials created on the arcs over which the messages were
     // sent, remove them from memory. For all the cliques that received some
     // projected CPT that should now be changed, do the same.
     NodeSet invalidated_cliques( __JT->size() );
@@ -834,6 +835,16 @@ namespace gum {
         for ( const auto neighbor : __JT->neighbours( clique ) ) {
           __diffuseMessageInvalidations( clique, neighbor, invalidated_cliques );
         }
+      }
+    }
+
+    // now, add to the set of invalidated cliques those that contain projected
+    // CPTs that were changed.
+    for ( auto node : nodes_with_projected_CPTs_changed ) {
+      const auto clique = __node_to_clique[node];
+      invalidated_cliques.insert( clique );
+      for ( const auto neighbor : __JT->neighbours( clique ) ) {
+        __diffuseMessageInvalidations( clique, neighbor, invalidated_cliques );
       }
     }
 
@@ -852,7 +863,7 @@ namespace gum {
       }
     }
 
-    // now cope with the nodes that recevied hard evidence
+    // now cope with the nodes that received hard evidence
     for ( auto iter = __target_posteriors.beginSafe();
           iter != __target_posteriors.endSafe();
           ++iter ) {
@@ -904,7 +915,7 @@ namespace gum {
         const NodeId xnode = bn.nodeId( *var );
         if ( __hard_ev_nodes.exists( xnode ) ) {
           marg_cpt_set.insert( evidence[xnode] );
-          hard_variables.insert( &( bn.variable( xnode ) ) );
+          hard_variables.insert( var );
         }
       }
 
