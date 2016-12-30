@@ -501,7 +501,12 @@ def process_signature(app, what, name, obj, options, signature, return_annotatio
   return_annotation = substitution4swigautodoc(return_annotation)
   return signature, return_annotation
 
+def skip(app, what, name, obj, skip, options):
+    if name == "__init__":
+        return False
+    return skip
 
 def setup(app):
   app.connect('autodoc-process-docstring', process_docstring)
   app.connect('autodoc-process-signature', process_signature)
+  app.connect("autodoc-skip-member", skip)
