@@ -26,7 +26,7 @@
 #include <agrum/graphs/edgeGraphPart.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/edgeGraphPart.inl>
+#include <agrum/graphs/edgeGraphPart_inl.h>
 #endif  // GUM_NOINLINE
 #include "graphElements.h"
 

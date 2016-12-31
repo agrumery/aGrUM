@@ -108,7 +108,7 @@ namespace gum {
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/listeners/diGraphListener.inl>
+#include <agrum/graphs/listeners/diGraphListener_inl.h>
 #endif  // GUM_NOINLINE
 
 #endif  // GUM_DIGRAPH_LISTENER_H

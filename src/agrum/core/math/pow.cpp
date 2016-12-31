@@ -27,5 +27,5 @@
 #include <agrum/core/math/pow.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/math/pow.inl>
+#include <agrum/core/math/pow_inl.h>
 #endif  // GUM_NO_INLINE

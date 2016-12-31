@@ -120,7 +120,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/databaseFromCSV.inl>
+#include <agrum/learning/database/databaseFromCSV_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DATABASE_FROM_CSV_H */

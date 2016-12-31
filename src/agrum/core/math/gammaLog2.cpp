@@ -27,7 +27,7 @@
 #include <agrum/core/math/gammaLog2.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/math/gammaLog2.inl>
+#include <agrum/core/math/gammaLog2_inl.h>
 #endif  // GUM_NO_INLINE
 
 namespace gum {

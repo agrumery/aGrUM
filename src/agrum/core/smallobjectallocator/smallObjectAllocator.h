@@ -161,7 +161,7 @@ namespace gum {
 #define SOA_DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.inl>
+#include <agrum/core/smallobjectallocator/smallObjectAllocator_inl.h>
 #endif
 
 #endif  // GUM_SMALL_OBJECT_ALLOCATOR_H

@@ -27,7 +27,7 @@
 #include <agrum/core/timer.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/timer.inl>
+#include <agrum/core/timer_inl.h>
 #endif  // GUM_NO_INLINE
 
 namespace gum {

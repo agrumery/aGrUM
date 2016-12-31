@@ -28,7 +28,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintUndiGraph.inl>
+#include <agrum/learning/constraints/structuralConstraintUndiGraph_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

@@ -27,7 +27,7 @@
 #include <agrum/PRM/gspan/DFSCode.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/PRM/gspan/DFSCode.inl>
+#include <agrum/PRM/gspan/DFSCode_inl.h>
 #endif  // GUM_NO_INLINE
 
 namespace gum {

@@ -81,7 +81,7 @@ namespace gum {
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/nanodbcParser.inl>
+#include <agrum/learning/database/nanodbcParser_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif  // GUM_NANODBC_H

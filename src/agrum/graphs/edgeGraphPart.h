@@ -238,7 +238,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/edgeGraphPart.inl>
+#include <agrum/graphs/edgeGraphPart_inl.h>
 #endif  // GUM_NOINLINE
 
 #include <agrum/graphs/edgeGraphPart_tpl.h>

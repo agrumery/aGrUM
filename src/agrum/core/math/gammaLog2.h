@@ -123,7 +123,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/math/gammaLog2.inl>
+#include <agrum/core/math/gammaLog2_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif /* GUM_GAMMA_LOG2_H */

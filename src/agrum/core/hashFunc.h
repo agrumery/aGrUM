@@ -771,7 +771,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/hashFunc.inl>
+#include <agrum/core/hashFunc_inl.h>
 #endif /* GUM_NO_INLINE */
 
 /// always include the implementation of the templates

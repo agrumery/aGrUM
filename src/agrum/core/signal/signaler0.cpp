@@ -63,5 +63,5 @@ namespace gum {
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/signal/signaler0.inl>
+#include <agrum/core/signal/signaler0_inl.h>
 #endif  // GUM_NO_INLINE

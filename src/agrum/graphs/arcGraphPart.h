@@ -290,7 +290,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/arcGraphPart.inl>
+#include <agrum/graphs/arcGraphPart_inl.h>
 #endif  // GUM_NOINLINE
 
 #include <agrum/graphs/arcGraphPart_tpl.h>

@@ -252,7 +252,7 @@ namespace gum {
   }   /* namespace prm */
 } /* namespace gum */
 #ifndef GUM_NO_INLINE
-#include <agrum/PRM/gspan/pattern.inl>
+#include <agrum/PRM/gspan/pattern_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif /* GUM_PATTERN_H */

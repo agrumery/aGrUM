@@ -21,7 +21,7 @@
 #include <sstream>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/variables/discreteVariable.inl>
+#include <agrum/variables/discreteVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

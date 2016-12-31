@@ -31,6 +31,6 @@
 #include <agrum/multidim/multiDimAdressable.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/instantiation.inl>
-#include <agrum/multidim/multiDimAdressable.inl>
+#include <agrum/multidim/instantiation_inl.h>
+#include <agrum/multidim/multiDimAdressable_inl.h>
 #endif /* GUM_NO_INLINE */

@@ -20,7 +20,7 @@
 #include <agrum/variables/variable.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/variables/variable.inl>
+#include <agrum/variables/variable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

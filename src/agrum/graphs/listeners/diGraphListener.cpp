@@ -26,7 +26,7 @@
 #include <agrum/graphs/listeners/diGraphListener.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/listeners/diGraphListener.inl>
+#include <agrum/graphs/listeners/diGraphListener_inl.h>
 #endif  // GUM_NOINLINE
 
 namespace gum {

@@ -939,7 +939,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/setInst.inl>
+#include <agrum/multidim/setInst_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_SetInst_H */

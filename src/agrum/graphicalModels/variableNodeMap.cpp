@@ -30,7 +30,7 @@
 #include <sstream>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphicalModels/variableNodeMap.inl>
+#include <agrum/graphicalModels/variableNodeMap_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

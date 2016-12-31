@@ -34,7 +34,7 @@
 #include <agrum/graphs/DAGCycleDetector.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/DAGCycleDetector.inl>
+#include <agrum/graphs/DAGCycleDetector_inl.h>
 #endif  // GUM_NOINLINE
 
 namespace gum {

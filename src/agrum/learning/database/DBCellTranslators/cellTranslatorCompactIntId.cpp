@@ -28,5 +28,5 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.inl>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId_inl.h>
 #endif /* GUM_NO_INLINE */

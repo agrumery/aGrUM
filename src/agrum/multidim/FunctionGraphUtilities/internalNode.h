@@ -90,7 +90,7 @@ namespace gum {
 
   // clang-format off
   /**
-   * @class InternalNode 
+   * @class InternalNode
    * @headerfile internalNode.h <agrum/multidim/FunctionGraphUtilities/internalNode.h>
    * @ingroup multidim_group
    *
@@ -277,7 +277,7 @@ namespace gum {
 }  // End of namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/FunctionGraphUtilities/internalNode.inl>
+#include <agrum/multidim/FunctionGraphUtilities/internalNode_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H */

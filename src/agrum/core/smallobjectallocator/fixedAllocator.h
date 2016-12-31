@@ -188,7 +188,7 @@ namespace gum {
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/smallobjectallocator/fixedAllocator.inl>
+#include <agrum/core/smallobjectallocator/fixedAllocator_inl.h>
 #endif
 
 #endif  // FIXEDALLOCATOR_H

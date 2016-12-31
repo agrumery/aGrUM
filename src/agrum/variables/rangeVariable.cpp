@@ -27,7 +27,7 @@
 #include <agrum/variables/rangeVariable.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/variables/rangeVariable.inl>
+#include <agrum/variables/rangeVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

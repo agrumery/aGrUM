@@ -26,7 +26,7 @@
 #include <agrum/graphs/arcGraphPart.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/arcGraphPart.inl>
+#include <agrum/graphs/arcGraphPart_inl.h>
 #endif  // GUM_NOINLINE
 #include "graphElements.h"
 

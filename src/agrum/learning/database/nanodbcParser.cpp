@@ -32,7 +32,7 @@
 #include <stdexcept>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/database/nanodbcParser.inl>
+#include <agrum/learning/database/nanodbcParser_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

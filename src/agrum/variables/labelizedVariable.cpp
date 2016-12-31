@@ -20,7 +20,7 @@
 #include <agrum/variables/labelizedVariable.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/variables/labelizedVariable.inl>
+#include <agrum/variables/labelizedVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

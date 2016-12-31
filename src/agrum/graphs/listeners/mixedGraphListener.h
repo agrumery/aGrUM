@@ -123,7 +123,7 @@ namespace gum {
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/listeners/mixedGraphListener.inl>
+#include <agrum/graphs/listeners/mixedGraphListener_inl.h>
 #endif  // GUM_NOINLINE
 
 #endif  // GUM_MIXEDGRAPH_LISTENER_H

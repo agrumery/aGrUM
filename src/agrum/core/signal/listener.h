@@ -95,7 +95,7 @@ namespace gum {
   ( sender ).signal.attach( &( receiver ), &target )
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/signal/listener.inl>
+#include <agrum/core/signal/listener_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif  // GUM_LISTENER_H

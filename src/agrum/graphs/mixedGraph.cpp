@@ -26,7 +26,7 @@
 #include <agrum/graphs/mixedGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/mixedGraph.inl>
+#include <agrum/graphs/mixedGraph_inl.h>
 #endif  // GUM_NOINLINE
 
 namespace gum {

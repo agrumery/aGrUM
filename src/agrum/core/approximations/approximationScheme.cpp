@@ -57,5 +57,5 @@ namespace gum {
 }  // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/approximations/approximationScheme.inl>
+#include <agrum/core/approximations/approximationScheme_inl.h>
 #endif

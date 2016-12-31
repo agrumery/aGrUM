@@ -151,7 +151,7 @@ namespace gum {
 #include <agrum/core/signal/signaler0_tpl.h>
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/signal/signaler0.inl>
+#include <agrum/core/signal/signaler0_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif  // GUM_SIGNALER0_H

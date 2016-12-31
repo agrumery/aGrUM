@@ -197,7 +197,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/math/chi2.inl>
+#include <agrum/core/math/chi2_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CHI2_H */

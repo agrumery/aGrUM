@@ -158,7 +158,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/PRM/gspan/DFSCode.inl>
+#include <agrum/PRM/gspan/DFSCode_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif /* GUM_DFS_CODE_H */

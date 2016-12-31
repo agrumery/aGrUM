@@ -22,7 +22,7 @@
 #include <sstream>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/setInst.inl>
+#include <agrum/multidim/setInst_inl.h>
 #endif
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

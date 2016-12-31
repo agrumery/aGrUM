@@ -124,7 +124,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/timer.inl>
+#include <agrum/core/timer_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif  // GUM_TIMER_H

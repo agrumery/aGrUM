@@ -93,7 +93,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.inl>
+#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_ROW_GENERATOR_IDENTITY_H */

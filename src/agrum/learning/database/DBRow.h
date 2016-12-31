@@ -142,7 +142,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/DBRow.inl>
+#include <agrum/learning/database/DBRow_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_ROW_H */

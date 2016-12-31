@@ -45,7 +45,7 @@
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/core/math/chi2.inl>
+#include <agrum/core/math/chi2_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

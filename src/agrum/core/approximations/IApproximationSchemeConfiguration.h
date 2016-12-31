@@ -310,7 +310,7 @@ namespace gum {
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/approximations/IApproximationSchemeConfiguration.inl>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration_inl.h>
 #endif
 
 #endif  // GUM_APPROXIMATION_SCHEME_CONFIGURATION_H

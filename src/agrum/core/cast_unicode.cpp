@@ -29,5 +29,5 @@
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/core/cast_unicode.inl>
+#include <agrum/core/cast_unicode_inl.h>
 #endif /* GUM_NO_INLINE */

@@ -28,7 +28,7 @@
 #include <agrum/PRM/elements/PRMObject.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/PRM/elements/PRMObject.inl>
+#include <agrum/PRM/elements/PRMObject_inl.h>
 #endif  // GUM_NO_INLINE
 
 namespace gum {

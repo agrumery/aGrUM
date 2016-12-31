@@ -881,7 +881,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/BNLearnUtils/genericBNLearner.inl>
+#include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_GENERIC_BN_LEARNER_H */

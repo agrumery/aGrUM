@@ -35,7 +35,7 @@
 #include <agrum/graphs/undiGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/triangulations/incrementalTriangulation.inl>
+#include <agrum/graphs/triangulations/incrementalTriangulation_inl.h>
 #endif  // GUM_NO_INLINE
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

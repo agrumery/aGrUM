@@ -136,7 +136,7 @@ namespace gum {
 
 // include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/core/OMPThreads.inl>
+#include <agrum/core/OMPThreads_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif  // GUM_OPEM_MP_THREADS_H

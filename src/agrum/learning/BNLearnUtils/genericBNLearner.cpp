@@ -36,7 +36,7 @@
 
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/BNLearnUtils/genericBNLearner.inl>
+#include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

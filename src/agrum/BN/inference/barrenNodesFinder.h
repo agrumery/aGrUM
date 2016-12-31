@@ -121,7 +121,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/inference/barrenNodesFinder.inl>
+#include <agrum/BN/inference/barrenNodesFinder_inl.h>
 #endif  // GUM_NO_INLINE
 
 

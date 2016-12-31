@@ -202,7 +202,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintMandatoryArcs.inl>
+#include <agrum/learning/constraints/structuralConstraintMandatoryArcs_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_MANDATORY_ARCS_H */

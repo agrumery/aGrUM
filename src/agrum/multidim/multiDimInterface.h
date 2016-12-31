@@ -246,7 +246,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/multiDimInterface.inl>
+#include <agrum/multidim/multiDimInterface_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif /* GUM_MULTIDIM_INTERFACE_H */

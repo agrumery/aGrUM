@@ -135,7 +135,7 @@ namespace gum {
 }
 
 #ifndef GUM_NO_INLINE
-#include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext.inl>
+#include <agrum/multidim/FunctionGraphUtilities/operators/o4DGContext_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif  // O4DGCONTEXT_H

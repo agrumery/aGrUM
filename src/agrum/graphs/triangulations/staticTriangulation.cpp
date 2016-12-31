@@ -29,7 +29,7 @@
 #include <agrum/graphs/triangulations/staticTriangulation.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/triangulations/staticTriangulation.inl>
+#include <agrum/graphs/triangulations/staticTriangulation_inl.h>
 #endif  // GUM_NO_INLINE
 
 namespace gum {

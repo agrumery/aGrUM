@@ -147,7 +147,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.inl>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CELL_TRANSLATOR_COMPACT_INT_ID_H */

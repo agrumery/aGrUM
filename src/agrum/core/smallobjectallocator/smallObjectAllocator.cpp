@@ -49,5 +49,5 @@ namespace gum {
 } /* End of Namespace */
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/smallobjectallocator/smallObjectAllocator.inl>
+#include <agrum/core/smallobjectallocator/smallObjectAllocator_inl.h>
 #endif

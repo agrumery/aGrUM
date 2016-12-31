@@ -142,7 +142,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/PRM/gspan/edgeCode.inl>
+#include <agrum/PRM/gspan/edgeCode_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif /* GUM_EDGE_CODE_H */

@@ -26,7 +26,7 @@
 #include <agrum/graphs/undiGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/undiGraph.inl>
+#include <agrum/graphs/undiGraph_inl.h>
 #endif  // GUM_NOINLINE
 #include "graphElements.h"
 #include <cstdio>

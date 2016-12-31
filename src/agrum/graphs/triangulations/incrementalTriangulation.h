@@ -281,7 +281,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/triangulations/incrementalTriangulation.inl>
+#include <agrum/graphs/triangulations/incrementalTriangulation_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif /* GUM_INCREMENTAL_TRIANGULATION_H */

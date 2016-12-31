@@ -104,7 +104,7 @@ namespace gum {
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/CSVParser.inl>
+#include <agrum/learning/database/CSVParser_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif  // GUM_CSVPARSER_H

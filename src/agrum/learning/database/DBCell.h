@@ -196,7 +196,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/DBCell.inl>
+#include <agrum/learning/database/DBCell_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_DB_CELL_H */

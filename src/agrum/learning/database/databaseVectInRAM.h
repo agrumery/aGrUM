@@ -408,7 +408,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/databaseVectInRAM.inl>
+#include <agrum/learning/database/databaseVectInRAM_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DATABASE_VECT_IN_RAM_H */

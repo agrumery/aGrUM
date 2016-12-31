@@ -26,7 +26,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintDAG.inl>
+#include <agrum/learning/constraints/structuralConstraintDAG_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

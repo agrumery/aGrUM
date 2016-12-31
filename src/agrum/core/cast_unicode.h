@@ -47,7 +47,7 @@ std::wstring widen( const std::string& str );
 std::string narrow( const std::wstring& str );
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/cast_unicode.inl>
+#include <agrum/core/cast_unicode_inl.h>
 #endif
 
 #endif  // CAST_UNICODE_H

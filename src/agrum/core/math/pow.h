@@ -78,7 +78,7 @@ namespace gum {
 }  // end of gum namespace
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/math/pow.inl>
+#include <agrum/core/math/pow_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif  // GUM_MATH_POW_H

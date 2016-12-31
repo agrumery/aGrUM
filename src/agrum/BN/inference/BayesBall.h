@@ -92,7 +92,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/inference/BayesBall.inl>
+#include <agrum/BN/inference/BayesBall_inl.h>
 #endif  // GUM_NO_INLINE
 
 #include <agrum/BN/inference/BayesBall_tpl.h>

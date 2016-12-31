@@ -31,7 +31,7 @@
 #include <agrum/graphs/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy.inl>
+#include <agrum/graphs/triangulations/eliminationStrategies/partialOrderedEliminationSequenceStrategy_inl.h>
 #endif  // GUM_NOINLINE
 
 namespace gum {

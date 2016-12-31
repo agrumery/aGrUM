@@ -177,7 +177,7 @@ namespace gum {
 /* ==============================================================================
  */
 #ifndef GUM_NO_INLINE
-#include <agrum/variables/labelizedVariable.inl>
+#include <agrum/variables/labelizedVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LABELIZED_DISCRETE_VARIABLE_H */

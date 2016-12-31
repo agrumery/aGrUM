@@ -114,5 +114,5 @@ namespace gum {
 }  // namespace gum
 
 #ifdef GUM_NO_INLINE
-#include <agrum/multidim/FunctionGraphUtilities/internalNode.inl>
+#include <agrum/multidim/FunctionGraphUtilities/internalNode_inl.h>
 #endif /* GUM_NO_INLINE */

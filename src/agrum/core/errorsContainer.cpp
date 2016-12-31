@@ -30,7 +30,7 @@
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
-#include <agrum/core/errorsContainer.inl>
+#include <agrum/core/errorsContainer_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

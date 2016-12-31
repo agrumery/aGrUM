@@ -26,7 +26,7 @@
 #include <sstream>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/cliqueGraph.inl>
+#include <agrum/graphs/cliqueGraph_inl.h>
 #endif  // GUM_NOINLINE
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

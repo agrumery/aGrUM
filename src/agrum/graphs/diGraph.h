@@ -206,7 +206,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/diGraph.inl>
+#include <agrum/graphs/diGraph_inl.h>
 #endif  // GUM_NOINLINE
 
 #endif /* GUM_DIGRAPH_H */

@@ -116,7 +116,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/database/databaseFromSQL.inl>
+#include <agrum/learning/database/databaseFromSQL_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DATABASE_FROM_SQL_H */

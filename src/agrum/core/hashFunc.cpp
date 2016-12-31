@@ -27,5 +27,5 @@
 #include <agrum/core/hashFunc.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/hashFunc.inl>
+#include <agrum/core/hashFunc_inl.h>
 #endif /* GUM_NO_INLINE */

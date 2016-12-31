@@ -27,7 +27,7 @@
 #include <agrum/PRM/generator/nameGenerator.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/PRM/generator/nameGenerator.inl>
+#include <agrum/PRM/generator/nameGenerator_inl.h>
 #endif
 
 namespace gum {

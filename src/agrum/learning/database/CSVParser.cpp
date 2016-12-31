@@ -21,7 +21,7 @@
 #include <agrum/learning/database/CSVParser.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/learning/database/CSVParser.inl>
+#include <agrum/learning/database/CSVParser_inl.h>
 #endif /* GUM_NO_INLINE */
 
 namespace gum {

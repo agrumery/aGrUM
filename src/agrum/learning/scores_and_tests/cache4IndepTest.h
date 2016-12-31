@@ -145,7 +145,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/scores_and_tests/cache4IndepTest.inl>
+#include <agrum/learning/scores_and_tests/cache4IndepTest_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_CACHE_4_INDEP_TEST_H */

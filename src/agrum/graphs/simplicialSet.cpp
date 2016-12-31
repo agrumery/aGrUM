@@ -32,7 +32,7 @@
 #include <sstream>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/simplicialSet.inl>
+#include <agrum/graphs/simplicialSet_inl.h>
 #endif  // GUM_NO_INLINE
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

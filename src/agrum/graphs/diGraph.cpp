@@ -26,7 +26,7 @@
 #include <agrum/graphs/diGraph.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/graphs/diGraph.inl>
+#include <agrum/graphs/diGraph_inl.h>
 #endif  // GUM_NOINLINE
 
 namespace gum {

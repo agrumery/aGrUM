@@ -338,7 +338,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/DAGCycleDetector.inl>
+#include <agrum/graphs/DAGCycleDetector_inl.h>
 #endif  // GUM_NOINLINE
 
 #endif  // GUM_DAG_CYCLE_DETECTOR_H

@@ -530,7 +530,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/core/math/formula.inl>
+#include <agrum/core/math/formula_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif /* GUM_MATH_FORMULA_H */

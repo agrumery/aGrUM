@@ -159,7 +159,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/variables/rangeVariable.inl>
+#include <agrum/variables/rangeVariable_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_RANGE_VARIABLE_H */

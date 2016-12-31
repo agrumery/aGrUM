@@ -50,5 +50,5 @@ namespace gum {
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE
-#include <agrum/core/utils_string.inl>
+#include <agrum/core/utils_string_inl.h>
 #endif  // GUM_NO_INLINE

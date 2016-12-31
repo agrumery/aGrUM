@@ -217,7 +217,7 @@ namespace gum {
 
 /// include the inlined functions if necessary
 #ifndef GUM_NO_INLINE
-#include <agrum/learning/constraints/structuralConstraintIndegree.inl>
+#include <agrum/learning/constraints/structuralConstraintIndegree_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_INDEGREE_H */

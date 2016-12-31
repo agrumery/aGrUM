@@ -324,7 +324,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/triangulations/staticTriangulation.inl>
+#include <agrum/graphs/triangulations/staticTriangulation_inl.h>
 #endif  // GUM_NO_INLINE
 
 #endif /* GUM_STATIC_TRIANGULATION_H */

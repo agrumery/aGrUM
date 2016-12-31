@@ -192,7 +192,7 @@ namespace gum {
 
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphs/triangulations/eliminationStrategies/orderedEliminationSequenceStrategy.inl>
+#include <agrum/graphs/triangulations/eliminationStrategies/orderedEliminationSequenceStrategy_inl.h>
 #endif  // GUM_NOINLINE
 
 

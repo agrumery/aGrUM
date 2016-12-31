@@ -173,7 +173,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/graphicalModels/variableNodeMap.inl>
+#include <agrum/graphicalModels/variableNodeMap_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_VARIABLE_NODE_MAP_H*/

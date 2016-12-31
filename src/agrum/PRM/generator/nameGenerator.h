@@ -81,7 +81,7 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/PRM/generator/nameGenerator.inl>
+#include <agrum/PRM/generator/nameGenerator_inl.h>
 #endif
 
 #endif /* GUM_NAME_GENERATOR_H */
