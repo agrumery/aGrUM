@@ -50,9 +50,9 @@ namespace gum {
    * the current state of the inference. Note that the MarginalTargetedInference
    * is designed to be used in incremental inference engines.
    */
-  template <typename GUM_SCALAR>
+  template<typename GUM_SCALAR>
   class MarginalTargetedInference : public virtual BayesNetInference<GUM_SCALAR> {
-    public:
+  public:
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -62,7 +62,7 @@ namespace gum {
     /** @warning By default, all the nodes of the Bayes net are targets.
      * @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    MarginalTargetedInference( const IBayesNet<GUM_SCALAR>* bn );
+    MarginalTargetedInference(const IBayesNet<GUM_SCALAR> *bn);
 
     /// destructor
     virtual ~MarginalTargetedInference();
@@ -90,7 +90,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential<GUM_SCALAR>& posterior( const NodeId node );
+    virtual const Potential<GUM_SCALAR> &posterior(const NodeId node);
 
     /// Computes and returns the posterior of a node.
     /**
@@ -108,7 +108,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential<GUM_SCALAR>& posterior( const std::string& nodeName );
+    virtual const Potential<GUM_SCALAR> &posterior(const std::string &nodeName);
 
     /// @}
 
@@ -128,35 +128,35 @@ namespace gum {
     /**
      * @throw UndefinedElement if target is not a NodeId in the Bayes net
      */
-    virtual void addTarget( const NodeId target ) final;
+    virtual void addTarget(const NodeId target) final;
 
     /// Add a marginal target to the list of targets
     /**
      * @throw UndefinedElement if target is not a NodeId in the Bayes net
      */
-    virtual void addTarget( const std::string& nodeName ) final;
+    virtual void addTarget(const std::string &nodeName) final;
 
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
      * In particular, it does not raise any exception. */
-    virtual void eraseTarget( const NodeId target ) final;
+    virtual void eraseTarget(const NodeId target) final;
 
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
      * In particular, it does not raise any exception. */
-    virtual void eraseTarget( const std::string& nodeName ) final;
+    virtual void eraseTarget(const std::string &nodeName) final;
 
     /// return true if variable is a (marginal) target
-    virtual bool isTarget( const NodeId variable ) const final;
+    virtual bool isTarget(const NodeId variable) const final;
 
     /// return true if variable is a (marginal) target
-    virtual bool isTarget( const std::string& nodeName ) const final;
+    virtual bool isTarget(const std::string &nodeName) const final;
 
     /// returns the number of marginal targets
     virtual const Size nbrTargets() const noexcept final;
 
     /// returns the list of marginal targets
-    virtual const NodeSet& targets() const noexcept final;
+    virtual const NodeSet &targets() const noexcept final;
 
     /// @}
 
@@ -169,24 +169,53 @@ namespace gum {
      * Compute Shanon's entropy of a node given the observation
      * @see http://en.wikipedia.org/wiki/Information_entropy
      */
-    virtual GUM_SCALAR H( const NodeId X ) final;
+    virtual GUM_SCALAR H(const NodeId X) final;
 
     /** Entropy
      * Compute Shanon's entropy of a node given the observation
      * @see http://en.wikipedia.org/wiki/Information_entropy
      */
-    virtual GUM_SCALAR H( const std::string& nodeName ) final;
+    virtual GUM_SCALAR H(const std::string &nodeName) final;
 
     ///@}
 
-    protected:
+
+    /**
+     * Create a gum::Potential for P(target|evs) (for all instanciation of target
+     * and evs)
+     *
+     * @warning If some evs are d-separated, they are not included in the Potential
+     *
+     * @param bn the BayesNet
+     * @param target  the nodeId of the targetted variable
+     * @param evs the nodeId of the observed variable
+     * @return a Potential
+     */
+    Potential<GUM_SCALAR> evidenceImpact(NodeId target,
+                                         const std::vector<NodeId> evs);
+
+    /**
+    * Create a gum::Potential for P(target|evs) (for all instanciation of target
+    * and evs)
+    *
+    * @warning If some evs are d-separated, they are not included in the Potential
+    *
+    * @param bn the BayesNet
+    * @param target  the nodeId of the target variable
+    * @param evs the nodeId of the observed variable
+    * @return a Potential
+    */
+    Potential<GUM_SCALAR> evidenceImpact(std::string target,
+                                         const std::vector<std::string> evs);
+
+  protected:
     /// fired after a new marginal target is inserted
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded( const NodeId id ) = 0;
+    virtual void _onMarginalTargetAdded(const NodeId id) = 0;
 
     /// fired before a marginal target is removed
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased( const NodeId id ) = 0;
+    virtual void _onMarginalTargetErased(const NodeId id) = 0;
 
     /// fired after all the nodes of the BN are added as marginal targets
     virtual void _onAllMarginalTargetsAdded() = 0;
@@ -195,14 +224,14 @@ namespace gum {
     virtual void _onAllMarginalTargetsErased() = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn );
+    virtual void _onBayesNetChanged(const IBayesNet<GUM_SCALAR> *bn);
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id ) = 0;
+    virtual const Potential<GUM_SCALAR> &_posterior(const NodeId id) = 0;
 
 
-    private:
+  private:
     /// the set of marginal targets
     NodeSet __targets;
 

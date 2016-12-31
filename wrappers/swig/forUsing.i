@@ -253,6 +253,15 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
    double H( const std::string& nodeName ) {
      return self->gum::MarginalTargetedInference<double>::H(nodeName);
    }
+
+
+  Potential<double> evidenceImpact(NodeId target,const std::vector<NodeId> evs){
+    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+  Potential<double> evidenceImpact(std::string target,
+                                   const std::vector<std::string> evs){
+   return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
 }
 %enddef
 ADD_INFERENCE_API(gum::LazyPropagation<double>)
@@ -293,5 +302,3 @@ ADD_INFERENCE_API(gum::GibbsInference<double>)
 ADD_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
 ADD_JOINT_INFERENCE_API(gum::VariableEliminationInference<double>)
-
-

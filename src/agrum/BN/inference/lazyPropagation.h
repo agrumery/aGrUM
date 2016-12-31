@@ -69,43 +69,6 @@ namespace gum {
                           public EvidenceInference<GUM_SCALAR> {
     public:
     // ############################################################################
-    /// @name Static methods
-    // ############################################################################
-    /// @{
-    /**
-    * Create a gum::Potential for P(target|evs) (for all instanciation of target
-    * and evs)
-    *
-    * @warning If some evs are d-separated, they are not included in the Potential
-    *
-    * @param bn the BayesNet
-    * @param target  the nodeId of the targetted variable
-    * @param evs the nodeId of the observed variable
-    * @return a Potential
-    */
-    static Potential<GUM_SCALAR> evidenceImpact( const BayesNet<GUM_SCALAR>& bn,
-                                                 NodeId                    target,
-                                                 const std::vector<NodeId> evs );
-
-    /**
-    * Create a gum::Potential for P(target|evs) (for all instanciation of target
-    * and evs)
-    *
-    * @warning If some evs are d-separated, they are not included in the Potential
-    *
-    * @param bn the BayesNet
-    * @param target  the nodeId of the target variable
-    * @param evs the nodeId of the observed variable
-    * @return a Potential
-    */
-    static Potential<GUM_SCALAR>
-    evidenceImpact( const BayesNet<GUM_SCALAR>&    bn,
-                    std::string                    target,
-                    const std::vector<std::string> evs );
-
-    /// @}
-
-    // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
