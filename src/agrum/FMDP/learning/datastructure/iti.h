@@ -263,7 +263,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/datastructure/iti.tcc>
+#include <agrum/FMDP/learning/datastructure/iti_tpl.h>
 
 #endif  // GUM_ITI_H
 

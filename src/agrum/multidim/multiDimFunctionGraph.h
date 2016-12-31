@@ -398,6 +398,6 @@ namespace gum {
   // extern template class MultiDimFunctionGraph<double>;
 }
 
-#include <agrum/multidim/multiDimFunctionGraph.tcc>
+#include <agrum/multidim/multiDimFunctionGraph_tpl.h>
 
 #endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_H

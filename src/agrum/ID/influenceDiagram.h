@@ -393,7 +393,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/ID/influenceDiagram.tcc>
+#include <agrum/ID/influenceDiagram_tpl.h>
 
 #endif /* GUM_INF_DIAG_H */
 

@@ -98,6 +98,6 @@ namespace gum {
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/amplitude.tcc>
+#include <agrum/multidim/aggregators/amplitude_tpl.h>
 
 #endif  // GUM_AMPLITUDE_AGGREGATOR_H

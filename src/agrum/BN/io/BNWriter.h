@@ -89,6 +89,6 @@ namespace gum {
   extern template class BNWriter<double>;
 } /* namespace gum */
 
-#include <agrum/BN/io/BNWriter.tcc>
+#include <agrum/BN/io/BNWriter_tpl.h>
 
 #endif  // GUM_BN_WRITER_H

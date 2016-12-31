@@ -143,6 +143,6 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 /// always include templated methods
-#include <agrum/learning/localSearchWithTabuList.tcc>
+#include <agrum/learning/localSearchWithTabuList_tpl.h>
 
 #endif /* GUM_LEARNING_LOCAL_SEARCH_WITH_TABU_LIST_H */

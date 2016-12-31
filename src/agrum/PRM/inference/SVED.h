@@ -206,6 +206,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/inference/SVED.tcc>
+#include <agrum/PRM/inference/SVED_tpl.h>
 
 #endif /* GUM_SVED_H */

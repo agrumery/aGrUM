@@ -102,6 +102,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/inference/GibbsInference.tcc>
+#include <agrum/BN/inference/GibbsInference_tpl.h>
 
 #endif /* GUM_GIBBS_INFERENCE_H */

@@ -137,6 +137,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/graphicalModels/inference/scheduleCliqueStoreMultiDim.tcc>
+#include <agrum/graphicalModels/inference/scheduleCliqueStoreMultiDim_tpl.h>
 
 #endif /* GUM_SCHEDULE_CLIQUE_STORE_MULTI_DIM_H */

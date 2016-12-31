@@ -121,5 +121,5 @@ namespace gum {
   };
 } /* namespace gum */
 
-#include <agrum/ID/io/BIFXML/BIFXMLIDWriter.tcc>
+#include <agrum/ID/io/BIFXML/BIFXMLIDWriter_tpl.h>
 #endif  // GUM_BIF_XML_ID_WRITER_H

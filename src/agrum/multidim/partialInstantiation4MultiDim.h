@@ -168,7 +168,7 @@ namespace gum {
 
   // ==========================================================================
   // DO NOT FORGET TO REGISTER YOUR PARTIAL INSTANTIATION FUNCTIONS AT THE END
-  // OF FILE partialInstantiation4MultiDim.tcc
+  // OF FILE partialInstantiation4MultiDim_tpl.h
   // ==========================================================================
 
   /**
@@ -241,6 +241,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the templatized implementations
-#include <agrum/multidim/partialInstantiation4MultiDim.tcc>
+#include <agrum/multidim/partialInstantiation4MultiDim_tpl.h>
 
 #endif /* GUM_PARTIAL_INSTANTIATION_4_MULTI_DIM_H */

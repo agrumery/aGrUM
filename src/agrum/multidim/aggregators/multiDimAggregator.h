@@ -187,6 +187,6 @@ namespace gum {
   } /* namespace aggregator */
 } /* namespace gum */
 
-#include <agrum/multidim/aggregators/multiDimAggregator.tcc>
+#include <agrum/multidim/aggregators/multiDimAggregator_tpl.h>
 
 #endif /* GUM_MULTI_DIM_AGGREGATOR_H */

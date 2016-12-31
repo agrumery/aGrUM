@@ -280,6 +280,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimDecorator.tcc>
+#include <agrum/multidim/multiDimDecorator_tpl.h>
 
 #endif /* GUM_MULTI_DIM_DECORATOR_H */

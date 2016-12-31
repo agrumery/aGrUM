@@ -273,6 +273,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/elements/PRMType.tcc>
+#include <agrum/PRM/elements/PRMType_tpl.h>
 
 #endif /* GUM_CLASS_H */

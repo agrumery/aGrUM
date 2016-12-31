@@ -118,7 +118,7 @@ namespace gum {
 }  // gum
 
 // always include the implementation of the templates
-#include <agrum/PRM/o3prm/O3prmBNReader.tcc>
+#include <agrum/PRM/o3prm/O3prmBNReader_tpl.h>
 
 
 extern template class gum::O3prmBNReader<float>;

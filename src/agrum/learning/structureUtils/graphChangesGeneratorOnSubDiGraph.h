@@ -232,6 +232,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include the templated functions
-#include <agrum/learning/structureUtils/graphChangesGeneratorOnSubDiGraph.tcc>
+#include <agrum/learning/structureUtils/graphChangesGeneratorOnSubDiGraph_tpl.h>
 
 #endif /* GUM_LEARNING_GRAPH_CHANGES_GENERATOR_ON_SUBDIGRAPH_H */

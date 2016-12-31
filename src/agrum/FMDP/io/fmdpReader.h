@@ -88,6 +88,6 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/io/fmdpReader.tcc>
+#include <agrum/FMDP/io/fmdpReader_tpl.h>
 
 #endif  // GUM_FMDP_READER_H

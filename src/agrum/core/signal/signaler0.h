@@ -148,7 +148,7 @@ namespace gum {
 #define GUM_EMIT0( signal ) this->signal( this )
 
 // Template implementation should always be in headers
-#include <agrum/core/signal/signaler0.tcc>
+#include <agrum/core/signal/signaler0_tpl.h>
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/signal/signaler0.inl>

@@ -129,6 +129,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/graphicalModels/inference/scheduleDeleteMultiDim.tcc>
+#include <agrum/graphicalModels/inference/scheduleDeleteMultiDim_tpl.h>
 
 #endif /* GUM_SCHEDULE_DELETE_MULTI_DIM_H */

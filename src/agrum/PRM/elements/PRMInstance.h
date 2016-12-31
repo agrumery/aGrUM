@@ -539,6 +539,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/elements/PRMInstance.tcc>
+#include <agrum/PRM/elements/PRMInstance_tpl.h>
 
 #endif /* GUM_INSTANCE_H */

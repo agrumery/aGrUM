@@ -80,6 +80,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/generator/PRMGenerator.tcc>
+#include <agrum/PRM/generator/PRMGenerator_tpl.h>
 
 #endif /* GUM_PRM_GENERATOR_H */

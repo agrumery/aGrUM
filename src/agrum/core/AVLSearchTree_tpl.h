@@ -56,7 +56,7 @@ namespace gum {
   }
 
   template <typename Val, class Cmp>
-  void AVLSearchTree<Val, Cmp>::_erase( BinTreeNode4AVL<Val>* node ) {
+  void AVLSearchTree<Val, Cmp>::_erase( BinTreeNodeAVL<Val>* node ) {
     if ( !node ) return;
 
     // update all the iterators pointing to node that they should point
@@ -223,7 +223,7 @@ namespace gum {
   }
 
   template <typename Val, class Cmp>
-  INLINE BinTreeNode4AVL<Val>* AVLSearchTree<Val, Cmp>::_insert( const Val& val ) {
+  INLINE BinTreeNodeAVL<Val>* AVLSearchTree<Val, Cmp>::_insert( const Val& val ) {
     // insert the new value into the tree
     Node* new_node = BinSearchTree<Val, Cmp, Node>::_insert( val );
 

@@ -514,7 +514,7 @@ namespace gum {
 #include <agrum/graphs/nodeGraphPart.inl>
 #endif  // GUM_NOINLINE
 
-#include <agrum/graphs/nodeGraphPart.tcc>
+#include <agrum/graphs/nodeGraphPart_tpl.h>
 
 #endif  // GUM_NODE_GRAPH_PART_H
 

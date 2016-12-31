@@ -160,7 +160,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/treeOperatorStrategy.tcc>
+#include <agrum/FMDP/planning/treeOperatorStrategy_tpl.h>
 
 #endif  // GUM_TreeOperatorStrategy_H
 

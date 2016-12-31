@@ -35,7 +35,7 @@
 #include <agrum/CN/LrsWrapper.h>
 #include <agrum/core/hashFunc.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/core/utils.h>
+#include <agrum/core/utils_misc.h>
 
 namespace gum {
   namespace credal {
@@ -1018,6 +1018,6 @@ namespace gum {
 
 }  // end of namespace gum
 
-#include <agrum/CN/LpInterface.tcc>
+#include <agrum/CN/LpInterface_tpl.h>
 
 #endif

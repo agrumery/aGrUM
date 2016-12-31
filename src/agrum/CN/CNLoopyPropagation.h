@@ -386,6 +386,6 @@ namespace gum {
   }
 }
 
-#include <agrum/CN/CNLoopyPropagation.tcc>
+#include <agrum/CN/CNLoopyPropagation_tpl.h>
 
 #endif

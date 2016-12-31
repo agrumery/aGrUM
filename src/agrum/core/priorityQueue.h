@@ -1082,6 +1082,6 @@ extern template class gum::PriorityQueue<std::string>;
 extern template class gum::PriorityQueue<int, int>;
 
 // always include the implementation of the templates
-#include <agrum/core/priorityQueue.tcc>
+#include <agrum/core/priorityQueue_tpl.h>
 
 #endif /* GUM_PRIORITY_QUEUE_H */

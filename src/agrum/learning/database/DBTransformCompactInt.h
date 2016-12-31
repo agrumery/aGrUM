@@ -117,6 +117,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include the template implementations
-#include <agrum/learning/database/DBTransformCompactInt.tcc>
+#include <agrum/learning/database/DBTransformCompactInt_tpl.h>
 
 #endif /* GUM_LEARNING_DB_TRANSFORM_COMPACT_INT_H */

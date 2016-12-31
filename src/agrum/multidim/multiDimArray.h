@@ -255,6 +255,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimArray.tcc>
+#include <agrum/multidim/multiDimArray_tpl.h>
 
 #endif /* GUM_MULTI_DIM_ARRAY_H */

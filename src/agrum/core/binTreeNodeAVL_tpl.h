@@ -25,7 +25,7 @@
  */
 
 // to ease IDE parsers
-#include <agrum/core/binTreeNode4AVL.h>
+#include <agrum/core/binTreeNodeAVL.h>
 
 namespace gum {
 
@@ -36,73 +36,73 @@ namespace gum {
   // ===========================================================================
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>::BinTreeNode4AVL( const Val& val )
+  INLINE BinTreeNodeAVL<Val>::BinTreeNodeAVL( const Val& val )
       : BinTreeNode<Val>( val )
       , __height( 1 ) {
-    GUM_CONSTRUCTOR( BinTreeNode4AVL );
+    GUM_CONSTRUCTOR( BinTreeNodeAVL );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>::BinTreeNode4AVL( const BinTreeNode4AVL<Val>& from )
+  INLINE BinTreeNodeAVL<Val>::BinTreeNodeAVL( const BinTreeNodeAVL<Val>& from )
       : BinTreeNode<Val>( from )
       , __height( from.__height ) {
-    GUM_CONS_CPY( BinTreeNode4AVL );
+    GUM_CONS_CPY( BinTreeNodeAVL );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>::~BinTreeNode4AVL() {
-    GUM_DESTRUCTOR( BinTreeNode4AVL );
+  INLINE BinTreeNodeAVL<Val>::~BinTreeNodeAVL() {
+    GUM_DESTRUCTOR( BinTreeNodeAVL );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>& BinTreeNode4AVL<Val>::
-  operator=( const BinTreeNode4AVL<Val>& from ) {
-    GUM_OP_CPY( BinTreeNode4AVL );
+  INLINE BinTreeNodeAVL<Val>& BinTreeNodeAVL<Val>::
+  operator=( const BinTreeNodeAVL<Val>& from ) {
+    GUM_OP_CPY( BinTreeNodeAVL );
     BinTreeNode<Val>::operator=( from );
     return *this;
   }
 
   template <typename Val>
-  INLINE Val& BinTreeNode4AVL<Val>::operator*() {
+  INLINE Val& BinTreeNodeAVL<Val>::operator*() {
     return BinTreeNode<Val>::operator*();
   }
 
   template <typename Val>
-  INLINE Val& BinTreeNode4AVL<Val>::value() {
+  INLINE Val& BinTreeNodeAVL<Val>::value() {
     return BinTreeNode<Val>::value();
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>*
-  BinTreeNode4AVL<Val>::child( BinTreeDir dir ) const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::child( dir ) );
+  INLINE BinTreeNodeAVL<Val>*
+  BinTreeNodeAVL<Val>::child( BinTreeDir dir ) const {
+    return static_cast<BinTreeNodeAVL<Val>*>( BinTreeNode<Val>::child( dir ) );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::leftChild() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::leftChild() );
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::leftChild() const {
+    return static_cast<BinTreeNodeAVL<Val>*>( BinTreeNode<Val>::leftChild() );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::rightChild() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::rightChild() );
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::rightChild() const {
+    return static_cast<BinTreeNodeAVL<Val>*>( BinTreeNode<Val>::rightChild() );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::parent() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::parent() );
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::parent() const {
+    return static_cast<BinTreeNodeAVL<Val>*>( BinTreeNode<Val>::parent() );
   }
 
   template <typename Val>
-  INLINE BinTreeDir BinTreeNode4AVL<Val>::parentDir() const {
+  INLINE BinTreeDir BinTreeNodeAVL<Val>::parentDir() const {
     return BinTreeNode<Val>::parentDir();
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::__rightRotation() {
-    BinTreeNode4AVL<Val>* node_P = leftChild();
-    BinTreeNode4AVL<Val>* V = node_P->rightChild();
-    BinTreeNode4AVL<Val>* the_parent = parent();
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::__rightRotation() {
+    BinTreeNodeAVL<Val>* node_P = leftChild();
+    BinTreeNodeAVL<Val>* V = node_P->rightChild();
+    BinTreeNodeAVL<Val>* the_parent = parent();
     BinTreeDir            parent_dir = parentDir();
     unsigned int          left_height = 0;
     unsigned int          right_height = rightChild() ? rightChild()->__height : 0;
@@ -130,10 +130,10 @@ namespace gum {
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::__leftRotation() {
-    BinTreeNode4AVL<Val>* node_Q = rightChild();
-    BinTreeNode4AVL<Val>* V = node_Q->leftChild();
-    BinTreeNode4AVL<Val>* the_parent = parent();
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::__leftRotation() {
+    BinTreeNodeAVL<Val>* node_Q = rightChild();
+    BinTreeNodeAVL<Val>* V = node_Q->leftChild();
+    BinTreeNodeAVL<Val>* the_parent = parent();
     BinTreeDir            parent_dir = parentDir();
     unsigned int          right_height = 0;
     unsigned int          left_height = leftChild() ? leftChild()->__height : 0;
@@ -161,8 +161,8 @@ namespace gum {
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::__balance() {
-    BinTreeNode4AVL<Val> *node = this, *root = this;
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::__balance() {
+    BinTreeNodeAVL<Val> *node = this, *root = this;
 
     while ( node ) {
       // compute the heights of the left and right trees
@@ -176,7 +176,7 @@ namespace gum {
       // check whether we need a single or a double rotation
       // see the AVL trees literature to see what need be done
       if ( left_height - right_height == 2 ) {
-        BinTreeNode4AVL<Val>* left_child = node->leftChild();
+        BinTreeNodeAVL<Val>* left_child = node->leftChild();
         left_height =
             left_child->leftChild() ? left_child->leftChild()->__height : 0;
         right_height =
@@ -186,7 +186,7 @@ namespace gum {
 
         node = node->__rightRotation();
       } else if ( right_height - left_height == 2 ) {
-        BinTreeNode4AVL<Val>* right_child = node->rightChild();
+        BinTreeNodeAVL<Val>* right_child = node->rightChild();
         left_height =
             right_child->leftChild() ? right_child->leftChild()->__height : 0;
         right_height =
@@ -214,75 +214,75 @@ namespace gum {
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>*
-  BinTreeNode4AVL<Val>::insertLeftChild( const Val& val ) {
-    BinTreeNode4AVL<Val>* new_child = new BinTreeNode4AVL<Val>( val );
+  INLINE BinTreeNodeAVL<Val>*
+  BinTreeNodeAVL<Val>::insertLeftChild( const Val& val ) {
+    BinTreeNodeAVL<Val>* new_child = new BinTreeNodeAVL<Val>( val );
     BinTreeNode<Val>::insertLeftChild( *new_child );
     return new_child;
   }
 
   template <typename Val>
   INLINE void
-  BinTreeNode4AVL<Val>::insertLeftChild( BinTreeNode4AVL<Val>& new_child ) {
+  BinTreeNodeAVL<Val>::insertLeftChild( BinTreeNodeAVL<Val>& new_child ) {
     BinTreeNode<Val>::insertLeftChild( new_child );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>*
-  BinTreeNode4AVL<Val>::insertRightChild( const Val& val ) {
-    BinTreeNode4AVL<Val>* new_child = new BinTreeNode4AVL<Val>( val );
+  INLINE BinTreeNodeAVL<Val>*
+  BinTreeNodeAVL<Val>::insertRightChild( const Val& val ) {
+    BinTreeNodeAVL<Val>* new_child = new BinTreeNodeAVL<Val>( val );
     BinTreeNode<Val>::insertRightChild( *new_child );
     return new_child;
   }
 
   template <typename Val>
   INLINE void
-  BinTreeNode4AVL<Val>::insertRightChild( BinTreeNode4AVL<Val>& new_child ) {
+  BinTreeNodeAVL<Val>::insertRightChild( BinTreeNodeAVL<Val>& new_child ) {
     BinTreeNode<Val>::insertRightChild( new_child );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>*
-  BinTreeNode4AVL<Val>::insertChild( const Val& val, BinTreeDir child_dir ) {
-    BinTreeNode4AVL<Val>* new_child = new BinTreeNode4AVL<Val>( val );
+  INLINE BinTreeNodeAVL<Val>*
+  BinTreeNodeAVL<Val>::insertChild( const Val& val, BinTreeDir child_dir ) {
+    BinTreeNodeAVL<Val>* new_child = new BinTreeNodeAVL<Val>( val );
     BinTreeNode<Val>::insertChild( *new_child, child_dir );
     return new_child;
   }
 
   template <typename Val>
-  INLINE void BinTreeNode4AVL<Val>::insertChild( BinTreeNode4AVL<Val>& new_child,
+  INLINE void BinTreeNodeAVL<Val>::insertChild( BinTreeNodeAVL<Val>& new_child,
                                                  BinTreeDir child_dir ) {
     BinTreeNode<Val>::insertChild( new_child, child_dir );
   }
 
   template <typename Val>
-  INLINE void BinTreeNode4AVL<Val>::eraseLeftLink() {
+  INLINE void BinTreeNodeAVL<Val>::eraseLeftLink() {
     BinTreeNode<Val>::eraseLeftLink();
   }
 
   template <typename Val>
-  INLINE void BinTreeNode4AVL<Val>::eraseRightLink() {
+  INLINE void BinTreeNodeAVL<Val>::eraseRightLink() {
     BinTreeNode<Val>::eraseRightLink();
   }
 
   template <typename Val>
-  INLINE void BinTreeNode4AVL<Val>::eraseLink( BinTreeDir tree_dir ) {
+  INLINE void BinTreeNodeAVL<Val>::eraseLink( BinTreeDir tree_dir ) {
     BinTreeNode<Val>::eraseLink( tree_dir );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::leftmostNode() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::leftmostNode() );
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::leftmostNode() const {
+    return static_cast<BinTreeNodeAVL<Val>*>( BinTreeNode<Val>::leftmostNode() );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::rightmostNode() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::rightmostNode() );
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::rightmostNode() const {
+    return static_cast<BinTreeNodeAVL<Val>*>( BinTreeNode<Val>::rightmostNode() );
   }
 
   template <typename Val>
-  INLINE BinTreeNode4AVL<Val>* BinTreeNode4AVL<Val>::root() const {
-    return static_cast<BinTreeNode4AVL<Val>*>( BinTreeNode<Val>::root() );
+  INLINE BinTreeNodeAVL<Val>* BinTreeNodeAVL<Val>::root() const {
+    return static_cast<BinTreeNodeAVL<Val>*>( BinTreeNode<Val>::root() );
   }
 
 }  // namespace gum

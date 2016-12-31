@@ -427,6 +427,6 @@ extern template class gum::learning::Counter<>;
 
 
 /// include the template implementation
-#include <agrum/learning/scores_and_tests/counter.tcc>
+#include <agrum/learning/scores_and_tests/counter_tpl.h>
 
 #endif /* GUM_LEARNING_COUNTER_H */

@@ -26,7 +26,7 @@
 #include <chrono>
 
 #include <agrum/config.h>
-#include <agrum/core/utils.h>
+#include <agrum/core/utils_misc.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/core/utils_random.inl>

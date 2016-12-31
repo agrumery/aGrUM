@@ -138,6 +138,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include templated methods
-#include <agrum/learning/greedyHillClimbing.tcc>
+#include <agrum/learning/greedyHillClimbing_tpl.h>
 
 #endif /* GUM_LEARNING_GREEDY_HILL_CLIMBING_H */

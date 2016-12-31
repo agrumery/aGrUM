@@ -132,6 +132,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include "netReader.tcc"
+#include "netReader_tpl.h"
 
 #endif  // NETREADER_H

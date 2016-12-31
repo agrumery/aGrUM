@@ -227,6 +227,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/graphicalModels/inference/scheduleMultiDim.tcc>
+#include <agrum/graphicalModels/inference/scheduleMultiDim_tpl.h>
 
 #endif /* GUM_SCHEDULE_MULTI_DIM_H */

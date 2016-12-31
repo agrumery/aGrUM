@@ -355,6 +355,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/inference/gspan.tcc>
+#include <agrum/PRM/inference/gspan_tpl.h>
 
 #endif /* GUM_GSPAN_H */

@@ -300,6 +300,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimImplementation.tcc>
+#include <agrum/multidim/multiDimImplementation_tpl.h>
 
 #endif /* GUM_MULTI_DIM_IMPLEMENTATION_H */

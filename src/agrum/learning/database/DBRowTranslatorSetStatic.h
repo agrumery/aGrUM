@@ -390,6 +390,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/learning/database/DBRowTranslatorSetStatic.tcc>
+#include <agrum/learning/database/DBRowTranslatorSetStatic_tpl.h>
 
 #endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_STATIC_H */

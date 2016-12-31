@@ -390,6 +390,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/inference/structuredInference.tcc>
+#include <agrum/PRM/inference/structuredInference_tpl.h>
 
 #endif /* GUM_STRUCTURED_INFERENCE_H */

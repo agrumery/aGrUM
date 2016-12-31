@@ -317,7 +317,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/fmdpFactory.tcc>
+#include <agrum/FMDP/fmdpFactory_tpl.h>
 
 #endif  // GUM_FMDP_FACTORY_H
 

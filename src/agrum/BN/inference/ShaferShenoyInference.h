@@ -405,7 +405,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/inference/ShaferShenoyInference.tcc>
+#include <agrum/BN/inference/ShaferShenoyInference_tpl.h>
 
 #endif /* SHAFER_SHENOY_INFERENCE_H */
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

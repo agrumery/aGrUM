@@ -215,6 +215,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/PRMSlotChain.tcc>
+#include <agrum/PRM/elements/PRMSlotChain_tpl.h>
 
 #endif /* GUM_SLOT_CHAIN_H */

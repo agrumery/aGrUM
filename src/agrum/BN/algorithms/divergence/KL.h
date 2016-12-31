@@ -149,6 +149,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/BN/algorithms/divergence/KL.tcc>
+#include <agrum/BN/algorithms/divergence/KL_tpl.h>
 
 #endif  // GUM_KL_H

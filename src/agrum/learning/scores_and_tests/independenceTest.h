@@ -307,6 +307,6 @@ extern template class gum::learning::IndependenceTest<>;
 
 
 /// include the template implementation
-#include <agrum/learning/scores_and_tests/independenceTest.tcc>
+#include <agrum/learning/scores_and_tests/independenceTest_tpl.h>
 
 #endif /* GUM_LEARNING_INDEPENDENCE_TEST_H */

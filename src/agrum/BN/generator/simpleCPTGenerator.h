@@ -75,5 +75,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/simpleCPTGenerator.tcc>
+#include <agrum/BN/generator/simpleCPTGenerator_tpl.h>
 #endif /* GUM_SIMPLE_CPT_GENERATOR_H */

@@ -352,7 +352,7 @@ extern template class gum::RefPtr<float>;
 extern template class gum::RefPtr<double>;
 
 
-// always include the .tcc as it contains only templates
-#include <agrum/core/refPtr.tcc>
+// always include the _tpl.h as it contains only templates
+#include <agrum/core/refPtr_tpl.h>
 
 #endif /* GUM_REFPTR_H */

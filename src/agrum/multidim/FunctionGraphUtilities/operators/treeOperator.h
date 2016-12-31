@@ -109,6 +109,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator_tpl.h>
 
 #endif  // GUM_OPERATOR_H

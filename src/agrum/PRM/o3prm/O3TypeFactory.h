@@ -110,7 +110,7 @@ namespace gum {
 }  // gum
 
 // always include the implementation of the templates
-#include <agrum/PRM/o3prm/O3TypeFactory.tcc>
+#include <agrum/PRM/o3prm/O3TypeFactory_tpl.h>
 
 
 extern template class gum::prm::o3prm::O3TypeFactory<float>;

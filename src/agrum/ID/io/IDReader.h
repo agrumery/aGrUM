@@ -71,6 +71,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include "IDReader.tcc"
+#include "IDReader_tpl.h"
 
 #endif  // GUM_ID_READER_H

@@ -133,6 +133,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/ICIModels/multiDimNoisyORNet.tcc>
+#include <agrum/multidim/ICIModels/multiDimNoisyORNet_tpl.h>
 
 #endif /* GUM_MULTI_DIM_NOISY_OR_NET_H */

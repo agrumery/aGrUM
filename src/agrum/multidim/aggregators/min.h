@@ -90,6 +90,6 @@ namespace gum {
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/min.tcc>
+#include <agrum/multidim/aggregators/min_tpl.h>
 
 #endif  // GUM_MIN_AGGREGATOR_H

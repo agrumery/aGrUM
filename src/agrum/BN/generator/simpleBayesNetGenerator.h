@@ -97,6 +97,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/simpleBayesNetGenerator.tcc>
+#include <agrum/BN/generator/simpleBayesNetGenerator_tpl.h>
 
 #endif /* GUM_SIMPLE_BAYES_NET_GENERATOR_H */

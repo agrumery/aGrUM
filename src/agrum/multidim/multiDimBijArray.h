@@ -189,6 +189,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/multidim/multiDimBijArray.tcc>
+#include <agrum/multidim/multiDimBijArray_tpl.h>
 
 #endif  // GUM_MULTIDIMBIJARRAY_H

@@ -150,6 +150,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/graphicalModels/inference/scheduleProject.tcc>
+#include <agrum/graphicalModels/inference/scheduleProject_tpl.h>
 
 #endif /* GUM_SCHEDULE_PROJECTION_H */

@@ -241,6 +241,6 @@ namespace gum {
 #include <agrum/graphs/edgeGraphPart.inl>
 #endif  // GUM_NOINLINE
 
-#include <agrum/graphs/edgeGraphPart.tcc>
+#include <agrum/graphs/edgeGraphPart_tpl.h>
 
 #endif  // GUM_EDGEGRAPHPART_H

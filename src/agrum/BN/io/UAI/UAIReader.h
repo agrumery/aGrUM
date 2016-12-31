@@ -142,6 +142,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include "UAIReader.tcc"
+#include "UAIReader_tpl.h"
 
 #endif  // UAIREADER_H

@@ -174,6 +174,6 @@ namespace gum {
 
 }  // End of namespace gum
 
-#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy.tcc>
+#include <agrum/FMDP/learning/core/testPolicy/GTestPolicy_tpl.h>
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H */

@@ -256,6 +256,6 @@ namespace gum {
 } /* namespace gum */
 
 /// include the template implementation
-#include <agrum/learning/paramUtils/paramEstimator.tcc>
+#include <agrum/learning/paramUtils/paramEstimator_tpl.h>
 
 #endif /* GUM_LEARNING_PARAM_ESTIMATOR_H */

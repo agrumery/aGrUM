@@ -2527,6 +2527,6 @@ extern template class gum::List<unsigned int>;
 
 
 // always include the implementation of the templates
-#include <agrum/core/list.tcc>
+#include <agrum/core/list_tpl.h>
 
 #endif /* GUM_LIST_H */

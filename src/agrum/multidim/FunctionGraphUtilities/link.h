@@ -197,6 +197,6 @@ namespace gum {
 
 }  // End of namespace gum
 
-#include <agrum/multidim/FunctionGraphUtilities/link.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/link_tpl.h>
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H */

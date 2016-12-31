@@ -495,6 +495,6 @@ extern template class gum::MultiPriorityQueue<int, int>;
 
 
 // always include the implementation of the templates
-#include <agrum/core/multiPriorityQueue.tcc>
+#include <agrum/core/multiPriorityQueue_tpl.h>
 
 #endif /* GUM_MULTI_PRIORITY_QUEUE_H */

@@ -390,6 +390,6 @@ extern template class gum::Heap<double>;
 
 
 // always include the implementation of the templates
-#include <agrum/core/heap.tcc>
+#include <agrum/core/heap_tpl.h>
 
 #endif /* GUM_HEAP_H */

@@ -133,6 +133,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/ICIModels/multiDimNoisyORCompound.tcc>
+#include <agrum/multidim/ICIModels/multiDimNoisyORCompound_tpl.h>
 
 #endif /* GUM_MULTI_DIM_NOISY_OR_COMPOUND_H */

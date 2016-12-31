@@ -95,6 +95,6 @@ namespace gum {
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/and.tcc>
+#include <agrum/multidim/aggregators/and_tpl.h>
 
 #endif  // GUM_AND_AGGREGATOR_H

@@ -154,6 +154,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/BIFXML/BIFXMLBNReader.tcc>
+#include <agrum/BN/io/BIFXML/BIFXMLBNReader_tpl.h>
 
 #endif  // GUM_BIF_XML_BN_READER_H

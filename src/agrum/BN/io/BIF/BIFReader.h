@@ -188,7 +188,7 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/BN/io/BIF/BIFReader.tcc>
+#include <agrum/BN/io/BIF/BIFReader_tpl.h>
 
 #endif  // BIF_READER_H
 

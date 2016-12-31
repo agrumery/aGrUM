@@ -287,6 +287,6 @@ namespace gum {
   }    // namespace prm
 }  // namespace gum
 
-#include <agrum/PRM/o3prmr/O3prmrContext.tcc>
+#include <agrum/PRM/o3prmr/O3prmrContext_tpl.h>
 
 #endif  // SKOORSYNTAXTREE_H

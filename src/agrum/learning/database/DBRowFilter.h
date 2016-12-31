@@ -245,7 +245,7 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // always include the template implementation
-#include <agrum/learning/database/DBRowFilter.tcc>
+#include <agrum/learning/database/DBRowFilter_tpl.h>
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif /* GUM_LEARNING_DB_ROW_FILTER_H */

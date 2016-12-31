@@ -25,7 +25,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/core/binTreeNode4AVL.h>
+#include <agrum/core/binTreeNodeAVL.h>
 
 
-template class gum::BinTreeNode4AVL<int>;
+template class gum::BinTreeNodeAVL<int>;

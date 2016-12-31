@@ -133,6 +133,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/multidim/FunctionGraphUtilities/operators/regress.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/operators/regress_tpl.h>
 
 #endif  // GUM_REGRESS_H

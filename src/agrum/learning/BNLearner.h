@@ -178,6 +178,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include templated methods
-#include <agrum/learning/BNLearner.tcc>
+#include <agrum/learning/BNLearner_tpl.h>
 
 #endif /* GUM_LEARNING_BN_LEARNER_H */

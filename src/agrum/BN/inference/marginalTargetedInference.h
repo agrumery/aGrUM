@@ -247,7 +247,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/marginalTargetedInference.tcc>
+#include <agrum/BN/inference/marginalTargetedInference_tpl.h>
 
 
 #endif  // GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H

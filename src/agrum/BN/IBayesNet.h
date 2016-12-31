@@ -238,6 +238,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/IBayesNet.tcc>
+#include <agrum/BN/IBayesNet_tpl.h>
 
 #endif /* GUM_SIMPLE_BAYES_NET_H */

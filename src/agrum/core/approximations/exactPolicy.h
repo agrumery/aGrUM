@@ -116,6 +116,6 @@ extern template class gum::ExactPolicy<double>;
 
 
 // Always include inlined implementation of template class
-#include <agrum/core/approximations/exactPolicy.tcc>
+#include <agrum/core/approximations/exactPolicy_tpl.h>
 
 #endif /* GUM_EXACT_POLICY_H */

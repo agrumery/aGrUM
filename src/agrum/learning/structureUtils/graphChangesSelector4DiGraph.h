@@ -249,6 +249,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include templated methods
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.tcc>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph_tpl.h>
 
 #endif /* GUM_LEARNING_GRAPH_CHANGES_SELECTOR_4_DIGRAPH_H */

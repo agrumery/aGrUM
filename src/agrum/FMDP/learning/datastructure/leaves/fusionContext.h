@@ -243,6 +243,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/datastructure/leaves/fusionContext.tcc>
+#include <agrum/FMDP/learning/datastructure/leaves/fusionContext_tpl.h>
 
 #endif  // GUM_FUSION_CONTEXT_H

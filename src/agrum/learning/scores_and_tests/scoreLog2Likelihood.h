@@ -211,6 +211,6 @@ extern template class gum::learning::ScoreLog2Likelihood<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreLog2Likelihood.tcc>
+#include <agrum/learning/scores_and_tests/scoreLog2Likelihood_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_LOG2_LIKELIHOOD_H */

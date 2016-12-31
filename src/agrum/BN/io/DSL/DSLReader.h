@@ -131,7 +131,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include "DSLReader.tcc"
+#include "DSLReader_tpl.h"
 
 #endif  // DSLREADER_H
 

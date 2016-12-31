@@ -142,6 +142,6 @@ namespace gum {
 
 }  // End of namespace gum
 
-#include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.tcc>
+#include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy_tpl.h>
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_CHI2_TEST_POLICY_H */

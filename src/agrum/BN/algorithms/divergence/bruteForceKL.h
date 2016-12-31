@@ -100,6 +100,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/BN/algorithms/divergence/bruteForceKL.tcc>
+#include <agrum/BN/algorithms/divergence/bruteForceKL_tpl.h>
 
 #endif  // GUM_BRUTE_FORCE_KL_H

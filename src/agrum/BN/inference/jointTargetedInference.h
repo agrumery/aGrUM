@@ -253,7 +253,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/jointTargetedInference.tcc>
+#include <agrum/BN/inference/jointTargetedInference_tpl.h>
 
 
 #endif  // GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H

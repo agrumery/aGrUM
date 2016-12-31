@@ -111,7 +111,7 @@ namespace gum {
 #include <agrum/BN/inference/dSeparation.inl>
 #endif  // GUM_NO_INLINE
 
-#include <agrum/BN/inference/dSeparation.tcc>
+#include <agrum/BN/inference/dSeparation_tpl.h>
 
 
 #endif /* GUM_D_SEPARATION_H */

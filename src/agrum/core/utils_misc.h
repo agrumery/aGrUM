@@ -155,6 +155,6 @@ namespace gum {
 } /* namespace gum */
 
 // Always include the template implementations
-#include <agrum/core/utils.tcc>
+#include <agrum/core/utils_misc_tpl.h>
 
 #endif /* GUM_UTILS_H */

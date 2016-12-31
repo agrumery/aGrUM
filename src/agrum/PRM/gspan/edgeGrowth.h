@@ -103,6 +103,6 @@ namespace gum {
   }   /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/gspan/edgeGrowth.tcc>
+#include <agrum/PRM/gspan/edgeGrowth_tpl.h>
 
 #endif /* GUM_EDGE_GROWTH_H */

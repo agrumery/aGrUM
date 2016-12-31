@@ -300,6 +300,6 @@ extern template class gum::learning::Score<>;
 
 
 /// include the template implementation
-#include <agrum/learning/scores_and_tests/score.tcc>
+#include <agrum/learning/scores_and_tests/score_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_H */

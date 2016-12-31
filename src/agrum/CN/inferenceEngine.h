@@ -521,6 +521,6 @@ namespace gum {
   }
 }  // namespace gum
 
-#include <agrum/CN/inferenceEngine.tcc>
+#include <agrum/CN/inferenceEngine_tpl.h>
 
 #endif

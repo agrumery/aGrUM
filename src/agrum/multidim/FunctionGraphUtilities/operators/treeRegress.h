@@ -91,6 +91,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress_tpl.h>
 
 #endif  // GUM_REGRESS_H

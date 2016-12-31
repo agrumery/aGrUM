@@ -629,6 +629,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/BayesNet.tcc>
+#include <agrum/BN/BayesNet_tpl.h>
 
 #endif /* GUM_BAYES_NET_H */

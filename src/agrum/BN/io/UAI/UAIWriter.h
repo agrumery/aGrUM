@@ -105,5 +105,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/UAI/UAIWriter.tcc>
+#include <agrum/BN/io/UAI/UAIWriter_tpl.h>
 #endif  // GUM_UAIWRITER_H

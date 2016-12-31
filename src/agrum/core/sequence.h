@@ -1443,6 +1443,6 @@ extern template class gum::Sequence<std::string>;
 
 
 // always include the implementation of the templates
-#include <agrum/core/sequence.tcc>
+#include <agrum/core/sequence_tpl.h>
 
 #endif  // GUM_SEQUENCE_H

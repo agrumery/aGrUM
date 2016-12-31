@@ -142,6 +142,6 @@ extern template class gum::Rational<long double>;
 
 
 // Always include template implementation in header file
-#include <agrum/core/math/rational.tcc>
+#include <agrum/core/math/rational_tpl.h>
 
 #endif  // GUM_RATIONAL_H

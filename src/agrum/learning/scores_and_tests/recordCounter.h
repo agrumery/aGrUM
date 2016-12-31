@@ -435,6 +435,6 @@ extern template class gum::learning::RecordCounter<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/recordCounter.tcc>
+#include <agrum/learning/scores_and_tests/recordCounter_tpl.h>
 
 #endif /* GUM_LEARNING_RECORD_COUNTER_H */

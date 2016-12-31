@@ -96,6 +96,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/PRMFuncAttribute.tcc>
+#include <agrum/PRM/elements/PRMFuncAttribute_tpl.h>
 
 #endif /* GUM_FUNC_ATTRIBUTE_H */

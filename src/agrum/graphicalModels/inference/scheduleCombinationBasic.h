@@ -183,6 +183,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/graphicalModels/inference/scheduleCombinationBasic.tcc>
+#include <agrum/graphicalModels/inference/scheduleCombinationBasic_tpl.h>
 
 #endif /* GUM_SCHEDULE_COMBINATION_BASIC_H */

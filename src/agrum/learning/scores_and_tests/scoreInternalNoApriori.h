@@ -122,6 +122,6 @@ extern template class gum::learning::ScoreInternalNoApriori<>;
 
 
 /// include the template implementation
-#include <agrum/learning/scores_and_tests/scoreInternalNoApriori.tcc>
+#include <agrum/learning/scores_and_tests/scoreInternalNoApriori_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_INTERNAL_NO_APRIORI_H */

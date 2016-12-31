@@ -1018,6 +1018,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/PRMFactory.tcc>
+#include <agrum/PRM/PRMFactory_tpl.h>
 
 #endif /* GUM_PRM_FACTORY_H */

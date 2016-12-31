@@ -125,5 +125,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/BIFXML/BIFXMLBNWriter.tcc>
+#include <agrum/BN/io/BIFXML/BIFXMLBNWriter_tpl.h>
 #endif  // GUM_BIF_XML_BN_WRITER_H

@@ -258,7 +258,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/fmdpLearner.tcc>
+#include <agrum/FMDP/learning/fmdpLearner_tpl.h>
 
 #endif  // GUM_FMDP_LEARNER_H
 

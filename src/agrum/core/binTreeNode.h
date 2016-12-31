@@ -331,6 +331,6 @@ extern template class gum::BinTreeNode<int>;
 
 
 // always include the implementation of the templates
-#include <agrum/core/binTreeNode.tcc>
+#include <agrum/core/binTreeNode_tpl.h>
 
 #endif  // GUM_BIN_TREE_NODE_H

@@ -139,6 +139,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/inference/groundedInference.tcc>
+#include <agrum/PRM/inference/groundedInference_tpl.h>
 
 #endif /* GUM_GROUNDED_INFERENCE_H */

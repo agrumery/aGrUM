@@ -182,6 +182,6 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 // always include templates
-#include <agrum/core/math/Dirichlet.tcc>
+#include <agrum/core/math/Dirichlet_tpl.h>
 
 #endif /* GUM_LEARNING_DIRICHLET_H */

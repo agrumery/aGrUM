@@ -183,6 +183,6 @@ namespace gum {
 
 }  // End of namespace gum
 
-#include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy.tcc>
+#include <agrum/FMDP/learning/core/testPolicy/leastSquareTestPolicy_tpl.h>
 
 #endif /* GUM_MULTI_DIM_FUNCTION_GRAPH_LEAST_SQUARE_TEST_POLICY_H */

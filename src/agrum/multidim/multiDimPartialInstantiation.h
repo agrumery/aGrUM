@@ -140,6 +140,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/multidim/multiDimPartialInstantiation.tcc>
+#include <agrum/multidim/multiDimPartialInstantiation_tpl.h>
 
 #endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_H */

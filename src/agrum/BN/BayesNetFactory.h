@@ -452,7 +452,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/BayesNetFactory.tcc>
+#include <agrum/BN/BayesNetFactory_tpl.h>
 
 #endif  // GUM_BAYESNET_FACTORY_H
 

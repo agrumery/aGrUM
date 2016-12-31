@@ -334,6 +334,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/ID/inference/influenceDiagramInference.tcc>
+#include <agrum/ID/inference/influenceDiagramInference_tpl.h>
 
 #endif /* GUM_INFLUENCE_DIAGRAM_INFERENCE_H */

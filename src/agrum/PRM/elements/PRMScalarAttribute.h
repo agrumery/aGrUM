@@ -161,6 +161,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/PRMScalarAttribute.tcc>
+#include <agrum/PRM/elements/PRMScalarAttribute_tpl.h>
 
 #endif /* GUM_SCALAR_ATTRIBUTE_H */

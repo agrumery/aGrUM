@@ -92,6 +92,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/utilityTable.tcc>
+#include <agrum/multidim/utilityTable_tpl.h>
 
 #endif /* GUM_UTILITY_TABLE_H */

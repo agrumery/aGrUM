@@ -413,7 +413,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.tcc>
+#include <agrum/FMDP/learning/datastructure/incrementalGraphLearner_tpl.h>
 
 #endif  // GUM_INCREMENTAL_GRAPH_LEARNER_H
 

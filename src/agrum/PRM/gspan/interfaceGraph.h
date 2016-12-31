@@ -302,6 +302,6 @@ namespace gum {
   }   /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/gspan/interfaceGraph.tcc>
+#include <agrum/PRM/gspan/interfaceGraph_tpl.h>
 
 #endif /* GUM_INTERFACE_GRAPH_H */

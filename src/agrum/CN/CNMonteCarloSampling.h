@@ -137,6 +137,6 @@ namespace gum {
   }  // namespace cn
 }
 
-#include <agrum/CN/CNMonteCarloSampling.tcc>
+#include <agrum/CN/CNMonteCarloSampling_tpl.h>
 
 #endif

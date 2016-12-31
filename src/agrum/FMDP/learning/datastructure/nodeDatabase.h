@@ -214,6 +214,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/datastructure/nodeDatabase.tcc>
+#include <agrum/FMDP/learning/datastructure/nodeDatabase_tpl.h>
 
 #endif  // GUM_NODE_DATABASE_H

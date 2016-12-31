@@ -102,6 +102,6 @@ namespace gum {
 } /* namespace gum */
 
 /// include the template implementation
-#include <agrum/learning/aprioris/aprioriDirichletFromDatabase.tcc>
+#include <agrum/learning/aprioris/aprioriDirichletFromDatabase_tpl.h>
 
 #endif /* GUM_LEARNING_A_PRIORI_DIRICHLET_FROM_DATABASE_H */

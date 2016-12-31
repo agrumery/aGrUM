@@ -78,6 +78,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/BNReader.tcc>
+#include <agrum/BN/io/BNReader_tpl.h>
 
 #endif  // GUM_BN_READER_H

@@ -223,6 +223,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include templated implementation
-#include <agrum/learning/database/DBRowTranslatorSetDynamic.tcc>
+#include <agrum/learning/database/DBRowTranslatorSetDynamic_tpl.h>
 
 #endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H */

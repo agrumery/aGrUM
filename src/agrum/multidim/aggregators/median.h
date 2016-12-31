@@ -103,6 +103,6 @@ namespace gum {
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/median.tcc>
+#include <agrum/multidim/aggregators/median_tpl.h>
 
 #endif  // GUM_MEDIAN_AGGREGATOR_H

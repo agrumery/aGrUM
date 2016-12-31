@@ -31,7 +31,7 @@
 
 #include <agrum/core/binSearchTree.h>
 #include <agrum/core/binTreeNode.h>
-#include <agrum/core/binTreeNode4AVL.h>
+#include <agrum/core/binTreeNodeAVL.h>
 
 namespace gum {
 
@@ -50,10 +50,10 @@ namespace gum {
    * @tparam Cmp The comparator used to balance the AVLSearchTree.
    */
   template <typename Val, class Cmp = std::less<Val>>
-  class AVLSearchTree : public BinSearchTree<Val, Cmp, BinTreeNode4AVL<Val>> {
+  class AVLSearchTree : public BinSearchTree<Val, Cmp, BinTreeNodeAVL<Val>> {
 
     public:
-    typedef BinTreeNode4AVL<Val> Node;
+    typedef BinTreeNodeAVL<Val> Node;
     typedef BinSearchTreeIterator<Val, Cmp, Node> iterator;
 
     // ============================================================================
@@ -189,6 +189,6 @@ extern template class gum::AVLSearchTree<int>;
 
 
 // always include the template implementations
-#include <agrum/core/AVLSearchTree.tcc>
+#include <agrum/core/AVLSearchTree_tpl.h>
 
 #endif /* GUM_AVL_SEARCH_TREE_H */

@@ -127,7 +127,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/ID/generator/influenceDiagramGenerator.tcc>
+#include <agrum/ID/generator/influenceDiagramGenerator_tpl.h>
 #endif /* GUM_INF_DIAG_GENERATOR_H */
 
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

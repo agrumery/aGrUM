@@ -183,5 +183,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/core/contingencyTable.tcc>
+#include <agrum/FMDP/learning/core/contingencyTable_tpl.h>
 #endif  // GUM_CONTINGENCY_TABLE_H

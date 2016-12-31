@@ -97,5 +97,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/cnf/GeneralizedCNFWriter.tcc>
+#include <agrum/BN/io/cnf/GeneralizedCNFWriter_tpl.h>
 #endif  // GUM_NET_WRITER_H

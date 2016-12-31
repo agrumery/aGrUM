@@ -94,6 +94,6 @@ namespace gum {
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/or.tcc>
+#include <agrum/multidim/aggregators/or_tpl.h>
 
 #endif  // GUM_OR_AGGREGATOR_H

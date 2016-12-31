@@ -243,6 +243,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/inference/PRMInference.tcc>
+#include <agrum/PRM/inference/PRMInference_tpl.h>
 
 #endif /* GUM_PRM_INFERENCE_H */

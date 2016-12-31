@@ -238,6 +238,6 @@ extern template class gum::learning::ScoreK2<>;
 
 
 /// always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreK2.tcc>
+#include <agrum/learning/scores_and_tests/scoreK2_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_K2_H */

@@ -118,6 +118,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/BN/algorithms/divergence/GibbsKL.tcc>
+#include <agrum/BN/algorithms/divergence/GibbsKL_tpl.h>
 
 #endif  // GUM_GIBBS_KL_H

@@ -309,7 +309,7 @@ namespace gum {
   }   /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/gspan/searchStrategy.tcc>
+#include <agrum/PRM/gspan/searchStrategy_tpl.h>
 
 #endif /* GUM_DFS_TREE_H */
 

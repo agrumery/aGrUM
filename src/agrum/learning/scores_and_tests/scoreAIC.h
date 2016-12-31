@@ -212,6 +212,6 @@ extern template class gum::learning::ScoreAIC<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreAIC.tcc>
+#include <agrum/learning/scores_and_tests/scoreAIC_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_AIC_H */

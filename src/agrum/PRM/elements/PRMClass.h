@@ -461,6 +461,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/PRMClass.tcc>
+#include <agrum/PRM/elements/PRMClass_tpl.h>
 
 #endif /* GUM_CLASS_H */

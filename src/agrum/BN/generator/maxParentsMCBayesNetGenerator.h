@@ -192,5 +192,5 @@ namespace gum {
 
 } /*namespace gum*/
 
-#include <agrum/BN/generator/maxParentsMCBayesNetGenerator.tcc>
+#include <agrum/BN/generator/maxParentsMCBayesNetGenerator_tpl.h>
 #endif  // MCBAYESNETGENERATOR

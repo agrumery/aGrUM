@@ -170,6 +170,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/ICIModels/multiDimICIModel.tcc>
+#include <agrum/multidim/ICIModels/multiDimICIModel_tpl.h>
 
 #endif /* GUM_MULTI_DIM_ICI_MODEL_H */

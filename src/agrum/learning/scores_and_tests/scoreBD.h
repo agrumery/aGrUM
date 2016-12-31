@@ -217,6 +217,6 @@ extern template class gum::learning::ScoreBD<>;
 
 
 /// always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreBD.tcc>
+#include <agrum/learning/scores_and_tests/scoreBD_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_BDeu_H */

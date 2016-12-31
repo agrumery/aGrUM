@@ -95,6 +95,6 @@ namespace gum {
   };
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimReadOnly.tcc>
+#include <agrum/multidim/multiDimReadOnly_tpl.h>
 
 #endif /* GUM_MULTI_DIM_READONLY_H */

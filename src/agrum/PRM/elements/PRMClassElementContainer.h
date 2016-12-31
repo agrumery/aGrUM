@@ -461,6 +461,6 @@ std::ostream&
 operator<<( std::ostream&                                         output,
             const gum::prm::PRMClassElementContainer<GUM_SCALAR>& container );
 
-#include <agrum/PRM/elements/PRMClassElementContainer.tcc>
+#include <agrum/PRM/elements/PRMClassElementContainer_tpl.h>
 
 #endif /* GUM_CLASS_ELEMENT_CONTAINER_H */

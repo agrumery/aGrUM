@@ -449,7 +449,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/inference/lazyPropagation.tcc>
+#include <agrum/BN/inference/lazyPropagation_tpl.h>
 
 #endif /* GUM_LAZY_PROPAGATION_H */
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -131,6 +131,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/PRMFormAttribute.tcc>
+#include <agrum/PRM/elements/PRMFormAttribute_tpl.h>
 
 #endif /* GUM_ATTRIBUTE_H */

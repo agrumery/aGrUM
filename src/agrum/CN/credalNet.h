@@ -740,6 +740,6 @@ namespace gum {
   }  // namespace credal
 }  // namespace gum
 
-#include <agrum/CN/credalNet.tcc>
+#include <agrum/CN/credalNet_tpl.h>
 
 #endif  // __CREDAL_NET__H__

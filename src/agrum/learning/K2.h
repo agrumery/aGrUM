@@ -139,6 +139,6 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 /// always include templated methods
-#include <agrum/learning/K2.tcc>
+#include <agrum/learning/K2_tpl.h>
 
 #endif /* GUM_LEARNING_K2_H */

@@ -241,6 +241,6 @@ extern template class gum::LinearApproximationPolicy<double>;
 
 
 // Always inline template classes implementation.
-#include <agrum/core/approximations/linearApproximationPolicy.tcc>
+#include <agrum/core/approximations/linearApproximationPolicy_tpl.h>
 
 #endif /* GUM_LINEAR_APPROXIMATION_POLICY_H */

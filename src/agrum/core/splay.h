@@ -428,7 +428,7 @@ namespace gum {
 
 } /* namespace gum */
 
-// always include the .tcc as it contains only templates
-#include <agrum/core/splay.tcc>
+// always include the _tpl.h as it contains only templates
+#include <agrum/core/splay_tpl.h>
 
 #endif /* GUM_SPLAY_H */

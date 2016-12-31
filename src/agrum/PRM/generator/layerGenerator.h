@@ -156,6 +156,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/generator/layerGenerator.tcc>
+#include <agrum/PRM/generator/layerGenerator_tpl.h>
 
 #endif /* GUM_LAYER_GENERATOR_H */

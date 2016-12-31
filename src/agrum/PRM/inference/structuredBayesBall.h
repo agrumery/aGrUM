@@ -170,6 +170,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/inference/structuredBayesBall.tcc>
+#include <agrum/PRM/inference/structuredBayesBall_tpl.h>
 
 #endif /* GUM_STRUCTURED_BB_H */

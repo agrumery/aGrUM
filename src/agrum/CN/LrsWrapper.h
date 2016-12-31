@@ -449,6 +449,6 @@ namespace gum {
   }  // end of credal namespace
 }  // end of gum namespace
 
-#include <agrum/CN/LrsWrapper.tcc>
+#include <agrum/CN/LrsWrapper_tpl.h>
 
 #endif

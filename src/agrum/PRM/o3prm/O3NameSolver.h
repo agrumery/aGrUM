@@ -103,6 +103,6 @@ extern template class gum::prm::o3prm::O3NameSolver<double>;
 
 
 // always include the implementation of the templates
-#include <agrum/PRM/o3prm/O3NameSolver.tcc>
+#include <agrum/PRM/o3prm/O3NameSolver_tpl.h>
 
 #endif  // GUM_PRM_O3PRM_O3NAMESOLVER_H

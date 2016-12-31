@@ -99,6 +99,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include templated methods
-#include <agrum/learning/paramUtils/DAG2BNLearner.tcc>
+#include <agrum/learning/paramUtils/DAG2BNLearner_tpl.h>
 
 #endif /* GUM_LEARNING_DAG_2_BN_LEARNER_H */

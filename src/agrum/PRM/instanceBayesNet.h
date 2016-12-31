@@ -135,6 +135,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/instanceBayesNet.tcc>
+#include <agrum/PRM/instanceBayesNet_tpl.h>
 
 #endif /* GUM_INSTANCE_BAYESNET_H */

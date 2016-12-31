@@ -49,7 +49,7 @@ namespace gum {
   /**
    * @class CompleteProjectionRegister4MultiDim
    * @headerfile completeProjectionRegister4MultiDim.h agrum/multdim/operators/completeProjectionRegister4MultiDim.h
-   * @ingroup multidim_op_group 
+   * @ingroup multidim_op_group
    *
    * @brief A container for registering complete projection functions on
    * multiDimImplementations, i.e., functions projecting tables over all their
@@ -210,6 +210,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the implementations
-#include <agrum/multidim/operators/completeProjectionRegister4MultiDim.tcc>
+#include <agrum/multidim/operators/completeProjectionRegister4MultiDim_tpl.h>
 
 #endif /* GUM_COMPLETE_PROJECTION_REGISTER_MULTI_DIM_H */

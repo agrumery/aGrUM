@@ -157,6 +157,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/classBayesNet.tcc>
+#include <agrum/PRM/classBayesNet_tpl.h>
 
 #endif /* GUM_CLASS_BAYESNET_H */

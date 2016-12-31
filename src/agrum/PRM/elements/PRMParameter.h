@@ -130,6 +130,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/PRMParameter.tcc>
+#include <agrum/PRM/elements/PRMParameter_tpl.h>
 
 #endif /* GUM_PARAMETER_H */

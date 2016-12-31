@@ -278,6 +278,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/BN/BayesNetFragment.tcc>
+#include <agrum/BN/BayesNetFragment_tpl.h>
 
 #endif  // GUM_BAYES_NET_FRAGMENT_H

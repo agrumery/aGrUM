@@ -152,6 +152,6 @@ namespace gum {
   }  // namespace samplers
 }  // namespace gum
 
-#include <agrum/BN/samplers/GibbsSampler.tcc>
+#include <agrum/BN/samplers/GibbsSampler_tpl.h>
 
 #endif  // GUM_GIBBS_H

@@ -139,6 +139,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/graphicalModels/inference/scheduleSeparatorStoreMultiDim.tcc>
+#include <agrum/graphicalModels/inference/scheduleSeparatorStoreMultiDim_tpl.h>
 
 #endif /* GUM_SCHEDULE_SEPARATOR_STORE_MULTI_DIM_H */

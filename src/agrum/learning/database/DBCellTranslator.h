@@ -308,6 +308,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/learning/database/DBCellTranslator.tcc>
+#include <agrum/learning/database/DBCellTranslator_tpl.h>
 
 #endif /* GUM_LEARNING_DB_CELL_TRANSLATOR_H */

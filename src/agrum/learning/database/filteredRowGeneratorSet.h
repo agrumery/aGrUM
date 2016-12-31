@@ -223,7 +223,7 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/learning/database/filteredRowGeneratorSet.tcc>
+#include <agrum/learning/database/filteredRowGeneratorSet_tpl.h>
 
 namespace gum {
 

@@ -420,7 +420,7 @@ namespace gum {
 }  // namespace gum
 
 // ============================================================================
-#include <agrum/multidim/multiDimFunctionGraphManager.tcc>
+#include <agrum/multidim/multiDimFunctionGraphManager_tpl.h>
 // ============================================================================
 #endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 // ============================================================================

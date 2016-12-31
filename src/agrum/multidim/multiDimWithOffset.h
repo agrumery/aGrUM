@@ -195,6 +195,6 @@ namespace gum {
   };
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimWithOffset.tcc>
+#include <agrum/multidim/multiDimWithOffset_tpl.h>
 
 #endif /* GUM_MULTI_DIM_WITH_OFFSET_H */

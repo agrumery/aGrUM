@@ -157,7 +157,7 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/FMDP/io/dat/fmdpDatReader.tcc>
+#include <agrum/FMDP/io/dat/fmdpDatReader_tpl.h>
 
 #endif  // FMDP_DAT_READER_H
 

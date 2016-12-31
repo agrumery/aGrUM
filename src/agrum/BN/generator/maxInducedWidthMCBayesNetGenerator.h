@@ -178,5 +178,5 @@ namespace gum {
 
 } /*namespace gum*/
 
-#include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator.tcc>
+#include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator_tpl.h>
 #endif  // MCBAYESNETGENERATOR

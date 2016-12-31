@@ -19,41 +19,30 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Template implementation for utilities for aGrUM.
+ * @brief Outlined implementation for utilities for aGrUM.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-// to help IDE parser
-#include <agrum/core/utils.h>
-#include <iostream>
-#include <string>
-#include <tuple>
-#include <type_traits>
+#include <agrum/core/utils_misc.h>
 
-namespace std {
-  template <typename T>
-  ostream& operator<<( ostream& stream, const vector<T>& val ) {
-    bool deja = false;
-    stream << "[";
+namespace gum {
 
-    for ( const auto& v : val ) {
-      if ( deja )
-        stream << " , ";
-      else
-        deja = true;
-      stream << v;
-    }
+  bool
+  Memcmp( const void* const _in, const void* const _out, unsigned long size ) {
+    unsigned char* in = (unsigned char*)_in;
+    unsigned char* out = (unsigned char*)_out;
 
-    stream << "]";
+    for ( unsigned long i = 0; i < size; ++i )
+      if ( *( in++ ) != *( out++ ) ) return false;
 
-    return stream;
+    return true;
   }
 
-  template <typename T1, typename T2>
-  ostream& operator<<( ostream& stream, const pair<T1, T2>& val ) {
-    stream << "(" << val.first << "," << val.second << ")";
-    return stream;
+  void __atexit( void ) {
+#ifndef NDEBUG
+    gum::__debug__::__atexit();
+#endif
   }
 
-} /* namespace std */
+} /* namespace gum */

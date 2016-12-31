@@ -646,6 +646,6 @@ extern template class gum::BinSearchTree<int>;
 
 
 // always include the template implementations
-#include <agrum/core/binSearchTree.tcc>
+#include <agrum/core/binSearchTree_tpl.h>
 
 #endif  // GUM_BIN_SEARCH_TREE_H

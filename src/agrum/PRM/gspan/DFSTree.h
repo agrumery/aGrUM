@@ -314,6 +314,6 @@ namespace gum {
   }   /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/gspan/DFSTree.tcc>
+#include <agrum/PRM/gspan/DFSTree_tpl.h>
 
 #endif /* GUM_DFS_TREE_H */

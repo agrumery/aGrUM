@@ -382,6 +382,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/PRMInterface.tcc>
+#include <agrum/PRM/elements/PRMInterface_tpl.h>
 
 #endif /* GUM_INTERFACE_H */

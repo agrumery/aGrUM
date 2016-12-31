@@ -141,6 +141,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimSparse.tcc>
+#include <agrum/multidim/multiDimSparse_tpl.h>
 
 #endif /* GUM_MULTI_DIM_SPARSE_H */

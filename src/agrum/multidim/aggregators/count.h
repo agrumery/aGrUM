@@ -97,6 +97,6 @@ namespace gum {
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/count.tcc>
+#include <agrum/multidim/aggregators/count_tpl.h>
 
 #endif  // GUM_COUNT_AGGREGATOR_H

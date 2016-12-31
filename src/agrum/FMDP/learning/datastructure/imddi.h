@@ -183,7 +183,7 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/FMDP/learning/datastructure/imddi.tcc>
+#include <agrum/FMDP/learning/datastructure/imddi_tpl.h>
 
 #endif  // GUM_IMDDI_H
 

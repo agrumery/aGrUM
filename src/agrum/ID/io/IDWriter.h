@@ -81,6 +81,6 @@ namespace gum {
   };
 } /* namespace gum */
 
-#include "IDWriter.tcc"
+#include "IDWriter_tpl.h"
 
 #endif  // GUM_ID_WRITER_H

@@ -103,6 +103,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/utils_prm.tcc>
+#include <agrum/PRM/utils_prm_tpl.h>
 
 #endif  // GUM_UTILS_PRM_H

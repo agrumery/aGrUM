@@ -166,6 +166,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/generator/clusteredLayerGenerator.tcc>
+#include <agrum/PRM/generator/clusteredLayerGenerator_tpl.h>
 
 #endif /* GUM_CLUSTERED_LAYER_GENERATOR_H */

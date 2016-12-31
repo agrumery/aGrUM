@@ -93,6 +93,6 @@ namespace gum {
 } /* namespace gum */
 
 /// include the template implementation
-#include <agrum/learning/aprioris/aprioriSmoothing.tcc>
+#include <agrum/learning/aprioris/aprioriSmoothing_tpl.h>
 
 #endif /* GUM_LEARNING_A_PRIORI_SMOOTHING_H */

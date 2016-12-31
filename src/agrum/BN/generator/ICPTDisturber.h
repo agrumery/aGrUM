@@ -96,5 +96,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/ICPTDisturber.tcc>
+#include <agrum/BN/generator/ICPTDisturber_tpl.h>
 #endif  // GUM_I_CPT_DISTURBER_H

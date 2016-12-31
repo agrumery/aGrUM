@@ -216,6 +216,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/inference/SVE.tcc>
+#include <agrum/PRM/inference/SVE_tpl.h>
 
 #endif /* GUM_SVE_H */

@@ -293,7 +293,7 @@ namespace gum {
 #include <agrum/graphs/arcGraphPart.inl>
 #endif  // GUM_NOINLINE
 
-#include <agrum/graphs/arcGraphPart.tcc>
+#include <agrum/graphs/arcGraphPart_tpl.h>
 
 #endif  // GUM_ARC_GRAPH_PART_H
 // kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

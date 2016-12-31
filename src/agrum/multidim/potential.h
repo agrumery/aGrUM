@@ -394,5 +394,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/potential.tcc>
+#include <agrum/multidim/potential_tpl.h>
 #endif /* GUM_POTENTIAL_H */

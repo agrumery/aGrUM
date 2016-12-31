@@ -92,6 +92,6 @@ namespace gum {
   }  // aggregator
 }  // gum
 
-#include <agrum/multidim/aggregators/max.tcc>
+#include <agrum/multidim/aggregators/max_tpl.h>
 
 #endif  // GUM_MAX_AGGREGATOR_H

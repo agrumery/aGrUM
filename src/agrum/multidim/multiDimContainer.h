@@ -405,6 +405,6 @@ namespace gum {
   };
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimContainer.tcc>
+#include <agrum/multidim/multiDimContainer_tpl.h>
 
 #endif /* GUM_MULTIDIM_CONTAINER_H */

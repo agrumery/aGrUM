@@ -200,6 +200,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the template implementation
-#include <agrum/multidim/operators/multiDimProjection.tcc>
+#include <agrum/multidim/operators/multiDimProjection_tpl.h>
 
 #endif /* GUM_MULTI_DIM_PROJECTION_H */

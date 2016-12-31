@@ -173,6 +173,6 @@ namespace gum {
   } /* namespace prm */
 }  // namespace gum
 
-#include <agrum/PRM/elements/PRMReferenceSlot.tcc>
+#include <agrum/PRM/elements/PRMReferenceSlot_tpl.h>
 
 #endif /* GUM_CLASS_ELEMENT_H */

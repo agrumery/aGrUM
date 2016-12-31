@@ -425,5 +425,5 @@ namespace gum {
 
 } /*namespace gum*/
 
-#include <agrum/BN/generator/MCBayesNetGenerator.tcc>
+#include <agrum/BN/generator/MCBayesNetGenerator_tpl.h>
 #endif  // MCBAYESNETGENERATOR

@@ -174,6 +174,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include the implementation of the templates
-#include <agrum/variables/discretizedVariable.tcc>
+#include <agrum/variables/discretizedVariable_tpl.h>
 
 #endif /* GUM_DISCRETIZED_VARIABLE_H */

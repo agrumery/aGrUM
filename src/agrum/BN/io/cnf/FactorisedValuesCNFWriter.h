@@ -101,5 +101,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/cnf/FactorisedValuesCNFWriter.tcc>
+#include <agrum/BN/io/cnf/FactorisedValuesCNFWriter_tpl.h>
 #endif  // GUM_NET_WRITER_H

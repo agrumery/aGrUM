@@ -124,8 +124,6 @@ def srcAgrum():
     yield i
   for i in recglob("src/agrum", "*.inl"):
     yield i
-  for i in recglob("src/agrum", "*.tcc"):
-    yield i
   for i in recglob("src/testunits", "*TestSuite.h"):
     yield i
 

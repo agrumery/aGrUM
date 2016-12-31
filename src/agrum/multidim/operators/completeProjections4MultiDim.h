@@ -498,7 +498,7 @@ namespace gum {
 
   // ==========================================================================
   // DO NOT FORGET TO REGISTER YOUR PROJECTION FUNCTIONS AT THE END OF FILE
-  // completeProjections4MultiDim.tcc
+  // completeProjections4MultiDim_tpl.h
   // ==========================================================================
 
   /**
@@ -560,6 +560,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the templatized implementations
-#include <agrum/multidim/operators/completeProjections4MultiDim.tcc>
+#include <agrum/multidim/operators/completeProjections4MultiDim_tpl.h>
 
 #endif /* GUM_COMPLETE_PROJECTIONS_4_MULTI_DIM_H */

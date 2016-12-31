@@ -113,5 +113,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/BIF/BIFWriter.tcc>
+#include <agrum/BN/io/BIF/BIFWriter_tpl.h>
 #endif  // GUM_BIF_WRITER_H

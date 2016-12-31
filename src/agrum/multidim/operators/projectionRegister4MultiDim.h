@@ -210,6 +210,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the implementations
-#include <agrum/multidim/operators/projectionRegister4MultiDim.tcc>
+#include <agrum/multidim/operators/projectionRegister4MultiDim_tpl.h>
 
 #endif /* GUM_PROJECTION_REGISTER_MULTI_DIM_H */

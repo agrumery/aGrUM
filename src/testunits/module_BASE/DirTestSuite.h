@@ -30,7 +30,7 @@
 #include <agrum/core/mvsc/dirent.h>
 #endif  // HAVE_DIRENT_H
 
-#include <agrum/core/utils.h>
+#include <agrum/core/utils_misc.h>
 namespace gum_tests {
 
   class DirTestSuite : public CxxTest::TestSuite {

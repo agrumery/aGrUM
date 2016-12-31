@@ -93,6 +93,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include "DSLWriter.tcc"
+#include "DSLWriter_tpl.h"
 
 #endif  // DSLWRITER_H

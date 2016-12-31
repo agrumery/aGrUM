@@ -1250,6 +1250,6 @@ extern template class gum::Set<std::string>;
 
 
 // always include the implementation of the templates
-#include <agrum/core/set.tcc>
+#include <agrum/core/set_tpl.h>
 
 #endif  // GUM_SET_H

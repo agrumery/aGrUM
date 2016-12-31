@@ -117,6 +117,6 @@ extern template class gum::learning::IndepTestChi2<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/indepTestChi2.tcc>
+#include <agrum/learning/scores_and_tests/indepTestChi2_tpl.h>
 
 #endif /* GUM_LEARNING_INDEP_TEST_CHI2_H */

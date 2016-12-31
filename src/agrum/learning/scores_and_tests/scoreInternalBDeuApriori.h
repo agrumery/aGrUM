@@ -115,6 +115,6 @@ extern template class gum::learning::ScoreInternalBDeuApriori<>;
 
 
 /// include the template implementation
-#include <agrum/learning/scores_and_tests/scoreInternalBDeuApriori.tcc>
+#include <agrum/learning/scores_and_tests/scoreInternalBDeuApriori_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_INTERNAL_BDEU_APRIORI_H */

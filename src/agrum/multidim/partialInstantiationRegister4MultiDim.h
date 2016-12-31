@@ -218,6 +218,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the implementations
-#include <agrum/multidim/partialInstantiationRegister4MultiDim.tcc>
+#include <agrum/multidim/partialInstantiationRegister4MultiDim_tpl.h>
 
 #endif /* GUM_PARTIAL_INSTANTIATION_REGISTER_MULTI_DIM_H */

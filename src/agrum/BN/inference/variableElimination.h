@@ -349,7 +349,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/BN/inference/variableElimination.tcc>
+#include <agrum/BN/inference/variableElimination_tpl.h>
 
 
 #endif /* GUM_VARIABLE_ELIMINATION_ */

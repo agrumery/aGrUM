@@ -633,7 +633,7 @@ namespace gum {
 
   // ==========================================================================
   // DO NOT FORGET TO REGISTER YOUR BINARY FUNCTIONS AT THE END OF FILE
-  // operators4MultiDim.tcc
+  // operators4MultiDim_tpl.h
   // ==========================================================================
 
   /**
@@ -696,6 +696,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include the templatized implementations
-#include <agrum/multidim/operators/operators4MultiDim.tcc>
+#include <agrum/multidim/operators/operators4MultiDim_tpl.h>
 
 #endif /* GUM_OPERATORS_4_MULTI_DIM_H */

@@ -234,6 +234,6 @@ namespace gum {
   }  // end of namespace
 }
 
-#include <agrum/CN/multipleInferenceEngine.tcc>
+#include <agrum/CN/multipleInferenceEngine_tpl.h>
 
 #endif

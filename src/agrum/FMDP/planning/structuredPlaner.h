@@ -381,7 +381,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/structuredPlaner.tcc>
+#include <agrum/FMDP/planning/structuredPlaner_tpl.h>
 
 #endif  // GUM_STRUCTURED_PLANNING_H
 

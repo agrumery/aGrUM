@@ -210,6 +210,6 @@ extern template class gum::learning::ScoreBIC<>;
 
 
 // always include the template implementation
-#include <agrum/learning/scores_and_tests/scoreBIC.tcc>
+#include <agrum/learning/scores_and_tests/scoreBIC_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_BIC_H */

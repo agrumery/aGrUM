@@ -95,6 +95,6 @@ namespace gum {
 #include <agrum/BN/inference/BayesBall.inl>
 #endif  // GUM_NO_INLINE
 
-#include <agrum/BN/inference/BayesBall.tcc>
+#include <agrum/BN/inference/BayesBall_tpl.h>
 
 #endif /* GUM_BAYESBALLS_H */

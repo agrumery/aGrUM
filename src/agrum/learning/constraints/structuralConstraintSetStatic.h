@@ -593,6 +593,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include the templated function definitions
-#include <agrum/learning/constraints/structuralConstraintSetStatic.tcc>
+#include <agrum/learning/constraints/structuralConstraintSetStatic_tpl.h>
 
 #endif /* GUM_LEARNING_STRUCTURAL_CONSTRAINT_SET_STATIC_H */

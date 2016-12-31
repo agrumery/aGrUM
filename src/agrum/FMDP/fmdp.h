@@ -296,6 +296,6 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/fmdp.tcc>
+#include <agrum/FMDP/fmdp_tpl.h>
 
 #endif  // GUM_FACTORED_MARKOV_DECISION_PROCESS_H

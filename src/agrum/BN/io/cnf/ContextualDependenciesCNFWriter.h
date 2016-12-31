@@ -102,5 +102,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter.tcc>
+#include <agrum/BN/io/cnf/ContextualDependenciesCNFWriter_tpl.h>
 #endif  // GUM_NET_WRITER_H

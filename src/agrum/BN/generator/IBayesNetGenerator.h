@@ -169,6 +169,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/generator/IBayesNetGenerator.tcc>
+#include <agrum/BN/generator/IBayesNetGenerator_tpl.h>
 
 #endif /* GUM_I_BAYES_NET_GENERATOR_H */

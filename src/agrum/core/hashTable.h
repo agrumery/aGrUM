@@ -2946,6 +2946,6 @@ extern template class gum::HashTable<std::string, int>;
 
 
 // always include the implementation of the templates
-#include <agrum/core/hashTable.tcc>
+#include <agrum/core/hashTable_tpl.h>
 
 #endif  // GUM_HASHTABLE_H

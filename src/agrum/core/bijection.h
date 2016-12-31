@@ -1938,6 +1938,6 @@ extern template class gum::Bijection<std::string, std::string>;
 
 
 // always include the template implementations
-#include <agrum/core/bijection.tcc>
+#include <agrum/core/bijection_tpl.h>
 
 #endif /* GUM_BIJECTION_H */

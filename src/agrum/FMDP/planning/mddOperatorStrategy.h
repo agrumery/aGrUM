@@ -184,7 +184,7 @@ namespace gum {
 } /* namespace gum */
 
 
-#include <agrum/FMDP/planning/mddOperatorStrategy.tcc>
+#include <agrum/FMDP/planning/mddOperatorStrategy_tpl.h>
 
 #endif  // GUM_MDD_OPERATOR_STRATEGY_H
 

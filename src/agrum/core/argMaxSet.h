@@ -203,6 +203,6 @@ namespace gum {
 
 }  // End of namespace gum
 
-#include <agrum/core/argMaxSet.tcc>
+#include <agrum/core/argMaxSet_tpl.h>
 
 #endif /* GUM_ARG_MAX_SET_H */

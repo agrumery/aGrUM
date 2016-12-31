@@ -242,6 +242,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/PRM.tcc>
+#include <agrum/PRM/PRM_tpl.h>
 
 #endif /* GUM_PRM_H */

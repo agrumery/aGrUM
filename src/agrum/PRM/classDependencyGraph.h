@@ -147,6 +147,6 @@ namespace gum {
   } /* namespace prm */
 } /* namespace gum */
 
-#include <agrum/PRM/classDependencyGraph.tcc>
+#include <agrum/PRM/classDependencyGraph_tpl.h>
 
 #endif /* GUM_ClassDependencyGraph_H */

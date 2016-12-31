@@ -113,5 +113,5 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/BN/io/cnf/CNFWriter.tcc>
+#include <agrum/BN/io/cnf/CNFWriter_tpl.h>
 #endif  // GUM_NET_WRITER_H

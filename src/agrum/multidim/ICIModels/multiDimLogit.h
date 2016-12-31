@@ -131,6 +131,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/ICIModels/multiDimLogit.tcc>
+#include <agrum/multidim/ICIModels/multiDimLogit_tpl.h>
 
 #endif /* GUM_MULTI_DIM_LOGIT_H */

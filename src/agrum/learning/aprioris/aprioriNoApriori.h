@@ -96,6 +96,6 @@ namespace gum {
 } /* namespace gum */
 
 /// include the template implementation
-#include <agrum/learning/aprioris/aprioriNoApriori.tcc>
+#include <agrum/learning/aprioris/aprioriNoApriori_tpl.h>
 
 #endif /* GUM_LEARNING_A_PRIORI_NO_APRIORI_H */

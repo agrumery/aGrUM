@@ -353,6 +353,6 @@ namespace gum {
 
 } /* namespace gum */
 
-#include <agrum/multidim/multiDimBucket.tcc>
+#include <agrum/multidim/multiDimBucket_tpl.h>
 
 #endif /* GUM_MULTIDIM_BUCKET_H */

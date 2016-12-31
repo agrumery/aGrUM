@@ -119,6 +119,6 @@ extern template class gum::learning::ScoreInternalK2Apriori<>;
 
 
 /// include the template implementation
-#include <agrum/learning/scores_and_tests/scoreInternalK2Apriori.tcc>
+#include <agrum/learning/scores_and_tests/scoreInternalK2Apriori_tpl.h>
 
 #endif /* GUM_LEARNING_SCORE_INTERNAL_K2_APRIORI_H */

@@ -144,6 +144,6 @@ namespace gum {
 
 }  // namespace gum
 
-#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.tcc>
+#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator_tpl.h>
 
 #endif  // GUM_MULTI_DIM_FUNCTION_GRAPH_OPERATOR_H

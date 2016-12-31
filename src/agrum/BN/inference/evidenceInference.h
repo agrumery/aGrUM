@@ -79,7 +79,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/evidenceInference.tcc>
+#include <agrum/BN/inference/evidenceInference_tpl.h>
 
 
 #endif  // GUM_BAYES_NET_EVIDENCE_INFERENCE_H
