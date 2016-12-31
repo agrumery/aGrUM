@@ -11178,29 +11178,6 @@ class LazyPropagation_double(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, LazyPropagation_double, name)
     __repr__ = _swig_repr
 
-    def evidenceImpact(*args):
-        """
-        evidenceImpact(BayesNet_double bn, gum::NodeId target, Vector_int evs) -> Potential_double
-
-        Parameters
-        ----------
-        bn: gum::BayesNet< double > const &
-        target: gum::NodeId
-        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
-
-        evidenceImpact(BayesNet_double bn, std::string target, Vector_string evs) -> Potential_double
-
-        Parameters
-        ----------
-        bn: gum::BayesNet< double > const &
-        target: std::string
-        evs: std::vector< std::string,std::allocator< std::string > > const
-
-        """
-        return _pyAgrum.LazyPropagation_double_evidenceImpact(*args)
-
-    evidenceImpact = staticmethod(evidenceImpact)
-
     def __init__(self, *args):
         """
         __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4, bool use_binary_join_tree=True) -> LazyPropagation_double
@@ -11801,6 +11778,26 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_H(self, *args)
 
 
+    def evidenceImpact(self, *args):
+        """
+        evidenceImpact(LazyPropagation_double self, gum::NodeId target, Vector_int evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: gum::NodeId
+        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+
+        evidenceImpact(LazyPropagation_double self, std::string target, Vector_string evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: std::string
+        evs: std::vector< std::string,std::allocator< std::string > > const
+
+        """
+        return _pyAgrum.LazyPropagation_double_evidenceImpact(self, *args)
+
+
     def eraseAllJointTargets(self):
         """
         eraseAllJointTargets(LazyPropagation_double self)
@@ -11864,27 +11861,6 @@ class LazyPropagation_double(_object):
 
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
-
-def LazyPropagation_double_evidenceImpact(*args):
-    """
-    evidenceImpact(BayesNet_double bn, gum::NodeId target, Vector_int evs) -> Potential_double
-
-    Parameters
-    ----------
-    bn: gum::BayesNet< double > const &
-    target: gum::NodeId
-    evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
-
-    LazyPropagation_double_evidenceImpact(BayesNet_double bn, std::string target, Vector_string evs) -> Potential_double
-
-    Parameters
-    ----------
-    bn: gum::BayesNet< double > const &
-    target: std::string
-    evs: std::vector< std::string,std::allocator< std::string > > const
-
-    """
-    return _pyAgrum.LazyPropagation_double_evidenceImpact(*args)
 
 class ShaferShenoyInference_double(_object):
     """Proxy of C++ gum::ShaferShenoyInference<(double)> class."""
@@ -12472,6 +12448,26 @@ class ShaferShenoyInference_double(_object):
 
         """
         return _pyAgrum.ShaferShenoyInference_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args):
+        """
+        evidenceImpact(ShaferShenoyInference_double self, gum::NodeId target, Vector_int evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: gum::NodeId
+        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+
+        evidenceImpact(ShaferShenoyInference_double self, std::string target, Vector_string evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: std::string
+        evs: std::vector< std::string,std::allocator< std::string > > const
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_evidenceImpact(self, *args)
 
 
     def eraseAllJointTargets(self):
@@ -13112,6 +13108,26 @@ class VariableElimination_double(_object):
 
         """
         return _pyAgrum.VariableElimination_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args):
+        """
+        evidenceImpact(VariableElimination_double self, gum::NodeId target, Vector_int evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: gum::NodeId
+        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+
+        evidenceImpact(VariableElimination_double self, std::string target, Vector_string evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: std::string
+        evs: std::vector< std::string,std::allocator< std::string > > const
+
+        """
+        return _pyAgrum.VariableElimination_double_evidenceImpact(self, *args)
 
 VariableElimination_double_swigregister = _pyAgrum.VariableElimination_double_swigregister
 VariableElimination_double_swigregister(VariableElimination_double)
@@ -13783,6 +13799,26 @@ class GibbsInference_double(_object):
 
         """
         return _pyAgrum.GibbsInference_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args):
+        """
+        evidenceImpact(GibbsInference_double self, gum::NodeId target, Vector_int evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: gum::NodeId
+        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+
+        evidenceImpact(GibbsInference_double self, std::string target, Vector_string evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: std::string
+        evs: std::vector< std::string,std::allocator< std::string > > const
+
+        """
+        return _pyAgrum.GibbsInference_double_evidenceImpact(self, *args)
 
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)
