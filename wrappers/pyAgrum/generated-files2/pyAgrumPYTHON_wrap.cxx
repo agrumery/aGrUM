@@ -4609,7 +4609,7 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
 #include <typeinfo>
 
 #include <agrum/core/types.h>
-#include <agrum/core/utils.h>
+#include <agrum/core/utils_misc.h>
 #include <agrum/core/hashFunc.h>
 #include <agrum/core/bijection.h>
 #include <agrum/core/set.h>
