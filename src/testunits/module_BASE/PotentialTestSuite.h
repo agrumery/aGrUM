@@ -742,29 +742,29 @@ namespace gum_tests {
       tmp -= p;
       TS_ASSERT_EQUALS( tmp, res );
 
-      res.fillWith( {1 / 2.0,
-                     2 / 2.0,
-                     3 / 2.0,
-                     4 / 2.0,
-                     5 / 2.0,
-                     6 / 2.0,
-                     7 / 2.0,
-                     8 / 2.0,
-                     9 / 2.0} );
+      res.fillWith( {1 / 2.0f,
+                     2 / 2.0f,
+                     3 / 2.0f,
+                     4 / 2.0f,
+                     5 / 2.0f,
+                     6 / 2.0f,
+                     7 / 2.0f,
+                     8 / 2.0f,
+                     9 / 2.0f} );
       TS_ASSERT_EQUALS( p / q, res );
       tmp = p;
       tmp /= q;
       TS_ASSERT_EQUALS( tmp, res );
 
-      res.fillWith( {2.0 / 1,
-                     2.0 / 2,
-                     2.0 / 3,
-                     2.0 / 4,
-                     2.0 / 5,
-                     2.0 / 6,
-                     2.0 / 7,
-                     2.0 / 8,
-                     2.0 / 9} );
+      res.fillWith( {2.0f / 1,
+                     2.0f / 2,
+                     2.0f / 3,
+                     2.0f / 4,
+                     2.0f / 5,
+                     2.0f / 6,
+                     2.0f / 7,
+                     2.0f / 8,
+                     2.0f / 9} );
       TS_ASSERT_EQUALS( q / p, res );
       tmp = q;
       tmp /= p;
@@ -813,13 +813,13 @@ namespace gum_tests {
       tmp -= p;
       TS_ASSERT_EQUALS( tmp, res );
 
-      res.fillWith( {3 / 2.0} );
+      res.fillWith( {3 / 2.0f} );
       TS_ASSERT_EQUALS( p / q, res );
       tmp = p;
       tmp /= q;
       TS_ASSERT_EQUALS( tmp, res );
 
-      res.fillWith( {2.0 / 3} );
+      res.fillWith( {2.0f / 3} );
       TS_ASSERT_EQUALS( q / p, res );
       tmp = q;
       tmp /= p;
