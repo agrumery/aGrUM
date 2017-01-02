@@ -335,11 +335,9 @@ namespace gum {
       NodeSet&       alreadyVisitedDn ) const {
     if ( alreadyVisitedUp.contains( node ) ) return;
     alreadyVisitedUp << node;
-    GUM_TRACE("Visiting Up "<<node);
 
     if ( soids.contains( node ) ) {
       minimal << node;
-      GUM_TRACE("Adding "<<node);
     } else {
       for ( auto fath : _dag.parents( node ) )
         __minimalCondSetVisitUp(
@@ -360,11 +358,9 @@ namespace gum {
       NodeSet&       alreadyVisitedDn ) const {
     if ( alreadyVisitedDn.contains( node ) ) return;
     alreadyVisitedDn << node;
-    GUM_TRACE("Visiting Dn "<<node);
 
     if ( soids.contains( node ) ) {
       minimal << node;
-      GUM_TRACE("Adding "<<node);
       for ( auto fath : _dag.parents( node ) )
         __minimalCondSetVisitUp(
             fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn );
@@ -379,8 +375,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   NodeSet IBayesNet<GUM_SCALAR>::minimalCondSet( NodeId         target,
                                                  const NodeSet& soids ) const {
-
-    GUM_CHECKPOINT;
     if ( soids.contains( target ) ) return NodeSet( {target} );
 
     NodeSet res;
@@ -389,7 +383,6 @@ namespace gum {
     alreadyVisitedDn << target;
     alreadyVisitedUp << target;
 
-    GUM_CHECKPOINT;
     for ( auto fath : _dag.parents( target ) )
       __minimalCondSetVisitUp(
           fath, soids, res, alreadyVisitedUp, alreadyVisitedDn );

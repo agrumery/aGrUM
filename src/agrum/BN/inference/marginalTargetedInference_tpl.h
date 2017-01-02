@@ -22,7 +22,7 @@
  * @brief Implementation of the generic class for the computation of
  * (possibly incrementally) marginal posteriors
  */
-
+#include <iterator>
 
 namespace gum {
 

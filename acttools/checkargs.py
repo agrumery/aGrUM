@@ -46,7 +46,7 @@ def getCurrent():
 
   for key in cfg.default:  # .iterkeys():
     current[key] = cfg.default[key]
-    if not key in cfg.non_persistent:
+    if key not in cfg.non_persistent:
       if key in shlv:
         current[key] = shlv[key]
 
@@ -56,7 +56,7 @@ def getCurrent():
 def setCurrent(current):
   shlv = shelve.open(cfg.configFile, writeback=True)
   for key in current.keys():
-    if not key in cfg.non_persistent:
+    if key not in cfg.non_persistent:
       shlv[key] = current[key]
 
 
@@ -104,9 +104,8 @@ def checkCurrent(current, options, args):
   checkConsistency(current)
 
   if options.noSaveParams:
-      print("No params saved")
+      pass
   else:
-      print("Params saved")
       setCurrent(current)
   showInvocation(current)
 
