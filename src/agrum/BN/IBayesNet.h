@@ -220,10 +220,16 @@ namespace gum {
     NodeSet minimalCondSet( NodeId target, const NodeSet& soids ) const;
 
     private:
-    void __minimalCondSetVisit( NodeId         node,
-                                const NodeSet& soids,
-                                NodeSet&       minimal,
-                                NodeSet&       alreadyVisited ) const;
+    void __minimalCondSetVisitUp( NodeId         node,
+                                  const NodeSet& soids,
+                                  NodeSet&       minimal,
+                                  NodeSet&       alreadyVisitedUp,
+                                  NodeSet&       alreadyVisitedDn ) const;
+    void __minimalCondSetVisitDn( NodeId         node,
+                                  const NodeSet& soids,
+                                  NodeSet&       minimal,
+                                  NodeSet&       alreadyVisitedUp,
+                                  NodeSet&       alreadyVisitedDn ) const;
   };
 
 

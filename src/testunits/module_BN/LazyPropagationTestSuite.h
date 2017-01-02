@@ -113,7 +113,7 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    void testCreationAndInference() {
+    void /*test*/CreationAndInference() {
       fill(*bn);
       // Testing the inference
       gum::LazyPropagation<float> *inf = 0;
@@ -125,7 +125,7 @@ namespace gum_tests {
       }
     }
 
-    void testMarginal() {
+    void /*test*/Marginal() {
       fill(*bn);
       gum::LazyPropagation<float> inf(bn);
       gum::ShaferShenoyInference<float> inf2(bn);
@@ -147,7 +147,7 @@ namespace gum_tests {
       TS_ASSERT(equalPotentials(inf.posterior(i5), inf2.posterior(i5)));
     }
 
-    void testMarginalWithEvidence() {
+    void /*test*/MarginalWithEvidence() {
       fill(*bn);
       gum::List<const gum::Potential<float> *> e_list;
       e_list.insert(e_i1);
@@ -206,7 +206,7 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    void testJoint() {
+    void /*test*/Joint() {
       fill(*bn);
       // Testing the inference
       gum::LazyPropagation<float> inf(bn);
@@ -219,7 +219,7 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    void testJoint2() {
+    void /*test*/Joint2() {
       fill(*bn);
       // Testing the inference
       gum::LazyPropagation<float> inf(bn);
@@ -240,7 +240,7 @@ namespace gum_tests {
     }
 
     // testing information methods
-    void testInformationMethods() {
+    void /*test*/InformationMethods() {
       fill(*bn);
 
       gum::LazyPropagation<float> inf(bn);
@@ -270,7 +270,7 @@ namespace gum_tests {
       //@TODO : test computations and not only good behaviour
     }
 
-    void testSmartManagementOfJointTarget() {
+    void /*test*/SmartManagementOfJointTarget() {
       fill(*bn);
 
       gum::LazyPropagation<float> inf(bn);
@@ -287,7 +287,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(inf.nbrJointTargets(), (gum::Size) 2);
     }
 
-    void testEvidenceProbability() {
+    void /*test*/EvidenceProbability() {
       fill(*bn);
       gum::LazyPropagation<float> inf(bn);
       inf.setRelevantPotentialsFinderType(
@@ -304,7 +304,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(proba, proba2, 1e-5);
     }
 
-    void testEvidenceProbability2() {
+    void /*test*/EvidenceProbability2() {
       fill(*bn);
       gum::LazyPropagation<float> inf(bn);
       inf.makeInference();
@@ -319,7 +319,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(proba, proba2, 1e-5);
     }
 
-    void testEvidenceProbabilityAsia() {
+    void /*test*/EvidenceProbabilityAsia() {
       std::string file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader(&bn, file);
@@ -345,7 +345,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA(proba, proba2, 1e-5);
     }
 
-    void testAsia() {
+    void /*test*/Asia() {
       std::string file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader(&bn, file);
@@ -382,7 +382,7 @@ namespace gum_tests {
       }
     }
 
-    void testAlarm() {
+    void /*test*/Alarm() {
       std::string file = GET_RESSOURCES_PATH("alarm.bif");
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader(&bn, file);
@@ -467,7 +467,7 @@ namespace gum_tests {
         delete pot;
     }
 
-    void testAsia2() {
+    void /*test*/Asia2() {
       std::string file = GET_RESSOURCES_PATH("asia3.bif");
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader(&bn, file);
@@ -524,7 +524,7 @@ namespace gum_tests {
       }
     }
 
-    void testAsia3() {
+    void /*test*/Asia3() {
       std::string file = GET_RESSOURCES_PATH("asia3.bif");
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader(&bn, file);
@@ -583,7 +583,7 @@ namespace gum_tests {
       }
     }
 
-    void testAsia4() {
+    void /*test*/Asia4() {
       std::string file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet<float> bn;
       gum::BIFReader<float> reader(&bn, file);
@@ -656,7 +656,7 @@ namespace gum_tests {
       }
     }
 
-    void testChgEvidence() {
+    void /*test*/ChgEvidence() {
       std::string file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader(&bn, file);
@@ -691,7 +691,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p_1, ie.posterior(0));
     }
 
-    void testChgEvidence2() {
+    void /*test*/ChgEvidence2() {
       std::string file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader(&bn, file);
@@ -727,7 +727,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p_1, ie.posterior(0));
     }
 
-    void testStaticEvidenceImpact() {
+    void /*test*/StaticEvidenceImpact() {
       std::string file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader(&bn, file);
@@ -765,7 +765,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p_1, res.extract(i));
     }
 
-    void testStaticEvidenceImpactWithNames() {
+    void /*test*/EvidenceImpactWithNames() {
       std::string file = GET_RESSOURCES_PATH("asia.bif");
       gum::BayesNet<double> bn;
       gum::BIFReader<double> reader(&bn, file);
@@ -805,6 +805,34 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(p_0, res.extract(i));
       i.inc();
       TS_ASSERT_EQUALS(p_1, res.extract(i));
+    }
+
+    void testEvidenceImpact() {
+      /*
+      F  A
+      \ / \
+       B   |
+       |   E
+       C   |
+      / \ /
+      H  D
+      */
+      gum::BayesNet<double> bn;
+      for(const auto& item : {"A","B","C","D","E","F","H"})
+        bn.add(item,2);
+      bn.addArc("A","B");
+      bn.addArc("A","E");
+      bn.addArc("B","C");
+      bn.addArc("C","D");
+      bn.addArc("C","H");
+      bn.addArc("E","D");
+      bn.addArc("F","B");
+      bn.generateCPTs();
+
+      gum::LazyPropagation<double> ie(&bn);
+      gum::Potential<double> res;
+      TS_GUM_ASSERT_THROWS_NOTHING(res = ie.evidenceImpact("E", {"A","B","C","D","F"}));
+      TS_ASSERT_EQUALS(res.nbrDim(), gum::Size(3));  // MarkovBlanket(E)=(A,D,C)
     }
 
 

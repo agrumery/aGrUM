@@ -327,38 +327,75 @@ namespace gum {
 
   // visit the nodes and add some of node from soids in minimal
   template <typename GUM_SCALAR>
-  void
-  IBayesNet<GUM_SCALAR>::__minimalCondSetVisit( NodeId         node,
-                                                const NodeSet& soids,
-                                                NodeSet&       minimal,
-                                                NodeSet& alreadyVisited ) const {
-    if ( alreadyVisited.contains( node ) ) return;
-    alreadyVisited << node;
+  void IBayesNet<GUM_SCALAR>::__minimalCondSetVisitUp(
+      NodeId         node,
+      const NodeSet& soids,
+      NodeSet&       minimal,
+      NodeSet&       alreadyVisitedUp,
+      NodeSet&       alreadyVisitedDn ) const {
+    if ( alreadyVisitedUp.contains( node ) ) return;
+    alreadyVisitedUp << node;
+    GUM_TRACE("Visiting Up "<<node);
+
     if ( soids.contains( node ) ) {
       minimal << node;
-      for ( auto fath : _dag.parents( node ) )
-        __minimalCondSetVisit( fath, soids, minimal, alreadyVisited );
+      GUM_TRACE("Adding "<<node);
     } else {
+      for ( auto fath : _dag.parents( node ) )
+        __minimalCondSetVisitUp(
+            fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn );
       for ( auto chil : _dag.children( node ) )
-        __minimalCondSetVisit( chil, soids, minimal, alreadyVisited );
+        __minimalCondSetVisitDn(
+            chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn );
     }
   }
+
+  // visit the nodes and add some of node from soids in minimal
+  template <typename GUM_SCALAR>
+  void IBayesNet<GUM_SCALAR>::__minimalCondSetVisitDn(
+      NodeId         node,
+      const NodeSet& soids,
+      NodeSet&       minimal,
+      NodeSet&       alreadyVisitedUp,
+      NodeSet&       alreadyVisitedDn ) const {
+    if ( alreadyVisitedDn.contains( node ) ) return;
+    alreadyVisitedDn << node;
+    GUM_TRACE("Visiting Dn "<<node);
+
+    if ( soids.contains( node ) ) {
+      minimal << node;
+      GUM_TRACE("Adding "<<node);
+      for ( auto fath : _dag.parents( node ) )
+        __minimalCondSetVisitUp(
+            fath, soids, minimal, alreadyVisitedUp, alreadyVisitedDn );
+    } else {
+      for ( auto chil : _dag.children( node ) )
+        __minimalCondSetVisitDn(
+            chil, soids, minimal, alreadyVisitedUp, alreadyVisitedDn );
+    }
+  }
+
 
   template <typename GUM_SCALAR>
   NodeSet IBayesNet<GUM_SCALAR>::minimalCondSet( NodeId         target,
                                                  const NodeSet& soids ) const {
 
+    GUM_CHECKPOINT;
     if ( soids.contains( target ) ) return NodeSet( {target} );
 
     NodeSet res;
-    NodeSet alreadyVisited;
-    for ( auto pere : _dag.parents( target ) ) {
-      __minimalCondSetVisit( pere, soids, res, alreadyVisited );
-    }
+    NodeSet alreadyVisitedUp;
+    NodeSet alreadyVisitedDn;
+    alreadyVisitedDn << target;
+    alreadyVisitedUp << target;
 
-    for ( auto fils : _dag.children( target ) ) {
-      __minimalCondSetVisit( fils, soids, res, alreadyVisited );
-    }
+    GUM_CHECKPOINT;
+    for ( auto fath : _dag.parents( target ) )
+      __minimalCondSetVisitUp(
+          fath, soids, res, alreadyVisitedUp, alreadyVisitedDn );
+    for ( auto chil : _dag.children( target ) )
+      __minimalCondSetVisitDn(
+          chil, soids, res, alreadyVisitedUp, alreadyVisitedDn );
     return res;
   }
 
