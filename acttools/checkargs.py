@@ -39,10 +39,10 @@ def parseCommandLine(current):
 def getCurrent():
   current = {}
   try:
-    shlv = shelve.open(cfg.configFile, writeback=True)
+    shlv = shelve.open(cfg.configFile, writeback=False)
   except:
     remove(cfg.configFile)
-    shlv = shelve.open(cfg.configFile, writeback=True)
+    shlv = shelve.open(cfg.configFile, writeback=False)
 
   for key in cfg.default:  # .iterkeys():
     current[key] = cfg.default[key]
@@ -103,7 +103,11 @@ def checkCurrent(current, options, args):
 
   checkConsistency(current)
 
-  setCurrent(current)
+  if options.noSaveParams:
+      print("No params saved")
+  else:
+      print("Params saved")
+      setCurrent(current)
   showInvocation(current)
 
 
@@ -139,7 +143,7 @@ def checkConsistency(current):
     has_notif = True
     notif("Options [stats] and [oneByOne] are mutually exclusive")
 
-  # check -t and -m  
+  # check -t and -m
   check_modules(current)
   checkAndWriteTests(current)
 
@@ -153,4 +157,3 @@ def checkConsistency(current):
 
   if has_notif:
     print("")
-

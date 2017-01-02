@@ -76,6 +76,7 @@ def initParams():
   cfg.default['withSQL'] = True
   cfg.default['mvsc'] = False
   cfg.default['build'] = "all"
+  cfg.default['noSaveParams'] = False
 
   cfg.actions = set("lib test install doc clean show uninstall package autoindent".split())
   cfg.modes = set("debug release".split())
@@ -83,7 +84,7 @@ def initParams():
   cfg.moduleLabels = parseModulesTxt()
   cfg.modules = set(cfg.moduleLabels)
 
-  cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage"]
+  cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage","noSaveParams"]
   cfg.mains = ["action", "targets", "mode"]
   cfg.specialActions = ["show", "clean", "autoindent"]
   cfg.swapOptions = {
@@ -195,6 +196,11 @@ def configureOptions(current):
                         choices=["all", "no-cmake", "no-make"],
                         dest="build",
                         default="all")
+  cfg.parser.add_option("", "--no-saveParams",
+                        help="act will not save as default the parameters of this invocation.",
+                        action="store_true",
+                        dest="noSaveParams",
+                        default=False)
 
 
 def configureColors(no_fun=False):
