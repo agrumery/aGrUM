@@ -23,8 +23,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/core/approximations/approximationSchemeListener.h>
@@ -153,10 +153,8 @@ namespace gum_tests {
           try {
           fill( *bn );
           gum::LoopyBeliefPropagation<float> inf( bn );
-          /*
           inf.setVerbosity( false );
           inf.makeInference();
-          */
           } catch ( gum::Exception& e ) {
             GUM_SHOWERROR(e);
 
@@ -274,7 +272,6 @@ namespace gum_tests {
         }
 
         void testLBPInfListener() {
-          /*
           fill( *bn );
           gum::List<const gum::Potential<float>*> e_list;
           e_list.insert( e_i1 );
@@ -294,7 +291,6 @@ namespace gum_tests {
           TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize() + inf.burnIn(),
                             inf.nbrIterations() );
           TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
-           */
         }
 
     private:

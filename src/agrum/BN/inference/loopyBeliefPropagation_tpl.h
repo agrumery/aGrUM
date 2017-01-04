@@ -72,11 +72,11 @@ namespace gum {
       Potential<GUM_SCALAR> p;
       p.add( this->BN().variable( tail ) );
       p.fill( static_cast<GUM_SCALAR>( 1 ) );
+      p.normalize();
 
       for ( const auto& head : this->BN().dag().children( tail ) ) {
         __messages.insert( Arc( head, tail ), p );
         __messages.insert( Arc( tail, head ), p );
-        __messages[Arc( tail, head )].normalize();
       }
     }
   }
@@ -84,14 +84,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   void LoopyBeliefPropagation<GUM_SCALAR>::_updateOutdatedBNStructure() {
     __init_messages();
-    GUM_CHECKPOINT;
-  }
-
-  /// Returns the probability of the variable.
-  template <typename GUM_SCALAR>
-  INLINE const Potential<GUM_SCALAR>&
-  LoopyBeliefPropagation<GUM_SCALAR>::_posterior( NodeId id ) {
-    // return __sampling_nbr[id];
   }
 
 
@@ -124,7 +116,7 @@ namespace gum {
   LoopyBeliefPropagation<GUM_SCALAR>::__computeProdLambda( NodeId node ) {
     Potential<GUM_SCALAR> lamX;
     if ( this->hasEvidence( node ) ) {
-      lamX = *(this->evidence()[node]);
+      lamX = *( this->evidence()[node] );
     } else {
       lamX.add( this->BN().variable( node ) );
       lamX.fill( 1 );
@@ -141,10 +133,11 @@ namespace gum {
                                                            NodeId except ) {
     Potential<GUM_SCALAR> lamX;
     if ( this->hasEvidence( node ) ) {
-      lamX = this->evidence()[node];
+      lamX = *this->evidence()[node];
     } else {
       lamX.add( this->BN().variable( node ) );
       lamX.fill( 1 );
+      lamX.normalize();
     }
     for ( const auto& child : this->BN().dag().children( node ) ) {
       if ( child != except ) {
@@ -167,16 +160,47 @@ namespace gum {
 
     GUM_SCALAR KL = 0;
 
+    // update lambda_par (for arc par->x)
     for ( const auto& par : this->BN().dag().parents( nodeX ) ) {
       auto newLambda = ( __computeProdPi( nodeX, par )
                              .margSumIn( {&varX, &this->BN().variable( par )} ) *
                          lamX )
-                           .margSumOut( {&varX} );
+                           .margSumOut( {&varX} )
+                           .normalize();  // normalizing lambda
+      GUM_SCALAR ekl = 0;
+      try {
+        ekl = __messages[Arc( nodeX, par )].KL( newLambda );
+      } catch ( FatalError ) {  // 0 misplaced
+        GUM_ERROR( FatalError, "Not compatible lambda during computation" );
+      }
+      if ( ekl > KL ) KL = ekl;
+      __messages.set( Arc( nodeX, par ), newLambda );
     }
+
+    // update pi_child (for arc x->child)
+    for ( const auto& chi : this->BN().dag().children( nodeX ) ) {
+      auto newPi = ( piX * __computeProdLambda( nodeX, chi ) ).normalize();
+
+      GUM_SCALAR ekl = 0;
+      try {
+        ekl = __messages[Arc( nodeX, chi )].KL( newPi );
+      } catch ( FatalError ) {  // 0 misplaced
+        GUM_ERROR( FatalError, "Not compatible pi during computation" );
+      }
+      if ( ekl > KL ) KL = ekl;
+      __messages.set( Arc( nodeX, chi ), newPi );
+    }
+
+    return KL;
   }
 
   template <typename GUM_SCALAR>
-  INLINE void LoopyBeliefPropagation<GUM_SCALAR>::__initStats() {}
+  INLINE void LoopyBeliefPropagation<GUM_SCALAR>::__initStats() {
+    __init_messages();
+    for ( const auto& node : this->BN().topologicalOrder() ) {
+      __updateNodeMessage( node );
+    }
+  }
 
 
   /// Returns the probability of the variables.
@@ -185,17 +209,35 @@ namespace gum {
     __initStats();
     initApproximationScheme();
 
-    double error = 0.0;
+    std::vector<NodeId> suffleIds( this->BN().size() );
+    for ( const auto& node : this->BN().nodes() )
+      suffleIds.push_back( node );
 
+    auto engine = std::default_random_engine{};
+
+    GUM_SCALAR error = 0.0;
     do {
-      //        nextParticle();
+      std::shuffle( std::begin( suffleIds ), std::end( suffleIds ), engine );
+
       updateApproximationScheme();
-      __updateNodeMessage( 0 );
+
+      for ( const auto& node : suffleIds ) {
+        GUM_SCALAR e = __updateNodeMessage( node );
+        if ( error > e ) error = e;
+      }
     } while ( continueApproximationScheme( error ) );
-    /*
-          for ( auto& elt : __sampling_nbr ) {
-            elt.second.normalize();
-          }*/
+  }
+
+
+  /// Returns the probability of the variable.
+  template <typename GUM_SCALAR>
+  INLINE const Potential<GUM_SCALAR>&
+  LoopyBeliefPropagation<GUM_SCALAR>::_posterior( NodeId id ) {
+    static auto p = __computeProdPi( id ).margSumIn( {&this->BN().variable( id )} );
+    p *= __computeProdLambda( id );
+    p.normalize();
+
+    return p;
   }
 } /* namespace gum */
 
