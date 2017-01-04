@@ -24,10 +24,9 @@
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <agrum/BN/inference/ShaferShenoyInference.h>
 
 #include <agrum/BN/inference/BayesBall.h>
-#include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/dSeparation.h>
 #include <agrum/graphs/binaryJoinTreeConverterDefault.h>
@@ -37,8 +36,6 @@
 
 
 namespace gum {
-
-
   // default constructor
   template <typename GUM_SCALAR>
   INLINE ShaferShenoyInference<GUM_SCALAR>::ShaferShenoyInference(
@@ -164,7 +161,7 @@ namespace gum {
       delete pot.second;
 
     // indicate that new messages need be computed
-    if ( this->isReady4Inference() || this->isDone() )
+    if ( this->isInferenceReady() || this->isDone() )
       this->_setOutdatedBNPotentialsState();
   }
 
@@ -403,7 +400,7 @@ namespace gum {
     // to get the new junction tree
 
     // 1/ create an undirected graph containing only the nodes and no edge
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     __graph.clear();
     for ( auto node : bn.dag() )
       __graph.addNode( node );
@@ -793,7 +790,7 @@ namespace gum {
       if ( __evidence_changes.exists( node ) ) hard_nodes_changed.insert( node );
 
     NodeSet     nodes_with_projected_CPTs_changed;
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     for ( auto pot_iter = __hard_ev_projected_CPTs.beginSafe();
           pot_iter != __hard_ev_projected_CPTs.endSafe();
           ++pot_iter ) {
@@ -997,7 +994,7 @@ namespace gum {
 
     // put in a vector these cliques and their size
     std::vector<std::pair<NodeId, Size>> possible_roots( clique_targets.size() );
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     std::size_t i = 0;
     for ( const auto clique_id : clique_targets ) {
       const auto& clique = __JT->clique( clique_id );
@@ -1065,7 +1062,7 @@ namespace gum {
     Set<const DiscreteVariable*> the_del_vars = del_vars;
     for ( auto iter = the_del_vars.beginSafe(); iter != the_del_vars.endSafe();
           ++iter ) {
-      NodeId id = this->BayesNet().nodeId( **iter );
+      NodeId id = this->BN().nodeId( **iter );
       if ( this->hardEvidenceNodes().exists( id ) ||
            this->softEvidenceNodes().exists( id ) ) {
         the_del_vars.erase( iter );
@@ -1194,7 +1191,7 @@ namespace gum {
     const NodeSet&               separator = __JT->separator( from_id, to_id );
     Set<const DiscreteVariable*> del_vars( from_clique.size() );
     Set<const DiscreteVariable*> kept_vars( separator.size() );
-    const auto&                  bn = this->BayesNet();
+    const auto&                  bn = this->BN();
 
     for ( const auto node : from_clique ) {
       if ( !separator.contains( node ) ) {
@@ -1294,7 +1291,7 @@ namespace gum {
   Potential<GUM_SCALAR>*
   ShaferShenoyInference<GUM_SCALAR>::_unnormalizedJointPosterior(
       const NodeId id ) {
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
 
     // hard evidence do not belong to the join tree
     // # TODO: check for sets of inconsistent hard evidence
@@ -1485,7 +1482,7 @@ namespace gum {
     const NodeSet&               nodes = __JT->clique( clique_of_set );
     Set<const DiscreteVariable*> del_vars( nodes.size() );
     Set<const DiscreteVariable*> kept_vars( targets.size() );
-    const auto&                  bn = this->BayesNet();
+    const auto&                  bn = this->BN();
     for ( const auto node : nodes ) {
       if ( !targets.contains( node ) ) {
         del_vars.insert( &( bn.variable( node ) ) );
@@ -1583,7 +1580,7 @@ namespace gum {
     }
 
     // marginalize out all the variables that do not belong to wanted_target
-    const auto&                  bn = this->BayesNet();
+    const auto&                  bn = this->BN();
     Set<const DiscreteVariable*> del_vars;
     for ( const auto node : declared_target )
       if ( !wanted_target.contains( node ) )

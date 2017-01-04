@@ -50,7 +50,7 @@ namespace gum {
       // Retrieving the BN's variable
       std::stringstream var_name;
       var_name << chain.first->name() << "." << chain.second->safeName();
-      bn_obs->add( __inf->BayesNet().variableFromName( var_name.str() ) );
+      bn_obs->add(__inf->BN().variableFromName( var_name.str() ) );
       // Retrievin the PRM<GUM_SCALAR>'s evidence and copying it in bn_obs
       const Potential<GUM_SCALAR>* prm_obs =
           this->evidence( chain.first )[chain.second->id()];
@@ -69,7 +69,7 @@ namespace gum {
       std::stringstream var_name;
       var_name << chain.first->name() << "." << chain.second->safeName();
       const DiscreteVariable& var =
-          __inf->BayesNet().variableFromName( var_name.str() );
+              __inf->BN().variableFromName( var_name.str() );
 
       for ( auto iter = __obs.beginSafe(); iter != __obs.endSafe();
             ++iter ) {  // safe iterator needed here
@@ -147,7 +147,7 @@ namespace gum {
       }
 
       sBuff << chain.first->name() << "." << chain.second->safeName();
-      m = __inf->posterior( __inf->BayesNet().idFromName( sBuff.str() ) );
+      m = __inf->posterior( __inf->BN().idFromName( sBuff.str() ) );
     }
 
     template <typename GUM_SCALAR>

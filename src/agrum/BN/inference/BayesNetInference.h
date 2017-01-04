@@ -180,7 +180,7 @@ namespace gum {
     enum class StateOfInference {
       OutdatedBNStructure,
       OutdatedBNPotentials,
-      Ready4Inference,
+      InferenceReady,
       Done
     };
 
@@ -223,18 +223,18 @@ namespace gum {
      * @warning By default, all the nodes of the Bayes net are targets.
      * @warning note that, by aGrUM's rule, the bn is not copied into the
      * inference engine but only referenced. */
-    virtual void setBayesNet( const IBayesNet<GUM_SCALAR>* bn );
+    virtual void setBN(const IBayesNet<GUM_SCALAR> *bn);
 
     /// Returns a constant reference over the IBayesNet referenced by this class
     /** @throws UndefinedElement is raised if no Bayes net has been assigned to
      * the inference. */
-    virtual const IBayesNet<GUM_SCALAR>& BayesNet() const final;
+    virtual const IBayesNet<GUM_SCALAR>& BN() const final;
 
     /// get the domain sizes of the random variables of the BN
     virtual const NodeProperty<Size>& domainSizes() const final;
 
     /// returns whether the inference object is in a ready state
-    virtual bool isReady4Inference() const noexcept final;
+    virtual bool isInferenceReady() const noexcept final;
 
     /// returns whether the inference object is in a done state
     /** The inference object is in a done state when the posteriors can be

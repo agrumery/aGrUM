@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   Copyright (C) 2017 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,85 +22,84 @@
  * @brief This file contains gibbs sampling (for BNs) class definitions.
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
-#ifndef GUM_GIBBS_INFERENCE_H
-#define GUM_GIBBS_INFERENCE_H
+#ifndef GUM_LOOPYBELIEFPROPAGATION_H
+#define GUM_LOOPYBELIEFPROPAGATION_H
 
 #include <agrum/BN/inference/marginalTargetedInference.h>
-#include <agrum/BN/samplers/GibbsSampler.h>
 #include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
-
   /**
-   * @class GibbsInference GibbsInference.h
-   *<agrum/BN/inference/GibbsInference.h>
-   * @brief class for making Gibbs sampling inference in bayesian networks.
-   * @ingroup bn_inference
-   *
-   */
+* @class LoopyBeliefPropagation loopyBeliefPropagation.h
+*<agrum/BN/inference/loopyBeliefPropagation.h>
+* @brief class for making Loopy Belief Propagation in bayesian networks.
+* @ingroup bn_inference
+*
+*/
   template <typename GUM_SCALAR>
-
-  class GibbsInference : public ApproximationScheme,
-                         public MarginalTargetedInference<GUM_SCALAR>,
-                         public samplers::GibbsSampler<GUM_SCALAR> {
-
+  class LoopyBeliefPropagation : public ApproximationScheme,
+                                 public MarginalTargetedInference<GUM_SCALAR> {
     public:
     /**
      * Default constructor
      */
-    GibbsInference( const IBayesNet<GUM_SCALAR>* BN );
+    LoopyBeliefPropagation( const IBayesNet<GUM_SCALAR>* BN );
 
     /**
      * Destructor.
      */
-    virtual ~GibbsInference();
-
-    using samplers::GibbsSampler<GUM_SCALAR>::particle;
-    using samplers::GibbsSampler<GUM_SCALAR>::initParticle;
-    using samplers::GibbsSampler<GUM_SCALAR>::nextParticle;
-    using samplers::GibbsSampler<GUM_SCALAR>::bn;
-    using samplers::GibbsSampler<GUM_SCALAR>::addSoftEvidenceSampler;
-    using samplers::GibbsSampler<GUM_SCALAR>::addHardEvidenceSampler;
-    using samplers::GibbsSampler<GUM_SCALAR>::eraseSoftEvidenceSampler;
-    using samplers::GibbsSampler<GUM_SCALAR>::eraseHardEvidenceSampler;
-    using samplers::GibbsSampler<GUM_SCALAR>::eraseAllEvidenceSampler;
+    virtual ~LoopyBeliefPropagation();
 
     protected:
-    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence );
-    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence );
-    virtual void _onAllEvidenceErased( bool contains_hard_evidence );
+    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence ){};
 
-    virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard );
-    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn );
+    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence ){};
 
-    virtual void _updateOutdatedBNStructure(){};
+    virtual void _onAllEvidenceErased( bool contains_hard_evidence ){};
+
+    virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard ){};
+
+    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn ){};
+
+    virtual void _updateOutdatedBNStructure();
+
     virtual void _updateOutdatedBNPotentials(){};
-    virtual void _makeInference();
 
     virtual void _onMarginalTargetAdded( const NodeId id ){};
+
     virtual void _onMarginalTargetErased( const NodeId id ){};
+
     virtual void _onAllMarginalTargetsAdded(){};
+
     virtual void _onAllMarginalTargetsErased(){};
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
     virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id );
 
-    /// the actual number of sampling for each modality by node
-    NodeProperty<Potential<GUM_SCALAR>> __sampling_nbr;
+    virtual void _makeInference();
 
-    void   __initStats();
-    void   __updateStats_without_err();
-    double __updateStats_with_err( Size nbr );
+    // will be used in both directions :
+    // for x->y, (x,y) and (y,x) will be in __messages
+    ArcProperty<Potential<GUM_SCALAR>> __messages;
+
+    void __initStats();
+
+    void                  __init_messages();
+    Potential<GUM_SCALAR> __computeProdPi( NodeId node );
+    Potential<GUM_SCALAR> __computeProdPi( NodeId node, NodeId except );
+    Potential<GUM_SCALAR> __computeProdLambda( NodeId node );
+    Potential<GUM_SCALAR> __computeProdLambda( NodeId node, NodeId except );
+
+    //return the max differential KL for this node
+    GUM_SCALAR __updateNodeMessage( NodeId node );
   };
 
-
-  extern template class GibbsInference<float>;
-  extern template class GibbsInference<double>;
-
-
+  // extern template class LoopyBeliefPropagation<float>;
+  // extern template class LoopyBeliefPropagation<double>;
 } /* namespace gum */
 
-#include <agrum/BN/inference/GibbsInference_tpl.h>
+#include <agrum/BN/inference/loopyBeliefPropagation_tpl.h>
 
-#endif /* GUM_GIBBS_INFERENCE_H */
+
+#endif  // GUM_LOOPYBELIEFPROPAGATION_H

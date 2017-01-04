@@ -236,7 +236,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   const Potential <GUM_SCALAR> &
   MarginalTargetedInference<GUM_SCALAR>::posterior(const std::string &nodeName) {
-    return posterior(this->BayesNet().idFromName(nodeName));
+    return posterior(this->BN().idFromName(nodeName));
   }
 
   /* Entropy
@@ -253,7 +253,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   INLINE GUM_SCALAR
   MarginalTargetedInference<GUM_SCALAR>::H(const std::string &nodeName) {
-    return H(this->BayesNet().idFromName(nodeName));
+    return H(this->BN().idFromName(nodeName));
   }
 
 
@@ -261,7 +261,7 @@ namespace gum {
   Potential <GUM_SCALAR>
   MarginalTargetedInference<GUM_SCALAR>::evidenceImpact(NodeId target,
                                                         const std::vector<NodeId> evs) {
-    const auto &vtarget = this->BayesNet().variable(target);
+    const auto &vtarget = this->BN().variable(target);
 
     NodeSet soids(evs.size());
     for (const auto &e : evs)
@@ -273,15 +273,15 @@ namespace gum {
                            << evs
                            << ").");
     }
-    auto condset = this->BayesNet().minimalCondSet(target, soids);
+    auto condset = this->BN().minimalCondSet(target, soids);
 
     Potential<GUM_SCALAR> res;
     this->eraseAllTargets();
     this->eraseAllEvidence();
-    res.add(this->BayesNet().variable(target));
+    res.add(this->BN().variable(target));
     this->addTarget(target);
     for (const auto &n : condset) {
-      res.add(this->BayesNet().variable(n));
+      res.add(this->BN().variable(n));
       this->addEvidence(n, 0);
     }
 
@@ -289,7 +289,7 @@ namespace gum {
     for (inst.setFirst(); !inst.end(); inst.incNotVar(vtarget)) {
       // inferring
       for (const auto &n : condset)
-        this->chgEvidence(n, inst.val(this->BayesNet().variable(n)));
+        this->chgEvidence(n, inst.val(this->BN().variable(n)));
       this->makeInference();
       // populate res
       for (inst.setFirstVar(vtarget); !inst.end(); inst.incVar(vtarget)) {
@@ -306,7 +306,7 @@ namespace gum {
   Potential <GUM_SCALAR>
   MarginalTargetedInference<GUM_SCALAR>::evidenceImpact(std::string target,
                                                         const std::vector<std::string> evs) {
-    const auto &bn = this->BayesNet();
+    const auto &bn = this->BN();
 
     std::vector<NodeId> evsId;
     evsId.reserve(evs.size());

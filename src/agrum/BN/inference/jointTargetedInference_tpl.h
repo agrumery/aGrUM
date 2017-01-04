@@ -247,7 +247,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
   JointTargetedInference<GUM_SCALAR>::posterior( const std::string& nodeName ) {
-    return posterior( this->BayesNet().idFromName( nodeName ) );
+    return posterior(this->BN().idFromName( nodeName ) );
   }
 
   // ##############################################################################
@@ -273,8 +273,8 @@ namespace gum {
       pXY = this->_unnormalizedJointPosterior( {X, Y} );
       pXY->normalize();
       if ( X != Y ) {
-        pX = pXY->margSumOut( {&( this->BayesNet().variable( Y ) )} );
-        pY = pXY->margSumOut( {&( this->BayesNet().variable( X ) )} );
+        pX = pXY->margSumOut( {&(this->BN().variable( Y ) )} );
+        pY = pXY->margSumOut( {&(this->BN().variable( X ) )} );
       } else {
         pX = *pXY;
         pY = *pXY;

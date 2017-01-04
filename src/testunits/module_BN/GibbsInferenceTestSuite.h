@@ -151,17 +151,15 @@ namespace gum_tests {
 
     // Testing when there is no evidence
     void testGibbsInf_1() {
-      //       try {
-      //         fill( *bn );
-      //         // Testing the inference
-      //         gum::GibbsInference<float> inf( bn );
-      //         inf.setVerbosity( false );
-      //         inf.makeInference();
-      //       } catch ( gum::Exception e ) {
-      //         TS_ASSERT( false );
-      //         std::cerr << std::endl << e.content() << std::endl;
-      //         throw e;
-      //       }
+      try {
+        fill(*bn);
+        gum::GibbsInference<float> inf( bn );
+        inf.setVerbosity( false );
+        inf.makeInference();
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT( false );
+      }
     }
 
     void testGibbsInf_2() {
@@ -316,17 +314,6 @@ namespace gum_tests {
                0.5f, 0.5f, 0.0f,
                0.5f, 0.5f, 0.0f,
                0.0f, 0.0f, 1.0f} );  // clang-format on
-    }
-
-    // Uncomment this to have some outputs.
-    void printPotential( const gum::Potential<float>& ) {
-      // gum::Instantiation inst(p);
-
-      // for (inst.setFirst(); !inst.end(); ++inst)
-      //{
-      //  std::cerr << inst<<" : " <<p[inst] << std::endl;
-      //}
-      // std::cerr << std::endl;
     }
   };
 }
