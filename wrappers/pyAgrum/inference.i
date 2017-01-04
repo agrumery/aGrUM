@@ -59,25 +59,25 @@ IMPROVE_INFERENCE_API(gum::GibbsInference<double>)
 %extend classname {
     Potential<double> jointPosterior(PyObject *list) {
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->jointPosterior(nodeset);
     };
 
     void addJointTarget( PyObject* list ) {
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
 
     void eraseJointTarget( PyObject* list ) {
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 
     bool isJointTarget( PyObject* list ) {
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 

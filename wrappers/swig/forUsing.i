@@ -114,8 +114,8 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   const Potential<double> posterior( const std::string nodeName ) {
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-  const IBayesNet<double>& BayesNet() const {
-    return self->BayesNetInference<double>::BayesNet();
+  const IBayesNet<double>& BN() const {
+    return self->BayesNetInference<double>::BN();
   }
 
 //######## EVIDENCE ##########

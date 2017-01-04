@@ -8554,6 +8554,30 @@ class Potential_double(_object):
         return val
 
 
+    def KL(self, p: 'Potential_double') -> "double":
+        """
+        KL(Potential_double self, Potential_double p) -> double
+
+        Parameters
+        ----------
+        p: gum::Potential< double > const &
+
+        """
+        return _pyAgrum.Potential_double_KL(self, p)
+
+
+    def fastKL(self, p: 'Potential_double') -> "double":
+        """
+        fastKL(Potential_double self, Potential_double p) -> double
+
+        Parameters
+        ----------
+        p: gum::Potential< double > const &
+
+        """
+        return _pyAgrum.Potential_double_fastKL(self, p)
+
+
     def normalizeAsCPT(self) -> "void":
         """
         normalizeAsCPT(Potential_double self)
@@ -10747,33 +10771,33 @@ class BayesNetInference_double(_object):
     __repr__ = _swig_repr
     StateOfInference_OutdatedBNStructure = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNStructure
     StateOfInference_OutdatedBNPotentials = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNPotentials
-    StateOfInference_Ready4Inference = _pyAgrum.BayesNetInference_double_StateOfInference_Ready4Inference
+    StateOfInference_InferenceReady = _pyAgrum.BayesNetInference_double_StateOfInference_InferenceReady
     StateOfInference_Done = _pyAgrum.BayesNetInference_double_StateOfInference_Done
     __swig_destroy__ = _pyAgrum.delete_BayesNetInference_double
     __del__ = lambda self: None
 
-    def setBayesNet(self, bn: 'IBayesNet_double') -> "void":
+    def setBN(self, bn: 'IBayesNet_double') -> "void":
         """
-        setBayesNet(BayesNetInference_double self, IBayesNet_double bn)
+        setBN(BayesNetInference_double self, IBayesNet_double bn)
 
         Parameters
         ----------
         bn: gum::IBayesNet< double > const *
 
         """
-        return _pyAgrum.BayesNetInference_double_setBayesNet(self, bn)
+        return _pyAgrum.BayesNetInference_double_setBN(self, bn)
 
 
-    def BayesNet(self) -> "gum::IBayesNet< double > const &":
+    def BN(self) -> "gum::IBayesNet< double > const &":
         """
-        BayesNet(BayesNetInference_double self) -> IBayesNet_double
+        BN(BayesNetInference_double self) -> IBayesNet_double
 
         Parameters
         ----------
         self: gum::BayesNetInference< double > const *
 
         """
-        return _pyAgrum.BayesNetInference_double_BayesNet(self)
+        return _pyAgrum.BayesNetInference_double_BN(self)
 
 
     def domainSizes(self) -> "gum::NodeProperty< gum::Size > const &":
@@ -10788,16 +10812,16 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_domainSizes(self)
 
 
-    def isReady4Inference(self) -> "bool":
+    def isInferenceReady(self) -> "bool":
         """
-        isReady4Inference(BayesNetInference_double self) -> bool
+        isInferenceReady(BayesNetInference_double self) -> bool
 
         Parameters
         ----------
         self: gum::BayesNetInference< double > const *
 
         """
-        return _pyAgrum.BayesNetInference_double_isReady4Inference(self)
+        return _pyAgrum.BayesNetInference_double_isInferenceReady(self)
 
 
     def isDone(self) -> "bool":
@@ -11448,16 +11472,16 @@ class LazyPropagation_double(_object):
         return _pyAgrum.LazyPropagation_double_posterior(self, *args)
 
 
-    def BayesNet(self) -> "gum::IBayesNet< double > const &":
+    def BN(self) -> "gum::IBayesNet< double > const &":
         """
-        BayesNet(LazyPropagation_double self) -> IBayesNet_double
+        BN(LazyPropagation_double self) -> IBayesNet_double
 
         Parameters
         ----------
         self: gum::LazyPropagation< double > const *
 
         """
-        return _pyAgrum.LazyPropagation_double_BayesNet(self)
+        return _pyAgrum.LazyPropagation_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
@@ -12120,16 +12144,16 @@ class ShaferShenoyInference_double(_object):
         return _pyAgrum.ShaferShenoyInference_double_posterior(self, *args)
 
 
-    def BayesNet(self) -> "gum::IBayesNet< double > const &":
+    def BN(self) -> "gum::IBayesNet< double > const &":
         """
-        BayesNet(ShaferShenoyInference_double self) -> IBayesNet_double
+        BN(ShaferShenoyInference_double self) -> IBayesNet_double
 
         Parameters
         ----------
         self: gum::ShaferShenoyInference< double > const *
 
         """
-        return _pyAgrum.ShaferShenoyInference_double_BayesNet(self)
+        return _pyAgrum.ShaferShenoyInference_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
@@ -12780,16 +12804,16 @@ class VariableElimination_double(_object):
         return _pyAgrum.VariableElimination_double_posterior(self, *args)
 
 
-    def BayesNet(self) -> "gum::IBayesNet< double > const &":
+    def BN(self) -> "gum::IBayesNet< double > const &":
         """
-        BayesNet(VariableElimination_double self) -> IBayesNet_double
+        BN(VariableElimination_double self) -> IBayesNet_double
 
         Parameters
         ----------
         self: gum::VariableElimination< double > const *
 
         """
-        return _pyAgrum.VariableElimination_double_BayesNet(self)
+        return _pyAgrum.VariableElimination_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
@@ -13471,16 +13495,16 @@ class GibbsInference_double(_object):
         return _pyAgrum.GibbsInference_double_posterior(self, *args)
 
 
-    def BayesNet(self) -> "gum::IBayesNet< double > const &":
+    def BN(self) -> "gum::IBayesNet< double > const &":
         """
-        BayesNet(GibbsInference_double self) -> IBayesNet_double
+        BN(GibbsInference_double self) -> IBayesNet_double
 
         Parameters
         ----------
         self: gum::GibbsInference< double > const *
 
         """
-        return _pyAgrum.GibbsInference_double_BayesNet(self)
+        return _pyAgrum.GibbsInference_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":

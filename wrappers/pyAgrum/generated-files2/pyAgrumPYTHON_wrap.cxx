@@ -6824,22 +6824,22 @@ SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__targetList(gum::LazyPropa
     }
 SWIGINTERN gum::Potential< double > gum_LazyPropagation_Sl_double_Sg__jointPosterior(gum::LazyPropagation< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->jointPosterior(nodeset);
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__addJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__isJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__jointTargets(gum::LazyPropagation< double > const *self){
@@ -6859,8 +6859,8 @@ SWIGINTERN gum::Potential< double > const gum_LazyPropagation_Sl_double_Sg__post
 SWIGINTERN gum::Potential< double > const gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_1(gum::LazyPropagation< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_LazyPropagation_Sl_double_Sg__BayesNet(gum::LazyPropagation< double > const *self){
-    return self->BayesNetInference<double>::BayesNet();
+SWIGINTERN gum::IBayesNet< double > const &gum_LazyPropagation_Sl_double_Sg__BN(gum::LazyPropagation< double > const *self){
+    return self->BayesNetInference<double>::BN();
   }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__addEvidence__SWIG_0(gum::LazyPropagation< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
@@ -6999,22 +6999,22 @@ SWIGINTERN PyObject *gum_ShaferShenoyInference_Sl_double_Sg__targetList(gum::Sha
     }
 SWIGINTERN gum::Potential< double > gum_ShaferShenoyInference_Sl_double_Sg__jointPosterior(gum::ShaferShenoyInference< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->jointPosterior(nodeset);
     }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__addJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__eraseJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__isJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 SWIGINTERN PyObject *gum_ShaferShenoyInference_Sl_double_Sg__jointTargets(gum::ShaferShenoyInference< double > const *self){
@@ -7034,8 +7034,8 @@ SWIGINTERN gum::Potential< double > const gum_ShaferShenoyInference_Sl_double_Sg
 SWIGINTERN gum::Potential< double > const gum_ShaferShenoyInference_Sl_double_Sg__posterior__SWIG_1(gum::ShaferShenoyInference< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_ShaferShenoyInference_Sl_double_Sg__BayesNet(gum::ShaferShenoyInference< double > const *self){
-    return self->BayesNetInference<double>::BayesNet();
+SWIGINTERN gum::IBayesNet< double > const &gum_ShaferShenoyInference_Sl_double_Sg__BN(gum::ShaferShenoyInference< double > const *self){
+    return self->BayesNetInference<double>::BN();
   }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__addEvidence__SWIG_0(gum::ShaferShenoyInference< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
@@ -7174,22 +7174,22 @@ SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__targetList(gum::Varia
     }
 SWIGINTERN gum::Potential< double > gum_VariableElimination_Sl_double_Sg__jointPosterior(gum::VariableElimination< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->jointPosterior(nodeset);
     }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addJointTarget(gum::VariableElimination< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseJointTarget(gum::VariableElimination< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__isJointTarget(gum::VariableElimination< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__jointTargets(gum::VariableElimination< double > const *self){
@@ -7209,8 +7209,8 @@ SWIGINTERN gum::Potential< double > const gum_VariableElimination_Sl_double_Sg__
 SWIGINTERN gum::Potential< double > const gum_VariableElimination_Sl_double_Sg__posterior__SWIG_1(gum::VariableElimination< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_VariableElimination_Sl_double_Sg__BayesNet(gum::VariableElimination< double > const *self){
-    return self->BayesNetInference<double>::BayesNet();
+SWIGINTERN gum::IBayesNet< double > const &gum_VariableElimination_Sl_double_Sg__BN(gum::VariableElimination< double > const *self){
+    return self->BayesNetInference<double>::BN();
   }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
@@ -7359,8 +7359,8 @@ SWIGINTERN gum::Potential< double > const gum_GibbsInference_Sl_double_Sg__poste
 SWIGINTERN gum::Potential< double > const gum_GibbsInference_Sl_double_Sg__posterior__SWIG_1(gum::GibbsInference< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_GibbsInference_Sl_double_Sg__BayesNet(gum::GibbsInference< double > const *self){
-    return self->BayesNetInference<double>::BayesNet();
+SWIGINTERN gum::IBayesNet< double > const &gum_GibbsInference_Sl_double_Sg__BN(gum::GibbsInference< double > const *self){
+    return self->BayesNetInference<double>::BN();
   }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
@@ -41919,6 +41919,88 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Potential_double_KL(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  gum::Potential< double > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double_KL",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double_KL" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double_KL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double_KL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  {
+    try {
+      result = (double)((gum::Potential< double > const *)arg1)->KL((gum::Potential< double > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Potential_double_fastKL(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  gum::Potential< double > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double_fastKL",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double_fastKL" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double_fastKL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double_fastKL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  {
+    try {
+      result = (double)((gum::Potential< double > const *)arg1)->fastKL((gum::Potential< double > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Potential_double_normalizeAsCPT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
@@ -51161,7 +51243,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetInference_double_setBayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNetInference_double_setBN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNetInference< double > *arg1 = (gum::BayesNetInference< double > *) 0 ;
   gum::IBayesNet< double > *arg2 = (gum::IBayesNet< double > *) 0 ;
@@ -51172,20 +51254,20 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_setBayesNet(PyObject *SWIGUN
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:BayesNetInference_double_setBayesNet",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:BayesNetInference_double_setBN",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_setBayesNet" "', argument " "1"" of type '" "gum::BayesNetInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_setBN" "', argument " "1"" of type '" "gum::BayesNetInference< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNetInference< double > * >(argp1);
   res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesNetInference_double_setBayesNet" "', argument " "2"" of type '" "gum::IBayesNet< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesNetInference_double_setBN" "', argument " "2"" of type '" "gum::IBayesNet< double > const *""'"); 
   }
   arg2 = reinterpret_cast< gum::IBayesNet< double > * >(argp2);
   {
     try {
-      (arg1)->setBayesNet((gum::IBayesNet< double > const *)arg2);
+      (arg1)->setBN((gum::IBayesNet< double > const *)arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -51198,7 +51280,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetInference_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNetInference_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNetInference< double > *arg1 = (gum::BayesNetInference< double > *) 0 ;
   void *argp1 = 0 ;
@@ -51206,15 +51288,15 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_BayesNet(PyObject *SWIGUNUSE
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:BayesNetInference_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:BayesNetInference_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_BayesNet" "', argument " "1"" of type '" "gum::BayesNetInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_BN" "', argument " "1"" of type '" "gum::BayesNetInference< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNetInference< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &((gum::BayesNetInference< double > const *)arg1)->BayesNet();
+      result = (gum::IBayesNet< double > *) &((gum::BayesNetInference< double > const *)arg1)->BN();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -51256,7 +51338,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetInference_double_isReady4Inference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNetInference_double_isInferenceReady(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNetInference< double > *arg1 = (gum::BayesNetInference< double > *) 0 ;
   void *argp1 = 0 ;
@@ -51264,15 +51346,15 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_isReady4Inference(PyObject *
   PyObject * obj0 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:BayesNetInference_double_isReady4Inference",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:BayesNetInference_double_isInferenceReady",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_isReady4Inference" "', argument " "1"" of type '" "gum::BayesNetInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_isInferenceReady" "', argument " "1"" of type '" "gum::BayesNetInference< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNetInference< double > * >(argp1);
   {
     try {
-      result = (bool)((gum::BayesNetInference< double > const *)arg1)->isReady4Inference();
+      result = (bool)((gum::BayesNetInference< double > const *)arg1)->isInferenceReady();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -54415,7 +54497,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LazyPropagation_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
   void *argp1 = 0 ;
@@ -54423,15 +54505,15 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_BayesNet(PyObject *SWIGUNUSEDP
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_BayesNet" "', argument " "1"" of type '" "gum::LazyPropagation< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_BN" "', argument " "1"" of type '" "gum::LazyPropagation< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_LazyPropagation_Sl_double_Sg__BayesNet((gum::LazyPropagation< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_LazyPropagation_Sl_double_Sg__BN((gum::LazyPropagation< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -57749,7 +57831,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyInference< double > *arg1 = (gum::ShaferShenoyInference< double > *) 0 ;
   void *argp1 = 0 ;
@@ -57757,15 +57839,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_BayesNet(PyObject *SWIGU
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:ShaferShenoyInference_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:ShaferShenoyInference_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_double_BayesNet" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_double_BN" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_ShaferShenoyInference_Sl_double_Sg__BayesNet((gum::ShaferShenoyInference< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_ShaferShenoyInference_Sl_double_Sg__BN((gum::ShaferShenoyInference< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -61091,7 +61173,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_VariableElimination_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_VariableElimination_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
   void *argp1 = 0 ;
@@ -61099,15 +61181,15 @@ SWIGINTERN PyObject *_wrap_VariableElimination_double_BayesNet(PyObject *SWIGUNU
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_BayesNet" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_BN" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_VariableElimination_Sl_double_Sg__BayesNet((gum::VariableElimination< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_VariableElimination_Sl_double_Sg__BN((gum::VariableElimination< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -64352,7 +64434,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsInference_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
   void *argp1 = 0 ;
@@ -64360,15 +64442,15 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_BayesNet(PyObject *SWIGUNUSEDPA
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_BayesNet" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_BN" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_GibbsInference_Sl_double_Sg__BayesNet((gum::GibbsInference< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_GibbsInference_Sl_double_Sg__BN((gum::GibbsInference< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -84307,6 +84389,24 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::Potential< double > const *\n"
 		"\n"
 		""},
+	 { (char *)"Potential_double_KL", _wrap_Potential_double_KL, METH_VARARGS, (char *)"\n"
+		"Potential_double_KL(Potential_double self, Potential_double p) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
+		"p: gum::Potential< double > const &\n"
+		"\n"
+		""},
+	 { (char *)"Potential_double_fastKL", _wrap_Potential_double_fastKL, METH_VARARGS, (char *)"\n"
+		"Potential_double_fastKL(Potential_double self, Potential_double p) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
+		"p: gum::Potential< double > const &\n"
+		"\n"
+		""},
 	 { (char *)"Potential_double_normalizeAsCPT", _wrap_Potential_double_normalizeAsCPT, METH_VARARGS, (char *)"\n"
 		"Potential_double_normalizeAsCPT(Potential_double self)\n"
 		"\n"
@@ -85892,8 +85992,8 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::BayesNetInference< double > *\n"
 		"\n"
 		""},
-	 { (char *)"BayesNetInference_double_setBayesNet", _wrap_BayesNetInference_double_setBayesNet, METH_VARARGS, (char *)"\n"
-		"BayesNetInference_double_setBayesNet(BayesNetInference_double self, IBayesNet_double bn)\n"
+	 { (char *)"BayesNetInference_double_setBN", _wrap_BayesNetInference_double_setBN, METH_VARARGS, (char *)"\n"
+		"BayesNetInference_double_setBN(BayesNetInference_double self, IBayesNet_double bn)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -85901,8 +86001,8 @@ static PyMethodDef SwigMethods[] = {
 		"bn: gum::IBayesNet< double > const *\n"
 		"\n"
 		""},
-	 { (char *)"BayesNetInference_double_BayesNet", _wrap_BayesNetInference_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"BayesNetInference_double_BayesNet(BayesNetInference_double self) -> IBayesNet_double\n"
+	 { (char *)"BayesNetInference_double_BN", _wrap_BayesNetInference_double_BN, METH_VARARGS, (char *)"\n"
+		"BayesNetInference_double_BN(BayesNetInference_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -85917,8 +86017,8 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::BayesNetInference< double > const *\n"
 		"\n"
 		""},
-	 { (char *)"BayesNetInference_double_isReady4Inference", _wrap_BayesNetInference_double_isReady4Inference, METH_VARARGS, (char *)"\n"
-		"BayesNetInference_double_isReady4Inference(BayesNetInference_double self) -> bool\n"
+	 { (char *)"BayesNetInference_double_isInferenceReady", _wrap_BayesNetInference_double_isInferenceReady, METH_VARARGS, (char *)"\n"
+		"BayesNetInference_double_isInferenceReady(BayesNetInference_double self) -> bool\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -86426,8 +86526,8 @@ static PyMethodDef SwigMethods[] = {
 		"nodeName: std::string const\n"
 		"\n"
 		""},
-	 { (char *)"LazyPropagation_double_BayesNet", _wrap_LazyPropagation_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"LazyPropagation_double_BayesNet(LazyPropagation_double self) -> IBayesNet_double\n"
+	 { (char *)"LazyPropagation_double_BN", _wrap_LazyPropagation_double_BN, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_BN(LazyPropagation_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -86947,8 +87047,8 @@ static PyMethodDef SwigMethods[] = {
 		"nodeName: std::string const\n"
 		"\n"
 		""},
-	 { (char *)"ShaferShenoyInference_double_BayesNet", _wrap_ShaferShenoyInference_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"ShaferShenoyInference_double_BayesNet(ShaferShenoyInference_double self) -> IBayesNet_double\n"
+	 { (char *)"ShaferShenoyInference_double_BN", _wrap_ShaferShenoyInference_double_BN, METH_VARARGS, (char *)"\n"
+		"ShaferShenoyInference_double_BN(ShaferShenoyInference_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -87462,8 +87562,8 @@ static PyMethodDef SwigMethods[] = {
 		"nodeName: std::string const\n"
 		"\n"
 		""},
-	 { (char *)"VariableElimination_double_BayesNet", _wrap_VariableElimination_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"VariableElimination_double_BayesNet(VariableElimination_double self) -> IBayesNet_double\n"
+	 { (char *)"VariableElimination_double_BN", _wrap_VariableElimination_double_BN, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_BN(VariableElimination_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -87989,8 +88089,8 @@ static PyMethodDef SwigMethods[] = {
 		"nodeName: std::string const\n"
 		"\n"
 		""},
-	 { (char *)"GibbsInference_double_BayesNet", _wrap_GibbsInference_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"GibbsInference_double_BayesNet(GibbsInference_double self) -> IBayesNet_double\n"
+	 { (char *)"GibbsInference_double_BN", _wrap_GibbsInference_double_BN, METH_VARARGS, (char *)"\n"
+		"GibbsInference_double_BN(GibbsInference_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -92150,7 +92250,7 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "FindBarrenNodesType_FIND_BARREN_NODES",SWIG_From_int(static_cast< int >(gum::FindBarrenNodesType::FIND_BARREN_NODES)));
   SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_OutdatedBNStructure",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::OutdatedBNStructure)));
   SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_OutdatedBNPotentials",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::OutdatedBNPotentials)));
-  SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_Ready4Inference",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::Ready4Inference)));
+  SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_InferenceReady",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::InferenceReady)));
   SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_Done",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::Done)));
   SWIG_Python_SetConstant(d, "CredalNet_double_NodeType_Precise",SWIG_From_int(static_cast< int >(gum::credal::CredalNet< double >::NodeType::Precise)));
   SWIG_Python_SetConstant(d, "CredalNet_double_NodeType_Credal",SWIG_From_int(static_cast< int >(gum::credal::CredalNet< double >::NodeType::Credal)));
