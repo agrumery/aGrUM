@@ -13,7 +13,7 @@
 %extend gum::learning::BNLearner<double> {
 
   void setSliceOrder(PyObject *l) {
-    NodeProperty<unsigned int> ranks; // gum should be added by SED in cmake/GUM-UseSWIG.cmake
+    gum::NodeProperty<unsigned int> ranks;
 
     if (PyList_Check(l)==0) {
       PyErr_SetString(PyExc_TypeError, "arg must be a sequence (of sequences of int)");
