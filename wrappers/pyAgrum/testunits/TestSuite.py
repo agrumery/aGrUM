@@ -59,7 +59,7 @@ using python unittest
 """, end='\n', file=sys.stdout)
 
 print("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform), end='\n', file=sys.stdout)
-print("pyAgrum p  th : {}".format(gum.__file__), end='\n', file=sys.stdout)
+print("pyAgrum path : {}".format(gum.__file__), end='\n', file=sys.stdout)
 print("", end='\n', file=sys.stdout)
 
 runner = unittest.TextTestRunner(stream=sys.stdout, verbosity=2)

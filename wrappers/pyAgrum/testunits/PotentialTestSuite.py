@@ -634,8 +634,8 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.FatalError):
       res = r.KL(p)
 
-    self.assertAlmostEqual(q.KL(r), 0.5 * math.log2(0.5 / 0.7) + 0.5 * math.log2(0.5 / 0.3), 1e-5)
-    self.assertAlmostEqual(r.KL(q), 0.7 * math.log2(0.7 / 0.5) + 0.3 * math.log2(0.3 / 0.5), 1e-5)
+    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7,2) + 0.5 * math.log(0.5 / 0.3,2), 1e-5)
+    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5,2) + 0.3 * math.log(0.3 / 0.5,2), 1e-5)
 
 
 ts = unittest.TestSuite()
