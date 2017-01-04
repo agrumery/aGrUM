@@ -273,6 +273,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %import <agrum/core/inline.h>
 
 %import <agrum/core/types.h>
+%include <agrum/core/set.h>
 %include <agrum/core/exceptions.h>
 %include <agrum/core/sequence.h>
 %include <agrum/core/utils_random.h>
@@ -297,6 +298,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/graphs/mixedGraph.h>
 %include <agrum/graphs/cliqueGraph.h>
 %import <agrum/graphs/triangulations/defaultTriangulation.h>
+%import <agrum/graphs/triangulations/triangulation.h>
 
 %include <agrum/multidim/multiDimInterface.h>
 %import <agrum/multidim/multiDimAdressable.h>
@@ -323,6 +325,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 %import <agrum/core/approximations/approximationScheme.h>
 
+%include <agrum/BN/inference/relevantPotentialsFinderType.h>
 %include <agrum/BN/inference/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
 %include <agrum/BN/inference/ShaferShenoyInference.h>
