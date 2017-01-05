@@ -7,9 +7,6 @@ if (USE_SWIG)
   if (SWIG_FOUND)
     message(STATUS "** aGrUM notification : Swig 3 found")
     include(${SWIG_USE_FILE})
-
-    # modification of SWIG_ADD_MODULE to take outdir into account for generated cpp wrapper.
-    include (${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum/cmake/GUM-UseSWIG.cmake)
   else ()
     message(STATUS "** aGrUM notification : Swig 3 not found : you cannot change *.i files !")
   endif ()
