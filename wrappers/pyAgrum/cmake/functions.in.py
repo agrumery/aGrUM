@@ -20,10 +20,10 @@ Helping functions and consts for pyAgrum
 #* Free Software Foundation, Inc., *
 #* 59 Temple Place - Suite 330, Boston, MA 02111 - 1307, USA.
 
-from @PYAGRUM_MODULE@ import BayesNet
-from @PYAGRUM_MODULE@ import Potential
-from @PYAGRUM_MODULE@ import InfluenceDiagram
-from @PYAGRUM_MODULE@ import VariableElimination
+from .pyAgrum import BayesNet
+from .pyAgrum import Potential
+from .pyAgrum import InfluenceDiagram
+from .pyAgrum import VariableElimination
 
 def about():
   """

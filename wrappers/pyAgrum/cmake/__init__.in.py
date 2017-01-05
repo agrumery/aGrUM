@@ -33,27 +33,27 @@ __license__ = __doc__
 __project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
 
 import numpy as np
-from @PYAGRUM_FUNCTIONS@ import *
+from .functions import *
 
 # selection of imports extracted from dir(.pyAgrum)
-from @PYAGRUM_MODULE@ import statsObj
-from @PYAGRUM_MODULE@ import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
-from @PYAGRUM_MODULE@ import BayesNet
-from @PYAGRUM_MODULE@ import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
-from @PYAGRUM_MODULE@ import Potential, Instantiation, UtilityTable
-from @PYAGRUM_MODULE@ import BruteForceKL, GibbsKL
-from @PYAGRUM_MODULE@ import GibbsInference, LazyPropagation, ShaferShenoyInference, VariableElimination
-from @PYAGRUM_MODULE@ import PythonApproximationListener, PythonBNListener, PythonLoadListener
-from @PYAGRUM_MODULE@ import BNGenerator, IDGenerator, JTGenerator
-from @PYAGRUM_MODULE@ import BNLearner
-from @PYAGRUM_MODULE@ import InfluenceDiagram, InfluenceDiagramInference
-from @PYAGRUM_MODULE@ import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
-from @PYAGRUM_MODULE@ import PRMexplorer
+from .pyAgrum import statsObj
+from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
+from .pyAgrum import BayesNet
+from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
+from .pyAgrum import Potential, Instantiation, UtilityTable
+from .pyAgrum import BruteForceKL, GibbsKL
+from .pyAgrum import GibbsInference, LazyPropagation, ShaferShenoyInference, VariableElimination
+from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener
+from .pyAgrum import BNGenerator, IDGenerator, JTGenerator
+from .pyAgrum import BNLearner
+from .pyAgrum import InfluenceDiagram, InfluenceDiagramInference
+from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
+from .pyAgrum import PRMexplorer
 
-from @PYAGRUM_MODULE@ import initRandom, randomProba, randomDistribution
-from @PYAGRUM_MODULE@ import isOMP, setNumberOfThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads
+from .pyAgrum import initRandom, randomProba, randomDistribution
+from .pyAgrum import isOMP, setNumberOfThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads
 
-from @PYAGRUM_MODULE@ import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTree, EmptySet, GumException, FatalError, FormatNotFound, GraphError, IOError, IdError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, OutOfLowerBound, OutOfUpperBound, ReferenceError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase
+from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTree, EmptySet, GumException, FatalError, FormatNotFound, GraphError, IOError, IdError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, OutOfLowerBound, OutOfUpperBound, ReferenceError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase
 
 # selection of imports extracted from dir(pyAgrum)
 __all__=[

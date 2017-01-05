@@ -20,16 +20,9 @@ if (FOR_PYTHON3)
   find_package(PythonLibs   3 REQUIRED)
 
   set(CMAKE_SWIG_FLAGS  "${CMAKE_SWIG_FLAGS};-py3" )
-
-  #change in module naming from inside module between python2 and python3
-  set(PYAGRUM_MODULE ".pyAgrum")
-  set(PYAGRUM_FUNCTIONS ".functions")
 else ()
   find_package(PythonInterp 2 REQUIRED)
   find_package(PythonLibs   2 REQUIRED)
-
-  set(PYAGRUM_MODULE "pyAgrum")
-  set(PYAGRUM_FUNCTIONS "functions")
 endif()
 
 # PYTHON_INSTALL
