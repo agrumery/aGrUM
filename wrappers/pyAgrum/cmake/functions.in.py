@@ -120,15 +120,31 @@ def fastBN(arcs,domain_size=2):
   """
   rapid prototyping of BN.
 
-  :param arcs: dot-like simple list of arcs ("a->b->c;a->c->d" for instance)
+  :param arcs: dot-like simple list of arcs ("a->b->c;a->c->d" for instance). The first apparition of a node name can be
+   enhanced with a "[domain_size]" extension. For instance "a[5]->b->c;a[2]->c->d" will create a bn with a variable "a"
+   with a.nbrDim()==5 (the second "a[2]" is not taken into accound since the variable is already created).
   :param domain_size: number of modalities for each created variable.
   :return: the created pyAgrum.BayesNet
   """
+  def _split(a):
+    r=a.split('[')
+    if len(r)==1:
+        return a,None
+    else:
+        n=r[0]
+        d=int(r[1][:-1])
+        if d<2:
+            d=2
+        return n,d
   def _getId(bn,a):
+    name,domain=_split(a)
     try:
-      ia=bn.idFromName(a)
+      ia=bn.idFromName(name)
+      # we do not use the domain
     except IndexError:
-      ia=bn.add(a,domain_size)
+      if domain is None:
+        domain=domain_size
+      ia=bn.add(name,domain)
     return ia
 
   bn=BayesNet()

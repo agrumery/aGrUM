@@ -24,9 +24,11 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/variables/labelizedVariable.h>
 
+#include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>
 
 // The graph used for the tests:
@@ -63,249 +65,226 @@ namespace gum_tests {
 
   class LoopyBeliefPropagationTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<float>*  bn;
-    gum::NodeId            i1, i2, i3, i4, i5;
-    gum::Potential<float> *e_i1, *e_i4;
-
-    void setUp() {
-      bn = new gum::BayesNet<float>();
-
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
-      gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
-
-      i1 = bn->add( n1 );
-      i2 = bn->add( n2 );
-      i3 = bn->add( n3 );
-      i4 = bn->add( n4 );
-      i5 = bn->add( n5 );
-
-      bn->addArc( i1, i3 );
-      bn->addArc( i1, i4 );
-      bn->addArc( i3, i5 );
-      bn->addArc( i4, i5 );
-      bn->addArc( i2, i4 );
-      bn->addArc( i2, i5 );
-
-      e_i1 = new gum::Potential<float>();
-      ( *e_i1 ) << bn->variable( i1 );
-      e_i1->fill( (float)0 );
-      gum::Instantiation inst_1( *e_i1 );
-      inst_1.chgVal( bn->variable( i1 ), 0 );
-      e_i1->set( inst_1, (float)1 );
-
-      e_i4 = new gum::Potential<float>();
-      ( *e_i4 ) << bn->variable( i4 );
-      e_i4->fill( (float)0 );
-      gum::Instantiation inst_4( *e_i4 );
-      inst_4.chgVal( bn->variable( i4 ), 1 );
-      e_i4->set( inst_4, (float)1 );
-    }
-
-    void tearDown() {
-      delete bn;
-      delete e_i1;
-      delete e_i4;
-    }
-
     void testFill() {
-      TS_ASSERT( bn->cpt( i1 ).nbrDim() == 1 );
-      bn->cpt( i1 ).fillWith( {0.2f, 0.8f} );
+      gum::BayesNet<float> bn;
+      fillBN( bn );
 
-      TS_ASSERT( bn->cpt( i2 ).nbrDim() == 1 );
-      bn->cpt( i2 ).fillWith( {0.3f, 0.7f} );
+      TS_ASSERT( bn.cpt( "1" ).nbrDim() == 1 );
 
-      TS_ASSERT( bn->cpt( i3 ).nbrDim() == 2 );
-      bn->cpt( i3 ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
+      TS_ASSERT( bn.cpt( "2" ).nbrDim() == 1 );
+
+      TS_ASSERT( bn.cpt( "3" ).nbrDim() == 2 );
 
       // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-      // gum::Set<const gum::DiscreteVariable*> del_vars;
-      auto p3 = bn->cpt( i3 ).margSumOut( {&( bn->variable( i3 ) )} );
+      auto p3 = bn.cpt( "3" ).margSumOut( {&( bn.variable( "3" ) )} );
       for ( gum::Instantiation j( p3 ); !j.end(); ++j )
         TS_ASSERT_DELTA( p3.get( j ), 1.0f, 1e-5 );
 
-      TS_ASSERT( bn->cpt( i4 ).nbrDim() == 3 );
-      bn->cpt( i4 ).fillWith( {0.4f, 0.6f, 0.5f, 0.5f, 0.5f, 0.5f, 1.0f, 0.0f} );
       // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-      auto p4 = bn->cpt( i4 ).margSumOut( {&( bn->variable( i4 ) )} );
+      auto p4 = bn.cpt( "4" ).margSumOut( {&( bn.variable( "4" ) )} );
       for ( gum::Instantiation j( p4 ); !j.end(); ++j )
         TS_ASSERT_DELTA( p4.get( j ), 1.0f, 1e-5 );
 
-      TS_ASSERT( bn->cpt( i5 ).nbrDim() == 4 );
-      bn->cpt( i5 ).fillWith(  // clang-format off
-                  {0.3f, 0.6f, 0.1f,
-                   0.5f, 0.5f, 0.0f,
-                   0.5f, 0.5f,0.0f,
-                   1.0f, 0.0f, 0.0f,
-                   0.4f, 0.6f, 0.0f,
-                   0.5f, 0.5f, 0.0f,
-                   0.5f, 0.5f, 0.0f,
-                   0.0f, 0.0f, 1.0f}); //clang-format on
+      // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
+      auto p5 = bn.cpt( "5" ).margSumOut( {&( bn.variable( "5" ) )} );
+      for ( gum::Instantiation j( p5 ); !j.end(); ++j ) {
+        TS_ASSERT_DELTA( p5.get( j ), 1.0f, 1e-5 );
+      }
+    }
 
-          // CHECKING IS FOR EACH INSTANCE OF PARENTS, WE HAVE A PROBA (SUM to 1)
-          auto p5 = bn->cpt( i5 ).margSumOut( {&(bn->variable(i5))} );
-          for ( gum::Instantiation j( p5 ); !j.end(); ++j ) {
-            TS_ASSERT_DELTA( p5.get(j), 1.0f, 1e-5 );
-          }
-        }
+    // Testing when there is no evidence
+    void testLBPInf_1() {
+      gum::BayesNet<float> bn;
+      fillBN( bn );
+      gum::LazyPropagation<float> lazy( &bn );
+      lazy.makeInference();
 
-        // Testing when there is no evidence
-        void testLBPInf_1() {
-          try {
-          fill( *bn );
-          gum::LoopyBeliefPropagation<float> inf( bn );
-          inf.setVerbosity( false );
-          inf.makeInference();
-          } catch ( gum::Exception& e ) {
-            GUM_SHOWERROR(e);
+      gum::LoopyBeliefPropagation<float> inf( &bn );
+      try {
+        inf.setVerbosity( false );
+        inf.makeInference();
+        GUM_TRACE_VAR( inf.messageApproximationScheme() );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
 
-            TS_ASSERT(false);
-          }
-        }
+      try {
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+    }
 
-        void testLBPInf_2() {
-          /*fill( *bn );
-          gum::LoopyBeliefPropagation<float> inf( bn );
-          inf.setVerbosity( false );
+    void /*test*/LBPInf_alarm() {
+      try {
+        std::string           file = GET_RESSOURCES_PATH( "alarm.bif" );
+        gum::BayesNet<float>  alarm;
+        gum::BIFReader<float> reader( &alarm, file );
+        reader.proceed();
 
-          try {
-            // Testing the inference
-            inf.makeInference();
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+        gum::LazyPropagation<float> lazy( &alarm );
+        lazy.makeInference();
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i1 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+        GUM_CHECKPOINT;
+        gum::LoopyBeliefPropagation<float> inf( &alarm );
+        inf.setVerbosity( false );
+        // Testing the inference
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i2 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            std::cerr << e.errorContent() << std::endl;
-            TS_ASSERT( false );
-          }
+        GUM_CHECKPOINT;
+        inf.makeInference();
+        GUM_TRACE_VAR( inf.messageApproximationScheme() );
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i3 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+        __compareInference( alarm, lazy, inf );
+        GUM_CHECKPOINT;
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i4 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+      } catch ( gum::Exception e ) {
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+    }
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i5 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }*/
-        }
+    void testLBPInf_3() {
+      /*
+      gum::List<const gum::Potential<float>*> e_list;
+      e_list.insert( e_i1 );
+      e_list.insert( e_i4 );
 
-        void testLBPInf_3() {
-          /*fill( *bn );
-          gum::List<const gum::Potential<float>*> e_list;
-          e_list.insert( e_i1 );
-          e_list.insert( e_i4 );
+      gum::LoopyBeliefPropagation<float> inf( bn );
+      inf.setVerbosity( false );
 
-          gum::LoopyBeliefPropagation<float> inf( bn );
-          inf.setVerbosity( false );
+      try {
+        for ( auto pot : e_list )
+          inf.addEvidence( *pot );
+      } catch ( gum::Exception e ) {
+        std::cerr << std::endl << e.errorContent() << std::endl;
+        TS_ASSERT( false );
+      }
 
-          try {
-            for ( auto pot : e_list )
-              inf.addEvidence( *pot );
-          } catch ( gum::Exception e ) {
-            std::cerr << std::endl << e.errorContent() << std::endl;
-            TS_ASSERT( false );
-          }
+      try {
+        // Testing the inference
+        inf.makeInference();
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
+      }
 
-          try {
-            // Testing the inference
-            inf.makeInference();
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+      try {
+        const gum::Potential<float>& posterior = inf.posterior( i1 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
+      }
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i1 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+      try {
+        const gum::Potential<float>& posterior = inf.posterior( i2 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
+      }
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i2 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+      try {
+        const gum::Potential<float>& posterior = inf.posterior( i3 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
+      }
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i3 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+      try {
+        const gum::Potential<float>& posterior = inf.posterior( i4 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
+      }
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i4 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+      try {
+        const gum::Potential<float>& posterior = inf.posterior( i5 );
+        printPotential( posterior );
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
+      }*/
+    }
 
-          try {
-            const gum::Potential<float>& posterior = inf.posterior( i5 );
-            printPotential( posterior );
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }*/
-        }
+    void /*test*/LBPInfListener() {
+      gum::BayesNet<float> bn;
+      fillBN( bn );
 
-        void testLBPInfListener() {
-          fill( *bn );
-          gum::List<const gum::Potential<float>*> e_list;
-          e_list.insert( e_i1 );
-          e_list.insert( e_i4 );
+      gum::Potential<float> e_i1;
+      e_i1 << bn.variable( "1" );
+      e_i1.fillWith( {1.0f, 0.0f} );
 
-          gum::LoopyBeliefPropagation<float> inf( bn );
+      gum::Potential<float> e_i4;
+      e_i4 << bn.variable( "4" );
+      e_i1.fillWith( {0.0f, 1.0f} );
 
-          aSimpleLBPListener agsl( inf );
+      gum::List<const gum::Potential<float>*> e_list;
+      e_list.insert( &e_i1 );
+      e_list.insert( &e_i4 );
 
-          try {
-            // Testing the inference
-            inf.makeInference();
-          } catch ( gum::Exception e ) {
-            TS_ASSERT( false );
-          }
+      gum::LoopyBeliefPropagation<float> inf( &bn );
 
-          TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize() + inf.burnIn(),
-                            inf.nbrIterations() );
-          TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
-        }
+      aSimpleLBPListener agsl( inf );
+
+      try {
+        // Testing the inference
+        inf.makeInference();
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
+      }
+
+      TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize() + inf.burnIn(),
+                        inf.nbrIterations() );
+      TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
+    }
+
 
     private:
-        // Builds a BN to test the inference
-        void fill( gum::BayesNet<float>& bn ) {
-          bn.cpt( i1 ).fillWith( {0.2f, 0.8f} );
-          bn.cpt( i2 ).fillWith( {0.3f, 0.7f} );
-          bn.cpt( i3 ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
-          bn.cpt( i4 ).fillWith(  // clang-format off
+    template <typename GUM_SCALAR>
+    void __compareInference( const gum::BayesNet<GUM_SCALAR>&        bn,
+                             gum::LazyPropagation<GUM_SCALAR>&       lazy,
+                             gum::LoopyBeliefPropagation<GUM_SCALAR> inf ) {
+      GUM_SCALAR err = static_cast<GUM_SCALAR>( 0 );
+
+      for ( const auto& node : bn.nodes() ) {
+        GUM_TRACE( bn.variable( node ).name() );
+        GUM_TRACE( lazy.posterior( node ) );
+        GUM_TRACE( inf.posterior( node ) );
+        GUM_SCALAR e =
+            ( lazy.posterior( node ) - inf.posterior( node ) ).sq().max();
+        if ( e > err ) err=e;
+      }
+      TS_ASSERT_LESS_THAN( err, 1e-3 );
+    }
+
+    void fillBN( gum::BayesNet<float>& bn ) {
+      if ( bn.size() == 0 ) {  // we fill this only once
+        gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
+            n3( "3", "", 2 );
+        gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+
+        auto i1 = bn.add( n1 );
+        auto i2 = bn.add( n2 );
+        auto i3 = bn.add( n3 );
+        auto i4 = bn.add( n4 );
+        auto i5 = bn.add( n5 );
+
+        bn.addArc( i1, i3 );
+        bn.addArc( i1, i4 );
+        bn.addArc( i3, i5 );
+        bn.addArc( i4, i5 );
+        bn.addArc( i2, i4 );
+        bn.addArc( i2, i5 );
+
+        bn.cpt( i1 ).fillWith( {0.2f, 0.8f} );
+        bn.cpt( i2 ).fillWith( {0.3f, 0.7f} );
+        bn.cpt( i3 ).fillWith( {0.1f, 0.9f, 0.9f, 0.1f} );
+        bn.cpt( i4 ).fillWith(  // clang-format off
                   {0.4f, 0.6f,
                    0.5f, 0.5f,
                    0.5f, 0.5f,
-                   1.0f, 0.0f} );  // clang-format
+                   1.0f, 0.0f});  // clang-format
           // on
-          bn.cpt( i5 ).fillWith(  // clang-format off
+          bn.cpt(i5).fillWith(  // clang-format off
                   {0.3f, 0.6f, 0.1f,
                    0.5f, 0.5f, 0.0f,
                    0.5f, 0.5f, 0.0f,
@@ -313,7 +292,8 @@ namespace gum_tests {
                    0.4f, 0.6f, 0.0f,
                    0.5f, 0.5f, 0.0f,
                    0.5f, 0.5f, 0.0f,
-                   0.0f, 0.0f, 1.0f} );  // clang-format on
+                   0.0f, 0.0f, 1.0f});  // clang-format on
+      }
     }
   };
 }

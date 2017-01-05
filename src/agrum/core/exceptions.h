@@ -43,7 +43,7 @@
   }
 #define GUM_SHOWERROR( e )                                                \
   {                                                                       \
-    std::cerr << __FILE__ << ":" << __LINE__ << ": " << ( e ).errorType() \
+    std::cout << __FILE__ << ":" << __LINE__ << ": " << ( e ).errorType() \
               << " - " << ( e ).errorContent() << std::endl;              \
   }
 #else

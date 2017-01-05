@@ -86,13 +86,13 @@ namespace gum {
     void __initStats();
 
     void                  __init_messages();
-    Potential<GUM_SCALAR> __computeProdPi( NodeId node );
-    Potential<GUM_SCALAR> __computeProdPi( NodeId node, NodeId except );
+    Potential<GUM_SCALAR> __computeProdPi( NodeId X );
+    Potential<GUM_SCALAR> __computeProdPi( NodeId X, NodeId except );
     Potential<GUM_SCALAR> __computeProdLambda( NodeId node );
-    Potential<GUM_SCALAR> __computeProdLambda( NodeId node, NodeId except );
+    Potential<GUM_SCALAR> __computeProdLambda( NodeId X, NodeId except );
 
     //return the max differential KL for this node
-    GUM_SCALAR __updateNodeMessage( NodeId node );
+    GUM_SCALAR __updateNodeMessage( NodeId X );
   };
 
   // extern template class LoopyBeliefPropagation<float>;

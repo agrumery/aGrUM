@@ -28,9 +28,9 @@
 #include <string>
 
 #define LBP_DEFAULT_MAXITER 10000000
-#define LBP_DEFAULT_EPSILON 1e-4 * std::log( 2 )
+#define LBP_DEFAULT_EPSILON 1e-4
 #define LBP_DEFAULT_MIN_EPSILON_RATE 1e-4
-#define LBP_DEFAULT_PERIOD_SIZE 500
+#define LBP_DEFAULT_PERIOD_SIZE 1  // no period size
 #define LBP_DEFAULT_VERBOSITY false
 
 
@@ -89,106 +89,119 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>
-  LoopyBeliefPropagation<GUM_SCALAR>::__computeProdPi( NodeId node ) {
-    auto piX = this->BN().cpt( node );
-    for ( const auto& par : this->BN().dag().parents( node ) ) {
-      piX *= __messages[Arc( par, node )];
+  LoopyBeliefPropagation<GUM_SCALAR>::__computeProdPi( NodeId X ) {
+    const auto& varX = this->BN().variable( X );
+
+    auto piX = this->BN().cpt( X );
+    for ( const auto& U : this->BN().dag().parents( X ) ) {
+      piX *= __messages[Arc( U, X )];
     }
-    return piX;
-  }
-
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR>
-  LoopyBeliefPropagation<GUM_SCALAR>::__computeProdPi( NodeId node,
-                                                       NodeId except ) {
-    auto piX = this->BN().cpt( node );
-    for ( const auto& par : this->BN().dag().parents( node ) ) {
-      if ( par != except ) {
-        piX *= __messages[Arc( par, node )];
-      }
-    }
-    return piX;
-  }
-
-
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR>
-  LoopyBeliefPropagation<GUM_SCALAR>::__computeProdLambda( NodeId node ) {
-    Potential<GUM_SCALAR> lamX;
-    if ( this->hasEvidence( node ) ) {
-      lamX = *( this->evidence()[node] );
-    } else {
-      lamX.add( this->BN().variable( node ) );
-      lamX.fill( 1 );
-    }
-    for ( const auto& child : this->BN().dag().children( node ) ) {
-      lamX *= __messages[Arc( child, node )];
-    }
-    return lamX;
-  }
-
-  template <typename GUM_SCALAR>
-  Potential<GUM_SCALAR>
-  LoopyBeliefPropagation<GUM_SCALAR>::__computeProdLambda( NodeId node,
-                                                           NodeId except ) {
-    Potential<GUM_SCALAR> lamX;
-    if ( this->hasEvidence( node ) ) {
-      lamX = *this->evidence()[node];
-    } else {
-      lamX.add( this->BN().variable( node ) );
-      lamX.fill( 1 );
-      lamX.normalize();
-    }
-    for ( const auto& child : this->BN().dag().children( node ) ) {
-      if ( child != except ) {
-        lamX *= __messages[Arc( child, node )];
-      }
-    }
-    return lamX;
-  }
-
-
-  template <typename GUM_SCALAR>
-  GUM_SCALAR
-  LoopyBeliefPropagation<GUM_SCALAR>::__updateNodeMessage( NodeId nodeX ) {
-    const auto& varX = this->BN().variable( nodeX );
-
-    auto piX = __computeProdPi( nodeX );
     piX = piX.margSumIn( {&varX} );
+    GUM_TRACE_VAR( piX );
 
-    auto lamX = __computeProdLambda( nodeX );
+    return piX;
+  }
+
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>
+  LoopyBeliefPropagation<GUM_SCALAR>::__computeProdPi( NodeId X, NodeId except ) {
+    const auto& varX = this->BN().variable( X );
+    const auto& varExcept = this->BN().variable( except );
+    auto        piXexcept = this->BN().cpt( X );
+    for ( const auto& U : this->BN().dag().parents( X ) ) {
+      if ( U != except ) {
+        piXexcept *= __messages[Arc( U, X )];
+      }
+    }
+    piXexcept = piXexcept.margSumIn( {&varX, &varExcept} );
+    GUM_TRACE_VAR( piXexcept );
+    return piXexcept;
+  }
+
+
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>
+  LoopyBeliefPropagation<GUM_SCALAR>::__computeProdLambda( NodeId X ) {
+    Potential<GUM_SCALAR> lamX;
+    if ( this->hasEvidence( X ) ) {
+      lamX = *( this->evidence()[X] );
+    } else {
+      lamX.add( this->BN().variable( X ) );
+      lamX.fill( 1 );
+    }
+    for ( const auto& Y : this->BN().dag().children( X ) ) {
+      lamX *= __messages[Arc( Y, X )];
+    }
+    lamX.normalize();
+
+    GUM_TRACE_VAR( lamX );
+    return lamX;
+  }
+
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR>
+  LoopyBeliefPropagation<GUM_SCALAR>::__computeProdLambda( NodeId X,
+                                                           NodeId except ) {
+    Potential<GUM_SCALAR> lamXexcept;
+    if ( this->hasEvidence( X ) ) {
+      lamXexcept = *this->evidence()[X];
+    } else {
+      lamXexcept.add( this->BN().variable( X ) );
+      lamXexcept.fill( 1 );
+      lamXexcept.normalize();
+    }
+    for ( const auto& Y : this->BN().dag().children( X ) ) {
+      if ( Y != except ) {
+        lamXexcept *= __messages[Arc( Y, X )];
+      }
+    }
+    lamXexcept.normalize();
+
+    GUM_TRACE_VAR( lamXexcept );
+    return lamXexcept;
+  }
+
+
+  template <typename GUM_SCALAR>
+  GUM_SCALAR LoopyBeliefPropagation<GUM_SCALAR>::__updateNodeMessage( NodeId X ) {
+    const auto& varX = this->BN().variable( X );
+    GUM_TRACE( "== NODE " << X + 1 )
+    auto piX = __computeProdPi( X );
+    auto lamX = __computeProdLambda( X );
 
     GUM_SCALAR KL = 0;
 
-    // update lambda_par (for arc par->x)
-    for ( const auto& par : this->BN().dag().parents( nodeX ) ) {
-      auto newLambda = ( __computeProdPi( nodeX, par )
-                             .margSumIn( {&varX, &this->BN().variable( par )} ) *
-                         lamX )
+    // update lambda_par (for arc U->x)
+    for ( const auto& U : this->BN().dag().parents( X ) ) {
+      GUM_TRACE( "LAMBDA " << U + 1 << "->" << X + 1 )
+      auto newLambda = ( __computeProdPi( X, U ) * lamX )
                            .margSumOut( {&varX} )
                            .normalize();  // normalizing lambda
-      GUM_SCALAR ekl = 0;
+      GUM_SCALAR ekl = static_cast<GUM_SCALAR>( 0 );
       try {
-        ekl = __messages[Arc( nodeX, par )].KL( newLambda );
+        ekl = __messages[Arc( X, U )].KL( newLambda );
       } catch ( FatalError ) {  // 0 misplaced
         GUM_ERROR( FatalError, "Not compatible lambda during computation" );
       }
       if ( ekl > KL ) KL = ekl;
-      __messages.set( Arc( nodeX, par ), newLambda );
+      GUM_TRACE_VAR( newLambda );
+      __messages.set( Arc( X, U ), newLambda );
     }
 
     // update pi_child (for arc x->child)
-    for ( const auto& chi : this->BN().dag().children( nodeX ) ) {
-      auto newPi = ( piX * __computeProdLambda( nodeX, chi ) ).normalize();
+    for ( const auto& Y : this->BN().dag().children( X ) ) {
+      GUM_TRACE( "PI " << X + 1 << "->" << Y + 1 )
+      auto newPi = ( piX * __computeProdLambda( X, Y ) ).normalize();
 
       GUM_SCALAR ekl = 0;
       try {
-        ekl = __messages[Arc( nodeX, chi )].KL( newPi );
+        ekl = __messages[Arc( X, Y )].KL( newPi );
       } catch ( FatalError ) {  // 0 misplaced
         GUM_ERROR( FatalError, "Not compatible pi during computation" );
       }
       if ( ekl > KL ) KL = ekl;
-      __messages.set( Arc( nodeX, chi ), newPi );
+      GUM_TRACE_VAR( newPi );
+      __messages.set( Arc( X, Y ), newPi );
     }
 
     return KL;
@@ -209,22 +222,25 @@ namespace gum {
     __initStats();
     initApproximationScheme();
 
-    std::vector<NodeId> suffleIds( this->BN().size() );
+    std::vector<NodeId> shuffleIds;
     for ( const auto& node : this->BN().nodes() )
-      suffleIds.push_back( node );
+      shuffleIds.push_back( node );
 
     auto engine = std::default_random_engine{};
 
     GUM_SCALAR error = 0.0;
     do {
-      std::shuffle( std::begin( suffleIds ), std::end( suffleIds ), engine );
-
-      updateApproximationScheme();
-
-      for ( const auto& node : suffleIds ) {
-        GUM_SCALAR e = __updateNodeMessage( node );
-        if ( error > e ) error = e;
+      std::shuffle( std::begin( shuffleIds ), std::end( shuffleIds ), engine );
+      for ( auto x : shuffleIds ) {
+        GUM_TRACE_VAR( x );
       }
+      updateApproximationScheme();
+      GUM_TRACE( "==================================" )
+      for ( const auto& node : shuffleIds ) {
+        GUM_SCALAR e = __updateNodeMessage( node );
+        if ( e > error ) error = e;
+      }
+      GUM_TRACE_VAR( error );
     } while ( continueApproximationScheme( error ) );
   }
 
@@ -233,8 +249,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE const Potential<GUM_SCALAR>&
   LoopyBeliefPropagation<GUM_SCALAR>::_posterior( NodeId id ) {
-    static auto p = __computeProdPi( id ).margSumIn( {&this->BN().variable( id )} );
-    p *= __computeProdLambda( id );
+    static auto p = __computeProdPi( id ) * __computeProdLambda( id );
     p.normalize();
 
     return p;
