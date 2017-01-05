@@ -10,16 +10,15 @@ interface generator."
 #pragma SWIG nowarn=341,342 // The 'using' keyword in type aliasing is not fully supported yet.
 #pragma SWIG nowarn=320 // Explicit template instantiation ignored.
 
+%begin %{
+#include <cmath>
+%}
+
 %include "std_vector.i"
 %include "std_string.i"
 
 %{
 #define SWIG_FILE_WITH_INIT
-
-// this should be removed at some point with a new version of SWIG
-using namespace std;
-
-#include <cmath>
 
 #include "extensions/helpers.h"
 %}
