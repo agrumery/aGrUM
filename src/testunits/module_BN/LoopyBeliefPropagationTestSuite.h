@@ -67,7 +67,7 @@ namespace gum_tests {
     public:
     void testFill() {
       gum::BayesNet<float> bn;
-      fillBN( bn );
+      __fillBN( bn );
 
       TS_ASSERT( bn.cpt( "1" ).nbrDim() == 1 );
 
@@ -93,9 +93,9 @@ namespace gum_tests {
     }
 
     // Testing when there is no evidence
-    void testLBPInf_1() {
+    void /*test*/ LBPInf_1() {
       gum::BayesNet<float> bn;
-      fillBN( bn );
+      __fillBN( bn );
       gum::LazyPropagation<float> lazy( &bn );
       lazy.makeInference();
 
@@ -117,7 +117,32 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/LBPInf_alarm() {
+    // Testing when there is no evidence
+    void testLBPInf_2() {
+      gum::BayesNet<float> bn;
+      __fillBN2( bn );
+      gum::LazyPropagation<float> lazy( &bn );
+      lazy.makeInference();
+
+      gum::LoopyBeliefPropagation<float> inf( &bn );
+      try {
+        inf.setVerbosity( false );
+        inf.makeInference();
+        GUM_TRACE_VAR( inf.messageApproximationScheme() );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+
+      try {
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+    }
+
+    void testLBPInf_alarm() {
       try {
         std::string           file = GET_RESSOURCES_PATH( "alarm.bif" );
         gum::BayesNet<float>  alarm;
@@ -127,17 +152,14 @@ namespace gum_tests {
         gum::LazyPropagation<float> lazy( &alarm );
         lazy.makeInference();
 
-        GUM_CHECKPOINT;
         gum::LoopyBeliefPropagation<float> inf( &alarm );
         inf.setVerbosity( false );
         // Testing the inference
 
-        GUM_CHECKPOINT;
         inf.makeInference();
         GUM_TRACE_VAR( inf.messageApproximationScheme() );
 
         __compareInference( alarm, lazy, inf );
-        GUM_CHECKPOINT;
 
       } catch ( gum::Exception e ) {
         GUM_SHOWERROR( e );
@@ -205,9 +227,9 @@ namespace gum_tests {
       }*/
     }
 
-    void /*test*/LBPInfListener() {
+    void /*test*/ LBPInfListener() {
       gum::BayesNet<float> bn;
-      fillBN( bn );
+      __fillBN( bn );
 
       gum::Potential<float> e_i1;
       e_i1 << bn.variable( "1" );
@@ -246,17 +268,18 @@ namespace gum_tests {
       GUM_SCALAR err = static_cast<GUM_SCALAR>( 0 );
 
       for ( const auto& node : bn.nodes() ) {
-        GUM_TRACE( bn.variable( node ).name() );
-        GUM_TRACE( lazy.posterior( node ) );
-        GUM_TRACE( inf.posterior( node ) );
-        GUM_SCALAR e =
-            ( lazy.posterior( node ) - inf.posterior( node ) ).sq().max();
-        if ( e > err ) err=e;
+        GUM_SCALAR e = lazy.posterior( node ).KL( inf.posterior( node ) );
+        if ( e > err ) {
+          err = e;
+          GUM_TRACE( bn.variable( node ).name() );
+          GUM_TRACE( lazy.posterior( node ) );
+          GUM_TRACE( inf.posterior( node ) );
+        }
       }
       TS_ASSERT_LESS_THAN( err, 1e-3 );
     }
 
-    void fillBN( gum::BayesNet<float>& bn ) {
+    void __fillBN( gum::BayesNet<float>& bn ) {
       if ( bn.size() == 0 ) {  // we fill this only once
         gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ),
             n3( "3", "", 2 );
@@ -293,6 +316,28 @@ namespace gum_tests {
                    0.5f, 0.5f, 0.0f,
                    0.5f, 0.5f, 0.0f,
                    0.0f, 0.0f, 1.0f});  // clang-format on
+      }
+    }
+    void __fillBN2( gum::BayesNet<float>& bn ) {
+      if ( bn.size() == 0 ) {  // we fill this only once
+        gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 3 ),
+            n3( "3", "", 4 );
+        gum::LabelizedVariable n4( "4", "", 5 ), n5( "5", "", 6 );
+
+        auto i1 = bn.add( n1 );
+        auto i2 = bn.add( n2 );
+        auto i3 = bn.add( n3 );
+        auto i4 = bn.add( n4 );
+        auto i5 = bn.add( n5 );
+
+        bn.addArc( i1, i3 );
+        bn.addArc( i1, i4 );
+        bn.addArc( i3, i5 );
+        bn.addArc( i4, i5 );
+        bn.addArc( i2, i4 );
+        bn.addArc( i2, i5 );
+
+        bn.generateCPTs();
       }
     }
   };

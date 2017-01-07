@@ -81,7 +81,8 @@ namespace gum {
 
     // will be used in both directions :
     // for x->y, (x,y) and (y,x) will be in __messages
-    ArcProperty<Potential<GUM_SCALAR>> __messages;
+    ArcProperty<Potential<GUM_SCALAR>>  __messages;
+    NodeProperty<Potential<GUM_SCALAR>> __posteriors;
 
     void __initStats();
 
@@ -91,7 +92,7 @@ namespace gum {
     Potential<GUM_SCALAR> __computeProdLambda( NodeId node );
     Potential<GUM_SCALAR> __computeProdLambda( NodeId X, NodeId except );
 
-    //return the max differential KL for this node
+    // return the max differential KL for this node
     GUM_SCALAR __updateNodeMessage( NodeId X );
   };
 
