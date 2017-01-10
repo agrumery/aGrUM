@@ -49,8 +49,46 @@
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
 
 #include <agrum/BN/generator/simpleCPTGenerator.h>
+#include <agrum/core/utils_string.h>
 
 namespace gum {
+
+  template <typename GUM_SCALAR>
+  BayesNet<GUM_SCALAR>
+  BayesNet<GUM_SCALAR>::fastPrototype( const std::string& dotlike,
+                                       Size               domainSize ) {
+    gum::BayesNet<GUM_SCALAR> bn;
+
+
+    for ( const auto& chaine : split( dotlike, ";" ) ) {
+      NodeId lastId = 0;
+      bool   notfirst = false;
+      for ( const auto& node : split( chaine, "->" ) ) {
+        auto               r = split( node, "\\[|\\]" );
+        const std::string& name = r[0];
+
+        auto ds = domainSize;
+        if ( r.size() > 1 ) {
+          ds = static_cast<Size>( std::stoi( r[1] ) );
+        }
+
+        NodeId idVar;
+        try {
+          idVar = bn.idFromName( name );
+        } catch ( gum::NotFound ) {
+          idVar = bn.add( LabelizedVariable( name, name, ds ) );
+        }
+        if ( notfirst ) {
+          bn.addArc( lastId, idVar );
+        } else {
+          notfirst = true;
+        }
+        lastId = idVar;
+      }
+    }
+    bn.generateCPTs();
+    return bn;
+  }
 
   template <typename GUM_SCALAR>
   INLINE BayesNet<GUM_SCALAR>::BayesNet()

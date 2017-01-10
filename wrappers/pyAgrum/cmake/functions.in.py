@@ -126,40 +126,7 @@ def fastBN(arcs,domain_size=2):
   :param domain_size: number of modalities for each created variable.
   :return: the created pyAgrum.BayesNet
   """
-  def _split(a):
-    r=a.split('[')
-    if len(r)==1:
-        return a,None
-    else:
-        n=r[0]
-        d=int(r[1][:-1])
-        if d<2:
-            d=2
-        return n,d
-  def _getId(bn,a):
-    name,domain=_split(a)
-    try:
-      ia=bn.idFromName(name)
-      # we do not use the domain
-    except IndexError:
-      if domain is None:
-        domain=domain_size
-      ia=bn.add(name,domain)
-    return ia
-
-  bn=BayesNet()
-  for arc in arcs.split(";"):
-    if arc!="":
-      l=arc.split("->")
-      if len(l)==1: # cannot be 0
-        _getId(bn,l[0])
-      else:
-        for a, b in zip(l[:-1], l[1:]):
-          ia=_getId(bn,a)
-          ib=_getId(bn,b)
-          bn.addArc(ia,ib)
-  bn.generateCPTs()
-  return bn
+  return BayesNet.fastPrototype(arcs,domain_size)
 
 def getPosterior(bn, target, evs):
   """

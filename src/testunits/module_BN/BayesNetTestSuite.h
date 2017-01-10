@@ -926,6 +926,39 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( bn.minimalCondSet( 4, gum::NodeSet( {0, 1, 3, 5} ) ),
                         gum::NodeSet( {0, 1, 3} ) );
     }
+
+    void testFastPrototype() {
+      auto bn = gum::BayesNet<int>::fastPrototype( "a->b->c;a->c" );
+      TS_ASSERT_EQUALS( bn.size(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS( bn.sizeArcs(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS(
+          bn.dim(),
+          gum::Size( ( 2 - 1 ) + ( 2 * ( 2 - 1 ) ) + ( 2 * 2 * ( 2 - 1 ) ) ) );
+
+      bn = gum::BayesNet<int>::fastPrototype( "a->b->c;a->c", 3 );
+      TS_ASSERT_EQUALS( bn.size(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS( bn.sizeArcs(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS(
+          bn.dim(),
+          gum::Size( ( 3 - 1 ) + ( 3 * ( 3 - 1 ) ) + ( 3 * 3 * ( 3 - 1 ) ) ) );
+
+      bn = gum::BayesNet<int>::fastPrototype( "a->b[5]->c;a->c" );
+      TS_ASSERT_EQUALS( bn.size(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS( bn.sizeArcs(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS(
+          bn.dim(),
+          gum::Size( ( 2 - 1 ) + ( 2 * ( 5 - 1 ) ) + ( 5 * 2 * ( 2 - 1 ) ) ) );
+
+      bn = gum::BayesNet<int>::fastPrototype( "a->b->c;a[1000]->c" );
+      TS_ASSERT_EQUALS( bn.size(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS( bn.sizeArcs(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS(
+          bn.dim(),
+          gum::Size( ( 2 - 1 ) + ( 2 * ( 2 - 1 ) ) + ( 2 * 2 * ( 2 - 1 ) ) ) );
+
+      TS_ASSERT_THROWS( bn = gum::BayesNet<int>::fastPrototype( "a->b->c->a" ),
+                        gum::InvalidDirectedCycle );
+    }
   };
 
 }  // tests
