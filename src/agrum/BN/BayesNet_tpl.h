@@ -128,10 +128,12 @@ namespace gum {
   template <typename GUM_SCALAR>
   BayesNet<GUM_SCALAR>::~BayesNet() {
     GUM_DESTRUCTOR( BayesNet );
-
+    GUM_CHECKPOINT;
     for ( auto p : __probaMap ) {
       delete p.second;
+      GUM_CHECKPOINT;
     }
+    GUM_CHECKPOINT;
   }
 
   template <typename GUM_SCALAR>

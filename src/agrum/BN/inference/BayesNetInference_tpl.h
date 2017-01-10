@@ -52,8 +52,7 @@ namespace gum {
     // Warning: Do not use method eraseAllEvidence () because it contains a call
     // to pure virtual method _onAllEvidenceErased which belongs to an inherited
     // instance and, therefore, does not exist anymore when ~BayesNetInference ()
-    // is
-    // called
+    // is called
     for ( const auto& pair : __evidence ) {
       if ( pair.second != nullptr ) {
         delete ( pair.second );
@@ -88,8 +87,7 @@ namespace gum {
 
   // Returns a constant reference over the IBayesNet referenced by this class
   template <typename GUM_SCALAR>
-  INLINE const IBayesNet<GUM_SCALAR>&
-               BayesNetInference<GUM_SCALAR>::BN() const {
+  INLINE const IBayesNet<GUM_SCALAR>& BayesNetInference<GUM_SCALAR>::BN() const {
     if ( __bn == nullptr )
       GUM_ERROR( UndefinedElement,
                  "No Bayes net has been assigned to "
@@ -100,8 +98,7 @@ namespace gum {
 
   // assigns a new BN to the inference engine
   template <typename GUM_SCALAR>
-  void
-  BayesNetInference<GUM_SCALAR>::setBN(const IBayesNet<GUM_SCALAR> *bn) {
+  void BayesNetInference<GUM_SCALAR>::setBN( const IBayesNet<GUM_SCALAR>* bn ) {
     clear();
     __bn = bn;
     __computeDomainSizes();
@@ -227,7 +224,7 @@ namespace gum {
   INLINE void
   BayesNetInference<GUM_SCALAR>::addEvidence( const std::string& nodeName,
                                               const Idx          val ) {
-    addEvidence(this->BN().idFromName( nodeName ), val );
+    addEvidence( this->BN().idFromName( nodeName ), val );
   }
 
   // adds a new hard evidence on node id
@@ -277,7 +274,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void BayesNetInference<GUM_SCALAR>::addEvidence(
       const std::string& nodeName, const std::vector<GUM_SCALAR>& vals ) {
-    addEvidence(this->BN().idFromName( nodeName ), vals );
+    addEvidence( this->BN().idFromName( nodeName ), vals );
   }
 
   // adds a new evidence on node id (might be soft or hard)
@@ -384,7 +381,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE bool
   BayesNetInference<GUM_SCALAR>::hasEvidence( const std::string& nodeName ) const {
-    return hasEvidence(this->BN().idFromName( nodeName ) );
+    return hasEvidence( this->BN().idFromName( nodeName ) );
   }
 
 
@@ -392,7 +389,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE bool BayesNetInference<GUM_SCALAR>::hasHardEvidence(
       const std::string& nodeName ) const {
-    return hasHardEvidence(this->BN().idFromName( nodeName ) );
+    return hasHardEvidence( this->BN().idFromName( nodeName ) );
   }
 
 
@@ -400,7 +397,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE bool BayesNetInference<GUM_SCALAR>::hasSoftEvidence(
       const std::string& nodeName ) const {
-    return hasSoftEvidence(this->BN().idFromName( nodeName ) );
+    return hasSoftEvidence( this->BN().idFromName( nodeName ) );
   }
 
   // change the value of an already existing hard evidence
@@ -415,7 +412,7 @@ namespace gum {
   INLINE void
   BayesNetInference<GUM_SCALAR>::chgEvidence( const std::string& nodeName,
                                               const Idx          val ) {
-    chgEvidence(this->BN().idFromName( nodeName ), val );
+    chgEvidence( this->BN().idFromName( nodeName ), val );
   }
 
   // change the value of an already existing hard evidence
@@ -466,7 +463,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void BayesNetInference<GUM_SCALAR>::chgEvidence(
       const std::string& nodeName, const std::vector<GUM_SCALAR>& vals ) {
-    chgEvidence(this->BN().idFromName( nodeName ), vals );
+    chgEvidence( this->BN().idFromName( nodeName ), vals );
   }
 
 
@@ -562,7 +559,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void
   BayesNetInference<GUM_SCALAR>::eraseEvidence( const std::string& nodeName ) {
-    eraseEvidence(this->BN().idFromName( nodeName ) );
+    eraseEvidence( this->BN().idFromName( nodeName ) );
   }
 
 
@@ -665,7 +662,7 @@ namespace gum {
   // prepare the internal inference structures for the next inference
   template <typename GUM_SCALAR>
   INLINE void BayesNetInference<GUM_SCALAR>::prepareInference() {
-    if (isInferenceReady() || isDone() ) {
+    if ( isInferenceReady() || isDone() ) {
       return;
     }
 
