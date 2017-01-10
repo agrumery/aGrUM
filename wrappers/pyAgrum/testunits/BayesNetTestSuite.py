@@ -221,6 +221,30 @@ class TestFeatures(BayesNetTestCase):
     self.assertEquals(bn.maxParam(), 1.0)
     self.assertEquals(bn.minNonZeroParam(), 0.1)
     self.assertEquals(bn.maxNonOneParam(), 0.9)
+    
+  def test_fastBN(self):
+    bn=gum.fastBN("a->b->c;a->c" )
+    self.assertEquals(bn.size(),3)
+    self.assertEquals(bn.sizeArcs(),3)
+    self.assertEquals(bn.dim(),( 2 - 1 ) + ( 2 * ( 2 - 1 ) ) + ( 2 * 2 * ( 2 - 1 ) ))
+    
+    bn=gum.fastBN("a->b->c;a->c",3 )
+    self.assertEquals(bn.size(),3)
+    self.assertEquals(bn.sizeArcs(),3)
+    self.assertEquals(bn.dim(),( 3 - 1 ) + ( 3 * ( 3 - 1 ) ) + ( 3 * 3 * ( 3 - 1 ) ))
+    
+    bn=gum.fastBN("a->b[5]->c;a->c" )
+    self.assertEquals(bn.size(),3)
+    self.assertEquals(bn.sizeArcs(),3)
+    self.assertEquals(bn.dim(),( 2 - 1 ) + ( 2 * ( 5 - 1 ) ) + ( 2 * 5 * ( 2 - 1 ) ))
+    
+    bn=gum.fastBN("a->b->c;a[1000]->c" )
+    self.assertEquals(bn.size(),3)
+    self.assertEquals(bn.sizeArcs(),3)
+    self.assertEquals(bn.dim(),( 2 - 1 ) + ( 2 * ( 2 - 1 ) ) + ( 2 * 2 * ( 2 - 1 ) ))
+    
+    with self.assertRaises(gum.InvalidDirectedCycle):
+      bn=gum.fastBN("a->b->c->a" )
 
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
@@ -257,7 +281,6 @@ class TestFeatures(BayesNetTestCase):
 
     r = bn.minimalCondSet(iC, set([iC, iE, iF, iG]))
     self.assertEqual(r, set([iC]))
-
 
 class TestLoadBN(BayesNetTestCase):
   def listen(self, percent):

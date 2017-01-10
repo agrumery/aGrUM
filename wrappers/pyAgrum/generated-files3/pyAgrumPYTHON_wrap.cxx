@@ -45755,6 +45755,131 @@ SWIGINTERN PyObject *IBayesNet_double_swigregister(PyObject *SWIGUNUSEDPARM(self
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_BayesNet_double_fastPrototype__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string *arg1 = 0 ;
+  gum::Size arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::BayesNet< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:BayesNet_double_fastPrototype",&obj0,&obj1)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(obj0, &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_fastPrototype" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "BayesNet_double_fastPrototype" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "BayesNet_double_fastPrototype" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      result = gum::BayesNet< double >::SWIGTEMPLATEDISAMBIGUATOR fastPrototype((std::string const &)*arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::BayesNet< double >(static_cast< const gum::BayesNet< double >& >(result))), SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_double_fastPrototype__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  gum::BayesNet< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:BayesNet_double_fastPrototype",&obj0)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(obj0, &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_fastPrototype" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "BayesNet_double_fastPrototype" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    try {
+      result = gum::BayesNet< double >::SWIGTEMPLATEDISAMBIGUATOR fastPrototype((std::string const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::BayesNet< double >(static_cast< const gum::BayesNet< double >& >(result))), SWIGTYPE_p_gum__BayesNetT_double_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_double_fastPrototype(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_BayesNet_double_fastPrototype__SWIG_1(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_long(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_BayesNet_double_fastPrototype__SWIG_0(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'BayesNet_double_fastPrototype'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::BayesNet< double >::fastPrototype(std::string const &,gum::Size)\n"
+    "    gum::BayesNet< double >::fastPrototype(std::string const &)\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap_new_BayesNet_double__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *result = 0 ;
@@ -85163,6 +85288,21 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"IBayesNet_double_swigregister", IBayesNet_double_swigregister, METH_VARARGS, NULL},
+	 { (char *)"BayesNet_double_fastPrototype", _wrap_BayesNet_double_fastPrototype, METH_VARARGS, (char *)"\n"
+		"fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> BayesNet_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"dotlike: std::string const &\n"
+		"domainSize: gum::Size\n"
+		"\n"
+		"BayesNet_double_fastPrototype(std::string const & dotlike) -> BayesNet_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"dotlike: std::string const &\n"
+		"\n"
+		""},
 	 { (char *)"delete_BayesNet_double", _wrap_delete_BayesNet_double, METH_VARARGS, (char *)"\n"
 		"delete_BayesNet_double(BayesNet_double self)\n"
 		"\n"

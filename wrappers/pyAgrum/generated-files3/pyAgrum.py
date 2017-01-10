@@ -9839,6 +9839,26 @@ class BayesNet_double(IBayesNet_double):
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, BayesNet_double, name)
     __repr__ = _swig_repr
+
+    def fastPrototype(dotlike: 'std::string const &', domainSize: 'gum::Size'=2) -> "gum::BayesNet< double >":
+        """
+        fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> BayesNet_double
+
+        Parameters
+        ----------
+        dotlike: std::string const &
+        domainSize: gum::Size
+
+        fastPrototype(std::string const & dotlike) -> BayesNet_double
+
+        Parameters
+        ----------
+        dotlike: std::string const &
+
+        """
+        return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
+
+    fastPrototype = staticmethod(fastPrototype)
     __swig_destroy__ = _pyAgrum.delete_BayesNet_double
     __del__ = lambda self: None
 
@@ -10733,6 +10753,24 @@ class BayesNet_double(IBayesNet_double):
 
 BayesNet_double_swigregister = _pyAgrum.BayesNet_double_swigregister
 BayesNet_double_swigregister(BayesNet_double)
+
+def BayesNet_double_fastPrototype(dotlike: 'std::string const &', domainSize: 'gum::Size'=2) -> "gum::BayesNet< double >":
+    """
+    fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> BayesNet_double
+
+    Parameters
+    ----------
+    dotlike: std::string const &
+    domainSize: gum::Size
+
+    BayesNet_double_fastPrototype(std::string const & dotlike) -> BayesNet_double
+
+    Parameters
+    ----------
+    dotlike: std::string const &
+
+    """
+    return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
 
 class BayesNetInference_double(_object):
     """Proxy of C++ gum::BayesNetInference<(double)> class."""

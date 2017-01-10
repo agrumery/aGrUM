@@ -124,6 +124,8 @@ def fastBN(arcs,domain_size=2):
   :param domain_size: number of modalities for each created variable.
   :return: the created pyAgrum.BayesNet
   """
+  return BayesNet.fastPrototype(arcs,domain_size)
+  """
   def _getId(bn,a):
     try:
       ia=bn.idFromName(a)
@@ -144,6 +146,7 @@ def fastBN(arcs,domain_size=2):
           bn.addArc(ia,ib)
   bn.generateCPTs()
   return bn
+  """
 
 def getPosterior(bn, target, evs):
   """
