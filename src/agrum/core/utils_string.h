@@ -59,6 +59,14 @@ namespace gum {
    */
   bool endsWith( std::string const& value, std::string const& ending );
 
+  /**
+   * @brief Split str using the regexp delimiter
+   * @param orig searched string
+   * @param delimiter  regexp for delimiters
+   * @return Vector of splitted strings
+   */
+  std::vector<std::string> split( const std::string& orig,
+                                  const std::string& delimiter );
   /// @}
 } /* namespace gum */
 

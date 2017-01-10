@@ -77,6 +77,19 @@ namespace gum {
     friend class BayesNetFactory<GUM_SCALAR>;
 
     public:
+    /**
+     * Create a bn with a dotlike syntax : 'a->b->c;b->d;'. The domain size maybe
+     * specified using 'a[10]'. Note that if the dotlike string contains such a
+     * specification  for an already defined variable, the first specification will
+     * be used.
+     *
+     * @param dotlike the string containing the specification
+     * @param domainSize the default domain size for variables
+     * @return the resulting bayesian network
+     */
+    static BayesNet<GUM_SCALAR> fastPrototype( const std::string& dotlike,
+                                               Size               domainSize = 2 );
+
     // ===========================================================================
     /// @name Constructors and Destructor
     // ===========================================================================

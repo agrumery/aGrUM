@@ -24,6 +24,8 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
+#include <regex>
+#include <iterator>
 
 #include <agrum/core/utils_string.h>
 
@@ -47,6 +49,15 @@ namespace gum {
     return std::equal( ending.rbegin(), ending.rend(), value.rbegin() );
   }
 
+  std::vector<std::string> split( const std::string& orig,
+                                  const std::string& delimiter ) {
+
+    std::regex rgx( delimiter );
+
+    std::sregex_token_iterator first{begin( orig ), end( orig ), rgx, -1}, last;
+
+    return {first, last};
+  }
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE
