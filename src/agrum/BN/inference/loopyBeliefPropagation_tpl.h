@@ -27,10 +27,10 @@
 #include <sstream>
 #include <string>
 
-#define LBP_DEFAULT_MAXITER 10000000
-#define LBP_DEFAULT_EPSILON 1e-4
-#define LBP_DEFAULT_MIN_EPSILON_RATE 1e-4
-#define LBP_DEFAULT_PERIOD_SIZE 1  // no period size
+#define LBP_DEFAULT_MAXITER 100
+#define LBP_DEFAULT_EPSILON 1e-8
+#define LBP_DEFAULT_MIN_EPSILON_RATE 1e-10
+#define LBP_DEFAULT_PERIOD_SIZE 1
 #define LBP_DEFAULT_VERBOSITY false
 
 
@@ -54,6 +54,7 @@ namespace gum {
     setMaxIter( LBP_DEFAULT_MAXITER );
     setVerbosity( LBP_DEFAULT_VERBOSITY );
     setPeriodSize( LBP_DEFAULT_PERIOD_SIZE );
+    setBurnIn(0); //no burn in for LBP
 
     __init_messages();
   }
@@ -156,7 +157,6 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   GUM_SCALAR LoopyBeliefPropagation<GUM_SCALAR>::__updateNodeMessage( NodeId X ) {
-    GUM_TRACE( "== NODE " << X + 1 )
     auto piX = __computeProdPi( X );
     auto lamX = __computeProdLambda( X );
 
@@ -165,7 +165,6 @@ namespace gum {
 
     // update lambda_par (for arc U->x)
     for ( const auto& U : this->BN().dag().parents( X ) ) {
-      GUM_TRACE( "LAMBDA " << U + 1 << "->" << X + 1 )
       auto newLambda = ( __computeProdPi( X, U ) * lamX )
                            .margSumIn( {&this->BN().variable( U )} );
       newLambda.normalize();
@@ -186,10 +185,8 @@ namespace gum {
 
     // update pi_child (for arc x->child)
     for ( const auto& Y : this->BN().dag().children( X ) ) {
-      GUM_TRACE( "PI " << X + 1 << "->" << Y + 1 )
       auto newPi = ( piX * __computeProdLambda( X, Y ) );
       newPi.normalize();
-      GUM_TRACE_VAR( newPi );
       GUM_SCALAR ekl = KL;
       try {
         ekl = __messages[Arc( X, Y )].KL( newPi );
@@ -205,11 +202,6 @@ namespace gum {
       __messages.set( Arc( X, Y ), newPi );
     }
 
-    if ( KL > 0 ) {
-      GUM_TRACE( "Error " << KL << " on " << __messages[argKL] );
-    } else {
-      GUM_TRACE( "No error" );
-    }
     return KL;
   }
 
@@ -242,7 +234,6 @@ namespace gum {
         GUM_SCALAR e = __updateNodeMessage( node );
         if ( e > error ) error = e;
       }
-      GUM_TRACE_VAR( error );
     } while ( continueApproximationScheme( error ) );
   }
 

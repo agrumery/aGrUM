@@ -57,7 +57,10 @@ namespace gum_tests {
                        const double    c ) {
       __nbr++;
     }
-    void whenStop( const void* buffer, const std::string s ) { __mess = s; }
+    void whenStop( const void* buffer, const std::string s ) {
+      __nbr++;
+      __mess = s;
+    }
 
     int         getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
@@ -103,11 +106,11 @@ namespace gum_tests {
       }
       try {
         gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2, 0.8} );
+        lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         lazy.makeInference();
 
         gum::LoopyBeliefPropagation<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2, 0.8} );
+        inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         inf.setVerbosity( false );
         inf.makeInference();
         __compareInference( bn, lazy, inf );
@@ -136,11 +139,11 @@ namespace gum_tests {
       }
       try {
         gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2, 0.8} );
+        lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         lazy.makeInference();
 
         gum::LoopyBeliefPropagation<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2, 0.8} );
+        inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         inf.setVerbosity( false );
         inf.makeInference();
         __compareInference( bn, lazy, inf );
@@ -169,11 +172,11 @@ namespace gum_tests {
       }
       try {
         gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2, 0.8} );
+        lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         lazy.makeInference();
 
         gum::LoopyBeliefPropagation<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2, 0.8} );
+        inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         inf.setVerbosity( false );
         inf.makeInference();
         __compareInference( bn, lazy, inf );
@@ -206,15 +209,15 @@ namespace gum_tests {
       }
       try {
         gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( "e" ), std::vector<float>{0.2, 0.8} );
+        lazy.addEvidence( bn.idFromName( "e" ), std::vector<float>{0.2f, 0.8f} );
         lazy.addEvidence( bn.idFromName( "b" ), 0 );
-        lazy.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7, 0.3} );
+        lazy.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7f, 0.3f} );
         lazy.makeInference();
 
         gum::LoopyBeliefPropagation<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( "e" ), std::vector<float>{0.2, 0.8} );
+        inf.addEvidence( bn.idFromName( "e" ), std::vector<float>{0.2f, 0.8f} );
         inf.addEvidence( bn.idFromName( "b" ), 0 );
-        inf.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7, 0.3} );
+        inf.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7f, 0.3f} );
         inf.setVerbosity( false );
         inf.makeInference();
         __compareInference( bn, lazy, inf );
@@ -247,16 +250,16 @@ namespace gum_tests {
       try {
         gum::LazyPropagation<float> lazy( &bn );
         lazy.addEvidence( bn.idFromName( "e" ),
-                          std::vector<float>{0.1, 0.3, 0.4, 0.7} );
+                          std::vector<float>{0.1, 0.3f, 0.4, 0.7f} );
         lazy.addEvidence( bn.idFromName( "b" ), 0 );
-        lazy.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7, 0.3} );
+        lazy.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7f, 0.3f} );
         lazy.makeInference();
 
         gum::LoopyBeliefPropagation<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "e" ),
-                         std::vector<float>{0.1, 0.3, 0.4, 0.7} );
+                         std::vector<float>{0.1, 0.3f, 0.4, 0.7f} );
         inf.addEvidence( bn.idFromName( "b" ), 0 );
-        inf.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7, 0.3} );
+        inf.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7f, 0.3f} );
         inf.setVerbosity( false );
         inf.makeInference();
         __compareInference( bn, lazy, inf );
@@ -265,24 +268,246 @@ namespace gum_tests {
       }
     }
 
+    void testLBPSimpleBN() {
+      auto bn = gum::BayesNet<float>::fastPrototype( "a->b->c;a->d->c", 3 );
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.addEvidence( bn.idFromName( "a" ), 0 );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "a" ), 0 );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.addEvidence( bn.idFromName( "d" ), 0 );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "d" ), 0 );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.addEvidence( bn.idFromName( "a" ),
+                          std::vector<float>{0.7f, 0.3f, 1.0f} );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "a" ),
+                         std::vector<float>{0.7f, 0.3f, 1.0f} );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.addEvidence( bn.idFromName( "d" ),
+                          std::vector<float>{0.7f, 0.3f, 1.0f} );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "d" ),
+                         std::vector<float>{0.7f, 0.3f, 1.0f} );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testLBPCplxBN() {
+      auto bn = gum::BayesNet<float>::fastPrototype(
+          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3 );
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.addEvidence( bn.idFromName( "a" ), 0 );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "a" ), 0 );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.addEvidence( bn.idFromName( "d" ), 0 );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "d" ), 0 );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.addEvidence( bn.idFromName( "a" ),
+                          std::vector<float>{0.7f, 0.3f, 1.0f} );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "a" ),
+                         std::vector<float>{0.7f, 0.3f, 1.0f} );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.addEvidence( bn.idFromName( "d" ),
+                          std::vector<float>{0.7f, 0.3f, 1.0f} );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "d" ),
+                         std::vector<float>{0.7f, 0.3f, 1.0f} );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testLBPAsia() {
+      gum::BayesNet<float>  bn;
+      gum::BIFReader<float> reader( &bn, GET_RESSOURCES_PATH( "asia.bif" ) );
+      int                   nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_ASSERT( nbrErr == 0 );
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.setVerbosity( false );
+        inf.makeInference();
+        __compareInference( bn, lazy, inf );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testLBPAlarm() {
+      gum::BayesNet<float>  bn;
+      gum::BIFReader<float> reader( &bn, GET_RESSOURCES_PATH( "alarm.bif" ) );
+      int                   nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_ASSERT( nbrErr == 0 );
+
+      try {
+        gum::LazyPropagation<float> lazy( &bn );
+        lazy.makeInference();
+
+        gum::LoopyBeliefPropagation<float> inf( &bn );
+        inf.setVerbosity( false );
+        inf.makeInference();
+
+        // alarm is not good for LBP
+        __compareInference( bn, lazy, inf,2.5e-1 );
+      } catch ( gum::Exception& e ) {
+        TS_ASSERT( false );
+      }
+    }
+
+    void testLBPInfListener() {
+      gum::BayesNet<float>  bn;
+      gum::BIFReader<float> reader( &bn, GET_RESSOURCES_PATH( "alarm.bif" ) );
+      int                   nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_ASSERT( nbrErr == 0 );
+
+      gum::LoopyBeliefPropagation<float> inf( &bn );
+      aSimpleLBPListener                 agsl( inf );
+      inf.setVerbosity( true );
+
+      try {
+        // Testing the inference
+        inf.makeInference();
+      } catch ( gum::Exception e ) {
+        TS_ASSERT( false );
+      }
+      TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize() + inf.burnIn(),
+                        inf.nbrIterations() );
+      TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
+    }
+
+
     private:
     template <typename GUM_SCALAR>
     void __compareInference( const gum::BayesNet<GUM_SCALAR>&         bn,
                              gum::LazyPropagation<GUM_SCALAR>&        lazy,
-                             gum::LoopyBeliefPropagation<GUM_SCALAR>& inf ) {
-      GUM_SCALAR err = static_cast<GUM_SCALAR>( 0 );
-
+                             gum::LoopyBeliefPropagation<GUM_SCALAR>& inf,
+                             double errmax = 1e-2 ) {
+      GUM_SCALAR  err = static_cast<GUM_SCALAR>( 0 );
+      std::string argstr = "";
       for ( const auto& node : bn.nodes() ) {
         GUM_SCALAR e = lazy.posterior( node ).KL( inf.posterior( node ) );
         if ( e > err ) {
           err = e;
-          GUM_TRACE( bn.variable( node ).name() );
-          GUM_TRACE( lazy.posterior( node ) );
-          GUM_TRACE( inf.posterior( node ) );
-          GUM_TRACE_VAR( "==>" << err )
+          argstr = bn.variable( node ).name() + " (err=" + std::to_string( err ) +
+                   ") : \n";
+          argstr += "  lazy : " + lazy.posterior( node ).toString() + "\n";
+          argstr += "  inf : " + inf.posterior( node ).toString() + " \n";
         }
       }
-      TS_ASSERT_LESS_THAN( err, 1e-3 );
+      if ( err > errmax ) {
+        GUM_TRACE( argstr );
+      }
+      TS_ASSERT_LESS_THAN( err, errmax );
     }
   };
 }

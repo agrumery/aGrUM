@@ -161,10 +161,6 @@ namespace gum {
 
   // size of burn in on number of iteration
   INLINE void ApproximationScheme::setBurnIn( Size b ) {
-    if ( b < 1 ) {
-      GUM_ERROR( OutOfLowerBound, "b should be >=1" );
-    }
-
     _burn_in = b;
   }
 
