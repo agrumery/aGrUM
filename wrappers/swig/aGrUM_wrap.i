@@ -83,6 +83,7 @@
 #include <agrum/BN/inference/variableElimination.h>
 
 #include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
@@ -204,6 +205,7 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
 }
 %enddef
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsInference<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
@@ -329,6 +331,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/BN/inference/variableElimination.h>
 
 %include <agrum/BN/inference/GibbsInference.h>
+%include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 %import <agrum/BN/algorithms/divergence/KL.h>
 %include <agrum/BN/algorithms/divergence/bruteForceKL.h>
@@ -377,6 +380,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( VariableElimination_double ) gum::VariableElimination<double>;
 
 %template ( GibbsInference_double ) gum::GibbsInference<double>;
+%template ( LoopyBeliefPropagation_double ) gum::LoopyBeliefPropagation<double>;
 
 %template ( BruteForceKL_double ) gum::BruteForceKL<double>;
 %template ( GibbsKL_double ) gum::GibbsKL<double>;

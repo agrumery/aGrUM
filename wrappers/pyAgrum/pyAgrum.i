@@ -81,6 +81,7 @@ ShaferShenoyInference = ShaferShenoyInference_double
 VariableElimination = VariableElimination_double
 
 GibbsInference = GibbsInference_double
+LoopyBeliefPropagation = LoopyBeliefPropagation_double
 
 BruteForceKL = BruteForceKL_double
 GibbsKL = GibbsKL_double

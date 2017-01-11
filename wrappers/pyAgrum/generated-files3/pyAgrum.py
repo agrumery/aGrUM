@@ -13885,6 +13885,697 @@ class GibbsInference_double(_object):
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)
 
+class LoopyBeliefPropagation_double(_object):
+    """Proxy of C++ gum::LoopyBeliefPropagation<(double)> class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyBeliefPropagation_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, LoopyBeliefPropagation_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, BN: 'IBayesNet_double'):
+        """
+        __init__(gum::LoopyBeliefPropagation<(double)> self, IBayesNet_double BN) -> LoopyBeliefPropagation_double
+
+        Parameters
+        ----------
+        BN: gum::IBayesNet< double > const *
+
+        """
+        this = _pyAgrum.new_LoopyBeliefPropagation_double(BN)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_LoopyBeliefPropagation_double
+    __del__ = lambda self: None
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceList(self) -> "PyObject *":
+        """
+        hardEvidenceList(LoopyBeliefPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_hardEvidenceList(self)
+
+
+    def softEvidenceList(self) -> "PyObject *":
+        """
+        softEvidenceList(LoopyBeliefPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_softEvidenceList(self)
+
+
+    def targetList(self) -> "PyObject *":
+        """
+        targetList(LoopyBeliefPropagation_double self) -> PyObject *
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_targetList(self)
+
+
+    def setVerbosity(self, v: 'bool') -> "void":
+        """
+        setVerbosity(LoopyBeliefPropagation_double self, bool v)
+
+        Parameters
+        ----------
+        v: bool
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps: 'double') -> "void":
+        """
+        setEpsilon(LoopyBeliefPropagation_double self, double eps)
+
+        Parameters
+        ----------
+        eps: double
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate: 'double') -> "void":
+        """
+        setMinEpsilonRate(LoopyBeliefPropagation_double self, double rate)
+
+        Parameters
+        ----------
+        rate: double
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max: 'gum::Size') -> "void":
+        """
+        setMaxIter(LoopyBeliefPropagation_double self, gum::Size max)
+
+        Parameters
+        ----------
+        max: gum::Size
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout: 'double') -> "void":
+        """
+        setMaxTime(LoopyBeliefPropagation_double self, double timeout)
+
+        Parameters
+        ----------
+        timeout: double
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p: 'gum::Size') -> "void":
+        """
+        setPeriodSize(LoopyBeliefPropagation_double self, gum::Size p)
+
+        Parameters
+        ----------
+        p: gum::Size
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_setPeriodSize(self, p)
+
+
+    def setBurnIn(self, b: 'gum::Size') -> "void":
+        """
+        setBurnIn(LoopyBeliefPropagation_double self, gum::Size b)
+
+        Parameters
+        ----------
+        b: gum::Size
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_setBurnIn(self, b)
+
+
+    def verbosity(self) -> "bool":
+        """
+        verbosity(LoopyBeliefPropagation_double self) -> bool
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_verbosity(self)
+
+
+    def epsilon(self) -> "double":
+        """
+        epsilon(LoopyBeliefPropagation_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_epsilon(self)
+
+
+    def minEpsilonRate(self) -> "double":
+        """
+        minEpsilonRate(LoopyBeliefPropagation_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_minEpsilonRate(self)
+
+
+    def maxIter(self) -> "gum::Size":
+        """
+        maxIter(LoopyBeliefPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_maxIter(self)
+
+
+    def maxTime(self) -> "double":
+        """
+        maxTime(LoopyBeliefPropagation_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_maxTime(self)
+
+
+    def periodSize(self) -> "gum::Size":
+        """
+        periodSize(LoopyBeliefPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_periodSize(self)
+
+
+    def burnIn(self) -> "gum::Size":
+        """
+        burnIn(LoopyBeliefPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_burnIn(self)
+
+
+    def nbrIterations(self) -> "gum::Size":
+        """
+        nbrIterations(LoopyBeliefPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_nbrIterations(self)
+
+
+    def currentTime(self) -> "double":
+        """
+        currentTime(LoopyBeliefPropagation_double self) -> double
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_currentTime(self)
+
+
+    def messageApproximationScheme(self) -> "std::string":
+        """
+        messageApproximationScheme(LoopyBeliefPropagation_double self) -> std::string
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_messageApproximationScheme(self)
+
+
+    def history(self) -> "std::vector< double,std::allocator< double > > const &":
+        """
+        history(LoopyBeliefPropagation_double self) -> Vector_double
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_history(self)
+
+
+    def makeInference(self) -> "void":
+        """
+        makeInference(LoopyBeliefPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        """
+        posterior(LoopyBeliefPropagation_double self, gum::NodeId const var) -> Potential_double
+
+        Parameters
+        ----------
+        var: gum::NodeId const
+
+        posterior(LoopyBeliefPropagation_double self, std::string const nodeName) -> Potential_double
+
+        Parameters
+        ----------
+        nodeName: std::string const
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_posterior(self, *args)
+
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        """
+        BN(LoopyBeliefPropagation_double self) -> IBayesNet_double
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_BN(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        addEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        addEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        addEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        addEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        addEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, gum::Idx const val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: gum::Idx const
+
+        chgEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, gum::Idx const val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: gum::Idx const
+
+        chgEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, std::string const & val)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        val: std::string const &
+
+        chgEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, std::string const & val)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        val: std::string const &
+
+        chgEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, Vector_double vals)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+        vals: std::vector< double,std::allocator< double > > const &
+
+        chgEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, Vector_double vals)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+        vals: std::vector< double,std::allocator< double > > const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """
+        eraseAllEvidence(LoopyBeliefPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args) -> "void":
+        """
+        eraseEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id)
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        eraseEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
+        """
+        hasHardEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id) -> bool
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        hasSoftEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """
+        nbrEvidence(LoopyBeliefPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """
+        nbrHardEvidence(LoopyBeliefPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """
+        nbrSoftEvidence(LoopyBeliefPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """
+        eraseAllTargets(LoopyBeliefPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """
+        addAllTargets(LoopyBeliefPropagation_double self)
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(LoopyBeliefPropagation_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        addTarget(LoopyBeliefPropagation_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(LoopyBeliefPropagation_double self, gum::NodeId const target)
+
+        Parameters
+        ----------
+        target: gum::NodeId const
+
+        eraseTarget(LoopyBeliefPropagation_double self, std::string const & nodeName)
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(LoopyBeliefPropagation_double self, gum::NodeId const variable) -> bool
+
+        Parameters
+        ----------
+        variable: gum::NodeId const
+
+        isTarget(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """
+        nbrTargets(LoopyBeliefPropagation_double self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(LoopyBeliefPropagation_double self, gum::NodeId const X) -> double
+
+        Parameters
+        ----------
+        X: gum::NodeId const
+
+        H(LoopyBeliefPropagation_double self, std::string const & nodeName) -> double
+
+        Parameters
+        ----------
+        nodeName: std::string const &
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args) -> "gum::Potential< double >":
+        """
+        evidenceImpact(LoopyBeliefPropagation_double self, gum::NodeId target, Vector_int evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: gum::NodeId
+        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
+
+        evidenceImpact(LoopyBeliefPropagation_double self, std::string target, Vector_string evs) -> Potential_double
+
+        Parameters
+        ----------
+        target: std::string
+        evs: std::vector< std::string,std::allocator< std::string > > const
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_evidenceImpact(self, *args)
+
+LoopyBeliefPropagation_double_swigregister = _pyAgrum.LoopyBeliefPropagation_double_swigregister
+LoopyBeliefPropagation_double_swigregister(LoopyBeliefPropagation_double)
+
 class BruteForceKL_double(_object):
     """Proxy of C++ gum::BruteForceKL<(double)> class."""
 
@@ -16884,6 +17575,7 @@ ShaferShenoyInference = ShaferShenoyInference_double
 VariableElimination = VariableElimination_double
 
 GibbsInference = GibbsInference_double
+LoopyBeliefPropagation = LoopyBeliefPropagation_double
 
 BruteForceKL = BruteForceKL_double
 GibbsKL = GibbsKL_double

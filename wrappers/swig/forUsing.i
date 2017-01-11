@@ -268,6 +268,7 @@ ADD_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_INFERENCE_API(gum::ShaferShenoyInference<double>)
 ADD_INFERENCE_API(gum::VariableElimination<double>)
 ADD_INFERENCE_API(gum::GibbsInference<double>)
+ADD_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
 
 %define ADD_JOINT_INFERENCE_API(classname)
 %extend classname {

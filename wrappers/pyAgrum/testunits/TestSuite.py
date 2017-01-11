@@ -23,13 +23,14 @@ import PythonBNListenerTestSuite
 import PotentialTestSuite
 import JTInferenceTestSuite
 import JunctionTreeTestSuite
-import GibbsTestSuite
 import ICIModelsForBNTestSuite
 import BNLearnerTestSuite
 import AggregatorsForBNTestSuite
 import PRMexplorerTestSuite
 import AllIncrementalInferenceTestSuite
 import LazyPropagationTestSuite
+import GibbsTestSuite
+import LoopyBeliefPropagationTestSuite
 
 import time
 
@@ -42,11 +43,12 @@ tests.append(JTInferenceTestSuite.ts)
 tests.append(AllIncrementalInferenceTestSuite.ts)
 tests.append(JunctionTreeTestSuite.ts)
 tests.append(LazyPropagationTestSuite.ts)
-tests.append(GibbsTestSuite.ts)
 tests.append(ICIModelsForBNTestSuite.ts)
 tests.append(BNLearnerTestSuite.ts)
 tests.append(AggregatorsForBNTestSuite.ts)
 tests.append(PRMexplorerTestSuite.ts)
+tests.append(GibbsTestSuite.ts)
+tests.append(LoopyBeliefPropagationTestSuite.ts)
 
 tests = unittest.TestSuite(tests)
 
