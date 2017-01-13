@@ -27,6 +27,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <agrum/BN/inference/variableElimination.h>
 
 #include <agrum/BN/inference/BayesBall.h>
 #include <agrum/BN/inference/dSeparation.h>
@@ -256,7 +257,7 @@ namespace gum {
     // to get the new junction tree
 
     // 1/ create an undirected graph containing only the nodes and no edge
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     __graph.clear();
     for ( auto node : bn.dag() )
       __graph.addNode( node );
@@ -494,7 +495,7 @@ namespace gum {
       Set<const DiscreteVariable*>&      kept_vars ) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
@@ -531,7 +532,7 @@ namespace gum {
       Set<const DiscreteVariable*>&      kept_vars ) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
@@ -552,7 +553,7 @@ namespace gum {
       Set<const DiscreteVariable*>&      kept_vars ) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
@@ -605,7 +606,7 @@ namespace gum {
     Set<const DiscreteVariable*> the_del_vars = del_vars;
     for ( auto iter = the_del_vars.beginSafe(); iter != the_del_vars.endSafe();
           ++iter ) {
-      NodeId id = this->BayesNet().nodeId( **iter );
+      NodeId id = this->BN().nodeId( **iter );
       if ( this->hardEvidenceNodes().exists( id ) ||
            this->softEvidenceNodes().exists( id ) ) {
         the_del_vars.erase( iter );
@@ -692,7 +693,7 @@ namespace gum {
   std::pair<Set<const Potential<GUM_SCALAR>*>, Set<const Potential<GUM_SCALAR>*>>
   VariableElimination<GUM_SCALAR>::__NodePotentials( const NodeId node ) {
     std::pair<__PotentialSet, __PotentialSet> res;
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
 
     // get the CPT's of the node
     // beware: all the potentials that are defined over some nodes
@@ -806,7 +807,7 @@ namespace gum {
       const NodeSet&               separator = __JT->separator( from_id, to_id );
       Set<const DiscreteVariable*> del_vars( from_clique.size() );
       Set<const DiscreteVariable*> kept_vars( separator.size() );
-      const auto&                  bn = this->BayesNet();
+      const auto&                  bn = this->BN();
 
       for ( const auto node : from_clique ) {
         if ( !separator.contains( node ) ) {
@@ -927,7 +928,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>*
   VariableElimination<GUM_SCALAR>::_unnormalizedJointPosterior( const NodeId id ) {
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
 
     // hard evidence do not belong to the join tree
     // # TODO: check for sets of inconsistent hard evidence
@@ -1053,7 +1054,7 @@ namespace gum {
     const NodeSet&               nodes = __JT->clique( __targets2clique );
     Set<const DiscreteVariable*> del_vars( nodes.size() );
     Set<const DiscreteVariable*> kept_vars( targets.size() );
-    const auto&                  bn = this->BayesNet();
+    const auto&                  bn = this->BN();
     for ( const auto node : nodes ) {
       if ( !targets.contains( node ) ) {
         del_vars.insert( &( bn.variable( node ) ) );

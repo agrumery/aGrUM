@@ -198,7 +198,7 @@ namespace gum {
       delete pot.second;
 
     // indicate that new messages need be computed
-    if ( this->isReady4Inference() || this->isDone() )
+    if ( this->isInferenceReady() || this->isDone() )
       this->_setOutdatedBNPotentialsState();
   }
 
@@ -439,7 +439,7 @@ namespace gum {
     // to get the new junction tree
 
     // 1/ create an undirected graph containing only the nodes and no edge
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     __graph.clear();
     for ( auto node : bn.dag() )
       __graph.addNode( node );
@@ -674,7 +674,7 @@ namespace gum {
         const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
 
         // get the list of nodes with hard evidence in cpt
-        NodeSet hard_nodes;
+        NodeSet     hard_nodes;
         const auto& variables = cpt.variablesSequence();
         for ( const auto var : variables ) {
           const NodeId xnode = bn.nodeId( *var );
@@ -686,8 +686,7 @@ namespace gum {
         // directly cpt into the clique
         if ( hard_nodes.empty() ) {
           __clique_potentials[__node_to_clique[node]].insert( &cpt );
-        }
-        else {
+        } else {
           // marginalize out the hard evidence nodes: if the cpt is defined
           // only over nodes that received hard evidence, do not consider it
           // as a potential anymore but as a constant
@@ -698,8 +697,7 @@ namespace gum {
                            hard_evidence[bn.nodeId( *( variables[i] ) )] );
             }
             __constants.insert( node, cpt[inst] );
-          }
-          else {
+          } else {
             // perform the projection with a combine and project instance
             Set<const DiscreteVariable*> hard_variables;
             __PotentialSet               marg_cpt_set{&cpt};
@@ -709,7 +707,7 @@ namespace gum {
             }
             // perform the combination of those potentials and their projection
             MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
-                       combine_and_project( __combination_op, LPNewprojPotential );
+                           combine_and_project( __combination_op, LPNewprojPotential );
             __PotentialSet new_cpt_list = combine_and_project.combineAndProject(
                 marg_cpt_set, hard_variables );
 
@@ -802,17 +800,17 @@ namespace gum {
     for ( const auto node : __hard_ev_nodes )
       if ( __evidence_changes.exists( node ) ) hard_nodes_changed.insert( node );
 
-    NodeSet nodes_with_projected_CPTs_changed;
-    const auto& bn = this->BayesNet();
+    NodeSet     nodes_with_projected_CPTs_changed;
+    const auto& bn = this->BN();
     for ( auto pot_iter = __hard_ev_projected_CPTs.beginSafe();
           pot_iter != __hard_ev_projected_CPTs.endSafe();
           ++pot_iter ) {
-      for ( const auto var : bn.cpt ( pot_iter.key() ).variablesSequence() ) {
+      for ( const auto var : bn.cpt( pot_iter.key() ).variablesSequence() ) {
         if ( hard_nodes_changed.contains( bn.nodeId( *var ) ) ) {
           nodes_with_projected_CPTs_changed.insert( pot_iter.key() );
           delete pot_iter.val();
           __clique_potentials[__node_to_clique[pot_iter.key()]].erase(
-                 pot_iter.val() );
+              pot_iter.val() );
           __hard_ev_projected_CPTs.erase( pot_iter );
           break;
         }
@@ -977,7 +975,7 @@ namespace gum {
 
     // put in a vector these cliques and their size
     std::vector<std::pair<NodeId, Size>> possible_roots( clique_targets.size() );
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     std::size_t i = 0;
     for ( const auto clique_id : clique_targets ) {
       const auto& clique = __JT->clique( clique_id );
@@ -1048,7 +1046,7 @@ namespace gum {
       Set<const DiscreteVariable*>&      kept_vars ) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
@@ -1085,7 +1083,7 @@ namespace gum {
       Set<const DiscreteVariable*>&      kept_vars ) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
@@ -1106,7 +1104,7 @@ namespace gum {
       Set<const DiscreteVariable*>&      kept_vars ) {
     // find the node ids of the kept variables
     NodeSet     kept_ids;
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
     for ( const auto var : kept_vars ) {
       kept_ids.insert( bn.nodeId( *var ) );
     }
@@ -1159,7 +1157,7 @@ namespace gum {
     Set<const DiscreteVariable*> the_del_vars = del_vars;
     for ( auto iter = the_del_vars.beginSafe(); iter != the_del_vars.endSafe();
           ++iter ) {
-      NodeId id = this->BayesNet().nodeId( **iter );
+      NodeId id = this->BN().nodeId( **iter );
       if ( this->hardEvidenceNodes().exists( id ) ||
            this->softEvidenceNodes().exists( id ) ) {
         the_del_vars.erase( iter );
@@ -1288,7 +1286,7 @@ namespace gum {
     const NodeSet&               separator = __JT->separator( from_id, to_id );
     Set<const DiscreteVariable*> del_vars( from_clique.size() );
     Set<const DiscreteVariable*> kept_vars( separator.size() );
-    const auto&                  bn = this->BayesNet();
+    const auto&                  bn = this->BN();
 
     for ( const auto node : from_clique ) {
       if ( !separator.contains( node ) ) {
@@ -1363,7 +1361,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   Potential<GUM_SCALAR>*
   LazyPropagation<GUM_SCALAR>::_unnormalizedJointPosterior( const NodeId id ) {
-    const auto& bn = this->BayesNet();
+    const auto& bn = this->BN();
 
     // hard evidence do not belong to the join tree
     // # TODO: check for sets of inconsistent hard evidence
@@ -1549,7 +1547,7 @@ namespace gum {
     const NodeSet&               nodes = __JT->clique( clique_of_set );
     Set<const DiscreteVariable*> del_vars( nodes.size() );
     Set<const DiscreteVariable*> kept_vars( targets.size() );
-    const auto&                  bn = this->BayesNet();
+    const auto&                  bn = this->BN();
     for ( const auto node : nodes ) {
       if ( !targets.contains( node ) ) {
         del_vars.insert( &( bn.variable( node ) ) );
@@ -1648,7 +1646,7 @@ namespace gum {
     }
 
     // marginalize out all the variables that do not belong to wanted_target
-    const auto&                  bn = this->BayesNet();
+    const auto&                  bn = this->BN();
     Set<const DiscreteVariable*> del_vars;
     for ( const auto node : declared_target )
       if ( !wanted_target.contains( node ) )

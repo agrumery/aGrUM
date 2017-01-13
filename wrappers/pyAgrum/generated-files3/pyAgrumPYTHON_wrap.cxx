@@ -3520,98 +3520,99 @@ namespace Swig {
 #define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[63]
 #define SWIGTYPE_p_gum__LearningError swig_types[64]
 #define SWIGTYPE_p_gum__ListT_gum__PotentialT_double_t_const_p_t swig_types[65]
-#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[66]
-#define SWIGTYPE_p_gum__MixedGraph swig_types[67]
-#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[68]
-#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[69]
-#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[70]
-#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[71]
-#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[72]
-#define SWIGTYPE_p_gum__MultiDimInterface swig_types[73]
-#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[74]
-#define SWIGTYPE_p_gum__NoChild swig_types[75]
-#define SWIGTYPE_p_gum__NoNeighbour swig_types[76]
-#define SWIGTYPE_p_gum__NoParent swig_types[77]
-#define SWIGTYPE_p_gum__NodeGraphPart swig_types[78]
-#define SWIGTYPE_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t swig_types[79]
-#define SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t swig_types[80]
-#define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[81]
-#define SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t swig_types[82]
-#define SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t swig_types[83]
-#define SWIGTYPE_p_gum__NotFound swig_types[84]
-#define SWIGTYPE_p_gum__NullElement swig_types[85]
-#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[86]
-#define SWIGTYPE_p_gum__OutOfBounds swig_types[87]
-#define SWIGTYPE_p_gum__OutOfLowerBound swig_types[88]
-#define SWIGTYPE_p_gum__OutOfUpperBound swig_types[89]
-#define SWIGTYPE_p_gum__PossiblyIncompatibleScoreApriori swig_types[90]
-#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[91]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[92]
-#define SWIGTYPE_p_gum__ReferenceError swig_types[93]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[94]
-#define SWIGTYPE_p_gum__SequenceT_unsigned_int_t swig_types[95]
-#define SWIGTYPE_p_gum__SetIteratorStaticEnd swig_types[96]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[97]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[98]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[99]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[100]
-#define SWIGTYPE_p_gum__SetT_gum__PotentialT_double_t_const_p_t swig_types[101]
-#define SWIGTYPE_p_gum__SetT_unsigned_int_t swig_types[102]
-#define SWIGTYPE_p_gum__SetT_unsigned_int_t__const_iterator swig_types[103]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[104]
-#define SWIGTYPE_p_gum__SizeError swig_types[105]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[106]
-#define SWIGTYPE_p_gum__Triangulation swig_types[107]
-#define SWIGTYPE_p_gum__TypeError swig_types[108]
-#define SWIGTYPE_p_gum__UndefinedElement swig_types[109]
-#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[110]
-#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[111]
-#define SWIGTYPE_p_gum__UndiGraph swig_types[112]
-#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[113]
-#define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[114]
-#define SWIGTYPE_p_gum__Variable swig_types[115]
-#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[116]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[117]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[118]
-#define SWIGTYPE_p_gum__WrongType swig_types[119]
-#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[120]
-#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[121]
-#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[122]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[123]
-#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[124]
-#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[125]
-#define SWIGTYPE_p_iterator_category swig_types[126]
-#define SWIGTYPE_p_msg swig_types[127]
-#define SWIGTYPE_p_node_const_iterator swig_types[128]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[129]
-#define SWIGTYPE_p_node_iterator swig_types[130]
-#define SWIGTYPE_p_node_iterator_safe swig_types[131]
-#define SWIGTYPE_p_p_PyObject swig_types[132]
-#define SWIGTYPE_p_size_type swig_types[133]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[134]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[135]
-#define SWIGTYPE_p_std__allocatorT_unsigned_int_t swig_types[136]
-#define SWIGTYPE_p_std__default_random_engine swig_types[137]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[138]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[139]
-#define SWIGTYPE_p_std__invalid_argument swig_types[140]
-#define SWIGTYPE_p_std__ostream swig_types[141]
-#define SWIGTYPE_p_std__string swig_types[142]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[143]
-#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[144]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[145]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[146]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[147]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[148]
-#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[149]
-#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[150]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[151]
-#define SWIGTYPE_p_unsigned_int swig_types[152]
-#define SWIGTYPE_p_unsigned_long swig_types[153]
-#define SWIGTYPE_p_value_type swig_types[154]
-#define SWIGTYPE_p_void swig_types[155]
-static swig_type_info *swig_types[157];
-static swig_module_info swig_module = {swig_types, 156, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[66]
+#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[67]
+#define SWIGTYPE_p_gum__MixedGraph swig_types[68]
+#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[69]
+#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[70]
+#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[71]
+#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[72]
+#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[73]
+#define SWIGTYPE_p_gum__MultiDimInterface swig_types[74]
+#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[75]
+#define SWIGTYPE_p_gum__NoChild swig_types[76]
+#define SWIGTYPE_p_gum__NoNeighbour swig_types[77]
+#define SWIGTYPE_p_gum__NoParent swig_types[78]
+#define SWIGTYPE_p_gum__NodeGraphPart swig_types[79]
+#define SWIGTYPE_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t swig_types[80]
+#define SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t swig_types[81]
+#define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[82]
+#define SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t swig_types[83]
+#define SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t swig_types[84]
+#define SWIGTYPE_p_gum__NotFound swig_types[85]
+#define SWIGTYPE_p_gum__NullElement swig_types[86]
+#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[87]
+#define SWIGTYPE_p_gum__OutOfBounds swig_types[88]
+#define SWIGTYPE_p_gum__OutOfLowerBound swig_types[89]
+#define SWIGTYPE_p_gum__OutOfUpperBound swig_types[90]
+#define SWIGTYPE_p_gum__PossiblyIncompatibleScoreApriori swig_types[91]
+#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[92]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[93]
+#define SWIGTYPE_p_gum__ReferenceError swig_types[94]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[95]
+#define SWIGTYPE_p_gum__SequenceT_unsigned_int_t swig_types[96]
+#define SWIGTYPE_p_gum__SetIteratorStaticEnd swig_types[97]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[98]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[99]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[100]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[101]
+#define SWIGTYPE_p_gum__SetT_gum__PotentialT_double_t_const_p_t swig_types[102]
+#define SWIGTYPE_p_gum__SetT_unsigned_int_t swig_types[103]
+#define SWIGTYPE_p_gum__SetT_unsigned_int_t__const_iterator swig_types[104]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[105]
+#define SWIGTYPE_p_gum__SizeError swig_types[106]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[107]
+#define SWIGTYPE_p_gum__Triangulation swig_types[108]
+#define SWIGTYPE_p_gum__TypeError swig_types[109]
+#define SWIGTYPE_p_gum__UndefinedElement swig_types[110]
+#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[111]
+#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[112]
+#define SWIGTYPE_p_gum__UndiGraph swig_types[113]
+#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[114]
+#define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[115]
+#define SWIGTYPE_p_gum__Variable swig_types[116]
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[117]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[118]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[119]
+#define SWIGTYPE_p_gum__WrongType swig_types[120]
+#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[121]
+#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[122]
+#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[123]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[124]
+#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[125]
+#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[126]
+#define SWIGTYPE_p_iterator_category swig_types[127]
+#define SWIGTYPE_p_msg swig_types[128]
+#define SWIGTYPE_p_node_const_iterator swig_types[129]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[130]
+#define SWIGTYPE_p_node_iterator swig_types[131]
+#define SWIGTYPE_p_node_iterator_safe swig_types[132]
+#define SWIGTYPE_p_p_PyObject swig_types[133]
+#define SWIGTYPE_p_size_type swig_types[134]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[135]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[136]
+#define SWIGTYPE_p_std__allocatorT_unsigned_int_t swig_types[137]
+#define SWIGTYPE_p_std__default_random_engine swig_types[138]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[139]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[140]
+#define SWIGTYPE_p_std__invalid_argument swig_types[141]
+#define SWIGTYPE_p_std__ostream swig_types[142]
+#define SWIGTYPE_p_std__string swig_types[143]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[144]
+#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[145]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[146]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[147]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[148]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[149]
+#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[150]
+#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[151]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[152]
+#define SWIGTYPE_p_unsigned_int swig_types[153]
+#define SWIGTYPE_p_unsigned_long swig_types[154]
+#define SWIGTYPE_p_value_type swig_types[155]
+#define SWIGTYPE_p_void swig_types[156]
+static swig_type_info *swig_types[158];
+static swig_module_info swig_module = {swig_types, 157, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4675,6 +4676,7 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
 #include <agrum/BN/inference/variableElimination.h>
 
 #include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
@@ -6820,22 +6822,22 @@ SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__targetList(gum::LazyPropa
     }
 SWIGINTERN gum::Potential< double > gum_LazyPropagation_Sl_double_Sg__jointPosterior(gum::LazyPropagation< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->jointPosterior(nodeset);
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__addJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__eraseJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 SWIGINTERN bool gum_LazyPropagation_Sl_double_Sg__isJointTarget(gum::LazyPropagation< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 SWIGINTERN PyObject *gum_LazyPropagation_Sl_double_Sg__jointTargets(gum::LazyPropagation< double > const *self){
@@ -6855,8 +6857,8 @@ SWIGINTERN gum::Potential< double > const gum_LazyPropagation_Sl_double_Sg__post
 SWIGINTERN gum::Potential< double > const gum_LazyPropagation_Sl_double_Sg__posterior__SWIG_1(gum::LazyPropagation< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_LazyPropagation_Sl_double_Sg__BayesNet(gum::LazyPropagation< double > const *self){
-    return self->BayesNetInference<double>::BayesNet();
+SWIGINTERN gum::IBayesNet< double > const &gum_LazyPropagation_Sl_double_Sg__BN(gum::LazyPropagation< double > const *self){
+    return self->BayesNetInference<double>::BN();
   }
 SWIGINTERN void gum_LazyPropagation_Sl_double_Sg__addEvidence__SWIG_0(gum::LazyPropagation< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
@@ -6995,22 +6997,22 @@ SWIGINTERN PyObject *gum_ShaferShenoyInference_Sl_double_Sg__targetList(gum::Sha
     }
 SWIGINTERN gum::Potential< double > gum_ShaferShenoyInference_Sl_double_Sg__jointPosterior(gum::ShaferShenoyInference< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->jointPosterior(nodeset);
     }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__addJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__eraseJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 SWIGINTERN bool gum_ShaferShenoyInference_Sl_double_Sg__isJointTarget(gum::ShaferShenoyInference< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 SWIGINTERN PyObject *gum_ShaferShenoyInference_Sl_double_Sg__jointTargets(gum::ShaferShenoyInference< double > const *self){
@@ -7030,8 +7032,8 @@ SWIGINTERN gum::Potential< double > const gum_ShaferShenoyInference_Sl_double_Sg
 SWIGINTERN gum::Potential< double > const gum_ShaferShenoyInference_Sl_double_Sg__posterior__SWIG_1(gum::ShaferShenoyInference< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_ShaferShenoyInference_Sl_double_Sg__BayesNet(gum::ShaferShenoyInference< double > const *self){
-    return self->BayesNetInference<double>::BayesNet();
+SWIGINTERN gum::IBayesNet< double > const &gum_ShaferShenoyInference_Sl_double_Sg__BN(gum::ShaferShenoyInference< double > const *self){
+    return self->BayesNetInference<double>::BN();
   }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__addEvidence__SWIG_0(gum::ShaferShenoyInference< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
@@ -7170,22 +7172,22 @@ SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__targetList(gum::Varia
     }
 SWIGINTERN gum::Potential< double > gum_VariableElimination_Sl_double_Sg__jointPosterior(gum::VariableElimination< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->jointPosterior(nodeset);
     }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addJointTarget(gum::VariableElimination< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::addJointTarget(nodeset);
     }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__eraseJointTarget(gum::VariableElimination< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       self->gum::JointTargetedInference<double>::eraseJointTarget(nodeset);
     }
 SWIGINTERN bool gum_VariableElimination_Sl_double_Sg__isJointTarget(gum::VariableElimination< double > *self,PyObject *list){
       gum::NodeSet nodeset;
-      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BayesNet());
+      PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(nodeset,list,self->BN());
       return self->gum::JointTargetedInference<double>::isJointTarget(nodeset);
     }
 SWIGINTERN PyObject *gum_VariableElimination_Sl_double_Sg__jointTargets(gum::VariableElimination< double > const *self){
@@ -7205,8 +7207,8 @@ SWIGINTERN gum::Potential< double > const gum_VariableElimination_Sl_double_Sg__
 SWIGINTERN gum::Potential< double > const gum_VariableElimination_Sl_double_Sg__posterior__SWIG_1(gum::VariableElimination< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_VariableElimination_Sl_double_Sg__BayesNet(gum::VariableElimination< double > const *self){
-    return self->BayesNetInference<double>::BayesNet();
+SWIGINTERN gum::IBayesNet< double > const &gum_VariableElimination_Sl_double_Sg__BN(gum::VariableElimination< double > const *self){
+    return self->BayesNetInference<double>::BN();
   }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__addEvidence__SWIG_0(gum::VariableElimination< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
@@ -7355,8 +7357,8 @@ SWIGINTERN gum::Potential< double > const gum_GibbsInference_Sl_double_Sg__poste
 SWIGINTERN gum::Potential< double > const gum_GibbsInference_Sl_double_Sg__posterior__SWIG_1(gum::GibbsInference< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_GibbsInference_Sl_double_Sg__BayesNet(gum::GibbsInference< double > const *self){
-    return self->BayesNetInference<double>::BayesNet();
+SWIGINTERN gum::IBayesNet< double > const &gum_GibbsInference_Sl_double_Sg__BN(gum::GibbsInference< double > const *self){
+    return self->BayesNetInference<double>::BN();
   }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
@@ -7464,6 +7466,156 @@ SWIGINTERN gum::Potential< double > gum_GibbsInference_Sl_double_Sg__evidenceImp
     return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
 SWIGINTERN gum::Potential< double > gum_GibbsInference_Sl_double_Sg__evidenceImpact__SWIG_1(gum::GibbsInference< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
+   return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setEvidence(gum::LoopyBeliefPropagation< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__updateEvidence(gum::LoopyBeliefPropagation< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setTargets(gum::LoopyBeliefPropagation< double > *self,PyObject *targets){}
+SWIGINTERN PyObject *gum_LoopyBeliefPropagation_Sl_double_Sg__hardEvidenceList(gum::LoopyBeliefPropagation< double > *self){
+      return PyAgrumHelper::PyListFromNodeSet(self->hardEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_LoopyBeliefPropagation_Sl_double_Sg__softEvidenceList(gum::LoopyBeliefPropagation< double > *self){
+      return PyAgrumHelper::PyListFromNodeSet(self->softEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_LoopyBeliefPropagation_Sl_double_Sg__targetList(gum::LoopyBeliefPropagation< double > *self){
+      return PyAgrumHelper::PyListFromNodeSet(self->targets() );
+    }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setVerbosity(gum::LoopyBeliefPropagation< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setEpsilon(gum::LoopyBeliefPropagation< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setMinEpsilonRate(gum::LoopyBeliefPropagation< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setMaxIter(gum::LoopyBeliefPropagation< double > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setMaxTime(gum::LoopyBeliefPropagation< double > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setPeriodSize(gum::LoopyBeliefPropagation< double > *self,gum::Size p){ self->gum::ApproximationScheme::setPeriodSize(p); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setBurnIn(gum::LoopyBeliefPropagation< double > *self,gum::Size b){ self->gum::ApproximationScheme::setBurnIn(b); }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__verbosity(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::verbosity(); }
+SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__epsilon(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::epsilon(); }
+SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__minEpsilonRate(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::minEpsilonRate(); }
+SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__maxIter(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
+SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__maxTime(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
+SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__periodSize(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__burnIn(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::burnIn(); }
+SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__nbrIterations(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
+SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__currentTime(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
+SWIGINTERN std::string gum_LoopyBeliefPropagation_Sl_double_Sg__messageApproximationScheme(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_LoopyBeliefPropagation_Sl_double_Sg__history(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__makeInference(gum::LoopyBeliefPropagation< double > *self){
+    self->gum::BayesNetInference<double>::makeInference();
+  }
+SWIGINTERN gum::Potential< double > const gum_LoopyBeliefPropagation_Sl_double_Sg__posterior__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const var){
+    return self->MarginalTargetedInference<double>::posterior(var);
+  }
+SWIGINTERN gum::Potential< double > const gum_LoopyBeliefPropagation_Sl_double_Sg__posterior__SWIG_1(gum::LoopyBeliefPropagation< double > *self,std::string const nodeName){
+    return self->MarginalTargetedInference<double>::posterior(nodeName);
+  }
+SWIGINTERN gum::IBayesNet< double > const &gum_LoopyBeliefPropagation_Sl_double_Sg__BN(gum::LoopyBeliefPropagation< double > const *self){
+    return self->BayesNetInference<double>::BN();
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_1(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_2(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_3(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_4(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::addEvidence(id,vals);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_5(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,vals);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_1(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_2(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_3(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_4(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::chgEvidence(id,vals);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_5(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,vals);
+  }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasEvidence__SWIG_0(gum::LoopyBeliefPropagation< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasEvidence(id);
+  }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasEvidence__SWIG_1(gum::LoopyBeliefPropagation< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasEvidence(nodeName);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseAllEvidence(gum::LoopyBeliefPropagation< double > *self){
+    self->gum::BayesNetInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseEvidence__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const id){
+    self->gum::BayesNetInference<double>::eraseEvidence(id);
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseEvidence__SWIG_1(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName){
+    self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
+  }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::LoopyBeliefPropagation< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(id);
+  }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasHardEvidence(gum::LoopyBeliefPropagation< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasHardEvidence(nodeName);
+  }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::LoopyBeliefPropagation< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(nodeName);
+  }
+SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__nbrEvidence(gum::LoopyBeliefPropagation< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrEvidence();
+  }
+SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__nbrHardEvidence(gum::LoopyBeliefPropagation< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrHardEvidence();
+  }
+SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__nbrSoftEvidence(gum::LoopyBeliefPropagation< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrSoftEvidence();
+  }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseAllTargets(gum::LoopyBeliefPropagation< double > *self){
+      self->gum::MarginalTargetedInference<double>::eraseAllTargets();
+    }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addAllTargets(gum::LoopyBeliefPropagation< double > *self){
+      self->gum::MarginalTargetedInference<double>::addAllTargets();
+    }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addTarget__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::addTarget(target);
+    }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__addTarget__SWIG_1(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::addTarget(nodeName);
+    }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseTarget__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(target);
+    }
+SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__eraseTarget__SWIG_1(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(nodeName);
+    }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__isTarget__SWIG_0(gum::LoopyBeliefPropagation< double > const *self,gum::NodeId const variable){
+      return self->gum::MarginalTargetedInference<double>::isTarget(variable);
+    }
+SWIGINTERN bool gum_LoopyBeliefPropagation_Sl_double_Sg__isTarget__SWIG_1(gum::LoopyBeliefPropagation< double > const *self,std::string const &nodeName){
+      return self->gum::MarginalTargetedInference<double>::isTarget(nodeName);
+    }
+SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__nbrTargets(gum::LoopyBeliefPropagation< double > const *self){
+      return self->gum::MarginalTargetedInference<double>::nbrTargets();
+    }
+SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__H__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId const X){
+     return self->gum::MarginalTargetedInference<double>::H(X);
+   }
+SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__H__SWIG_1(gum::LoopyBeliefPropagation< double > *self,std::string const &nodeName){
+     return self->gum::MarginalTargetedInference<double>::H(nodeName);
+   }
+SWIGINTERN gum::Potential< double > gum_LoopyBeliefPropagation_Sl_double_Sg__evidenceImpact__SWIG_0(gum::LoopyBeliefPropagation< double > *self,gum::NodeId target,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs){
+    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+SWIGINTERN gum::Potential< double > gum_LoopyBeliefPropagation_Sl_double_Sg__evidenceImpact__SWIG_1(gum::LoopyBeliefPropagation< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
 SWIGINTERN PyObject *gum_BruteForceKL_Sl_double_Sg__compute(gum::BruteForceKL< double > *self){
@@ -41970,6 +42122,88 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Potential_double_KL(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  gum::Potential< double > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double_KL",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double_KL" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double_KL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double_KL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  {
+    try {
+      result = (double)((gum::Potential< double > const *)arg1)->KL((gum::Potential< double > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Potential_double_fastKL(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  gum::Potential< double > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Potential_double_fastKL",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double_fastKL" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__PotentialT_double_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Potential_double_fastKL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "Potential_double_fastKL" "', argument " "2"" of type '" "gum::Potential< double > const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::Potential< double > * >(argp2);
+  {
+    try {
+      result = (double)((gum::Potential< double > const *)arg1)->fastKL((gum::Potential< double > const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Potential_double_normalizeAsCPT(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
@@ -51337,7 +51571,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetInference_double_setBayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNetInference_double_setBN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNetInference< double > *arg1 = (gum::BayesNetInference< double > *) 0 ;
   gum::IBayesNet< double > *arg2 = (gum::IBayesNet< double > *) 0 ;
@@ -51348,20 +51582,20 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_setBayesNet(PyObject *SWIGUN
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:BayesNetInference_double_setBayesNet",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:BayesNetInference_double_setBN",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_setBayesNet" "', argument " "1"" of type '" "gum::BayesNetInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_setBN" "', argument " "1"" of type '" "gum::BayesNetInference< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNetInference< double > * >(argp1);
   res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesNetInference_double_setBayesNet" "', argument " "2"" of type '" "gum::IBayesNet< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "BayesNetInference_double_setBN" "', argument " "2"" of type '" "gum::IBayesNet< double > const *""'"); 
   }
   arg2 = reinterpret_cast< gum::IBayesNet< double > * >(argp2);
   {
     try {
-      (arg1)->setBayesNet((gum::IBayesNet< double > const *)arg2);
+      (arg1)->setBN((gum::IBayesNet< double > const *)arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -51374,7 +51608,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetInference_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNetInference_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNetInference< double > *arg1 = (gum::BayesNetInference< double > *) 0 ;
   void *argp1 = 0 ;
@@ -51382,15 +51616,15 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_BayesNet(PyObject *SWIGUNUSE
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:BayesNetInference_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:BayesNetInference_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_BayesNet" "', argument " "1"" of type '" "gum::BayesNetInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_BN" "', argument " "1"" of type '" "gum::BayesNetInference< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNetInference< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &((gum::BayesNetInference< double > const *)arg1)->BayesNet();
+      result = (gum::IBayesNet< double > *) &((gum::BayesNetInference< double > const *)arg1)->BN();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -51432,7 +51666,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNetInference_double_isReady4Inference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNetInference_double_isInferenceReady(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNetInference< double > *arg1 = (gum::BayesNetInference< double > *) 0 ;
   void *argp1 = 0 ;
@@ -51440,15 +51674,15 @@ SWIGINTERN PyObject *_wrap_BayesNetInference_double_isReady4Inference(PyObject *
   PyObject * obj0 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:BayesNetInference_double_isReady4Inference",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:BayesNetInference_double_isInferenceReady",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_isReady4Inference" "', argument " "1"" of type '" "gum::BayesNetInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNetInference_double_isInferenceReady" "', argument " "1"" of type '" "gum::BayesNetInference< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNetInference< double > * >(argp1);
   {
     try {
-      result = (bool)((gum::BayesNetInference< double > const *)arg1)->isReady4Inference();
+      result = (bool)((gum::BayesNetInference< double > const *)arg1)->isInferenceReady();
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -54565,7 +54799,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_LazyPropagation_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
   void *argp1 = 0 ;
@@ -54573,15 +54807,15 @@ SWIGINTERN PyObject *_wrap_LazyPropagation_double_BayesNet(PyObject *SWIGUNUSEDP
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:LazyPropagation_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_BayesNet" "', argument " "1"" of type '" "gum::LazyPropagation< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_BN" "', argument " "1"" of type '" "gum::LazyPropagation< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_LazyPropagation_Sl_double_Sg__BayesNet((gum::LazyPropagation< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_LazyPropagation_Sl_double_Sg__BN((gum::LazyPropagation< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -57899,7 +58133,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::ShaferShenoyInference< double > *arg1 = (gum::ShaferShenoyInference< double > *) 0 ;
   void *argp1 = 0 ;
@@ -57907,15 +58141,15 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_BayesNet(PyObject *SWIGU
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:ShaferShenoyInference_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:ShaferShenoyInference_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_double_BayesNet" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_double_BN" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_ShaferShenoyInference_Sl_double_Sg__BayesNet((gum::ShaferShenoyInference< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_ShaferShenoyInference_Sl_double_Sg__BN((gum::ShaferShenoyInference< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -61221,7 +61455,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_VariableElimination_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_VariableElimination_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::VariableElimination< double > *arg1 = (gum::VariableElimination< double > *) 0 ;
   void *argp1 = 0 ;
@@ -61229,15 +61463,15 @@ SWIGINTERN PyObject *_wrap_VariableElimination_double_BayesNet(PyObject *SWIGUNU
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:VariableElimination_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__VariableEliminationT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_BayesNet" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VariableElimination_double_BN" "', argument " "1"" of type '" "gum::VariableElimination< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::VariableElimination< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_VariableElimination_Sl_double_Sg__BayesNet((gum::VariableElimination< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_VariableElimination_Sl_double_Sg__BN((gum::VariableElimination< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -64482,7 +64716,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_BayesNet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsInference_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
   void *argp1 = 0 ;
@@ -64490,15 +64724,15 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_BayesNet(PyObject *SWIGUNUSEDPA
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_BayesNet",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_BN",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_BayesNet" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_BN" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_GibbsInference_Sl_double_Sg__BayesNet((gum::GibbsInference< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_GibbsInference_Sl_double_Sg__BN((gum::GibbsInference< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -66769,6 +67003,3267 @@ SWIGINTERN PyObject *GibbsInference_double_swigregister(PyObject *SWIGUNUSEDPARM
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_gum__GibbsInferenceT_double_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_LoopyBeliefPropagation_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::LoopyBeliefPropagation< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_LoopyBeliefPropagation_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_LoopyBeliefPropagation_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (gum::LoopyBeliefPropagation< double > *)new gum::LoopyBeliefPropagation< double >((gum::IBayesNet< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_LoopyBeliefPropagation_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_LoopyBeliefPropagation_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LoopyBeliefPropagation_double" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_updateEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_updateEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_updateEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__updateEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setTargets",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setTargets" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setTargets(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_hardEvidenceList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_hardEvidenceList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_hardEvidenceList" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_LoopyBeliefPropagation_Sl_double_Sg__hardEvidenceList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_softEvidenceList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_softEvidenceList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_softEvidenceList" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_LoopyBeliefPropagation_Sl_double_Sg__softEvidenceList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_targetList(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_targetList",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_targetList" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_LoopyBeliefPropagation_Sl_double_Sg__targetList(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setVerbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setVerbosity",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setVerbosity" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_bool(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_setVerbosity" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setVerbosity(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setEpsilon",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setEpsilon" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_setEpsilon" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setEpsilon(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setMinEpsilonRate",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setMinEpsilonRate" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_setMinEpsilonRate" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setMinEpsilonRate(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setMaxIter",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setMaxIter" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_setMaxIter" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setMaxIter(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setMaxTime",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setMaxTime" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_setMaxTime" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setMaxTime(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setPeriodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setPeriodSize",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setPeriodSize" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_setPeriodSize" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setPeriodSize(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_setBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_setBurnIn",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_setBurnIn" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_setBurnIn" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__setBurnIn(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_verbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_verbosity",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_verbosity" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__verbosity((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_epsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_epsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_epsilon" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_LoopyBeliefPropagation_Sl_double_Sg__epsilon((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_minEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_minEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_minEpsilonRate" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_LoopyBeliefPropagation_Sl_double_Sg__minEpsilonRate((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_maxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_maxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_maxIter" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LoopyBeliefPropagation_Sl_double_Sg__maxIter((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_maxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_maxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_maxTime" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_LoopyBeliefPropagation_Sl_double_Sg__maxTime((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_periodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_periodSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_periodSize" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LoopyBeliefPropagation_Sl_double_Sg__periodSize((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_burnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_burnIn",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_burnIn" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LoopyBeliefPropagation_Sl_double_Sg__burnIn((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_nbrIterations(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_nbrIterations",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_nbrIterations" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LoopyBeliefPropagation_Sl_double_Sg__nbrIterations((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_currentTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_currentTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_currentTime" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_LoopyBeliefPropagation_Sl_double_Sg__currentTime((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_messageApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_messageApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_messageApproximationScheme" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = gum_LoopyBeliefPropagation_Sl_double_Sg__messageApproximationScheme((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_history(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_history",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_history" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (std::vector< double,std::allocator< double > > *) &gum_LoopyBeliefPropagation_Sl_double_Sg__history((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_makeInference",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_makeInference" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__makeInference(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_posterior__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_posterior" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_posterior" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = gum_LoopyBeliefPropagation_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_posterior__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_posterior" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LoopyBeliefPropagation_double_posterior" "', argument " "2"" of type '" "std::string const""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_LoopyBeliefPropagation_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_posterior(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_posterior__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_posterior__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_posterior'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::posterior(gum::NodeId const)\n"
+    "    gum::LoopyBeliefPropagation< double >::posterior(std::string const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IBayesNet< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_BN",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_BN" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::IBayesNet< double > *) &gum_LoopyBeliefPropagation_Sl_double_Sg__BN((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_addEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_addEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::addEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::LoopyBeliefPropagation< double >::addEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::LoopyBeliefPropagation< double >::addEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::LoopyBeliefPropagation< double >::addEvidence(std::string const &,std::string const &)\n"
+    "    gum::LoopyBeliefPropagation< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::LoopyBeliefPropagation< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__chgEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_chgEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_chgEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_chgEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::chgEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::LoopyBeliefPropagation< double >::chgEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::LoopyBeliefPropagation< double >::chgEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::LoopyBeliefPropagation< double >::chgEvidence(std::string const &,std::string const &)\n"
+    "    gum::LoopyBeliefPropagation< double >::chgEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::LoopyBeliefPropagation< double >::chgEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_hasEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_hasEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_hasEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__hasEvidence__SWIG_0((gum::LoopyBeliefPropagation< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_hasEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_hasEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__hasEvidence__SWIG_1((gum::LoopyBeliefPropagation< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_hasEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_hasEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_hasEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_hasEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::hasEvidence(gum::NodeId const) const\n"
+    "    gum::LoopyBeliefPropagation< double >::hasEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_eraseAllEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_eraseAllEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_eraseAllEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_eraseEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_eraseEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_eraseEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_eraseEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_eraseEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_eraseEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::eraseEvidence(gum::NodeId const)\n"
+    "    gum::LoopyBeliefPropagation< double >::eraseEvidence(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_hasSoftEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_hasSoftEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_0((gum::LoopyBeliefPropagation< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_hasHardEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__hasHardEvidence((gum::LoopyBeliefPropagation< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_hasSoftEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__hasSoftEvidence__SWIG_1((gum::LoopyBeliefPropagation< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_hasSoftEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_hasSoftEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_hasSoftEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_hasSoftEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::hasSoftEvidence(gum::NodeId const) const\n"
+    "    gum::LoopyBeliefPropagation< double >::hasSoftEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_nbrEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_nbrEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_nbrEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LoopyBeliefPropagation_Sl_double_Sg__nbrEvidence((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_nbrHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_nbrHardEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_nbrHardEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LoopyBeliefPropagation_Sl_double_Sg__nbrHardEvidence((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_nbrSoftEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_nbrSoftEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_nbrSoftEvidence" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LoopyBeliefPropagation_Sl_double_Sg__nbrSoftEvidence((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_eraseAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_eraseAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_eraseAllTargets" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__eraseAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_addAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addAllTargets" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addTarget" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_addTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_addTarget" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__addTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_addTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_addTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_addTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_addTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::addTarget(gum::NodeId const)\n"
+    "    gum::LoopyBeliefPropagation< double >::addTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_eraseTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_eraseTarget" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_eraseTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__eraseTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_eraseTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_eraseTarget" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_LoopyBeliefPropagation_Sl_double_Sg__eraseTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_eraseTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_eraseTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_eraseTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_eraseTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::eraseTarget(gum::NodeId const)\n"
+    "    gum::LoopyBeliefPropagation< double >::eraseTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_isTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_isTarget" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_isTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__isTarget__SWIG_0((gum::LoopyBeliefPropagation< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_isTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_isTarget" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_LoopyBeliefPropagation_Sl_double_Sg__isTarget__SWIG_1((gum::LoopyBeliefPropagation< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_isTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_isTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_isTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_isTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::isTarget(gum::NodeId const) const\n"
+    "    gum::LoopyBeliefPropagation< double >::isTarget(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_nbrTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_nbrTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_nbrTargets" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_LoopyBeliefPropagation_Sl_double_Sg__nbrTargets((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_H__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_H" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_H" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (double)gum_LoopyBeliefPropagation_Sl_double_Sg__H__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_H__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:LoopyBeliefPropagation_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_H" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LoopyBeliefPropagation_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LoopyBeliefPropagation_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (double)gum_LoopyBeliefPropagation_Sl_double_Sg__H__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_H(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_H__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_LoopyBeliefPropagation_double_H__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_H'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::H(gum::NodeId const)\n"
+    "    gum::LoopyBeliefPropagation< double >::H(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_evidenceImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_evidenceImpact" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "LoopyBeliefPropagation_double_evidenceImpact" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LoopyBeliefPropagation_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_LoopyBeliefPropagation_Sl_double_Sg__evidenceImpact__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_evidenceImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  std::string arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LoopyBeliefPropagation_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_evidenceImpact" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LoopyBeliefPropagation_double_evidenceImpact" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "LoopyBeliefPropagation_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_LoopyBeliefPropagation_Sl_double_Sg__evidenceImpact__SWIG_1(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_evidenceImpact(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_evidenceImpact__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LoopyBeliefPropagation_double_evidenceImpact__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LoopyBeliefPropagation_double_evidenceImpact'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LoopyBeliefPropagation< double >::evidenceImpact(gum::NodeId,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const)\n"
+    "    gum::LoopyBeliefPropagation< double >::evidenceImpact(std::string,std::vector< std::string,std::allocator< std::string > > const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *LoopyBeliefPropagation_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -84447,6 +87942,24 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::Potential< double > const *\n"
 		"\n"
 		""},
+	 { (char *)"Potential_double_KL", _wrap_Potential_double_KL, METH_VARARGS, (char *)"\n"
+		"Potential_double_KL(Potential_double self, Potential_double p) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
+		"p: gum::Potential< double > const &\n"
+		"\n"
+		""},
+	 { (char *)"Potential_double_fastKL", _wrap_Potential_double_fastKL, METH_VARARGS, (char *)"\n"
+		"Potential_double_fastKL(Potential_double self, Potential_double p) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::Potential< double > const *\n"
+		"p: gum::Potential< double > const &\n"
+		"\n"
+		""},
 	 { (char *)"Potential_double_normalizeAsCPT", _wrap_Potential_double_normalizeAsCPT, METH_VARARGS, (char *)"\n"
 		"Potential_double_normalizeAsCPT(Potential_double self)\n"
 		"\n"
@@ -86047,8 +89560,8 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::BayesNetInference< double > *\n"
 		"\n"
 		""},
-	 { (char *)"BayesNetInference_double_setBayesNet", _wrap_BayesNetInference_double_setBayesNet, METH_VARARGS, (char *)"\n"
-		"BayesNetInference_double_setBayesNet(BayesNetInference_double self, IBayesNet_double bn)\n"
+	 { (char *)"BayesNetInference_double_setBN", _wrap_BayesNetInference_double_setBN, METH_VARARGS, (char *)"\n"
+		"BayesNetInference_double_setBN(BayesNetInference_double self, IBayesNet_double bn)\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -86056,8 +89569,8 @@ static PyMethodDef SwigMethods[] = {
 		"bn: gum::IBayesNet< double > const *\n"
 		"\n"
 		""},
-	 { (char *)"BayesNetInference_double_BayesNet", _wrap_BayesNetInference_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"BayesNetInference_double_BayesNet(BayesNetInference_double self) -> IBayesNet_double\n"
+	 { (char *)"BayesNetInference_double_BN", _wrap_BayesNetInference_double_BN, METH_VARARGS, (char *)"\n"
+		"BayesNetInference_double_BN(BayesNetInference_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -86072,8 +89585,8 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::BayesNetInference< double > const *\n"
 		"\n"
 		""},
-	 { (char *)"BayesNetInference_double_isReady4Inference", _wrap_BayesNetInference_double_isReady4Inference, METH_VARARGS, (char *)"\n"
-		"BayesNetInference_double_isReady4Inference(BayesNetInference_double self) -> bool\n"
+	 { (char *)"BayesNetInference_double_isInferenceReady", _wrap_BayesNetInference_double_isInferenceReady, METH_VARARGS, (char *)"\n"
+		"BayesNetInference_double_isInferenceReady(BayesNetInference_double self) -> bool\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -86581,8 +90094,8 @@ static PyMethodDef SwigMethods[] = {
 		"nodeName: std::string const\n"
 		"\n"
 		""},
-	 { (char *)"LazyPropagation_double_BayesNet", _wrap_LazyPropagation_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"LazyPropagation_double_BayesNet(LazyPropagation_double self) -> IBayesNet_double\n"
+	 { (char *)"LazyPropagation_double_BN", _wrap_LazyPropagation_double_BN, METH_VARARGS, (char *)"\n"
+		"LazyPropagation_double_BN(LazyPropagation_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -87102,8 +90615,8 @@ static PyMethodDef SwigMethods[] = {
 		"nodeName: std::string const\n"
 		"\n"
 		""},
-	 { (char *)"ShaferShenoyInference_double_BayesNet", _wrap_ShaferShenoyInference_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"ShaferShenoyInference_double_BayesNet(ShaferShenoyInference_double self) -> IBayesNet_double\n"
+	 { (char *)"ShaferShenoyInference_double_BN", _wrap_ShaferShenoyInference_double_BN, METH_VARARGS, (char *)"\n"
+		"ShaferShenoyInference_double_BN(ShaferShenoyInference_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -87617,8 +91130,8 @@ static PyMethodDef SwigMethods[] = {
 		"nodeName: std::string const\n"
 		"\n"
 		""},
-	 { (char *)"VariableElimination_double_BayesNet", _wrap_VariableElimination_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"VariableElimination_double_BayesNet(VariableElimination_double self) -> IBayesNet_double\n"
+	 { (char *)"VariableElimination_double_BN", _wrap_VariableElimination_double_BN, METH_VARARGS, (char *)"\n"
+		"VariableElimination_double_BN(VariableElimination_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -88144,8 +91657,8 @@ static PyMethodDef SwigMethods[] = {
 		"nodeName: std::string const\n"
 		"\n"
 		""},
-	 { (char *)"GibbsInference_double_BayesNet", _wrap_GibbsInference_double_BayesNet, METH_VARARGS, (char *)"\n"
-		"GibbsInference_double_BayesNet(GibbsInference_double self) -> IBayesNet_double\n"
+	 { (char *)"GibbsInference_double_BN", _wrap_GibbsInference_double_BN, METH_VARARGS, (char *)"\n"
+		"GibbsInference_double_BN(GibbsInference_double self) -> IBayesNet_double\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -88430,6 +91943,533 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"GibbsInference_double_swigregister", GibbsInference_double_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_LoopyBeliefPropagation_double", _wrap_new_LoopyBeliefPropagation_double, METH_VARARGS, (char *)"\n"
+		"new_LoopyBeliefPropagation_double(IBayesNet_double BN) -> LoopyBeliefPropagation_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"BN: gum::IBayesNet< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"delete_LoopyBeliefPropagation_double", _wrap_delete_LoopyBeliefPropagation_double, METH_VARARGS, (char *)"\n"
+		"delete_LoopyBeliefPropagation_double(LoopyBeliefPropagation_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setEvidence", _wrap_LoopyBeliefPropagation_double_setEvidence, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setEvidence(LoopyBeliefPropagation_double self, PyObject * evidces)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"evidces: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_updateEvidence", _wrap_LoopyBeliefPropagation_double_updateEvidence, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_updateEvidence(LoopyBeliefPropagation_double self, PyObject * evidces)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"evidces: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setTargets", _wrap_LoopyBeliefPropagation_double_setTargets, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setTargets(LoopyBeliefPropagation_double self, PyObject * targets)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"targets: PyObject *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_hardEvidenceList", _wrap_LoopyBeliefPropagation_double_hardEvidenceList, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_hardEvidenceList(LoopyBeliefPropagation_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_softEvidenceList", _wrap_LoopyBeliefPropagation_double_softEvidenceList, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_softEvidenceList(LoopyBeliefPropagation_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_targetList", _wrap_LoopyBeliefPropagation_double_targetList, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_targetList(LoopyBeliefPropagation_double self) -> PyObject *\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setVerbosity", _wrap_LoopyBeliefPropagation_double_setVerbosity, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setVerbosity(LoopyBeliefPropagation_double self, bool v)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"v: bool\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setEpsilon", _wrap_LoopyBeliefPropagation_double_setEpsilon, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setEpsilon(LoopyBeliefPropagation_double self, double eps)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"eps: double\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setMinEpsilonRate", _wrap_LoopyBeliefPropagation_double_setMinEpsilonRate, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setMinEpsilonRate(LoopyBeliefPropagation_double self, double rate)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"rate: double\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setMaxIter", _wrap_LoopyBeliefPropagation_double_setMaxIter, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setMaxIter(LoopyBeliefPropagation_double self, gum::Size max)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"max: gum::Size\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setMaxTime", _wrap_LoopyBeliefPropagation_double_setMaxTime, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setMaxTime(LoopyBeliefPropagation_double self, double timeout)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"timeout: double\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setPeriodSize", _wrap_LoopyBeliefPropagation_double_setPeriodSize, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setPeriodSize(LoopyBeliefPropagation_double self, gum::Size p)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"p: gum::Size\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_setBurnIn", _wrap_LoopyBeliefPropagation_double_setBurnIn, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_setBurnIn(LoopyBeliefPropagation_double self, gum::Size b)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"b: gum::Size\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_verbosity", _wrap_LoopyBeliefPropagation_double_verbosity, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_verbosity(LoopyBeliefPropagation_double self) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_epsilon", _wrap_LoopyBeliefPropagation_double_epsilon, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_epsilon(LoopyBeliefPropagation_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_minEpsilonRate", _wrap_LoopyBeliefPropagation_double_minEpsilonRate, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_minEpsilonRate(LoopyBeliefPropagation_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_maxIter", _wrap_LoopyBeliefPropagation_double_maxIter, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_maxIter(LoopyBeliefPropagation_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_maxTime", _wrap_LoopyBeliefPropagation_double_maxTime, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_maxTime(LoopyBeliefPropagation_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_periodSize", _wrap_LoopyBeliefPropagation_double_periodSize, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_periodSize(LoopyBeliefPropagation_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_burnIn", _wrap_LoopyBeliefPropagation_double_burnIn, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_burnIn(LoopyBeliefPropagation_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_nbrIterations", _wrap_LoopyBeliefPropagation_double_nbrIterations, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_nbrIterations(LoopyBeliefPropagation_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_currentTime", _wrap_LoopyBeliefPropagation_double_currentTime, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_currentTime(LoopyBeliefPropagation_double self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_messageApproximationScheme", _wrap_LoopyBeliefPropagation_double_messageApproximationScheme, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_messageApproximationScheme(LoopyBeliefPropagation_double self) -> std::string\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_history", _wrap_LoopyBeliefPropagation_double_history, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_history(LoopyBeliefPropagation_double self) -> Vector_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_makeInference", _wrap_LoopyBeliefPropagation_double_makeInference, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_makeInference(LoopyBeliefPropagation_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_posterior", _wrap_LoopyBeliefPropagation_double_posterior, METH_VARARGS, (char *)"\n"
+		"posterior(gum::NodeId const var) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"var: gum::NodeId const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_posterior(LoopyBeliefPropagation_double self, std::string const nodeName) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"nodeName: std::string const\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_BN", _wrap_LoopyBeliefPropagation_double_BN, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_BN(LoopyBeliefPropagation_double self) -> IBayesNet_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_addEvidence", _wrap_LoopyBeliefPropagation_double_addEvidence, METH_VARARGS, (char *)"\n"
+		"addEvidence(gum::NodeId const id, gum::Idx const val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"val: gum::Idx const\n"
+		"\n"
+		"addEvidence(std::string const & nodeName, gum::Idx const val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"nodeName: std::string const &\n"
+		"val: gum::Idx const\n"
+		"\n"
+		"addEvidence(gum::NodeId const id, std::string const & val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"val: std::string const &\n"
+		"\n"
+		"addEvidence(std::string const & nodeName, std::string const & val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"nodeName: std::string const &\n"
+		"val: std::string const &\n"
+		"\n"
+		"addEvidence(gum::NodeId const id, Vector_double vals)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"vals: std::vector< double,std::allocator< double > > const &\n"
+		"\n"
+		"LoopyBeliefPropagation_double_addEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, Vector_double vals)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"nodeName: std::string const &\n"
+		"vals: std::vector< double,std::allocator< double > > const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_chgEvidence", _wrap_LoopyBeliefPropagation_double_chgEvidence, METH_VARARGS, (char *)"\n"
+		"chgEvidence(gum::NodeId const id, gum::Idx const val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"val: gum::Idx const\n"
+		"\n"
+		"chgEvidence(std::string const & nodeName, gum::Idx const val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"nodeName: std::string const &\n"
+		"val: gum::Idx const\n"
+		"\n"
+		"chgEvidence(gum::NodeId const id, std::string const & val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"val: std::string const &\n"
+		"\n"
+		"chgEvidence(std::string const & nodeName, std::string const & val)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"nodeName: std::string const &\n"
+		"val: std::string const &\n"
+		"\n"
+		"chgEvidence(gum::NodeId const id, Vector_double vals)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"vals: std::vector< double,std::allocator< double > > const &\n"
+		"\n"
+		"LoopyBeliefPropagation_double_chgEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, Vector_double vals)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"nodeName: std::string const &\n"
+		"vals: std::vector< double,std::allocator< double > > const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_hasEvidence", _wrap_LoopyBeliefPropagation_double_hasEvidence, METH_VARARGS, (char *)"\n"
+		"hasEvidence(gum::NodeId const id) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_hasEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_eraseAllEvidence", _wrap_LoopyBeliefPropagation_double_eraseAllEvidence, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_eraseAllEvidence(LoopyBeliefPropagation_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_eraseEvidence", _wrap_LoopyBeliefPropagation_double_eraseEvidence, METH_VARARGS, (char *)"\n"
+		"eraseEvidence(gum::NodeId const id)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_eraseEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_hasHardEvidence", _wrap_LoopyBeliefPropagation_double_hasHardEvidence, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_hasHardEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_hasSoftEvidence", _wrap_LoopyBeliefPropagation_double_hasSoftEvidence, METH_VARARGS, (char *)"\n"
+		"hasSoftEvidence(gum::NodeId const id) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_hasSoftEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_nbrEvidence", _wrap_LoopyBeliefPropagation_double_nbrEvidence, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_nbrEvidence(LoopyBeliefPropagation_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_nbrHardEvidence", _wrap_LoopyBeliefPropagation_double_nbrHardEvidence, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_nbrHardEvidence(LoopyBeliefPropagation_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_nbrSoftEvidence", _wrap_LoopyBeliefPropagation_double_nbrSoftEvidence, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_nbrSoftEvidence(LoopyBeliefPropagation_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_eraseAllTargets", _wrap_LoopyBeliefPropagation_double_eraseAllTargets, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_eraseAllTargets(LoopyBeliefPropagation_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_addAllTargets", _wrap_LoopyBeliefPropagation_double_addAllTargets, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_addAllTargets(LoopyBeliefPropagation_double self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_addTarget", _wrap_LoopyBeliefPropagation_double_addTarget, METH_VARARGS, (char *)"\n"
+		"addTarget(gum::NodeId const target)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeId const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_addTarget(LoopyBeliefPropagation_double self, std::string const & nodeName)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_eraseTarget", _wrap_LoopyBeliefPropagation_double_eraseTarget, METH_VARARGS, (char *)"\n"
+		"eraseTarget(gum::NodeId const target)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeId const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_eraseTarget(LoopyBeliefPropagation_double self, std::string const & nodeName)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_isTarget", _wrap_LoopyBeliefPropagation_double_isTarget, METH_VARARGS, (char *)"\n"
+		"isTarget(gum::NodeId const variable) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"variable: gum::NodeId const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_isTarget(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_nbrTargets", _wrap_LoopyBeliefPropagation_double_nbrTargets, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_nbrTargets(LoopyBeliefPropagation_double self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_H", _wrap_LoopyBeliefPropagation_double_H, METH_VARARGS, (char *)"\n"
+		"H(gum::NodeId const X) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"X: gum::NodeId const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_H(LoopyBeliefPropagation_double self, std::string const & nodeName) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"nodeName: std::string const &\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_evidenceImpact", _wrap_LoopyBeliefPropagation_double_evidenceImpact, METH_VARARGS, (char *)"\n"
+		"evidenceImpact(gum::NodeId target, Vector_int evs) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeId\n"
+		"evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const\n"
+		"\n"
+		"LoopyBeliefPropagation_double_evidenceImpact(LoopyBeliefPropagation_double self, std::string target, Vector_string evs) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > *\n"
+		"target: std::string\n"
+		"evs: std::vector< std::string,std::allocator< std::string > > const\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_swigregister", LoopyBeliefPropagation_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_BruteForceKL_double", _wrap_new_BruteForceKL_double, METH_VARARGS, (char *)"\n"
 		"BruteForceKL_double(IBayesNet_double P, IBayesNet_double Q)\n"
 		"\n"
@@ -90664,6 +94704,9 @@ static void *_p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfigurat
 static void *_p_gum__GibbsInferenceT_double_tTo_p_gum__IApproximationSchemeConfiguration(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::IApproximationSchemeConfiguration *) (gum::ApproximationScheme *) ((gum::GibbsInference< double > *) x));
 }
+static void *_p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__IApproximationSchemeConfiguration(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((gum::IApproximationSchemeConfiguration *) (gum::ApproximationScheme *) ((gum::LoopyBeliefPropagation< double > *) x));
+}
 static void *_p_gum__GibbsKLT_double_tTo_p_gum__IApproximationSchemeConfiguration(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::IApproximationSchemeConfiguration *) (gum::ApproximationScheme *) ((gum::GibbsKL< double > *) x));
 }
@@ -90913,6 +94956,9 @@ static void *_p_gum__InstantiationTo_p_gum__MultiDimInterface(void *x, int *SWIG
 static void *_p_gum__GibbsInferenceT_double_tTo_p_gum__ApproximationScheme(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::ApproximationScheme *)  ((gum::GibbsInference< double > *) x));
 }
+static void *_p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__ApproximationScheme(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((gum::ApproximationScheme *)  ((gum::LoopyBeliefPropagation< double > *) x));
+}
 static void *_p_gum__GibbsKLT_double_tTo_p_gum__ApproximationScheme(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::ApproximationScheme *)  ((gum::GibbsKL< double > *) x));
 }
@@ -91039,6 +95085,7 @@ static swig_type_info _swigt__p_gum__LabelizedVariable = {"_p_gum__LabelizedVari
 static swig_type_info _swigt__p_gum__LazyPropagationT_double_t = {"_p_gum__LazyPropagationT_double_t", "gum::LazyPropagation< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__LearningError = {"_p_gum__LearningError", "gum::LearningError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__ListT_gum__PotentialT_double_t_const_p_t = {"_p_gum__ListT_gum__PotentialT_double_t_const_p_t", "gum::List< gum::Potential< double > const * > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__LoopyBeliefPropagationT_double_t = {"_p_gum__LoopyBeliefPropagationT_double_t", "gum::LoopyBeliefPropagation< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__MissingVariableInDatabase = {"_p_gum__MissingVariableInDatabase", "gum::MissingVariableInDatabase *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__MixedGraph = {"_p_gum__MixedGraph", "gum::MixedGraph *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__MultiDimAdressable = {"_p_gum__MultiDimAdressable", "gum::MultiDimAdressable *", 0, 0, (void*)0, 0};
@@ -91197,6 +95244,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__LazyPropagationT_double_t,
   &_swigt__p_gum__LearningError,
   &_swigt__p_gum__ListT_gum__PotentialT_double_t_const_p_t,
+  &_swigt__p_gum__LoopyBeliefPropagationT_double_t,
   &_swigt__p_gum__MissingVariableInDatabase,
   &_swigt__p_gum__MixedGraph,
   &_swigt__p_gum__MultiDimAdressable,
@@ -91305,7 +95353,7 @@ static swig_cast_info _swigc__p_PythonLoadListener[] = {  {&_swigt__p_PythonLoad
 static swig_cast_info _swigc__p_allocator_type[] = {  {&_swigt__p_allocator_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__ApproximationScheme[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, _p_gum__GibbsInferenceT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__ApproximationScheme, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__ApproximationScheme[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, _p_gum__GibbsInferenceT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__LoopyBeliefPropagationT_double_t, _p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__ApproximationScheme, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Arc[] = {  {&_swigt__p_gum__Arc, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ArcGraphPart[] = {  {&_swigt__p_gum__DiGraph, _p_gum__DiGraphTo_p_gum__ArcGraphPart, 0, 0},  {&_swigt__p_gum__DAG, _p_gum__DAGTo_p_gum__ArcGraphPart, 0, 0},  {&_swigt__p_gum__MixedGraph, _p_gum__MixedGraphTo_p_gum__ArcGraphPart, 0, 0},  {&_swigt__p_gum__ArcGraphPart, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__BayesNetInferenceT_double_t[] = {  {&_swigt__p_gum__BayesNetInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -91335,7 +95383,7 @@ static swig_cast_info _swigc__p_gum__FormatNotFound[] = {  {&_swigt__p_gum__Form
 static swig_cast_info _swigc__p_gum__GibbsInferenceT_double_t[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__GibbsKLT_double_t[] = {  {&_swigt__p_gum__GibbsKLT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__GraphError[] = {  {&_swigt__p_gum__InvalidDirectedCycle, _p_gum__InvalidDirectedCycleTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__NoNeighbour, _p_gum__NoNeighbourTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__InvalidNode, _p_gum__InvalidNodeTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__GraphError, 0, 0, 0},  {&_swigt__p_gum__DefaultInLabel, _p_gum__DefaultInLabelTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__NoChild, _p_gum__NoChildTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__InvalidEdge, _p_gum__InvalidEdgeTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__InvalidArc, _p_gum__InvalidArcTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__NoParent, _p_gum__NoParentTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__EmptyBSTree, _p_gum__EmptyBSTreeTo_p_gum__GraphError, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__IApproximationSchemeConfiguration[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, _p_gum__GibbsInferenceT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__IApproximationSchemeConfiguration, 0, 0, 0},  {&_swigt__p_gum__ApproximationScheme, _p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__genericBNLearner, _p_gum__learning__genericBNLearnerTo_p_gum__IApproximationSchemeConfiguration, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__IApproximationSchemeConfiguration[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, _p_gum__GibbsInferenceT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__LoopyBeliefPropagationT_double_t, _p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__IApproximationSchemeConfiguration, 0, 0, 0},  {&_swigt__p_gum__ApproximationScheme, _p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__genericBNLearner, _p_gum__learning__genericBNLearnerTo_p_gum__IApproximationSchemeConfiguration, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IBayesNetT_double_t[] = {  {&_swigt__p_gum__IBayesNetT_double_t, 0, 0, 0},  {&_swigt__p_gum__BayesNetT_double_t, _p_gum__BayesNetT_double_tTo_p_gum__IBayesNetT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IOError[] = {  {&_swigt__p_gum__FormatNotFound, _p_gum__FormatNotFoundTo_p_gum__IOError, 0, 0},  {&_swigt__p_gum__IOError, 0, 0, 0},  {&_swigt__p_gum__SyntaxError, _p_gum__SyntaxErrorTo_p_gum__IOError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IdError[] = {  {&_swigt__p_gum__IdError, 0, 0, 0},{0, 0, 0, 0}};
@@ -91355,6 +95403,7 @@ static swig_cast_info _swigc__p_gum__LabelizedVariable[] = {  {&_swigt__p_gum__L
 static swig_cast_info _swigc__p_gum__LazyPropagationT_double_t[] = {  {&_swigt__p_gum__LazyPropagationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__LearningError[] = {  {&_swigt__p_gum__MissingVariableInDatabase, _p_gum__MissingVariableInDatabaseTo_p_gum__LearningError, 0, 0},  {&_swigt__p_gum__UnknownLabelInDatabase, _p_gum__UnknownLabelInDatabaseTo_p_gum__LearningError, 0, 0},  {&_swigt__p_gum__LearningError, 0, 0, 0},  {&_swigt__p_gum__DatabaseError, _p_gum__DatabaseErrorTo_p_gum__LearningError, 0, 0},  {&_swigt__p_gum__IncompatibleScoreApriori, _p_gum__IncompatibleScoreAprioriTo_p_gum__LearningError, 0, 0},  {&_swigt__p_gum__PossiblyIncompatibleScoreApriori, _p_gum__PossiblyIncompatibleScoreAprioriTo_p_gum__LearningError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ListT_gum__PotentialT_double_t_const_p_t[] = {  {&_swigt__p_gum__ListT_gum__PotentialT_double_t_const_p_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__LoopyBeliefPropagationT_double_t[] = {  {&_swigt__p_gum__LoopyBeliefPropagationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MissingVariableInDatabase[] = {  {&_swigt__p_gum__MissingVariableInDatabase, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MixedGraph[] = {  {&_swigt__p_gum__MixedGraph, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MultiDimArrayT_double_t[] = {{&_swigt__p_gum__MultiDimArrayT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -91513,6 +95562,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__LazyPropagationT_double_t,
   _swigc__p_gum__LearningError,
   _swigc__p_gum__ListT_gum__PotentialT_double_t_const_p_t,
+  _swigc__p_gum__LoopyBeliefPropagationT_double_t,
   _swigc__p_gum__MissingVariableInDatabase,
   _swigc__p_gum__MixedGraph,
   _swigc__p_gum__MultiDimAdressable,
@@ -92309,7 +96359,7 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "FindBarrenNodesType_FIND_BARREN_NODES",SWIG_From_int(static_cast< int >(gum::FindBarrenNodesType::FIND_BARREN_NODES)));
   SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_OutdatedBNStructure",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::OutdatedBNStructure)));
   SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_OutdatedBNPotentials",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::OutdatedBNPotentials)));
-  SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_Ready4Inference",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::Ready4Inference)));
+  SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_InferenceReady",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::InferenceReady)));
   SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_Done",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::Done)));
   SWIG_Python_SetConstant(d, "CredalNet_double_NodeType_Precise",SWIG_From_int(static_cast< int >(gum::credal::CredalNet< double >::NodeType::Precise)));
   SWIG_Python_SetConstant(d, "CredalNet_double_NodeType_Credal",SWIG_From_int(static_cast< int >(gum::credal::CredalNet< double >::NodeType::Credal)));

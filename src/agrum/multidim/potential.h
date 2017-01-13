@@ -268,6 +268,24 @@ namespace gum {
     const Potential<GUM_SCALAR>& sq() const;
 
     /**
+     * @brief compute KL divergence between this and p
+     * Checks the compatibility and then call @ref Potential::fastKL
+     * @throws gum::InvalidArgument if p is not compatible with $this (dimension,
+     * variables)
+     * @throws gum::FatalError if a zero is found in p or this and not in the
+     * other.
+     */
+    GUM_SCALAR KL( const Potential<GUM_SCALAR>& p ) const;
+
+    /**
+     * @brief compute KL divergence between this and p without testing compatibilty
+     * (undefined errors may occur in  this case)
+     * @throws gum::FatalError if a zero is found in p or this and not in the
+     * other.
+     */
+    GUM_SCALAR fastKL( const Potential<GUM_SCALAR>& p ) const;
+
+    /**
      * @brief normalisation of this as a CPT
      * @throw FatalError it some distribution sums to 0
      */

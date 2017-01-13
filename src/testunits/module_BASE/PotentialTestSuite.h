@@ -860,5 +860,40 @@ namespace gum_tests {
       p.fillWith( {1, 2, 3, 4, 5, 6, 7, 8, 9} );
       TS_ASSERT_EQUALS( p.margSumOut( {&a, &b} ).toString(), "<> :: 45" );
     }
+
+    void testKL() {
+      gum::LabelizedVariable v( "v", "v", 2 ), w( "w", "w", 2 );
+      gum::Potential<float>  p, q, r, s;
+      p.add( v );
+      p.fillWith( {0.0f, 1.0f} );
+      q.add( v );
+      q.fillWith( {0.5f, 0.5f} );
+      r.add( v );
+      r.fillWith( {0.7f, 0.3f} );
+      s.add( v );
+      s.add( w );
+      s.fillWith( {0.0f, 1.0f, 0.2f, 0.8f} );
+
+      float res;
+
+      TS_GUM_ASSERT_THROWS_NOTHING( res = p.KL( p ) );
+      TS_ASSERT_EQUALS( res, 0.0f );
+
+      TS_ASSERT_THROWS( res = p.KL( s ), gum::InvalidArgument );
+      TS_ASSERT_THROWS( res = s.KL( p ), gum::InvalidArgument );
+
+      TS_ASSERT_THROWS( res = p.KL( q ), gum::FatalError );
+      TS_ASSERT_THROWS( res = q.KL( p ), gum::FatalError );
+
+      TS_ASSERT_THROWS( res = p.KL( r ), gum::FatalError );
+      TS_ASSERT_THROWS( res = r.KL( p ), gum::FatalError );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( res = q.KL( r ) );
+      TS_ASSERT_DELTA( res, 0.5 * log2( 0.5 / 0.7 ) + 0.5 * log2( 0.5 / 0.3 ) ,1e-5);
+
+      TS_GUM_ASSERT_THROWS_NOTHING( res = r.KL( q ) );
+      TS_ASSERT_DELTA(
+          res, 0.7 * log2( 0.7 / 0.5 ) + 0.3 * log2( 0.3 / 0.5 ), 1e-5 );
+    }
   };
 }

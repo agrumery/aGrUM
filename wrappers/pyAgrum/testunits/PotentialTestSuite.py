@@ -1,5 +1,6 @@
 # -*- encoding: UTF-8 -*-
 
+import math
 import unittest
 
 import numpy as np
@@ -604,8 +605,37 @@ class TestOperators(pyAgrumTestCase):
     self.assertEqual(tmp, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
     p = gum.Potential().add(a).add(b).fillWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
     q = gum.Potential().fillWith([1])
-    e=str(q+p)
+    e = str(q + p)
     self.assertEqual(tmp, gum.Potential().add(a).add(b).fillWith([2, 3, 4, 5, 6, 7, 8, 9, 10]))
+
+  def testKL(self):
+    v = gum.LabelizedVariable("v", "v", 2)
+    w = gum.LabelizedVariable("w", "w", 2)
+
+    p = gum.Potential().add(v).fillWith([0.0, 1.0])
+    q = gum.Potential().add(v).fillWith([0.5, 0.5])
+    r = gum.Potential().add(v).fillWith([0.7, 0.3])
+    s = gum.Potential().add(v).add(w).fillWith([0.0, 1.0, 0.2, .08])
+
+    self.assertEqual(p.KL(p), 0.0)
+
+    with self.assertRaises(gum.InvalidArgument):
+      res = p.KL(s)
+    with self.assertRaises(gum.InvalidArgument):
+      res = s.KL(p)
+
+    with self.assertRaises(gum.FatalError):
+      res = p.KL(q)
+    with self.assertRaises(gum.FatalError):
+      res = q.KL(p)
+
+    with self.assertRaises(gum.FatalError):
+      res = p.KL(r)
+    with self.assertRaises(gum.FatalError):
+      res = r.KL(p)
+
+    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7,2) + 0.5 * math.log(0.5 / 0.3,2), 1e-5)
+    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5,2) + 0.3 * math.log(0.3 / 0.5,2), 1e-5)
 
 
 ts = unittest.TestSuite()

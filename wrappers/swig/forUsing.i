@@ -114,8 +114,8 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   const Potential<double> posterior( const std::string nodeName ) {
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-  const IBayesNet<double>& BayesNet() const {
-    return self->BayesNetInference<double>::BayesNet();
+  const IBayesNet<double>& BN() const {
+    return self->BayesNetInference<double>::BN();
   }
 
 //######## EVIDENCE ##########
@@ -268,6 +268,7 @@ ADD_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_INFERENCE_API(gum::ShaferShenoyInference<double>)
 ADD_INFERENCE_API(gum::VariableElimination<double>)
 ADD_INFERENCE_API(gum::GibbsInference<double>)
+ADD_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
 
 %define ADD_JOINT_INFERENCE_API(classname)
 %extend classname {

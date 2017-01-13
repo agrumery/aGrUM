@@ -27,12 +27,12 @@
 #include <sstream>
 #include <string>
 
-#define INFERENCE_DEFAULT_MAXITER 10000000
-#define INFERENCE_DEFAULT_EPSILON 1e-4 * std::log( 2 )
-#define INFERENCE_DEFAULT_MIN_EPSILON_RATE 1e-4
-#define INFERENCE_DEFAULT_PERIOD_SIZE 500
-#define INFERENCE_DEFAULT_VERBOSITY false
-#define INFERENCE_DEFAULT_BURNIN 3000
+#define GIBBS_DEFAULT_MAXITER 10000000
+#define GIBBS_DEFAULT_EPSILON 1e-4 * std::log( 2 )
+#define GIBBS_DEFAULT_MIN_EPSILON_RATE 1e-4
+#define GIBBS_DEFAULT_PERIOD_SIZE 500
+#define GIBBS_DEFAULT_VERBOSITY false
+#define GIBBS_DEFAULT_BURNIN 3000
 
 // to ease parsing for IDE
 #include <agrum/BN/inference/BayesNetInference.h>
@@ -50,12 +50,12 @@ namespace gum {
     // for debugging purposes
     GUM_CONSTRUCTOR( GibbsInference );
 
-    setEpsilon( INFERENCE_DEFAULT_EPSILON );
-    setMinEpsilonRate( INFERENCE_DEFAULT_MIN_EPSILON_RATE );
-    setMaxIter( INFERENCE_DEFAULT_MAXITER );
-    setVerbosity( INFERENCE_DEFAULT_VERBOSITY );
-    setBurnIn( INFERENCE_DEFAULT_BURNIN );
-    setPeriodSize( INFERENCE_DEFAULT_PERIOD_SIZE );
+    setEpsilon( GIBBS_DEFAULT_EPSILON );
+    setMinEpsilonRate( GIBBS_DEFAULT_MIN_EPSILON_RATE );
+    setMaxIter( GIBBS_DEFAULT_MAXITER );
+    setVerbosity( GIBBS_DEFAULT_VERBOSITY );
+    setBurnIn( GIBBS_DEFAULT_BURNIN );
+    setPeriodSize( GIBBS_DEFAULT_PERIOD_SIZE );
 
     for ( auto node : bn().dag().nodes() ) {
       __sampling_nbr.insert( node, Potential<GUM_SCALAR>() );

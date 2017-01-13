@@ -42,7 +42,7 @@ from .pyAgrum import BayesNet
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from .pyAgrum import Potential, Instantiation, UtilityTable
 from .pyAgrum import BruteForceKL, GibbsKL
-from .pyAgrum import GibbsInference, LazyPropagation, ShaferShenoyInference, VariableElimination
+from .pyAgrum import LoopyBeliefPropagation, GibbsInference, LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener
 from .pyAgrum import BNGenerator, IDGenerator, JTGenerator
 from .pyAgrum import BNLearner
@@ -65,7 +65,7 @@ __all__=[
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
   'Potential','Instantiation','UtilityTable',
   'BruteForceKL','GibbsKL',
-  'GibbsInference','LazyPropagation','ShaferShenoyInference','VariableElimination',
+  'LoopyBeliefPropagation','GibbsInference','LazyPropagation','ShaferShenoyInference','VariableElimination',
   'PythonApproximationListener','PythonBNListener','PythonLoadListener',
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',

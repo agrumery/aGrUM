@@ -128,7 +128,6 @@ namespace gum {
   template <typename GUM_SCALAR>
   BayesNet<GUM_SCALAR>::~BayesNet() {
     GUM_DESTRUCTOR( BayesNet );
-
     for ( auto p : __probaMap ) {
       delete p.second;
     }

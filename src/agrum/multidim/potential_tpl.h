@@ -1,4 +1,4 @@
-/**************************************************************************
+/***************************************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
@@ -22,7 +22,10 @@
  * @brief Implementation of the Potential class.
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
-#include <agrum/multidim/operators/projections4MultiDim.h>
+#include <cmath>
+
+
+#include <agrum/config.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum {
@@ -249,6 +252,54 @@ namespace gum {
   INLINE const Potential<GUM_SCALAR>& Potential<GUM_SCALAR>::sq() const {
     this->apply( []( GUM_SCALAR x ) { return x * x; } );
     return *this;
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR
+  Potential<GUM_SCALAR>::KL( const Potential<GUM_SCALAR>& p ) const {
+    if ( this->nbrDim() != p.nbrDim() )
+      GUM_ERROR( InvalidArgument,
+                 "KL between potentials with different numbers of dimensions" );
+    for ( const auto var : p.variablesSequence() ) {
+      if ( !this->contains( *var ) )
+        GUM_ERROR(
+            InvalidArgument,
+            "A variable in the argument does not belong to the potential." );
+    }
+    for ( const auto var : this->variablesSequence() ) {
+      if ( !p.contains( *var ) )
+        GUM_ERROR( InvalidArgument,
+                   "A variable does not belong to the argument." );
+    }
+    return fastKL( p );
+  }
+
+  template <typename GUM_SCALAR>
+  INLINE GUM_SCALAR
+  Potential<GUM_SCALAR>::fastKL( const Potential<GUM_SCALAR>& p ) const {
+    Instantiation inst( *this );
+    Instantiation instP( p );
+    GUM_SCALAR    res = static_cast<GUM_SCALAR>( 0 );
+    for ( inst.setFirst(), instP.setFirst(); !inst.end();
+          inst.inc(), instP.inc() ) {
+      GUM_SCALAR x = this->get( inst );
+      GUM_SCALAR y = p.get( instP );
+      if ( static_cast<GUM_SCALAR>( 0 ) == x ) {
+        if ( static_cast<GUM_SCALAR>( 0 ) == y ) {
+          continue;  // we add 0 to res
+        }
+        GUM_ERROR( FatalError,
+                   "The Potential has a 0 while the argument has not." )
+      }
+
+      if ( static_cast<GUM_SCALAR>( 0 ) == y ) {
+        // we know that x!=0;
+        GUM_ERROR( FatalError,
+                   "The argument has a 0 while the potential has not." )
+      }
+      res += x * log2( x / y );
+    }
+    return res;
   }
 
   template <typename GUM_SCALAR>
