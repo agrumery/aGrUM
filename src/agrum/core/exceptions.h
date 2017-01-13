@@ -35,16 +35,18 @@
 
 #ifdef NDEBUG
 #define GUM_ERROR_IN_EXPR( type, msg ) throw( type( msg ) )
-#define GUM_ERROR( type, msg )           \
-  {                                      \
-    std::ostringstream __error__str;     \
-    __error__str << msg;                 \
-    throw( type( __error__str.str() ) ); \
+#define GUM_ERROR( type, msg )                                  \
+  {                                                             \
+    std::ostringstream __error__str;                            \
+    __error__str << __FILE__ << ":" << __LINE__ << ": " << msg; \
+    throw( type( __error__str.str() ) );                        \
   }
-#define GUM_SHOWERROR( e )                                                \
-  {                                                                       \
-    std::cout << __FILE__ << ":" << __LINE__ << ": " << ( e ).errorType() \
-              << " - " << ( e ).errorContent() << std::endl;              \
+#define GUM_SHOWERROR( e )                                               \
+  {                                                                      \
+    std::cout << std::endl                                               \
+              << __FILE__ << ":" << __LINE__ << " " << ( e ).errorType() \
+              << " from " << std::endl                                   \
+              << ( e ).errorContent() << std::endl;                      \
   }
 #else
 #define GUM_ERROR_IN_EXPR( type, msg ) throw( type( msg ) )
@@ -55,11 +57,13 @@
     throw( type( gum::__createMsg(                                  \
         __FILE__, __FUNCTION__, __LINE__, __error__str.str() ) ) ); \
   }
-#define GUM_SHOWERROR( e )                                                \
-  {                                                                       \
-    std::cerr << __FILE__ << ":" << __LINE__ << ": " << ( e ).errorType() \
-              << " - " << ( e ).errorContent() << std::endl;              \
-    std::cerr << ( e ).errorCallStack() << std::endl;                     \
+#define GUM_SHOWERROR( e )                                               \
+  {                                                                      \
+    std::cout << std::endl                                               \
+              << __FILE__ << ":" << __LINE__ << " " << ( e ).errorType() \
+              << " from " << std::endl                                   \
+              << ( e ).errorContent() << std::endl;                      \
+    std::cout << ( e ).errorCallStack() << std::endl;                    \
   }
 #endif  // NDEBUG
 
@@ -109,7 +113,7 @@ namespace gum {
      * @brief Returns the message content.
      * @return Returns the message content.
      */
-    const std::string errorContent() const { return _type + " : " + _msg; }
+    const std::string errorContent() const { return _msg; }
 
     /**
      * @brief Returns the error type.

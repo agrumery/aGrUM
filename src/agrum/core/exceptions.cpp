@@ -23,7 +23,7 @@
 #include <string.h>
 
 #include <agrum/config.h>
-
+#include <agrum/core/exceptions.h>
 #ifndef NDEBUG
 #ifdef HAVE_EXECINFO_H
 #include <execinfo.h>
