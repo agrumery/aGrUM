@@ -457,7 +457,7 @@ namespace gum_tests {
         inf.makeInference();
 
         // alarm is not good for LBP
-        __compareInference( bn, lazy, inf,2.5e-1 );
+        __compareInference( bn, lazy, inf, 2.5e-1 );
       } catch ( gum::Exception& e ) {
         TS_ASSERT( false );
       }
@@ -485,6 +485,54 @@ namespace gum_tests {
       TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
     }
 
+
+    void testAggregatorsInLBP() {
+      gum::BayesNet<float> bn;
+      for ( const auto& e : {"a", "b", "c", "d"} )
+        bn.add( e, 2 );
+      bn.addOR( gum::LabelizedVariable( "O", "", 2 ) );
+      bn.addAND( gum::LabelizedVariable( "A", "", 2 ) );
+      bn.addFORALL( gum::LabelizedVariable( "F", "", 2 ) );
+
+      bn.addArc( "a", "O" );
+      bn.addArc( "a", "A" );
+
+      bn.addArc( "b", "O" );
+      bn.addArc( "b", "A" );
+
+      bn.addArc( "c", "O" );
+
+      bn.addArc( "O", "F" );
+      bn.addArc( "A", "F" );
+      bn.addArc( "a", "F" );
+      bn.addArc( "d", "F" );
+
+      auto ie = gum::LoopyBeliefPropagation<float>( &bn );
+      TS_GUM_ASSERT_THROWS_NOTHING( ie.makeInference(); )
+    }
+
+    void testLogitInLBP() {
+      gum::BayesNet<float> bn;
+      for ( const auto& item : {"Cold", "Flu", "Malaria", "X", "Y", "Z"} )
+        bn.add( item, 2 );
+
+      gum::LabelizedVariable fever( "Fever", "", 2 );
+      TS_GUM_ASSERT_THROWS_NOTHING( bn.addLogit( fever, 0.3f ) );
+
+      bn.addWeightedArc( "Malaria", "Fever", 0.9f );
+      bn.addWeightedArc( "Flu", "Fever", 0.8f );
+      bn.addWeightedArc( "Cold", "Fever", 0.4f );
+
+      TS_ASSERT_THROWS( bn.addWeightedArc( "Malaria", "Cold", 0.8f ),
+                        gum::InvalidArc );
+
+      bn.addArc( "Y", "X" );
+      bn.addArc( "Fever", "X" );
+      bn.addArc( "Z", "X" );
+
+      gum::LoopyBeliefPropagation<float> ie( &bn );
+      TS_GUM_ASSERT_THROWS_NOTHING( ie.makeInference(); )
+    }
 
     private:
     template <typename GUM_SCALAR>

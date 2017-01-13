@@ -118,6 +118,17 @@ namespace gum {
     };
 
     /**
+     * @brief Copy of a multiDimICIModel.
+     *
+     * This method is virtual because it should be optimized in certain
+     * MultiDimContainer.
+     *
+     * @throw OperationNotAllowed Raised if src does not have the same domain
+     * size than this MultiDimContainer.
+     **/
+    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
+
+    /**
      * @return the real number of parameters used for this table. This function
      * is used for compute @see compressionRatio()
      */
@@ -155,7 +166,7 @@ namespace gum {
     /// @{
 
     /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
-    GUM_SCALAR __default_weight;
+    mutable GUM_SCALAR __default_weight;
 
     mutable HashTable<const DiscreteVariable*, GUM_SCALAR> __causal_weights;
     /// @}

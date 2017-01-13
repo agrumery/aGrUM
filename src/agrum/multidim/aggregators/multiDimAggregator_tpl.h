@@ -93,18 +93,33 @@ namespace gum {
     template <typename GUM_SCALAR>
     const std::string MultiDimAggregator<GUM_SCALAR>::toString() const {
       std::stringstream s;
-      s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "="
-        << aggregatorName() << "(";
+      s << this->variable( 0 ) << "=" << aggregatorName() << "(";
 
-      for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
+      for ( Idx i = 1; i < this->nbrDim(); i++ ) {
         if ( i > 1 ) s << ",";
 
-        s << MultiDimImplementation<GUM_SCALAR>::variable( i );
+        s << this->variable( i );
       }
 
       s << ")";
 
       return s.str();
+    }
+    template <typename GUM_SCALAR>
+    void MultiDimAggregator<GUM_SCALAR>::copyFrom(
+        const MultiDimContainer<GUM_SCALAR>& src ) const {
+      auto p = dynamic_cast<const MultiDimAggregator<GUM_SCALAR>*>( &src );
+      if ( p == nullptr ) {
+        MultiDimReadOnly<GUM_SCALAR>::copyFrom( src );
+      } else {
+        if ( p->name() != this->name() ) {
+
+          GUM_ERROR( OperationNotAllowed,
+                     "Can not copy from a " << p->name() << " to a "
+                                            << this->name() );
+        }
+      }
+      // it the types aree consistant, nothing to do...
     }
 
     // returns the name of the implementation
@@ -125,7 +140,7 @@ namespace gum {
     INLINE void
     MultiDimAggregator<GUM_SCALAR>::_swap( const DiscreteVariable* x,
                                            const DiscreteVariable* y ) {
-      MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
+      this->_swap( x, y );
     }
 
   } /* namespace aggregator */

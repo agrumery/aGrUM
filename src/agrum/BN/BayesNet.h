@@ -584,6 +584,21 @@ namespace gum {
      */
     void addWeightedArc( NodeId tail, NodeId head, GUM_SCALAR causalWeight );
 
+    /**
+     * Add an arc in the BN, and update arc.head's CPT.
+     *
+     * @param head and
+     * @param tail as std::string
+     * @param causalWeight see gum::MultiDimICIModel
+     * @param NotFound if no node with sun names is found
+     * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
+     * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
+     */
+    void addWeightedArc( const std::string& tail,
+                         const std::string& head,
+                         GUM_SCALAR         causalWeight ) {
+      addWeightedArc( idFromName( tail ), idFromName( head ), causalWeight );
+    };
     /// @}
 
     /// randomly generates CPTs for a given structure

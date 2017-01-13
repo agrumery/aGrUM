@@ -22,6 +22,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/BN/BayesNet.h>
 #include <agrum/core/exceptions.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>

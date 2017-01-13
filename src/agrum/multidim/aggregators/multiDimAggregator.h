@@ -151,6 +151,17 @@ namespace gum {
        */
       virtual const std::string& name() const override;
 
+      /**
+       * @brief Copy of a multiDimICIModel.
+       *
+       * This method is virtual because it should be optimized in certain
+       * MultiDimContainer.
+       *
+       * @throw OperationNotAllowed Raised if src does not have the same domain
+       * size than this MultiDimContainer.
+       **/
+      virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
+
       /// @}
       protected:
       /// by default, _buildValue uses a "fold" scheme and the user has to

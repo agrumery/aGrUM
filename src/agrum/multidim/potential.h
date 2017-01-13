@@ -1,6 +1,4 @@
-//@beforeMerge working on setEvidence in pyAgrum
-
-/***************************************************************************
+/************************************************
  *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *

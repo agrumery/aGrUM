@@ -119,12 +119,10 @@ namespace gum {
   template <typename GUM_SCALAR>
   const std::string MultiDimICIModel<GUM_SCALAR>::toString() const {
     std::stringstream s;
-    s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "=CIModel(["
-      << externalWeight() << "],";
+    s << this->variable( 0 ) << "=CIModel([" << externalWeight() << "],";
 
-    for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
-      s << MultiDimImplementation<GUM_SCALAR>::variable( i ) << "["
-        << causalWeight( MultiDimImplementation<GUM_SCALAR>::variable( i ) )
+    for ( Idx i = 1; i < this->nbrDim(); i++ ) {
+      s << this->variable( i ) << "[" << causalWeight( this->variable( i ) )
         << "]";
     }
 
@@ -133,6 +131,25 @@ namespace gum {
     std::string res;
     s >> res;
     return res;
+  }
+  template <typename GUM_SCALAR>
+  void MultiDimICIModel<GUM_SCALAR>::copyFrom(
+      const MultiDimContainer<GUM_SCALAR>& src ) const {
+    auto p = dynamic_cast<const MultiDimICIModel<GUM_SCALAR>*>( &src );
+    if ( p == nullptr )
+      MultiDimReadOnly<GUM_SCALAR>::copyFrom( src );
+    else {
+      if ( src.domainSize() != this->domainSize() ) {
+        GUM_ERROR( OperationNotAllowed, "Domain sizes do not fit" );
+      }
+      __external_weight = p->__external_weight;
+      __default_weight = p->__default_weight;
+      for ( Idx i = 1; i < this->nbrDim(); i++ ) {
+        __causal_weights.set(
+            const_cast<const DiscreteVariable*>(& this->variable( i ) ),
+            p->causalWeight( this->variable( i ) ) );
+      }
+    }
   }
 
   // returns the name of the implementation
@@ -145,7 +162,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void MultiDimICIModel<GUM_SCALAR>::_swap( const DiscreteVariable* x,
                                                    const DiscreteVariable* y ) {
-    MultiDimImplementation<GUM_SCALAR>::_swap( x, y );
+    this->_swap( x, y );
     __causal_weights.insert( y, __causal_weights[x] );
     __causal_weights.erase( x );
   }

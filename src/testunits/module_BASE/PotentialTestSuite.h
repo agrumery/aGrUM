@@ -26,6 +26,7 @@
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/multidim/ICIModels/multiDimLogit.h>
 
 namespace gum_tests {
 
@@ -889,11 +890,14 @@ namespace gum_tests {
       TS_ASSERT_THROWS( res = r.KL( p ), gum::FatalError );
 
       TS_GUM_ASSERT_THROWS_NOTHING( res = q.KL( r ) );
-      TS_ASSERT_DELTA( res, 0.5 * log2( 0.5 / 0.7 ) + 0.5 * log2( 0.5 / 0.3 ) ,1e-5);
+      TS_ASSERT_DELTA(
+          res, 0.5 * log2( 0.5 / 0.7 ) + 0.5 * log2( 0.5 / 0.3 ), 1e-5 );
 
       TS_GUM_ASSERT_THROWS_NOTHING( res = r.KL( q ) );
       TS_ASSERT_DELTA(
           res, 0.7 * log2( 0.7 / 0.5 ) + 0.3 * log2( 0.3 / 0.5 ), 1e-5 );
     }
+
+    void testPotentialAggregator() {}
   };
 }

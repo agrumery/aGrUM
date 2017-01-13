@@ -24,6 +24,7 @@
 
 #include <agrum/core/exceptions.h>
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
+#include <agrum/multidim/multiDimImplementation.h>
 
 namespace gum {
 
@@ -77,27 +78,26 @@ namespace gum {
     }
 
     fact = 1 / ( 1 + std::exp( -fact ) );  // or std::exp(fact)/(1+std::exp(fact))
-    return ( i.val( C ) == 1 ) ? fact : (GUM_SCALAR)1.0 - fact;
+    auto res = ( i.val( C ) == 1 ) ? fact : (GUM_SCALAR)1.0 - fact;
+
+    return res;
   }
 
   template <typename GUM_SCALAR>
   const std::string MultiDimLogit<GUM_SCALAR>::toString() const {
     std::stringstream s;
-    s << MultiDimImplementation<GUM_SCALAR>::variable( 0 ) << "=logit("
-      << this->externalWeight();
+    s << this->variable( 0 ) << "=logit(" << this->externalWeight();
 
-    for ( Idx i = 1; i < MultiDimImplementation<GUM_SCALAR>::nbrDim(); i++ ) {
-      GUM_SCALAR c =
-          this->causalWeight( MultiDimImplementation<GUM_SCALAR>::variable( i ) );
+    for ( Idx i = 1; i < this->nbrDim(); i++ ) {
+      GUM_SCALAR c = this->causalWeight( this->variable( i ) );
 
       if ( c != GUM_SCALAR( 0 ) ) {
         s << " ";
 
         if ( c > 0 ) s << "+";
 
-        s << this->causalWeight(
-                 MultiDimImplementation<GUM_SCALAR>::variable( i ) )
-          << "*" << MultiDimImplementation<GUM_SCALAR>::variable( i );
+        s << this->causalWeight( this->variable( i ) ) << "*"
+          << this->variable( i );
       }
     }
 
