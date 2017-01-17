@@ -3,8 +3,8 @@ linux_gcc-5_release:
     - linux
   stage: build
   variables:
-    CC: "$(which gcc-5)"
-    CXX: "$(which g++-5)"
+    CC: "/usr/bin/gcc-5"
+    CXX: "/usr/bin/g++-5"
   before_script: 
     - apt update && apt -y install g++-5 cmake python
   script: 
