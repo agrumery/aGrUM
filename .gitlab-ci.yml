@@ -8,7 +8,22 @@ linux_gcc-5_release:
   before_script: 
     - apt update && apt -y install g++-5 cmake python
   script: 
-    - python act lib release
+    - python act --no-fun lib release
+  artifacts:
+    paths:
+      - build/
+
+linux_gcc-4.9_release:
+  tags:
+    - linux
+  stage: build
+  variables:
+    CC: "/usr/bin/gcc-4.9"
+    CXX: "/usr/bin/g++-4.9"
+  before_script: 
+    - apt update && apt -y install g++-4.9 cmake python
+  script: 
+    - python act --no-fun lib release
   artifacts:
     paths:
       - build/
