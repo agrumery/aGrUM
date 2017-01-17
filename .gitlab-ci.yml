@@ -1,0 +1,14 @@
+linux_gcc-5_release:
+  tags:
+    - linux
+  stage: build
+  variables:
+    CC: "$(which gcc-5)"
+    CXX: "$(which g++-5)"
+  before_script: 
+    - apt update && apt -y install g++-5 cmake python
+  script: 
+    - python act lib release
+  artifacts:
+    paths:
+      - build/
