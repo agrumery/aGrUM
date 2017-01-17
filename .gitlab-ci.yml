@@ -1,6 +1,11 @@
+################################################################################
+# BUILD
+################################################################################
+
 linux_gcc-5_release:
   tags:
     - linux
+    - gcc-5
   stage: build
   variables:
     CC: "/usr/bin/gcc-5"
@@ -10,14 +15,149 @@ linux_gcc-5_release:
   cache:
     untracked: true
 
+linux_gcc-5_debug:
+  tags:
+    - linux
+    - gcc-5
+  stage: build
+  variables:
+    CC: "/usr/bin/gcc-5"
+    CXX: "/usr/bin/g++-5"
+  script: 
+    - python act --no-fun lib debug
+  cache:
+    untracked: true
+
 linux_gcc-4.9_release:
   tags:
     - linux
+    - gcc-4.9
   stage: build
   variables:
     CC: "/usr/bin/gcc-4.9"
     CXX: "/usr/bin/g++-4.9"
   script: 
     - python act --no-fun lib release
+  cache:
+    untracked: true
+
+linux_gcc-4.9_debug:
+  tags:
+    - linux
+    - gcc-4.9
+  stage: build
+  variables:
+    CC: "/usr/bin/gcc-4.9"
+    CXX: "/usr/bin/g++-4.9"
+  script: 
+    - python act --no-fun lib debug
+  cache:
+    untracked: true
+    
+linux_clang_release:
+  tags:
+    - linux
+    - clang
+  stage: build
+  variables:
+    CC: "/usr/bin/clang"
+    CXX: "/usr/bin/clang++"
+  script: 
+    - python act --no-fun lib release
+  cache:
+    untracked: true
+
+linux_clang_debug:
+  tags:
+    - linux
+    - clang
+  stage: build
+  variables:
+    CC: "/usr/bin/clang"
+    CXX: "/usr/bin/clang++"
+  script: 
+    - python act --no-fun lib debug
+  cache:
+    untracked: true
+    
+################################################################################
+# TEST
+################################################################################
+
+linux_gcc-5_release_test:
+  tags:
+    - linux
+    - gcc-5
+  stage: build
+  variables:
+    CC: "/usr/bin/gcc-5"
+    CXX: "/usr/bin/g++-5"
+  script: 
+    - python act --no-fun test release
+  cache:
+    untracked: true
+
+linux_gcc-5_debug_test:
+  tags:
+    - linux
+    - gcc-5
+  stage: build
+  variables:
+    CC: "/usr/bin/gcc-5"
+    CXX: "/usr/bin/g++-5"
+  script: 
+    - python act --no-fun test debug
+  cache:
+    untracked: true
+
+linux_gcc-4.9_release_test:
+  tags:
+    - linux
+    - gcc-4.9
+  stage: build
+  variables:
+    CC: "/usr/bin/gcc-4.9"
+    CXX: "/usr/bin/g++-4.9"
+  script: 
+    - python act --no-fun test release
+  cache:
+    untracked: true
+
+linux_gcc-4.9_debug_test:
+  tags:
+    - linux
+    - gcc-4.9
+  stage: build
+  variables:
+    CC: "/usr/bin/gcc-4.9"
+    CXX: "/usr/bin/g++-4.9"
+  script: 
+    - python act --no-fun test debug
+  cache:
+    untracked: true
+    
+linux_clang_release_test:
+  tags:
+    - linux
+    - clang
+  stage: build
+  variables:
+    CC: "/usr/bin/clang"
+    CXX: "/usr/bin/clang++"
+  script: 
+    - python act --no-fun test release
+  cache:
+    untracked: true
+
+linux_clang_debug_test:
+  tags:
+    - linux
+    - clang
+  stage: build
+  variables:
+    CC: "/usr/bin/clang"
+    CXX: "/usr/bin/clang++"
+  script: 
+    - python act --no-fun test debug
   cache:
     untracked: true
