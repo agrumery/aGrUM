@@ -28,31 +28,31 @@ linux_gcc-5_debug:
   cache:
     untracked: true
 
-linux_gcc-4.9_release:
-  tags:
-    - linux
-    - gcc-4.9
-  stage: build
-  variables:
-    CC: "/usr/bin/gcc-4.9"
-    CXX: "/usr/bin/g++-4.9"
-  script: 
-    - python act --no-fun lib release
-  cache:
-    untracked: true
-
-linux_gcc-4.9_debug:
-  tags:
-    - linux
-    - gcc-4.9
-  stage: build
-  variables:
-    CC: "/usr/bin/gcc-4.9"
-    CXX: "/usr/bin/g++-4.9"
-  script: 
-    - python act --no-fun lib debug
-  cache:
-    untracked: true
+#linux_gcc-4.9_release:
+#  tags:
+#    - linux
+#    - gcc-4.9
+#  stage: build
+#  variables:
+#    CC: "/usr/bin/gcc-4.9"
+#    CXX: "/usr/bin/g++-4.9"
+#  script: 
+#    - python act --no-fun lib release
+#  cache:
+#    untracked: true
+#
+#linux_gcc-4.9_debug:
+#  tags:
+#    - linux
+#    - gcc-4.9
+#  stage: build
+#  variables:
+#    CC: "/usr/bin/gcc-4.9"
+#    CXX: "/usr/bin/g++-4.9"
+#  script: 
+#    - python act --no-fun lib debug
+#  cache:
+#    untracked: true
     
 linux_clang_release:
   tags:
@@ -110,31 +110,31 @@ linux_gcc-5_debug_test:
   cache:
     untracked: true
 
-linux_gcc-4.9_release_test:
-  tags:
-    - linux
-    - gcc-4.9
-  stage: test
-  variables:
-    CC: "/usr/bin/gcc-4.9"
-    CXX: "/usr/bin/g++-4.9"
-  script: 
-    - python act --no-fun test release
-  cache:
-    untracked: true
-
-linux_gcc-4.9_debug_test:
-  tags:
-    - linux
-    - gcc-4.9
-  stage: test
-  variables:
-    CC: "/usr/bin/gcc-4.9"
-    CXX: "/usr/bin/g++-4.9"
-  script: 
-    - python act --no-fun test debug
-  cache:
-    untracked: true
+#linux_gcc-4.9_release_test:
+#  tags:
+#    - linux
+#    - gcc-4.9
+#  stage: test
+#  variables:
+#    CC: "/usr/bin/gcc-4.9"
+#    CXX: "/usr/bin/g++-4.9"
+#  script: 
+#    - python act --no-fun test release
+#  cache:
+#    untracked: true
+#
+#linux_gcc-4.9_debug_test:
+#  tags:
+#    - linux
+#    - gcc-4.9
+#  stage: test
+#  variables:
+#    CC: "/usr/bin/gcc-4.9"
+#    CXX: "/usr/bin/g++-4.9"
+#  script: 
+#    - python act --no-fun test debug
+#  cache:
+#    untracked: true
     
 linux_clang_release_test:
   tags:
