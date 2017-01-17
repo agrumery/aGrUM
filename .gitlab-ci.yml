@@ -9,9 +9,8 @@ linux_gcc-5_release:
     - apt update && apt -y install g++-5 cmake python
   script: 
     - python act --no-fun lib release
-  artifacts:
-    paths:
-      - build/
+  cache:
+    untracked: true
 
 linux_gcc-4.9_release:
   tags:
@@ -24,6 +23,5 @@ linux_gcc-4.9_release:
     - apt update && apt -y install g++-4.9 cmake python
   script: 
     - python act --no-fun lib release
-  artifacts:
-    paths:
-      - build/
+  cache:
+    untracked: true
