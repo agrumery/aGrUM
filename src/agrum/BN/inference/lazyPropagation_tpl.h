@@ -490,9 +490,9 @@ namespace gum {
       }
     }
 
-    // 4/ if there exist some joint targets, we shall add new edges into the
-    // moral
-    // graph in order to ensure that there exists a clique containing each joint
+    // 4/ if there exist some joint targets, we shall add new edges
+    // into the moral graph in order to ensure that there exists a clique
+    // containing each joint
     for ( const auto& nodeset : this->jointTargets() ) {
       for ( auto iter1 = nodeset.cbegin(); iter1 != nodeset.cend(); ++iter1 ) {
         auto iter2 = iter1;
@@ -599,6 +599,8 @@ namespace gum {
         if ( nodeset.contains( node ) ) nodeset.erase( node );
 
       if ( !nodeset.empty() ) {
+        // the clique we are looking for is the one that was created when
+        // the first element of nodeset was eliminated
         NodeId first_eliminated_node = *( nodeset.begin() );
         int    elim_number = elim_order[first_eliminated_node];
         for ( const auto node : nodeset ) {
@@ -607,8 +609,10 @@ namespace gum {
             first_eliminated_node = node;
           }
         }
-        __joint_target_to_clique.insert( set,
-                                         __node_to_clique[first_eliminated_node] );
+        
+        __joint_target_to_clique.insert(
+           set,
+           __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
       }
     }
 
@@ -1487,10 +1491,10 @@ namespace gum {
 
     // if we still need to perform some inference task, do it: so, first,
     // determine the clique on which we should perform collect to compute
-    // the unnormalized joint posterior of a set of nodes containing "set"
+    // the unnormalized joint posterior of a set of nodes containing "targets"
     NodeId clique_of_set;
     try {
-      clique_of_set = __joint_target_to_clique[targets];
+      clique_of_set = __joint_target_to_clique[set];
     } catch ( NotFound& ) {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
@@ -1507,6 +1511,7 @@ namespace gum {
       // one we are looking for
       const std::vector<NodeId>& JT_elim_order =
           __triangulation->eliminationOrder();
+
       NodeProperty<int> elim_order( Size( JT_elim_order.size() ) );
       for ( std::size_t i = std::size_t( 0 ), size = JT_elim_order.size();
             i < size;
@@ -1520,8 +1525,10 @@ namespace gum {
           first_eliminated_node = node;
         }
       }
-      clique_of_set = __node_to_clique[first_eliminated_node];
 
+      clique_of_set =
+        __triangulation->createdJunctionTreeClique( first_eliminated_node );
+      
       // 3/ check that cliquee_of_set contains the all the nodes in the target
       const NodeSet& clique_nodes = __JT->clique( clique_of_set );
       for ( const auto node : targets ) {
@@ -1564,6 +1571,7 @@ namespace gum {
 
     if ( ( new_pot_list.size() == 1 ) && hard_ev_nodes.empty() ) {
       joint = const_cast<Potential<GUM_SCALAR>*>( *( new_pot_list.begin() ) );
+
       // if pot already existed, create a copy, so that we can put it into
       // the __target_posteriors property
       if ( pot_list.exists( joint ) ) {
@@ -1573,7 +1581,8 @@ namespace gum {
         // removed just after the next else block
         new_pot_list.clear();
       }
-    } else {
+    }
+    else {
       // combine all the potentials in new_pot_list with all the hard evidence
       // of the nodes in set
       __PotentialSet new_new_pot_list = new_pot_list;

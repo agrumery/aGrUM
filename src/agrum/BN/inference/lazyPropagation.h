@@ -268,6 +268,7 @@ namespace gum {
 
     /// the join (or junction) tree used to answer the last inference query
     JoinTree* __JT{nullptr};
+    
     /// the junction tree to answer the last inference query
     JunctionTree* __junctionTree{nullptr};
 
