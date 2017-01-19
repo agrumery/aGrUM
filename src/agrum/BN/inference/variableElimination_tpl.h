@@ -464,7 +464,8 @@ namespace gum {
             first_eliminated_node = node;
           }
         }
-        __targets2clique = __node_to_clique[first_eliminated_node];
+        __targets2clique =
+          __triangulation->createdJunctionTreeClique( first_eliminated_node );
       }
     }
   }
