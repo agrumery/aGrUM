@@ -493,9 +493,9 @@ namespace gum {
     __node_to_clique.clear();
     const std::vector<NodeId>& JT_elim_order = __triangulation->eliminationOrder();
     NodeProperty<int>          elim_order( Size( JT_elim_order.size() ) );
-    for ( NodeId i = NodeId( 0 ), size = NodeId( JT_elim_order.size() ); i < size;
+    for ( std::size_t i = std::size_t( 0 ), size = JT_elim_order.size(); i < size;
           ++i )
-      elim_order.insert( JT_elim_order[i], i );
+      elim_order.insert( JT_elim_order[i], (int)i );
     const DAG& dag = bn.dag();
     for ( const auto node : __graph ) {
       // get the variables in the potential of node (and its parents)
@@ -559,6 +559,8 @@ namespace gum {
         if ( nodeset.contains( node ) ) nodeset.erase( node );
 
       if ( !nodeset.empty() ) {
+        // the clique we are looking for is the one that was created when
+        // the first element of nodeset was eliminated
         NodeId first_eliminated_node = *( nodeset.begin() );
         int    elim_number = elim_order[first_eliminated_node];
         for ( const auto node : nodeset ) {
@@ -567,8 +569,10 @@ namespace gum {
             first_eliminated_node = node;
           }
         }
-        __joint_target_to_clique.insert( set,
-                                         __node_to_clique[first_eliminated_node] );
+        
+        __joint_target_to_clique.insert(
+          set,
+          __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
       }
     }
 
@@ -778,6 +782,17 @@ namespace gum {
   /// messages
   template <typename GUM_SCALAR>
   void ShaferShenoyInference<GUM_SCALAR>::_updateOutdatedBNPotentials() {
+    // for each clique, indicate whether the potential stored into
+    // __clique_ss_potentials[clique] is the result of a combination. In this
+    // case, it has been allocated by the combination and will need to be
+    // deallocated if its clique has been invalidated
+    NodeProperty<bool> ss_potential_to_deallocate ( __clique_potentials.size () );
+    for ( auto pot_iter = __clique_potentials.cbegin ();
+          pot_iter != __clique_potentials.cend (); ++pot_iter ) {
+      ss_potential_to_deallocate.insert ( pot_iter.key(),
+                                          ( pot_iter.val().size () > 1 ) );
+    }
+    
     // compute the set of CPTs that were projected due to hard evidence and
     // whose hard evidence have changed, so that they need a new projection.
     // By the way, remove these CPTs since they are no more needed
@@ -789,17 +804,17 @@ namespace gum {
     for ( const auto node : __hard_ev_nodes )
       if ( __evidence_changes.exists( node ) ) hard_nodes_changed.insert( node );
 
-    NodeSet     nodes_with_projected_CPTs_changed;
+    NodeSet nodes_with_projected_CPTs_changed;
     const auto& bn = this->BN();
     for ( auto pot_iter = __hard_ev_projected_CPTs.beginSafe();
           pot_iter != __hard_ev_projected_CPTs.endSafe();
           ++pot_iter ) {
-      const auto  pot = pot_iter.val();
-      const auto& variables = pot->variablesSequence();
-      for ( const auto var : variables ) {
+      for ( const auto var : bn.cpt( pot_iter.key() ).variablesSequence() ) {
         if ( hard_nodes_changed.contains( bn.nodeId( *var ) ) ) {
           nodes_with_projected_CPTs_changed.insert( pot_iter.key() );
-          delete pot;
+          delete pot_iter.val();
+          __clique_potentials[__node_to_clique[pot_iter.key()]].erase(
+              pot_iter.val() );
           __hard_ev_projected_CPTs.erase( pot_iter );
           break;
         }
@@ -824,21 +839,23 @@ namespace gum {
         }
       }
     }
+    
+    // now, add to the set of invalidated cliques those that contain projected
+    // CPTs that were changed.
+    for ( auto node : nodes_with_projected_CPTs_changed ) {
+      const auto clique = __node_to_clique[node];
+      invalidated_cliques.insert( clique );
+      for ( const auto neighbor : __JT->neighbours( clique ) ) {
+        __diffuseMessageInvalidations( clique, neighbor, invalidated_cliques );
+      }
+    }
 
     // now that we know the cliques whose set of potentials have been changed,
     // we can discard their corresponding Shafer-Shenoy potential
     for ( const auto clique : invalidated_cliques ) {
-      if ( __clique_ss_potential.exists( clique ) ) {
-        const auto& potset = __clique_potentials[clique];
-
-        // If there is only one element in potset, this element has been
-        // stored into __clique_ss_potential, so, no need to deallocate it
-        // else all the elements of potset have been combined and their result
-        // has been stored into __clique_ss_potential and this one must be
-        // deallocated
-        if ( potset.size() > 1 ) {
-          delete __clique_ss_potential[clique];
-        }
+      if ( __clique_ss_potential.exists( clique ) &&
+           ss_potential_to_deallocate[clique] ) {
+        delete __clique_ss_potential[clique];
       }
     }
 
@@ -909,7 +926,7 @@ namespace gum {
         const NodeId xnode = bn.nodeId( *var );
         if ( __hard_ev_nodes.exists( xnode ) ) {
           marg_cpt_set.insert( evidence[xnode] );
-          hard_variables.insert( &( bn.variable( xnode ) ) );
+          hard_variables.insert( var );
         }
       }
 
@@ -1423,7 +1440,7 @@ namespace gum {
     // the unnormalized joint posterior of a set of nodes containing "set"
     NodeId clique_of_set;
     try {
-      clique_of_set = __joint_target_to_clique[targets];
+      clique_of_set = __joint_target_to_clique[set];
     } catch ( NotFound& ) {
       // here, the precise set of targets does not belong to the set of targets
       // defined by the user. So we will try to find a clique in the junction
@@ -1453,7 +1470,8 @@ namespace gum {
           first_eliminated_node = node;
         }
       }
-      clique_of_set = __node_to_clique[first_eliminated_node];
+      clique_of_set =
+        __triangulation->createdJunctionTreeClique( first_eliminated_node );
 
       // 3/ check that cliquee_of_set contains the all the nodes in the target
       const NodeSet& clique_nodes = __JT->clique( clique_of_set );
@@ -1462,6 +1480,9 @@ namespace gum {
           GUM_ERROR( UndefinedElement, set << " is not a joint target" );
         }
       }
+
+      // add the discovered clique to __joint_target_to_clique
+      __joint_target_to_clique.insert ( set, clique_of_set );
     }
 
     // now perform a collect on the clique

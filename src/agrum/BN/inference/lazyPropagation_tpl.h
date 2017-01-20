@@ -560,7 +560,7 @@ namespace gum {
     }
 
     // do the same for the nodes that received evidence. Here, we only store
-    // the nodes whose at least one parent belongs to __graph (otherwise
+    // the nodes for which at least one parent belongs to __graph (otherwise
     // their CPT is just a constant real number).
     for ( const auto node : __hard_ev_nodes ) {
       // get the set of parents of the node that belong to __graph
@@ -709,6 +709,7 @@ namespace gum {
               marg_cpt_set.insert( evidence[xnode] );
               hard_variables.insert( &( bn.variable( xnode ) ) );
             }
+
             // perform the combination of those potentials and their projection
             MultiDimCombineAndProjectDefault<GUM_SCALAR, Potential>
                            combine_and_project( __combination_op, LPNewprojPotential );
@@ -1528,14 +1529,18 @@ namespace gum {
 
       clique_of_set =
         __triangulation->createdJunctionTreeClique( first_eliminated_node );
+
       
-      // 3/ check that cliquee_of_set contains the all the nodes in the target
+      // 3/ check that clique_of_set contains the all the nodes in the target
       const NodeSet& clique_nodes = __JT->clique( clique_of_set );
       for ( const auto node : targets ) {
         if ( !clique_nodes.contains( node ) ) {
           GUM_ERROR( UndefinedElement, set << " is not a joint target" );
         }
       }
+
+      // add the discovered clique to __joint_target_to_clique
+      __joint_target_to_clique.insert ( set, clique_of_set );
     }
 
     // now perform a collect on the clique
