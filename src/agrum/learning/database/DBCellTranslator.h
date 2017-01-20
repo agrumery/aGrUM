@@ -79,17 +79,9 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    template <int Idx, int... NextIdx>
-    class DBCellTranslator;
-
     // This empty class is used to test whether a given filter is a cell
-    // translator
-    // or not, without having to take into account the template parameters of
-    // class
-    // DBCellTranslator. This is used, for instance, in the "using Create ="
-    // declaration in order to create a CreateTranslator if the filter passed in
-    // parameter to Create<> is a cell translator, and to create a
-    // CreateGenerator otherwise.
+    // translator or not, without having to take into account the template
+    // parameters of class DBCellTranslator.
     struct BaseDBCellTranslator {};
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
@@ -145,7 +137,7 @@ namespace gum {
      * produce in the output vector.
      */
     template <int Nb_inputs, int Nb_outputs>
-    class DBCellTranslator<Nb_inputs, Nb_outputs> : public BaseDBCellTranslator {
+    class DBCellTranslator : public BaseDBCellTranslator {
       public:
       /// the number of DBRow cells read by the translator
       static constexpr Size input_size = Nb_inputs;
