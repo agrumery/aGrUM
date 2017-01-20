@@ -125,7 +125,7 @@ namespace gum {
       return DAG2BNLearner::createBN<
           GUM_SCALAR,
           ParamEstimator<>,
-          DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
+          DBRowTranslatorSet<CellTranslatorUniversal>>(
           *__param_estimator,
           __learnDAG(),
           __score_database.names(),
@@ -145,7 +145,7 @@ namespace gum {
       return DAG2BNLearner::createBN<
           GUM_SCALAR,
           ParamEstimator<>,
-          DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
+          DBRowTranslatorSet<CellTranslatorUniversal>>(
           *__param_estimator,
           dag,
           __score_database.names(),
@@ -186,7 +186,7 @@ namespace gum {
       return DAG2BNLearner::createBN<
           GUM_SCALAR,
           ParamEstimator<>,
-          DBRowTranslatorSetDynamic<CellTranslatorUniversal>>(
+          DBRowTranslatorSet<CellTranslatorUniversal>>(
           *__param_estimator,
           newDAG,
           __score_database.names(),

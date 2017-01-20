@@ -36,7 +36,7 @@ namespace gum_tests {
     void test_BD() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator ( 0, 8 );
       
       auto generators =
@@ -117,7 +117,7 @@ namespace gum_tests {
     void test_cache() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator ( 0, 8 );
       
       auto generators =
@@ -156,7 +156,7 @@ namespace gum_tests {
     void test_clearcache() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator ( 0, 8 );
       
       auto generators =

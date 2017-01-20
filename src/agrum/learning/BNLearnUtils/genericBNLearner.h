@@ -40,7 +40,7 @@
 
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
-#include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
+#include <agrum/learning/database/DBRowTranslatorSet.h>
 #include <agrum/learning/database/DBTransformCompactInt.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
@@ -207,7 +207,7 @@ namespace gum {
 
         /// returns the row filter
         DBRowFilter<DatabaseVectInRAM::Handler,
-                    DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                    DBRowTranslatorSet<CellTranslatorCompactIntId>,
                     FilteredRowGeneratorSet<RowGeneratorIdentity>>&
         rowFilter();
 
@@ -230,7 +230,7 @@ namespace gum {
          * apriori database is the same as in the score/parameter database
          * read before creating the apriori. This is compulsory to have
          * aprioris that make sense. */
-        DBRowTranslatorSetDynamic<CellTranslatorUniversal>& rawTranslators();
+        DBRowTranslatorSet<CellTranslatorUniversal>& rawTranslators();
 
         /// @}
 
@@ -239,17 +239,17 @@ namespace gum {
         DatabaseVectInRAM __database;
 
         /// the rwo translators
-        DBRowTranslatorSetDynamic<CellTranslatorUniversal> __raw_translators;
+        DBRowTranslatorSet<CellTranslatorUniversal> __raw_translators;
 
         /// the translators used for reading the database
-        DBRowTranslatorSetDynamic<CellTranslatorCompactIntId> __translators;
+        DBRowTranslatorSet<CellTranslatorCompactIntId> __translators;
 
         /// the generators used for reading the database
         FilteredRowGeneratorSet<RowGeneratorIdentity> __generators;
 
         /// the filtered row that reads the database
         DBRowFilter<DatabaseVectInRAM::Handler,
-                    DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                    DBRowTranslatorSet<CellTranslatorCompactIntId>,
                     FilteredRowGeneratorSet<RowGeneratorIdentity>>* __row_filter{
             nullptr};
 

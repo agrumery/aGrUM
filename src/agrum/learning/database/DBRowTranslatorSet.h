@@ -45,7 +45,7 @@ namespace gum {
 
   namespace learning {
 
-    /** @class DBRowTranslatorSetDynamic
+    /** @class DBRowTranslatorSet
      * @ingroup learning_group
      * @brief the "non-meta-programming" class that includes cell translator
      * packs into row filters
@@ -59,7 +59,7 @@ namespace gum {
      * the DBCellTranslators are gathered in a DBRowTranslatorSet
      */
     template <typename Translator>
-    class DBRowTranslatorSetDynamic {
+    class DBRowTranslatorSet {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -68,17 +68,17 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowTranslatorSetDynamic();
+      DBRowTranslatorSet();
 
       /// copy constructor
-      DBRowTranslatorSetDynamic(
-          const DBRowTranslatorSetDynamic<Translator>& from );
+      DBRowTranslatorSet(
+          const DBRowTranslatorSet<Translator>& from );
 
       /// move constructor
-      DBRowTranslatorSetDynamic( DBRowTranslatorSetDynamic<Translator>&& from );
+      DBRowTranslatorSet( DBRowTranslatorSet<Translator>&& from );
 
       /// destructor
-      ~DBRowTranslatorSetDynamic() noexcept;
+      ~DBRowTranslatorSet() noexcept;
 
       /// @}
 
@@ -89,12 +89,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowTranslatorSetDynamic<Translator>&
-      operator=( const DBRowTranslatorSetDynamic<Translator>& );
+      DBRowTranslatorSet<Translator>&
+      operator=( const DBRowTranslatorSet<Translator>& );
 
       /// move operator
-      DBRowTranslatorSetDynamic<Translator>&
-      operator=( DBRowTranslatorSetDynamic<Translator>&& );
+      DBRowTranslatorSet<Translator>&
+      operator=( DBRowTranslatorSet<Translator>&& );
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
@@ -208,6 +208,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include templated implementation
-#include <agrum/learning/database/DBRowTranslatorSetDynamic_tpl.h>
+#include <agrum/learning/database/DBRowTranslatorSet_tpl.h>
 
 #endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H */

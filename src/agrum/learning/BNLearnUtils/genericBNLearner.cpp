@@ -72,7 +72,7 @@ namespace gum {
       // create the row filter using the fast translators
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
-                          DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                          DBRowTranslatorSet<CellTranslatorCompactIntId>,
                           FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
       __translators = __row_filter->translatorSet();
@@ -231,7 +231,7 @@ namespace gum {
       // create the row filter using the fast translators
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
-                          DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                          DBRowTranslatorSet<CellTranslatorCompactIntId>,
                           FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
       __translators = __row_filter->translatorSet();
@@ -298,7 +298,7 @@ namespace gum {
 
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
-                          DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                          DBRowTranslatorSet<CellTranslatorCompactIntId>,
                           FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
       __translators = __row_filter->translatorSet();
@@ -327,7 +327,7 @@ namespace gum {
       // create the row filter for the __database
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
-                          DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                          DBRowTranslatorSet<CellTranslatorCompactIntId>,
                           FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
     }
@@ -342,7 +342,7 @@ namespace gum {
       // create the row filter for the __database
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
-                          DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                          DBRowTranslatorSet<CellTranslatorCompactIntId>,
                           FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
     }
@@ -364,7 +364,7 @@ namespace gum {
         // create the row filter for the __database
         __row_filter =
             new DBRowFilter<DatabaseVectInRAM::Handler,
-                            DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                            DBRowTranslatorSet<CellTranslatorCompactIntId>,
                             FilteredRowGeneratorSet<RowGeneratorIdentity>>(
                 __database.handler(), __translators, __generators );
       }
@@ -387,7 +387,7 @@ namespace gum {
         // create the row filter for the __database
         __row_filter =
             new DBRowFilter<DatabaseVectInRAM::Handler,
-                            DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                            DBRowTranslatorSet<CellTranslatorCompactIntId>,
                             FilteredRowGeneratorSet<RowGeneratorIdentity>>(
                 __database.handler(), __translators, __generators );
       }
