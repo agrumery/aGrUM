@@ -18,26 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The "non-meta-programming" set of translators stored into a row filter
+ * @brief The set of translators stored into a row filter
  *
- * Basically, there are two ways to create the cell translators needed to parse
- * a database: either you know at compile time the columns of the database you
- * will wish to extract and you should definitely use the
- *DBRowTranslatorSetStatic
- * class to store the cell translators; or you know the columns to extract at
- * run time and you should use the DBRowTranslatorSetDynamic class.
- * DBRowTranslatorSetStatic is a "meta-programming" based class that packs the
- * cell filters in a most efficient way (essentially, all methods can be
- *inlined,
- * which makes this class the fastest one). DBRowTranslatorSetDynamics are less
- * efficient but are more general. If all their cell translators are identical,
- * translator's methods are also inlined, otherwise, methods' calls induce
- * virtual function overheads.
+ * When learning Bayesian networks, the records of the train database are
+ * used to construct contingency tables that are either exploited in
+ * statistical conditional independence tests or in scores. In both cases,
+ * the values observed in the records must be translated into indices in
+ * the domain of the corresponding random variables. DBCellTranslators are
+ * used for this purpose. To make the parsing of the database easier, all
+ * the DBCellTranslators are gathered in a DBRowTranslatorSet.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H
-#define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H
+#ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
+#define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
 
 #include <vector>
 
@@ -54,24 +48,15 @@ namespace gum {
     /** @class DBRowTranslatorSetDynamic
      * @ingroup learning_group
      * @brief the "non-meta-programming" class that includes cell translator
-     *packs
-     * into row filters
+     * packs into row filters
      *
-     * Basically, there are two ways to create the cell translators needed to
-     *parse
-     * a database: either you know at compile time the columns of the database
-     *you
-     * will wish to extract and you should definitely use the
-     * DBRowTranslatorSetStatic class to store the cell translators; or you know
-     * the columns to extract at run time and you should use the
-     * DBRowTranslatorSetDynamic class. DBRowTranslatorSetStatic is a
-     * "meta-programming" based class that packs the cell filters in a most
-     * efficient way (essentially, all methods can be inlined, which makes this
-     * class the fastest one). DBRowTranslatorSetDynamics are less efficient but
-     * are more general. If all their cell translators are identical,
-     *translator's
-     * methods are also inlined, otherwise, methods' calls induce virtual
-     * function overheads.
+     * When learning Bayesian networks, the records of the train database are
+     * used to construct contingency tables that are either exploited in
+     * statistical conditional independence tests or in scores. In both cases,
+     * the values observed in the records must be translated into indices in
+     * the domain of the corresponding random variables. DBCellTranslators are
+     * used for this purpose. To make the parsing of the database easier, all
+     * the DBCellTranslators are gathered in a DBRowTranslatorSet
      */
     template <typename Translator>
     class DBRowTranslatorSetDynamic {
@@ -225,4 +210,4 @@ namespace gum {
 // always include templated implementation
 #include <agrum/learning/database/DBRowTranslatorSetDynamic_tpl.h>
 
-#endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H */
+#endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H */

@@ -34,10 +34,8 @@ namespace gum_tests {
     void test_G2() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      auto translators = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                8>() );
+      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( 0, 8 );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -90,10 +88,10 @@ namespace gum_tests {
 
     void test_cache() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto                           translators = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                8>() );
+
+      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( 0, 8 );
+      
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
       auto filter =
@@ -124,10 +122,10 @@ namespace gum_tests {
 
     void test_clearcache() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
-      auto                           translators = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                8>() );
+
+      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( 0, 8 );
+      
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
       auto filter =

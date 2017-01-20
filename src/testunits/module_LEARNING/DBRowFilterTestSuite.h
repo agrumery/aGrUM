@@ -28,7 +28,6 @@
 #include <agrum/learning/database/DBCellTranslator.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
 #include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
-#include <agrum/learning/database/DBRowTranslatorSetStatic.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 #include <agrum/learning/scores_and_tests/scoreK2.h>
@@ -76,11 +75,9 @@ namespace gum_tests {
     void test_asia1() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      auto translators = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                8>() );
-
+      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( 0, 8 );
+      
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
 
@@ -126,11 +123,9 @@ namespace gum_tests {
     void test_asia2() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      auto translators = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                8>() );
-
+      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( 0, 8 );
+      
       auto generators = gum::learning::make_generators(
           TruncatedGenerator(), gum::learning::RowGeneratorIdentity() );
 
@@ -152,10 +147,8 @@ namespace gum_tests {
     void test_asia3() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      auto translators = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                8>() );
+      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( 0, 8 );
 
       auto generators = gum::learning::make_generators(
           ThreeGenerator(), TruncatedGenerator(), TwoGenerator() );

@@ -57,17 +57,15 @@ namespace gum_tests {
     void test_asia() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
-      auto translators1 = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                8>() );
-
+gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( 0, 8 );
+      
       // auto translators = translators1;
 
       gum::learning::DBRowTranslatorSetDynamic<
           gum::learning::CellTranslatorCompactIntId>
-          translators;
-      translators.insertTranslator( gum::learning::Col<0>(), 8 );
+        translators1;
+      translators1.insertTranslator( gum::learning::Col<0>(), 8 );
 
       auto generators1 =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -138,10 +136,8 @@ namespace gum_tests {
     void xtest_alarm1() {
       gum::learning::DatabaseFromCSV database( MY_ALARM );
 
-      auto translators = gum::learning::make_translators(
-          gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                                gum::learning::Col<0>,
-                                37>() );
+      gum::learning::DBRowTranslatorSetDynamic<gum::learning::CellTranslatorCompactIntId> translators;
+      translators.insertTranslator ( 0, 37 );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
