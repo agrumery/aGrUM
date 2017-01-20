@@ -93,8 +93,7 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
           translators;
-      translators.insertTranslator( gum::learning::Col<0>(),
-                                    database.nbVariables() );
+      translators.insertTranslator( 0, database.nbVariables() );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -162,13 +161,13 @@ namespace gum_tests {
     void test_asia_with_ordered_values() {
       gum::learning::DatabaseFromCSV database( MY_ASIA );
 
-      gum::learning::DBRowTranslatorSet<
-          gum::learning::CellTranslatorUniversal>
-                                             translators;
+      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorUniversal>
+        translators;
       gum::learning::CellTranslatorUniversal one_translator(
           gum::Sequence<double>{0, 1}, false );
+
       translators.insertTranslator(
-          one_translator, gum::learning::Col<0>(), database.nbVariables() );
+          one_translator, 0, database.nbVariables() );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -252,7 +251,7 @@ namespace gum_tests {
       gum::learning::CellTranslatorUniversal translator_tf(
           gum::Sequence<double>{0, 1, 2, 3}, true );
       translators.insertTranslator(
-          translator_tf, gum::learning::Col<0>(), database.nbVariables() );
+          translator_tf, 0, database.nbVariables() );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -335,8 +334,7 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorUniversal>
           translators;
-      translators.insertTranslator( gum::learning::Col<0>(),
-                                    database.nbVariables() );
+      translators.insertTranslator( 0, database.nbVariables() );
       translators[1].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
       translators[10].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
       translators[11].setUserValues( gum::Sequence<double>{0, 1, 2}, false );
@@ -551,8 +549,7 @@ namespace gum_tests {
           gum::learning::CellTranslatorCompactIntId>
           translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
-                                    gum::learning::Col<0>(),
-                                    37 );
+                                    0, 37 );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -598,8 +595,7 @@ namespace gum_tests {
           gum::learning::DBCellTranslator<1, 1>>
           translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
-                                    gum::learning::Col<0>(),
-                                    database.content()[0].size() );
+                                    0, database.content()[0].size() );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -645,8 +641,7 @@ namespace gum_tests {
           gum::learning::DBCellTranslator<1, 1>>
           translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
-                                    gum::learning::Col<0>(),
-                                    database.content()[0].size() );
+                                    0, database.content()[0].size() );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );

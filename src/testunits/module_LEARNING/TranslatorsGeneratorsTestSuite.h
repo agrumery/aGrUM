@@ -52,7 +52,7 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
           translators2;
-      translators2.insertTranslator( gum::learning::Col<0>(), 8 );
+      translators2.insertTranslator( 0, 8 );
 
       auto generators2 =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -154,11 +154,9 @@ namespace gum_tests {
           gum::learning::CellTranslatorCompactIntId>
           translators1, translators2, translators3;
 
-      translators1.insertTranslator( gum::learning::Col<0>(),
-                                     database.nbVariables() );
+      translators1.insertTranslator( 0, database.nbVariables() );
 
-      translators2.insertTranslator( gum::learning::Col<0>(),
-                                     database.nbVariables() );
+      translators2.insertTranslator( 0, database.nbVariables() );
       translators3 = translators2;
 
       translators3 = std::move( translators1 );

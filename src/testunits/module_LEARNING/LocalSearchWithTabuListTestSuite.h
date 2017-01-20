@@ -65,7 +65,7 @@ gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> tra
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
         translators1;
-      translators1.insertTranslator( gum::learning::Col<0>(), 8 );
+      translators1.insertTranslator( 0, 8 );
 
       auto generators1 =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -194,8 +194,7 @@ gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> tra
           gum::learning::CellTranslatorCompactIntId>
           translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
-                                    gum::learning::Col<0>(),
-                                    37 );
+                                    0, 37 );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
@@ -252,8 +251,7 @@ gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> tra
           gum::learning::DBCellTranslator<1, 1>>
           translators;
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
-                                    gum::learning::Col<0>(),
-                                    37 );
+                                    0, 37 );
 
       auto generators =
           gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );

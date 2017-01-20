@@ -38,7 +38,6 @@
 #include <agrum/config.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 #include <agrum/learning/database/DBRow.h>
-#include <agrum/learning/database/column.h>
 #include <agrum/learning/database/filteredRow.h>
 
 namespace gum {
@@ -115,37 +114,35 @@ namespace gum {
       /// @{
 
       /// inserts new translators at the end of the set
-      /** insert a new translator that will read columns deb_cols. If we wish to
-       * insert several translators, use an nb_times different from 1. In this
-       * case, the other translators will read columns of the database deduced
-       * from deb_cols by applying increment ColsIncr. */
-      template <typename Cols,
-                typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator( Cols     deb_cols = Cols(),
-                             Size     nb_times = 1,
-                             ColsIncr incr = ColsIncr() );
+      /** insert a new translator that will read consecutive columns starting
+       * from deb_cols. If we wish to insert several translators, use an
+       * nb_times different from 1. In this case, the other translators will
+       * read columns of the database deduced from deb_cols by applying
+       * increment incr. */
+      void insertTranslator( Idx  deb_cols,
+                             Size nb_times = 1,
+                             Idx  incr = std::remove_reference<Translator>::type::input_size  );
+
+
+      
 
       /// inserts new translators at the end of the set
-      /** insert a new translator that will read columns deb_cols. If we wish to
-       * insert several translators, use an nb_times different from 1. In this
-       * case, the other translators will read columns of the database deduced
-       * from deb_cols by applying increment ColsIncr. */
-      template <typename NewTranslator,
-                typename Cols,
-                typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator( const NewTranslator& translator,
-                             Cols                 deb_cols = Cols(),
-                             Size                 nb_times = 1,
-                             ColsIncr             incr = ColsIncr() );
-
-      /// inserts new translators at the end of the set
-      /** insert a new translator that will read only one column, namely
-       * deb_col.
-       * If we wish to insert several translators, use an nb_times different
-       * from 1. In this case, the other translators will read columns of the
-       * database deduced from deb_col by applying increment "increment". */
-      void insertTranslator( Idx deb_col, Size nb_times = 1, Idx increment = 1 );
-
+      /** insert a new translator that will read consecutive columns starting
+       * from deb_cols. If we wish to insert several translators, use an
+       * nb_times different from 1. In this case, the other translators will
+       * read columns of the database deduced from deb_cols by applying
+       * increment incr. */
+      template <class NewTranslator>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+      typename std::enable_if<isDBCellTranslator<NewTranslator>::value, void>::type
+#else // for the doxygen documentation:
+      void 
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+      insertTranslator( const NewTranslator& translator,
+          Idx  deb_cols,
+          Size nb_times = 1,
+          Idx  incr = std::remove_reference<NewTranslator>::type::input_size );
+      
       /// execute all the translations on the current database row
       void translate();
 

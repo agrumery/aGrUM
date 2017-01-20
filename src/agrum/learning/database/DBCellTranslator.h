@@ -67,10 +67,10 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <type_traits>
 
 #include <agrum/config.h>
 #include <agrum/learning/database/DBRow.h>
-#include <agrum/learning/database/column.h>
 #include <agrum/learning/database/filteredRow.h>
 
 namespace gum {
@@ -86,6 +86,15 @@ namespace gum {
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
+    /// metaprogramming for checking whether a type is a CellTranslator
+    /** To check at compile time that a type T is a DBCellTranslator, use
+     * gum::isDBCellTranslator<T>::value which will be a Boolean True or
+     * False */
+    template<typename Type>
+    struct isDBCellTranslator :
+      public std::is_base_of<BaseDBCellTranslator,Type> {};
+    
+    
     /** @class DBCellTranslator
      * @ingroup learning_group
      * @brief The base class for all the tabular database cell translators
@@ -199,9 +208,11 @@ namespace gum {
       void setOutputRow( FilteredRow& row ) noexcept;
 
       /// sets the input DBRow's columns read by the translator
-      template <int Col1, int... OtherCols>
-      void          setInputCols( const Col<Col1, OtherCols...>& ) noexcept;
+      void setInputCols( const std::vector<Idx>& cols );
 
+      /// sets the input DBRow's columns read by the translator
+      void setInputCols( Idx start ) noexcept;
+      
       /// sets the output FilteredRow's columns written by the translator
       /** If the DBCellTranslator outputs N columns, then those will be written
        * in

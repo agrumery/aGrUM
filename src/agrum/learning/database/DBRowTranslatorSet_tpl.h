@@ -130,102 +130,12 @@ namespace gum {
       return *this;
     }
 
-    /// inserts new translators at the end of the vector
-    template <typename Translator>
-    template <typename Cols, typename ColsIncr>
-    void DBRowTranslatorSet<Translator>::insertTranslator( Cols deb_cols,
-                                                                  Size nb_times,
-                                                                  ColsIncr incr ) {
-      // we get the contents of deb_cols and incr and we will compute and set
-      // the
-      // input columns by ourselves
-      const Size input_size = std::remove_reference<Translator>::type::input_size;
-      Idx        input_cols[input_size];
-      Idx        incr_cols[input_size];
-      deb_cols.toArray( input_cols );
-      incr.toArray( incr_cols );
-
-      // now insert the translators
-      for ( Idx i = 0; i < nb_times; ++i ) {
-        // create the translator
-        Translator* new_translator = new Translator;
-        try {
-          __translators.push_back( new_translator );
-        } catch ( ... ) {
-          delete new_translator;
-          __output_row.row().resize( __output_size );
-          throw;
-        }
-
-        // assign its output columns and rowFilter
-        new_translator->setOutputRow( __output_row );
-        new_translator->setOutputCols( __output_size );
-        __output_size += std::remove_reference<Translator>::type::output_size;
-
-        // assign the input col
-        Idx* inputs = const_cast<Idx*>( new_translator->inputCols() );
-        std::memcpy( inputs, input_cols, input_size * sizeof( Idx ) );
-        for ( Idx j = 0; j < input_size; ++j ) {
-          inputs[j] = input_cols[j];
-          input_cols[j] += incr_cols[j];
-        }
-      }
-
-      __output_row.row().resize( __output_size );
-    }
-
-    /// inserts new translators at the end of the vector
-    template <typename Translator>
-    template <typename NewTranslator, typename Cols, typename ColsIncr>
-    void DBRowTranslatorSet<Translator>::insertTranslator(
-        const NewTranslator& translator,
-        Cols                 deb_cols,
-        Size                 nb_times,
-        ColsIncr             incr ) {
-      // we get the contents of deb_cols and incr and we will compute and set
-      // the
-      // input columns by ourselves
-      const Size input_size =
-          std::remove_reference<NewTranslator>::type::input_size;
-      Idx input_cols[input_size];
-      Idx incr_cols[input_size];
-      deb_cols.toArray( input_cols );
-      incr.toArray( incr_cols );
-
-      // now insert the translators
-      for ( Idx i = 0; i < nb_times; ++i ) {
-        // create the translator
-        Translator* new_translator = new NewTranslator( translator );
-        try {
-          __translators.push_back( new_translator );
-        } catch ( ... ) {
-          delete new_translator;
-          __output_row.row().resize( __output_size );
-          throw;
-        }
-
-        // assign its output columns and rowFilter
-        new_translator->setOutputRow( __output_row );
-        new_translator->setOutputCols( __output_size );
-        __output_size += std::remove_reference<NewTranslator>::type::output_size;
-
-        // assign the input col
-        Idx* inputs = const_cast<Idx*>( new_translator->inputCols() );
-        std::memcpy( inputs, input_cols, input_size * sizeof( Idx ) );
-        for ( Idx j = 0; j < input_size; ++j ) {
-          inputs[j] = input_cols[j];
-          input_cols[j] += incr_cols[j];
-        }
-      }
-
-      __output_row.row().resize( __output_size );
-    }
 
     /// inserts new translators at the end of the vector
     template <typename Translator>
     void DBRowTranslatorSet<Translator>::insertTranslator( Idx  deb_col,
-                                                                  Size nb_times,
-                                                                  Idx increment ) {
+                                                           Size nb_times,
+                                                           Idx increment ) {
       for ( Idx i = 0; i < nb_times; ++i ) {
         // create the translator
         Translator* new_translator = new Translator;
@@ -254,6 +164,46 @@ namespace gum {
       __output_row.row().resize( __output_size );
     }
 
+
+    /// inserts new translators at the end of the vector
+    template <typename Translator>
+    template <class NewTranslator>
+    typename std::enable_if<isDBCellTranslator<NewTranslator>::value, void>::type
+    DBRowTranslatorSet<Translator>::insertTranslator(
+           const NewTranslator& translator,
+           Idx  deb_cols,
+           Size nb_times,
+           Idx  incr ) {
+      for ( Idx i = 0; i < nb_times; ++i ) {
+        // create the translator
+        NewTranslator* new_translator = new NewTranslator ( translator );
+        try {
+          __translators.push_back( new_translator );
+        } catch ( ... ) {
+          delete new_translator;
+          __output_row.row().resize( __output_size );
+          throw;
+        }
+
+        // assign its output columns and rowFilter
+        new_translator->setOutputRow( __output_row );
+        new_translator->setOutputCols( __output_size );
+        __output_size += std::remove_reference<NewTranslator>::type::output_size;
+
+        // assign the input col
+        Idx* inputs = const_cast<Idx*>( new_translator->inputCols() );
+        for ( Idx j = 0;
+              j < std::remove_reference<NewTranslator>::type::input_size;
+              ++j ) {
+          inputs[j] = deb_cols + j;
+        }
+        deb_cols += incr;
+      }
+
+      __output_row.row().resize( __output_size );
+    }
+
+    
     /// execute all the translations on the current database row
     template <typename Translator>
     ALWAYS_INLINE void DBRowTranslatorSet<Translator>::translate() {

@@ -111,14 +111,23 @@ namespace gum {
 
     /// sets the input DBRow's columns read by the translator
     template <int Nb_inputs, int Nb_outputs>
-    template <int Col1, int... OtherCols>
-    INLINE void   DBCellTranslator<Nb_inputs, Nb_outputs>::setInputCols(
-        const Col<Col1, OtherCols...>& ) noexcept {
-      static_assert( sizeof...( OtherCols ) + 1 == Nb_inputs,
-                     "you set a wrong number of translator's input columns" );
-      Col<Col1, OtherCols...>::toArray( _input_cols );
+    INLINE void DBCellTranslator<Nb_inputs, Nb_outputs>::setInputCols(
+        const std::vector<Idx>& cols ) {
+      if ( cols.size () != Nb_inputs )
+        GUM_ERROR ( SizeError, "the number of columns passed to setInputCols "
+                    "is different from the number of inputs of the translator" );
+      for ( std::size_t i=0; i < Nb_inputs; ++i )
+        _input_cols[i] = cols[i];
     }
-
+    
+    /// sets the input DBRow's columns read by the translator
+    template <int Nb_inputs, int Nb_outputs>
+    INLINE void DBCellTranslator<Nb_inputs, Nb_outputs>::setInputCols(
+        Idx start ) noexcept {
+      for ( std::size_t i = 0; i < Nb_inputs; ++i, ++start )
+        _input_cols[i] = start;
+    }
+    
     /// sets the output FilteredRow's columns written by the translator
     template <int Nb_inputs, int Nb_outputs>
     INLINE void

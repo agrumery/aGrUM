@@ -53,7 +53,7 @@ namespace gum {
       // filter that can parse any database. Then, we parse once the DB to
       // convert it into a compact int (an interval 0..N-1) so that we can
       // parse it very quickly
-      __raw_translators.insertTranslator( Col<0>(), __database.nbVariables() );
+      __raw_translators.insertTranslator( 0, __database.nbVariables() );
 
       auto raw_filter =
           make_DB_row_filter( __database, __raw_translators, __generators );
@@ -66,7 +66,7 @@ namespace gum {
       raw2fast_transfo.transform( raw_filter );
 
       __translators.insertTranslator( CellTranslatorCompactIntId( false ),
-                                      Col<0>(),
+                                      0,
                                       __database.nbVariables() );
 
       // create the row filter using the fast translators
@@ -101,7 +101,7 @@ namespace gum {
           Sequence<std::string>(),
           true );  // by default, check the database
       __raw_translators.insertTranslator(
-          dummy_translator, Col<0>(), __database.nbVariables() );
+          dummy_translator, 0, __database.nbVariables() );
 
       // assign the user values to the raw translators
       for ( auto iter = modalities.cbegin(); iter != modalities.cend(); ++iter ) {
@@ -225,7 +225,7 @@ namespace gum {
       raw2fast_transfo.transform( raw_filter );
 
       __translators.insertTranslator( CellTranslatorCompactIntId( false ),
-                                      Col<0>(),
+                                      0,
                                       __database.nbVariables() );
 
       // create the row filter using the fast translators
@@ -293,7 +293,7 @@ namespace gum {
       raw2fast_transfo.transform( raw_filter );
 
       __translators.insertTranslator( CellTranslatorCompactIntId( false ),
-                                      Col<0>(),
+                                      0,
                                       score_database.__database.nbVariables() );
 
       __row_filter =
