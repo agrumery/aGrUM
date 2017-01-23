@@ -20,7 +20,7 @@ linux_gcc-5_release_test:
 linux_gcc-6_release_test:
   tags:
     - linux
-    - clang
+    - gcc-6
   stage: test
   variables:
     CC: "/usr/bin/gcc-6"
