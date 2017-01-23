@@ -102,6 +102,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
       try {
@@ -116,6 +117,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
     }
@@ -137,6 +139,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
       try {
@@ -151,6 +154,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
     }
@@ -172,6 +176,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
       try {
@@ -186,6 +191,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
     }
@@ -229,6 +235,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
     }
@@ -258,14 +265,14 @@ namespace gum_tests {
       try {
         gum::LazyPropagation<float> lazy( &bn );
         lazy.addEvidence( bn.idFromName( "e" ),
-                          std::vector<float>{0.1, 0.3f, 0.4, 0.7f} );
+                          std::vector<float>{0.1f, 0.3f, 0.4f, 0.7f} );
         lazy.addEvidence( bn.idFromName( "b" ), 0 );
         lazy.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7f, 0.3f} );
         lazy.makeInference();
 
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "e" ),
-                         std::vector<float>{0.1, 0.3f, 0.4, 0.7f} );
+                         std::vector<float>{0.1f, 0.3f, 0.4f, 0.7f} );
         inf.addEvidence( bn.idFromName( "b" ), 0 );
         inf.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7f, 0.3f} );
         inf.setVerbosity( false );
@@ -273,6 +280,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
     }
@@ -290,6 +298,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
 
@@ -305,6 +314,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
 
@@ -320,6 +330,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
 
@@ -337,6 +348,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
 
@@ -354,6 +366,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
     }
@@ -372,6 +385,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
 
@@ -387,6 +401,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
 
@@ -402,6 +417,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
 
@@ -419,6 +435,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
 
@@ -436,6 +453,7 @@ namespace gum_tests {
         inf.makeInference();
         __compareInference( bn, lazy, inf );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
     }
@@ -481,6 +499,7 @@ namespace gum_tests {
         // alarm is not good for Gibbs
         __compareInference( bn, lazy, inf, 2e-1 );
       } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
         TS_ASSERT( false );
       }
     }

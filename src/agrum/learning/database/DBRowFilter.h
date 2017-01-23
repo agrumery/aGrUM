@@ -29,8 +29,7 @@
 
 #include <agrum/config.h>
 #include <agrum/learning/database/DBHandler.h>
-#include <agrum/learning/database/DBRowTranslatorSetDynamic.h>
-#include <agrum/learning/database/DBRowTranslatorSetStatic.h>
+#include <agrum/learning/database/DBRowTranslatorSet.h>
 #include <agrum/learning/database/filteredRowGeneratorSet.h>
 
 namespace gum {

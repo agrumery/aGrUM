@@ -131,7 +131,7 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorString::translateBack( Idx col, Idx translated_val ) const {
+    CellTranslatorString::translateBack( Idx col, float translated_val ) const {
       std::stringstream str;
       str << DBCell::getString( __strings.first( translated_val ) );
       return str.str();

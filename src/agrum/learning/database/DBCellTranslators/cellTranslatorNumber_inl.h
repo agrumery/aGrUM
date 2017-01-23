@@ -110,7 +110,7 @@ namespace gum {
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorNumber::initialize() {
-      const double nb = in( 0 ).getReal();
+      const float nb = in( 0 ).getReal();
       if ( !__values.existsFirst( nb ) ) {
         __values.insert( nb, __max_value );
         ++__max_value;
@@ -130,7 +130,7 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorNumber::translateBack( Idx col, Idx translated_val ) const {
+    CellTranslatorNumber::translateBack( Idx col, float translated_val ) const {
       std::stringstream str;
       str << __values.first( translated_val );
       return str.str();

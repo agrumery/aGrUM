@@ -67,10 +67,10 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <type_traits>
 
 #include <agrum/config.h>
 #include <agrum/learning/database/DBRow.h>
-#include <agrum/learning/database/column.h>
 #include <agrum/learning/database/filteredRow.h>
 
 namespace gum {
@@ -79,21 +79,22 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    template <int Idx, int... NextIdx>
-    class DBCellTranslator;
-
     // This empty class is used to test whether a given filter is a cell
-    // translator
-    // or not, without having to take into account the template parameters of
-    // class
-    // DBCellTranslator. This is used, for instance, in the "using Create ="
-    // declaration in order to create a CreateTranslator if the filter passed in
-    // parameter to Create<> is a cell translator, and to create a
-    // CreateGenerator otherwise.
+    // translator or not, without having to take into account the template
+    // parameters of class DBCellTranslator.
     struct BaseDBCellTranslator {};
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
+    /// metaprogramming for checking whether a type is a CellTranslator
+    /** To check at compile time that a type T is a DBCellTranslator, use
+     * gum::isDBCellTranslator<T>::value which will be a Boolean True or
+     * False */
+    template<typename Type>
+    struct isDBCellTranslator :
+      public std::is_base_of<BaseDBCellTranslator,Type> {};
+    
+    
     /** @class DBCellTranslator
      * @ingroup learning_group
      * @brief The base class for all the tabular database cell translators
@@ -145,7 +146,7 @@ namespace gum {
      * produce in the output vector.
      */
     template <int Nb_inputs, int Nb_outputs>
-    class DBCellTranslator<Nb_inputs, Nb_outputs> : public BaseDBCellTranslator {
+    class DBCellTranslator : public BaseDBCellTranslator {
       public:
       /// the number of DBRow cells read by the translator
       static constexpr Size input_size = Nb_inputs;
@@ -207,9 +208,11 @@ namespace gum {
       void setOutputRow( FilteredRow& row ) noexcept;
 
       /// sets the input DBRow's columns read by the translator
-      template <int Col1, int... OtherCols>
-      void          setInputCols( const Col<Col1, OtherCols...>& ) noexcept;
+      void setInputCols( const std::vector<Idx>& cols );
 
+      /// sets the input DBRow's columns read by the translator
+      void setInputCols( Idx start ) noexcept;
+      
       /// sets the output FilteredRow's columns written by the translator
       /** If the DBCellTranslator outputs N columns, then those will be written
        * in
@@ -223,7 +226,7 @@ namespace gum {
       FilteredRow& outputFilteredRow() noexcept;
 
       /// returns the row of unsigned int of the current output FilteredRow
-      std::vector<Idx>& outputRow() noexcept;
+      std::vector<float>& outputRow() noexcept;
 
       /// returns the set of input DBRow's columns used by the translator
       const Idx* inputCols() const noexcept;
@@ -236,7 +239,7 @@ namespace gum {
       const DBCell& in( Idx i ) const noexcept;
 
       /// returns the FilteredRow cell corresponding to the ith output column
-      Idx& out( Idx i ) noexcept;
+      float& out( Idx i ) noexcept;
 
       /// performs a translation
       virtual void translate() = 0;
@@ -263,7 +266,7 @@ namespace gum {
        * found in the columns they translate. They can thus push back the
        * numbers
        * of such values into vector "modals". */
-      virtual void modalities( std::vector<Size>& modals ) const = 0;
+      virtual void modalities( std::vector<Size>& domain_sizes ) const = 0;
 
       /// back-translate a given output (i.e., returns its input value)
       /** @param col the column in _output_cols corresponding to the translated
@@ -271,7 +274,7 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      virtual std::string translateBack( Idx col, Idx translated_val ) const = 0;
+      virtual std::string translateBack( Idx col, float translated_val ) const = 0;
 
       /// returns the size of the input for this cell translator
       Size inputSize() const noexcept;

@@ -18,63 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The "non-meta-programming" set of translators stored into a row filter
+ * @brief The set of translators stored into a row filter
  *
- * Basically, there are two ways to create the cell translators needed to parse
- * a database: either you know at compile time the columns of the database you
- * will wish to extract and you should definitely use the
- *DBRowTranslatorSetStatic
- * class to store the cell translators; or you know the columns to extract at
- * run time and you should use the DBRowTranslatorSetDynamic class.
- * DBRowTranslatorSetStatic is a "meta-programming" based class that packs the
- * cell filters in a most efficient way (essentially, all methods can be
- *inlined,
- * which makes this class the fastest one). DBRowTranslatorSetDynamics are less
- * efficient but are more general. If all their cell translators are identical,
- * translator's methods are also inlined, otherwise, methods' calls induce
- * virtual function overheads.
+ * When learning Bayesian networks, the records of the train database are
+ * used to construct contingency tables that are either exploited in
+ * statistical conditional independence tests or in scores. In both cases,
+ * the values observed in the records must be translated into indices in
+ * the domain of the corresponding random variables. DBCellTranslators are
+ * used for this purpose. To make the parsing of the database easier, all
+ * the DBCellTranslators are gathered in a DBRowTranslatorSet.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H
-#define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H
+#ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
+#define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
 
 #include <vector>
 
 #include <agrum/config.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 #include <agrum/learning/database/DBRow.h>
-#include <agrum/learning/database/column.h>
 #include <agrum/learning/database/filteredRow.h>
 
 namespace gum {
 
   namespace learning {
 
-    /** @class DBRowTranslatorSetDynamic
+    /** @class DBRowTranslatorSet
      * @ingroup learning_group
      * @brief the "non-meta-programming" class that includes cell translator
-     *packs
-     * into row filters
+     * packs into row filters
      *
-     * Basically, there are two ways to create the cell translators needed to
-     *parse
-     * a database: either you know at compile time the columns of the database
-     *you
-     * will wish to extract and you should definitely use the
-     * DBRowTranslatorSetStatic class to store the cell translators; or you know
-     * the columns to extract at run time and you should use the
-     * DBRowTranslatorSetDynamic class. DBRowTranslatorSetStatic is a
-     * "meta-programming" based class that packs the cell filters in a most
-     * efficient way (essentially, all methods can be inlined, which makes this
-     * class the fastest one). DBRowTranslatorSetDynamics are less efficient but
-     * are more general. If all their cell translators are identical,
-     *translator's
-     * methods are also inlined, otherwise, methods' calls induce virtual
-     * function overheads.
+     * When learning Bayesian networks, the records of the train database are
+     * used to construct contingency tables that are either exploited in
+     * statistical conditional independence tests or in scores. In both cases,
+     * the values observed in the records must be translated into indices in
+     * the domain of the corresponding random variables. DBCellTranslators are
+     * used for this purpose. To make the parsing of the database easier, all
+     * the DBCellTranslators are gathered in a DBRowTranslatorSet
      */
     template <typename Translator>
-    class DBRowTranslatorSetDynamic {
+    class DBRowTranslatorSet {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -83,17 +67,17 @@ namespace gum {
       /// @{
 
       /// default constructor
-      DBRowTranslatorSetDynamic();
+      DBRowTranslatorSet();
 
       /// copy constructor
-      DBRowTranslatorSetDynamic(
-          const DBRowTranslatorSetDynamic<Translator>& from );
+      DBRowTranslatorSet(
+          const DBRowTranslatorSet<Translator>& from );
 
       /// move constructor
-      DBRowTranslatorSetDynamic( DBRowTranslatorSetDynamic<Translator>&& from );
+      DBRowTranslatorSet( DBRowTranslatorSet<Translator>&& from );
 
       /// destructor
-      ~DBRowTranslatorSetDynamic() noexcept;
+      ~DBRowTranslatorSet() noexcept;
 
       /// @}
 
@@ -104,12 +88,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowTranslatorSetDynamic<Translator>&
-      operator=( const DBRowTranslatorSetDynamic<Translator>& );
+      DBRowTranslatorSet<Translator>&
+      operator=( const DBRowTranslatorSet<Translator>& );
 
       /// move operator
-      DBRowTranslatorSetDynamic<Translator>&
-      operator=( DBRowTranslatorSetDynamic<Translator>&& );
+      DBRowTranslatorSet<Translator>&
+      operator=( DBRowTranslatorSet<Translator>&& );
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
@@ -130,37 +114,35 @@ namespace gum {
       /// @{
 
       /// inserts new translators at the end of the set
-      /** insert a new translator that will read columns deb_cols. If we wish to
-       * insert several translators, use an nb_times different from 1. In this
-       * case, the other translators will read columns of the database deduced
-       * from deb_cols by applying increment ColsIncr. */
-      template <typename Cols,
-                typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator( Cols     deb_cols = Cols(),
-                             Size     nb_times = 1,
-                             ColsIncr incr = ColsIncr() );
+      /** insert a new translator that will read consecutive columns starting
+       * from deb_cols. If we wish to insert several translators, use an
+       * nb_times different from 1. In this case, the other translators will
+       * read columns of the database deduced from deb_cols by applying
+       * increment incr. */
+      void insertTranslator( Idx  deb_cols,
+                             Size nb_times = 1,
+                             Idx  incr = std::remove_reference<Translator>::type::input_size  );
+
+
+      
 
       /// inserts new translators at the end of the set
-      /** insert a new translator that will read columns deb_cols. If we wish to
-       * insert several translators, use an nb_times different from 1. In this
-       * case, the other translators will read columns of the database deduced
-       * from deb_cols by applying increment ColsIncr. */
-      template <typename NewTranslator,
-                typename Cols,
-                typename ColsIncr = typename Make_Default_Incr<Cols>::type>
-      void insertTranslator( const NewTranslator& translator,
-                             Cols                 deb_cols = Cols(),
-                             Size                 nb_times = 1,
-                             ColsIncr             incr = ColsIncr() );
-
-      /// inserts new translators at the end of the set
-      /** insert a new translator that will read only one column, namely
-       * deb_col.
-       * If we wish to insert several translators, use an nb_times different
-       * from 1. In this case, the other translators will read columns of the
-       * database deduced from deb_col by applying increment "increment". */
-      void insertTranslator( Idx deb_col, Size nb_times = 1, Idx increment = 1 );
-
+      /** insert a new translator that will read consecutive columns starting
+       * from deb_cols. If we wish to insert several translators, use an
+       * nb_times different from 1. In this case, the other translators will
+       * read columns of the database deduced from deb_cols by applying
+       * increment incr. */
+      template <class NewTranslator>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+      typename std::enable_if<isDBCellTranslator<NewTranslator>::value, void>::type
+#else // for the doxygen documentation:
+      void 
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+      insertTranslator( const NewTranslator& translator,
+          Idx  deb_cols,
+          Size nb_times = 1,
+          Idx  incr = std::remove_reference<NewTranslator>::type::input_size );
+      
       /// execute all the translations on the current database row
       void translate();
 
@@ -223,6 +205,6 @@ namespace gum {
 } /* namespace gum */
 
 // always include templated implementation
-#include <agrum/learning/database/DBRowTranslatorSetDynamic_tpl.h>
+#include <agrum/learning/database/DBRowTranslatorSet_tpl.h>
 
-#endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_DYNAMIC_H */
+#endif /* GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H */

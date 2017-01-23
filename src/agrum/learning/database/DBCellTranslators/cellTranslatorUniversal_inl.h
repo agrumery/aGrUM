@@ -169,14 +169,14 @@ namespace gum {
     ALWAYS_INLINE void CellTranslatorUniversal::initialize() {
       if ( __check_database ) {
         if ( in( 0 ).type() == DBCell::EltType::REAL ) {
-          const double nb = in( 0 ).getReal();
+          const float& nb = in( 0 ).getReal();
 
           if ( !__numbers.existsFirst( nb ) ) {
             __numbers.insert( nb, __max_value );
             ++__max_value;
           }
         } else {
-          const int nb = in( 0 ).getStringIndex();
+          const float nb = in( 0 ).getStringIndex();
 
           if ( !__strings.existsFirst( nb ) ) {
             __strings.insert( nb, __max_value );
@@ -200,7 +200,7 @@ namespace gum {
 
     /// returns a given value as stored within the database
     INLINE std::string
-    CellTranslatorUniversal::translateBack( Idx col, Idx translated_val ) const {
+    CellTranslatorUniversal::translateBack( Idx col, float translated_val ) const {
       std::stringstream str;
 
       if ( __numbers.existsSecond( translated_val ) )
@@ -219,13 +219,13 @@ namespace gum {
     }
 
     /// returns the set of translations for string values in the database
-    INLINE const Bijection<Idx, Idx>&
+    INLINE const Bijection<Idx, float>&
                  CellTranslatorUniversal::stringTranslations() const noexcept {
       return __strings;
     }
 
     /// returns the set of translations for number values in the database
-    INLINE const Bijection<double, Idx>&
+    INLINE const Bijection<double, float>&
                  CellTranslatorUniversal::numberTranslations() const noexcept {
       return __numbers;
     }

@@ -379,12 +379,16 @@ def _proba2fgcolor(p, cmap=_INFOcmap):
     return "#000000"
 
 
-def _BN2colouredDot(bn, size="4", vals=None, cmap=_INFOcmap):
+def _BN2colouredDot(bn, size="4", arcvals=None,vals=None, cmap=_INFOcmap):
   """
   Shows a graphviz svg representation of the BN using size ("1" ,"2" , ...)
   vals is a dictionnary name:value of value in [0,1] for each node
   (with special color for 0 and 1)
   """
+  if arcvals is not None:
+    minarcs=min(arcvals.values())
+    maxarcs=max(arcvals.values())
+
   graph = dot.Dot(graph_type='digraph')
   for n in bn.names():
     if vals is None or n not in vals:
@@ -402,13 +406,22 @@ def _BN2colouredDot(bn, size="4", vals=None, cmap=_INFOcmap):
                     tooltip='"({0}) {1}{2}"'.format(bn.idFromName(n), n, res))
     graph.add_node(node)
   for a in bn.arcs():
-    edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"')
+    if arcvals is None:
+        pw=1
+        av=""
+    else:
+        pw=0.1+5*(arcvals[a]-minarcs)/(maxarcs-minarcs)
+        av=arcvals[a]
+
+    edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
+                    penwidth=pw,
+                    tooltip="{} : {}".format(a,av))
     graph.add_edge(edge)
   graph.set_size(size)
   return graph
 
 
-def showBN(bn, size="4", format="svg", vals=None, cmap=_INFOcmap, asString=False):
+def showBN(bn, size="4", format="svg", arcvals=None,vals=None, cmap=_INFOcmap, asString=False):
   """
   show a Bayesian network
 
@@ -416,13 +429,14 @@ def showBN(bn, size="4", format="svg", vals=None, cmap=_INFOcmap, asString=False
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
   :param vals: a nodeMap of values to be shown as color nodes
+  :param arcvals: a arcMap of values to be shown as bold arcs
   :param cmap: color map to show the vals
   :return: the graph
   """
-  return showGraph(_BN2colouredDot(bn, size, vals, cmap), size, format)
+  return showGraph(_BN2colouredDot(bn, size, arcvals,vals, cmap), size, format)
 
 
-def getBN(bn, size="4", format="svg", vals=None, cmap=_INFOcmap, asString=False):
+def getBN(bn, size="4", format="svg", arcvals=None,vals=None, cmap=_INFOcmap, asString=False):
   """
   get a HTML string for a Bayesian network
 
@@ -430,10 +444,11 @@ def getBN(bn, size="4", format="svg", vals=None, cmap=_INFOcmap, asString=False)
   :param size: size of the rendered graph
   :param format: render as "png" or "svg"
   :param vals: a nodeMap of values to be shown as color nodes
+  :param arcvals: a arcMap of values to be shown as bold arcs
   :param cmap: color map to show the vals
   :return: the graph
   """
-  return getGraph(_BN2colouredDot(bn, size, vals, cmap), size, format)
+  return getGraph(_BN2colouredDot(bn, size, arcvals,vals, cmap), size, format)
 
 
 def _normalizeVals(vals, hilightExtrema=False):
@@ -460,19 +475,26 @@ def _normalizeVals(vals, hilightExtrema=False):
     return {name: vmi + (val - mi) * (vma - vmi) / (ma - mi) for name, val in items}
 
 
-def _reprEntropy(bn, evs, size, cmap, asString):
+def _reprInformation(bn, evs, size, cmap, asString):
   """
-  Shows a
+  repr a bn annoted with results from inference : Information and mutual informations
+
+  :param bn: the BN
+  :param evs: map of evidence
+  :param size:  size of the graph
+  :param cmap: colour map used
+  :return: the HTML string
   """
   ie = gum.LazyPropagation(bn)
   ie.setEvidence(evs)
   ie.makeInference()
 
-  vals = {bn.variable(n).name(): ie.H(n) for n in bn.ids()}
-  gr = _BN2colouredDot(bn, size, _normalizeVals(vals, hilightExtrema=False), cmap)
+  nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.ids()}
+  arcvals={(x,y):ie.I(x,y) for x,y in bn.arcs()}
+  gr = _BN2colouredDot(bn, size, arcvals,_normalizeVals(nodevals, hilightExtrema=False), cmap)
 
-  mi = min(vals.values())
-  ma = max(vals.values())
+  mi = min(nodevals.values())
+  ma = max(nodevals.values())
 
   fig = mpl.figure.Figure(figsize=(8, 3))
   canvas = fc(fig)
@@ -501,7 +523,7 @@ def _reprEntropy(bn, evs, size, cmap, asString):
     return display(HTML(sss))
 
 
-def getEntropy(bn, evs={}, size="4", cmap=_INFOcmap):
+def getInformation(bn, evs={}, size="4", cmap=_INFOcmap):
   """
   get a HTML string for a bn annoted with results from inference : entropy and mutual informations
 
@@ -511,10 +533,10 @@ def getEntropy(bn, evs={}, size="4", cmap=_INFOcmap):
   :param cmap: colour map used
   :return: the HTML string
   """
-  return _reprEntropy(bn, evs, size, cmap, asString=True)
+  return _reprInformation(bn, evs, size, cmap, asString=True)
 
 
-def showEntropy(bn, evs={}, size="4", cmap=_INFOcmap):
+def showInformation(bn, evs={}, size="4", cmap=_INFOcmap):
   """
   show a bn annoted with results from inference : entropy and mutual informations
 
@@ -524,7 +546,7 @@ def showEntropy(bn, evs={}, size="4", cmap=_INFOcmap):
   :param cmap: colour map used
   :return: the graph
   """
-  return _reprEntropy(bn, evs, size, cmap, asString=False)
+  return _reprInformation(bn, evs, size, cmap, asString=False)
 
 
 def _reprInference(bn, engine, evs, targets, size, format, asString):

@@ -60,13 +60,19 @@ namespace gum {
       /// @{
 
       /// returns the filtered row as a vector of integers
-      std::vector<Idx>& row() noexcept { return __row; }
+      const std::vector<float>& row() const noexcept { return __row; }
 
-      /// returns a reference on the weight of the row
-      double& weight() noexcept { return __weight; }
+      /// returns the filtered row as a vector of integers
+      std::vector<float>& row() noexcept { return __row; }
 
       /// returns the weight of the row
-      double weight() const noexcept { return __weight; }
+      const double& weight() const noexcept { return __weight; }
+
+      /// returns the weight of the row
+      double& weight() noexcept { return __weight; }
+
+      /// sets the weight of the row
+      void setWeight ( double new_weight ) { __weight = new_weight; };
 
       /// returns a reference on the number of unobserved values
       Size& unobserved() noexcept { return __nb_unobserved; }
@@ -77,7 +83,7 @@ namespace gum {
       /// returns the value at the ith column
       /** by convention, unobserved columns should have value
        * std::numeric_limits<Idx>::max () */
-      Idx operator[]( Idx i ) const noexcept { return __row[i]; }
+      float operator[]( Idx i ) const noexcept { return __row[i]; }
 
       /// @}
 
@@ -101,7 +107,7 @@ namespace gum {
 
       private:
       /// the integer-encoded filtered row
-      std::vector<Idx> __row;
+      std::vector<float> __row;
 
       /// the weight of the row
       double __weight{1};

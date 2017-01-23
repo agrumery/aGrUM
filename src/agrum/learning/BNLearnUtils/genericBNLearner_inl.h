@@ -35,7 +35,7 @@ namespace gum {
 
     // returns the row filter
     INLINE DBRowFilter<DatabaseVectInRAM::Handler,
-                       DBRowTranslatorSetDynamic<CellTranslatorCompactIntId>,
+                       DBRowTranslatorSet<CellTranslatorCompactIntId>,
                        FilteredRowGeneratorSet<RowGeneratorIdentity>>&
     genericBNLearner::Database::rowFilter() {
       return *__row_filter;
@@ -69,7 +69,7 @@ namespace gum {
     }
 
     // returns the "raw" translators (needed for the aprioris)
-    INLINE DBRowTranslatorSetDynamic<CellTranslatorUniversal>&
+    INLINE DBRowTranslatorSet<CellTranslatorUniversal>&
            genericBNLearner::Database::rawTranslators() {
       return __raw_translators;
     }
