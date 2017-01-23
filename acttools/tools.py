@@ -41,9 +41,9 @@ def is_tool(prog, longpath=False):
   progw = prog + ".exe"
   for dir in os.environ['PATH'].split(os.pathsep):
     if os.path.exists(os.path.join(dir, prog)):
-      return prog if not longpath else os.path.join(dir, prog)
+      return prog if not longpath else '"' + os.path.join(dir, prog) + '"'
     if os.path.exists(os.path.join(dir, progw)):
-      return progw if not longpath else os.path.join(dir, progw)
+      return progw if not longpath else '"' + os.path.join(dir, progw) + '"'
   return None
 
 
@@ -57,7 +57,7 @@ def check_tools(options):
   if exe_py is None:
     exe_py = is_tool('python', True)
 
-  version = cmdline('"' + exe_py + '"' + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[0])"')[0]
+  version = cmdline(exe_py + ' -c "from distutils import sysconfig;print((sysconfig.get_python_version())[0])"')[0]
 
   if version == "2":
     if options.python == "3":

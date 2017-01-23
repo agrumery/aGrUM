@@ -40,7 +40,7 @@ def getCmake(current, target):
   else:
     line += " -DUSE_NANODBC=OFF"
 
-  line += " -DCMAKE_INSTALL_PREFIX=" + current["destination"]
+  line += " -DCMAKE_INSTALL_PREFIX=" + '"' + current["destination"] + '"'
 
   if current["verbose"]:
     line += " -DCMAKE_VERBOSE_MAKEFILE=ON"
