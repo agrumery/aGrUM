@@ -49,3 +49,4 @@ windows_mvsc_release_test:
   script:
     - python act --no-fun --mvsc clean
     - python act --no-fun --mvsc test release
+    - build\\release\\src\\Release\\gumTest.exe
