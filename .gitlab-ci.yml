@@ -1,0 +1,60 @@
+cache:
+  untracked: false
+  
+################################################################################
+# BUILD
+################################################################################
+     
+linux_gcc-5_debug:
+  tags:
+    - linux
+    - gcc-5
+  stage: build
+  variables:
+    CC: "/usr/bin/gcc-5"
+    CXX: "/usr/bin/g++-5"
+  script: 
+    - python act --no-fun clean 
+    - python act --no-fun lib debug
+
+linux_clang_debug:
+  tags:
+    - linux
+    - clang
+  stage: test
+  variables:
+    CC: "/usr/bin/clang"
+    CXX: "/usr/bin/clang++"
+  script: 
+    - python act --no-fun clean 
+    - python act --no-fun lib debug release
+  cache:
+    untracked: true
+
+################################################################################
+# TEST
+################################################################################
+
+linux_gcc-5_release_test:
+  tags:
+    - linux
+    - gcc-5
+  stage: test
+  variables:
+    CC: "/usr/bin/gcc-5"
+    CXX: "/usr/bin/g++-5"
+  script: 
+    - python act --no-fun clean 
+    - python act --no-fun test release
+
+linux_clang_release_test:
+  tags:
+    - linux
+    - clang
+  stage: test
+  variables:
+    CC: "/usr/bin/clang"
+    CXX: "/usr/bin/clang++"
+  script: 
+    - python act --no-fun clean 
+    - python act --no-fun test release
