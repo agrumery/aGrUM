@@ -153,8 +153,8 @@ namespace gum {
 
     /// returns the row of unsigned int of the current output FilteredRow
     template <int Nb_inputs, int Nb_outputs>
-    INLINE std::vector<Idx>&
-           DBCellTranslator<Nb_inputs, Nb_outputs>::outputRow() noexcept {
+    INLINE std::vector<float>&
+    DBCellTranslator<Nb_inputs, Nb_outputs>::outputRow() noexcept {
       return _output_row->row();
     }
 
@@ -182,7 +182,7 @@ namespace gum {
 
     /// returns the FilteredRow cell corresponding to the ith output column
     template <int Nb_inputs, int Nb_outputs>
-    INLINE Idx& DBCellTranslator<Nb_inputs, Nb_outputs>::out( Idx i ) noexcept {
+    INLINE float& DBCellTranslator<Nb_inputs, Nb_outputs>::out( Idx i ) noexcept {
       return _output_row->row()[_output_cols[i]];
     }
 

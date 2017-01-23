@@ -138,7 +138,7 @@ namespace gum {
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack( Idx col, Idx translated_val ) const;
+      std::string translateBack( Idx col, float translated_val ) const;
 
       /// returns the name of the variable(s) the translator has processed
       void variableNames( const std::vector<std::string>& db_var,
@@ -192,7 +192,7 @@ namespace gum {
       Size __max_value{0};
 
       /// the set of strings (actually their indices) found so far
-      Bijection<Idx, Idx> __strings;
+      Bijection<Idx, float> __strings;
 
       /// the sequence of values specified by the user
       Sequence<std::string>* __user_values{nullptr};

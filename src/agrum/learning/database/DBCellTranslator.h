@@ -226,7 +226,7 @@ namespace gum {
       FilteredRow& outputFilteredRow() noexcept;
 
       /// returns the row of unsigned int of the current output FilteredRow
-      std::vector<Idx>& outputRow() noexcept;
+      std::vector<float>& outputRow() noexcept;
 
       /// returns the set of input DBRow's columns used by the translator
       const Idx* inputCols() const noexcept;
@@ -239,7 +239,7 @@ namespace gum {
       const DBCell& in( Idx i ) const noexcept;
 
       /// returns the FilteredRow cell corresponding to the ith output column
-      Idx& out( Idx i ) noexcept;
+      float& out( Idx i ) noexcept;
 
       /// performs a translation
       virtual void translate() = 0;
@@ -266,7 +266,7 @@ namespace gum {
        * found in the columns they translate. They can thus push back the
        * numbers
        * of such values into vector "modals". */
-      virtual void modalities( std::vector<Size>& modals ) const = 0;
+      virtual void modalities( std::vector<Size>& domain_sizes ) const = 0;
 
       /// back-translate a given output (i.e., returns its input value)
       /** @param col the column in _output_cols corresponding to the translated
@@ -274,7 +274,7 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      virtual std::string translateBack( Idx col, Idx translated_val ) const = 0;
+      virtual std::string translateBack( Idx col, float translated_val ) const = 0;
 
       /// returns the size of the input for this cell translator
       Size inputSize() const noexcept;

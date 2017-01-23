@@ -81,13 +81,13 @@ namespace gum {
 
     /// perform the translation
     ALWAYS_INLINE void CellTranslatorCompactIntId::translate() {
-      out( 0 ) = (Idx)in( 0 ).getReal();
+      out( 0 ) = in( 0 ).getReal();
     }
 
     /// initialize the cell translator by a first database parsing
     ALWAYS_INLINE void CellTranslatorCompactIntId::initialize() {
       if ( __check_database ) {
-        const int nb = (int)in( 0 ).getReal();
+        const float& nb = in( 0 ).getReal();
         if ( nb < 0 ) {
           GUM_ERROR( WrongType,
                      "the CellTranslatorCompactIntId has read "
@@ -134,7 +134,7 @@ namespace gum {
     /// returns a given value as stored within the database
     INLINE std::string
     CellTranslatorCompactIntId::translateBack( Idx col,
-                                               Idx translated_val ) const {
+                                               float translated_val ) const {
       std::stringstream str;
       str << translated_val;
       return str.str();
