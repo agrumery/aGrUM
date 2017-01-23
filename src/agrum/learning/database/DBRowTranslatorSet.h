@@ -34,7 +34,7 @@
 #define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
 
 #include <vector>
-#include <limits>
+#include <climits>
 
 #include <agrum/config.h>
 #include <agrum/learning/database/DBCellTranslator.h>
@@ -122,7 +122,7 @@ namespace gum {
        * increment incr. */
       void insertTranslator( Idx  deb_cols,
                              Size nb_times = 1,
-                             Idx  incr = std::numeric_limits<Idx>::max () );
+                             Idx  incr = INT_MAX );
 
 
       
