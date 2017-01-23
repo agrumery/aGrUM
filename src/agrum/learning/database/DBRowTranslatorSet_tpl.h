@@ -138,7 +138,7 @@ namespace gum {
                                                            Idx increment ) {
       // fix for a MVSC bug: by default, we wish the increment to be the
       // number of columns read by the translator
-      if ( increment == INT_MAX )
+      if ( increment == std::numeric_limits<Idx>::max () )
         increment = std::remove_reference<Translator>::type::input_size;
       
       for ( Idx i = 0; i < nb_times; ++i ) {
@@ -179,6 +179,11 @@ namespace gum {
            Idx  deb_cols,
            Size nb_times,
            Idx  incr ) {
+      // fix for a MVSC bug: by default, we wish the increment to be the
+      // number of columns read by the translator
+      if ( incr == std::numeric_limits<Idx>::max () )
+        incr = std::remove_reference<NewTranslator>::type::input_size;
+
       for ( Idx i = 0; i < nb_times; ++i ) {
         // create the translator
         NewTranslator* new_translator = new NewTranslator ( translator );

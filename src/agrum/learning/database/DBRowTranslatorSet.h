@@ -34,7 +34,7 @@
 #define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
 
 #include <vector>
-#include <climits>
+#include <limits>
 
 #include <agrum/config.h>
 #include <agrum/learning/database/DBCellTranslator.h>
@@ -122,10 +122,7 @@ namespace gum {
        * increment incr. */
       void insertTranslator( Idx  deb_cols,
                              Size nb_times = 1,
-                             Idx  incr = INT_MAX );
-
-
-      
+                             Idx  incr = std::numeric_limits<Idx>::max () );
 
       /// inserts new translators at the end of the set
       /** insert a new translator that will read consecutive columns starting
@@ -142,7 +139,7 @@ namespace gum {
       insertTranslator( const NewTranslator& translator,
           Idx  deb_cols,
           Size nb_times = 1,
-          Idx  incr = std::remove_reference<NewTranslator>::type::input_size );
+          Idx  incr = std::numeric_limits<Idx>::max () );
       
       /// execute all the translations on the current database row
       void translate();
