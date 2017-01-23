@@ -136,6 +136,11 @@ namespace gum {
     void DBRowTranslatorSet<Translator>::insertTranslator( Idx  deb_col,
                                                            Size nb_times,
                                                            Idx increment ) {
+      // fix for a MVSC bug: by default, we wish the increment to be the
+      // number of columns read by the translator
+      if ( increment == std::numeric_limits<Idx>::max () )
+        increment = std::remove_reference<Translator>::type::input_size;
+      
       for ( Idx i = 0; i < nb_times; ++i ) {
         // create the translator
         Translator* new_translator = new Translator;
@@ -174,6 +179,11 @@ namespace gum {
            Idx  deb_cols,
            Size nb_times,
            Idx  incr ) {
+      // fix for a MVSC bug: by default, we wish the increment to be the
+      // number of columns read by the translator
+      if ( incr == std::numeric_limits<Idx>::max () )
+        incr = std::remove_reference<NewTranslator>::type::input_size;
+
       for ( Idx i = 0; i < nb_times; ++i ) {
         // create the translator
         NewTranslator* new_translator = new NewTranslator ( translator );
