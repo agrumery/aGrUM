@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Template implementation of FilteredRowGeneratorSet
+ * @brief Template implementation of FilteredRowGeneratorSetStatic
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -31,48 +31,48 @@ namespace gum {
 
     /// default constructor
     template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        FilteredRowGeneratorSet(
+    INLINE FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::
+        FilteredRowGeneratorSetStatic(
             const Generator &first_generator,
             const OtherGenerators &... next_generators ) noexcept
         : NextGenerators( next_generators... ),
           __first_generator( first_generator ) {
-      GUM_CONSTRUCTOR( FilteredRowGeneratorSet );
+      GUM_CONSTRUCTOR( FilteredRowGeneratorSetStatic );
     }
 
     /// copy constructor
     template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        FilteredRowGeneratorSet(
-            const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from )
+    INLINE FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::
+        FilteredRowGeneratorSetStatic(
+            const FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>& from )
         : NextGenerators( from )
         , __first_generator( from.__first_generator ) {
-      GUM_CONS_CPY( FilteredRowGeneratorSet );
+      GUM_CONS_CPY( FilteredRowGeneratorSetStatic );
     }
 
     /// move constructor
     template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        FilteredRowGeneratorSet(
-            FilteredRowGeneratorSet<Generator, OtherGenerators...>
+    INLINE FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::
+        FilteredRowGeneratorSetStatic(
+            FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>
                 &&from ) noexcept
         : NextGenerators( std::move( from ) ),
           __first_generator( std::move( from.__first_generator ) ) {
-      GUM_CONS_MOV( FilteredRowGeneratorSet );
+      GUM_CONS_MOV( FilteredRowGeneratorSetStatic );
     }
 
     /// destructor
     template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        ~FilteredRowGeneratorSet() noexcept {
-      GUM_DESTRUCTOR( FilteredRowGeneratorSet );
+    INLINE FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::
+        ~FilteredRowGeneratorSetStatic() noexcept {
+      GUM_DESTRUCTOR( FilteredRowGeneratorSetStatic );
     }
 
     /// copy operator
     template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-           FilteredRowGeneratorSet<Generator, OtherGenerators...>::operator=(
-        const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from ) {
+    INLINE FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>&
+           FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::operator=(
+        const FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>& from ) {
       if ( this != &from ) {
         NextGenerators::operator=( from );
         __first_generator = from.__first_generator;
@@ -82,9 +82,9 @@ namespace gum {
 
     /// move operator
     template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-           FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-    operator=( FilteredRowGeneratorSet<Generator, OtherGenerators...>&& from ) {
+    INLINE FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>&
+           FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::
+    operator=( FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>&& from ) {
       if ( this != &from ) {
         NextGenerators::operator=( std::move( from ) );
         __first_generator = std::move( from.__first_generator );
@@ -95,7 +95,7 @@ namespace gum {
     /// returns true if there are still rows that can be output by the RowFilter
     template <typename Generator, typename... OtherGenerators>
     INLINE bool
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::hasRows() noexcept {
+    FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::hasRows() noexcept {
       if ( NextGenerators::hasRows() ) return true;
       while ( __first_generator.hasRows() ) {
         if ( NextGenerators::setInputRow( __first_generator.generate() ) ) {
@@ -108,7 +108,7 @@ namespace gum {
     /// sets the input row from which the generator will create new rows
     template <typename Generator, typename... OtherGenerators>
     INLINE bool
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::setInputRow(
+    FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::setInputRow(
         FilteredRow& row ) noexcept {
       __first_generator.setInputRow( row );
       while ( __first_generator.hasRows() ) {
@@ -123,7 +123,7 @@ namespace gum {
     /// generate new rows from the input row
     template <typename Generator, typename... OtherGenerators>
     INLINE FilteredRow&
-           FilteredRowGeneratorSet<Generator, OtherGenerators...>::generate() {
+           FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::generate() {
       if ( !NextGenerators::hasRows() && __first_generator.hasRows() )
         NextGenerators::setInputRow( __first_generator.generate() );
       return NextGenerators::generate();
@@ -131,7 +131,7 @@ namespace gum {
 
     /// resets the filter
     template <typename Generator, typename... OtherGenerators>
-    INLINE void FilteredRowGeneratorSet<Generator, OtherGenerators...>::reset() {
+    INLINE void FilteredRowGeneratorSetStatic<Generator, OtherGenerators...>::reset() {
       __first_generator.reset();
       NextGenerators::reset();
     }
