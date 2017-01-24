@@ -36,7 +36,7 @@ namespace gum {
     // returns the row filter
     INLINE DBRowFilter<DatabaseVectInRAM::Handler,
                        DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                       FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>&
+                       FilteredRowGeneratorSet<RowGeneratorIdentity>>&
     genericBNLearner::Database::rowFilter() {
       return *__row_filter;
     }

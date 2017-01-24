@@ -208,7 +208,7 @@ namespace gum {
         /// returns the row filter
         DBRowFilter<DatabaseVectInRAM::Handler,
                     DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                    FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>&
+                    FilteredRowGeneratorSet<RowGeneratorIdentity>>&
         rowFilter();
 
         /// returns the modalities of the variables
@@ -245,12 +245,12 @@ namespace gum {
         DBRowTranslatorSet<CellTranslatorCompactIntId> __translators;
 
         /// the generators used for reading the database
-        FilteredRowGeneratorSetStatic<RowGeneratorIdentity> __generators;
+        FilteredRowGeneratorSet<RowGeneratorIdentity> __generators;
 
         /// the filtered row that reads the database
         DBRowFilter<DatabaseVectInRAM::Handler,
                     DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                    FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>* __row_filter{
+                    FilteredRowGeneratorSet<RowGeneratorIdentity>>* __row_filter{
             nullptr};
 
         /// the modalities of the variables
