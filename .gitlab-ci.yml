@@ -48,4 +48,6 @@ windows_mvsc_release_test:
     PATH: "%PATH%;C:\\Program Files\\Git\\bin;C:\\Program Files (x86)\\Python35-32;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin"
   script:
     - python act --no-fun --mvsc clean
-    - python act --no-fun --mvsc test release > errors.log 2>&1
+    - python act --no-fun --mvsc test release > output.txt 2>&1
+  artifacts:
+    - output.txt
