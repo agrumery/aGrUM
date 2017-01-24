@@ -47,13 +47,14 @@ namespace gum {
         : Database( genericBNLearner::__readFile( filename ) ) {}
 
     genericBNLearner::Database::Database( const DatabaseVectInRAM& db )
-        : __database( db )
-        , __generators( RowGeneratorIdentity() ) {
+        : __database( db ) {
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
       // convert it into a compact int (an interval 0..N-1) so that we can
       // parse it very quickly
       __raw_translators.insertTranslator( 0, __database.nbVariables() );
+
+      __generators.insertGenerator ();
 
       auto raw_filter =
           make_DB_row_filter( __database, __raw_translators, __generators );
@@ -73,7 +74,7 @@ namespace gum {
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
                           DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                          FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>(
+                          FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
       __translators = __row_filter->translatorSet();
 
@@ -91,8 +92,7 @@ namespace gum {
         std::string                                filename,
         const NodeProperty<Sequence<std::string>>& modalities,
         bool                                       check_database )
-        : __database( genericBNLearner::__readFile( filename ) )
-        , __generators( RowGeneratorIdentity() ) {
+        : __database( genericBNLearner::__readFile( filename ) ) {
       // create the RowFilter used for learning: we first generate a universal
       // filter that can parse any database. Then, we parse once the DB to
       // convert it into a compact int (an interval 0..N-1) so that we can
@@ -103,7 +103,9 @@ namespace gum {
       __raw_translators.insertTranslator(
           dummy_translator, 0, __database.nbVariables() );
 
-      // assign the user values to the raw translators
+      __generators.insertGenerator ();
+
+        // assign the user values to the raw translators
       for ( auto iter = modalities.cbegin(); iter != modalities.cend(); ++iter ) {
         __raw_translators[iter.key()].setUserValues( iter.val(), check_database );
       }
@@ -232,7 +234,7 @@ namespace gum {
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
                           DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                          FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>(
+                          FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
       __translators = __row_filter->translatorSet();
 
@@ -248,8 +250,7 @@ namespace gum {
 
     genericBNLearner::Database::Database( std::string filename,
                                           Database&   score_database )
-        : __database( genericBNLearner::__readFile( filename ) )
-        , __generators( RowGeneratorIdentity() ) {
+        : __database( genericBNLearner::__readFile( filename ) ) {
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
       if ( __database.nbVariables() < score_database.__database.nbVariables() ) {
@@ -257,6 +258,8 @@ namespace gum {
                    "the a priori seems to have fewer variables "
                    "than the observed database" );
       }
+
+      __generators.insertGenerator ();
 
       const std::vector<std::string>& score_vars =
           score_database.__database.variableNames();
@@ -299,7 +302,7 @@ namespace gum {
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
                           DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                          FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>(
+                          FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
       __translators = __row_filter->translatorSet();
 
@@ -310,8 +313,7 @@ namespace gum {
         std::string                                filename,
         Database&                                  score_database,
         const NodeProperty<Sequence<std::string>>& modalities )
-        : __database( genericBNLearner::__readFile( filename ) )
-        , __generators( RowGeneratorIdentity() ) {
+        : __database( genericBNLearner::__readFile( filename ) ) {
       GUM_ERROR( OperationNotAllowed,
                  "Learners with both Dirichlet apriori and "
                  "variables' modalities specified are not implemented yet" );
@@ -328,7 +330,7 @@ namespace gum {
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
                           DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                          FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>(
+                          FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
     }
 
@@ -343,7 +345,7 @@ namespace gum {
       __row_filter =
           new DBRowFilter<DatabaseVectInRAM::Handler,
                           DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                          FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>(
+                          FilteredRowGeneratorSet<RowGeneratorIdentity>>(
               __database.handler(), __translators, __generators );
     }
 
@@ -365,7 +367,7 @@ namespace gum {
         __row_filter =
             new DBRowFilter<DatabaseVectInRAM::Handler,
                             DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                            FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>(
+                            FilteredRowGeneratorSet<RowGeneratorIdentity>>(
                 __database.handler(), __translators, __generators );
       }
 
@@ -388,7 +390,7 @@ namespace gum {
         __row_filter =
             new DBRowFilter<DatabaseVectInRAM::Handler,
                             DBRowTranslatorSet<CellTranslatorCompactIntId>,
-                            FilteredRowGeneratorSetStatic<RowGeneratorIdentity>>(
+                            FilteredRowGeneratorSet<RowGeneratorIdentity>>(
                 __database.handler(), __translators, __generators );
       }
 

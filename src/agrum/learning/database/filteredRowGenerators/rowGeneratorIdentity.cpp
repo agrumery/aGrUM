@@ -73,6 +73,13 @@ namespace gum {
       return *this;
     }
 
+
+    /// virtual copy constructor
+    RowGeneratorIdentity* RowGeneratorIdentity::copyFactory () const {
+      return new RowGeneratorIdentity ( *this );
+    }
+    
+
   } /* namespace learning */
 
 } /* namespace gum */
