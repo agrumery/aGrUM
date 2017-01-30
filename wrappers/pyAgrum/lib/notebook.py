@@ -835,29 +835,29 @@ def getInferenceEngine(ie, inferenceCaption):
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:
     t += "<li><b>hard evidence</b><br/>"
-    t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.hardEvidenceList()])
+    t += ", ".join([ie.BN().variable(n).name() for n in ie.hardEvidenceList()])
     t += "</li>"
   if ie.nbrSoftEvidence() > 0:
     t += "<li><b>soft evidence</b><br/>"
-    t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.softEvidenceList()])
+    t += ", ".join([ie.BN().variable(n).name() for n in ie.softEvidenceList()])
     t += "</li>"
   if ie.nbrTargets() > 0:
     t += "<li><b>target(s)</b><br/>"
-    if ie.nbrTargets() == ie.BayesNet().size():
+    if ie.nbrTargets() == ie.BN().size():
       t += " all"
     else:
-      t += ", ".join([ie.BayesNet().variable(n).name() for n in ie.targetList()])
+      t += ", ".join([ie.BN().variable(n).name() for n in ie.targetList()])
     t += "</li>"
 
   if hasattr(ie, 'nbrJointTargets'):
     if ie.nbrJointTargets() > 0:
       t += "<li><b>Joint target(s)</b><br/>"
       t += ", ".join(['['
-                      + (", ".join([ie.BayesNet().variable(n).name() for n in ns]))
+                      + (", ".join([ie.BN().variable(n).name() for n in ns]))
                       + ']' for ns in ie.jointTargets()])
       t += "</li>"
   t += '</ul></div>'
-  return getSideBySide(getBN(ie.BayesNet()), t, captions=[inferenceCaption, "Evidence and targets"])
+  return getSideBySide(getBN(ie.BN()), t, captions=[inferenceCaption, "Evidence and targets"])
 
 
 # adding _repr_html_ to some pyAgrum classes !
