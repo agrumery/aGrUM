@@ -43,7 +43,7 @@ from ._utils.pyAgrum_header import pyAgrum_header
 
 class CSVGenerator:
   """
-  Classe for samples generation w.r.t to a probability distribution
+  Class for samples generation w.r.t to a probability distribution
   represented by a Bayesian network.
   """
 
@@ -77,7 +77,7 @@ class CSVGenerator:
     """
     l = bn.cpt(n).var_names
     node = l.pop()
-    # l is the liste of var names
+    # l is the list of var names
     return node, l  # map(bn.idFromName,l)
 
   def caching_nameAndParents(self, bn, n):
@@ -175,7 +175,7 @@ def module_help(exit_value=1):
 
 
 if __name__ == "__main__":
-  pyAgrum_header("2011-2013")
+  pyAgrum_header("2011-2017")
 
   if len(sys.argv) < 3:
     module_help()

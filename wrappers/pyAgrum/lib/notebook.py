@@ -61,7 +61,7 @@ def configuration():
     res += "<tr><td>%s</td><td>%s</td></tr>" % (name, packages[name])
 
   res += "</table><div align='right'><small>%s</small></div>" % time.strftime(
-      '%a %b %d %H:%M:%S %Y %Z')
+    '%a %b %d %H:%M:%S %Y %Z')
 
   return IPython.display.HTML(res)
 
@@ -297,7 +297,7 @@ def getPosterior(bn, evs, target):
   :type target: str
   :return: the matplotlib graph
   """
-  return getProba(gum.getPosterior(bn, evs, target))
+  return getProba(gum.getPosterior(bn, evs=evs, target=target))
 
 
 def showPosterior(bn, evs, target):
@@ -328,8 +328,8 @@ def animApproximationScheme(apsc, scale=np.log10):
   def stopper(x):
     clear_output(True)
     plt.title(
-        "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
-                                                                        apsc.epsilon()))
+      "{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
+                                                                      apsc.epsilon()))
 
   def progresser(x, y, z):
     if len(apsc.history()) < 10:
@@ -344,12 +344,12 @@ def animApproximationScheme(apsc, scale=np.log10):
   h.setWhenProgress(progresser)
 
 
-_cdict = {'red'  : ((0.0, 0.1, 0.3),
-                    (1.0, 0.6, 1.0)),
+_cdict = {'red': ((0.0, 0.1, 0.3),
+                  (1.0, 0.6, 1.0)),
           'green': ((0.0, 0.0, 0.0),
                     (1.0, 0.6, 0.8)),
-          'blue' : ((0.0, 0.0, 0.0),
-                    (1.0, 1, 0.8))}
+          'blue': ((0.0, 0.0, 0.0),
+                   (1.0, 1, 0.8))}
 _INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
 
 
@@ -379,15 +379,15 @@ def _proba2fgcolor(p, cmap=_INFOcmap):
     return "#000000"
 
 
-def _BN2colouredDot(bn, size="4", arcvals=None,vals=None, cmap=_INFOcmap):
+def _BN2colouredDot(bn, size="4", arcvals=None, vals=None, cmap=_INFOcmap):
   """
   Shows a graphviz svg representation of the BN using size ("1" ,"2" , ...)
   vals is a dictionnary name:value of value in [0,1] for each node
   (with special color for 0 and 1)
   """
   if arcvals is not None:
-    minarcs=min(arcvals.values())
-    maxarcs=max(arcvals.values())
+    minarcs = min(arcvals.values())
+    maxarcs = max(arcvals.values())
 
   graph = dot.Dot(graph_type='digraph')
   for n in bn.names():
@@ -407,21 +407,21 @@ def _BN2colouredDot(bn, size="4", arcvals=None,vals=None, cmap=_INFOcmap):
     graph.add_node(node)
   for a in bn.arcs():
     if arcvals is None:
-        pw=1
-        av=""
+      pw = 1
+      av = ""
     else:
-        pw=0.1+5*(arcvals[a]-minarcs)/(maxarcs-minarcs)
-        av=arcvals[a]
+      pw = 0.1 + 5 * (arcvals[a] - minarcs) / (maxarcs - minarcs)
+      av = arcvals[a]
 
     edge = dot.Edge('"' + bn.variable(a[0]).name() + '"', '"' + bn.variable(a[1]).name() + '"',
                     penwidth=pw,
-                    tooltip="{} : {}".format(a,av))
+                    tooltip="{} : {}".format(a, av))
     graph.add_edge(edge)
   graph.set_size(size)
   return graph
 
 
-def showBN(bn, size="4", format="svg", arcvals=None,vals=None, cmap=_INFOcmap, asString=False):
+def showBN(bn, size="4", format="svg", arcvals=None, vals=None, cmap=_INFOcmap, asString=False):
   """
   show a Bayesian network
 
@@ -433,10 +433,10 @@ def showBN(bn, size="4", format="svg", arcvals=None,vals=None, cmap=_INFOcmap, a
   :param cmap: color map to show the vals
   :return: the graph
   """
-  return showGraph(_BN2colouredDot(bn, size, arcvals,vals, cmap), size, format)
+  return showGraph(_BN2colouredDot(bn, size, arcvals, vals, cmap), size, format)
 
 
-def getBN(bn, size="4", format="svg", arcvals=None,vals=None, cmap=_INFOcmap, asString=False):
+def getBN(bn, size="4", format="svg", arcvals=None, vals=None, cmap=_INFOcmap, asString=False):
   """
   get a HTML string for a Bayesian network
 
@@ -448,7 +448,7 @@ def getBN(bn, size="4", format="svg", arcvals=None,vals=None, cmap=_INFOcmap, as
   :param cmap: color map to show the vals
   :return: the graph
   """
-  return getGraph(_BN2colouredDot(bn, size, arcvals,vals, cmap), size, format)
+  return getGraph(_BN2colouredDot(bn, size, arcvals, vals, cmap), size, format)
 
 
 def _normalizeVals(vals, hilightExtrema=False):
@@ -490,8 +490,8 @@ def _reprInformation(bn, evs, size, cmap, asString):
   ie.makeInference()
 
   nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.ids()}
-  arcvals={(x,y):ie.I(x,y) for x,y in bn.arcs()}
-  gr = _BN2colouredDot(bn, size, arcvals,_normalizeVals(nodevals, hilightExtrema=False), cmap)
+  arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
+  gr = _BN2colouredDot(bn, size, arcvals, _normalizeVals(nodevals, hilightExtrema=False), cmap)
 
   mi = min(nodevals.values())
   ma = max(nodevals.values())
@@ -506,7 +506,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
   cb1.set_label('Entropy')
   png = print_figure(canvas.figure, "png")  # from IPython.core.pylabtools
   png_legend = "<img style='vertical-align:middle' src='data:image/png;base64,%s'>" % base64.encodestring(png).decode(
-      'ascii')
+    'ascii')
 
   gsvg = SVG(gr.create_svg())
 
@@ -631,29 +631,48 @@ def getInference(bn, engine=None, evs={}, targets={}, size="7", format='png'):
   return _reprInference(bn, engine, evs, targets, size, format, asString=True)
 
 
-def _reprPotential(pot, digits, varnames, asString):
+def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False):
   """
   return a representation of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param gum.Potential pot:
-  :param int digits: number of digits to show
-  :param list varnames: the aliases for variables name in the table
-  :param boolean asString: display the table or a HTML string
+
+  :param pot: the potential to get
+  :type pot: gum.Potential
+  :param digits: number of digits to show
+  :type digits: int
+  :param: withColors : bgcolor for proba cells or not
+  :type withColors: boolean
+  :param varnames: the aliases for variables name in the table
+  :type varnames: list of strings
+  :param asString: display the table or a HTML string
+  :type asString: boolean
   :return: the representation
   """
   from IPython.core.display import HTML
+
+  def _rgb(r, g, b):
+    return '#%02x%02x%02x' % (r, g, b)
+
+  def _mkCell(val):
+    s = "<td style='"
+    if withColors and (0 <= val <= 1):
+      r = int(255 - val * 128)
+      g = int(127 + val * 128)
+      b = 100
+      s += "background-color:" + _rgb(r, g, b) + ";"
+    s += "text-align:right;'>{:." + str(digits) + "f}</td>"
+    return s.format(val)
 
   html = list()
   html.append("<table>")
   if pot.empty():
     html.append("<tr><th style='background-color:#AAAAAA'>&nbsp;</th></tr>")
-    html.append(
-        ("<tr><td style='text-align:right;'>{:." + str(digits) + "f}</td>").format(pot.get(gum.Instantiation())))
+    html.append("<tr>" + _mkCell(pot.get(gum.Instantiation())) + "</tr>")
   else:
     if varnames is not None and len(varnames) != pot.nbrDim():
       raise ValueError(
-          "varnames contains {} values instead of the needed {} values.".format(len(varnames), pot.nbrDim()))
+        "varnames contains {} values instead of the needed {} values.".format(len(varnames), pot.nbrDim()))
 
     nparents = pot.nbrDim() - 1
     var = pot.variable(0)
@@ -662,19 +681,25 @@ def _reprPotential(pot, digits, varnames, asString):
     # first line
     if nparents > 0:
       html.append(
-          "<tr><th colspan='{}'></th><th colspan='{}' style='background-color:#AAAAAA'><center>{}</center></th></tr>".format(
-              nparents, var.domainSize(), varname))
+        "<tr><th colspan='{}'></th><th colspan='{}' style='background-color:#AAAAAA'><center>{}</center></th></tr>".format(
+          nparents, var.domainSize(), varname))
     else:
       html.append(
-          "<tr style='background-color:#AAAAAA'><th colspan='{}'><center>{}</center></th></tr>".format(var.domainSize(),
-                                                                                                       varname))
+        "<tr style='background-color:#AAAAAA'><th colspan='{}'><center>{}</center></th></tr>".format(
+          var.domainSize(),
+          varname))
     # second line
-    html.append("<tr>")
+    s = "<tr>"
     if nparents > 0:
-      for parent in pot.var_names[:-1] if varnames == None else varnames[1:]:
-        html.append("<th style='background-color:#AAAAAA'><center>{}</center></th>".format(parent))
+      # for parent in pot.var_names[:-1] if varnames == None else varnames[1:]:
+      for par in range(nparents - 1, 0 - 1, -1):
+        parent = pot.var_names[par] if varnames is None else varnames[par]
+        s += "<th style='background-color:#AAAAAA'><center>{}</center></th>".format(parent)
     for label in var.labels():
-      html.append("<th style='background-color:#BBBBBB'><center>{}</center></th>".format(label))
+      s += "<th style='background-color:#BBBBBB'><center>{}</center></th>".format(label)
+    s += '</tr>'
+
+    html.append(s)
 
     inst = gum.Instantiation(pot)
     off = 1
@@ -683,22 +708,21 @@ def _reprPotential(pot, digits, varnames, asString):
       offset[i] = off
       off *= inst.variable(i).domainSize()
 
-    html.append("<tr>")
     inst.setFirst()
     while not inst.end():
-      if inst.val(0) == 0:
-        for par in range(nparents, 0, -1):
-          label = inst.variable(par).label(inst.val(par))
-          if par == 1:
-            html.append("<th style='background-color:#BBBBBB'>{}</th>".format(label))
-          else:
-            if sum([inst.val(i) for i in range(1, par)]) == 0:
-              html.append("<th style='background-color:#BBBBBB;' rowspan = '{}'>{}</th>".format(offset[par], label))
-      html.append(("<td style='text-align:right;'>{:." + str(digits) + "f}</td>").format(pot.get(inst)))
-      inst.inc()
-      if not inst.end() and inst.val(0) == 0:
-        html.append("</tr><tr>")
-    html.append("</tr>")
+      s = "<tr>"
+      for par in range(1, nparents + 1):
+        label = inst.variable(par).label(inst.val(par))
+        if par == 1:
+          s += "<th style='background-color:#BBBBBB'>{}</th>".format(label)
+        else:
+          if sum([inst.val(i) for i in range(1, par)]) == 0:
+            s += "<th style='background-color:#BBBBBB;' rowspan = '{}'>{}</th>".format(offset[par], label)
+      for j in range(pot.variable(0).domainSize()):
+        s += _mkCell(pot.get(inst))
+        inst.inc()
+      s += "</tr>"
+      html.append(s)
 
   html.append("</table>")
 
@@ -708,20 +732,26 @@ def _reprPotential(pot, digits, varnames, asString):
     return HTML("".join(html))
 
 
-def showPotential(pot, digits=4, varnames=None):
+def showPotential(pot, digits=4, withColors=True, varnames=None):
   """
   show a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param gum.Potential pot:
-  :param int digits: number of digits to show
-  :param list varnames: the aliases for variables name in the table
+
+  :param pot: the potential to get
+  :type pot: gum.Potential
+  :param digits: number of digits to show
+  :type digits: int
+  :param: withColors : bgcolor for proba cells or not
+  :type withColors: boolean
+  :param varnames: the aliases for variables name in the table
+  :type varnames: list of strings
   :return: the display of the potential
   """
-  return _reprPotential(pot, digits, varnames, asString=False)
+  return _reprPotential(pot, digits, withColors, varnames, asString=False)
 
 
-def getPotential(pot, digits=4, varnames=None):
+def getPotential(pot, digits=4, withColors=True, varnames=None):
   """
   return a HTML string of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -730,11 +760,13 @@ def getPotential(pot, digits=4, varnames=None):
   :type pot: gum.Potential
   :param digits: number of digits to show
   :type digits: int
+  :param: withColors : bgcolor for proba cells or not
+  :type withColors: boolean
   :param varnames: the aliases for variables name in the table
   :type varnames: list of strings
   :return: the HTML string
   """
-  return _reprPotential(pot, digits, varnames, asString=True)
+  return _reprPotential(pot, digits, withColors, varnames, asString=True)
 
 
 def getSideBySide(*args, **kwargs):
@@ -773,7 +805,7 @@ def getSideBySide(*args, **kwargs):
   if captions is not None:
     s += '<tr><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'
     s += '</small></div></td><td style="border-top:hidden;border-bottom:hidden;"><div align="center"><small>'.join(
-        captions)
+      captions)
     s += '</small></div></td></tr>'
 
   s += '</table>'
