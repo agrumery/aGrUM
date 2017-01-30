@@ -73,7 +73,7 @@ def pdfize(aBN, name):
 
 
 if __name__ == "__main__":
-  pyAgrum_header("2011-13")
+  pyAgrum_header("2011-17")
 
   if len(sys.argv) < 2:
     print(os.path.basename(sys.argv[0]), "file.{" + gum.availableBNExts() + "}")
