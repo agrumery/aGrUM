@@ -5,7 +5,7 @@ cache:
 # TEST
 ################################################################################
 
-linux_gcc-5_release_test:
+linux_gcc-5_release:
   tags:
     - linux
     - gcc-5
@@ -15,37 +15,49 @@ linux_gcc-5_release_test:
     CXX: "/usr/bin/g++-5"
   script: 
     - python act --no-fun clean 
-    - python act --no-fun test release
+    - python act --no-fun lib release
 
-linux_gcc-6_release_test:
-  tags:
-    - linux
-    - clang
-  stage: test
-  variables:
-    CC: "/usr/bin/gcc-6"
-    CXX: "/usr/bin/gcc-6"
-  script: 
-    - python act --no-fun clean 
-    - python act --no-fun test release
-    
-linux_clang_release_test:
-  tags:
-    - linux
-    - clang
-  stage: test
-  variables:
-    CC: "/usr/bin/clang"
-    CXX: "/usr/bin/clang++"
-  script: 
-    - python act --no-fun clean 
-    - python act --no-fun test release
-
-windows_mvsc_release_test:
-  tags:
-    - windows
-  variables:
-    PATH: "%PATH%;C:\\Program Files\\Git\\bin;"
-  script:
-    - python act --no-fun --mvsc clean
-    - python act --no-fun --mvsc test release -m BASE+BN+FMDP+ID+LEARNING+PRM
+#linux_gcc-5_release_test:
+#  tags:
+#    - linux
+#    - gcc-5
+#  stage: test
+#  variables:
+#    CC: "/usr/bin/gcc-5"
+#    CXX: "/usr/bin/g++-5"
+#  script: 
+#    - python act --no-fun clean 
+#    - python act --no-fun test release
+#
+#linux_gcc-6_release_test:
+#  tags:
+#    - linux
+#    - gcc-6
+#  stage: test
+#  variables:
+#    CC: "/usr/bin/gcc-6"
+#    CXX: "/usr/bin/gcc-6"
+#  script: 
+#    - python act --no-fun clean 
+#    - python act --no-fun test release
+#    
+#linux_clang_release_test:
+#  tags:
+#    - linux
+#    - clang
+#  stage: test
+#  variables:
+#    CC: "/usr/bin/clang"
+#    CXX: "/usr/bin/clang++"
+#  script: 
+#    - python act --no-fun clean 
+#    - python act --no-fun test release
+#
+#windows_mvsc_release_test:
+#  tags:
+#    - windows
+#  variables:
+#    PATH: "%PATH%;C:\\Program Files\\Git\\bin;C:\\Program Files (x86)\\Python35-32;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin"
+#  script:
+#    - python act --no-fun --mvsc clean
+#    - python act --no-fun --mvsc test release -m BASE+BN+FMDP+ID+LEARNING+PRM
