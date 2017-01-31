@@ -15,6 +15,7 @@ linux_gcc-5_release:
     CXX: "/usr/bin/g++-5"
   script: 
     - python act --no-fun clean 
+    - python act --no-fun clean 
     - python act --no-fun lib release
 
 #linux_gcc-5_release_test:
