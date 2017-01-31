@@ -67,8 +67,9 @@ gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> tra
         translators1;
       translators1.insertTranslator( 0, 8 );
 
-      auto generators1 =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators1;
+      generators1.insertGenerator ();
 
       auto generators = generators1;
 
@@ -139,8 +140,10 @@ gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> tra
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator ( 0, 37 );
 
-      auto generators =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators;
+      generators.insertGenerator ();
+
       auto filter =
           gum::learning::make_DB_row_filter( database, translators, generators );
 
@@ -196,8 +199,10 @@ gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> tra
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
                                     0, 37 );
 
-      auto generators =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators;
+      generators.insertGenerator ();
+
       auto filter =
           gum::learning::make_DB_row_filter( database, translators, generators );
 
@@ -253,8 +258,9 @@ gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> tra
       translators.insertTranslator( gum::learning::CellTranslatorCompactIntId(),
                                     0, 37 );
 
-      auto generators =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators;
+      generators.insertGenerator ();
       auto filter =
           gum::learning::make_DB_row_filter( database, translators, generators );
 

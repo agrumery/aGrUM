@@ -24,9 +24,10 @@
  * used to construct contingency tables that are either exploited in
  * statistical conditional independence tests or in scores. In both cases,
  * the values observed in the records must be translated into indices in
- * the domain of the corresponding random variables. DBCellTranslators are
- * used for this purpose. To make the parsing of the database easier, all
- * the DBCellTranslators are gathered in a DBRowTranslatorSet.
+ * the finite domain of the corresponding random variables. DBCellTranslators
+ * are used for this purpose. To make the parsing of all the columns of the
+ * database easier, all the DBCellTranslators used are gathered into a single
+ * DBRowTranslatorSet.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -47,16 +48,17 @@ namespace gum {
 
     /** @class DBRowTranslatorSet
      * @ingroup learning_group
-     * @brief the "non-meta-programming" class that includes cell translator
-     * packs into row filters
+     * @brief the class for packing the translators used to preprocess
+     * the database
      *
      * When learning Bayesian networks, the records of the train database are
      * used to construct contingency tables that are either exploited in
      * statistical conditional independence tests or in scores. In both cases,
      * the values observed in the records must be translated into indices in
-     * the domain of the corresponding random variables. DBCellTranslators are
-     * used for this purpose. To make the parsing of the database easier, all
-     * the DBCellTranslators are gathered in a DBRowTranslatorSet
+     * the finite domain of the corresponding random variables.
+     * DBCellTranslators are used for this purpose. To make the parsing of all
+     * the columns of the database easier, all the DBCellTranslators used are
+     * gathered into a DBRowTranslatorSet.
      */
     template <typename Translator>
     class DBRowTranslatorSet {
@@ -71,8 +73,7 @@ namespace gum {
       DBRowTranslatorSet();
 
       /// copy constructor
-      DBRowTranslatorSet(
-          const DBRowTranslatorSet<Translator>& from );
+      DBRowTranslatorSet( const DBRowTranslatorSet<Translator>& from );
 
       /// move constructor
       DBRowTranslatorSet( DBRowTranslatorSet<Translator>&& from );

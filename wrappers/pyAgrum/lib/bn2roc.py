@@ -308,5 +308,7 @@ def checkROCargs():
 
 
 if __name__ == "__main__":
+  pyAgrum_header("2011-17")
+
   (bn, csv_name, variable, label) = checkROCargs()
   showROC(bn, csv_name, variable, label, True, False)

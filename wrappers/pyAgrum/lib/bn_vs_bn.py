@@ -144,7 +144,7 @@ def module_help(exit_value=1):
 
 
 if __name__ == "__main__":
-  pyAgrum_header("2011-13")
+  pyAgrum_header("2011-17")
 
   if len(sys.argv) != 3:
     module_help()

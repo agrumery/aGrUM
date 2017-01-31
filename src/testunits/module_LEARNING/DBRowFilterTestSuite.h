@@ -48,6 +48,9 @@ namespace gum_tests {
       } else
         return 0;
     }
+    virtual TruncatedGenerator* copyFactory () const {
+      return new TruncatedGenerator ( *this );
+    }
 
     gum::Idx nb{9500};
   };
@@ -59,6 +62,11 @@ namespace gum_tests {
       return *_input_row;
     }
     inline gum::Idx _computeRows() { return 3; }
+
+    virtual ThreeGenerator* copyFactory () const {
+      return new ThreeGenerator ( *this );
+    }
+
   };
 
   class TwoGenerator : public gum::learning::FilteredRowGenerator {
@@ -68,6 +76,9 @@ namespace gum_tests {
       return *_input_row;
     }
     inline gum::Idx _computeRows() { return 2; }
+    virtual TwoGenerator* copyFactory () const {
+      return new TwoGenerator ( *this );
+    }
   };
 
   class DBRowTestSuite : public CxxTest::TestSuite {
@@ -78,8 +89,9 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator ( 0, 8 );
       
-      auto generators =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators;
+      generators.insertGenerator ();
 
       auto filter1 =
           gum::learning::make_DB_row_filter( database, translators, generators );
@@ -126,8 +138,10 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator ( 0, 8 );
       
-      auto generators = gum::learning::make_generators(
-          TruncatedGenerator(), gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::FilteredRowGenerator>
+        generators;
+      generators.insertGenerator ( TruncatedGenerator() );
+      generators.insertGenerator ( gum::learning::RowGeneratorIdentity());
 
       auto filter =
           gum::learning::make_DB_row_filter( database, translators, generators );
@@ -150,9 +164,12 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
       translators.insertTranslator ( 0, 8 );
 
-      auto generators = gum::learning::make_generators(
-          ThreeGenerator(), TruncatedGenerator(), TwoGenerator() );
-
+      gum::learning::FilteredRowGeneratorSet<gum::learning::FilteredRowGenerator>
+        generators;
+      generators.insertGenerator ( ThreeGenerator() );
+      generators.insertGenerator ( TruncatedGenerator() );
+      generators.insertGenerator ( TwoGenerator() );
+      
       auto filter =
           gum::learning::make_DB_row_filter( database, translators, generators );
 
