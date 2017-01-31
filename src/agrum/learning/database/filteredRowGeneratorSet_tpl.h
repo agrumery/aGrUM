@@ -29,112 +29,240 @@ namespace gum {
 
   namespace learning {
 
+
     /// default constructor
-    template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        FilteredRowGeneratorSet(
-            const Generator &first_generator,
-            const OtherGenerators &... next_generators ) noexcept
-        : NextGenerators( next_generators... ),
-          __first_generator( first_generator ) {
+    template <typename Generator>
+    INLINE FilteredRowGeneratorSet<Generator>:: FilteredRowGeneratorSet () {
       GUM_CONSTRUCTOR( FilteredRowGeneratorSet );
     }
 
+    
     /// copy constructor
-    template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        FilteredRowGeneratorSet(
-            const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from )
-        : NextGenerators( from )
-        , __first_generator( from.__first_generator ) {
+    template <typename Generator>
+    INLINE FilteredRowGeneratorSet<Generator>::FilteredRowGeneratorSet(
+            const FilteredRowGeneratorSet<Generator>& from )
+      : __generators ( from.__generators.size () )
+      , __output_row ( from.__output_row ) {
       GUM_CONS_CPY( FilteredRowGeneratorSet );
+
+      std::size_t size = from.__generators.size ();
+      for ( std::size_t i = 0; i < size; ++i )
+        __generators[i] = from.__generators[i]->copyFactory ();
+      
+      if ( size )
+        __last_generator = *( __generators.rbegin () );
     }
 
+    
     /// move constructor
-    template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        FilteredRowGeneratorSet(
-            FilteredRowGeneratorSet<Generator, OtherGenerators...>
-                &&from ) noexcept
-        : NextGenerators( std::move( from ) ),
-          __first_generator( std::move( from.__first_generator ) ) {
+    template <typename Generator>
+    INLINE FilteredRowGeneratorSet<Generator>::FilteredRowGeneratorSet(
+            FilteredRowGeneratorSet<Generator>&& from )
+        : __generators ( std::move( from.__generators ) )
+        , __output_row ( from.__output_row ) {
       GUM_CONS_MOV( FilteredRowGeneratorSet );
+      __last_generator = from.__last_generator;
+      from.__last_generator = nullptr;
+      from.__output_row = nullptr;
     }
 
+    
     /// destructor
-    template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-        ~FilteredRowGeneratorSet() noexcept {
+    template <typename Generator>
+    INLINE FilteredRowGeneratorSet<Generator>::~FilteredRowGeneratorSet() {
       GUM_DESTRUCTOR( FilteredRowGeneratorSet );
+
+      for ( auto gen : __generators )
+        delete gen;
     }
+    
 
     /// copy operator
-    template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-           FilteredRowGeneratorSet<Generator, OtherGenerators...>::operator=(
-        const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from ) {
+    template <typename Generator>
+    INLINE FilteredRowGeneratorSet<Generator>&
+    FilteredRowGeneratorSet<Generator>::operator=(
+        const FilteredRowGeneratorSet<Generator>& from ) {
       if ( this != &from ) {
-        NextGenerators::operator=( from );
-        __first_generator = from.__first_generator;
+        // remove the old generators and produce new ones
+        for ( auto gen : __generators )
+          delete gen;
+        std::size_t size = from.__generators.size ();
+        for ( std::size_t i = 0; i < size; ++i )
+            __generators[i] = from.__generators[i]->copyFactory ();
+        if ( size )
+          __last_generator = *( __generators.rbegin () );
+        else
+          __last_generator = nullptr;
+        
+        __output_row = from.__output_row;
       }
       return *this;
     }
 
+    
     /// move operator
-    template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-           FilteredRowGeneratorSet<Generator, OtherGenerators...>::
-    operator=( FilteredRowGeneratorSet<Generator, OtherGenerators...>&& from ) {
+    template <typename Generator>
+    INLINE FilteredRowGeneratorSet<Generator>&
+    FilteredRowGeneratorSet<Generator>::operator=(
+        FilteredRowGeneratorSet<Generator>&& from ) {
       if ( this != &from ) {
-        NextGenerators::operator=( std::move( from ) );
-        __first_generator = std::move( from.__first_generator );
+        __generators = std::move( from.__generators );
+        __last_generator = from.__last_generator;
+        from.__last_generator = nullptr;
+        __output_row = from.__output_row;
       }
       return *this;
     }
+
+
+    /// inserts a new generator of type Generator at the end of the set
+    template <typename Generator>
+    void FilteredRowGeneratorSet<Generator>::insertGenerator () {
+      Generator* new_gen = new Generator;
+      __generators.push_back ( new_gen );
+      __last_generator = new_gen;
+      __output_row = nullptr;
+    }
+
+    
+    /// inserts a new generator of type Generator at the end of the set
+    template <typename Generator>
+    template <typename... Args>
+    void FilteredRowGeneratorSet<Generator>::emplaceGenerator ( Args&&... args ) {
+      Generator* new_gen = new Generator ( std::forward<Args>( args )... );
+      __generators.push_back ( new_gen );
+      __last_generator = new_gen;
+      __output_row = nullptr;
+    }
+
+    
+    /// inserts a new generator at the end of the set
+    template <typename Generator>
+    template <class NewGenerator>
+    void FilteredRowGeneratorSet<Generator>::insertGenerator
+    ( const NewGenerator& generator ) {
+      NewGenerator* new_gen = new NewGenerator ( generator );
+      __generators.push_back ( new_gen );
+      __last_generator = new_gen;
+      __output_row = nullptr;
+    }
+
+
+    /// returns the number of generators 
+    template <typename Generator>
+    INLINE Size
+    FilteredRowGeneratorSet<Generator>::nbGenerators() const noexcept {
+      return __generators.size ();
+    }
+
 
     /// returns true if there are still rows that can be output by the RowFilter
-    template <typename Generator, typename... OtherGenerators>
-    INLINE bool
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::hasRows() noexcept {
-      if ( NextGenerators::hasRows() ) return true;
-      while ( __first_generator.hasRows() ) {
-        if ( NextGenerators::setInputRow( __first_generator.generate() ) ) {
+    template <typename Generator>
+    bool FilteredRowGeneratorSet<Generator>::__hasRows( std::size_t i ) {
+      auto gen = __generators[i];
+
+      if ( gen != __last_generator ) {
+        if ( __hasRows( i+1 ) ) return true;
+        while ( gen->hasRows() ) {
+          if ( __setInputRow( i+1, gen->generate() ) ) {
+            return true;
+          }
+        }
+      }
+      else {
+        if ( __output_row != nullptr ) return true;
+        if ( gen->hasRows() ) {
+          __output_row = &( gen->generate () );
           return true;
         }
       }
+
       return false;
     }
+
+    
+    /// returns true if there are still rows that can be output by the RowFilter
+    template <typename Generator>
+    INLINE bool
+    FilteredRowGeneratorSet<Generator>::hasRows() {
+      return __hasRows ( 0 );
+    }
+
+        
+    /// sets the input row from which the generator will create new rows
+    template <typename Generator>
+    bool FilteredRowGeneratorSet<Generator>::__setInputRow( std::size_t i,
+                                                            FilteredRow& row ) {
+      auto gen = __generators[i];
+      gen->setInputRow( row );
+
+      if ( gen != __last_generator ) {
+        while ( gen->hasRows() ) {
+          if ( __setInputRow( i+1, gen->generate () ) ) {
+            return true;
+          }
+        }
+      }
+      else {
+        if ( gen->hasRows() ) {
+          __output_row = &( gen->generate () );
+          return true;
+        }
+      }
+
+      return false;
+    }
+      
 
     /// sets the input row from which the generator will create new rows
-    template <typename Generator, typename... OtherGenerators>
+    template <typename Generator>
     INLINE bool
-    FilteredRowGeneratorSet<Generator, OtherGenerators...>::setInputRow(
-        FilteredRow& row ) noexcept {
-      __first_generator.setInputRow( row );
-      while ( __first_generator.hasRows() ) {
-        if ( NextGenerators::setInputRow( __first_generator.generate() ) ) {
-          return true;
-        }
-      }
-
-      return false;
+    FilteredRowGeneratorSet<Generator>::setInputRow( FilteredRow& row ) {
+      return __setInputRow( 0, row );
     }
+
 
     /// generate new rows from the input row
-    template <typename Generator, typename... OtherGenerators>
-    INLINE FilteredRow&
-           FilteredRowGeneratorSet<Generator, OtherGenerators...>::generate() {
-      if ( !NextGenerators::hasRows() && __first_generator.hasRows() )
-        NextGenerators::setInputRow( __first_generator.generate() );
-      return NextGenerators::generate();
+    template <typename Generator>
+    FilteredRow&
+    FilteredRowGeneratorSet<Generator>::__generate( std::size_t i ) {
+      auto gen = __generators[i];
+
+      if ( gen != __last_generator ) {
+        if ( ! __hasRows ( i+1 ) && gen->hasRows () )
+          __setInputRow( i+1, gen->generate() );
+        return __generate( i+1 );
+      }
+      else {
+        if ( ( __output_row == nullptr ) && gen->hasRows () )
+          __output_row = &( gen->generate () );
+        FilteredRow& row = *( __output_row );
+        __output_row = nullptr;
+        return row;
+      }
+
+      // we should never arrive here
+      GUM_ERROR ( UndefinedElement,
+                  "the generator cannot generate rows anymore" );
     }
+          
+ 
+    /// generate new rows from the input row
+    template <typename Generator>
+    INLINE FilteredRow&
+    FilteredRowGeneratorSet<Generator>::generate () {
+      return __generate ( 0 );
+    }
+    
 
     /// resets the filter
-    template <typename Generator, typename... OtherGenerators>
-    INLINE void FilteredRowGeneratorSet<Generator, OtherGenerators...>::reset() {
-      __first_generator.reset();
-      NextGenerators::reset();
+    template <typename Generator>
+    INLINE void FilteredRowGeneratorSet<Generator>::reset() {
+      for ( auto gen : __generators )
+        gen->reset ();
+      __output_row = nullptr;
     }
+
 
   } /* namespace learning */
 

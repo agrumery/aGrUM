@@ -31,7 +31,7 @@ import pyAgrum as gum
 import pydotplus as dot
 from matplotlib.patches import Rectangle
 
-from .notebook import showGraph,getGraph
+from .notebook import showGraph, getGraph
 
 noTimeCluster = "void"
 
@@ -108,25 +108,27 @@ def getTimeSlicesRange(dbn):
 
   return timeslices
 
+
 def is2TBN(bn):
-  ts=getTimeSlicesRange(bn)
-  if not ( set(ts.keys()) <= set([noTimeCluster,"0","t"])):
-      return False,"Some variables are not correctly suffixed."
-    
-  domainSizes=dict()
-  for name,radical in ts['t']:
-    domainSizes[radical]=bn.variable(name).domainSize()
-    
-  res=""
-  for name,radical in ts['0']:
+  ts = getTimeSlicesRange(bn)
+  if not (set(ts.keys()) <= set([noTimeCluster, "0", "t"])):
+    return False, "Some variables are not correctly suffixed."
+
+  domainSizes = dict()
+  for name, radical in ts['t']:
+    domainSizes[radical] = bn.variable(name).domainSize()
+
+  res = ""
+  for name, radical in ts['0']:
     if radical in domainSizes:
-      if domainSizes[radical]!=bn.variable(name).domainSize():
-        res="\n - for variables {}/{}t".format(name,radical)
-              
-  if res!="":
-    return False,"Domain size mismatch : "+res
+      if domainSizes[radical] != bn.variable(name).domainSize():
+        res = "\n - for variables {}/{}t".format(name, radical)
+
+  if res != "":
+    return False, "Domain size mismatch : " + res
   else:
-    return True,""
+    return True, ""
+
 
 def _TimeSlicesToDot(dbn):
   """
@@ -163,7 +165,8 @@ def _TimeSlicesToDot(dbn):
         prec = n
 
   return g
-  
+
+
 def showTimeSlices(dbn, size="6", format="png"):
   """
   Try to correctly display dBN and 2TBN 
@@ -172,9 +175,10 @@ def showTimeSlices(dbn, size="6", format="png"):
   :param size: size of the figue
   :param format: png/svg
   """
-  
+
   showGraph(_TimeSlicesToDot(dbn), size, format)
-  
+
+
 def getTimeSlices(dbn, size="6", format="png"):
   """
   Try to correctly represent dBN and 2TBN as an HTML string
@@ -183,7 +187,7 @@ def getTimeSlices(dbn, size="6", format="png"):
   :param size: size of the figue
   :param format: png/svg
   """
-  
+
   return getGraph(_TimeSlicesToDot(dbn), size, format)
 
 
@@ -309,6 +313,8 @@ def plotFollow(lovars, dbn, T, evs):
 
 
 if __name__ == '__main__':
+  pyAgrum_header("2015-17")
+
   dbn = gum.BayesNet()
   a0, b0, c0, d0, at, bt, ct, dt = [dbn.add(gum.LabelizedVariable(s, s, 5)) for s in
                                     ["a0", "b0", "c0", "d0", "at", "bt", "ct", "dt"]]

@@ -20,6 +20,27 @@
 /** @file
  * @brief class for packing sets of generators into a row filter
  *
+ * When learning Bayesian networks, the records of the train database are
+ * used to construct contingency tables that are either exploited in
+ * statistical conditional independence tests or in scores. To achieve this,
+ * the values observed in the database's records are first translated by
+ * DBRowTranslators into indices in the "finite" domain of the corresponding
+ * random variables. Unfortunately, not all the values can be translated
+ * by DBRowTranslators because these translations are performed "statically"
+ * once at the beginning of the learning. Actually, some values need be
+ * translted dynamically during the learning: this is the case for instance
+ * of unobserved values that need be filled by EM-algorithms (hence resulting
+ * in different translations during the learning phase) or continuous values
+ * that can be discretized by adaptive discretization algorithms. To perform
+ * these dynamic translations, aGrUM provides the FilteredRowGenerator
+ * classes. Whenever a record is processed during learning, this record is
+ * passed to a set of FilteredRowGenerators which will be called iteratively
+ * to produce one or several records (e.g., EM produces multiple records)
+ * that will be used to compute the contingency tables used by scores and
+ * independence tests. To make the use of these FilteredRowGenerators, they
+ * are packed into a FilteredRowGeneratorSet which, when called, will call
+ * iteratively all the FilteredRowGenerators.
+ *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_FILTERED_ROW_GENERATOR_SET_H
@@ -33,125 +54,35 @@ namespace gum {
 
   namespace learning {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-    // the general type for sets of filtered row generators
-    template <typename... Generators>
-    class FilteredRowGeneratorSet;
-
-    // the end of the recurive definition of sets of filtered row generators
-    template <>
-    class FilteredRowGeneratorSet<> {
-      public:
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-
-      /// @{
-
-      /// default constructor
-      FilteredRowGeneratorSet() noexcept {}
-
-      /// copy constructor
-      FilteredRowGeneratorSet( const FilteredRowGeneratorSet<>& from ) noexcept
-          : __input_row( from.__input_row ) {}
-
-      /// move constructor
-      FilteredRowGeneratorSet( FilteredRowGeneratorSet<>&& from ) noexcept
-          : __input_row( from.__input_row ) {}
-
-      /// destructor
-      ~FilteredRowGeneratorSet() noexcept {}
-
-      /// @}
-
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-
-      /// @{
-
-      /// copy operator
-      FilteredRowGeneratorSet<>&
-      operator=( const FilteredRowGeneratorSet<>& from ) {
-        __input_row = from.__input_row;
-        return *this;
-      }
-
-      /// move operator
-      FilteredRowGeneratorSet<>& operator=( FilteredRowGeneratorSet<>&& from ) {
-        __input_row = from.__input_row;
-        return *this;
-      }
-
-      /// @}
-
-      // ##########################################################################
-      /// @name Accessors / Modifiers
-      // ##########################################################################
-
-      /// @{
-
-      /// indicates whether there are still rows to generate
-      bool hasRows() noexcept { return __input_row != nullptr; }
-
-      /// sets the filtered row used as input to generate new output filtered
-      /// rows
-      bool setInputRow( FilteredRow& row ) noexcept {
-        __input_row = &row;
-        return true;
-      }
-
-      /// clear the sets of rows to generate
-      void reset() { __input_row = nullptr; }
-
-      /// generates a new row and returns it
-      FilteredRow& generate() {
-        FilteredRow& row = *__input_row;
-        reset();
-        return row;
-      }
-
-      /// @}
-
-      private:
-      FilteredRow* __input_row{nullptr};
-    };
-
-#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
     /** @class FilteredRowGeneratorSet
      * @ingroup learning_group
      * @brief The class used to pack generators into a row filter
      *
-     * Several generators can be used in sequence to generate new filtered rows
-     * from that which is read from the database. This allows a high degree of
-     * flexibility in the reading of the database. For instance, if we wish to
-     * learn a dynamic Bayesian network from a database with some unobserved
-     * variables that we wish to estimate through an EM algorithm, we just have
-     * to pack an EM generator with a time slicer generator: the first one will
-     * fill the holes in the database (hence producing several output rows from
-     * a single database row) and each produced row will then be time sliced by
-     * the second generator, hence resulting in a new set of rows.
-     *
-     * This class is not intended to be used as is. The user should prefer
-     *packing
-     * generators into a row filter using the helper function make_generators,
-     * which will return a FilteredRowGeneratorSet. The following code shows how
-     * to do it:
-     * @code
-     * auto generators =  make_generators
-     *   ( EMGenerator (),
-     *     TimeSlicerGenerator () );
-     * @endcode
+     * When learning Bayesian networks, the records of the train database are
+     * used to construct contingency tables that are either exploited in
+     * statistical conditional independence tests or in scores. To achieve this,
+     * the values observed in the database's records are first translated by
+     * DBRowTranslators into indices in the "finite" domain of the corresponding
+     * random variables. Unfortunately, not all the values can be translated
+     * by DBRowTranslators because these translations are performed "statically"
+     * once at the beginning of the learning. Actually, some values need be
+     * translted dynamically during the learning: this is the case for instance
+     * of unobserved values that need be filled by EM-algorithms (hence resulting
+     * in different translations during the learning phase) or continuous values
+     * that can be discretized by adaptive discretization algorithms. To perform
+     * these dynamic translations, aGrUM provides the FilteredRowGenerator
+     * classes. Whenever a record is processed during learning, this record is
+     * passed to a set of FilteredRowGenerators which will be called iteratively
+     * to produce one or several records (e.g., EM produces multiple records)
+     * that will be used to compute the contingency tables used by scores and
+     * independence tests. To make the use of these FilteredRowGenerators, they
+     * are packed into a FilteredRowGeneratorSet which, when called, will call
+     * iteratively all the FilteredRowGenerators.
      */
-    template <typename Generator, typename... OtherGenerators>
-    class FilteredRowGeneratorSet<Generator, OtherGenerators...>
-        : public FilteredRowGeneratorSet<OtherGenerators...> {
+    template <typename Generator>
+    class FilteredRowGeneratorSet {
       public:
-      /// the type for the next generators to apply
-      using NextGenerators = FilteredRowGeneratorSet<OtherGenerators...>;
-
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
@@ -159,22 +90,19 @@ namespace gum {
       /// @{
 
       /// default constructor
-      FilteredRowGeneratorSet(
-          const Generator& first_generator,
-          const OtherGenerators&... next_generators ) noexcept;
-
+      FilteredRowGeneratorSet ();
+ 
       /// copy constructor
-      FilteredRowGeneratorSet(
-          const FilteredRowGeneratorSet<Generator, OtherGenerators...>& from );
+      FilteredRowGeneratorSet ( const FilteredRowGeneratorSet<Generator>& from );
 
       /// move constructor
-      FilteredRowGeneratorSet(
-          FilteredRowGeneratorSet<Generator, OtherGenerators...>&& from ) noexcept;
+      FilteredRowGeneratorSet( FilteredRowGeneratorSet<Generator>&& from );
 
       /// destructor
-      ~FilteredRowGeneratorSet() noexcept;
+      ~FilteredRowGeneratorSet ();
 
       /// @}
+      
 
       // ##########################################################################
       /// @name Operators
@@ -183,12 +111,22 @@ namespace gum {
       /// @{
 
       /// copy operator
-      FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-      operator=( const FilteredRowGeneratorSet<Generator, OtherGenerators...>& );
+      FilteredRowGeneratorSet<Generator>&
+      operator=( const FilteredRowGeneratorSet<Generator>& );
 
       /// move operator
-      FilteredRowGeneratorSet<Generator, OtherGenerators...>&
-      operator=( FilteredRowGeneratorSet<Generator, OtherGenerators...>&& );
+      FilteredRowGeneratorSet<Generator>&
+      operator=( FilteredRowGeneratorSet<Generator>&& );
+
+      /// returns the ith generator
+      /** @throws NotFound is raised if there are fewer than i generators in
+       * the generator set */
+      Generator& operator[] ( Idx i );
+
+      /// returns the ith generator
+      /** @throws NotFound is raised if there are fewer than i generators in
+       * the generator set */
+      const Generator& operator[]( Idx i ) const;
 
       /// @}
 
@@ -198,15 +136,29 @@ namespace gum {
 
       /// @{
 
-      /// returns true if there are still rows that can be output by the
-      /// RowFilter
-      bool hasRows() noexcept;
+      /// inserts a new generator of type Generator at the end of the set
+      void insertGenerator ();
 
-      /// sets the input row from which the generator will create new rows
-      bool setInputRow( FilteredRow& row ) noexcept;
+      /// inserts a new generator of type Generator at the end of the set
+      template <typename... Args>
+      void emplaceGenerator ( Args&&... args );
+
+      /// inserts a new generator at the end of the set
+      template <class NewGenerator>
+      void insertGenerator( const NewGenerator& generator );
+
+      /// returns the number of generators 
+      Size nbGenerators() const noexcept;
+      
+      /** @brief returns true if there are still rows that can be output
+       * by the set of generators */
+      bool hasRows();
+
+      /// sets the input row from which the generators will create new rows
+      bool setInputRow( FilteredRow& row );
 
       /// generate new rows from the input row
-      FilteredRow& generate();
+      FilteredRow& generate ();
 
       /// resets the filter
       void reset();
@@ -214,8 +166,27 @@ namespace gum {
       /// @}
 
       private:
-      /// the first generator to apply
-      Generator __first_generator;
+      /// the vector of all the generators
+      std::vector<Generator*> __generators;
+
+      /// the number of generators
+      Generator* __last_generator { nullptr };
+
+      /// the final row outputed by the set of generators
+      FilteredRow* __output_row { nullptr };
+
+
+
+      /** @brief returns true if there are still rows that can be output
+       * by the set of generators */
+      bool __hasRows( std::size_t i );
+
+      /// sets the input row from which the generators will create new rows
+      bool __setInputRow( std::size_t i,
+                          FilteredRow& row );
+
+      /// generate new rows from the input row
+      FilteredRow& __generate ( std::size_t i );
     };
 
   } /* namespace learning */
@@ -225,25 +196,5 @@ namespace gum {
 // always include the template implementation
 #include <agrum/learning/database/filteredRowGeneratorSet_tpl.h>
 
-namespace gum {
-
-  namespace learning {
-
-    /// a function to create easily a FilteredRowGeneratorSet
-    /** Below is an example of the use of this function. Basically, all the
-     * arguments are FilteredRowGenerators
-     * @code
-     * auto my_gen = make_generators ( DuplicateGenerator (), IdGenerator () );
-     * @endcode
-     */
-    template <typename... Args>
-    constexpr FilteredRowGeneratorSet<Args...>
-    make_generators( const Args&... args ) {
-      return FilteredRowGeneratorSet<Args...>( args... );
-    }
-
-  } /* namespace learning */
-
-} /* namespace gum */
 
 #endif /* GUM_LEARNING_FILTERED_ROW_GENERATOR_SET_H */

@@ -56,6 +56,9 @@ namespace gum {
       /// destructor
       ~RowGeneratorIdentity();
 
+      /// virtual copy constructor
+      virtual RowGeneratorIdentity* copyFactory () const;
+
       /// @}
 
       // ##########################################################################

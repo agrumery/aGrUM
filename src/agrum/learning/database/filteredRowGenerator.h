@@ -92,6 +92,9 @@ namespace gum {
       /// destructor
       virtual ~FilteredRowGenerator() noexcept;
 
+      /// virtual copy constructor
+      virtual FilteredRowGenerator* copyFactory () const = 0;
+
       /// @}
 
       // ##########################################################################

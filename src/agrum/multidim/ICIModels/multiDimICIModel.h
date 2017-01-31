@@ -126,7 +126,8 @@ namespace gum {
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      **/
-    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
+    virtual void
+    copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const override;
 
     /**
      * @return the real number of parameters used for this table. This function

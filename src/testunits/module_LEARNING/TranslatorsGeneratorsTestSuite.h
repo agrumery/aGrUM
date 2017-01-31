@@ -43,8 +43,9 @@ namespace gum_tests {
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators1;
       translators1.insertTranslator ( 0, 8 );
 
-      auto generators1 =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators1;
+      generators1.insertGenerator ();
 
       auto filter1 =
           gum::learning::make_DB_row_filter( database, translators1, generators1 );
@@ -54,8 +55,9 @@ namespace gum_tests {
           translators2;
       translators2.insertTranslator( 0, 8 );
 
-      auto generators2 =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators2;
+      generators2.insertGenerator ();
 
       auto filter2 =
           gum::learning::make_DB_row_filter( database, translators2, generators2 );
@@ -102,11 +104,13 @@ namespace gum_tests {
       translators1 = std::move( translators2 );
       translators2 = std::move( translators3 );
 
-      auto generators1 =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators1;
+      generators1.insertGenerator ();
 
-      auto generators2 =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators2;
+      generators2.insertGenerator ();
 
       auto generators3 = generators2;
 
@@ -163,11 +167,13 @@ namespace gum_tests {
       translators1 = std::move( translators2 );
       translators2 = std::move( translators3 );
 
-      auto generators1 =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators1;
+      generators1.insertGenerator ();
 
-      auto generators2 =
-          gum::learning::make_generators( gum::learning::RowGeneratorIdentity() );
+      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+        generators2;
+      generators2.insertGenerator ();
 
       auto generators3 = generators2;
 

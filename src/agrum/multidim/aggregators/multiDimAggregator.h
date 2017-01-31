@@ -160,7 +160,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if src does not have the same domain
        * size than this MultiDimContainer.
        **/
-      virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
+      virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const override;
 
       /// @}
       protected:
@@ -181,9 +181,6 @@ namespace gum {
                          Idx                     i1,
                          Idx                     i2,
                          bool&                   stop_iteration ) const = 0;
-
-      virtual void _swap( const DiscreteVariable* x,
-                          const DiscreteVariable* y ) override;
     };
 
 
