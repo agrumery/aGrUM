@@ -162,7 +162,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void MultiDimICIModel<GUM_SCALAR>::_swap( const DiscreteVariable* x,
                                                    const DiscreteVariable* y ) {
-    this->_swap( x, y );
+    MultiDimReadOnly<GUM_SCALAR>::_swap( x, y );
     __causal_weights.insert( y, __causal_weights[x] );
     __causal_weights.erase( x );
   }

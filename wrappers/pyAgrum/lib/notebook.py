@@ -714,10 +714,10 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
       for par in range(1, nparents + 1):
         label = inst.variable(par).label(inst.val(par))
         if par == 1:
-          s += "<th style='background-color:#BBBBBB'>{}</th>".format(label)
+          s += "<th style='background-color:#BBBBBB'><center>{}</center></th>".format(label)
         else:
           if sum([inst.val(i) for i in range(1, par)]) == 0:
-            s += "<th style='background-color:#BBBBBB;' rowspan = '{}'>{}</th>".format(offset[par], label)
+            s += "<th style='background-color:#BBBBBB;' rowspan = '{}'><center>{}</center></th>".format(offset[par], label)
       for j in range(pot.variable(0).domainSize()):
         s += _mkCell(pot.get(inst))
         inst.inc()
