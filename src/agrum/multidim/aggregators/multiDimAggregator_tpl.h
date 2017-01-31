@@ -135,13 +135,5 @@ namespace gum {
                                      const MultiDimAggregator<GUM_SCALAR>& ag ) {
       return s << ag.toString();
     }
-
-    template <typename GUM_SCALAR>
-    INLINE void
-    MultiDimAggregator<GUM_SCALAR>::_swap( const DiscreteVariable* x,
-                                           const DiscreteVariable* y ) {
-      this->_swap( x, y );
-    }
-
   } /* namespace aggregator */
 } /* namespace gum */
