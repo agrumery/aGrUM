@@ -1,35 +1,5 @@
 cache:
   untracked: false
-  
-################################################################################
-# BUILD
-################################################################################
-     
-linux_gcc-5_debug:
-  tags:
-    - linux
-    - gcc-5
-  stage: build
-  variables:
-    CC: "/usr/bin/gcc-5"
-    CXX: "/usr/bin/g++-5"
-  script: 
-    - python act --no-fun clean 
-    - python act --no-fun lib debug
-
-linux_clang_debug:
-  tags:
-    - linux
-    - clang
-  stage: test
-  variables:
-    CC: "/usr/bin/clang"
-    CXX: "/usr/bin/clang++"
-  script: 
-    - python act --no-fun clean 
-    - python act --no-fun lib debug release
-  cache:
-    untracked: true
 
 ################################################################################
 # TEST
@@ -47,6 +17,18 @@ linux_gcc-5_release_test:
     - python act --no-fun clean 
     - python act --no-fun test release
 
+linux_gcc-6_release_test:
+  tags:
+    - linux
+    - clang
+  stage: test
+  variables:
+    CC: "/usr/bin/gcc-6"
+    CXX: "/usr/bin/gcc-6"
+  script: 
+    - python act --no-fun clean 
+    - python act --no-fun test release
+    
 linux_clang_release_test:
   tags:
     - linux
@@ -58,3 +40,12 @@ linux_clang_release_test:
   script: 
     - python act --no-fun clean 
     - python act --no-fun test release
+
+windows_mvsc_release_test:
+  tags:
+    - windows
+  variables:
+    PATH: "%PATH%;C:\\Program Files\\Git\\bin;"
+  script:
+    - python act --no-fun --mvsc clean
+    - python act --no-fun --mvsc test release -m BASE+BN+FMDP+ID+LEARNING+PRM
