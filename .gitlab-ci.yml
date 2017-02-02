@@ -1,6 +1,10 @@
 cache:
   untracked: false
 
+################################################################################
+# TEMPLATES
+################################################################################
+
 .gcc-5: &gcc-5
   tags:
     - linux
@@ -24,125 +28,66 @@ cache:
     PATH: "%PATH%;C:\\Program Files\\Git\\bin;C:\\Program Files (x86)\\Python35-32;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin"
     ACT_OPTIONS: "--mvsc -m BASE+BN+FMDP+ID+LEARNING+PRM -d build"
 
-.agrum_build_sh: &agrum_build_sh
-  script:
-    - python act --no-fun clean 
-    - python act --no-fun lib release aGrUM $ACT_OPTIONS
-
-.agrum_test_sh: &agrum_test_sh
+.agrum_sh: &agrum_sh
   script:
     - python act --no-fun clean 
     - python act --no-fun test release aGrUM $ACT_OPTIONS
 
-.pyagrum_build_sh: &pyagrum_build_sh
-  script:  
-    - python act --no-fun clean 
-    - python act --no-fun lib release pyAgrum $ACT_OPTIONS
-
-.pyagrum_test_sh: &pyagrum_test_sh
+.pyagrum_sh: &pyagrum_sh
   script:  
     - python act --no-fun clean 
     - python act --no-fun test release pyAgrum $ACT_OPTIONS
 
-.agrum_build_cmd: &agrum_build_cmd
+.agrum_cmd: &agrum_cmd
   script:
     - python act --no-fun clean 
-    - python act --no-fun install release aGrUM %ACT_OPTIONS%
+    - python act --no-fun test release aGrUM %ACT_OPTIONS%
 
-.agrum_test_cmd: &agrum_test_cmd
-  script:
-    - python act --no-fun clean 
-    - python act --no-fun install release aGrUM %ACT_OPTIONS%
-
-.pyagrum_build_cmd: &pyagrum_build_cmd
+.pyagrum_cmd: &pyagrum_cmd
   script:  
     - python act --no-fun clean 
-    - python act --no-fun install release pyAgrum %ACT_OPTIONS%
-
-.pyagrum_test_cmd: &pyagrum_test_cmd
-  script:  
-    - python act --no-fun clean 
-    - python act --no-fun install release pyAgrum %ACT_OPTIONS%
+    - python act --no-fun test release pyAgrum %ACT_OPTIONS%
 
 ################################################################################
-# BRANCH JOBS
+# BUILD JOBS
 ################################################################################
-
-.branch_template: &branch_template
-  only:
-    - branches
-  except:
-    - master
+.build_template: &build_template
   stage: build
 
 linux_gcc-5_agrum:
-  <<: *branch_template
+  <<: *build_template
   <<: *gcc-5
-  <<: *agrum_build_sh
-  
-linux_clang_agrum:
-  <<: *branch_template
-  <<: *clang-3_8
-  <<: *agrum_build_sh
-
-windows_mvsc_agrum:
-  <<: *branch_template
-  <<: *mvsc
-  <<: *agrum_build_cmd
+  <<: *agrum_sh
 
 linux_gcc-5_pyagrum:
-  <<: *branch_template
+  <<: *build_template
   <<: *gcc-5
-  <<: *pyagrum_build_sh
-  
-linux_clang_pyagrum:
-  <<: *branch_template
-  <<: *clang-3_8
-  <<: *pyagrum_build_sh
-
-windows_mvsc_pyagrum:
-  <<: *branch_template
-  <<: *mvsc
-  <<: *pyagrum_build_cmd
-  allow_failure: true
+  <<: *pyagrum_sh
 
 ################################################################################
-# MASTER JOBS
+# TEST JOBS
 ################################################################################
-
-.master_template: &master_template
-  only:
-    - master
+.test_template: &test_template
   stage: test
 
-linux_gcc-5_agrum_test:
-  <<: *master_template
-  <<: *gcc-5
-  <<: *agrum_test_sh
-  
-linux_clang_agrum_test:
-  <<: *master_template
+linux_clang_agrum:
+  <<: *test_template
   <<: *clang-3_8
-  <<: *agrum_test_sh
+  <<: *agrum_sh
 
-windows_mvsc_agrum_test:
-  <<: *master_template
-  <<: *mvsc
-  <<: *agrum_test_cmd
-
-linux_gcc-5_pyagrum_test:
-  <<: *master_template
-  <<: *gcc-5
-  <<: *pyagrum_test_sh
-  
-linux_clang_pyagrum_test:
-  <<: *master_template
+linux_clang_pyagrum:
+  <<: *test_template
   <<: *clang-3_8
-  <<: *pyagrum_test_sh
+  <<: *pyagrum_sh
 
-windows_mvsc_pyagrum_test:
-  <<: *master_template
+windows_mvsc_agrum:
+  <<: *test_template
   <<: *mvsc
-  <<: *pyagrum_test_cmd
+  <<: *agrum_cmd
+
+windows_mvsc_pyagrum:
+  <<: *test_template
+  <<: *mvsc
+  <<: *pyagrum_cmd
   allow_failure: true
 
