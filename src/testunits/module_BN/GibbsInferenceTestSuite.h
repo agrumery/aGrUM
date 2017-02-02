@@ -543,13 +543,16 @@ namespace gum_tests {
       GUM_SCALAR  e;
 
       for ( const auto& node : bn.nodes() ) {
-        try {
-          pl = (lazy.posterior( node ) + softness ).normalize();
-          pi = ( inf.posterior( node ) + softness ).normalize();
-          e = pl.KL( pi );
-        } catch ( gum::FatalError ) {
-          // 0 in a proba
-          e = std::numeric_limits<GUM_SCALAR>::infinity();
+        int counter = 0;
+        while ( e > err and counter++ < 3 ) {
+          try {
+            pl = ( lazy.posterior( node ) + softness ).normalize();
+            pi = ( inf.posterior( node ) + softness ).normalize();
+            e = pl.KL( pi );
+          } catch ( gum::FatalError ) {
+            // 0 in a proba
+            e = std::numeric_limits<GUM_SCALAR>::infinity();
+          }
         }
         if ( e > err ) {
           err = e;
