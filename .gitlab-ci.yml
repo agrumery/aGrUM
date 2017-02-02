@@ -2,50 +2,60 @@ cache:
   untracked: false
 
 ################################################################################
-# TEST
+# BRANCH JOBS
 ################################################################################
 
-linux_gcc-5_release_test:
+.branch_template: &branch_template
+  only:
+    - branches
+  except:
+    - master
+  stage:
+    - build
+
+.linux_build: &linux_build
+  script: 
+    - python act --no-fun clean 
+    - python act --no-fun lib release aGrUM
+    - python act --no-fun lib release pyAgrum
+  
+linux_gcc-5_release:
+  <<: *branch_template
   tags:
     - linux
     - gcc-5
-  stage: test
   variables:
     CC: "/usr/bin/gcc-5"
     CXX: "/usr/bin/g++-5"
-  script: 
-    - python act --no-fun clean 
-    - python act --no-fun test release
+  <<: *linux_build
 
-linux_gcc-6_release_test:
+linux_gcc-6_release:
+  <<: *branch_template
   tags:
     - linux
     - gcc-6
-  stage: test
   variables:
     CC: "/usr/bin/gcc-6"
     CXX: "/usr/bin/gcc-6"
-  script: 
-    - python act --no-fun clean 
-    - python act --no-fun test release
+  <<: *linux_build
     
 linux_clang_release_test:
+  <<: *branch_template
   tags:
     - linux
     - clang
-  stage: test
   variables:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
-  script: 
-    - python act --no-fun clean 
-    - python act --no-fun test release
+  <<: *linux_build
 
 windows_mvsc_release_test:
+  <<: *branch_template
   tags:
     - windows
   variables:
     PATH: "%PATH%;C:\\Program Files\\Git\\bin;C:\\Program Files (x86)\\Python35-32;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin"
   script:
     - python act --no-fun --mvsc clean
-    - python act --no-fun --mvsc test release -m BASE+BN+FMDP+ID+LEARNING+PRM
+    - python act --no-fun --mvsc lib release aGrUM
+    - python act --no-fun --mvsc lib release PyAgrum
