@@ -308,7 +308,7 @@ def showPosterior(bn, evs, target):
   :param evs: map of evidence
   :param target: name of target variable
   """
-  showProba(gum.getPosterior(bn, evs, target))
+  showProba(gum.getPosterior(bn, evs=evs, target=target))
 
 
 def animApproximationScheme(apsc, scale=np.log10):
