@@ -41,6 +41,22 @@
 //                          2 -> 5
 #define EPSILON_FOR_SIMPLE_TEST 1e-2
 #define EPSILON_FOR_BN 1e-3
+
+#define MAXTEST_FOR_GIBBS 5
+
+#define GIBBSINFERENCE_TEST_BEGIN_ITERATION \
+  bool res = false;                         \
+  for ( int ii = 0; ii < MAXTEST_FOR_GIBBS; ii++ ) {
+
+#define GIBBSINFERENCE_TEST_END_ITERATION( ERRMAX )    \
+  if ( __compareInference( bn, lazy, inf, ERRMAX ) ) { \
+    res = true;                                        \
+    break;                                             \
+  }                                                    \
+  std::cout << "== TRYING ONCE MORE" << std::endl;     \
+  }                                                    \
+  TS_ASSERT( res );
+
 namespace gum_tests {
 
   class aSimpleGibbsListener : public gum::ApproximationSchemeListener {
@@ -75,10 +91,11 @@ namespace gum_tests {
 
       gum::GibbsInference<float> inf( &bn );
       try {
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.setVerbosity( false );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -95,12 +112,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( ev ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( ev ), 0 );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.setVerbosity( false );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -110,12 +128,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.setVerbosity( false );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -132,12 +151,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( ev ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( ev ), 0 );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.setVerbosity( false );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -147,12 +167,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.setVerbosity( false );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -169,12 +190,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( ev ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( ev ), 0 );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.setVerbosity( false );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -184,12 +206,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( ev ), std::vector<float>{0.2f, 0.8f} );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.setVerbosity( false );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -207,6 +230,7 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( "h" ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "e" ), 0 );
         inf.addEvidence( bn.idFromName( "b" ), 1 );
@@ -214,7 +238,7 @@ namespace gum_tests {
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.setVerbosity( false );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -226,6 +250,7 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7f, 0.3f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "e" ), std::vector<float>{0.2f, 0.8f} );
         inf.addEvidence( bn.idFromName( "b" ), 0 );
@@ -233,7 +258,7 @@ namespace gum_tests {
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -250,6 +275,7 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( "h" ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "e" ), 0 );
         inf.addEvidence( bn.idFromName( "b" ), 1 );
@@ -257,7 +283,7 @@ namespace gum_tests {
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -270,6 +296,7 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( "h" ), std::vector<float>{0.7f, 0.3f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "e" ),
                          std::vector<float>{0.1f, 0.3f, 0.4f, 0.7f} );
@@ -278,7 +305,7 @@ namespace gum_tests {
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -292,11 +319,12 @@ namespace gum_tests {
         gum::LazyPropagation<float> lazy( &bn );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -307,12 +335,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( "a" ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "a" ), 0 );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -323,12 +352,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( "d" ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "d" ), 0 );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -340,13 +370,14 @@ namespace gum_tests {
                           std::vector<float>{0.7f, 0.3f, 1.0f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "a" ),
                          std::vector<float>{0.7f, 0.3f, 1.0f} );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -358,13 +389,14 @@ namespace gum_tests {
                           std::vector<float>{0.7f, 0.3f, 1.0f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "d" ),
                          std::vector<float>{0.7f, 0.3f, 1.0f} );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -379,11 +411,12 @@ namespace gum_tests {
         gum::LazyPropagation<float> lazy( &bn );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -394,12 +427,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( "a" ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "a" ), 0 );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -410,12 +444,13 @@ namespace gum_tests {
         lazy.addEvidence( bn.idFromName( "d" ), 0 );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "d" ), 0 );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -427,13 +462,14 @@ namespace gum_tests {
                           std::vector<float>{0.7f, 0.3f, 1.0f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "a" ),
                          std::vector<float>{0.7f, 0.3f, 1.0f} );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -445,13 +481,14 @@ namespace gum_tests {
                           std::vector<float>{0.7f, 0.3f, 1.0f} );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.addEvidence( bn.idFromName( "d" ),
                          std::vector<float>{0.7f, 0.3f, 1.0f} );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_SIMPLE_TEST );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -469,11 +506,12 @@ namespace gum_tests {
         gum::LazyPropagation<float> lazy( &bn );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_BN );
         inf.makeInference();
-        __compareInference( bn, lazy, inf );
+        GIBBSINFERENCE_TEST_END_ITERATION( 5e-2 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -491,13 +529,13 @@ namespace gum_tests {
         gum::LazyPropagation<float> lazy( &bn );
         lazy.makeInference();
 
+        GIBBSINFERENCE_TEST_BEGIN_ITERATION
         gum::GibbsInference<float> inf( &bn );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_BN );
         inf.makeInference();
-
         // alarm is not good for Gibbs
-        __compareInference( bn, lazy, inf, 2e-1 );
+        GIBBSINFERENCE_TEST_END_ITERATION( 2e-1 )
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
         TS_ASSERT( false );
@@ -531,12 +569,12 @@ namespace gum_tests {
 
     private:
     template <typename GUM_SCALAR>
-    void __compareInference( const gum::BayesNet<GUM_SCALAR>&  bn,
+    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&  bn,
                              gum::LazyPropagation<GUM_SCALAR>& lazy,
                              gum::GibbsInference<GUM_SCALAR>&  inf,
-                             double                            errmax = 5e-2 ) {
+                             double                            errmax ) {
       gum::Potential<GUM_SCALAR> softness, pl, pi;
-      softness.fill( 1e-1);
+      softness.fill( 1e-1 );
 
       GUM_SCALAR  err = static_cast<GUM_SCALAR>( 0 );
       std::string argstr = "";
@@ -544,7 +582,7 @@ namespace gum_tests {
 
       for ( const auto& node : bn.nodes() ) {
         try {
-          pl = (lazy.posterior( node ) + softness ).normalize();
+          pl = ( lazy.posterior( node ) + softness ).normalize();
           pi = ( inf.posterior( node ) + softness ).normalize();
           e = pl.KL( pi );
         } catch ( gum::FatalError ) {
@@ -562,7 +600,7 @@ namespace gum_tests {
       if ( err > errmax ) {
         GUM_TRACE( argstr );
       }
-      TS_ASSERT_LESS_THAN( err, errmax );
+      return err <= errmax;
     }
   };
-}
+}  // namespace gum_tests
