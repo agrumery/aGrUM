@@ -145,4 +145,3 @@ windows_mvsc_pyagrum_test:
   <<: *mvsc
   <<: *pyagrum_test_cmd
   allow_failure: true
-
