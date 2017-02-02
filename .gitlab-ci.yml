@@ -24,22 +24,22 @@ cache:
     PATH: "%PATH%;C:\\Program Files\\Git\\bin;C:\\Program Files (x86)\\Python35-32;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin"
     ACT_OPTIONS: "--mvsc -m BASE+BN+FMDP+ID+LEARNING+PRM -d build"
 
-.agrum_build_sh: &agrum_build
+.agrum_build_sh: &agrum_build_sh
   script:
     - python act --no-fun clean 
     - python act --no-fun lib release aGrUM $ACT_OPTIONS
 
-.pyagrum_build_sh: &pyagrum_build
+.pyagrum_build_sh: &pyagrum_build_sh
   script:  
     - python act --no-fun clean 
     - python act --no-fun lib release pyAgrum $ACT_OPTIONS
 
-.agrum_build_cmd: &agrum_build
+.agrum_build_cmd: &agrum_build_cmd
   script:
     - python act --no-fun clean 
     - python act --no-fun install release aGrUM %ACT_OPTIONS%
 
-.pyagrum_build_cmd: &pyagrum_build
+.pyagrum_build_cmd: &pyagrum_build_cmd
   script:  
     - python act --no-fun clean 
     - python act --no-fun install release pyAgrum %ACT_OPTIONS%
@@ -59,31 +59,30 @@ cache:
 linux_gcc-5_agrum:
   <<: *branch_template
   <<: *gcc-5
-  <<: *agrum_build
+  <<: *agrum_build_sh
   
 linux_clang_agrum:
   <<: *branch_template
   <<: *clang-3_8
-  <<: *agrum_build
+  <<: *agrum_build_sh
 
 windows_mvsc_agrum:
   <<: *branch_template
   <<: *mvsc
-  <<: *agrum_build
+  <<: *agrum_build_cmd
 
 linux_gcc-5_pyagrum:
   <<: *branch_template
   <<: *gcc-5
-  <<: *pyagrum_build
+  <<: *pyagrum_build_sh
   
 linux_clang_pyagrum:
   <<: *branch_template
   <<: *clang-3_8
-  <<: *pyagrum_build
+  <<: *pyagrum_build_sh
 
 windows_mvsc_pyagrum:
   <<: *branch_template
   <<: *mvsc
-  <<: *pyagrum_build
-
+  <<: *pyagrum_build_cmd
 
