@@ -29,12 +29,27 @@ cache:
     - python act --no-fun clean 
     - python act --no-fun lib release aGrUM $ACT_OPTIONS
 
+.agrum_test_sh: &agrum_test_sh
+  script:
+    - python act --no-fun clean 
+    - python act --no-fun test release aGrUM $ACT_OPTIONS
+
 .pyagrum_build_sh: &pyagrum_build_sh
   script:  
     - python act --no-fun clean 
     - python act --no-fun lib release pyAgrum $ACT_OPTIONS
 
+.pyagrum_test_sh: &pyagrum_test_sh
+  script:  
+    - python act --no-fun clean 
+    - python act --no-fun test release pyAgrum $ACT_OPTIONS
+
 .agrum_build_cmd: &agrum_build_cmd
+  script:
+    - python act --no-fun clean 
+    - python act --no-fun install release aGrUM %ACT_OPTIONS%
+
+.agrum_test_cmd: &agrum_test_cmd
   script:
     - python act --no-fun clean 
     - python act --no-fun install release aGrUM %ACT_OPTIONS%
@@ -44,6 +59,10 @@ cache:
     - python act --no-fun clean 
     - python act --no-fun install release pyAgrum %ACT_OPTIONS%
 
+.pyagrum_test_cmd: &pyagrum_test_cmd
+  script:  
+    - python act --no-fun clean 
+    - python act --no-fun install release pyAgrum %ACT_OPTIONS%
 
 ################################################################################
 # BRANCH JOBS
@@ -85,4 +104,45 @@ windows_mvsc_pyagrum:
   <<: *branch_template
   <<: *mvsc
   <<: *pyagrum_build_cmd
+  allow_failure: true
+
+################################################################################
+# MASTER JOBS
+################################################################################
+
+.master_template: &master_template
+  only:
+    - master
+  stage: test
+
+linux_gcc-5_agrum_test:
+  <<: *master_template
+  <<: *gcc-5
+  <<: *agrum_test_sh
+  
+linux_clang_agrum_test:
+  <<: *master_template
+  <<: *clang-3_8
+  <<: *agrum_test_sh
+
+windows_mvsc_agrum_test:
+  <<: *master_template
+  <<: *mvsc
+  <<: *agrum_test_cmd
+
+linux_gcc-5_pyagrum_test:
+  <<: *master_template
+  <<: *gcc-5
+  <<: *pyagrum_test_sh
+  
+linux_clang_pyagrum_test:
+  <<: *master_template
+  <<: *clang-3_8
+  <<: *pyagrum_test_sh
+
+windows_mvsc_pyagrum_test:
+  <<: *master_template
+  <<: *mvsc
+  <<: *pyagrum_test_cmd
+  allow_failure: true
 
