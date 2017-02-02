@@ -24,15 +24,25 @@ cache:
     PATH: "%PATH%;C:\\Program Files\\Git\\bin;C:\\Program Files (x86)\\Python35-32;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin"
     ACT_OPTIONS: "--mvsc -m BASE+BN+FMDP+ID+LEARNING+PRM"
 
-.agrum_build: &agrum_build
+.agrum_build_sh: &agrum_build
   script:
     - python act --no-fun clean 
     - python act --no-fun lib release aGrUM $ACT_OPTIONS
 
-.pyagrum_build: &pyagrum_build
+.pyagrum_build_sh: &pyagrum_build
   script:  
     - python act --no-fun clean 
     - python act --no-fun lib release pyAgrum $ACT_OPTIONS
+
+.agrum_build_cmd: &agrum_build
+  script:
+    - python act --no-fun clean 
+    - python act --no-fun lib release aGrUM %ACT_OPTIONS%
+
+.pyagrum_build_cmd: &pyagrum_build
+  script:  
+    - python act --no-fun clean 
+    - python act --no-fun lib release pyAgrum %ACT_OPTIONS%
 
 
 ################################################################################
