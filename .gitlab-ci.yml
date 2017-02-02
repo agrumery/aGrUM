@@ -90,4 +90,3 @@ windows_mvsc_pyagrum:
   <<: *mvsc
   <<: *pyagrum_cmd
   allow_failure: true
-
