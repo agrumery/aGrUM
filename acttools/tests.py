@@ -132,7 +132,7 @@ def afficheTestsForModule(m):
   w = max([len(x) for x in l])
   nbr = 80 / w
   i = 0
-  for s in l:
+  for s in sorted(l):
     print(s.ljust(w), end="\t")
     i += 1
     if i > nbr:
