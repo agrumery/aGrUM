@@ -393,6 +393,16 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
+  NodeSet IBayesNet<GUM_SCALAR>::minimalCondSet( const NodeSet& targets,
+                                                 const NodeSet& soids ) const {
+    NodeSet res;
+    for(auto node:targets) {
+      res+=minimalCondSet(node,soids);
+    }
+    return res;
+  }
+
+  template <typename GUM_SCALAR>
   INLINE std::ostream& operator<<( std::ostream&                output,
                                    const IBayesNet<GUM_SCALAR>& bn ) {
     output << bn.toString();

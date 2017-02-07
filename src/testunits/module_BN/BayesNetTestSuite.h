@@ -851,15 +851,15 @@ namespace gum_tests {
 
     void testMinimalCondSet() {
       /*
-       A   B
-        \ / \
-      H  C   D
-       \ |   |
-         E   |
-          \ /
-           F
-           |
-           G
+       A   B        0   1
+        \ / \        \ / \
+      H  C   D     7  2   3
+       \ |   |      \ |   |
+         E   |        4   |
+          \ /          \ /
+           F            5
+           |            |
+           G            6
        */
       gum::BayesNet<int> bn;
 
@@ -881,18 +881,24 @@ namespace gum_tests {
       bn.addArc( f, g );
       bn.addArc( h, e );
 
-      TS_ASSERT_EQUALS(
-          bn.minimalCondSet( c, gum::NodeSet( {a, b, c, d, e, f, g, h} ) ),
-          gum::NodeSet( {c} ) );
-      TS_ASSERT_EQUALS(
-          bn.minimalCondSet( c, gum::NodeSet( {a, b, d, e, f, g, h} ) ),
-          gum::NodeSet( {a, b, e, h} ) );
-      TS_ASSERT_EQUALS( bn.minimalCondSet( c, gum::NodeSet( {e, f, g} ) ),
+      TS_ASSERT_EQUALS( bn.minimalCondSet( c, {a, b, c, d, e, f, g, h} ),
+                        gum::NodeSet( {c} ) );
+      TS_ASSERT_EQUALS( bn.minimalCondSet( c, {a, b, d, e, f, g, h} ),
+                        gum::NodeSet( {a, b, e, h} ) );
+      TS_ASSERT_EQUALS( bn.minimalCondSet( c, {e, f, g} ),
                         gum::NodeSet( {e, f} ) );
-      TS_ASSERT_EQUALS( bn.minimalCondSet( c, gum::NodeSet( {b, e, f, g} ) ),
+      TS_ASSERT_EQUALS( bn.minimalCondSet( c, {b, e, f, g} ),
                         gum::NodeSet( {e, b} ) );
-      TS_ASSERT_EQUALS( bn.minimalCondSet( c, gum::NodeSet( {a, e, f, g} ) ),
+      TS_ASSERT_EQUALS( bn.minimalCondSet( c, {a, e, f, g} ),
                         gum::NodeSet( {a, e, f} ) );
+
+      // for set of targets
+      TS_ASSERT_EQUALS( bn.minimalCondSet( {e, d}, {a, b, c, d, e, f, g, h} ),
+                        gum::NodeSet( {d, e} ) );
+      TS_ASSERT_EQUALS( bn.minimalCondSet( {e, d}, {a, b, c, d, f, g, h} ),
+                        gum::NodeSet( {c, d, h, f} ) );
+      TS_ASSERT_EQUALS( bn.minimalCondSet( {e, d}, {a, b, c, f, g, h} ),
+                        gum::NodeSet( {b, c, f, h} ) );
     }
 
     void testMinimalCondSet2() {
