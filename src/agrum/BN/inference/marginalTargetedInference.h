@@ -188,11 +188,11 @@ namespace gum {
      *
      * @param bn the BayesNet
      * @param target  the nodeId of the targetted variable
-     * @param evs the nodeId of the observed variable
+     * @param evs the vector of nodeId of the observed variables
      * @return a Potential
      */
     Potential<GUM_SCALAR> evidenceImpact(NodeId target,
-                                         const std::vector<NodeId> evs);
+                                         const std::vector<NodeId>& evs);
 
     /**
     * Create a gum::Potential for P(target|evs) (for all instanciation of target
@@ -200,13 +200,12 @@ namespace gum {
     *
     * @warning If some evs are d-separated, they are not included in the Potential
     *
-    * @param bn the BayesNet
     * @param target  the nodeId of the target variable
     * @param evs the nodeId of the observed variable
     * @return a Potential
     */
-    Potential<GUM_SCALAR> evidenceImpact(std::string target,
-                                         const std::vector<std::string> evs);
+    Potential<GUM_SCALAR> evidenceImpact(const std::string& target,
+                                         const std::vector<std::string>& evs);
 
   protected:
     /// fired after a new marginal target is inserted

@@ -260,7 +260,7 @@ namespace gum {
   template<typename GUM_SCALAR>
   Potential <GUM_SCALAR>
   MarginalTargetedInference<GUM_SCALAR>::evidenceImpact(NodeId target,
-                                                        const std::vector<NodeId> evs) {
+                                                        const std::vector<NodeId>& evs) {
     const auto &vtarget = this->BN().variable(target);
 
     NodeSet soids(evs.size());
@@ -304,8 +304,8 @@ namespace gum {
 
   template<typename GUM_SCALAR>
   Potential <GUM_SCALAR>
-  MarginalTargetedInference<GUM_SCALAR>::evidenceImpact(std::string target,
-                                                        const std::vector<std::string> evs) {
+  MarginalTargetedInference<GUM_SCALAR>::evidenceImpact(const std::string& target,
+                                                        const std::vector<std::string>& evs) {
     const auto &bn = this->BN();
 
     std::vector<NodeId> evsId;
@@ -313,7 +313,7 @@ namespace gum {
     std::transform(std::begin(evs),
                    std::end(evs),
                    std::back_inserter(evsId),
-                   [&bn](std::string s) { return bn.idFromName(s); });
+                   [&bn](const std::string& s) { return bn.idFromName(s); });
 
     return evidenceImpact(bn.idFromName(target), evsId);
   }
