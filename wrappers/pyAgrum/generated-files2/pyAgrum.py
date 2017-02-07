@@ -9863,11 +9863,25 @@ class IBayesNet_double(DAGmodel):
         target: gum::NodeId
         soids: gum::NodeSet const &
 
-        minimalCondSet(IBayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject *
+        minimalCondSet(IBayesNet_double self, gum::NodeSet const & target, gum::NodeSet const & soids) -> gum::NodeSet
+
+        Parameters
+        ----------
+        target: gum::NodeSet const &
+        soids: gum::NodeSet const &
+
+        minimalCondSet(IBayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject
 
         Parameters
         ----------
         target: gum::NodeId
+        list: PyObject *
+
+        minimalCondSet(IBayesNet_double self, PyObject * targets, PyObject * list) -> PyObject *
+
+        Parameters
+        ----------
+        targets: PyObject *
         list: PyObject *
 
         """
@@ -10605,17 +10619,24 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_children(self, id)
 
 
-    def minimalCondSet(self, target, list):
+    def minimalCondSet(self, *args):
         """
-        minimalCondSet(BayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject *
+        minimalCondSet(BayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject
 
         Parameters
         ----------
         target: gum::NodeId
         list: PyObject *
 
+        minimalCondSet(BayesNet_double self, PyObject * targets, PyObject * list) -> PyObject *
+
+        Parameters
+        ----------
+        targets: PyObject *
+        list: PyObject *
+
         """
-        return _pyAgrum.BayesNet_double_minimalCondSet(self, target, list)
+        return _pyAgrum.BayesNet_double_minimalCondSet(self, *args)
 
 
     def loadBIF(self, *args):
@@ -11954,6 +11975,26 @@ class LazyPropagation_double(_object):
         """
         return _pyAgrum.LazyPropagation_double_VI(self, X, Y)
 
+
+    def evidenceJointImpact(self, *args):
+        """
+        evidenceJointImpact(LazyPropagation_double self, Vector_int targets, Vector_int evs) -> Potential_double
+
+        Parameters
+        ----------
+        targets: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
+        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
+
+        evidenceJointImpact(LazyPropagation_double self, Vector_string targets, Vector_string evs) -> Potential_double
+
+        Parameters
+        ----------
+        targets: std::vector< std::string,std::allocator< std::string > > const &
+        evs: std::vector< std::string,std::allocator< std::string > > const &
+
+        """
+        return _pyAgrum.LazyPropagation_double_evidenceJointImpact(self, *args)
+
 LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregister
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
@@ -12625,6 +12666,26 @@ class ShaferShenoyInference_double(_object):
 
         """
         return _pyAgrum.ShaferShenoyInference_double_VI(self, X, Y)
+
+
+    def evidenceJointImpact(self, *args):
+        """
+        evidenceJointImpact(ShaferShenoyInference_double self, Vector_int targets, Vector_int evs) -> Potential_double
+
+        Parameters
+        ----------
+        targets: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
+        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
+
+        evidenceJointImpact(ShaferShenoyInference_double self, Vector_string targets, Vector_string evs) -> Potential_double
+
+        Parameters
+        ----------
+        targets: std::vector< std::string,std::allocator< std::string > > const &
+        evs: std::vector< std::string,std::allocator< std::string > > const &
+
+        """
+        return _pyAgrum.ShaferShenoyInference_double_evidenceJointImpact(self, *args)
 
 ShaferShenoyInference_double_swigregister = _pyAgrum.ShaferShenoyInference_double_swigregister
 ShaferShenoyInference_double_swigregister(ShaferShenoyInference_double)
