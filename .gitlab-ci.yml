@@ -25,7 +25,7 @@ cache:
   tags:
     - windows
   variables:
-    PATH: "C:\\Program Files\\Git\\bin;C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\bin;C:\ProgramData\Anaconda3\Scripts;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
+    PATH: "C:\\Program Files\\Git\\bin;C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Library\\mingw-w64\\bin;C:\\ProgramData\\Anaconda3\\Library\\usr\\bin;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\ProgramData\\Anaconda3\\Scripts;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
     ACT_OPTIONS: "--mvsc -m BASE+BN+FMDP+ID+LEARNING+PRM -d build"
 
 .agrum_sh: &agrum_sh
