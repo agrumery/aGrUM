@@ -39,6 +39,18 @@ class LazyPropagationTestCase(pyAgrumTestCase):
     self.assertEqual(res.extract({"tuberculosis?": 0}), gum.getPosterior(bn, target="visit_to_Asia?", evs={"tuberculosis?": 0}))
     self.assertEqual(res.extract({"tuberculosis?": 1}), gum.getPosterior(bn, target="visit_to_Asia?", evs={"tuberculosis?": 1}))
 
+  def testEvidenceJointImpact(self):
+    bn=gum.fastBN("A->B->C->D;A->E->D;F->B;C->H;" )
+    ie=gum.LazyPropagation(bn)
+
+    res=ie.evidenceJointImpact(["D","E"],["A", "B", "C", "F"])
+
+    joint=bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D") * bn.cpt("E") * bn.cpt("F") * bn.cpt("H")
+    pADCE=joint.margSumIn(["A","C","D","E"])
+    pAC=pADCE.margSumOut(["D","E"])
+
+    self.assertEqual(res,pADCE/pAC)
+
 
 ts = unittest.TestSuite()
 addTests(ts, LazyPropagationTestCase)

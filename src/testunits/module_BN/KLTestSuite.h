@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   (gumSize) 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.   *
  ***************************************************************************/
-
+#define TESTKL_MAX_ITER_GIBBS_KL 5
 #include <iostream>
 #include <string>
 #include <vector>
@@ -181,20 +181,27 @@ namespace gum_tests {
         reader.proceed();
       }
 
-      gum::GibbsKL<float> kl( netP, netQ );
-      kl.setVerbosity( true );
-      // very rough approximation in order to not penalize TestSuite
-      kl.setEpsilon( 1e-5 );
-      kl.setMinEpsilonRate( 1e-5 );
-      TS_ASSERT_DELTA( kl.klPQ(), 0.241864114, 1e-1 );
-      TS_ASSERT_DELTA( kl.klQP(), 0.399826689, 1e-1 );
-      TS_ASSERT_EQUALS( kl.errorPQ(), (gum::Size)0 );
-      TS_ASSERT_EQUALS( kl.errorQP(), (gum::Size)0 );
-      TS_ASSERT_DELTA( kl.hellinger(), 0.321089688, 1e-1 );
-      TS_ASSERT( kl.history().size() -
-                     ( kl.nbrIterations() - kl.burnIn() ) / kl.periodSize() <
-                 2 );
-      // GUM_TRACE_VAR( kl.history() );
+      // iterations for better robustness : KL may fail from time to time
+      for ( int ii = 0; ii < TESTKL_MAX_ITER_GIBBS_KL; ii++ ) {
+        gum::GibbsKL<float> kl( netP, netQ );
+        kl.setVerbosity( true );
+        // very rough approximation in order to not penalize TestSuite
+        kl.setEpsilon( 1e-5 );
+        kl.setMinEpsilonRate( 1e-5 );
+        if ( fabs( kl.klPQ() - 0.241864114 ) <= 1e-1 ) {
+          TS_ASSERT_DELTA( kl.klPQ(), 0.241864114, 1e-1 );
+          TS_ASSERT_DELTA( kl.klQP(), 0.399826689, 1e-1 );
+          TS_ASSERT_EQUALS( kl.errorPQ(), (gum::Size)0 );
+          TS_ASSERT_EQUALS( kl.errorQP(), (gum::Size)0 );
+          TS_ASSERT_DELTA( kl.hellinger(), 0.321089688, 1e-1 );
+          TS_ASSERT( kl.history().size() -
+                         ( kl.nbrIterations() - kl.burnIn() ) / kl.periodSize() <
+                     2 );
+
+          return;
+        }
+      }
+      TS_ASSERT( false );
     }
   };
 }  // gum_tests

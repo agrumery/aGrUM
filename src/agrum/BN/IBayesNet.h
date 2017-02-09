@@ -219,6 +219,13 @@ namespace gum {
      */
     NodeSet minimalCondSet( NodeId target, const NodeSet& soids ) const;
 
+    /***
+     * @return the minimal subset of soids that conditions the targets
+     *
+     * i.e. P(targets| soids)=P(targets|@return)
+     */
+    NodeSet minimalCondSet( const NodeSet& target, const NodeSet& soids ) const;
+
     private:
     void __minimalCondSetVisitUp( NodeId         node,
                                   const NodeSet& soids,

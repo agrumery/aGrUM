@@ -36,7 +36,7 @@
     }
     return q;
   };
-  
+
   PyObject *names() const {
     PyObject* q=PyList_New(0);
 
@@ -69,11 +69,21 @@
   PyObject *children(const NodeId id) const {
     return PyAgrumHelper::PyListFromNodeSet(self->dag().children(id));
   };
-  
+
   PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+  };
+
+
+  PyObject *minimalCondSet(PyObject* targets,PyObject* list) const {
+    gum::NodeSet sotargets;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,*self);
+
+    gum::NodeSet soids;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
+    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   };
 }
 %enddef

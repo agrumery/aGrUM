@@ -170,6 +170,34 @@ namespace gum {
     virtual Size nbrJointTargets() const noexcept final;
     /// @}
 
+    /**
+     * Create a gum::Potential for P(joint targets|evs) (for all instanciation of
+     * targets
+     * and evs)
+     *
+     * @warning If some evs are d-separated, they are not included in the Potential
+     *
+     * @param targets  the vector of nodeId of the targetted variables
+     * @param evs the vector of nodeId of observed variables
+     * @return a Potential
+     */
+    Potential<GUM_SCALAR> evidenceJointImpact( const std::vector<NodeId>& targets,
+                                               const std::vector<NodeId>& evs );
+
+    /**
+     * Create a gum::Potential for P(joint targets|evs) (for all instanciation of
+     * targets
+     * and evs)
+     *
+     * @warning If some evs are d-separated, they are not included in the Potential
+     *
+     * @param targets  the vector of std::string of the targetted variables
+     * @param evs the vector of std::string of observed variables
+     * @return a Potential
+     */
+    Potential<GUM_SCALAR>
+    evidenceJointImpact( const std::vector<std::string>& targets,
+                         const std::vector<std::string>& evs );
 
     // ############################################################################
     /// @name Information Theory related functions

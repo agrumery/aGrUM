@@ -1,5 +1,14 @@
 # aGrUM Changelog
- 
+
+## Changelog for 0.10.4
+* Add new approximated inference : LBP (aGrUM and pyAgrum)
+* Fix bugs in LazyPropagation and Shafer-Shenoy inference
+* Refresh some codes in Learning module
+* Update (and simplify) CMakeLists.txt for new swig 3.0.11
+* Add some project files (including this CHANGELOG.md)
+* Refresh pyAgrum notebooks with matplotlib2
+
+
 ## Changelog for 0.10.3
 * Only bug fixes in tests
 
@@ -71,7 +80,7 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
     * etc.
 * pyAgrum
   * small bugs fixed and reorganisation
- 
+
 ##Changelog for 0.9.1
 * aGrUM
   * Improvement in learning algorithms

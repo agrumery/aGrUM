@@ -258,8 +258,7 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   Potential<double> evidenceImpact(NodeId target,const std::vector<NodeId> evs){
     return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
-  Potential<double> evidenceImpact(std::string target,
-                                   const std::vector<std::string> evs){
+  Potential<double> evidenceImpact(std::string target,const std::vector<std::string> evs){
    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
 }
@@ -298,8 +297,14 @@ ADD_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
   double VI( const NodeId X, const NodeId Y ) {
     return self->gum::JointTargetedInference<double>::VI(X,Y);
   }
+
+  Potential<double> evidenceJointImpact(const std::vector<NodeId>& targets,const std::vector<NodeId>& evs){
+    return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
+  }
+  Potential<double> evidenceJointImpact(const std::vector<std::string>& targets,const std::vector<std::string>& evs){
+   return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
+  }
 }
 %enddef
 ADD_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
-ADD_JOINT_INFERENCE_API(gum::VariableEliminationInference<double>)

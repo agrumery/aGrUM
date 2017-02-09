@@ -22,7 +22,7 @@
  * @brief Implementation of the non pure virtual methods of class
  * JointTargetedInference.
  */
-
+#include <agrum/BN/inference/jointTargetedInference.h>
 
 namespace gum {
 
@@ -247,7 +247,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
   JointTargetedInference<GUM_SCALAR>::posterior( const std::string& nodeName ) {
-    return posterior(this->BN().idFromName( nodeName ) );
+    return posterior( this->BN().idFromName( nodeName ) );
   }
 
   // ##############################################################################
@@ -273,8 +273,8 @@ namespace gum {
       pXY = this->_unnormalizedJointPosterior( {X, Y} );
       pXY->normalize();
       if ( X != Y ) {
-        pX = pXY->margSumOut( {&(this->BN().variable( Y ) )} );
-        pY = pXY->margSumOut( {&(this->BN().variable( X ) )} );
+        pX = pXY->margSumOut( {&( this->BN().variable( Y ) )} );
+        pY = pXY->margSumOut( {&( this->BN().variable( X ) )} );
       } else {
         pX = *pXY;
         pY = *pXY;
@@ -324,5 +324,78 @@ namespace gum {
     return this->H( X ) + this->H( Y ) - 2 * I( X, Y );
   }
 
+
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR> JointTargetedInference<GUM_SCALAR>::evidenceJointImpact(
+      const std::vector<NodeId>& targets, const std::vector<NodeId>& evs ) {
+
+    NodeSet sotargets( targets.size() );
+    for ( const auto& e : targets )
+      sotargets << e;
+
+    NodeSet soevs( evs.size() );
+    for ( const auto& e : evs )
+      soevs << e;
+
+    if ( ( soevs * sotargets ).size() > 0 ) {
+      GUM_ERROR( InvalidArgument,
+                 "Targets (" << targets << ") can not intersect evs (" << evs
+                             << ")." );
+    }
+    auto condset = this->BN().minimalCondSet( sotargets, soevs );
+
+    this->eraseAllTargets();
+    this->eraseAllEvidence();
+
+    Instantiation         iTarget;
+    Potential<GUM_SCALAR> res;
+    for ( const auto& target : sotargets ) {
+      res.add( this->BN().variable( target ) );
+      iTarget.add( this->BN().variable( target ) );
+    }
+    this->addJointTarget( sotargets );
+
+    for ( const auto& n : condset ) {
+      res.add( this->BN().variable( n ) );
+      this->addEvidence( n, 0 );
+    }
+
+    Instantiation inst( res );
+    for ( inst.setFirstOut( iTarget ); !inst.end(); inst.incOut( iTarget ) ) {
+      // inferring
+      for ( const auto& n : condset )
+        this->chgEvidence( n, inst.val( this->BN().variable( n ) ) );
+      this->makeInference();
+      // populate res
+      for ( inst.setFirstIn( iTarget ); !inst.end(); inst.incIn( iTarget ) ) {
+        res.set( inst, this->jointPosterior( sotargets )[inst] );
+      }
+      inst.setFirstIn( iTarget );  // remove inst.end() flag
+    }
+
+    return res;
+  }
+
+  template <typename GUM_SCALAR>
+  Potential<GUM_SCALAR> JointTargetedInference<GUM_SCALAR>::evidenceJointImpact(
+      const std::vector<std::string>& targets,
+      const std::vector<std::string>& evs ) {
+    const auto& bn = this->BN();
+    auto transf = [&bn]( const std::string& s ) { return bn.idFromName( s ); };
+
+    std::vector<NodeId> targetsId;
+    targetsId.reserve( targets.size() );
+    std::transform( std::begin( targets ),
+                    std::end( targets ),
+                    std::back_inserter( targetsId ),
+                    transf );
+
+    std::vector<NodeId> evsId;
+    evsId.reserve( evs.size() );
+    std::transform(
+        std::begin( evs ), std::end( evs ), std::back_inserter( evsId ), transf );
+
+    return evidenceJointImpact( targetsId, evsId );
+  }
 
 } /* namespace gum */

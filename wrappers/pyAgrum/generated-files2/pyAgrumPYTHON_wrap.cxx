@@ -6613,10 +6613,18 @@ SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__parents(gum::IBayesNet< double 
 SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__children(gum::IBayesNet< double > const *self,gum::NodeId const id){
     return PyAgrumHelper::PyListFromNodeSet(self->dag().children(id));
   }
-SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_1(gum::IBayesNet< double > const *self,gum::NodeId target,PyObject *list){
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_2(gum::IBayesNet< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+  }
+SWIGINTERN PyObject *gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_3(gum::IBayesNet< double > const *self,PyObject *targets,PyObject *list){
+    gum::NodeSet sotargets;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,*self);
+
+    gum::NodeSet soids;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
+    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   }
 SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__ids(gum::BayesNet< double > *self){
     PyObject* q=PyList_New(0);
@@ -6649,10 +6657,18 @@ SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__parents(gum::BayesNet< double > 
 SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__children(gum::BayesNet< double > const *self,gum::NodeId const id){
     return PyAgrumHelper::PyListFromNodeSet(self->dag().children(id));
   }
-SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__minimalCondSet(gum::BayesNet< double > const *self,gum::NodeId target,PyObject *list){
+SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_0(gum::BayesNet< double > const *self,gum::NodeId target,PyObject *list){
     gum::NodeSet soids;
     PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
     return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(target, soids));
+  }
+SWIGINTERN PyObject *gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_1(gum::BayesNet< double > const *self,PyObject *targets,PyObject *list){
+    gum::NodeSet sotargets;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(sotargets,targets,*self);
+
+    gum::NodeSet soids;
+    PyAgrumHelper::populateNodeSetFromPySequenceOfIntOrString(soids,list,*self);
+    return PyAgrumHelper::PySetFromNodeSet(self->minimalCondSet(sotargets, soids));
   }
 SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadBIF__SWIG_0(gum::BayesNet< double > *self,std::string name,PyObject *l=(PyObject *) 0){
       std::stringstream stream;
@@ -6983,6 +6999,12 @@ SWIGINTERN double gum_LazyPropagation_Sl_double_Sg__I(gum::LazyPropagation< doub
 SWIGINTERN double gum_LazyPropagation_Sl_double_Sg__VI(gum::LazyPropagation< double > *self,gum::NodeId const X,gum::NodeId const Y){
     return self->gum::JointTargetedInference<double>::VI(X,Y);
   }
+SWIGINTERN gum::Potential< double > gum_LazyPropagation_Sl_double_Sg__evidenceJointImpact__SWIG_0(gum::LazyPropagation< double > *self,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &targets,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &evs){
+    return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
+  }
+SWIGINTERN gum::Potential< double > gum_LazyPropagation_Sl_double_Sg__evidenceJointImpact__SWIG_1(gum::LazyPropagation< double > *self,std::vector< std::string,std::allocator< std::string > > const &targets,std::vector< std::string,std::allocator< std::string > > const &evs){
+   return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
+  }
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__setEvidence(gum::ShaferShenoyInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__updateEvidence(gum::ShaferShenoyInference< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_ShaferShenoyInference_Sl_double_Sg__setTargets(gum::ShaferShenoyInference< double > *self,PyObject *targets){}
@@ -7157,6 +7179,12 @@ SWIGINTERN double gum_ShaferShenoyInference_Sl_double_Sg__I(gum::ShaferShenoyInf
   }
 SWIGINTERN double gum_ShaferShenoyInference_Sl_double_Sg__VI(gum::ShaferShenoyInference< double > *self,gum::NodeId const X,gum::NodeId const Y){
     return self->gum::JointTargetedInference<double>::VI(X,Y);
+  }
+SWIGINTERN gum::Potential< double > gum_ShaferShenoyInference_Sl_double_Sg__evidenceJointImpact__SWIG_0(gum::ShaferShenoyInference< double > *self,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &targets,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &evs){
+    return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
+  }
+SWIGINTERN gum::Potential< double > gum_ShaferShenoyInference_Sl_double_Sg__evidenceJointImpact__SWIG_1(gum::ShaferShenoyInference< double > *self,std::vector< std::string,std::allocator< std::string > > const &targets,std::vector< std::string,std::allocator< std::string > > const &evs){
+   return self->gum::JointTargetedInference<double>::evidenceJointImpact(targets,evs);
   }
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__setEvidence(gum::VariableElimination< double > *self,PyObject *evidces){}
 SWIGINTERN void gum_VariableElimination_Sl_double_Sg__updateEvidence(gum::VariableElimination< double > *self,PyObject *evidces){}
@@ -45770,6 +45798,59 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  gum::NodeSet *arg2 = 0 ;
+  gum::NodeSet *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  SwigValueWrapper< gum::Set< unsigned int > > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:IBayesNet_double_minimalCondSet",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__SetT_unsigned_int_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "2"" of type '" "gum::NodeSet const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "IBayesNet_double_minimalCondSet" "', argument " "2"" of type '" "gum::NodeSet const &""'"); 
+  }
+  arg2 = reinterpret_cast< gum::NodeSet * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_gum__SetT_unsigned_int_t,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "3"" of type '" "gum::NodeSet const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "IBayesNet_double_minimalCondSet" "', argument " "3"" of type '" "gum::NodeSet const &""'"); 
+  }
+  arg3 = reinterpret_cast< gum::NodeSet * >(argp3);
+  {
+    try {
+      result = ((gum::IBayesNet< double > const *)arg1)->minimalCondSet((gum::NodeSet const &)*arg2,(gum::NodeSet const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::NodeSet(static_cast< const gum::NodeSet& >(result))), SWIGTYPE_p_gum__SetT_unsigned_int_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_IBayesNet_double_ids(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
@@ -45933,7 +46014,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
   gum::NodeId arg2 ;
@@ -45961,7 +46042,42 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet__SWIG_1(PyObject *SWI
   arg3 = obj2;
   {
     try {
-      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_1((gum::IBayesNet< double > const *)arg1,arg2,arg3);
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_2((gum::IBayesNet< double > const *)arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  PyObject *arg3 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:IBayesNet_double_minimalCondSet",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "IBayesNet_double_minimalCondSet" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  arg2 = obj1;
+  arg3 = obj2;
+  {
+    try {
+      result = (PyObject *)gum_IBayesNet_Sl_double_Sg__minimalCondSet__SWIG_3((gum::IBayesNet< double > const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -45985,6 +46101,23 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet(PyObject *self, PyObj
   argc = args ? PyObject_Length(args) : 0;
   for (ii = 0; (ii < 3) && (ii < argc); ii++) {
     argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__IBayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__SetT_unsigned_int_t, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_gum__SetT_unsigned_int_t, 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_IBayesNet_double_minimalCondSet__SWIG_1(self, args);
+        }
+      }
+    }
   }
   if (argc == 3) {
     int _v;
@@ -46018,7 +46151,22 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double_minimalCondSet(PyObject *self, PyObj
       if (_v) {
         _v = (argv[2] != 0);
         if (_v) {
-          return _wrap_IBayesNet_double_minimalCondSet__SWIG_1(self, args);
+          return _wrap_IBayesNet_double_minimalCondSet__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__IBayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      _v = (argv[1] != 0);
+      if (_v) {
+        _v = (argv[2] != 0);
+        if (_v) {
+          return _wrap_IBayesNet_double_minimalCondSet__SWIG_3(self, args);
         }
       }
     }
@@ -46028,7 +46176,9 @@ fail:
   SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'IBayesNet_double_minimalCondSet'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::IBayesNet< double >::minimalCondSet(gum::NodeId,gum::NodeSet const &) const\n"
-    "    gum::IBayesNet< double >::minimalCondSet(gum::NodeId,PyObject *) const\n");
+    "    gum::IBayesNet< double >::minimalCondSet(gum::NodeSet const &,gum::NodeSet const &) const\n"
+    "    gum::IBayesNet< double >::minimalCondSet(gum::NodeId,PyObject *) const\n"
+    "    gum::IBayesNet< double >::minimalCondSet(PyObject *,PyObject *) const\n");
   return 0;
 }
 
@@ -50454,7 +50604,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_double_minimalCondSet(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNet_double_minimalCondSet__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
   gum::NodeId arg2 ;
@@ -50482,7 +50632,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_minimalCondSet(PyObject *SWIGUNUSEDPA
   arg3 = obj2;
   {
     try {
-      result = (PyObject *)gum_BayesNet_Sl_double_Sg__minimalCondSet((gum::BayesNet< double > const *)arg1,arg2,arg3);
+      result = (PyObject *)gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_0((gum::BayesNet< double > const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -50492,6 +50642,96 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_minimalCondSet(PyObject *SWIGUNUSEDPA
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_double_minimalCondSet__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  PyObject *arg3 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:BayesNet_double_minimalCondSet",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_minimalCondSet" "', argument " "1"" of type '" "gum::BayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  arg2 = obj1;
+  arg3 = obj2;
+  {
+    try {
+      result = (PyObject *)gum_BayesNet_Sl_double_Sg__minimalCondSet__SWIG_1((gum::BayesNet< double > const *)arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_double_minimalCondSet(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__BayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        _v = (argv[2] != 0);
+        if (_v) {
+          return _wrap_BayesNet_double_minimalCondSet__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__BayesNetT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      _v = (argv[1] != 0);
+      if (_v) {
+        _v = (argv[2] != 0);
+        if (_v) {
+          return _wrap_BayesNet_double_minimalCondSet__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'BayesNet_double_minimalCondSet'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::BayesNet< double >::minimalCondSet(gum::NodeId,PyObject *) const\n"
+    "    gum::BayesNet< double >::minimalCondSet(PyObject *,PyObject *) const\n");
+  return 0;
 }
 
 
@@ -57402,6 +57642,184 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_evidenceJointImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > *arg2 = 0 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LazyPropagation_double_evidenceJointImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "2"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "2"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = gum_LazyPropagation_Sl_double_Sg__evidenceJointImpact__SWIG_0(arg1,(std::vector< unsigned int,std::allocator< unsigned int > > const &)*arg2,(std::vector< unsigned int,std::allocator< unsigned int > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_evidenceJointImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LazyPropagation< double > *arg1 = (gum::LazyPropagation< double > *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:LazyPropagation_double_evidenceJointImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LazyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "1"" of type '" "gum::LazyPropagation< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LazyPropagation< double > * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "LazyPropagation_double_evidenceJointImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = gum_LazyPropagation_Sl_double_Sg__evidenceJointImpact__SWIG_1(arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LazyPropagation_double_evidenceJointImpact(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LazyPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LazyPropagation_double_evidenceJointImpact__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__LazyPropagationT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_LazyPropagation_double_evidenceJointImpact__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'LazyPropagation_double_evidenceJointImpact'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::LazyPropagation< double >::evidenceJointImpact(std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &)\n"
+    "    gum::LazyPropagation< double >::evidenceJointImpact(std::vector< std::string,std::allocator< std::string > > const &,std::vector< std::string,std::allocator< std::string > > const &)\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *LazyPropagation_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
@@ -60733,6 +61151,184 @@ SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_VI(PyObject *SWIGUNUSEDP
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_evidenceJointImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ShaferShenoyInference< double > *arg1 = (gum::ShaferShenoyInference< double > *) 0 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > *arg2 = 0 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ShaferShenoyInference_double_evidenceJointImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
+  {
+    std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "2"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "2"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = gum_ShaferShenoyInference_Sl_double_Sg__evidenceJointImpact__SWIG_0(arg1,(std::vector< unsigned int,std::allocator< unsigned int > > const &)*arg2,(std::vector< unsigned int,std::allocator< unsigned int > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_evidenceJointImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ShaferShenoyInference< double > *arg1 = (gum::ShaferShenoyInference< double > *) 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg2 = 0 ;
+  std::vector< std::string,std::allocator< std::string > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ShaferShenoyInference_double_evidenceJointImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "1"" of type '" "gum::ShaferShenoyInference< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ShaferShenoyInference< double > * >(argp1);
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res2 = swig::asptr(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "2"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ShaferShenoyInference_double_evidenceJointImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = gum_ShaferShenoyInference_Sl_double_Sg__evidenceJointImpact__SWIG_1(arg1,(std::vector< std::string,std::allocator< std::string > > const &)*arg2,(std::vector< std::string,std::allocator< std::string > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ShaferShenoyInference_double_evidenceJointImpact(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ShaferShenoyInference_double_evidenceJointImpact__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< std::string,std::allocator< std::string > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ShaferShenoyInference_double_evidenceJointImpact__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ShaferShenoyInference_double_evidenceJointImpact'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ShaferShenoyInference< double >::evidenceJointImpact(std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &)\n"
+    "    gum::ShaferShenoyInference< double >::evidenceJointImpact(std::vector< std::string,std::allocator< std::string > > const &,std::vector< std::string,std::allocator< std::string > > const &)\n");
+  return 0;
 }
 
 
@@ -88947,12 +89543,26 @@ static PyMethodDef SwigMethods[] = {
 		"target: gum::NodeId\n"
 		"soids: gum::NodeSet const &\n"
 		"\n"
-		"IBayesNet_double_minimalCondSet(IBayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject *\n"
+		"minimalCondSet(gum::NodeSet const & target, gum::NodeSet const & soids) -> gum::NodeSet\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeSet const &\n"
+		"soids: gum::NodeSet const &\n"
+		"\n"
+		"minimalCondSet(gum::NodeId target, PyObject * list) -> PyObject\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeId\n"
+		"list: PyObject *\n"
+		"\n"
+		"IBayesNet_double_minimalCondSet(IBayesNet_double self, PyObject * targets, PyObject * list) -> PyObject *\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"self: gum::IBayesNet< double > const *\n"
-		"target: gum::NodeId\n"
+		"targets: PyObject *\n"
 		"list: PyObject *\n"
 		"\n"
 		""},
@@ -89533,12 +90143,19 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"BayesNet_double_minimalCondSet", _wrap_BayesNet_double_minimalCondSet, METH_VARARGS, (char *)"\n"
-		"BayesNet_double_minimalCondSet(BayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject *\n"
+		"minimalCondSet(gum::NodeId target, PyObject * list) -> PyObject\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"target: gum::NodeId\n"
+		"list: PyObject *\n"
+		"\n"
+		"BayesNet_double_minimalCondSet(BayesNet_double self, PyObject * targets, PyObject * list) -> PyObject *\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
 		"self: gum::BayesNet< double > const *\n"
-		"target: gum::NodeId\n"
+		"targets: PyObject *\n"
 		"list: PyObject *\n"
 		"\n"
 		""},
@@ -90572,6 +91189,23 @@ static PyMethodDef SwigMethods[] = {
 		"Y: gum::NodeId const\n"
 		"\n"
 		""},
+	 { (char *)"LazyPropagation_double_evidenceJointImpact", _wrap_LazyPropagation_double_evidenceJointImpact, METH_VARARGS, (char *)"\n"
+		"evidenceJointImpact(Vector_int targets, Vector_int evs) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"targets: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &\n"
+		"evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &\n"
+		"\n"
+		"LazyPropagation_double_evidenceJointImpact(LazyPropagation_double self, Vector_string targets, Vector_string evs) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LazyPropagation< double > *\n"
+		"targets: std::vector< std::string,std::allocator< std::string > > const &\n"
+		"evs: std::vector< std::string,std::allocator< std::string > > const &\n"
+		"\n"
+		""},
 	 { (char *)"LazyPropagation_double_swigregister", LazyPropagation_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ShaferShenoyInference_double", _wrap_new_ShaferShenoyInference_double, METH_VARARGS, (char *)"\n"
 		"ShaferShenoyInference_double(IBayesNet_double BN, gum::FindBarrenNodesType barren_type, bool use_binary_join_tree=True)\n"
@@ -91091,6 +91725,23 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::ShaferShenoyInference< double > *\n"
 		"X: gum::NodeId const\n"
 		"Y: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"ShaferShenoyInference_double_evidenceJointImpact", _wrap_ShaferShenoyInference_double_evidenceJointImpact, METH_VARARGS, (char *)"\n"
+		"evidenceJointImpact(Vector_int targets, Vector_int evs) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"targets: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &\n"
+		"evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &\n"
+		"\n"
+		"ShaferShenoyInference_double_evidenceJointImpact(ShaferShenoyInference_double self, Vector_string targets, Vector_string evs) -> Potential_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ShaferShenoyInference< double > *\n"
+		"targets: std::vector< std::string,std::allocator< std::string > > const &\n"
+		"evs: std::vector< std::string,std::allocator< std::string > > const &\n"
 		"\n"
 		""},
 	 { (char *)"ShaferShenoyInference_double_swigregister", ShaferShenoyInference_double_swigregister, METH_VARARGS, NULL},
