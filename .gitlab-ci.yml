@@ -2,18 +2,96 @@ cache:
   untracked: false
 
 ################################################################################
-# TEST
+# TEMPLATES
 ################################################################################
 
-linux_gcc-5_release:
+.gcc-5: &gcc-5
   tags:
     - linux
     - gcc-5
-  stage: test
   variables:
     CC: "/usr/bin/gcc-5"
     CXX: "/usr/bin/g++-5"
-  script: 
+
+.clang-3_8: &clang-3_8
+  tags:
+    - linux
+    - clang
+  variables:
+    CC: "/usr/bin/clang"
+    CXX: "/usr/bin/clang++"
+
+.mvsc: &mvsc
+  tags:
+    - windows
+    - anaconda
+  variables:
+    PATH: "C:\\Program Files\\Git\\bin;C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Library\\mingw-w64\\bin;C:\\ProgramData\\Anaconda3\\Library\\usr\\bin;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\ProgramData\\Anaconda3\\Scripts;C:\\Program Files (x86)\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
+    ACT_OPTIONS: "--mvsc -m BASE+BN+FMDP+ID+LEARNING+PRM -d build"
+
+.agrum_sh: &agrum_sh
+  script:
     - python act --no-fun clean 
-    - python act --no-fun test release aGrUM
+    - python act --no-fun test release aGrUM $ACT_OPTIONS
+
+.pyagrum_sh: &pyagrum_sh
+  script:  
+    - python act --no-fun clean 
+    - python act --no-fun test release pyAgrum $ACT_OPTIONS
+
+.agrum_cmd: &agrum_cmd
+  script:
+    - python act --no-fun clean 
+    - python act --no-fun test release aGrUM %ACT_OPTIONS%
+
+.pyagrum_cmd: &pyagrum_cmd
+  script:  
+    - python act --no-fun clean 
+    - python act --no-fun test release pyAgrum %ACT_OPTIONS%
+
+################################################################################
+# BUILD JOBS
+################################################################################
+.build_template: &build_template
+  stage: build
+
+linux_gcc-5_agrum:
+  <<: *build_template
+  <<: *gcc-5
+  <<: *agrum_sh
+
+linux_gcc-5_pyagrum:
+  <<: *build_template
+  <<: *gcc-5
+  <<: *pyagrum_sh
+
+################################################################################
+# TEST JOBS
+################################################################################
+.test_template: &test_template
+  stage: test
+
+linux_clang_agrum:
+  <<: *test_template
+  <<: *clang-3_8
+  <<: *agrum_sh
+
+linux_clang_pyagrum:
+  <<: *test_template
+  <<: *clang-3_8
+  <<: *pyagrum_sh
+
+windows_mvsc_agrum:
+  <<: *test_template
+  <<: *mvsc
+  <<: *agrum_cmd
+
+windows_mvsc_pyagrum:
+  <<: *test_template
+  <<: *mvsc
+  <<: *pyagrum_cmd
+  
+################################################################################
+# DEPLOY JOBS
+################################################################################
 
