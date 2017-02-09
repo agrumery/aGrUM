@@ -100,8 +100,8 @@ push_changes_to_ALM:
   tags:
     - linux
     - agrumerie
-  only:
-    - master
+  #only:
+  #  - master
   script:
     - git remote add alm ssh://phw@alm.lip6.fr/aGrUM-CItest.git
     - git push master alm master
