@@ -53,6 +53,8 @@ cache:
 # BUILD JOBS
 ################################################################################
 .build_template: &build_template
+  except:
+    - /^doc\/.*$/
   stage: build
 
 linux_gcc-5_agrum:
@@ -69,6 +71,8 @@ linux_gcc-5_pyagrum:
 # TEST JOBS
 ################################################################################
 .test_template: &test_template
+  except:
+    - /^doc\/.*$/
   stage: test
 
 linux_clang_agrum:
