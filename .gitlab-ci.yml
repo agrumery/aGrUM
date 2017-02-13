@@ -56,7 +56,7 @@ cache:
   except:
     - /^doc\/.*$/
   only:
-    - /^*@gitlab.com/agrumery.*$/
+    - int/No_CI_on_forks@gitlab.com/agrumery
   stage: build
 
 linux_gcc-5_agrum:
@@ -76,7 +76,7 @@ linux_gcc-5_pyagrum:
   except:
     - /^doc\/.*$/
   only:
-    - /^*@gitlab.com/agrumery.*$/
+    - int/No_CI_on_forks@gitlab.com/agrumery
   stage: test
 
 linux_clang_agrum:
