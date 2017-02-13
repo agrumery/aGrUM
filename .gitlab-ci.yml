@@ -55,9 +55,8 @@ cache:
 .build_template: &build_template
   except:
     - /^doc\/.*$/
-  #only:
-  #  - branches@gitlab.com:agrumery
-  #  - master@gitlab.com:agrumery
+  only:
+    - /^*@gitlab.com/agrumery.*$/
   stage: build
 
 linux_gcc-5_agrum:
@@ -76,9 +75,8 @@ linux_gcc-5_pyagrum:
 .test_template: &test_template
   except:
     - /^doc\/.*$/
-  #only:
-  #  - branches@gitlab.com:agrumery
-  #  - master@gitlab.com:agrumery
+  only:
+    - /^*@gitlab.com/agrumery.*$/
   stage: test
 
 linux_clang_agrum:
