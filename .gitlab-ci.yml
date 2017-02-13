@@ -56,8 +56,8 @@ cache:
   except:
     - /^doc\/.*$/
   only:
-    - branches@gitlab.com/agrumery
-    - master@gitlab.com/agrumery
+    - branches@gitlab.com:agrumery
+    - master@gitlab.com:agrumery
   stage: build
 
 linux_gcc-5_agrum:
@@ -77,8 +77,8 @@ linux_gcc-5_pyagrum:
   except:
     - /^doc\/.*$/
   only:
-    - branches@gitlab.com/agrumery
-    - master@gitlab.com/agrumery
+    - branches@gitlab.com:agrumery
+    - master@gitlab.com:agrumery
   stage: test
 
 linux_clang_agrum:
