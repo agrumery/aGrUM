@@ -77,8 +77,8 @@ linux_gcc-5_pyagrum:
   except:
     - /^doc\/.*$/
   only:
-    - branches@gitlab.com/agrumery/aGrUM
-    - master@gitlab.com/agrumery/aGrUM
+    - branches@gitlab.com/agrumery
+    - master@gitlab.com/agrumery
   stage: test
 
 linux_clang_agrum:
