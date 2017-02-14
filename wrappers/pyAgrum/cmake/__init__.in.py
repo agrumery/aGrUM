@@ -58,7 +58,7 @@ from @PYAGRUM_MODULE@ import DefaultInLabel, DuplicateElement, DuplicateLabel, E
 # selection of imports extracted from dir(pyAgrum)
 __all__=[
   '__version__','__license__','__project_url__',        # here
-  'about','availableBNExts','loadBN','saveBN','loadID','getPosterior' # in fuctions.py
+  'about','availableBNExts','loadBN','saveBN','loadID','getPosterior', # in fuctions.py
 
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
   'BayesNet',
