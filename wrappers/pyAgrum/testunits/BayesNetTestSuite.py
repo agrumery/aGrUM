@@ -235,7 +235,7 @@ class TestFeatures(BayesNetTestCase):
     self.assertEqual(r, set([iB, iC]))
 
     r = bn.minimalCondSet(iA, set([iE, iF, iG]))
-    self.assertEqual(r, set([iE]))
+    self.assertEqual(r, set([iE, iF]))
 
     r = bn.minimalCondSet(iA, set([iB, iC, iE, iF, iG]))
     self.assertEqual(r, set([iB, iC]))
