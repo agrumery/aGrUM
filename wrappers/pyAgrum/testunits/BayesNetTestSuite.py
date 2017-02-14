@@ -2,7 +2,7 @@
 import unittest
 
 import pyAgrum as gum
-import scipy
+import numpy
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 
@@ -208,7 +208,7 @@ class TestFeatures(BayesNetTestCase):
       bn.add("C", 0)
 
     bn.addArc("A", "B")
-    self.assertEqual(bn.log10DomainSize(), scipy.log10(6.0))
+    self.assertEqual(bn.log10DomainSize(), numpy.log10(6.0))
     self.assertEqual(bn.dim(), 5)
 
   def testSomeFunctions(self):
