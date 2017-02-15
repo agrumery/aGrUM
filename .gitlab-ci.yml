@@ -39,11 +39,11 @@ cache:
 
 .agrum_cmd: &agrum_cmd
   script:
-    - python act --no-fun install release aGrUM -d build %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun test release aGrUM %ACT_OPTIONS%
+    - python act --no-fun test release aGrUM -d build %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun test release aGrUM %ACT_OPTIONS%
 
 .pyagrum_cmd: &pyagrum_cmd
   script:  
-    - python act --no-fun install release pyAgrum -d build %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS%
+    - python act --no-fun test release pyAgrum -d build %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS%
 
 ################################################################################
 # BUILD JOBS
