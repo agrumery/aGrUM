@@ -379,7 +379,7 @@ def _proba2fgcolor(p, cmap=_INFOcmap):
     return "#000000"
 
 
-def _BN2colouredDot(bn, size="4", arcvals=None, vals=None, cmap=_INFOcmap):
+def _BN2colouredDot(bn, size="4", arcvals=None, vals=None, cmap=_INFOcmap,showValues=None):
   """
   Shows a graphviz svg representation of the BN using size ("1" ,"2" , ...)
   vals is a dictionnary name:value of value in [0,1] for each node
@@ -398,7 +398,7 @@ def _BN2colouredDot(bn, size="4", arcvals=None, vals=None, cmap=_INFOcmap):
     else:
       bgcol = _proba2bgcolor(vals[n], cmap)
       fgcol = _proba2fgcolor(vals[n], cmap)
-      res = " : {0:2.5f}".format(vals[n])
+      res = " : {0:2.5f}".format(vals[n] if showValues is None else showValues[n])
 
     node = dot.Node('"' + n + '"', style="filled",
                     fillcolor=bgcol,
@@ -489,9 +489,10 @@ def _reprInformation(bn, evs, size, cmap, asString):
   ie.setEvidence(evs)
   ie.makeInference()
 
-  nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.ids()}
+  idEvs = {bn.idFromName(name) for name in evs}
+  nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.ids() if not n in idEvs}
   arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
-  gr = _BN2colouredDot(bn, size, arcvals, _normalizeVals(nodevals, hilightExtrema=False), cmap)
+  gr = _BN2colouredDot(bn, size, arcvals, _normalizeVals(nodevals, hilightExtrema=False), cmap,showValues=nodevals)
 
   mi = min(nodevals.values())
   ma = max(nodevals.values())
