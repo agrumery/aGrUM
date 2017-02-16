@@ -20,6 +20,14 @@ cache:
   variables:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
+    
+.clang-llvm-8.0: &clang-llvm-0.8
+  tags:
+    - macos
+    - clang
+  variables:
+    CC: "/usr/bin/clang"
+    CXX: "/usr/bin/clang++"
 
 .mvsc: &mvsc
   tags:
@@ -94,6 +102,16 @@ windows_mvsc_pyagrum:
   <<: *test_template
   <<: *mvsc
   <<: *pyagrum_cmd
+
+macos_clang_agrum:
+  <<: *test_template
+  <<: *clang-llvm-0.8
+  <<: *agrum_sh
+  
+macos_clang_pyagrum:
+  <<: *test_template
+  <<: *clang-llvm-0.8
+  <<: *pagrum_sh
   
 ################################################################################
 # DEPLOY JOBS
