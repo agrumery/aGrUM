@@ -27,6 +27,7 @@
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/database/DBCellTranslators/cellTranslatorNumber.h>
 #include <agrum/learning/database/databaseFromCSV.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 
@@ -54,6 +55,8 @@ namespace gum_tests {
 
   class LocalSearchWithTabuListTestSuite : public CxxTest::TestSuite {
     public:
+
+
     void test_asia() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
@@ -128,11 +131,12 @@ gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> tra
                                     database.variableNames(),
                                     modalities,
                                     filter.translatorSet() );
-        TS_ASSERT( bn.dag().arcs().size() == 11 );
+        TS_ASSERT( bn.dag().arcs().size() == 10 );
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
       }
     }
+    
 
     void xtest_alarm1() {
       gum::learning::DatabaseFromCSV database( MY_ALARM );

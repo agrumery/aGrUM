@@ -663,7 +663,7 @@ namespace gum_tests {
 
         gum::BayesNet<double> bn = learner.learnBN();
 
-        TS_ASSERT_DELTA( listen.getNbr(), 74, 1 );  // 75 ?
+        TS_ASSERT_DELTA( listen.getNbr(), 13, 1 );  // 75 ?
         TS_ASSERT_EQUALS( listen.getMess(), "stopped on request" );
         TS_ASSERT_EQUALS( learner.messageApproximationScheme(),
                           "stopped on request" );
