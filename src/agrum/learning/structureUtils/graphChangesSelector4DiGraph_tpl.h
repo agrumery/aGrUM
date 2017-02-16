@@ -317,13 +317,11 @@ namespace gum {
       }
 
       // assign a score to each node given its parents in the current graph
-      __score->clear();
       __node_current_scores.resize( nb_nodes );
       for ( NodeId i = 0; i < nb_nodes; ++i ) {
+        __score->clear();
         __score->addNodeSet( i, __parents[i] );
-      }
-      for ( NodeId i = 0; i < nb_nodes; ++i ) {
-        __node_current_scores[i] = __score->score( i );
+        __node_current_scores[i] = __score->score( 0 );
       }
 
       // compute all the possible changes
@@ -337,14 +335,6 @@ namespace gum {
       // determine the changes that are illegal and prepare the computation of
       // the scores of all the legal changes
       __illegal_changes.clear();
-      __score->clear();
-      for ( NodeId i = 0; i < __changes.size(); ++i ) {
-        if ( !__isChangeValid( i ) ) {
-          __illegal_changes.insert( i );
-        } else {
-          __addScoreToCompute( i );
-        }
-      }
 
       // set the __change_scores and __change_queue_per_node for legal changes
       __change_scores.resize(
@@ -353,29 +343,33 @@ namespace gum {
                                      std::numeric_limits<double>::min() ) );
       __change_queue_per_node.clear();
       __change_queue_per_node.resize( nb_nodes );
-      for ( NodeId i = 0, j = 0; i < __changes.size(); ++i ) {
-        if ( !__illegal_changes.exists( i ) ) {
+      for ( NodeId i = 0; i < __changes.size(); ++i ) {
+        if ( !__isChangeValid( i ) ) {
+          __illegal_changes.insert( i );
+        }
+        else {
+          __score->clear();
+          __addScoreToCompute( i );
+
           const GraphChange& change = __changes[i];
 
           if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
             double delta2 =
-                __score->score( j ) - __node_current_scores[change.node2()];
-            ++j;
+                __score->score( 0 ) - __node_current_scores[change.node2()];
             double delta1 =
-                __score->score( j ) - __node_current_scores[change.node1()];
+                __score->score( 1 ) - __node_current_scores[change.node1()];
             double delta = delta1 + delta2;
             __change_scores[i].first = delta1;
             __change_scores[i].second = delta2;
             __change_queue_per_node[change.node1()].insert( i, delta );
             __change_queue_per_node[change.node2()].insert( i, delta );
-          } else {
+          }
+          else {
             double delta =
-                __score->score( j ) - __node_current_scores[change.node2()];
+              __score->score( 0 ) - __node_current_scores[change.node2()];
             __change_scores[i].second = delta;
             __change_queue_per_node[change.node2()].insert( i, delta );
           }
-
-          ++j;
         }
       }
       __score->clear();
@@ -588,24 +582,20 @@ namespace gum {
                                              STRUCTURAL_CONSTRAINT,
                                              GRAPH_CHANGES_GENERATOR>::
         __updateScores( const Set<Idx>& changes_to_recompute ) {
-      // prepare the computations of the cores
-      __score->clear();
-      for ( const auto change_index : changes_to_recompute ) {
-        __addScoreToCompute( change_index );
-      }
-
+     
       // update the scores
-      Idx      j = 0;
       Set<Idx> modified_nodes( changes_to_recompute.size() );
       for ( const auto change_index : changes_to_recompute ) {
+        __score->clear();
+        __addScoreToCompute( change_index );
+        
         const GraphChange& change = __changes[change_index];
         if ( change.type() == GraphChangeType::ARC_REVERSAL ) {
           // get the scores of both the tail and the head
           const double delta2 =
-              __score->score( j ) - __node_current_scores[change.node2()];
-          ++j;
+              __score->score( 0 ) - __node_current_scores[change.node2()];
           const double delta1 =
-              __score->score( j ) - __node_current_scores[change.node1()];
+              __score->score( 1 ) - __node_current_scores[change.node1()];
           const double delta = delta1 + delta2;
 
           // update the scores
@@ -621,10 +611,11 @@ namespace gum {
           // indicate which queues were modified
           modified_nodes.insert( change.node1() );
           modified_nodes.insert( change.node2() );
-        } else {
+        }
+        else {
           // get the score of the head
           const double delta =
-              __score->score( j ) - __node_current_scores[change.node2()];
+              __score->score( 0 ) - __node_current_scores[change.node2()];
 
           // update the score
           __change_scores[change_index].second = delta;
@@ -636,8 +627,6 @@ namespace gum {
           // indicate which queue was modified
           modified_nodes.insert( change.node2() );
         }
-
-        ++j;
       }
 
       // update the node queue

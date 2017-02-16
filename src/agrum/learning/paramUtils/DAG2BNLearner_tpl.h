@@ -83,11 +83,15 @@ namespace gum {
 
       // estimate the parameters
       const VariableNodeMap& varmap = bn.variableNodeMap();
-      estimator.clear();
       for ( const auto id : dag ) {
+        estimator.clear();
+
         // get the sequence of variables and make the targets be the last
-        const Potential<GUM_SCALAR>&      pot = bn.cpt( id );
+        Potential<GUM_SCALAR>& pot =
+          const_cast<Potential<GUM_SCALAR>&>( bn.cpt( id ) );
         const DiscreteVariable&           var = varmap.get( id );
+
+        // get the variables of the CPT of id in the correct order
         Sequence<const DiscreteVariable*> vars = pot.variablesSequence();
         if ( vars.pos( &var ) != vars.size() - 1 ) {
           vars.erase( &var );
@@ -101,24 +105,14 @@ namespace gum {
             cond_ids[i] = varmap.get( *( vars[i] ) );
           }
           estimator.addNodeSet( id, cond_ids );
-        } else {
+        }
+        else {
           estimator.addNodeSet( id );
         }
-      }
 
-      // assign the parameters to the potentials
-      Idx index = 0;
-      for ( const auto id : dag ) {
-        // get the variables of the CPT of id in the correct order
-        Potential<GUM_SCALAR>& pot =
-            const_cast<Potential<GUM_SCALAR>&>( bn.cpt( id ) );
-        const DiscreteVariable&           var = varmap.get( id );
-        Sequence<const DiscreteVariable*> vars = pot.variablesSequence();
-        if ( vars.pos( &var ) != vars.size() - 1 ) {
-          vars.erase( &var );
-          vars.insert( &var );
-        }
-
+        // assign the parameters to the potentials
+        Idx index = 0;
+     
         // create a potential with the appropriate size
         Potential<GUM_SCALAR> ordered_pot;
         ordered_pot.beginMultipleChanges();
@@ -130,7 +124,6 @@ namespace gum {
 
         // assign the potential to the BN
         __probaVarReordering( pot, ordered_pot );
-        ++index;
       }
 
       return bn;
