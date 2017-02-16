@@ -21,7 +21,7 @@ cache:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
     
-.clang-llvm-8.0: &clang-llvm-0.8
+.clang-llvm-8_0: &clang-llvm-8_0
   tags:
     - macos
     - clang
@@ -105,13 +105,13 @@ windows_mvsc_pyagrum:
 
 macos_clang_agrum:
   <<: *test_template
-  <<: *clang-llvm-0.8
+  <<: *clang-llvm-8_0
   <<: *agrum_sh
   
 macos_clang_pyagrum:
   <<: *test_template
-  <<: *clang-llvm-0.8
-  <<: *pagrum_sh
+  <<: *clang-llvm-8_0
+  <<: *pyagrum_sh
   
 ################################################################################
 # DEPLOY JOBS
