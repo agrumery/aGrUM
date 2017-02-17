@@ -56,60 +56,76 @@ cache:
 ################################################################################
 # BUILD JOBS
 ################################################################################
-.build_template: &build_template
+.aGrUM_build_template: &aGrUM_build_template
   except:
-    - /^doc\/.*$/
+    - /^doc\/.*$/i
+    - /^pyagrum/.*$/i
+  only:
+    - branches@agrumery/aGrUM
+  stage: build
+
+.pyAgrum_build_template: &pyAgrum_build_template
+  except:
+    - /^doc\/.*$/i
   only:
     - branches@agrumery/aGrUM
   stage: build
 
 linux_gcc-5_agrum:
-  <<: *build_template
+  <<: *aGrUM_build_template
   <<: *gcc-5
   <<: *agrum_sh
 
 linux_gcc-5_pyagrum:
-  <<: *build_template
+  <<: *pyAgrum_build_template
   <<: *gcc-5
   <<: *pyagrum_sh
 
 ################################################################################
 # TEST JOBS
 ################################################################################
-.test_template: &test_template
+.aGrUM_test_template: &aGrUM_test_template
   except:
-    - /^doc\/.*$/
+    - /^doc\/.*$/i
+    - /^pyagrum/.*$/i
+  only:
+    - branches@agrumery/aGrUM
+  stage: test
+
+.pyAgrum_test_template: &pyAgrum_test_template
+  except:
+    - /^doc\/.*$/i
   only:
     - branches@agrumery/aGrUM
   stage: test
 
 linux_clang_agrum:
-  <<: *test_template
+  <<: *aGrUM_test_template
   <<: *clang-3_8
   <<: *agrum_sh
 
 linux_clang_pyagrum:
-  <<: *test_template
+  <<: *pyAgrum_test_template
   <<: *clang-3_8
   <<: *pyagrum_sh
 
 windows_mvsc_agrum:
-  <<: *test_template
+  <<: *aGrUM_test_template
   <<: *mvsc
   <<: *agrum_cmd
 
 windows_mvsc_pyagrum:
-  <<: *test_template
+  <<: *pyAgrum_test_template
   <<: *mvsc
   <<: *pyagrum_cmd
 
 macos_clang_agrum:
-  <<: *test_template
+  <<: *aGrUM_test_template
   <<: *clang-llvm-8_0
   <<: *agrum_sh
   
 macos_clang_pyagrum:
-  <<: *test_template
+  <<: *pyAgrum_test_template
   <<: *clang-llvm-8_0
   <<: *pyagrum_sh
   
