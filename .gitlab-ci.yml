@@ -58,15 +58,15 @@ cache:
 ################################################################################
 .aGrUM_build_template: &aGrUM_build_template
   except:
-    - /^doc\/.*$/i
-    - /^pyagrum/.*$/i
+    - /^doc\/.*$/
+    - /^pyagrum/.*$/
   only:
     - branches@agrumery/aGrUM
   stage: build
 
 .pyAgrum_build_template: &pyAgrum_build_template
   except:
-    - /^doc\/.*$/i
+    - /^doc\/.*$/
   only:
     - branches@agrumery/aGrUM
   stage: build
@@ -86,15 +86,15 @@ linux_gcc-5_pyagrum:
 ################################################################################
 .aGrUM_test_template: &aGrUM_test_template
   except:
-    - /^doc\/.*$/i
-    - /^pyagrum/.*$/i
+    - /^doc\/.*$/
+    - /^pyagrum/.*$/
   only:
     - branches@agrumery/aGrUM
   stage: test
 
 .pyAgrum_test_template: &pyAgrum_test_template
   except:
-    - /^doc\/.*$/i
+    - /^doc\/.*$/
   only:
     - branches@agrumery/aGrUM
   stage: test
