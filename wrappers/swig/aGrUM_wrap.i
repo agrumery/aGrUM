@@ -202,12 +202,16 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
 
   using parent::messageApproximationScheme;
   using parent::history;
+
+  const gum::IApproximationSchemeConfiguration& asIApproximationSchemeConfiguration() const {
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
 }
 %enddef
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsInference<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,%arg(gum::credal::CNMonteCarloSampling<double,gum::LazyPropagation<double> >))
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
 
@@ -325,7 +329,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/BN/BayesNet.h>
 
 %import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
-%import <agrum/core/approximations/approximationScheme.h>
+%include <agrum/core/approximations/approximationScheme.h>
 
 %include <agrum/BN/inference/relevantPotentialsFinderType.h>
 %include <agrum/BN/inference/BayesNetInference.h>
@@ -350,8 +354,8 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 
 %include <agrum/CN/credalNet.h>
 %include <agrum/CN/varMod2BNsMap.h>
-%import <agrum/CN/inferenceEngine.h>
-%import <agrum/CN/multipleInferenceEngine.h>
+%include <agrum/CN/inferenceEngine.h>
+%include <agrum/CN/multipleInferenceEngine.h>
 %include <agrum/CN/CNMonteCarloSampling.h>
 %include <agrum/CN/CNLoopyPropagation.h>
 
@@ -389,7 +393,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( GibbsKL_double ) gum::GibbsKL<double>;
 
 %template ( CredalNet_double ) gum::credal::CredalNet<double>;
-%template ( CNMonteCarloSampling_double ) gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double> >;
+%template ( CNMonteCarloSampling_double ) gum::credal::CNMonteCarloSampling<double>;
 %template ( CNLoopyPropagation_double ) gum::credal::CNLoopyPropagation<double>;
 
 %template ( InfluenceDiagram_double) gum::InfluenceDiagram<double>;

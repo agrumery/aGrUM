@@ -55,7 +55,7 @@ namespace gum {
      *0 for a sample
      * the test is made once
      */
-    template <typename GUM_SCALAR, class BNInferenceEngine>
+    template <typename GUM_SCALAR, class BNInferenceEngine=LazyPropagation<GUM_SCALAR> >
     class CNMonteCarloSampling
         : public MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine> {
       private:

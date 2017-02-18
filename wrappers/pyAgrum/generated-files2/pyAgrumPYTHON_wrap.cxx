@@ -7376,6 +7376,9 @@ SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__nbrIterations(gum::GibbsIn
 SWIGINTERN double gum_GibbsInference_Sl_double_Sg__currentTime(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_GibbsInference_Sl_double_Sg__messageApproximationScheme(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
 SWIGINTERN std::vector< double,std::allocator< double > > const &gum_GibbsInference_Sl_double_Sg__history(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_GibbsInference_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::GibbsInference< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
 SWIGINTERN void gum_GibbsInference_Sl_double_Sg__makeInference(gum::GibbsInference< double > *self){
     self->gum::BayesNetInference<double>::makeInference();
   }
@@ -7526,6 +7529,9 @@ SWIGINTERN gum::Size gum_LoopyBeliefPropagation_Sl_double_Sg__nbrIterations(gum:
 SWIGINTERN double gum_LoopyBeliefPropagation_Sl_double_Sg__currentTime(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_LoopyBeliefPropagation_Sl_double_Sg__messageApproximationScheme(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
 SWIGINTERN std::vector< double,std::allocator< double > > const &gum_LoopyBeliefPropagation_Sl_double_Sg__history(gum::LoopyBeliefPropagation< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_LoopyBeliefPropagation_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::LoopyBeliefPropagation< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
 SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__makeInference(gum::LoopyBeliefPropagation< double > *self){
     self->gum::BayesNetInference<double>::makeInference();
   }
@@ -7688,46 +7694,52 @@ SWIGINTERN gum::Size gum_GibbsKL_Sl_double_Sg__nbrIterations(gum::GibbsKL< doubl
 SWIGINTERN double gum_GibbsKL_Sl_double_Sg__currentTime(gum::GibbsKL< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_GibbsKL_Sl_double_Sg__messageApproximationScheme(gum::GibbsKL< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
 SWIGINTERN std::vector< double,std::allocator< double > > const &gum_GibbsKL_Sl_double_Sg__history(gum::GibbsKL< double > const *self){ return self->gum::ApproximationScheme::history(); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setVerbosity(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setEpsilon(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setMinEpsilonRate(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setMaxIter(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setMaxTime(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setPeriodSize(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,gum::Size p){ self->gum::ApproximationScheme::setPeriodSize(p); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setBurnIn(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,gum::Size b){ self->gum::ApproximationScheme::setBurnIn(b); }
-SWIGINTERN bool gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__verbosity(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::verbosity(); }
-SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__epsilon(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::epsilon(); }
-SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__minEpsilonRate(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::minEpsilonRate(); }
-SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__maxIter(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::maxIter(); }
-SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__maxTime(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::maxTime(); }
-SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__periodSize(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::periodSize(); }
-SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__burnIn(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::burnIn(); }
-SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__nbrIterations(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
-SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__currentTime(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::currentTime(); }
-SWIGINTERN std::string gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__messageApproximationScheme(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
-SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__history(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self){ return self->gum::ApproximationScheme::history(); }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setRepetitiveInd(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,bool const flag){
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_GibbsKL_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::GibbsKL< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setVerbosity(gum::credal::CNMonteCarloSampling< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setEpsilon(gum::credal::CNMonteCarloSampling< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMinEpsilonRate(gum::credal::CNMonteCarloSampling< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMaxIter(gum::credal::CNMonteCarloSampling< double > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMaxTime(gum::credal::CNMonteCarloSampling< double > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setPeriodSize(gum::credal::CNMonteCarloSampling< double > *self,gum::Size p){ self->gum::ApproximationScheme::setPeriodSize(p); }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setBurnIn(gum::credal::CNMonteCarloSampling< double > *self,gum::Size b){ self->gum::ApproximationScheme::setBurnIn(b); }
+SWIGINTERN bool gum_credal_CNMonteCarloSampling_Sl_double_Sg__verbosity(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::verbosity(); }
+SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sg__epsilon(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::epsilon(); }
+SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sg__minEpsilonRate(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::minEpsilonRate(); }
+SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sg__maxIter(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
+SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sg__maxTime(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
+SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sg__periodSize(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sg__burnIn(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::burnIn(); }
+SWIGINTERN gum::Size gum_credal_CNMonteCarloSampling_Sl_double_Sg__nbrIterations(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
+SWIGINTERN double gum_credal_CNMonteCarloSampling_Sl_double_Sg__currentTime(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
+SWIGINTERN std::string gum_credal_CNMonteCarloSampling_Sl_double_Sg__messageApproximationScheme(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__history(gum::credal::CNMonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::credal::CNMonteCarloSampling< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__setRepetitiveInd(gum::credal::CNMonteCarloSampling< double > *self,bool const flag){
     self->gum::credal::InferenceEngine<double>::setRepetitiveInd(flag);
   }
-SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__marginalMax__SWIG_0(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self,gum::NodeId const id){
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMax__SWIG_0(gum::credal::CNMonteCarloSampling< double > const *self,gum::NodeId const id){
     return self->gum::credal::InferenceEngine<double>::marginalMax(id);
   }
-SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__marginalMin__SWIG_0(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self,gum::NodeId const id){
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMin__SWIG_0(gum::credal::CNMonteCarloSampling< double > const *self,gum::NodeId const id){
     return self->gum::credal::InferenceEngine<double>::marginalMin(id);
   }
-SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__marginalMax__SWIG_1(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self,std::string const name){
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMax__SWIG_1(gum::credal::CNMonteCarloSampling< double > const *self,std::string const name){
     return self->gum::credal::InferenceEngine<double>::marginalMax(name);
   }
-SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__marginalMin__SWIG_1(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self,std::string const name){
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMin__SWIG_1(gum::credal::CNMonteCarloSampling< double > const *self,std::string const name){
     return self->gum::credal::InferenceEngine<double>::marginalMin(name);
   }
-SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__insertModalsFile(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *self,std::string const &path){
+SWIGINTERN void gum_credal_CNMonteCarloSampling_Sl_double_Sg__insertModalsFile(gum::credal::CNMonteCarloSampling< double > *self,std::string const &path){
     self->gum::credal::InferenceEngine<double>::insertModalsFile(path);
   }
-SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__dynamicExpMax(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self,std::string const &varName){
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__dynamicExpMax(gum::credal::CNMonteCarloSampling< double > const *self,std::string const &varName){
     return self->gum::credal::InferenceEngine<double>::dynamicExpMax(varName);
   }
-SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__dynamicExpMin(gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *self,std::string const &varName){
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNMonteCarloSampling_Sl_double_Sg__dynamicExpMin(gum::credal::CNMonteCarloSampling< double > const *self,std::string const &varName){
     return self->gum::credal::InferenceEngine<double>::dynamicExpMin(varName);
   }
 SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__setVerbosity(gum::credal::CNLoopyPropagation< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
@@ -7748,6 +7760,9 @@ SWIGINTERN gum::Size gum_credal_CNLoopyPropagation_Sl_double_Sg__nbrIterations(g
 SWIGINTERN double gum_credal_CNLoopyPropagation_Sl_double_Sg__currentTime(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
 SWIGINTERN std::string gum_credal_CNLoopyPropagation_Sl_double_Sg__messageApproximationScheme(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
 SWIGINTERN std::vector< double,std::allocator< double > > const &gum_credal_CNLoopyPropagation_Sl_double_Sg__history(gum::credal::CNLoopyPropagation< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_credal_CNLoopyPropagation_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::credal::CNLoopyPropagation< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
 SWIGINTERN void gum_credal_CNLoopyPropagation_Sl_double_Sg__setRepetitiveInd(gum::credal::CNLoopyPropagation< double > *self,bool const flag){
     self->gum::credal::InferenceEngine<double>::setRepetitiveInd(flag);
   }
@@ -7930,6 +7945,9 @@ SWIGINTERN gum::Size gum_learning_BNLearner_Sl_double_Sg__nbrIterations(gum::lea
 SWIGINTERN double gum_learning_BNLearner_Sl_double_Sg__currentTime__SWIG_0_0(gum::learning::BNLearner< double > const *self){ return self->gum::learning::genericBNLearner::currentTime(); }
 SWIGINTERN std::string gum_learning_BNLearner_Sl_double_Sg__messageApproximationScheme(gum::learning::BNLearner< double > const *self){ return self->gum::learning::genericBNLearner::messageApproximationScheme(); }
 SWIGINTERN std::vector< double,std::allocator< double > > const &gum_learning_BNLearner_Sl_double_Sg__history(gum::learning::BNLearner< double > const *self){ return self->gum::learning::genericBNLearner::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_learning_BNLearner_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::learning::BNLearner< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
 SWIGINTERN gum::DAG gum_learning_BNLearner_Sl_double_Sg__learnDAG(gum::learning::BNLearner< double > *self){ return self->gum::learning::genericBNLearner::learnDAG(); }
 SWIGINTERN std::vector< std::string,std::allocator< std::string > > const &gum_learning_BNLearner_Sl_double_Sg__names(gum::learning::BNLearner< double > const *self){ return self->gum::learning::genericBNLearner::names(); }
 SWIGINTERN std::vector< gum::Size,std::allocator< gum::Size > > const &gum_learning_BNLearner_Sl_double_Sg__modalities(gum::learning::BNLearner< double > *self){ return self->gum::learning::genericBNLearner::modalities(); }
@@ -39627,6 +39645,1306 @@ SWIGINTERN PyObject *DAGmodel_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObj
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_ApproximationScheme__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  bool arg1 ;
+  bool val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::ApproximationScheme *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_ApproximationScheme",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_bool(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_ApproximationScheme" "', argument " "1"" of type '" "bool""'");
+  } 
+  arg1 = static_cast< bool >(val1);
+  {
+    try {
+      result = (gum::ApproximationScheme *)new gum::ApproximationScheme(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__ApproximationScheme, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ApproximationScheme__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_ApproximationScheme")) SWIG_fail;
+  {
+    try {
+      result = (gum::ApproximationScheme *)new gum::ApproximationScheme();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__ApproximationScheme, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ApproximationScheme(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 0) {
+    return _wrap_new_ApproximationScheme__SWIG_1(self, args);
+  }
+  if (argc == 1) {
+    int _v;
+    {
+      int res = SWIG_AsVal_bool(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_new_ApproximationScheme__SWIG_0(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_ApproximationScheme'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ApproximationScheme::ApproximationScheme(bool)\n"
+    "    gum::ApproximationScheme::ApproximationScheme()\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_ApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ApproximationScheme" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_setEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_setEpsilon",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_setEpsilon" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_setEpsilon" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      (arg1)->setEpsilon(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_epsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_epsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_epsilon" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (double)((gum::ApproximationScheme const *)arg1)->epsilon();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_disableEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_disableEpsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_disableEpsilon" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->disableEpsilon();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_enableEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_enableEpsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_enableEpsilon" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->enableEpsilon();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_isEnabledEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_isEnabledEpsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_isEnabledEpsilon" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (bool)((gum::ApproximationScheme const *)arg1)->isEnabledEpsilon();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_setMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_setMinEpsilonRate",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_setMinEpsilonRate" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_setMinEpsilonRate" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      (arg1)->setMinEpsilonRate(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_minEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_minEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_minEpsilonRate" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (double)((gum::ApproximationScheme const *)arg1)->minEpsilonRate();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_disableMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_disableMinEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_disableMinEpsilonRate" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->disableMinEpsilonRate();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_enableMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_enableMinEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_enableMinEpsilonRate" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->enableMinEpsilonRate();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_isEnabledMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_isEnabledMinEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_isEnabledMinEpsilonRate" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (bool)((gum::ApproximationScheme const *)arg1)->isEnabledMinEpsilonRate();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_setMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_setMaxIter",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_setMaxIter" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_setMaxIter" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      (arg1)->setMaxIter(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_maxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_maxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_maxIter" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::ApproximationScheme const *)arg1)->maxIter();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_disableMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_disableMaxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_disableMaxIter" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->disableMaxIter();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_enableMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_enableMaxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_enableMaxIter" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->enableMaxIter();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_isEnabledMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_isEnabledMaxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_isEnabledMaxIter" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (bool)((gum::ApproximationScheme const *)arg1)->isEnabledMaxIter();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_setMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_setMaxTime",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_setMaxTime" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_setMaxTime" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      (arg1)->setMaxTime(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_maxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_maxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_maxTime" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (double)((gum::ApproximationScheme const *)arg1)->maxTime();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_currentTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_currentTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_currentTime" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (double)((gum::ApproximationScheme const *)arg1)->currentTime();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_disableMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_disableMaxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_disableMaxTime" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->disableMaxTime();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_enableMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_enableMaxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_enableMaxTime" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->enableMaxTime();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_isEnabledMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_isEnabledMaxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_isEnabledMaxTime" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (bool)((gum::ApproximationScheme const *)arg1)->isEnabledMaxTime();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_setPeriodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_setPeriodSize",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_setPeriodSize" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_setPeriodSize" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      (arg1)->setPeriodSize(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_periodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_periodSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_periodSize" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::ApproximationScheme const *)arg1)->periodSize();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_setBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_setBurnIn",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_setBurnIn" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_setBurnIn" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      (arg1)->setBurnIn(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_burnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_burnIn",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_burnIn" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::ApproximationScheme const *)arg1)->burnIn();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_setVerbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_setVerbosity",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_setVerbosity" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_bool(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_setVerbosity" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  {
+    try {
+      (arg1)->setVerbosity(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_verbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_verbosity",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_verbosity" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (bool)((gum::ApproximationScheme const *)arg1)->verbosity();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_stateApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_stateApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_stateApproximationScheme" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE)((gum::ApproximationScheme const *)arg1)->stateApproximationScheme();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_nbrIterations(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_nbrIterations",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_nbrIterations" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::ApproximationScheme const *)arg1)->nbrIterations();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_history(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_history",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_history" "', argument " "1"" of type '" "gum::ApproximationScheme const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (std::vector< double,std::allocator< double > > *) &((gum::ApproximationScheme const *)arg1)->history();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_initApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_initApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_initApproximationScheme" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->initApproximationScheme();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_startOfPeriod(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_startOfPeriod",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_startOfPeriod" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (bool)(arg1)->startOfPeriod();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_updateApproximationScheme__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  unsigned int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_updateApproximationScheme",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_updateApproximationScheme" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_updateApproximationScheme" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  {
+    try {
+      (arg1)->updateApproximationScheme(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_updateApproximationScheme__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_updateApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_updateApproximationScheme" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->updateApproximationScheme();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_updateApproximationScheme(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = args ? PyObject_Length(args) : 0;
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ApproximationScheme, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_ApproximationScheme_updateApproximationScheme__SWIG_1(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ApproximationScheme, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ApproximationScheme_updateApproximationScheme__SWIG_0(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ApproximationScheme_updateApproximationScheme'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ApproximationScheme::updateApproximationScheme(unsigned int)\n"
+    "    gum::ApproximationScheme::updateApproximationScheme()\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_remainingBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_remainingBurnIn",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_remainingBurnIn" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      result = (gum::Size)(arg1)->remainingBurnIn();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_stopApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ApproximationScheme_stopApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_stopApproximationScheme" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  {
+    try {
+      (arg1)->stopApproximationScheme();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ApproximationScheme_continueApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ApproximationScheme *arg1 = (gum::ApproximationScheme *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ApproximationScheme_continueApproximationScheme",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ApproximationScheme, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ApproximationScheme_continueApproximationScheme" "', argument " "1"" of type '" "gum::ApproximationScheme *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ApproximationScheme * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ApproximationScheme_continueApproximationScheme" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = (bool)(arg1)->continueApproximationScheme(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ApproximationScheme_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__ApproximationScheme, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_randomDistribution_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::Size arg1 ;
@@ -65297,6 +66615,35 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_GibbsInference_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_GibbsInference_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::GibbsInference< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_GibbsInference_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
@@ -68552,6 +69899,35 @@ SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_history(PyObject *SWIGU
     }
   }
   resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::LoopyBeliefPropagation< double > *arg1 = (gum::LoopyBeliefPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::LoopyBeliefPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::LoopyBeliefPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_LoopyBeliefPropagation_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::LoopyBeliefPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -71939,6 +73315,35 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_GibbsKL_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::GibbsKL< double > *arg1 = (gum::GibbsKL< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsKL_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsKLT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsKL_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::GibbsKL< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::GibbsKL< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_GibbsKL_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::GibbsKL< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *GibbsKL_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
@@ -73973,7 +75378,7 @@ SWIGINTERN PyObject *_wrap_new_CNMonteCarloSampling_double(PyObject *SWIGUNUSEDP
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *result = 0 ;
+  gum::credal::CNMonteCarloSampling< double > *result = 0 ;
   
   if (!PyArg_ParseTuple(args,(char *)"O:new_CNMonteCarloSampling_double",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_gum__credal__CredalNetT_double_t,  0  | 0);
@@ -73986,7 +75391,7 @@ SWIGINTERN PyObject *_wrap_new_CNMonteCarloSampling_double(PyObject *SWIGUNUSEDP
   arg1 = reinterpret_cast< gum::credal::CredalNet< double > * >(argp1);
   {
     try {
-      result = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *)new gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > >((gum::credal::CredalNet< double > const &)*arg1);
+      result = (gum::credal::CNMonteCarloSampling< double > *)new gum::credal::CNMonteCarloSampling< double >((gum::credal::CredalNet< double > const &)*arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74001,7 +75406,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_delete_CNMonteCarloSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74009,9 +75414,9 @@ SWIGINTERN PyObject *_wrap_delete_CNMonteCarloSampling_double(PyObject *SWIGUNUS
   if (!PyArg_ParseTuple(args,(char *)"O:delete_CNMonteCarloSampling_double",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CNMonteCarloSampling_double" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CNMonteCarloSampling_double" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
       delete arg1;
@@ -74029,7 +75434,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74037,9 +75442,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_makeInference(PyObject *S
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_makeInference",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_makeInference" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_makeInference" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
       (arg1)->makeInference();
@@ -74057,7 +75462,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_insertEvidenceFile(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74068,9 +75473,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_insertEvidenceFile(PyObje
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_insertEvidenceFile",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_insertEvidenceFile" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_insertEvidenceFile" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
@@ -74101,7 +75506,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setVerbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74113,9 +75518,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setVerbosity(PyObject *SW
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_setVerbosity",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setVerbosity" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setVerbosity" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_bool(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_setVerbosity" "', argument " "2"" of type '" "bool""'");
@@ -74123,7 +75528,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setVerbosity(PyObject *SW
   arg2 = static_cast< bool >(val2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setVerbosity(arg1,arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setVerbosity(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74138,7 +75543,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74150,9 +75555,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setEpsilon(PyObject *SWIG
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_setEpsilon",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setEpsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setEpsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_setEpsilon" "', argument " "2"" of type '" "double""'");
@@ -74160,7 +75565,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setEpsilon(PyObject *SWIG
   arg2 = static_cast< double >(val2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setEpsilon(arg1,arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setEpsilon(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74175,7 +75580,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74187,9 +75592,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMinEpsilonRate(PyObjec
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_setMinEpsilonRate",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setMinEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setMinEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_setMinEpsilonRate" "', argument " "2"" of type '" "double""'");
@@ -74197,7 +75602,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMinEpsilonRate(PyObjec
   arg2 = static_cast< double >(val2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setMinEpsilonRate(arg1,arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMinEpsilonRate(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74212,7 +75617,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   gum::Size arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74224,9 +75629,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMaxIter(PyObject *SWIG
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_setMaxIter",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setMaxIter" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setMaxIter" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_setMaxIter" "', argument " "2"" of type '" "gum::Size""'");
@@ -74234,7 +75639,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMaxIter(PyObject *SWIG
   arg2 = static_cast< gum::Size >(val2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setMaxIter(arg1,arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMaxIter(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74249,7 +75654,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74261,9 +75666,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMaxTime(PyObject *SWIG
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_setMaxTime",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setMaxTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setMaxTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_setMaxTime" "', argument " "2"" of type '" "double""'");
@@ -74271,7 +75676,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setMaxTime(PyObject *SWIG
   arg2 = static_cast< double >(val2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setMaxTime(arg1,arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setMaxTime(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74286,7 +75691,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setPeriodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   gum::Size arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74298,9 +75703,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setPeriodSize(PyObject *S
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_setPeriodSize",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setPeriodSize" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setPeriodSize" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_setPeriodSize" "', argument " "2"" of type '" "gum::Size""'");
@@ -74308,7 +75713,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setPeriodSize(PyObject *S
   arg2 = static_cast< gum::Size >(val2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setPeriodSize(arg1,arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setPeriodSize(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74323,7 +75728,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   gum::Size arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74335,9 +75740,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setBurnIn(PyObject *SWIGU
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_setBurnIn",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setBurnIn" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setBurnIn" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_setBurnIn" "', argument " "2"" of type '" "gum::Size""'");
@@ -74345,7 +75750,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setBurnIn(PyObject *SWIGU
   arg2 = static_cast< gum::Size >(val2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setBurnIn(arg1,arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setBurnIn(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74360,7 +75765,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_verbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74369,12 +75774,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_verbosity(PyObject *SWIGU
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_verbosity",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_verbosity" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_verbosity" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (bool)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__verbosity((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (bool)gum_credal_CNMonteCarloSampling_Sl_double_Sg__verbosity((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74389,7 +75794,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_epsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74398,12 +75803,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_epsilon(PyObject *SWIGUNU
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_epsilon",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_epsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_epsilon" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (double)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__epsilon((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (double)gum_credal_CNMonteCarloSampling_Sl_double_Sg__epsilon((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74418,7 +75823,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_minEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74427,12 +75832,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_minEpsilonRate(PyObject *
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_minEpsilonRate",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_minEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_minEpsilonRate" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (double)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__minEpsilonRate((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (double)gum_credal_CNMonteCarloSampling_Sl_double_Sg__minEpsilonRate((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74447,7 +75852,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_maxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74456,12 +75861,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_maxIter(PyObject *SWIGUNU
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_maxIter",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_maxIter" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_maxIter" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__maxIter((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (gum::Size)gum_credal_CNMonteCarloSampling_Sl_double_Sg__maxIter((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74476,7 +75881,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_maxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74485,12 +75890,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_maxTime(PyObject *SWIGUNU
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_maxTime",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_maxTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_maxTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (double)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__maxTime((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (double)gum_credal_CNMonteCarloSampling_Sl_double_Sg__maxTime((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74505,7 +75910,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_periodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74514,12 +75919,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_periodSize(PyObject *SWIG
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_periodSize",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_periodSize" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_periodSize" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__periodSize((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (gum::Size)gum_credal_CNMonteCarloSampling_Sl_double_Sg__periodSize((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74534,7 +75939,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_burnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74543,12 +75948,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_burnIn(PyObject *SWIGUNUS
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_burnIn",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_burnIn" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_burnIn" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__burnIn((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (gum::Size)gum_credal_CNMonteCarloSampling_Sl_double_Sg__burnIn((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74563,7 +75968,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_nbrIterations(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74572,12 +75977,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_nbrIterations(PyObject *S
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_nbrIterations",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_nbrIterations" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_nbrIterations" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__nbrIterations((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (gum::Size)gum_credal_CNMonteCarloSampling_Sl_double_Sg__nbrIterations((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74592,7 +75997,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_currentTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74601,12 +76006,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_currentTime(PyObject *SWI
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_currentTime",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_currentTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_currentTime" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (double)gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__currentTime((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (double)gum_credal_CNMonteCarloSampling_Sl_double_Sg__currentTime((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74621,7 +76026,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_messageApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74630,12 +76035,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_messageApproximationSchem
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_messageApproximationScheme",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_messageApproximationScheme" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_messageApproximationScheme" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__messageApproximationScheme((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = gum_credal_CNMonteCarloSampling_Sl_double_Sg__messageApproximationScheme((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74650,7 +76055,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_history(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
@@ -74659,12 +76064,12 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_history(PyObject *SWIGUNU
   if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_history",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_history" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_history" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     try {
-      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__history((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1);
+      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sg__history((gum::credal::CNMonteCarloSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74677,9 +76082,38 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:CNMonteCarloSampling_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_credal_CNMonteCarloSampling_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::credal::CNMonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setRepetitiveInd(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74691,9 +76125,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setRepetitiveInd(PyObject
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_setRepetitiveInd",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setRepetitiveInd" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_setRepetitiveInd" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_bool(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_setRepetitiveInd" "', argument " "2"" of type '" "bool""'");
@@ -74701,7 +76135,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_setRepetitiveInd(PyObject
   arg2 = static_cast< bool >(val2);
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__setRepetitiveInd(arg1,arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__setRepetitiveInd(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74716,7 +76150,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMax__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74729,9 +76163,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMax__SWIG_0(PyObj
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_marginalMax",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_marginalMax" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_marginalMax" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_marginalMax" "', argument " "2"" of type '" "gum::NodeId""'");
@@ -74739,7 +76173,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMax__SWIG_0(PyObj
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__marginalMax__SWIG_0((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1,arg2);
+      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMax__SWIG_0((gum::credal::CNMonteCarloSampling< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74754,7 +76188,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMin__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74767,9 +76201,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMin__SWIG_0(PyObj
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_marginalMin",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_marginalMin" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_marginalMin" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CNMonteCarloSampling_double_marginalMin" "', argument " "2"" of type '" "gum::NodeId""'");
@@ -74777,7 +76211,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMin__SWIG_0(PyObj
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__marginalMin__SWIG_0((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1,arg2);
+      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMin__SWIG_0((gum::credal::CNMonteCarloSampling< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74792,7 +76226,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMax__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74803,9 +76237,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMax__SWIG_1(PyObj
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_marginalMax",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_marginalMax" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_marginalMax" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj1, &ptr);
@@ -74817,7 +76251,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMax__SWIG_1(PyObj
   }
   {
     try {
-      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__marginalMax__SWIG_1((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1,arg2);
+      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMax__SWIG_1((gum::credal::CNMonteCarloSampling< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74874,15 +76308,15 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMax(PyObject *sel
 fail:
   SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'CNMonteCarloSampling_double_marginalMax'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > >::marginalMax(gum::NodeId const) const\n"
-    "    gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > >::marginalMax(std::string const) const\n");
+    "    gum::credal::CNMonteCarloSampling< double >::marginalMax(gum::NodeId const) const\n"
+    "    gum::credal::CNMonteCarloSampling< double >::marginalMax(std::string const) const\n");
   return 0;
 }
 
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMin__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74893,9 +76327,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMin__SWIG_1(PyObj
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_marginalMin",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_marginalMin" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_marginalMin" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj1, &ptr);
@@ -74907,7 +76341,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMin__SWIG_1(PyObj
   }
   {
     try {
-      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__marginalMin__SWIG_1((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1,arg2);
+      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sg__marginalMin__SWIG_1((gum::credal::CNMonteCarloSampling< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -74964,15 +76398,15 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_marginalMin(PyObject *sel
 fail:
   SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'CNMonteCarloSampling_double_marginalMin'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > >::marginalMin(gum::NodeId const) const\n"
-    "    gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > >::marginalMin(std::string const) const\n");
+    "    gum::credal::CNMonteCarloSampling< double >::marginalMin(gum::NodeId const) const\n"
+    "    gum::credal::CNMonteCarloSampling< double >::marginalMin(std::string const) const\n");
   return 0;
 }
 
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_insertModalsFile(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -74983,9 +76417,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_insertModalsFile(PyObject
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_insertModalsFile",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_insertModalsFile" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_insertModalsFile" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
@@ -74999,7 +76433,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_insertModalsFile(PyObject
   }
   {
     try {
-      gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__insertModalsFile(arg1,(std::string const &)*arg2);
+      gum_credal_CNMonteCarloSampling_Sl_double_Sg__insertModalsFile(arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -75016,7 +76450,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_dynamicExpMax(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -75028,9 +76462,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_dynamicExpMax(PyObject *S
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_dynamicExpMax",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_dynamicExpMax" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_dynamicExpMax" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
@@ -75044,7 +76478,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_dynamicExpMax(PyObject *S
   }
   {
     try {
-      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__dynamicExpMax((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1,(std::string const &)*arg2);
+      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sg__dynamicExpMax((gum::credal::CNMonteCarloSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -75061,7 +76495,7 @@ fail:
 
 SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_dynamicExpMin(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *arg1 = (gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *) 0 ;
+  gum::credal::CNMonteCarloSampling< double > *arg1 = (gum::credal::CNMonteCarloSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -75073,9 +76507,9 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_dynamicExpMin(PyObject *S
   if (!PyArg_ParseTuple(args,(char *)"OO:CNMonteCarloSampling_double_dynamicExpMin",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_dynamicExpMin" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNMonteCarloSampling_double_dynamicExpMin" "', argument " "1"" of type '" "gum::credal::CNMonteCarloSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > * >(argp1);
+  arg1 = reinterpret_cast< gum::credal::CNMonteCarloSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
@@ -75089,7 +76523,7 @@ SWIGINTERN PyObject *_wrap_CNMonteCarloSampling_double_dynamicExpMin(PyObject *S
   }
   {
     try {
-      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sc_gum_LazyPropagation_Sl_double_Sg__Sg__dynamicExpMin((gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *)arg1,(std::string const &)*arg2);
+      result = (std::vector< double,std::allocator< double > > *) &gum_credal_CNMonteCarloSampling_Sl_double_Sg__dynamicExpMin((gum::credal::CNMonteCarloSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -75999,6 +77433,35 @@ SWIGINTERN PyObject *_wrap_CNLoopyPropagation_double_history(PyObject *SWIGUNUSE
     }
   }
   resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CNLoopyPropagation_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::credal::CNLoopyPropagation< double > *arg1 = (gum::credal::CNLoopyPropagation< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:CNLoopyPropagation_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CNLoopyPropagation_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::credal::CNLoopyPropagation< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::credal::CNLoopyPropagation< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_credal_CNLoopyPropagation_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::credal::CNLoopyPropagation< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -80763,6 +82226,35 @@ SWIGINTERN PyObject *_wrap_BNLearner_double_history(PyObject *SWIGUNUSEDPARM(sel
     }
   }
   resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_BNLearner_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::learning::BNLearner< double > *arg1 = (gum::learning::BNLearner< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:BNLearner_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__learning__BNLearnerT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BNLearner_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::learning::BNLearner< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::learning::BNLearner< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_learning_BNLearner_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::learning::BNLearner< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -88221,6 +89713,326 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"DAGmodel_swigregister", DAGmodel_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_ApproximationScheme", _wrap_new_ApproximationScheme, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme(bool v=False)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"v: bool\n"
+		"\n"
+		"new_ApproximationScheme() -> ApproximationScheme\n"
+		""},
+	 { (char *)"delete_ApproximationScheme", _wrap_delete_ApproximationScheme, METH_VARARGS, (char *)"\n"
+		"delete_ApproximationScheme(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_setEpsilon", _wrap_ApproximationScheme_setEpsilon, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_setEpsilon(ApproximationScheme self, double eps)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"eps: double\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_epsilon", _wrap_ApproximationScheme_epsilon, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_epsilon(ApproximationScheme self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_disableEpsilon", _wrap_ApproximationScheme_disableEpsilon, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_disableEpsilon(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_enableEpsilon", _wrap_ApproximationScheme_enableEpsilon, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_enableEpsilon(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_isEnabledEpsilon", _wrap_ApproximationScheme_isEnabledEpsilon, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_isEnabledEpsilon(ApproximationScheme self) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_setMinEpsilonRate", _wrap_ApproximationScheme_setMinEpsilonRate, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_setMinEpsilonRate(ApproximationScheme self, double rate)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"rate: double\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_minEpsilonRate", _wrap_ApproximationScheme_minEpsilonRate, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_minEpsilonRate(ApproximationScheme self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_disableMinEpsilonRate", _wrap_ApproximationScheme_disableMinEpsilonRate, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_disableMinEpsilonRate(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_enableMinEpsilonRate", _wrap_ApproximationScheme_enableMinEpsilonRate, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_enableMinEpsilonRate(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_isEnabledMinEpsilonRate", _wrap_ApproximationScheme_isEnabledMinEpsilonRate, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_isEnabledMinEpsilonRate(ApproximationScheme self) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_setMaxIter", _wrap_ApproximationScheme_setMaxIter, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_setMaxIter(ApproximationScheme self, gum::Size max)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"max: gum::Size\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_maxIter", _wrap_ApproximationScheme_maxIter, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_maxIter(ApproximationScheme self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_disableMaxIter", _wrap_ApproximationScheme_disableMaxIter, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_disableMaxIter(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_enableMaxIter", _wrap_ApproximationScheme_enableMaxIter, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_enableMaxIter(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_isEnabledMaxIter", _wrap_ApproximationScheme_isEnabledMaxIter, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_isEnabledMaxIter(ApproximationScheme self) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_setMaxTime", _wrap_ApproximationScheme_setMaxTime, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_setMaxTime(ApproximationScheme self, double timeout)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"timeout: double\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_maxTime", _wrap_ApproximationScheme_maxTime, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_maxTime(ApproximationScheme self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_currentTime", _wrap_ApproximationScheme_currentTime, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_currentTime(ApproximationScheme self) -> double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_disableMaxTime", _wrap_ApproximationScheme_disableMaxTime, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_disableMaxTime(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_enableMaxTime", _wrap_ApproximationScheme_enableMaxTime, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_enableMaxTime(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_isEnabledMaxTime", _wrap_ApproximationScheme_isEnabledMaxTime, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_isEnabledMaxTime(ApproximationScheme self) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_setPeriodSize", _wrap_ApproximationScheme_setPeriodSize, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_setPeriodSize(ApproximationScheme self, gum::Size p)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"p: gum::Size\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_periodSize", _wrap_ApproximationScheme_periodSize, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_periodSize(ApproximationScheme self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_setBurnIn", _wrap_ApproximationScheme_setBurnIn, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_setBurnIn(ApproximationScheme self, gum::Size b)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"b: gum::Size\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_burnIn", _wrap_ApproximationScheme_burnIn, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_burnIn(ApproximationScheme self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_setVerbosity", _wrap_ApproximationScheme_setVerbosity, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_setVerbosity(ApproximationScheme self, bool v)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"v: bool\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_verbosity", _wrap_ApproximationScheme_verbosity, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_verbosity(ApproximationScheme self) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_stateApproximationScheme", _wrap_ApproximationScheme_stateApproximationScheme, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_stateApproximationScheme(ApproximationScheme self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_nbrIterations", _wrap_ApproximationScheme_nbrIterations, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_nbrIterations(ApproximationScheme self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_history", _wrap_ApproximationScheme_history, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_history(ApproximationScheme self) -> Vector_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme const *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_initApproximationScheme", _wrap_ApproximationScheme_initApproximationScheme, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_initApproximationScheme(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_startOfPeriod", _wrap_ApproximationScheme_startOfPeriod, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_startOfPeriod(ApproximationScheme self) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_updateApproximationScheme", _wrap_ApproximationScheme_updateApproximationScheme, METH_VARARGS, (char *)"\n"
+		"updateApproximationScheme(unsigned int incr=1)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"incr: unsigned int\n"
+		"\n"
+		"ApproximationScheme_updateApproximationScheme(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_remainingBurnIn", _wrap_ApproximationScheme_remainingBurnIn, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_remainingBurnIn(ApproximationScheme self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_stopApproximationScheme", _wrap_ApproximationScheme_stopApproximationScheme, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_stopApproximationScheme(ApproximationScheme self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_continueApproximationScheme", _wrap_ApproximationScheme_continueApproximationScheme, METH_VARARGS, (char *)"\n"
+		"ApproximationScheme_continueApproximationScheme(ApproximationScheme self, double error) -> bool\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::ApproximationScheme *\n"
+		"error: double\n"
+		"\n"
+		""},
+	 { (char *)"ApproximationScheme_swigregister", ApproximationScheme_swigregister, METH_VARARGS, NULL},
 	 { (char *)"randomDistribution_double", _wrap_randomDistribution_double, METH_VARARGS, (char *)"\n"
 		"randomDistribution_double(gum::Size n) -> Vector_double\n"
 		"\n"
@@ -92434,6 +94246,14 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::GibbsInference< double > const *\n"
 		"\n"
 		""},
+	 { (char *)"GibbsInference_double_asIApproximationSchemeConfiguration", _wrap_GibbsInference_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"\n"
+		"GibbsInference_double_asIApproximationSchemeConfiguration(GibbsInference_double self) -> IApproximationSchemeConfiguration\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::GibbsInference< double > const *\n"
+		"\n"
+		""},
 	 { (char *)"GibbsInference_double_makeInference", _wrap_GibbsInference_double_makeInference, METH_VARARGS, (char *)"\n"
 		"GibbsInference_double_makeInference(GibbsInference_double self)\n"
 		"\n"
@@ -92955,6 +94775,14 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { (char *)"LoopyBeliefPropagation_double_history", _wrap_LoopyBeliefPropagation_double_history, METH_VARARGS, (char *)"\n"
 		"LoopyBeliefPropagation_double_history(LoopyBeliefPropagation_double self) -> Vector_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::LoopyBeliefPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration", _wrap_LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"\n"
+		"LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration(LoopyBeliefPropagation_double self) -> IApproximationSchemeConfiguration\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -93484,6 +95312,14 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::GibbsKL< double > const *\n"
 		"\n"
 		""},
+	 { (char *)"GibbsKL_double_asIApproximationSchemeConfiguration", _wrap_GibbsKL_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"\n"
+		"GibbsKL_double_asIApproximationSchemeConfiguration(GibbsKL_double self) -> IApproximationSchemeConfiguration\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::GibbsKL< double > const *\n"
+		"\n"
+		""},
 	 { (char *)"GibbsKL_double_swigregister", GibbsKL_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CredalNet_double", _wrap_new_CredalNet_double, METH_VARARGS, (char *)"\n"
 		"CredalNet_double()\n"
@@ -93838,7 +95674,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_makeInference", _wrap_CNMonteCarloSampling_double_makeInference, METH_VARARGS, (char *)"\n"
@@ -93846,7 +95682,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_insertEvidenceFile", _wrap_CNMonteCarloSampling_double_insertEvidenceFile, METH_VARARGS, (char *)"\n"
@@ -93854,7 +95690,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"path: std::string const &\n"
 		"\n"
 		""},
@@ -93863,7 +95699,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"v: bool\n"
 		"\n"
 		""},
@@ -93872,7 +95708,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"eps: double\n"
 		"\n"
 		""},
@@ -93881,7 +95717,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"rate: double\n"
 		"\n"
 		""},
@@ -93890,7 +95726,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"max: gum::Size\n"
 		"\n"
 		""},
@@ -93899,7 +95735,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"timeout: double\n"
 		"\n"
 		""},
@@ -93908,7 +95744,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"p: gum::Size\n"
 		"\n"
 		""},
@@ -93917,7 +95753,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"b: gum::Size\n"
 		"\n"
 		""},
@@ -93926,7 +95762,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_epsilon", _wrap_CNMonteCarloSampling_double_epsilon, METH_VARARGS, (char *)"\n"
@@ -93934,7 +95770,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_minEpsilonRate", _wrap_CNMonteCarloSampling_double_minEpsilonRate, METH_VARARGS, (char *)"\n"
@@ -93942,7 +95778,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_maxIter", _wrap_CNMonteCarloSampling_double_maxIter, METH_VARARGS, (char *)"\n"
@@ -93950,7 +95786,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_maxTime", _wrap_CNMonteCarloSampling_double_maxTime, METH_VARARGS, (char *)"\n"
@@ -93958,7 +95794,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_periodSize", _wrap_CNMonteCarloSampling_double_periodSize, METH_VARARGS, (char *)"\n"
@@ -93966,7 +95802,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_burnIn", _wrap_CNMonteCarloSampling_double_burnIn, METH_VARARGS, (char *)"\n"
@@ -93974,7 +95810,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_nbrIterations", _wrap_CNMonteCarloSampling_double_nbrIterations, METH_VARARGS, (char *)"\n"
@@ -93982,7 +95818,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_currentTime", _wrap_CNMonteCarloSampling_double_currentTime, METH_VARARGS, (char *)"\n"
@@ -93990,7 +95826,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_messageApproximationScheme", _wrap_CNMonteCarloSampling_double_messageApproximationScheme, METH_VARARGS, (char *)"\n"
@@ -93998,7 +95834,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_history", _wrap_CNMonteCarloSampling_double_history, METH_VARARGS, (char *)"\n"
@@ -94006,7 +95842,15 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"CNMonteCarloSampling_double_asIApproximationSchemeConfiguration", _wrap_CNMonteCarloSampling_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"\n"
+		"CNMonteCarloSampling_double_asIApproximationSchemeConfiguration(CNMonteCarloSampling_double self) -> IApproximationSchemeConfiguration\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"\n"
 		""},
 	 { (char *)"CNMonteCarloSampling_double_setRepetitiveInd", _wrap_CNMonteCarloSampling_double_setRepetitiveInd, METH_VARARGS, (char *)"\n"
@@ -94014,7 +95858,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"flag: bool const\n"
 		"\n"
 		""},
@@ -94029,7 +95873,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"name: std::string const\n"
 		"\n"
 		""},
@@ -94044,7 +95888,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"name: std::string const\n"
 		"\n"
 		""},
@@ -94053,7 +95897,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > *\n"
 		"path: std::string const &\n"
 		"\n"
 		""},
@@ -94062,7 +95906,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"varName: std::string const &\n"
 		"\n"
 		""},
@@ -94071,7 +95915,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Parameters\n"
 		"----------\n"
-		"self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *\n"
+		"self: gum::credal::CNMonteCarloSampling< double > const *\n"
 		"varName: std::string const &\n"
 		"\n"
 		""},
@@ -94285,6 +96129,14 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { (char *)"CNLoopyPropagation_double_history", _wrap_CNLoopyPropagation_double_history, METH_VARARGS, (char *)"\n"
 		"CNLoopyPropagation_double_history(CNLoopyPropagation_double self) -> Vector_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::credal::CNLoopyPropagation< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"CNLoopyPropagation_double_asIApproximationSchemeConfiguration", _wrap_CNLoopyPropagation_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"\n"
+		"CNLoopyPropagation_double_asIApproximationSchemeConfiguration(CNLoopyPropagation_double self) -> IApproximationSchemeConfiguration\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -95086,6 +96938,14 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { (char *)"BNLearner_double_history", _wrap_BNLearner_double_history, METH_VARARGS, (char *)"\n"
 		"BNLearner_double_history(BNLearner_double self) -> Vector_double\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::learning::BNLearner< double > const *\n"
+		"\n"
+		""},
+	 { (char *)"BNLearner_double_asIApproximationSchemeConfiguration", _wrap_BNLearner_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"\n"
+		"BNLearner_double_asIApproximationSchemeConfiguration(BNLearner_double self) -> IApproximationSchemeConfiguration\n"
 		"\n"
 		"Parameters\n"
 		"----------\n"
@@ -95941,7 +97801,7 @@ static swig_type_info _swigt__p_gum__VariableNodeMap = {"_p_gum__VariableNodeMap
 static swig_type_info _swigt__p_gum__WrongClassElement = {"_p_gum__WrongClassElement", "gum::WrongClassElement *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__WrongType = {"_p_gum__WrongType", "gum::WrongType *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__credal__CNLoopyPropagationT_double_t = {"_p_gum__credal__CNLoopyPropagationT_double_t", "gum::credal::CNLoopyPropagation< double > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t = {"_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t", "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t = {"_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t", "gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *|gum::credal::CNMonteCarloSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__credal__CredalNetT_double_t = {"_p_gum__credal__CredalNetT_double_t", "gum::credal::CredalNet< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__BNLearnerT_double_t = {"_p_gum__learning__BNLearnerT_double_t", "gum::learning::BNLearner< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__learning__DatabaseVectInRAM = {"_p_gum__learning__DatabaseVectInRAM", "gum::learning::DatabaseVectInRAM *", 0, 0, (void*)0, 0};

@@ -321,7 +321,7 @@ def animApproximationScheme(apsc, scale=np.log10):
   from IPython.display import clear_output, display
   f = plt.gcf()
 
-  h = gum.PythonApproximationListener(apsc)
+  h = gum.PythonApproximationListener(apsc.asIApproximationSchemeConfiguration())
   apsc.setVerbosity(True)
   apsc.listener = h
 

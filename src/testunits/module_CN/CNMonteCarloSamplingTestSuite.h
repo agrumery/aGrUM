@@ -123,8 +123,8 @@ namespace gum_tests {
     void testCNMonteCarloSamplingInference() {
       initCNet();
 
-      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>> mcs(
-          *cn );
+      // using gum::LazyPropagation<double> by default
+      gum::credal::CNMonteCarloSampling<double> mcs( *cn );
 
       // evidence from file
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -205,7 +205,7 @@ namespace gum_tests {
 
       typedef std::vector<double> exp;
 
-      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>> mcs(
+      gum::credal::CNMonteCarloSampling<double> mcs(
           *cn );
 
       //////////////////////////////////////////////////////
@@ -263,7 +263,7 @@ namespace gum_tests {
       initDCNet();
       typedef std::vector<double> exp;
 
-      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>> mcs(
+      gum::credal::CNMonteCarloSampling<double> mcs(
           *cn );
 
       //////////////////////////////////////////////////////
@@ -317,7 +317,7 @@ namespace gum_tests {
     // with dynamic network
     void testCNMonteCarloSamplingListener() {
       initDCNet();
-      gum::credal::CNMonteCarloSampling<double, gum::LazyPropagation<double>> mcs(
+      gum::credal::CNMonteCarloSampling<double> mcs(
           *cn );
 
       // evidence from file

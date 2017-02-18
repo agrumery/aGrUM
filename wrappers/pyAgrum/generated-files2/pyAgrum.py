@@ -7909,6 +7909,473 @@ cvar = _pyAgrum.cvar
 __list_end_safe = cvar.__list_end_safe
 __list_end = cvar.__list_end
 
+class ApproximationScheme(_object):
+    """Proxy of C++ gum::ApproximationScheme class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, ApproximationScheme, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, ApproximationScheme, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, v=False):
+        """
+        __init__(gum::ApproximationScheme self, bool v=False) -> ApproximationScheme
+
+        Parameters
+        ----------
+        v: bool
+
+        __init__(gum::ApproximationScheme self) -> ApproximationScheme
+        """
+        this = _pyAgrum.new_ApproximationScheme(v)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_ApproximationScheme
+    __del__ = lambda self: None
+
+    def setEpsilon(self, eps):
+        """
+        setEpsilon(ApproximationScheme self, double eps)
+
+        Parameters
+        ----------
+        eps: double
+
+        """
+        return _pyAgrum.ApproximationScheme_setEpsilon(self, eps)
+
+
+    def epsilon(self):
+        """
+        epsilon(ApproximationScheme self) -> double
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_epsilon(self)
+
+
+    def disableEpsilon(self):
+        """
+        disableEpsilon(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_disableEpsilon(self)
+
+
+    def enableEpsilon(self):
+        """
+        enableEpsilon(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_enableEpsilon(self)
+
+
+    def isEnabledEpsilon(self):
+        """
+        isEnabledEpsilon(ApproximationScheme self) -> bool
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_isEnabledEpsilon(self)
+
+
+    def setMinEpsilonRate(self, rate):
+        """
+        setMinEpsilonRate(ApproximationScheme self, double rate)
+
+        Parameters
+        ----------
+        rate: double
+
+        """
+        return _pyAgrum.ApproximationScheme_setMinEpsilonRate(self, rate)
+
+
+    def minEpsilonRate(self):
+        """
+        minEpsilonRate(ApproximationScheme self) -> double
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_minEpsilonRate(self)
+
+
+    def disableMinEpsilonRate(self):
+        """
+        disableMinEpsilonRate(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_disableMinEpsilonRate(self)
+
+
+    def enableMinEpsilonRate(self):
+        """
+        enableMinEpsilonRate(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_enableMinEpsilonRate(self)
+
+
+    def isEnabledMinEpsilonRate(self):
+        """
+        isEnabledMinEpsilonRate(ApproximationScheme self) -> bool
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_isEnabledMinEpsilonRate(self)
+
+
+    def setMaxIter(self, max):
+        """
+        setMaxIter(ApproximationScheme self, gum::Size max)
+
+        Parameters
+        ----------
+        max: gum::Size
+
+        """
+        return _pyAgrum.ApproximationScheme_setMaxIter(self, max)
+
+
+    def maxIter(self):
+        """
+        maxIter(ApproximationScheme self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_maxIter(self)
+
+
+    def disableMaxIter(self):
+        """
+        disableMaxIter(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_disableMaxIter(self)
+
+
+    def enableMaxIter(self):
+        """
+        enableMaxIter(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_enableMaxIter(self)
+
+
+    def isEnabledMaxIter(self):
+        """
+        isEnabledMaxIter(ApproximationScheme self) -> bool
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_isEnabledMaxIter(self)
+
+
+    def setMaxTime(self, timeout):
+        """
+        setMaxTime(ApproximationScheme self, double timeout)
+
+        Parameters
+        ----------
+        timeout: double
+
+        """
+        return _pyAgrum.ApproximationScheme_setMaxTime(self, timeout)
+
+
+    def maxTime(self):
+        """
+        maxTime(ApproximationScheme self) -> double
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_maxTime(self)
+
+
+    def currentTime(self):
+        """
+        currentTime(ApproximationScheme self) -> double
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_currentTime(self)
+
+
+    def disableMaxTime(self):
+        """
+        disableMaxTime(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_disableMaxTime(self)
+
+
+    def enableMaxTime(self):
+        """
+        enableMaxTime(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_enableMaxTime(self)
+
+
+    def isEnabledMaxTime(self):
+        """
+        isEnabledMaxTime(ApproximationScheme self) -> bool
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_isEnabledMaxTime(self)
+
+
+    def setPeriodSize(self, p):
+        """
+        setPeriodSize(ApproximationScheme self, gum::Size p)
+
+        Parameters
+        ----------
+        p: gum::Size
+
+        """
+        return _pyAgrum.ApproximationScheme_setPeriodSize(self, p)
+
+
+    def periodSize(self):
+        """
+        periodSize(ApproximationScheme self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_periodSize(self)
+
+
+    def setBurnIn(self, b):
+        """
+        setBurnIn(ApproximationScheme self, gum::Size b)
+
+        Parameters
+        ----------
+        b: gum::Size
+
+        """
+        return _pyAgrum.ApproximationScheme_setBurnIn(self, b)
+
+
+    def burnIn(self):
+        """
+        burnIn(ApproximationScheme self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_burnIn(self)
+
+
+    def setVerbosity(self, v):
+        """
+        setVerbosity(ApproximationScheme self, bool v)
+
+        Parameters
+        ----------
+        v: bool
+
+        """
+        return _pyAgrum.ApproximationScheme_setVerbosity(self, v)
+
+
+    def verbosity(self):
+        """
+        verbosity(ApproximationScheme self) -> bool
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_verbosity(self)
+
+
+    def stateApproximationScheme(self):
+        """
+        stateApproximationScheme(ApproximationScheme self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_stateApproximationScheme(self)
+
+
+    def nbrIterations(self):
+        """
+        nbrIterations(ApproximationScheme self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_nbrIterations(self)
+
+
+    def history(self):
+        """
+        history(ApproximationScheme self) -> Vector_double
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme const *
+
+        """
+        return _pyAgrum.ApproximationScheme_history(self)
+
+
+    def initApproximationScheme(self):
+        """
+        initApproximationScheme(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_initApproximationScheme(self)
+
+
+    def startOfPeriod(self):
+        """
+        startOfPeriod(ApproximationScheme self) -> bool
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_startOfPeriod(self)
+
+
+    def updateApproximationScheme(self, incr=1):
+        """
+        updateApproximationScheme(ApproximationScheme self, unsigned int incr=1)
+
+        Parameters
+        ----------
+        incr: unsigned int
+
+        updateApproximationScheme(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_updateApproximationScheme(self, incr)
+
+
+    def remainingBurnIn(self):
+        """
+        remainingBurnIn(ApproximationScheme self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_remainingBurnIn(self)
+
+
+    def stopApproximationScheme(self):
+        """
+        stopApproximationScheme(ApproximationScheme self)
+
+        Parameters
+        ----------
+        self: gum::ApproximationScheme *
+
+        """
+        return _pyAgrum.ApproximationScheme_stopApproximationScheme(self)
+
+
+    def continueApproximationScheme(self, error):
+        """
+        continueApproximationScheme(ApproximationScheme self, double error) -> bool
+
+        Parameters
+        ----------
+        error: double
+
+        """
+        return _pyAgrum.ApproximationScheme_continueApproximationScheme(self, error)
+
+ApproximationScheme_swigregister = _pyAgrum.ApproximationScheme_swigregister
+ApproximationScheme_swigregister(ApproximationScheme)
+
 RelevantPotentialsFinderType_FIND_ALL = _pyAgrum.RelevantPotentialsFinderType_FIND_ALL
 RelevantPotentialsFinderType_DSEP_BAYESBALL_NODES = _pyAgrum.RelevantPotentialsFinderType_DSEP_BAYESBALL_NODES
 RelevantPotentialsFinderType_DSEP_BAYESBALL_POTENTIALS = _pyAgrum.RelevantPotentialsFinderType_DSEP_BAYESBALL_POTENTIALS
@@ -13288,12 +13755,16 @@ class VariableElimination_double(_object):
 VariableElimination_double_swigregister = _pyAgrum.VariableElimination_double_swigregister
 VariableElimination_double_swigregister(VariableElimination_double)
 
-class GibbsInference_double(_object):
+class GibbsInference_double(ApproximationScheme):
     """Proxy of C++ gum::GibbsInference<(double)> class."""
 
     __swig_setmethods__ = {}
+    for _s in [ApproximationScheme]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, GibbsInference_double, name, value)
     __swig_getmethods__ = {}
+    for _s in [ApproximationScheme]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, GibbsInference_double, name)
     __repr__ = _swig_repr
 
@@ -13595,6 +14066,18 @@ class GibbsInference_double(_object):
 
         """
         return _pyAgrum.GibbsInference_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """
+        asIApproximationSchemeConfiguration(GibbsInference_double self) -> IApproximationSchemeConfiguration
+
+        Parameters
+        ----------
+        self: gum::GibbsInference< double > const *
+
+        """
+        return _pyAgrum.GibbsInference_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
@@ -13979,12 +14462,16 @@ class GibbsInference_double(_object):
 GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)
 
-class LoopyBeliefPropagation_double(_object):
+class LoopyBeliefPropagation_double(ApproximationScheme):
     """Proxy of C++ gum::LoopyBeliefPropagation<(double)> class."""
 
     __swig_setmethods__ = {}
+    for _s in [ApproximationScheme]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyBeliefPropagation_double, name, value)
     __swig_getmethods__ = {}
+    for _s in [ApproximationScheme]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, LoopyBeliefPropagation_double, name)
     __repr__ = _swig_repr
 
@@ -14286,6 +14773,18 @@ class LoopyBeliefPropagation_double(_object):
 
         """
         return _pyAgrum.LoopyBeliefPropagation_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """
+        asIApproximationSchemeConfiguration(LoopyBeliefPropagation_double self) -> IApproximationSchemeConfiguration
+
+        Parameters
+        ----------
+        self: gum::LoopyBeliefPropagation< double > const *
+
+        """
+        return _pyAgrum.LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
@@ -14717,12 +15216,16 @@ class BruteForceKL_double(_object):
 BruteForceKL_double_swigregister = _pyAgrum.BruteForceKL_double_swigregister
 BruteForceKL_double_swigregister(BruteForceKL_double)
 
-class GibbsKL_double(_object):
+class GibbsKL_double(ApproximationScheme):
     """Proxy of C++ gum::GibbsKL<(double)> class."""
 
     __swig_setmethods__ = {}
+    for _s in [ApproximationScheme]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
     __setattr__ = lambda self, name, value: _swig_setattr(self, GibbsKL_double, name, value)
     __swig_getmethods__ = {}
+    for _s in [ApproximationScheme]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, GibbsKL_double, name)
     __repr__ = _swig_repr
 
@@ -14976,6 +15479,18 @@ class GibbsKL_double(_object):
 
         """
         return _pyAgrum.GibbsKL_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """
+        asIApproximationSchemeConfiguration(GibbsKL_double self) -> IApproximationSchemeConfiguration
+
+        Parameters
+        ----------
+        self: gum::GibbsKL< double > const *
+
+        """
+        return _pyAgrum.GibbsKL_double_asIApproximationSchemeConfiguration(self)
 
 GibbsKL_double_swigregister = _pyAgrum.GibbsKL_double_swigregister
 GibbsKL_double_swigregister(GibbsKL_double)
@@ -15444,7 +15959,7 @@ CredalNet_double_swigregister = _pyAgrum.CredalNet_double_swigregister
 CredalNet_double_swigregister(CredalNet_double)
 
 class CNMonteCarloSampling_double(_object):
-    """Proxy of C++ gum::credal::CNMonteCarloSampling<(double,gum::LazyPropagation<(double)>)> class."""
+    """Proxy of C++ gum::credal::CNMonteCarloSampling<(double)> class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CNMonteCarloSampling_double, name, value)
@@ -15454,7 +15969,7 @@ class CNMonteCarloSampling_double(_object):
 
     def __init__(self, credalNet):
         """
-        __init__(gum::credal::CNMonteCarloSampling<(double,gum::LazyPropagation<(double)>)> self, CredalNet_double credalNet) -> CNMonteCarloSampling_double
+        __init__(gum::credal::CNMonteCarloSampling<(double)> self, CredalNet_double credalNet) -> CNMonteCarloSampling_double
 
         Parameters
         ----------
@@ -15475,7 +15990,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > *
+        self: gum::credal::CNMonteCarloSampling< double > *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_makeInference(self)
@@ -15583,7 +16098,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_verbosity(self)
@@ -15595,7 +16110,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_epsilon(self)
@@ -15607,7 +16122,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_minEpsilonRate(self)
@@ -15619,7 +16134,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_maxIter(self)
@@ -15631,7 +16146,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_maxTime(self)
@@ -15643,7 +16158,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_periodSize(self)
@@ -15655,7 +16170,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_burnIn(self)
@@ -15667,7 +16182,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_nbrIterations(self)
@@ -15679,7 +16194,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_currentTime(self)
@@ -15691,7 +16206,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_messageApproximationScheme(self)
@@ -15703,10 +16218,22 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        self: gum::credal::CNMonteCarloSampling< double,gum::LazyPropagation< double > > const *
+        self: gum::credal::CNMonteCarloSampling< double > const *
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """
+        asIApproximationSchemeConfiguration(CNMonteCarloSampling_double self) -> IApproximationSchemeConfiguration
+
+        Parameters
+        ----------
+        self: gum::credal::CNMonteCarloSampling< double > const *
+
+        """
+        return _pyAgrum.CNMonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def setRepetitiveInd(self, flag):
@@ -16104,6 +16631,18 @@ class CNLoopyPropagation_double(_object):
 
         """
         return _pyAgrum.CNLoopyPropagation_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """
+        asIApproximationSchemeConfiguration(CNLoopyPropagation_double self) -> IApproximationSchemeConfiguration
+
+        Parameters
+        ----------
+        self: gum::credal::CNLoopyPropagation< double > const *
+
+        """
+        return _pyAgrum.CNLoopyPropagation_double_asIApproximationSchemeConfiguration(self)
 
 
     def setRepetitiveInd(self, flag):
@@ -17254,6 +17793,18 @@ class BNLearner_double(_object):
 
         """
         return _pyAgrum.BNLearner_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """
+        asIApproximationSchemeConfiguration(BNLearner_double self) -> IApproximationSchemeConfiguration
+
+        Parameters
+        ----------
+        self: gum::learning::BNLearner< double > const *
+
+        """
+        return _pyAgrum.BNLearner_double_asIApproximationSchemeConfiguration(self)
 
 
     def learnDAG(self):
