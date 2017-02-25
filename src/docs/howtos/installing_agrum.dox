@@ -1,29 +1,29 @@
 /*!
  * \page installing_agrum How to install aGrUM
  * # Installation #
- * 
+ *
  * aGrUM is in heavy developpement. Do not hesitate to have a look at
  * http://agrum.lip6.fr to see which version you should use.
- * 
+ *
  * To install aGrUm :
- * 
- *     git clone git://forge.lip6.fr/aGrUM
- * 
- * 
+ *
+ *     git clone git@gitlab.com:agrumery/aGrUM.git
+ *
+ *
  * To test aGrUM, you could run (quite long)
- * 
- *     act test release -t all
- * 
+ *
+ *     act test release agrum -t all
+ *
  * To install aGruM, you classically have the choice between :
- * 
+ *
  * - system-wide installation : using root privilege
  * \verbatim
- * sudo act install release
+ * sudo act install release agrum
  * \endverbatim
- * 
+ *
  * - user-wide installation : if you want to install it in ~/usr
  * \verbatim
- * act install release -d ~/usr
+ * act install release agrum -d ~/usr
  * \endverbatim
  */
 
