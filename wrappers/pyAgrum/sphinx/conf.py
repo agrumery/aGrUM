@@ -31,9 +31,9 @@
 import sys
 
 import os
-
 sys.path.insert(0, ' ../../../build/release/wrappers/pyAgrum')
 sys.path.insert(0, os.path.abspath('.'))
+import gumDoc
 
 extensions = [
   'sphinx.ext.autodoc',
@@ -73,7 +73,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2017, aGrUM/pyAgrum Team'
+copyright = '2016, aGrUM/pyAgrum Team'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -449,8 +449,18 @@ epub_exclude_files = ['search.html']
 # epub_use_index = True
 
 
-autodoc_member_order = 'bysource'
+autodoc_member_order= 'bysource'
 autoclass_content = 'both'
+
+
+
+
+
+
+
+
+
+
 
 ############################ TRANSLATER SWIG type #############
 import re
@@ -468,7 +478,7 @@ gumReplaceList = [
   ('std::', ''),
   ('const &', ' '),
   ('const *', ' '),
-  ('\w+ self,', '')
+  ('\w+ self,','')
 ]
 dico = {re.escape(x): y for x, y in gumReplaceList}
 pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
@@ -477,11 +487,11 @@ pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
 def substitution4swigautodoc(l):
   if l is None:
     return None
-  l1 = l
-  l2 = ""
-  while l1 != l2:
-    l2 = l1
-    l1 = pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
+  l1=l
+  l2=""
+  while l1!=l2:
+    l2=l1
+    l1=pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
 
   return l1
 
@@ -498,12 +508,10 @@ def process_signature(app, what, name, obj, options, signature, return_annotatio
   return_annotation = substitution4swigautodoc(return_annotation)
   return signature, return_annotation
 
-
 def skip(app, what, name, obj, skip, options):
-  if name == "__init__":
-    return False
-  return skip
-
+    if name == "__init__":
+        return False
+    return skip
 
 def setup(app):
   app.connect('autodoc-process-docstring', process_docstring)
