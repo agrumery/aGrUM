@@ -70,7 +70,7 @@ def getCmake(current, target):
     line += " -DBUILD_PYTHON=OFF"
   else:
     line += " -DBUILD_PYTHON=ON"
-  
+
   if current["python"] == "3":
     line += " -DFOR_PYTHON3=ON"
   else:
@@ -80,6 +80,8 @@ def getCmake(current, target):
   if platform.system() == "Windows":
     if current["mvsc"]:
       line += ' -G "Visual Studio 14 2015 Win64"'
+    elif current["mvsc32"]:
+      line += ' -G "Visual Studio 14 2015"'
     else:
       line += ' -G "MinGW Makefiles"'
 

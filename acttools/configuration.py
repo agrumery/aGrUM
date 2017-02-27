@@ -75,6 +75,7 @@ def initParams():
   cfg.default['coverage'] = False
   cfg.default['withSQL'] = True
   cfg.default['mvsc'] = False
+  cfg.default['mvsc32'] = False
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
 
@@ -186,9 +187,14 @@ def configureOptions(current):
                         dest="coverage",
                         default=False)
   cfg.parser.add_option("", "--mvsc",
-                        help="use Microsoft Visual Studio C++ compiler (Windows only).",
+                        help="use Microsoft Visual Studio C++ compiler 64bits (Windows only).",
                         action="store_true",
                         dest="mvsc",
+                        default=False)
+  cfg.parser.add_option("", "--mvsc32",
+                        help="use Microsoft Visual Studio C++ compiler 32bits (Windows only).",
+                        action="store_true",
+                        dest="mvsc32",
                         default=False)
   cfg.parser.add_option("", "--build",
                         help="build options : {all|no-cmake|no-make}.",
