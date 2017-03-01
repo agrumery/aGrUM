@@ -94,7 +94,7 @@ def buildCmake(current, target):
 
 
 def getMake(current, target):
-  if current["mvsc"]:
+  if current["mvsc"] or current["mvsc32"]:
     return getForMsBuildSystem(current, target)
   else:
     return getForMakeSystem(current, target)
