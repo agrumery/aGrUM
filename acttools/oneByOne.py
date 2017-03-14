@@ -28,17 +28,17 @@ from .tests import checkTests, testNames
 from .utils import notif, warn
 
 
-def checkAgrumMemoryLeak(x, pourcent):
-  commande = 'act test debug -t {0} -m all'.format(x)
+def checkAgrumMemoryLeak(x, percent):
+  cmd = 'act test debug -t {0} -m all'.format(x)
 
-  first = (cfg.C_VALUE + "[{:5.1f}%] ").format(pourcent)
+  first = (cfg.C_VALUE + "[{:5.1f}%] ").format(percent)
   second = cfg.C_WARNING + x + cfg.C_END + " : "
   flag = 0
 
   sys.stdout.write(first + second)
   sys.stdout.flush()
 
-  proc = Popen(commande + " --no-fun", shell=True, stdout=PIPE, stderr=STDOUT)
+  proc = Popen(cmd + " --no-fun", shell=True, stdout=PIPE, stderr=STDOUT)
   out = proc.stdout.readlines()
   for line in out:
     if "NO MEMORY LEAK" in line:
