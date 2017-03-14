@@ -3,16 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+
 Introduction to pyAgrum
 =======================
 
 .. figure:: _static/agrum.png
     :align: right
     :alt: aGrUM
-    :target: https://agrum.lip6.fr
+    :target: http://agrum.gitlab.io
 
-`pyAgrum <https://pyagrum.lip6.fr>`_ is a Python wrapper for the C++ `aGrUM <https://agrum.lip6.fr>`_ library.
+pyAgrum is a Python wrapper for the C++ `aGrUM <http://agrum.gitlab.io>`_ library.
 It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
+
+.. warning:: For now, this documentation is mainly automatically produced by `SWIG <https://www.swig.org>`_.
 
 .. image::  _static/fastBNwithPyAgrum.png
 
@@ -24,7 +27,7 @@ pyAgrum aims to allow to easily use (as well as to prototype new algorithms on) 
 pyAgrum contains
   * a `comprehensive API documentation <http://www-desir.lip6.fr/~phw/aGrUM/dev/pdoc/>`_,
   * `examples as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/>`_,
-  * and a `website <https://forge.lip6.fr/projects/pyagrum/wiki>`_.
+  * and a `website <http://agrum.gitlab.io>`_.
 
 
 pyAgrum library

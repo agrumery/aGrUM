@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
-#include <regex>
 #include <iterator>
+#include <regex>
 
 #include <agrum/core/utils_string.h>
 
@@ -49,15 +49,32 @@ namespace gum {
     return std::equal( ending.rbegin(), ending.rend(), value.rbegin() );
   }
 
-  std::vector<std::string> split( const std::string& orig,
-                                  const std::string& delimiter ) {
-
-    std::regex rgx( delimiter );
-
-    std::sregex_token_iterator first{begin( orig ), end( orig ), rgx, -1}, last;
-
-    return {first, last};
+  std::vector<std::string> split( const std::string& str,
+                                  const std::string& delim ) {
+    std::vector<std::string> tokens;
+    size_t                   prev = 0, pos = 0;
+    do {
+      pos = str.find( delim, prev );
+      if ( pos == std::string::npos ) pos = str.length();
+      std::string token = str.substr( prev, pos - prev );
+      if ( !token.empty() )
+        tokens.push_back( token );
+      prev = pos + delim.length();
+    } while ( pos < str.length() && prev < str.length() );
+    return tokens;
   }
+
+  /** not usable for gcc 4.8
+std::vector<std::string> split( const std::string& orig,
+                                const std::string& delimiter ) {
+
+  std::regex rgx( delimiter );
+
+  std::sregex_token_iterator first{begin( orig ), end( orig ), rgx, -1}, last;
+
+  return {first, last};
+} */
+
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE

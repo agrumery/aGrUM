@@ -64,12 +64,16 @@ namespace gum {
       NodeId lastId = 0;
       bool   notfirst = false;
       for ( const auto& node : split( chaine, "->" ) ) {
-        auto               r = split( node, "\\[|\\]" );
-        const std::string& name = r[0];
+        auto               r = split( node, "[" );
+        std::string& name = r[0];
 
         auto ds = domainSize;
         if ( r.size() > 1 ) {
-          ds = static_cast<Size>( std::stoi( r[1] ) );
+          if ( *( r[1].rbegin() ) != ']' )
+            name = node;  // a name with  '[' inside but no ']' at the end
+          else {
+            ds = static_cast<Size>( std::stoi( r[1] ) );
+          }
         }
 
         NodeId idVar;

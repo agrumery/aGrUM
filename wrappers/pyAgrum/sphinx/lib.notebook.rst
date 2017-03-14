@@ -39,8 +39,8 @@ Visualization of graphical models
 .. autofunction:: pyAgrum.lib.notebook.showInference
 .. autofunction:: pyAgrum.lib.notebook.getJunctionTree
 .. autofunction:: pyAgrum.lib.notebook.showJunctionTree
-.. autofunction:: pyAgrum.lib.notebook.showEntropy
-.. autofunction:: pyAgrum.lib.notebook.getEntropy
+.. autofunction:: pyAgrum.lib.notebook.showInformation
+.. autofunction:: pyAgrum.lib.notebook.getInformation
 .. autofunction:: pyAgrum.lib.notebook.showInfluenceDiagram
 .. autofunction:: pyAgrum.lib.notebook.getInfluenceDiagram
 
