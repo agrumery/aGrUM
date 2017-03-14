@@ -41,9 +41,6 @@ namespace gum {
 
   template <typename Val, class Cmp, class Node>
   class BinSearchTreeIterator;
-
-  template <typename Val, class Cmp>
-  class AVLSearchTree;
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
   // ===========================================================================
@@ -320,7 +317,6 @@ namespace gum {
     /// @brief To speed-up accesses.
     /// @{
     friend class BinSearchTreeIterator<Val, Cmp, Node>;
-    friend class AVLSearchTree<Val, Cmp>;
     /// @}
 
     /**
@@ -613,7 +609,6 @@ namespace gum {
     /// To speed-up accesses.
     /// @{
     friend class BinSearchTree<Val, Cmp, Node>;
-    friend class AVLSearchTree<Val, Cmp>;
     /// @}
 
     /**
