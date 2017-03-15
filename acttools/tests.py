@@ -37,7 +37,7 @@ def checkTests(current):
   if cde == "all":
     return alltests
   elif cde == 'list':
-    afficheTests(current)
+    printTests(current)
     sys.exit(0)
   else:
     return checkTestList(current, alltests)
@@ -59,7 +59,7 @@ def checkTestList(current, alltests):
     if name == "":
       if ss != "show":
         error('Test "src/testunits/[module]/' + ss + 'TestSuite.h" does not exist for the selected modules')
-      afficheTests(current)
+      printTests(current)
       sys.exit(1)
     else:
       res.append(name)
@@ -122,7 +122,7 @@ def checkTestListCmake(current):
       writeTestList(res)
 
 
-def afficheTestsForModule(m):
+def printTestsForModule(m):
   print("=" * (2 + len(m)))
   print(" " + m + " ")
   print("=" * (2 + len(m)))
@@ -143,6 +143,6 @@ def afficheTestsForModule(m):
   print("")
 
 
-def afficheTests(current):
+def printTests(current):
   for modul in setifyString(current['modules']):
-    afficheTestsForModule(modul)
+    printTestsForModule(modul)
