@@ -29,7 +29,7 @@ from .utils import notif, warn
 
 
 def checkAgrumMemoryLeak(x, percent):
-  cmd = 'act test debug -t {0} -m all'.format(x)
+  cmd = sys.executable + ' act test debug -t {0} -m all'.format(x)
 
   first = (cfg.C_VALUE + "[{:5.1f}%] ").format(percent)
   second = cfg.C_WARNING + x + cfg.C_END + " : "
