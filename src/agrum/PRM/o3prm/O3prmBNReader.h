@@ -30,7 +30,6 @@
 #define GUM_PRM_O3PRM_BNREADER_H
 
 #include <algorithm>
-#include <regex>
 #include <string>
 
 #include <agrum/BN/io/BNReader.h>

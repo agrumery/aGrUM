@@ -109,8 +109,6 @@ namespace gum {
 
       // renaming varible in th BN
 
-      std::regex            re( "([^\\(]+)(\\([^\\)]+\\))(.*)" );
-      std::smatch           match;
       gum::Set<std::string> names;
       for ( auto node : __bn->nodes() ) {
         // keeping the complete name in description
@@ -118,24 +116,29 @@ namespace gum {
         __bn->variable( node ).setDescription( nn );
 
         // trying to simplify the name
-        if ( std::regex_search( nn, match, re ) ) {
-          if ( match.size() != 4 ) {
-            ParseError warn(
-                false, "Name " + nn + " cannot be simplified.", __filename, 0 );
-            __errors.add( warn );
-          } else {
-            std::string newNameRadical = __getVariableName(
-                match.str( 1 ), match.str( 2 ), match.str( 3 ) );
-            std::string newName = newNameRadical;
-            // forcing newName to be unique
-            int num = 0;
-            while ( names.contains( newName ) ) {
-              newName = newNameRadical + std::to_string( ++num );
-            }
+        auto start = nn.find_first_of('(');
+        auto end = nn.find_first_of(')');
+        if (0 < start && start < end && end < nn.size()) {
+          auto path = nn.substr(0, start - 1);
+          auto type = nn.substr(start + 1, end);
+          auto name = nn.substr(end + 1, std::string::npos);
 
-            names.insert( newName );
-            __bn->changeVariableName( node, newName );
+          std::string newNameRadical = __getVariableName( path, type, name);
+
+          std::string newName = newNameRadical;
+          // forcing newName to be unique
+          int num = 0;
+          while ( names.contains( newName ) ) {
+            newName = newNameRadical + std::to_string( ++num );
           }
+
+          names.insert( newName );
+          __bn->changeVariableName( node, newName );
+
+        } else {
+          ParseError warn(
+              false, "Name " + nn + " cannot be simplified.", __filename, 0 );
+          __errors.add( warn );
         }
       }
     }
