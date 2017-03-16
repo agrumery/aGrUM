@@ -107,7 +107,7 @@ namespace gum {
         }
       }
 
-      // renaming varible in th BN
+      // renaming variables in th BN
 
       gum::Set<std::string> names;
       for ( auto node : __bn->nodes() ) {
