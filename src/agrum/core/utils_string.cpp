@@ -75,6 +75,18 @@ std::vector<std::string> split( const std::string& orig,
   return {first, last};
 } */
 
+  std::string replace(const std::string& s, const std::string& val, const std::string& new_val) {
+    auto retVal = s;
+    auto pos = retVal.find(val);
+    while (pos != std::string::npos) {
+      std::stringstream sBuff;
+      sBuff << s.substr(0, pos) << new_val << s.substr(pos + val.size(), std::string::npos);
+      retVal = sBuff.str();
+      pos = retVal.find(val);
+    }
+    return retVal;
+  }
+
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE
