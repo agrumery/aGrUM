@@ -911,14 +911,14 @@ namespace gum {
       INLINE const PRMClassElement<GUM_SCALAR>*
                    O3ClassFactory<GUM_SCALAR>::__resolveSlotChain(
           const PRMClassElementContainer<GUM_SCALAR>& c, const O3Label& chain ) {
-
-        auto link_regex = std::regex( R"d((\([\w\.]*\))?\w+)d" );
         auto s = chain.label();
         auto current = &c;
-        auto match = std::smatch();
+        std::vector<std::string> v;
 
-        while ( std::regex_search( s, match, link_regex ) ) {
-          auto link = match[0];
+        decomposePath(chain.label(), v);
+
+        for (size_t i=0;i<v.size();++i) {
+          auto link = v[i];
 
           if ( !__checkSlotChainLink( *current, chain, link ) ) {
             return nullptr;
@@ -926,7 +926,7 @@ namespace gum {
 
           auto elt = &( current->get( link ) );
 
-          if ( match[0].str().size() == s.size() ) {
+          if ( i == v.size() - 1) {
             // last link, should be an attribute or aggregate
             return elt;
 
@@ -936,8 +936,6 @@ namespace gum {
             auto ref = dynamic_cast<const PRMReferenceSlot<GUM_SCALAR>*>( elt );
             if ( ref ) {
               current = &( ref->slotType() );
-              // Links are seperated by dots, so we need to skip the next one
-              s = s.substr( match[0].str().size() + 1 );
             } else {
               return nullptr;  // failsafe to prevent infinite loop
             }
@@ -945,6 +943,7 @@ namespace gum {
         }
 
         // Encountered only reference slots
+
         return nullptr;
       }
 

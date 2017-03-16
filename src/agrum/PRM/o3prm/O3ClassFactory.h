@@ -27,7 +27,6 @@
  */
 
 #include <memory>
-#include <regex>
 #include <string>
 
 #include <agrum/PRM/PRM.h>
