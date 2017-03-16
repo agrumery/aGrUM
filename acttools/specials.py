@@ -32,12 +32,15 @@ from .configuration import cfg
 from .oneByOne import checkAgrumMemoryLeaks
 from .stats import profileAgrum
 from .utils import trace, notif, critic
+from .callSphinx import callSphinx
 
 
 def isSpecialAction(current):
   if current["oneByOne"] == True:
     return True
   if current["stats"] == True:
+    return True
+  if current["action"] == 'doc' and current["target"] == 'pyAgrum':
     return True
 
   return current["action"] in set(["clean", "show", "autoindent"])
@@ -72,6 +75,11 @@ def specialActions(current):
   if current["stats"] == True:
     profileAgrum(current)
     return True
+
+  if current["action"] == 'doc':
+    if 'pyAgrum' in current["targets"]:
+      callSphinx(current)
+      return True
 
   return False
 

@@ -125,11 +125,6 @@ def checkConsistency(current):
 
   # end of helper
 
-  if current['action'] == 'doc':
-    if current['targets'] != set(['aGrUM']):
-      notif("Action [doc] only on target [aGrUM] (for now).")
-      current['targets'] = set(['aGrUM'])
-
   # test for only one target
   if current['action'] == 'test':
     if len(current['targets']) > 1:
