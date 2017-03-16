@@ -81,3 +81,4 @@ apps/pyAgrum/samples/alarm.csv
 apps/pyAgrum/samples/alarm.dsl
 apps/pyAgrum/samples/roc_alarm.dsl-alarm.csv-KINKEDTUBE-TRUE.png
 .idea/
+*.swp
