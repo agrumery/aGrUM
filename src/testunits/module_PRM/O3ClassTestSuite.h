@@ -2241,7 +2241,7 @@ namespace gum_tests {
       // Arrange
       auto                  path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
       gum::prm::PRM<double> prm;
-      auto                  input = std::ifstream( path );
+      std::ifstream input( path );
       std::stringstream     output;
       auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
