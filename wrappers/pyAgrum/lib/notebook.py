@@ -37,7 +37,7 @@ from IPython.core.display import Image, display_png
 from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
-from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot
+from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot,_proba2bgcolor
 
 
 _cdict = {
@@ -354,7 +354,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
   idEvs = {bn.idFromName(name) for name in evs}
   nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.ids() if not n in idEvs}
   arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
-  gr = _BN2colouredDot(bn, size, arcvals, _normalizeVals(nodevals, hilightExtrema=False), cmap, showValues=nodevals)
+  gr = BN2dot(bn, size, arcvals, _normalizeVals(nodevals, hilightExtrema=False), cmap, showValues=nodevals)
 
   mi = min(nodevals.values())
   ma = max(nodevals.values())
