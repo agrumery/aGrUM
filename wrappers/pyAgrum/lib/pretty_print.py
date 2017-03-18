@@ -1,7 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2011  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017  (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -48,7 +48,7 @@ def max_length(v):
     return m
 
 
-def pretty_cpt(cpt):
+def cpt2txt(cpt):
     """
     string representation of a gum.Potential
 
@@ -104,7 +104,7 @@ def pretty_cpt(cpt):
     return "\n".join(res)
 
 
-def pretty_bn(aBN):
+def bn2txt(aBN):
     """
     Representation of all CPTs of a gum.BayesNet
 
@@ -116,7 +116,7 @@ def pretty_bn(aBN):
     else:
         bn = aBN
 
-    return "\n".join([pretty_cpt(bn.cpt(nod)) for nod in bn.topologicalOrder()])
+    return "\n".join([cpt2txt(bn.cpt(nod)) for nod in bn.topologicalOrder()])
 
 
 if __name__ == "__main__":
@@ -125,4 +125,4 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         module_help()
 
-    pretty_bn(sys.argv[1])
+    bn2txt(sys.argv[1])
