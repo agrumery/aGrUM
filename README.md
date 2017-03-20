@@ -2,12 +2,12 @@ aGrUM is a C++ library designed for easily building applications using graphical
 
 It is written to provide the basic building blocks to perform the following tasks :
 
-* graphical model learning / elicitation,
+* graphical model learning/elicitation,
 * inference within the graphical model,
 * planification.
 
-INSTALLATION
-============
-  python act install release {pyAgrum|agrum} -d [folderDestination]
+Homepage
+========
+  [aGrUM/pyAgrum on gitlab.io](http://agrum.gitlab.io)
 
 
