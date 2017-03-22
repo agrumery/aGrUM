@@ -56,6 +56,7 @@ pyAgrum.lib is a set of python tools.
   :titlesonly:
 
   lib.notebook
+  lib.bn2graph
   lib.dBN
 
 

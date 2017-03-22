@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+  #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # pyAgrum documentation build configuration file, created by
@@ -31,8 +31,8 @@
 import sys
 
 import os
-sys.path.insert(0, ' ../../../build/release/wrappers/pyAgrum')
 sys.path.insert(0, os.path.abspath('.'))
+print(sys.path)
 import gumDoc
 
 extensions = [
@@ -81,6 +81,7 @@ author = 'Pierre-henri Wuillemin'
 # built documents.
 #
 import pyAgrum as gum
+print("GUM VERSION ="+gum.__version__)
 # The short X.Y version.
 ma, mi, *_ = gum.__version__.split(".")
 version = ma + "." + mi

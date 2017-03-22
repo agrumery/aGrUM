@@ -15,7 +15,6 @@ Helpers
 Visualization of Potentials
 ---------------------------
 
-.. autofunction:: pyAgrum.lib.notebook.getProba
 .. autofunction:: pyAgrum.lib.notebook.showProba
 .. autofunction:: pyAgrum.lib.notebook.getPosterior
 .. autofunction:: pyAgrum.lib.notebook.showPosterior

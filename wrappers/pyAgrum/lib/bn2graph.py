@@ -68,13 +68,22 @@ def _proba2fgcolor(p, cmap=None):
 
 
 def BN2dot(bn, size="4", arcvals=None, vals=None, cmap=None, showValues=None):
+  """
+  create a pydotplus representation of the BN
+
+  :param pyAgrum.BayesNet bn:
+  :param string size: size of the rendered graph
+  :param dictionnary evs: map of evidence
+  :param set targets: set of targets. If targets={} then each node is a target
+  :param vals: a nodeMap of values to be shown as color nodes (with special colors for 0 and 1)
+  :param arcvals: a arcMap of values to be shown as bold arcs
+  :param cmap: color map to show the vals
+  :param showValues: a nodeMap of values to be shown as tooltip
+  :return: the desired representation of the inference
+  """
   if cmap is None:
     cmap=plt.get_cmap('summer')
-  """
-  Shows a graphviz svg representation of the BN using size ("1" ,"2" , ...)
-  vals is a dictionnary name:value of value in [0,1] for each node
-  (with special color for 0 and 1)
-  """
+
   if arcvals is not None:
     minarcs = min(arcvals.values())
     maxarcs = max(arcvals.values())
@@ -178,7 +187,7 @@ def proba2histo(p):
   """
   compute the representation of an histogram for a mono-dim Potential
 
-  :param p: the mono-dim Potential
+  :param pyAgrum.Potential p: the mono-dim Potential
   :return: a matplotlib histogram for a Potential p.
   """
   if p.variable(0).domainSize() > 8:
@@ -193,17 +202,19 @@ def _saveFigProba(p, filename, format="svg"):
   plt.close(fig)
 
 
-def BNinference2dot(bn, engine=None, evs={}, targets={}, format='png', vals=None, arcvals=None,cmap=None):
+def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', vals=None, arcvals=None,cmap=None):
   """
-  repr a pydot graph for an inference in a notebook
+  create a pydotplus representation of an inference in a BN
 
-  :param gum.BayesNet bn:
-  :param gum.Inference engine: inference algorithm used. If None, LazyPropagation will be used
+  :param pyAgrum.BayesNet bn:
+  :param string size: size of the rendered graph
+  :param pyAgrum Inference engine: inference algorithm used. If None, LazyPropagation will be used
   :param dictionnary evs: map of evidence
   :param set targets: set of targets. If targets={} then each node is a target
-  :param string size: size of the rendered graph
   :param string format: render as "png" or "svg"
-  :param boolean asString: display the graph or return a string containing the corresponding HTML fragment
+  :param vals: a nodeMap of values to be shown as color nodes (with special color for 0 and 1)
+  :param arcvals: a arcMap of values to be shown as bold arcs
+  :param cmap: color map to show the vals
   :return: the desired representation of the inference
   """
   if cmap is None:
@@ -267,13 +278,18 @@ def BNinference2dot(bn, engine=None, evs={}, targets={}, format='png', vals=None
   g = dot.graph_from_dot_data(dotstr)
 
   shutil.rmtree(temp_dir)
+
+  g.set_size(size)
   return g
 
 
 def dotize(aBN, name, format='pdf'):
   """
-  From a bn 'bn' and a name 'bn', ize creates 'bn.dot' and 'bn.style', representation of the bn in
-  dot format and in style. style in [pdf,png,fig,jpg,svg]
+  From a bn, creates an image of the BN
+
+  :param pyAgrum.BayesNet bn: the bayes net to show
+  :param string name: the filename (without extension) for the image
+  :param string format: format in ['pdf','png','fig','jpg','svg']
   """
   if format not in ['pdf', 'png', 'fig', 'jpg', 'svg']:
     raise Exception("<%s> in not a correct style ([pdf,png,fig,jpg,svg])" % style)
@@ -289,16 +305,20 @@ def dotize(aBN, name, format='pdf'):
 
 def pngize(aBN, name):
   """
-  From a bn 'bn' and a name 'bn', pngize creates 'bn.dot' and 'bn.png', representation of the bn in
-  dot format and in png.
+  From a bn, creates a png of the BN
+
+  :param pyAgrum.BayesNet bn: the bayes net to show
+  :param string name: the filename (without extension) for the image
   """
   dotize(aBN, name, 'png')
 
 
 def pdfize(aBN, name):
   """
-  From a bn 'bn' and a name 'bn', pdfize creates 'bn.dot' and 'bn.pdf', representation of the bn in
-  dot format and in pdf.
+  From a bn, creates a pdf of the BN
+
+  :param pyAgrum.BayesNet bn: the bayes net to show
+  :param string name: the filename (without extension) for the image
   """
   dotize(aBN, name, 'pdf')
 

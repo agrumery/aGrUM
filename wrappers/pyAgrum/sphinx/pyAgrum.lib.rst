@@ -10,6 +10,15 @@ notebook
     :show-inheritance:
     :noindex:
 
+bn2graph
+---------------------------
+
+.. automodule:: pyAgrum.lib.bn2graph
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :noindex:
+
 dynamicBN
 ----------------------------
 
@@ -37,14 +46,6 @@ bn2csv
     :show-inheritance:
     :noindex:
 
-bn2graph
----------------------------
-
-.. automodule:: pyAgrum.lib.bn2graph
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :noindex:
 
 
 bn2scores
