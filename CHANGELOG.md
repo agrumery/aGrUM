@@ -1,5 +1,29 @@
 # aGrUM Changelog
 
+## Changelog for 0.11.0
+* internal
+  * working on continuous integration with gitlab
+  * aGrUM/pyAgrum to be compilable with g++-4.8
+  * aGrUM/pyAgrum to be compilable with win32
+  * pyAgrum wheels generation using act for 'pip' tool
+* aGrUM
+  * removing some unused datastructure (AVLTree)
+  * fixing bug in localSearchWithTabuList learning class
+  * Remove wrong parallel estimations for learning (now correct but sequential)
+  * working on docs
+  * API change : add BayesNet::minimalCondSet(NodeSet&,NodeSet&) (migration from pyAgrum to aGrUM)
+  * API change : add JointTargettedInference::evidenceJointImpact()
+* pyAgrum
+  * API changes : pyAgrum.lib.bn2graph (BN2dot, BNinference2dot, proba2histo)
+  * API changes : pyAgrum.lib.pretty_print (bn2txt, cpt2txt)
+  * API changes : pyAgrum.lib.notebook : uniformizing parameters evs (first) and targets (second) order.
+  * API changes : pyAgrum.lib.notebook : showEntropy->showInformation
+  * updating sphinx help generation
+  * fix CNMonteCarloSampling not recognized as ApproximationScheme
+  * enhancing showInformation with Mutual Information on arcs
+  * API change : adding BayesNet.minimalCondSet(set of targets,set of evs) (as wrapper)
+  * API change : adding LazyInference.evidenceJointImpact(set of targets,set of evs)
+
 ## Changelog for 0.10.4
 * Add new approximated inference : LBP (aGrUM and pyAgrum)
 * Fix bugs in LazyPropagation and Shafer-Shenoy inference
