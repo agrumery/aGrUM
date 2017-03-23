@@ -425,7 +425,7 @@ def showInference(bn, engine=None, evs={}, targets={}, size="7", format='png', v
   :param boolean asString: display the graph or return a string containing the corresponding HTML fragment
   :return: the desired representation of the inference
   """
-  return showGraph(BNinference2dot(bn, engine, evs, targets, format, vals, arcvals, cmap), size, format)
+  return showGraph(BNinference2dot(bn, size, engine, evs, targets, format, vals, arcvals, cmap), size, format)
 
 
 def getInference(bn, engine=None, evs={}, targets={}, size="7", format='png', vals=None, arcvals=None, cmap=None):
@@ -441,7 +441,7 @@ def getInference(bn, engine=None, evs={}, targets={}, size="7", format='png', va
   :param boolean asString: display the graph or return a string containing the corresponding HTML fragment
   :return: the desired representation of the inference
   """
-  return getGraph(BNinference2dot(bn, engine, evs, targets, format, vals, arcvals, cmap), size, format)
+  return getGraph(BNinference2dot(bn, size, engine, evs, targets, format, vals, arcvals, cmap), size, format)
 
 
 def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False):
