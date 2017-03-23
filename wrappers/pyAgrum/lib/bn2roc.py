@@ -269,7 +269,7 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False):
 
   title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)
 
-  figname = 'roc_' + shortname + "-" + csv_name + "-" + variable + "-" + str(label) + '.png'
+  figname = csv_name + "-roc_" + shortname + "-" + variable + "-" + str(label) + '.png'
 
   drawROC(points, title, figname, not visible, show_fig, special_point=opt, special_value=seuil)
 
