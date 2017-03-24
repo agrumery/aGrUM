@@ -1,5 +1,8 @@
 # aGrUM Changelog
 
+## Changelog for 0.11.1
+* 2 typos found in pyAgrum.lib.notebook
+
 ## Changelog for 0.11.0
 * internal
   * working on continuous integration with gitlab
