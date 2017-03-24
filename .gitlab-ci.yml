@@ -1,5 +1,10 @@
+stages:
+- build
+- test
+- package
+
 cache:
-  untracked: true
+  untracked: false
 
 ################################################################################
 # TEMPLATES
@@ -12,6 +17,10 @@ cache:
   variables:
     CC: "/usr/bin/gcc-5"
     CXX: "/usr/bin/g++-5"
+  cache:
+    key: gcc5
+    paths:
+    - build/
 
 .clang-3_8: &clang-3_8
   tags:
@@ -20,6 +29,10 @@ cache:
   variables:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
+  cache:
+    key: clang38
+    paths:
+    - build/
     
 .clang-llvm-8_0: &clang-llvm-8_0
   tags:
@@ -28,6 +41,10 @@ cache:
   variables:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
+  cache:
+    key: llvm80
+    paths:
+    - build/
 
 .mvsc: &mvsc
   tags:
@@ -36,6 +53,22 @@ cache:
   variables:
     PATH: "C:\\Program Files\\Git\\bin;C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Library\\mingw-w64\\bin;C:\\ProgramData\\Anaconda3\\Library\\usr\\bin;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\ProgramData\\Anaconda3\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
     ACT_OPTIONS: "--mvsc -m BASE+BN+FMDP+ID+LEARNING+PRM -d build"
+  cache:
+    key: mvsc
+    paths:
+    - build/
+
+.mvsc32: &mvsc32
+  tags:
+    - windows
+    - anaconda
+  variables:
+    PATH: "C:\\Program Files\\Git\\bin;C:\\ProgramData\\Anaconda3;C:\\ProgramData\\Anaconda3\\Library\\mingw-w64\\bin;C:\\ProgramData\\Anaconda3\\Library\\usr\\bin;C:\\ProgramData\\Anaconda3\\Library\\bin;C:\\ProgramData\\Anaconda3\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
+    ACT_OPTIONS: "--mvsc32 -m BASE+BN+FMDP+ID+LEARNING+PRM"
+  cache:
+    key: mvsc32
+    paths:
+    - build/
 
 .agrum_sh: &agrum_sh
   script:
@@ -52,6 +85,27 @@ cache:
 .pyagrum_cmd: &pyagrum_cmd
   script:  
     - python act --no-fun test release pyAgrum -d build %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS%
+
+.wheel_py2_sh: &wheel_py2_sh
+  script:
+    - mkdir -p wheel
+    - virtualenv py2 --python=$(which python2) || rm -rf py2 && virtualenv py2 --python=$(which python2)
+    - source py2/bin/activate
+    - python act --no-fun wheel release pyAgrum -d $(pwd)/wheel --python=2 || python act --no-fun clean && python act --no-fun wheel release pyAgrum -d $(pwd)/wheel --python=2
+    - deactivate
+
+.wheel_py3_sh: &wheel_py3_sh
+  script:
+    - mkdir -p wheel
+    - virtualenv py3 --python=$(which python3) || rm -rf py3 && virtualenv py3 --python=$(which python3)
+    - source py3/bin/activate
+    - python act --no-fun wheel release pyAgrum -d $(pwd)/wheel --python=3 || python act --no-fun clean && python act --no-fun wheel release pyAgrum -d $(pwd)/wheel --python=3
+    - deactivate
+
+.wheel_cmd: &wheel_cmd
+  script:
+    - mkdir -p wheel
+    - python act --no-fun wheel release pyAgrum -d %cd%/wheel %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun wheel release pyAgrum -d %cd%/wheel %ACT_OPTIONS%
 
 ################################################################################
 # BUILD JOBS
@@ -132,4 +186,109 @@ macos_clang_pyagrum:
 ################################################################################
 # DEPLOY JOBS
 ################################################################################
+.wheel_artifact: &wheel_artifact
+  artifacts:
+    when: on_success
+    expire_in: 1 week
+    paths:
+    - wheel/*.whl
 
+.pyAgrum_wheel_template: &pyAgrum_wheel_template
+  except:
+    - /^doc\/.*$/
+  only:
+    - master@agrumery/aGrUM
+  stage: package
+
+linux_wheel_pyagrum2:
+  tags:
+    - python2
+    - linux
+  <<: *pyAgrum_wheel_template
+  <<: *wheel_py2_sh
+  <<: *wheel_artifact
+
+linux_wheel_pyagrum3:
+  tags:
+    - python3
+    - linux
+  <<: *pyAgrum_wheel_template
+  <<: *wheel_py3_sh
+  <<: *wheel_artifact
+
+macos_wheel_pyagrum2:
+  tags:
+    - python2
+    - macos
+  <<: *pyAgrum_wheel_template
+  <<: *pyAgrum_wheel_template
+  <<: *wheel_py2_sh
+  <<: *wheel_artifact
+
+macos_wheel_pyagrum3:
+  tags:
+    - python3
+    - macos
+  <<: *pyAgrum_wheel_template
+  <<: *wheel_py3_sh
+  <<: *wheel_artifact
+
+windows_wheel_32_py27:
+  tags:
+    - conda32
+    - windows
+  variables:
+    PATH: "C:\\Users\\conda32\\Anaconda3\\envs\\py27;C:\\Users\\conda32\\Anaconda3\\envs\\py27\\Scripts;C:\\Program Files\\Git\\bin;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
+    ACT_OPTIONS: "--python=2 --mvsc32"
+  cache:
+    key: py27_x86
+    paths:
+    - build/
+  <<: *pyAgrum_wheel_template
+  <<: *wheel_cmd
+  <<: *wheel_artifact
+      
+windows_wheel_32_py36:
+  tags:
+    - conda32
+    - windows
+  variables:
+    PATH: "C:\\Users\\conda32\\Anaconda3\\envs\\py36;C:\\Users\\conda32\\Anaconda3\\envs\\py36\\Scripts;C:\\Program Files\\Git\\bin;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
+    ACT_OPTIONS: "--python=3 --mvsc32"
+  cache:
+    key: py36_x86
+    paths:
+    - build/
+  <<: *pyAgrum_wheel_template
+  <<: *wheel_cmd
+  <<: *wheel_artifact
+
+windows_wheel_64_py27:
+  tags:
+    - conda64
+    - windows
+  variables:
+    PATH: "C:\\Users\\conda64\\Anaconda3\\envs\\py27;C:\\Users\\conda64\\Anaconda3\\envs\\py27\\Scripts;C:\\Program Files\\Git\\bin;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
+    ACT_OPTIONS: "--python=2 --mvsc"
+  cache:
+    key: py27_AMD64
+    paths:
+    - build/
+  <<: *pyAgrum_wheel_template
+  <<: *wheel_cmd
+  <<: *wheel_artifact
+
+windows_wheel_64_py36:
+  tags:
+    - conda64
+    - windows
+  variables:
+    PATH: "C:\\Users\\conda64\\Anaconda3\\envs\\py36;C:\\Users\\conda64\\Anaconda3\\envs\\py36\\Scripts;C:\\Program Files\\Git\\bin;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
+    ACT_OPTIONS: "--python=3 --mvsc"
+  cache:
+    key: py36_AMD64
+    paths:
+    - build/
+  <<: *pyAgrum_wheel_template
+  <<: *wheel_cmd
+  <<: *wheel_artifact

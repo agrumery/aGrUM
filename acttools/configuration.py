@@ -79,7 +79,7 @@ def initParams():
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
 
-  cfg.actions = set("lib test install doc clean show uninstall package autoindent".split())
+  cfg.actions = set("lib test install doc clean show uninstall package autoindent wheel".split())
   cfg.modes = set("debug release".split())
   cfg.targets = set("aGrUM pyAgrum jAgrum".split())
   cfg.moduleLabels = parseModulesTxt()
