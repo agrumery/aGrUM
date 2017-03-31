@@ -1,0 +1,6 @@
+# MANIFEST.in
+include LICENCE
+include logo.png
+include setup.py
+include setup.cfg
+
