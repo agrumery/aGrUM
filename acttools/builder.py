@@ -163,9 +163,9 @@ def getPost(current, target):
       return line, True
     elif target == "pyAgrum":
       if cfg.os_platform == "win32":
-        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py wrappers"
+        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\gumTest.py"
       else:
-        line = "PYTHONPATH=wrappers " + cfg.python + " ../../wrappers/pyAgrum/testunits/TestSuite.py"
+        line = cfg.python + " ../../wrappers/pyAgrum/testunits/gumTest.py"
       return line, False
   return "", False
 
