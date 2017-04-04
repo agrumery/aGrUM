@@ -4,3 +4,5 @@ nbconvert
 jupyter
 matplotlib
 pydotplus
+pandas
+scipy
