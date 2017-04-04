@@ -33,6 +33,7 @@ from .oneByOne import checkAgrumMemoryLeaks
 from .stats import profileAgrum
 from .utils import trace, notif, critic
 from .callSphinx import callSphinx
+from .wheel_builder import wheel
 
 
 def isSpecialAction(current):
@@ -65,6 +66,10 @@ def specialActions(current):
     # trace(current,"Special action [autoindent]")
     autoindent(current)
     print("")
+    return True
+
+  if current["action"] == "wheel":
+    wheel(current)
     return True
 
   if current["oneByOne"] == True:
