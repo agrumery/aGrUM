@@ -76,7 +76,11 @@ cache:
 
 .pyagrum_sh: &pyagrum_sh
   script:  
+    - virtualenv py3 --python=$(which python3) || rm -rf py3 && virtualenv py3 --python=$(which python3)
+    - source py3/bin/activate
+    - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - python act --no-fun lib release pyAgrum $ACT_OPTIONS || python act --no-fun clean && python act --no-fun test release pyAgrum $ACT_OPTIONS
+    - deactivate
 
 .agrum_cmd: &agrum_cmd
   script:
@@ -84,6 +88,7 @@ cache:
 
 .pyagrum_cmd: &pyagrum_cmd
   script:  
+    - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - python act --no-fun test release pyAgrum -d build %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS%
 
 .wheel_py2_sh: &wheel_py2_sh

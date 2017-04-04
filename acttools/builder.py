@@ -166,7 +166,7 @@ def getPost(current, target):
         line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\TestSuite.py wrappers"
       else:
         line = "PYTHONPATH=wrappers " + cfg.python + " ../../wrappers/pyAgrum/testunits/TestSuite.py"
-      return line, False
+      return line, True
   return "", False
 
 
