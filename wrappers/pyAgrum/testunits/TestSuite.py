@@ -93,4 +93,3 @@ print("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platfor
 print("pyAgrum path : {}".format(gum.__file__), end='\n', file=sys.stdout)
 print("", end='\n', file=sys.stdout)
 
-sys.exit(1 if errs>0 else 0)
