@@ -162,10 +162,17 @@ def getPost(current, target):
         line = "src/gumTest"
       return line, True
     elif target == "pyAgrum":
-      if cfg.os_platform == "win32":
-        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\gumTest.py"
+      if current['tests']=='quick':
+        gumTest="gumTest.py"
+      elif current['tests']=='all': # all is with NOTEBOOKStest
+        gumTest="gumTest.py all"
       else:
-        line = cfg.python + " ../../wrappers/pyAgrum/testunits/gumTest.py"
+        critic("Only [-t all] or [-t quick] for testing pyAgrum.")
+
+      if cfg.os_platform == "win32":
+        line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\"+gumTest
+      else:
+        line = cfg.python + " ../../wrappers/pyAgrum/testunits/"+gumTest
       return line, True
   return "", False
 

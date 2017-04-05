@@ -27,14 +27,21 @@ import os
 import sys
 from datetime import datetime
 
-from .utils import error, notif, setifyString, CrossPlatformRelPath
+from .utils import error, notif, setifyString, CrossPlatformRelPath, critic
 
 
 def checkTests(current):
   cde = current['tests']
+  print(current['targets'])
+  if cde == "quick":
+    if 'aGrUM' in current['targets']:
+      current['tests']='all'
+      current['modules']='BASE+BN+LEARNING'
+      cde='all'
+
   alltests = allTests(setifyString(current['modules']))
 
-  if cde == "all":
+  if cde == "all" or cde=='quick':
     return alltests
   elif cde == 'list':
     printTests(current)
@@ -57,7 +64,7 @@ def checkTestList(current, alltests):
         name = tryfile
         break
     if name == "":
-      if ss != "show":
+      if ss != "show" and ss!="quick":
         error('Test "src/testunits/[module]/' + ss + 'TestSuite.h" does not exist for the selected modules')
       printTests(current)
       sys.exit(1)
