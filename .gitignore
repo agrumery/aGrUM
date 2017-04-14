@@ -1,3 +1,4 @@
+.directory
 .options.*
 wrappers/pyAgrum/sphinx/_build
 *.patch
