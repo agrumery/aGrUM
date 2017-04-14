@@ -32,7 +32,7 @@ import sys
 
 import os
 sys.path.insert(0, os.path.abspath('.'))
-print(sys.path)
+sys.path.insert(0, os.path.abspath('../../../build/release/wrappers/'))
 import gumDoc
 
 extensions = [
@@ -160,7 +160,7 @@ html_theme = 'classic'
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-html_title = 'pyAgrum'
+html_title = project+" "+version+" documentation"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #

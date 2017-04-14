@@ -1,32 +1,5 @@
-pyAgrum.lib modules
-===================
-
-notebook
----------------------------
-
-.. automodule:: pyAgrum.lib.notebook
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :noindex:
-
-bn2graph
----------------------------
-
-.. automodule:: pyAgrum.lib.bn2graph
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :noindex:
-
-dynamicBN
-----------------------------
-
-.. automodule:: pyAgrum.lib.dynamicBN
-    :members:
-    :undoc-members:
-    :show-inheritance:
-    :noindex:
+other pyAgrum.lib modules
+=========================
 
 bn2roc
 -------------------------

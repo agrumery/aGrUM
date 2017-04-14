@@ -25,8 +25,8 @@ the interface more friendly.
 pyAgrum aims to allow to easily use (as well as to prototype new algorithms on) Bayesian network and other graphical models.
 
 pyAgrum contains
-  * a `comprehensive API documentation <http://www-desir.lip6.fr/~phw/aGrUM/dev/pdoc/>`_,
-  * `examples as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/>`_,
+  * a `comprehensive API documentation <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/pyAgrum/index.html>`_,
+  * `examples as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/01-tutorial.ipynb.html>`_,
   * and a `website <http://agrum.gitlab.io>`_.
 
 
@@ -58,6 +58,7 @@ pyAgrum.lib is a set of python tools.
   lib.notebook
   lib.bn2graph
   lib.dBN
+  pyAgrum.lib
 
 
 Indices and tables
