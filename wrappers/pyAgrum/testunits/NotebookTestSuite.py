@@ -13,7 +13,7 @@ import time
 import nbformat
 from nbconvert.preprocessors.execute import ExecutePreprocessor, CellExecutionError
 
-errs = 4
+errs = 0
 
 list = []
 for filename in glob.glob("../notebooks/*.ipynb"):

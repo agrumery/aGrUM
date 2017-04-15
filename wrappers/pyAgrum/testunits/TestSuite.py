@@ -17,20 +17,20 @@ import pyAgrum as gum
 
 import unittest
 
-import VariablesTestSuite
-import BayesNetTestSuite
-import PythonBNListenerTestSuite
-import PotentialTestSuite
-import JTInferenceTestSuite
-import JunctionTreeTestSuite
-import ICIModelsForBNTestSuite
-import BNLearnerTestSuite
-import AggregatorsForBNTestSuite
-import PRMexplorerTestSuite
-import AllIncrementalInferenceTestSuite
-import LazyPropagationTestSuite
-import GibbsTestSuite
-import LoopyBeliefPropagationTestSuite
+from tests import VariablesTestSuite
+from tests import BayesNetTestSuite
+from tests import PythonBNListenerTestSuite
+from tests import PotentialTestSuite
+from tests import JTInferenceTestSuite
+from tests import JunctionTreeTestSuite
+from tests import ICIModelsForBNTestSuite
+from tests import BNLearnerTestSuite
+from tests import AggregatorsForBNTestSuite
+from tests import PRMexplorerTestSuite
+from tests import AllIncrementalInferenceTestSuite
+from tests import LazyPropagationTestSuite
+from tests import GibbsTestSuite
+from tests import LoopyBeliefPropagationTestSuite
 
 import time
 
@@ -92,4 +92,3 @@ print("", end='\n', file=sys.stdout)
 print("pyAgrum on Python {0} - {1}".format(platform.python_version(), os_platform), end='\n', file=sys.stdout)
 print("pyAgrum path : {}".format(gum.__file__), end='\n', file=sys.stdout)
 print("", end='\n', file=sys.stdout)
-
