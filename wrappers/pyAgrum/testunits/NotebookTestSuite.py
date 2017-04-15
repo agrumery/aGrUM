@@ -7,29 +7,25 @@ import glob
 import os
 import sys
 import traceback
+import time
 
 
 import nbformat
 from nbconvert.preprocessors.execute import ExecutePreprocessor, CellExecutionError
 
-errs = 0
+errs = 4
 
 list = []
 for filename in glob.glob("../notebooks/*.ipynb"):
   list.append(filename)
 
+startTime = time.time()
 for notebook_filename in sorted(list):
   print(os.path.basename(notebook_filename)+" ... ",end='',flush=True)
   res="ok"
 
   try:
     ep = ExecutePreprocessor(timeout=600, kernel_name='python3')
-    #print(" ==> preamble")
-    #with open("syspath-test.ipynb") as f:
-    #  nbpreambule = nbformat.read(f, as_version=4)
-    #print(nbpreambule)
-    #ep.preprocess(nbpreambule, {'metadata': {'path': '../notebooks/'}})
-    #print(" ==> "+notebook_filename)
     with open(notebook_filename) as f:
       nb = nbformat.read(f, as_version=4)
     nb['cells'].insert(0,nbformat.from_dict({
@@ -50,4 +46,13 @@ for notebook_filename in sorted(list):
     print("-" * 60)
 
   print(res)
+
+elapsedTime = time.time() - startTime
+
+print()
+print("----------------------------------------------------------------------")
+print("## Profiling : {} ms ##".format(int(elapsedTime * 1000)))
+print("Failed {} of {} tests".format(errs,len(list)))
+print("Success rate: {}%".format(int(100*(1-errs/len(list)))))
+
 print("Python Test Suite Error : " + str(errs))

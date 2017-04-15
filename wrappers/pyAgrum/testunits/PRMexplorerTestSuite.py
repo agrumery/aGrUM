@@ -11,7 +11,7 @@ class PRMexplorerTestCase(pyAgrumTestCase):
     prm.load(
         self.agrumSrcDir('src/testunits/ressources/o3prm/Asia.o3prm'))  # verbose=False : don't want to see the warnings
 
-  def testO3PRMLoadErrors(self):
+  def testO3PRMLoadErrs(self):
     try:
       prm = gum.PRMexplorer()
       prm.load(self.agrumSrcDir('src/testunits/ressources/o3prm/DoesNotExist.o3prm'))
