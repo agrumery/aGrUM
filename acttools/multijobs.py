@@ -111,6 +111,10 @@ def prettifying(line):
     ss = s[0].split('(')
     if len(ss) == 2:
       return cfg.C_WARNING + ss[0] + cfg.C_VALUE + '(' + ss[1] + cfg.C_END + " ... " + s[1]
+    ss = s[0].split("-")
+    if len(ss) == 2:
+      sss =ss[1].split(".")
+      return cfg.C_WARNING + ss[0] + cfg.C_VALUE + ' ' + sss[0] + cfg.C_END + " ... " + s[1]
 
   # end of test execution
   s = line.split("##")
