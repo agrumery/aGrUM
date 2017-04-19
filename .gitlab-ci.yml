@@ -94,7 +94,7 @@ macos_pyAgrum_test:
     - virtualenv venv --python=$(which python3)
     - source venv/bin/activate
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
-    - if ! python act --no-fun test release pyAgrum --python=3; then python act --no-fun clean ; python act --no-fun test release pyAgrum --python=3; fi
+    - if ! python act --no-fun test release pyAgrum --python=3 -t quick; then python act --no-fun clean ; python act --no-fun test release pyAgrum --python=3 -t quick; fi
     - deactivate
 
 ################################################################################
@@ -137,5 +137,5 @@ windows_pyAgrum_test:
   stage: pyagrum_test
   script:
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
-    - python act --no-fun test release pyAgrum %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS%
+    - python act --no-fun test release pyAgrum %ACT_OPTIONS%  -t quick || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS% -t quick
 
