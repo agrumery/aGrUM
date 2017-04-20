@@ -29,7 +29,6 @@ from ._utils.pyAgrum_header import pyAgrum_header
 import pyAgrum as gum
 
 DECIMAL_LENGTH = 4
-NUMBER_FORMAT = '{0:.' + str(DECIMAL_LENGTH) + 'f}'
 BLANK = ' '
 
 
@@ -48,16 +47,17 @@ def max_length(v):
     return m
 
 
-def cpt2txt(cpt):
+def cpt2txt(cpt,digits=DECIMAL_LENGTH):
     """
     string representation of a gum.Potential
 
     :param cpt: the Potential to represent
     :return: the string representation
     """
+    number_format = '{0:.' + str(digits) + 'f}'
     res = []
 
-    size = (1 + 2 + DECIMAL_LENGTH) * cpt.variable(0).domainSize() - 1
+    size = (1 + 2 + digits) * cpt.variable(0).domainSize() - 1
 
     width = {}
     total_width = 0
@@ -80,7 +80,7 @@ def cpt2txt(cpt):
         line = '|'
     line += BLANK
     for j in range(cpt.variable(0).domainSize()):
-        line += ("{0:^{1}}" + BLANK).format(cpt.variable(0).label(j)[0:DECIMAL_LENGTH + 2], DECIMAL_LENGTH + 2)
+        line += ("{0:^{1}}" + BLANK).format(cpt.variable(0).label(j)[0:digits + 2], digits + 2)
     line += '|'
     res.append(line)
     res.append(('-' * total_width) + '|' + '-' * (2 + size) + '|')
@@ -95,7 +95,7 @@ def cpt2txt(cpt):
             line = '|'
         line += ' '
         for j in range(cpt.variable(0).domainSize()):
-            line += NUMBER_FORMAT.format(cpt.get(i)) + ' '
+            line += number_format.format(cpt.get(i)) + ' '
             i.inc()
         line += '|'
         res.append(line)

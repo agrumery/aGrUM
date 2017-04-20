@@ -73,7 +73,7 @@ def configuration():
   res += "</table><div align='right'><small>%s</small></div>" % time.strftime(
       '%a %b %d %H:%M:%S %Y %Z')
 
-  return IPython.display.HTML(res)
+  display(HTML(res))
 
 
 def _reprGraph(gr, size, format, asString):
@@ -451,15 +451,10 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
 
 
   :param pot: the potential to get
-  :type pot: gum.Potential
   :param digits: number of digits to show
-  :type digits: int
   :param: withColors : bgcolor for proba cells or not
-  :type withColors: boolean
   :param varnames: the aliases for variables name in the table
-  :type varnames: list of strings
   :param asString: display the table or a HTML string
-  :type asString: boolean
   :return: the representation
   """
   from IPython.core.display import HTML
@@ -552,18 +547,13 @@ def showPotential(pot, digits=4, withColors=True, varnames=None):
   show a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-
-  :param pot: the potential to get
-  :type pot: gum.Potential
-  :param digits: number of digits to show
-  :type digits: int
-  :param: withColors : bgcolor for proba cells or not
-  :type withColors: boolean
-  :param varnames: the aliases for variables name in the table
-  :type varnames: list of strings
+  :param gum.Potential pot: the potential to get  
+  :param int digits: number of digits to show
+  :param: boolean withColors : bgcolor for proba cells or not
+  :param list of strings varnames: the aliases for variables name in the table
   :return: the display of the potential
   """
-  return _reprPotential(pot, digits, withColors, varnames, asString=False)
+  display(_reprPotential(pot, digits, withColors, varnames, asString=False))
 
 
 def getPotential(pot, digits=4, withColors=True, varnames=None):
@@ -571,14 +561,10 @@ def getPotential(pot, digits=4, withColors=True, varnames=None):
   return a HTML string of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param pot: the potential to get
-  :type pot: gum.Potential
-  :param digits: number of digits to show
-  :type digits: int
-  :param: withColors : bgcolor for proba cells or not
-  :type withColors: boolean
-  :param varnames: the aliases for variables name in the table
-  :type varnames: list of strings
+  :param gum.Potential pot: the potential to get  
+  :param int digits: number of digits to show
+  :param: boolean withColors : bgcolor for proba cells or not
+  :param list of strings varnames: the aliases for variables name in the table
   :return: the HTML string
   """
   return _reprPotential(pot, digits, withColors, varnames, asString=True)
@@ -645,7 +631,8 @@ def getInferenceEngine(ie, inferenceCaption):
   """
   display an inference as a BN+ lists of hard/soft evidence and list of targets
 
-  :param ie:
+  :param gum.InferenceEngine ie: inference engine
+  :param string inferenceCaption : title for caption
   """
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:
