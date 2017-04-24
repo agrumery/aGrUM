@@ -11,8 +11,8 @@ set(NANODBC_ENABLE_LIBCXX "Use libc++ if available." ON) # ON)
 
 
 if(USE_NANODBC)
-	INCLUDE (CheckIncludeFileCXX)
-	CHECK_INCLUDE_FILE_CXX("sql.h" HAVE_SQLHEADER)
+	#INCLUDE (CheckIncludeFileCXX)
+	CHECK_INCLUDE_FILE("sql.h" HAVE_SQLHEADER)
 	IF(NOT HAVE_SQLHEADER)
 		set(USE_NANODBC OFF)
 		message(STATUS "** aGrUM Notification: Can not find <sql.h>. Nanodbc support is OFF.")
