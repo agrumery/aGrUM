@@ -117,7 +117,7 @@ class CSVGenerator:
 
     return (self._sample, LL)
 
-  def proceed(self, name_in, name_out, n, visible, with_labels=True):
+  def proceed(self, name_in, name_out, n, visible, with_labels):
     """
     From the file name_in (BN file), generate n samples and save them in name_out
 
@@ -165,11 +165,9 @@ class CSVGenerator:
 
     return LL
 
-
-def generateCSV(name_in, name_out, n, visible=False):
+def generateCSV(name_in, name_out, n, visible=False, with_labels=True):
   g = CSVGenerator()
-  return g.proceed(name_in, name_out, n, visible)
-
+  return g.proceed(name_in, name_out, n, visible, with_labels)
 
 def module_help(exit_value=1):
   """
@@ -177,7 +175,6 @@ def module_help(exit_value=1):
   """
   print(os.path.basename(sys.argv[0]), "src.{" + gum.availableBNExts() + "} nbr [dst.csv]")
   sys.exit(exit_value)
-
 
 if __name__ == "__main__":
   pyAgrum_header("2011-2017")
