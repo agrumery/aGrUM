@@ -117,7 +117,7 @@ class CSVGenerator:
 
     return (self._sample, LL)
 
-  def proceed(self, name_in, name_out, n, visible):
+  def proceed(self, name_in, name_out, n, visible, with_labels=True):
     """
     From the file name_in (BN file), generate n samples and save them in name_out
 
@@ -146,7 +146,12 @@ class CSVGenerator:
     for i in range(n):
       (cas, ll) = self.newSample(bn, seq)
       LL += ll
-      row = [cas[bn.variable(item).name()] for item in seq]
+
+      if with_labels:
+        row = [bn.variable(item).label(cas[bn.variable(item).name()]) for item in seq]
+      else:
+        row = [cas[bn.variable(item).name()] for item in seq]
+
       writer.writerow(row)
 
       if visible:
