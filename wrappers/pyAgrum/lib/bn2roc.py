@@ -94,13 +94,13 @@ def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True
 
   if (sys.version_info >= (3, 0)):  # python 3
     csvfile = open(csv_name, "r")
-    dialect = csv.Sniffer().sniff(csvfile.read(4096))
+    dialect = csv.Sniffer().sniff(csvfile.readline())
     csvfile.seek(0)
     batchReader = csv.reader(open(csv_name, 'r'), dialect)
     titre = batchReader.__next__()
   else:  # python2
     csvfile = open(csv_name, "rb")
-    dialect = csv.Sniffer().sniff(csvfile.read(4096))
+    dialect = csv.Sniffer().sniff(csvfile.readline())
     csvfile.seek(0)
     batchReader = csv.reader(open(csv_name, 'rb'), dialect)
     titre = batchReader.next()
