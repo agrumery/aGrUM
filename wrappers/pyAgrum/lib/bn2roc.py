@@ -76,7 +76,7 @@ def computeAUC(points):
   return -somme
 
 
-def computeROCpoints(bn, csv_name, target, label, visible=False):
+def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True):
   idTarget = bn.idFromName(target)
   idLabel = -1
   for i in range(bn.variable(idTarget).domainSize()):
@@ -128,7 +128,10 @@ def computeROCpoints(bn, csv_name, target, label, visible=False):
     e = {}
     for var in bn.names():
       if not var.__eq__(target):
-        e[var] = bn.variableFromName(var).label(int(data[positions[bn.idFromName(var)]]))
+        if with_labels:
+            e[var] = str(data[positions[bn.idFromName(var)]])
+        else:
+            e[var] = bn.variableFromName(var).label(int(data[positions[bn.idFromName(var)]]))
 
     try:
       engine.setEvidence(e)
@@ -258,8 +261,8 @@ def drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
     pylab.show()
 
 
-def showROC(bn, csv_name, variable, label, visible=True, show_fig=False):
-  (res, totalP, totalN, idTarget) = computeROCpoints(bn, csv_name, variable, label, visible)
+def showROC(bn, csv_name, variable, label, visible=True, show_fig=False,with_labels=True):
+  (res, totalP, totalN, idTarget) = computeROCpoints(bn, csv_name, variable, label, visible,with_labels)
   points, opt, seuil = computeROC(bn, res, totalP, totalN, idTarget, label)
 
   try:
@@ -269,7 +272,7 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False):
 
   title = shortname + " vs " + csv_name + " - " + variable + "=" + str(label)
 
-  figname = csv_name + "-roc_" + shortname + "-" + variable + "-" + str(label) + '.png'
+  figname = csv_name + "-" +'ROC_' + shortname + "-" +  variable + "-" + str(label) + '.png'
 
   drawROC(points, title, figname, not visible, show_fig, special_point=opt, special_value=seuil)
 
