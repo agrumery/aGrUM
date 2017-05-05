@@ -78,12 +78,15 @@ def computeAUC(points):
 
 def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True):
   idTarget = bn.idFromName(target)
-  idLabel = -1
-  for i in range(bn.variable(idTarget).domainSize()):
-    if bn.variable(idTarget).label(i) == label:
-      idLabel = i
-      break;
-  assert (idLabel >= 0)
+  label=str(label)
+
+  if not with_labels:
+      idLabel = -1
+      for i in range(bn.variable(idTarget).domainSize()):
+        if bn.variable(idTarget).label(i) == label:
+          idLabel = i
+          break;
+      assert (idLabel >= 0)
 
   engine = gum.LazyPropagation(bn)
 
@@ -91,13 +94,13 @@ def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True
 
   if (sys.version_info >= (3, 0)):  # python 3
     csvfile = open(csv_name, "r")
-    dialect = csv.Sniffer().sniff(csvfile.read(1024))
+    dialect = csv.Sniffer().sniff(csvfile.read(4096))
     csvfile.seek(0)
     batchReader = csv.reader(open(csv_name, 'r'), dialect)
     titre = batchReader.__next__()
   else:  # python2
     csvfile = open(csv_name, "rb")
-    dialect = csv.Sniffer().sniff(csvfile.read(1024))
+    dialect = csv.Sniffer().sniff(csvfile.read(4096))
     csvfile.seek(0)
     batchReader = csv.reader(open(csv_name, 'rb'), dialect)
     titre = batchReader.next()
@@ -118,11 +121,17 @@ def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True
   totalN = 0
   res = []
   for data in batchReader:
-    idTargetLine = int(data[positions[idTarget]])
-    if idTargetLine == idLabel:
-      totalP += 1
+    if with_labels:
+      if str(data[positions[idTarget]])==label:
+        totalP += 1
+      else:
+        totalN += 1
     else:
-      totalN += 1
+      idTargetLine = int(data[positions[idTarget]])
+      if idTargetLine == idLabel:
+        totalP += 1
+      else:
+        totalN += 1
 
     engine.eraseAllEvidence()
     e = {}
@@ -137,7 +146,10 @@ def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True
       engine.setEvidence(e)
       engine.makeInference()
       px = engine.posterior(idTarget)[{target: label}]
-      res.append((px, int(data[positions[idTarget]])))
+      if with_labels:
+        res.append((px, str(data[positions[idTarget]])))
+      else:
+        res.append((px, int(data[positions[idTarget]])))
     except gum.OutOfBounds as err:
       print(err)
       print("erreur : " + str(e))
@@ -149,7 +161,10 @@ def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True
   if visible:
     print
 
-  return (res, totalP, totalN, idLabel)
+  if with_labels:
+    return (res,totalP,totalN,label)
+  else:
+    return (res, totalP, totalN, idLabel)
 
 
 def computeROC(bn, values, totalP, totalN, idLabel, modalite):
