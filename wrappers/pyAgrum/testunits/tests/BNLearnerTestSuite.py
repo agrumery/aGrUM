@@ -84,7 +84,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     bn2 = learner.learnParameters(bn)
     for i in range(bn.size()):
-      self.assertEquals(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
+      #self.assertEquals(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
+      self.assertEquals(set(bn2.variable(i).labels()),set(bn.variable(bn.idFromName(bn2.variable(i).name())).labels()))
 
     bn = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'), verbose=False)
     # there is a beurk modality in asia3-faulty.csv

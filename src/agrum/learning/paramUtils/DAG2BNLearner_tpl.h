@@ -26,6 +26,9 @@
 
 #include <agrum/variables/labelizedVariable.h>
 
+#include <algorithm>
+#include <string>
+#include <vector>
 namespace gum {
 
   namespace learning {
@@ -67,9 +70,16 @@ namespace gum {
       // create a bn with dummy parameters corresponding to the dag
       for ( const auto id : dag ) {
         // create the labelized variable
+        std::vector<std::string> labels;
+        for ( Idx i 
+                = 0; i < modal[id]; ++i ) {
+          labels.push_back( translator.translateBack( id, i ) );
+        }
+        sort( labels.begin(), labels.end() );
+
         LabelizedVariable variable( names[id], "", 0 );
-        for ( Idx i = 0; i < modal[id]; ++i ) {
-          variable.addLabel( translator.translateBack( id, i ) );
+        for ( auto s : labels ) {
+          variable.addLabel( s );
         }
         bn.add( variable, id );
       }
@@ -88,8 +98,8 @@ namespace gum {
 
         // get the sequence of variables and make the targets be the last
         Potential<GUM_SCALAR>& pot =
-          const_cast<Potential<GUM_SCALAR>&>( bn.cpt( id ) );
-        const DiscreteVariable&           var = varmap.get( id );
+            const_cast<Potential<GUM_SCALAR>&>( bn.cpt( id ) );
+        const DiscreteVariable& var = varmap.get( id );
 
         // get the variables of the CPT of id in the correct order
         Sequence<const DiscreteVariable*> vars = pot.variablesSequence();
@@ -105,14 +115,13 @@ namespace gum {
             cond_ids[i] = varmap.get( *( vars[i] ) );
           }
           estimator.addNodeSet( id, cond_ids );
-        }
-        else {
+        } else {
           estimator.addNodeSet( id );
         }
 
         // assign the parameters to the potentials
         Idx index = 0;
-     
+
         // create a potential with the appropriate size
         Potential<GUM_SCALAR> ordered_pot;
         ordered_pot.beginMultipleChanges();

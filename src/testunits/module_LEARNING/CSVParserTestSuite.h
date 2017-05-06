@@ -219,5 +219,19 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( f.line(), (gum::Size)1 );
       }
     };
+
+    void testSimpleCSVwithLabelsBeginningWithNumbers() {
+      std::string res;
+      gum::Size   count;
+
+      // simpleCSV with double quoted token
+      count = testParseString(
+          "1,1a,1b\n2a,2,3c",
+          res );
+      TS_ASSERT_EQUALS( count, (gum::Size)2 );
+      TS_ASSERT_EQUALS( __noParsedLine, (gum::Size)2 );
+      TS_ASSERT_EQUALS( res,
+                        std::string( "1:1a:1b|2a:2:3c|" ) );
+    }
   };
 }

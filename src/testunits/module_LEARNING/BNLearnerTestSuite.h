@@ -203,9 +203,9 @@ namespace gum_tests {
         gum::BayesNet<double> bn = learner.learnBN();
         TS_ASSERT( bn.variable( 0 ).domainSize() == 3 );
         TS_ASSERT( bn.variable( 2 ).domainSize() == 5 );
-        TS_ASSERT( bn.variable( 0 ).label( 0 ) == "false" );
-        TS_ASSERT( bn.variable( 0 ).label( 1 ) == "true" );
-        TS_ASSERT( bn.variable( 0 ).label( 2 ) == "big" );
+          TS_ASSERT( bn.variable( 0 ).label( 0 ) == "big" );
+        TS_ASSERT( bn.variable( 0 ).label( 1 ) == "false" );
+        TS_ASSERT( bn.variable( 0 ).label( 2 ) == "true" );
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
       }
@@ -751,7 +751,7 @@ namespace gum_tests {
       }
 
       TS_ASSERT_EQUALS( learn1.variable( learn1.idFromName( "wl_0" ) ).toString(),
-                        "wl_0<1,0,2,3>" );
+                        "wl_0<0,1,2,3>" );
       TS_ASSERT_EQUALS( learn2.variable( learn2.idFromName( "wl_0" ) ).toString(),
                         "wl_0<0,1,2,3>" );
       TS_ASSERT_EQUALS( learn2.variable( learn3.idFromName( "wl_0" ) ).toString(),
