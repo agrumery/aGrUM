@@ -23,8 +23,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
 #include <agrum/learning/database/DBCell.h>
+#include <string>
 namespace gum {
 
   namespace learning {
@@ -199,11 +199,15 @@ namespace gum {
 
     /// safely sets the content of the DBCell with the best possible type
     INLINE void DBCell::setBestTypeSafe( const std::string& elt ) {
-      // try to convert the string into a double
-      try {
-        __setRealFromStringSafe( elt );
-        return;
-      } catch ( std::invalid_argument& ) {
+      if ( !elt.empty() &&
+           elt.find_first_not_of( "0123456789-." ) == std::string::npos ) {
+        // try to convert the string into a double
+        try {
+          __setRealFromStringSafe( elt );
+          return;
+        } catch ( std::invalid_argument& ) {
+          // nothing
+        }
       }
 
       // here, the best type is a string
