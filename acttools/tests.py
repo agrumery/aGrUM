@@ -32,7 +32,6 @@ from .utils import error, notif, setifyString, CrossPlatformRelPath, critic
 
 def checkTests(current):
   cde = current['tests']
-  print(current['targets'])
   if cde == "quick":
     if 'aGrUM' in current['targets']:
       current['tests']='all'
