@@ -41,7 +41,10 @@ except:
     cfg.withColour = True
     pass
 
-cfg.numversion = "2.0"
+cfg.__version_major="2"
+cfg.__version_minor="1"
+cfg.__version = cfg.__version_major+"."+cfg.__version_minor
+
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
 cfg.configFile = ".options.act2.py"  #
 cfg.fixedSeedValue = "10"
@@ -104,7 +107,7 @@ def configureOptions(current):
   us = "%prog [options] [" + "|".join(sorted(cfg.actions)) + "] [" + "|".join(cfg.modes) + "] [" + "|".join(
       cfg.targets) + "]"
   cfg.parser = OptionParser(usage=us, description="Compilation tools for aGrUM and wrappers",
-                            version="%prog v" + cfg.numversion)
+                            version="%prog v" + cfg.__version)
   cfg.parser.add_option("", "--no-fun",
                         help="no fancy output parser.",
                         action="store_true",
