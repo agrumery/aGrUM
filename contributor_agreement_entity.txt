@@ -3,7 +3,7 @@ Entity Contributor Non-Exclusive License Agreement including the Traditional Pat
 
 Thank you for your interest in contributing to aGrUM ("We" or “Us").
 
-The purpose of this contributor agreement ("Agreement") is to clarify and document the rights granted by contributors to Us. To make this document effective, please follow the instructions at https://forge.lip6.fr/projects/agrum/wiki/Contribution.
+The purpose of this contributor agreement ("Agreement") is to clarify and document the rights granted by contributors to Us. To make this document effective, please follow the instructions at http://agrum.gitlab.io/pages/contribution-licence-agreement.html.
 
 1. DEFINITIONS
 "You" means any Legal Entity on behalf of whom a Contribution has been made to Us.
@@ -88,7 +88,7 @@ Title: aGrUM's authors
 Address: LIP6, 4 place Jussieu 75005 Paris, France
 Signature:
 
-This agreement is a modified version of the Entity Contributor Non-Exclusive License 
+This agreement is a modified version of the Entity Contributor Non-Exclusive License
 Agreement  generated from http://contributoragreements.org.
 
 This agreement is under the CC BY-SA 3.0 licence.

@@ -3,7 +3,7 @@ Individual Contributor Non-Exclusive License Agreement including the Traditional
 
 Thank you for your interest in contributing to aGrUM ("We" or “Us").
 
-The purpose of this contributor agreement ("Agreement") is to clarify and document the rights granted by contributors to Us. To make this document effective, please follow the instructions at https://forge.lip6.fr/projects/agrum/wiki/Contribution.
+The purpose of this contributor agreement ("Agreement") is to clarify and document the rights granted by contributors to Us. To make this document effective, please follow the instructions at http://agrum.gitlab.io/pages/contribution-licence-agreement.html.
 
 1. DEFINITIONS
 "You" means the Individual Copyright owner who submits a Contribution to Us. If You are an employee and submit the Contribution as part of your employment, You have had Your employer approve this Agreement or sign the Entity version of this document.
@@ -28,7 +28,7 @@ Subject to the terms and conditions of this Agreement, You hereby grant to Us a 
 	•	to reproduce the Contribution in original or modified form,
 	•	to distribute, to make the Contribution available to the public, display and publicly 		perform the Contribution in original or modified form.
 
-2.2 Moral Rights 
+2.2 Moral Rights
 Moral Rights remain unaffected to the extent they are recognized and not waivable by applicable law. Notwithstanding, You may add your name in the header of the source code files of Your Contribution and We will respect this attribution when using Your Contribution.
 
 3. PATENTS
@@ -87,7 +87,7 @@ Signature:
 
 
 
-This agreement is a modified version of the Entity Contributor Non-Exclusive License 
+This agreement is a modified version of the Entity Contributor Non-Exclusive License
 Agreement  generated from http://contributoragreements.org.
 
 This agreement is under the CC BY-SA 3.0 licence.

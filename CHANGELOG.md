@@ -78,7 +78,7 @@
   * Improvements in inference : New target/evidence-driven incremental inference scheme using relevant reasoning used by Lazy/Shafer-Shenoy/Variable Elimination algorithms. Relevant reasoning leads to a major improvement of the inference (see http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/RelevanceReasoning.html).
 * pyAgrum
   * LazyPropagation API follow the new inference scheme (add/removeTarget, add/remove/chgEvidence)
-installers using pip or anaconda (See https://forge.lip6.fr/projects/pyagrum/wiki/Install)
+* Installers using pip or anaconda.
 
 ## Changelog for 0.9.3
 Tag 0.9.3 has not been properly announced. Still, many changes in this release :

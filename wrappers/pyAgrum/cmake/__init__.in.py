@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-`pyAgrum <https://forge.lip6.fr/projects/pyagrum/wiki>`_ is a Python wrapper for the C++ `aGrUM <https://agrum.lip6.fr>`_ library.
+`pyAgrum <http://agrum.gitlab.io>`_ is a Python wrapper for the C++ `aGrUM <https://agrum.lip6.fr>`_ library.
 It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
 
 The module is generated using the `SWIG <https://www.swig.org>`_ interface generator. Custom-written code was added to make the interface more friendly.
 
 pyAgrum includes :
-  * API documentation,
-  * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/>`_,
-  * a `website <https://forge.lip6.fr/projects/pyagrum/wiki>`_.
+  * API documentation <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/pyAgrum/>,
+  * examples as `notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/01-tutorial.ipynb.html>`_,
+  * a `website <http://agrum.gitlab.io>`_.
 """
 
 # aGrum Licence (GPL)
@@ -30,7 +30,7 @@ pyAgrum includes :
 
 __version__ = '@PYAGRUM_VERSION@'
 __license__ = __doc__
-__project_url__ = 'http://forge.lip6.fr/projects/pyagrum'
+__project_url__ = 'http://agrum.gitlab.io'
 
 import numpy as np
 from .functions import *
