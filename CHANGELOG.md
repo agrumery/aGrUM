@@ -1,5 +1,19 @@
 # aGrUM Changelog
 
+## Changelog for 0.11.2
+* aGrUM
+  * a lot of internal changes for CI in gitlab (especially for future automatic generation of wheels)
+  * learning: correct identification of string labels beginning with digits
+  * learning: labels from CSV are now alphabetically sorted
+  * fix an issue with sql.h
+* pyAgrum
+  * notebooks as tests (now in wrappers/pyAgrum/notebooks)
+  * updating requirements
+  * some improvements in doc
+  * pyagrum.lib.ipython: emulation of 'pyagrum.lin.notebook' for ipython graphical console (within spyder for instance)
+  * pyagrum.lib.bn2csv: csv file with labels of variables instead of index (parameter with_labels:boolean)
+  * pyagrum.lib.bn2roc: use a csv with labels by default (parameter with_labels:boolean)
+
 ## Changelog for 0.11.1
 * 2 typos found in pyAgrum.lib.notebook
 
