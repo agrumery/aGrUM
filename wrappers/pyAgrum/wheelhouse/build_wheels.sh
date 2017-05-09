@@ -2,12 +2,11 @@
 set -e -x
 
 # Setting up paths to where everything is/will be
-AGRUM_DIR=/opt/aGrUM
-PYAGRUM_DIR=/opt/aGrUM/wrappers/pyAgrum
-WHEELHOUSE_DIR=/opt/wheelhouse
+AGRUM_DIR=$CI_PROJECT_DIR
+PYAGRUM_DIR=${AGRUM_DIR}/wrappers/pyAgrum
+WHEELHOUSE_DIR=${AGRUM_DIR}/wheelhouse
 
 # Downloading aGrUM and initializing the wheelhouse dir
-git clone https://gitlab.com/agrumery/aGrUM.git ${AGRUM_DIR}
 mkdir -p ${WHEELHOUSE_DIR}/pyAgrum
 cp -R ${PYAGRUM_DIR} ${WHEELHOUSE_DIR}/pyAgrum/
 cp ${AGRUM_DIR}/wrappers/swig/* ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum
@@ -15,7 +14,21 @@ cp ${AGRUM_DIR}/wrappers/swig/* ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum
 # Extracting pyAgrum version from VERSION.txt
 MAJOR=$(cat ${AGRUM_DIR}/VERSION.txt | grep AGRUM_VERSION_MAJOR | sed 's/set(AGRUM_VERSION_MAJOR "\(.*\)")/\1/')
 MINOR=$(cat ${AGRUM_DIR}/VERSION.txt | grep AGRUM_VERSION_MINOR | sed 's/set(AGRUM_VERSION_MINOR "\(.*\)")/\1/')
-PATCH=$(cat ${AGRUM_DIR}/VERSION.txt | grep 'set(AGRUM_VERSION_PATCH' | sed 's/set(AGRUM_VERSION_PATCH "\([0-9]*\.[0-9]*\)")/\1/')
+PATCH=$(cat ${AGRUM_DIR}/VERSION.txt | grep 'set(AGRUM_VERSION_PATCH' | sed 's/set(AGRUM_VERSION_PATCH "\([0-9]\).*")/\1/' | grep -v AGRUM_VERSION_PATCH)
+
+if [ -z $MAJOR ]
+then
+  echo "Could not find aGrUM's MAJOR version number."
+  exit 1
+elif [ -z $MINOR ]
+then
+  echo "Could not find aGrUM's MINOR version number."
+  exit 1
+elif [ -z $PATCH ]
+then
+  echo "Could not find aGrUM's PATCH version number."
+  exit 1
+fi
 
 PYAGRUM_VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
@@ -59,9 +72,8 @@ do
 done
 
 # Moves wheels in shared Volume if exists
-mkdir -p /aGrUM/wheels
-cp ${WHEELHOUSE_DIR}/*.whl /aGrUM/wheels
-cd /aGrUM/wheels
-ls -1 | grep -v "manylinux1" | xargs rm -f
-ls -1 | grep "numpy" | xargs rm -f
+cd $WHEELHOUSE_DIR
+ls -1 | grep -v "manylinux1" | xargs rm -rf
+ls -1 | grep "numpy" | xargs rm -rf
 cd -
+

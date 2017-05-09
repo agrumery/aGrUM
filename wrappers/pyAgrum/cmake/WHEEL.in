@@ -1,5 +1,4 @@
 Wheel-Version: 1.0
-Generator: act (@ACT_VERSION_MAJOR@.@ACT_VERSION_MINOR@)
+Generator: act (#ACT_VERSION#)
 Root-Is-Purelib: false
 Tag: #PYAGRUM_WHEEL_TAGS#
-
