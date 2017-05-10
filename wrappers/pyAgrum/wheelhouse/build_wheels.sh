@@ -56,23 +56,26 @@ rm -rf ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum/testunits
 
 # Compile and install aGrUM
 cd ${AGRUM_DIR}
-/opt/python/cp36-cp36m/bin/python act install release aGrUM --withoutSQL --no-fun
+/opt/python/cp36-cp36m/bin/python act install release aGrUM --withoutSQL --no-fun -d /usr
 cd -
 
+cd ${WHEELHOUSE_DIR}/pyAgrum
 # Compile wheels
 for PYBIN in /opt/python/*/bin
 do
-  "${PYBIN}/pip" wheel ${WHEELHOUSE_DIR}/pyAgrum -w ${WHEELHOUSE_DIR}
+  "${PYBIN}/python" ${WHEELHOUSE_DIR}/pyAgrum/setup.py sdist
+  "${PYBIN}/python" ${WHEELHOUSE_DIR}/pyAgrum/setup.py bdist_wheel
 done
+cd -
 
 # Bundle external shared libraries into the wheels
-for whl in ${WHEELHOUSE_DIR}/*.whl
+for whl in ${WHEELHOUSE_DIR}/pyAgrum/dist/*.whl
 do
   auditwheel repair "$whl" -w ${WHEELHOUSE_DIR}
 done
 
 # Moves wheels in shared Volume if exists
-cd $WHEELHOUSE_DIR
+cd ${WHEELHOUSE_DIR}
 ls -1 | grep -v "manylinux1" | xargs rm -rf
 ls -1 | grep "numpy" | xargs rm -rf
 cd -
