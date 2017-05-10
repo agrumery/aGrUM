@@ -213,6 +213,38 @@ namespace gum {
     GUM_ERROR( NotFound, "no path found" );
   }
 
+  const std::string MixedGraph::toDot() const {
+    std::stringstream output;
+    std::stringstream nodeStream;
+    std::stringstream edgeStream;
+    List<NodeId>      treatedNodes;
+    output << "digraph \""
+           << "no_name\" {" << std::endl;
+    nodeStream << "node [shape = ellipse];" << std::endl;
+    std::string tab = "  ";
+
+    for ( const auto node : nodes() ) {
+      nodeStream << tab << node << ";";
+
+      if ( neighbours( node ).size() > 0 )
+        for ( const auto nei : neighbours( node ) )
+          if ( !treatedNodes.exists( nei ) )
+            edgeStream << tab << node << " -> " << nei << " [dir=none];" << std::endl;
+
+      if (children(node).size()>0)
+        for (const auto chi : children(node))
+          edgeStream << tab << node << " -> " << chi << ";" << std::endl;
+
+      treatedNodes.insert( node );
+    }
+
+    output << nodeStream.str() << std::endl
+           << edgeStream.str() << std::endl
+           << "}" << std::endl;
+
+    return output.str();
+  }
+
   /// for friendly displaying the content of directed graphs
   std::ostream& operator<<( std::ostream& stream, const MixedGraph& g ) {
     stream << g.toString();
