@@ -33884,6 +33884,35 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_MixedGraph_toDot(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MixedGraph_toDot",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MixedGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_toDot" "', argument " "1"" of type '" "gum::MixedGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
+  {
+    try {
+      result = ((gum::MixedGraph const *)arg1)->toDot();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_MixedGraph___str__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
@@ -88622,6 +88651,14 @@ static PyMethodDef SwigMethods[] = {
 		"self: gum::MixedGraph const *\n"
 		"node1: gum::NodeId const\n"
 		"node2: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"MixedGraph_toDot", _wrap_MixedGraph_toDot, METH_VARARGS, (char *)"\n"
+		"MixedGraph_toDot(MixedGraph self) -> std::string const\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::MixedGraph const *\n"
 		"\n"
 		""},
 	 { (char *)"MixedGraph___str__", _wrap_MixedGraph___str__, METH_VARARGS, (char *)"\n"

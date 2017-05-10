@@ -6421,6 +6421,18 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph_mixedUnorientedPath(self, node1, node2)
 
 
+    def toDot(self) -> "std::string const":
+        """
+        toDot(MixedGraph self) -> std::string const
+
+        Parameters
+        ----------
+        self: gum::MixedGraph const *
+
+        """
+        return _pyAgrum.MixedGraph_toDot(self)
+
+
     def __str__(self) -> "std::string const":
         """
         __str__(MixedGraph self) -> std::string const

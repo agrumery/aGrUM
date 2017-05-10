@@ -547,7 +547,7 @@ def showPotential(pot, digits=4, withColors=True, varnames=None):
   show a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param gum.Potential pot: the potential to get  
+  :param gum.Potential pot: the potential to get
   :param int digits: number of digits to show
   :param: boolean withColors : bgcolor for proba cells or not
   :param list of strings varnames: the aliases for variables name in the table
@@ -561,7 +561,7 @@ def getPotential(pot, digits=4, withColors=True, varnames=None):
   return a HTML string of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
 
-  :param gum.Potential pot: the potential to get  
+  :param gum.Potential pot: the potential to get
   :param int digits: number of digits to show
   :param: boolean withColors : bgcolor for proba cells or not
   :param list of strings varnames: the aliases for variables name in the table
@@ -665,6 +665,10 @@ def getInferenceEngine(ie, inferenceCaption):
 # adding _repr_html_ to some pyAgrum classes !
 gum.BayesNet._repr_html_ = lambda self: getBN(self)
 gum.Potential._repr_html_ = lambda self: getPotential(self)
+gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self, "Lazy Propagation on this BN")
+
+gum.UndiGraph._repr_html_ = lambda self: getDot(self.toDot())
+gum.DiGraph._repr_html_ = lambda self: getDot(self.toDot())
+gum.MixedGraph._repr_html_ = lambda self: getDot(self.toDot())
 gum.DAG._repr_html_ = lambda self: getDot(self.toDot())
 gum.CliqueGraph._repr_html_ = lambda self: getDot(self.toDot())
-gum.LazyPropagation._repr_html_ = lambda self: getInferenceEngine(self, "Lazy Propagation on this BN")
