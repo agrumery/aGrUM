@@ -100,7 +100,11 @@ set(CMAKE_SWIG_OUTDIR ${GENERATED_PYTHON})
 
 
 if (SWIG_FOUND)
-  swig_add_module(pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
+  if (CMAKE_VERSION VERSION_LESS 3.8)
+    swig_add_module (pyAgrum python ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
+  else ()
+    swig_add_library (pyAgrum LANGUAGE python SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/pyAgrum.i)
+  endif ()
   swig_link_libraries(pyAgrum ${LIBAGRUM})
   swig_link_libraries(pyAgrum ${PYTHON_LIBRARY})  #for Apple ?
 else (SWIG_FOUND)
