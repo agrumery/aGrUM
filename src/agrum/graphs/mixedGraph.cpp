@@ -226,14 +226,13 @@ namespace gum {
     for ( const auto node : nodes() ) {
       nodeStream << tab << node << ";";
 
-      if ( neighbours( node ).size() > 0 )
-        for ( const auto nei : neighbours( node ) )
-          if ( !treatedNodes.exists( nei ) )
-            edgeStream << tab << node << " -> " << nei << " [dir=none];" << std::endl;
+      for ( const auto nei : neighbours( node ) )
+        if ( !treatedNodes.exists( nei ) )
+          edgeStream << tab << node << " -> " << nei << " [dir=none];"
+                     << std::endl;
 
-      if (children(node).size()>0)
-        for (const auto chi : children(node))
-          edgeStream << tab << node << " -> " << chi << ";" << std::endl;
+      for ( const auto chi : children( node ) )
+        edgeStream << tab << node << " -> " << chi << ";" << std::endl;
 
       treatedNodes.insert( node );
     }
