@@ -30,13 +30,23 @@
 namespace gum_tests {
   class EssentialGraphTestSuite : public CxxTest::TestSuite {
     public:
-    void testConstructor() {
+    void testChain() {
       auto bn = gum::BayesNet<int>::fastPrototype( "a->b->c" );
       auto eg = gum::EssentialGraph( bn );
 
       TS_ASSERT_EQUALS( eg.size(), 3u );
       TS_ASSERT_EQUALS( eg.sizeArcs(), 0u );
       TS_ASSERT_EQUALS( eg.sizeEdges(), 2u );
+    }
+
+    void testVstructure() {
+      auto bn = gum::BayesNet<int>::fastPrototype( "a->b;c->b" );
+      auto eg = gum::EssentialGraph( bn );
+
+      GUM_TRACE_VAR(eg.toDot());
+      TS_ASSERT_EQUALS( eg.size(), 3u );
+      TS_ASSERT_EQUALS( eg.sizeArcs(), 2u );
+      TS_ASSERT_EQUALS( eg.sizeEdges(), 0u );
     }
   };
 

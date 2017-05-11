@@ -110,7 +110,7 @@ namespace gum {
     std::string tab = "  ";
 
     for ( const auto node : __mg.nodes() ) {
-      nodeStream << tab << node << ";";
+      nodeStream << tab << node << "[label=\""<<__dag.variable(node).name()<<"\"];";
 
       for ( const auto nei : __mg.neighbours( node ) )
         if ( !treatedNodes.exists( nei ) )
