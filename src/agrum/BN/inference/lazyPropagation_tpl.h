@@ -31,7 +31,7 @@
 #include <agrum/BN/inference/BayesBall.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/dSeparation.h>
-#include <agrum/graphs/binaryJoinTreeConverterDefault.h>
+#include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
 #include <agrum/multidim/operators/multiDimProjection.h>
@@ -609,7 +609,7 @@ namespace gum {
             first_eliminated_node = node;
           }
         }
-        
+
         __joint_target_to_clique.insert(
            set,
            __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
@@ -1530,7 +1530,7 @@ namespace gum {
       clique_of_set =
         __triangulation->createdJunctionTreeClique( first_eliminated_node );
 
-      
+
       // 3/ check that clique_of_set contains the all the nodes in the target
       const NodeSet& clique_nodes = __JT->clique( clique_of_set );
       for ( const auto node : targets ) {

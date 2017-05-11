@@ -25,7 +25,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/utils_random.h>
-#include <agrum/graphs/DAGCycleDetector.h>
+#include <agrum/graphs/algorithms/DAGCycleDetector.h>
 
 namespace gum_tests {
 

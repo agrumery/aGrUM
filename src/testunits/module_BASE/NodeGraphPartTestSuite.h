@@ -20,7 +20,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/nodeGraphPart.h>
+#include <agrum/graphs/parts/nodeGraphPart.h>
 
 namespace gum_tests {
 

@@ -25,8 +25,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
-#include <agrum/graphs/triangulations/incrementalTriangulation.h>
+#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/algorithms/triangulations/incrementalTriangulation.h>
 
 namespace gum_tests {
 

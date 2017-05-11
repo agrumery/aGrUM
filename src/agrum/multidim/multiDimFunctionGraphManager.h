@@ -29,7 +29,7 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
 
 #include <agrum/config.h>
-#include <agrum/graphs/nodeGraphPart.h>
+#include <agrum/graphs/parts/nodeGraphPart.h>
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 

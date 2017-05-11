@@ -35,7 +35,7 @@
 #include <agrum/BN/inference/jointTargetedInference.h>
 #include <agrum/BN/inference/relevantPotentialsFinderType.h>
 #include <agrum/config.h>
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 
 namespace gum {
 
@@ -268,7 +268,7 @@ namespace gum {
 
     /// the join (or junction) tree used to answer the last inference query
     JoinTree* __JT{nullptr};
-    
+
     /// the junction tree to answer the last inference query
     JunctionTree* __junctionTree{nullptr};
 

@@ -27,7 +27,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/variables/labelizedVariable.h>
 

@@ -33,7 +33,7 @@
 #include <agrum/core/sequence.h>
 // =========================================================================
 #include <agrum/graphs/graphElements.h>
-#include <agrum/graphs/nodeGraphPart.h>
+#include <agrum/graphs/parts/nodeGraphPart.h>
 // =========================================================================
 #include <agrum/multidim/FunctionGraphUtilities/link.h>
 // =========================================================================

@@ -32,8 +32,8 @@
 #include <agrum/config.h>
 #include <agrum/core/sequence.h>
 
-#include <agrum/graphs/arcGraphPart.h>
-#include <agrum/graphs/nodeGraphPart.h>
+#include <agrum/graphs/parts/arcGraphPart.h>
+#include <agrum/graphs/parts/nodeGraphPart.h>
 
 namespace gum {
 

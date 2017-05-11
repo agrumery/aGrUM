@@ -159,29 +159,29 @@ class PyAgrumHelper {
         }
       }
     }
-    
+
     static void populateNodeSetFromPySequenceOfIntOrString(gum::NodeSet& nodeset,PyObject* seq,const gum::IBayesNet<double>& bn) {
         /*
       if (PySequence_Check(list)) {
         auto siz=PySequence_Size(list);
-        for (int i=0 ;i<siz ;i++) 
+        for (int i=0 ;i<siz ;i++)
           nodeset.insert(idFromNameOrInt(PySequence_GetItem(list,i),bn));
       }
       if (PyAnySet_Check(list)) {
         auto siz=PySet_Size(list);
-        for (int i=0 ;i<siz ;i++) 
+        for (int i=0 ;i<siz ;i++)
           nodeset.insert(idFromNameOrInt(PySequence_GetItem(list,i),bn));
-        
+
       }*/
       PyObject *iter = PyObject_GetIter(seq);
       if (iter!=NULL) {
         PyObject *item;
         while((item=PyIter_Next(iter))) {
-          nodeset.insert(idFromNameOrInt(item,bn));          
+          nodeset.insert(idFromNameOrInt(item,bn));
         }
       } else {
         GUM_ERROR(gum::InvalidArgument,"Argument <list> is not a sequence nor a set");
-      }  
+      }
     }
 
     static PyObject* PyListFromNodeSet(const gum::NodeSet& nodeset) {

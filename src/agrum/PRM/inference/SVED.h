@@ -30,8 +30,8 @@
 
 #include <agrum/core/set.h>
 
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
-#include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
+#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/BN/inference/variableElimination.h>
 

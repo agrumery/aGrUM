@@ -29,7 +29,7 @@
 #include <agrum/BN/inference/BayesBall.h>
 #include <agrum/BN/inference/barrenNodesFinder.h>
 #include <agrum/BN/inference/dSeparation.h>
-#include <agrum/graphs/binaryJoinTreeConverterDefault.h>
+#include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
 #include <agrum/multidim/operators/multiDimProjection.h>
@@ -569,7 +569,7 @@ namespace gum {
             first_eliminated_node = node;
           }
         }
-        
+
         __joint_target_to_clique.insert(
           set,
           __triangulation->createdJunctionTreeClique( first_eliminated_node ) );
@@ -792,7 +792,7 @@ namespace gum {
       ss_potential_to_deallocate.insert ( pot_iter.key(),
                                           ( pot_iter.val().size () > 1 ) );
     }
-    
+
     // compute the set of CPTs that were projected due to hard evidence and
     // whose hard evidence have changed, so that they need a new projection.
     // By the way, remove these CPTs since they are no more needed
@@ -839,7 +839,7 @@ namespace gum {
         }
       }
     }
-    
+
     // now, add to the set of invalidated cliques those that contain projected
     // CPTs that were changed.
     for ( auto node : nodes_with_projected_CPTs_changed ) {

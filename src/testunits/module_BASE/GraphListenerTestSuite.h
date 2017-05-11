@@ -29,9 +29,9 @@
 #include <agrum/graphs/mixedGraph.h>
 #include <agrum/graphs/undiGraph.h>
 
-#include <agrum/graphs/listeners/diGraphListener.h>
-#include <agrum/graphs/listeners/mixedGraphListener.h>
-#include <agrum/graphs/listeners/undiGraphListener.h>
+#include <agrum/graphs/parts/listeners/diGraphListener.h>
+#include <agrum/graphs/parts/listeners/mixedGraphListener.h>
+#include <agrum/graphs/parts/listeners/undiGraphListener.h>
 
 // The graph used for the tests:
 //          0   1_          0 -> 2

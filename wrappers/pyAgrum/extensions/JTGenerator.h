@@ -27,9 +27,9 @@
 
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/graphElements.h>
-#include <agrum/graphs/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
-#include <agrum/graphs/binaryJoinTreeConverterDefault.h>
+#include <agrum/graphs/algorithms/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>
+#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/BN/BayesNet.h>
 
 class JTGenerator {

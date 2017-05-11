@@ -40,7 +40,7 @@
 #include <agrum/multidim/operators/projections4MultiDim.h>
 #include <agrum/multidim/potential.h>
 
-#include <agrum/graphs/triangulations/partialOrderedTriangulation.h>
+#include <agrum/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/inference/PRMInference.h>

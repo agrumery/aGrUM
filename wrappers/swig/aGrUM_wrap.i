@@ -24,16 +24,16 @@
 #include <agrum/core/list.h>
 #include <agrum/core/OMPThreads.h>
 
-#include <agrum/graphs/edgeGraphPart.h>
-#include <agrum/graphs/arcGraphPart.h>
-#include <agrum/graphs/nodeGraphPart.h>
+#include <agrum/graphs/parts/edgeGraphPart.h>
+#include <agrum/graphs/parts/arcGraphPart.h>
+#include <agrum/graphs/parts/nodeGraphPart.h>
 
 #include <agrum/graphs/diGraph.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/graphs/mixedGraph.h>
 #include <agrum/graphs/cliqueGraph.h>
-#include <agrum/graphs/triangulations/defaultTriangulation.h>
+#include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/multidim/multiDimInterface.h>
 #include <agrum/multidim/multiDimAdressable.h>
@@ -90,7 +90,7 @@
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 #include <agrum/core/signal/listener.h>
-#include <agrum/graphs/listeners/diGraphListener.h>
+#include <agrum/graphs/parts/listeners/diGraphListener.h>
 
 #include <agrum/CN/credalNet.h>
 #include <agrum/CN/varMod2BNsMap.h>
@@ -294,17 +294,17 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 
 %include <agrum/graphs/graphElements.h>
 
-%import <agrum/graphs/edgeGraphPart.h>
-%import <agrum/graphs/arcGraphPart.h>
-%import <agrum/graphs/nodeGraphPart.h>
+%import <agrum/graphs/parts/edgeGraphPart.h>
+%import <agrum/graphs/parts/arcGraphPart.h>
+%import <agrum/graphs/parts/nodeGraphPart.h>
 
 %include <agrum/graphs/diGraph.h>
 %include <agrum/graphs/DAG.h>
 %include <agrum/graphs/undiGraph.h>
 %include <agrum/graphs/mixedGraph.h>
 %include <agrum/graphs/cliqueGraph.h>
-%import <agrum/graphs/triangulations/defaultTriangulation.h>
-%import <agrum/graphs/triangulations/triangulation.h>
+%import <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
+%import <agrum/graphs/algorithms/triangulations/triangulation.h>
 
 %include <agrum/multidim/multiDimInterface.h>
 %import <agrum/multidim/multiDimAdressable.h>
@@ -345,7 +345,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/BN/algorithms/divergence/GibbsKL.h>
 
 %import <agrum/core/signal/listener.h>
-%import <agrum/graphs/listeners/diGraphListener.h>
+%import <agrum/graphs/parts/listeners/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
 %import <agrum/learning/database/databaseVectInRAM.h>

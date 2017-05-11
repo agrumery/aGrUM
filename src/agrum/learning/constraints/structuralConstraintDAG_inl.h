@@ -25,7 +25,7 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 #include <agrum/config.h>
-#include <agrum/graphs/DAGCycleDetector.h>
+#include <agrum/graphs/algorithms/DAGCycleDetector.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 
 namespace gum {

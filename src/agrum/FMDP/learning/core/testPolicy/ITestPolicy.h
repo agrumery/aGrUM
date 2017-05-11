@@ -30,7 +30,7 @@
 // ============================================================================
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // ============================================================================
-#include <agrum/graphs/nodeGraphPart.h>
+#include <agrum/graphs/parts/nodeGraphPart.h>
 // ============================================================================
 
 namespace gum {
