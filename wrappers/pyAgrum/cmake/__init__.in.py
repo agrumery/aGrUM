@@ -38,7 +38,7 @@ from .functions import *
 # selection of imports extracted from dir(.pyAgrum)
 from .pyAgrum import statsObj
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
-from .pyAgrum import BayesNet
+from .pyAgrum import BayesNet,EssentialGraph
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from .pyAgrum import Potential, Instantiation, UtilityTable
 from .pyAgrum import BruteForceKL, GibbsKL
@@ -61,7 +61,7 @@ __all__=[
   'about','availableBNExts','loadBN','saveBN','loadID','getPosterior', # in fuctions.py
 
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
-  'BayesNet',
+  'BayesNet','EssentialGraph'
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
   'Potential','Instantiation','UtilityTable',
   'BruteForceKL','GibbsKL',

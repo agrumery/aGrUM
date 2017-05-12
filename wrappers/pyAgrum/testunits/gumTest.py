@@ -1,15 +1,15 @@
+from __future__ import print_function
+
 import os
 import platform
 import sys
 from sys import platform as os_platform
 
-
-os.chdir(os.path.dirname('./'+__file__))
+os.chdir(os.path.dirname('./' + __file__))
 libagrum = os.path.abspath("../../../build/release/wrappers")
 sys.path.insert(0, libagrum)  # to force to use local pyAgrum for the tests (and not installed one)
 
 import pyAgrum as gum
-
 
 total_errs = 0
 
@@ -29,7 +29,7 @@ except:
   total_errs += 1
   print("=> Error in TestSuite")
 
-if len(sys.argv)==2 and sys.argv[1]=='all':
+if len(sys.argv) == 2 and sys.argv[1] == 'all':
   print("\n")
   print("*******************")
   print("Notebook Test Suite")

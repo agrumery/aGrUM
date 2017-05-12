@@ -61,6 +61,8 @@
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNet.h>
 
+#include <agrum/BN/algorithms/essentialGraph.h>
+
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
 #include <agrum/BN/io/DSL/DSLReader.h>
@@ -327,6 +329,8 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/graphicalModels/DAGmodel.h>
 %include <agrum/BN/IBayesNet.h>
 %include <agrum/BN/BayesNet.h>
+
+%include <agrum/BN/algorithms/essentialGraph.h>
 
 %import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 %include <agrum/core/approximations/approximationScheme.h>

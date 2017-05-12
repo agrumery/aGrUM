@@ -17,6 +17,7 @@ import pyAgrum as gum
 
 import unittest
 
+from tests import EssentialGraphTestSuite
 from tests import VariablesTestSuite
 from tests import BayesNetTestSuite
 from tests import PythonBNListenerTestSuite
@@ -35,6 +36,7 @@ from tests import LoopyBeliefPropagationTestSuite
 import time
 
 tests = list()
+tests.append(EssentialGraphTestSuite.ts)
 tests.append(VariablesTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)
 tests.append(PythonBNListenerTestSuite.ts)

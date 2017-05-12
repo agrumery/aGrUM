@@ -3489,127 +3489,128 @@ namespace Swig {
 #define SWIGTYPE_p_gum__EdgeGraphPart swig_types[35]
 #define SWIGTYPE_p_gum__EmptyBSTree swig_types[36]
 #define SWIGTYPE_p_gum__EmptySet swig_types[37]
-#define SWIGTYPE_p_gum__Exception swig_types[38]
-#define SWIGTYPE_p_gum__FactoryError swig_types[39]
-#define SWIGTYPE_p_gum__FactoryInvalidState swig_types[40]
-#define SWIGTYPE_p_gum__FatalError swig_types[41]
-#define SWIGTYPE_p_gum__FormatNotFound swig_types[42]
-#define SWIGTYPE_p_gum__GibbsInferenceT_double_t swig_types[43]
-#define SWIGTYPE_p_gum__GibbsKLT_double_t swig_types[44]
-#define SWIGTYPE_p_gum__GraphError swig_types[45]
-#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[46]
-#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[47]
-#define SWIGTYPE_p_gum__IOError swig_types[48]
-#define SWIGTYPE_p_gum__IdError swig_types[49]
-#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[50]
-#define SWIGTYPE_p_gum__IncompatibleScoreApriori swig_types[51]
-#define SWIGTYPE_p_gum__InfluenceDiagramInferenceT_double_t swig_types[52]
-#define SWIGTYPE_p_gum__InfluenceDiagramT_double_t swig_types[53]
-#define SWIGTYPE_p_gum__Instantiation swig_types[54]
-#define SWIGTYPE_p_gum__InvalidArc swig_types[55]
-#define SWIGTYPE_p_gum__InvalidArgument swig_types[56]
-#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[57]
-#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[58]
-#define SWIGTYPE_p_gum__InvalidEdge swig_types[59]
-#define SWIGTYPE_p_gum__InvalidNode swig_types[60]
-#define SWIGTYPE_p_gum__KLT_double_t swig_types[61]
-#define SWIGTYPE_p_gum__LabelizedVariable swig_types[62]
-#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[63]
-#define SWIGTYPE_p_gum__LearningError swig_types[64]
-#define SWIGTYPE_p_gum__ListT_gum__PotentialT_double_t_const_p_t swig_types[65]
-#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[66]
-#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[67]
-#define SWIGTYPE_p_gum__MixedGraph swig_types[68]
-#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[69]
-#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[70]
-#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[71]
-#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[72]
-#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[73]
-#define SWIGTYPE_p_gum__MultiDimInterface swig_types[74]
-#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[75]
-#define SWIGTYPE_p_gum__NoChild swig_types[76]
-#define SWIGTYPE_p_gum__NoNeighbour swig_types[77]
-#define SWIGTYPE_p_gum__NoParent swig_types[78]
-#define SWIGTYPE_p_gum__NodeGraphPart swig_types[79]
-#define SWIGTYPE_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t swig_types[80]
-#define SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t swig_types[81]
-#define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[82]
-#define SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t swig_types[83]
-#define SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t swig_types[84]
-#define SWIGTYPE_p_gum__NotFound swig_types[85]
-#define SWIGTYPE_p_gum__NullElement swig_types[86]
-#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[87]
-#define SWIGTYPE_p_gum__OutOfBounds swig_types[88]
-#define SWIGTYPE_p_gum__OutOfLowerBound swig_types[89]
-#define SWIGTYPE_p_gum__OutOfUpperBound swig_types[90]
-#define SWIGTYPE_p_gum__PossiblyIncompatibleScoreApriori swig_types[91]
-#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[92]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[93]
-#define SWIGTYPE_p_gum__ReferenceError swig_types[94]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[95]
-#define SWIGTYPE_p_gum__SequenceT_unsigned_int_t swig_types[96]
-#define SWIGTYPE_p_gum__SetIteratorStaticEnd swig_types[97]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[98]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[99]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[100]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[101]
-#define SWIGTYPE_p_gum__SetT_gum__PotentialT_double_t_const_p_t swig_types[102]
-#define SWIGTYPE_p_gum__SetT_unsigned_int_t swig_types[103]
-#define SWIGTYPE_p_gum__SetT_unsigned_int_t__const_iterator swig_types[104]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[105]
-#define SWIGTYPE_p_gum__SizeError swig_types[106]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[107]
-#define SWIGTYPE_p_gum__Triangulation swig_types[108]
-#define SWIGTYPE_p_gum__TypeError swig_types[109]
-#define SWIGTYPE_p_gum__UndefinedElement swig_types[110]
-#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[111]
-#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[112]
-#define SWIGTYPE_p_gum__UndiGraph swig_types[113]
-#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[114]
-#define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[115]
-#define SWIGTYPE_p_gum__Variable swig_types[116]
-#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[117]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[118]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[119]
-#define SWIGTYPE_p_gum__WrongType swig_types[120]
-#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[121]
-#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[122]
-#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[123]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[124]
-#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[125]
-#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[126]
-#define SWIGTYPE_p_iterator_category swig_types[127]
-#define SWIGTYPE_p_msg swig_types[128]
-#define SWIGTYPE_p_node_const_iterator swig_types[129]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[130]
-#define SWIGTYPE_p_node_iterator swig_types[131]
-#define SWIGTYPE_p_node_iterator_safe swig_types[132]
-#define SWIGTYPE_p_p_PyObject swig_types[133]
-#define SWIGTYPE_p_size_type swig_types[134]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[135]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[136]
-#define SWIGTYPE_p_std__allocatorT_unsigned_int_t swig_types[137]
-#define SWIGTYPE_p_std__default_random_engine swig_types[138]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[139]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[140]
-#define SWIGTYPE_p_std__invalid_argument swig_types[141]
-#define SWIGTYPE_p_std__ostream swig_types[142]
-#define SWIGTYPE_p_std__string swig_types[143]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[144]
-#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[145]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[146]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[147]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[148]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[149]
-#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[150]
-#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[151]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[152]
-#define SWIGTYPE_p_unsigned_int swig_types[153]
-#define SWIGTYPE_p_unsigned_long swig_types[154]
-#define SWIGTYPE_p_value_type swig_types[155]
-#define SWIGTYPE_p_void swig_types[156]
-static swig_type_info *swig_types[158];
-static swig_module_info swig_module = {swig_types, 157, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__EssentialGraph swig_types[38]
+#define SWIGTYPE_p_gum__Exception swig_types[39]
+#define SWIGTYPE_p_gum__FactoryError swig_types[40]
+#define SWIGTYPE_p_gum__FactoryInvalidState swig_types[41]
+#define SWIGTYPE_p_gum__FatalError swig_types[42]
+#define SWIGTYPE_p_gum__FormatNotFound swig_types[43]
+#define SWIGTYPE_p_gum__GibbsInferenceT_double_t swig_types[44]
+#define SWIGTYPE_p_gum__GibbsKLT_double_t swig_types[45]
+#define SWIGTYPE_p_gum__GraphError swig_types[46]
+#define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[47]
+#define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[48]
+#define SWIGTYPE_p_gum__IOError swig_types[49]
+#define SWIGTYPE_p_gum__IdError swig_types[50]
+#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[51]
+#define SWIGTYPE_p_gum__IncompatibleScoreApriori swig_types[52]
+#define SWIGTYPE_p_gum__InfluenceDiagramInferenceT_double_t swig_types[53]
+#define SWIGTYPE_p_gum__InfluenceDiagramT_double_t swig_types[54]
+#define SWIGTYPE_p_gum__Instantiation swig_types[55]
+#define SWIGTYPE_p_gum__InvalidArc swig_types[56]
+#define SWIGTYPE_p_gum__InvalidArgument swig_types[57]
+#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[58]
+#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[59]
+#define SWIGTYPE_p_gum__InvalidEdge swig_types[60]
+#define SWIGTYPE_p_gum__InvalidNode swig_types[61]
+#define SWIGTYPE_p_gum__KLT_double_t swig_types[62]
+#define SWIGTYPE_p_gum__LabelizedVariable swig_types[63]
+#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[64]
+#define SWIGTYPE_p_gum__LearningError swig_types[65]
+#define SWIGTYPE_p_gum__ListT_gum__PotentialT_double_t_const_p_t swig_types[66]
+#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[67]
+#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[68]
+#define SWIGTYPE_p_gum__MixedGraph swig_types[69]
+#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[70]
+#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[71]
+#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[72]
+#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[73]
+#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[74]
+#define SWIGTYPE_p_gum__MultiDimInterface swig_types[75]
+#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[76]
+#define SWIGTYPE_p_gum__NoChild swig_types[77]
+#define SWIGTYPE_p_gum__NoNeighbour swig_types[78]
+#define SWIGTYPE_p_gum__NoParent swig_types[79]
+#define SWIGTYPE_p_gum__NodeGraphPart swig_types[80]
+#define SWIGTYPE_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t swig_types[81]
+#define SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t swig_types[82]
+#define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[83]
+#define SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t swig_types[84]
+#define SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t swig_types[85]
+#define SWIGTYPE_p_gum__NotFound swig_types[86]
+#define SWIGTYPE_p_gum__NullElement swig_types[87]
+#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[88]
+#define SWIGTYPE_p_gum__OutOfBounds swig_types[89]
+#define SWIGTYPE_p_gum__OutOfLowerBound swig_types[90]
+#define SWIGTYPE_p_gum__OutOfUpperBound swig_types[91]
+#define SWIGTYPE_p_gum__PossiblyIncompatibleScoreApriori swig_types[92]
+#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[93]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[94]
+#define SWIGTYPE_p_gum__ReferenceError swig_types[95]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[96]
+#define SWIGTYPE_p_gum__SequenceT_unsigned_int_t swig_types[97]
+#define SWIGTYPE_p_gum__SetIteratorStaticEnd swig_types[98]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[99]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[100]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[101]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[102]
+#define SWIGTYPE_p_gum__SetT_gum__PotentialT_double_t_const_p_t swig_types[103]
+#define SWIGTYPE_p_gum__SetT_unsigned_int_t swig_types[104]
+#define SWIGTYPE_p_gum__SetT_unsigned_int_t__const_iterator swig_types[105]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[106]
+#define SWIGTYPE_p_gum__SizeError swig_types[107]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[108]
+#define SWIGTYPE_p_gum__Triangulation swig_types[109]
+#define SWIGTYPE_p_gum__TypeError swig_types[110]
+#define SWIGTYPE_p_gum__UndefinedElement swig_types[111]
+#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[112]
+#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[113]
+#define SWIGTYPE_p_gum__UndiGraph swig_types[114]
+#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[115]
+#define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[116]
+#define SWIGTYPE_p_gum__Variable swig_types[117]
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[118]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[119]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[120]
+#define SWIGTYPE_p_gum__WrongType swig_types[121]
+#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[122]
+#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[123]
+#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[124]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[125]
+#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[126]
+#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[127]
+#define SWIGTYPE_p_iterator_category swig_types[128]
+#define SWIGTYPE_p_msg swig_types[129]
+#define SWIGTYPE_p_node_const_iterator swig_types[130]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[131]
+#define SWIGTYPE_p_node_iterator swig_types[132]
+#define SWIGTYPE_p_node_iterator_safe swig_types[133]
+#define SWIGTYPE_p_p_PyObject swig_types[134]
+#define SWIGTYPE_p_size_type swig_types[135]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[136]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[137]
+#define SWIGTYPE_p_std__allocatorT_unsigned_int_t swig_types[138]
+#define SWIGTYPE_p_std__default_random_engine swig_types[139]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[140]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[141]
+#define SWIGTYPE_p_std__invalid_argument swig_types[142]
+#define SWIGTYPE_p_std__ostream swig_types[143]
+#define SWIGTYPE_p_std__string swig_types[144]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[145]
+#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[146]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[147]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[148]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[149]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[150]
+#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[151]
+#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[152]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[153]
+#define SWIGTYPE_p_unsigned_int swig_types[154]
+#define SWIGTYPE_p_unsigned_long swig_types[155]
+#define SWIGTYPE_p_value_type swig_types[156]
+#define SWIGTYPE_p_void swig_types[157]
+static swig_type_info *swig_types[159];
+static swig_module_info swig_module = {swig_types, 158, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4650,6 +4651,8 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNet.h>
+
+#include <agrum/BN/algorithms/essentialGraph.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
@@ -39721,6 +39724,419 @@ SWIGINTERN PyObject *DAGmodel_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObj
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_gum__DAGmodel, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_EssentialGraph(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAGmodel *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::EssentialGraph *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_EssentialGraph",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1, SWIGTYPE_p_gum__DAGmodel,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_EssentialGraph" "', argument " "1"" of type '" "gum::DAGmodel const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_EssentialGraph" "', argument " "1"" of type '" "gum::DAGmodel const &""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAGmodel * >(argp1);
+  {
+    try {
+      result = (gum::EssentialGraph *)new gum::EssentialGraph((gum::DAGmodel const &)*arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__EssentialGraph, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_EssentialGraph(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_EssentialGraph",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_EssentialGraph" "', argument " "1"" of type '" "gum::EssentialGraph *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_mixedGraph(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::MixedGraph result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:EssentialGraph_mixedGraph",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_mixedGraph" "', argument " "1"" of type '" "gum::EssentialGraph *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      result = (arg1)->mixedGraph();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::MixedGraph(static_cast< const gum::MixedGraph& >(result))), SWIGTYPE_p_gum__MixedGraph, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_toDot(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:EssentialGraph_toDot",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_toDot" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      result = ((gum::EssentialGraph const *)arg1)->toDot();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_parents(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::NodeSet *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:EssentialGraph_parents",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_parents" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "EssentialGraph_parents" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (gum::NodeSet *) &((gum::EssentialGraph const *)arg1)->parents(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__SetT_unsigned_int_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_children(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::NodeSet *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:EssentialGraph_children",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_children" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "EssentialGraph_children" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (gum::NodeSet *) &((gum::EssentialGraph const *)arg1)->children(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__SetT_unsigned_int_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_neighbours(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::NodeSet *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:EssentialGraph_neighbours",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_neighbours" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "EssentialGraph_neighbours" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (gum::NodeSet *) &((gum::EssentialGraph const *)arg1)->neighbours(arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__SetT_unsigned_int_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_sizeArcs(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:EssentialGraph_sizeArcs",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_sizeArcs" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::EssentialGraph const *)arg1)->sizeArcs();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_arcs(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::ArcSet *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:EssentialGraph_arcs",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_arcs" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      result = (gum::ArcSet *) &((gum::EssentialGraph const *)arg1)->arcs();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__SetT_gum__Arc_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_sizeEdges(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:EssentialGraph_sizeEdges",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_sizeEdges" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::EssentialGraph const *)arg1)->sizeEdges();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_edges(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::EdgeSet *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:EssentialGraph_edges",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_edges" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      result = (gum::EdgeSet *) &((gum::EssentialGraph const *)arg1)->edges();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__SetT_gum__Edge_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_sizeNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:EssentialGraph_sizeNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_sizeNodes" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::EssentialGraph const *)arg1)->sizeNodes();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_EssentialGraph_size(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::EssentialGraph *arg1 = (gum::EssentialGraph *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:EssentialGraph_size",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__EssentialGraph, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "EssentialGraph_size" "', argument " "1"" of type '" "gum::EssentialGraph const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::EssentialGraph * >(argp1);
+  {
+    try {
+      result = (gum::Size)((gum::EssentialGraph const *)arg1)->size();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *EssentialGraph_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__EssentialGraph, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -89800,6 +90216,114 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"DAGmodel_swigregister", DAGmodel_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_EssentialGraph", _wrap_new_EssentialGraph, METH_VARARGS, (char *)"\n"
+		"new_EssentialGraph(DAGmodel m) -> EssentialGraph\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"m: gum::DAGmodel const &\n"
+		"\n"
+		""},
+	 { (char *)"delete_EssentialGraph", _wrap_delete_EssentialGraph, METH_VARARGS, (char *)"\n"
+		"delete_EssentialGraph(EssentialGraph self)\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_mixedGraph", _wrap_EssentialGraph_mixedGraph, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_mixedGraph(EssentialGraph self) -> MixedGraph\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_toDot", _wrap_EssentialGraph_toDot, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_toDot(EssentialGraph self) -> std::string\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_parents", _wrap_EssentialGraph_parents, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_parents(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_children", _wrap_EssentialGraph_children, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_children(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_neighbours", _wrap_EssentialGraph_neighbours, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_neighbours(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"id: gum::NodeId const\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_sizeArcs", _wrap_EssentialGraph_sizeArcs, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_sizeArcs(EssentialGraph self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_arcs", _wrap_EssentialGraph_arcs, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_arcs(EssentialGraph self) -> gum::ArcSet const &\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_sizeEdges", _wrap_EssentialGraph_sizeEdges, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_sizeEdges(EssentialGraph self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_edges", _wrap_EssentialGraph_edges, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_edges(EssentialGraph self) -> gum::EdgeSet const &\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_sizeNodes", _wrap_EssentialGraph_sizeNodes, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_sizeNodes(EssentialGraph self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_size", _wrap_EssentialGraph_size, METH_VARARGS, (char *)"\n"
+		"EssentialGraph_size(EssentialGraph self) -> gum::Size\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"self: gum::EssentialGraph const *\n"
+		"\n"
+		""},
+	 { (char *)"EssentialGraph_swigregister", EssentialGraph_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_ApproximationScheme", _wrap_new_ApproximationScheme, METH_VARARGS, (char *)"\n"
 		"ApproximationScheme(bool v=False)\n"
 		"\n"
@@ -97804,6 +98328,7 @@ static swig_type_info _swigt__p_gum__Edge = {"_p_gum__Edge", "gum::Edge *", 0, 0
 static swig_type_info _swigt__p_gum__EdgeGraphPart = {"_p_gum__EdgeGraphPart", "gum::EdgeGraphPart *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__EmptyBSTree = {"_p_gum__EmptyBSTree", "gum::EmptyBSTree *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__EmptySet = {"_p_gum__EmptySet", "gum::EmptySet *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__EssentialGraph = {"_p_gum__EssentialGraph", "gum::EssentialGraph *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__Exception = {"_p_gum__Exception", "gum::Exception *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FactoryError = {"_p_gum__FactoryError", "gum::FactoryError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FactoryInvalidState = {"_p_gum__FactoryInvalidState", "gum::FactoryInvalidState *", 0, 0, (void*)0, 0};
@@ -97963,6 +98488,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__EdgeGraphPart,
   &_swigt__p_gum__EmptyBSTree,
   &_swigt__p_gum__EmptySet,
+  &_swigt__p_gum__EssentialGraph,
   &_swigt__p_gum__Exception,
   &_swigt__p_gum__FactoryError,
   &_swigt__p_gum__FactoryInvalidState,
@@ -98122,6 +98648,7 @@ static swig_cast_info _swigc__p_gum__Edge[] = {  {&_swigt__p_gum__Edge, 0, 0, 0}
 static swig_cast_info _swigc__p_gum__EdgeGraphPart[] = {  {&_swigt__p_gum__UndiGraph, _p_gum__UndiGraphTo_p_gum__EdgeGraphPart, 0, 0},  {&_swigt__p_gum__MixedGraph, _p_gum__MixedGraphTo_p_gum__EdgeGraphPart, 0, 0},  {&_swigt__p_gum__EdgeGraphPart, 0, 0, 0},  {&_swigt__p_gum__CliqueGraph, _p_gum__CliqueGraphTo_p_gum__EdgeGraphPart, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__EmptyBSTree[] = {  {&_swigt__p_gum__EmptyBSTree, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__EmptySet[] = {  {&_swigt__p_gum__EmptySet, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__EssentialGraph[] = {  {&_swigt__p_gum__EssentialGraph, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Exception[] = {  {&_swigt__p_gum__WrongType, _p_gum__WrongTypeTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FatalError, _p_gum__FatalErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IncompatibleScoreApriori, _p_gum__IncompatibleScoreAprioriTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__PossiblyIncompatibleScoreApriori, _p_gum__PossiblyIncompatibleScoreAprioriTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidNode, _p_gum__InvalidNodeTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FormatNotFound, _p_gum__FormatNotFoundTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NotFound, _p_gum__NotFoundTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__GraphError, _p_gum__GraphErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DefaultInLabel, _p_gum__DefaultInLabelTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidDirectedCycle, _p_gum__InvalidDirectedCycleTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DatabaseError, _p_gum__DatabaseErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__ReferenceError, _p_gum__ReferenceErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__OperationNotAllowed, _p_gum__OperationNotAllowedTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FactoryError, _p_gum__FactoryErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__CPTError, _p_gum__CPTErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidArc, _p_gum__InvalidArcTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__SyntaxError, _p_gum__SyntaxErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__OutOfUpperBound, _p_gum__OutOfUpperBoundTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__OutOfLowerBound, _p_gum__OutOfLowerBoundTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__SizeError, _p_gum__SizeErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__TypeError, _p_gum__TypeErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DuplicateLabel, _p_gum__DuplicateLabelTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__LearningError, _p_gum__LearningErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidEdge, _p_gum__InvalidEdgeTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__Exception, 0, 0, 0},  {&_swigt__p_gum__InvalidArgumentsNumber, _p_gum__InvalidArgumentsNumberTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedIteratorValue, _p_gum__UndefinedIteratorValueTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IdError, _p_gum__IdErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__InvalidArgument, _p_gum__InvalidArgumentTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoNeighbour, _p_gum__NoNeighbourTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__OutOfBounds, _p_gum__OutOfBoundsTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__EmptyBSTree, _p_gum__EmptyBSTreeTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__CPTNoSumTo1, _p_gum__CPTNoSumTo1To_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IncompatibleEvidence, _p_gum__IncompatibleEvidenceTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoParent, _p_gum__NoParentTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__WrongClassElement, _p_gum__WrongClassElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__DuplicateElement, _p_gum__DuplicateElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NullElement, _p_gum__NullElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedElement, _p_gum__UndefinedElementTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__NoChild, _p_gum__NoChildTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__FactoryInvalidState, _p_gum__FactoryInvalidStateTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__EmptySet, _p_gum__EmptySetTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__IOError, _p_gum__IOErrorTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__MissingVariableInDatabase, _p_gum__MissingVariableInDatabaseTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UnknownLabelInDatabase, _p_gum__UnknownLabelInDatabaseTo_p_gum__Exception, 0, 0},  {&_swigt__p_gum__UndefinedIteratorKey, _p_gum__UndefinedIteratorKeyTo_p_gum__Exception, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FactoryError[] = {  {&_swigt__p_gum__WrongClassElement, _p_gum__WrongClassElementTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__FactoryError, 0, 0, 0},  {&_swigt__p_gum__FactoryInvalidState, _p_gum__FactoryInvalidStateTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__TypeError, _p_gum__TypeErrorTo_p_gum__FactoryError, 0, 0},  {&_swigt__p_gum__WrongType, _p_gum__WrongTypeTo_p_gum__FactoryError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FactoryInvalidState[] = {  {&_swigt__p_gum__FactoryInvalidState, 0, 0, 0},{0, 0, 0, 0}};
@@ -98281,6 +98808,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__EdgeGraphPart,
   _swigc__p_gum__EmptyBSTree,
   _swigc__p_gum__EmptySet,
+  _swigc__p_gum__EssentialGraph,
   _swigc__p_gum__Exception,
   _swigc__p_gum__FactoryError,
   _swigc__p_gum__FactoryInvalidState,

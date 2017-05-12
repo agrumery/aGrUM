@@ -7921,6 +7921,166 @@ cvar = _pyAgrum.cvar
 __list_end_safe = cvar.__list_end_safe
 __list_end = cvar.__list_end
 
+class EssentialGraph(_object):
+    """Proxy of C++ gum::EssentialGraph class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, EssentialGraph, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, EssentialGraph, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, m: 'DAGmodel'):
+        """
+        __init__(gum::EssentialGraph self, DAGmodel m) -> EssentialGraph
+
+        Parameters
+        ----------
+        m: gum::DAGmodel const &
+
+        """
+        this = _pyAgrum.new_EssentialGraph(m)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_EssentialGraph
+    __del__ = lambda self: None
+
+    def mixedGraph(self) -> "gum::MixedGraph":
+        """
+        mixedGraph(EssentialGraph self) -> MixedGraph
+
+        Parameters
+        ----------
+        self: gum::EssentialGraph *
+
+        """
+        return _pyAgrum.EssentialGraph_mixedGraph(self)
+
+
+    def toDot(self) -> "std::string":
+        """
+        toDot(EssentialGraph self) -> std::string
+
+        Parameters
+        ----------
+        self: gum::EssentialGraph const *
+
+        """
+        return _pyAgrum.EssentialGraph_toDot(self)
+
+
+    def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
+        """
+        parents(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.EssentialGraph_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
+        """
+        children(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.EssentialGraph_children(self, id)
+
+
+    def neighbours(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
+        """
+        neighbours(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.EssentialGraph_neighbours(self, id)
+
+
+    def sizeArcs(self) -> "gum::Size":
+        """
+        sizeArcs(EssentialGraph self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::EssentialGraph const *
+
+        """
+        return _pyAgrum.EssentialGraph_sizeArcs(self)
+
+
+    def arcs(self) -> "gum::ArcSet const &":
+        """
+        arcs(EssentialGraph self) -> gum::ArcSet const &
+
+        Parameters
+        ----------
+        self: gum::EssentialGraph const *
+
+        """
+        return _pyAgrum.EssentialGraph_arcs(self)
+
+
+    def sizeEdges(self) -> "gum::Size":
+        """
+        sizeEdges(EssentialGraph self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::EssentialGraph const *
+
+        """
+        return _pyAgrum.EssentialGraph_sizeEdges(self)
+
+
+    def edges(self) -> "gum::EdgeSet const &":
+        """
+        edges(EssentialGraph self) -> gum::EdgeSet const &
+
+        Parameters
+        ----------
+        self: gum::EssentialGraph const *
+
+        """
+        return _pyAgrum.EssentialGraph_edges(self)
+
+
+    def sizeNodes(self) -> "gum::Size":
+        """
+        sizeNodes(EssentialGraph self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::EssentialGraph const *
+
+        """
+        return _pyAgrum.EssentialGraph_sizeNodes(self)
+
+
+    def size(self) -> "gum::Size":
+        """
+        size(EssentialGraph self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::EssentialGraph const *
+
+        """
+        return _pyAgrum.EssentialGraph_size(self)
+
+EssentialGraph_swigregister = _pyAgrum.EssentialGraph_swigregister
+EssentialGraph_swigregister(EssentialGraph)
+
 class ApproximationScheme(_object):
     """Proxy of C++ gum::ApproximationScheme class."""
 
