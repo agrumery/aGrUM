@@ -66,7 +66,7 @@ namespace gum {
     // A Characterization of Markov Equivalence Classes for Acyclic Digraphs (2001)
     //  Steen A. Andersson, David Madigan, and Michael D. Perlman*
 
-    // condition (a)
+    // condition (c)
     if ( ( __mg.parents( a ) - __mg.parents( b ) ).size() > 0 ) {
       return true;
     }
@@ -77,7 +77,7 @@ namespace gum {
       if ( c == a ) {
         continue;
       }
-      if ( __mg.existsEdge( c, a ) ) {
+      if ( ! __mg.existsEdge( c, a ) ) {
         return true;
       } else {
         cs.insert( c );
@@ -110,7 +110,8 @@ namespace gum {
     std::string tab = "  ";
 
     for ( const auto node : __mg.nodes() ) {
-      nodeStream << tab << node << "[label=\""<<__dag.variable(node).name()<<"\"];";
+      nodeStream << tab << node << "[label=\"" << __dag.variable( node ).name()
+                 << "\"];";
 
       for ( const auto nei : __mg.neighbours( node ) )
         if ( !treatedNodes.exists( nei ) )
