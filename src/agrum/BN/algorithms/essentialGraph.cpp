@@ -47,18 +47,16 @@ namespace gum {
     }
 
     std::vector<Arc> v;
-    bool             change = true;
-    while ( change ) {
-      change = false;
+    do {
+      v.clear();
       for ( const auto x : __dag.topologicalOrder() )
-        for ( const auto y : __mg.children( x ) ) {
-          if ( !__strongly_protected( x, y ) ) {
-            change = true;
-            __mg.eraseArc( Arc( x, y ) );
-            __mg.addEdge( x, y );
-          }
-        }
-    }
+        for ( const auto y : __mg.children( x ) )
+          if ( !__strongly_protected( x, y ) ) v.push_back( Arc( x, y ) );
+      for ( const auto& arc : v ) {
+        __mg.eraseArc( arc );
+        __mg.addEdge( arc.tail(), arc.head() );
+      }
+    } while ( v.size() > 0 );
   }
 
   bool EssentialGraph::__strongly_protected( NodeId a, NodeId b ) {
@@ -77,7 +75,7 @@ namespace gum {
       if ( c == a ) {
         continue;
       }
-      if ( ! __mg.existsEdge( c, a ) ) {
+      if ( !__mg.existsEdge( c, a ) ) {
         return true;
       } else {
         cs.insert( c );
