@@ -660,7 +660,9 @@ namespace gum {
           // only over nodes that received hard evidence, do not consider it
           // as a potential anymore but as a constant
           if ( hard_nodes.size() == variables.size() ) {
-            Instantiation inst( cpt );
+            Instantiation inst;
+            const auto& vars = cpt.variablesSequence ();
+            for ( auto var : vars ) inst << *var;
             for ( Size i = 0; i < hard_nodes.size(); ++i ) {
               inst.chgVal( variables[i],
                            hard_evidence[bn.nodeId( *( variables[i] ) )] );
@@ -979,7 +981,8 @@ namespace gum {
     for ( auto& node_cst : __constants ) {
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node_cst.first );
       const auto&                  variables = cpt.variablesSequence();
-      Instantiation                inst( cpt );
+      Instantiation  inst;
+      for ( const auto var : variables ) inst << *var;
       for ( const auto var : variables ) {
         inst.chgVal( var, hard_evidence[bn.nodeId( *var )] );
       }
@@ -1429,9 +1432,15 @@ namespace gum {
       for ( const auto node : set ) {
         pot_list.insert( evidence[node] );
       }
-      MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
+      if ( pot_list.size() == 1 ) {
+        auto pot = new Potential<GUM_SCALAR> ( **( pot_list.begin() ) );
+        return pot;
+      }
+      else {
+        MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
           __combination_op );
-      return fast_combination.combine( pot_list );
+        return fast_combination.combine( pot_list );
+      }
     }
 
 

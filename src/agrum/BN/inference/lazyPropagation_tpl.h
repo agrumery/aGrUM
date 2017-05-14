@@ -678,7 +678,7 @@ namespace gum {
         const Potential<GUM_SCALAR>& cpt = bn.cpt( node );
 
         // get the list of nodes with hard evidence in cpt
-        NodeSet     hard_nodes;
+        NodeSet hard_nodes;
         const auto& variables = cpt.variablesSequence();
         for ( const auto var : variables ) {
           const NodeId xnode = bn.nodeId( *var );
@@ -695,12 +695,14 @@ namespace gum {
           // only over nodes that received hard evidence, do not consider it
           // as a potential anymore but as a constant
           if ( hard_nodes.size() == variables.size() ) {
-            Instantiation inst( cpt );
+            Instantiation inst;
+            const auto& vars = cpt.variablesSequence ();
+            for ( auto var : vars ) inst << *var;
             for ( Size i = 0; i < hard_nodes.size(); ++i ) {
               inst.chgVal( variables[i],
                            hard_evidence[bn.nodeId( *( variables[i] ) )] );
             }
-            __constants.insert( node, cpt[inst] );
+            __constants.insert( node, cpt.get( inst ) );
           } else {
             // perform the projection with a combine and project instance
             Set<const DiscreteVariable*> hard_variables;
@@ -904,8 +906,8 @@ namespace gum {
 
     // Now add the projections of the CPTs due to newly changed hard evidence:
     // if we are performing _updateOutdatedBNPotentials, this means that the
-    // set of nodes that received hard evidence has not been changed, only
-    // their instantiations can have been changed. So, if there is an entry
+    // set of nodes that received hard evidence has not changed, only
+    // their instantiations can have changed. So, if there is an entry
     // for node in __constants, there will still be such an entry after
     // performing the new projections. Idem for __hard_ev_projected_CPTs
     for ( const auto node : nodes_with_projected_CPTs_changed ) {
@@ -947,12 +949,13 @@ namespace gum {
     const auto& hard_evidence = this->hardEvidence();
     for ( auto& node_cst : __constants ) {
       const Potential<GUM_SCALAR>& cpt = bn.cpt( node_cst.first );
-      const auto&                  variables = cpt.variablesSequence();
-      Instantiation                inst( cpt );
+      const auto&  variables = cpt.variablesSequence();
+      Instantiation  inst;
+      for ( const auto var : variables ) inst << *var;
       for ( const auto var : variables ) {
         inst.chgVal( var, hard_evidence[bn.nodeId( *var )] );
       }
-      node_cst.second = cpt[inst];
+      node_cst.second = cpt.get ( inst );
     }
 
     // indicate that all changes have been performed
@@ -1316,7 +1319,7 @@ namespace gum {
       if ( pot->variablesSequence().size() == 1 ) {
         bool is_all_ones = true;
         for ( Instantiation inst( *pot ); !inst.end(); ++inst ) {
-          if ( ( *pot )[inst] < __1_minus_epsilon ) {
+          if ( pot->get ( inst ) < __1_minus_epsilon ) {
             is_all_ones = false;
             break;
           }
@@ -1428,7 +1431,7 @@ namespace gum {
     // probability is equal to 0)
     bool nonzero_found = false;
     for ( Instantiation inst( *joint ); !inst.end(); ++inst ) {
-      if ( ( *joint )[inst] ) {
+      if ( joint->get ( inst ) ) {
         nonzero_found = true;
         break;
       }
@@ -1484,9 +1487,15 @@ namespace gum {
       for ( const auto node : set ) {
         pot_list.insert( evidence[node] );
       }
-      MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
+      if ( pot_list.size() == 1 ) {
+        auto pot = new Potential<GUM_SCALAR> ( **( pot_list.begin() ) );
+        return pot;
+      }
+      else {
+        MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
           __combination_op );
-      return fast_combination.combine( pot_list );
+        return fast_combination.combine( pot_list );
+      }
     }
 
 

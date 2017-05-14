@@ -1041,11 +1041,15 @@ namespace gum {
       for ( const auto node : set ) {
         pot_list.insert( evidence[node] );
       }
-      MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
+      if ( pot_list.size() == 1 ) {
+        return new Potential<GUM_SCALAR> ( **( pot_list.begin() ) );
+      }
+      else {
+        MultiDimCombinationDefault<GUM_SCALAR, Potential> fast_combination(
           __combination_op );
-      return fast_combination.combine( pot_list );
+        return fast_combination.combine( pot_list );
+      }
     }
-
 
     // if we still need to perform some inference task, do it
     __createNewJT( set );
