@@ -234,14 +234,6 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE const Potential<GUM_SCALAR>&
-  Potential<GUM_SCALAR>::fillWith( std::initializer_list<GUM_SCALAR> list ) const {
-    this->populate( list );
-    return *this;
-  }
-
-
-  template <typename GUM_SCALAR>
-  INLINE const Potential<GUM_SCALAR>&
   Potential<GUM_SCALAR>::fillWith( const GUM_SCALAR& v ) const {
     this->fill( v );
     return *this;

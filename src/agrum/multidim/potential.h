@@ -233,17 +233,6 @@ namespace gum {
     fillWith( const std::vector<GUM_SCALAR>& v ) const;
 
     /**
-     * @brief Automatically fills this MultiDimContainer with the values in
-     * l.
-     *
-     * @param l contains the data.
-     * @throw SizeError Raised if l size's does not matches this
-     * MultiDimContainer domain size.
-     */
-    const Potential<GUM_SCALAR>&
-    fillWith( std::initializer_list<GUM_SCALAR> l ) const;
-
-    /**
      * @brief Automatically fills this MultiDimContainer with the value v
      *
      * @param v contains the data.
