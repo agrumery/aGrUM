@@ -63,6 +63,28 @@ namespace gum {
     }
   }
 
+  bool MarkovBlanket::hasSameStructure( const DAGmodel& other ) {
+    if ( size() != other.size() ) return false;
+
+    if ( sizeArcs() != other.sizeArcs() ) return false;
+
+    for ( const auto& nid : nodes() ) {
+      try {
+        other.idFromName( __dag.variable( nid ).name() );
+      } catch ( NotFound ) {
+        return false;
+      }
+    }
+
+    for ( const auto& arc : arcs() ) {
+      if ( !other.arcs().exists(
+               Arc( other.idFromName( __dag.variable( arc.tail() ).name() ),
+                    other.idFromName( __dag.variable( arc.head() ).name() ) ) ) )
+        return false;
+    }
+
+    return true;
+  }
 
   std::string MarkovBlanket::toDot( void ) const {
     std::stringstream output;

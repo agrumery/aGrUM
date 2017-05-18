@@ -71,6 +71,32 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( mb.sizeArcs(), 1u );
       }
     }
+
+    void testMarkovBlanketStructure() {
+      const auto bn =
+          gum::BayesNet<int>::fastPrototype( "a->b->c->d->e;f->d->g;h->i->g" );
+      TS_ASSERT( !gum::MarkovBlanket( bn, "a" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "b->a" ) ) );
+
+      TS_ASSERT( gum::MarkovBlanket( bn, "a" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "a->b" ) ) );
+      TS_ASSERT( gum::MarkovBlanket( bn, "b" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "a->b->c" ) ) );
+      TS_ASSERT( gum::MarkovBlanket( bn, "c" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "b->c->d;f->d" ) ) );
+      TS_ASSERT( gum::MarkovBlanket( bn, "d" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "c->d->e;f->d->g;i->g" ) ) );
+      TS_ASSERT( gum::MarkovBlanket( bn, "e" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "d->e" ) ) );
+      TS_ASSERT( gum::MarkovBlanket( bn, "f" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "c->d;f->d;" ) ) );
+      TS_ASSERT( gum::MarkovBlanket( bn, "g" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "d->g;i->g;" ) ) );
+      TS_ASSERT( gum::MarkovBlanket( bn, "h" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "h->i;" ) ) );
+      TS_ASSERT( gum::MarkovBlanket( bn, "i" ).hasSameStructure(
+          gum::BayesNet<int>::fastPrototype( "d->g;h->i->g;;" ) ) );
+    }
   };
 
 }  // gum_tests

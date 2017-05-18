@@ -79,6 +79,10 @@ namespace gum {
     /// wrapping @ref DiGraph::nodes()
     const NodeGraphPart& nodes() const;
 
+    /// @return true if all the named node are the same and all the named arcs are
+    /// the same
+    bool hasSameStructure( const DAGmodel& other );
+
     private:
     void __buildMarkovBlanket();
 
