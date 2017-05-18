@@ -32,7 +32,7 @@
 
 namespace gum {
   MarkovBlanket::MarkovBlanket( const DAGmodel& m, NodeId id )
-      : __dag( m )
+      : __model( m )
       , __node( id ) {
     __buildMarkovBlanket();
   }
@@ -43,21 +43,34 @@ namespace gum {
   MarkovBlanket::~MarkovBlanket() {}
 
   void MarkovBlanket::__buildMarkovBlanket() {
-    if ( !__dag.nodes().exists( __node ) )
+    if ( !__model.nodes().exists( __node ) )
       GUM_ERROR( InvalidArgument, "Node " << __node << " does not exist." );
 
     __mb.addNode( __node );
-    for ( const auto& parent : __dag.dag().parents( __node ) ) {
+    for ( const auto& parent : __model.dag().parents( __node ) ) {
       __mb.addNode( parent );
       __mb.addArc( parent, __node );
     }
-    for ( const auto& child : __dag.dag().children( __node ) ) {
+
+    for ( const auto& child : __model.dag().children( __node ) ) {
       __mb.addNode( child );
       __mb.addArc( __node, child );
-      for ( const auto& opar : __dag.dag().parents( child ) ) {
+      for ( const auto& opar : __model.dag().parents( child ) ) {
         if ( opar != __node ) {
           if ( !__mb.nodes().exists( opar ) ) __mb.addNode( opar );
           __mb.addArc( opar, child );
+        }
+      }
+    }
+
+    // we add now some arcs that are between the nodes in __mb but are not part of
+    // the last ones.
+    // For instance, an arc between a parent and a parent of children
+    for ( const auto node : __mb.nodes() ) {
+      for ( const auto child : __model.dag().children( node ) ) {
+        if ( __mb.existsNode( child ) && !__mb.existsArc( Arc( node, child ) ) ) {
+          __mb.addArc( node, child );
+          __specialArcs.insert( Arc( node, child ) );
         }
       }
     }
@@ -70,7 +83,7 @@ namespace gum {
 
     for ( const auto& nid : nodes() ) {
       try {
-        other.idFromName( __dag.variable( nid ).name() );
+        other.idFromName( __model.variable( nid ).name() );
       } catch ( NotFound ) {
         return false;
       }
@@ -78,8 +91,8 @@ namespace gum {
 
     for ( const auto& arc : arcs() ) {
       if ( !other.arcs().exists(
-               Arc( other.idFromName( __dag.variable( arc.tail() ).name() ),
-                    other.idFromName( __dag.variable( arc.head() ).name() ) ) ) )
+               Arc( other.idFromName( __model.variable( arc.tail() ).name() ),
+                    other.idFromName( __model.variable( arc.head() ).name() ) ) ) )
         return false;
     }
 
@@ -89,7 +102,7 @@ namespace gum {
   std::string MarkovBlanket::toDot( void ) const {
     std::stringstream output;
     std::stringstream nodeStream;
-    std::stringstream edgeStream;
+    std::stringstream arcStream;
     List<NodeId>      treatedNodes;
     output << "digraph \""
            << "no_name\" {" << std::endl;
@@ -98,19 +111,24 @@ namespace gum {
 
     for ( const auto node : __mb.nodes() ) {
 
-      nodeStream << tab << node << "[label=\"" << __dag.variable( node ).name()
+      nodeStream << tab << node << "[label=\"" << __model.variable( node ).name()
                  << "\"";
       if ( node == __node ) {
         nodeStream << ", color=red";
       }
-      nodeStream << "];";
+      nodeStream << "];" << std::endl;
 
-      for ( const auto chi : __mb.children( node ) )
-        edgeStream << tab << node << " -> " << chi << ";" << std::endl;
+      for ( const auto chi : __mb.children( node ) ) {
+        arcStream << tab << node << " -> " << chi;
+        if ( __specialArcs.exists( Arc( node, chi ) ) ) {
+          arcStream << " [color=grey]";
+        }
+        arcStream << ";" << std::endl;
+      }
     }
 
     output << nodeStream.str() << std::endl
-           << edgeStream.str() << std::endl
+           << arcStream.str() << std::endl
            << "}" << std::endl;
 
     return output.str();

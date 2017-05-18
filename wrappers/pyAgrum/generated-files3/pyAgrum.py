@@ -7915,6 +7915,18 @@ class DAGmodel(_object):
         """
         return _pyAgrum.DAGmodel_log10DomainSize(self)
 
+
+    def hasSameStructure(self, other: 'DAGmodel') -> "bool":
+        """
+        hasSameStructure(DAGmodel self, DAGmodel other) -> bool
+
+        Parameters
+        ----------
+        other: gum::DAGmodel const &
+
+        """
+        return _pyAgrum.DAGmodel_hasSameStructure(self, other)
+
 DAGmodel_swigregister = _pyAgrum.DAGmodel_swigregister
 DAGmodel_swigregister(DAGmodel)
 cvar = _pyAgrum.cvar
@@ -8080,6 +8092,150 @@ class EssentialGraph(_object):
 
 EssentialGraph_swigregister = _pyAgrum.EssentialGraph_swigregister
 EssentialGraph_swigregister(EssentialGraph)
+
+class MarkovBlanket(_object):
+    """Proxy of C++ gum::MarkovBlanket class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, MarkovBlanket, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, MarkovBlanket, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(gum::MarkovBlanket self, DAGmodel m, gum::NodeId n) -> MarkovBlanket
+
+        Parameters
+        ----------
+        m: gum::DAGmodel const &
+        n: gum::NodeId
+
+        __init__(gum::MarkovBlanket self, DAGmodel m, std::string const & name) -> MarkovBlanket
+
+        Parameters
+        ----------
+        m: gum::DAGmodel const &
+        name: std::string const &
+
+        """
+        this = _pyAgrum.new_MarkovBlanket(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_MarkovBlanket
+    __del__ = lambda self: None
+
+    def mb(self) -> "gum::DiGraph":
+        """
+        mb(MarkovBlanket self) -> DiGraph
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket *
+
+        """
+        return _pyAgrum.MarkovBlanket_mb(self)
+
+
+    def toDot(self) -> "std::string":
+        """
+        toDot(MarkovBlanket self) -> std::string
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_toDot(self)
+
+
+    def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
+        """
+        parents(MarkovBlanket self, gum::NodeId const id) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.MarkovBlanket_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
+        """
+        children(MarkovBlanket self, gum::NodeId const id) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.MarkovBlanket_children(self, id)
+
+
+    def sizeArcs(self) -> "gum::Size":
+        """
+        sizeArcs(MarkovBlanket self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_sizeArcs(self)
+
+
+    def arcs(self) -> "gum::ArcSet const &":
+        """
+        arcs(MarkovBlanket self) -> gum::ArcSet const &
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_arcs(self)
+
+
+    def sizeNodes(self) -> "gum::Size":
+        """
+        sizeNodes(MarkovBlanket self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_sizeNodes(self)
+
+
+    def size(self) -> "gum::Size":
+        """
+        size(MarkovBlanket self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_size(self)
+
+
+    def hasSameStructure(self, other: 'DAGmodel') -> "bool":
+        """
+        hasSameStructure(MarkovBlanket self, DAGmodel other) -> bool
+
+        Parameters
+        ----------
+        other: gum::DAGmodel const &
+
+        """
+        return _pyAgrum.MarkovBlanket_hasSameStructure(self, other)
+
+MarkovBlanket_swigregister = _pyAgrum.MarkovBlanket_swigregister
+MarkovBlanket_swigregister(MarkovBlanket)
 
 class ApproximationScheme(_object):
     """Proxy of C++ gum::ApproximationScheme class."""

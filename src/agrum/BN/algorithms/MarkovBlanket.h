@@ -53,7 +53,10 @@ namespace gum {
     /// @return a copy of the mixed graph
     DiGraph mb();
 
-    /// @return a dot representation of this essentialGraph
+    // @return a dot representation of this MarkovBlanket
+    // node of interest is in red
+    // special arcs (not used during the construction of the Markov Blanket) are in
+    // grey
     std::string toDot( void ) const;
 
     /// wrapping @ref DiGraph::parents(id)
@@ -61,9 +64,6 @@ namespace gum {
 
     /// wrapping @ref DiGraph::parents(id)
     const NodeSet& children( const NodeId id ) const;
-
-    /// wrapping @ref DiGraph::parents(id)
-    const NodeSet& neighbours( const NodeId id ) const;
 
     /// wrapping @ref DiGraph::sizeArcs()
     Size sizeArcs() const;
@@ -73,6 +73,7 @@ namespace gum {
 
     /// wrapping @ref DiGraph::sizeNodes()
     Size sizeNodes() const;
+
     /// wrapping @ref DiGraph::size()
     Size size() const;
 
@@ -86,9 +87,10 @@ namespace gum {
     private:
     void __buildMarkovBlanket();
 
-    const DAGmodel& __dag;
+    const DAGmodel& __model;
     DiGraph         __mb;
     const NodeId    __node;
+    ArcSet          __specialArcs;
   };
 }  // namespace gum
 

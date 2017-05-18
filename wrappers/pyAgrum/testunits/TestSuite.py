@@ -17,6 +17,7 @@ import pyAgrum as gum
 
 import unittest
 
+from tests import MarkovBlanket
 from tests import EssentialGraphTestSuite
 from tests import VariablesTestSuite
 from tests import BayesNetTestSuite
@@ -36,6 +37,7 @@ from tests import LoopyBeliefPropagationTestSuite
 import time
 
 tests = list()
+tests.append(MarkovBlanket.ts)
 tests.append(EssentialGraphTestSuite.ts)
 tests.append(VariablesTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)

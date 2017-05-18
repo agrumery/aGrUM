@@ -97,6 +97,14 @@ namespace gum_tests {
       TS_ASSERT( gum::MarkovBlanket( bn, "i" ).hasSameStructure(
           gum::BayesNet<int>::fastPrototype( "d->g;h->i->g;;" ) ) );
     }
+
+    void testMarkovBlanketSpecialArcs() {
+      const auto bn = gum::BayesNet<int>::fastPrototype(
+          "aa->bb->cc->dd->ee;ff->dd->gg;hh->ii->gg;ff->ii;ff->gg" );
+      const auto mb = gum::BayesNet<int>::fastPrototype(
+          "cc->dd->ee;ff->dd->gg;ff->gg;ff->ii->gg" );
+      TS_ASSERT( gum::MarkovBlanket( bn, "dd" ).hasSameStructure( mb ) );
+    }
   };
 
 }  // gum_tests
