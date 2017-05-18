@@ -168,6 +168,10 @@ namespace gum {
     /// Directed Graphical Model
     double log10DomainSize( void ) const;
 
+    /// @return true if all the named node are the same and all the named arcs are
+    /// the same
+    bool hasSameStructure( const DAGmodel& other );
+
     protected:
     /**
      * Private copy operator.
