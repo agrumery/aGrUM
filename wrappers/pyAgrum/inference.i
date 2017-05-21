@@ -38,14 +38,14 @@ def setTargets(self, targets):
     void updateEvidence(PyObject *evidces) {}
     void setTargets(PyObject* targets) {}
 
-    PyObject* hardEvidenceList() {
-      return PyAgrumHelper::PyListFromNodeSet(self->hardEvidenceNodes() ) ;
+    PyObject* hardEvidenceNodes() {
+      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
     }
-    PyObject* softEvidenceList() {
-      return PyAgrumHelper::PyListFromNodeSet(self->softEvidenceNodes() ) ;
+    PyObject* softEvidenceNodes() {
+      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
     }
-    PyObject* targetList() {
-      return PyAgrumHelper::PyListFromNodeSet(self->targets() );
+    PyObject* targets() {
+      return PyAgrumHelper::PySetFromNodeSet(self->targets() );
     }
 }
 %enddef

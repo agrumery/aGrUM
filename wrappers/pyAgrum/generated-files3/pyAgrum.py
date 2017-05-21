@@ -12233,40 +12233,40 @@ class LazyPropagation_double(_object):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(LazyPropagation_double self) -> PyObject *
+        hardEvidenceNodes(LazyPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LazyPropagation< double > *
 
         """
-        return _pyAgrum.LazyPropagation_double_hardEvidenceList(self)
+        return _pyAgrum.LazyPropagation_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(LazyPropagation_double self) -> PyObject *
+        softEvidenceNodes(LazyPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LazyPropagation< double > *
 
         """
-        return _pyAgrum.LazyPropagation_double_softEvidenceList(self)
+        return _pyAgrum.LazyPropagation_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(LazyPropagation_double self) -> PyObject *
+        targets(LazyPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LazyPropagation< double > *
 
         """
-        return _pyAgrum.LazyPropagation_double_targetList(self)
+        return _pyAgrum.LazyPropagation_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
@@ -12925,40 +12925,40 @@ class ShaferShenoyInference_double(_object):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(ShaferShenoyInference_double self) -> PyObject *
+        hardEvidenceNodes(ShaferShenoyInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::ShaferShenoyInference< double > *
 
         """
-        return _pyAgrum.ShaferShenoyInference_double_hardEvidenceList(self)
+        return _pyAgrum.ShaferShenoyInference_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(ShaferShenoyInference_double self) -> PyObject *
+        softEvidenceNodes(ShaferShenoyInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::ShaferShenoyInference< double > *
 
         """
-        return _pyAgrum.ShaferShenoyInference_double_softEvidenceList(self)
+        return _pyAgrum.ShaferShenoyInference_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(ShaferShenoyInference_double self) -> PyObject *
+        targets(ShaferShenoyInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::ShaferShenoyInference< double > *
 
         """
-        return _pyAgrum.ShaferShenoyInference_double_targetList(self)
+        return _pyAgrum.ShaferShenoyInference_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
@@ -13605,40 +13605,40 @@ class VariableElimination_double(_object):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(VariableElimination_double self) -> PyObject *
+        hardEvidenceNodes(VariableElimination_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::VariableElimination< double > *
 
         """
-        return _pyAgrum.VariableElimination_double_hardEvidenceList(self)
+        return _pyAgrum.VariableElimination_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(VariableElimination_double self) -> PyObject *
+        softEvidenceNodes(VariableElimination_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::VariableElimination< double > *
 
         """
-        return _pyAgrum.VariableElimination_double_softEvidenceList(self)
+        return _pyAgrum.VariableElimination_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(VariableElimination_double self) -> PyObject *
+        targets(VariableElimination_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::VariableElimination< double > *
 
         """
-        return _pyAgrum.VariableElimination_double_targetList(self)
+        return _pyAgrum.VariableElimination_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
@@ -14144,40 +14144,40 @@ class GibbsInference_double(ApproximationScheme):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(GibbsInference_double self) -> PyObject *
+        hardEvidenceNodes(GibbsInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::GibbsInference< double > *
 
         """
-        return _pyAgrum.GibbsInference_double_hardEvidenceList(self)
+        return _pyAgrum.GibbsInference_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(GibbsInference_double self) -> PyObject *
+        softEvidenceNodes(GibbsInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::GibbsInference< double > *
 
         """
-        return _pyAgrum.GibbsInference_double_softEvidenceList(self)
+        return _pyAgrum.GibbsInference_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(GibbsInference_double self) -> PyObject *
+        targets(GibbsInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::GibbsInference< double > *
 
         """
-        return _pyAgrum.GibbsInference_double_targetList(self)
+        return _pyAgrum.GibbsInference_double_targets(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
@@ -14851,40 +14851,40 @@ class LoopyBeliefPropagation_double(ApproximationScheme):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(LoopyBeliefPropagation_double self) -> PyObject *
+        hardEvidenceNodes(LoopyBeliefPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LoopyBeliefPropagation< double > *
 
         """
-        return _pyAgrum.LoopyBeliefPropagation_double_hardEvidenceList(self)
+        return _pyAgrum.LoopyBeliefPropagation_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(LoopyBeliefPropagation_double self) -> PyObject *
+        softEvidenceNodes(LoopyBeliefPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LoopyBeliefPropagation< double > *
 
         """
-        return _pyAgrum.LoopyBeliefPropagation_double_softEvidenceList(self)
+        return _pyAgrum.LoopyBeliefPropagation_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(LoopyBeliefPropagation_double self) -> PyObject *
+        targets(LoopyBeliefPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LoopyBeliefPropagation< double > *
 
         """
-        return _pyAgrum.LoopyBeliefPropagation_double_targetList(self)
+        return _pyAgrum.LoopyBeliefPropagation_double_targets(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
