@@ -345,6 +345,7 @@ namespace gum_tests {
       TS_ASSERT_DELTA( proba, proba2, 1e-5 );
     }
 
+
     void testAsia() {
       std::string           file = GET_RESSOURCES_PATH( "asia.bif" );
       gum::BayesNet<float>  bn;
@@ -832,16 +833,16 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( res.nbrDim(),
                         gum::Size( 4 ) );  // MarkovBlanket(E)=(A,D,C)
       try {
-        auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D") *
-                     bn.cpt("E") * bn.cpt("F") * bn.cpt("H");
-        auto pADCE = joint.margSumIn({&bn.variableFromName("A"),
-                                      &bn.variableFromName("C"),
-                                      &bn.variableFromName("D"),
-                                      &bn.variableFromName("E")});
-        auto pADC = pADCE.margSumOut({&bn.variableFromName("E")});
-        TS_ASSERT_EQUALS(res, pADCE / pADC);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
+        auto joint = bn.cpt( "A" ) * bn.cpt( "B" ) * bn.cpt( "C" ) *
+                     bn.cpt( "D" ) * bn.cpt( "E" ) * bn.cpt( "F" ) * bn.cpt( "H" );
+        auto pADCE = joint.margSumIn( {&bn.variableFromName( "A" ),
+                                       &bn.variableFromName( "C" ),
+                                       &bn.variableFromName( "D" ),
+                                       &bn.variableFromName( "E" )} );
+        auto pADC = pADCE.margSumOut( {&bn.variableFromName( "E" )} );
+        TS_ASSERT_EQUALS( res, pADCE / pADC );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
       }
     }
     void testJointWithHardEvidence() {
@@ -871,39 +872,39 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
-      void testJointEvidenceImpact() {
-        /*
-        F  A
-        \ / \
-         B   |
-         |   E
-         C   |
-        / \ /
-        H  D
-        */
-        auto bn =
-                gum::BayesNet<double>::fastPrototype( "A->B->C->D;A->E->D;F->B;C->H;" );
+    void testJointEvidenceImpact() {
+      /*
+      F  A
+      \ / \
+       B   |
+       |   E
+       C   |
+      / \ /
+      H  D
+      */
+      auto bn =
+          gum::BayesNet<double>::fastPrototype( "A->B->C->D;A->E->D;F->B;C->H;" );
 
-        gum::LazyPropagation<double> ie( &bn );
-        gum::Potential<double>       res;
-        TS_GUM_ASSERT_THROWS_NOTHING(
-                res = ie.evidenceJointImpact( {"D","E"}, {"A", "B", "C", "F"} ) );
-        TS_ASSERT_EQUALS( res.nbrDim(),
-                          gum::Size( 4 ) );  // MarkovBlanket(E)=(A,D,C)
-        try {
-          auto joint = bn.cpt("A") * bn.cpt("B") * bn.cpt("C") * bn.cpt("D") *
-                       bn.cpt("E") * bn.cpt("F") * bn.cpt("H");
-          auto pADCE = joint.margSumIn({&bn.variableFromName("A"),
-                                        &bn.variableFromName("C"),
-                                        &bn.variableFromName("D"),
-                                        &bn.variableFromName("E")});
-          auto pAC = pADCE.margSumOut({&bn.variableFromName("D"),&bn.variableFromName("E")});
-          TS_ASSERT_EQUALS(res, pADCE / pAC);
-        } catch (gum::Exception& e) {
-          GUM_SHOWERROR(e);
-        }
+      gum::LazyPropagation<double> ie( &bn );
+      gum::Potential<double>       res;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+          res = ie.evidenceJointImpact( {"D", "E"}, {"A", "B", "C", "F"} ) );
+      TS_ASSERT_EQUALS( res.nbrDim(),
+                        gum::Size( 4 ) );  // MarkovBlanket(E)=(A,D,C)
+      try {
+        auto joint = bn.cpt( "A" ) * bn.cpt( "B" ) * bn.cpt( "C" ) *
+                     bn.cpt( "D" ) * bn.cpt( "E" ) * bn.cpt( "F" ) * bn.cpt( "H" );
+        auto pADCE = joint.margSumIn( {&bn.variableFromName( "A" ),
+                                       &bn.variableFromName( "C" ),
+                                       &bn.variableFromName( "D" ),
+                                       &bn.variableFromName( "E" )} );
+        auto pAC = pADCE.margSumOut(
+            {&bn.variableFromName( "D" ), &bn.variableFromName( "E" )} );
+        TS_ASSERT_EQUALS( res, pADCE / pAC );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
       }
-
+    }
 
     private:
     // Builds a BN to test the inference
