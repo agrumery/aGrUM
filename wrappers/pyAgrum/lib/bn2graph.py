@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -88,7 +89,8 @@ def BN2dot(bn, size="4", arcvals=None, vals=None, cmap=None, showValues=None):
     minarcs = min(arcvals.values())
     maxarcs = max(arcvals.values())
 
-  graph = dot.Dot(graph_type='digraph')
+  graph = dot.Dot(graph_type='digraph',bgcolor="transparent")
+
   for n in bn.names():
     if vals is None or n not in vals:
       bgcol = "#444444"
@@ -232,7 +234,7 @@ def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', 
   from tempfile import mkdtemp
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n"
+  dotstr = "digraph structs {\n  bgcolor=\"transparent\";"
   dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
   dotstr += "  node [fillcolor=floralwhite, style=filled,color=grey];\n"
 

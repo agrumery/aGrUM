@@ -144,7 +144,9 @@ def getDot(dotstring, size="4", format="png"):
   :param format: render as "png" or "svg"
   :return: the HTML representation of the graph
   """
-  return getGraph(dot.graph_from_dot_data(dotstring), size, format)
+  g=dot.graph_from_dot_data(dotstring)
+  g.set_bgcolor("transparent")
+  return getGraph(g, size, format)
 
 
 def showJunctionTree(bn, withNames=True, size="4", format="png"):
