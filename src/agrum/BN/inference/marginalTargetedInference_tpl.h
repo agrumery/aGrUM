@@ -214,7 +214,7 @@ namespace gum {
 
   // returns the list of single targets
   template <typename GUM_SCALAR>
-  INLINE const NodeSet& MarginalTargetedInference<GUM_SCALAR>::targetsSet() const
+  INLINE const NodeSet& MarginalTargetedInference<GUM_SCALAR>::targets() const
       noexcept {
     return __targetsSet;
   }

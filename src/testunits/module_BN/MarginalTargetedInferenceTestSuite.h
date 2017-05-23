@@ -44,23 +44,23 @@ namespace gum_tests {
           gum::BayesNet<double>::fastPrototype( "A->B->C->D;A->E->D;F->B;C->H;" );
 
       gum::LazyPropagation<double> lazy( &bn );
-        TS_ASSERT( lazy.targetsSet() == gum::NodeSet( {} ) );
+        TS_ASSERT(lazy.targets() == gum::NodeSet( {} ) );
       lazy.addTarget( "A" );
-      TS_ASSERT( lazy.targetsSet() == gum::NodeSet( {0} ) );
+      TS_ASSERT(lazy.targets() == gum::NodeSet( {0} ) );
       lazy.addTarget( "B" );
-      TS_ASSERT( lazy.targetsSet() == gum::NodeSet( {0, 1} ) );
+      TS_ASSERT(lazy.targets() == gum::NodeSet( {0, 1} ) );
 
       gum::ShaferShenoyInference<double> shafer( &bn );
       shafer.addTarget( "A" );
-      TS_ASSERT( shafer.targetsSet() == gum::NodeSet( {0} ) );
+      TS_ASSERT(shafer.targets() == gum::NodeSet( {0} ) );
       shafer.addTarget( "B" );
-      TS_ASSERT( shafer.targetsSet() == gum::NodeSet( {0, 1} ) );
+      TS_ASSERT(shafer.targets() == gum::NodeSet( {0, 1} ) );
 
       gum::VariableElimination<double> ve( &bn );
       ve.addTarget( "A" );
-      TS_ASSERT( ve.targetsSet() == gum::NodeSet( {0} ) );
+      TS_ASSERT(ve.targets() == gum::NodeSet( {0} ) );
       ve.addTarget( "B" );
-      TS_ASSERT( ve.targetsSet() == gum::NodeSet( {0, 1} ) );
+      TS_ASSERT(ve.targets() == gum::NodeSet( {0, 1} ) );
     }
   };
 }

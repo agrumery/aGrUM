@@ -170,7 +170,7 @@ namespace gum {
     /// returns the set of marginal targets
     //// @warning if the set is empty, it means that all the nodes are targets by
     /// default.
-    virtual const NodeSet& targetsSet() const noexcept final;
+    virtual const NodeSet& targets() const noexcept final;
 
     /// return all the marginal targets.
     /** Particularly, if the targetSet is empty, allTargets will send a copy of the
