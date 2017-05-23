@@ -24,11 +24,11 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/BN/inference/dSeparation.h>
+#include <agrum/BN/algorithms/dSeparation.h>
 #include <agrum/core/list.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/inference/dSeparation_inl.h>
+#include <agrum/BN/algorithms/dSeparation_inl.h>
 #endif  // GUM_NO_INLINE
 
 namespace gum {

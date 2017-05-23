@@ -22,10 +22,10 @@
  * @brief Implementation of the BayesBall class.
  */
 
-#include <agrum/BN/inference/BayesBall.h>
+#include <agrum/BN/algorithms/BayesBall.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/inference/BayesBall_inl.h>
+#include <agrum/BN/algorithms/BayesBall_inl.h>
 #endif  // GUM_NO_INLINE
 
 namespace gum {

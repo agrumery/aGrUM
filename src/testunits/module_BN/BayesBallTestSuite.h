@@ -25,7 +25,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
-#include <agrum/BN/inference/BayesBall.h>
+#include <agrum/BN/algorithms/BayesBall.h>
 
 namespace gum_tests {
 

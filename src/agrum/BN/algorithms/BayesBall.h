@@ -92,9 +92,9 @@ namespace gum {
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/inference/BayesBall_inl.h>
+#include <agrum/BN/algorithms/BayesBall_inl.h>
 #endif  // GUM_NO_INLINE
 
-#include <agrum/BN/inference/BayesBall_tpl.h>
+#include <agrum/BN/algorithms/BayesBall_tpl.h>
 
 #endif /* GUM_BAYESBALLS_H */
