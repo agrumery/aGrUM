@@ -17,47 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include <cmath>
 #include <iostream>
-#include <sstream>
 #include <string>
 
+#include <agrum/BN/inference/ShaferShenoyInference.h>
+#include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/variableElimination.h>
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/BN/generator/simpleBayesNetGenerator.h>
-#include <agrum/BN/algorithms/BayesBall.h>
+// The graph used for the tests:
+//          1   2_          1 -> 3
+//         / \ / /          1 -> 4
+//        3   4 /           3 -> 5
+//         \ / /            4 -> 5
+//          5_/             2 -> 4
+//                          2 -> 5
 
 namespace gum_tests {
 
-  class BayesBallTestSuite : public CxxTest::TestSuite {
+  class MarginalTargetedInferenceTestSuite : public CxxTest::TestSuite {
     public:
-    void setUp() {}
+    void testAddTarget() {
+      auto bn =
+          gum::BayesNet<double>::fastPrototype( "A->B->C->D;A->E->D;F->B;C->H;" );
 
-    void tearDown() {}
+      gum::LazyPropagation<double> lazy( &bn );
+        TS_ASSERT(lazy.targets() == gum::NodeSet( {} ) );
+      lazy.addTarget( "A" );
+      TS_ASSERT(lazy.targets() == gum::NodeSet( {0} ) );
+      lazy.addTarget( "B" );
+      TS_ASSERT(lazy.targets() == gum::NodeSet( {0, 1} ) );
 
+      gum::ShaferShenoyInference<double> shafer( &bn );
+      shafer.addTarget( "A" );
+      TS_ASSERT(shafer.targets() == gum::NodeSet( {0} ) );
+      shafer.addTarget( "B" );
+      TS_ASSERT(shafer.targets() == gum::NodeSet( {0, 1} ) );
 
-    void testRequisiteNodes() {
-      gum::SimpleBayesNetGenerator<float> gen( 50, 200, 2 );
-      gum::BayesNet<float>                bn;
-      gen.generateBN( bn );
-      gum::Set<gum::NodeId> requisite;
-
-      gum::Set<gum::NodeId>      query, hardEvidence, softEvidence;
-      gum::Sequence<gum::NodeId> nodes_seq;
-
-      for ( const auto node : bn.nodes() )
-        nodes_seq.insert( node );
-
-      for ( gum::Idx i = 0; i < 5; ++i )
-        hardEvidence.insert( nodes_seq.atPos( i ) );
-
-      for ( gum::Idx j = 24; j > 19; --j )
-        query.insert( nodes_seq.atPos( j ) );
-
-      TS_ASSERT_THROWS_NOTHING( gum::BayesBall::requisiteNodes(
-          bn.dag(), query, hardEvidence, softEvidence, requisite ) );
-
-      TS_ASSERT( requisite.size() >= 5 );
+      gum::VariableElimination<double> ve( &bn );
+      ve.addTarget( "A" );
+      TS_ASSERT(ve.targets() == gum::NodeSet( {0} ) );
+      ve.addTarget( "B" );
+      TS_ASSERT(ve.targets() == gum::NodeSet( {0, 1} ) );
     }
   };
 }

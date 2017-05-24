@@ -20,84 +20,82 @@
 
 /**
  * @file
- * @brief Class building the essential Graph from a DAGmodel
+ * @brief Class building the markovBlanket from a DAGmodel and a node name
  *
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  *
  */
-#ifndef GUM_ESSENTIALGRAPH_H
-#define GUM_ESSENTIALGRAPH_H
+#ifndef GUM_MARKOVBLANKET_H
+#define GUM_MARKOVBLANKET_H
 
 #include <agrum/graphicalModels/DAGmodel.h>
+#include <agrum/graphs/diGraph.h>
 #include <agrum/graphs/graphElements.h>
-#include <agrum/graphs/mixedGraph.h>
 
 namespace gum {
 
   /**
-   * @class EssentialGraph essentialGraph.h <agrum/BN/algorithms/essentialGraph.h>
-   * @brief Class building the essential graph from a BN.
+   * @class MarkovBlanket MarkovBlanket.h <agrum/BN/algorithms/MarokovBlanket.h>
+   * @brief Class building the markov Blanket from a BN and a nodeName.
    * @ingroup bn_group
+
+   * The main goal of this class is to build and to encapsulate the DiGraph which
+   represents the Markov Blanket.
    *
-   * Essential graph is a mixed graph (Chain Graph) that represents the class of
-   * markov equivalent Bayesian Networks (with the same independency model).
-   *
-   * The main goal of this class is to nest the algorithm to build the essential graph
-   * from a BN and to encapsulate the representation (as a MixedGraph) of the essential
-   * graph.
-   *
-   * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  class EssentialGraph {
+  class MarkovBlanket {
     public:
-    EssentialGraph( const DAGmodel& m );
-    ~EssentialGraph();
+    MarkovBlanket( const DAGmodel& m, NodeId n );
+    MarkovBlanket( const DAGmodel& m, const std::string& name );
+
+    ~MarkovBlanket();
 
     /// @return a copy of the mixed graph
-    MixedGraph mixedGraph();
+    DiGraph mb();
 
-    /// @return a dot representation of this essentialGraph
+    // @return a dot representation of this MarkovBlanket
+    // node of interest is in red
+    // special arcs (not used during the construction of the Markov Blanket) are in
+    // grey
     std::string toDot( void ) const;
 
-    /// wrapping @ref MixedGraph::parents(id)
+    /// wrapping @ref DiGraph::parents(id)
     const NodeSet& parents( const NodeId id ) const;
 
-    /// wrapping @ref MixedGraph::parents(id)
+    /// wrapping @ref DiGraph::parents(id)
     const NodeSet& children( const NodeId id ) const;
 
-    /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& neighbours( const NodeId id ) const;
-
-    /// wrapping @ref MixedGraph::sizeArcs()
+    /// wrapping @ref DiGraph::sizeArcs()
     Size sizeArcs() const;
 
-    /// wrapping @ref MixedGraph::arcs()
+    /// wrapping @ref DiGraph::arcs()
     const ArcSet& arcs() const;
-    /// wrapping @ref MixedGraph::sizeEdges()
-    Size sizeEdges() const;
 
-    /// wrapping @ref MixedGraph::edges()
-    const EdgeSet& edges() const;
-
-    /// wrapping @ref MixedGraph::sizeNodes()
+    /// wrapping @ref DiGraph::sizeNodes()
     Size sizeNodes() const;
-    /// wrapping @ref MixedGraph::size()
+
+    /// wrapping @ref DiGraph::size()
     Size size() const;
 
-    /// wrapping @ref MixedGraph::nodes()
+    /// wrapping @ref DiGraph::nodes()
     const NodeGraphPart& nodes() const;
 
-    private:
-    void __buildEssentialGraph();
-    bool __strongly_protected( NodeId a, NodeId b );
+    /// @return true if all the named node are the same and all the named arcs are
+    /// the same
+    bool hasSameStructure( const DAGmodel& other );
 
-    const DAGmodel& __dag;
-    MixedGraph      __mg;
+    private:
+    void __buildMarkovBlanket();
+
+    const DAGmodel& __model;
+    DiGraph         __mb;
+    const NodeId    __node;
+    ArcSet          __specialArcs;
   };
 }  // namespace gum
 
 #ifndef GUM_NO_INLINE
-#include <agrum/BN/algorithms/essentialGraph_inl.h>
+#include <agrum/BN/algorithms/MarkovBlanket_inl.h>
 #endif  // GUM_NOINLINE
 
-#endif  // GUM_ESSENTIALGRAPH_H
+#endif  // GUM_MARKOVBLANKET_H

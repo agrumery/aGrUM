@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,47 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <iostream>
-#include <sstream>
-#include <string>
+/** @file
+ * @brief Inline implementation of the class building the essential Graph from a
+ * DAGmodel
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
+ *
+ */
 
-#include <cxxtest/AgrumTestSuite.h>
-#include <cxxtest/testsuite_utils.h>
+// to ease parsing by IDE
+#include <agrum/BN/algorithms/MarkovBlanket.h>
 
-#include <agrum/BN/generator/simpleBayesNetGenerator.h>
-#include <agrum/BN/algorithms/BayesBall.h>
+namespace gum {
 
-namespace gum_tests {
+  INLINE DiGraph MarkovBlanket::mb() { return __mb; }
 
-  class BayesBallTestSuite : public CxxTest::TestSuite {
-    public:
-    void setUp() {}
+  INLINE const NodeSet& MarkovBlanket::parents( const NodeId id ) const {
+    return __mb.parents( id );
+  }
 
-    void tearDown() {}
+  INLINE const NodeSet& MarkovBlanket::children( const NodeId id ) const {
+    return __mb.children( id );
+  }
 
+  INLINE Size MarkovBlanket::sizeArcs() const { return __mb.sizeArcs(); }
 
-    void testRequisiteNodes() {
-      gum::SimpleBayesNetGenerator<float> gen( 50, 200, 2 );
-      gum::BayesNet<float>                bn;
-      gen.generateBN( bn );
-      gum::Set<gum::NodeId> requisite;
+  INLINE const ArcSet& MarkovBlanket::arcs() const { return __mb.arcs(); }
 
-      gum::Set<gum::NodeId>      query, hardEvidence, softEvidence;
-      gum::Sequence<gum::NodeId> nodes_seq;
+  INLINE Size MarkovBlanket::sizeNodes() const { return __mb.sizeNodes(); }
 
-      for ( const auto node : bn.nodes() )
-        nodes_seq.insert( node );
+  INLINE Size MarkovBlanket::size() const { return __mb.size(); }
 
-      for ( gum::Idx i = 0; i < 5; ++i )
-        hardEvidence.insert( nodes_seq.atPos( i ) );
-
-      for ( gum::Idx j = 24; j > 19; --j )
-        query.insert( nodes_seq.atPos( j ) );
-
-      TS_ASSERT_THROWS_NOTHING( gum::BayesBall::requisiteNodes(
-          bn.dag(), query, hardEvidence, softEvidence, requisite ) );
-
-      TS_ASSERT( requisite.size() >= 5 );
-    }
-  };
-}
+  INLINE const NodeGraphPart& MarkovBlanket::nodes() const { return __mb.nodes(); }
+}  // namespace gum

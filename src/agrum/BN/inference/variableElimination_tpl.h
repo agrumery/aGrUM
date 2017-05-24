@@ -29,8 +29,8 @@
 
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/BN/inference/BayesBall.h>
-#include <agrum/BN/inference/dSeparation.h>
+#include <agrum/BN/algorithms/BayesBall.h>
+#include <agrum/BN/algorithms/dSeparation.h>
 #include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>

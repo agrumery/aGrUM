@@ -7915,6 +7915,18 @@ class DAGmodel(_object):
         """
         return _pyAgrum.DAGmodel_log10DomainSize(self)
 
+
+    def hasSameStructure(self, other: 'DAGmodel') -> "bool":
+        """
+        hasSameStructure(DAGmodel self, DAGmodel other) -> bool
+
+        Parameters
+        ----------
+        other: gum::DAGmodel const &
+
+        """
+        return _pyAgrum.DAGmodel_hasSameStructure(self, other)
+
 DAGmodel_swigregister = _pyAgrum.DAGmodel_swigregister
 DAGmodel_swigregister(DAGmodel)
 cvar = _pyAgrum.cvar
@@ -8080,6 +8092,150 @@ class EssentialGraph(_object):
 
 EssentialGraph_swigregister = _pyAgrum.EssentialGraph_swigregister
 EssentialGraph_swigregister(EssentialGraph)
+
+class MarkovBlanket(_object):
+    """Proxy of C++ gum::MarkovBlanket class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, MarkovBlanket, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, MarkovBlanket, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(gum::MarkovBlanket self, DAGmodel m, gum::NodeId n) -> MarkovBlanket
+
+        Parameters
+        ----------
+        m: gum::DAGmodel const &
+        n: gum::NodeId
+
+        __init__(gum::MarkovBlanket self, DAGmodel m, std::string const & name) -> MarkovBlanket
+
+        Parameters
+        ----------
+        m: gum::DAGmodel const &
+        name: std::string const &
+
+        """
+        this = _pyAgrum.new_MarkovBlanket(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_MarkovBlanket
+    __del__ = lambda self: None
+
+    def mb(self) -> "gum::DiGraph":
+        """
+        mb(MarkovBlanket self) -> DiGraph
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket *
+
+        """
+        return _pyAgrum.MarkovBlanket_mb(self)
+
+
+    def toDot(self) -> "std::string":
+        """
+        toDot(MarkovBlanket self) -> std::string
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_toDot(self)
+
+
+    def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
+        """
+        parents(MarkovBlanket self, gum::NodeId const id) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.MarkovBlanket_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
+        """
+        children(MarkovBlanket self, gum::NodeId const id) -> gum::NodeSet const &
+
+        Parameters
+        ----------
+        id: gum::NodeId const
+
+        """
+        return _pyAgrum.MarkovBlanket_children(self, id)
+
+
+    def sizeArcs(self) -> "gum::Size":
+        """
+        sizeArcs(MarkovBlanket self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_sizeArcs(self)
+
+
+    def arcs(self) -> "gum::ArcSet const &":
+        """
+        arcs(MarkovBlanket self) -> gum::ArcSet const &
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_arcs(self)
+
+
+    def sizeNodes(self) -> "gum::Size":
+        """
+        sizeNodes(MarkovBlanket self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_sizeNodes(self)
+
+
+    def size(self) -> "gum::Size":
+        """
+        size(MarkovBlanket self) -> gum::Size
+
+        Parameters
+        ----------
+        self: gum::MarkovBlanket const *
+
+        """
+        return _pyAgrum.MarkovBlanket_size(self)
+
+
+    def hasSameStructure(self, other: 'DAGmodel') -> "bool":
+        """
+        hasSameStructure(MarkovBlanket self, DAGmodel other) -> bool
+
+        Parameters
+        ----------
+        other: gum::DAGmodel const &
+
+        """
+        return _pyAgrum.MarkovBlanket_hasSameStructure(self, other)
+
+MarkovBlanket_swigregister = _pyAgrum.MarkovBlanket_swigregister
+MarkovBlanket_swigregister(MarkovBlanket)
 
 class ApproximationScheme(_object):
     """Proxy of C++ gum::ApproximationScheme class."""
@@ -12077,40 +12233,40 @@ class LazyPropagation_double(_object):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(LazyPropagation_double self) -> PyObject *
+        hardEvidenceNodes(LazyPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LazyPropagation< double > *
 
         """
-        return _pyAgrum.LazyPropagation_double_hardEvidenceList(self)
+        return _pyAgrum.LazyPropagation_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(LazyPropagation_double self) -> PyObject *
+        softEvidenceNodes(LazyPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LazyPropagation< double > *
 
         """
-        return _pyAgrum.LazyPropagation_double_softEvidenceList(self)
+        return _pyAgrum.LazyPropagation_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(LazyPropagation_double self) -> PyObject *
+        targets(LazyPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LazyPropagation< double > *
 
         """
-        return _pyAgrum.LazyPropagation_double_targetList(self)
+        return _pyAgrum.LazyPropagation_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
@@ -12769,40 +12925,40 @@ class ShaferShenoyInference_double(_object):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(ShaferShenoyInference_double self) -> PyObject *
+        hardEvidenceNodes(ShaferShenoyInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::ShaferShenoyInference< double > *
 
         """
-        return _pyAgrum.ShaferShenoyInference_double_hardEvidenceList(self)
+        return _pyAgrum.ShaferShenoyInference_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(ShaferShenoyInference_double self) -> PyObject *
+        softEvidenceNodes(ShaferShenoyInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::ShaferShenoyInference< double > *
 
         """
-        return _pyAgrum.ShaferShenoyInference_double_softEvidenceList(self)
+        return _pyAgrum.ShaferShenoyInference_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(ShaferShenoyInference_double self) -> PyObject *
+        targets(ShaferShenoyInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::ShaferShenoyInference< double > *
 
         """
-        return _pyAgrum.ShaferShenoyInference_double_targetList(self)
+        return _pyAgrum.ShaferShenoyInference_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
@@ -13449,40 +13605,40 @@ class VariableElimination_double(_object):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(VariableElimination_double self) -> PyObject *
+        hardEvidenceNodes(VariableElimination_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::VariableElimination< double > *
 
         """
-        return _pyAgrum.VariableElimination_double_hardEvidenceList(self)
+        return _pyAgrum.VariableElimination_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(VariableElimination_double self) -> PyObject *
+        softEvidenceNodes(VariableElimination_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::VariableElimination< double > *
 
         """
-        return _pyAgrum.VariableElimination_double_softEvidenceList(self)
+        return _pyAgrum.VariableElimination_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(VariableElimination_double self) -> PyObject *
+        targets(VariableElimination_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::VariableElimination< double > *
 
         """
-        return _pyAgrum.VariableElimination_double_targetList(self)
+        return _pyAgrum.VariableElimination_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
@@ -13988,40 +14144,40 @@ class GibbsInference_double(ApproximationScheme):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(GibbsInference_double self) -> PyObject *
+        hardEvidenceNodes(GibbsInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::GibbsInference< double > *
 
         """
-        return _pyAgrum.GibbsInference_double_hardEvidenceList(self)
+        return _pyAgrum.GibbsInference_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(GibbsInference_double self) -> PyObject *
+        softEvidenceNodes(GibbsInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::GibbsInference< double > *
 
         """
-        return _pyAgrum.GibbsInference_double_softEvidenceList(self)
+        return _pyAgrum.GibbsInference_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(GibbsInference_double self) -> PyObject *
+        targets(GibbsInference_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::GibbsInference< double > *
 
         """
-        return _pyAgrum.GibbsInference_double_targetList(self)
+        return _pyAgrum.GibbsInference_double_targets(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
@@ -14695,40 +14851,40 @@ class LoopyBeliefPropagation_double(ApproximationScheme):
 
 
 
-    def hardEvidenceList(self) -> "PyObject *":
+    def hardEvidenceNodes(self) -> "PyObject *":
         """
-        hardEvidenceList(LoopyBeliefPropagation_double self) -> PyObject *
+        hardEvidenceNodes(LoopyBeliefPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LoopyBeliefPropagation< double > *
 
         """
-        return _pyAgrum.LoopyBeliefPropagation_double_hardEvidenceList(self)
+        return _pyAgrum.LoopyBeliefPropagation_double_hardEvidenceNodes(self)
 
 
-    def softEvidenceList(self) -> "PyObject *":
+    def softEvidenceNodes(self) -> "PyObject *":
         """
-        softEvidenceList(LoopyBeliefPropagation_double self) -> PyObject *
+        softEvidenceNodes(LoopyBeliefPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LoopyBeliefPropagation< double > *
 
         """
-        return _pyAgrum.LoopyBeliefPropagation_double_softEvidenceList(self)
+        return _pyAgrum.LoopyBeliefPropagation_double_softEvidenceNodes(self)
 
 
-    def targetList(self) -> "PyObject *":
+    def targets(self) -> "PyObject *":
         """
-        targetList(LoopyBeliefPropagation_double self) -> PyObject *
+        targets(LoopyBeliefPropagation_double self) -> PyObject *
 
         Parameters
         ----------
         self: gum::LoopyBeliefPropagation< double > *
 
         """
-        return _pyAgrum.LoopyBeliefPropagation_double_targetList(self)
+        return _pyAgrum.LoopyBeliefPropagation_double_targets(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":

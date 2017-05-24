@@ -23,7 +23,7 @@
  */
 
 // to ease IDE parser
-#include <agrum/BN/inference/BayesBall.h>
+#include <agrum/BN/algorithms/BayesBall.h>
 
 namespace gum {
 

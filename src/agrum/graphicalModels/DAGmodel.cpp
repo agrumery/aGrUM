@@ -122,4 +122,29 @@ namespace gum {
   const Sequence<NodeId>& DAGmodel::topologicalOrder( bool clear ) const {
     return this->dag().topologicalOrder( clear );
   }
+
+  bool DAGmodel::hasSameStructure( const DAGmodel& other ) {
+    if ( this == &other ) return true;
+
+    if ( size() != other.size() ) return false;
+
+    if ( sizeArcs() != other.sizeArcs() ) return false;
+
+    for ( const auto& nid : nodes() ) {
+      try {
+        other.idFromName( variable( nid ).name() );
+      } catch ( NotFound ) {
+        return false;
+      }
+    }
+
+    for ( const auto& arc : arcs() ) {
+      if ( !other.arcs().exists(
+               Arc( other.idFromName( variable( arc.tail() ).name() ),
+                    other.idFromName( variable( arc.head() ).name() ) ) ) )
+        return false;
+    }
+
+    return true;
+  }
 }

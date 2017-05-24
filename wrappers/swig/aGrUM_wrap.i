@@ -62,6 +62,7 @@
 #include <agrum/BN/BayesNet.h>
 
 #include <agrum/BN/algorithms/essentialGraph.h>
+#include <agrum/BN/algorithms/MarkovBlanket.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/BN/io/BIF/BIFWriter.h>
@@ -331,6 +332,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/BN/BayesNet.h>
 
 %include <agrum/BN/algorithms/essentialGraph.h>
+%include <agrum/BN/algorithms/MarkovBlanket.h>
 
 %import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 %include <agrum/core/approximations/approximationScheme.h>

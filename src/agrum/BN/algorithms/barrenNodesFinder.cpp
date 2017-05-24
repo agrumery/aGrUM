@@ -23,12 +23,12 @@
  */
 #include <limits>
 
-#include <agrum/BN/inference/barrenNodesFinder.h>
+#include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/core/list.h>
 #include <agrum/core/sequence.h>
 
 #ifdef GUM_NO_INLINE
-#include <agrum/BN/inference/barrenNodesFinder_inl.h>
+#include <agrum/BN/algorithms/barrenNodesFinder_inl.h>
 #endif  // GUM_NO_INLINE
 
 namespace gum {
