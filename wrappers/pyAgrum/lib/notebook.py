@@ -637,18 +637,18 @@ def getInferenceEngine(ie, inferenceCaption):
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:
     t += "<li><b>hard evidence</b><br/>"
-    t += ", ".join([ie.BN().variable(n).name() for n in ie.hardEvidenceList()])
+    t += ", ".join([ie.BN().variable(n).name() for n in ie.hardEvidenceNodes()])
     t += "</li>"
   if ie.nbrSoftEvidence() > 0:
     t += "<li><b>soft evidence</b><br/>"
-    t += ", ".join([ie.BN().variable(n).name() for n in ie.softEvidenceList()])
+    t += ", ".join([ie.BN().variable(n).name() for n in ie.softEvidenceNodes()])
     t += "</li>"
   if ie.nbrTargets() > 0:
     t += "<li><b>target(s)</b><br/>"
     if ie.nbrTargets() == ie.BN().size():
       t += " all"
     else:
-      t += ", ".join([ie.BN().variable(n).name() for n in ie.targetList()])
+      t += ", ".join([ie.BN().variable(n).name() for n in ie.targets()])
     t += "</li>"
 
   if hasattr(ie, 'nbrJointTargets'):
