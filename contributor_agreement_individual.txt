@@ -3,7 +3,7 @@ Individual Contributor Non-Exclusive License Agreement including the Traditional
 
 Thank you for your interest in contributing to aGrUM ("We" or “Us").
 
-The purpose of this contributor agreement ("Agreement") is to clarify and document the rights granted by contributors to Us. To make this document effective, please follow the instructions at http://agrum.gitlab.io/pages/contribution-licence-agreement.html.
+The purpose of this contributor agreement ("Agreement") is to clarify and document the rights granted by contributors to Us. To make this document effective, please follow the instructions at http://agrum.org/pages/contribution-licence-agreement.html.
 
 1. DEFINITIONS
 "You" means the Individual Copyright owner who submits a Contribution to Us. If You are an employee and submit the Contribution as part of your employment, You have had Your employer approve this Agreement or sign the Entity version of this document.

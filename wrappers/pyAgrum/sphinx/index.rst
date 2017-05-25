@@ -10,9 +10,9 @@ Introduction to pyAgrum
 .. figure:: _static/agrum.png
     :align: right
     :alt: aGrUM
-    :target: http://agrum.gitlab.io
+    :target: http://agrum.org
 
-pyAgrum is a Python wrapper for the C++ `aGrUM <http://agrum.gitlab.io>`_ library.
+pyAgrum is a Python wrapper for the C++ `aGrUM <http://agrum.org>`_ library.
 It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
 
 .. warning:: For now, this documentation is mainly automatically produced by `SWIG <https://www.swig.org>`_.
@@ -27,7 +27,7 @@ pyAgrum aims to allow to easily use (as well as to prototype new algorithms on) 
 pyAgrum contains
   * a `comprehensive API documentation <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/pyAgrum/index.html>`_,
   * `examples as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/01-tutorial.ipynb.html>`_,
-  * and a `website <http://agrum.gitlab.io>`_.
+  * and a `website <http://agrum.org>`_.
 
 
 pyAgrum library
@@ -38,7 +38,8 @@ pyAgrum library
 
   functions
   graph
-  randomVariablesAndPotentials
+  randomVariables
+  potential
   bayesianNetwork
   PRM
   credalNetwork

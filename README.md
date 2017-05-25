@@ -8,6 +8,6 @@ It is written to provide the basic building blocks to perform the following task
 
 Homepage
 ========
-  [aGrUM/pyAgrum on gitlab.io](http://agrum.gitlab.io)
+  [aGrUM/pyAgrum on gitlab.io](http://agrum.org)
 
 

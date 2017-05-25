@@ -1,0 +1,4 @@
+ipython
+tkinter
+numpy
+pydotplus

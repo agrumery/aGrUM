@@ -35,13 +35,16 @@ import os
 # ones.
 import sys
 
+import matplotlib
+matplotlib.use('agg') # work around for tkinter.file_dialog not found
+
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../../../build/release/wrappers/'))
 
 extensions = [
   'sphinx.ext.autodoc',
-  'sphinx.ext.todo',
-  'sphinx.ext.viewcode',
+  #'sphinx.ext.todo',
+  #'sphinx.ext.viewcode',
   'sphinx.ext.coverage',
   'sphinx.ext.napoleon'
 ]  # Napoleon settings
@@ -82,6 +85,7 @@ author = 'Pierre-henri Wuillemin'
 # built documents.
 #
 import pyAgrum as gum
+import gumDoc
 
 print("GUM VERSION =" + gum.__version__)
 # The short X.Y version.
@@ -223,8 +227,7 @@ html_static_path = ['_static']
 # html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-#
-# html_show_sourcelink = True
+html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 #
@@ -238,7 +241,7 @@ html_show_copyright = True
 # contain a <link> tag referring to it.  The value of this option must be the
 # base URL from which the finished HTML is served.
 #
-# html_use_opensearch = ''
+html_use_opensearch = ''
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
 # html_file_suffix = None
@@ -248,7 +251,7 @@ html_show_copyright = True
 #   'da', 'de', 'en', 'es', 'fi', 'fr', 'h', 'it', 'ja'
 #   'nl', 'no', 'pt', 'ro', 'r', 'sv', 'tr', 'zh'
 #
-# html_search_language = 'en'
+html_search_language = 'en'
 
 # A dictionary with options for the search language support, empty by default.
 # 'ja' uses this config value.
@@ -459,10 +462,12 @@ autoclass_content = 'both'
 import re
 
 gumReplaceList = [
+  ('pyAgrum.pyAgrum','pyAgrum'),
   ('gum::Idx', 'int'),
   ('gum::Size', 'int'),
   ('gum::NodeId', 'int'),
   ('std::string', 'str'),
+  ('str &', 'str'),
   ('gum::', 'pyAgrum.'),
   ('_double ', ' '),
   ('< double > *', ' '),
@@ -517,8 +522,11 @@ def skip(app, what, name, obj, skip, options):
     return True
   return None
 
-autodoc_default_flags = ['members', 'private-members', 'special-members',
-                         #'undoc-members','show-inheritance'
+autodoc_default_flags = ['members',
+                         #'private-members',
+                         #'special-members',
+                         #'undoc-members',
+                         #'show-inheritance',
                          ]
 def setup(app):
   app.connect('autodoc-process-docstring', process_docstring)
