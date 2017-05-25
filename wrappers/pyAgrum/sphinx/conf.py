@@ -45,7 +45,7 @@ extensions = [
   'sphinx.ext.autodoc',
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
-  'sphinx.ext.coverage',
+  #'sphinx.ext.coverage',
   'sphinx.ext.napoleon'
 ]  # Napoleon settings
 napoleon_google_docstring = True
