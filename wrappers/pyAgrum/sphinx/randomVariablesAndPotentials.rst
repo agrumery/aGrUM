@@ -1,6 +1,8 @@
 Random Variables and Potentials
 ===============================
 
+aGrUM/pyAgrum exclusively uses ploum ploum
+
 Random Variables
 ----------------
 .. autoclass:: pyAgrum.DiscreteVariable
@@ -10,9 +12,6 @@ Random Variables
   :members:
 
 .. autoclass:: pyAgrum.DiscretizedVariable
-
-.. autoclass:: pyAgrum.pyAgrum.DiscretizedVariable_double
-  :members:
 
 .. autoclass:: pyAgrum.RangeVariable
   :members:

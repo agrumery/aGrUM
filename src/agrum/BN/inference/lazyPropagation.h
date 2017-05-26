@@ -30,7 +30,7 @@
 #include <cmath>
 #include <utility>
 
-#include <agrum/BN/inference/barrenNodesFinder.h>
+#include <agrum/BN/algorithms/barrenNodesFinder.h>
 #include <agrum/BN/inference/evidenceInference.h>
 #include <agrum/BN/inference/jointTargetedInference.h>
 #include <agrum/BN/inference/relevantPotentialsFinderType.h>

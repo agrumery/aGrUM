@@ -237,7 +237,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
   JointTargetedInference<GUM_SCALAR>::posterior( const NodeId node ) {
-    if ( this->targets().contains( node ) )
+    if ( this->isTarget( node ) )
       return MarginalTargetedInference<GUM_SCALAR>::posterior( node );
     else
       return jointPosterior( NodeSet{node} );

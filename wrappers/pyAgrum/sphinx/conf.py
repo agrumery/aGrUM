@@ -1,4 +1,4 @@
-  #!/usr/bin/env python3
+# !/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # pyAgrum documentation build configuration file, created by
@@ -28,12 +28,15 @@
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-import sys
 
 import os
+# Add any Sphinx extension module names here, as strings. They can be
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
+# ones.
+import sys
+
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../../../build/release/wrappers/'))
-import gumDoc
 
 extensions = [
   'sphinx.ext.autodoc',
@@ -41,9 +44,7 @@ extensions = [
   'sphinx.ext.viewcode',
   'sphinx.ext.coverage',
   'sphinx.ext.napoleon'
-]
-
-# Napoleon settings
+]  # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
 napoleon_include_private_with_doc = False
@@ -73,7 +74,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2016, aGrUM/pyAgrum Team'
+copyright = '2017, aGrUM/pyAgrum Team'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -81,10 +82,11 @@ author = 'Pierre-henri Wuillemin'
 # built documents.
 #
 import pyAgrum as gum
-print("GUM VERSION ="+gum.__version__)
+
+print("GUM VERSION =" + gum.__version__)
 # The short X.Y version.
-ma, mi, *_ = gum.__version__.split(".")
-version = ma + "." + mi
+ma, mi, pa, *_ = gum.__version__.split(".")
+version = ma + "." + mi + "." + pa
 # The full version, including alpha/beta/rc tags.
 release = gum.__version__
 
@@ -160,7 +162,7 @@ html_theme = 'classic'
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-html_title = project+" "+version+" documentation"
+html_title = project + " " + version + " documentation"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
@@ -230,7 +232,7 @@ html_static_path = ['_static']
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 #
-# html_show_copyright = True
+html_show_copyright = True
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
@@ -252,7 +254,7 @@ html_static_path = ['_static']
 # 'ja' uses this config value.
 # 'zh' user can custom change `jieba` dictionary path.
 #
-# html_search_options = {'type': 'default'}
+html_search_options = {'type': 'default'}
 
 # The name of a javascript file (relative to the configuration directory) that
 # implements a search results scorer. If empty, the default will be used.
@@ -450,18 +452,8 @@ epub_exclude_files = ['search.html']
 # epub_use_index = True
 
 
-autodoc_member_order= 'bysource'
+autodoc_member_order = 'bysource'
 autoclass_content = 'both'
-
-
-
-
-
-
-
-
-
-
 
 ############################ TRANSLATER SWIG type #############
 import re
@@ -479,7 +471,7 @@ gumReplaceList = [
   ('std::', ''),
   ('const &', ' '),
   ('const *', ' '),
-  ('\w+ self,','')
+  ('\w+ self,', '')
 ]
 dico = {re.escape(x): y for x, y in gumReplaceList}
 pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
@@ -488,11 +480,11 @@ pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
 def substitution4swigautodoc(l):
   if l is None:
     return None
-  l1=l
-  l2=""
-  while l1!=l2:
-    l2=l1
-    l1=pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
+  l1 = l
+  l2 = ""
+  while l1 != l2:
+    l2 = l1
+    l1 = pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
 
   return l1
 
@@ -509,11 +501,24 @@ def process_signature(app, what, name, obj, options, signature, return_annotatio
   return_annotation = substitution4swigautodoc(return_annotation)
   return signature, return_annotation
 
-def skip(app, what, name, obj, skip, options):
-    if name == "__init__":
-        return False
-    return skip
 
+def skip(app, what, name, obj, skip, options):
+  exclusions = ('__weakref__', '__ne__', '__eq__',  # special-members
+                '__doc__', '__module__', '__dict__',  # undoc-members
+                '__swig_destroy__', # swig members
+                'clone',  # special members
+                )
+  exclude = name in exclusions
+  if exclude:
+    print("####### {}.{} excluded ".format(obj,name))
+    return True
+  if skip:
+    return True
+  return None
+
+autodoc_default_flags = ['members', 'private-members', 'special-members',
+                         #'undoc-members','show-inheritance'
+                         ]
 def setup(app):
   app.connect('autodoc-process-docstring', process_docstring)
   app.connect('autodoc-process-signature', process_signature)

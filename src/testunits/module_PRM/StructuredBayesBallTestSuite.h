@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <agrum/BN/inference/BayesBall.h>
+#include <agrum/BN/algorithms/BayesBall.h>
 #include <agrum/BN/inference/variableElimination.h>
 
 #include <agrum/PRM/inference/SVE.h>

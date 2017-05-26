@@ -26,9 +26,9 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 
-#include <agrum/BN/inference/BayesBall.h>
-#include <agrum/BN/inference/barrenNodesFinder.h>
-#include <agrum/BN/inference/dSeparation.h>
+#include <agrum/BN/algorithms/BayesBall.h>
+#include <agrum/BN/algorithms/barrenNodesFinder.h>
+#include <agrum/BN/algorithms/dSeparation.h>
 #include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
@@ -346,7 +346,7 @@ namespace gum {
     // however, note that the nodes that received hard evidence do not belong to
     // the graph and, therefore, should not be taken into account
     const auto& hard_ev_nodes = this->hardEvidenceNodes();
-    for ( const auto node : this->targets() ) {
+    for ( const auto node : this->allTargets() ) {
       if ( !__graph.exists( node ) && !hard_ev_nodes.exists( node ) ) return true;
     }
     for ( const auto& nodes : this->jointTargets() ) {
@@ -412,7 +412,7 @@ namespace gum {
     // the BN without altering the inference output
     if ( __barren_nodes_type == FindBarrenNodesType::FIND_BARREN_NODES ) {
       // identify the barren nodes
-      NodeSet target_nodes = this->targets();
+      NodeSet target_nodes = this->allTargets();
       for ( const auto& nodeset : this->jointTargets() ) {
         target_nodes += nodeset;
       }
@@ -999,7 +999,7 @@ namespace gum {
   void ShaferShenoyInference<GUM_SCALAR>::__computeJoinTreeRoots() {
     // get the set of cliques in which we can find the targets and joint_targets
     NodeSet clique_targets;
-    for ( const auto node : this->targets() ) {
+    for ( const auto node : this->allTargets() ) {
       try {
         clique_targets.insert( __node_to_clique[node] );
       } catch ( Exception& ) {
@@ -1288,7 +1288,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE void ShaferShenoyInference<GUM_SCALAR>::_makeInference() {
     // collect messages for all single targets
-    for ( const auto node : this->targets() ) {
+    for ( const auto node : this->allTargets() ) {
       // perform only collects in the join tree for nodes that have
       // not received hard evidence (those that received hard evidence were
       // not included into the join tree for speed-up reasons)
