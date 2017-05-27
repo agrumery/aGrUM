@@ -130,7 +130,7 @@ class CSVGenerator:
       bn = name_in
 
     seq = bn.topologicalOrder()
-    writer = csv.writer(open(name_out, 'w'))
+    writer = csv.writer(open(name_out, 'w',newline=''))
 
     if visible:
       sys.stdout.flush()

@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017  (pierre-henri.wuillemin@lip6.fr)
+# (c) Copyright by Pierre-Henri Wuillemin, UPMC, 2017
+# (pierre-henri.wuillemin@lip6.fr)
 
 # Permission to use, copy, modify, and distribute this
 # software and its documentation for any purpose and
@@ -88,7 +89,8 @@ def BN2dot(bn, size="4", arcvals=None, vals=None, cmap=None, showValues=None):
     minarcs = min(arcvals.values())
     maxarcs = max(arcvals.values())
 
-  graph = dot.Dot(graph_type='digraph')
+  graph = dot.Dot(graph_type='digraph',bgcolor="transparent")
+
   for n in bn.names():
     if vals is None or n not in vals:
       bgcol = "#444444"
@@ -232,24 +234,24 @@ def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', 
   from tempfile import mkdtemp
   temp_dir = mkdtemp("", "tmp", None)  # with TemporaryDirectory() as temp_dir:
 
-  dotstr = "digraph structs {\n"
+  dotstr = "digraph structs {\n  bgcolor=\"transparent\";"
   dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
   dotstr += "  node [fillcolor=floralwhite, style=filled,color=grey];\n"
 
-  for n in bn.ids():
-    name = bn.variable(n).name()
+  for nid in bn.ids():
+    name = bn.variable(nid).name()
 
-    if vals is None or name not in vals:
-      bgcol = "sandybrown" if name in evs else "#FFFFFF"
+    if vals is None or name not in vals or nid not in vals:
+      bgcol = "sandybrown" if name in evs or nid in evs else "#FFFFFF"
       fgcol = "#000000"
     else:
       bgcol = _proba2bgcolor(vals[name], cmap)
       fgcol = _proba2fgcolor(vals[name], cmap)
     colorattribute = 'fillcolor="{}", fontcolor="{}", color="#000000"'.format(bgcol, fgcol)
 
-    if len(targets) == 0 or name in targets:
+    if len(targets) == 0 or name in targets or nid in targets:
       filename = temp_dir + name + "." + format
-      _saveFigProba(ie.posterior(n), filename, format=format)
+      _saveFigProba(ie.posterior(name), filename, format=format)
       fill = ", " + colorattribute
       dotstr += ' "{0}" [shape=rectangle,image="{1}",label="" {2}];\n'.format(name, filename, fill)
     else:
