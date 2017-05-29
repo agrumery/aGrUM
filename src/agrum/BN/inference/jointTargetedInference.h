@@ -149,7 +149,7 @@ namespace gum {
     /// Clear all the previously defined marginal targets
     virtual void eraseAllMarginalTargets() final;
 
-    /// Add a set of nodes as a new joint target
+    /// Add a set of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
     /**
      * @throw UndefinedElement if some node(s) do not belong to the Bayes net
      */

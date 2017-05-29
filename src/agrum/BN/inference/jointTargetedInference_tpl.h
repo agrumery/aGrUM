@@ -91,10 +91,13 @@ namespace gum {
   // Clear all previously defined targets (single targets and sets of targets)
   template <typename GUM_SCALAR>
   INLINE void JointTargetedInference<GUM_SCALAR>::eraseAllJointTargets() {
-    _onAllJointTargetsErased();
-    __joint_targets.clear();
-    this->__state =
-        BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    if ( __joint_targets.size() > 0 ) {
+      // we already are in target mode. So no this->_setTargetedMode();  is needed
+      _onAllJointTargetsErased();
+      __joint_targets.clear();
+      this->__state =
+          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    }
   }
 
 
@@ -141,6 +144,7 @@ namespace gum {
       if ( iter->isSubsetOf( joint_target ) ) eraseJointTarget( *iter );
     }
 
+    this->_setTargetedMode();  // does nothing if already in targeted mode
     __joint_targets.insert( joint_target );
     _onJointTargetAdded( joint_target );
     this->__state =
@@ -169,6 +173,8 @@ namespace gum {
 
     // check that the joint_target set does not contain the new target
     if ( __joint_targets.contains( joint_target ) ) {
+      // note that we have to be in target mode when we are here
+      // so, no this->_setTargetedMode();  is necessary
       _onJointTargetErased( joint_target );
       __joint_targets.erase( joint_target );
       this->__state =
