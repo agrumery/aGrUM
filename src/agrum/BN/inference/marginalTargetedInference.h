@@ -59,9 +59,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    /** @warning By default (when the targets set is empty), all the nodes of
-     * the Bayes net are considered as targets. Once a first target is added to the
-     * set, the remaining nodes are not considered as default targets anymore.
+    /** @warning By default, all the nodes of the Bayes net are targets.
      * @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
     MarginalTargetedInference( const IBayesNet<GUM_SCALAR>* bn );
@@ -121,12 +119,9 @@ namespace gum {
     /// @{
 
     /// Clear all previously defined targets
-    /// @warning this means that every node is now a target by default
     virtual void eraseAllTargets();
 
     /// adds all nodes as targets
-    /// @warning due to the semantic of targets, this function is an alias of
-    /// eraseAllTargets()
     virtual void addAllTargets() final;
 
     /// Add a marginal target to the list of targets
@@ -143,17 +138,12 @@ namespace gum {
 
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
-     * In particular, it does not raise any exception.
-     * @warning Erasing the last target implies that every node is now a target by
-     * default.
-     * */
+     * In particular, it does not raise any exception. */
     virtual void eraseTarget( const NodeId target ) final;
 
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
-     * In particular, it does not raise any exception.
-     * @warning Erasing the last target implies that every node is now a target by
-     * default.*/
+     * In particular, it does not raise any exception. */
     virtual void eraseTarget( const std::string& nodeName ) final;
 
     /// return true if variable is a (marginal) target
@@ -162,21 +152,11 @@ namespace gum {
     /// return true if variable is a (marginal) target
     virtual bool isTarget( const std::string& nodeName ) const final;
 
-    /// returns the number of marginal targets.
-    //// @warning if the result is 0, it means that all the nodes are targets by
-    /// default.
+    /// returns the number of marginal targets
     virtual const Size nbrTargets() const noexcept final;
 
-    /// returns the set of marginal targets
-    //// @warning if the set is empty, it means that all the nodes are targets by
-    /// default.
+    /// returns the list of marginal targets
     virtual const NodeSet& targets() const noexcept final;
-
-    /// return all the marginal targets.
-    /** Particularly, if the targetSet is empty, allTargets will send a copy of the
-     * nodeSet of the BN
-     */
-    virtual NodeSet allTargets() const noexcept final;
 
     /// @}
 
@@ -249,10 +229,16 @@ namespace gum {
     /** @param id The variable's id. */
     virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id ) = 0;
 
+    protected:
+    void _setTargetedMode();
+    bool _isTargetedMode() const;
 
     private:
+    /// whether the actual targets are default
+    bool __targeted_mode;
+
     /// the set of marginal targets
-    NodeSet __targetsSet;
+    NodeSet __targets;
 
 
     /// remove all the marginal posteriors computed

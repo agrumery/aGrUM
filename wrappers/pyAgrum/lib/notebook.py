@@ -144,7 +144,9 @@ def getDot(dotstring, size="4", format="png"):
   :param format: render as "png" or "svg"
   :return: the HTML representation of the graph
   """
-  return getGraph(dot.graph_from_dot_data(dotstring), size, format)
+  g=dot.graph_from_dot_data(dotstring)
+  g.set_bgcolor("transparent")
+  return getGraph(g, size, format)
 
 
 def showJunctionTree(bn, withNames=True, size="4", format="png"):
@@ -637,18 +639,18 @@ def getInferenceEngine(ie, inferenceCaption):
   t = '<div align="left"><ul>'
   if ie.nbrHardEvidence() > 0:
     t += "<li><b>hard evidence</b><br/>"
-    t += ", ".join([ie.BN().variable(n).name() for n in ie.hardEvidenceList()])
+    t += ", ".join([ie.BN().variable(n).name() for n in ie.hardEvidenceNodes()])
     t += "</li>"
   if ie.nbrSoftEvidence() > 0:
     t += "<li><b>soft evidence</b><br/>"
-    t += ", ".join([ie.BN().variable(n).name() for n in ie.softEvidenceList()])
+    t += ", ".join([ie.BN().variable(n).name() for n in ie.softEvidenceNodes()])
     t += "</li>"
   if ie.nbrTargets() > 0:
     t += "<li><b>target(s)</b><br/>"
     if ie.nbrTargets() == ie.BN().size():
       t += " all"
     else:
-      t += ", ".join([ie.BN().variable(n).name() for n in ie.targetList()])
+      t += ", ".join([ie.BN().variable(n).name() for n in ie.targets()])
     t += "</li>"
 
   if hasattr(ie, 'nbrJointTargets'):
