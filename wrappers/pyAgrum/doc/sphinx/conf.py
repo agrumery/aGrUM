@@ -514,14 +514,13 @@ def process_signature(app, what, name, obj, options, signature, return_annotatio
 
 
 def skip(app, what, name, obj, skip, options):
-  exclusions = ('__weakref__', '__ne__', '__eq__',  # special-members
+  exclusions = ('__weakref__', '__ne__', '__eq__','__str__','__init__',  # special-members
                 '__doc__', '__module__', '__dict__',  # undoc-members
-                '__swig_destroy__', # swig members
-                'clone',  # special members
+                '__swig_destroy__', '_s',  # swig members
+                'clone',  # special gum members
                 )
   exclude = name in exclusions
   if exclude:
-    print("####### {}.{} excluded ".format(obj,name))
     return True
   if skip:
     return True

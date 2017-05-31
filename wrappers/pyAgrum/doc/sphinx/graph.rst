@@ -7,25 +7,49 @@ For all types of graphs, nodes are int. If a graph of objects is needed (like :p
 
 Edges and Arcs
 --------------
+
+Arc
+^^^
+
 .. autoclass:: pyAgrum.Arc
   :members:
+
+Edge
+^^^^
 
 .. autoclass:: pyAgrum.Edge
   :members:
 
-Graphs
-------
+Directed Graphs
+---------------
+
+Digraph
+^^^^^^^
+
 .. autoclass:: pyAgrum.DiGraph
   :members:
+
+Directed Acyclic Graph
+^^^^^^^^^^^^^^^^^^^^^^
+.. autoclass:: pyAgrum.DAG
+  :members:
+
+Undirected Graphs
+-----------------
+
+UndiGraph
+^^^^^^^^^
 
 .. autoclass:: pyAgrum.UndiGraph
   :members:
 
-.. autoclass:: pyAgrum.MixedGraph
-  :members:
-
-.. autoclass:: pyAgrum.DAG
-  :members:
+Clique Graph
+^^^^^^^^^^^^
 
 .. autoclass:: pyAgrum.CliqueGraph
   :members:
+
+Mixed Graph
+-----------
+  .. autoclass:: pyAgrum.MixedGraph
+    :members:

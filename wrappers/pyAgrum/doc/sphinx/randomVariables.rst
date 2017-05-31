@@ -13,10 +13,22 @@ Common API for Random Discrete Variables
 Concrete classes for Random Discrete Variables
 ----------------------------------------------
 
+LabelizedVariable
+^^^^^^^^^^^^^^^^^
+
 .. autoclass:: pyAgrum.LabelizedVariable
   :members:
 
+DiscretizedVariable
+^^^^^^^^^^^^^^^^^^^
+
 .. autoclass:: pyAgrum.DiscretizedVariable
+
+.. autoclass:: pyAgrum.pyAgrum.DiscretizedVariable_double
+  :members:
+
+RangeVariable
+^^^^^^^^^^^^^
 
 .. autoclass:: pyAgrum.RangeVariable
   :members:

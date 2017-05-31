@@ -5,7 +5,7 @@
 SPHINXOPTS    = -c . -a -E -w sphinx_warnings.txt
 SPHINXBUILD   = sphinx-build.exe
 PAPER         =
-BUILDDIR      = outputs
+BUILDDIR      = ..
 AGRUMBUILDDIR = $(BUILDIR)
 
 # Internal variables.
