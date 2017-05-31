@@ -1,6 +1,6 @@
 %feature("docstring") gum::BayesNet
 "
-C'est un fameux 3 mats
+BayesNet represents a Bayesian Network.
 
 Parameters
 ==========

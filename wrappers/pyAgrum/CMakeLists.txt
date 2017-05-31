@@ -92,6 +92,7 @@ include_directories (${PYTHON_INCLUDE_DIR})
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${AGRUM_SOURCE_DIR})
 include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/generated_files)
+include_directories(BEFORE ${AGRUM_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/doc)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 include_directories (${SWIG_SOURCE_DIR})
 

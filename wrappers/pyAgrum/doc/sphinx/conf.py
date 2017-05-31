@@ -45,10 +45,10 @@ extensions = [
   #'sphinx.ext.coverage',
   'sphinx.ext.napoleon'
 ]  # Napoleon settings
-napoleon_google_docstring = True
+napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 napoleon_include_private_with_doc = False
-napoleon_include_special_with_doc = True
+napoleon_include_special_with_doc = False
 napoleon_use_admonition_for_examples = False
 napoleon_use_admonition_for_notes = False
 napoleon_use_admonition_for_references = False
@@ -459,70 +459,6 @@ epub_exclude_files = ['search.html']
 autodoc_member_order = 'bysource'
 autoclass_content = 'both'
 
-############################ TRANSLATER SWIG type #############
-import re
-
-gumReplaceList = [
-  ('pyAgrum.pyAgrum','pyAgrum'),
-  ('gum::Idx', 'int'),
-  ('gum::Size', 'int'),
-  ('gum::NodeId', 'int'),
-  ('std::string', 'str'),
-  ('str &', 'str'),
-  ('gum::', 'pyAgrum.'),
-  ('_double ', ' '),
-  ('< double > *', ' '),
-  ('< double >', ' '),
-  (' const ', ' '),
-  ('std::', ''),
-  ('const &', ' '),
-  ('const *', ' '),
-  ('\w+ self,', '')
-]
-dico = {re.escape(x): y for x, y in gumReplaceList}
-pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
-
-
-def substitution4swigautodoc(l):
-  if l is None:
-    return None
-  l1 = l
-  l2 = ""
-  while l1 != l2:
-    l2 = l1
-    l1 = pattern.sub(lambda m: dico[re.escape(m.group(0))], l1)
-
-  return l1
-
-
-def process_docstring(app, what, name, obj, options, lines):
-  # loop through each line in the docstring and replace |class| with
-  # the classname
-  for i in range(len(lines)):
-    lines[i] = substitution4swigautodoc(lines[i])
-
-
-def process_signature(app, what, name, obj, options, signature, return_annotation):
-  signature = substitution4swigautodoc(signature)
-  return_annotation = substitution4swigautodoc(return_annotation)
-  return signature, return_annotation
-
-
-def skip(app, what, name, obj, skip, options):
-  exclusions = ('__weakref__', '__ne__', '__eq__',    # special-members
-                '__doc__', '__module__', '__dict__',  # undoc-members
-                '__swig_destroy__', '_s',             # swig members
-                '__init__' ,                          # swig-managed
-                'clone',  # special members
-                )
-  exclude = name in exclusions
-  if exclude:
-    #print("####### {}.{} excluded ".format(obj,name))
-    return True
-  if skip:
-    return True
-  return None
-
 autodoc_default_flags = ['members',
                          #'private-members',
                          #'special-members',
@@ -530,6 +466,7 @@ autodoc_default_flags = ['members',
                          #'show-inheritance',
                          ]
 def setup(app):
-  app.connect('autodoc-process-docstring', process_docstring)
-  app.connect('autodoc-process-signature', process_signature)
-  app.connect("autodoc-skip-member", skip)
+  pass
+  #app.connect('autodoc-process-docstring', process_docstring)
+  #app.connect('autodoc-process-signature', process_signature)
+  #app.connect("autodoc-skip-member", skip)

@@ -125,211 +125,90 @@ class SwigPyIterator(_object):
     __del__ = lambda self: None
 
     def value(self) -> "PyObject *":
-        """
-        value(SwigPyIterator self) -> PyObject *
-
-        Parameters
-        ----------
-        self: swig::SwigPyIterator const *
-
-        """
+        """value(self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_value(self)
 
 
     def incr(self, n: 'size_t'=1) -> "swig::SwigPyIterator *":
         """
-        incr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
-
-        Parameters
-        ----------
-        n: size_t
-
-        incr(SwigPyIterator self) -> SwigPyIterator
-
-        Parameters
-        ----------
-        self: swig::SwigPyIterator *
-
+        incr(self, n=1) -> SwigPyIterator
+        incr(self) -> SwigPyIterator
         """
         return _pyAgrum.SwigPyIterator_incr(self, n)
 
 
     def decr(self, n: 'size_t'=1) -> "swig::SwigPyIterator *":
         """
-        decr(SwigPyIterator self, size_t n=1) -> SwigPyIterator
-
-        Parameters
-        ----------
-        n: size_t
-
-        decr(SwigPyIterator self) -> SwigPyIterator
-
-        Parameters
-        ----------
-        self: swig::SwigPyIterator *
-
+        decr(self, n=1) -> SwigPyIterator
+        decr(self) -> SwigPyIterator
         """
         return _pyAgrum.SwigPyIterator_decr(self, n)
 
 
     def distance(self, x: 'SwigPyIterator') -> "ptrdiff_t":
-        """
-        distance(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t
-
-        Parameters
-        ----------
-        x: swig::SwigPyIterator const &
-
-        """
+        """distance(self, x) -> ptrdiff_t"""
         return _pyAgrum.SwigPyIterator_distance(self, x)
 
 
     def equal(self, x: 'SwigPyIterator') -> "bool":
-        """
-        equal(SwigPyIterator self, SwigPyIterator x) -> bool
-
-        Parameters
-        ----------
-        x: swig::SwigPyIterator const &
-
-        """
+        """equal(self, x) -> bool"""
         return _pyAgrum.SwigPyIterator_equal(self, x)
 
 
     def copy(self) -> "swig::SwigPyIterator *":
-        """
-        copy(SwigPyIterator self) -> SwigPyIterator
-
-        Parameters
-        ----------
-        self: swig::SwigPyIterator const *
-
-        """
+        """copy(self) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator_copy(self)
 
 
     def next(self) -> "PyObject *":
-        """
-        next(SwigPyIterator self) -> PyObject *
-
-        Parameters
-        ----------
-        self: swig::SwigPyIterator *
-
-        """
+        """next(self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_next(self)
 
 
     def __next__(self) -> "PyObject *":
-        """
-        __next__(SwigPyIterator self) -> PyObject *
-
-        Parameters
-        ----------
-        self: swig::SwigPyIterator *
-
-        """
+        """__next__(self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator___next__(self)
 
 
     def previous(self) -> "PyObject *":
-        """
-        previous(SwigPyIterator self) -> PyObject *
-
-        Parameters
-        ----------
-        self: swig::SwigPyIterator *
-
-        """
+        """previous(self) -> PyObject *"""
         return _pyAgrum.SwigPyIterator_previous(self)
 
 
     def advance(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator *":
-        """
-        advance(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
-
-        Parameters
-        ----------
-        n: ptrdiff_t
-
-        """
+        """advance(self, n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator_advance(self, n)
 
 
     def __eq__(self, x: 'SwigPyIterator') -> "bool":
-        """
-        __eq__(SwigPyIterator self, SwigPyIterator x) -> bool
-
-        Parameters
-        ----------
-        x: swig::SwigPyIterator const &
-
-        """
+        """__eq__(self, x) -> bool"""
         return _pyAgrum.SwigPyIterator___eq__(self, x)
 
 
     def __ne__(self, x: 'SwigPyIterator') -> "bool":
-        """
-        __ne__(SwigPyIterator self, SwigPyIterator x) -> bool
-
-        Parameters
-        ----------
-        x: swig::SwigPyIterator const &
-
-        """
+        """__ne__(self, x) -> bool"""
         return _pyAgrum.SwigPyIterator___ne__(self, x)
 
 
     def __iadd__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator &":
-        """
-        __iadd__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
-
-        Parameters
-        ----------
-        n: ptrdiff_t
-
-        """
+        """__iadd__(self, n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___iadd__(self, n)
 
 
     def __isub__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator &":
-        """
-        __isub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
-
-        Parameters
-        ----------
-        n: ptrdiff_t
-
-        """
+        """__isub__(self, n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___isub__(self, n)
 
 
     def __add__(self, n: 'ptrdiff_t') -> "swig::SwigPyIterator *":
-        """
-        __add__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
-
-        Parameters
-        ----------
-        n: ptrdiff_t
-
-        """
+        """__add__(self, n) -> SwigPyIterator"""
         return _pyAgrum.SwigPyIterator___add__(self, n)
 
 
     def __sub__(self, *args) -> "ptrdiff_t":
         """
-        __sub__(SwigPyIterator self, ptrdiff_t n) -> SwigPyIterator
-
-        Parameters
-        ----------
-        n: ptrdiff_t
-
-        __sub__(SwigPyIterator self, SwigPyIterator x) -> ptrdiff_t
-
-        Parameters
-        ----------
-        x: swig::SwigPyIterator const &
-
+        __sub__(self, n) -> SwigPyIterator
+        __sub__(self, x) -> ptrdiff_t
         """
         return _pyAgrum.SwigPyIterator___sub__(self, *args)
 
@@ -352,42 +231,22 @@ class JTGenerator(_object):
 
     def junctionTree(self, *args) -> "gum::JunctionTree":
         """
-        junctionTree(JTGenerator self, UndiGraph g) -> CliqueGraph
-
-        Parameters
-        ----------
-        g: gum::UndiGraph const &
-
-        junctionTree(JTGenerator self, BayesNet_double bn) -> CliqueGraph
-
-        Parameters
-        ----------
-        bn: gum::BayesNet< double > const &
-
+        junctionTree(self, g) -> CliqueGraph
+        junctionTree(self, bn) -> CliqueGraph
         """
         return _pyAgrum.JTGenerator_junctionTree(self, *args)
 
 
     def binaryJoinTree(self, *args) -> "gum::JunctionTree":
         """
-        binaryJoinTree(JTGenerator self, UndiGraph g) -> CliqueGraph
-
-        Parameters
-        ----------
-        g: gum::UndiGraph const &
-
-        binaryJoinTree(JTGenerator self, BayesNet_double bn) -> CliqueGraph
-
-        Parameters
-        ----------
-        bn: gum::BayesNet< double > const &
-
+        binaryJoinTree(self, g) -> CliqueGraph
+        binaryJoinTree(self, bn) -> CliqueGraph
         """
         return _pyAgrum.JTGenerator_binaryJoinTree(self, *args)
 
 
     def __init__(self):
-        """__init__(JTGenerator self) -> JTGenerator"""
+        """__init__(self) -> JTGenerator"""
         this = _pyAgrum.new_JTGenerator()
         try:
             self.this.append(this)
@@ -408,15 +267,7 @@ class PythonBNListener(_object):
     __repr__ = _swig_repr
 
     def __init__(self, g: 'DiGraph', vnm: 'VariableNodeMap'):
-        """
-        __init__(PythonBNListener self, DiGraph g, VariableNodeMap vnm) -> PythonBNListener
-
-        Parameters
-        ----------
-        g: gum::DiGraph *
-        vnm: gum::VariableNodeMap const *
-
-        """
+        """__init__(self, g, vnm) -> PythonBNListener"""
         this = _pyAgrum.new_PythonBNListener(g, vnm)
         try:
             self.this.append(this)
@@ -426,104 +277,42 @@ class PythonBNListener(_object):
     __del__ = lambda self: None
 
     def whenNodeAdded(self, source: 'void const *', id: 'gum::NodeId') -> "void":
-        """
-        whenNodeAdded(PythonBNListener self, void const * source, gum::NodeId id)
-
-        Parameters
-        ----------
-        source: void const *
-        id: gum::NodeId
-
-        """
+        """whenNodeAdded(self, source, id)"""
         return _pyAgrum.PythonBNListener_whenNodeAdded(self, source, id)
 
 
     def whenNodeDeleted(self, arg2: 'void const *', id: 'gum::NodeId') -> "void":
-        """
-        whenNodeDeleted(PythonBNListener self, void const * arg2, gum::NodeId id)
-
-        Parameters
-        ----------
-        arg2: void const *
-        id: gum::NodeId
-
-        """
+        """whenNodeDeleted(self, arg2, id)"""
         return _pyAgrum.PythonBNListener_whenNodeDeleted(self, arg2, id)
 
 
     def whenArcAdded(self, arg2: 'void const *', src: 'gum::NodeId', dst: 'gum::NodeId') -> "void":
-        """
-        whenArcAdded(PythonBNListener self, void const * arg2, gum::NodeId src, gum::NodeId dst)
-
-        Parameters
-        ----------
-        arg2: void const *
-        src: gum::NodeId
-        dst: gum::NodeId
-
-        """
+        """whenArcAdded(self, arg2, src, dst)"""
         return _pyAgrum.PythonBNListener_whenArcAdded(self, arg2, src, dst)
 
 
     def whenArcDeleted(self, arg2: 'void const *', src: 'gum::NodeId', dst: 'gum::NodeId') -> "void":
-        """
-        whenArcDeleted(PythonBNListener self, void const * arg2, gum::NodeId src, gum::NodeId dst)
-
-        Parameters
-        ----------
-        arg2: void const *
-        src: gum::NodeId
-        dst: gum::NodeId
-
-        """
+        """whenArcDeleted(self, arg2, src, dst)"""
         return _pyAgrum.PythonBNListener_whenArcDeleted(self, arg2, src, dst)
 
 
     def setWhenArcAdded(self, pyfunc: 'PyObject *') -> "void":
-        """
-        setWhenArcAdded(PythonBNListener self, PyObject * pyfunc)
-
-        Parameters
-        ----------
-        pyfunc: PyObject *
-
-        """
+        """setWhenArcAdded(self, pyfunc)"""
         return _pyAgrum.PythonBNListener_setWhenArcAdded(self, pyfunc)
 
 
     def setWhenArcDeleted(self, pyfunc: 'PyObject *') -> "void":
-        """
-        setWhenArcDeleted(PythonBNListener self, PyObject * pyfunc)
-
-        Parameters
-        ----------
-        pyfunc: PyObject *
-
-        """
+        """setWhenArcDeleted(self, pyfunc)"""
         return _pyAgrum.PythonBNListener_setWhenArcDeleted(self, pyfunc)
 
 
     def setWhenNodeAdded(self, pyfunc: 'PyObject *') -> "void":
-        """
-        setWhenNodeAdded(PythonBNListener self, PyObject * pyfunc)
-
-        Parameters
-        ----------
-        pyfunc: PyObject *
-
-        """
+        """setWhenNodeAdded(self, pyfunc)"""
         return _pyAgrum.PythonBNListener_setWhenNodeAdded(self, pyfunc)
 
 
     def setWhenNodeDeleted(self, pyfunc: 'PyObject *') -> "void":
-        """
-        setWhenNodeDeleted(PythonBNListener self, PyObject * pyfunc)
-
-        Parameters
-        ----------
-        pyfunc: PyObject *
-
-        """
+        """setWhenNodeDeleted(self, pyfunc)"""
         return _pyAgrum.PythonBNListener_setWhenNodeDeleted(self, pyfunc)
 
 PythonBNListener_swigregister = _pyAgrum.PythonBNListener_swigregister
@@ -539,32 +328,17 @@ class PythonLoadListener(_object):
     __repr__ = _swig_repr
 
     def whenLoading(self, buffer: 'void const *', percent: 'int') -> "void":
-        """
-        whenLoading(PythonLoadListener self, void const * buffer, int percent)
-
-        Parameters
-        ----------
-        buffer: void const *
-        percent: int
-
-        """
+        """whenLoading(self, buffer, percent)"""
         return _pyAgrum.PythonLoadListener_whenLoading(self, buffer, percent)
 
 
     def setPythonListener(self, l: 'PyObject *') -> "bool":
-        """
-        setPythonListener(PythonLoadListener self, PyObject * l) -> bool
-
-        Parameters
-        ----------
-        l: PyObject *
-
-        """
+        """setPythonListener(self, l) -> bool"""
         return _pyAgrum.PythonLoadListener_setPythonListener(self, l)
 
 
     def __init__(self):
-        """__init__(PythonLoadListener self) -> PythonLoadListener"""
+        """__init__(self) -> PythonLoadListener"""
         this = _pyAgrum.new_PythonLoadListener()
         try:
             self.this.append(this)
@@ -577,15 +351,7 @@ PythonLoadListener_swigregister(PythonLoadListener)
 
 
 def __fillLoadListeners(py_listener: 'std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > &', l: 'PyObject *') -> "int":
-    """
-    __fillLoadListeners(std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > & py_listener, PyObject * l) -> int
-
-    Parameters
-    ----------
-    py_listener: std::vector< PythonLoadListener,std::allocator< PythonLoadListener > > &
-    l: PyObject *
-
-    """
+    """__fillLoadListeners(py_listener, l) -> int"""
     return _pyAgrum.__fillLoadListeners(py_listener, l)
 class PythonApproximationListener(_object):
     """Proxy of C++ PythonApproximationListener class."""
@@ -597,14 +363,7 @@ class PythonApproximationListener(_object):
     __repr__ = _swig_repr
 
     def __init__(self, algo: 'IApproximationSchemeConfiguration'):
-        """
-        __init__(PythonApproximationListener self, IApproximationSchemeConfiguration algo) -> PythonApproximationListener
-
-        Parameters
-        ----------
-        algo: gum::IApproximationSchemeConfiguration &
-
-        """
+        """__init__(self, algo) -> PythonApproximationListener"""
         this = _pyAgrum.new_PythonApproximationListener(algo)
         try:
             self.this.append(this)
@@ -614,54 +373,22 @@ class PythonApproximationListener(_object):
     __del__ = lambda self: None
 
     def whenProgress(self, src: 'void const *', step: 'gum::Size const', error: 'double const', duration: 'double const') -> "void":
-        """
-        whenProgress(PythonApproximationListener self, void const * src, gum::Size const step, double const error, double const duration)
-
-        Parameters
-        ----------
-        src: void const *
-        step: gum::Size const
-        error: double const
-        duration: double const
-
-        """
+        """whenProgress(self, src, step, error, duration)"""
         return _pyAgrum.PythonApproximationListener_whenProgress(self, src, step, error, duration)
 
 
     def whenStop(self, src: 'void const *', message: 'std::string const') -> "void":
-        """
-        whenStop(PythonApproximationListener self, void const * src, std::string const message)
-
-        Parameters
-        ----------
-        src: void const *
-        message: std::string const
-
-        """
+        """whenStop(self, src, message)"""
         return _pyAgrum.PythonApproximationListener_whenStop(self, src, message)
 
 
     def setWhenProgress(self, pyfunc: 'PyObject *') -> "void":
-        """
-        setWhenProgress(PythonApproximationListener self, PyObject * pyfunc)
-
-        Parameters
-        ----------
-        pyfunc: PyObject *
-
-        """
+        """setWhenProgress(self, pyfunc)"""
         return _pyAgrum.PythonApproximationListener_setWhenProgress(self, pyfunc)
 
 
     def setWhenStop(self, pyfunc: 'PyObject *') -> "void":
-        """
-        setWhenStop(PythonApproximationListener self, PyObject * pyfunc)
-
-        Parameters
-        ----------
-        pyfunc: PyObject *
-
-        """
+        """setWhenStop(self, pyfunc)"""
         return _pyAgrum.PythonApproximationListener_setWhenStop(self, pyfunc)
 
 PythonApproximationListener_swigregister = _pyAgrum.PythonApproximationListener_swigregister
@@ -678,39 +405,16 @@ class BNGenerator(_object):
 
     def generate(self, n_nodes: 'gum::Size'=10, n_arcs: 'gum::Size'=15, n_modmax: 'gum::Size'=4) -> "gum::BayesNet< double >":
         """
-        generate(BNGenerator self, gum::Size n_nodes=10, gum::Size n_arcs=15, gum::Size n_modmax=4) -> BayesNet_double
-
-        Parameters
-        ----------
-        n_nodes: gum::Size
-        n_arcs: gum::Size
-        n_modmax: gum::Size
-
-        generate(BNGenerator self, gum::Size n_nodes=10, gum::Size n_arcs=15) -> BayesNet_double
-
-        Parameters
-        ----------
-        n_nodes: gum::Size
-        n_arcs: gum::Size
-
-        generate(BNGenerator self, gum::Size n_nodes=10) -> BayesNet_double
-
-        Parameters
-        ----------
-        n_nodes: gum::Size
-
-        generate(BNGenerator self) -> BayesNet_double
-
-        Parameters
-        ----------
-        self: BNGenerator *
-
+        generate(self, n_nodes=10, n_arcs=15, n_modmax=4) -> BayesNet_double
+        generate(self, n_nodes=10, n_arcs=15) -> BayesNet_double
+        generate(self, n_nodes=10) -> BayesNet_double
+        generate(self) -> BayesNet_double
         """
         return _pyAgrum.BNGenerator_generate(self, n_nodes, n_arcs, n_modmax)
 
 
     def __init__(self):
-        """__init__(BNGenerator self) -> BNGenerator"""
+        """__init__(self) -> BNGenerator"""
         this = _pyAgrum.new_BNGenerator()
         try:
             self.this.append(this)
@@ -732,58 +436,18 @@ class IDGenerator(_object):
 
     def generate(self, nbrNodes: 'gum::Size'=10, arcDensity: 'double'=0.2, chanceNodeDensity: 'double'=0.8, utilityNodeDensity: 'double'=0.1, max_modality: 'int'=2) -> "gum::InfluenceDiagram< double >":
         """
-        generate(IDGenerator self, gum::Size nbrNodes=10, double arcDensity=0.2, double chanceNodeDensity=0.8, double utilityNodeDensity=0.1, int max_modality=2) -> InfluenceDiagram_double
-
-        Parameters
-        ----------
-        nbrNodes: gum::Size
-        arcDensity: double
-        chanceNodeDensity: double
-        utilityNodeDensity: double
-        max_modality: int
-
-        generate(IDGenerator self, gum::Size nbrNodes=10, double arcDensity=0.2, double chanceNodeDensity=0.8, double utilityNodeDensity=0.1) -> InfluenceDiagram_double
-
-        Parameters
-        ----------
-        nbrNodes: gum::Size
-        arcDensity: double
-        chanceNodeDensity: double
-        utilityNodeDensity: double
-
-        generate(IDGenerator self, gum::Size nbrNodes=10, double arcDensity=0.2, double chanceNodeDensity=0.8) -> InfluenceDiagram_double
-
-        Parameters
-        ----------
-        nbrNodes: gum::Size
-        arcDensity: double
-        chanceNodeDensity: double
-
-        generate(IDGenerator self, gum::Size nbrNodes=10, double arcDensity=0.2) -> InfluenceDiagram_double
-
-        Parameters
-        ----------
-        nbrNodes: gum::Size
-        arcDensity: double
-
-        generate(IDGenerator self, gum::Size nbrNodes=10) -> InfluenceDiagram_double
-
-        Parameters
-        ----------
-        nbrNodes: gum::Size
-
-        generate(IDGenerator self) -> InfluenceDiagram_double
-
-        Parameters
-        ----------
-        self: IDGenerator *
-
+        generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1, max_modality=2) -> InfluenceDiagram_double
+        generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8, utilityNodeDensity=0.1) -> InfluenceDiagram_double
+        generate(self, nbrNodes=10, arcDensity=0.2, chanceNodeDensity=0.8) -> InfluenceDiagram_double
+        generate(self, nbrNodes=10, arcDensity=0.2) -> InfluenceDiagram_double
+        generate(self, nbrNodes=10) -> InfluenceDiagram_double
+        generate(self) -> InfluenceDiagram_double
         """
         return _pyAgrum.IDGenerator_generate(self, nbrNodes, arcDensity, chanceNodeDensity, utilityNodeDensity, max_modality)
 
 
     def __init__(self):
-        """__init__(IDGenerator self) -> IDGenerator"""
+        """__init__(self) -> IDGenerator"""
         this = _pyAgrum.new_IDGenerator()
         try:
             self.this.append(this)
@@ -804,7 +468,7 @@ class PRMexplorer(_object):
     __repr__ = _swig_repr
 
     def __init__(self):
-        """__init__(PRMexplorer self) -> PRMexplorer"""
+        """__init__(self) -> PRMexplorer"""
         this = _pyAgrum.new_PRMexplorer()
         try:
             self.this.append(this)
@@ -815,137 +479,55 @@ class PRMexplorer(_object):
 
     def load(self, *args) -> "void":
         """
-        load(PRMexplorer self, std::string filename, std::string classpath, bool verbose=False)
-
-        Parameters
-        ----------
-        filename: std::string
-        classpath: std::string
-        verbose: bool
-
-        load(PRMexplorer self, std::string filename, std::string classpath)
-
-        Parameters
-        ----------
-        filename: std::string
-        classpath: std::string
-
-        load(PRMexplorer self, std::string filename)
-
-        Parameters
-        ----------
-        filename: std::string
-
+        load(self, filename, classpath, verbose=False)
+        load(self, filename, classpath)
+        load(self, filename)
         """
         return _pyAgrum.PRMexplorer_load(self, *args)
 
 
     def isType(self, name: 'std::string') -> "PyObject *":
-        """
-        isType(PRMexplorer self, std::string name) -> PyObject *
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """isType(self, name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_isType(self, name)
 
 
     def isClass(self, name: 'std::string') -> "PyObject *":
-        """
-        isClass(PRMexplorer self, std::string name) -> PyObject *
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """isClass(self, name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_isClass(self, name)
 
 
     def isInterface(self, name: 'std::string') -> "PyObject *":
-        """
-        isInterface(PRMexplorer self, std::string name) -> PyObject *
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """isInterface(self, name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_isInterface(self, name)
 
 
     def classes(self) -> "PyObject *":
-        """
-        classes(PRMexplorer self) -> PyObject *
-
-        Parameters
-        ----------
-        self: PRMexplorer *
-
-        """
+        """classes(self) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classes(self)
 
 
     def classAttributes(self, class_name: 'std::string') -> "PyObject *":
-        """
-        classAttributes(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """classAttributes(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classAttributes(self, class_name)
 
 
     def isAttribute(self, class_name: 'std::string', att_name: 'std::string') -> "PyObject *":
-        """
-        isAttribute(PRMexplorer self, std::string class_name, std::string att_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-        att_name: std::string
-
-        """
+        """isAttribute(self, class_name, att_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_isAttribute(self, class_name, att_name)
 
 
     def classReferences(self, class_name: 'std::string') -> "PyObject *":
-        """
-        classReferences(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """classReferences(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classReferences(self, class_name)
 
 
     def classParameters(self, class_name: 'std::string') -> "PyObject *":
-        """
-        classParameters(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """classParameters(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classParameters(self, class_name)
 
 
     def classImplements(self, class_name: 'std::string') -> "PyObject *":
-        """
-        classImplements(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """classImplements(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classImplements(self, class_name)
 
     __swig_setmethods__["aggType"] = _pyAgrum.PRMexplorer_aggType_set
@@ -954,226 +536,95 @@ class PRMexplorer(_object):
         aggType = _swig_property(_pyAgrum.PRMexplorer_aggType_get, _pyAgrum.PRMexplorer_aggType_set)
 
     def classAggregates(self, class_name: 'std::string') -> "PyObject *":
-        """
-        classAggregates(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """classAggregates(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classAggregates(self, class_name)
 
 
     def classSlotChains(self, class_name: 'std::string') -> "PyObject *":
-        """
-        classSlotChains(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """classSlotChains(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classSlotChains(self, class_name)
 
 
     def classDag(self, class_name: 'std::string') -> "PyObject *":
-        """
-        classDag(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """classDag(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_classDag(self, class_name)
 
 
     def getalltheSystems(self) -> "PyObject *":
-        """
-        getalltheSystems(PRMexplorer self) -> PyObject *
-
-        Parameters
-        ----------
-        self: PRMexplorer *
-
-        """
+        """getalltheSystems(self) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getalltheSystems(self)
 
 
     def getSuperClass(self, class_name: 'std::string') -> "PyObject *":
-        """
-        getSuperClass(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """getSuperClass(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getSuperClass(self, class_name)
 
 
     def getDirectSubClass(self, class_name: 'std::string') -> "PyObject *":
-        """
-        getDirectSubClass(PRMexplorer self, std::string class_name) -> PyObject *
-
-        Parameters
-        ----------
-        class_name: std::string
-
-        """
+        """getDirectSubClass(self, class_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getDirectSubClass(self, class_name)
 
 
     def cpf(self, class_name: 'std::string', attribute: 'std::string') -> "gum::Potential< double > const &":
-        """
-        cpf(PRMexplorer self, std::string class_name, std::string attribute) -> Potential_double
-
-        Parameters
-        ----------
-        class_name: std::string
-        attribute: std::string
-
-        """
+        """cpf(self, class_name, attribute) -> Potential_double"""
         return _pyAgrum.PRMexplorer_cpf(self, class_name, attribute)
 
 
     def types(self) -> "PyObject *":
-        """
-        types(PRMexplorer self) -> PyObject *
-
-        Parameters
-        ----------
-        self: PRMexplorer *
-
-        """
+        """types(self) -> PyObject *"""
         return _pyAgrum.PRMexplorer_types(self)
 
 
     def getSuperType(self, type_name: 'std::string') -> "PyObject *":
-        """
-        getSuperType(PRMexplorer self, std::string type_name) -> PyObject *
-
-        Parameters
-        ----------
-        type_name: std::string
-
-        """
+        """getSuperType(self, type_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getSuperType(self, type_name)
 
 
     def getDirectSubTypes(self, type_name: 'std::string') -> "PyObject *":
-        """
-        getDirectSubTypes(PRMexplorer self, std::string type_name) -> PyObject *
-
-        Parameters
-        ----------
-        type_name: std::string
-
-        """
+        """getDirectSubTypes(self, type_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getDirectSubTypes(self, type_name)
 
 
     def getLabels(self, type_name: 'std::string') -> "PyObject *":
-        """
-        getLabels(PRMexplorer self, std::string type_name) -> PyObject *
-
-        Parameters
-        ----------
-        type_name: std::string
-
-        """
+        """getLabels(self, type_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getLabels(self, type_name)
 
 
     def getLabelMap(self, type_name: 'std::string') -> "PyObject *":
-        """
-        getLabelMap(PRMexplorer self, std::string type_name) -> PyObject *
-
-        Parameters
-        ----------
-        type_name: std::string
-
-        """
+        """getLabelMap(self, type_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getLabelMap(self, type_name)
 
 
     def interfaces(self) -> "PyObject *":
-        """
-        interfaces(PRMexplorer self) -> PyObject *
-
-        Parameters
-        ----------
-        self: PRMexplorer *
-
-        """
+        """interfaces(self) -> PyObject *"""
         return _pyAgrum.PRMexplorer_interfaces(self)
 
 
     def interAttributes(self, interface_name: 'std::string', allAttributes: 'bool'=False) -> "PyObject *":
         """
-        interAttributes(PRMexplorer self, std::string interface_name, bool allAttributes=False) -> PyObject
-
-        Parameters
-        ----------
-        interface_name: std::string
-        allAttributes: bool
-
-        interAttributes(PRMexplorer self, std::string interface_name) -> PyObject *
-
-        Parameters
-        ----------
-        interface_name: std::string
-
+        interAttributes(self, interface_name, allAttributes=False) -> PyObject
+        interAttributes(self, interface_name) -> PyObject *
         """
         return _pyAgrum.PRMexplorer_interAttributes(self, interface_name, allAttributes)
 
 
     def interReferences(self, interface_name: 'std::string') -> "PyObject *":
-        """
-        interReferences(PRMexplorer self, std::string interface_name) -> PyObject *
-
-        Parameters
-        ----------
-        interface_name: std::string
-
-        """
+        """interReferences(self, interface_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_interReferences(self, interface_name)
 
 
     def getSuperInterface(self, interface_name: 'std::string') -> "PyObject *":
-        """
-        getSuperInterface(PRMexplorer self, std::string interface_name) -> PyObject *
-
-        Parameters
-        ----------
-        interface_name: std::string
-
-        """
+        """getSuperInterface(self, interface_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getSuperInterface(self, interface_name)
 
 
     def getDirectSubInterfaces(self, interface_name: 'std::string') -> "PyObject *":
-        """
-        getDirectSubInterfaces(PRMexplorer self, std::string interface_name) -> PyObject *
-
-        Parameters
-        ----------
-        interface_name: std::string
-
-        """
+        """getDirectSubInterfaces(self, interface_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getDirectSubInterfaces(self, interface_name)
 
 
     def getImplementations(self, interface_name: 'std::string') -> "PyObject *":
-        """
-        getImplementations(PRMexplorer self, std::string interface_name) -> PyObject *
-
-        Parameters
-        ----------
-        interface_name: std::string
-
-        """
+        """getImplementations(self, interface_name) -> PyObject *"""
         return _pyAgrum.PRMexplorer_getImplementations(self, interface_name)
 
 PRMexplorer_swigregister = _pyAgrum.PRMexplorer_swigregister
@@ -1189,349 +640,144 @@ class Vector_double(_object):
     __repr__ = _swig_repr
 
     def iterator(self) -> "swig::SwigPyIterator *":
-        """
-        iterator(Vector_double self) -> SwigPyIterator
-
-        Parameters
-        ----------
-        self: std::vector< double > *
-
-        """
+        """iterator(self) -> SwigPyIterator"""
         return _pyAgrum.Vector_double_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self) -> "bool":
-        """
-        __nonzero__(Vector_double self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """__nonzero__(self) -> bool"""
         return _pyAgrum.Vector_double___nonzero__(self)
 
 
     def __bool__(self) -> "bool":
-        """
-        __bool__(Vector_double self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """__bool__(self) -> bool"""
         return _pyAgrum.Vector_double___bool__(self)
 
 
     def __len__(self) -> "std::vector< double >::size_type":
-        """
-        __len__(Vector_double self) -> std::vector< double >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """__len__(self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector_double___len__(self)
 
 
     def __getslice__(self, i: 'std::vector< double >::difference_type', j: 'std::vector< double >::difference_type') -> "std::vector< double,std::allocator< double > > *":
-        """
-        __getslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j) -> Vector_double
-
-        Parameters
-        ----------
-        i: std::vector< double >::difference_type
-        j: std::vector< double >::difference_type
-
-        """
+        """__getslice__(self, i, j) -> Vector_double"""
         return _pyAgrum.Vector_double___getslice__(self, i, j)
 
 
     def __setslice__(self, *args) -> "void":
         """
-        __setslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j)
-
-        Parameters
-        ----------
-        i: std::vector< double >::difference_type
-        j: std::vector< double >::difference_type
-
-        __setslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j, Vector_double v)
-
-        Parameters
-        ----------
-        i: std::vector< double >::difference_type
-        j: std::vector< double >::difference_type
-        v: std::vector< double,std::allocator< double > > const &
-
+        __setslice__(self, i, j)
+        __setslice__(self, i, j, v)
         """
         return _pyAgrum.Vector_double___setslice__(self, *args)
 
 
     def __delslice__(self, i: 'std::vector< double >::difference_type', j: 'std::vector< double >::difference_type') -> "void":
-        """
-        __delslice__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::difference_type j)
-
-        Parameters
-        ----------
-        i: std::vector< double >::difference_type
-        j: std::vector< double >::difference_type
-
-        """
+        """__delslice__(self, i, j)"""
         return _pyAgrum.Vector_double___delslice__(self, i, j)
 
 
     def __delitem__(self, *args) -> "void":
         """
-        __delitem__(Vector_double self, std::vector< double >::difference_type i)
-
-        Parameters
-        ----------
-        i: std::vector< double >::difference_type
-
-        __delitem__(Vector_double self, PySliceObject * slice)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
+        __delitem__(self, i)
+        __delitem__(self, slice)
         """
         return _pyAgrum.Vector_double___delitem__(self, *args)
 
 
     def __getitem__(self, *args) -> "std::vector< double >::value_type const &":
         """
-        __getitem__(Vector_double self, PySliceObject * slice) -> Vector_double
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
-        __getitem__(Vector_double self, std::vector< double >::difference_type i) -> std::vector< double >::value_type const &
-
-        Parameters
-        ----------
-        i: std::vector< double >::difference_type
-
+        __getitem__(self, slice) -> Vector_double
+        __getitem__(self, i) -> std::vector< double >::value_type const &
         """
         return _pyAgrum.Vector_double___getitem__(self, *args)
 
 
     def __setitem__(self, *args) -> "void":
         """
-        __setitem__(Vector_double self, PySliceObject * slice, Vector_double v)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-        v: std::vector< double,std::allocator< double > > const &
-
-        __setitem__(Vector_double self, PySliceObject * slice)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
-        __setitem__(Vector_double self, std::vector< double >::difference_type i, std::vector< double >::value_type const & x)
-
-        Parameters
-        ----------
-        i: std::vector< double >::difference_type
-        x: std::vector< double >::value_type const &
-
+        __setitem__(self, slice, v)
+        __setitem__(self, slice)
+        __setitem__(self, i, x)
         """
         return _pyAgrum.Vector_double___setitem__(self, *args)
 
 
     def pop(self) -> "std::vector< double >::value_type":
-        """
-        pop(Vector_double self) -> std::vector< double >::value_type
-
-        Parameters
-        ----------
-        self: std::vector< double > *
-
-        """
+        """pop(self) -> std::vector< double >::value_type"""
         return _pyAgrum.Vector_double_pop(self)
 
 
     def append(self, x: 'std::vector< double >::value_type const &') -> "void":
-        """
-        append(Vector_double self, std::vector< double >::value_type const & x)
-
-        Parameters
-        ----------
-        x: std::vector< double >::value_type const &
-
-        """
+        """append(self, x)"""
         return _pyAgrum.Vector_double_append(self, x)
 
 
     def empty(self) -> "bool":
-        """
-        empty(Vector_double self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.Vector_double_empty(self)
 
 
     def size(self) -> "std::vector< double >::size_type":
-        """
-        size(Vector_double self) -> std::vector< double >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """size(self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector_double_size(self)
 
 
     def swap(self, v: 'Vector_double') -> "void":
-        """
-        swap(Vector_double self, Vector_double v)
-
-        Parameters
-        ----------
-        v: std::vector< double > &
-
-        """
+        """swap(self, v)"""
         return _pyAgrum.Vector_double_swap(self, v)
 
 
     def begin(self) -> "std::vector< double >::iterator":
-        """
-        begin(Vector_double self) -> std::vector< double >::iterator
-
-        Parameters
-        ----------
-        self: std::vector< double > *
-
-        """
+        """begin(self) -> std::vector< double >::iterator"""
         return _pyAgrum.Vector_double_begin(self)
 
 
     def end(self) -> "std::vector< double >::iterator":
-        """
-        end(Vector_double self) -> std::vector< double >::iterator
-
-        Parameters
-        ----------
-        self: std::vector< double > *
-
-        """
+        """end(self) -> std::vector< double >::iterator"""
         return _pyAgrum.Vector_double_end(self)
 
 
     def rbegin(self) -> "std::vector< double >::reverse_iterator":
-        """
-        rbegin(Vector_double self) -> std::vector< double >::reverse_iterator
-
-        Parameters
-        ----------
-        self: std::vector< double > *
-
-        """
+        """rbegin(self) -> std::vector< double >::reverse_iterator"""
         return _pyAgrum.Vector_double_rbegin(self)
 
 
     def rend(self) -> "std::vector< double >::reverse_iterator":
-        """
-        rend(Vector_double self) -> std::vector< double >::reverse_iterator
-
-        Parameters
-        ----------
-        self: std::vector< double > *
-
-        """
+        """rend(self) -> std::vector< double >::reverse_iterator"""
         return _pyAgrum.Vector_double_rend(self)
 
 
     def clear(self) -> "void":
-        """
-        clear(Vector_double self)
-
-        Parameters
-        ----------
-        self: std::vector< double > *
-
-        """
+        """clear(self)"""
         return _pyAgrum.Vector_double_clear(self)
 
 
     def get_allocator(self) -> "std::vector< double >::allocator_type":
-        """
-        get_allocator(Vector_double self) -> std::vector< double >::allocator_type
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """get_allocator(self) -> std::vector< double >::allocator_type"""
         return _pyAgrum.Vector_double_get_allocator(self)
 
 
     def pop_back(self) -> "void":
-        """
-        pop_back(Vector_double self)
-
-        Parameters
-        ----------
-        self: std::vector< double > *
-
-        """
+        """pop_back(self)"""
         return _pyAgrum.Vector_double_pop_back(self)
 
 
     def erase(self, *args) -> "std::vector< double >::iterator":
         """
-        erase(Vector_double self, std::vector< double >::iterator pos) -> std::vector< double >::iterator
-
-        Parameters
-        ----------
-        pos: std::vector< double >::iterator
-
-        erase(Vector_double self, std::vector< double >::iterator first, std::vector< double >::iterator last) -> std::vector< double >::iterator
-
-        Parameters
-        ----------
-        first: std::vector< double >::iterator
-        last: std::vector< double >::iterator
-
+        erase(self, pos) -> std::vector< double >::iterator
+        erase(self, first, last) -> std::vector< double >::iterator
         """
         return _pyAgrum.Vector_double_erase(self, *args)
 
 
     def __init__(self, *args):
         """
-        __init__(std::vector<(double)> self) -> Vector_double
-        __init__(std::vector<(double)> self, Vector_double arg2) -> Vector_double
-
-        Parameters
-        ----------
-        arg2: std::vector< double > const &
-
-        __init__(std::vector<(double)> self, std::vector< double >::size_type size) -> Vector_double
-
-        Parameters
-        ----------
-        size: std::vector< double >::size_type
-
-        __init__(std::vector<(double)> self, std::vector< double >::size_type size, std::vector< double >::value_type const & value) -> Vector_double
-
-        Parameters
-        ----------
-        size: std::vector< double >::size_type
-        value: std::vector< double >::value_type const &
-
+        __init__(self) -> Vector_double
+        __init__(self, arg2) -> Vector_double
+        __init__(self, size) -> Vector_double
+        __init__(self, size, value) -> Vector_double
         """
         this = _pyAgrum.new_Vector_double(*args)
         try:
@@ -1540,115 +786,48 @@ class Vector_double(_object):
             self.this = this
 
     def push_back(self, x: 'std::vector< double >::value_type const &') -> "void":
-        """
-        push_back(Vector_double self, std::vector< double >::value_type const & x)
-
-        Parameters
-        ----------
-        x: std::vector< double >::value_type const &
-
-        """
+        """push_back(self, x)"""
         return _pyAgrum.Vector_double_push_back(self, x)
 
 
     def front(self) -> "std::vector< double >::value_type const &":
-        """
-        front(Vector_double self) -> std::vector< double >::value_type const &
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """front(self) -> std::vector< double >::value_type const &"""
         return _pyAgrum.Vector_double_front(self)
 
 
     def back(self) -> "std::vector< double >::value_type const &":
-        """
-        back(Vector_double self) -> std::vector< double >::value_type const &
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """back(self) -> std::vector< double >::value_type const &"""
         return _pyAgrum.Vector_double_back(self)
 
 
     def assign(self, n: 'std::vector< double >::size_type', x: 'std::vector< double >::value_type const &') -> "void":
-        """
-        assign(Vector_double self, std::vector< double >::size_type n, std::vector< double >::value_type const & x)
-
-        Parameters
-        ----------
-        n: std::vector< double >::size_type
-        x: std::vector< double >::value_type const &
-
-        """
+        """assign(self, n, x)"""
         return _pyAgrum.Vector_double_assign(self, n, x)
 
 
     def resize(self, *args) -> "void":
         """
-        resize(Vector_double self, std::vector< double >::size_type new_size)
-
-        Parameters
-        ----------
-        new_size: std::vector< double >::size_type
-
-        resize(Vector_double self, std::vector< double >::size_type new_size, std::vector< double >::value_type const & x)
-
-        Parameters
-        ----------
-        new_size: std::vector< double >::size_type
-        x: std::vector< double >::value_type const &
-
+        resize(self, new_size)
+        resize(self, new_size, x)
         """
         return _pyAgrum.Vector_double_resize(self, *args)
 
 
     def insert(self, *args) -> "void":
         """
-        insert(Vector_double self, std::vector< double >::iterator pos, std::vector< double >::value_type const & x) -> std::vector< double >::iterator
-
-        Parameters
-        ----------
-        pos: std::vector< double >::iterator
-        x: std::vector< double >::value_type const &
-
-        insert(Vector_double self, std::vector< double >::iterator pos, std::vector< double >::size_type n, std::vector< double >::value_type const & x)
-
-        Parameters
-        ----------
-        pos: std::vector< double >::iterator
-        n: std::vector< double >::size_type
-        x: std::vector< double >::value_type const &
-
+        insert(self, pos, x) -> std::vector< double >::iterator
+        insert(self, pos, n, x)
         """
         return _pyAgrum.Vector_double_insert(self, *args)
 
 
     def reserve(self, n: 'std::vector< double >::size_type') -> "void":
-        """
-        reserve(Vector_double self, std::vector< double >::size_type n)
-
-        Parameters
-        ----------
-        n: std::vector< double >::size_type
-
-        """
+        """reserve(self, n)"""
         return _pyAgrum.Vector_double_reserve(self, n)
 
 
     def capacity(self) -> "std::vector< double >::size_type":
-        """
-        capacity(Vector_double self) -> std::vector< double >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< double > const *
-
-        """
+        """capacity(self) -> std::vector< double >::size_type"""
         return _pyAgrum.Vector_double_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_double
@@ -1666,349 +845,144 @@ class Vector_int(_object):
     __repr__ = _swig_repr
 
     def iterator(self) -> "swig::SwigPyIterator *":
-        """
-        iterator(Vector_int self) -> SwigPyIterator
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > *
-
-        """
+        """iterator(self) -> SwigPyIterator"""
         return _pyAgrum.Vector_int_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self) -> "bool":
-        """
-        __nonzero__(Vector_int self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """__nonzero__(self) -> bool"""
         return _pyAgrum.Vector_int___nonzero__(self)
 
 
     def __bool__(self) -> "bool":
-        """
-        __bool__(Vector_int self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """__bool__(self) -> bool"""
         return _pyAgrum.Vector_int___bool__(self)
 
 
     def __len__(self) -> "std::vector< unsigned int >::size_type":
-        """
-        __len__(Vector_int self) -> std::vector< unsigned int >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """__len__(self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int___len__(self)
 
 
     def __getslice__(self, i: 'std::vector< unsigned int >::difference_type', j: 'std::vector< unsigned int >::difference_type') -> "std::vector< unsigned int,std::allocator< unsigned int > > *":
-        """
-        __getslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j) -> Vector_int
-
-        Parameters
-        ----------
-        i: std::vector< unsigned int >::difference_type
-        j: std::vector< unsigned int >::difference_type
-
-        """
+        """__getslice__(self, i, j) -> Vector_int"""
         return _pyAgrum.Vector_int___getslice__(self, i, j)
 
 
     def __setslice__(self, *args) -> "void":
         """
-        __setslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j)
-
-        Parameters
-        ----------
-        i: std::vector< unsigned int >::difference_type
-        j: std::vector< unsigned int >::difference_type
-
-        __setslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j, Vector_int v)
-
-        Parameters
-        ----------
-        i: std::vector< unsigned int >::difference_type
-        j: std::vector< unsigned int >::difference_type
-        v: std::vector< unsigned int,std::allocator< unsigned int > > const &
-
+        __setslice__(self, i, j)
+        __setslice__(self, i, j, v)
         """
         return _pyAgrum.Vector_int___setslice__(self, *args)
 
 
     def __delslice__(self, i: 'std::vector< unsigned int >::difference_type', j: 'std::vector< unsigned int >::difference_type') -> "void":
-        """
-        __delslice__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::difference_type j)
-
-        Parameters
-        ----------
-        i: std::vector< unsigned int >::difference_type
-        j: std::vector< unsigned int >::difference_type
-
-        """
+        """__delslice__(self, i, j)"""
         return _pyAgrum.Vector_int___delslice__(self, i, j)
 
 
     def __delitem__(self, *args) -> "void":
         """
-        __delitem__(Vector_int self, std::vector< unsigned int >::difference_type i)
-
-        Parameters
-        ----------
-        i: std::vector< unsigned int >::difference_type
-
-        __delitem__(Vector_int self, PySliceObject * slice)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
+        __delitem__(self, i)
+        __delitem__(self, slice)
         """
         return _pyAgrum.Vector_int___delitem__(self, *args)
 
 
     def __getitem__(self, *args) -> "std::vector< unsigned int >::value_type const &":
         """
-        __getitem__(Vector_int self, PySliceObject * slice) -> Vector_int
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
-        __getitem__(Vector_int self, std::vector< unsigned int >::difference_type i) -> std::vector< unsigned int >::value_type const &
-
-        Parameters
-        ----------
-        i: std::vector< unsigned int >::difference_type
-
+        __getitem__(self, slice) -> Vector_int
+        __getitem__(self, i) -> std::vector< unsigned int >::value_type const &
         """
         return _pyAgrum.Vector_int___getitem__(self, *args)
 
 
     def __setitem__(self, *args) -> "void":
         """
-        __setitem__(Vector_int self, PySliceObject * slice, Vector_int v)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-        v: std::vector< unsigned int,std::allocator< unsigned int > > const &
-
-        __setitem__(Vector_int self, PySliceObject * slice)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
-        __setitem__(Vector_int self, std::vector< unsigned int >::difference_type i, std::vector< unsigned int >::value_type const & x)
-
-        Parameters
-        ----------
-        i: std::vector< unsigned int >::difference_type
-        x: std::vector< unsigned int >::value_type const &
-
+        __setitem__(self, slice, v)
+        __setitem__(self, slice)
+        __setitem__(self, i, x)
         """
         return _pyAgrum.Vector_int___setitem__(self, *args)
 
 
     def pop(self) -> "std::vector< unsigned int >::value_type":
-        """
-        pop(Vector_int self) -> std::vector< unsigned int >::value_type
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > *
-
-        """
+        """pop(self) -> std::vector< unsigned int >::value_type"""
         return _pyAgrum.Vector_int_pop(self)
 
 
     def append(self, x: 'std::vector< unsigned int >::value_type const &') -> "void":
-        """
-        append(Vector_int self, std::vector< unsigned int >::value_type const & x)
-
-        Parameters
-        ----------
-        x: std::vector< unsigned int >::value_type const &
-
-        """
+        """append(self, x)"""
         return _pyAgrum.Vector_int_append(self, x)
 
 
     def empty(self) -> "bool":
-        """
-        empty(Vector_int self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.Vector_int_empty(self)
 
 
     def size(self) -> "std::vector< unsigned int >::size_type":
-        """
-        size(Vector_int self) -> std::vector< unsigned int >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """size(self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int_size(self)
 
 
     def swap(self, v: 'Vector_int') -> "void":
-        """
-        swap(Vector_int self, Vector_int v)
-
-        Parameters
-        ----------
-        v: std::vector< unsigned int > &
-
-        """
+        """swap(self, v)"""
         return _pyAgrum.Vector_int_swap(self, v)
 
 
     def begin(self) -> "std::vector< unsigned int >::iterator":
-        """
-        begin(Vector_int self) -> std::vector< unsigned int >::iterator
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > *
-
-        """
+        """begin(self) -> std::vector< unsigned int >::iterator"""
         return _pyAgrum.Vector_int_begin(self)
 
 
     def end(self) -> "std::vector< unsigned int >::iterator":
-        """
-        end(Vector_int self) -> std::vector< unsigned int >::iterator
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > *
-
-        """
+        """end(self) -> std::vector< unsigned int >::iterator"""
         return _pyAgrum.Vector_int_end(self)
 
 
     def rbegin(self) -> "std::vector< unsigned int >::reverse_iterator":
-        """
-        rbegin(Vector_int self) -> std::vector< unsigned int >::reverse_iterator
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > *
-
-        """
+        """rbegin(self) -> std::vector< unsigned int >::reverse_iterator"""
         return _pyAgrum.Vector_int_rbegin(self)
 
 
     def rend(self) -> "std::vector< unsigned int >::reverse_iterator":
-        """
-        rend(Vector_int self) -> std::vector< unsigned int >::reverse_iterator
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > *
-
-        """
+        """rend(self) -> std::vector< unsigned int >::reverse_iterator"""
         return _pyAgrum.Vector_int_rend(self)
 
 
     def clear(self) -> "void":
-        """
-        clear(Vector_int self)
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > *
-
-        """
+        """clear(self)"""
         return _pyAgrum.Vector_int_clear(self)
 
 
     def get_allocator(self) -> "std::vector< unsigned int >::allocator_type":
-        """
-        get_allocator(Vector_int self) -> std::vector< unsigned int >::allocator_type
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """get_allocator(self) -> std::vector< unsigned int >::allocator_type"""
         return _pyAgrum.Vector_int_get_allocator(self)
 
 
     def pop_back(self) -> "void":
-        """
-        pop_back(Vector_int self)
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > *
-
-        """
+        """pop_back(self)"""
         return _pyAgrum.Vector_int_pop_back(self)
 
 
     def erase(self, *args) -> "std::vector< unsigned int >::iterator":
         """
-        erase(Vector_int self, std::vector< unsigned int >::iterator pos) -> std::vector< unsigned int >::iterator
-
-        Parameters
-        ----------
-        pos: std::vector< unsigned int >::iterator
-
-        erase(Vector_int self, std::vector< unsigned int >::iterator first, std::vector< unsigned int >::iterator last) -> std::vector< unsigned int >::iterator
-
-        Parameters
-        ----------
-        first: std::vector< unsigned int >::iterator
-        last: std::vector< unsigned int >::iterator
-
+        erase(self, pos) -> std::vector< unsigned int >::iterator
+        erase(self, first, last) -> std::vector< unsigned int >::iterator
         """
         return _pyAgrum.Vector_int_erase(self, *args)
 
 
     def __init__(self, *args):
         """
-        __init__(std::vector<(unsigned int)> self) -> Vector_int
-        __init__(std::vector<(unsigned int)> self, Vector_int arg2) -> Vector_int
-
-        Parameters
-        ----------
-        arg2: std::vector< unsigned int > const &
-
-        __init__(std::vector<(unsigned int)> self, std::vector< unsigned int >::size_type size) -> Vector_int
-
-        Parameters
-        ----------
-        size: std::vector< unsigned int >::size_type
-
-        __init__(std::vector<(unsigned int)> self, std::vector< unsigned int >::size_type size, std::vector< unsigned int >::value_type const & value) -> Vector_int
-
-        Parameters
-        ----------
-        size: std::vector< unsigned int >::size_type
-        value: std::vector< unsigned int >::value_type const &
-
+        __init__(self) -> Vector_int
+        __init__(self, arg2) -> Vector_int
+        __init__(self, size) -> Vector_int
+        __init__(self, size, value) -> Vector_int
         """
         this = _pyAgrum.new_Vector_int(*args)
         try:
@@ -2017,115 +991,48 @@ class Vector_int(_object):
             self.this = this
 
     def push_back(self, x: 'std::vector< unsigned int >::value_type const &') -> "void":
-        """
-        push_back(Vector_int self, std::vector< unsigned int >::value_type const & x)
-
-        Parameters
-        ----------
-        x: std::vector< unsigned int >::value_type const &
-
-        """
+        """push_back(self, x)"""
         return _pyAgrum.Vector_int_push_back(self, x)
 
 
     def front(self) -> "std::vector< unsigned int >::value_type const &":
-        """
-        front(Vector_int self) -> std::vector< unsigned int >::value_type const &
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """front(self) -> std::vector< unsigned int >::value_type const &"""
         return _pyAgrum.Vector_int_front(self)
 
 
     def back(self) -> "std::vector< unsigned int >::value_type const &":
-        """
-        back(Vector_int self) -> std::vector< unsigned int >::value_type const &
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """back(self) -> std::vector< unsigned int >::value_type const &"""
         return _pyAgrum.Vector_int_back(self)
 
 
     def assign(self, n: 'std::vector< unsigned int >::size_type', x: 'std::vector< unsigned int >::value_type const &') -> "void":
-        """
-        assign(Vector_int self, std::vector< unsigned int >::size_type n, std::vector< unsigned int >::value_type const & x)
-
-        Parameters
-        ----------
-        n: std::vector< unsigned int >::size_type
-        x: std::vector< unsigned int >::value_type const &
-
-        """
+        """assign(self, n, x)"""
         return _pyAgrum.Vector_int_assign(self, n, x)
 
 
     def resize(self, *args) -> "void":
         """
-        resize(Vector_int self, std::vector< unsigned int >::size_type new_size)
-
-        Parameters
-        ----------
-        new_size: std::vector< unsigned int >::size_type
-
-        resize(Vector_int self, std::vector< unsigned int >::size_type new_size, std::vector< unsigned int >::value_type const & x)
-
-        Parameters
-        ----------
-        new_size: std::vector< unsigned int >::size_type
-        x: std::vector< unsigned int >::value_type const &
-
+        resize(self, new_size)
+        resize(self, new_size, x)
         """
         return _pyAgrum.Vector_int_resize(self, *args)
 
 
     def insert(self, *args) -> "void":
         """
-        insert(Vector_int self, std::vector< unsigned int >::iterator pos, std::vector< unsigned int >::value_type const & x) -> std::vector< unsigned int >::iterator
-
-        Parameters
-        ----------
-        pos: std::vector< unsigned int >::iterator
-        x: std::vector< unsigned int >::value_type const &
-
-        insert(Vector_int self, std::vector< unsigned int >::iterator pos, std::vector< unsigned int >::size_type n, std::vector< unsigned int >::value_type const & x)
-
-        Parameters
-        ----------
-        pos: std::vector< unsigned int >::iterator
-        n: std::vector< unsigned int >::size_type
-        x: std::vector< unsigned int >::value_type const &
-
+        insert(self, pos, x) -> std::vector< unsigned int >::iterator
+        insert(self, pos, n, x)
         """
         return _pyAgrum.Vector_int_insert(self, *args)
 
 
     def reserve(self, n: 'std::vector< unsigned int >::size_type') -> "void":
-        """
-        reserve(Vector_int self, std::vector< unsigned int >::size_type n)
-
-        Parameters
-        ----------
-        n: std::vector< unsigned int >::size_type
-
-        """
+        """reserve(self, n)"""
         return _pyAgrum.Vector_int_reserve(self, n)
 
 
     def capacity(self) -> "std::vector< unsigned int >::size_type":
-        """
-        capacity(Vector_int self) -> std::vector< unsigned int >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< unsigned int > const *
-
-        """
+        """capacity(self) -> std::vector< unsigned int >::size_type"""
         return _pyAgrum.Vector_int_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_int
@@ -2143,349 +1050,144 @@ class Vector_string(_object):
     __repr__ = _swig_repr
 
     def iterator(self) -> "swig::SwigPyIterator *":
-        """
-        iterator(Vector_string self) -> SwigPyIterator
-
-        Parameters
-        ----------
-        self: std::vector< std::string > *
-
-        """
+        """iterator(self) -> SwigPyIterator"""
         return _pyAgrum.Vector_string_iterator(self)
 
     def __iter__(self):
         return self.iterator()
 
     def __nonzero__(self) -> "bool":
-        """
-        __nonzero__(Vector_string self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """__nonzero__(self) -> bool"""
         return _pyAgrum.Vector_string___nonzero__(self)
 
 
     def __bool__(self) -> "bool":
-        """
-        __bool__(Vector_string self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """__bool__(self) -> bool"""
         return _pyAgrum.Vector_string___bool__(self)
 
 
     def __len__(self) -> "std::vector< std::string >::size_type":
-        """
-        __len__(Vector_string self) -> std::vector< std::string >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """__len__(self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string___len__(self)
 
 
     def __getslice__(self, i: 'std::vector< std::string >::difference_type', j: 'std::vector< std::string >::difference_type') -> "std::vector< std::string,std::allocator< std::string > > *":
-        """
-        __getslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j) -> Vector_string
-
-        Parameters
-        ----------
-        i: std::vector< std::string >::difference_type
-        j: std::vector< std::string >::difference_type
-
-        """
+        """__getslice__(self, i, j) -> Vector_string"""
         return _pyAgrum.Vector_string___getslice__(self, i, j)
 
 
     def __setslice__(self, *args) -> "void":
         """
-        __setslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j)
-
-        Parameters
-        ----------
-        i: std::vector< std::string >::difference_type
-        j: std::vector< std::string >::difference_type
-
-        __setslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j, Vector_string v)
-
-        Parameters
-        ----------
-        i: std::vector< std::string >::difference_type
-        j: std::vector< std::string >::difference_type
-        v: std::vector< std::string,std::allocator< std::string > > const &
-
+        __setslice__(self, i, j)
+        __setslice__(self, i, j, v)
         """
         return _pyAgrum.Vector_string___setslice__(self, *args)
 
 
     def __delslice__(self, i: 'std::vector< std::string >::difference_type', j: 'std::vector< std::string >::difference_type') -> "void":
-        """
-        __delslice__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::difference_type j)
-
-        Parameters
-        ----------
-        i: std::vector< std::string >::difference_type
-        j: std::vector< std::string >::difference_type
-
-        """
+        """__delslice__(self, i, j)"""
         return _pyAgrum.Vector_string___delslice__(self, i, j)
 
 
     def __delitem__(self, *args) -> "void":
         """
-        __delitem__(Vector_string self, std::vector< std::string >::difference_type i)
-
-        Parameters
-        ----------
-        i: std::vector< std::string >::difference_type
-
-        __delitem__(Vector_string self, PySliceObject * slice)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
+        __delitem__(self, i)
+        __delitem__(self, slice)
         """
         return _pyAgrum.Vector_string___delitem__(self, *args)
 
 
     def __getitem__(self, *args) -> "std::vector< std::string >::value_type const &":
         """
-        __getitem__(Vector_string self, PySliceObject * slice) -> Vector_string
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
-        __getitem__(Vector_string self, std::vector< std::string >::difference_type i) -> std::vector< std::string >::value_type const &
-
-        Parameters
-        ----------
-        i: std::vector< std::string >::difference_type
-
+        __getitem__(self, slice) -> Vector_string
+        __getitem__(self, i) -> std::vector< std::string >::value_type const &
         """
         return _pyAgrum.Vector_string___getitem__(self, *args)
 
 
     def __setitem__(self, *args) -> "void":
         """
-        __setitem__(Vector_string self, PySliceObject * slice, Vector_string v)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-        v: std::vector< std::string,std::allocator< std::string > > const &
-
-        __setitem__(Vector_string self, PySliceObject * slice)
-
-        Parameters
-        ----------
-        slice: PySliceObject *
-
-        __setitem__(Vector_string self, std::vector< std::string >::difference_type i, std::vector< std::string >::value_type const & x)
-
-        Parameters
-        ----------
-        i: std::vector< std::string >::difference_type
-        x: std::vector< std::string >::value_type const &
-
+        __setitem__(self, slice, v)
+        __setitem__(self, slice)
+        __setitem__(self, i, x)
         """
         return _pyAgrum.Vector_string___setitem__(self, *args)
 
 
     def pop(self) -> "std::vector< std::string >::value_type":
-        """
-        pop(Vector_string self) -> std::vector< std::string >::value_type
-
-        Parameters
-        ----------
-        self: std::vector< std::string > *
-
-        """
+        """pop(self) -> std::vector< std::string >::value_type"""
         return _pyAgrum.Vector_string_pop(self)
 
 
     def append(self, x: 'std::vector< std::string >::value_type const &') -> "void":
-        """
-        append(Vector_string self, std::vector< std::string >::value_type const & x)
-
-        Parameters
-        ----------
-        x: std::vector< std::string >::value_type const &
-
-        """
+        """append(self, x)"""
         return _pyAgrum.Vector_string_append(self, x)
 
 
     def empty(self) -> "bool":
-        """
-        empty(Vector_string self) -> bool
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.Vector_string_empty(self)
 
 
     def size(self) -> "std::vector< std::string >::size_type":
-        """
-        size(Vector_string self) -> std::vector< std::string >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """size(self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string_size(self)
 
 
     def swap(self, v: 'Vector_string') -> "void":
-        """
-        swap(Vector_string self, Vector_string v)
-
-        Parameters
-        ----------
-        v: std::vector< std::string > &
-
-        """
+        """swap(self, v)"""
         return _pyAgrum.Vector_string_swap(self, v)
 
 
     def begin(self) -> "std::vector< std::string >::iterator":
-        """
-        begin(Vector_string self) -> std::vector< std::string >::iterator
-
-        Parameters
-        ----------
-        self: std::vector< std::string > *
-
-        """
+        """begin(self) -> std::vector< std::string >::iterator"""
         return _pyAgrum.Vector_string_begin(self)
 
 
     def end(self) -> "std::vector< std::string >::iterator":
-        """
-        end(Vector_string self) -> std::vector< std::string >::iterator
-
-        Parameters
-        ----------
-        self: std::vector< std::string > *
-
-        """
+        """end(self) -> std::vector< std::string >::iterator"""
         return _pyAgrum.Vector_string_end(self)
 
 
     def rbegin(self) -> "std::vector< std::string >::reverse_iterator":
-        """
-        rbegin(Vector_string self) -> std::vector< std::string >::reverse_iterator
-
-        Parameters
-        ----------
-        self: std::vector< std::string > *
-
-        """
+        """rbegin(self) -> std::vector< std::string >::reverse_iterator"""
         return _pyAgrum.Vector_string_rbegin(self)
 
 
     def rend(self) -> "std::vector< std::string >::reverse_iterator":
-        """
-        rend(Vector_string self) -> std::vector< std::string >::reverse_iterator
-
-        Parameters
-        ----------
-        self: std::vector< std::string > *
-
-        """
+        """rend(self) -> std::vector< std::string >::reverse_iterator"""
         return _pyAgrum.Vector_string_rend(self)
 
 
     def clear(self) -> "void":
-        """
-        clear(Vector_string self)
-
-        Parameters
-        ----------
-        self: std::vector< std::string > *
-
-        """
+        """clear(self)"""
         return _pyAgrum.Vector_string_clear(self)
 
 
     def get_allocator(self) -> "std::vector< std::string >::allocator_type":
-        """
-        get_allocator(Vector_string self) -> std::vector< std::string >::allocator_type
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """get_allocator(self) -> std::vector< std::string >::allocator_type"""
         return _pyAgrum.Vector_string_get_allocator(self)
 
 
     def pop_back(self) -> "void":
-        """
-        pop_back(Vector_string self)
-
-        Parameters
-        ----------
-        self: std::vector< std::string > *
-
-        """
+        """pop_back(self)"""
         return _pyAgrum.Vector_string_pop_back(self)
 
 
     def erase(self, *args) -> "std::vector< std::string >::iterator":
         """
-        erase(Vector_string self, std::vector< std::string >::iterator pos) -> std::vector< std::string >::iterator
-
-        Parameters
-        ----------
-        pos: std::vector< std::string >::iterator
-
-        erase(Vector_string self, std::vector< std::string >::iterator first, std::vector< std::string >::iterator last) -> std::vector< std::string >::iterator
-
-        Parameters
-        ----------
-        first: std::vector< std::string >::iterator
-        last: std::vector< std::string >::iterator
-
+        erase(self, pos) -> std::vector< std::string >::iterator
+        erase(self, first, last) -> std::vector< std::string >::iterator
         """
         return _pyAgrum.Vector_string_erase(self, *args)
 
 
     def __init__(self, *args):
         """
-        __init__(std::vector<(std::string)> self) -> Vector_string
-        __init__(std::vector<(std::string)> self, Vector_string arg2) -> Vector_string
-
-        Parameters
-        ----------
-        arg2: std::vector< std::string > const &
-
-        __init__(std::vector<(std::string)> self, std::vector< std::string >::size_type size) -> Vector_string
-
-        Parameters
-        ----------
-        size: std::vector< std::string >::size_type
-
-        __init__(std::vector<(std::string)> self, std::vector< std::string >::size_type size, std::vector< std::string >::value_type const & value) -> Vector_string
-
-        Parameters
-        ----------
-        size: std::vector< std::string >::size_type
-        value: std::vector< std::string >::value_type const &
-
+        __init__(self) -> Vector_string
+        __init__(self, arg2) -> Vector_string
+        __init__(self, size) -> Vector_string
+        __init__(self, size, value) -> Vector_string
         """
         this = _pyAgrum.new_Vector_string(*args)
         try:
@@ -2494,115 +1196,48 @@ class Vector_string(_object):
             self.this = this
 
     def push_back(self, x: 'std::vector< std::string >::value_type const &') -> "void":
-        """
-        push_back(Vector_string self, std::vector< std::string >::value_type const & x)
-
-        Parameters
-        ----------
-        x: std::vector< std::string >::value_type const &
-
-        """
+        """push_back(self, x)"""
         return _pyAgrum.Vector_string_push_back(self, x)
 
 
     def front(self) -> "std::vector< std::string >::value_type const &":
-        """
-        front(Vector_string self) -> std::vector< std::string >::value_type const &
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """front(self) -> std::vector< std::string >::value_type const &"""
         return _pyAgrum.Vector_string_front(self)
 
 
     def back(self) -> "std::vector< std::string >::value_type const &":
-        """
-        back(Vector_string self) -> std::vector< std::string >::value_type const &
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """back(self) -> std::vector< std::string >::value_type const &"""
         return _pyAgrum.Vector_string_back(self)
 
 
     def assign(self, n: 'std::vector< std::string >::size_type', x: 'std::vector< std::string >::value_type const &') -> "void":
-        """
-        assign(Vector_string self, std::vector< std::string >::size_type n, std::vector< std::string >::value_type const & x)
-
-        Parameters
-        ----------
-        n: std::vector< std::string >::size_type
-        x: std::vector< std::string >::value_type const &
-
-        """
+        """assign(self, n, x)"""
         return _pyAgrum.Vector_string_assign(self, n, x)
 
 
     def resize(self, *args) -> "void":
         """
-        resize(Vector_string self, std::vector< std::string >::size_type new_size)
-
-        Parameters
-        ----------
-        new_size: std::vector< std::string >::size_type
-
-        resize(Vector_string self, std::vector< std::string >::size_type new_size, std::vector< std::string >::value_type const & x)
-
-        Parameters
-        ----------
-        new_size: std::vector< std::string >::size_type
-        x: std::vector< std::string >::value_type const &
-
+        resize(self, new_size)
+        resize(self, new_size, x)
         """
         return _pyAgrum.Vector_string_resize(self, *args)
 
 
     def insert(self, *args) -> "void":
         """
-        insert(Vector_string self, std::vector< std::string >::iterator pos, std::vector< std::string >::value_type const & x) -> std::vector< std::string >::iterator
-
-        Parameters
-        ----------
-        pos: std::vector< std::string >::iterator
-        x: std::vector< std::string >::value_type const &
-
-        insert(Vector_string self, std::vector< std::string >::iterator pos, std::vector< std::string >::size_type n, std::vector< std::string >::value_type const & x)
-
-        Parameters
-        ----------
-        pos: std::vector< std::string >::iterator
-        n: std::vector< std::string >::size_type
-        x: std::vector< std::string >::value_type const &
-
+        insert(self, pos, x) -> std::vector< std::string >::iterator
+        insert(self, pos, n, x)
         """
         return _pyAgrum.Vector_string_insert(self, *args)
 
 
     def reserve(self, n: 'std::vector< std::string >::size_type') -> "void":
-        """
-        reserve(Vector_string self, std::vector< std::string >::size_type n)
-
-        Parameters
-        ----------
-        n: std::vector< std::string >::size_type
-
-        """
+        """reserve(self, n)"""
         return _pyAgrum.Vector_string_reserve(self, n)
 
 
     def capacity(self) -> "std::vector< std::string >::size_type":
-        """
-        capacity(Vector_string self) -> std::vector< std::string >::size_type
-
-        Parameters
-        ----------
-        self: std::vector< std::string > const *
-
-        """
+        """capacity(self) -> std::vector< std::string >::size_type"""
         return _pyAgrum.Vector_string_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_string
@@ -2620,7 +1255,7 @@ class SetIteratorStaticEnd(_object):
     __repr__ = _swig_repr
 
     def __init__(self):
-        """__init__(gum::SetIteratorStaticEnd self) -> SetIteratorStaticEnd"""
+        """__init__(self) -> SetIteratorStaticEnd"""
         this = _pyAgrum.new_SetIteratorStaticEnd()
         try:
             self.this.append(this)
@@ -2642,26 +1277,10 @@ class GumException(Exception):
 
     def __init__(self, *args):
         """
-        __init__(gum::Exception self, std::string const aMsg, std::string const aType) -> GumException
-
-        Parameters
-        ----------
-        aMsg: std::string const
-        aType: std::string const
-
-        __init__(gum::Exception self, std::string const aMsg) -> GumException
-
-        Parameters
-        ----------
-        aMsg: std::string const
-
-        __init__(gum::Exception self) -> GumException
-        __init__(gum::Exception self, GumException e) -> GumException
-
-        Parameters
-        ----------
-        e: gum::Exception const &
-
+        __init__(self, aMsg, aType) -> GumException
+        __init__(self, aMsg) -> GumException
+        __init__(self) -> GumException
+        __init__(self, e) -> GumException
         """
         this = _pyAgrum.new_GumException(*args)
         try:
@@ -2672,50 +1291,22 @@ class GumException(Exception):
     __del__ = lambda self: None
 
     def __str__(self) -> "std::string const":
-        """
-        __str__(GumException self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::Exception const *
-
-        """
+        """__str__(self) -> std::string const"""
         return _pyAgrum.GumException___str__(self)
 
 
     def errorContent(self) -> "std::string const":
-        """
-        errorContent(GumException self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::Exception const *
-
-        """
+        """errorContent(self) -> std::string const"""
         return _pyAgrum.GumException_errorContent(self)
 
 
     def errorType(self) -> "std::string const":
-        """
-        errorType(GumException self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::Exception const *
-
-        """
+        """errorType(self) -> std::string const"""
         return _pyAgrum.GumException_errorType(self)
 
 
     def errorCallStack(self) -> "std::string const":
-        """
-        errorCallStack(GumException self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::Exception const *
-
-        """
+        """errorCallStack(self) -> std::string const"""
         return _pyAgrum.GumException_errorCallStack(self)
 
 GumException_swigregister = _pyAgrum.GumException_swigregister
@@ -2723,17 +1314,7 @@ GumException_swigregister(GumException)
 
 
 def __createMsg(filename: 'std::string const &', function: 'std::string const &', line: 'int const', msg: 'std::string const &') -> "std::string const":
-    """
-    __createMsg(std::string const & filename, std::string const & function, int const line, std::string const & msg) -> std::string const
-
-    Parameters
-    ----------
-    filename: std::string const &
-    function: std::string const &
-    line: int const
-    msg: std::string const &
-
-    """
+    """__createMsg(filename, function, line, msg) -> std::string const"""
     return _pyAgrum.__createMsg(filename, function, line, msg)
 class IdError(GumException):
     """Proxy of C++ gum::IdError class."""
@@ -2750,19 +1331,8 @@ class IdError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::IdError self, std::string aMsg, std::string aType) -> IdError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::IdError self, std::string aMsg) -> IdError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> IdError
+        __init__(self, aMsg) -> IdError
         """
         this = _pyAgrum.new_IdError(*args)
         try:
@@ -2789,19 +1359,8 @@ class FatalError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::FatalError self, std::string aMsg, std::string aType) -> FatalError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::FatalError self, std::string aMsg) -> FatalError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> FatalError
+        __init__(self, aMsg) -> FatalError
         """
         this = _pyAgrum.new_FatalError(*args)
         try:
@@ -2828,19 +1387,8 @@ class UndefinedIteratorValue(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::UndefinedIteratorValue self, std::string aMsg, std::string aType) -> UndefinedIteratorValue
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::UndefinedIteratorValue self, std::string aMsg) -> UndefinedIteratorValue
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> UndefinedIteratorValue
+        __init__(self, aMsg) -> UndefinedIteratorValue
         """
         this = _pyAgrum.new_UndefinedIteratorValue(*args)
         try:
@@ -2867,19 +1415,8 @@ class UndefinedIteratorKey(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::UndefinedIteratorKey self, std::string aMsg, std::string aType) -> UndefinedIteratorKey
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::UndefinedIteratorKey self, std::string aMsg) -> UndefinedIteratorKey
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> UndefinedIteratorKey
+        __init__(self, aMsg) -> UndefinedIteratorKey
         """
         this = _pyAgrum.new_UndefinedIteratorKey(*args)
         try:
@@ -2906,19 +1443,8 @@ class NullElement(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::NullElement self, std::string aMsg, std::string aType) -> NullElement
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::NullElement self, std::string aMsg) -> NullElement
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> NullElement
+        __init__(self, aMsg) -> NullElement
         """
         this = _pyAgrum.new_NullElement(*args)
         try:
@@ -2945,19 +1471,8 @@ class UndefinedElement(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::UndefinedElement self, std::string aMsg, std::string aType) -> UndefinedElement
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::UndefinedElement self, std::string aMsg) -> UndefinedElement
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> UndefinedElement
+        __init__(self, aMsg) -> UndefinedElement
         """
         this = _pyAgrum.new_UndefinedElement(*args)
         try:
@@ -2984,19 +1499,8 @@ class SizeError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::SizeError self, std::string aMsg, std::string aType) -> SizeError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::SizeError self, std::string aMsg) -> SizeError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> SizeError
+        __init__(self, aMsg) -> SizeError
         """
         this = _pyAgrum.new_SizeError(*args)
         try:
@@ -3023,19 +1527,8 @@ class EmptySet(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::EmptySet self, std::string aMsg, std::string aType) -> EmptySet
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::EmptySet self, std::string aMsg) -> EmptySet
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> EmptySet
+        __init__(self, aMsg) -> EmptySet
         """
         this = _pyAgrum.new_EmptySet(*args)
         try:
@@ -3062,19 +1555,8 @@ class InvalidArgumentsNumber(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::InvalidArgumentsNumber self, std::string aMsg, std::string aType) -> InvalidArgumentsNumber
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::InvalidArgumentsNumber self, std::string aMsg) -> InvalidArgumentsNumber
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> InvalidArgumentsNumber
+        __init__(self, aMsg) -> InvalidArgumentsNumber
         """
         this = _pyAgrum.new_InvalidArgumentsNumber(*args)
         try:
@@ -3101,19 +1583,8 @@ class InvalidArgument(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::InvalidArgument self, std::string aMsg, std::string aType) -> InvalidArgument
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::InvalidArgument self, std::string aMsg) -> InvalidArgument
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> InvalidArgument
+        __init__(self, aMsg) -> InvalidArgument
         """
         this = _pyAgrum.new_InvalidArgument(*args)
         try:
@@ -3140,19 +1611,8 @@ class IOError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::IOError self, std::string aMsg, std::string aType) -> IOError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::IOError self, std::string aMsg) -> IOError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> IOError
+        __init__(self, aMsg) -> IOError
         """
         this = _pyAgrum.new_IOError(*args)
         try:
@@ -3179,19 +1639,8 @@ class FormatNotFound(IOError):
 
     def __init__(self, *args):
         """
-        __init__(gum::FormatNotFound self, std::string aMsg, std::string aType) -> FormatNotFound
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::FormatNotFound self, std::string aMsg) -> FormatNotFound
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> FormatNotFound
+        __init__(self, aMsg) -> FormatNotFound
         """
         this = _pyAgrum.new_FormatNotFound(*args)
         try:
@@ -3218,19 +1667,8 @@ class OperationNotAllowed(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::OperationNotAllowed self, std::string aMsg, std::string aType) -> OperationNotAllowed
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::OperationNotAllowed self, std::string aMsg) -> OperationNotAllowed
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> OperationNotAllowed
+        __init__(self, aMsg) -> OperationNotAllowed
         """
         this = _pyAgrum.new_OperationNotAllowed(*args)
         try:
@@ -3257,19 +1695,8 @@ class NotFound(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::NotFound self, std::string aMsg, std::string aType) -> NotFound
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::NotFound self, std::string aMsg) -> NotFound
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> NotFound
+        __init__(self, aMsg) -> NotFound
         """
         this = _pyAgrum.new_NotFound(*args)
         try:
@@ -3296,19 +1723,8 @@ class ReferenceError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::ReferenceError self, std::string aMsg, std::string aType) -> ReferenceError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::ReferenceError self, std::string aMsg) -> ReferenceError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> ReferenceError
+        __init__(self, aMsg) -> ReferenceError
         """
         this = _pyAgrum.new_ReferenceError(*args)
         try:
@@ -3335,19 +1751,8 @@ class OutOfBounds(ReferenceError):
 
     def __init__(self, *args):
         """
-        __init__(gum::OutOfBounds self, std::string aMsg, std::string aType) -> OutOfBounds
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::OutOfBounds self, std::string aMsg) -> OutOfBounds
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> OutOfBounds
+        __init__(self, aMsg) -> OutOfBounds
         """
         this = _pyAgrum.new_OutOfBounds(*args)
         try:
@@ -3374,19 +1779,8 @@ class OutOfLowerBound(OutOfBounds):
 
     def __init__(self, *args):
         """
-        __init__(gum::OutOfLowerBound self, std::string aMsg, std::string aType) -> OutOfLowerBound
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::OutOfLowerBound self, std::string aMsg) -> OutOfLowerBound
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> OutOfLowerBound
+        __init__(self, aMsg) -> OutOfLowerBound
         """
         this = _pyAgrum.new_OutOfLowerBound(*args)
         try:
@@ -3413,19 +1807,8 @@ class OutOfUpperBound(OutOfBounds):
 
     def __init__(self, *args):
         """
-        __init__(gum::OutOfUpperBound self, std::string aMsg, std::string aType) -> OutOfUpperBound
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::OutOfUpperBound self, std::string aMsg) -> OutOfUpperBound
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> OutOfUpperBound
+        __init__(self, aMsg) -> OutOfUpperBound
         """
         this = _pyAgrum.new_OutOfUpperBound(*args)
         try:
@@ -3452,19 +1835,8 @@ class DuplicateElement(ReferenceError):
 
     def __init__(self, *args):
         """
-        __init__(gum::DuplicateElement self, std::string aMsg, std::string aType) -> DuplicateElement
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::DuplicateElement self, std::string aMsg) -> DuplicateElement
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> DuplicateElement
+        __init__(self, aMsg) -> DuplicateElement
         """
         this = _pyAgrum.new_DuplicateElement(*args)
         try:
@@ -3491,19 +1863,8 @@ class DuplicateLabel(ReferenceError):
 
     def __init__(self, *args):
         """
-        __init__(gum::DuplicateLabel self, std::string aMsg, std::string aType) -> DuplicateLabel
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::DuplicateLabel self, std::string aMsg) -> DuplicateLabel
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> DuplicateLabel
+        __init__(self, aMsg) -> DuplicateLabel
         """
         this = _pyAgrum.new_DuplicateLabel(*args)
         try:
@@ -3530,19 +1891,8 @@ class GraphError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::GraphError self, std::string aMsg, std::string aType) -> GraphError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::GraphError self, std::string aMsg) -> GraphError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> GraphError
+        __init__(self, aMsg) -> GraphError
         """
         this = _pyAgrum.new_GraphError(*args)
         try:
@@ -3569,19 +1919,8 @@ class NoNeighbour(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::NoNeighbour self, std::string aMsg, std::string aType) -> NoNeighbour
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::NoNeighbour self, std::string aMsg) -> NoNeighbour
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> NoNeighbour
+        __init__(self, aMsg) -> NoNeighbour
         """
         this = _pyAgrum.new_NoNeighbour(*args)
         try:
@@ -3608,19 +1947,8 @@ class NoParent(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::NoParent self, std::string aMsg, std::string aType) -> NoParent
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::NoParent self, std::string aMsg) -> NoParent
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> NoParent
+        __init__(self, aMsg) -> NoParent
         """
         this = _pyAgrum.new_NoParent(*args)
         try:
@@ -3647,19 +1975,8 @@ class NoChild(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::NoChild self, std::string aMsg, std::string aType) -> NoChild
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::NoChild self, std::string aMsg) -> NoChild
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> NoChild
+        __init__(self, aMsg) -> NoChild
         """
         this = _pyAgrum.new_NoChild(*args)
         try:
@@ -3686,19 +2003,8 @@ class InvalidEdge(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::InvalidEdge self, std::string aMsg, std::string aType) -> InvalidEdge
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::InvalidEdge self, std::string aMsg) -> InvalidEdge
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> InvalidEdge
+        __init__(self, aMsg) -> InvalidEdge
         """
         this = _pyAgrum.new_InvalidEdge(*args)
         try:
@@ -3725,19 +2031,8 @@ class InvalidArc(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::InvalidArc self, std::string aMsg, std::string aType) -> InvalidArc
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::InvalidArc self, std::string aMsg) -> InvalidArc
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> InvalidArc
+        __init__(self, aMsg) -> InvalidArc
         """
         this = _pyAgrum.new_InvalidArc(*args)
         try:
@@ -3764,19 +2059,8 @@ class InvalidNode(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::InvalidNode self, std::string aMsg, std::string aType) -> InvalidNode
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::InvalidNode self, std::string aMsg) -> InvalidNode
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> InvalidNode
+        __init__(self, aMsg) -> InvalidNode
         """
         this = _pyAgrum.new_InvalidNode(*args)
         try:
@@ -3803,19 +2087,8 @@ class EmptyBSTree(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::EmptyBSTree self, std::string aMsg, std::string aType) -> EmptyBSTree
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::EmptyBSTree self, std::string aMsg) -> EmptyBSTree
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> EmptyBSTree
+        __init__(self, aMsg) -> EmptyBSTree
         """
         this = _pyAgrum.new_EmptyBSTree(*args)
         try:
@@ -3842,19 +2115,8 @@ class DefaultInLabel(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::DefaultInLabel self, std::string aMsg, std::string aType) -> DefaultInLabel
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::DefaultInLabel self, std::string aMsg) -> DefaultInLabel
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> DefaultInLabel
+        __init__(self, aMsg) -> DefaultInLabel
         """
         this = _pyAgrum.new_DefaultInLabel(*args)
         try:
@@ -3881,19 +2143,8 @@ class InvalidDirectedCycle(GraphError):
 
     def __init__(self, *args):
         """
-        __init__(gum::InvalidDirectedCycle self, std::string aMsg, std::string aType) -> InvalidDirectedCycle
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::InvalidDirectedCycle self, std::string aMsg) -> InvalidDirectedCycle
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> InvalidDirectedCycle
+        __init__(self, aMsg) -> InvalidDirectedCycle
         """
         this = _pyAgrum.new_InvalidDirectedCycle(*args)
         try:
@@ -3920,19 +2171,8 @@ class CPTError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::CPTError self, std::string aMsg, std::string aType) -> CPTError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::CPTError self, std::string aMsg) -> CPTError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> CPTError
+        __init__(self, aMsg) -> CPTError
         """
         this = _pyAgrum.new_CPTError(*args)
         try:
@@ -3959,19 +2199,8 @@ class CPTNoSumTo1(CPTError):
 
     def __init__(self, *args):
         """
-        __init__(gum::CPTNoSumTo1 self, std::string aMsg, std::string aType) -> CPTNoSumTo1
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::CPTNoSumTo1 self, std::string aMsg) -> CPTNoSumTo1
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> CPTNoSumTo1
+        __init__(self, aMsg) -> CPTNoSumTo1
         """
         this = _pyAgrum.new_CPTNoSumTo1(*args)
         try:
@@ -3998,19 +2227,8 @@ class IncompatibleEvidence(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::IncompatibleEvidence self, std::string aMsg, std::string aType) -> IncompatibleEvidence
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::IncompatibleEvidence self, std::string aMsg) -> IncompatibleEvidence
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> IncompatibleEvidence
+        __init__(self, aMsg) -> IncompatibleEvidence
         """
         this = _pyAgrum.new_IncompatibleEvidence(*args)
         try:
@@ -4037,19 +2255,8 @@ class FactoryError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::FactoryError self, std::string aMsg, std::string aType) -> FactoryError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::FactoryError self, std::string aMsg) -> FactoryError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> FactoryError
+        __init__(self, aMsg) -> FactoryError
         """
         this = _pyAgrum.new_FactoryError(*args)
         try:
@@ -4076,19 +2283,8 @@ class FactoryInvalidState(FactoryError):
 
     def __init__(self, *args):
         """
-        __init__(gum::FactoryInvalidState self, std::string aMsg, std::string aType) -> FactoryInvalidState
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::FactoryInvalidState self, std::string aMsg) -> FactoryInvalidState
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> FactoryInvalidState
+        __init__(self, aMsg) -> FactoryInvalidState
         """
         this = _pyAgrum.new_FactoryInvalidState(*args)
         try:
@@ -4115,19 +2311,8 @@ class WrongType(FactoryError):
 
     def __init__(self, *args):
         """
-        __init__(gum::WrongType self, std::string aMsg, std::string aType) -> WrongType
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::WrongType self, std::string aMsg) -> WrongType
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> WrongType
+        __init__(self, aMsg) -> WrongType
         """
         this = _pyAgrum.new_WrongType(*args)
         try:
@@ -4154,19 +2339,8 @@ class WrongClassElement(FactoryError):
 
     def __init__(self, *args):
         """
-        __init__(gum::WrongClassElement self, std::string aMsg, std::string aType) -> WrongClassElement
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::WrongClassElement self, std::string aMsg) -> WrongClassElement
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> WrongClassElement
+        __init__(self, aMsg) -> WrongClassElement
         """
         this = _pyAgrum.new_WrongClassElement(*args)
         try:
@@ -4193,19 +2367,8 @@ class TypeError(FactoryError):
 
     def __init__(self, *args):
         """
-        __init__(gum::TypeError self, std::string aMsg, std::string aType) -> TypeError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::TypeError self, std::string aMsg) -> TypeError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> TypeError
+        __init__(self, aMsg) -> TypeError
         """
         this = _pyAgrum.new_TypeError(*args)
         try:
@@ -4232,19 +2395,8 @@ class LearningError(GumException):
 
     def __init__(self, *args):
         """
-        __init__(gum::LearningError self, std::string aMsg, std::string aType) -> LearningError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::LearningError self, std::string aMsg) -> LearningError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> LearningError
+        __init__(self, aMsg) -> LearningError
         """
         this = _pyAgrum.new_LearningError(*args)
         try:
@@ -4271,19 +2423,8 @@ class IncompatibleScoreApriori(LearningError):
 
     def __init__(self, *args):
         """
-        __init__(gum::IncompatibleScoreApriori self, std::string aMsg, std::string aType) -> IncompatibleScoreApriori
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::IncompatibleScoreApriori self, std::string aMsg) -> IncompatibleScoreApriori
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> IncompatibleScoreApriori
+        __init__(self, aMsg) -> IncompatibleScoreApriori
         """
         this = _pyAgrum.new_IncompatibleScoreApriori(*args)
         try:
@@ -4310,19 +2451,8 @@ class PossiblyIncompatibleScoreApriori(LearningError):
 
     def __init__(self, *args):
         """
-        __init__(gum::PossiblyIncompatibleScoreApriori self, std::string aMsg, std::string aType) -> PossiblyIncompatibleScoreApriori
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::PossiblyIncompatibleScoreApriori self, std::string aMsg) -> PossiblyIncompatibleScoreApriori
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> PossiblyIncompatibleScoreApriori
+        __init__(self, aMsg) -> PossiblyIncompatibleScoreApriori
         """
         this = _pyAgrum.new_PossiblyIncompatibleScoreApriori(*args)
         try:
@@ -4349,19 +2479,8 @@ class DatabaseError(LearningError):
 
     def __init__(self, *args):
         """
-        __init__(gum::DatabaseError self, std::string aMsg, std::string aType) -> DatabaseError
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::DatabaseError self, std::string aMsg) -> DatabaseError
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> DatabaseError
+        __init__(self, aMsg) -> DatabaseError
         """
         this = _pyAgrum.new_DatabaseError(*args)
         try:
@@ -4388,19 +2507,8 @@ class MissingVariableInDatabase(LearningError):
 
     def __init__(self, *args):
         """
-        __init__(gum::MissingVariableInDatabase self, std::string aMsg, std::string aType) -> MissingVariableInDatabase
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::MissingVariableInDatabase self, std::string aMsg) -> MissingVariableInDatabase
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> MissingVariableInDatabase
+        __init__(self, aMsg) -> MissingVariableInDatabase
         """
         this = _pyAgrum.new_MissingVariableInDatabase(*args)
         try:
@@ -4427,19 +2535,8 @@ class UnknownLabelInDatabase(LearningError):
 
     def __init__(self, *args):
         """
-        __init__(gum::UnknownLabelInDatabase self, std::string aMsg, std::string aType) -> UnknownLabelInDatabase
-
-        Parameters
-        ----------
-        aMsg: std::string
-        aType: std::string
-
-        __init__(gum::UnknownLabelInDatabase self, std::string aMsg) -> UnknownLabelInDatabase
-
-        Parameters
-        ----------
-        aMsg: std::string
-
+        __init__(self, aMsg, aType) -> UnknownLabelInDatabase
+        __init__(self, aMsg) -> UnknownLabelInDatabase
         """
         this = _pyAgrum.new_UnknownLabelInDatabase(*args)
         try:
@@ -4466,23 +2563,8 @@ class SyntaxError(IOError):
 
     def __init__(self, *args):
         """
-        __init__(gum::SyntaxError self, std::string const & aMsg, gum::Size nol, gum::Size noc, std::string aType) -> SyntaxError
-
-        Parameters
-        ----------
-        aMsg: std::string const &
-        nol: gum::Size
-        noc: gum::Size
-        aType: std::string
-
-        __init__(gum::SyntaxError self, std::string const & aMsg, gum::Size nol, gum::Size noc) -> SyntaxError
-
-        Parameters
-        ----------
-        aMsg: std::string const &
-        nol: gum::Size
-        noc: gum::Size
-
+        __init__(self, aMsg, nol, noc, aType) -> SyntaxError
+        __init__(self, aMsg, nol, noc) -> SyntaxError
         """
         this = _pyAgrum.new_SyntaxError(*args)
         try:
@@ -4491,26 +2573,12 @@ class SyntaxError(IOError):
             self.this = this
 
     def col(self) -> "gum::Size":
-        """
-        col(SyntaxError self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::SyntaxError const *
-
-        """
+        """col(self) -> gum::Size"""
         return _pyAgrum.SyntaxError_col(self)
 
 
     def line(self) -> "gum::Size":
-        """
-        line(SyntaxError self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::SyntaxError const *
-
-        """
+        """line(self) -> gum::Size"""
         return _pyAgrum.SyntaxError_line(self)
 
     __swig_destroy__ = _pyAgrum.delete_SyntaxError
@@ -4529,24 +2597,14 @@ def randomGeneratorSeed() -> "unsigned int":
 
 def initRandom(seed: 'unsigned int'=0) -> "void":
     """
-    initRandom(unsigned int seed=0)
-
-    Parameters
-    ----------
-    seed: unsigned int
-
+    initRandom(seed=0)
     initRandom()
     """
     return _pyAgrum.initRandom(seed)
 
 def getRandomGenerator(seed: 'unsigned int'=0) -> "std::default_random_engine":
     """
-    getRandomGenerator(unsigned int seed=0) -> std::default_random_engine
-
-    Parameters
-    ----------
-    seed: unsigned int
-
+    getRandomGenerator(seed=0) -> std::default_random_engine
     getRandomGenerator() -> std::default_random_engine
     """
     return _pyAgrum.getRandomGenerator(seed)
@@ -4556,14 +2614,7 @@ def isOMP() -> "bool":
     return _pyAgrum.isOMP()
 
 def setNumberOfThreads(number: 'unsigned int') -> "void":
-    """
-    setNumberOfThreads(unsigned int number)
-
-    Parameters
-    ----------
-    number: unsigned int
-
-    """
+    """setNumberOfThreads(number)"""
     return _pyAgrum.setNumberOfThreads(number)
 
 def getMaxNumberOfThreads() -> "unsigned int":
@@ -4583,14 +2634,7 @@ def getNumberOfLogicalProcessors() -> "unsigned int":
     return _pyAgrum.getNumberOfLogicalProcessors()
 
 def setNestedParallelism(value: 'bool') -> "void":
-    """
-    setNestedParallelism(bool value)
-
-    Parameters
-    ----------
-    value: bool
-
-    """
+    """setNestedParallelism(value)"""
     return _pyAgrum.setNestedParallelism(value)
 
 def getNestedParallelism() -> "bool":
@@ -4598,14 +2642,7 @@ def getNestedParallelism() -> "bool":
     return _pyAgrum.getNestedParallelism()
 
 def setDynamicThreadsNumber(value: 'bool') -> "void":
-    """
-    setDynamicThreadsNumber(bool value)
-
-    Parameters
-    ----------
-    value: bool
-
-    """
+    """setDynamicThreadsNumber(value)"""
     return _pyAgrum.setDynamicThreadsNumber(value)
 
 def getDynamicThreadsNumber() -> "bool":
@@ -4626,86 +2663,37 @@ class Variable(_object):
     __del__ = lambda self: None
 
     def clone(self) -> "gum::Variable *":
-        """
-        clone(Variable self) -> Variable
-
-        Parameters
-        ----------
-        self: gum::Variable const *
-
-        """
+        """clone(self) -> Variable"""
         return _pyAgrum.Variable_clone(self)
 
 
     def __eq__(self, aRV: 'Variable') -> "bool":
-        """
-        __eq__(Variable self, Variable aRV) -> bool
-
-        Parameters
-        ----------
-        aRV: gum::Variable const &
-
-        """
+        """__eq__(self, aRV) -> bool"""
         return _pyAgrum.Variable___eq__(self, aRV)
 
 
     def __ne__(self, aRV: 'Variable') -> "bool":
-        """
-        __ne__(Variable self, Variable aRV) -> bool
-
-        Parameters
-        ----------
-        aRV: gum::Variable const &
-
-        """
+        """__ne__(self, aRV) -> bool"""
         return _pyAgrum.Variable___ne__(self, aRV)
 
 
     def setName(self, theValue: 'std::string const &') -> "void":
-        """
-        setName(Variable self, std::string const & theValue)
-
-        Parameters
-        ----------
-        theValue: std::string const &
-
-        """
+        """setName(self, theValue)"""
         return _pyAgrum.Variable_setName(self, theValue)
 
 
     def name(self) -> "std::string const &":
-        """
-        name(Variable self) -> std::string const &
-
-        Parameters
-        ----------
-        self: gum::Variable const *
-
-        """
+        """name(self) -> std::string const &"""
         return _pyAgrum.Variable_name(self)
 
 
     def setDescription(self, theValue: 'std::string const &') -> "void":
-        """
-        setDescription(Variable self, std::string const & theValue)
-
-        Parameters
-        ----------
-        theValue: std::string const &
-
-        """
+        """setDescription(self, theValue)"""
         return _pyAgrum.Variable_setDescription(self, theValue)
 
 
     def description(self) -> "std::string const &":
-        """
-        description(Variable self) -> std::string const &
-
-        Parameters
-        ----------
-        self: gum::Variable const *
-
-        """
+        """description(self) -> std::string const &"""
         return _pyAgrum.Variable_description(self)
 
 Variable_swigregister = _pyAgrum.Variable_swigregister
@@ -4733,158 +2721,67 @@ class DiscreteVariable(Variable):
     __del__ = lambda self: None
 
     def clone(self) -> "gum::DiscreteVariable *":
-        """
-        clone(DiscreteVariable self) -> DiscreteVariable
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable const *
-
-        """
+        """clone(self) -> DiscreteVariable"""
         return _pyAgrum.DiscreteVariable_clone(self)
 
 
     def empty(self) -> "bool":
-        """
-        empty(DiscreteVariable self) -> bool
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.DiscreteVariable_empty(self)
 
 
     def domainSize(self) -> "gum::Size":
-        """
-        domainSize(DiscreteVariable self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable const *
-
-        """
+        """domainSize(self) -> gum::Size"""
         return _pyAgrum.DiscreteVariable_domainSize(self)
 
 
     def labels(self) -> "std::vector< std::string,std::allocator< std::string > >":
-        """
-        labels(DiscreteVariable self) -> Vector_string
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable const *
-
-        """
+        """labels(self) -> Vector_string"""
         return _pyAgrum.DiscreteVariable_labels(self)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
-        """
-        numerical(DiscreteVariable self, gum::Idx indice) -> double
-
-        Parameters
-        ----------
-        indice: gum::Idx
-
-        """
+        """numerical(self, indice) -> double"""
         return _pyAgrum.DiscreteVariable_numerical(self, indice)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
-        """
-        varType(DiscreteVariable self) -> gum::DiscreteVariable::VarType
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable const *
-
-        """
+        """varType(self) -> gum::DiscreteVariable::VarType"""
         return _pyAgrum.DiscreteVariable_varType(self)
 
 
     def __eq__(self, aRV: 'DiscreteVariable') -> "bool":
-        """
-        __eq__(DiscreteVariable self, DiscreteVariable aRV) -> bool
-
-        Parameters
-        ----------
-        aRV: gum::DiscreteVariable const &
-
-        """
+        """__eq__(self, aRV) -> bool"""
         return _pyAgrum.DiscreteVariable___eq__(self, aRV)
 
 
     def __ne__(self, aRV: 'DiscreteVariable') -> "bool":
-        """
-        __ne__(DiscreteVariable self, DiscreteVariable aRV) -> bool
-
-        Parameters
-        ----------
-        aRV: gum::DiscreteVariable const &
-
-        """
+        """__ne__(self, aRV) -> bool"""
         return _pyAgrum.DiscreteVariable___ne__(self, aRV)
 
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
-        """
-        index(DiscreteVariable self, std::string const & label) -> gum::Idx
-
-        Parameters
-        ----------
-        label: std::string const &
-
-        """
+        """index(self, label) -> gum::Idx"""
         return _pyAgrum.DiscreteVariable_index(self, label)
 
 
     def label(self, i: 'gum::Idx') -> "std::string":
-        """
-        label(DiscreteVariable self, gum::Idx i) -> std::string
-
-        Parameters
-        ----------
-        i: gum::Idx
-
-        """
+        """label(self, i) -> std::string"""
         return _pyAgrum.DiscreteVariable_label(self, i)
 
 
     def __str__(self) -> "std::string const":
-        """
-        __str__(DiscreteVariable self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable const *
-
-        """
+        """__str__(self) -> std::string const"""
         return _pyAgrum.DiscreteVariable___str__(self)
 
 
     def toStringWithDescription(self) -> "std::string const":
-        """
-        toStringWithDescription(DiscreteVariable self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable const *
-
-        """
+        """toStringWithDescription(self) -> std::string const"""
         return _pyAgrum.DiscreteVariable_toStringWithDescription(self)
 
 
     def domain(self) -> "std::string const":
-        """
-        domain(DiscreteVariable self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable const *
-
-        """
+        """domain(self) -> std::string const"""
         return _pyAgrum.DiscreteVariable_domain(self)
 
 
@@ -4893,38 +2790,17 @@ class DiscreteVariable(Variable):
 
 
     def toLabelizedVar(self) -> "gum::LabelizedVariable &":
-        """
-        toLabelizedVar(DiscreteVariable self) -> LabelizedVariable
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable *
-
-        """
+        """toLabelizedVar(self) -> LabelizedVariable"""
         return _pyAgrum.DiscreteVariable_toLabelizedVar(self)
 
 
     def toRangeVar(self) -> "gum::RangeVariable &":
-        """
-        toRangeVar(DiscreteVariable self) -> RangeVariable
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable *
-
-        """
+        """toRangeVar(self) -> RangeVariable"""
         return _pyAgrum.DiscreteVariable_toRangeVar(self)
 
 
     def toDiscretizedVar(self) -> "gum::DiscretizedVariable< double > &":
-        """
-        toDiscretizedVar(DiscreteVariable self) -> DiscretizedVariable_double
-
-        Parameters
-        ----------
-        self: gum::DiscreteVariable *
-
-        """
+        """toDiscretizedVar(self) -> DiscretizedVariable_double"""
         return _pyAgrum.DiscreteVariable_toDiscretizedVar(self)
 
 DiscreteVariable_swigregister = _pyAgrum.DiscreteVariable_swigregister
@@ -4945,33 +2821,10 @@ class LabelizedVariable(DiscreteVariable):
 
     def __init__(self, *args):
         """
-        __init__(gum::LabelizedVariable self, std::string const & aName, std::string const & aDesc, int const nbrLabel=2) -> LabelizedVariable
-
-        Parameters
-        ----------
-        aName: std::string const &
-        aDesc: std::string const &
-        nbrLabel: int const
-
-        __init__(gum::LabelizedVariable self, std::string const & aName, std::string const & aDesc) -> LabelizedVariable
-
-        Parameters
-        ----------
-        aName: std::string const &
-        aDesc: std::string const &
-
-        __init__(gum::LabelizedVariable self, std::string const & aName) -> LabelizedVariable
-
-        Parameters
-        ----------
-        aName: std::string const &
-
-        __init__(gum::LabelizedVariable self, LabelizedVariable aLDRV) -> LabelizedVariable
-
-        Parameters
-        ----------
-        aLDRV: gum::LabelizedVariable const &
-
+        __init__(self, aName, aDesc, nbrLabel=2) -> LabelizedVariable
+        __init__(self, aName, aDesc) -> LabelizedVariable
+        __init__(self, aName) -> LabelizedVariable
+        __init__(self, aLDRV) -> LabelizedVariable
         """
         this = _pyAgrum.new_LabelizedVariable(*args)
         try:
@@ -4982,38 +2835,17 @@ class LabelizedVariable(DiscreteVariable):
     __del__ = lambda self: None
 
     def clone(self) -> "gum::DiscreteVariable *":
-        """
-        clone(LabelizedVariable self) -> DiscreteVariable
-
-        Parameters
-        ----------
-        self: gum::LabelizedVariable const *
-
-        """
+        """clone(self) -> DiscreteVariable"""
         return _pyAgrum.LabelizedVariable_clone(self)
 
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
-        """
-        index(LabelizedVariable self, std::string const & label) -> gum::Idx
-
-        Parameters
-        ----------
-        label: std::string const &
-
-        """
+        """index(self, label) -> gum::Idx"""
         return _pyAgrum.LabelizedVariable_index(self, label)
 
 
     def isLabel(self, aLabel: 'std::string const &') -> "bool":
-        """
-        isLabel(LabelizedVariable self, std::string const & aLabel) -> bool
-
-        Parameters
-        ----------
-        aLabel: std::string const &
-
-        """
+        """isLabel(self, aLabel) -> bool"""
         return _pyAgrum.LabelizedVariable_isLabel(self, aLabel)
 
 
@@ -5024,87 +2856,37 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def changeLabel(self, pos: 'gum::Idx', aLabel: 'std::string const') -> "void":
-        """
-        changeLabel(LabelizedVariable self, gum::Idx pos, std::string const aLabel)
-
-        Parameters
-        ----------
-        pos: gum::Idx
-        aLabel: std::string const
-
-        """
+        """changeLabel(self, pos, aLabel)"""
         return _pyAgrum.LabelizedVariable_changeLabel(self, pos, aLabel)
 
 
     def eraseLabels(self) -> "void":
-        """
-        eraseLabels(LabelizedVariable self)
-
-        Parameters
-        ----------
-        self: gum::LabelizedVariable *
-
-        """
+        """eraseLabels(self)"""
         return _pyAgrum.LabelizedVariable_eraseLabels(self)
 
 
     def label(self, i: 'gum::Idx') -> "std::string":
-        """
-        label(LabelizedVariable self, gum::Idx i) -> std::string
-
-        Parameters
-        ----------
-        i: gum::Idx
-
-        """
+        """label(self, i) -> std::string"""
         return _pyAgrum.LabelizedVariable_label(self, i)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
-        """
-        numerical(LabelizedVariable self, gum::Idx indice) -> double
-
-        Parameters
-        ----------
-        indice: gum::Idx
-
-        """
+        """numerical(self, indice) -> double"""
         return _pyAgrum.LabelizedVariable_numerical(self, indice)
 
 
     def domainSize(self) -> "gum::Size":
-        """
-        domainSize(LabelizedVariable self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LabelizedVariable const *
-
-        """
+        """domainSize(self) -> gum::Size"""
         return _pyAgrum.LabelizedVariable_domainSize(self)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
-        """
-        varType(LabelizedVariable self) -> gum::DiscreteVariable::VarType
-
-        Parameters
-        ----------
-        self: gum::LabelizedVariable const *
-
-        """
+        """varType(self) -> gum::DiscreteVariable::VarType"""
         return _pyAgrum.LabelizedVariable_varType(self)
 
 
     def domain(self) -> "std::string const":
-        """
-        domain(LabelizedVariable self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::LabelizedVariable const *
-
-        """
+        """domain(self) -> std::string const"""
         return _pyAgrum.LabelizedVariable_domain(self)
 
 LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
@@ -5125,36 +2907,10 @@ class RangeVariable(DiscreteVariable):
 
     def __init__(self, *args):
         """
-        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0, long maxVal=1) -> RangeVariable
-
-        Parameters
-        ----------
-        aName: std::string const &
-        aDesc: std::string const &
-        minVal: long
-        maxVal: long
-
-        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc, long minVal=0) -> RangeVariable
-
-        Parameters
-        ----------
-        aName: std::string const &
-        aDesc: std::string const &
-        minVal: long
-
-        __init__(gum::RangeVariable self, std::string const & aName, std::string const & aDesc) -> RangeVariable
-
-        Parameters
-        ----------
-        aName: std::string const &
-        aDesc: std::string const &
-
-        __init__(gum::RangeVariable self, RangeVariable aDRV) -> RangeVariable
-
-        Parameters
-        ----------
-        aDRV: gum::RangeVariable const &
-
+        __init__(self, aName, aDesc, minVal=0, maxVal=1) -> RangeVariable
+        __init__(self, aName, aDesc, minVal=0) -> RangeVariable
+        __init__(self, aName, aDesc) -> RangeVariable
+        __init__(self, aDRV) -> RangeVariable
         """
         this = _pyAgrum.new_RangeVariable(*args)
         try:
@@ -5165,146 +2921,62 @@ class RangeVariable(DiscreteVariable):
     __del__ = lambda self: None
 
     def clone(self) -> "gum::DiscreteVariable *":
-        """
-        clone(RangeVariable self) -> DiscreteVariable
-
-        Parameters
-        ----------
-        self: gum::RangeVariable const *
-
-        """
+        """clone(self) -> DiscreteVariable"""
         return _pyAgrum.RangeVariable_clone(self)
 
 
     def domainSize(self) -> "gum::Size":
-        """
-        domainSize(RangeVariable self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::RangeVariable const *
-
-        """
+        """domainSize(self) -> gum::Size"""
         return _pyAgrum.RangeVariable_domainSize(self)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
-        """
-        varType(RangeVariable self) -> gum::DiscreteVariable::VarType
-
-        Parameters
-        ----------
-        self: gum::RangeVariable const *
-
-        """
+        """varType(self) -> gum::DiscreteVariable::VarType"""
         return _pyAgrum.RangeVariable_varType(self)
 
 
     def label(self, indice: 'gum::Idx') -> "std::string":
-        """
-        label(RangeVariable self, gum::Idx indice) -> std::string
-
-        Parameters
-        ----------
-        indice: gum::Idx
-
-        """
+        """label(self, indice) -> std::string"""
         return _pyAgrum.RangeVariable_label(self, indice)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
-        """
-        numerical(RangeVariable self, gum::Idx indice) -> double
-
-        Parameters
-        ----------
-        indice: gum::Idx
-
-        """
+        """numerical(self, indice) -> double"""
         return _pyAgrum.RangeVariable_numerical(self, indice)
 
 
     def minVal(self) -> "long":
-        """
-        minVal(RangeVariable self) -> long
-
-        Parameters
-        ----------
-        self: gum::RangeVariable const *
-
-        """
+        """minVal(self) -> long"""
         return _pyAgrum.RangeVariable_minVal(self)
 
 
     def setMinVal(self, minVal: 'long') -> "void":
-        """
-        setMinVal(RangeVariable self, long minVal)
-
-        Parameters
-        ----------
-        minVal: long
-
-        """
+        """setMinVal(self, minVal)"""
         return _pyAgrum.RangeVariable_setMinVal(self, minVal)
 
 
     def maxVal(self) -> "long":
-        """
-        maxVal(RangeVariable self) -> long
-
-        Parameters
-        ----------
-        self: gum::RangeVariable const *
-
-        """
+        """maxVal(self) -> long"""
         return _pyAgrum.RangeVariable_maxVal(self)
 
 
     def setMaxVal(self, maxVal: 'long') -> "void":
-        """
-        setMaxVal(RangeVariable self, long maxVal)
-
-        Parameters
-        ----------
-        maxVal: long
-
-        """
+        """setMaxVal(self, maxVal)"""
         return _pyAgrum.RangeVariable_setMaxVal(self, maxVal)
 
 
     def belongs(self, val: 'long') -> "bool":
-        """
-        belongs(RangeVariable self, long val) -> bool
-
-        Parameters
-        ----------
-        val: long
-
-        """
+        """belongs(self, val) -> bool"""
         return _pyAgrum.RangeVariable_belongs(self, val)
 
 
     def index(self, arg2: 'std::string const &') -> "gum::Idx":
-        """
-        index(RangeVariable self, std::string const & arg2) -> gum::Idx
-
-        Parameters
-        ----------
-        arg2: std::string const &
-
-        """
+        """index(self, arg2) -> gum::Idx"""
         return _pyAgrum.RangeVariable_index(self, arg2)
 
 
     def domain(self) -> "std::string const":
-        """
-        domain(RangeVariable self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::RangeVariable const *
-
-        """
+        """domain(self) -> std::string const"""
         return _pyAgrum.RangeVariable_domain(self)
 
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
@@ -5322,19 +2994,8 @@ class Edge(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::Edge self, gum::NodeId aN1, gum::NodeId aN2) -> Edge
-
-        Parameters
-        ----------
-        aN1: gum::NodeId
-        aN2: gum::NodeId
-
-        __init__(gum::Edge self, Edge src) -> Edge
-
-        Parameters
-        ----------
-        src: gum::Edge const &
-
+        __init__(self, aN1, aN2) -> Edge
+        __init__(self, src) -> Edge
         """
         this = _pyAgrum.new_Edge(*args)
         try:
@@ -5345,69 +3006,55 @@ class Edge(_object):
     __del__ = lambda self: None
 
     def other(self, id: 'gum::NodeId') -> "gum::NodeId":
-        """
-        other(Edge self, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """other(self, id) -> gum::NodeId"""
         return _pyAgrum.Edge_other(self, id)
 
 
     def first(self) -> "gum::NodeId":
-        """
-        first(Edge self) -> gum::NodeId
-
-        Parameters
-        ----------
-        self: gum::Edge const *
-
-        """
+        """first(self) -> gum::NodeId"""
         return _pyAgrum.Edge_first(self)
 
 
     def second(self) -> "gum::NodeId":
-        """
-        second(Edge self) -> gum::NodeId
-
-        Parameters
-        ----------
-        self: gum::Edge const *
-
-        """
+        """second(self) -> gum::NodeId"""
         return _pyAgrum.Edge_second(self)
 
 
     def __eq__(self, src: 'Edge') -> "bool":
-        """
-        __eq__(Edge self, Edge src) -> bool
-
-        Parameters
-        ----------
-        src: gum::Edge const &
-
-        """
+        """__eq__(self, src) -> bool"""
         return _pyAgrum.Edge___eq__(self, src)
 
 
     def __ne__(self, src: 'Edge') -> "bool":
-        """
-        __ne__(Edge self, Edge src) -> bool
-
-        Parameters
-        ----------
-        src: gum::Edge const &
-
-        """
+        """__ne__(self, src) -> bool"""
         return _pyAgrum.Edge___ne__(self, src)
 
 Edge_swigregister = _pyAgrum.Edge_swigregister
 Edge_swigregister(Edge)
 
 class Arc(_object):
-    """Proxy of C++ gum::Arc class."""
+    """
+
+    pyAgrum.Arc is the representation of an arc between two nodes represented by `int`s : the head and the tail.
+
+
+    Parameters
+    ----------
+    tail : int
+      the tail
+    head : int
+      the head
+
+
+    A copy constructor is also available
+
+    Parameters
+    ----------
+    src : :class: Arc
+      the Arc to copy
+
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Arc, name, value)
@@ -5417,19 +3064,8 @@ class Arc(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::Arc self, gum::NodeId tail, gum::NodeId head) -> Arc
-
-        Parameters
-        ----------
-        tail: gum::NodeId
-        head: gum::NodeId
-
-        __init__(gum::Arc self, Arc src) -> Arc
-
-        Parameters
-        ----------
-        src: gum::Arc const &
-
+        __init__(self, tail, head) -> Arc
+        __init__(self, src) -> Arc
         """
         this = _pyAgrum.new_Arc(*args)
         try:
@@ -5441,11 +3077,13 @@ class Arc(_object):
 
     def tail(self) -> "gum::NodeId":
         """
-        tail(Arc self) -> gum::NodeId
+        tail(self) -> gum::NodeId
 
-        Parameters
-        ----------
-        self: gum::Arc const *
+
+        Returns
+        -------
+        int
+          the id of the tail node
 
         """
         return _pyAgrum.Arc_tail(self)
@@ -5453,73 +3091,40 @@ class Arc(_object):
 
     def head(self) -> "gum::NodeId":
         """
-        head(Arc self) -> gum::NodeId
+        head(self) -> gum::NodeId
 
-        Parameters
-        ----------
-        self: gum::Arc const *
+
+        Returns
+        ------
+        int
+          the id of the head node
 
         """
         return _pyAgrum.Arc_head(self)
 
 
     def other(self, id: 'gum::NodeId') -> "gum::NodeId":
-        """
-        other(Arc self, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """other(self, id) -> gum::NodeId"""
         return _pyAgrum.Arc_other(self, id)
 
 
     def first(self) -> "gum::NodeId":
-        """
-        first(Arc self) -> gum::NodeId
-
-        Parameters
-        ----------
-        self: gum::Arc const *
-
-        """
+        """first(self) -> gum::NodeId"""
         return _pyAgrum.Arc_first(self)
 
 
     def second(self) -> "gum::NodeId":
-        """
-        second(Arc self) -> gum::NodeId
-
-        Parameters
-        ----------
-        self: gum::Arc const *
-
-        """
+        """second(self) -> gum::NodeId"""
         return _pyAgrum.Arc_second(self)
 
 
     def __eq__(self, src: 'Arc') -> "bool":
-        """
-        __eq__(Arc self, Arc src) -> bool
-
-        Parameters
-        ----------
-        src: gum::Arc const &
-
-        """
+        """__eq__(self, src) -> bool"""
         return _pyAgrum.Arc___eq__(self, src)
 
 
     def __ne__(self, src: 'Arc') -> "bool":
-        """
-        __ne__(Arc self, Arc src) -> bool
-
-        Parameters
-        ----------
-        src: gum::Arc const &
-
-        """
+        """__ne__(self, src) -> bool"""
         return _pyAgrum.Arc___ne__(self, src)
 
 Arc_swigregister = _pyAgrum.Arc_swigregister
@@ -5536,43 +3141,12 @@ class DiGraph(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::DiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True) -> DiGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        arcs_size: gum::Size
-        arcs_resize_policy: bool
-
-        __init__(gum::DiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size) -> DiGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        arcs_size: gum::Size
-
-        __init__(gum::DiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> DiGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-
-        __init__(gum::DiGraph self, gum::Size nodes_size) -> DiGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-
-        __init__(gum::DiGraph self) -> DiGraph
-        __init__(gum::DiGraph self, DiGraph g) -> DiGraph
-
-        Parameters
-        ----------
-        g: gum::DiGraph const &
-
+        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> DiGraph
+        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size) -> DiGraph
+        __init__(self, nodes_size, nodes_resize_policy=True) -> DiGraph
+        __init__(self, nodes_size) -> DiGraph
+        __init__(self) -> DiGraph
+        __init__(self, g) -> DiGraph
         """
         this = _pyAgrum.new_DiGraph(*args)
         try:
@@ -5583,287 +3157,124 @@ class DiGraph(_object):
     __del__ = lambda self: None
 
     def __eq__(self, g: 'DiGraph') -> "bool":
-        """
-        __eq__(DiGraph self, DiGraph g) -> bool
-
-        Parameters
-        ----------
-        g: gum::DiGraph const &
-
-        """
+        """__eq__(self, g) -> bool"""
         return _pyAgrum.DiGraph___eq__(self, g)
 
 
     def __ne__(self, g: 'DiGraph') -> "bool":
-        """
-        __ne__(DiGraph self, DiGraph g) -> bool
-
-        Parameters
-        ----------
-        g: gum::DiGraph const &
-
-        """
+        """__ne__(self, g) -> bool"""
         return _pyAgrum.DiGraph___ne__(self, g)
 
 
     def addArc(self, tail: 'gum::NodeId const', head: 'gum::NodeId const') -> "void":
-        """
-        addArc(DiGraph self, gum::NodeId const tail, gum::NodeId const head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
-        """
+        """addArc(self, tail, head)"""
         return _pyAgrum.DiGraph_addArc(self, tail, head)
 
 
     def eraseNode(self, id: 'gum::NodeId const') -> "void":
-        """
-        eraseNode(DiGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """eraseNode(self, id)"""
         return _pyAgrum.DiGraph_eraseNode(self, id)
 
 
     def clear(self) -> "void":
-        """
-        clear(DiGraph self)
-
-        Parameters
-        ----------
-        self: gum::DiGraph *
-
-        """
+        """clear(self)"""
         return _pyAgrum.DiGraph_clear(self)
 
 
     def __str__(self) -> "std::string const":
-        """
-        __str__(DiGraph self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::DiGraph const *
-
-        """
+        """__str__(self) -> std::string const"""
         return _pyAgrum.DiGraph___str__(self)
 
 
     def toDot(self, *args) -> "std::string const":
         """
-        toDot(DiGraph self, std::string const & name) -> std::string const
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        toDot(DiGraph self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::DiGraph const *
-
+        toDot(self, name) -> std::string const
+        toDot(self) -> std::string const
         """
         return _pyAgrum.DiGraph_toDot(self, *args)
 
 
     def topologicalOrder(self, clear: 'bool'=True) -> "gum::Sequence< gum::NodeId > const &":
         """
-        topologicalOrder(DiGraph self, bool clear=True) -> gum::Sequence< gum::NodeId > const
-
-        Parameters
-        ----------
-        clear: bool
-
-        topologicalOrder(DiGraph self) -> gum::Sequence< gum::NodeId > const &
-
-        Parameters
-        ----------
-        self: gum::DiGraph const *
-
+        topologicalOrder(self, clear=True) -> gum::Sequence< gum::NodeId > const
+        topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &
         """
         return _pyAgrum.DiGraph_topologicalOrder(self, clear)
 
 
     def ids(self) -> "PyObject *":
-        """
-        ids(DiGraph self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::DiGraph *
-
-        """
+        """ids(self) -> PyObject *"""
         return _pyAgrum.DiGraph_ids(self)
 
 
     def arcs(self) -> "PyObject *":
-        """
-        arcs(DiGraph self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::DiGraph *
-
-        """
+        """arcs(self) -> PyObject *"""
         return _pyAgrum.DiGraph_arcs(self)
 
 
     def parents(self, id: 'gum::NodeId') -> "PyObject *":
-        """
-        parents(DiGraph self, gum::NodeId id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """parents(self, id) -> PyObject *"""
         return _pyAgrum.DiGraph_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId') -> "PyObject *":
-        """
-        children(DiGraph self, gum::NodeId id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """children(self, id) -> PyObject *"""
         return _pyAgrum.DiGraph_children(self, id)
 
 
     def addNode(self, *args) -> "void":
         """
-        addNode(DiGraph self) -> gum::NodeId
-        addNode(DiGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
+        addNode(self) -> gum::NodeId
+        addNode(self, id)
         """
         return _pyAgrum.DiGraph_addNode(self, *args)
 
 
     def existsNode(self, id: 'gum::NodeId const') -> "bool":
-        """
-        existsNode(DiGraph self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """existsNode(self, id) -> bool"""
         return _pyAgrum.DiGraph_existsNode(self, id)
 
 
     def size(self) -> "gum::Size":
-        """
-        size(DiGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::DiGraph const *
-
-        """
+        """size(self) -> gum::Size"""
         return _pyAgrum.DiGraph_size(self)
 
 
     def empty(self) -> "bool":
-        """
-        empty(DiGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::DiGraph const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.DiGraph_empty(self)
 
 
     def eraseArc(self, arc: 'Arc') -> "void":
-        """
-        eraseArc(DiGraph self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        """
+        """eraseArc(self, arc)"""
         return _pyAgrum.DiGraph_eraseArc(self, arc)
 
 
     def existsArc(self, *args) -> "bool":
         """
-        existsArc(DiGraph self, Arc arc) -> bool
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        existsArc(DiGraph self, gum::NodeId const tail, gum::NodeId const head) -> bool
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
+        existsArc(self, arc) -> bool
+        existsArc(self, tail, head) -> bool
         """
         return _pyAgrum.DiGraph_existsArc(self, *args)
 
 
     def eraseParents(self, id: 'gum::NodeId const') -> "void":
-        """
-        eraseParents(DiGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """eraseParents(self, id)"""
         return _pyAgrum.DiGraph_eraseParents(self, id)
 
 
     def eraseChildren(self, id: 'gum::NodeId const') -> "void":
-        """
-        eraseChildren(DiGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """eraseChildren(self, id)"""
         return _pyAgrum.DiGraph_eraseChildren(self, id)
 
 
     def sizeArcs(self) -> "gum::Size":
-        """
-        sizeArcs(DiGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::DiGraph const *
-
-        """
+        """sizeArcs(self) -> gum::Size"""
         return _pyAgrum.DiGraph_sizeArcs(self)
 
 
     def emptyArcs(self) -> "bool":
-        """
-        emptyArcs(DiGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::DiGraph const *
-
-        """
+        """emptyArcs(self) -> bool"""
         return _pyAgrum.DiGraph_emptyArcs(self)
 
 DiGraph_swigregister = _pyAgrum.DiGraph_swigregister
@@ -5884,43 +3295,12 @@ class DAG(DiGraph):
 
     def __init__(self, *args):
         """
-        __init__(gum::DAG self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True) -> DAG
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        arcs_size: gum::Size
-        arcs_resize_policy: bool
-
-        __init__(gum::DAG self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size) -> DAG
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        arcs_size: gum::Size
-
-        __init__(gum::DAG self, gum::Size nodes_size, bool nodes_resize_policy=True) -> DAG
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-
-        __init__(gum::DAG self, gum::Size nodes_size) -> DAG
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-
-        __init__(gum::DAG self) -> DAG
-        __init__(gum::DAG self, DAG g) -> DAG
-
-        Parameters
-        ----------
-        g: gum::DAG const &
-
+        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> DAG
+        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size) -> DAG
+        __init__(self, nodes_size, nodes_resize_policy=True) -> DAG
+        __init__(self, nodes_size) -> DAG
+        __init__(self) -> DAG
+        __init__(self, g) -> DAG
         """
         this = _pyAgrum.new_DAG(*args)
         try:
@@ -5931,15 +3311,7 @@ class DAG(DiGraph):
     __del__ = lambda self: None
 
     def addArc(self, tail: 'gum::NodeId const', head: 'gum::NodeId const') -> "void":
-        """
-        addArc(DAG self, gum::NodeId const tail, gum::NodeId const head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
-        """
+        """addArc(self, tail, head)"""
         return _pyAgrum.DAG_addArc(self, tail, head)
 
 DAG_swigregister = _pyAgrum.DAG_swigregister
@@ -5956,43 +3328,12 @@ class UndiGraph(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size, bool edges_resize_policy=True) -> UndiGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        edges_size: gum::Size
-        edges_resize_policy: bool
-
-        __init__(gum::UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size) -> UndiGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        edges_size: gum::Size
-
-        __init__(gum::UndiGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> UndiGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-
-        __init__(gum::UndiGraph self, gum::Size nodes_size) -> UndiGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-
-        __init__(gum::UndiGraph self) -> UndiGraph
-        __init__(gum::UndiGraph self, UndiGraph g) -> UndiGraph
-
-        Parameters
-        ----------
-        g: gum::UndiGraph const &
-
+        __init__(self, nodes_size, nodes_resize_policy=True, edges_size, edges_resize_policy=True) -> UndiGraph
+        __init__(self, nodes_size, nodes_resize_policy=True, edges_size) -> UndiGraph
+        __init__(self, nodes_size, nodes_resize_policy=True) -> UndiGraph
+        __init__(self, nodes_size) -> UndiGraph
+        __init__(self) -> UndiGraph
+        __init__(self, g) -> UndiGraph
         """
         this = _pyAgrum.new_UndiGraph(*args)
         try:
@@ -6003,263 +3344,113 @@ class UndiGraph(_object):
     __del__ = lambda self: None
 
     def __eq__(self, g: 'UndiGraph') -> "bool":
-        """
-        __eq__(UndiGraph self, UndiGraph g) -> bool
-
-        Parameters
-        ----------
-        g: gum::UndiGraph const &
-
-        """
+        """__eq__(self, g) -> bool"""
         return _pyAgrum.UndiGraph___eq__(self, g)
 
 
     def __ne__(self, g: 'UndiGraph') -> "bool":
-        """
-        __ne__(UndiGraph self, UndiGraph g) -> bool
-
-        Parameters
-        ----------
-        g: gum::UndiGraph const &
-
-        """
+        """__ne__(self, g) -> bool"""
         return _pyAgrum.UndiGraph___ne__(self, g)
 
 
     def addEdge(self, first: 'gum::NodeId const', second: 'gum::NodeId const') -> "void":
-        """
-        addEdge(UndiGraph self, gum::NodeId const first, gum::NodeId const second)
-
-        Parameters
-        ----------
-        first: gum::NodeId const
-        second: gum::NodeId const
-
-        """
+        """addEdge(self, first, second)"""
         return _pyAgrum.UndiGraph_addEdge(self, first, second)
 
 
     def eraseNode(self, id: 'gum::NodeId const') -> "void":
-        """
-        eraseNode(UndiGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """eraseNode(self, id)"""
         return _pyAgrum.UndiGraph_eraseNode(self, id)
 
 
     def clear(self) -> "void":
-        """
-        clear(UndiGraph self)
-
-        Parameters
-        ----------
-        self: gum::UndiGraph *
-
-        """
+        """clear(self)"""
         return _pyAgrum.UndiGraph_clear(self)
 
 
     def __str__(self) -> "std::string const":
-        """
-        __str__(UndiGraph self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::UndiGraph const *
-
-        """
+        """__str__(self) -> std::string const"""
         return _pyAgrum.UndiGraph___str__(self)
 
 
     def toDot(self) -> "std::string const":
-        """
-        toDot(UndiGraph self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::UndiGraph const *
-
-        """
+        """toDot(self) -> std::string const"""
         return _pyAgrum.UndiGraph_toDot(self)
 
 
     def hasUndirectedCycle(self) -> "bool":
-        """
-        hasUndirectedCycle(UndiGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::UndiGraph const *
-
-        """
+        """hasUndirectedCycle(self) -> bool"""
         return _pyAgrum.UndiGraph_hasUndirectedCycle(self)
 
 
     def partialUndiGraph(self, nodesSet: 'gum::NodeSet') -> "gum::UndiGraph":
-        """
-        partialUndiGraph(UndiGraph self, gum::NodeSet nodesSet) -> UndiGraph
-
-        Parameters
-        ----------
-        nodesSet: gum::NodeSet
-
-        """
+        """partialUndiGraph(self, nodesSet) -> UndiGraph"""
         return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
 
 
     def ids(self) -> "PyObject *":
-        """
-        ids(UndiGraph self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::UndiGraph *
-
-        """
+        """ids(self) -> PyObject *"""
         return _pyAgrum.UndiGraph_ids(self)
 
 
     def edges(self) -> "PyObject *":
-        """
-        edges(UndiGraph self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::UndiGraph *
-
-        """
+        """edges(self) -> PyObject *"""
         return _pyAgrum.UndiGraph_edges(self)
 
 
     def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
-        """
-        neighbours(UndiGraph self, gum::NodeId id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """neighbours(self, id) -> PyObject *"""
         return _pyAgrum.UndiGraph_neighbours(self, id)
 
 
     def addNode(self, *args) -> "void":
         """
-        addNode(UndiGraph self) -> gum::NodeId
-        addNode(UndiGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
+        addNode(self) -> gum::NodeId
+        addNode(self, id)
         """
         return _pyAgrum.UndiGraph_addNode(self, *args)
 
 
     def existsNode(self, id: 'gum::NodeId const') -> "bool":
-        """
-        existsNode(UndiGraph self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """existsNode(self, id) -> bool"""
         return _pyAgrum.UndiGraph_existsNode(self, id)
 
 
     def size(self) -> "gum::Size":
-        """
-        size(UndiGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::UndiGraph const *
-
-        """
+        """size(self) -> gum::Size"""
         return _pyAgrum.UndiGraph_size(self)
 
 
     def empty(self) -> "bool":
-        """
-        empty(UndiGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::UndiGraph const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.UndiGraph_empty(self)
 
 
     def eraseEdge(self, edge: 'Edge') -> "void":
-        """
-        eraseEdge(UndiGraph self, Edge edge)
-
-        Parameters
-        ----------
-        edge: gum::Edge const &
-
-        """
+        """eraseEdge(self, edge)"""
         return _pyAgrum.UndiGraph_eraseEdge(self, edge)
 
 
     def existsEdge(self, *args) -> "bool":
         """
-        existsEdge(UndiGraph self, Edge edge) -> bool
-
-        Parameters
-        ----------
-        edge: gum::Edge const &
-
-        existsEdge(UndiGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
-
-        Parameters
-        ----------
-        n1: gum::NodeId const
-        n2: gum::NodeId const
-
+        existsEdge(self, edge) -> bool
+        existsEdge(self, n1, n2) -> bool
         """
         return _pyAgrum.UndiGraph_existsEdge(self, *args)
 
 
     def sizeEdges(self) -> "gum::Size":
-        """
-        sizeEdges(UndiGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::UndiGraph const *
-
-        """
+        """sizeEdges(self) -> gum::Size"""
         return _pyAgrum.UndiGraph_sizeEdges(self)
 
 
     def emptyEdges(self) -> "bool":
-        """
-        emptyEdges(UndiGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::UndiGraph const *
-
-        """
+        """emptyEdges(self) -> bool"""
         return _pyAgrum.UndiGraph_emptyEdges(self)
 
 
     def eraseNeighbours(self, id: 'gum::NodeId const') -> "void":
-        """
-        eraseNeighbours(UndiGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """eraseNeighbours(self, id)"""
         return _pyAgrum.UndiGraph_eraseNeighbours(self, id)
 
 UndiGraph_swigregister = _pyAgrum.UndiGraph_swigregister
@@ -6280,64 +3471,14 @@ class MixedGraph(UndiGraph, DiGraph):
 
     def __init__(self, *args):
         """
-        __init__(gum::MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True, gum::Size edges_size, bool edges_resize_policy=True) -> MixedGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        arcs_size: gum::Size
-        arcs_resize_policy: bool
-        edges_size: gum::Size
-        edges_resize_policy: bool
-
-        __init__(gum::MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True, gum::Size edges_size) -> MixedGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        arcs_size: gum::Size
-        arcs_resize_policy: bool
-        edges_size: gum::Size
-
-        __init__(gum::MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size, bool arcs_resize_policy=True) -> MixedGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        arcs_size: gum::Size
-        arcs_resize_policy: bool
-
-        __init__(gum::MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size arcs_size) -> MixedGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        arcs_size: gum::Size
-
-        __init__(gum::MixedGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> MixedGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-
-        __init__(gum::MixedGraph self, gum::Size nodes_size) -> MixedGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-
-        __init__(gum::MixedGraph self) -> MixedGraph
-        __init__(gum::MixedGraph self, MixedGraph g) -> MixedGraph
-
-        Parameters
-        ----------
-        g: gum::MixedGraph const &
-
+        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True, edges_size, edges_resize_policy=True) -> MixedGraph
+        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True, edges_size) -> MixedGraph
+        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True) -> MixedGraph
+        __init__(self, nodes_size, nodes_resize_policy=True, arcs_size) -> MixedGraph
+        __init__(self, nodes_size, nodes_resize_policy=True) -> MixedGraph
+        __init__(self, nodes_size) -> MixedGraph
+        __init__(self) -> MixedGraph
+        __init__(self, g) -> MixedGraph
         """
         this = _pyAgrum.new_MixedGraph(*args)
         try:
@@ -6348,323 +3489,142 @@ class MixedGraph(UndiGraph, DiGraph):
     __del__ = lambda self: None
 
     def __eq__(self, g: 'MixedGraph') -> "bool":
-        """
-        __eq__(MixedGraph self, MixedGraph g) -> bool
-
-        Parameters
-        ----------
-        g: gum::MixedGraph const &
-
-        """
+        """__eq__(self, g) -> bool"""
         return _pyAgrum.MixedGraph___eq__(self, g)
 
 
     def __ne__(self, g: 'MixedGraph') -> "bool":
-        """
-        __ne__(MixedGraph self, MixedGraph g) -> bool
-
-        Parameters
-        ----------
-        g: gum::MixedGraph const &
-
-        """
+        """__ne__(self, g) -> bool"""
         return _pyAgrum.MixedGraph___ne__(self, g)
 
 
     def eraseNode(self, id: 'gum::NodeId const') -> "void":
-        """
-        eraseNode(MixedGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """eraseNode(self, id)"""
         return _pyAgrum.MixedGraph_eraseNode(self, id)
 
 
     def clear(self) -> "void":
-        """
-        clear(MixedGraph self)
-
-        Parameters
-        ----------
-        self: gum::MixedGraph *
-
-        """
+        """clear(self)"""
         return _pyAgrum.MixedGraph_clear(self)
 
 
     def mixedOrientedPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
-        """
-        mixedOrientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> Vector_int
-
-        Parameters
-        ----------
-        node1: gum::NodeId const
-        node2: gum::NodeId const
-
-        """
+        """mixedOrientedPath(self, node1, node2) -> Vector_int"""
         return _pyAgrum.MixedGraph_mixedOrientedPath(self, node1, node2)
 
 
     def mixedUnorientedPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
-        """
-        mixedUnorientedPath(MixedGraph self, gum::NodeId const node1, gum::NodeId const node2) -> Vector_int
-
-        Parameters
-        ----------
-        node1: gum::NodeId const
-        node2: gum::NodeId const
-
-        """
+        """mixedUnorientedPath(self, node1, node2) -> Vector_int"""
         return _pyAgrum.MixedGraph_mixedUnorientedPath(self, node1, node2)
 
 
     def toDot(self) -> "std::string const":
-        """
-        toDot(MixedGraph self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::MixedGraph const *
-
-        """
+        """toDot(self) -> std::string const"""
         return _pyAgrum.MixedGraph_toDot(self)
 
 
     def __str__(self) -> "std::string const":
-        """
-        __str__(MixedGraph self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::MixedGraph const *
-
-        """
+        """__str__(self) -> std::string const"""
         return _pyAgrum.MixedGraph___str__(self)
 
 
     def addNode(self, *args) -> "void":
         """
-        addNode(MixedGraph self) -> gum::NodeId
-        addNode(MixedGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
+        addNode(self) -> gum::NodeId
+        addNode(self, id)
         """
         return _pyAgrum.MixedGraph_addNode(self, *args)
 
 
     def existsNode(self, id: 'gum::NodeId const') -> "bool":
-        """
-        existsNode(MixedGraph self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """existsNode(self, id) -> bool"""
         return _pyAgrum.MixedGraph_existsNode(self, id)
 
 
     def size(self) -> "gum::Size":
-        """
-        size(MixedGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::MixedGraph const *
-
-        """
+        """size(self) -> gum::Size"""
         return _pyAgrum.MixedGraph_size(self)
 
 
     def empty(self) -> "bool":
-        """
-        empty(MixedGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::MixedGraph const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.MixedGraph_empty(self)
 
 
     def addEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """
-        addEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2)
-
-        Parameters
-        ----------
-        n1: gum::NodeId const
-        n2: gum::NodeId const
-
-        """
+        """addEdge(self, n1, n2)"""
         return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
 
 
     def eraseEdge(self, edge: 'Edge') -> "void":
-        """
-        eraseEdge(MixedGraph self, Edge edge)
-
-        Parameters
-        ----------
-        edge: gum::Edge const &
-
-        """
+        """eraseEdge(self, edge)"""
         return _pyAgrum.MixedGraph_eraseEdge(self, edge)
 
 
     def existsEdge(self, *args) -> "bool":
         """
-        existsEdge(MixedGraph self, Edge edge) -> bool
-
-        Parameters
-        ----------
-        edge: gum::Edge const &
-
-        existsEdge(MixedGraph self, gum::NodeId const n1, gum::NodeId const n2) -> bool
-
-        Parameters
-        ----------
-        n1: gum::NodeId const
-        n2: gum::NodeId const
-
+        existsEdge(self, edge) -> bool
+        existsEdge(self, n1, n2) -> bool
         """
         return _pyAgrum.MixedGraph_existsEdge(self, *args)
 
 
     def sizeEdges(self) -> "gum::Size":
-        """
-        sizeEdges(MixedGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::MixedGraph const *
-
-        """
+        """sizeEdges(self) -> gum::Size"""
         return _pyAgrum.MixedGraph_sizeEdges(self)
 
 
     def emptyEdges(self) -> "bool":
-        """
-        emptyEdges(MixedGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::MixedGraph const *
-
-        """
+        """emptyEdges(self) -> bool"""
         return _pyAgrum.MixedGraph_emptyEdges(self)
 
 
     def eraseNeighbours(self, id: 'gum::NodeId const') -> "void":
-        """
-        eraseNeighbours(MixedGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """eraseNeighbours(self, id)"""
         return _pyAgrum.MixedGraph_eraseNeighbours(self, id)
 
 
     def addArc(self, tail: 'gum::NodeId const', head: 'gum::NodeId const') -> "void":
-        """
-        addArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
-        """
+        """addArc(self, tail, head)"""
         return _pyAgrum.MixedGraph_addArc(self, tail, head)
 
 
     def eraseArc(self, arc: 'Arc') -> "void":
-        """
-        eraseArc(MixedGraph self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        """
+        """eraseArc(self, arc)"""
         return _pyAgrum.MixedGraph_eraseArc(self, arc)
 
 
     def existsArc(self, *args) -> "bool":
         """
-        existsArc(MixedGraph self, Arc arc) -> bool
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        existsArc(MixedGraph self, gum::NodeId const tail, gum::NodeId const head) -> bool
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
+        existsArc(self, arc) -> bool
+        existsArc(self, tail, head) -> bool
         """
         return _pyAgrum.MixedGraph_existsArc(self, *args)
 
 
     def eraseParents(self, *args) -> "void":
         """
-        eraseParents(MixedGraph self)
-        eraseParents(MixedGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
+        eraseParents(self)
+        eraseParents(self, id)
         """
         return _pyAgrum.MixedGraph_eraseParents(self, *args)
 
 
     def eraseChildren(self, *args) -> "void":
         """
-        eraseChildren(MixedGraph self)
-        eraseChildren(MixedGraph self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
+        eraseChildren(self)
+        eraseChildren(self, id)
         """
         return _pyAgrum.MixedGraph_eraseChildren(self, *args)
 
 
     def sizeArcs(self) -> "gum::Size":
-        """
-        sizeArcs(MixedGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::MixedGraph const *
-
-        """
+        """sizeArcs(self) -> gum::Size"""
         return _pyAgrum.MixedGraph_sizeArcs(self)
 
 
     def emptyArcs(self) -> "bool":
-        """
-        emptyArcs(MixedGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::MixedGraph const *
-
-        """
+        """emptyArcs(self) -> bool"""
         return _pyAgrum.MixedGraph_emptyArcs(self)
 
 MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
@@ -6685,43 +3645,12 @@ class CliqueGraph(UndiGraph):
 
     def __init__(self, *args):
         """
-        __init__(gum::CliqueGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size, bool edges_resize_policy=True) -> CliqueGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        edges_size: gum::Size
-        edges_resize_policy: bool
-
-        __init__(gum::CliqueGraph self, gum::Size nodes_size, bool nodes_resize_policy=True, gum::Size edges_size) -> CliqueGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-        edges_size: gum::Size
-
-        __init__(gum::CliqueGraph self, gum::Size nodes_size, bool nodes_resize_policy=True) -> CliqueGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-        nodes_resize_policy: bool
-
-        __init__(gum::CliqueGraph self, gum::Size nodes_size) -> CliqueGraph
-
-        Parameters
-        ----------
-        nodes_size: gum::Size
-
-        __init__(gum::CliqueGraph self) -> CliqueGraph
-        __init__(gum::CliqueGraph self, CliqueGraph arg2) -> CliqueGraph
-
-        Parameters
-        ----------
-        from: gum::CliqueGraph const &
-
+        __init__(self, nodes_size, nodes_resize_policy=True, edges_size, edges_resize_policy=True) -> CliqueGraph
+        __init__(self, nodes_size, nodes_resize_policy=True, edges_size) -> CliqueGraph
+        __init__(self, nodes_size, nodes_resize_policy=True) -> CliqueGraph
+        __init__(self, nodes_size) -> CliqueGraph
+        __init__(self) -> CliqueGraph
+        __init__(self, arg2) -> CliqueGraph
         """
         this = _pyAgrum.new_CliqueGraph(*args)
         try:
@@ -6732,230 +3661,95 @@ class CliqueGraph(UndiGraph):
     __del__ = lambda self: None
 
     def addEdge(self, first: 'gum::NodeId const', second: 'gum::NodeId const') -> "void":
-        """
-        addEdge(CliqueGraph self, gum::NodeId const first, gum::NodeId const second)
-
-        Parameters
-        ----------
-        first: gum::NodeId const
-        second: gum::NodeId const
-
-        """
+        """addEdge(self, first, second)"""
         return _pyAgrum.CliqueGraph_addEdge(self, first, second)
 
 
     def eraseEdge(self, edge: 'Edge') -> "void":
-        """
-        eraseEdge(CliqueGraph self, Edge edge)
-
-        Parameters
-        ----------
-        edge: gum::Edge const &
-
-        """
+        """eraseEdge(self, edge)"""
         return _pyAgrum.CliqueGraph_eraseEdge(self, edge)
 
 
     def clearEdges(self) -> "void":
-        """
-        clearEdges(CliqueGraph self)
-
-        Parameters
-        ----------
-        self: gum::CliqueGraph *
-
-        """
+        """clearEdges(self)"""
         return _pyAgrum.CliqueGraph_clearEdges(self)
 
 
     def eraseNode(self, node: 'gum::NodeId const') -> "void":
-        """
-        eraseNode(CliqueGraph self, gum::NodeId const node)
-
-        Parameters
-        ----------
-        node: gum::NodeId const
-
-        """
+        """eraseNode(self, node)"""
         return _pyAgrum.CliqueGraph_eraseNode(self, node)
 
 
     def clear(self) -> "void":
-        """
-        clear(CliqueGraph self)
-
-        Parameters
-        ----------
-        self: gum::CliqueGraph *
-
-        """
+        """clear(self)"""
         return _pyAgrum.CliqueGraph_clear(self)
 
 
     def container(self, idNode: 'gum::NodeId const') -> "gum::NodeId":
-        """
-        container(CliqueGraph self, gum::NodeId const idNode) -> gum::NodeId
-
-        Parameters
-        ----------
-        idNode: gum::NodeId const
-
-        """
+        """container(self, idNode) -> gum::NodeId"""
         return _pyAgrum.CliqueGraph_container(self, idNode)
 
 
     def setClique(self, idClique: 'gum::NodeId const', new_clique: 'gum::NodeSet const &') -> "void":
-        """
-        setClique(CliqueGraph self, gum::NodeId const idClique, gum::NodeSet const & new_clique)
-
-        Parameters
-        ----------
-        idClique: gum::NodeId const
-        new_clique: gum::NodeSet const &
-
-        """
+        """setClique(self, idClique, new_clique)"""
         return _pyAgrum.CliqueGraph_setClique(self, idClique, new_clique)
 
 
     def addToClique(self, clique_id: 'gum::NodeId const', node_id: 'gum::NodeId const') -> "void":
-        """
-        addToClique(CliqueGraph self, gum::NodeId const clique_id, gum::NodeId const node_id)
-
-        Parameters
-        ----------
-        clique_id: gum::NodeId const
-        node_id: gum::NodeId const
-
-        """
+        """addToClique(self, clique_id, node_id)"""
         return _pyAgrum.CliqueGraph_addToClique(self, clique_id, node_id)
 
 
     def eraseFromClique(self, clique_id: 'gum::NodeId const', node_id: 'gum::NodeId const') -> "void":
-        """
-        eraseFromClique(CliqueGraph self, gum::NodeId const clique_id, gum::NodeId const node_id)
-
-        Parameters
-        ----------
-        clique_id: gum::NodeId const
-        node_id: gum::NodeId const
-
-        """
+        """eraseFromClique(self, clique_id, node_id)"""
         return _pyAgrum.CliqueGraph_eraseFromClique(self, clique_id, node_id)
 
 
     def separator(self, *args) -> "gum::NodeSet const &":
         """
-        separator(CliqueGraph self, Edge edge) -> gum::NodeSet const
-
-        Parameters
-        ----------
-        edge: gum::Edge const &
-
-        separator(CliqueGraph self, gum::NodeId const clique1, gum::NodeId const clique) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        clique1: gum::NodeId const
-        clique: gum::NodeId const
-
+        separator(self, edge) -> gum::NodeSet const
+        separator(self, clique1, clique) -> gum::NodeSet const &
         """
         return _pyAgrum.CliqueGraph_separator(self, *args)
 
 
     def containerPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > >":
-        """
-        containerPath(CliqueGraph self, gum::NodeId const node1, gum::NodeId const node2) -> Vector_int
-
-        Parameters
-        ----------
-        node1: gum::NodeId const
-        node2: gum::NodeId const
-
-        """
+        """containerPath(self, node1, node2) -> Vector_int"""
         return _pyAgrum.CliqueGraph_containerPath(self, node1, node2)
 
 
     def hasRunningIntersection(self) -> "bool":
-        """
-        hasRunningIntersection(CliqueGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::CliqueGraph const *
-
-        """
+        """hasRunningIntersection(self) -> bool"""
         return _pyAgrum.CliqueGraph_hasRunningIntersection(self)
 
 
     def isJoinTree(self) -> "bool":
-        """
-        isJoinTree(CliqueGraph self) -> bool
-
-        Parameters
-        ----------
-        self: gum::CliqueGraph const *
-
-        """
+        """isJoinTree(self) -> bool"""
         return _pyAgrum.CliqueGraph_isJoinTree(self)
 
 
     def __str__(self) -> "std::string const":
-        """
-        __str__(CliqueGraph self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::CliqueGraph const *
-
-        """
+        """__str__(self) -> std::string const"""
         return _pyAgrum.CliqueGraph___str__(self)
 
 
     def toDot(self) -> "std::string const":
-        """
-        toDot(CliqueGraph self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::CliqueGraph const *
-
-        """
+        """toDot(self) -> std::string const"""
         return _pyAgrum.CliqueGraph_toDot(self)
 
 
     def __ne__(self, arg2: 'CliqueGraph') -> "bool":
-        """
-        __ne__(CliqueGraph self, CliqueGraph arg2) -> bool
-
-        Parameters
-        ----------
-        from: gum::CliqueGraph const &
-
-        """
+        """__ne__(self, arg2) -> bool"""
         return _pyAgrum.CliqueGraph___ne__(self, arg2)
 
 
     def __eq__(self, arg2: 'CliqueGraph') -> "bool":
-        """
-        __eq__(CliqueGraph self, CliqueGraph arg2) -> bool
-
-        Parameters
-        ----------
-        from: gum::CliqueGraph const &
-
-        """
+        """__eq__(self, arg2) -> bool"""
         return _pyAgrum.CliqueGraph___eq__(self, arg2)
 
 
     def clique(self, clique: 'gum::NodeId const') -> "PyObject *":
-        """
-        clique(CliqueGraph self, gum::NodeId const clique) -> PyObject *
-
-        Parameters
-        ----------
-        clique: gum::NodeId const
-
-        """
+        """clique(self, clique) -> PyObject *"""
         return _pyAgrum.CliqueGraph_clique(self, clique)
 
 
@@ -6981,44 +3775,13 @@ class Instantiation(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::Instantiation self) -> Instantiation
-        __init__(gum::Instantiation self, Instantiation aI, bool const notifyMaster=True) -> Instantiation
-
-        Parameters
-        ----------
-        aI: gum::Instantiation const &
-        notifyMaster: bool const
-
-        __init__(gum::Instantiation self, Instantiation aI) -> Instantiation
-
-        Parameters
-        ----------
-        aI: gum::Instantiation const &
-
-        __init__(gum::Instantiation self, MultiDimAdressable aMD) -> Instantiation
-
-        Parameters
-        ----------
-        aMD: gum::MultiDimAdressable &
-
-        __init__(gum::Instantiation self, MultiDimAdressable aMD) -> Instantiation
-
-        Parameters
-        ----------
-        aMD: gum::MultiDimAdressable const &
-
-        __init__(gum::Instantiation self, MultiDimAdressable aMD) -> Instantiation
-
-        Parameters
-        ----------
-        aMD: gum::MultiDimAdressable *
-
-        __init__(gum::Instantiation self, MultiDimAdressable aMD) -> Instantiation
-
-        Parameters
-        ----------
-        aMD: gum::MultiDimAdressable const *
-
+        __init__(self) -> Instantiation
+        __init__(self, aI, notifyMaster=True) -> Instantiation
+        __init__(self, aI) -> Instantiation
+        __init__(self, aMD) -> Instantiation
+        __init__(self, aMD) -> Instantiation
+        __init__(self, aMD) -> Instantiation
+        __init__(self, aMD) -> Instantiation
         """
         this = _pyAgrum.new_Instantiation(*args)
         try:
@@ -7029,654 +3792,272 @@ class Instantiation(_object):
     __del__ = lambda self: None
 
     def nbrDim(self) -> "gum::Idx":
-        """
-        nbrDim(Instantiation self) -> gum::Idx
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """nbrDim(self) -> gum::Idx"""
         return _pyAgrum.Instantiation_nbrDim(self)
 
 
     def add(self, v: 'DiscreteVariable') -> "void":
-        """
-        add(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """add(self, v)"""
         return _pyAgrum.Instantiation_add(self, v)
 
 
     def erase(self, v: 'DiscreteVariable') -> "void":
-        """
-        erase(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """erase(self, v)"""
         return _pyAgrum.Instantiation_erase(self, v)
 
 
     def clear(self) -> "void":
-        """
-        clear(Instantiation self)
-
-        Parameters
-        ----------
-        self: gum::Instantiation *
-
-        """
+        """clear(self)"""
         return _pyAgrum.Instantiation_clear(self)
 
 
     def domainSize(self) -> "gum::Size":
-        """
-        domainSize(Instantiation self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """domainSize(self) -> gum::Size"""
         return _pyAgrum.Instantiation_domainSize(self)
 
 
     def pos(self, v: 'DiscreteVariable') -> "gum::Idx":
-        """
-        pos(Instantiation self, DiscreteVariable v) -> gum::Idx
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """pos(self, v) -> gum::Idx"""
         return _pyAgrum.Instantiation_pos(self, v)
 
 
     def val(self, *args) -> "gum::Idx":
         """
-        val(Instantiation self, gum::Idx i) -> gum::Idx
-
-        Parameters
-        ----------
-        i: gum::Idx
-
-        val(Instantiation self, DiscreteVariable var) -> gum::Idx
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
+        val(self, i) -> gum::Idx
+        val(self, var) -> gum::Idx
         """
         return _pyAgrum.Instantiation_val(self, *args)
 
 
     def valFromPtr(self, pvar: 'DiscreteVariable') -> "gum::Idx":
-        """
-        valFromPtr(Instantiation self, DiscreteVariable pvar) -> gum::Idx
-
-        Parameters
-        ----------
-        pvar: gum::DiscreteVariable const *
-
-        """
+        """valFromPtr(self, pvar) -> gum::Idx"""
         return _pyAgrum.Instantiation_valFromPtr(self, pvar)
 
 
     def variable(self, i: 'gum::Idx') -> "gum::DiscreteVariable const &":
-        """
-        variable(Instantiation self, gum::Idx i) -> DiscreteVariable
-
-        Parameters
-        ----------
-        i: gum::Idx
-
-        """
+        """variable(self, i) -> DiscreteVariable"""
         return _pyAgrum.Instantiation_variable(self, i)
 
 
     def chgVal(self, *args) -> "gum::Instantiation &":
         """
-        chgVal(Instantiation self, DiscreteVariable v, gum::Idx newval) -> Instantiation
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-        newval: gum::Idx
-
-        chgVal(Instantiation self, DiscreteVariable v, gum::Idx newval) -> Instantiation
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const *
-        newval: gum::Idx
-
-        chgVal(Instantiation self, gum::Idx varPos, gum::Idx newval) -> Instantiation
-
-        Parameters
-        ----------
-        varPos: gum::Idx
-        newval: gum::Idx
-
+        chgVal(self, v, newval) -> Instantiation
+        chgVal(self, v, newval) -> Instantiation
+        chgVal(self, varPos, newval) -> Instantiation
         """
         return _pyAgrum.Instantiation_chgVal(self, *args)
 
 
     def setVals(self, i: 'Instantiation') -> "gum::Instantiation &":
-        """
-        setVals(Instantiation self, Instantiation i) -> Instantiation
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """setVals(self, i) -> Instantiation"""
         return _pyAgrum.Instantiation_setVals(self, i)
 
 
     def contains(self, *args) -> "bool":
         """
-        contains(Instantiation self, DiscreteVariable v) -> bool
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        contains(Instantiation self, DiscreteVariable v) -> bool
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const *
-
+        contains(self, v) -> bool
+        contains(self, v) -> bool
         """
         return _pyAgrum.Instantiation_contains(self, *args)
 
 
     def variablesSequence(self) -> "gum::Sequence< gum::DiscreteVariable const * > const &":
-        """
-        variablesSequence(Instantiation self) -> gum::Sequence< gum::DiscreteVariable const * > const &
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """variablesSequence(self) -> gum::Sequence< gum::DiscreteVariable const * > const &"""
         return _pyAgrum.Instantiation_variablesSequence(self)
 
 
     def empty(self) -> "bool":
-        """
-        empty(Instantiation self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.Instantiation_empty(self)
 
 
     def inOverflow(self) -> "bool":
-        """
-        inOverflow(Instantiation self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """inOverflow(self) -> bool"""
         return _pyAgrum.Instantiation_inOverflow(self)
 
 
     def unsetOverflow(self) -> "void":
-        """
-        unsetOverflow(Instantiation self)
-
-        Parameters
-        ----------
-        self: gum::Instantiation *
-
-        """
+        """unsetOverflow(self)"""
         return _pyAgrum.Instantiation_unsetOverflow(self)
 
 
     def unsetEnd(self) -> "void":
-        """
-        unsetEnd(Instantiation self)
-
-        Parameters
-        ----------
-        self: gum::Instantiation *
-
-        """
+        """unsetEnd(self)"""
         return _pyAgrum.Instantiation_unsetEnd(self)
 
 
     def end(self) -> "bool":
-        """
-        end(Instantiation self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """end(self) -> bool"""
         return _pyAgrum.Instantiation_end(self)
 
 
     def rend(self) -> "bool":
-        """
-        rend(Instantiation self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """rend(self) -> bool"""
         return _pyAgrum.Instantiation_rend(self)
 
 
     def inc(self) -> "void":
-        """
-        inc(Instantiation self)
-
-        Parameters
-        ----------
-        self: gum::Instantiation *
-
-        """
+        """inc(self)"""
         return _pyAgrum.Instantiation_inc(self)
 
 
     def dec(self) -> "void":
-        """
-        dec(Instantiation self)
-
-        Parameters
-        ----------
-        self: gum::Instantiation *
-
-        """
+        """dec(self)"""
         return _pyAgrum.Instantiation_dec(self)
 
 
     def incIn(self, i: 'Instantiation') -> "void":
-        """
-        incIn(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """incIn(self, i)"""
         return _pyAgrum.Instantiation_incIn(self, i)
 
 
     def decIn(self, i: 'Instantiation') -> "void":
-        """
-        decIn(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """decIn(self, i)"""
         return _pyAgrum.Instantiation_decIn(self, i)
 
 
     def incOut(self, i: 'Instantiation') -> "void":
-        """
-        incOut(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """incOut(self, i)"""
         return _pyAgrum.Instantiation_incOut(self, i)
 
 
     def decOut(self, i: 'Instantiation') -> "void":
-        """
-        decOut(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """decOut(self, i)"""
         return _pyAgrum.Instantiation_decOut(self, i)
 
 
     def incNotVar(self, v: 'DiscreteVariable') -> "void":
-        """
-        incNotVar(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """incNotVar(self, v)"""
         return _pyAgrum.Instantiation_incNotVar(self, v)
 
 
     def decNotVar(self, v: 'DiscreteVariable') -> "void":
-        """
-        decNotVar(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """decNotVar(self, v)"""
         return _pyAgrum.Instantiation_decNotVar(self, v)
 
 
     def incVar(self, v: 'DiscreteVariable') -> "void":
-        """
-        incVar(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """incVar(self, v)"""
         return _pyAgrum.Instantiation_incVar(self, v)
 
 
     def decVar(self, v: 'DiscreteVariable') -> "void":
-        """
-        decVar(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """decVar(self, v)"""
         return _pyAgrum.Instantiation_decVar(self, v)
 
 
     def setFirst(self) -> "void":
-        """
-        setFirst(Instantiation self)
-
-        Parameters
-        ----------
-        self: gum::Instantiation *
-
-        """
+        """setFirst(self)"""
         return _pyAgrum.Instantiation_setFirst(self)
 
 
     def setLast(self) -> "void":
-        """
-        setLast(Instantiation self)
-
-        Parameters
-        ----------
-        self: gum::Instantiation *
-
-        """
+        """setLast(self)"""
         return _pyAgrum.Instantiation_setLast(self)
 
 
     def setFirstIn(self, i: 'Instantiation') -> "void":
-        """
-        setFirstIn(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """setFirstIn(self, i)"""
         return _pyAgrum.Instantiation_setFirstIn(self, i)
 
 
     def setLastIn(self, i: 'Instantiation') -> "void":
-        """
-        setLastIn(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """setLastIn(self, i)"""
         return _pyAgrum.Instantiation_setLastIn(self, i)
 
 
     def setFirstOut(self, i: 'Instantiation') -> "void":
-        """
-        setFirstOut(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """setFirstOut(self, i)"""
         return _pyAgrum.Instantiation_setFirstOut(self, i)
 
 
     def setLastOut(self, i: 'Instantiation') -> "void":
-        """
-        setLastOut(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """setLastOut(self, i)"""
         return _pyAgrum.Instantiation_setLastOut(self, i)
 
 
     def setFirstNotVar(self, v: 'DiscreteVariable') -> "void":
-        """
-        setFirstNotVar(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """setFirstNotVar(self, v)"""
         return _pyAgrum.Instantiation_setFirstNotVar(self, v)
 
 
     def setLastNotVar(self, v: 'DiscreteVariable') -> "void":
-        """
-        setLastNotVar(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """setLastNotVar(self, v)"""
         return _pyAgrum.Instantiation_setLastNotVar(self, v)
 
 
     def setFirstVar(self, v: 'DiscreteVariable') -> "void":
-        """
-        setFirstVar(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """setFirstVar(self, v)"""
         return _pyAgrum.Instantiation_setFirstVar(self, v)
 
 
     def setLastVar(self, v: 'DiscreteVariable') -> "void":
-        """
-        setLastVar(Instantiation self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """setLastVar(self, v)"""
         return _pyAgrum.Instantiation_setLastVar(self, v)
 
 
     def actAsSlave(self, aMD: 'MultiDimAdressable') -> "bool":
-        """
-        actAsSlave(Instantiation self, MultiDimAdressable aMD) -> bool
-
-        Parameters
-        ----------
-        aMD: gum::MultiDimAdressable &
-
-        """
+        """actAsSlave(self, aMD) -> bool"""
         return _pyAgrum.Instantiation_actAsSlave(self, aMD)
 
 
     def forgetMaster(self) -> "bool":
-        """
-        forgetMaster(Instantiation self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Instantiation *
-
-        """
+        """forgetMaster(self) -> bool"""
         return _pyAgrum.Instantiation_forgetMaster(self)
 
 
     def isSlave(self) -> "bool":
-        """
-        isSlave(Instantiation self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """isSlave(self) -> bool"""
         return _pyAgrum.Instantiation_isSlave(self)
 
 
     def isMaster(self, *args) -> "bool":
         """
-        isMaster(Instantiation self, MultiDimAdressable m) -> bool
-
-        Parameters
-        ----------
-        m: gum::MultiDimAdressable const *
-
-        isMaster(Instantiation self, MultiDimAdressable m) -> bool
-
-        Parameters
-        ----------
-        m: gum::MultiDimAdressable const &
-
+        isMaster(self, m) -> bool
+        isMaster(self, m) -> bool
         """
         return _pyAgrum.Instantiation_isMaster(self, *args)
 
 
     def synchronizeWithMaster(self, m: 'MultiDimAdressable') -> "void":
-        """
-        synchronizeWithMaster(Instantiation self, MultiDimAdressable m)
-
-        Parameters
-        ----------
-        m: gum::MultiDimAdressable const *
-
-        """
+        """synchronizeWithMaster(self, m)"""
         return _pyAgrum.Instantiation_synchronizeWithMaster(self, m)
 
 
     def addWithMaster(self, m: 'MultiDimAdressable', v: 'DiscreteVariable') -> "void":
-        """
-        addWithMaster(Instantiation self, MultiDimAdressable m, DiscreteVariable v)
-
-        Parameters
-        ----------
-        m: gum::MultiDimAdressable const *
-        v: gum::DiscreteVariable const &
-
-        """
+        """addWithMaster(self, m, v)"""
         return _pyAgrum.Instantiation_addWithMaster(self, m, v)
 
 
     def eraseWithMaster(self, m: 'MultiDimAdressable', v: 'DiscreteVariable') -> "void":
-        """
-        eraseWithMaster(Instantiation self, MultiDimAdressable m, DiscreteVariable v)
-
-        Parameters
-        ----------
-        m: gum::MultiDimAdressable const *
-        v: gum::DiscreteVariable const &
-
-        """
+        """eraseWithMaster(self, m, v)"""
         return _pyAgrum.Instantiation_eraseWithMaster(self, m, v)
 
 
     def __iadd__(self, depl: 'gum::Size') -> "gum::Instantiation &":
-        """
-        __iadd__(Instantiation self, gum::Size depl) -> Instantiation
-
-        Parameters
-        ----------
-        depl: gum::Size
-
-        """
+        """__iadd__(self, depl) -> Instantiation"""
         return _pyAgrum.Instantiation___iadd__(self, depl)
 
 
     def __isub__(self, depl: 'gum::Size') -> "gum::Instantiation &":
-        """
-        __isub__(Instantiation self, gum::Size depl) -> Instantiation
-
-        Parameters
-        ----------
-        depl: gum::Size
-
-        """
+        """__isub__(self, depl) -> Instantiation"""
         return _pyAgrum.Instantiation___isub__(self, depl)
 
 
     def hamming(self) -> "gum::Idx":
-        """
-        hamming(Instantiation self) -> gum::Idx
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """hamming(self) -> gum::Idx"""
         return _pyAgrum.Instantiation_hamming(self)
 
 
     def __str__(self) -> "std::string":
-        """
-        __str__(Instantiation self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::Instantiation const *
-
-        """
+        """__str__(self) -> std::string"""
         return _pyAgrum.Instantiation___str__(self)
 
 
     def reorder(self, *args) -> "void":
         """
-        reorder(Instantiation self, gum::Sequence< gum::DiscreteVariable const * > const & v)
-
-        Parameters
-        ----------
-        v: gum::Sequence< gum::DiscreteVariable const * > const &
-
-        reorder(Instantiation self, Instantiation i)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
+        reorder(self, v)
+        reorder(self, i)
         """
         return _pyAgrum.Instantiation_reorder(self, *args)
 
@@ -7699,232 +4080,98 @@ class DAGmodel(_object):
     __del__ = lambda self: None
 
     def property(self, name: 'std::string const &') -> "std::string const &":
-        """
-        property(DAGmodel self, std::string const & name) -> std::string const &
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """property(self, name) -> std::string const &"""
         return _pyAgrum.DAGmodel_property(self, name)
 
 
     def propertyWithDefault(self, name: 'std::string const &', byDefault: 'std::string const &') -> "std::string const &":
-        """
-        propertyWithDefault(DAGmodel self, std::string const & name, std::string const & byDefault) -> std::string const &
-
-        Parameters
-        ----------
-        name: std::string const &
-        byDefault: std::string const &
-
-        """
+        """propertyWithDefault(self, name, byDefault) -> std::string const &"""
         return _pyAgrum.DAGmodel_propertyWithDefault(self, name, byDefault)
 
 
     def setProperty(self, name: 'std::string const &', value: 'std::string const &') -> "void":
-        """
-        setProperty(DAGmodel self, std::string const & name, std::string const & value)
-
-        Parameters
-        ----------
-        name: std::string const &
-        value: std::string const &
-
-        """
+        """setProperty(self, name, value)"""
         return _pyAgrum.DAGmodel_setProperty(self, name, value)
 
 
     def dag(self) -> "gum::DAG const &":
-        """
-        dag(DAGmodel self) -> DAG
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
-        """
+        """dag(self) -> DAG"""
         return _pyAgrum.DAGmodel_dag(self)
 
 
     def variableNodeMap(self) -> "gum::VariableNodeMap const &":
-        """
-        variableNodeMap(DAGmodel self) -> VariableNodeMap
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
-        """
+        """variableNodeMap(self) -> VariableNodeMap"""
         return _pyAgrum.DAGmodel_variableNodeMap(self)
 
 
     def size(self) -> "gum::Size":
-        """
-        size(DAGmodel self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
-        """
+        """size(self) -> gum::Size"""
         return _pyAgrum.DAGmodel_size(self)
 
 
     def sizeArcs(self) -> "gum::Size":
-        """
-        sizeArcs(DAGmodel self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
-        """
+        """sizeArcs(self) -> gum::Size"""
         return _pyAgrum.DAGmodel_sizeArcs(self)
 
 
     def empty(self) -> "bool":
-        """
-        empty(DAGmodel self) -> bool
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.DAGmodel_empty(self)
 
 
     def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
-        """
-        variable(DAGmodel self, gum::NodeId id) -> DiscreteVariable
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """variable(self, id) -> DiscreteVariable"""
         return _pyAgrum.DAGmodel_variable(self, id)
 
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        nodeId(DAGmodel self, DiscreteVariable var) -> gum::NodeId
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
-        """
+        """nodeId(self, var) -> gum::NodeId"""
         return _pyAgrum.DAGmodel_nodeId(self, var)
 
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
-        """
-        idFromName(DAGmodel self, std::string const & name) -> gum::NodeId
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """idFromName(self, name) -> gum::NodeId"""
         return _pyAgrum.DAGmodel_idFromName(self, name)
 
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
-        """
-        variableFromName(DAGmodel self, std::string const & name) -> DiscreteVariable
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """variableFromName(self, name) -> DiscreteVariable"""
         return _pyAgrum.DAGmodel_variableFromName(self, name)
 
 
     def completeInstantiation(self, I: 'Instantiation') -> "void":
-        """
-        completeInstantiation(DAGmodel self, Instantiation I)
-
-        Parameters
-        ----------
-        I: gum::Instantiation &
-
-        """
+        """completeInstantiation(self, I)"""
         return _pyAgrum.DAGmodel_completeInstantiation(self, I)
 
 
     def arcs(self) -> "gum::ArcSet const &":
-        """
-        arcs(DAGmodel self) -> gum::ArcSet const &
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
-        """
+        """arcs(self) -> gum::ArcSet const &"""
         return _pyAgrum.DAGmodel_arcs(self)
 
 
     def moralGraph(self, clear: 'bool'=True) -> "gum::UndiGraph const &":
         """
-        moralGraph(DAGmodel self, bool clear=True) -> UndiGraph
-
-        Parameters
-        ----------
-        clear: bool
-
-        moralGraph(DAGmodel self) -> UndiGraph
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
+        moralGraph(self, clear=True) -> UndiGraph
+        moralGraph(self) -> UndiGraph
         """
         return _pyAgrum.DAGmodel_moralGraph(self, clear)
 
 
     def topologicalOrder(self, clear: 'bool'=True) -> "gum::Sequence< gum::NodeId > const &":
         """
-        topologicalOrder(DAGmodel self, bool clear=True) -> gum::Sequence< gum::NodeId > const
-
-        Parameters
-        ----------
-        clear: bool
-
-        topologicalOrder(DAGmodel self) -> gum::Sequence< gum::NodeId > const &
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
+        topologicalOrder(self, clear=True) -> gum::Sequence< gum::NodeId > const
+        topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &
         """
         return _pyAgrum.DAGmodel_topologicalOrder(self, clear)
 
 
     def log10DomainSize(self) -> "double":
-        """
-        log10DomainSize(DAGmodel self) -> double
-
-        Parameters
-        ----------
-        self: gum::DAGmodel const *
-
-        """
+        """log10DomainSize(self) -> double"""
         return _pyAgrum.DAGmodel_log10DomainSize(self)
 
 
     def hasSameStructure(self, other: 'DAGmodel') -> "bool":
-        """
-        hasSameStructure(DAGmodel self, DAGmodel other) -> bool
-
-        Parameters
-        ----------
-        other: gum::DAGmodel const &
-
-        """
+        """hasSameStructure(self, other) -> bool"""
         return _pyAgrum.DAGmodel_hasSameStructure(self, other)
 
 DAGmodel_swigregister = _pyAgrum.DAGmodel_swigregister
@@ -7943,14 +4190,7 @@ class EssentialGraph(_object):
     __repr__ = _swig_repr
 
     def __init__(self, m: 'DAGmodel'):
-        """
-        __init__(gum::EssentialGraph self, DAGmodel m) -> EssentialGraph
-
-        Parameters
-        ----------
-        m: gum::DAGmodel const &
-
-        """
+        """__init__(self, m) -> EssentialGraph"""
         this = _pyAgrum.new_EssentialGraph(m)
         try:
             self.this.append(this)
@@ -7960,134 +4200,57 @@ class EssentialGraph(_object):
     __del__ = lambda self: None
 
     def mixedGraph(self) -> "gum::MixedGraph":
-        """
-        mixedGraph(EssentialGraph self) -> MixedGraph
-
-        Parameters
-        ----------
-        self: gum::EssentialGraph *
-
-        """
+        """mixedGraph(self) -> MixedGraph"""
         return _pyAgrum.EssentialGraph_mixedGraph(self)
 
 
     def toDot(self) -> "std::string":
-        """
-        toDot(EssentialGraph self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::EssentialGraph const *
-
-        """
+        """toDot(self) -> std::string"""
         return _pyAgrum.EssentialGraph_toDot(self)
 
 
     def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        parents(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """parents(self, id) -> gum::NodeSet const &"""
         return _pyAgrum.EssentialGraph_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        children(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """children(self, id) -> gum::NodeSet const &"""
         return _pyAgrum.EssentialGraph_children(self, id)
 
 
     def neighbours(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        neighbours(EssentialGraph self, gum::NodeId const id) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """neighbours(self, id) -> gum::NodeSet const &"""
         return _pyAgrum.EssentialGraph_neighbours(self, id)
 
 
     def sizeArcs(self) -> "gum::Size":
-        """
-        sizeArcs(EssentialGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::EssentialGraph const *
-
-        """
+        """sizeArcs(self) -> gum::Size"""
         return _pyAgrum.EssentialGraph_sizeArcs(self)
 
 
     def arcs(self) -> "gum::ArcSet const &":
-        """
-        arcs(EssentialGraph self) -> gum::ArcSet const &
-
-        Parameters
-        ----------
-        self: gum::EssentialGraph const *
-
-        """
+        """arcs(self) -> gum::ArcSet const &"""
         return _pyAgrum.EssentialGraph_arcs(self)
 
 
     def sizeEdges(self) -> "gum::Size":
-        """
-        sizeEdges(EssentialGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::EssentialGraph const *
-
-        """
+        """sizeEdges(self) -> gum::Size"""
         return _pyAgrum.EssentialGraph_sizeEdges(self)
 
 
     def edges(self) -> "gum::EdgeSet const &":
-        """
-        edges(EssentialGraph self) -> gum::EdgeSet const &
-
-        Parameters
-        ----------
-        self: gum::EssentialGraph const *
-
-        """
+        """edges(self) -> gum::EdgeSet const &"""
         return _pyAgrum.EssentialGraph_edges(self)
 
 
     def sizeNodes(self) -> "gum::Size":
-        """
-        sizeNodes(EssentialGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::EssentialGraph const *
-
-        """
+        """sizeNodes(self) -> gum::Size"""
         return _pyAgrum.EssentialGraph_sizeNodes(self)
 
 
     def size(self) -> "gum::Size":
-        """
-        size(EssentialGraph self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::EssentialGraph const *
-
-        """
+        """size(self) -> gum::Size"""
         return _pyAgrum.EssentialGraph_size(self)
 
 EssentialGraph_swigregister = _pyAgrum.EssentialGraph_swigregister
@@ -8104,20 +4267,8 @@ class MarkovBlanket(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::MarkovBlanket self, DAGmodel m, gum::NodeId n) -> MarkovBlanket
-
-        Parameters
-        ----------
-        m: gum::DAGmodel const &
-        n: gum::NodeId
-
-        __init__(gum::MarkovBlanket self, DAGmodel m, std::string const & name) -> MarkovBlanket
-
-        Parameters
-        ----------
-        m: gum::DAGmodel const &
-        name: std::string const &
-
+        __init__(self, m, n) -> MarkovBlanket
+        __init__(self, m, name) -> MarkovBlanket
         """
         this = _pyAgrum.new_MarkovBlanket(*args)
         try:
@@ -8128,110 +4279,47 @@ class MarkovBlanket(_object):
     __del__ = lambda self: None
 
     def mb(self) -> "gum::DiGraph":
-        """
-        mb(MarkovBlanket self) -> DiGraph
-
-        Parameters
-        ----------
-        self: gum::MarkovBlanket *
-
-        """
+        """mb(self) -> DiGraph"""
         return _pyAgrum.MarkovBlanket_mb(self)
 
 
     def toDot(self) -> "std::string":
-        """
-        toDot(MarkovBlanket self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::MarkovBlanket const *
-
-        """
+        """toDot(self) -> std::string"""
         return _pyAgrum.MarkovBlanket_toDot(self)
 
 
     def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        parents(MarkovBlanket self, gum::NodeId const id) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """parents(self, id) -> gum::NodeSet const &"""
         return _pyAgrum.MarkovBlanket_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        children(MarkovBlanket self, gum::NodeId const id) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """children(self, id) -> gum::NodeSet const &"""
         return _pyAgrum.MarkovBlanket_children(self, id)
 
 
     def sizeArcs(self) -> "gum::Size":
-        """
-        sizeArcs(MarkovBlanket self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::MarkovBlanket const *
-
-        """
+        """sizeArcs(self) -> gum::Size"""
         return _pyAgrum.MarkovBlanket_sizeArcs(self)
 
 
     def arcs(self) -> "gum::ArcSet const &":
-        """
-        arcs(MarkovBlanket self) -> gum::ArcSet const &
-
-        Parameters
-        ----------
-        self: gum::MarkovBlanket const *
-
-        """
+        """arcs(self) -> gum::ArcSet const &"""
         return _pyAgrum.MarkovBlanket_arcs(self)
 
 
     def sizeNodes(self) -> "gum::Size":
-        """
-        sizeNodes(MarkovBlanket self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::MarkovBlanket const *
-
-        """
+        """sizeNodes(self) -> gum::Size"""
         return _pyAgrum.MarkovBlanket_sizeNodes(self)
 
 
     def size(self) -> "gum::Size":
-        """
-        size(MarkovBlanket self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::MarkovBlanket const *
-
-        """
+        """size(self) -> gum::Size"""
         return _pyAgrum.MarkovBlanket_size(self)
 
 
     def hasSameStructure(self, other: 'DAGmodel') -> "bool":
-        """
-        hasSameStructure(MarkovBlanket self, DAGmodel other) -> bool
-
-        Parameters
-        ----------
-        other: gum::DAGmodel const &
-
-        """
+        """hasSameStructure(self, other) -> bool"""
         return _pyAgrum.MarkovBlanket_hasSameStructure(self, other)
 
 MarkovBlanket_swigregister = _pyAgrum.MarkovBlanket_swigregister
@@ -8248,13 +4336,8 @@ class ApproximationScheme(_object):
 
     def __init__(self, v: 'bool'=False):
         """
-        __init__(gum::ApproximationScheme self, bool v=False) -> ApproximationScheme
-
-        Parameters
-        ----------
-        v: bool
-
-        __init__(gum::ApproximationScheme self) -> ApproximationScheme
+        __init__(self, v=False) -> ApproximationScheme
+        __init__(self) -> ApproximationScheme
         """
         this = _pyAgrum.new_ApproximationScheme(v)
         try:
@@ -8265,440 +4348,185 @@ class ApproximationScheme(_object):
     __del__ = lambda self: None
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """
-        setEpsilon(ApproximationScheme self, double eps)
-
-        Parameters
-        ----------
-        eps: double
-
-        """
+        """setEpsilon(self, eps)"""
         return _pyAgrum.ApproximationScheme_setEpsilon(self, eps)
 
 
     def epsilon(self) -> "double":
-        """
-        epsilon(ApproximationScheme self) -> double
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """epsilon(self) -> double"""
         return _pyAgrum.ApproximationScheme_epsilon(self)
 
 
     def disableEpsilon(self) -> "void":
-        """
-        disableEpsilon(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """disableEpsilon(self)"""
         return _pyAgrum.ApproximationScheme_disableEpsilon(self)
 
 
     def enableEpsilon(self) -> "void":
-        """
-        enableEpsilon(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """enableEpsilon(self)"""
         return _pyAgrum.ApproximationScheme_enableEpsilon(self)
 
 
     def isEnabledEpsilon(self) -> "bool":
-        """
-        isEnabledEpsilon(ApproximationScheme self) -> bool
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """isEnabledEpsilon(self) -> bool"""
         return _pyAgrum.ApproximationScheme_isEnabledEpsilon(self)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """
-        setMinEpsilonRate(ApproximationScheme self, double rate)
-
-        Parameters
-        ----------
-        rate: double
-
-        """
+        """setMinEpsilonRate(self, rate)"""
         return _pyAgrum.ApproximationScheme_setMinEpsilonRate(self, rate)
 
 
     def minEpsilonRate(self) -> "double":
-        """
-        minEpsilonRate(ApproximationScheme self) -> double
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """minEpsilonRate(self) -> double"""
         return _pyAgrum.ApproximationScheme_minEpsilonRate(self)
 
 
     def disableMinEpsilonRate(self) -> "void":
-        """
-        disableMinEpsilonRate(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """disableMinEpsilonRate(self)"""
         return _pyAgrum.ApproximationScheme_disableMinEpsilonRate(self)
 
 
     def enableMinEpsilonRate(self) -> "void":
-        """
-        enableMinEpsilonRate(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """enableMinEpsilonRate(self)"""
         return _pyAgrum.ApproximationScheme_enableMinEpsilonRate(self)
 
 
     def isEnabledMinEpsilonRate(self) -> "bool":
-        """
-        isEnabledMinEpsilonRate(ApproximationScheme self) -> bool
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """isEnabledMinEpsilonRate(self) -> bool"""
         return _pyAgrum.ApproximationScheme_isEnabledMinEpsilonRate(self)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """
-        setMaxIter(ApproximationScheme self, gum::Size max)
-
-        Parameters
-        ----------
-        max: gum::Size
-
-        """
+        """setMaxIter(self, max)"""
         return _pyAgrum.ApproximationScheme_setMaxIter(self, max)
 
 
     def maxIter(self) -> "gum::Size":
-        """
-        maxIter(ApproximationScheme self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """maxIter(self) -> gum::Size"""
         return _pyAgrum.ApproximationScheme_maxIter(self)
 
 
     def disableMaxIter(self) -> "void":
-        """
-        disableMaxIter(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """disableMaxIter(self)"""
         return _pyAgrum.ApproximationScheme_disableMaxIter(self)
 
 
     def enableMaxIter(self) -> "void":
-        """
-        enableMaxIter(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """enableMaxIter(self)"""
         return _pyAgrum.ApproximationScheme_enableMaxIter(self)
 
 
     def isEnabledMaxIter(self) -> "bool":
-        """
-        isEnabledMaxIter(ApproximationScheme self) -> bool
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """isEnabledMaxIter(self) -> bool"""
         return _pyAgrum.ApproximationScheme_isEnabledMaxIter(self)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """
-        setMaxTime(ApproximationScheme self, double timeout)
-
-        Parameters
-        ----------
-        timeout: double
-
-        """
+        """setMaxTime(self, timeout)"""
         return _pyAgrum.ApproximationScheme_setMaxTime(self, timeout)
 
 
     def maxTime(self) -> "double":
-        """
-        maxTime(ApproximationScheme self) -> double
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """maxTime(self) -> double"""
         return _pyAgrum.ApproximationScheme_maxTime(self)
 
 
     def currentTime(self) -> "double":
-        """
-        currentTime(ApproximationScheme self) -> double
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """currentTime(self) -> double"""
         return _pyAgrum.ApproximationScheme_currentTime(self)
 
 
     def disableMaxTime(self) -> "void":
-        """
-        disableMaxTime(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """disableMaxTime(self)"""
         return _pyAgrum.ApproximationScheme_disableMaxTime(self)
 
 
     def enableMaxTime(self) -> "void":
-        """
-        enableMaxTime(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """enableMaxTime(self)"""
         return _pyAgrum.ApproximationScheme_enableMaxTime(self)
 
 
     def isEnabledMaxTime(self) -> "bool":
-        """
-        isEnabledMaxTime(ApproximationScheme self) -> bool
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """isEnabledMaxTime(self) -> bool"""
         return _pyAgrum.ApproximationScheme_isEnabledMaxTime(self)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """
-        setPeriodSize(ApproximationScheme self, gum::Size p)
-
-        Parameters
-        ----------
-        p: gum::Size
-
-        """
+        """setPeriodSize(self, p)"""
         return _pyAgrum.ApproximationScheme_setPeriodSize(self, p)
 
 
     def periodSize(self) -> "gum::Size":
-        """
-        periodSize(ApproximationScheme self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """periodSize(self) -> gum::Size"""
         return _pyAgrum.ApproximationScheme_periodSize(self)
 
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
-        """
-        setBurnIn(ApproximationScheme self, gum::Size b)
-
-        Parameters
-        ----------
-        b: gum::Size
-
-        """
+        """setBurnIn(self, b)"""
         return _pyAgrum.ApproximationScheme_setBurnIn(self, b)
 
 
     def burnIn(self) -> "gum::Size":
-        """
-        burnIn(ApproximationScheme self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """burnIn(self) -> gum::Size"""
         return _pyAgrum.ApproximationScheme_burnIn(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """
-        setVerbosity(ApproximationScheme self, bool v)
-
-        Parameters
-        ----------
-        v: bool
-
-        """
+        """setVerbosity(self, v)"""
         return _pyAgrum.ApproximationScheme_setVerbosity(self, v)
 
 
     def verbosity(self) -> "bool":
-        """
-        verbosity(ApproximationScheme self) -> bool
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """verbosity(self) -> bool"""
         return _pyAgrum.ApproximationScheme_verbosity(self)
 
 
     def stateApproximationScheme(self) -> "gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE":
-        """
-        stateApproximationScheme(ApproximationScheme self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """stateApproximationScheme(self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE"""
         return _pyAgrum.ApproximationScheme_stateApproximationScheme(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """
-        nbrIterations(ApproximationScheme self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """nbrIterations(self) -> gum::Size"""
         return _pyAgrum.ApproximationScheme_nbrIterations(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """
-        history(ApproximationScheme self) -> Vector_double
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme const *
-
-        """
+        """history(self) -> Vector_double"""
         return _pyAgrum.ApproximationScheme_history(self)
 
 
     def initApproximationScheme(self) -> "void":
-        """
-        initApproximationScheme(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """initApproximationScheme(self)"""
         return _pyAgrum.ApproximationScheme_initApproximationScheme(self)
 
 
     def startOfPeriod(self) -> "bool":
-        """
-        startOfPeriod(ApproximationScheme self) -> bool
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """startOfPeriod(self) -> bool"""
         return _pyAgrum.ApproximationScheme_startOfPeriod(self)
 
 
     def updateApproximationScheme(self, incr: 'unsigned int'=1) -> "void":
         """
-        updateApproximationScheme(ApproximationScheme self, unsigned int incr=1)
-
-        Parameters
-        ----------
-        incr: unsigned int
-
-        updateApproximationScheme(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
+        updateApproximationScheme(self, incr=1)
+        updateApproximationScheme(self)
         """
         return _pyAgrum.ApproximationScheme_updateApproximationScheme(self, incr)
 
 
     def remainingBurnIn(self) -> "gum::Size":
-        """
-        remainingBurnIn(ApproximationScheme self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """remainingBurnIn(self) -> gum::Size"""
         return _pyAgrum.ApproximationScheme_remainingBurnIn(self)
 
 
     def stopApproximationScheme(self) -> "void":
-        """
-        stopApproximationScheme(ApproximationScheme self)
-
-        Parameters
-        ----------
-        self: gum::ApproximationScheme *
-
-        """
+        """stopApproximationScheme(self)"""
         return _pyAgrum.ApproximationScheme_stopApproximationScheme(self)
 
 
     def continueApproximationScheme(self, error: 'double') -> "bool":
-        """
-        continueApproximationScheme(ApproximationScheme self, double error) -> bool
-
-        Parameters
-        ----------
-        error: double
-
-        """
+        """continueApproximationScheme(self, error) -> bool"""
         return _pyAgrum.ApproximationScheme_continueApproximationScheme(self, error)
 
 ApproximationScheme_swigregister = _pyAgrum.ApproximationScheme_swigregister
@@ -8712,14 +4540,7 @@ FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_
 FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
 def randomDistribution_double(n: 'gum::Size') -> "std::vector< double,std::allocator< double > >":
-    """
-    randomDistribution_double(gum::Size n) -> Vector_double
-
-    Parameters
-    ----------
-    n: gum::Size
-
-    """
+    """randomDistribution_double(n) -> Vector_double"""
     return _pyAgrum.randomDistribution_double(n)
 class DiscretizedVariable_double(DiscreteVariable):
     """Proxy of C++ gum::DiscretizedVariable<(double)> class."""
@@ -8736,19 +4557,8 @@ class DiscretizedVariable_double(DiscreteVariable):
 
     def __init__(self, *args):
         """
-        __init__(gum::DiscretizedVariable<(double)> self, std::string const & aName, std::string const & aDesc) -> DiscretizedVariable_double
-
-        Parameters
-        ----------
-        aName: std::string const &
-        aDesc: std::string const &
-
-        __init__(gum::DiscretizedVariable<(double)> self, DiscretizedVariable_double aDRV) -> DiscretizedVariable_double
-
-        Parameters
-        ----------
-        aDRV: gum::DiscretizedVariable< double > const &
-
+        __init__(self, aName, aDesc) -> DiscretizedVariable_double
+        __init__(self, aDRV) -> DiscretizedVariable_double
         """
         this = _pyAgrum.new_DiscretizedVariable_double(*args)
         try:
@@ -8759,38 +4569,17 @@ class DiscretizedVariable_double(DiscreteVariable):
     __del__ = lambda self: None
 
     def clone(self) -> "gum::DiscreteVariable *":
-        """
-        clone(DiscretizedVariable_double self) -> DiscreteVariable
-
-        Parameters
-        ----------
-        self: gum::DiscretizedVariable< double > const *
-
-        """
+        """clone(self) -> DiscreteVariable"""
         return _pyAgrum.DiscretizedVariable_double_clone(self)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
-        """
-        varType(DiscretizedVariable_double self) -> gum::DiscreteVariable::VarType
-
-        Parameters
-        ----------
-        self: gum::DiscretizedVariable< double > const *
-
-        """
+        """varType(self) -> gum::DiscreteVariable::VarType"""
         return _pyAgrum.DiscretizedVariable_double_varType(self)
 
 
     def isTick(self, aTick: 'double const &') -> "bool":
-        """
-        isTick(DiscretizedVariable_double self, double const & aTick) -> bool
-
-        Parameters
-        ----------
-        aTick: double const &
-
-        """
+        """isTick(self, aTick) -> bool"""
         return _pyAgrum.DiscretizedVariable_double_isTick(self, aTick)
 
 
@@ -8801,86 +4590,37 @@ class DiscretizedVariable_double(DiscreteVariable):
 
 
     def eraseTicks(self) -> "void":
-        """
-        eraseTicks(DiscretizedVariable_double self)
-
-        Parameters
-        ----------
-        self: gum::DiscretizedVariable< double > *
-
-        """
+        """eraseTicks(self)"""
         return _pyAgrum.DiscretizedVariable_double_eraseTicks(self)
 
 
     def label(self, i: 'gum::Idx') -> "std::string":
-        """
-        label(DiscretizedVariable_double self, gum::Idx i) -> std::string
-
-        Parameters
-        ----------
-        i: gum::Idx
-
-        """
+        """label(self, i) -> std::string"""
         return _pyAgrum.DiscretizedVariable_double_label(self, i)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
-        """
-        numerical(DiscretizedVariable_double self, gum::Idx indice) -> double
-
-        Parameters
-        ----------
-        indice: gum::Idx
-
-        """
+        """numerical(self, indice) -> double"""
         return _pyAgrum.DiscretizedVariable_double_numerical(self, indice)
 
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
-        """
-        index(DiscretizedVariable_double self, std::string const & label) -> gum::Idx
-
-        Parameters
-        ----------
-        label: std::string const &
-
-        """
+        """index(self, label) -> gum::Idx"""
         return _pyAgrum.DiscretizedVariable_double_index(self, label)
 
 
     def domainSize(self) -> "gum::Size":
-        """
-        domainSize(DiscretizedVariable_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::DiscretizedVariable< double > const *
-
-        """
+        """domainSize(self) -> gum::Size"""
         return _pyAgrum.DiscretizedVariable_double_domainSize(self)
 
 
     def domain(self) -> "std::string const":
-        """
-        domain(DiscretizedVariable_double self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::DiscretizedVariable< double > const *
-
-        """
+        """domain(self) -> std::string const"""
         return _pyAgrum.DiscretizedVariable_double_domain(self)
 
 
     def tick(self, i: 'gum::Idx') -> "double const &":
-        """
-        tick(DiscretizedVariable_double self, gum::Idx i) -> double const &
-
-        Parameters
-        ----------
-        i: gum::Idx
-
-        """
+        """tick(self, i) -> double const &"""
         return _pyAgrum.DiscretizedVariable_double_tick(self, i)
 
 DiscretizedVariable_double_swigregister = _pyAgrum.DiscretizedVariable_double_swigregister
@@ -8901,236 +4641,106 @@ class MultiDimContainer_double(_object):
     __del__ = lambda self: None
 
     def set(self, i: 'Instantiation', value: 'double const &') -> "void":
-        """
-        set(MultiDimContainer_double self, Instantiation i, double const & value)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-        value: double const &
-
-        """
+        """set(self, i, value)"""
         return _pyAgrum.MultiDimContainer_double_set(self, i, value)
 
 
     def get(self, i: 'Instantiation') -> "double":
-        """
-        get(MultiDimContainer_double self, Instantiation i) -> double
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """get(self, i) -> double"""
         return _pyAgrum.MultiDimContainer_double_get(self, i)
 
 
     def fill(self, d: 'double const &') -> "void":
-        """
-        fill(MultiDimContainer_double self, double const & d)
-
-        Parameters
-        ----------
-        d: double const &
-
-        """
+        """fill(self, d)"""
         return _pyAgrum.MultiDimContainer_double_fill(self, d)
 
 
     def populate(self, *args) -> "void":
         """
-        populate(MultiDimContainer_double self, Vector_double v)
-
-        Parameters
-        ----------
-        v: std::vector< double,std::allocator< double > > const &
-
-        populate(MultiDimContainer_double self, std::initializer_list< double > l)
-
-        Parameters
-        ----------
-        l: std::initializer_list< double >
-
+        populate(self, v)
+        populate(self, l)
         """
         return _pyAgrum.MultiDimContainer_double_populate(self, *args)
 
 
     def copyFrom(self, *args) -> "void":
         """
-        copyFrom(MultiDimContainer_double self, MultiDimContainer_double src)
-
-        Parameters
-        ----------
-        src: gum::MultiDimContainer< double > const &
-
-        copyFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation p_i)
-
-        Parameters
-        ----------
-        src: gum::MultiDimContainer< double > const &
-        p_i: gum::Instantiation *
-
+        copyFrom(self, src)
+        copyFrom(self, src, p_i)
         """
         return _pyAgrum.MultiDimContainer_double_copyFrom(self, *args)
 
 
     def extractFrom(self, src: 'MultiDimContainer_double', mask: 'Instantiation') -> "void":
-        """
-        extractFrom(MultiDimContainer_double self, MultiDimContainer_double src, Instantiation mask)
-
-        Parameters
-        ----------
-        src: gum::MultiDimContainer< double > const &
-        mask: gum::Instantiation const &
-
-        """
+        """extractFrom(self, src, mask)"""
         return _pyAgrum.MultiDimContainer_double_extractFrom(self, src, mask)
 
 
     def content(self, *args) -> "gum::MultiDimImplementation< double > *":
         """
-        content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > const
-        content(MultiDimContainer_double self) -> gum::MultiDimImplementation< double > *
-
-        Parameters
-        ----------
-        self: gum::MultiDimContainer< double > *
-
+        content(self) -> gum::MultiDimImplementation< double > const
+        content(self) -> gum::MultiDimImplementation< double > *
         """
         return _pyAgrum.MultiDimContainer_double_content(self, *args)
 
 
     def getMasterRef(self, *args) -> "gum::MultiDimAdressable const &":
         """
-        getMasterRef(MultiDimContainer_double self) -> MultiDimAdressable
-        getMasterRef(MultiDimContainer_double self) -> MultiDimAdressable
-
-        Parameters
-        ----------
-        self: gum::MultiDimContainer< double > const *
-
+        getMasterRef(self) -> MultiDimAdressable
+        getMasterRef(self) -> MultiDimAdressable
         """
         return _pyAgrum.MultiDimContainer_double_getMasterRef(self, *args)
 
 
     def copy(self, src: 'MultiDimContainer_double') -> "void":
-        """
-        copy(MultiDimContainer_double self, MultiDimContainer_double src)
-
-        Parameters
-        ----------
-        src: gum::MultiDimContainer< double > const &
-
-        """
+        """copy(self, src)"""
         return _pyAgrum.MultiDimContainer_double_copy(self, src)
 
 
     def newFactory(self) -> "gum::MultiDimContainer< double > *":
-        """
-        newFactory(MultiDimContainer_double self) -> MultiDimContainer_double
-
-        Parameters
-        ----------
-        self: gum::MultiDimContainer< double > const *
-
-        """
+        """newFactory(self) -> MultiDimContainer_double"""
         return _pyAgrum.MultiDimContainer_double_newFactory(self)
 
 
     def __str__(self) -> "std::string const":
-        """
-        __str__(MultiDimContainer_double self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::MultiDimContainer< double > const *
-
-        """
+        """__str__(self) -> std::string const"""
         return _pyAgrum.MultiDimContainer_double___str__(self)
 
 
     def toString(self, i: 'Instantiation') -> "std::string const":
-        """
-        toString(MultiDimContainer_double self, Instantiation i) -> std::string const
-
-        Parameters
-        ----------
-        i: gum::Instantiation const *
-
-        """
+        """toString(self, i) -> std::string const"""
         return _pyAgrum.MultiDimContainer_double_toString(self, i)
 
 
     def __eq__(self, p: 'MultiDimContainer_double') -> "bool":
-        """
-        __eq__(MultiDimContainer_double self, MultiDimContainer_double p) -> bool
-
-        Parameters
-        ----------
-        p: gum::MultiDimContainer< double > const &
-
-        """
+        """__eq__(self, p) -> bool"""
         return _pyAgrum.MultiDimContainer_double___eq__(self, p)
 
 
     def __ne__(self, p: 'MultiDimContainer_double') -> "bool":
-        """
-        __ne__(MultiDimContainer_double self, MultiDimContainer_double p) -> bool
-
-        Parameters
-        ----------
-        p: gum::MultiDimContainer< double > const &
-
-        """
+        """__ne__(self, p) -> bool"""
         return _pyAgrum.MultiDimContainer_double___ne__(self, p)
 
 
     def apply(self, f: 'std::function< double (double) >') -> "void":
-        """
-        apply(MultiDimContainer_double self, std::function< double (double) > f)
-
-        Parameters
-        ----------
-        f: std::function< double (double) >
-
-        """
+        """apply(self, f)"""
         return _pyAgrum.MultiDimContainer_double_apply(self, f)
 
 
     def reduce(self, f: 'std::function< double (double,double) >', base: 'double') -> "double":
-        """
-        reduce(MultiDimContainer_double self, std::function< double (double,double) > f, double base) -> double
-
-        Parameters
-        ----------
-        f: std::function< double (double,double) >
-        base: double
-
-        """
+        """reduce(self, f, base) -> double"""
         return _pyAgrum.MultiDimContainer_double_reduce(self, f, base)
 
 
     def beginMultipleChanges(self) -> "void":
-        """
-        beginMultipleChanges(MultiDimContainer_double self)
-
-        Parameters
-        ----------
-        self: gum::MultiDimContainer< double > *
-
-        """
+        """beginMultipleChanges(self)"""
         return _pyAgrum.MultiDimContainer_double_beginMultipleChanges(self)
 
 
     def endMultipleChanges(self, *args) -> "void":
         """
-        endMultipleChanges(MultiDimContainer_double self)
-        endMultipleChanges(MultiDimContainer_double self, double const & v)
-
-        Parameters
-        ----------
-        v: double const &
-
+        endMultipleChanges(self)
+        endMultipleChanges(self, v)
         """
         return _pyAgrum.MultiDimContainer_double_endMultipleChanges(self, *args)
 
@@ -9148,32 +4758,11 @@ class Potential_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::Potential<(double)> self) -> Potential_double
-        __init__(gum::Potential<(double)> self, gum::MultiDimImplementation< double > * aContent) -> Potential_double
-
-        Parameters
-        ----------
-        aContent: gum::MultiDimImplementation< double > *
-
-        __init__(gum::Potential<(double)> self, gum::MultiDimImplementation< double > * aContent, MultiDimContainer_double src) -> Potential_double
-
-        Parameters
-        ----------
-        aContent: gum::MultiDimImplementation< double > *
-        src: gum::MultiDimContainer< double > const &
-
-        __init__(gum::Potential<(double)> self, Potential_double src) -> Potential_double
-
-        Parameters
-        ----------
-        src: gum::Potential< double > const &
-
-        __init__(gum::Potential<(double)> self, Potential_double arg2) -> Potential_double
-
-        Parameters
-        ----------
-        from: gum::Potential< double > &&
-
+        __init__(self) -> Potential_double
+        __init__(self, aContent) -> Potential_double
+        __init__(self, aContent, src) -> Potential_double
+        __init__(self, src) -> Potential_double
+        __init__(self, arg2) -> Potential_double
         """
         this = _pyAgrum.new_Potential_double(*args)
         try:
@@ -9189,127 +4778,54 @@ class Potential_double(_object):
     __del__ = lambda self: None
 
     def newFactory(self) -> "gum::Potential< double > *":
-        """
-        newFactory(Potential_double self) -> Potential_double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """newFactory(self) -> Potential_double"""
         return _pyAgrum.Potential_double_newFactory(self)
 
 
     def isNonZeroMap(self) -> "gum::Potential< double >":
-        """
-        isNonZeroMap(Potential_double self) -> Potential_double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """isNonZeroMap(self) -> Potential_double"""
         return _pyAgrum.Potential_double_isNonZeroMap(self)
 
 
     def sum(self) -> "double":
-        """
-        sum(Potential_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """sum(self) -> double"""
         return _pyAgrum.Potential_double_sum(self)
 
 
     def product(self) -> "double":
-        """
-        product(Potential_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """product(self) -> double"""
         return _pyAgrum.Potential_double_product(self)
 
 
     def max(self) -> "double":
-        """
-        max(Potential_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """max(self) -> double"""
         return _pyAgrum.Potential_double_max(self)
 
 
     def min(self) -> "double":
-        """
-        min(Potential_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """min(self) -> double"""
         return _pyAgrum.Potential_double_min(self)
 
 
     def maxNonOne(self) -> "double":
-        """
-        maxNonOne(Potential_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """maxNonOne(self) -> double"""
         return _pyAgrum.Potential_double_maxNonOne(self)
 
 
     def minNonZero(self) -> "double":
-        """
-        minNonZero(Potential_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """minNonZero(self) -> double"""
         return _pyAgrum.Potential_double_minNonZero(self)
 
 
     def entropy(self) -> "double":
-        """
-        entropy(Potential_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """entropy(self) -> double"""
         return _pyAgrum.Potential_double_entropy(self)
 
 
     def fillWith(self, *args) -> "gum::Potential< double > const &":
         """
-        fillWith(Potential_double self, Vector_double v) -> Potential_double
-
-        Parameters
-        ----------
-        v: std::vector< double,std::allocator< double > > const &
-
-        fillWith(Potential_double self, double const & v) -> Potential_double
-
-        Parameters
-        ----------
-        v: double const &
-
+        fillWith(self, v) -> Potential_double
+        fillWith(self, v) -> Potential_double
         """
         val = _pyAgrum.Potential_double_fillWith(self, *args)
 
@@ -9321,14 +4837,7 @@ class Potential_double(_object):
 
 
     def abs(self) -> "gum::Potential< double > const &":
-        """
-        abs(Potential_double self) -> Potential_double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """abs(self) -> Potential_double"""
         val = _pyAgrum.Potential_double_abs(self)
 
         self._notSync=True
@@ -9339,14 +4848,7 @@ class Potential_double(_object):
 
 
     def normalize(self) -> "gum::Potential< double > const &":
-        """
-        normalize(Potential_double self) -> Potential_double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """normalize(self) -> Potential_double"""
         val = _pyAgrum.Potential_double_normalize(self)
 
         self._notSync=True
@@ -9357,14 +4859,7 @@ class Potential_double(_object):
 
 
     def sq(self) -> "gum::Potential< double > const &":
-        """
-        sq(Potential_double self) -> Potential_double
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """sq(self) -> Potential_double"""
         val = _pyAgrum.Potential_double_sq(self)
 
         self._notSync=True
@@ -9375,38 +4870,17 @@ class Potential_double(_object):
 
 
     def KL(self, p: 'Potential_double') -> "double":
-        """
-        KL(Potential_double self, Potential_double p) -> double
-
-        Parameters
-        ----------
-        p: gum::Potential< double > const &
-
-        """
+        """KL(self, p) -> double"""
         return _pyAgrum.Potential_double_KL(self, p)
 
 
     def fastKL(self, p: 'Potential_double') -> "double":
-        """
-        fastKL(Potential_double self, Potential_double p) -> double
-
-        Parameters
-        ----------
-        p: gum::Potential< double > const &
-
-        """
+        """fastKL(self, p) -> double"""
         return _pyAgrum.Potential_double_fastKL(self, p)
 
 
     def normalizeAsCPT(self) -> "void":
-        """
-        normalizeAsCPT(Potential_double self)
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """normalizeAsCPT(self)"""
         val = _pyAgrum.Potential_double_normalizeAsCPT(self)
 
         self._notSync=True
@@ -9417,14 +4891,7 @@ class Potential_double(_object):
 
 
     def scale(self, v: 'double') -> "gum::Potential< double > const &":
-        """
-        scale(Potential_double self, double v) -> Potential_double
-
-        Parameters
-        ----------
-        v: double
-
-        """
+        """scale(self, v) -> Potential_double"""
         val = _pyAgrum.Potential_double_scale(self, v)
 
         self._notSync=True
@@ -9435,14 +4902,7 @@ class Potential_double(_object):
 
 
     def translate(self, v: 'double') -> "gum::Potential< double > const &":
-        """
-        translate(Potential_double self, double v) -> Potential_double
-
-        Parameters
-        ----------
-        v: double
-
-        """
+        """translate(self, v) -> Potential_double"""
         val = _pyAgrum.Potential_double_translate(self, v)
 
         self._notSync=True
@@ -9453,74 +4913,32 @@ class Potential_double(_object):
 
 
     def __add__(self, p2: 'Potential_double') -> "gum::Potential< double >":
-        """
-        __add__(Potential_double self, Potential_double p2) -> Potential_double
-
-        Parameters
-        ----------
-        p2: gum::Potential< double > const &
-
-        """
+        """__add__(self, p2) -> Potential_double"""
         return _pyAgrum.Potential_double___add__(self, p2)
 
 
     def __sub__(self, p2: 'Potential_double') -> "gum::Potential< double >":
-        """
-        __sub__(Potential_double self, Potential_double p2) -> Potential_double
-
-        Parameters
-        ----------
-        p2: gum::Potential< double > const &
-
-        """
+        """__sub__(self, p2) -> Potential_double"""
         return _pyAgrum.Potential_double___sub__(self, p2)
 
 
     def __mul__(self, p2: 'Potential_double') -> "gum::Potential< double >":
-        """
-        __mul__(Potential_double self, Potential_double p2) -> Potential_double
-
-        Parameters
-        ----------
-        p2: gum::Potential< double > const &
-
-        """
+        """__mul__(self, p2) -> Potential_double"""
         return _pyAgrum.Potential_double___mul__(self, p2)
 
 
     def __iadd__(self, r: 'Potential_double') -> "gum::Potential< double > &":
-        """
-        __iadd__(Potential_double self, Potential_double r) -> Potential_double
-
-        Parameters
-        ----------
-        r: gum::Potential< double > const &
-
-        """
+        """__iadd__(self, r) -> Potential_double"""
         return _pyAgrum.Potential_double___iadd__(self, r)
 
 
     def __imul__(self, r: 'Potential_double') -> "gum::Potential< double > &":
-        """
-        __imul__(Potential_double self, Potential_double r) -> Potential_double
-
-        Parameters
-        ----------
-        r: gum::Potential< double > const &
-
-        """
+        """__imul__(self, r) -> Potential_double"""
         return _pyAgrum.Potential_double___imul__(self, r)
 
 
     def __isub__(self, r: 'Potential_double') -> "gum::Potential< double > &":
-        """
-        __isub__(Potential_double self, Potential_double r) -> Potential_double
-
-        Parameters
-        ----------
-        r: gum::Potential< double > const &
-
-        """
+        """__isub__(self, r) -> Potential_double"""
         return _pyAgrum.Potential_double___isub__(self, r)
 
 
@@ -9531,223 +4949,96 @@ class Potential_double(_object):
 
 
     def __str__(self) -> "std::string const":
-        """
-        __str__(Potential_double self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """__str__(self) -> std::string const"""
         return _pyAgrum.Potential_double___str__(self)
 
 
     def extract(self, *args) -> "gum::Potential< double >":
         """
-        extract(Potential_double self, Instantiation inst) -> Potential_double
-
-        Parameters
-        ----------
-        inst: gum::Instantiation const &
-
-        extract(Potential_double self, PyObject * dict) -> Potential_double
-
-        Parameters
-        ----------
-        dict: PyObject *
-
+        extract(self, inst) -> Potential_double
+        extract(self, dict) -> Potential_double
         """
         return _pyAgrum.Potential_double_extract(self, *args)
 
 
     def reorganize(self, *args) -> "gum::Potential< double >":
         """
-        reorganize(Potential_double self, std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const & vars) -> Potential_double
-
-        Parameters
-        ----------
-        vars: std::vector< gum::DiscreteVariable const *,std::allocator< gum::DiscreteVariable const * > > const &
-
-        reorganize(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
+        reorganize(self, vars) -> Potential_double
+        reorganize(self, varnames) -> Potential_double
         """
         return _pyAgrum.Potential_double_reorganize(self, *args)
 
 
     def putFirst(self, varname: 'PyObject *') -> "gum::Potential< double >":
-        """
-        putFirst(Potential_double self, PyObject * varname) -> Potential_double
-
-        Parameters
-        ----------
-        varname: PyObject *
-
-        """
+        """putFirst(self, varname) -> Potential_double"""
         return _pyAgrum.Potential_double_putFirst(self, varname)
 
 
     def margSumOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """
-        margSumOut(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
-        """
+        """margSumOut(self, varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margSumOut(self, varnames)
 
 
     def margProdOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """
-        margProdOut(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
-        """
+        """margProdOut(self, varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margProdOut(self, varnames)
 
 
     def margMaxOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """
-        margMaxOut(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
-        """
+        """margMaxOut(self, varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margMaxOut(self, varnames)
 
 
     def margMinOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """
-        margMinOut(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
-        """
+        """margMinOut(self, varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margMinOut(self, varnames)
 
 
     def margSumIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """
-        margSumIn(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
-        """
+        """margSumIn(self, varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margSumIn(self, varnames)
 
 
     def margProdIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """
-        margProdIn(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
-        """
+        """margProdIn(self, varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margProdIn(self, varnames)
 
 
     def margMaxIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """
-        margMaxIn(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
-        """
+        """margMaxIn(self, varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margMaxIn(self, varnames)
 
 
     def margMinIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """
-        margMinIn(Potential_double self, PyObject * varnames) -> Potential_double
-
-        Parameters
-        ----------
-        varnames: PyObject *
-
-        """
+        """margMinIn(self, varnames) -> Potential_double"""
         return _pyAgrum.Potential_double_margMinIn(self, varnames)
 
 
     def __truediv__(self, *args) -> "gum::Potential< double >":
         """
-        __truediv__(Potential_double self, Potential_double p2) -> Potential_double
-
-        Parameters
-        ----------
-        p2: gum::Potential< double > const &
-
-        __truediv__(Potential_double self, Potential_double b) -> Potential_double
-
-        Parameters
-        ----------
-        b: gum::Potential< double > const &
-
+        __truediv__(self, p2) -> Potential_double
+        __truediv__(self, b) -> Potential_double
         """
         return _pyAgrum.Potential_double___truediv__(self, *args)
 
 
     def __div__(self, b: 'Potential_double') -> "gum::Potential< double >":
-        """
-        __div__(Potential_double self, Potential_double b) -> Potential_double
-
-        Parameters
-        ----------
-        b: gum::Potential< double > const &
-
-        """
+        """__div__(self, b) -> Potential_double"""
         return _pyAgrum.Potential_double___div__(self, b)
 
 
     def __eq__(self, *args) -> "bool":
         """
-        __eq__(Potential_double self, Potential_double r) -> bool
-
-        Parameters
-        ----------
-        r: gum::Potential< double > const &
-
-        __eq__(Potential_double self, Potential_double b) -> bool
-
-        Parameters
-        ----------
-        b: gum::Potential< double > const &
-
+        __eq__(self, r) -> bool
+        __eq__(self, b) -> bool
         """
         return _pyAgrum.Potential_double___eq__(self, *args)
 
 
     def __ne__(self, *args) -> "bool":
         """
-        __ne__(Potential_double self, Potential_double r) -> bool
-
-        Parameters
-        ----------
-        r: gum::Potential< double > const &
-
-        __ne__(Potential_double self, Potential_double b) -> bool
-
-        Parameters
-        ----------
-        b: gum::Potential< double > const &
-
+        __ne__(self, r) -> bool
+        __ne__(self, b) -> bool
         """
         return _pyAgrum.Potential_double___ne__(self, *args)
 
@@ -9864,27 +5155,12 @@ class Potential_double(_object):
 
 
     def get(self, i: 'Instantiation') -> "double":
-        """
-        get(Potential_double self, Instantiation i) -> double
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """get(self, i) -> double"""
         return _pyAgrum.Potential_double_get(self, i)
 
 
     def set(self, i: 'Instantiation', value: 'double const &') -> "void":
-        """
-        set(Potential_double self, Instantiation i, double const & value)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-        value: double const &
-
-        """
+        """set(self, i, value)"""
         val = _pyAgrum.Potential_double_set(self, i, value)
 
         self._notSync=True
@@ -9894,98 +5170,42 @@ class Potential_double(_object):
 
 
     def empty(self) -> "bool":
-        """
-        empty(Potential_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.Potential_double_empty(self)
 
 
     def pos(self, v: 'DiscreteVariable') -> "gum::Idx":
-        """
-        pos(Potential_double self, DiscreteVariable v) -> gum::Idx
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """pos(self, v) -> gum::Idx"""
         return _pyAgrum.Potential_double_pos(self, v)
 
 
     def contains(self, v: 'DiscreteVariable') -> "bool":
-        """
-        contains(Potential_double self, DiscreteVariable v) -> bool
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """contains(self, v) -> bool"""
         return _pyAgrum.Potential_double_contains(self, v)
 
 
     def nbrDim(self) -> "gum::Idx":
-        """
-        nbrDim(Potential_double self) -> gum::Idx
-
-        Parameters
-        ----------
-        self: gum::Potential< double > const *
-
-        """
+        """nbrDim(self) -> gum::Idx"""
         return _pyAgrum.Potential_double_nbrDim(self)
 
 
     def variable(self, i: 'gum::Idx') -> "gum::DiscreteVariable const &":
-        """
-        variable(Potential_double self, gum::Idx i) -> DiscreteVariable
-
-        Parameters
-        ----------
-        i: gum::Idx
-
-        """
+        """variable(self, i) -> DiscreteVariable"""
         return _pyAgrum.Potential_double_variable(self, i)
 
 
     def populate(self, v: 'Vector_double') -> "void":
-        """
-        populate(Potential_double self, Vector_double v)
-
-        Parameters
-        ----------
-        v: std::vector< double,std::allocator< double > > const &
-
-        """
+        """populate(self, v)"""
         return _pyAgrum.Potential_double_populate(self, v)
 
 
     def fill(self, d: 'double const &') -> "void":
-        """
-        fill(Potential_double self, double const & d)
-
-        Parameters
-        ----------
-        d: double const &
-
-        """
+        """fill(self, d)"""
         return _pyAgrum.Potential_double_fill(self, d)
 
 
     def remove(self, var: 'DiscreteVariable') -> "void":
-        """
-        remove(Potential_double self, DiscreteVariable var)
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
-        """
+        """remove(self, var)"""
         val = _pyAgrum.Potential_double_remove(self, var)
 
         self._notSync=True
@@ -9995,14 +5215,7 @@ class Potential_double(_object):
 
 
     def add(self, v: 'DiscreteVariable') -> "void":
-        """
-        add(Potential_double self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """add(self, v)"""
         val = _pyAgrum.Potential_double_add(self, v)
 
         self._notSync=True
@@ -10027,19 +5240,9 @@ class UtilityTable_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::UtilityTable<(double)> self) -> UtilityTable_double
-        __init__(gum::UtilityTable<(double)> self, gum::MultiDimImplementation< double > * aContent) -> UtilityTable_double
-
-        Parameters
-        ----------
-        aContent: gum::MultiDimImplementation< double > *
-
-        __init__(gum::UtilityTable<(double)> self, UtilityTable_double toCopy) -> UtilityTable_double
-
-        Parameters
-        ----------
-        toCopy: gum::UtilityTable< double > const &
-
+        __init__(self) -> UtilityTable_double
+        __init__(self, aContent) -> UtilityTable_double
+        __init__(self, toCopy) -> UtilityTable_double
         """
         this = _pyAgrum.new_UtilityTable_double(*args)
         try:
@@ -10053,14 +5256,7 @@ class UtilityTable_double(_object):
 
 
     def newFactory(self) -> "gum::UtilityTable< double > *":
-        """
-        newFactory(UtilityTable_double self) -> UtilityTable_double
-
-        Parameters
-        ----------
-        self: gum::UtilityTable< double > const *
-
-        """
+        """newFactory(self) -> UtilityTable_double"""
         return _pyAgrum.UtilityTable_double_newFactory(self)
 
 
@@ -10144,14 +5340,7 @@ class UtilityTable_double(_object):
 
 
     def __str__(self) -> "char const *":
-        """
-        __str__(UtilityTable_double self) -> char const *
-
-        Parameters
-        ----------
-        self: gum::UtilityTable< double > *
-
-        """
+        """__str__(self) -> char const *"""
         return _pyAgrum.UtilityTable_double___str__(self)
 
 
@@ -10206,27 +5395,12 @@ class UtilityTable_double(_object):
 
 
     def get(self, i: 'Instantiation') -> "double":
-        """
-        get(UtilityTable_double self, Instantiation i) -> double
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """get(self, i) -> double"""
         return _pyAgrum.UtilityTable_double_get(self, i)
 
 
     def set(self, i: 'Instantiation', value: 'double const &') -> "void":
-        """
-        set(UtilityTable_double self, Instantiation i, double const & value)
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-        value: double const &
-
-        """
+        """set(self, i, value)"""
         val = _pyAgrum.UtilityTable_double_set(self, i, value)
 
         self._notSync=True
@@ -10236,98 +5410,42 @@ class UtilityTable_double(_object):
 
 
     def empty(self) -> "bool":
-        """
-        empty(UtilityTable_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::UtilityTable< double > const *
-
-        """
+        """empty(self) -> bool"""
         return _pyAgrum.UtilityTable_double_empty(self)
 
 
     def pos(self, v: 'DiscreteVariable') -> "gum::Idx":
-        """
-        pos(UtilityTable_double self, DiscreteVariable v) -> gum::Idx
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """pos(self, v) -> gum::Idx"""
         return _pyAgrum.UtilityTable_double_pos(self, v)
 
 
     def contains(self, v: 'DiscreteVariable') -> "bool":
-        """
-        contains(UtilityTable_double self, DiscreteVariable v) -> bool
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """contains(self, v) -> bool"""
         return _pyAgrum.UtilityTable_double_contains(self, v)
 
 
     def nbrDim(self) -> "gum::Idx":
-        """
-        nbrDim(UtilityTable_double self) -> gum::Idx
-
-        Parameters
-        ----------
-        self: gum::UtilityTable< double > const *
-
-        """
+        """nbrDim(self) -> gum::Idx"""
         return _pyAgrum.UtilityTable_double_nbrDim(self)
 
 
     def variable(self, i: 'gum::Idx') -> "gum::DiscreteVariable const &":
-        """
-        variable(UtilityTable_double self, gum::Idx i) -> DiscreteVariable
-
-        Parameters
-        ----------
-        i: gum::Idx
-
-        """
+        """variable(self, i) -> DiscreteVariable"""
         return _pyAgrum.UtilityTable_double_variable(self, i)
 
 
     def populate(self, v: 'Vector_double') -> "void":
-        """
-        populate(UtilityTable_double self, Vector_double v)
-
-        Parameters
-        ----------
-        v: std::vector< double,std::allocator< double > > const &
-
-        """
+        """populate(self, v)"""
         return _pyAgrum.UtilityTable_double_populate(self, v)
 
 
     def fill(self, d: 'double const &') -> "void":
-        """
-        fill(UtilityTable_double self, double const & d)
-
-        Parameters
-        ----------
-        d: double const &
-
-        """
+        """fill(self, d)"""
         return _pyAgrum.UtilityTable_double_fill(self, d)
 
 
     def remove(self, var: 'DiscreteVariable') -> "void":
-        """
-        remove(UtilityTable_double self, DiscreteVariable var)
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
-        """
+        """remove(self, var)"""
         val = _pyAgrum.UtilityTable_double_remove(self, var)
 
         self._notSync=True
@@ -10337,14 +5455,7 @@ class UtilityTable_double(_object):
 
 
     def add(self, v: 'DiscreteVariable') -> "void":
-        """
-        add(UtilityTable_double self, DiscreteVariable v)
-
-        Parameters
-        ----------
-        v: gum::DiscreteVariable const &
-
-        """
+        """add(self, v)"""
         val = _pyAgrum.UtilityTable_double_add(self, v)
 
         self._notSync=True
@@ -10374,311 +5485,126 @@ class IBayesNet_double(DAGmodel):
     __del__ = lambda self: None
 
     def cpt(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
-        """
-        cpt(IBayesNet_double self, gum::NodeId varId) -> Potential_double
-
-        Parameters
-        ----------
-        varId: gum::NodeId
-
-        """
+        """cpt(self, varId) -> Potential_double"""
         return _pyAgrum.IBayesNet_double_cpt(self, varId)
 
 
     def variableNodeMap(self) -> "gum::VariableNodeMap const &":
-        """
-        variableNodeMap(IBayesNet_double self) -> VariableNodeMap
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """variableNodeMap(self) -> VariableNodeMap"""
         return _pyAgrum.IBayesNet_double_variableNodeMap(self)
 
 
     def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
-        """
-        variable(IBayesNet_double self, gum::NodeId id) -> DiscreteVariable
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """variable(self, id) -> DiscreteVariable"""
         return _pyAgrum.IBayesNet_double_variable(self, id)
 
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        nodeId(IBayesNet_double self, DiscreteVariable var) -> gum::NodeId
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
-        """
+        """nodeId(self, var) -> gum::NodeId"""
         return _pyAgrum.IBayesNet_double_nodeId(self, var)
 
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
-        """
-        idFromName(IBayesNet_double self, std::string const & name) -> gum::NodeId
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """idFromName(self, name) -> gum::NodeId"""
         return _pyAgrum.IBayesNet_double_idFromName(self, name)
 
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
-        """
-        variableFromName(IBayesNet_double self, std::string const & name) -> DiscreteVariable
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """variableFromName(self, name) -> DiscreteVariable"""
         return _pyAgrum.IBayesNet_double_variableFromName(self, name)
 
 
     def jointProbability(self, i: 'Instantiation') -> "double":
-        """
-        jointProbability(IBayesNet_double self, Instantiation i) -> double
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """jointProbability(self, i) -> double"""
         return _pyAgrum.IBayesNet_double_jointProbability(self, i)
 
 
     def log2JointProbability(self, i: 'Instantiation') -> "double":
-        """
-        log2JointProbability(IBayesNet_double self, Instantiation i) -> double
-
-        Parameters
-        ----------
-        i: gum::Instantiation const &
-
-        """
+        """log2JointProbability(self, i) -> double"""
         return _pyAgrum.IBayesNet_double_log2JointProbability(self, i)
 
 
     def __eq__(self, src: 'IBayesNet_double') -> "bool":
-        """
-        __eq__(IBayesNet_double self, IBayesNet_double src) -> bool
-
-        Parameters
-        ----------
-        src: gum::IBayesNet< double > const &
-
-        """
+        """__eq__(self, src) -> bool"""
         return _pyAgrum.IBayesNet_double___eq__(self, src)
 
 
     def __ne__(self, src: 'IBayesNet_double') -> "bool":
-        """
-        __ne__(IBayesNet_double self, IBayesNet_double src) -> bool
-
-        Parameters
-        ----------
-        src: gum::IBayesNet< double > const &
-
-        """
+        """__ne__(self, src) -> bool"""
         return _pyAgrum.IBayesNet_double___ne__(self, src)
 
 
     def dim(self) -> "gum::Size":
-        """
-        dim(IBayesNet_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """dim(self) -> gum::Size"""
         return _pyAgrum.IBayesNet_double_dim(self)
 
 
     def maxVarDomainSize(self) -> "gum::Size":
-        """
-        maxVarDomainSize(IBayesNet_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """maxVarDomainSize(self) -> gum::Size"""
         return _pyAgrum.IBayesNet_double_maxVarDomainSize(self)
 
 
     def minParam(self) -> "double":
-        """
-        minParam(IBayesNet_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """minParam(self) -> double"""
         return _pyAgrum.IBayesNet_double_minParam(self)
 
 
     def maxParam(self) -> "double":
-        """
-        maxParam(IBayesNet_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """maxParam(self) -> double"""
         return _pyAgrum.IBayesNet_double_maxParam(self)
 
 
     def minNonZeroParam(self) -> "double":
-        """
-        minNonZeroParam(IBayesNet_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """minNonZeroParam(self) -> double"""
         return _pyAgrum.IBayesNet_double_minNonZeroParam(self)
 
 
     def maxNonOneParam(self) -> "double":
-        """
-        maxNonOneParam(IBayesNet_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """maxNonOneParam(self) -> double"""
         return _pyAgrum.IBayesNet_double_maxNonOneParam(self)
 
 
     def toDot(self) -> "std::string":
-        """
-        toDot(IBayesNet_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """toDot(self) -> std::string"""
         return _pyAgrum.IBayesNet_double_toDot(self)
 
 
     def __str__(self) -> "std::string":
-        """
-        __str__(IBayesNet_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """__str__(self) -> std::string"""
         return _pyAgrum.IBayesNet_double___str__(self)
 
 
     def ids(self) -> "PyObject *":
-        """
-        ids(IBayesNet_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > *
-
-        """
+        """ids(self) -> PyObject *"""
         return _pyAgrum.IBayesNet_double_ids(self)
 
 
     def names(self) -> "PyObject *":
-        """
-        names(IBayesNet_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > const *
-
-        """
+        """names(self) -> PyObject *"""
         return _pyAgrum.IBayesNet_double_names(self)
 
 
     def arcs(self) -> "PyObject *":
-        """
-        arcs(IBayesNet_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::IBayesNet< double > *
-
-        """
+        """arcs(self) -> PyObject *"""
         return _pyAgrum.IBayesNet_double_arcs(self)
 
 
     def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        parents(IBayesNet_double self, gum::NodeId const id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """parents(self, id) -> PyObject *"""
         return _pyAgrum.IBayesNet_double_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        children(IBayesNet_double self, gum::NodeId const id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """children(self, id) -> PyObject *"""
         return _pyAgrum.IBayesNet_double_children(self, id)
 
 
     def minimalCondSet(self, *args) -> "PyObject *":
         """
-        minimalCondSet(IBayesNet_double self, gum::NodeId target, gum::NodeSet const & soids) -> gum::NodeSet
-
-        Parameters
-        ----------
-        target: gum::NodeId
-        soids: gum::NodeSet const &
-
-        minimalCondSet(IBayesNet_double self, gum::NodeSet const & target, gum::NodeSet const & soids) -> gum::NodeSet
-
-        Parameters
-        ----------
-        target: gum::NodeSet const &
-        soids: gum::NodeSet const &
-
-        minimalCondSet(IBayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject
-
-        Parameters
-        ----------
-        target: gum::NodeId
-        list: PyObject *
-
-        minimalCondSet(IBayesNet_double self, PyObject * targets, PyObject * list) -> PyObject *
-
-        Parameters
-        ----------
-        targets: PyObject *
-        list: PyObject *
-
+        minimalCondSet(self, target, soids) -> gum::NodeSet
+        minimalCondSet(self, target, soids) -> gum::NodeSet
+        minimalCondSet(self, target, list) -> PyObject
+        minimalCondSet(self, targets, list) -> PyObject *
         """
         return _pyAgrum.IBayesNet_double_minimalCondSet(self, *args)
 
@@ -10686,7 +5612,22 @@ IBayesNet_double_swigregister = _pyAgrum.IBayesNet_double_swigregister
 IBayesNet_double_swigregister(IBayesNet_double)
 
 class BayesNet_double(IBayesNet_double):
-    """Proxy of C++ gum::BayesNet<(double)> class."""
+    """
+
+    BayesNet represents a Bayesian Network.
+
+    Parameters
+    ==========
+    problem : :class:`~openturns.OptimizationProblem`
+        Optimization problem to solve.
+    tau : float
+        Multiplicative decrease of linear step.
+    omega : float
+        Armijo factor.
+    smooth : float
+        Growing factor in penalization term.
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [IBayesNet_double]:
@@ -10700,19 +5641,8 @@ class BayesNet_double(IBayesNet_double):
 
     def fastPrototype(dotlike: 'std::string const &', domainSize: 'gum::Size'=2) -> "gum::BayesNet< double >":
         """
-        fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> BayesNet_double
-
-        Parameters
-        ----------
-        dotlike: std::string const &
-        domainSize: gum::Size
-
-        fastPrototype(std::string const & dotlike) -> BayesNet_double
-
-        Parameters
-        ----------
-        dotlike: std::string const &
-
+        fastPrototype(dotlike, domainSize=2) -> BayesNet_double
+        fastPrototype(dotlike) -> BayesNet_double
         """
         return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
 
@@ -10722,19 +5652,9 @@ class BayesNet_double(IBayesNet_double):
 
     def __init__(self, *args):
         """
-        __init__(gum::BayesNet<(double)> self) -> BayesNet_double
-        __init__(gum::BayesNet<(double)> self, std::string name) -> BayesNet_double
-
-        Parameters
-        ----------
-        name: std::string
-
-        __init__(gum::BayesNet<(double)> self, BayesNet_double source) -> BayesNet_double
-
-        Parameters
-        ----------
-        source: gum::BayesNet< double > const &
-
+        __init__(self) -> BayesNet_double
+        __init__(self, name) -> BayesNet_double
+        __init__(self, source) -> BayesNet_double
         """
         this = _pyAgrum.new_BayesNet_double(*args)
         try:
@@ -10744,18 +5664,8 @@ class BayesNet_double(IBayesNet_double):
 
     def cpt(self, *args) -> "gum::Potential< double > const &":
         """
-        cpt(BayesNet_double self, gum::NodeId varId) -> Potential_double
-
-        Parameters
-        ----------
-        varId: gum::NodeId
-
-        cpt(BayesNet_double self, std::string const & name) -> Potential_double
-
-        Parameters
-        ----------
-        name: std::string const &
-
+        cpt(self, varId) -> Potential_double
+        cpt(self, name) -> Potential_double
         """
         val = _pyAgrum.BayesNet_double_cpt(self, *args)
 
@@ -10766,862 +5676,340 @@ class BayesNet_double(IBayesNet_double):
 
 
     def variableNodeMap(self) -> "gum::VariableNodeMap const &":
-        """
-        variableNodeMap(BayesNet_double self) -> VariableNodeMap
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > const *
-
-        """
+        """variableNodeMap(self) -> VariableNodeMap"""
         return _pyAgrum.BayesNet_double_variableNodeMap(self)
 
 
     def add(self, *args) -> "gum::NodeId":
         """
-        add(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        add(BayesNet_double self, std::string const & name, unsigned int nbrmod) -> gum::NodeId
-
-        Parameters
-        ----------
-        name: std::string const &
-        nbrmod: unsigned int
-
-        add(BayesNet_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        aContent: gum::MultiDimImplementation< double > *
-
-        add(BayesNet_double self, DiscreteVariable variable, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        id: gum::NodeId
-
-        add(BayesNet_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        aContent: gum::MultiDimImplementation< double > *
-        id: gum::NodeId
-
+        add(self, variable) -> gum::NodeId
+        add(self, name, nbrmod) -> gum::NodeId
+        add(self, variable, aContent) -> gum::NodeId
+        add(self, variable, id) -> gum::NodeId
+        add(self, variable, aContent, id) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_add(self, *args)
 
 
     def erase(self, *args) -> "void":
         """
-        erase(BayesNet_double self, gum::NodeId id)
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        erase(BayesNet_double self, std::string const & name)
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        erase(BayesNet_double self, DiscreteVariable var)
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
+        erase(self, id)
+        erase(self, name)
+        erase(self, var)
         """
         return _pyAgrum.BayesNet_double_erase(self, *args)
 
 
     def variable(self, *args) -> "gum::DiscreteVariable const &":
         """
-        variable(BayesNet_double self, gum::NodeId id) -> DiscreteVariable
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        variable(BayesNet_double self, std::string const & name) -> DiscreteVariable
-
-        Parameters
-        ----------
-        name: std::string const &
-
+        variable(self, id) -> DiscreteVariable
+        variable(self, name) -> DiscreteVariable
         """
         return _pyAgrum.BayesNet_double_variable(self, *args)
 
 
     def changeVariableName(self, *args) -> "void":
         """
-        changeVariableName(BayesNet_double self, gum::NodeId id, std::string const & new_name)
-
-        Parameters
-        ----------
-        id: gum::NodeId
-        new_name: std::string const &
-
-        changeVariableName(BayesNet_double self, std::string const & name, std::string const & new_name)
-
-        Parameters
-        ----------
-        name: std::string const &
-        new_name: std::string const &
-
+        changeVariableName(self, id, new_name)
+        changeVariableName(self, name, new_name)
         """
         return _pyAgrum.BayesNet_double_changeVariableName(self, *args)
 
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        nodeId(BayesNet_double self, DiscreteVariable var) -> gum::NodeId
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
-        """
+        """nodeId(self, var) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_nodeId(self, var)
 
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
-        """
-        idFromName(BayesNet_double self, std::string const & name) -> gum::NodeId
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """idFromName(self, name) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_idFromName(self, name)
 
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
-        """
-        variableFromName(BayesNet_double self, std::string const & name) -> DiscreteVariable
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """variableFromName(self, name) -> DiscreteVariable"""
         return _pyAgrum.BayesNet_double_variableFromName(self, name)
 
 
     def addArc(self, *args) -> "void":
         """
-        addArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId
-        head: gum::NodeId
-
-        addArc(BayesNet_double self, std::string const & tail, std::string const & head)
-
-        Parameters
-        ----------
-        tail: std::string const &
-        head: std::string const &
-
+        addArc(self, tail, head)
+        addArc(self, tail, head)
         """
         return _pyAgrum.BayesNet_double_addArc(self, *args)
 
 
     def eraseArc(self, *args) -> "void":
         """
-        eraseArc(BayesNet_double self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        eraseArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId
-        head: gum::NodeId
-
-        eraseArc(BayesNet_double self, std::string const & tail, std::string const & head)
-
-        Parameters
-        ----------
-        tail: std::string const &
-        head: std::string const &
-
+        eraseArc(self, arc)
+        eraseArc(self, tail, head)
+        eraseArc(self, tail, head)
         """
         return _pyAgrum.BayesNet_double_eraseArc(self, *args)
 
 
     def beginTopologyTransformation(self) -> "void":
-        """
-        beginTopologyTransformation(BayesNet_double self)
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > *
-
-        """
+        """beginTopologyTransformation(self)"""
         return _pyAgrum.BayesNet_double_beginTopologyTransformation(self)
 
 
     def endTopologyTransformation(self) -> "void":
-        """
-        endTopologyTransformation(BayesNet_double self)
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > *
-
-        """
+        """endTopologyTransformation(self)"""
         return _pyAgrum.BayesNet_double_endTopologyTransformation(self)
 
 
     def reverseArc(self, *args) -> "void":
         """
-        reverseArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId
-        head: gum::NodeId
-
-        reverseArc(BayesNet_double self, std::string const & tail, std::string const & head)
-
-        Parameters
-        ----------
-        tail: std::string const &
-        head: std::string const &
-
-        reverseArc(BayesNet_double self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
+        reverseArc(self, tail, head)
+        reverseArc(self, tail, head)
+        reverseArc(self, arc)
         """
         return _pyAgrum.BayesNet_double_reverseArc(self, *args)
 
 
     def addNoisyOR(self, *args) -> "gum::NodeId":
         """
-        addNoisyOR(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-
-        addNoisyOR(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-        id: gum::NodeId
-
+        addNoisyOR(self, variable, externalWeight) -> gum::NodeId
+        addNoisyOR(self, variable, externalWeight, id) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addNoisyOR(self, *args)
 
 
     def addNoisyORNet(self, *args) -> "gum::NodeId":
         """
-        addNoisyORNet(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-
-        addNoisyORNet(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-        id: gum::NodeId
-
+        addNoisyORNet(self, variable, externalWeight) -> gum::NodeId
+        addNoisyORNet(self, variable, externalWeight, id) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addNoisyORNet(self, *args)
 
 
     def addNoisyORCompound(self, *args) -> "gum::NodeId":
         """
-        addNoisyORCompound(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-
-        addNoisyORCompound(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-        id: gum::NodeId
-
+        addNoisyORCompound(self, variable, externalWeight) -> gum::NodeId
+        addNoisyORCompound(self, variable, externalWeight, id) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addNoisyORCompound(self, *args)
 
 
     def addNoisyAND(self, *args) -> "gum::NodeId":
         """
-        addNoisyAND(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-        id: gum::NodeId
-
-        addNoisyAND(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-
+        addNoisyAND(self, variable, externalWeight, id) -> gum::NodeId
+        addNoisyAND(self, variable, externalWeight) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addNoisyAND(self, *args)
 
 
     def addLogit(self, *args) -> "gum::NodeId":
         """
-        addLogit(BayesNet_double self, DiscreteVariable variable, double externalWeight, gum::NodeId id) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-        id: gum::NodeId
-
-        addLogit(BayesNet_double self, DiscreteVariable variable, double externalWeight) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        externalWeight: double
-
+        addLogit(self, variable, externalWeight, id) -> gum::NodeId
+        addLogit(self, variable, externalWeight) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addLogit(self, *args)
 
 
     def addOR(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        addOR(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        """
+        """addOR(self, variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addOR(self, variable)
 
 
     def addAND(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        addAND(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        """
+        """addAND(self, variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addAND(self, variable)
 
 
     def addAMPLITUDE(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        addAMPLITUDE(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        """
+        """addAMPLITUDE(self, variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addAMPLITUDE(self, variable)
 
 
     def addCOUNT(self, variable: 'DiscreteVariable', Value: 'gum::Idx'=1) -> "gum::NodeId":
         """
-        addCOUNT(BayesNet_double self, DiscreteVariable variable, gum::Idx Value=1) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        Value: gum::Idx
-
-        addCOUNT(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
+        addCOUNT(self, variable, Value=1) -> gum::NodeId
+        addCOUNT(self, variable) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addCOUNT(self, variable, Value)
 
 
     def addEXISTS(self, variable: 'DiscreteVariable', Value: 'gum::Idx'=1) -> "gum::NodeId":
         """
-        addEXISTS(BayesNet_double self, DiscreteVariable variable, gum::Idx Value=1) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        Value: gum::Idx
-
-        addEXISTS(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
+        addEXISTS(self, variable, Value=1) -> gum::NodeId
+        addEXISTS(self, variable) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addEXISTS(self, variable, Value)
 
 
     def addFORALL(self, variable: 'DiscreteVariable', Value: 'gum::Idx'=1) -> "gum::NodeId":
         """
-        addFORALL(BayesNet_double self, DiscreteVariable variable, gum::Idx Value=1) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        Value: gum::Idx
-
-        addFORALL(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
+        addFORALL(self, variable, Value=1) -> gum::NodeId
+        addFORALL(self, variable) -> gum::NodeId
         """
         return _pyAgrum.BayesNet_double_addFORALL(self, variable, Value)
 
 
     def addMAX(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        addMAX(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        """
+        """addMAX(self, variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addMAX(self, variable)
 
 
     def addMEDIAN(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        addMEDIAN(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        """
+        """addMEDIAN(self, variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addMEDIAN(self, variable)
 
 
     def addMIN(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        addMIN(BayesNet_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        """
+        """addMIN(self, variable) -> gum::NodeId"""
         return _pyAgrum.BayesNet_double_addMIN(self, variable)
 
 
     def addWeightedArc(self, *args) -> "void":
         """
-        addWeightedArc(BayesNet_double self, gum::NodeId tail, gum::NodeId head, double causalWeight)
-
-        Parameters
-        ----------
-        tail: gum::NodeId
-        head: gum::NodeId
-        causalWeight: double
-
-        addWeightedArc(BayesNet_double self, std::string const & tail, std::string const & head, double causalWeight)
-
-        Parameters
-        ----------
-        tail: std::string const &
-        head: std::string const &
-        causalWeight: double
-
+        addWeightedArc(self, tail, head, causalWeight)
+        addWeightedArc(self, tail, head, causalWeight)
         """
         return _pyAgrum.BayesNet_double_addWeightedArc(self, *args)
 
 
     def generateCPTs(self) -> "void":
-        """
-        generateCPTs(BayesNet_double self)
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > const *
-
-        """
+        """generateCPTs(self)"""
         return _pyAgrum.BayesNet_double_generateCPTs(self)
 
 
     def generateCPT(self, *args) -> "void":
         """
-        generateCPT(BayesNet_double self, gum::NodeId node)
-
-        Parameters
-        ----------
-        node: gum::NodeId
-
-        generateCPT(BayesNet_double self, std::string const & name)
-
-        Parameters
-        ----------
-        name: std::string const &
-
+        generateCPT(self, node)
+        generateCPT(self, name)
         """
         return _pyAgrum.BayesNet_double_generateCPT(self, *args)
 
 
     def changePotential(self, *args) -> "void":
         """
-        changePotential(BayesNet_double self, gum::NodeId id, Potential_double newPot)
-
-        Parameters
-        ----------
-        id: gum::NodeId
-        newPot: gum::Potential< double > *
-
-        changePotential(BayesNet_double self, std::string const & name, Potential_double newPot)
-
-        Parameters
-        ----------
-        name: std::string const &
-        newPot: gum::Potential< double > *
-
+        changePotential(self, id, newPot)
+        changePotential(self, name, newPot)
         """
         return _pyAgrum.BayesNet_double_changePotential(self, *args)
 
 
     def dag(self) -> "gum::DAG const &":
-        """
-        dag(BayesNet_double self) -> DAG
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > const *
-
-        """
+        """dag(self) -> DAG"""
         return _pyAgrum.BayesNet_double_dag(self)
 
 
     def size(self) -> "gum::Size":
-        """
-        size(BayesNet_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > const *
-
-        """
+        """size(self) -> gum::Size"""
         return _pyAgrum.BayesNet_double_size(self)
 
 
     def log10DomainSize(self) -> "double":
-        """
-        log10DomainSize(BayesNet_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > const *
-
-        """
+        """log10DomainSize(self) -> double"""
         return _pyAgrum.BayesNet_double_log10DomainSize(self)
 
 
     def ids(self) -> "PyObject *":
-        """
-        ids(BayesNet_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > *
-
-        """
+        """ids(self) -> PyObject *"""
         return _pyAgrum.BayesNet_double_ids(self)
 
 
     def names(self) -> "PyObject *":
-        """
-        names(BayesNet_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > const *
-
-        """
+        """names(self) -> PyObject *"""
         return _pyAgrum.BayesNet_double_names(self)
 
 
     def arcs(self) -> "PyObject *":
-        """
-        arcs(BayesNet_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::BayesNet< double > *
-
-        """
+        """arcs(self) -> PyObject *"""
         return _pyAgrum.BayesNet_double_arcs(self)
 
 
     def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        parents(BayesNet_double self, gum::NodeId const id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """parents(self, id) -> PyObject *"""
         return _pyAgrum.BayesNet_double_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        children(BayesNet_double self, gum::NodeId const id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """children(self, id) -> PyObject *"""
         return _pyAgrum.BayesNet_double_children(self, id)
 
 
     def minimalCondSet(self, *args) -> "PyObject *":
         """
-        minimalCondSet(BayesNet_double self, gum::NodeId target, PyObject * list) -> PyObject
-
-        Parameters
-        ----------
-        target: gum::NodeId
-        list: PyObject *
-
-        minimalCondSet(BayesNet_double self, PyObject * targets, PyObject * list) -> PyObject *
-
-        Parameters
-        ----------
-        targets: PyObject *
-        list: PyObject *
-
+        minimalCondSet(self, target, list) -> PyObject
+        minimalCondSet(self, targets, list) -> PyObject *
         """
         return _pyAgrum.BayesNet_double_minimalCondSet(self, *args)
 
 
     def loadBIF(self, *args) -> "std::string":
         """
-        loadBIF(BayesNet_double self, std::string name, PyObject * l) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-        l: PyObject *
-
-        loadBIF(BayesNet_double self, std::string name) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-
+        loadBIF(self, name, l) -> std::string
+        loadBIF(self, name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadBIF(self, *args)
 
 
     def saveBIF(self, name: 'std::string') -> "void":
-        """
-        saveBIF(BayesNet_double self, std::string name)
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """saveBIF(self, name)"""
         return _pyAgrum.BayesNet_double_saveBIF(self, name)
 
 
     def loadDSL(self, *args) -> "std::string":
         """
-        loadDSL(BayesNet_double self, std::string name, PyObject * l) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-        l: PyObject *
-
-        loadDSL(BayesNet_double self, std::string name) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-
+        loadDSL(self, name, l) -> std::string
+        loadDSL(self, name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadDSL(self, *args)
 
 
     def saveDSL(self, name: 'std::string') -> "void":
-        """
-        saveDSL(BayesNet_double self, std::string name)
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """saveDSL(self, name)"""
         return _pyAgrum.BayesNet_double_saveDSL(self, name)
 
 
     def loadNET(self, *args) -> "std::string":
         """
-        loadNET(BayesNet_double self, std::string name, PyObject * l) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-        l: PyObject *
-
-        loadNET(BayesNet_double self, std::string name) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-
+        loadNET(self, name, l) -> std::string
+        loadNET(self, name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadNET(self, *args)
 
 
     def saveNET(self, name: 'std::string') -> "void":
-        """
-        saveNET(BayesNet_double self, std::string name)
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """saveNET(self, name)"""
         return _pyAgrum.BayesNet_double_saveNET(self, name)
 
 
     def loadPRM(self, *args) -> "std::string":
         """
-        loadPRM(BayesNet_double self, std::string name, std::string system, std::string classpath, PyObject * l) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-        system: std::string
-        classpath: std::string
-        l: PyObject *
-
-        loadPRM(BayesNet_double self, std::string name, std::string system, std::string classpath) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-        system: std::string
-        classpath: std::string
-
-        loadPRM(BayesNet_double self, std::string name, std::string system) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-        system: std::string
-
-        loadPRM(BayesNet_double self, std::string name) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-
+        loadPRM(self, name, system, classpath, l) -> std::string
+        loadPRM(self, name, system, classpath) -> std::string
+        loadPRM(self, name, system) -> std::string
+        loadPRM(self, name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadPRM(self, *args)
 
 
     def loadBIFXML(self, *args) -> "std::string":
         """
-        loadBIFXML(BayesNet_double self, std::string name, PyObject * l) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-        l: PyObject *
-
-        loadBIFXML(BayesNet_double self, std::string name) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-
+        loadBIFXML(self, name, l) -> std::string
+        loadBIFXML(self, name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadBIFXML(self, *args)
 
 
     def saveBIFXML(self, name: 'std::string') -> "void":
-        """
-        saveBIFXML(BayesNet_double self, std::string name)
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """saveBIFXML(self, name)"""
         return _pyAgrum.BayesNet_double_saveBIFXML(self, name)
 
 
     def loadUAI(self, *args) -> "std::string":
         """
-        loadUAI(BayesNet_double self, std::string name, PyObject * l) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-        l: PyObject *
-
-        loadUAI(BayesNet_double self, std::string name) -> std::string
-
-        Parameters
-        ----------
-        name: std::string
-
+        loadUAI(self, name, l) -> std::string
+        loadUAI(self, name) -> std::string
         """
         return _pyAgrum.BayesNet_double_loadUAI(self, *args)
 
 
     def saveUAI(self, name: 'std::string') -> "void":
-        """
-        saveUAI(BayesNet_double self, std::string name)
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """saveUAI(self, name)"""
         return _pyAgrum.BayesNet_double_saveUAI(self, name)
 
 BayesNet_double_swigregister = _pyAgrum.BayesNet_double_swigregister
@@ -11629,19 +6017,8 @@ BayesNet_double_swigregister(BayesNet_double)
 
 def BayesNet_double_fastPrototype(dotlike: 'std::string const &', domainSize: 'gum::Size'=2) -> "gum::BayesNet< double >":
     """
-    fastPrototype(std::string const & dotlike, gum::Size domainSize=2) -> BayesNet_double
-
-    Parameters
-    ----------
-    dotlike: std::string const &
-    domainSize: gum::Size
-
-    BayesNet_double_fastPrototype(std::string const & dotlike) -> BayesNet_double
-
-    Parameters
-    ----------
-    dotlike: std::string const &
-
+    fastPrototype(dotlike, domainSize=2) -> BayesNet_double
+    BayesNet_double_fastPrototype(dotlike) -> BayesNet_double
     """
     return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
 
@@ -11664,417 +6041,157 @@ class BayesNetInference_double(_object):
     __del__ = lambda self: None
 
     def setBN(self, bn: 'IBayesNet_double') -> "void":
-        """
-        setBN(BayesNetInference_double self, IBayesNet_double bn)
-
-        Parameters
-        ----------
-        bn: gum::IBayesNet< double > const *
-
-        """
+        """setBN(self, bn)"""
         return _pyAgrum.BayesNetInference_double_setBN(self, bn)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
-        """
-        BN(BayesNetInference_double self) -> IBayesNet_double
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """BN(self) -> IBayesNet_double"""
         return _pyAgrum.BayesNetInference_double_BN(self)
 
 
     def domainSizes(self) -> "gum::NodeProperty< gum::Size > const &":
-        """
-        domainSizes(BayesNetInference_double self) -> gum::NodeProperty< gum::Size > const &
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """domainSizes(self) -> gum::NodeProperty< gum::Size > const &"""
         return _pyAgrum.BayesNetInference_double_domainSizes(self)
 
 
     def isInferenceReady(self) -> "bool":
-        """
-        isInferenceReady(BayesNetInference_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """isInferenceReady(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isInferenceReady(self)
 
 
     def isDone(self) -> "bool":
-        """
-        isDone(BayesNetInference_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """isDone(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isDone(self)
 
 
     def prepareInference(self) -> "void":
-        """
-        prepareInference(BayesNetInference_double self)
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > *
-
-        """
+        """prepareInference(self)"""
         return _pyAgrum.BayesNetInference_double_prepareInference(self)
 
 
     def makeInference(self) -> "void":
-        """
-        makeInference(BayesNetInference_double self)
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.BayesNetInference_double_makeInference(self)
 
 
     def clear(self) -> "void":
-        """
-        clear(BayesNetInference_double self)
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > *
-
-        """
+        """clear(self)"""
         return _pyAgrum.BayesNetInference_double_clear(self)
 
 
     def state(self) -> "gum::BayesNetInference< double >::StateOfInference":
-        """
-        state(BayesNetInference_double self) -> gum::BayesNetInference< double >::StateOfInference
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """state(self) -> gum::BayesNetInference< double >::StateOfInference"""
         return _pyAgrum.BayesNetInference_double_state(self)
 
 
     def addEvidence(self, *args) -> "void":
         """
-        addEvidence(BayesNetInference_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        addEvidence(BayesNetInference_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        addEvidence(BayesNetInference_double self, gum::NodeId const id, std::string const & label)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        label: std::string const &
-
-        addEvidence(BayesNetInference_double self, std::string const & nodeName, std::string const & label)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        label: std::string const &
-
-        addEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        addEvidence(BayesNetInference_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
-        addEvidence(BayesNetInference_double self, Potential_double pot)
-
-        Parameters
-        ----------
-        pot: gum::Potential< double > const &
-
-        addEvidence(BayesNetInference_double self, Potential_double pot)
-
-        Parameters
-        ----------
-        pot: gum::Potential< double > &&
-
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, label)
+        addEvidence(self, nodeName, label)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        addEvidence(self, pot)
+        addEvidence(self, pot)
         """
         return _pyAgrum.BayesNetInference_double_addEvidence(self, *args)
 
 
     def addSetOfEvidence(self, potlist: 'gum::Set< gum::Potential< double > const * > const &') -> "void":
-        """
-        addSetOfEvidence(BayesNetInference_double self, gum::Set< gum::Potential< double > const * > const & potlist)
-
-        Parameters
-        ----------
-        potlist: gum::Set< gum::Potential< double > const * > const &
-
-        """
+        """addSetOfEvidence(self, potlist)"""
         return _pyAgrum.BayesNetInference_double_addSetOfEvidence(self, potlist)
 
 
     def addListOfEvidence(self, potlist: 'gum::List< gum::Potential< double > const * > const &') -> "void":
-        """
-        addListOfEvidence(BayesNetInference_double self, gum::List< gum::Potential< double > const * > const & potlist)
-
-        Parameters
-        ----------
-        potlist: gum::List< gum::Potential< double > const * > const &
-
-        """
+        """addListOfEvidence(self, potlist)"""
         return _pyAgrum.BayesNetInference_double_addListOfEvidence(self, potlist)
 
 
     def chgEvidence(self, *args) -> "void":
         """
-        chgEvidence(BayesNetInference_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        chgEvidence(BayesNetInference_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        chgEvidence(BayesNetInference_double self, gum::NodeId const id, std::string const & label)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        label: std::string const &
-
-        chgEvidence(BayesNetInference_double self, std::string const & nodeName, std::string const & label)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        label: std::string const &
-
-        chgEvidence(BayesNetInference_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        chgEvidence(BayesNetInference_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
-        chgEvidence(BayesNetInference_double self, Potential_double pot)
-
-        Parameters
-        ----------
-        pot: gum::Potential< double > const &
-
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, label)
+        chgEvidence(self, nodeName, label)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        chgEvidence(self, pot)
         """
         return _pyAgrum.BayesNetInference_double_chgEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        """
-        eraseAllEvidence(BayesNetInference_double self)
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > *
-
-        """
+        """eraseAllEvidence(self)"""
         return _pyAgrum.BayesNetInference_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args) -> "void":
         """
-        eraseEvidence(BayesNetInference_double self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        eraseEvidence(BayesNetInference_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
         """
         return _pyAgrum.BayesNetInference_double_eraseEvidence(self, *args)
 
 
     def hasEvidence(self, *args) -> "bool":
         """
-        hasEvidence(BayesNetInference_double self) -> bool
-        hasEvidence(BayesNetInference_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasEvidence(BayesNetInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasEvidence(self) -> bool
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.BayesNetInference_double_hasEvidence(self, *args)
 
 
     def hasHardEvidence(self, *args) -> "bool":
         """
-        hasHardEvidence(BayesNetInference_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasHardEvidence(BayesNetInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasHardEvidence(self, id) -> bool
+        hasHardEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.BayesNetInference_double_hasHardEvidence(self, *args)
 
 
     def hasSoftEvidence(self, *args) -> "bool":
         """
-        hasSoftEvidence(BayesNetInference_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasSoftEvidence(BayesNetInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.BayesNetInference_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
-        """
-        nbrEvidence(BayesNetInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """nbrEvidence(self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
-        """
-        nbrHardEvidence(BayesNetInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """nbrHardEvidence(self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
-        """
-        nbrSoftEvidence(BayesNetInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """nbrSoftEvidence(self) -> gum::Size"""
         return _pyAgrum.BayesNetInference_double_nbrSoftEvidence(self)
 
 
     def evidence(self) -> "gum::NodeProperty< gum::Potential< double > const * > const &":
-        """
-        evidence(BayesNetInference_double self) -> gum::NodeProperty< gum::Potential< double > const * > const &
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """evidence(self) -> gum::NodeProperty< gum::Potential< double > const * > const &"""
         return _pyAgrum.BayesNetInference_double_evidence(self)
 
 
     def softEvidenceNodes(self) -> "gum::NodeSet const &":
-        """
-        softEvidenceNodes(BayesNetInference_double self) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """softEvidenceNodes(self) -> gum::NodeSet const &"""
         return _pyAgrum.BayesNetInference_double_softEvidenceNodes(self)
 
 
     def hardEvidenceNodes(self) -> "gum::NodeSet const &":
-        """
-        hardEvidenceNodes(BayesNetInference_double self) -> gum::NodeSet const &
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """hardEvidenceNodes(self) -> gum::NodeSet const &"""
         return _pyAgrum.BayesNetInference_double_hardEvidenceNodes(self)
 
 
     def hardEvidence(self) -> "gum::NodeProperty< gum::Idx > const &":
-        """
-        hardEvidence(BayesNetInference_double self) -> gum::NodeProperty< gum::Idx > const &
-
-        Parameters
-        ----------
-        self: gum::BayesNetInference< double > const *
-
-        """
+        """hardEvidence(self) -> gum::NodeProperty< gum::Idx > const &"""
         return _pyAgrum.BayesNetInference_double_hardEvidence(self)
 
 BayesNetInference_double_swigregister = _pyAgrum.BayesNetInference_double_swigregister
@@ -12091,36 +6208,10 @@ class LazyPropagation_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4, bool use_binary_join_tree=True) -> LazyPropagation_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-        arg3: enum gum::RelevantPotentialsFinderType
-        arg4: enum gum::FindBarrenNodesType
-        use_binary_join_tree: bool
-
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::RelevantPotentialsFinderType arg3, gum::FindBarrenNodesType arg4) -> LazyPropagation_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-        arg3: enum gum::RelevantPotentialsFinderType
-        arg4: enum gum::FindBarrenNodesType
-
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN, gum::RelevantPotentialsFinderType arg3) -> LazyPropagation_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-        arg3: enum gum::RelevantPotentialsFinderType
-
-        __init__(gum::LazyPropagation<(double)> self, IBayesNet_double BN) -> LazyPropagation_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-
+        __init__(self, BN, arg3, arg4, use_binary_join_tree=True) -> LazyPropagation_double
+        __init__(self, BN, arg3, arg4) -> LazyPropagation_double
+        __init__(self, BN, arg3) -> LazyPropagation_double
+        __init__(self, BN) -> LazyPropagation_double
         """
         this = _pyAgrum.new_LazyPropagation_double(*args)
         try:
@@ -12131,74 +6222,32 @@ class LazyPropagation_double(_object):
     __del__ = lambda self: None
 
     def setTriangulation(self, new_triangulation: 'Triangulation') -> "void":
-        """
-        setTriangulation(LazyPropagation_double self, Triangulation new_triangulation)
-
-        Parameters
-        ----------
-        new_triangulation: gum::Triangulation const &
-
-        """
+        """setTriangulation(self, new_triangulation)"""
         return _pyAgrum.LazyPropagation_double_setTriangulation(self, new_triangulation)
 
 
     def setRelevantPotentialsFinderType(self, type: 'gum::RelevantPotentialsFinderType') -> "void":
-        """
-        setRelevantPotentialsFinderType(LazyPropagation_double self, gum::RelevantPotentialsFinderType type)
-
-        Parameters
-        ----------
-        type: enum gum::RelevantPotentialsFinderType
-
-        """
+        """setRelevantPotentialsFinderType(self, type)"""
         return _pyAgrum.LazyPropagation_double_setRelevantPotentialsFinderType(self, type)
 
 
     def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
-        """
-        setFindBarrenNodesType(LazyPropagation_double self, gum::FindBarrenNodesType type)
-
-        Parameters
-        ----------
-        type: enum gum::FindBarrenNodesType
-
-        """
+        """setFindBarrenNodesType(self, type)"""
         return _pyAgrum.LazyPropagation_double_setFindBarrenNodesType(self, type)
 
 
     def joinTree(self) -> "gum::JoinTree const *":
-        """
-        joinTree(LazyPropagation_double self) -> CliqueGraph
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """joinTree(self) -> CliqueGraph"""
         return _pyAgrum.LazyPropagation_double_joinTree(self)
 
 
     def junctionTree(self) -> "gum::JunctionTree const *":
-        """
-        junctionTree(LazyPropagation_double self) -> CliqueGraph
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """junctionTree(self) -> CliqueGraph"""
         return _pyAgrum.LazyPropagation_double_junctionTree(self)
 
 
     def evidenceProbability(self) -> "double":
-        """
-        evidenceProbability(LazyPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """evidenceProbability(self) -> double"""
         return _pyAgrum.LazyPropagation_double_evidenceProbability(self)
 
 
@@ -12234,559 +6283,220 @@ class LazyPropagation_double(_object):
 
 
     def hardEvidenceNodes(self) -> "PyObject *":
-        """
-        hardEvidenceNodes(LazyPropagation_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """hardEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.LazyPropagation_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self) -> "PyObject *":
-        """
-        softEvidenceNodes(LazyPropagation_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """softEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.LazyPropagation_double_softEvidenceNodes(self)
 
 
     def targets(self) -> "PyObject *":
-        """
-        targets(LazyPropagation_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """targets(self) -> PyObject *"""
         return _pyAgrum.LazyPropagation_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
-        """
-        jointPosterior(LazyPropagation_double self, PyObject * list) -> Potential_double
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """jointPosterior(self, list) -> Potential_double"""
         return _pyAgrum.LazyPropagation_double_jointPosterior(self, list)
 
 
     def addJointTarget(self, list: 'PyObject *') -> "void":
-        """
-        addJointTarget(LazyPropagation_double self, PyObject * list)
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """addJointTarget(self, list)"""
         return _pyAgrum.LazyPropagation_double_addJointTarget(self, list)
 
 
     def eraseJointTarget(self, list: 'PyObject *') -> "void":
-        """
-        eraseJointTarget(LazyPropagation_double self, PyObject * list)
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """eraseJointTarget(self, list)"""
         return _pyAgrum.LazyPropagation_double_eraseJointTarget(self, list)
 
 
     def isJointTarget(self, list: 'PyObject *') -> "bool":
-        """
-        isJointTarget(LazyPropagation_double self, PyObject * list) -> bool
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """isJointTarget(self, list) -> bool"""
         return _pyAgrum.LazyPropagation_double_isJointTarget(self, list)
 
 
     def jointTargets(self) -> "PyObject *":
-        """
-        jointTargets(LazyPropagation_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > const *
-
-        """
+        """jointTargets(self) -> PyObject *"""
         return _pyAgrum.LazyPropagation_double_jointTargets(self)
 
 
     def makeInference(self) -> "void":
-        """
-        makeInference(LazyPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.LazyPropagation_double_makeInference(self)
 
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         """
-        posterior(LazyPropagation_double self, gum::NodeId const var) -> Potential_double
-
-        Parameters
-        ----------
-        var: gum::NodeId const
-
-        posterior(LazyPropagation_double self, std::string const nodeName) -> Potential_double
-
-        Parameters
-        ----------
-        nodeName: std::string const
-
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
         """
         return _pyAgrum.LazyPropagation_double_posterior(self, *args)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
-        """
-        BN(LazyPropagation_double self) -> IBayesNet_double
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > const *
-
-        """
+        """BN(self) -> IBayesNet_double"""
         return _pyAgrum.LazyPropagation_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
         """
-        addEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        addEvidence(LazyPropagation_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        addEvidence(LazyPropagation_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        addEvidence(LazyPropagation_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        addEvidence(LazyPropagation_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        addEvidence(LazyPropagation_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
         """
         return _pyAgrum.LazyPropagation_double_addEvidence(self, *args)
 
 
     def chgEvidence(self, *args) -> "void":
         """
-        chgEvidence(LazyPropagation_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        chgEvidence(LazyPropagation_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        chgEvidence(LazyPropagation_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        chgEvidence(LazyPropagation_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        chgEvidence(LazyPropagation_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        chgEvidence(LazyPropagation_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
         """
         return _pyAgrum.LazyPropagation_double_chgEvidence(self, *args)
 
 
     def hasEvidence(self, *args) -> "bool":
         """
-        hasEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.LazyPropagation_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        """
-        eraseAllEvidence(LazyPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """eraseAllEvidence(self)"""
         return _pyAgrum.LazyPropagation_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args) -> "void":
         """
-        eraseEvidence(LazyPropagation_double self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        eraseEvidence(LazyPropagation_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
         """
         return _pyAgrum.LazyPropagation_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
-        """
-        hasHardEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
-        """
+        """hasHardEvidence(self, nodeName) -> bool"""
         return _pyAgrum.LazyPropagation_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args) -> "bool":
         """
-        hasSoftEvidence(LazyPropagation_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasSoftEvidence(LazyPropagation_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.LazyPropagation_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
-        """
-        nbrEvidence(LazyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > const *
-
-        """
+        """nbrEvidence(self) -> gum::Size"""
         return _pyAgrum.LazyPropagation_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
-        """
-        nbrHardEvidence(LazyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > const *
-
-        """
+        """nbrHardEvidence(self) -> gum::Size"""
         return _pyAgrum.LazyPropagation_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
-        """
-        nbrSoftEvidence(LazyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > const *
-
-        """
+        """nbrSoftEvidence(self) -> gum::Size"""
         return _pyAgrum.LazyPropagation_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self) -> "void":
-        """
-        eraseAllTargets(LazyPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """eraseAllTargets(self)"""
         return _pyAgrum.LazyPropagation_double_eraseAllTargets(self)
 
 
     def addAllTargets(self) -> "void":
-        """
-        addAllTargets(LazyPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """addAllTargets(self)"""
         return _pyAgrum.LazyPropagation_double_addAllTargets(self)
 
 
     def addTarget(self, *args) -> "void":
         """
-        addTarget(LazyPropagation_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        addTarget(LazyPropagation_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        addTarget(self, target)
+        addTarget(self, nodeName)
         """
         return _pyAgrum.LazyPropagation_double_addTarget(self, *args)
 
 
     def eraseTarget(self, *args) -> "void":
         """
-        eraseTarget(LazyPropagation_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        eraseTarget(LazyPropagation_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
         """
         return _pyAgrum.LazyPropagation_double_eraseTarget(self, *args)
 
 
     def isTarget(self, *args) -> "bool":
         """
-        isTarget(LazyPropagation_double self, gum::NodeId const variable) -> bool
-
-        Parameters
-        ----------
-        variable: gum::NodeId const
-
-        isTarget(LazyPropagation_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
         """
         return _pyAgrum.LazyPropagation_double_isTarget(self, *args)
 
 
     def nbrTargets(self) -> "gum::Size":
-        """
-        nbrTargets(LazyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > const *
-
-        """
+        """nbrTargets(self) -> gum::Size"""
         return _pyAgrum.LazyPropagation_double_nbrTargets(self)
 
 
     def H(self, *args) -> "double":
         """
-        H(LazyPropagation_double self, gum::NodeId const X) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-
-        H(LazyPropagation_double self, std::string const & nodeName) -> double
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        H(self, X) -> double
+        H(self, nodeName) -> double
         """
         return _pyAgrum.LazyPropagation_double_H(self, *args)
 
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         """
-        evidenceImpact(LazyPropagation_double self, gum::NodeId target, Vector_int evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: gum::NodeId
-        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
-
-        evidenceImpact(LazyPropagation_double self, std::string target, Vector_string evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: std::string
-        evs: std::vector< std::string,std::allocator< std::string > > const
-
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
         """
         return _pyAgrum.LazyPropagation_double_evidenceImpact(self, *args)
 
 
     def eraseAllJointTargets(self) -> "void":
-        """
-        eraseAllJointTargets(LazyPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """eraseAllJointTargets(self)"""
         return _pyAgrum.LazyPropagation_double_eraseAllJointTargets(self)
 
 
     def eraseAllMarginalTargets(self) -> "void":
-        """
-        eraseAllMarginalTargets(LazyPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """eraseAllMarginalTargets(self)"""
         return _pyAgrum.LazyPropagation_double_eraseAllMarginalTargets(self)
 
 
     def nbrJointTargets(self) -> "gum::Size":
-        """
-        nbrJointTargets(LazyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LazyPropagation< double > *
-
-        """
+        """nbrJointTargets(self) -> gum::Size"""
         return _pyAgrum.LazyPropagation_double_nbrJointTargets(self)
 
 
     def I(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
-        """
-        I(LazyPropagation_double self, gum::NodeId const X, gum::NodeId const Y) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-        Y: gum::NodeId const
-
-        """
+        """I(self, X, Y) -> double"""
         return _pyAgrum.LazyPropagation_double_I(self, X, Y)
 
 
     def VI(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
-        """
-        VI(LazyPropagation_double self, gum::NodeId const X, gum::NodeId const Y) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-        Y: gum::NodeId const
-
-        """
+        """VI(self, X, Y) -> double"""
         return _pyAgrum.LazyPropagation_double_VI(self, X, Y)
 
 
     def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
         """
-        evidenceJointImpact(LazyPropagation_double self, Vector_int targets, Vector_int evs) -> Potential_double
-
-        Parameters
-        ----------
-        targets: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
-        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
-
-        evidenceJointImpact(LazyPropagation_double self, Vector_string targets, Vector_string evs) -> Potential_double
-
-        Parameters
-        ----------
-        targets: std::vector< std::string,std::allocator< std::string > > const &
-        evs: std::vector< std::string,std::allocator< std::string > > const &
-
+        evidenceJointImpact(self, targets, evs) -> Potential_double
+        evidenceJointImpact(self, targets, evs) -> Potential_double
         """
         return _pyAgrum.LazyPropagation_double_evidenceJointImpact(self, *args)
 
@@ -12804,27 +6514,9 @@ class ShaferShenoyInference_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::ShaferShenoyInference<(double)> self, IBayesNet_double BN, gum::FindBarrenNodesType barren_type, bool use_binary_join_tree=True) -> ShaferShenoyInference_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-        barren_type: enum gum::FindBarrenNodesType
-        use_binary_join_tree: bool
-
-        __init__(gum::ShaferShenoyInference<(double)> self, IBayesNet_double BN, gum::FindBarrenNodesType barren_type) -> ShaferShenoyInference_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-        barren_type: enum gum::FindBarrenNodesType
-
-        __init__(gum::ShaferShenoyInference<(double)> self, IBayesNet_double BN) -> ShaferShenoyInference_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-
+        __init__(self, BN, barren_type, use_binary_join_tree=True) -> ShaferShenoyInference_double
+        __init__(self, BN, barren_type) -> ShaferShenoyInference_double
+        __init__(self, BN) -> ShaferShenoyInference_double
         """
         this = _pyAgrum.new_ShaferShenoyInference_double(*args)
         try:
@@ -12835,62 +6527,27 @@ class ShaferShenoyInference_double(_object):
     __del__ = lambda self: None
 
     def setTriangulation(self, new_triangulation: 'Triangulation') -> "void":
-        """
-        setTriangulation(ShaferShenoyInference_double self, Triangulation new_triangulation)
-
-        Parameters
-        ----------
-        new_triangulation: gum::Triangulation const &
-
-        """
+        """setTriangulation(self, new_triangulation)"""
         return _pyAgrum.ShaferShenoyInference_double_setTriangulation(self, new_triangulation)
 
 
     def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
-        """
-        setFindBarrenNodesType(ShaferShenoyInference_double self, gum::FindBarrenNodesType type)
-
-        Parameters
-        ----------
-        type: enum gum::FindBarrenNodesType
-
-        """
+        """setFindBarrenNodesType(self, type)"""
         return _pyAgrum.ShaferShenoyInference_double_setFindBarrenNodesType(self, type)
 
 
     def joinTree(self) -> "gum::JoinTree const *":
-        """
-        joinTree(ShaferShenoyInference_double self) -> CliqueGraph
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """joinTree(self) -> CliqueGraph"""
         return _pyAgrum.ShaferShenoyInference_double_joinTree(self)
 
 
     def junctionTree(self) -> "gum::JunctionTree const *":
-        """
-        junctionTree(ShaferShenoyInference_double self) -> CliqueGraph
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """junctionTree(self) -> CliqueGraph"""
         return _pyAgrum.ShaferShenoyInference_double_junctionTree(self)
 
 
     def evidenceProbability(self) -> "double":
-        """
-        evidenceProbability(ShaferShenoyInference_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """evidenceProbability(self) -> double"""
         return _pyAgrum.ShaferShenoyInference_double_evidenceProbability(self)
 
 
@@ -12926,559 +6583,220 @@ class ShaferShenoyInference_double(_object):
 
 
     def hardEvidenceNodes(self) -> "PyObject *":
-        """
-        hardEvidenceNodes(ShaferShenoyInference_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """hardEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.ShaferShenoyInference_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self) -> "PyObject *":
-        """
-        softEvidenceNodes(ShaferShenoyInference_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """softEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.ShaferShenoyInference_double_softEvidenceNodes(self)
 
 
     def targets(self) -> "PyObject *":
-        """
-        targets(ShaferShenoyInference_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """targets(self) -> PyObject *"""
         return _pyAgrum.ShaferShenoyInference_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
-        """
-        jointPosterior(ShaferShenoyInference_double self, PyObject * list) -> Potential_double
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """jointPosterior(self, list) -> Potential_double"""
         return _pyAgrum.ShaferShenoyInference_double_jointPosterior(self, list)
 
 
     def addJointTarget(self, list: 'PyObject *') -> "void":
-        """
-        addJointTarget(ShaferShenoyInference_double self, PyObject * list)
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """addJointTarget(self, list)"""
         return _pyAgrum.ShaferShenoyInference_double_addJointTarget(self, list)
 
 
     def eraseJointTarget(self, list: 'PyObject *') -> "void":
-        """
-        eraseJointTarget(ShaferShenoyInference_double self, PyObject * list)
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """eraseJointTarget(self, list)"""
         return _pyAgrum.ShaferShenoyInference_double_eraseJointTarget(self, list)
 
 
     def isJointTarget(self, list: 'PyObject *') -> "bool":
-        """
-        isJointTarget(ShaferShenoyInference_double self, PyObject * list) -> bool
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """isJointTarget(self, list) -> bool"""
         return _pyAgrum.ShaferShenoyInference_double_isJointTarget(self, list)
 
 
     def jointTargets(self) -> "PyObject *":
-        """
-        jointTargets(ShaferShenoyInference_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > const *
-
-        """
+        """jointTargets(self) -> PyObject *"""
         return _pyAgrum.ShaferShenoyInference_double_jointTargets(self)
 
 
     def makeInference(self) -> "void":
-        """
-        makeInference(ShaferShenoyInference_double self)
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.ShaferShenoyInference_double_makeInference(self)
 
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         """
-        posterior(ShaferShenoyInference_double self, gum::NodeId const var) -> Potential_double
-
-        Parameters
-        ----------
-        var: gum::NodeId const
-
-        posterior(ShaferShenoyInference_double self, std::string const nodeName) -> Potential_double
-
-        Parameters
-        ----------
-        nodeName: std::string const
-
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
         """
         return _pyAgrum.ShaferShenoyInference_double_posterior(self, *args)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
-        """
-        BN(ShaferShenoyInference_double self) -> IBayesNet_double
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > const *
-
-        """
+        """BN(self) -> IBayesNet_double"""
         return _pyAgrum.ShaferShenoyInference_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
         """
-        addEvidence(ShaferShenoyInference_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        addEvidence(ShaferShenoyInference_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        addEvidence(ShaferShenoyInference_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        addEvidence(ShaferShenoyInference_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        addEvidence(ShaferShenoyInference_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        addEvidence(ShaferShenoyInference_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
         """
         return _pyAgrum.ShaferShenoyInference_double_addEvidence(self, *args)
 
 
     def chgEvidence(self, *args) -> "void":
         """
-        chgEvidence(ShaferShenoyInference_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        chgEvidence(ShaferShenoyInference_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        chgEvidence(ShaferShenoyInference_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        chgEvidence(ShaferShenoyInference_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        chgEvidence(ShaferShenoyInference_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        chgEvidence(ShaferShenoyInference_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
         """
         return _pyAgrum.ShaferShenoyInference_double_chgEvidence(self, *args)
 
 
     def hasEvidence(self, *args) -> "bool":
         """
-        hasEvidence(ShaferShenoyInference_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasEvidence(ShaferShenoyInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.ShaferShenoyInference_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        """
-        eraseAllEvidence(ShaferShenoyInference_double self)
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """eraseAllEvidence(self)"""
         return _pyAgrum.ShaferShenoyInference_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args) -> "void":
         """
-        eraseEvidence(ShaferShenoyInference_double self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        eraseEvidence(ShaferShenoyInference_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
         """
         return _pyAgrum.ShaferShenoyInference_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
-        """
-        hasHardEvidence(ShaferShenoyInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
-        """
+        """hasHardEvidence(self, nodeName) -> bool"""
         return _pyAgrum.ShaferShenoyInference_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args) -> "bool":
         """
-        hasSoftEvidence(ShaferShenoyInference_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasSoftEvidence(ShaferShenoyInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.ShaferShenoyInference_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
-        """
-        nbrEvidence(ShaferShenoyInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > const *
-
-        """
+        """nbrEvidence(self) -> gum::Size"""
         return _pyAgrum.ShaferShenoyInference_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
-        """
-        nbrHardEvidence(ShaferShenoyInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > const *
-
-        """
+        """nbrHardEvidence(self) -> gum::Size"""
         return _pyAgrum.ShaferShenoyInference_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
-        """
-        nbrSoftEvidence(ShaferShenoyInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > const *
-
-        """
+        """nbrSoftEvidence(self) -> gum::Size"""
         return _pyAgrum.ShaferShenoyInference_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self) -> "void":
-        """
-        eraseAllTargets(ShaferShenoyInference_double self)
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """eraseAllTargets(self)"""
         return _pyAgrum.ShaferShenoyInference_double_eraseAllTargets(self)
 
 
     def addAllTargets(self) -> "void":
-        """
-        addAllTargets(ShaferShenoyInference_double self)
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """addAllTargets(self)"""
         return _pyAgrum.ShaferShenoyInference_double_addAllTargets(self)
 
 
     def addTarget(self, *args) -> "void":
         """
-        addTarget(ShaferShenoyInference_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        addTarget(ShaferShenoyInference_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        addTarget(self, target)
+        addTarget(self, nodeName)
         """
         return _pyAgrum.ShaferShenoyInference_double_addTarget(self, *args)
 
 
     def eraseTarget(self, *args) -> "void":
         """
-        eraseTarget(ShaferShenoyInference_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        eraseTarget(ShaferShenoyInference_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
         """
         return _pyAgrum.ShaferShenoyInference_double_eraseTarget(self, *args)
 
 
     def isTarget(self, *args) -> "bool":
         """
-        isTarget(ShaferShenoyInference_double self, gum::NodeId const variable) -> bool
-
-        Parameters
-        ----------
-        variable: gum::NodeId const
-
-        isTarget(ShaferShenoyInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
         """
         return _pyAgrum.ShaferShenoyInference_double_isTarget(self, *args)
 
 
     def nbrTargets(self) -> "gum::Size":
-        """
-        nbrTargets(ShaferShenoyInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > const *
-
-        """
+        """nbrTargets(self) -> gum::Size"""
         return _pyAgrum.ShaferShenoyInference_double_nbrTargets(self)
 
 
     def H(self, *args) -> "double":
         """
-        H(ShaferShenoyInference_double self, gum::NodeId const X) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-
-        H(ShaferShenoyInference_double self, std::string const & nodeName) -> double
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        H(self, X) -> double
+        H(self, nodeName) -> double
         """
         return _pyAgrum.ShaferShenoyInference_double_H(self, *args)
 
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         """
-        evidenceImpact(ShaferShenoyInference_double self, gum::NodeId target, Vector_int evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: gum::NodeId
-        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
-
-        evidenceImpact(ShaferShenoyInference_double self, std::string target, Vector_string evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: std::string
-        evs: std::vector< std::string,std::allocator< std::string > > const
-
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
         """
         return _pyAgrum.ShaferShenoyInference_double_evidenceImpact(self, *args)
 
 
     def eraseAllJointTargets(self) -> "void":
-        """
-        eraseAllJointTargets(ShaferShenoyInference_double self)
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """eraseAllJointTargets(self)"""
         return _pyAgrum.ShaferShenoyInference_double_eraseAllJointTargets(self)
 
 
     def eraseAllMarginalTargets(self) -> "void":
-        """
-        eraseAllMarginalTargets(ShaferShenoyInference_double self)
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """eraseAllMarginalTargets(self)"""
         return _pyAgrum.ShaferShenoyInference_double_eraseAllMarginalTargets(self)
 
 
     def nbrJointTargets(self) -> "gum::Size":
-        """
-        nbrJointTargets(ShaferShenoyInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::ShaferShenoyInference< double > *
-
-        """
+        """nbrJointTargets(self) -> gum::Size"""
         return _pyAgrum.ShaferShenoyInference_double_nbrJointTargets(self)
 
 
     def I(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
-        """
-        I(ShaferShenoyInference_double self, gum::NodeId const X, gum::NodeId const Y) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-        Y: gum::NodeId const
-
-        """
+        """I(self, X, Y) -> double"""
         return _pyAgrum.ShaferShenoyInference_double_I(self, X, Y)
 
 
     def VI(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
-        """
-        VI(ShaferShenoyInference_double self, gum::NodeId const X, gum::NodeId const Y) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-        Y: gum::NodeId const
-
-        """
+        """VI(self, X, Y) -> double"""
         return _pyAgrum.ShaferShenoyInference_double_VI(self, X, Y)
 
 
     def evidenceJointImpact(self, *args) -> "gum::Potential< double >":
         """
-        evidenceJointImpact(ShaferShenoyInference_double self, Vector_int targets, Vector_int evs) -> Potential_double
-
-        Parameters
-        ----------
-        targets: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
-        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
-
-        evidenceJointImpact(ShaferShenoyInference_double self, Vector_string targets, Vector_string evs) -> Potential_double
-
-        Parameters
-        ----------
-        targets: std::vector< std::string,std::allocator< std::string > > const &
-        evs: std::vector< std::string,std::allocator< std::string > > const &
-
+        evidenceJointImpact(self, targets, evs) -> Potential_double
+        evidenceJointImpact(self, targets, evs) -> Potential_double
         """
         return _pyAgrum.ShaferShenoyInference_double_evidenceJointImpact(self, *args)
 
@@ -13496,27 +6814,9 @@ class VariableElimination_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::VariableElimination<(double)> self, IBayesNet_double BN, gum::RelevantPotentialsFinderType relevant_type, gum::FindBarrenNodesType arg4) -> VariableElimination_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-        relevant_type: enum gum::RelevantPotentialsFinderType
-        arg4: enum gum::FindBarrenNodesType
-
-        __init__(gum::VariableElimination<(double)> self, IBayesNet_double BN, gum::RelevantPotentialsFinderType relevant_type) -> VariableElimination_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-        relevant_type: enum gum::RelevantPotentialsFinderType
-
-        __init__(gum::VariableElimination<(double)> self, IBayesNet_double BN) -> VariableElimination_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-
+        __init__(self, BN, relevant_type, arg4) -> VariableElimination_double
+        __init__(self, BN, relevant_type) -> VariableElimination_double
+        __init__(self, BN) -> VariableElimination_double
         """
         this = _pyAgrum.new_VariableElimination_double(*args)
         try:
@@ -13527,50 +6827,22 @@ class VariableElimination_double(_object):
     __del__ = lambda self: None
 
     def setTriangulation(self, new_triangulation: 'Triangulation') -> "void":
-        """
-        setTriangulation(VariableElimination_double self, Triangulation new_triangulation)
-
-        Parameters
-        ----------
-        new_triangulation: gum::Triangulation const &
-
-        """
+        """setTriangulation(self, new_triangulation)"""
         return _pyAgrum.VariableElimination_double_setTriangulation(self, new_triangulation)
 
 
     def setRelevantPotentialsFinderType(self, type: 'gum::RelevantPotentialsFinderType') -> "void":
-        """
-        setRelevantPotentialsFinderType(VariableElimination_double self, gum::RelevantPotentialsFinderType type)
-
-        Parameters
-        ----------
-        type: enum gum::RelevantPotentialsFinderType
-
-        """
+        """setRelevantPotentialsFinderType(self, type)"""
         return _pyAgrum.VariableElimination_double_setRelevantPotentialsFinderType(self, type)
 
 
     def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
-        """
-        setFindBarrenNodesType(VariableElimination_double self, gum::FindBarrenNodesType type)
-
-        Parameters
-        ----------
-        type: enum gum::FindBarrenNodesType
-
-        """
+        """setFindBarrenNodesType(self, type)"""
         return _pyAgrum.VariableElimination_double_setFindBarrenNodesType(self, type)
 
 
     def junctionTree(self, id: 'gum::NodeId const') -> "gum::JunctionTree const *":
-        """
-        junctionTree(VariableElimination_double self, gum::NodeId const id) -> CliqueGraph
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """junctionTree(self, id) -> CliqueGraph"""
         return _pyAgrum.VariableElimination_double_junctionTree(self, id)
 
 
@@ -13606,477 +6878,187 @@ class VariableElimination_double(_object):
 
 
     def hardEvidenceNodes(self) -> "PyObject *":
-        """
-        hardEvidenceNodes(VariableElimination_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > *
-
-        """
+        """hardEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.VariableElimination_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self) -> "PyObject *":
-        """
-        softEvidenceNodes(VariableElimination_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > *
-
-        """
+        """softEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.VariableElimination_double_softEvidenceNodes(self)
 
 
     def targets(self) -> "PyObject *":
-        """
-        targets(VariableElimination_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > *
-
-        """
+        """targets(self) -> PyObject *"""
         return _pyAgrum.VariableElimination_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
-        """
-        jointPosterior(VariableElimination_double self, PyObject * list) -> Potential_double
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """jointPosterior(self, list) -> Potential_double"""
         return _pyAgrum.VariableElimination_double_jointPosterior(self, list)
 
 
     def addJointTarget(self, list: 'PyObject *') -> "void":
-        """
-        addJointTarget(VariableElimination_double self, PyObject * list)
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """addJointTarget(self, list)"""
         return _pyAgrum.VariableElimination_double_addJointTarget(self, list)
 
 
     def eraseJointTarget(self, list: 'PyObject *') -> "void":
-        """
-        eraseJointTarget(VariableElimination_double self, PyObject * list)
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """eraseJointTarget(self, list)"""
         return _pyAgrum.VariableElimination_double_eraseJointTarget(self, list)
 
 
     def isJointTarget(self, list: 'PyObject *') -> "bool":
-        """
-        isJointTarget(VariableElimination_double self, PyObject * list) -> bool
-
-        Parameters
-        ----------
-        list: PyObject *
-
-        """
+        """isJointTarget(self, list) -> bool"""
         return _pyAgrum.VariableElimination_double_isJointTarget(self, list)
 
 
     def jointTargets(self) -> "PyObject *":
-        """
-        jointTargets(VariableElimination_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > const *
-
-        """
+        """jointTargets(self) -> PyObject *"""
         return _pyAgrum.VariableElimination_double_jointTargets(self)
 
 
     def makeInference(self) -> "void":
-        """
-        makeInference(VariableElimination_double self)
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.VariableElimination_double_makeInference(self)
 
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         """
-        posterior(VariableElimination_double self, gum::NodeId const var) -> Potential_double
-
-        Parameters
-        ----------
-        var: gum::NodeId const
-
-        posterior(VariableElimination_double self, std::string const nodeName) -> Potential_double
-
-        Parameters
-        ----------
-        nodeName: std::string const
-
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
         """
         return _pyAgrum.VariableElimination_double_posterior(self, *args)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
-        """
-        BN(VariableElimination_double self) -> IBayesNet_double
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > const *
-
-        """
+        """BN(self) -> IBayesNet_double"""
         return _pyAgrum.VariableElimination_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
         """
-        addEvidence(VariableElimination_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        addEvidence(VariableElimination_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        addEvidence(VariableElimination_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        addEvidence(VariableElimination_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        addEvidence(VariableElimination_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        addEvidence(VariableElimination_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
         """
         return _pyAgrum.VariableElimination_double_addEvidence(self, *args)
 
 
     def chgEvidence(self, *args) -> "void":
         """
-        chgEvidence(VariableElimination_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        chgEvidence(VariableElimination_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        chgEvidence(VariableElimination_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        chgEvidence(VariableElimination_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        chgEvidence(VariableElimination_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        chgEvidence(VariableElimination_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
         """
         return _pyAgrum.VariableElimination_double_chgEvidence(self, *args)
 
 
     def hasEvidence(self, *args) -> "bool":
         """
-        hasEvidence(VariableElimination_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasEvidence(VariableElimination_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.VariableElimination_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        """
-        eraseAllEvidence(VariableElimination_double self)
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > *
-
-        """
+        """eraseAllEvidence(self)"""
         return _pyAgrum.VariableElimination_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args) -> "void":
         """
-        eraseEvidence(VariableElimination_double self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        eraseEvidence(VariableElimination_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
         """
         return _pyAgrum.VariableElimination_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
-        """
-        hasHardEvidence(VariableElimination_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
-        """
+        """hasHardEvidence(self, nodeName) -> bool"""
         return _pyAgrum.VariableElimination_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args) -> "bool":
         """
-        hasSoftEvidence(VariableElimination_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasSoftEvidence(VariableElimination_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.VariableElimination_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
-        """
-        nbrEvidence(VariableElimination_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > const *
-
-        """
+        """nbrEvidence(self) -> gum::Size"""
         return _pyAgrum.VariableElimination_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
-        """
-        nbrHardEvidence(VariableElimination_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > const *
-
-        """
+        """nbrHardEvidence(self) -> gum::Size"""
         return _pyAgrum.VariableElimination_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
-        """
-        nbrSoftEvidence(VariableElimination_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > const *
-
-        """
+        """nbrSoftEvidence(self) -> gum::Size"""
         return _pyAgrum.VariableElimination_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self) -> "void":
-        """
-        eraseAllTargets(VariableElimination_double self)
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > *
-
-        """
+        """eraseAllTargets(self)"""
         return _pyAgrum.VariableElimination_double_eraseAllTargets(self)
 
 
     def addAllTargets(self) -> "void":
-        """
-        addAllTargets(VariableElimination_double self)
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > *
-
-        """
+        """addAllTargets(self)"""
         return _pyAgrum.VariableElimination_double_addAllTargets(self)
 
 
     def addTarget(self, *args) -> "void":
         """
-        addTarget(VariableElimination_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        addTarget(VariableElimination_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        addTarget(self, target)
+        addTarget(self, nodeName)
         """
         return _pyAgrum.VariableElimination_double_addTarget(self, *args)
 
 
     def eraseTarget(self, *args) -> "void":
         """
-        eraseTarget(VariableElimination_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        eraseTarget(VariableElimination_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
         """
         return _pyAgrum.VariableElimination_double_eraseTarget(self, *args)
 
 
     def isTarget(self, *args) -> "bool":
         """
-        isTarget(VariableElimination_double self, gum::NodeId const variable) -> bool
-
-        Parameters
-        ----------
-        variable: gum::NodeId const
-
-        isTarget(VariableElimination_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
         """
         return _pyAgrum.VariableElimination_double_isTarget(self, *args)
 
 
     def nbrTargets(self) -> "gum::Size":
-        """
-        nbrTargets(VariableElimination_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::VariableElimination< double > const *
-
-        """
+        """nbrTargets(self) -> gum::Size"""
         return _pyAgrum.VariableElimination_double_nbrTargets(self)
 
 
     def H(self, *args) -> "double":
         """
-        H(VariableElimination_double self, gum::NodeId const X) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-
-        H(VariableElimination_double self, std::string const & nodeName) -> double
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        H(self, X) -> double
+        H(self, nodeName) -> double
         """
         return _pyAgrum.VariableElimination_double_H(self, *args)
 
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         """
-        evidenceImpact(VariableElimination_double self, gum::NodeId target, Vector_int evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: gum::NodeId
-        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
-
-        evidenceImpact(VariableElimination_double self, std::string target, Vector_string evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: std::string
-        evs: std::vector< std::string,std::allocator< std::string > > const
-
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
         """
         return _pyAgrum.VariableElimination_double_evidenceImpact(self, *args)
 
@@ -14097,14 +7079,7 @@ class GibbsInference_double(ApproximationScheme):
     __repr__ = _swig_repr
 
     def __init__(self, BN: 'IBayesNet_double'):
-        """
-        __init__(gum::GibbsInference<(double)> self, IBayesNet_double BN) -> GibbsInference_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-
-        """
+        """__init__(self, BN) -> GibbsInference_double"""
         this = _pyAgrum.new_GibbsInference_double(BN)
         try:
             self.this.append(this)
@@ -14145,645 +7120,257 @@ class GibbsInference_double(ApproximationScheme):
 
 
     def hardEvidenceNodes(self) -> "PyObject *":
-        """
-        hardEvidenceNodes(GibbsInference_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
+        """hardEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.GibbsInference_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self) -> "PyObject *":
-        """
-        softEvidenceNodes(GibbsInference_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
+        """softEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.GibbsInference_double_softEvidenceNodes(self)
 
 
     def targets(self) -> "PyObject *":
-        """
-        targets(GibbsInference_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
+        """targets(self) -> PyObject *"""
         return _pyAgrum.GibbsInference_double_targets(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """
-        setVerbosity(GibbsInference_double self, bool v)
-
-        Parameters
-        ----------
-        v: bool
-
-        """
+        """setVerbosity(self, v)"""
         return _pyAgrum.GibbsInference_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """
-        setEpsilon(GibbsInference_double self, double eps)
-
-        Parameters
-        ----------
-        eps: double
-
-        """
+        """setEpsilon(self, eps)"""
         return _pyAgrum.GibbsInference_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """
-        setMinEpsilonRate(GibbsInference_double self, double rate)
-
-        Parameters
-        ----------
-        rate: double
-
-        """
+        """setMinEpsilonRate(self, rate)"""
         return _pyAgrum.GibbsInference_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """
-        setMaxIter(GibbsInference_double self, gum::Size max)
-
-        Parameters
-        ----------
-        max: gum::Size
-
-        """
+        """setMaxIter(self, max)"""
         return _pyAgrum.GibbsInference_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """
-        setMaxTime(GibbsInference_double self, double timeout)
-
-        Parameters
-        ----------
-        timeout: double
-
-        """
+        """setMaxTime(self, timeout)"""
         return _pyAgrum.GibbsInference_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """
-        setPeriodSize(GibbsInference_double self, gum::Size p)
-
-        Parameters
-        ----------
-        p: gum::Size
-
-        """
+        """setPeriodSize(self, p)"""
         return _pyAgrum.GibbsInference_double_setPeriodSize(self, p)
 
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
-        """
-        setBurnIn(GibbsInference_double self, gum::Size b)
-
-        Parameters
-        ----------
-        b: gum::Size
-
-        """
+        """setBurnIn(self, b)"""
         return _pyAgrum.GibbsInference_double_setBurnIn(self, b)
 
 
     def verbosity(self) -> "bool":
-        """
-        verbosity(GibbsInference_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """verbosity(self) -> bool"""
         return _pyAgrum.GibbsInference_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """
-        epsilon(GibbsInference_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """epsilon(self) -> double"""
         return _pyAgrum.GibbsInference_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """
-        minEpsilonRate(GibbsInference_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """minEpsilonRate(self) -> double"""
         return _pyAgrum.GibbsInference_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """
-        maxIter(GibbsInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """maxIter(self) -> gum::Size"""
         return _pyAgrum.GibbsInference_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """
-        maxTime(GibbsInference_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """maxTime(self) -> double"""
         return _pyAgrum.GibbsInference_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """
-        periodSize(GibbsInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """periodSize(self) -> gum::Size"""
         return _pyAgrum.GibbsInference_double_periodSize(self)
 
 
     def burnIn(self) -> "gum::Size":
-        """
-        burnIn(GibbsInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """burnIn(self) -> gum::Size"""
         return _pyAgrum.GibbsInference_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """
-        nbrIterations(GibbsInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """nbrIterations(self) -> gum::Size"""
         return _pyAgrum.GibbsInference_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """
-        currentTime(GibbsInference_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """currentTime(self) -> double"""
         return _pyAgrum.GibbsInference_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """
-        messageApproximationScheme(GibbsInference_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """messageApproximationScheme(self) -> std::string"""
         return _pyAgrum.GibbsInference_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """
-        history(GibbsInference_double self) -> Vector_double
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """history(self) -> Vector_double"""
         return _pyAgrum.GibbsInference_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """
-        asIApproximationSchemeConfiguration(GibbsInference_double self) -> IApproximationSchemeConfiguration
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
         return _pyAgrum.GibbsInference_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self) -> "void":
-        """
-        makeInference(GibbsInference_double self)
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.GibbsInference_double_makeInference(self)
 
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         """
-        posterior(GibbsInference_double self, gum::NodeId const var) -> Potential_double
-
-        Parameters
-        ----------
-        var: gum::NodeId const
-
-        posterior(GibbsInference_double self, std::string const nodeName) -> Potential_double
-
-        Parameters
-        ----------
-        nodeName: std::string const
-
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
         """
         return _pyAgrum.GibbsInference_double_posterior(self, *args)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
-        """
-        BN(GibbsInference_double self) -> IBayesNet_double
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """BN(self) -> IBayesNet_double"""
         return _pyAgrum.GibbsInference_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
         """
-        addEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        addEvidence(GibbsInference_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        addEvidence(GibbsInference_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        addEvidence(GibbsInference_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        addEvidence(GibbsInference_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        addEvidence(GibbsInference_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
         """
         return _pyAgrum.GibbsInference_double_addEvidence(self, *args)
 
 
     def chgEvidence(self, *args) -> "void":
         """
-        chgEvidence(GibbsInference_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        chgEvidence(GibbsInference_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        chgEvidence(GibbsInference_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        chgEvidence(GibbsInference_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        chgEvidence(GibbsInference_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        chgEvidence(GibbsInference_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
         """
         return _pyAgrum.GibbsInference_double_chgEvidence(self, *args)
 
 
     def hasEvidence(self, *args) -> "bool":
         """
-        hasEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.GibbsInference_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        """
-        eraseAllEvidence(GibbsInference_double self)
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
+        """eraseAllEvidence(self)"""
         return _pyAgrum.GibbsInference_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args) -> "void":
         """
-        eraseEvidence(GibbsInference_double self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        eraseEvidence(GibbsInference_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
         """
         return _pyAgrum.GibbsInference_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
-        """
-        hasHardEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
-        """
+        """hasHardEvidence(self, nodeName) -> bool"""
         return _pyAgrum.GibbsInference_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args) -> "bool":
         """
-        hasSoftEvidence(GibbsInference_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasSoftEvidence(GibbsInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.GibbsInference_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
-        """
-        nbrEvidence(GibbsInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """nbrEvidence(self) -> gum::Size"""
         return _pyAgrum.GibbsInference_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
-        """
-        nbrHardEvidence(GibbsInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """nbrHardEvidence(self) -> gum::Size"""
         return _pyAgrum.GibbsInference_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
-        """
-        nbrSoftEvidence(GibbsInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """nbrSoftEvidence(self) -> gum::Size"""
         return _pyAgrum.GibbsInference_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self) -> "void":
-        """
-        eraseAllTargets(GibbsInference_double self)
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
+        """eraseAllTargets(self)"""
         return _pyAgrum.GibbsInference_double_eraseAllTargets(self)
 
 
     def addAllTargets(self) -> "void":
-        """
-        addAllTargets(GibbsInference_double self)
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > *
-
-        """
+        """addAllTargets(self)"""
         return _pyAgrum.GibbsInference_double_addAllTargets(self)
 
 
     def addTarget(self, *args) -> "void":
         """
-        addTarget(GibbsInference_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        addTarget(GibbsInference_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        addTarget(self, target)
+        addTarget(self, nodeName)
         """
         return _pyAgrum.GibbsInference_double_addTarget(self, *args)
 
 
     def eraseTarget(self, *args) -> "void":
         """
-        eraseTarget(GibbsInference_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        eraseTarget(GibbsInference_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
         """
         return _pyAgrum.GibbsInference_double_eraseTarget(self, *args)
 
 
     def isTarget(self, *args) -> "bool":
         """
-        isTarget(GibbsInference_double self, gum::NodeId const variable) -> bool
-
-        Parameters
-        ----------
-        variable: gum::NodeId const
-
-        isTarget(GibbsInference_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
         """
         return _pyAgrum.GibbsInference_double_isTarget(self, *args)
 
 
     def nbrTargets(self) -> "gum::Size":
-        """
-        nbrTargets(GibbsInference_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsInference< double > const *
-
-        """
+        """nbrTargets(self) -> gum::Size"""
         return _pyAgrum.GibbsInference_double_nbrTargets(self)
 
 
     def H(self, *args) -> "double":
         """
-        H(GibbsInference_double self, gum::NodeId const X) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-
-        H(GibbsInference_double self, std::string const & nodeName) -> double
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        H(self, X) -> double
+        H(self, nodeName) -> double
         """
         return _pyAgrum.GibbsInference_double_H(self, *args)
 
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         """
-        evidenceImpact(GibbsInference_double self, gum::NodeId target, Vector_int evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: gum::NodeId
-        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
-
-        evidenceImpact(GibbsInference_double self, std::string target, Vector_string evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: std::string
-        evs: std::vector< std::string,std::allocator< std::string > > const
-
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
         """
         return _pyAgrum.GibbsInference_double_evidenceImpact(self, *args)
 
@@ -14804,14 +7391,7 @@ class LoopyBeliefPropagation_double(ApproximationScheme):
     __repr__ = _swig_repr
 
     def __init__(self, BN: 'IBayesNet_double'):
-        """
-        __init__(gum::LoopyBeliefPropagation<(double)> self, IBayesNet_double BN) -> LoopyBeliefPropagation_double
-
-        Parameters
-        ----------
-        BN: gum::IBayesNet< double > const *
-
-        """
+        """__init__(self, BN) -> LoopyBeliefPropagation_double"""
         this = _pyAgrum.new_LoopyBeliefPropagation_double(BN)
         try:
             self.this.append(this)
@@ -14852,645 +7432,257 @@ class LoopyBeliefPropagation_double(ApproximationScheme):
 
 
     def hardEvidenceNodes(self) -> "PyObject *":
-        """
-        hardEvidenceNodes(LoopyBeliefPropagation_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > *
-
-        """
+        """hardEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.LoopyBeliefPropagation_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self) -> "PyObject *":
-        """
-        softEvidenceNodes(LoopyBeliefPropagation_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > *
-
-        """
+        """softEvidenceNodes(self) -> PyObject *"""
         return _pyAgrum.LoopyBeliefPropagation_double_softEvidenceNodes(self)
 
 
     def targets(self) -> "PyObject *":
-        """
-        targets(LoopyBeliefPropagation_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > *
-
-        """
+        """targets(self) -> PyObject *"""
         return _pyAgrum.LoopyBeliefPropagation_double_targets(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """
-        setVerbosity(LoopyBeliefPropagation_double self, bool v)
-
-        Parameters
-        ----------
-        v: bool
-
-        """
+        """setVerbosity(self, v)"""
         return _pyAgrum.LoopyBeliefPropagation_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """
-        setEpsilon(LoopyBeliefPropagation_double self, double eps)
-
-        Parameters
-        ----------
-        eps: double
-
-        """
+        """setEpsilon(self, eps)"""
         return _pyAgrum.LoopyBeliefPropagation_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """
-        setMinEpsilonRate(LoopyBeliefPropagation_double self, double rate)
-
-        Parameters
-        ----------
-        rate: double
-
-        """
+        """setMinEpsilonRate(self, rate)"""
         return _pyAgrum.LoopyBeliefPropagation_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """
-        setMaxIter(LoopyBeliefPropagation_double self, gum::Size max)
-
-        Parameters
-        ----------
-        max: gum::Size
-
-        """
+        """setMaxIter(self, max)"""
         return _pyAgrum.LoopyBeliefPropagation_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """
-        setMaxTime(LoopyBeliefPropagation_double self, double timeout)
-
-        Parameters
-        ----------
-        timeout: double
-
-        """
+        """setMaxTime(self, timeout)"""
         return _pyAgrum.LoopyBeliefPropagation_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """
-        setPeriodSize(LoopyBeliefPropagation_double self, gum::Size p)
-
-        Parameters
-        ----------
-        p: gum::Size
-
-        """
+        """setPeriodSize(self, p)"""
         return _pyAgrum.LoopyBeliefPropagation_double_setPeriodSize(self, p)
 
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
-        """
-        setBurnIn(LoopyBeliefPropagation_double self, gum::Size b)
-
-        Parameters
-        ----------
-        b: gum::Size
-
-        """
+        """setBurnIn(self, b)"""
         return _pyAgrum.LoopyBeliefPropagation_double_setBurnIn(self, b)
 
 
     def verbosity(self) -> "bool":
-        """
-        verbosity(LoopyBeliefPropagation_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """verbosity(self) -> bool"""
         return _pyAgrum.LoopyBeliefPropagation_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """
-        epsilon(LoopyBeliefPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """epsilon(self) -> double"""
         return _pyAgrum.LoopyBeliefPropagation_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """
-        minEpsilonRate(LoopyBeliefPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """minEpsilonRate(self) -> double"""
         return _pyAgrum.LoopyBeliefPropagation_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """
-        maxIter(LoopyBeliefPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """maxIter(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """
-        maxTime(LoopyBeliefPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """maxTime(self) -> double"""
         return _pyAgrum.LoopyBeliefPropagation_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """
-        periodSize(LoopyBeliefPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """periodSize(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_periodSize(self)
 
 
     def burnIn(self) -> "gum::Size":
-        """
-        burnIn(LoopyBeliefPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """burnIn(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """
-        nbrIterations(LoopyBeliefPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """nbrIterations(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """
-        currentTime(LoopyBeliefPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """currentTime(self) -> double"""
         return _pyAgrum.LoopyBeliefPropagation_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """
-        messageApproximationScheme(LoopyBeliefPropagation_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """messageApproximationScheme(self) -> std::string"""
         return _pyAgrum.LoopyBeliefPropagation_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """
-        history(LoopyBeliefPropagation_double self) -> Vector_double
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """history(self) -> Vector_double"""
         return _pyAgrum.LoopyBeliefPropagation_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """
-        asIApproximationSchemeConfiguration(LoopyBeliefPropagation_double self) -> IApproximationSchemeConfiguration
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
         return _pyAgrum.LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self) -> "void":
-        """
-        makeInference(LoopyBeliefPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.LoopyBeliefPropagation_double_makeInference(self)
 
 
     def posterior(self, *args) -> "gum::Potential< double > const":
         """
-        posterior(LoopyBeliefPropagation_double self, gum::NodeId const var) -> Potential_double
-
-        Parameters
-        ----------
-        var: gum::NodeId const
-
-        posterior(LoopyBeliefPropagation_double self, std::string const nodeName) -> Potential_double
-
-        Parameters
-        ----------
-        nodeName: std::string const
-
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
         """
         return _pyAgrum.LoopyBeliefPropagation_double_posterior(self, *args)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
-        """
-        BN(LoopyBeliefPropagation_double self) -> IBayesNet_double
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """BN(self) -> IBayesNet_double"""
         return _pyAgrum.LoopyBeliefPropagation_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
         """
-        addEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        addEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        addEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        addEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        addEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        addEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
         """
         return _pyAgrum.LoopyBeliefPropagation_double_addEvidence(self, *args)
 
 
     def chgEvidence(self, *args) -> "void":
         """
-        chgEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, gum::Idx const val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: gum::Idx const
-
-        chgEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, gum::Idx const val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: gum::Idx const
-
-        chgEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, std::string const & val)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        val: std::string const &
-
-        chgEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, std::string const & val)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        val: std::string const &
-
-        chgEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id, Vector_double vals)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-        vals: std::vector< double,std::allocator< double > > const &
-
-        chgEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName, Vector_double vals)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-        vals: std::vector< double,std::allocator< double > > const &
-
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
         """
         return _pyAgrum.LoopyBeliefPropagation_double_chgEvidence(self, *args)
 
 
     def hasEvidence(self, *args) -> "bool":
         """
-        hasEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.LoopyBeliefPropagation_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        """
-        eraseAllEvidence(LoopyBeliefPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > *
-
-        """
+        """eraseAllEvidence(self)"""
         return _pyAgrum.LoopyBeliefPropagation_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args) -> "void":
         """
-        eraseEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id)
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        eraseEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
         """
         return _pyAgrum.LoopyBeliefPropagation_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
-        """
-        hasHardEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
-        """
+        """hasHardEvidence(self, nodeName) -> bool"""
         return _pyAgrum.LoopyBeliefPropagation_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args) -> "bool":
         """
-        hasSoftEvidence(LoopyBeliefPropagation_double self, gum::NodeId const id) -> bool
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        hasSoftEvidence(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
         """
         return _pyAgrum.LoopyBeliefPropagation_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
-        """
-        nbrEvidence(LoopyBeliefPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """nbrEvidence(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
-        """
-        nbrHardEvidence(LoopyBeliefPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """nbrHardEvidence(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
-        """
-        nbrSoftEvidence(LoopyBeliefPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """nbrSoftEvidence(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self) -> "void":
-        """
-        eraseAllTargets(LoopyBeliefPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > *
-
-        """
+        """eraseAllTargets(self)"""
         return _pyAgrum.LoopyBeliefPropagation_double_eraseAllTargets(self)
 
 
     def addAllTargets(self) -> "void":
-        """
-        addAllTargets(LoopyBeliefPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > *
-
-        """
+        """addAllTargets(self)"""
         return _pyAgrum.LoopyBeliefPropagation_double_addAllTargets(self)
 
 
     def addTarget(self, *args) -> "void":
         """
-        addTarget(LoopyBeliefPropagation_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        addTarget(LoopyBeliefPropagation_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        addTarget(self, target)
+        addTarget(self, nodeName)
         """
         return _pyAgrum.LoopyBeliefPropagation_double_addTarget(self, *args)
 
 
     def eraseTarget(self, *args) -> "void":
         """
-        eraseTarget(LoopyBeliefPropagation_double self, gum::NodeId const target)
-
-        Parameters
-        ----------
-        target: gum::NodeId const
-
-        eraseTarget(LoopyBeliefPropagation_double self, std::string const & nodeName)
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
         """
         return _pyAgrum.LoopyBeliefPropagation_double_eraseTarget(self, *args)
 
 
     def isTarget(self, *args) -> "bool":
         """
-        isTarget(LoopyBeliefPropagation_double self, gum::NodeId const variable) -> bool
-
-        Parameters
-        ----------
-        variable: gum::NodeId const
-
-        isTarget(LoopyBeliefPropagation_double self, std::string const & nodeName) -> bool
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
         """
         return _pyAgrum.LoopyBeliefPropagation_double_isTarget(self, *args)
 
 
     def nbrTargets(self) -> "gum::Size":
-        """
-        nbrTargets(LoopyBeliefPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::LoopyBeliefPropagation< double > const *
-
-        """
+        """nbrTargets(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_nbrTargets(self)
 
 
     def H(self, *args) -> "double":
         """
-        H(LoopyBeliefPropagation_double self, gum::NodeId const X) -> double
-
-        Parameters
-        ----------
-        X: gum::NodeId const
-
-        H(LoopyBeliefPropagation_double self, std::string const & nodeName) -> double
-
-        Parameters
-        ----------
-        nodeName: std::string const &
-
+        H(self, X) -> double
+        H(self, nodeName) -> double
         """
         return _pyAgrum.LoopyBeliefPropagation_double_H(self, *args)
 
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
         """
-        evidenceImpact(LoopyBeliefPropagation_double self, gum::NodeId target, Vector_int evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: gum::NodeId
-        evs: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const
-
-        evidenceImpact(LoopyBeliefPropagation_double self, std::string target, Vector_string evs) -> Potential_double
-
-        Parameters
-        ----------
-        target: std::string
-        evs: std::vector< std::string,std::allocator< std::string > > const
-
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
         """
         return _pyAgrum.LoopyBeliefPropagation_double_evidenceImpact(self, *args)
 
@@ -15508,19 +7700,8 @@ class BruteForceKL_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::BruteForceKL<(double)> self, IBayesNet_double P, IBayesNet_double Q) -> BruteForceKL_double
-
-        Parameters
-        ----------
-        P: gum::IBayesNet< double > const &
-        Q: gum::IBayesNet< double > const &
-
-        __init__(gum::BruteForceKL<(double)> self, gum::KL< double > const & kl) -> BruteForceKL_double
-
-        Parameters
-        ----------
-        kl: gum::KL< double > const &
-
+        __init__(self, P, Q) -> BruteForceKL_double
+        __init__(self, kl) -> BruteForceKL_double
         """
         this = _pyAgrum.new_BruteForceKL_double(*args)
         try:
@@ -15531,14 +7712,7 @@ class BruteForceKL_double(_object):
     __del__ = lambda self: None
 
     def compute(self) -> "PyObject *":
-        """
-        compute(BruteForceKL_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::BruteForceKL< double > *
-
-        """
+        """compute(self) -> PyObject *"""
         return _pyAgrum.BruteForceKL_double_compute(self)
 
 BruteForceKL_double_swigregister = _pyAgrum.BruteForceKL_double_swigregister
@@ -15559,19 +7733,8 @@ class GibbsKL_double(ApproximationScheme):
 
     def __init__(self, *args):
         """
-        __init__(gum::GibbsKL<(double)> self, IBayesNet_double P, IBayesNet_double Q) -> GibbsKL_double
-
-        Parameters
-        ----------
-        P: gum::IBayesNet< double > const &
-        Q: gum::IBayesNet< double > const &
-
-        __init__(gum::GibbsKL<(double)> self, gum::KL< double > const & kl) -> GibbsKL_double
-
-        Parameters
-        ----------
-        kl: gum::KL< double > const &
-
+        __init__(self, P, Q) -> GibbsKL_double
+        __init__(self, kl) -> GibbsKL_double
         """
         this = _pyAgrum.new_GibbsKL_double(*args)
         try:
@@ -15582,242 +7745,102 @@ class GibbsKL_double(ApproximationScheme):
     __del__ = lambda self: None
 
     def compute(self) -> "PyObject *":
-        """
-        compute(GibbsKL_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > *
-
-        """
+        """compute(self) -> PyObject *"""
         return _pyAgrum.GibbsKL_double_compute(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """
-        setVerbosity(GibbsKL_double self, bool v)
-
-        Parameters
-        ----------
-        v: bool
-
-        """
+        """setVerbosity(self, v)"""
         return _pyAgrum.GibbsKL_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """
-        setEpsilon(GibbsKL_double self, double eps)
-
-        Parameters
-        ----------
-        eps: double
-
-        """
+        """setEpsilon(self, eps)"""
         return _pyAgrum.GibbsKL_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """
-        setMinEpsilonRate(GibbsKL_double self, double rate)
-
-        Parameters
-        ----------
-        rate: double
-
-        """
+        """setMinEpsilonRate(self, rate)"""
         return _pyAgrum.GibbsKL_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """
-        setMaxIter(GibbsKL_double self, gum::Size max)
-
-        Parameters
-        ----------
-        max: gum::Size
-
-        """
+        """setMaxIter(self, max)"""
         return _pyAgrum.GibbsKL_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """
-        setMaxTime(GibbsKL_double self, double timeout)
-
-        Parameters
-        ----------
-        timeout: double
-
-        """
+        """setMaxTime(self, timeout)"""
         return _pyAgrum.GibbsKL_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """
-        setPeriodSize(GibbsKL_double self, gum::Size p)
-
-        Parameters
-        ----------
-        p: gum::Size
-
-        """
+        """setPeriodSize(self, p)"""
         return _pyAgrum.GibbsKL_double_setPeriodSize(self, p)
 
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
-        """
-        setBurnIn(GibbsKL_double self, gum::Size b)
-
-        Parameters
-        ----------
-        b: gum::Size
-
-        """
+        """setBurnIn(self, b)"""
         return _pyAgrum.GibbsKL_double_setBurnIn(self, b)
 
 
     def verbosity(self) -> "bool":
-        """
-        verbosity(GibbsKL_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """verbosity(self) -> bool"""
         return _pyAgrum.GibbsKL_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """
-        epsilon(GibbsKL_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """epsilon(self) -> double"""
         return _pyAgrum.GibbsKL_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """
-        minEpsilonRate(GibbsKL_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """minEpsilonRate(self) -> double"""
         return _pyAgrum.GibbsKL_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """
-        maxIter(GibbsKL_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """maxIter(self) -> gum::Size"""
         return _pyAgrum.GibbsKL_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """
-        maxTime(GibbsKL_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """maxTime(self) -> double"""
         return _pyAgrum.GibbsKL_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """
-        periodSize(GibbsKL_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """periodSize(self) -> gum::Size"""
         return _pyAgrum.GibbsKL_double_periodSize(self)
 
 
     def burnIn(self) -> "gum::Size":
-        """
-        burnIn(GibbsKL_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """burnIn(self) -> gum::Size"""
         return _pyAgrum.GibbsKL_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """
-        nbrIterations(GibbsKL_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """nbrIterations(self) -> gum::Size"""
         return _pyAgrum.GibbsKL_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """
-        currentTime(GibbsKL_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """currentTime(self) -> double"""
         return _pyAgrum.GibbsKL_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """
-        messageApproximationScheme(GibbsKL_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """messageApproximationScheme(self) -> std::string"""
         return _pyAgrum.GibbsKL_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """
-        history(GibbsKL_double self) -> Vector_double
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """history(self) -> Vector_double"""
         return _pyAgrum.GibbsKL_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """
-        asIApproximationSchemeConfiguration(GibbsKL_double self) -> IApproximationSchemeConfiguration
-
-        Parameters
-        ----------
-        self: gum::GibbsKL< double > const *
-
-        """
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
         return _pyAgrum.GibbsKL_double_asIApproximationSchemeConfiguration(self)
 
 GibbsKL_double_swigregister = _pyAgrum.GibbsKL_double_swigregister
@@ -15838,33 +7861,11 @@ class CredalNet_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::credal::CredalNet<(double)> self) -> CredalNet_double
-        __init__(gum::credal::CredalNet<(double)> self, std::string const & src_min_num, std::string const & src_max_den) -> CredalNet_double
-
-        Parameters
-        ----------
-        src_min_num: std::string const &
-        src_max_den: std::string const &
-
-        __init__(gum::credal::CredalNet<(double)> self, std::string const & src_min_num) -> CredalNet_double
-
-        Parameters
-        ----------
-        src_min_num: std::string const &
-
-        __init__(gum::credal::CredalNet<(double)> self, BayesNet_double src_min_num, BayesNet_double src_max_den) -> CredalNet_double
-
-        Parameters
-        ----------
-        src_min_num: gum::BayesNet< double > const &
-        src_max_den: gum::BayesNet< double > const &
-
-        __init__(gum::credal::CredalNet<(double)> self, BayesNet_double src_min_num) -> CredalNet_double
-
-        Parameters
-        ----------
-        src_min_num: gum::BayesNet< double > const &
-
+        __init__(self) -> CredalNet_double
+        __init__(self, src_min_num, src_max_den) -> CredalNet_double
+        __init__(self, src_min_num) -> CredalNet_double
+        __init__(self, src_min_num, src_max_den) -> CredalNet_double
+        __init__(self, src_min_num) -> CredalNet_double
         """
         this = _pyAgrum.new_CredalNet_double(*args)
         try:
@@ -15875,412 +7876,165 @@ class CredalNet_double(_object):
     __del__ = lambda self: None
 
     def addNode(self, name: 'std::string const &', card: 'gum::Size const &') -> "gum::NodeId":
-        """
-        addNode(CredalNet_double self, std::string const & name, gum::Size const & card) -> gum::NodeId
-
-        Parameters
-        ----------
-        name: std::string const &
-        card: gum::Size const &
-
-        """
+        """addNode(self, name, card) -> gum::NodeId"""
         return _pyAgrum.CredalNet_double_addNode(self, name, card)
 
 
     def addArc(self, tail: 'gum::NodeId const &', head: 'gum::NodeId const &') -> "void":
-        """
-        addArc(CredalNet_double self, gum::NodeId const & tail, gum::NodeId const & head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId const &
-        head: gum::NodeId const &
-
-        """
+        """addArc(self, tail, head)"""
         return _pyAgrum.CredalNet_double_addArc(self, tail, head)
 
 
     def setCPTs(self, id: 'gum::NodeId const &', cpt: 'std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const &') -> "void":
-        """
-        setCPTs(CredalNet_double self, gum::NodeId const & id, std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const & cpt)
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-        cpt: std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > const &
-
-        """
+        """setCPTs(self, id, cpt)"""
         return _pyAgrum.CredalNet_double_setCPTs(self, id, cpt)
 
 
     def setCPT(self, *args) -> "void":
         """
-        setCPT(CredalNet_double self, gum::NodeId const & id, gum::Size & entry, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-        entry: gum::Size &
-        cpt: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
-
-        setCPT(CredalNet_double self, gum::NodeId const & id, Instantiation ins, std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const & cpt)
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-        ins: gum::Instantiation
-        cpt: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
-
+        setCPT(self, id, entry, cpt)
+        setCPT(self, id, ins, cpt)
         """
         return _pyAgrum.CredalNet_double_setCPT(self, *args)
 
 
     def fillConstraints(self, id: 'gum::NodeId const &', lower: 'Vector_double', upper: 'Vector_double') -> "void":
-        """
-        fillConstraints(CredalNet_double self, gum::NodeId const & id, Vector_double lower, Vector_double upper)
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-        lower: std::vector< double,std::allocator< double > > const &
-        upper: std::vector< double,std::allocator< double > > const &
-
-        """
+        """fillConstraints(self, id, lower, upper)"""
         return _pyAgrum.CredalNet_double_fillConstraints(self, id, lower, upper)
 
 
     def fillConstraint(self, *args) -> "void":
         """
-        fillConstraint(CredalNet_double self, gum::NodeId const & id, gum::Idx const & entry, Vector_double lower, Vector_double upper)
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-        entry: gum::Idx const &
-        lower: std::vector< double,std::allocator< double > > const &
-        upper: std::vector< double,std::allocator< double > > const &
-
-        fillConstraint(CredalNet_double self, gum::NodeId const & id, Instantiation ins, Vector_double lower, Vector_double upper)
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-        ins: gum::Instantiation
-        lower: std::vector< double,std::allocator< double > > const &
-        upper: std::vector< double,std::allocator< double > > const &
-
+        fillConstraint(self, id, entry, lower, upper)
+        fillConstraint(self, id, ins, lower, upper)
         """
         return _pyAgrum.CredalNet_double_fillConstraint(self, *args)
 
 
     def instantiation(self, id: 'gum::NodeId const &') -> "gum::Instantiation":
-        """
-        instantiation(CredalNet_double self, gum::NodeId const & id) -> Instantiation
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-
-        """
+        """instantiation(self, id) -> Instantiation"""
         return _pyAgrum.CredalNet_double_instantiation(self, id)
 
 
     def domainSize(self, id: 'gum::NodeId const &') -> "gum::Size":
-        """
-        domainSize(CredalNet_double self, gum::NodeId const & id) -> gum::Size
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-
-        """
+        """domainSize(self, id) -> gum::Size"""
         return _pyAgrum.CredalNet_double_domainSize(self, id)
 
 
     def bnToCredal(self, beta: 'double const', oneNet: 'bool const', keepZeroes: 'bool const'=False) -> "void":
         """
-        bnToCredal(CredalNet_double self, double const beta, bool const oneNet, bool const keepZeroes=False)
-
-        Parameters
-        ----------
-        beta: double const
-        oneNet: bool const
-        keepZeroes: bool const
-
-        bnToCredal(CredalNet_double self, double const beta, bool const oneNet)
-
-        Parameters
-        ----------
-        beta: double const
-        oneNet: bool const
-
+        bnToCredal(self, beta, oneNet, keepZeroes=False)
+        bnToCredal(self, beta, oneNet)
         """
         return _pyAgrum.CredalNet_double_bnToCredal(self, beta, oneNet, keepZeroes)
 
 
     def intervalToCredalWithFiles(self) -> "void":
-        """
-        intervalToCredalWithFiles(CredalNet_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > *
-
-        """
+        """intervalToCredalWithFiles(self)"""
         return _pyAgrum.CredalNet_double_intervalToCredalWithFiles(self)
 
 
     def intervalToCredal(self) -> "void":
-        """
-        intervalToCredal(CredalNet_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > *
-
-        """
+        """intervalToCredal(self)"""
         return _pyAgrum.CredalNet_double_intervalToCredal(self)
 
 
     def lagrangeNormalization(self) -> "void":
-        """
-        lagrangeNormalization(CredalNet_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > *
-
-        """
+        """lagrangeNormalization(self)"""
         return _pyAgrum.CredalNet_double_lagrangeNormalization(self)
 
 
     def idmLearning(self, s: 'gum::Idx const'=0, keepZeroes: 'bool const'=False) -> "void":
         """
-        idmLearning(CredalNet_double self, gum::Idx const s=0, bool const keepZeroes=False)
-
-        Parameters
-        ----------
-        s: gum::Idx const
-        keepZeroes: bool const
-
-        idmLearning(CredalNet_double self, gum::Idx const s=0)
-
-        Parameters
-        ----------
-        s: gum::Idx const
-
-        idmLearning(CredalNet_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > *
-
+        idmLearning(self, s=0, keepZeroes=False)
+        idmLearning(self, s=0)
+        idmLearning(self)
         """
         return _pyAgrum.CredalNet_double_idmLearning(self, s, keepZeroes)
 
 
     def approximatedBinarization(self) -> "void":
-        """
-        approximatedBinarization(CredalNet_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > *
-
-        """
+        """approximatedBinarization(self)"""
         return _pyAgrum.CredalNet_double_approximatedBinarization(self)
 
 
     def saveBNsMinMax(self, min_path: 'std::string const &', max_path: 'std::string const &') -> "void":
-        """
-        saveBNsMinMax(CredalNet_double self, std::string const & min_path, std::string const & max_path)
-
-        Parameters
-        ----------
-        min_path: std::string const &
-        max_path: std::string const &
-
-        """
+        """saveBNsMinMax(self, min_path, max_path)"""
         return _pyAgrum.CredalNet_double_saveBNsMinMax(self, min_path, max_path)
 
 
     def __str__(self) -> "std::string":
-        """
-        __str__(CredalNet_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """__str__(self) -> std::string"""
         return _pyAgrum.CredalNet_double___str__(self)
 
 
     def computeCPTMinMax(self) -> "void":
-        """
-        computeCPTMinMax(CredalNet_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > *
-
-        """
+        """computeCPTMinMax(self)"""
         return _pyAgrum.CredalNet_double_computeCPTMinMax(self)
 
 
     def src_bn(self) -> "gum::BayesNet< double > const &":
-        """
-        src_bn(CredalNet_double self) -> BayesNet_double
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """src_bn(self) -> BayesNet_double"""
         return _pyAgrum.CredalNet_double_src_bn(self)
 
 
     def current_bn(self) -> "gum::BayesNet< double > const &":
-        """
-        current_bn(CredalNet_double self) -> BayesNet_double
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """current_bn(self) -> BayesNet_double"""
         return _pyAgrum.CredalNet_double_current_bn(self)
 
 
     def credalNet_currentCpt(self) -> "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &":
-        """
-        credalNet_currentCpt(CredalNet_double self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """credalNet_currentCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &"""
         return _pyAgrum.CredalNet_double_credalNet_currentCpt(self)
 
 
     def credalNet_srcCpt(self) -> "gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &":
-        """
-        credalNet_srcCpt(CredalNet_double self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """credalNet_srcCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &"""
         return _pyAgrum.CredalNet_double_credalNet_srcCpt(self)
 
 
     def currentNodeType(self, id: 'gum::NodeId const &') -> "gum::credal::CredalNet< double >::NodeType":
-        """
-        currentNodeType(CredalNet_double self, gum::NodeId const & id) -> gum::credal::CredalNet< double >::NodeType
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-
-        """
+        """currentNodeType(self, id) -> gum::credal::CredalNet< double >::NodeType"""
         return _pyAgrum.CredalNet_double_currentNodeType(self, id)
 
 
     def nodeType(self, id: 'gum::NodeId const &') -> "gum::credal::CredalNet< double >::NodeType":
-        """
-        nodeType(CredalNet_double self, gum::NodeId const & id) -> gum::credal::CredalNet< double >::NodeType
-
-        Parameters
-        ----------
-        id: gum::NodeId const &
-
-        """
+        """nodeType(self, id) -> gum::credal::CredalNet< double >::NodeType"""
         return _pyAgrum.CredalNet_double_nodeType(self, id)
 
 
     def epsilonMin(self) -> "double const &":
-        """
-        epsilonMin(CredalNet_double self) -> double const &
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """epsilonMin(self) -> double const &"""
         return _pyAgrum.CredalNet_double_epsilonMin(self)
 
 
     def epsilonMax(self) -> "double const &":
-        """
-        epsilonMax(CredalNet_double self) -> double const &
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """epsilonMax(self) -> double const &"""
         return _pyAgrum.CredalNet_double_epsilonMax(self)
 
 
     def epsilonMean(self) -> "double const &":
-        """
-        epsilonMean(CredalNet_double self) -> double const &
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """epsilonMean(self) -> double const &"""
         return _pyAgrum.CredalNet_double_epsilonMean(self)
 
 
     def isSeparatelySpecified(self) -> "bool const":
-        """
-        isSeparatelySpecified(CredalNet_double self) -> bool const
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """isSeparatelySpecified(self) -> bool const"""
         return _pyAgrum.CredalNet_double_isSeparatelySpecified(self)
 
 
     def hasComputedCPTMinMax(self) -> "bool const":
-        """
-        hasComputedCPTMinMax(CredalNet_double self) -> bool const
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """hasComputedCPTMinMax(self) -> bool const"""
         return _pyAgrum.CredalNet_double_hasComputedCPTMinMax(self)
 
 
     def get_CPT_min(self) -> "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &":
-        """
-        get_CPT_min(CredalNet_double self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """get_CPT_min(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
         return _pyAgrum.CredalNet_double_get_CPT_min(self)
 
 
     def get_CPT_max(self) -> "std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &":
-        """
-        get_CPT_max(CredalNet_double self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
-
-        Parameters
-        ----------
-        self: gum::credal::CredalNet< double > const *
-
-        """
+        """get_CPT_max(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
         return _pyAgrum.CredalNet_double_get_CPT_max(self)
 
 CredalNet_double_swigregister = _pyAgrum.CredalNet_double_swigregister
@@ -16296,14 +8050,7 @@ class CNMonteCarloSampling_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, credalNet: 'CredalNet_double'):
-        """
-        __init__(gum::credal::CNMonteCarloSampling<(double)> self, CredalNet_double credalNet) -> CNMonteCarloSampling_double
-
-        Parameters
-        ----------
-        credalNet: gum::credal::CredalNet< double > const &
-
-        """
+        """__init__(self, credalNet) -> CNMonteCarloSampling_double"""
         this = _pyAgrum.new_CNMonteCarloSampling_double(credalNet)
         try:
             self.this.append(this)
@@ -16313,338 +8060,143 @@ class CNMonteCarloSampling_double(_object):
     __del__ = lambda self: None
 
     def makeInference(self) -> "void":
-        """
-        makeInference(CNMonteCarloSampling_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.CNMonteCarloSampling_double_makeInference(self)
 
 
     def insertEvidenceFile(self, path: 'std::string const &') -> "void":
-        """
-        insertEvidenceFile(CNMonteCarloSampling_double self, std::string const & path)
-
-        Parameters
-        ----------
-        path: std::string const &
-
-        """
+        """insertEvidenceFile(self, path)"""
         return _pyAgrum.CNMonteCarloSampling_double_insertEvidenceFile(self, path)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """
-        setVerbosity(CNMonteCarloSampling_double self, bool v)
-
-        Parameters
-        ----------
-        v: bool
-
-        """
+        """setVerbosity(self, v)"""
         return _pyAgrum.CNMonteCarloSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """
-        setEpsilon(CNMonteCarloSampling_double self, double eps)
-
-        Parameters
-        ----------
-        eps: double
-
-        """
+        """setEpsilon(self, eps)"""
         return _pyAgrum.CNMonteCarloSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """
-        setMinEpsilonRate(CNMonteCarloSampling_double self, double rate)
-
-        Parameters
-        ----------
-        rate: double
-
-        """
+        """setMinEpsilonRate(self, rate)"""
         return _pyAgrum.CNMonteCarloSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """
-        setMaxIter(CNMonteCarloSampling_double self, gum::Size max)
-
-        Parameters
-        ----------
-        max: gum::Size
-
-        """
+        """setMaxIter(self, max)"""
         return _pyAgrum.CNMonteCarloSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """
-        setMaxTime(CNMonteCarloSampling_double self, double timeout)
-
-        Parameters
-        ----------
-        timeout: double
-
-        """
+        """setMaxTime(self, timeout)"""
         return _pyAgrum.CNMonteCarloSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """
-        setPeriodSize(CNMonteCarloSampling_double self, gum::Size p)
-
-        Parameters
-        ----------
-        p: gum::Size
-
-        """
+        """setPeriodSize(self, p)"""
         return _pyAgrum.CNMonteCarloSampling_double_setPeriodSize(self, p)
 
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
-        """
-        setBurnIn(CNMonteCarloSampling_double self, gum::Size b)
-
-        Parameters
-        ----------
-        b: gum::Size
-
-        """
+        """setBurnIn(self, b)"""
         return _pyAgrum.CNMonteCarloSampling_double_setBurnIn(self, b)
 
 
     def verbosity(self) -> "bool":
-        """
-        verbosity(CNMonteCarloSampling_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """verbosity(self) -> bool"""
         return _pyAgrum.CNMonteCarloSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """
-        epsilon(CNMonteCarloSampling_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """epsilon(self) -> double"""
         return _pyAgrum.CNMonteCarloSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """
-        minEpsilonRate(CNMonteCarloSampling_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """minEpsilonRate(self) -> double"""
         return _pyAgrum.CNMonteCarloSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """
-        maxIter(CNMonteCarloSampling_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """maxIter(self) -> gum::Size"""
         return _pyAgrum.CNMonteCarloSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """
-        maxTime(CNMonteCarloSampling_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """maxTime(self) -> double"""
         return _pyAgrum.CNMonteCarloSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """
-        periodSize(CNMonteCarloSampling_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """periodSize(self) -> gum::Size"""
         return _pyAgrum.CNMonteCarloSampling_double_periodSize(self)
 
 
     def burnIn(self) -> "gum::Size":
-        """
-        burnIn(CNMonteCarloSampling_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """burnIn(self) -> gum::Size"""
         return _pyAgrum.CNMonteCarloSampling_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """
-        nbrIterations(CNMonteCarloSampling_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """nbrIterations(self) -> gum::Size"""
         return _pyAgrum.CNMonteCarloSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """
-        currentTime(CNMonteCarloSampling_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """currentTime(self) -> double"""
         return _pyAgrum.CNMonteCarloSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """
-        messageApproximationScheme(CNMonteCarloSampling_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """messageApproximationScheme(self) -> std::string"""
         return _pyAgrum.CNMonteCarloSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """
-        history(CNMonteCarloSampling_double self) -> Vector_double
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """history(self) -> Vector_double"""
         return _pyAgrum.CNMonteCarloSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """
-        asIApproximationSchemeConfiguration(CNMonteCarloSampling_double self) -> IApproximationSchemeConfiguration
-
-        Parameters
-        ----------
-        self: gum::credal::CNMonteCarloSampling< double > const *
-
-        """
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
         return _pyAgrum.CNMonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def setRepetitiveInd(self, flag: 'bool const') -> "void":
-        """
-        setRepetitiveInd(CNMonteCarloSampling_double self, bool const flag)
-
-        Parameters
-        ----------
-        flag: bool const
-
-        """
+        """setRepetitiveInd(self, flag)"""
         return _pyAgrum.CNMonteCarloSampling_double_setRepetitiveInd(self, flag)
 
 
     def marginalMax(self, *args) -> "std::vector< double,std::allocator< double > > const &":
         """
-        marginalMax(CNMonteCarloSampling_double self, gum::NodeId const id) -> Vector_double
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        marginalMax(CNMonteCarloSampling_double self, std::string const name) -> Vector_double
-
-        Parameters
-        ----------
-        name: std::string const
-
+        marginalMax(self, id) -> Vector_double
+        marginalMax(self, name) -> Vector_double
         """
         return _pyAgrum.CNMonteCarloSampling_double_marginalMax(self, *args)
 
 
     def marginalMin(self, *args) -> "std::vector< double,std::allocator< double > > const &":
         """
-        marginalMin(CNMonteCarloSampling_double self, gum::NodeId const id) -> Vector_double
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        marginalMin(CNMonteCarloSampling_double self, std::string const name) -> Vector_double
-
-        Parameters
-        ----------
-        name: std::string const
-
+        marginalMin(self, id) -> Vector_double
+        marginalMin(self, name) -> Vector_double
         """
         return _pyAgrum.CNMonteCarloSampling_double_marginalMin(self, *args)
 
 
     def insertModalsFile(self, path: 'std::string const &') -> "void":
-        """
-        insertModalsFile(CNMonteCarloSampling_double self, std::string const & path)
-
-        Parameters
-        ----------
-        path: std::string const &
-
-        """
+        """insertModalsFile(self, path)"""
         return _pyAgrum.CNMonteCarloSampling_double_insertModalsFile(self, path)
 
 
     def dynamicExpMax(self, varName: 'std::string const &') -> "std::vector< double,std::allocator< double > > const &":
-        """
-        dynamicExpMax(CNMonteCarloSampling_double self, std::string const & varName) -> Vector_double
-
-        Parameters
-        ----------
-        varName: std::string const &
-
-        """
+        """dynamicExpMax(self, varName) -> Vector_double"""
         return _pyAgrum.CNMonteCarloSampling_double_dynamicExpMax(self, varName)
 
 
     def dynamicExpMin(self, varName: 'std::string const &') -> "std::vector< double,std::allocator< double > > const &":
-        """
-        dynamicExpMin(CNMonteCarloSampling_double self, std::string const & varName) -> Vector_double
-
-        Parameters
-        ----------
-        varName: std::string const &
-
-        """
+        """dynamicExpMin(self, varName) -> Vector_double"""
         return _pyAgrum.CNMonteCarloSampling_double_dynamicExpMin(self, varName)
 
 CNMonteCarloSampling_double_swigregister = _pyAgrum.CNMonteCarloSampling_double_swigregister
@@ -16663,68 +8215,30 @@ class CNLoopyPropagation_double(_object):
     InferenceType_randomOrder = _pyAgrum.CNLoopyPropagation_double_InferenceType_randomOrder
 
     def makeInference(self) -> "void":
-        """
-        makeInference(CNLoopyPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.CNLoopyPropagation_double_makeInference(self)
 
 
     def inferenceType(self, *args) -> "gum::credal::CNLoopyPropagation< double >::InferenceType":
         """
-        inferenceType(CNLoopyPropagation_double self, gum::credal::CNLoopyPropagation< double >::InferenceType inft)
-
-        Parameters
-        ----------
-        inft: enum gum::credal::CNLoopyPropagation< double >::InferenceType
-
-        inferenceType(CNLoopyPropagation_double self) -> gum::credal::CNLoopyPropagation< double >::InferenceType
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > *
-
+        inferenceType(self, inft)
+        inferenceType(self) -> gum::credal::CNLoopyPropagation< double >::InferenceType
         """
         return _pyAgrum.CNLoopyPropagation_double_inferenceType(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        """
-        eraseAllEvidence(CNLoopyPropagation_double self)
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > *
-
-        """
+        """eraseAllEvidence(self)"""
         return _pyAgrum.CNLoopyPropagation_double_eraseAllEvidence(self)
 
 
     def saveInference(self, path: 'std::string const &') -> "void":
-        """
-        saveInference(CNLoopyPropagation_double self, std::string const & path)
-
-        Parameters
-        ----------
-        path: std::string const &
-
-        """
+        """saveInference(self, path)"""
         return _pyAgrum.CNLoopyPropagation_double_saveInference(self, path)
 
 
     def __init__(self, cnet: 'CredalNet_double'):
-        """
-        __init__(gum::credal::CNLoopyPropagation<(double)> self, CredalNet_double cnet) -> CNLoopyPropagation_double
-
-        Parameters
-        ----------
-        cnet: gum::credal::CredalNet< double > const &
-
-        """
+        """__init__(self, cnet) -> CNLoopyPropagation_double"""
         this = _pyAgrum.new_CNLoopyPropagation_double(cnet)
         try:
             self.this.append(this)
@@ -16734,326 +8248,138 @@ class CNLoopyPropagation_double(_object):
     __del__ = lambda self: None
 
     def insertEvidenceFile(self, path: 'std::string const &') -> "void":
-        """
-        insertEvidenceFile(CNLoopyPropagation_double self, std::string const & path)
-
-        Parameters
-        ----------
-        path: std::string const &
-
-        """
+        """insertEvidenceFile(self, path)"""
         return _pyAgrum.CNLoopyPropagation_double_insertEvidenceFile(self, path)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """
-        setVerbosity(CNLoopyPropagation_double self, bool v)
-
-        Parameters
-        ----------
-        v: bool
-
-        """
+        """setVerbosity(self, v)"""
         return _pyAgrum.CNLoopyPropagation_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """
-        setEpsilon(CNLoopyPropagation_double self, double eps)
-
-        Parameters
-        ----------
-        eps: double
-
-        """
+        """setEpsilon(self, eps)"""
         return _pyAgrum.CNLoopyPropagation_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """
-        setMinEpsilonRate(CNLoopyPropagation_double self, double rate)
-
-        Parameters
-        ----------
-        rate: double
-
-        """
+        """setMinEpsilonRate(self, rate)"""
         return _pyAgrum.CNLoopyPropagation_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """
-        setMaxIter(CNLoopyPropagation_double self, gum::Size max)
-
-        Parameters
-        ----------
-        max: gum::Size
-
-        """
+        """setMaxIter(self, max)"""
         return _pyAgrum.CNLoopyPropagation_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """
-        setMaxTime(CNLoopyPropagation_double self, double timeout)
-
-        Parameters
-        ----------
-        timeout: double
-
-        """
+        """setMaxTime(self, timeout)"""
         return _pyAgrum.CNLoopyPropagation_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """
-        setPeriodSize(CNLoopyPropagation_double self, gum::Size p)
-
-        Parameters
-        ----------
-        p: gum::Size
-
-        """
+        """setPeriodSize(self, p)"""
         return _pyAgrum.CNLoopyPropagation_double_setPeriodSize(self, p)
 
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
-        """
-        setBurnIn(CNLoopyPropagation_double self, gum::Size b)
-
-        Parameters
-        ----------
-        b: gum::Size
-
-        """
+        """setBurnIn(self, b)"""
         return _pyAgrum.CNLoopyPropagation_double_setBurnIn(self, b)
 
 
     def verbosity(self) -> "bool":
-        """
-        verbosity(CNLoopyPropagation_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """verbosity(self) -> bool"""
         return _pyAgrum.CNLoopyPropagation_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """
-        epsilon(CNLoopyPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """epsilon(self) -> double"""
         return _pyAgrum.CNLoopyPropagation_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """
-        minEpsilonRate(CNLoopyPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """minEpsilonRate(self) -> double"""
         return _pyAgrum.CNLoopyPropagation_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """
-        maxIter(CNLoopyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """maxIter(self) -> gum::Size"""
         return _pyAgrum.CNLoopyPropagation_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """
-        maxTime(CNLoopyPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """maxTime(self) -> double"""
         return _pyAgrum.CNLoopyPropagation_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """
-        periodSize(CNLoopyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """periodSize(self) -> gum::Size"""
         return _pyAgrum.CNLoopyPropagation_double_periodSize(self)
 
 
     def burnIn(self) -> "gum::Size":
-        """
-        burnIn(CNLoopyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """burnIn(self) -> gum::Size"""
         return _pyAgrum.CNLoopyPropagation_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """
-        nbrIterations(CNLoopyPropagation_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """nbrIterations(self) -> gum::Size"""
         return _pyAgrum.CNLoopyPropagation_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """
-        currentTime(CNLoopyPropagation_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """currentTime(self) -> double"""
         return _pyAgrum.CNLoopyPropagation_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """
-        messageApproximationScheme(CNLoopyPropagation_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """messageApproximationScheme(self) -> std::string"""
         return _pyAgrum.CNLoopyPropagation_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """
-        history(CNLoopyPropagation_double self) -> Vector_double
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """history(self) -> Vector_double"""
         return _pyAgrum.CNLoopyPropagation_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """
-        asIApproximationSchemeConfiguration(CNLoopyPropagation_double self) -> IApproximationSchemeConfiguration
-
-        Parameters
-        ----------
-        self: gum::credal::CNLoopyPropagation< double > const *
-
-        """
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
         return _pyAgrum.CNLoopyPropagation_double_asIApproximationSchemeConfiguration(self)
 
 
     def setRepetitiveInd(self, flag: 'bool const') -> "void":
-        """
-        setRepetitiveInd(CNLoopyPropagation_double self, bool const flag)
-
-        Parameters
-        ----------
-        flag: bool const
-
-        """
+        """setRepetitiveInd(self, flag)"""
         return _pyAgrum.CNLoopyPropagation_double_setRepetitiveInd(self, flag)
 
 
     def marginalMax(self, *args) -> "std::vector< double,std::allocator< double > > const &":
         """
-        marginalMax(CNLoopyPropagation_double self, gum::NodeId const id) -> Vector_double
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        marginalMax(CNLoopyPropagation_double self, std::string const name) -> Vector_double
-
-        Parameters
-        ----------
-        name: std::string const
-
+        marginalMax(self, id) -> Vector_double
+        marginalMax(self, name) -> Vector_double
         """
         return _pyAgrum.CNLoopyPropagation_double_marginalMax(self, *args)
 
 
     def marginalMin(self, *args) -> "std::vector< double,std::allocator< double > > const &":
         """
-        marginalMin(CNLoopyPropagation_double self, gum::NodeId const id) -> Vector_double
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        marginalMin(CNLoopyPropagation_double self, std::string const name) -> Vector_double
-
-        Parameters
-        ----------
-        name: std::string const
-
+        marginalMin(self, id) -> Vector_double
+        marginalMin(self, name) -> Vector_double
         """
         return _pyAgrum.CNLoopyPropagation_double_marginalMin(self, *args)
 
 
     def insertModalsFile(self, path: 'std::string const &') -> "void":
-        """
-        insertModalsFile(CNLoopyPropagation_double self, std::string const & path)
-
-        Parameters
-        ----------
-        path: std::string const &
-
-        """
+        """insertModalsFile(self, path)"""
         return _pyAgrum.CNLoopyPropagation_double_insertModalsFile(self, path)
 
 
     def dynamicExpMax(self, varName: 'std::string const &') -> "std::vector< double,std::allocator< double > > const &":
-        """
-        dynamicExpMax(CNLoopyPropagation_double self, std::string const & varName) -> Vector_double
-
-        Parameters
-        ----------
-        varName: std::string const &
-
-        """
+        """dynamicExpMax(self, varName) -> Vector_double"""
         return _pyAgrum.CNLoopyPropagation_double_dynamicExpMax(self, varName)
 
 
     def dynamicExpMin(self, varName: 'std::string const &') -> "std::vector< double,std::allocator< double > > const &":
-        """
-        dynamicExpMin(CNLoopyPropagation_double self, std::string const & varName) -> Vector_double
-
-        Parameters
-        ----------
-        varName: std::string const &
-
-        """
+        """dynamicExpMin(self, varName) -> Vector_double"""
         return _pyAgrum.CNLoopyPropagation_double_dynamicExpMin(self, varName)
 
 CNLoopyPropagation_double_swigregister = _pyAgrum.CNLoopyPropagation_double_swigregister
@@ -17076,13 +8402,8 @@ class InfluenceDiagram_double(DAGmodel):
 
     def __init__(self, *args):
         """
-        __init__(gum::InfluenceDiagram<(double)> self) -> InfluenceDiagram_double
-        __init__(gum::InfluenceDiagram<(double)> self, InfluenceDiagram_double source) -> InfluenceDiagram_double
-
-        Parameters
-        ----------
-        source: gum::InfluenceDiagram< double > const &
-
+        __init__(self) -> InfluenceDiagram_double
+        __init__(self, source) -> InfluenceDiagram_double
         """
         this = _pyAgrum.new_InfluenceDiagram_double(*args)
         try:
@@ -17091,38 +8412,17 @@ class InfluenceDiagram_double(DAGmodel):
             self.this = this
 
     def toDot(self) -> "std::string":
-        """
-        toDot(InfluenceDiagram_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """toDot(self) -> std::string"""
         return _pyAgrum.InfluenceDiagram_double_toDot(self)
 
 
     def __str__(self) -> "std::string":
-        """
-        __str__(InfluenceDiagram_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """__str__(self) -> std::string"""
         return _pyAgrum.InfluenceDiagram_double___str__(self)
 
 
     def cpt(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
-        """
-        cpt(InfluenceDiagram_double self, gum::NodeId varId) -> Potential_double
-
-        Parameters
-        ----------
-        varId: gum::NodeId
-
-        """
+        """cpt(self, varId) -> Potential_double"""
         val = _pyAgrum.InfluenceDiagram_double_cpt(self, varId)
 
         val.__fill_distrib__()
@@ -17132,14 +8432,7 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def utility(self, varId: 'gum::NodeId') -> "gum::UtilityTable< double > const &":
-        """
-        utility(InfluenceDiagram_double self, gum::NodeId varId) -> UtilityTable_double
-
-        Parameters
-        ----------
-        varId: gum::NodeId
-
-        """
+        """utility(self, varId) -> UtilityTable_double"""
         val = _pyAgrum.InfluenceDiagram_double_utility(self, varId)
 
         val.__fill_distrib__()
@@ -17149,431 +8442,172 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def isUtilityNode(self, varId: 'gum::NodeId') -> "bool":
-        """
-        isUtilityNode(InfluenceDiagram_double self, gum::NodeId varId) -> bool
-
-        Parameters
-        ----------
-        varId: gum::NodeId
-
-        """
+        """isUtilityNode(self, varId) -> bool"""
         return _pyAgrum.InfluenceDiagram_double_isUtilityNode(self, varId)
 
 
     def isDecisionNode(self, varId: 'gum::NodeId') -> "bool":
-        """
-        isDecisionNode(InfluenceDiagram_double self, gum::NodeId varId) -> bool
-
-        Parameters
-        ----------
-        varId: gum::NodeId
-
-        """
+        """isDecisionNode(self, varId) -> bool"""
         return _pyAgrum.InfluenceDiagram_double_isDecisionNode(self, varId)
 
 
     def isChanceNode(self, varId: 'gum::NodeId') -> "bool":
-        """
-        isChanceNode(InfluenceDiagram_double self, gum::NodeId varId) -> bool
-
-        Parameters
-        ----------
-        varId: gum::NodeId
-
-        """
+        """isChanceNode(self, varId) -> bool"""
         return _pyAgrum.InfluenceDiagram_double_isChanceNode(self, varId)
 
 
     def utilityNodeSize(self) -> "gum::Size":
-        """
-        utilityNodeSize(InfluenceDiagram_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """utilityNodeSize(self) -> gum::Size"""
         return _pyAgrum.InfluenceDiagram_double_utilityNodeSize(self)
 
 
     def chanceNodeSize(self) -> "gum::Size":
-        """
-        chanceNodeSize(InfluenceDiagram_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """chanceNodeSize(self) -> gum::Size"""
         return _pyAgrum.InfluenceDiagram_double_chanceNodeSize(self)
 
 
     def decisionNodeSize(self) -> "gum::Size":
-        """
-        decisionNodeSize(InfluenceDiagram_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """decisionNodeSize(self) -> gum::Size"""
         return _pyAgrum.InfluenceDiagram_double_decisionNodeSize(self)
 
 
     def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
-        """
-        variable(InfluenceDiagram_double self, gum::NodeId id) -> DiscreteVariable
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """variable(self, id) -> DiscreteVariable"""
         return _pyAgrum.InfluenceDiagram_double_variable(self, id)
 
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
-        """
-        nodeId(InfluenceDiagram_double self, DiscreteVariable var) -> gum::NodeId
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
-        """
+        """nodeId(self, var) -> gum::NodeId"""
         return _pyAgrum.InfluenceDiagram_double_nodeId(self, var)
 
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
-        """
-        idFromName(InfluenceDiagram_double self, std::string const & name) -> gum::NodeId
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """idFromName(self, name) -> gum::NodeId"""
         return _pyAgrum.InfluenceDiagram_double_idFromName(self, name)
 
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
-        """
-        variableFromName(InfluenceDiagram_double self, std::string const & name) -> DiscreteVariable
-
-        Parameters
-        ----------
-        name: std::string const &
-
-        """
+        """variableFromName(self, name) -> DiscreteVariable"""
         return _pyAgrum.InfluenceDiagram_double_variableFromName(self, name)
 
 
     def add(self, variable: 'DiscreteVariable', id: 'gum::NodeId'=0) -> "gum::NodeId":
         """
-        add(InfluenceDiagram_double self, DiscreteVariable variable, gum::NodeId id=0) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        id: gum::NodeId
-
-        add(InfluenceDiagram_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
+        add(self, variable, id=0) -> gum::NodeId
+        add(self, variable) -> gum::NodeId
         """
         return _pyAgrum.InfluenceDiagram_double_add(self, variable, id)
 
 
     def addDecisionNode(self, variable: 'DiscreteVariable', id: 'gum::NodeId'=0) -> "gum::NodeId":
         """
-        addDecisionNode(InfluenceDiagram_double self, DiscreteVariable variable, gum::NodeId id=0) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        id: gum::NodeId
-
-        addDecisionNode(InfluenceDiagram_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
+        addDecisionNode(self, variable, id=0) -> gum::NodeId
+        addDecisionNode(self, variable) -> gum::NodeId
         """
         return _pyAgrum.InfluenceDiagram_double_addDecisionNode(self, variable, id)
 
 
     def addChanceNode(self, *args) -> "gum::NodeId":
         """
-        addChanceNode(InfluenceDiagram_double self, DiscreteVariable variable, gum::NodeId id=0) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        id: gum::NodeId
-
-        addChanceNode(InfluenceDiagram_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        addChanceNode(InfluenceDiagram_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent, gum::NodeId id=0) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        aContent: gum::MultiDimImplementation< double > *
-        id: gum::NodeId
-
-        addChanceNode(InfluenceDiagram_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        aContent: gum::MultiDimImplementation< double > *
-
+        addChanceNode(self, variable, id=0) -> gum::NodeId
+        addChanceNode(self, variable) -> gum::NodeId
+        addChanceNode(self, variable, aContent, id=0) -> gum::NodeId
+        addChanceNode(self, variable, aContent) -> gum::NodeId
         """
         return _pyAgrum.InfluenceDiagram_double_addChanceNode(self, *args)
 
 
     def addUtilityNode(self, *args) -> "gum::NodeId":
         """
-        addUtilityNode(InfluenceDiagram_double self, DiscreteVariable variable, gum::NodeId id=0) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        id: gum::NodeId
-
-        addUtilityNode(InfluenceDiagram_double self, DiscreteVariable variable) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-
-        addUtilityNode(InfluenceDiagram_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent, gum::NodeId id=0) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        aContent: gum::MultiDimImplementation< double > *
-        id: gum::NodeId
-
-        addUtilityNode(InfluenceDiagram_double self, DiscreteVariable variable, gum::MultiDimImplementation< double > * aContent) -> gum::NodeId
-
-        Parameters
-        ----------
-        variable: gum::DiscreteVariable const &
-        aContent: gum::MultiDimImplementation< double > *
-
+        addUtilityNode(self, variable, id=0) -> gum::NodeId
+        addUtilityNode(self, variable) -> gum::NodeId
+        addUtilityNode(self, variable, aContent, id=0) -> gum::NodeId
+        addUtilityNode(self, variable, aContent) -> gum::NodeId
         """
         return _pyAgrum.InfluenceDiagram_double_addUtilityNode(self, *args)
 
 
     def erase(self, *args) -> "void":
         """
-        erase(InfluenceDiagram_double self, gum::NodeId id)
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        erase(InfluenceDiagram_double self, DiscreteVariable var)
-
-        Parameters
-        ----------
-        var: gum::DiscreteVariable const &
-
+        erase(self, id)
+        erase(self, var)
         """
         return _pyAgrum.InfluenceDiagram_double_erase(self, *args)
 
 
     def changeVariableName(self, id: 'gum::NodeId', new_name: 'std::string const &') -> "void":
-        """
-        changeVariableName(InfluenceDiagram_double self, gum::NodeId id, std::string const & new_name)
-
-        Parameters
-        ----------
-        id: gum::NodeId
-        new_name: std::string const &
-
-        """
+        """changeVariableName(self, id, new_name)"""
         return _pyAgrum.InfluenceDiagram_double_changeVariableName(self, id, new_name)
 
 
     def addArc(self, tail: 'gum::NodeId', head: 'gum::NodeId') -> "void":
-        """
-        addArc(InfluenceDiagram_double self, gum::NodeId tail, gum::NodeId head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId
-        head: gum::NodeId
-
-        """
+        """addArc(self, tail, head)"""
         return _pyAgrum.InfluenceDiagram_double_addArc(self, tail, head)
 
 
     def eraseArc(self, *args) -> "void":
         """
-        eraseArc(InfluenceDiagram_double self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        eraseArc(InfluenceDiagram_double self, gum::NodeId tail, gum::NodeId head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId
-        head: gum::NodeId
-
+        eraseArc(self, arc)
+        eraseArc(self, tail, head)
         """
         return _pyAgrum.InfluenceDiagram_double_eraseArc(self, *args)
 
 
     def decisionOrderExists(self) -> "bool":
-        """
-        decisionOrderExists(InfluenceDiagram_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """decisionOrderExists(self) -> bool"""
         return _pyAgrum.InfluenceDiagram_double_decisionOrderExists(self)
 
 
     def getDecisionGraph(self) -> "gum::DAG *":
-        """
-        getDecisionGraph(InfluenceDiagram_double self) -> DAG
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """getDecisionGraph(self) -> DAG"""
         return _pyAgrum.InfluenceDiagram_double_getDecisionGraph(self)
 
 
     def getDecisionOrder(self) -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > *":
-        """
-        getDecisionOrder(InfluenceDiagram_double self) -> Vector_int
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """getDecisionOrder(self) -> Vector_int"""
         return _pyAgrum.InfluenceDiagram_double_getDecisionOrder(self)
 
 
     def existsPathBetween(self, src: 'gum::NodeId', dest: 'gum::NodeId') -> "bool":
-        """
-        existsPathBetween(InfluenceDiagram_double self, gum::NodeId src, gum::NodeId dest) -> bool
-
-        Parameters
-        ----------
-        src: gum::NodeId
-        dest: gum::NodeId
-
-        """
+        """existsPathBetween(self, src, dest) -> bool"""
         return _pyAgrum.InfluenceDiagram_double_existsPathBetween(self, src, dest)
 
 
     def names(self) -> "PyObject *":
-        """
-        names(InfluenceDiagram_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > const *
-
-        """
+        """names(self) -> PyObject *"""
         return _pyAgrum.InfluenceDiagram_double_names(self)
 
 
     def ids(self) -> "PyObject *":
-        """
-        ids(InfluenceDiagram_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > *
-
-        """
+        """ids(self) -> PyObject *"""
         return _pyAgrum.InfluenceDiagram_double_ids(self)
 
 
     def arcs(self) -> "PyObject *":
-        """
-        arcs(InfluenceDiagram_double self) -> PyObject *
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagram< double > *
-
-        """
+        """arcs(self) -> PyObject *"""
         return _pyAgrum.InfluenceDiagram_double_arcs(self)
 
 
     def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        parents(InfluenceDiagram_double self, gum::NodeId const id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """parents(self, id) -> PyObject *"""
         return _pyAgrum.InfluenceDiagram_double_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        children(InfluenceDiagram_double self, gum::NodeId const id) -> PyObject *
-
-        Parameters
-        ----------
-        id: gum::NodeId const
-
-        """
+        """children(self, id) -> PyObject *"""
         return _pyAgrum.InfluenceDiagram_double_children(self, id)
 
 
     def loadBIFXML(self, *args) -> "bool":
         """
-        loadBIFXML(InfluenceDiagram_double self, std::string name, PyObject * l) -> bool
-
-        Parameters
-        ----------
-        name: std::string
-        l: PyObject *
-
-        loadBIFXML(InfluenceDiagram_double self, std::string name) -> bool
-
-        Parameters
-        ----------
-        name: std::string
-
+        loadBIFXML(self, name, l) -> bool
+        loadBIFXML(self, name) -> bool
         """
         return _pyAgrum.InfluenceDiagram_double_loadBIFXML(self, *args)
 
 
     def saveBIFXML(self, name: 'std::string') -> "void":
-        """
-        saveBIFXML(InfluenceDiagram_double self, std::string name)
-
-        Parameters
-        ----------
-        name: std::string
-
-        """
+        """saveBIFXML(self, name)"""
         return _pyAgrum.InfluenceDiagram_double_saveBIFXML(self, name)
 
 InfluenceDiagram_double_swigregister = _pyAgrum.InfluenceDiagram_double_swigregister
@@ -17589,14 +8623,7 @@ class InfluenceDiagramInference_double(_object):
     __repr__ = _swig_repr
 
     def __init__(self, infDiag: 'InfluenceDiagram_double'):
-        """
-        __init__(gum::InfluenceDiagramInference<(double)> self, InfluenceDiagram_double infDiag) -> InfluenceDiagramInference_double
-
-        Parameters
-        ----------
-        infDiag: gum::InfluenceDiagram< double > const &
-
-        """
+        """__init__(self, infDiag) -> InfluenceDiagramInference_double"""
         this = _pyAgrum.new_InfluenceDiagramInference_double(infDiag)
         try:
             self.this.append(this)
@@ -17606,110 +8633,47 @@ class InfluenceDiagramInference_double(_object):
     __del__ = lambda self: None
 
     def makeInference(self) -> "void":
-        """
-        makeInference(InfluenceDiagramInference_double self)
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagramInference< double > *
-
-        """
+        """makeInference(self)"""
         return _pyAgrum.InfluenceDiagramInference_double_makeInference(self)
 
 
     def getMEU(self) -> "double":
-        """
-        getMEU(InfluenceDiagramInference_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagramInference< double > *
-
-        """
+        """getMEU(self) -> double"""
         return _pyAgrum.InfluenceDiagramInference_double_getMEU(self)
 
 
     def getBestDecisionChoice(self, decisionId: 'gum::NodeId') -> "gum::Idx":
-        """
-        getBestDecisionChoice(InfluenceDiagramInference_double self, gum::NodeId decisionId) -> gum::Idx
-
-        Parameters
-        ----------
-        decisionId: gum::NodeId
-
-        """
+        """getBestDecisionChoice(self, decisionId) -> gum::Idx"""
         return _pyAgrum.InfluenceDiagramInference_double_getBestDecisionChoice(self, decisionId)
 
 
     def displayResult(self) -> "std::string":
-        """
-        displayResult(InfluenceDiagramInference_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagramInference< double > *
-
-        """
+        """displayResult(self) -> std::string"""
         return _pyAgrum.InfluenceDiagramInference_double_displayResult(self)
 
 
     def insertEvidence(self, evidenceList: 'gum::List< gum::Potential< double > const * > const &') -> "void":
-        """
-        insertEvidence(InfluenceDiagramInference_double self, gum::List< gum::Potential< double > const * > const & evidenceList)
-
-        Parameters
-        ----------
-        evidenceList: gum::List< gum::Potential< double > const * > const &
-
-        """
+        """insertEvidence(self, evidenceList)"""
         return _pyAgrum.InfluenceDiagramInference_double_insertEvidence(self, evidenceList)
 
 
     def eraseEvidence(self, evidence: 'Potential_double') -> "void":
-        """
-        eraseEvidence(InfluenceDiagramInference_double self, Potential_double evidence)
-
-        Parameters
-        ----------
-        evidence: gum::Potential< double > const *
-
-        """
+        """eraseEvidence(self, evidence)"""
         return _pyAgrum.InfluenceDiagramInference_double_eraseEvidence(self, evidence)
 
 
     def eraseAllEvidence(self) -> "void":
-        """
-        eraseAllEvidence(InfluenceDiagramInference_double self)
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagramInference< double > *
-
-        """
+        """eraseAllEvidence(self)"""
         return _pyAgrum.InfluenceDiagramInference_double_eraseAllEvidence(self)
 
 
     def displayStrongJunctionTree(self, *args) -> "void":
-        """
-        displayStrongJunctionTree(InfluenceDiagramInference_double self, std::ostream & stream)
-
-        Parameters
-        ----------
-        stream: std::ostream &
-
-        """
+        """displayStrongJunctionTree(self, stream)"""
         return _pyAgrum.InfluenceDiagramInference_double_displayStrongJunctionTree(self, *args)
 
 
     def influenceDiagram(self) -> "gum::InfluenceDiagram< double > const &":
-        """
-        influenceDiagram(InfluenceDiagramInference_double self) -> InfluenceDiagram_double
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagramInference< double > const *
-
-        """
+        """influenceDiagram(self) -> InfluenceDiagram_double"""
         return _pyAgrum.InfluenceDiagramInference_double_influenceDiagram(self)
 
 
@@ -17778,26 +8742,12 @@ class InfluenceDiagramInference_double(_object):
 
 
     def _setEvidence(self, evidences: 'PyObject *') -> "void":
-        """
-        _setEvidence(InfluenceDiagramInference_double self, PyObject * evidences)
-
-        Parameters
-        ----------
-        evidences: PyObject *
-
-        """
+        """_setEvidence(self, evidences)"""
         return _pyAgrum.InfluenceDiagramInference_double__setEvidence(self, evidences)
 
 
     def junctionTreeToDot(self) -> "std::string const":
-        """
-        junctionTreeToDot(InfluenceDiagramInference_double self) -> std::string const
-
-        Parameters
-        ----------
-        self: gum::InfluenceDiagramInference< double > *
-
-        """
+        """junctionTreeToDot(self) -> std::string const"""
         return _pyAgrum.InfluenceDiagramInference_double_junctionTreeToDot(self)
 
 InfluenceDiagramInference_double_swigregister = _pyAgrum.InfluenceDiagramInference_double_swigregister
@@ -17814,60 +8764,14 @@ class BNLearner_double(_object):
 
     def __init__(self, *args):
         """
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename) -> BNLearner_double
-
-        Parameters
-        ----------
-        filename: std::string const &
-
-        __init__(gum::learning::BNLearner<(double)> self, DatabaseVectInRAM db) -> BNLearner_double
-
-        Parameters
-        ----------
-        db: gum::learning::DatabaseVectInRAM const &
-
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, gum::NodeProperty< gum::Sequence< std::string > > const & modalities, bool parse_database=False) -> BNLearner_double
-
-        Parameters
-        ----------
-        filename: std::string const &
-        modalities: gum::NodeProperty< gum::Sequence< std::string > > const &
-        parse_database: bool
-
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, gum::NodeProperty< gum::Sequence< std::string > > const & modalities) -> BNLearner_double
-
-        Parameters
-        ----------
-        filename: std::string const &
-        modalities: gum::NodeProperty< gum::Sequence< std::string > > const &
-
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, BayesNet_double src, bool parse_database=False) -> BNLearner_double
-
-        Parameters
-        ----------
-        filename: std::string const &
-        src: gum::BayesNet< double > const &
-        parse_database: bool
-
-        __init__(gum::learning::BNLearner<(double)> self, std::string const & filename, BayesNet_double src) -> BNLearner_double
-
-        Parameters
-        ----------
-        filename: std::string const &
-        src: gum::BayesNet< double > const &
-
-        __init__(gum::learning::BNLearner<(double)> self, BNLearner_double arg2) -> BNLearner_double
-
-        Parameters
-        ----------
-        arg2: gum::learning::BNLearner< double > const &
-
-        __init__(gum::learning::BNLearner<(double)> self, BNLearner_double arg2) -> BNLearner_double
-
-        Parameters
-        ----------
-        arg2: gum::learning::BNLearner< double > &&
-
+        __init__(self, filename) -> BNLearner_double
+        __init__(self, db) -> BNLearner_double
+        __init__(self, filename, modalities, parse_database=False) -> BNLearner_double
+        __init__(self, filename, modalities) -> BNLearner_double
+        __init__(self, filename, src, parse_database=False) -> BNLearner_double
+        __init__(self, filename, src) -> BNLearner_double
+        __init__(self, arg2) -> BNLearner_double
+        __init__(self, arg2) -> BNLearner_double
         """
         this = _pyAgrum.new_BNLearner_double(*args)
         try:
@@ -17878,653 +8782,267 @@ class BNLearner_double(_object):
     __del__ = lambda self: None
 
     def learnBN(self) -> "gum::BayesNet< double >":
-        """
-        learnBN(BNLearner_double self) -> BayesNet_double
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """learnBN(self) -> BayesNet_double"""
         return _pyAgrum.BNLearner_double_learnBN(self)
 
 
     def learnParameters(self, *args) -> "gum::BayesNet< double >":
         """
-        learnParameters(BNLearner_double self, DAG dag, bool take_into_account_score=True) -> BayesNet_double
-
-        Parameters
-        ----------
-        dag: gum::DAG const &
-        take_into_account_score: bool
-
-        learnParameters(BNLearner_double self, DAG dag) -> BayesNet_double
-
-        Parameters
-        ----------
-        dag: gum::DAG const &
-
-        learnParameters(BNLearner_double self, BayesNet_double bn, bool take_into_account_score=True) -> BayesNet_double
-
-        Parameters
-        ----------
-        bn: gum::BayesNet< double > const &
-        take_into_account_score: bool
-
-        learnParameters(BNLearner_double self, BayesNet_double bn) -> BayesNet_double
-
-        Parameters
-        ----------
-        bn: gum::BayesNet< double > const &
-
+        learnParameters(self, dag, take_into_account_score=True) -> BayesNet_double
+        learnParameters(self, dag) -> BayesNet_double
+        learnParameters(self, bn, take_into_account_score=True) -> BayesNet_double
+        learnParameters(self, bn) -> BayesNet_double
         """
         return _pyAgrum.BNLearner_double_learnParameters(self, *args)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """
-        setVerbosity(BNLearner_double self, bool v)
-
-        Parameters
-        ----------
-        v: bool
-
-        """
+        """setVerbosity(self, v)"""
         return _pyAgrum.BNLearner_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """
-        setEpsilon(BNLearner_double self, double eps)
-
-        Parameters
-        ----------
-        eps: double
-
-        """
+        """setEpsilon(self, eps)"""
         return _pyAgrum.BNLearner_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """
-        setMinEpsilonRate(BNLearner_double self, double rate)
-
-        Parameters
-        ----------
-        rate: double
-
-        """
+        """setMinEpsilonRate(self, rate)"""
         return _pyAgrum.BNLearner_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """
-        setMaxIter(BNLearner_double self, gum::Size max)
-
-        Parameters
-        ----------
-        max: gum::Size
-
-        """
+        """setMaxIter(self, max)"""
         return _pyAgrum.BNLearner_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """
-        setMaxTime(BNLearner_double self, double timeout)
-
-        Parameters
-        ----------
-        timeout: double
-
-        """
+        """setMaxTime(self, timeout)"""
         return _pyAgrum.BNLearner_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """
-        setPeriodSize(BNLearner_double self, gum::Size p)
-
-        Parameters
-        ----------
-        p: gum::Size
-
-        """
+        """setPeriodSize(self, p)"""
         return _pyAgrum.BNLearner_double_setPeriodSize(self, p)
 
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
-        """
-        setBurnIn(BNLearner_double self, gum::Size b)
-
-        Parameters
-        ----------
-        b: gum::Size
-
-        """
+        """setBurnIn(self, b)"""
         return _pyAgrum.BNLearner_double_setBurnIn(self, b)
 
 
     def verbosity(self) -> "bool":
-        """
-        verbosity(BNLearner_double self) -> bool
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """verbosity(self) -> bool"""
         return _pyAgrum.BNLearner_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """
-        epsilon(BNLearner_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """epsilon(self) -> double"""
         return _pyAgrum.BNLearner_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """
-        minEpsilonRate(BNLearner_double self) -> double
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """minEpsilonRate(self) -> double"""
         return _pyAgrum.BNLearner_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """
-        maxIter(BNLearner_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """maxIter(self) -> gum::Size"""
         return _pyAgrum.BNLearner_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(BNLearner_double self) -> double"""
+        """maxTime(self) -> double"""
         return _pyAgrum.BNLearner_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """
-        periodSize(BNLearner_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """periodSize(self) -> gum::Size"""
         return _pyAgrum.BNLearner_double_periodSize(self)
 
 
     def burnIn(self) -> "gum::Size":
-        """
-        burnIn(BNLearner_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """burnIn(self) -> gum::Size"""
         return _pyAgrum.BNLearner_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """
-        nbrIterations(BNLearner_double self) -> gum::Size
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """nbrIterations(self) -> gum::Size"""
         return _pyAgrum.BNLearner_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(BNLearner_double self) -> double"""
+        """currentTime(self) -> double"""
         return _pyAgrum.BNLearner_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """
-        messageApproximationScheme(BNLearner_double self) -> std::string
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """messageApproximationScheme(self) -> std::string"""
         return _pyAgrum.BNLearner_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """
-        history(BNLearner_double self) -> Vector_double
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """history(self) -> Vector_double"""
         return _pyAgrum.BNLearner_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """
-        asIApproximationSchemeConfiguration(BNLearner_double self) -> IApproximationSchemeConfiguration
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
         return _pyAgrum.BNLearner_double_asIApproximationSchemeConfiguration(self)
 
 
     def learnDAG(self) -> "gum::DAG":
-        """
-        learnDAG(BNLearner_double self) -> DAG
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """learnDAG(self) -> DAG"""
         return _pyAgrum.BNLearner_double_learnDAG(self)
 
 
     def names(self) -> "std::vector< std::string,std::allocator< std::string > > const &":
-        """
-        names(BNLearner_double self) -> Vector_string
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > const *
-
-        """
+        """names(self) -> Vector_string"""
         return _pyAgrum.BNLearner_double_names(self)
 
 
     def modalities(self) -> "std::vector< gum::Size,std::allocator< gum::Size > > const &":
-        """
-        modalities(BNLearner_double self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """modalities(self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &"""
         return _pyAgrum.BNLearner_double_modalities(self)
 
 
     def idFromName(self, var_name: 'std::string const &') -> "gum::NodeId":
-        """
-        idFromName(BNLearner_double self, std::string const & var_name) -> gum::NodeId
-
-        Parameters
-        ----------
-        var_name: std::string const &
-
-        """
+        """idFromName(self, var_name) -> gum::NodeId"""
         return _pyAgrum.BNLearner_double_idFromName(self, var_name)
 
 
     def nameFromId(self, id: 'gum::NodeId') -> "std::string const &":
-        """
-        nameFromId(BNLearner_double self, gum::NodeId id) -> std::string const &
-
-        Parameters
-        ----------
-        id: gum::NodeId
-
-        """
+        """nameFromId(self, id) -> std::string const &"""
         return _pyAgrum.BNLearner_double_nameFromId(self, id)
 
 
     def useScoreAIC(self) -> "void":
-        """
-        useScoreAIC(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """useScoreAIC(self)"""
         return _pyAgrum.BNLearner_double_useScoreAIC(self)
 
 
     def useScoreBD(self) -> "void":
-        """
-        useScoreBD(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """useScoreBD(self)"""
         return _pyAgrum.BNLearner_double_useScoreBD(self)
 
 
     def useScoreBDeu(self) -> "void":
-        """
-        useScoreBDeu(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """useScoreBDeu(self)"""
         return _pyAgrum.BNLearner_double_useScoreBDeu(self)
 
 
     def useScoreBIC(self) -> "void":
-        """
-        useScoreBIC(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """useScoreBIC(self)"""
         return _pyAgrum.BNLearner_double_useScoreBIC(self)
 
 
     def useScoreK2(self) -> "void":
-        """
-        useScoreK2(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """useScoreK2(self)"""
         return _pyAgrum.BNLearner_double_useScoreK2(self)
 
 
     def useScoreLog2Likelihood(self) -> "void":
-        """
-        useScoreLog2Likelihood(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """useScoreLog2Likelihood(self)"""
         return _pyAgrum.BNLearner_double_useScoreLog2Likelihood(self)
 
 
     def setAprioriWeight(self, weight: 'double') -> "void":
-        """
-        setAprioriWeight(BNLearner_double self, double weight)
-
-        Parameters
-        ----------
-        weight: double
-
-        """
+        """setAprioriWeight(self, weight)"""
         return _pyAgrum.BNLearner_double_setAprioriWeight(self, weight)
 
 
     def useNoApriori(self) -> "void":
-        """
-        useNoApriori(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """useNoApriori(self)"""
         return _pyAgrum.BNLearner_double_useNoApriori(self)
 
 
     def useAprioriSmoothing(self, *args) -> "void":
         """
-        useAprioriSmoothing(BNLearner_double self, double weight=-1)
-
-        Parameters
-        ----------
-        weight: double
-
-        useAprioriSmoothing(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
+        useAprioriSmoothing(self, weight=-1)
+        useAprioriSmoothing(self)
         """
         return _pyAgrum.BNLearner_double_useAprioriSmoothing(self, *args)
 
 
     def useAprioriDirichlet(self, filename: 'std::string const &') -> "void":
-        """
-        useAprioriDirichlet(BNLearner_double self, std::string const & filename)
-
-        Parameters
-        ----------
-        filename: std::string const &
-
-        """
+        """useAprioriDirichlet(self, filename)"""
         return _pyAgrum.BNLearner_double_useAprioriDirichlet(self, filename)
 
 
     def useGreedyHillClimbing(self) -> "void":
-        """
-        useGreedyHillClimbing(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
-        """
+        """useGreedyHillClimbing(self)"""
         return _pyAgrum.BNLearner_double_useGreedyHillClimbing(self)
 
 
     def useLocalSearchWithTabuList(self, *args) -> "void":
         """
-        useLocalSearchWithTabuList(BNLearner_double self, gum::Size tabu_size=100, gum::Size nb_decrease=2)
-
-        Parameters
-        ----------
-        tabu_size: gum::Size
-        nb_decrease: gum::Size
-
-        useLocalSearchWithTabuList(BNLearner_double self, gum::Size tabu_size=100)
-
-        Parameters
-        ----------
-        tabu_size: gum::Size
-
-        useLocalSearchWithTabuList(BNLearner_double self)
-
-        Parameters
-        ----------
-        self: gum::learning::BNLearner< double > *
-
+        useLocalSearchWithTabuList(self, tabu_size=100, nb_decrease=2)
+        useLocalSearchWithTabuList(self, tabu_size=100)
+        useLocalSearchWithTabuList(self)
         """
         return _pyAgrum.BNLearner_double_useLocalSearchWithTabuList(self, *args)
 
 
     def useK2(self, *args) -> "void":
         """
-        useK2(BNLearner_double self, PyObject * l)
-
-        Parameters
-        ----------
-        l: PyObject *
-
-        useK2(BNLearner_double self, gum::Sequence< gum::NodeId > const & order)
-
-        Parameters
-        ----------
-        order: gum::Sequence< gum::NodeId > const &
-
-        useK2(BNLearner_double self, Vector_int order)
-
-        Parameters
-        ----------
-        order: std::vector< gum::NodeId,std::allocator< gum::NodeId > > const &
-
+        useK2(self, l)
+        useK2(self, order)
+        useK2(self, order)
         """
         return _pyAgrum.BNLearner_double_useK2(self, *args)
 
 
     def setMaxIndegree(self, max_indegree: 'gum::Size') -> "void":
-        """
-        setMaxIndegree(BNLearner_double self, gum::Size max_indegree)
-
-        Parameters
-        ----------
-        max_indegree: gum::Size
-
-        """
+        """setMaxIndegree(self, max_indegree)"""
         return _pyAgrum.BNLearner_double_setMaxIndegree(self, max_indegree)
 
 
     def setSliceOrder(self, *args) -> "void":
         """
-        setSliceOrder(BNLearner_double self, PyObject * l)
-
-        Parameters
-        ----------
-        l: PyObject *
-
-        setSliceOrder(BNLearner_double self, gum::NodeProperty< gum::NodeId > const & slice_order)
-
-        Parameters
-        ----------
-        slice_order: gum::NodeProperty< gum::NodeId > const &
-
+        setSliceOrder(self, l)
+        setSliceOrder(self, slice_order)
         """
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)
 
 
     def addForbiddenArc(self, *args) -> "void":
         """
-        addForbiddenArc(BNLearner_double self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        addForbiddenArc(BNLearner_double self, gum::NodeId const tail, gum::NodeId const head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
-        addForbiddenArc(BNLearner_double self, std::string const & tail, std::string const & head)
-
-        Parameters
-        ----------
-        tail: std::string const &
-        head: std::string const &
-
+        addForbiddenArc(self, arc)
+        addForbiddenArc(self, tail, head)
+        addForbiddenArc(self, tail, head)
         """
         return _pyAgrum.BNLearner_double_addForbiddenArc(self, *args)
 
 
     def eraseForbiddenArc(self, *args) -> "void":
         """
-        eraseForbiddenArc(BNLearner_double self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        eraseForbiddenArc(BNLearner_double self, gum::NodeId const tail, gum::NodeId const head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
-        eraseForbiddenArc(BNLearner_double self, std::string const & tail, std::string const & head)
-
-        Parameters
-        ----------
-        tail: std::string const &
-        head: std::string const &
-
+        eraseForbiddenArc(self, arc)
+        eraseForbiddenArc(self, tail, head)
+        eraseForbiddenArc(self, tail, head)
         """
         return _pyAgrum.BNLearner_double_eraseForbiddenArc(self, *args)
 
 
     def addMandatoryArc(self, *args) -> "void":
         """
-        addMandatoryArc(BNLearner_double self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        addMandatoryArc(BNLearner_double self, gum::NodeId const tail, gum::NodeId const head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
-        addMandatoryArc(BNLearner_double self, std::string const & tail, std::string const & head)
-
-        Parameters
-        ----------
-        tail: std::string const &
-        head: std::string const &
-
+        addMandatoryArc(self, arc)
+        addMandatoryArc(self, tail, head)
+        addMandatoryArc(self, tail, head)
         """
         return _pyAgrum.BNLearner_double_addMandatoryArc(self, *args)
 
 
     def eraseMandatoryArc(self, *args) -> "void":
         """
-        eraseMandatoryArc(BNLearner_double self, Arc arc)
-
-        Parameters
-        ----------
-        arc: gum::Arc const &
-
-        eraseMandatoryArc(BNLearner_double self, gum::NodeId const tail, gum::NodeId const head)
-
-        Parameters
-        ----------
-        tail: gum::NodeId const
-        head: gum::NodeId const
-
-        eraseMandatoryArc(BNLearner_double self, std::string const & tail, std::string const & head)
-
-        Parameters
-        ----------
-        tail: std::string const &
-        head: std::string const &
-
+        eraseMandatoryArc(self, arc)
+        eraseMandatoryArc(self, tail, head)
+        eraseMandatoryArc(self, tail, head)
         """
         return _pyAgrum.BNLearner_double_eraseMandatoryArc(self, *args)
 
 
     def setInitialDAG(self, g: 'DAG') -> "void":
-        """
-        setInitialDAG(BNLearner_double self, DAG g)
-
-        Parameters
-        ----------
-        g: gum::DAG const &
-
-        """
+        """setInitialDAG(self, g)"""
         return _pyAgrum.BNLearner_double_setInitialDAG(self, g)
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister

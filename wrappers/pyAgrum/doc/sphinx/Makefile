@@ -5,8 +5,8 @@
 SPHINXOPTS    = -c . -a -E -w sphinx_warnings.txt
 SPHINXBUILD   = python3 `which sphinx-build`
 PAPER         =
-BUILDDIR      = ../../../build/release/wrappers/pyAgrum/docs
-AGRUMBUILDDIR = "{agrum}/build/release/wrappers/pyAgrum/docs"
+BUILDDIR      = ..
+AGRUMBUILDDIR = $(BUILDIR)
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
