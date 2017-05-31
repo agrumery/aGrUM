@@ -80,6 +80,7 @@ apps/pyAgrum/notebooks/*.png
 apps/pyAgrum/notebooks/WaterSprinkler.*
 apps/pyAgrum/notebooks/*.csv
 apps/pyAgrum/notebooks/*.html
+.ipynb_checkpoints
 
 apps/pyAgrum/samples/actuel.png
 apps/pyAgrum/samples/alarm.csv

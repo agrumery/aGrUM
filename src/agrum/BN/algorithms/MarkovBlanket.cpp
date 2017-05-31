@@ -53,7 +53,7 @@ namespace gum {
     }
 
     for ( const auto& child : __model.dag().children( __node ) ) {
-      __mb.addNode( child );
+      if ( !__mb.nodes().exists( child ) ) __mb.addNode( child );
       __mb.addArc( __node, child );
       for ( const auto& opar : __model.dag().parents( child ) ) {
         if ( opar != __node ) {
