@@ -3104,17 +3104,50 @@ class Arc(_object):
 
 
     def other(self, id: 'gum::NodeId') -> "gum::NodeId":
-        """other(self, id) -> gum::NodeId"""
+        """
+        other(self, id) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        id : int
+          the nodeId of the head or the tail
+
+
+        Returns
+        ------
+        int
+          the nodeId of the other node
+
+        """
         return _pyAgrum.Arc_other(self, id)
 
 
     def first(self) -> "gum::NodeId":
-        """first(self) -> gum::NodeId"""
+        """
+        first(self) -> gum::NodeId
+
+
+        Returns
+        ------
+        int
+          the nodeId of the first node of the arc (the tail)
+
+        """
         return _pyAgrum.Arc_first(self)
 
 
     def second(self) -> "gum::NodeId":
-        """second(self) -> gum::NodeId"""
+        """
+        second(self) -> gum::NodeId
+
+
+        Returns
+        ------
+        int
+          the nodeId of the second node of the arc (the head)
+
+        """
         return _pyAgrum.Arc_second(self)
 
 

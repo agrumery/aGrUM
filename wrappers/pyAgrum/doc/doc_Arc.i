@@ -2,6 +2,10 @@
 "
 pyAgrum.Arc is the representation of an arc between two nodes represented by `int`s : the head and the tail.
 
+Available constructors:
+    `Arc(tail, head) -> Arc`
+
+    `Arc(src) -> Arc`
 
 Parameters
 ----------
@@ -9,12 +13,6 @@ tail : int
   the tail
 head : int
   the head
-
-
-A copy constructor is also available
-
-Parameters
-----------
 src : :class: Arc
   the Arc to copy
 

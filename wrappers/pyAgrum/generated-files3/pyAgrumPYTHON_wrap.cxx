@@ -85959,9 +85959,42 @@ static PyMethodDef SwigMethods[] = {
 		"  the id of the head node\n"
 		"\n"
 		""},
-	 { (char *)"Arc_other", _wrap_Arc_other, METH_VARARGS, (char *)"Arc_other(self, id) -> gum::NodeId"},
-	 { (char *)"Arc_first", _wrap_Arc_first, METH_VARARGS, (char *)"Arc_first(self) -> gum::NodeId"},
-	 { (char *)"Arc_second", _wrap_Arc_second, METH_VARARGS, (char *)"Arc_second(self) -> gum::NodeId"},
+	 { (char *)"Arc_other", _wrap_Arc_other, METH_VARARGS, (char *)"\n"
+		"Arc_other(self, id) -> gum::NodeId\n"
+		"\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id : int\n"
+		"  the nodeId of the head or the tail\n"
+		"\n"
+		"\n"
+		"Returns\n"
+		"------\n"
+		"int\n"
+		"  the nodeId of the other node\n"
+		"\n"
+		""},
+	 { (char *)"Arc_first", _wrap_Arc_first, METH_VARARGS, (char *)"\n"
+		"Arc_first(self) -> gum::NodeId\n"
+		"\n"
+		"\n"
+		"Returns\n"
+		"------\n"
+		"int\n"
+		"  the nodeId of the first node of the arc (the tail)\n"
+		"\n"
+		""},
+	 { (char *)"Arc_second", _wrap_Arc_second, METH_VARARGS, (char *)"\n"
+		"Arc_second(self) -> gum::NodeId\n"
+		"\n"
+		"\n"
+		"Returns\n"
+		"------\n"
+		"int\n"
+		"  the nodeId of the second node of the arc (the head)\n"
+		"\n"
+		""},
 	 { (char *)"Arc___eq__", _wrap_Arc___eq__, METH_VARARGS, (char *)"Arc___eq__(self, src) -> bool"},
 	 { (char *)"Arc___ne__", _wrap_Arc___ne__, METH_VARARGS, (char *)"Arc___ne__(self, src) -> bool"},
 	 { (char *)"Arc_swigregister", Arc_swigregister, METH_VARARGS, NULL},

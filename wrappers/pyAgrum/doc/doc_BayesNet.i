@@ -2,14 +2,19 @@
 "
 BayesNet represents a Bayesian Network.
 
+Available constructors:
+
+    `BayesNet(name='') -> BayesNet`
+
+    `BayesNet(source) -> BayesNet`
+
 Parameters
 ==========
-problem : :class:`~openturns.OptimizationProblem`
-    Optimization problem to solve.
-tau : float
-    Multiplicative decrease of linear step.
-omega : float
-    Armijo factor.
-smooth : float
-    Growing factor in penalization term.
+name: str
+  the name of the Bayes Net (optional)
+source : :class:BayesNet
+  the Bayesian network to copy
 "
+
+%feature("docstring") gum::BayesNet::fastPrototype
+""

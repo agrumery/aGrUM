@@ -386,8 +386,8 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 
 %template (IBayesNet_double ) gum::IBayesNet<double>;
 %template ( BayesNet_double ) gum::BayesNet<double>;
-%template ( BayesNetInference_double ) gum::BayesNetInference<double>;
 
+%template ( BayesNetInference_double ) gum::BayesNetInference<double>;
 %template ( LazyPropagation_double ) gum::LazyPropagation<double>;
 %template ( ShaferShenoyInference_double ) gum::ShaferShenoyInference<double>;
 %template ( VariableElimination_double ) gum::VariableElimination<double>;
