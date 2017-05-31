@@ -43,7 +43,7 @@ setup(
     description='pyAgrum is a Python wrapper for the C++ aGrUM library',
     url='https://pyagrum.lip6.fr',
     maintainer='Pierre-Henri Wuillemin and Christophe Gonzales',
-    maintainer_email='agrum@lip6.fr',
+    maintainer_email='info@agrum.org',
     platforms=['any'],
     license='GPL',
     packages=['pyAgrum', 'pyAgrum/lib', 'pyAgrum/lib/_utils'],
