@@ -7,11 +7,11 @@ Welcome to aGrUM's contribution guide and thank you for helping us making aGrUM 
 Before submitting your first contribution, please take the time to fill aGrUM's contribution agreement. We will not accept any contribution without it !
 
 You can find the individual agreement [here](https://gitlab.com/agrumery/aGrUM/wikis/contribution/individual) and the entity agreement 
-[here](https://gitlab.com/agrumery/aGrUM/wikis/contribution/entity). Please send us your agreeemnt at agrum@lip6.fr.
+[here](https://gitlab.com/agrumery/aGrUM/wikis/contribution/entity). Please send us your agreeemnt at info@agrum.org.
 
 ### Why a contribution agreement ?
 
-We are planning to change aGrUM's licence, but don't worry aGrUM will always be Open Source. To do so, we need your agreement as one of aGrUM's contributor. There is also some legal consideration about how your contribution can be used and distributed with aGrUM. So please take your time and read the agreement before sending it to us. And if you have any question, feel free to ask us at agrum@lip6.fr.
+We are planning to change aGrUM's licence, but don't worry aGrUM will always be Open Source. To do so, we need your agreement as one of aGrUM's contributor. There is also some legal consideration about how your contribution can be used and distributed with aGrUM. So please take your time and read the agreement before sending it to us. And if you have any question, feel free to ask us at info@agrum.org.
 
 ## What to contribute
 
@@ -23,7 +23,7 @@ You can contribute to aGrUM in the following domains:
 
 ### Contributing to aGrUM's Code
 
-Before contributing to aGrUM's code you should ask us before hand at agrum@lip6.fr. This will prevent you from submiting code that we won't integrate: aGrUM's is still under heavy development and some featured modules like `bayesnet` or `learning` are refactored quite often.
+Before contributing to aGrUM's code you should ask us before hand at info@agrum.org. This will prevent you from submiting code that we won't integrate: aGrUM's is still under heavy development and some featured modules like `bayesnet` or `learning` are refactored quite often.
 
 Outside of aGrUM's core code, you can help us [solve bugs](https://gitlab.com/agrumery/aGrUM/issues), write [new tests](https://gitlab.com/agrumery/aGrUM/tree/master/src/testunits/README.md) or contribute to one of aGrUM's [applications](https://gitlab.com/agrumery/aGrUM/tree/master/apps/README.md) or [wrappers](https://gitlab.com/agrumery/aGrUM/tree/master/wrappers/README.md).
 
@@ -39,6 +39,6 @@ Packaging and distributing aGrUM or pyAgrum helps a lot by leting aGrUM users ea
 
 ## How to contribute
 
-For your first contribution you should fork aGrUM, make your contribution and send us a merge request. Before contributing, please take the time to warn us at agrum@lip6.fr so we can help you out with your contribution.
+For your first contribution you should fork aGrUM, make your contribution and send us a merge request. Before contributing, please take the time to warn us at info@agrum.org so we can help you out with your contribution.
 
 
