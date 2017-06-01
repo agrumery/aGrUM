@@ -8,20 +8,16 @@ import os
 import sys
 import traceback
 import time
+import concurrent
 
 
 import nbformat
 from nbconvert.preprocessors.execute import ExecutePreprocessor, CellExecutionError
 
-errs = 0
+def processeNotebook(notebook_filename):
+  err=0
 
-list = []
-for filename in glob.glob("../notebooks/*.ipynb"):
-  list.append(filename)
-
-startTime = time.time()
-for notebook_filename in sorted(list):
-  print(os.path.basename(notebook_filename)+" ... ",end='',flush=True)
+  print(os.path.basename(notebook_filename)+" ... ")
   res="ok"
 
   try:
@@ -40,12 +36,26 @@ for notebook_filename in sorted(list):
   except CellExecutionError as e:
     res=""
     print("Error")
-    errs += 1
+    errs = 1
     print("-" * 60)
     traceback.print_exc(file=sys.stdout)
     print("-" * 60)
 
-  print(res)
+  print(os.path.basename(notebook_filename)+" "+res)
+  return err
+
+errs = 0
+
+list = []
+for filename in glob.glob("../notebooks/*.ipynb"):
+  list.append(filename)
+
+startTime = time.time()
+#for notebook_filename in sorted(list):
+#  errs+=processeNotebook(notebook_filename)
+executor = concurrent.futures.ProcessPoolExecutor(10)
+futures = [executor.submit(processeNotebook, notebook_filename) for notebook_filename in sorted(list)]
+concurrent.futures.wait(futures)
 
 elapsedTime = time.time() - startTime
 
