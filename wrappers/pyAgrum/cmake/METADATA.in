@@ -4,7 +4,7 @@ Version: @PYAGRUM_VERSION@
 Summary: pyAgrum is a Python wrapper for the C++ aGrUM library
 Home-page: https://pyagrum.lip6.fr
 Author: Pierre-Henri Wuillemin and Christophe Gonzales
-Author-email: agrum@lip6.fr
+Author-email: info@agrum.org
 License: GPL
 Keywords: probabilities probabilistic-graphical-models inference diagnosis
 Platform: any

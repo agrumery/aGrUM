@@ -119,8 +119,8 @@ namespace gum {
         auto start = nn.find_first_of('(');
         auto end = nn.find_first_of(')');
         if (0 < start && start < end && end < nn.size()) {
-          auto path = nn.substr(0, start - 1);
-          auto type = nn.substr(start + 1, end);
+          auto path = nn.substr(0, start);
+          auto type = nn.substr(start + 1, end-start-1);
           auto name = nn.substr(end + 1, std::string::npos);
 
           std::string newNameRadical = __getVariableName( path, type, name);
