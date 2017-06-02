@@ -40,6 +40,7 @@ def callSphinx(current):
   notif("Sphinxing pyAgrum")
   safe_cd(current, "wrappers")
   safe_cd(current, "pyAgrum")
+  safe_cd(current, "doc")
   safe_cd(current, "sphinx")
   commande = 'make html'
   if not current['dry_run']:

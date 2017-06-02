@@ -36,7 +36,7 @@ def processeNotebook(notebook_filename):
   except CellExecutionError as e:
     res=""
     print("Error")
-    errs = 1
+    err = 1
     print("-" * 60)
     traceback.print_exc(file=sys.stdout)
     print("-" * 60)
@@ -53,10 +53,11 @@ for filename in glob.glob("../notebooks/*.ipynb"):
 startTime = time.time()
 #for notebook_filename in sorted(list):
 #  errs+=processeNotebook(notebook_filename)
-executor = concurrent.futures.ProcessPoolExecutor(10)
+executor = concurrent.futures.ProcessPoolExecutor(None)
 futures = [executor.submit(processeNotebook, notebook_filename) for notebook_filename in sorted(list)]
 concurrent.futures.wait(futures)
 
+errs=sum([f.result() for f in futures])
 elapsedTime = time.time() - startTime
 
 print()

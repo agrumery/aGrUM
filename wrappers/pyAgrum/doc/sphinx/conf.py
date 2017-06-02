@@ -38,6 +38,8 @@ import sys
 import matplotlib
 matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
+sys.path.insert(0, os.path.abspath('../../../../build/release/wrappers/'))
+
 extensions = [
   'sphinx.ext.autodoc',
   #'sphinx.ext.todo',
@@ -516,7 +518,7 @@ def process_signature(app, what, name, obj, options, signature, return_annotatio
 def skip(app, what, name, obj, skip, options):
   exclusions = ('__weakref__', '__ne__', '__eq__','__str__','__init__',  # special-members
                 '__doc__', '__module__', '__dict__',  # undoc-members
-                '__swig_destroy__', '_s',  # swig members
+                '__swig_destroy__', '_s',             # swig members
                 'clone',  # special gum members
                 )
   exclude = name in exclusions
