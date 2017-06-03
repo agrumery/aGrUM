@@ -5,7 +5,7 @@
 SPHINXOPTS    = -c . -a -E -w sphinx_warnings.txt
 SPHINXBUILD   = python3 `which sphinx-build`
 PAPER         =
-BUILDDIR      = ../../../build/release/wrappers/pyAgrum/docs
+BUILDDIR      = ../../../../build/release/wrappers/pyAgrum/docs
 AGRUMBUILDDIR = "{agrum}/build/release/wrappers/pyAgrum/docs"
 
 # Internal variables.

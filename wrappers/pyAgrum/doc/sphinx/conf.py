@@ -169,7 +169,7 @@ html_theme_options = {
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-html_title = project + " " + version + " documentation"
+html_title = project + " " + release + " documentation"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
