@@ -4,6 +4,7 @@ stages:
 - agrum_test
 - pyagrum_test
 - wheels
+- documentation
 
 cache:
   untracked: false
@@ -311,3 +312,30 @@ windows_64_pyagrum_cp36_wheels:
     untracked: true
     paths:
       - wheels\\*.whl
+
+################################################################################
+# pyAgrum Documentation
+################################################################################
+pyAgrum_documentation:
+  only:
+    - branches@agrumery/aGrUM
+    - documentation/*
+  tags:
+    - linux
+    - python3
+    - ovh_deploy
+  variables:
+    CC: "/usr/bin/gcc-5"
+    CXX: "/usr/bin/g++-5"
+  cache:
+    key: linux
+    paths:
+    - build/
+  stage: documentation
+  script:
+    - virtualenv venv --python=python3
+    - source venv/bin/activate
+    - pip install -r wrappers/pyAgrum/testunits/requirements.txt
+    - pip install sphinx
+    - python act doc pyAgrum --python=3
+    - deploy_ovh
