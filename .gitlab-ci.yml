@@ -19,6 +19,8 @@ cache:
     - linux
     - python3
     - gcc-5
+  except:
+    - documentation/*
   variables:
     CC: "/usr/bin/gcc-5"
     CXX: "/usr/bin/g++-5"
@@ -103,6 +105,8 @@ linux_pyagrum_wheel_x86_64:
   tags:
     - macos
     - python3
+  except:
+    - documentation/*
   variables:
     CC: "/usr/bin/clang"
     CXX: "/usr/bin/clang++"
@@ -192,6 +196,8 @@ macos_pyagrum_cp36_wheel:
   tags:
     - windows
     - conda64
+  except:
+    - documentation/*
   variables:
     PATH: "C:\\Program Files\\Git\\bin;C:\\Users\\conda64\\Anaconda3;C:\\Users\\conda64\\Anaconda3\\Library\\mingw-w64\\bin;C:\\Users\\conda64\\Anaconda3\\Library\\usr\\bin;C:\\Users\\conda64\\Anaconda3\\Library\\bin;C:\\Users\\conda64\\Anaconda3\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
     ACT_OPTIONS: "--no-fun --mvsc -d build"
@@ -323,7 +329,7 @@ pyAgrum_documentation:
   tags:
     - linux
     - python3
-    - ovh_deploy
+    - deploy_ovh
   variables:
     CC: "/usr/bin/gcc-5"
     CXX: "/usr/bin/g++-5"
@@ -338,4 +344,4 @@ pyAgrum_documentation:
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - pip install sphinx
     - python act doc pyAgrum --python=3
-    - deploy_ovh
+    - deploy_ovh $CI_COMMIT_REF_NAME
