@@ -27,29 +27,29 @@ from .utils import notif, safe_cd
 
 
 def callSphinx(current):
-  commande = 'act lib pyAgrum release'
+  cmd = '{0} act lib pyAgrum release'.format(sys.executable)
   notif("Compiling pyAgrum")
   if not current['dry_run']:
-    proc = Popen(commande + " --no-fun", shell=True, stdout=PIPE, stderr=STDOUT)
+    proc = Popen(cmd + " --no-fun", shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
-      sys.stdout.write(line)
+      print(line)
   else:
-    notif('[' + commande + ']')
+    notif('[' + cmd + ']')
 
   notif("Sphinxing pyAgrum")
   safe_cd(current, "wrappers")
   safe_cd(current, "pyAgrum")
   safe_cd(current, "doc")
   safe_cd(current, "sphinx")
-  commande = 'make html'
+  cmd = 'make html'
   if not current['dry_run']:
-    proc = Popen(commande, shell=True, stdout=PIPE, stderr=STDOUT)
+    proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
-      sys.stdout.write(line)
+      print(line)
   else:
-    notif('[' + commande + ']')
+    notif('[' + cmd + ']')
   safe_cd(current, "..")
   safe_cd(current, "..")
   safe_cd(current, "..")
