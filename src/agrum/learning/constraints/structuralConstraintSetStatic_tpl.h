@@ -408,7 +408,7 @@ namespace gum {
         constraints::modifyGraph( change );
       } else {
         GUM_ERROR( OperationNotAllowed,
-                   "the constraint set does not allow this arc addition" );
+                   "the constraint set does not allow this arc addition between "<<change.node1()<<" and "<<change.node2() );
       }
     }
 
@@ -421,7 +421,7 @@ namespace gum {
         constraints::modifyGraph( change );
       } else {
         GUM_ERROR( OperationNotAllowed,
-                   "the constraint set does not allow this arc deletion" );
+                   "the constraint set does not allow this arc deletion between "<<change.node1()<<" and "<<change.node2() );
       }
     }
 
@@ -434,7 +434,7 @@ namespace gum {
         constraints::modifyGraph( change );
       } else {
         GUM_ERROR( OperationNotAllowed,
-                   "the constraint set does not allow this arc reversal" );
+                   "the constraint set does not allow this arc reversal between "<<change.node1()<<" and "<<change.node2() );
       }
     }
 
@@ -574,7 +574,7 @@ namespace gum {
         constraints::modifyGraph( change );
       } else {
         GUM_ERROR( OperationNotAllowed,
-                   "the constraint set does not allow this arc addition" );
+                   "the constraint set does not allow this arc addition between "<<change.node1()<<" and "<<change.node2() );
       }
     }
 
@@ -586,7 +586,7 @@ namespace gum {
         constraints::modifyGraph( change );
       } else {
         GUM_ERROR( OperationNotAllowed,
-                   "the constraint set does not allow this arc deletion" );
+                   "the constraint set does not allow this arc deletion between "<<change.node1()<<" and "<<change.node2() );
       }
     }
 
@@ -598,7 +598,7 @@ namespace gum {
         constraints::modifyGraph( change );
       } else {
         GUM_ERROR( OperationNotAllowed,
-                   "the constraint set does not allow this arc reversal" );
+                   "the constraint set does not allow this arc reversal between "<<change.node1()<<" and "<<change.node2() );
       }
     }
 
