@@ -21,9 +21,9 @@ source : :class:BayesNet
 
 %feature("docstring") gum::BayesNet::dag
 "
-dag() -> DAG
-
 Returns
 =======
+gum::DAG
   Returns the BayesNet's DAG.
 "
+
