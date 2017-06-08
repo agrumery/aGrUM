@@ -39,10 +39,10 @@ def parseCommandLine(current):
 def getCurrent():
   current = {}
   try:
-    shlv = shelve.open(cfg.configFile, writeback=False)
+    shlv = shelve.open(cfg.configFile, protocol=2,writeback=False)
   except:
     remove(cfg.configFile)
-    shlv = shelve.open(cfg.configFile, writeback=False)
+    shlv = shelve.open(cfg.configFile, protocol=2,writeback=False)
 
   for key in cfg.default:  # .iterkeys():
     current[key] = cfg.default[key]
@@ -54,7 +54,7 @@ def getCurrent():
 
 
 def setCurrent(current):
-  shlv = shelve.open(cfg.configFile, writeback=True)
+  shlv = shelve.open(cfg.configFile, protocol=2,writeback=True)
   for key in current.keys():
     if key not in cfg.non_persistent:
       shlv[key] = current[key]

@@ -1,4 +1,7 @@
-DESTDIR=$(shell python -c "import os;import pyAgrum;print(os.path.dirname(pyAgrum.__file__))")
+# please check that pyAgrum has been compiled in that direction
+# for instance using
+# python act lib pyAgrum release
+DESTDIR=../../../build/release/wrappers/pyAgrum
 
 run:
 	swig -c++ -python -outdir $(DESTDIR) -py3 -I../../swig -I../../../src -I../../../build/release -I.. pyAgrum.i

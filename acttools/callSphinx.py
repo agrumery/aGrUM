@@ -20,20 +20,23 @@
 # *   Free Software Foundation, Inc.,                                       *
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # ***************************************************************************
+from __future__ import print_function
+
 import sys
 from subprocess import PIPE, Popen, STDOUT
 
+from .configuration import cfg
 from .utils import notif, safe_cd
 
 
 def callSphinx(current):
-  cmd = '{0} act lib pyAgrum release'.format(sys.executable)
+  cmd = '{0} act lib pyAgrum release --no-fun'.format(cfg.python)
   notif("Compiling pyAgrum")
   if not current['dry_run']:
-    proc = Popen(cmd + " --no-fun", shell=True, stdout=PIPE, stderr=STDOUT)
+    proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
-      print(line)
+      print(line,end="")
   else:
     notif('[' + cmd + ']')
 
@@ -41,13 +44,12 @@ def callSphinx(current):
   safe_cd(current, "wrappers")
   safe_cd(current, "pyAgrum")
   safe_cd(current, "doc")
-  safe_cd(current, "sphinx")
-  cmd = 'make html'
+  cmd = 'make'
   if not current['dry_run']:
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
-      print(line)
+      print(line,end="")
   else:
     notif('[' + cmd + ']')
   safe_cd(current, "..")
