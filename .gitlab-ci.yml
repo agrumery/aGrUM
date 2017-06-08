@@ -16,7 +16,7 @@ cache:
   only:
     - branches@agrumery/aGrUM
   except:
-    - /^documentation*$/
+    - /^documentation.*$/
   tags:
     - linux
     - python3
@@ -103,7 +103,7 @@ linux_pyagrum_wheel_x86_64:
   only:
     - branches@agrumery/aGrUM
   except:
-    - /^documentation*$/
+    - /^documentation.*$/
   tags:
     - macos
     - python3
@@ -194,7 +194,7 @@ macos_pyagrum_cp36_wheel:
   only:
     - branches@agrumery/aGrUM
   except:
-    - /^documentation*$/
+    - /^documentation.*$/
   tags:
     - windows
     - conda64
@@ -324,7 +324,7 @@ windows_64_pyagrum_cp36_wheels:
 ################################################################################
 pyAgrum_documentation:
   only:
-    - /^documentation*$/
+    - /^documentation.*$/
   tags:
     - linux
     - python3
