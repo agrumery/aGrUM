@@ -18,3 +18,12 @@ source : :class:BayesNet
 
 %feature("docstring") gum::BayesNet::fastPrototype
 ""
+
+%feature("docstring") gum::BayesNet::dag
+"
+dag() -> DAG
+
+Returns
+=======
+  Returns the BayesNet's DAG.
+"
