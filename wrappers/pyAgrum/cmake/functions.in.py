@@ -45,6 +45,12 @@ def availableBNExts():
     """
     return "bif|dsl|net|bifxml|o3prm|uai"
 
+def availableWriteBNExts():
+    """
+    :return: a string which lists all suffixes for supported output BN file formats.
+    """
+    return "bif|dsl|net|bifxml|uai"
+
 def loadBN(filename,listeners=None,verbose=True,**opts):
     """
     :param filename: the name of file
@@ -76,7 +82,7 @@ def loadBN(filename,listeners=None,verbose=True,**opts):
 
 def saveBN(bn,filename):
     """
-    save a BN into a file using the format corresponding to one of the availableBNExts() suffixes.
+    save a BN into a file using the format corresponding to one of the availableWriteBNExts() suffixes.
     """
     extension=filename.split('.')[-1].upper()
     if extension=="BIF":
@@ -90,7 +96,7 @@ def saveBN(bn,filename):
     elif extension=="UAI":
         bn.saveUAI(filename)
     else:
-        raise Exception("extension "+filename.split('.')[-1]+" unknown. Please use "+availableBNExts())
+        raise Exception("extension "+filename.split('.')[-1]+" unknown. Please use "+availableWriteBNExts())
 
 
 
