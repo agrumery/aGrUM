@@ -19,7 +19,7 @@ source : :class:BayesNet
 "
 "
 
-%feature("docstring") gum::BayesNet_double::dag
+%feature("docstring") gum::BayesNet::dag
 "
 Returns
 -------
