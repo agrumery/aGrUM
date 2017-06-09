@@ -36,7 +36,10 @@ def callSphinx(current):
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
-      print(line,end="")
+      try:
+        print(line.decode('utf-8'),end="")
+      except ValueError:
+        print(str(line),end="")
   else:
     notif('[' + cmd + ']')
 
@@ -49,7 +52,10 @@ def callSphinx(current):
     proc = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
     out = proc.stdout.readlines()
     for line in out:
-      print(line,end="")
+      try:
+        print(line.decode('utf-8'),end="")
+      except ValueError:
+        print(str(line),end="")
   else:
     notif('[' + cmd + ']')
   safe_cd(current, "..")
