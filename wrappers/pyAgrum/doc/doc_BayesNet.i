@@ -19,11 +19,22 @@ source : :class:BayesNet
 "
 "
 
-%feature("docstring") gum::BayesNet::dag
+%feature("docstring") gum::BayesNet::cpt
 "
-Returns
--------
-pyAgrum.DAG
-  Returns the topology of the BayesNet as a pyAgrum.DAG.
+FOO BAR
 "
 
+%feature("docstring") gum::BayesNet::erase
+"
+FOO BAR
+"
+
+%feature("docstring") gum::BayesNet::dag
+"
+FOO BAR
+"
+
+%feature("docstring") gum::BayesNet::loadBIF
+"
+FOO BAR
+"

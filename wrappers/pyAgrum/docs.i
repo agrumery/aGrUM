@@ -2,3 +2,4 @@
 %include "doc_Edge.i"
 %include "doc_BayesNet.i"
 %include "doc_LabelizedVariable.i"
+%include "doc_DiGraph.i"
