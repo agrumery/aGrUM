@@ -66,10 +66,10 @@ namespace gum {
     return s;
   }
 
-  const std::string DiGraph::toDot( const std::string& name ) const {
+  const std::string DiGraph::toDot( ) const {
     std::stringstream strBuff;
     std::string       tab = "     ";
-    strBuff << "digraph " << name << " {" << std::endl;
+    strBuff << "digraph {" << std::endl;
 
     for ( const auto node : nodes() )
       strBuff << tab << node << ";" << std::endl;

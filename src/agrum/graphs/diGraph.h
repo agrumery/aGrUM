@@ -180,7 +180,7 @@ namespace gum {
     /// to friendly display the content of the graph in the DOT syntax
     /** @param name The graph name in the dot syntax. Default is G.
      * @return Returns a string describing the graph in the dot syntax */
-    virtual const std::string toDot( const std::string& name = "G" ) const;
+    virtual const std::string toDot() const;
 
     /**
      * The topological order stays the same as long as no variable or arcs are
