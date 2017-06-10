@@ -2807,7 +2807,38 @@ DiscreteVariable_swigregister = _pyAgrum.DiscreteVariable_swigregister
 DiscreteVariable_swigregister(DiscreteVariable)
 
 class LabelizedVariable(DiscreteVariable):
-    """Proxy of C++ gum::LabelizedVariable class."""
+    """
+
+    LabelizedVariable is a discrete random variable with a customizable sequence of labels.
+
+    Available constructors:
+
+        `LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable`
+
+        `LabelizedVariable(aLDRV) -> LabelizedVariable`
+
+    Parameters
+    ----------
+    aName: str
+      The name of the variable
+    aDesc: str
+      The (optional) description of the variable
+    nbrLabel: int
+      The number of labels to create. By default , the value start from '0' to 'nbrLabel-1'
+    aLDRV: pyAgrum.LabelizedVariable
+      Another `LabelizedVariable` that will be copied
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>> v=gum.LabelizedVariable('v')
+    >>> print(v)
+    v<0,1>
+    >>> w=gum.LabelizedVariable('w','',4)
+    >>> print(w)
+    w<0,1,2,3>
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [DiscreteVariable]:
@@ -2984,7 +3015,25 @@ RangeVariable_swigregister(RangeVariable)
 
 INC_MARKS_ARRAY = _pyAgrum.INC_MARKS_ARRAY
 class Edge(_object):
-    """Proxy of C++ gum::Edge class."""
+    """
+
+    pyAgrum.Edge is the representation of an arc between two nodes represented by `int`s : the first and the second.
+
+    Available constructors :
+        `Edge(aN1,aN2) -> Edge`
+
+        `Edge(src) -> Edge`
+
+    Parameters
+    ----------
+    aN1 : int
+      the nodeId of the first node
+    aN2 : int
+      the nodeId of the secondnode
+    src: Edge
+      the Edge to copy
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Edge, name, value)
@@ -3006,17 +3055,50 @@ class Edge(_object):
     __del__ = lambda self: None
 
     def other(self, id):
-        """other(self, id) -> gum::NodeId"""
+        """
+        other(self, id) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        id : int
+          the nodeId of one of the nodes of the Edge
+
+
+        Returns
+        ------
+        int
+          the nodeId of the other node
+
+        """
         return _pyAgrum.Edge_other(self, id)
 
 
     def first(self):
-        """first(self) -> gum::NodeId"""
+        """
+        first(self) -> gum::NodeId
+
+
+        Returns
+        ------
+        int
+          the nodeId of the first node of the arc (the tail)
+
+        """
         return _pyAgrum.Edge_first(self)
 
 
     def second(self):
-        """second(self) -> gum::NodeId"""
+        """
+        second(self) -> gum::NodeId
+
+
+        Returns
+        ------
+        int
+          the nodeId of the second node of the arc (the head)
+
+        """
         return _pyAgrum.Edge_second(self)
 
 
@@ -3037,6 +3119,10 @@ class Arc(_object):
 
     pyAgrum.Arc is the representation of an arc between two nodes represented by `int`s : the head and the tail.
 
+    Available constructors:
+        `Arc(tail, head) -> Arc`
+
+        `Arc(src) -> Arc`
 
     Parameters
     ----------
@@ -3044,12 +3130,6 @@ class Arc(_object):
       the tail
     head : int
       the head
-
-
-    A copy constructor is also available
-
-    Parameters
-    ----------
     src : :class: Arc
       the Arc to copy
 
@@ -3104,17 +3184,50 @@ class Arc(_object):
 
 
     def other(self, id):
-        """other(self, id) -> gum::NodeId"""
+        """
+        other(self, id) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        id : int
+          the nodeId of the head or the tail
+
+
+        Returns
+        ------
+        int
+          the nodeId of the other node
+
+        """
         return _pyAgrum.Arc_other(self, id)
 
 
     def first(self):
-        """first(self) -> gum::NodeId"""
+        """
+        first(self) -> gum::NodeId
+
+
+        Returns
+        ------
+        int
+          the nodeId of the first node of the arc (the tail)
+
+        """
         return _pyAgrum.Arc_first(self)
 
 
     def second(self):
-        """second(self) -> gum::NodeId"""
+        """
+        second(self) -> gum::NodeId
+
+
+        Returns
+        ------
+        int
+          the nodeId of the second node of the arc (the head)
+
+        """
         return _pyAgrum.Arc_second(self)
 
 
@@ -3131,7 +3244,22 @@ Arc_swigregister = _pyAgrum.Arc_swigregister
 Arc_swigregister(Arc)
 
 class DiGraph(_object):
-    """Proxy of C++ gum::DiGraph class."""
+    """
+
+    DiGraph represents a Directed Graph.
+
+    Available constructors:
+        `DiGraph() -> DiGraph`
+
+        `DiGraph(src) -> DiGraph`
+
+    Parameters
+    ----------
+    src : :class: DiGraph
+      the digraph to copy
+
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, DiGraph, name, value)
@@ -3166,11 +3294,6 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph___ne__(self, g)
 
 
-    def addArc(self, tail, head):
-        """addArc(self, tail, head)"""
-        return _pyAgrum.DiGraph_addArc(self, tail, head)
-
-
     def eraseNode(self, id):
         """eraseNode(self, id)"""
         return _pyAgrum.DiGraph_eraseNode(self, id)
@@ -3186,12 +3309,9 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph___str__(self)
 
 
-    def toDot(self, *args):
-        """
-        toDot(self, name) -> std::string const
-        toDot(self) -> std::string const
-        """
-        return _pyAgrum.DiGraph_toDot(self, *args)
+    def toDot(self):
+        """toDot(self) -> std::string const"""
+        return _pyAgrum.DiGraph_toDot(self)
 
 
     def topologicalOrder(self, clear=True):
@@ -3203,7 +3323,13 @@ class DiGraph(_object):
 
 
     def ids(self):
-        """ids(self) -> PyObject *"""
+        """
+        ids(self) -> PyObject *
+
+
+        CRY CRY
+
+        """
         return _pyAgrum.DiGraph_ids(self)
 
 
@@ -3222,16 +3348,30 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_children(self, id)
 
 
-    def addNode(self, *args):
+    def addNode(self):
         """
         addNode(self) -> gum::NodeId
-        addNode(self, id)
+
+
+        PLIPPLOP
+
         """
-        return _pyAgrum.DiGraph_addNode(self, *args)
+        return _pyAgrum.DiGraph_addNode(self)
+
+
+    def addNodeWithId(self, id):
+        """addNodeWithId(self, id)"""
+        return _pyAgrum.DiGraph_addNodeWithId(self, id)
 
 
     def existsNode(self, id):
-        """existsNode(self, id) -> bool"""
+        """
+        existsNode(self, id) -> bool
+
+
+        PLIPPLOPPLILPI
+
+        """
         return _pyAgrum.DiGraph_existsNode(self, id)
 
 
@@ -3245,27 +3385,32 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_empty(self)
 
 
-    def eraseArc(self, arc):
-        """eraseArc(self, arc)"""
-        return _pyAgrum.DiGraph_eraseArc(self, arc)
-
-
-    def existsArc(self, *args):
+    def addArc(self, *args):
         """
-        existsArc(self, arc) -> bool
-        existsArc(self, tail, head) -> bool
+        addArc(self, tail, head)
+        addArc(self, n1, n2)
         """
-        return _pyAgrum.DiGraph_existsArc(self, *args)
+        return _pyAgrum.DiGraph_addArc(self, *args)
 
 
-    def eraseParents(self, id):
-        """eraseParents(self, id)"""
-        return _pyAgrum.DiGraph_eraseParents(self, id)
+    def eraseArc(self, n1, n2):
+        """eraseArc(self, n1, n2)"""
+        return _pyAgrum.DiGraph_eraseArc(self, n1, n2)
 
 
-    def eraseChildren(self, id):
-        """eraseChildren(self, id)"""
-        return _pyAgrum.DiGraph_eraseChildren(self, id)
+    def existsArc(self, n1, n2):
+        """existsArc(self, n1, n2) -> bool"""
+        return _pyAgrum.DiGraph_existsArc(self, n1, n2)
+
+
+    def eraseParents(self, n):
+        """eraseParents(self, n)"""
+        return _pyAgrum.DiGraph_eraseParents(self, n)
+
+
+    def eraseChildren(self, n):
+        """eraseChildren(self, n)"""
+        return _pyAgrum.DiGraph_eraseChildren(self, n)
 
 
     def sizeArcs(self):
@@ -3310,9 +3455,42 @@ class DAG(DiGraph):
     __swig_destroy__ = _pyAgrum.delete_DAG
     __del__ = lambda self: None
 
-    def addArc(self, tail, head):
-        """addArc(self, tail, head)"""
-        return _pyAgrum.DAG_addArc(self, tail, head)
+    def addArc(self, *args):
+        """
+        addArc(self, tail, head)
+        addArc(self, n1, n2)
+        """
+        return _pyAgrum.DAG_addArc(self, *args)
+
+
+    def eraseArc(self, n1, n2):
+        """eraseArc(self, n1, n2)"""
+        return _pyAgrum.DAG_eraseArc(self, n1, n2)
+
+
+    def existsArc(self, n1, n2):
+        """existsArc(self, n1, n2) -> bool"""
+        return _pyAgrum.DAG_existsArc(self, n1, n2)
+
+
+    def eraseParents(self, n):
+        """eraseParents(self, n)"""
+        return _pyAgrum.DAG_eraseParents(self, n)
+
+
+    def eraseChildren(self, n):
+        """eraseChildren(self, n)"""
+        return _pyAgrum.DAG_eraseChildren(self, n)
+
+
+    def sizeArcs(self):
+        """sizeArcs(self) -> gum::Size"""
+        return _pyAgrum.DAG_sizeArcs(self)
+
+
+    def emptyArcs(self):
+        """emptyArcs(self) -> bool"""
+        return _pyAgrum.DAG_emptyArcs(self)
 
 DAG_swigregister = _pyAgrum.DAG_swigregister
 DAG_swigregister(DAG)
@@ -3351,11 +3529,6 @@ class UndiGraph(_object):
     def __ne__(self, g):
         """__ne__(self, g) -> bool"""
         return _pyAgrum.UndiGraph___ne__(self, g)
-
-
-    def addEdge(self, first, second):
-        """addEdge(self, first, second)"""
-        return _pyAgrum.UndiGraph_addEdge(self, first, second)
 
 
     def eraseNode(self, id):
@@ -3403,12 +3576,14 @@ class UndiGraph(_object):
         return _pyAgrum.UndiGraph_neighbours(self, id)
 
 
-    def addNode(self, *args):
-        """
-        addNode(self) -> gum::NodeId
-        addNode(self, id)
-        """
-        return _pyAgrum.UndiGraph_addNode(self, *args)
+    def addNode(self):
+        """addNode(self) -> gum::NodeId"""
+        return _pyAgrum.UndiGraph_addNode(self)
+
+
+    def addNodeWithId(self, id):
+        """addNodeWithId(self, id)"""
+        return _pyAgrum.UndiGraph_addNodeWithId(self, id)
 
 
     def existsNode(self, id):
@@ -3426,17 +3601,19 @@ class UndiGraph(_object):
         return _pyAgrum.UndiGraph_empty(self)
 
 
-    def eraseEdge(self, edge):
-        """eraseEdge(self, edge)"""
-        return _pyAgrum.UndiGraph_eraseEdge(self, edge)
+    def addEdge(self, n1, n2):
+        """addEdge(self, n1, n2)"""
+        return _pyAgrum.UndiGraph_addEdge(self, n1, n2)
 
 
-    def existsEdge(self, *args):
-        """
-        existsEdge(self, edge) -> bool
-        existsEdge(self, n1, n2) -> bool
-        """
-        return _pyAgrum.UndiGraph_existsEdge(self, *args)
+    def eraseEdge(self, n1, n2):
+        """eraseEdge(self, n1, n2)"""
+        return _pyAgrum.UndiGraph_eraseEdge(self, n1, n2)
+
+
+    def existsEdge(self, n1, n2):
+        """existsEdge(self, n1, n2) -> bool"""
+        return _pyAgrum.UndiGraph_existsEdge(self, n1, n2)
 
 
     def sizeEdges(self):
@@ -3449,9 +3626,9 @@ class UndiGraph(_object):
         return _pyAgrum.UndiGraph_emptyEdges(self)
 
 
-    def eraseNeighbours(self, id):
-        """eraseNeighbours(self, id)"""
-        return _pyAgrum.UndiGraph_eraseNeighbours(self, id)
+    def eraseNeighbours(self, n):
+        """eraseNeighbours(self, n)"""
+        return _pyAgrum.UndiGraph_eraseNeighbours(self, n)
 
 UndiGraph_swigregister = _pyAgrum.UndiGraph_swigregister
 UndiGraph_swigregister(UndiGraph)
@@ -3528,12 +3705,14 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph___str__(self)
 
 
-    def addNode(self, *args):
-        """
-        addNode(self) -> gum::NodeId
-        addNode(self, id)
-        """
-        return _pyAgrum.MixedGraph_addNode(self, *args)
+    def addNode(self):
+        """addNode(self) -> gum::NodeId"""
+        return _pyAgrum.MixedGraph_addNode(self)
+
+
+    def addNodeWithId(self, id):
+        """addNodeWithId(self, id)"""
+        return _pyAgrum.MixedGraph_addNodeWithId(self, id)
 
 
     def existsNode(self, id):
@@ -3556,17 +3735,14 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
 
 
-    def eraseEdge(self, edge):
-        """eraseEdge(self, edge)"""
-        return _pyAgrum.MixedGraph_eraseEdge(self, edge)
+    def eraseEdge(self, n1, n2):
+        """eraseEdge(self, n1, n2)"""
+        return _pyAgrum.MixedGraph_eraseEdge(self, n1, n2)
 
 
-    def existsEdge(self, *args):
-        """
-        existsEdge(self, edge) -> bool
-        existsEdge(self, n1, n2) -> bool
-        """
-        return _pyAgrum.MixedGraph_existsEdge(self, *args)
+    def existsEdge(self, n1, n2):
+        """existsEdge(self, n1, n2) -> bool"""
+        return _pyAgrum.MixedGraph_existsEdge(self, n1, n2)
 
 
     def sizeEdges(self):
@@ -3579,43 +3755,34 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph_emptyEdges(self)
 
 
-    def eraseNeighbours(self, id):
-        """eraseNeighbours(self, id)"""
-        return _pyAgrum.MixedGraph_eraseNeighbours(self, id)
+    def eraseNeighbours(self, n):
+        """eraseNeighbours(self, n)"""
+        return _pyAgrum.MixedGraph_eraseNeighbours(self, n)
 
 
-    def addArc(self, tail, head):
-        """addArc(self, tail, head)"""
-        return _pyAgrum.MixedGraph_addArc(self, tail, head)
+    def addArc(self, n1, n2):
+        """addArc(self, n1, n2)"""
+        return _pyAgrum.MixedGraph_addArc(self, n1, n2)
 
 
-    def eraseArc(self, arc):
-        """eraseArc(self, arc)"""
-        return _pyAgrum.MixedGraph_eraseArc(self, arc)
+    def eraseArc(self, n1, n2):
+        """eraseArc(self, n1, n2)"""
+        return _pyAgrum.MixedGraph_eraseArc(self, n1, n2)
 
 
-    def existsArc(self, *args):
-        """
-        existsArc(self, arc) -> bool
-        existsArc(self, tail, head) -> bool
-        """
-        return _pyAgrum.MixedGraph_existsArc(self, *args)
+    def existsArc(self, n1, n2):
+        """existsArc(self, n1, n2) -> bool"""
+        return _pyAgrum.MixedGraph_existsArc(self, n1, n2)
 
 
-    def eraseParents(self, *args):
-        """
-        eraseParents(self)
-        eraseParents(self, id)
-        """
-        return _pyAgrum.MixedGraph_eraseParents(self, *args)
+    def eraseParents(self, n):
+        """eraseParents(self, n)"""
+        return _pyAgrum.MixedGraph_eraseParents(self, n)
 
 
-    def eraseChildren(self, *args):
-        """
-        eraseChildren(self)
-        eraseChildren(self, id)
-        """
-        return _pyAgrum.MixedGraph_eraseChildren(self, *args)
+    def eraseChildren(self, n):
+        """eraseChildren(self, n)"""
+        return _pyAgrum.MixedGraph_eraseChildren(self, n)
 
 
     def sizeArcs(self):
@@ -5616,16 +5783,17 @@ class BayesNet_double(IBayesNet_double):
 
     BayesNet represents a Bayesian Network.
 
+    Available constructors:
+        `BayesNet(name='') -> BayesNet`
+
+        `BayesNet(source) -> BayesNet`
+
     Parameters
-    ==========
-    problem : :class:`~openturns.OptimizationProblem`
-        Optimization problem to solve.
-    tau : float
-        Multiplicative decrease of linear step.
-    omega : float
-        Armijo factor.
-    smooth : float
-        Growing factor in penalization term.
+    ----------
+    name: str
+      the name of the Bayes Net (optional)
+    source : :class:BayesNet
+      the Bayesian network to copy
 
     """
 
@@ -5643,6 +5811,9 @@ class BayesNet_double(IBayesNet_double):
         """
         fastPrototype(dotlike, domainSize=2) -> BayesNet_double
         fastPrototype(dotlike) -> BayesNet_double
+
+
+
         """
         return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
 
@@ -5666,6 +5837,10 @@ class BayesNet_double(IBayesNet_double):
         """
         cpt(self, varId) -> Potential_double
         cpt(self, name) -> Potential_double
+
+
+        FOO BAR
+
         """
         val = _pyAgrum.BayesNet_double_cpt(self, *args)
 
@@ -5696,6 +5871,10 @@ class BayesNet_double(IBayesNet_double):
         erase(self, id)
         erase(self, name)
         erase(self, var)
+
+
+        FOO BAR
+
         """
         return _pyAgrum.BayesNet_double_erase(self, *args)
 
@@ -5942,6 +6121,10 @@ class BayesNet_double(IBayesNet_double):
         """
         loadBIF(self, name, l) -> std::string
         loadBIF(self, name) -> std::string
+
+
+        FOO BAR
+
         """
         return _pyAgrum.BayesNet_double_loadBIF(self, *args)
 
@@ -6019,6 +6202,9 @@ def BayesNet_double_fastPrototype(dotlike, domainSize=2):
     """
     fastPrototype(dotlike, domainSize=2) -> BayesNet_double
     BayesNet_double_fastPrototype(dotlike) -> BayesNet_double
+
+
+
     """
     return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
 

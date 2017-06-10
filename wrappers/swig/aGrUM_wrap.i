@@ -139,48 +139,6 @@ namespace std {
   }
 }
 
-%define ADD_NODEGRAPHPART_API(classname)
-%extend classname {
-  using gum::NodeGraphPart::addNode;
-  using gum::NodeGraphPart::existsNode;
-  using gum::NodeGraphPart::size;
-  using gum::NodeGraphPart::empty;
-}
-%enddef
-ADD_NODEGRAPHPART_API(gum::DiGraph)
-ADD_NODEGRAPHPART_API(gum::UndiGraph)
-ADD_NODEGRAPHPART_API(gum::MixedGraph)
-
-%define ADD_EDGEGRAPHPART_API(classname)
-%extend classname {
-  using gum::EdgeGraphPart::addEdge;
-  using gum::EdgeGraphPart::eraseEdge;
-  using gum::EdgeGraphPart::existsEdge;
-  using gum::EdgeGraphPart::eraseParents;
-  using gum::EdgeGraphPart::eraseChildren;
-  using gum::EdgeGraphPart::sizeEdges;
-  using gum::EdgeGraphPart::emptyEdges;
-  using gum::EdgeGraphPart::eraseNeighbours;
-}
-%enddef
-ADD_EDGEGRAPHPART_API(gum::UndiGraph)
-ADD_EDGEGRAPHPART_API(gum::MixedGraph)
-
-%define ADD_ARCGRAPHPART_API(classname)
-%extend classname {
-  using gum::ArcGraphPart::addArc;
-  using gum::ArcGraphPart::eraseArc;
-  using gum::ArcGraphPart::existsArc;
-  using gum::ArcGraphPart::eraseParents;
-  using gum::ArcGraphPart::eraseChildren;
-  using gum::ArcGraphPart::sizeArcs;
-  using gum::ArcGraphPart::emptyArcs;
-}
-%enddef
-ADD_ARCGRAPHPART_API(gum::DiGraph);
-ADD_ARCGRAPHPART_API(gum::MixedGraph);
-
-
 
 %define ADD_APPROXIMATIONSCHEME_API(parent,classname)
 %extend classname {

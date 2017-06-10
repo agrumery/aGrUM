@@ -6401,18 +6401,63 @@ SWIGINTERN PyObject *gum_DiGraph_children(gum::DiGraph *self,gum::NodeId id){
 
     return q;
   }
-SWIGINTERN gum::NodeId gum_DiGraph_addNode_SWIG_0_0(gum::DiGraph *self){ return self->gum::NodeGraphPart::addNode(); }
-SWIGINTERN void gum_DiGraph_addNode_SWIG_0_1(gum::DiGraph *self,gum::NodeId const id){ self->gum::NodeGraphPart::addNode(id); }
-SWIGINTERN bool gum_DiGraph_existsNode(gum::DiGraph const *self,gum::NodeId const id){ return self->gum::NodeGraphPart::existsNode(id); }
-SWIGINTERN gum::Size gum_DiGraph_size(gum::DiGraph const *self){ return self->gum::NodeGraphPart::size(); }
-SWIGINTERN bool gum_DiGraph_empty(gum::DiGraph const *self){ return self->gum::NodeGraphPart::empty(); }
-SWIGINTERN void gum_DiGraph_eraseArc(gum::DiGraph *self,gum::Arc const &arc){ self->gum::ArcGraphPart::eraseArc(arc); }
-SWIGINTERN bool gum_DiGraph_existsArc_SWIG_0_0(gum::DiGraph const *self,gum::Arc const &arc){ return self->gum::ArcGraphPart::existsArc(arc); }
-SWIGINTERN bool gum_DiGraph_existsArc_SWIG_0_1(gum::DiGraph const *self,gum::NodeId const tail,gum::NodeId const head){ return self->gum::ArcGraphPart::existsArc(tail,head); }
-SWIGINTERN void gum_DiGraph_eraseParents(gum::DiGraph *self,gum::NodeId const id){ self->gum::ArcGraphPart::eraseParents(id); }
-SWIGINTERN void gum_DiGraph_eraseChildren(gum::DiGraph *self,gum::NodeId const id){ self->gum::ArcGraphPart::eraseChildren(id); }
-SWIGINTERN gum::Size gum_DiGraph_sizeArcs(gum::DiGraph const *self){ return self->gum::ArcGraphPart::sizeArcs(); }
-SWIGINTERN bool gum_DiGraph_emptyArcs(gum::DiGraph const *self){ return self->gum::ArcGraphPart::emptyArcs(); }
+SWIGINTERN gum::NodeId gum_DiGraph_addNode(gum::DiGraph *self){
+    return self->gum::NodeGraphPart::addNode();
+  }
+SWIGINTERN void gum_DiGraph_addNodeWithId(gum::DiGraph *self,gum::NodeId const id){
+    self->gum::NodeGraphPart::addNode(id);
+  }
+SWIGINTERN bool gum_DiGraph_existsNode(gum::DiGraph const *self,gum::NodeId const id){
+    return self->gum::NodeGraphPart::existsNode(id);
+  }
+SWIGINTERN gum::Size gum_DiGraph_size(gum::DiGraph const *self){
+    return self->gum::NodeGraphPart::size();
+  }
+SWIGINTERN bool gum_DiGraph_empty(gum::DiGraph const *self){
+    return self->gum::NodeGraphPart::empty();
+  }
+SWIGINTERN void gum_DiGraph_addArc__SWIG_1(gum::DiGraph *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::ArcGraphPart::addArc(n1,n2);
+  }
+SWIGINTERN void gum_DiGraph_eraseArc(gum::DiGraph *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::ArcGraphPart::eraseArc(gum::Arc(n1,n2));
+  }
+SWIGINTERN bool gum_DiGraph_existsArc(gum::DiGraph const *self,gum::NodeId const n1,gum::NodeId const n2){
+    return self->gum::ArcGraphPart::existsArc(n1,n2);
+  }
+SWIGINTERN void gum_DiGraph_eraseParents(gum::DiGraph *self,gum::NodeId const n){
+    self->gum::ArcGraphPart::eraseParents(n);
+  }
+SWIGINTERN void gum_DiGraph_eraseChildren(gum::DiGraph *self,gum::NodeId const n){
+    self->gum::ArcGraphPart::eraseChildren(n);
+  }
+SWIGINTERN gum::Size gum_DiGraph_sizeArcs(gum::DiGraph const *self){
+    return self->gum::ArcGraphPart::sizeArcs();
+  }
+SWIGINTERN bool gum_DiGraph_emptyArcs(gum::DiGraph const *self){
+    return self->gum::ArcGraphPart::emptyArcs();
+  }
+SWIGINTERN void gum_DAG_addArc__SWIG_1(gum::DAG *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::ArcGraphPart::addArc(n1,n2);
+  }
+SWIGINTERN void gum_DAG_eraseArc(gum::DAG *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::ArcGraphPart::eraseArc(gum::Arc(n1,n2));
+  }
+SWIGINTERN bool gum_DAG_existsArc(gum::DAG const *self,gum::NodeId const n1,gum::NodeId const n2){
+    return self->gum::ArcGraphPart::existsArc(n1,n2);
+  }
+SWIGINTERN void gum_DAG_eraseParents(gum::DAG *self,gum::NodeId const n){
+    self->gum::ArcGraphPart::eraseParents(n);
+  }
+SWIGINTERN void gum_DAG_eraseChildren(gum::DAG *self,gum::NodeId const n){
+    self->gum::ArcGraphPart::eraseChildren(n);
+  }
+SWIGINTERN gum::Size gum_DAG_sizeArcs(gum::DAG const *self){
+    return self->gum::ArcGraphPart::sizeArcs();
+  }
+SWIGINTERN bool gum_DAG_emptyArcs(gum::DAG const *self){
+    return self->gum::ArcGraphPart::emptyArcs();
+  }
 SWIGINTERN PyObject *gum_UndiGraph_ids(gum::UndiGraph *self){
     PyObject* q=PyList_New(0);
 
@@ -6440,37 +6485,93 @@ SWIGINTERN PyObject *gum_UndiGraph_neighbours(gum::UndiGraph *self,gum::NodeId i
 
     return q;
   }
-SWIGINTERN gum::NodeId gum_UndiGraph_addNode_SWIG_0_0(gum::UndiGraph *self){ return self->gum::NodeGraphPart::addNode(); }
-SWIGINTERN void gum_UndiGraph_addNode_SWIG_0_1(gum::UndiGraph *self,gum::NodeId const id){ self->gum::NodeGraphPart::addNode(id); }
-SWIGINTERN bool gum_UndiGraph_existsNode(gum::UndiGraph const *self,gum::NodeId const id){ return self->gum::NodeGraphPart::existsNode(id); }
-SWIGINTERN gum::Size gum_UndiGraph_size(gum::UndiGraph const *self){ return self->gum::NodeGraphPart::size(); }
-SWIGINTERN bool gum_UndiGraph_empty(gum::UndiGraph const *self){ return self->gum::NodeGraphPart::empty(); }
-SWIGINTERN void gum_UndiGraph_eraseEdge(gum::UndiGraph *self,gum::Edge const &edge){ self->gum::EdgeGraphPart::eraseEdge(edge); }
-SWIGINTERN bool gum_UndiGraph_existsEdge_SWIG_0_0(gum::UndiGraph const *self,gum::Edge const &edge){ return self->gum::EdgeGraphPart::existsEdge(edge); }
-SWIGINTERN bool gum_UndiGraph_existsEdge_SWIG_0_1(gum::UndiGraph const *self,gum::NodeId const n1,gum::NodeId const n2){ return self->gum::EdgeGraphPart::existsEdge(n1,n2); }
-SWIGINTERN gum::Size gum_UndiGraph_sizeEdges(gum::UndiGraph const *self){ return self->gum::EdgeGraphPart::sizeEdges(); }
-SWIGINTERN bool gum_UndiGraph_emptyEdges(gum::UndiGraph const *self){ return self->gum::EdgeGraphPart::emptyEdges(); }
-SWIGINTERN void gum_UndiGraph_eraseNeighbours(gum::UndiGraph *self,gum::NodeId const id){ self->gum::EdgeGraphPart::eraseNeighbours(id); }
-SWIGINTERN gum::NodeId gum_MixedGraph_addNode_SWIG_0_0(gum::MixedGraph *self){ return self->gum::NodeGraphPart::addNode(); }
-SWIGINTERN void gum_MixedGraph_addNode_SWIG_0_1(gum::MixedGraph *self,gum::NodeId const id){ self->gum::NodeGraphPart::addNode(id); }
-SWIGINTERN bool gum_MixedGraph_existsNode(gum::MixedGraph const *self,gum::NodeId const id){ return self->gum::NodeGraphPart::existsNode(id); }
-SWIGINTERN gum::Size gum_MixedGraph_size(gum::MixedGraph const *self){ return self->gum::NodeGraphPart::size(); }
-SWIGINTERN bool gum_MixedGraph_empty(gum::MixedGraph const *self){ return self->gum::NodeGraphPart::empty(); }
-SWIGINTERN void gum_MixedGraph_addEdge(gum::MixedGraph *self,gum::NodeId const n1,gum::NodeId const n2){ self->gum::EdgeGraphPart::addEdge(n1,n2); }
-SWIGINTERN void gum_MixedGraph_eraseEdge(gum::MixedGraph *self,gum::Edge const &edge){ self->gum::EdgeGraphPart::eraseEdge(edge); }
-SWIGINTERN bool gum_MixedGraph_existsEdge_SWIG_0_0(gum::MixedGraph const *self,gum::Edge const &edge){ return self->gum::EdgeGraphPart::existsEdge(edge); }
-SWIGINTERN bool gum_MixedGraph_existsEdge_SWIG_0_1(gum::MixedGraph const *self,gum::NodeId const n1,gum::NodeId const n2){ return self->gum::EdgeGraphPart::existsEdge(n1,n2); }
-SWIGINTERN gum::Size gum_MixedGraph_sizeEdges(gum::MixedGraph const *self){ return self->gum::EdgeGraphPart::sizeEdges(); }
-SWIGINTERN bool gum_MixedGraph_emptyEdges(gum::MixedGraph const *self){ return self->gum::EdgeGraphPart::emptyEdges(); }
-SWIGINTERN void gum_MixedGraph_eraseNeighbours(gum::MixedGraph *self,gum::NodeId const id){ self->gum::EdgeGraphPart::eraseNeighbours(id); }
-SWIGINTERN void gum_MixedGraph_addArc(gum::MixedGraph *self,gum::NodeId const tail,gum::NodeId const head){ self->gum::ArcGraphPart::addArc(tail,head); }
-SWIGINTERN void gum_MixedGraph_eraseArc(gum::MixedGraph *self,gum::Arc const &arc){ self->gum::ArcGraphPart::eraseArc(arc); }
-SWIGINTERN bool gum_MixedGraph_existsArc_SWIG_0_0(gum::MixedGraph const *self,gum::Arc const &arc){ return self->gum::ArcGraphPart::existsArc(arc); }
-SWIGINTERN bool gum_MixedGraph_existsArc_SWIG_0_1(gum::MixedGraph const *self,gum::NodeId const tail,gum::NodeId const head){ return self->gum::ArcGraphPart::existsArc(tail,head); }
-SWIGINTERN void gum_MixedGraph_eraseParents__SWIG_1_0(gum::MixedGraph *self,gum::NodeId const id){ self->gum::ArcGraphPart::eraseParents(id); }
-SWIGINTERN void gum_MixedGraph_eraseChildren__SWIG_1_0(gum::MixedGraph *self,gum::NodeId const id){ self->gum::ArcGraphPart::eraseChildren(id); }
-SWIGINTERN gum::Size gum_MixedGraph_sizeArcs(gum::MixedGraph const *self){ return self->gum::ArcGraphPart::sizeArcs(); }
-SWIGINTERN bool gum_MixedGraph_emptyArcs(gum::MixedGraph const *self){ return self->gum::ArcGraphPart::emptyArcs(); }
+SWIGINTERN gum::NodeId gum_UndiGraph_addNode(gum::UndiGraph *self){
+    return self->gum::NodeGraphPart::addNode();
+  }
+SWIGINTERN void gum_UndiGraph_addNodeWithId(gum::UndiGraph *self,gum::NodeId const id){
+    self->gum::NodeGraphPart::addNode(id);
+  }
+SWIGINTERN bool gum_UndiGraph_existsNode(gum::UndiGraph const *self,gum::NodeId const id){
+    return self->gum::NodeGraphPart::existsNode(id);
+  }
+SWIGINTERN gum::Size gum_UndiGraph_size(gum::UndiGraph const *self){
+    return self->gum::NodeGraphPart::size();
+  }
+SWIGINTERN bool gum_UndiGraph_empty(gum::UndiGraph const *self){
+    return self->gum::NodeGraphPart::empty();
+  }
+SWIGINTERN void gum_UndiGraph_addEdge(gum::UndiGraph *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::EdgeGraphPart::addEdge(n1,n2);
+  }
+SWIGINTERN void gum_UndiGraph_eraseEdge(gum::UndiGraph *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::EdgeGraphPart::eraseEdge(gum::Edge(n1,n2));
+  }
+SWIGINTERN bool gum_UndiGraph_existsEdge(gum::UndiGraph const *self,gum::NodeId const n1,gum::NodeId const n2){
+    return self->gum::EdgeGraphPart::existsEdge(n1,n2);
+  }
+SWIGINTERN gum::Size gum_UndiGraph_sizeEdges(gum::UndiGraph const *self){
+    return self->gum::EdgeGraphPart::sizeEdges();
+  }
+SWIGINTERN bool gum_UndiGraph_emptyEdges(gum::UndiGraph const *self){
+    return self->gum::EdgeGraphPart::emptyEdges();
+  }
+SWIGINTERN void gum_UndiGraph_eraseNeighbours(gum::UndiGraph *self,gum::NodeId const n){
+    self->gum::EdgeGraphPart::eraseNeighbours(n);
+  }
+SWIGINTERN gum::NodeId gum_MixedGraph_addNode(gum::MixedGraph *self){
+    return self->gum::NodeGraphPart::addNode();
+  }
+SWIGINTERN void gum_MixedGraph_addNodeWithId(gum::MixedGraph *self,gum::NodeId const id){
+    self->gum::NodeGraphPart::addNode(id);
+  }
+SWIGINTERN bool gum_MixedGraph_existsNode(gum::MixedGraph const *self,gum::NodeId const id){
+    return self->gum::NodeGraphPart::existsNode(id);
+  }
+SWIGINTERN gum::Size gum_MixedGraph_size(gum::MixedGraph const *self){
+    return self->gum::NodeGraphPart::size();
+  }
+SWIGINTERN bool gum_MixedGraph_empty(gum::MixedGraph const *self){
+    return self->gum::NodeGraphPart::empty();
+  }
+SWIGINTERN void gum_MixedGraph_addEdge(gum::MixedGraph *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::EdgeGraphPart::addEdge(n1,n2);
+  }
+SWIGINTERN void gum_MixedGraph_eraseEdge(gum::MixedGraph *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::EdgeGraphPart::eraseEdge(gum::Edge(n1,n2));
+  }
+SWIGINTERN bool gum_MixedGraph_existsEdge(gum::MixedGraph const *self,gum::NodeId const n1,gum::NodeId const n2){
+    return self->gum::EdgeGraphPart::existsEdge(n1,n2);
+  }
+SWIGINTERN gum::Size gum_MixedGraph_sizeEdges(gum::MixedGraph const *self){
+    return self->gum::EdgeGraphPart::sizeEdges();
+  }
+SWIGINTERN bool gum_MixedGraph_emptyEdges(gum::MixedGraph const *self){
+    return self->gum::EdgeGraphPart::emptyEdges();
+  }
+SWIGINTERN void gum_MixedGraph_eraseNeighbours(gum::MixedGraph *self,gum::NodeId const n){
+    self->gum::EdgeGraphPart::eraseNeighbours(n);
+  }
+SWIGINTERN void gum_MixedGraph_addArc(gum::MixedGraph *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::ArcGraphPart::addArc(n1,n2);
+  }
+SWIGINTERN void gum_MixedGraph_eraseArc(gum::MixedGraph *self,gum::NodeId const n1,gum::NodeId const n2){
+    self->gum::ArcGraphPart::eraseArc(gum::Arc(n1,n2));
+  }
+SWIGINTERN bool gum_MixedGraph_existsArc(gum::MixedGraph const *self,gum::NodeId const n1,gum::NodeId const n2){
+    return self->gum::ArcGraphPart::existsArc(n1,n2);
+  }
+SWIGINTERN void gum_MixedGraph_eraseParents(gum::MixedGraph *self,gum::NodeId const n){
+    self->gum::ArcGraphPart::eraseParents(n);
+  }
+SWIGINTERN void gum_MixedGraph_eraseChildren(gum::MixedGraph *self,gum::NodeId const n){
+    self->gum::ArcGraphPart::eraseChildren(n);
+  }
+SWIGINTERN gum::Size gum_MixedGraph_sizeArcs(gum::MixedGraph const *self){
+    return self->gum::ArcGraphPart::sizeArcs();
+  }
+SWIGINTERN bool gum_MixedGraph_emptyArcs(gum::MixedGraph const *self){
+    return self->gum::ArcGraphPart::emptyArcs();
+  }
 SWIGINTERN PyObject *gum_CliqueGraph_clique(gum::CliqueGraph const *self,gum::NodeId const clique){
     PyObject* q=PySet_New(0);
 
@@ -30339,48 +30440,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DiGraph_addArc(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_DiGraph_addArc__SWIG_0(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DiGraph_addArc'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::DiGraph::addArc(gum::NodeId const,gum::NodeId const)\n");
-  return 0;
-}
-
-
 SWIGINTERN PyObject *_wrap_DiGraph_eraseNode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiGraph *arg1 = (gum::DiGraph *) 0 ;
@@ -30475,52 +30534,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DiGraph_toDot__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::DiGraph *arg1 = (gum::DiGraph *) 0 ;
-  std::string *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int res2 = SWIG_OLDOBJ ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  std::string result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:DiGraph_toDot",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DiGraph, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_toDot" "', argument " "1"" of type '" "gum::DiGraph const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
-  {
-    std::string *ptr = (std::string *)0;
-    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
-    if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DiGraph_toDot" "', argument " "2"" of type '" "std::string const &""'"); 
-    }
-    if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DiGraph_toDot" "', argument " "2"" of type '" "std::string const &""'"); 
-    }
-    arg2 = ptr;
-  }
-  {
-    try {
-      result = ((gum::DiGraph const *)arg1)->toDot((std::string const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
-  if (SWIG_IsNewObj(res2)) delete arg2;
-  return resultobj;
-fail:
-  if (SWIG_IsNewObj(res2)) delete arg2;
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_DiGraph_toDot__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DiGraph_toDot(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiGraph *arg1 = (gum::DiGraph *) 0 ;
   void *argp1 = 0 ;
@@ -30546,50 +30560,6 @@ SWIGINTERN PyObject *_wrap_DiGraph_toDot__SWIG_1(PyObject *SWIGUNUSEDPARM(self),
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_DiGraph_toDot(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_DiGraph_toDot__SWIG_1(self, args);
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_DiGraph_toDot__SWIG_0(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DiGraph_toDot'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::DiGraph::toDot(std::string const &) const\n"
-    "    gum::DiGraph::toDot() const\n");
-  return 0;
 }
 
 
@@ -30852,7 +30822,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DiGraph_addNode_SWIG_0_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DiGraph_addNode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiGraph *arg1 = (gum::DiGraph *) 0 ;
   void *argp1 = 0 ;
@@ -30868,7 +30838,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_addNode_SWIG_0_0(PyObject *SWIGUNUSEDPARM(sel
   arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
   {
     try {
-      result = (gum::NodeId)gum_DiGraph_addNode_SWIG_0_0(arg1);
+      result = (gum::NodeId)gum_DiGraph_addNode(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -30881,7 +30851,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DiGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DiGraph_addNodeWithId(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiGraph *arg1 = (gum::DiGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -30892,20 +30862,20 @@ SWIGINTERN PyObject *_wrap_DiGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(sel
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:DiGraph_addNode",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:DiGraph_addNodeWithId",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_addNode" "', argument " "1"" of type '" "gum::DiGraph *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_addNodeWithId" "', argument " "1"" of type '" "gum::DiGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DiGraph_addNode" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DiGraph_addNodeWithId" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      gum_DiGraph_addNode_SWIG_0_1(arg1,arg2);
+      gum_DiGraph_addNodeWithId(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -30915,52 +30885,6 @@ SWIGINTERN PyObject *_wrap_DiGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(sel
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_DiGraph_addNode(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_DiGraph_addNode_SWIG_0_0(self, args);
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_DiGraph_addNode_SWIG_0_1(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DiGraph_addNode'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    addNode()\n"
-    "    addNode(gum::NodeId const)\n");
-  return 0;
 }
 
 
@@ -31060,34 +30984,40 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DiGraph_eraseArc(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DiGraph_addArc__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiGraph *arg1 = (gum::DiGraph *) 0 ;
-  gum::Arc *arg2 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:DiGraph_eraseArc",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:DiGraph_addArc",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_eraseArc" "', argument " "1"" of type '" "gum::DiGraph *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_addArc" "', argument " "1"" of type '" "gum::DiGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__Arc,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DiGraph_eraseArc" "', argument " "2"" of type '" "gum::Arc const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DiGraph_eraseArc" "', argument " "2"" of type '" "gum::Arc const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Arc * >(argp2);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DiGraph_addArc" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DiGraph_addArc" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      gum_DiGraph_eraseArc(arg1,(gum::Arc const &)*arg2);
+      gum_DiGraph_addArc__SWIG_1(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -31100,48 +31030,117 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DiGraph_existsArc_SWIG_0_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DiGraph_addArc(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_DiGraph_addArc__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_DiGraph_addArc__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DiGraph_addArc'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::DiGraph::addArc(gum::NodeId const,gum::NodeId const)\n"
+    "    gum::DiGraph::addArc(gum::NodeId const,gum::NodeId const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DiGraph_eraseArc(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiGraph *arg1 = (gum::DiGraph *) 0 ;
-  gum::Arc *arg2 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  bool result;
+  PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:DiGraph_existsArc",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:DiGraph_eraseArc",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_existsArc" "', argument " "1"" of type '" "gum::DiGraph const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiGraph_eraseArc" "', argument " "1"" of type '" "gum::DiGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::DiGraph * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__Arc,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DiGraph_existsArc" "', argument " "2"" of type '" "gum::Arc const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "DiGraph_existsArc" "', argument " "2"" of type '" "gum::Arc const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Arc * >(argp2);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DiGraph_eraseArc" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DiGraph_eraseArc" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      result = (bool)gum_DiGraph_existsArc_SWIG_0_0((gum::DiGraph const *)arg1,(gum::Arc const &)*arg2);
+      gum_DiGraph_eraseArc(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_DiGraph_existsArc_SWIG_0_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DiGraph_existsArc(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::DiGraph *arg1 = (gum::DiGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -31175,7 +31174,7 @@ SWIGINTERN PyObject *_wrap_DiGraph_existsArc_SWIG_0_1(PyObject *SWIGUNUSEDPARM(s
   arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      result = (bool)gum_DiGraph_existsArc_SWIG_0_1((gum::DiGraph const *)arg1,arg2,arg3);
+      result = (bool)gum_DiGraph_existsArc((gum::DiGraph const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -31185,62 +31184,6 @@ SWIGINTERN PyObject *_wrap_DiGraph_existsArc_SWIG_0_1(PyObject *SWIGUNUSEDPARM(s
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_DiGraph_existsArc(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__Arc, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_DiGraph_existsArc_SWIG_0_0(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_DiGraph_existsArc_SWIG_0_1(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DiGraph_existsArc'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    existsArc(gum::Arc const &) const\n"
-    "    existsArc(gum::NodeId const,gum::NodeId const) const\n");
-  return 0;
 }
 
 
@@ -31746,7 +31689,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_DAG_addArc(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_DAG_addArc__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::DAG *arg1 = (gum::DAG *) 0 ;
   gum::NodeId arg2 ;
@@ -31786,6 +31729,341 @@ SWIGINTERN PyObject *_wrap_DAG_addArc(PyObject *SWIGUNUSEDPARM(self), PyObject *
     }
   }
   resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DAG_addArc__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = (gum::DAG *) 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:DAG_addArc",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DAG_addArc" "', argument " "1"" of type '" "gum::DAG *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DAG_addArc" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DAG_addArc" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      gum_DAG_addArc__SWIG_1(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DAG_addArc(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DAG, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_DAG_addArc__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__DAG, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_DAG_addArc__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'DAG_addArc'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::DAG::addArc(gum::NodeId const,gum::NodeId const)\n"
+    "    gum::DAG::addArc(gum::NodeId const,gum::NodeId const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_DAG_eraseArc(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = (gum::DAG *) 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:DAG_eraseArc",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DAG_eraseArc" "', argument " "1"" of type '" "gum::DAG *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DAG_eraseArc" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DAG_eraseArc" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      gum_DAG_eraseArc(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DAG_existsArc(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = (gum::DAG *) 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:DAG_existsArc",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DAG_existsArc" "', argument " "1"" of type '" "gum::DAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DAG_existsArc" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "DAG_existsArc" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
+  {
+    try {
+      result = (bool)gum_DAG_existsArc((gum::DAG const *)arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DAG_eraseParents(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = (gum::DAG *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:DAG_eraseParents",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DAG_eraseParents" "', argument " "1"" of type '" "gum::DAG *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DAG_eraseParents" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_DAG_eraseParents(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DAG_eraseChildren(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = (gum::DAG *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:DAG_eraseChildren",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DAG_eraseChildren" "', argument " "1"" of type '" "gum::DAG *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DAG_eraseChildren" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_DAG_eraseChildren(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DAG_sizeArcs(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = (gum::DAG *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DAG_sizeArcs",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DAG_sizeArcs" "', argument " "1"" of type '" "gum::DAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_DAG_sizeArcs((gum::DAG const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DAG_emptyArcs(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DAG *arg1 = (gum::DAG *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DAG_emptyArcs",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DAG, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DAG_emptyArcs" "', argument " "1"" of type '" "gum::DAG const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DAG * >(argp1);
+  {
+    try {
+      result = (bool)gum_DAG_emptyArcs((gum::DAG const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
   return NULL;
@@ -32244,94 +32522,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_UndiGraph_addEdge__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::UndiGraph *arg1 = (gum::UndiGraph *) 0 ;
-  gum::NodeId arg2 ;
-  gum::NodeId arg3 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  unsigned int val2 ;
-  int ecode2 = 0 ;
-  unsigned int val3 ;
-  int ecode3 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOO:UndiGraph_addEdge",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_addEdge" "', argument " "1"" of type '" "gum::UndiGraph *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
-  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "UndiGraph_addEdge" "', argument " "2"" of type '" "gum::NodeId""'");
-  } 
-  arg2 = static_cast< gum::NodeId >(val2);
-  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "UndiGraph_addEdge" "', argument " "3"" of type '" "gum::NodeId""'");
-  } 
-  arg3 = static_cast< gum::NodeId >(val3);
-  {
-    try {
-      (arg1)->addEdge(arg2,arg3);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_UndiGraph_addEdge(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__UndiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_UndiGraph_addEdge__SWIG_0(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'UndiGraph_addEdge'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::UndiGraph::addEdge(gum::NodeId const,gum::NodeId const)\n");
-  return 0;
-}
-
-
 SWIGINTERN PyObject *_wrap_UndiGraph_eraseNode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = (gum::UndiGraph *) 0 ;
@@ -32626,7 +32816,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_UndiGraph_addNode_SWIG_0_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_UndiGraph_addNode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = (gum::UndiGraph *) 0 ;
   void *argp1 = 0 ;
@@ -32642,7 +32832,7 @@ SWIGINTERN PyObject *_wrap_UndiGraph_addNode_SWIG_0_0(PyObject *SWIGUNUSEDPARM(s
   arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
   {
     try {
-      result = (gum::NodeId)gum_UndiGraph_addNode_SWIG_0_0(arg1);
+      result = (gum::NodeId)gum_UndiGraph_addNode(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -32655,7 +32845,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_UndiGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_UndiGraph_addNodeWithId(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = (gum::UndiGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -32666,20 +32856,20 @@ SWIGINTERN PyObject *_wrap_UndiGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(s
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:UndiGraph_addNode",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:UndiGraph_addNodeWithId",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_addNode" "', argument " "1"" of type '" "gum::UndiGraph *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_addNodeWithId" "', argument " "1"" of type '" "gum::UndiGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "UndiGraph_addNode" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "UndiGraph_addNodeWithId" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      gum_UndiGraph_addNode_SWIG_0_1(arg1,arg2);
+      gum_UndiGraph_addNodeWithId(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -32689,52 +32879,6 @@ SWIGINTERN PyObject *_wrap_UndiGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(s
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_UndiGraph_addNode(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__UndiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_UndiGraph_addNode_SWIG_0_0(self, args);
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__UndiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_UndiGraph_addNode_SWIG_0_1(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'UndiGraph_addNode'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    addNode()\n"
-    "    addNode(gum::NodeId const)\n");
-  return 0;
 }
 
 
@@ -32834,34 +32978,40 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_UndiGraph_eraseEdge(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_UndiGraph_addEdge(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = (gum::UndiGraph *) 0 ;
-  gum::Edge *arg2 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:UndiGraph_eraseEdge",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:UndiGraph_addEdge",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_eraseEdge" "', argument " "1"" of type '" "gum::UndiGraph *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_addEdge" "', argument " "1"" of type '" "gum::UndiGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__Edge,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "UndiGraph_eraseEdge" "', argument " "2"" of type '" "gum::Edge const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "UndiGraph_eraseEdge" "', argument " "2"" of type '" "gum::Edge const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Edge * >(argp2);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "UndiGraph_addEdge" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "UndiGraph_addEdge" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      gum_UndiGraph_eraseEdge(arg1,(gum::Edge const &)*arg2);
+      gum_UndiGraph_addEdge(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -32874,48 +33024,53 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_UndiGraph_existsEdge_SWIG_0_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_UndiGraph_eraseEdge(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = (gum::UndiGraph *) 0 ;
-  gum::Edge *arg2 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  bool result;
+  PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:UndiGraph_existsEdge",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:UndiGraph_eraseEdge",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__UndiGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_existsEdge" "', argument " "1"" of type '" "gum::UndiGraph const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "UndiGraph_eraseEdge" "', argument " "1"" of type '" "gum::UndiGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::UndiGraph * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__Edge,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "UndiGraph_existsEdge" "', argument " "2"" of type '" "gum::Edge const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "UndiGraph_existsEdge" "', argument " "2"" of type '" "gum::Edge const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Edge * >(argp2);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "UndiGraph_eraseEdge" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "UndiGraph_eraseEdge" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      result = (bool)gum_UndiGraph_existsEdge_SWIG_0_0((gum::UndiGraph const *)arg1,(gum::Edge const &)*arg2);
+      gum_UndiGraph_eraseEdge(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_UndiGraph_existsEdge_SWIG_0_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_UndiGraph_existsEdge(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::UndiGraph *arg1 = (gum::UndiGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -32949,7 +33104,7 @@ SWIGINTERN PyObject *_wrap_UndiGraph_existsEdge_SWIG_0_1(PyObject *SWIGUNUSEDPAR
   arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      result = (bool)gum_UndiGraph_existsEdge_SWIG_0_1((gum::UndiGraph const *)arg1,arg2,arg3);
+      result = (bool)gum_UndiGraph_existsEdge((gum::UndiGraph const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -32959,62 +33114,6 @@ SWIGINTERN PyObject *_wrap_UndiGraph_existsEdge_SWIG_0_1(PyObject *SWIGUNUSEDPAR
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_UndiGraph_existsEdge(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__UndiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__Edge, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_UndiGraph_existsEdge_SWIG_0_0(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__UndiGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_UndiGraph_existsEdge_SWIG_0_1(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'UndiGraph_existsEdge'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    existsEdge(gum::Edge const &) const\n"
-    "    existsEdge(gum::NodeId const,gum::NodeId const) const\n");
-  return 0;
 }
 
 
@@ -33997,7 +34096,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MixedGraph_addNode_SWIG_0_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_MixedGraph_addNode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
   void *argp1 = 0 ;
@@ -34013,7 +34112,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_addNode_SWIG_0_0(PyObject *SWIGUNUSEDPARM(
   arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
   {
     try {
-      result = (gum::NodeId)gum_MixedGraph_addNode_SWIG_0_0(arg1);
+      result = (gum::NodeId)gum_MixedGraph_addNode(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -34026,7 +34125,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MixedGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_MixedGraph_addNodeWithId(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -34037,20 +34136,20 @@ SWIGINTERN PyObject *_wrap_MixedGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:MixedGraph_addNode",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:MixedGraph_addNodeWithId",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MixedGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_addNode" "', argument " "1"" of type '" "gum::MixedGraph *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_addNodeWithId" "', argument " "1"" of type '" "gum::MixedGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MixedGraph_addNode" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MixedGraph_addNodeWithId" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      gum_MixedGraph_addNode_SWIG_0_1(arg1,arg2);
+      gum_MixedGraph_addNodeWithId(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -34060,52 +34159,6 @@ SWIGINTERN PyObject *_wrap_MixedGraph_addNode_SWIG_0_1(PyObject *SWIGUNUSEDPARM(
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_MixedGraph_addNode(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 1) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MixedGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      return _wrap_MixedGraph_addNode_SWIG_0_0(self, args);
-    }
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MixedGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_MixedGraph_addNode_SWIG_0_1(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MixedGraph_addNode'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    addNode()\n"
-    "    addNode(gum::NodeId const)\n");
-  return 0;
 }
 
 
@@ -34254,31 +34307,37 @@ fail:
 SWIGINTERN PyObject *_wrap_MixedGraph_eraseEdge(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
-  gum::Edge *arg2 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:MixedGraph_eraseEdge",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MixedGraph_eraseEdge",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MixedGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_eraseEdge" "', argument " "1"" of type '" "gum::MixedGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__Edge,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MixedGraph_eraseEdge" "', argument " "2"" of type '" "gum::Edge const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MixedGraph_eraseEdge" "', argument " "2"" of type '" "gum::Edge const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Edge * >(argp2);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MixedGraph_eraseEdge" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MixedGraph_eraseEdge" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      gum_MixedGraph_eraseEdge(arg1,(gum::Edge const &)*arg2);
+      gum_MixedGraph_eraseEdge(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -34291,48 +34350,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MixedGraph_existsEdge_SWIG_0_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
-  gum::Edge *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:MixedGraph_existsEdge",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MixedGraph, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_existsEdge" "', argument " "1"" of type '" "gum::MixedGraph const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__Edge,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MixedGraph_existsEdge" "', argument " "2"" of type '" "gum::Edge const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MixedGraph_existsEdge" "', argument " "2"" of type '" "gum::Edge const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Edge * >(argp2);
-  {
-    try {
-      result = (bool)gum_MixedGraph_existsEdge_SWIG_0_0((gum::MixedGraph const *)arg1,(gum::Edge const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_MixedGraph_existsEdge_SWIG_0_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_MixedGraph_existsEdge(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -34366,7 +34384,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_existsEdge_SWIG_0_1(PyObject *SWIGUNUSEDPA
   arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      result = (bool)gum_MixedGraph_existsEdge_SWIG_0_1((gum::MixedGraph const *)arg1,arg2,arg3);
+      result = (bool)gum_MixedGraph_existsEdge((gum::MixedGraph const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -34376,62 +34394,6 @@ SWIGINTERN PyObject *_wrap_MixedGraph_existsEdge_SWIG_0_1(PyObject *SWIGUNUSEDPA
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_MixedGraph_existsEdge(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MixedGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__Edge, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_MixedGraph_existsEdge_SWIG_0_0(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MixedGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_MixedGraph_existsEdge_SWIG_0_1(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MixedGraph_existsEdge'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    existsEdge(gum::Edge const &) const\n"
-    "    existsEdge(gum::NodeId const,gum::NodeId const) const\n");
-  return 0;
 }
 
 
@@ -34579,31 +34541,37 @@ fail:
 SWIGINTERN PyObject *_wrap_MixedGraph_eraseArc(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
-  gum::Arc *arg2 = 0 ;
+  gum::NodeId arg2 ;
+  gum::NodeId arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned int val3 ;
+  int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:MixedGraph_eraseArc",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MixedGraph_eraseArc",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MixedGraph, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_eraseArc" "', argument " "1"" of type '" "gum::MixedGraph *""'"); 
   }
   arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__Arc,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MixedGraph_eraseArc" "', argument " "2"" of type '" "gum::Arc const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MixedGraph_eraseArc" "', argument " "2"" of type '" "gum::Arc const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Arc * >(argp2);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MixedGraph_eraseArc" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MixedGraph_eraseArc" "', argument " "3"" of type '" "gum::NodeId""'");
+  } 
+  arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      gum_MixedGraph_eraseArc(arg1,(gum::Arc const &)*arg2);
+      gum_MixedGraph_eraseArc(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -34616,48 +34584,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MixedGraph_existsArc_SWIG_0_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
-  gum::Arc *arg2 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  bool result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:MixedGraph_existsArc",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MixedGraph, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MixedGraph_existsArc" "', argument " "1"" of type '" "gum::MixedGraph const *""'"); 
-  }
-  arg1 = reinterpret_cast< gum::MixedGraph * >(argp1);
-  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_gum__Arc,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MixedGraph_existsArc" "', argument " "2"" of type '" "gum::Arc const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MixedGraph_existsArc" "', argument " "2"" of type '" "gum::Arc const &""'"); 
-  }
-  arg2 = reinterpret_cast< gum::Arc * >(argp2);
-  {
-    try {
-      result = (bool)gum_MixedGraph_existsArc_SWIG_0_0((gum::MixedGraph const *)arg1,(gum::Arc const &)*arg2);
-    } catch (...) {
-      SetPythonizeAgrumException();
-      SWIG_fail;
-    }
-  }
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_MixedGraph_existsArc_SWIG_0_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_MixedGraph_existsArc(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -34691,7 +34618,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_existsArc_SWIG_0_1(PyObject *SWIGUNUSEDPAR
   arg3 = static_cast< gum::NodeId >(val3);
   {
     try {
-      result = (bool)gum_MixedGraph_existsArc_SWIG_0_1((gum::MixedGraph const *)arg1,arg2,arg3);
+      result = (bool)gum_MixedGraph_existsArc((gum::MixedGraph const *)arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -34704,63 +34631,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MixedGraph_existsArc(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[4] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MixedGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_gum__Arc, 0);
-      _v = SWIG_CheckState(res);
-      if (_v) {
-        return _wrap_MixedGraph_existsArc_SWIG_0_0(self, args);
-      }
-    }
-  }
-  if (argc == 3) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MixedGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        {
-          int res = SWIG_AsVal_unsigned_SS_int(argv[2], NULL);
-          _v = SWIG_CheckState(res);
-        }
-        if (_v) {
-          return _wrap_MixedGraph_existsArc_SWIG_0_1(self, args);
-        }
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MixedGraph_existsArc'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    existsArc(gum::Arc const &) const\n"
-    "    existsArc(gum::NodeId const,gum::NodeId const) const\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_MixedGraph_eraseParents__SWIG_1_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_MixedGraph_eraseParents(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -34784,7 +34655,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_eraseParents__SWIG_1_0(PyObject *SWIGUNUSE
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      gum_MixedGraph_eraseParents__SWIG_1_0(arg1,arg2);
+      gum_MixedGraph_eraseParents(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -34797,44 +34668,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_MixedGraph_eraseParents(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MixedGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_MixedGraph_eraseParents__SWIG_1_0(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MixedGraph_eraseParents'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::MixedGraph::eraseParents()\n"
-    "    eraseParents(gum::NodeId const)\n");
-  return 0;
-}
-
-
-SWIGINTERN PyObject *_wrap_MixedGraph_eraseChildren__SWIG_1_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_MixedGraph_eraseChildren(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::MixedGraph *arg1 = (gum::MixedGraph *) 0 ;
   gum::NodeId arg2 ;
@@ -34858,7 +34692,7 @@ SWIGINTERN PyObject *_wrap_MixedGraph_eraseChildren__SWIG_1_0(PyObject *SWIGUNUS
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      gum_MixedGraph_eraseChildren__SWIG_1_0(arg1,arg2);
+      gum_MixedGraph_eraseChildren(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -34868,43 +34702,6 @@ SWIGINTERN PyObject *_wrap_MixedGraph_eraseChildren__SWIG_1_0(PyObject *SWIGUNUS
   return resultobj;
 fail:
   return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_MixedGraph_eraseChildren(PyObject *self, PyObject *args) {
-  Py_ssize_t argc;
-  PyObject *argv[3] = {
-    0
-  };
-  Py_ssize_t ii;
-  
-  if (!PyTuple_Check(args)) SWIG_fail;
-  argc = PyObject_Length(args);
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
-    argv[ii] = PyTuple_GET_ITEM(args,ii);
-  }
-  if (argc == 2) {
-    int _v;
-    void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MixedGraph, 0);
-    _v = SWIG_CheckState(res);
-    if (_v) {
-      {
-        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
-        _v = SWIG_CheckState(res);
-      }
-      if (_v) {
-        return _wrap_MixedGraph_eraseChildren__SWIG_1_0(self, args);
-      }
-    }
-  }
-  
-fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MixedGraph_eraseChildren'.\n"
-    "  Possible C/C++ prototypes are:\n"
-    "    gum::MixedGraph::eraseChildren()\n"
-    "    eraseChildren(gum::NodeId const)\n");
-  return 0;
 }
 
 
@@ -85928,9 +85725,42 @@ static PyMethodDef SwigMethods[] = {
 		"new_Edge(src) -> Edge\n"
 		""},
 	 { (char *)"delete_Edge", _wrap_delete_Edge, METH_VARARGS, (char *)"delete_Edge(self)"},
-	 { (char *)"Edge_other", _wrap_Edge_other, METH_VARARGS, (char *)"Edge_other(self, id) -> gum::NodeId"},
-	 { (char *)"Edge_first", _wrap_Edge_first, METH_VARARGS, (char *)"Edge_first(self) -> gum::NodeId"},
-	 { (char *)"Edge_second", _wrap_Edge_second, METH_VARARGS, (char *)"Edge_second(self) -> gum::NodeId"},
+	 { (char *)"Edge_other", _wrap_Edge_other, METH_VARARGS, (char *)"\n"
+		"Edge_other(self, id) -> gum::NodeId\n"
+		"\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id : int\n"
+		"  the nodeId of one of the nodes of the Edge\n"
+		"\n"
+		"\n"
+		"Returns\n"
+		"------\n"
+		"int\n"
+		"  the nodeId of the other node\n"
+		"\n"
+		""},
+	 { (char *)"Edge_first", _wrap_Edge_first, METH_VARARGS, (char *)"\n"
+		"Edge_first(self) -> gum::NodeId\n"
+		"\n"
+		"\n"
+		"Returns\n"
+		"------\n"
+		"int\n"
+		"  the nodeId of the first node of the arc (the tail)\n"
+		"\n"
+		""},
+	 { (char *)"Edge_second", _wrap_Edge_second, METH_VARARGS, (char *)"\n"
+		"Edge_second(self) -> gum::NodeId\n"
+		"\n"
+		"\n"
+		"Returns\n"
+		"------\n"
+		"int\n"
+		"  the nodeId of the second node of the arc (the head)\n"
+		"\n"
+		""},
 	 { (char *)"Edge___eq__", _wrap_Edge___eq__, METH_VARARGS, (char *)"Edge___eq__(self, src) -> bool"},
 	 { (char *)"Edge___ne__", _wrap_Edge___ne__, METH_VARARGS, (char *)"Edge___ne__(self, src) -> bool"},
 	 { (char *)"Edge_swigregister", Edge_swigregister, METH_VARARGS, NULL},
@@ -86009,36 +85839,49 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"delete_DiGraph", _wrap_delete_DiGraph, METH_VARARGS, (char *)"delete_DiGraph(self)"},
 	 { (char *)"DiGraph___eq__", _wrap_DiGraph___eq__, METH_VARARGS, (char *)"DiGraph___eq__(self, g) -> bool"},
 	 { (char *)"DiGraph___ne__", _wrap_DiGraph___ne__, METH_VARARGS, (char *)"DiGraph___ne__(self, g) -> bool"},
-	 { (char *)"DiGraph_addArc", _wrap_DiGraph_addArc, METH_VARARGS, NULL},
 	 { (char *)"DiGraph_eraseNode", _wrap_DiGraph_eraseNode, METH_VARARGS, (char *)"DiGraph_eraseNode(self, id)"},
 	 { (char *)"DiGraph_clear", _wrap_DiGraph_clear, METH_VARARGS, (char *)"DiGraph_clear(self)"},
 	 { (char *)"DiGraph___str__", _wrap_DiGraph___str__, METH_VARARGS, (char *)"DiGraph___str__(self) -> std::string const"},
-	 { (char *)"DiGraph_toDot", _wrap_DiGraph_toDot, METH_VARARGS, (char *)"\n"
-		"toDot(name) -> std::string const\n"
-		"DiGraph_toDot(self) -> std::string const\n"
-		""},
+	 { (char *)"DiGraph_toDot", _wrap_DiGraph_toDot, METH_VARARGS, (char *)"DiGraph_toDot(self) -> std::string const"},
 	 { (char *)"DiGraph_topologicalOrder", _wrap_DiGraph_topologicalOrder, METH_VARARGS, (char *)"\n"
 		"topologicalOrder(clear=True) -> gum::Sequence< gum::NodeId > const\n"
 		"DiGraph_topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &\n"
 		""},
-	 { (char *)"DiGraph_ids", _wrap_DiGraph_ids, METH_VARARGS, (char *)"DiGraph_ids(self) -> PyObject *"},
+	 { (char *)"DiGraph_ids", _wrap_DiGraph_ids, METH_VARARGS, (char *)"\n"
+		"DiGraph_ids(self) -> PyObject *\n"
+		"\n"
+		"\n"
+		"CRY CRY\n"
+		"\n"
+		""},
 	 { (char *)"DiGraph_arcs", _wrap_DiGraph_arcs, METH_VARARGS, (char *)"DiGraph_arcs(self) -> PyObject *"},
 	 { (char *)"DiGraph_parents", _wrap_DiGraph_parents, METH_VARARGS, (char *)"DiGraph_parents(self, id) -> PyObject *"},
 	 { (char *)"DiGraph_children", _wrap_DiGraph_children, METH_VARARGS, (char *)"DiGraph_children(self, id) -> PyObject *"},
 	 { (char *)"DiGraph_addNode", _wrap_DiGraph_addNode, METH_VARARGS, (char *)"\n"
-		"addNode() -> gum::NodeId\n"
-		"DiGraph_addNode(self, id)\n"
+		"DiGraph_addNode(self) -> gum::NodeId\n"
+		"\n"
+		"\n"
+		"PLIPPLOP\n"
+		"\n"
 		""},
-	 { (char *)"DiGraph_existsNode", _wrap_DiGraph_existsNode, METH_VARARGS, (char *)"DiGraph_existsNode(self, id) -> bool"},
+	 { (char *)"DiGraph_addNodeWithId", _wrap_DiGraph_addNodeWithId, METH_VARARGS, (char *)"DiGraph_addNodeWithId(self, id)"},
+	 { (char *)"DiGraph_existsNode", _wrap_DiGraph_existsNode, METH_VARARGS, (char *)"\n"
+		"DiGraph_existsNode(self, id) -> bool\n"
+		"\n"
+		"\n"
+		"PLIPPLOPPLILPI\n"
+		"\n"
+		""},
 	 { (char *)"DiGraph_size", _wrap_DiGraph_size, METH_VARARGS, (char *)"DiGraph_size(self) -> gum::Size"},
 	 { (char *)"DiGraph_empty", _wrap_DiGraph_empty, METH_VARARGS, (char *)"DiGraph_empty(self) -> bool"},
-	 { (char *)"DiGraph_eraseArc", _wrap_DiGraph_eraseArc, METH_VARARGS, (char *)"DiGraph_eraseArc(self, arc)"},
-	 { (char *)"DiGraph_existsArc", _wrap_DiGraph_existsArc, METH_VARARGS, (char *)"\n"
-		"existsArc(arc) -> bool\n"
-		"DiGraph_existsArc(self, tail, head) -> bool\n"
+	 { (char *)"DiGraph_addArc", _wrap_DiGraph_addArc, METH_VARARGS, (char *)"\n"
+		"addArc(tail, head)\n"
+		"DiGraph_addArc(self, n1, n2)\n"
 		""},
-	 { (char *)"DiGraph_eraseParents", _wrap_DiGraph_eraseParents, METH_VARARGS, (char *)"DiGraph_eraseParents(self, id)"},
-	 { (char *)"DiGraph_eraseChildren", _wrap_DiGraph_eraseChildren, METH_VARARGS, (char *)"DiGraph_eraseChildren(self, id)"},
+	 { (char *)"DiGraph_eraseArc", _wrap_DiGraph_eraseArc, METH_VARARGS, (char *)"DiGraph_eraseArc(self, n1, n2)"},
+	 { (char *)"DiGraph_existsArc", _wrap_DiGraph_existsArc, METH_VARARGS, (char *)"DiGraph_existsArc(self, n1, n2) -> bool"},
+	 { (char *)"DiGraph_eraseParents", _wrap_DiGraph_eraseParents, METH_VARARGS, (char *)"DiGraph_eraseParents(self, n)"},
+	 { (char *)"DiGraph_eraseChildren", _wrap_DiGraph_eraseChildren, METH_VARARGS, (char *)"DiGraph_eraseChildren(self, n)"},
 	 { (char *)"DiGraph_sizeArcs", _wrap_DiGraph_sizeArcs, METH_VARARGS, (char *)"DiGraph_sizeArcs(self) -> gum::Size"},
 	 { (char *)"DiGraph_emptyArcs", _wrap_DiGraph_emptyArcs, METH_VARARGS, (char *)"DiGraph_emptyArcs(self) -> bool"},
 	 { (char *)"DiGraph_swigregister", DiGraph_swigregister, METH_VARARGS, NULL},
@@ -86051,7 +85894,16 @@ static PyMethodDef SwigMethods[] = {
 		"new_DAG(g) -> DAG\n"
 		""},
 	 { (char *)"delete_DAG", _wrap_delete_DAG, METH_VARARGS, (char *)"delete_DAG(self)"},
-	 { (char *)"DAG_addArc", _wrap_DAG_addArc, METH_VARARGS, (char *)"DAG_addArc(self, tail, head)"},
+	 { (char *)"DAG_addArc", _wrap_DAG_addArc, METH_VARARGS, (char *)"\n"
+		"addArc(tail, head)\n"
+		"DAG_addArc(self, n1, n2)\n"
+		""},
+	 { (char *)"DAG_eraseArc", _wrap_DAG_eraseArc, METH_VARARGS, (char *)"DAG_eraseArc(self, n1, n2)"},
+	 { (char *)"DAG_existsArc", _wrap_DAG_existsArc, METH_VARARGS, (char *)"DAG_existsArc(self, n1, n2) -> bool"},
+	 { (char *)"DAG_eraseParents", _wrap_DAG_eraseParents, METH_VARARGS, (char *)"DAG_eraseParents(self, n)"},
+	 { (char *)"DAG_eraseChildren", _wrap_DAG_eraseChildren, METH_VARARGS, (char *)"DAG_eraseChildren(self, n)"},
+	 { (char *)"DAG_sizeArcs", _wrap_DAG_sizeArcs, METH_VARARGS, (char *)"DAG_sizeArcs(self) -> gum::Size"},
+	 { (char *)"DAG_emptyArcs", _wrap_DAG_emptyArcs, METH_VARARGS, (char *)"DAG_emptyArcs(self) -> bool"},
 	 { (char *)"DAG_swigregister", DAG_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_UndiGraph", _wrap_new_UndiGraph, METH_VARARGS, (char *)"\n"
 		"UndiGraph(nodes_size, nodes_resize_policy=True, edges_size, edges_resize_policy=True)\n"
@@ -86064,7 +85916,6 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"delete_UndiGraph", _wrap_delete_UndiGraph, METH_VARARGS, (char *)"delete_UndiGraph(self)"},
 	 { (char *)"UndiGraph___eq__", _wrap_UndiGraph___eq__, METH_VARARGS, (char *)"UndiGraph___eq__(self, g) -> bool"},
 	 { (char *)"UndiGraph___ne__", _wrap_UndiGraph___ne__, METH_VARARGS, (char *)"UndiGraph___ne__(self, g) -> bool"},
-	 { (char *)"UndiGraph_addEdge", _wrap_UndiGraph_addEdge, METH_VARARGS, NULL},
 	 { (char *)"UndiGraph_eraseNode", _wrap_UndiGraph_eraseNode, METH_VARARGS, (char *)"UndiGraph_eraseNode(self, id)"},
 	 { (char *)"UndiGraph_clear", _wrap_UndiGraph_clear, METH_VARARGS, (char *)"UndiGraph_clear(self)"},
 	 { (char *)"UndiGraph___str__", _wrap_UndiGraph___str__, METH_VARARGS, (char *)"UndiGraph___str__(self) -> std::string const"},
@@ -86074,21 +85925,17 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"UndiGraph_ids", _wrap_UndiGraph_ids, METH_VARARGS, (char *)"UndiGraph_ids(self) -> PyObject *"},
 	 { (char *)"UndiGraph_edges", _wrap_UndiGraph_edges, METH_VARARGS, (char *)"UndiGraph_edges(self) -> PyObject *"},
 	 { (char *)"UndiGraph_neighbours", _wrap_UndiGraph_neighbours, METH_VARARGS, (char *)"UndiGraph_neighbours(self, id) -> PyObject *"},
-	 { (char *)"UndiGraph_addNode", _wrap_UndiGraph_addNode, METH_VARARGS, (char *)"\n"
-		"addNode() -> gum::NodeId\n"
-		"UndiGraph_addNode(self, id)\n"
-		""},
+	 { (char *)"UndiGraph_addNode", _wrap_UndiGraph_addNode, METH_VARARGS, (char *)"UndiGraph_addNode(self) -> gum::NodeId"},
+	 { (char *)"UndiGraph_addNodeWithId", _wrap_UndiGraph_addNodeWithId, METH_VARARGS, (char *)"UndiGraph_addNodeWithId(self, id)"},
 	 { (char *)"UndiGraph_existsNode", _wrap_UndiGraph_existsNode, METH_VARARGS, (char *)"UndiGraph_existsNode(self, id) -> bool"},
 	 { (char *)"UndiGraph_size", _wrap_UndiGraph_size, METH_VARARGS, (char *)"UndiGraph_size(self) -> gum::Size"},
 	 { (char *)"UndiGraph_empty", _wrap_UndiGraph_empty, METH_VARARGS, (char *)"UndiGraph_empty(self) -> bool"},
-	 { (char *)"UndiGraph_eraseEdge", _wrap_UndiGraph_eraseEdge, METH_VARARGS, (char *)"UndiGraph_eraseEdge(self, edge)"},
-	 { (char *)"UndiGraph_existsEdge", _wrap_UndiGraph_existsEdge, METH_VARARGS, (char *)"\n"
-		"existsEdge(edge) -> bool\n"
-		"UndiGraph_existsEdge(self, n1, n2) -> bool\n"
-		""},
+	 { (char *)"UndiGraph_addEdge", _wrap_UndiGraph_addEdge, METH_VARARGS, (char *)"UndiGraph_addEdge(self, n1, n2)"},
+	 { (char *)"UndiGraph_eraseEdge", _wrap_UndiGraph_eraseEdge, METH_VARARGS, (char *)"UndiGraph_eraseEdge(self, n1, n2)"},
+	 { (char *)"UndiGraph_existsEdge", _wrap_UndiGraph_existsEdge, METH_VARARGS, (char *)"UndiGraph_existsEdge(self, n1, n2) -> bool"},
 	 { (char *)"UndiGraph_sizeEdges", _wrap_UndiGraph_sizeEdges, METH_VARARGS, (char *)"UndiGraph_sizeEdges(self) -> gum::Size"},
 	 { (char *)"UndiGraph_emptyEdges", _wrap_UndiGraph_emptyEdges, METH_VARARGS, (char *)"UndiGraph_emptyEdges(self) -> bool"},
-	 { (char *)"UndiGraph_eraseNeighbours", _wrap_UndiGraph_eraseNeighbours, METH_VARARGS, (char *)"UndiGraph_eraseNeighbours(self, id)"},
+	 { (char *)"UndiGraph_eraseNeighbours", _wrap_UndiGraph_eraseNeighbours, METH_VARARGS, (char *)"UndiGraph_eraseNeighbours(self, n)"},
 	 { (char *)"UndiGraph_swigregister", UndiGraph_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_MixedGraph", _wrap_new_MixedGraph, METH_VARARGS, (char *)"\n"
 		"MixedGraph(nodes_size, nodes_resize_policy=True, arcs_size, arcs_resize_policy=True, edges_size, edges_resize_policy=True)\n"
@@ -86109,36 +85956,22 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"MixedGraph_mixedUnorientedPath", _wrap_MixedGraph_mixedUnorientedPath, METH_VARARGS, (char *)"MixedGraph_mixedUnorientedPath(self, node1, node2) -> Vector_int"},
 	 { (char *)"MixedGraph_toDot", _wrap_MixedGraph_toDot, METH_VARARGS, (char *)"MixedGraph_toDot(self) -> std::string const"},
 	 { (char *)"MixedGraph___str__", _wrap_MixedGraph___str__, METH_VARARGS, (char *)"MixedGraph___str__(self) -> std::string const"},
-	 { (char *)"MixedGraph_addNode", _wrap_MixedGraph_addNode, METH_VARARGS, (char *)"\n"
-		"addNode() -> gum::NodeId\n"
-		"MixedGraph_addNode(self, id)\n"
-		""},
+	 { (char *)"MixedGraph_addNode", _wrap_MixedGraph_addNode, METH_VARARGS, (char *)"MixedGraph_addNode(self) -> gum::NodeId"},
+	 { (char *)"MixedGraph_addNodeWithId", _wrap_MixedGraph_addNodeWithId, METH_VARARGS, (char *)"MixedGraph_addNodeWithId(self, id)"},
 	 { (char *)"MixedGraph_existsNode", _wrap_MixedGraph_existsNode, METH_VARARGS, (char *)"MixedGraph_existsNode(self, id) -> bool"},
 	 { (char *)"MixedGraph_size", _wrap_MixedGraph_size, METH_VARARGS, (char *)"MixedGraph_size(self) -> gum::Size"},
 	 { (char *)"MixedGraph_empty", _wrap_MixedGraph_empty, METH_VARARGS, (char *)"MixedGraph_empty(self) -> bool"},
 	 { (char *)"MixedGraph_addEdge", _wrap_MixedGraph_addEdge, METH_VARARGS, (char *)"MixedGraph_addEdge(self, n1, n2)"},
-	 { (char *)"MixedGraph_eraseEdge", _wrap_MixedGraph_eraseEdge, METH_VARARGS, (char *)"MixedGraph_eraseEdge(self, edge)"},
-	 { (char *)"MixedGraph_existsEdge", _wrap_MixedGraph_existsEdge, METH_VARARGS, (char *)"\n"
-		"existsEdge(edge) -> bool\n"
-		"MixedGraph_existsEdge(self, n1, n2) -> bool\n"
-		""},
+	 { (char *)"MixedGraph_eraseEdge", _wrap_MixedGraph_eraseEdge, METH_VARARGS, (char *)"MixedGraph_eraseEdge(self, n1, n2)"},
+	 { (char *)"MixedGraph_existsEdge", _wrap_MixedGraph_existsEdge, METH_VARARGS, (char *)"MixedGraph_existsEdge(self, n1, n2) -> bool"},
 	 { (char *)"MixedGraph_sizeEdges", _wrap_MixedGraph_sizeEdges, METH_VARARGS, (char *)"MixedGraph_sizeEdges(self) -> gum::Size"},
 	 { (char *)"MixedGraph_emptyEdges", _wrap_MixedGraph_emptyEdges, METH_VARARGS, (char *)"MixedGraph_emptyEdges(self) -> bool"},
-	 { (char *)"MixedGraph_eraseNeighbours", _wrap_MixedGraph_eraseNeighbours, METH_VARARGS, (char *)"MixedGraph_eraseNeighbours(self, id)"},
-	 { (char *)"MixedGraph_addArc", _wrap_MixedGraph_addArc, METH_VARARGS, (char *)"MixedGraph_addArc(self, tail, head)"},
-	 { (char *)"MixedGraph_eraseArc", _wrap_MixedGraph_eraseArc, METH_VARARGS, (char *)"MixedGraph_eraseArc(self, arc)"},
-	 { (char *)"MixedGraph_existsArc", _wrap_MixedGraph_existsArc, METH_VARARGS, (char *)"\n"
-		"existsArc(arc) -> bool\n"
-		"MixedGraph_existsArc(self, tail, head) -> bool\n"
-		""},
-	 { (char *)"MixedGraph_eraseParents", _wrap_MixedGraph_eraseParents, METH_VARARGS, (char *)"\n"
-		"eraseParents()\n"
-		"MixedGraph_eraseParents(self, id)\n"
-		""},
-	 { (char *)"MixedGraph_eraseChildren", _wrap_MixedGraph_eraseChildren, METH_VARARGS, (char *)"\n"
-		"eraseChildren()\n"
-		"MixedGraph_eraseChildren(self, id)\n"
-		""},
+	 { (char *)"MixedGraph_eraseNeighbours", _wrap_MixedGraph_eraseNeighbours, METH_VARARGS, (char *)"MixedGraph_eraseNeighbours(self, n)"},
+	 { (char *)"MixedGraph_addArc", _wrap_MixedGraph_addArc, METH_VARARGS, (char *)"MixedGraph_addArc(self, n1, n2)"},
+	 { (char *)"MixedGraph_eraseArc", _wrap_MixedGraph_eraseArc, METH_VARARGS, (char *)"MixedGraph_eraseArc(self, n1, n2)"},
+	 { (char *)"MixedGraph_existsArc", _wrap_MixedGraph_existsArc, METH_VARARGS, (char *)"MixedGraph_existsArc(self, n1, n2) -> bool"},
+	 { (char *)"MixedGraph_eraseParents", _wrap_MixedGraph_eraseParents, METH_VARARGS, (char *)"MixedGraph_eraseParents(self, n)"},
+	 { (char *)"MixedGraph_eraseChildren", _wrap_MixedGraph_eraseChildren, METH_VARARGS, (char *)"MixedGraph_eraseChildren(self, n)"},
 	 { (char *)"MixedGraph_sizeArcs", _wrap_MixedGraph_sizeArcs, METH_VARARGS, (char *)"MixedGraph_sizeArcs(self) -> gum::Size"},
 	 { (char *)"MixedGraph_emptyArcs", _wrap_MixedGraph_emptyArcs, METH_VARARGS, (char *)"MixedGraph_emptyArcs(self) -> bool"},
 	 { (char *)"MixedGraph_swigregister", MixedGraph_swigregister, METH_VARARGS, NULL},
@@ -86553,6 +86386,9 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"BayesNet_double_fastPrototype", _wrap_BayesNet_double_fastPrototype, METH_VARARGS, (char *)"\n"
 		"fastPrototype(dotlike, domainSize=2) -> BayesNet_double\n"
 		"BayesNet_double_fastPrototype(dotlike) -> BayesNet_double\n"
+		"\n"
+		"\n"
+		"\n"
 		""},
 	 { (char *)"delete_BayesNet_double", _wrap_delete_BayesNet_double, METH_VARARGS, (char *)"delete_BayesNet_double(self)"},
 	 { (char *)"new_BayesNet_double", _wrap_new_BayesNet_double, METH_VARARGS, (char *)"\n"
@@ -86563,6 +86399,10 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"BayesNet_double_cpt", _wrap_BayesNet_double_cpt, METH_VARARGS, (char *)"\n"
 		"cpt(varId) -> Potential_double\n"
 		"BayesNet_double_cpt(self, name) -> Potential_double\n"
+		"\n"
+		"\n"
+		"FOO BAR\n"
+		"\n"
 		""},
 	 { (char *)"BayesNet_double_variableNodeMap", _wrap_BayesNet_double_variableNodeMap, METH_VARARGS, (char *)"BayesNet_double_variableNodeMap(self) -> VariableNodeMap"},
 	 { (char *)"BayesNet_double_add", _wrap_BayesNet_double_add, METH_VARARGS, (char *)"\n"
@@ -86576,6 +86416,10 @@ static PyMethodDef SwigMethods[] = {
 		"erase(id)\n"
 		"erase(name)\n"
 		"BayesNet_double_erase(self, var)\n"
+		"\n"
+		"\n"
+		"FOO BAR\n"
+		"\n"
 		""},
 	 { (char *)"BayesNet_double_variable", _wrap_BayesNet_double_variable, METH_VARARGS, (char *)"\n"
 		"variable(id) -> DiscreteVariable\n"
@@ -86670,6 +86514,10 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"BayesNet_double_loadBIF", _wrap_BayesNet_double_loadBIF, METH_VARARGS, (char *)"\n"
 		"loadBIF(name, l) -> std::string\n"
 		"BayesNet_double_loadBIF(self, name) -> std::string\n"
+		"\n"
+		"\n"
+		"FOO BAR\n"
+		"\n"
 		""},
 	 { (char *)"BayesNet_double_saveBIF", _wrap_BayesNet_double_saveBIF, METH_VARARGS, (char *)"BayesNet_double_saveBIF(self, name)"},
 	 { (char *)"BayesNet_double_loadDSL", _wrap_BayesNet_double_loadDSL, METH_VARARGS, (char *)"\n"

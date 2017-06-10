@@ -458,8 +458,8 @@ epub_exclude_files = ['search.html']
 # epub_use_index = True
 
 
-autodoc_member_order = 'bysource'
-autoclass_content = 'both'
+autodoc_member_order = 'alphabetically'
+autoclass_content = 'class'
 
 autodoc_default_flags = ['members',
                          #'private-members',

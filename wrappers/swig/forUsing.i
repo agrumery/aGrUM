@@ -1,7 +1,85 @@
-// this file is for giving access to methods defined in template ancestror.
-// SWIG does not allow to use "using" for this kind of methods.
+// this file is for giving access to methods defined in ancestor.
 
 #####################################
+
+%define ADD_NODEGRAPHPART_API(classname)
+%extend classname {
+  gum::NodeId addNode() {
+    return self->gum::NodeGraphPart::addNode();
+  }
+  void addNodeWithId(const gum::NodeId id) {
+    self->gum::NodeGraphPart::addNode(id);
+  }
+  bool existsNode(const gum::NodeId id) const {
+    return self->gum::NodeGraphPart::existsNode(id);
+  }
+  gum::Size size() const {
+    return self->gum::NodeGraphPart::size();
+  }
+  bool empty() const {
+    return self->gum::NodeGraphPart::empty();
+  }
+}
+%enddef
+ADD_NODEGRAPHPART_API(gum::DiGraph)
+ADD_ARCGRAPHPART_API(gum::DAG);
+ADD_NODEGRAPHPART_API(gum::UndiGraph)
+ADD_NODEGRAPHPART_API(gum::MixedGraph)
+
+%define ADD_EDGEGRAPHPART_API(classname)
+%extend classname {
+  void addEdge(const NodeId n1,const NodeId n2) {
+    self->gum::EdgeGraphPart::addEdge(n1,n2);
+  }
+  void eraseEdge(const NodeId n1,const NodeId n2) {
+    self->gum::EdgeGraphPart::eraseEdge(gum::Edge(n1,n2));
+  }
+  bool existsEdge(const NodeId n1, const NodeId n2) const {
+    return self->gum::EdgeGraphPart::existsEdge(n1,n2);
+  }
+  gum::Size sizeEdges() const {
+    return self->gum::EdgeGraphPart::sizeEdges();
+  }
+  bool emptyEdges() const {
+    return self->gum::EdgeGraphPart::emptyEdges();
+  }
+  void eraseNeighbours(const gum::NodeId n) {
+    self->gum::EdgeGraphPart::eraseNeighbours(n);
+  }
+}
+%enddef
+ADD_EDGEGRAPHPART_API(gum::UndiGraph)
+ADD_EDGEGRAPHPART_API(gum::MixedGraph)
+
+%define ADD_ARCGRAPHPART_API(classname)
+%extend classname {
+  void addArc(const gum::NodeId n1,const gum::NodeId n2) {
+    self->gum::ArcGraphPart::addArc(n1,n2);
+  }
+  void eraseArc(const gum::NodeId n1,const gum::NodeId n2) {
+    self->gum::ArcGraphPart::eraseArc(gum::Arc(n1,n2));
+  }
+  bool existsArc(const gum::NodeId n1,const gum::NodeId n2) const {
+    return self->gum::ArcGraphPart::existsArc(n1,n2);
+  }
+  void eraseParents(const gum::NodeId n) {
+    self->gum::ArcGraphPart::eraseParents(n);
+  }
+  void eraseChildren(const gum::NodeId n) {
+    self->gum::ArcGraphPart::eraseChildren(n);
+  }
+  gum::Size sizeArcs() const {
+    return self->gum::ArcGraphPart::sizeArcs();
+  }
+  bool emptyArcs() const {
+    return self->gum::ArcGraphPart::emptyArcs();
+  }
+}
+%enddef
+ADD_ARCGRAPHPART_API(gum::DiGraph);
+ADD_ARCGRAPHPART_API(gum::DAG);
+ADD_ARCGRAPHPART_API(gum::MixedGraph);
+
 
 #####################################
 %define ADD_MULTIDIMDECORATOR_API(classname)
