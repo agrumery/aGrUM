@@ -40,7 +40,7 @@ def parseCommandLine(current):
 def getCurrent():
   current={}
   try:
-    with open(cfg.configFile, "rb") as fp:
+    with open(cfg.configFile, "r") as fp:
       shlv = pickle.load(fp)
   except:
     shlv = {}
