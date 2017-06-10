@@ -46,7 +46,7 @@ cfg.__version_minor="1"
 cfg.__version = cfg.__version_major+"."+cfg.__version_minor
 
 cfg.modulesFile = "src/modules.txt"  # the file to parse to find the modules
-cfg.configFile = ".options.act2_1.py"  #
+cfg.configFile = ".options.act2.pickle"  #
 cfg.fixedSeedValue = "10"
 
 cfg.nbr_tests_for_stats = 20

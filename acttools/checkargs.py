@@ -21,8 +21,9 @@
 # *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 # ***************************************************************************
 
-# import anydbm
-import shelve
+import pickle
+
+
 from os import remove
 
 from .configuration import cfg
@@ -37,12 +38,12 @@ def parseCommandLine(current):
 
 
 def getCurrent():
-  current = {}
+  current={}
   try:
-    shlv = shelve.open(cfg.configFile, protocol=2,writeback=False)
+    with open(cfg.configFile, "rb") as fp:
+      shlv = pickle.load(fp)
   except:
-    remove(cfg.configFile)
-    shlv = shelve.open(cfg.configFile, protocol=2,writeback=False)
+    shlv = {}
 
   for key in cfg.default:  # .iterkeys():
     current[key] = cfg.default[key]
@@ -54,10 +55,13 @@ def getCurrent():
 
 
 def setCurrent(current):
-  shlv = shelve.open(cfg.configFile, protocol=2,writeback=True)
+  shlv = {}
   for key in current.keys():
     if key not in cfg.non_persistent:
       shlv[key] = current[key]
+
+  with open(cfg.configFile, "wb") as fp:
+    pickle.dump(shlv, fp)
 
 
 def checkCurrent(current, options, args):
