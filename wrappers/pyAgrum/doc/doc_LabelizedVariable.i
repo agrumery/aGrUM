@@ -4,9 +4,9 @@ LabelizedVariable is a discrete random variable with a customizable sequence of 
 
 Available constructors:
 
-    `LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable`
+    ``LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable``
 
-    `LabelizedVariable(aLDRV) -> LabelizedVariable`
+    ``LabelizedVariable(aLDRV) -> LabelizedVariable``
 
 Parameters
 ----------
@@ -28,4 +28,13 @@ v<0,1>
 >>> w=gum.LabelizedVariable('w','',4)
 >>> print(w)
 w<0,1,2,3>
+"
+
+
+%feature("docstring") gum::LabelizedVariable::domain
+"
+Returns
+-------
+str
+    the domain of the variable as a string
 "

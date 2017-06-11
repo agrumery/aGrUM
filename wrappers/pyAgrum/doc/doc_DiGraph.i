@@ -3,9 +3,9 @@
 DiGraph represents a Directed Graph.
 
 Available constructors:
-    `DiGraph() -> DiGraph`
+    ``DiGraph() -> DiGraph``
 
-    `DiGraph(src) -> DiGraph`
+    ``DiGraph(src) -> DiGraph``
 
 Parameters
 ----------

@@ -3,9 +3,9 @@
 pyAgrum.Edge is the representation of an arc between two nodes represented by `int`s : the first and the second.
 
 Available constructors :
-    `Edge(aN1,aN2) -> Edge`
+    ``Edge(aN1,aN2) -> Edge``
 
-    `Edge(src) -> Edge`
+    ``Edge(src) -> Edge``
 
 Parameters
 ----------

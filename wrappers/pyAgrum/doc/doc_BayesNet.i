@@ -3,9 +3,9 @@
 BayesNet represents a Bayesian Network.
 
 Available constructors:
-    `BayesNet(name='') -> BayesNet`
+    ``BayesNet(name='') -> BayesNet``
 
-    `BayesNet(source) -> BayesNet`
+    ``BayesNet(source) -> BayesNet``
 
 Parameters
 ----------
