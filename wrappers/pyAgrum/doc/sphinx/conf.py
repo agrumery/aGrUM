@@ -528,7 +528,8 @@ def skip(app, what, name, obj, skip, options):
     return True
   return None
 
-autodoc_default_flags = ['members', 'private-members', 'special-members',
+autodoc_default_flags = ['members',
+                         #'private-members', 'special-members',
                          #'undoc-members','show-inheritance'
                          ]
 def setup(app):
