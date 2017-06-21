@@ -34,10 +34,10 @@ if len(sys.argv) == 2 and sys.argv[1] == 'all':
   print("*******************")
   print("Notebook Test Suite")
   print("*******************")
-  import NotebookTestSuite
+  from NotebookTestSuite import runNotebooks
 
   try:
-    total_errs += NotebookTestSuite.errs
+    total_errs += runNotebooks()
   except NameError:
     pass
   except:

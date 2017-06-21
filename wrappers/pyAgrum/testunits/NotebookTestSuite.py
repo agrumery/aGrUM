@@ -44,26 +44,32 @@ def processeNotebook(notebook_filename):
   print(os.path.basename(notebook_filename)+" "+res)
   return err
 
-errs = 0
 
-list = []
-for filename in glob.glob("../notebooks/*.ipynb"):
-  list.append(filename)
+def runNotebooks():
+  errs = 0
 
-startTime = time.time()
-#for notebook_filename in sorted(list):
-#  errs+=processeNotebook(notebook_filename)
-executor = concurrent.futures.ProcessPoolExecutor(None)
-futures = [executor.submit(processeNotebook, notebook_filename) for notebook_filename in sorted(list)]
-concurrent.futures.wait(futures)
+  list = []
+  for filename in glob.glob("../notebooks/*.ipynb"):
+    list.append(filename)
 
-errs=sum([f.result() for f in futures])
-elapsedTime = time.time() - startTime
+  startTime = time.time()
+  ## sequential
+  #for notebook_filename in sorted(list):
+  #  errs+=processeNotebook(notebook_filename)
 
-print()
-print("----------------------------------------------------------------------")
-print("## Profiling : {} ms ##".format(int(elapsedTime * 1000)))
-print("Failed {} of {} tests".format(errs,len(list)))
-print("Success rate: {}%".format(int(100*(1-errs/len(list)))))
+  ## concurrent
+  executor = concurrent.futures.ProcessPoolExecutor(None)
+  futures = [executor.submit(processeNotebook, notebook_filename) for notebook_filename in sorted(list)]
+  concurrent.futures.wait(futures)
+  errs=sum([f.result() for f in futures])
 
-print("Python Test Suite Error : " + str(errs))
+  elapsedTime = time.time() - startTime
+
+  print()
+  print("----------------------------------------------------------------------")
+  print("## Profiling : {} ms ##".format(int(elapsedTime * 1000)))
+  print("Failed {} of {} tests".format(errs,len(list)))
+  print("Success rate: {}%".format(int(100*(1-errs/len(list)))))
+
+  print("Python Test Suite Error : " + str(errs))
+  return err
