@@ -1,3 +1,5 @@
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 /* lrslib.hpp (vertex enumeration using lexicographic reverse search) */
 #define TITLE "lrslib "
 #define VERSION "v.6.2 2016.3.28"
@@ -483,3 +485,5 @@ void lrs_set_obj_mp(
     lrs_mp_vector num,
     lrs_mp_vector den,
     int64_t       max ); /* same as lrs_set_obj but num/den has lrs_mp type */
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS

@@ -40,23 +40,20 @@ namespace gum {
 
 
     /**
-     * @class PRMInstance<GUM_SCALAR> instance.h <agrum/PRM/elements/instance.h>
+     * @class PRMInstance instance.h <agrum/PRM/elements/instance.h>
      *
-     * @brief An PRMInstance<GUM_SCALAR> is a Bayesian Network fragment defined
-     *by
-     *a Class<GUM_SCALAR> and
-     *        used in a PRMSystem.
+     * @brief An PRMInstance is a Bayesian Network fragment defined by a Class
+     * and used in a PRMSystem.
      *
-     * Before using an PRMInstance<GUM_SCALAR> for inference YOU MUST call
-     * PRMInstance<GUM_SCALAR>::instantiateSlotChains() and
-     *PRMInstance<GUM_SCALAR>::instantiate() on it before,
-     * otherwise DiscreteVariable pointers will be inconsistent and inference
-     *will
-     * be erroneous. Of course, this must be done once you have set all
-     *reference
-     * in the current system.
+     * Before using an PRMInstance for inference YOU MUST call
+     * PRMInstance::instantiateSlotChains() and PRMInstance::instantiate() on
+     * it before, otherwise DiscreteVariable pointers will be inconsistent and
+     * inference will be erroneous. Of course, this must be done once you have
+     * set all reference in the current system.
      *
-     * @see Class<GUM_SCALAR> PRM PRMClassElement @ingroup prm_group
+     * @see PRMClass PRM PRMClassElement
+     *
+     * @ingroup prm_group
      */
     template <typename GUM_SCALAR>
     class PRMInstance : public PRMObject {

@@ -53,8 +53,9 @@ namespace gum {
    */
 
   class FixedAllocator {
+    // clang-format off
     /**
-     * @struct Chunk fixedAllocator.h <agrum/core/fixedAllocator.h>
+     * @struct __Chunk fixedAllocator.h <agrum/core/smallobjectallocator/fixedAllocator.h>
      *
      * @brief Allocates objects of one given size. Has a fixed limit of
      * allocation
@@ -72,6 +73,7 @@ namespace gum {
      *
      * @ingroup core
      */
+    // clang-format on
     struct __Chunk {
 
       // ============================================================================

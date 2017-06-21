@@ -1,6 +1,8 @@
 #ifndef _UNISTD_H
 #define _UNISTD_H 1
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 /* This file intended to serve as a drop-in replacement for
  *  unistd.h on Windows
  *  Please add functionality as neeeded
@@ -51,5 +53,7 @@ typedef unsigned __int8  uint8_t;
 typedef unsigned __int16 uint16_t;
 typedef unsigned __int32 uint32_t;
 typedef unsigned __int64 uint64_t;
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 #endif /* unistd.h  */

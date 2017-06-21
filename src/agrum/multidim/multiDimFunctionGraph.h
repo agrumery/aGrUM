@@ -55,7 +55,7 @@ namespace gum {
   class MultiDimFunctionGraphTreeManager;
 
   /**
-   * @class MultiDimFunctionGraph
+   * @class MultiDimFunctionGraph 
    * @ingroup multidim_group
    *
    * @warning Doxygen does not like spanning command on multiple line, so we
