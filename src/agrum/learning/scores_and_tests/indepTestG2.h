@@ -39,25 +39,25 @@ namespace gum {
 
   namespace learning {
 
-    /* =========================================================================
-     */
-    /* ===                       INDEP TEST G2 CLASS                         ===
-     */
-    /* =========================================================================
-     */
-    /** @class ScoreG2
+    // clang-format off
+    /* ========================================================================= */
+    /* ===                       INDEP TEST G2 CLASS                         === */
+    /* ========================================================================= */
+    /**
+     * @class IndepTestG2 indepTestG2.h <agrum/learning/scores_and_tests/indepTestG2.h>
      * @brief the class for computing G2 independence test scores
      * @ingroup learning_group
      *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the independence tests you need in one
-     *pass.
+     * The class should be used as follows: first, to speed-up computations,
+     * you should consider computing all the independence tests you need in one
+     * pass.
+     *
      * To do so, use the appropriate addNodeSet methods. These will compute
      * everything you need. Use method score to retrieve the scores related to
      * the independence test that were computed. See the IndependenceTest class
-     *for
-     * details.
+     * for details.
      */
+    // clang-format on
     template <typename IdSetAlloc = std::allocator<Idx>,
               typename CountAlloc = std::allocator<double>>
     class IndepTestG2 : public IndependenceTest<IdSetAlloc, CountAlloc> {

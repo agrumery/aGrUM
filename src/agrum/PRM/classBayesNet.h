@@ -34,26 +34,24 @@
 namespace gum {
   namespace prm {
 
+    // clang-format off
     /**
-     * @class ClassBayesNet<GUM_SCALAR> classBayesNet.h
-     *<agrum/PRM/classBayesNet.h>
+     * @class ClassBayesNet classBayesNet.h <agrum/PRM/classBayesNet.h>
      * @brief This class decorates a gum::prm::Class<GUM_SCALAR> has an
-     *IBaseBayesNet.
+     *        IBaseBayesNet.
+     * @tparam GUM_SCALAR The type of scalar to use.
      *
      * This class filters PRMAttribute and PRMAggregate in a way it can be
-     *interpreted
-     *as
-     * a IBayesNet. SlotChains and PRMReferenceSlot are not represented.
+     * interpreted as a IBayesNet.
+     *
+     * SlotChains and PRMReferenceSlot are not represented.
      *
      * Remember that a ClassBayesNet<GUM_SCALAR> does not contain input nodes
-     *parents
-     *and
-     * output nodes children. Thus you should be careful when using one of the
-     * BayesNetInference over a ClassBayesNet<GUM_SCALAR> since some variables
-     *are
-     *missing in
-     * the DAG but not in the nodes CPT.
+     * parents and output nodes children. Thus you should be careful when using
+     * one of the BayesNetInference over a ClassBayesNet<GUM_SCALAR> since some
+     * variables are missing in the DAG but not in the nodes CPT.
      */
+    // clang-format on
     template <typename GUM_SCALAR>
     class ClassBayesNet : public IBayesNet<GUM_SCALAR> {
       public:

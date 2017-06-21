@@ -43,7 +43,7 @@ namespace gum {
   // ===========================================================================
   // clang-format off
   /**
-   * @class MultiDimCIModel
+   * @class MultiDimICIModel
    * @headerfile multiDimICIModel.h <agrum/multidim/ICIModels/multiDimICIModel.h>
    * @ingroup multidim_group
    *

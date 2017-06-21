@@ -73,8 +73,7 @@ namespace gum {
       std::ostream& operator<<( std::ostream& out, const LabelData& data );
 
       /**
-       * @struct NodeData<GUM_SCALAR> interfaceGraph.h
-       * <agrum/PRM/gspan/interfaceGraph.h>
+       * @struct NodeData interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
        * Inner class to handle data about nodes in __graph.
        */
       template <typename GUM_SCALAR>
@@ -107,8 +106,7 @@ namespace gum {
                                 const NodeData<GUM_SCALAR>& data );
 
       /**
-       * @struct EdgeData<GUM_SCALAR> interfaceGraph.h
-       * <agrum/PRM/gspan/interfaceGraph.h>
+       * @struct EdgeData interfaceGraph.h <agrum/PRM/gspan/interfaceGraph.h>
        * Inner class to handle data about edges in __graph.
        */
       template <typename GUM_SCALAR>

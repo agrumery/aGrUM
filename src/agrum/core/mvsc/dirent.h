@@ -10,6 +10,8 @@
 #ifndef DIRENT_H
 #define DIRENT_H
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 /*
  * Define architecture flags so we don't need to include windows.h.
  * Avoiding windows.h makes it simpler to use windows sockets in conjunction
@@ -870,4 +872,7 @@ static void dirent_set_errno( int error ) {
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
 #endif /*DIRENT_H*/

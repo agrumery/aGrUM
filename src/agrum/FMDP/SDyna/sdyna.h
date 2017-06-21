@@ -51,7 +51,7 @@
 namespace gum {
 
   /**
-   * @class sdyna sdyna.h <agrum/FMDP/SDyna/sdyna.h>
+   * @class SDYNA sdyna.h <agrum/FMDP/SDyna/sdyna.h>
    * @brief
    * @ingroup fmdp_group
    *
@@ -59,7 +59,6 @@ namespace gum {
    * Instance of SDyna architecture should inherit
    *
    */
-
   class SDYNA {
 
     // ###################################################################

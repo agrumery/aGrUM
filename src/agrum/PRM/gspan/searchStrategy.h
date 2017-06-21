@@ -55,14 +55,16 @@ namespace gum {
       template <typename GUM_SCALAR>
       class DFSTree;
 
+      // clang_format off
       /**
-       * @class SearchStrategy<GUM_SCALAR> DFSTree.h <agrum/PRM/gspan/DFSTree.h>
+       * @class SearchStrategy searchStrategy.h <agrum/PRM/gspan/searchStrategy.h>
        *
        * This is an abstract class used to tune search strategies in the gspan
        * algorithm. Since GSpan uses a DFS to expand the search tree, this class
        * works as a stack regarding adding and removing informations about the
-       *growths.
+       * growths.
        */
+      // clang_format on
       template <typename GUM_SCALAR>
       class SearchStrategy {
 

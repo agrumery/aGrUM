@@ -1,3 +1,5 @@
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 /* lrslong.h      (lrs long integer arithmetic library              */
 /* Copyright: David Avis 2000, avis@cs.mcgill.ca                    */
 /* Version 4.0, February 17, 2000                                   */
@@ -269,3 +271,5 @@ void* xcalloc( int64_t n, int64_t s, int64_t l, char* f );
 void lrs_default_digits_overflow();
 
 /* end of  lrs_mp.h (vertex enumeration using lexicographic reverse search) */
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS

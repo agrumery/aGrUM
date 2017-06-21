@@ -61,8 +61,7 @@ namespace gum {
        * @class DFSTree DFSTree.h <agrum/PRM/gspan/DFSTree.h>
        *
        * A DFSTree is used by gspan to sort lexicographically patterns
-       *discovered
-       * in an interface graph.
+       * discovered in an interface graph.
        */
       template <typename GUM_SCALAR>
       class DFSTree : private DiGraph {
@@ -143,12 +142,6 @@ namespace gum {
          * @return Returns the Pattern added as a root of this DFSTree.
          */
         void addRoot( LabelData& data );
-
-        /**
-         * @class EdgeGrowth DFSTree.h <agrum/PRM/DFSTree.h>
-         * This class is used to define an edge growth of a pattern
-         * in this DFSTree.
-         */
 
         /**
          * @brief Add a one edge growth of p as one of its child.

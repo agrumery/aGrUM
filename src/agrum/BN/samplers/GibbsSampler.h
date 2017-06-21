@@ -34,7 +34,7 @@ namespace gum {
   namespace samplers {
 
     /**
-     * @class Gibbs Gibbs.h <agrum/BN/particle/Gibbs.h>
+     * @class GibbsSampler  Gibbs.h <agrum/BN/samplers/Gibbs.h>
      * @brief class for particle using GIBBS sampling
      * @ingroup bn_particles
      *
@@ -58,17 +58,17 @@ namespace gum {
       */
 
       /**
-          * Insert new evidence in the sampler.
-          * @warning if an evidence already w.r.t. a given node and a new
-          * evidence w.r.t. this node is inserted, the old evidence is removed.
-          */
+       * Insert new evidence in the sampler.
+       * @warning if an evidence already w.r.t. a given node and a new
+       * evidence w.r.t. this node is inserted, the old evidence is removed.
+       */
       virtual void addSoftEvidenceSampler( const Potential<GUM_SCALAR>& pot );
 
       /**
-          * Insert new hard evidence in the sampler.
-          * @warning if an evidence already w.r.t. a given node and a new
-          * evidence w.r.t. this node is inserted, the old evidence is removed.
-          */
+       * Insert new hard evidence in the sampler.
+       * @warning if an evidence already w.r.t. a given node and a new
+       * evidence w.r.t. this node is inserted, the old evidence is removed.
+       */
       virtual void addHardEvidenceSampler( NodeId id, Idx pos );
 
       /**

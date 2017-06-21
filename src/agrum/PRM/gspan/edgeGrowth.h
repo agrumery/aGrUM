@@ -50,6 +50,11 @@ namespace gum {
       template <typename GUM_SCALAR>
       class DFSTree;
 
+      /**
+       * @class EdgeGrowth DFSTree.h <agrum/PRM/DFSTree.h>
+       * This class is used to define an edge growth of a pattern
+       * in this DFSTree.
+       */
       template <typename GUM_SCALAR>
       class EdgeGrowth {
         public:

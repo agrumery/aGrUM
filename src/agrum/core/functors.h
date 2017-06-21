@@ -43,7 +43,7 @@
 namespace gum {
 
   /**
-   * @struct maximizes functors.h <agrum/multidim/patterns/functors.h>
+   * @struct Maximizes functors.h <agrum/core/functors.h>
    * @brief Maximization function object class
    * @ingroup core
    *
@@ -69,7 +69,7 @@ namespace gum {
   };
 
   /**
-   * @struct minimizes functors.h <agrum/multidim/patterns/functors.h>
+   * @struct Minimizes functors.h <agrum/core/functors.h>
    * @brief Minimization function object class
    * @ingroup core
    *
@@ -95,7 +95,7 @@ namespace gum {
   };
 
   /**
-   * @struct argmax functors.h <agrum/multidim/patterns/functors.h>
+   * @struct ArgumentMaximises  functors.h <agrum/core/functors.h>
    * @brief Arg Max function object class
    * @ingroup core
    *

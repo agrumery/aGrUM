@@ -764,6 +764,7 @@ WARN_LOGFILE           = warning.txt
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = @AGRUM_SOURCE_DIR@/agrum \
+                         @AGRUM_SOURCE_DIR@/docs/mainpage.dox \
                          @AGRUM_SOURCE_DIR@/docs/howtos \
                          @AGRUM_SOURCE_DIR@/docs/modules
 
@@ -834,7 +835,8 @@ EXCLUDE_PATTERNS       = */cocoR/*
 EXCLUDE_SYMBOLS        = IApproximationPolicy \
                          ICPTDisturber \
                          ICPTGenerator \
-                         SetIteratorStaticEnd
+                         SetIteratorStaticEnd \
+                         TerminalNodePolicy
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include

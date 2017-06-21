@@ -68,15 +68,14 @@ namespace gum {
     PutDown = 5,
     FillUp = 6
   };
+
+  // clang-format off
   /**
-   * @class Factory factorySimulator.h
-   * <agrum/FMDP/simulation/factorySimulator.h>
+   * @class FactorySimulator factorySimulator.h <agrum/FMDP/simulation/factorySimulator.h>
    * @brief A class to simulate the Factory problem
    * @ingroup fmdp_group
-   *
-   *
-   *
    */
+  // clang-format on
   class FactorySimulator : public AbstractSimulator {
 
     public:

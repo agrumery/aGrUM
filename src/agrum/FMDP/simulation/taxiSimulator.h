@@ -68,14 +68,14 @@ namespace gum {
     PutDown = 6,
     FillUp = 7
   };
+
+  // clang-format off
   /**
-   * @class Taxi taxiSimulator.h <agrum/FMDP/simulation/taxiSimulator.h>
+   * @class TaxiSimulator taxiSimulator.h <agrum/FMDP/simulation/taxiSimulator.h>
    * @brief A class to simulate the Taxi problem
    * @ingroup fmdp_group
-   *
-   *
-   *
    */
+  // clang-format on
   class TaxiSimulator : public AbstractSimulator {
 
     public:
