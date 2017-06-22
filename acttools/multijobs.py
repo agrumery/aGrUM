@@ -65,7 +65,7 @@ def prettifying(line):
   s = line.split("%]")
 
   if len(s) >= 2:
-    res += cfg.C_VALUE + "%]".join(s[:-1]) + "%]" + cfg.C_END + " "
+    res = cfg.C_WARNING + "%]".join(s[:-1]) + "%]" + cfg.C_END + " "
     line = s[-1].strip()
 
   if line == "":
@@ -75,61 +75,61 @@ def prettifying(line):
 
   # prettifying (compacting) path
   if line[0] == "/":  # we keep message beginning with full path
-    return line
+    return res+line
 
   s = line.split("agrum.dir/")
   if len(s) == 2:
-    return remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
+    return res+remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
 
   s = line.split("_pyAgrum.dir/__/__/")  # for agrum in pyAgrum
   if len(s) == 2:
-    return remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
+    return res+remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
 
   s = line.split("_pyAgrum.dir/")  # for specific pyAgrum files
   if len(s) == 2:
-    return remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
+    return res+remove_dirs(s[0]) + " " + cfg.C_MSG + s[1].rstrip() + cfg.C_END
 
   s = line.split("/generated-files/")
   if len(s) == 2:
-    return remove_dirs(s[0]) + cfg.C_MSG + " generated-files/" + s[1].rstrip() + cfg.C_END
+    return res+remove_dirs(s[0]) + cfg.C_MSG + " generated-files/" + s[1].rstrip() + cfg.C_END
 
   s = line.split(" /")
   if len(s) == 2:
-    return remove_dirs(s[0]) + cfg.C_MSG + " /" + s[1].rstrip() + cfg.C_END
+    return res+remove_dirs(s[0]) + cfg.C_MSG + " /" + s[1].rstrip() + cfg.C_END
 
   # prettifying test execution
   s = line.split(". [")
   if len(s) == 2:
-    return s[0] + ". " + cfg.C_VALUE + "[" + s[1].rstrip() + cfg.C_END
+    return res+s[0] + ". " + cfg.C_VALUE + "[" + s[1].rstrip() + cfg.C_END
 
   s = line.split("# [")
   if len(s) == 2:
-    return s[0] + "# " + cfg.C_VALUE + "[" + s[1].rstrip() + cfg.C_END
+    return res+s[0] + "# " + cfg.C_VALUE + "[" + s[1].rstrip() + cfg.C_END
 
   s = line.split(" ... ")
   if len(s) == 2:
     ss = s[0].split('(')
     if len(ss) == 2:
-      return cfg.C_WARNING + ss[0] + cfg.C_VALUE + '(' + ss[1] + cfg.C_END + " ... " + s[1]
+      return res+cfg.C_WARNING + ss[0] + cfg.C_VALUE + '(' + ss[1] + cfg.C_END + " ... " + s[1]
     ss = s[0].split("-")
     if len(ss) == 2:
       sss =ss[1].split(".")
-      return cfg.C_WARNING + ss[0] + cfg.C_VALUE + ' ' + sss[0] + cfg.C_END + " ... " + s[1]
+      return res+cfg.C_WARNING + ss[0] + cfg.C_VALUE + ' ' + sss[0] + cfg.C_END + " ... " + s[1]
 
   # end of test execution
   s = line.split("##")
   if len(s) == 3:
-    return cfg.C_WARNING + "##" + cfg.C_END + s[1] + cfg.C_MSG + "##" + cfg.C_END
+    return res+cfg.C_WARNING + "##" + cfg.C_END + s[1] + cfg.C_MSG + "##" + cfg.C_END
   if line[0:6] == "Failed":
     return "Failed " + cfg.C_MSG + line[7:] + cfg.C_END
   if line[0:6] == "Succes":
     return "Success rate: " + cfg.C_MSG + line[14:] + cfg.C_END
   if line[-11:] == "<--- failed":
-    return line[0:-11] + cfg.C_ERROR + "<--- failed" + cfg.C_END
+    return res+line[0:-11] + cfg.C_ERROR + "<--- failed" + cfg.C_END
 
   s = line.split("Memory leaks found")
   if len(s) == 2:
-    return s[0] + cfg.C_ERROR + "Memory leaks found" + cfg.C_END + s[1]
+    return res+s[0] + cfg.C_ERROR + "Memory leaks found" + cfg.C_END + s[1]
   return line
 
 
