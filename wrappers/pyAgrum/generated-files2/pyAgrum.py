@@ -2813,9 +2813,9 @@ class LabelizedVariable(DiscreteVariable):
 
     Available constructors:
 
-        `LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable`
+        ``LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable``
 
-        `LabelizedVariable(aLDRV) -> LabelizedVariable`
+        ``LabelizedVariable(aLDRV) -> LabelizedVariable``
 
     Parameters
     ----------
@@ -2917,7 +2917,16 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def domain(self):
-        """domain(self) -> std::string const"""
+        """
+        domain(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+            the domain of the variable as a string
+
+        """
         return _pyAgrum.LabelizedVariable_domain(self)
 
 LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
@@ -3020,9 +3029,9 @@ class Edge(_object):
     pyAgrum.Edge is the representation of an arc between two nodes represented by `int`s : the first and the second.
 
     Available constructors :
-        `Edge(aN1,aN2) -> Edge`
+        ``Edge(aN1,aN2) -> Edge``
 
-        `Edge(src) -> Edge`
+        ``Edge(src) -> Edge``
 
     Parameters
     ----------
@@ -3120,9 +3129,9 @@ class Arc(_object):
     pyAgrum.Arc is the representation of an arc between two nodes represented by `int`s : the head and the tail.
 
     Available constructors:
-        `Arc(tail, head) -> Arc`
+        ``Arc(tail, head) -> Arc``
 
-        `Arc(src) -> Arc`
+        ``Arc(src) -> Arc``
 
     Parameters
     ----------
@@ -3249,9 +3258,9 @@ class DiGraph(_object):
     DiGraph represents a Directed Graph.
 
     Available constructors:
-        `DiGraph() -> DiGraph`
+        ``DiGraph() -> DiGraph``
 
-        `DiGraph(src) -> DiGraph`
+        ``DiGraph(src) -> DiGraph``
 
     Parameters
     ----------
@@ -3327,7 +3336,10 @@ class DiGraph(_object):
         ids(self) -> PyObject *
 
 
-        CRY CRY
+        Returns
+        -------
+        List
+            the list of ids
 
         """
         return _pyAgrum.DiGraph_ids(self)
@@ -3353,7 +3365,12 @@ class DiGraph(_object):
         addNode(self) -> gum::NodeId
 
 
-        PLIPPLOP
+        Add a node by choosing a new NodeId
+
+        Returns
+        -------
+        int
+          the new NodeId
 
         """
         return _pyAgrum.DiGraph_addNode(self)
@@ -3369,7 +3386,17 @@ class DiGraph(_object):
         existsNode(self, id) -> bool
 
 
-        PLIPPLOPPLILPI
+        Check if a node with a certain id exists in the graph.
+
+        Parameters
+        ----------
+        id : int
+            the checked id
+
+        Returns
+        -------
+        bool
+            True if the node exists
 
         """
         return _pyAgrum.DiGraph_existsNode(self, id)
@@ -4710,7 +4737,36 @@ def randomDistribution_double(n):
     """randomDistribution_double(n) -> Vector_double"""
     return _pyAgrum.randomDistribution_double(n)
 class DiscretizedVariable_double(DiscreteVariable):
-    """Proxy of C++ gum::DiscretizedVariable<(double)> class."""
+    """
+
+    DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
+
+    Available constructors:
+
+        ``DiscretizedVariable(aName, aDesc='') -> DiscretizedVariable``
+
+        ``DiscretizedVariable(aDDRV) -> DiscretizedVariable``
+
+    Parameters
+    ----------
+    aName: str
+      The name of the variable
+    aDesc: str
+      The (optional) description of the variable
+    aDDRV: pyAgrum.DiscretizedVariable
+      Another `DiscretizedVariable` that will be copied
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>> v=gum.DiscretizedVariable('v','a descr')
+    >>> print(v)
+    v<>
+    >>> v.addTick(1).addTick(3.14).addTick(0.4).addTick(0.2)
+    >>> print(w)
+    a<[0.2;0.4[,[0.4;1[,[1;3.14]>
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [DiscreteVariable]:
@@ -4782,7 +4838,16 @@ class DiscretizedVariable_double(DiscreteVariable):
 
 
     def domain(self):
-        """domain(self) -> std::string const"""
+        """
+        domain(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+            the domain of the variable as a string
+
+        """
         return _pyAgrum.DiscretizedVariable_double_domain(self)
 
 
@@ -5784,9 +5849,9 @@ class BayesNet_double(IBayesNet_double):
     BayesNet represents a Bayesian Network.
 
     Available constructors:
-        `BayesNet(name='') -> BayesNet`
+        ``BayesNet(name='') -> BayesNet``
 
-        `BayesNet(source) -> BayesNet`
+        ``BayesNet(source) -> BayesNet``
 
     Parameters
     ----------

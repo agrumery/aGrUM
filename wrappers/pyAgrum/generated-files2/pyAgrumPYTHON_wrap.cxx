@@ -85698,7 +85698,16 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"LabelizedVariable_numerical", _wrap_LabelizedVariable_numerical, METH_VARARGS, (char *)"LabelizedVariable_numerical(self, indice) -> double"},
 	 { (char *)"LabelizedVariable_domainSize", _wrap_LabelizedVariable_domainSize, METH_VARARGS, (char *)"LabelizedVariable_domainSize(self) -> gum::Size"},
 	 { (char *)"LabelizedVariable_varType", _wrap_LabelizedVariable_varType, METH_VARARGS, (char *)"LabelizedVariable_varType(self) -> gum::DiscreteVariable::VarType"},
-	 { (char *)"LabelizedVariable_domain", _wrap_LabelizedVariable_domain, METH_VARARGS, (char *)"LabelizedVariable_domain(self) -> std::string const"},
+	 { (char *)"LabelizedVariable_domain", _wrap_LabelizedVariable_domain, METH_VARARGS, (char *)"\n"
+		"LabelizedVariable_domain(self) -> std::string const\n"
+		"\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"    the domain of the variable as a string\n"
+		"\n"
+		""},
 	 { (char *)"LabelizedVariable_swigregister", LabelizedVariable_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_RangeVariable", _wrap_new_RangeVariable, METH_VARARGS, (char *)"\n"
 		"RangeVariable(aName, aDesc, minVal=0, maxVal=1)\n"
@@ -85851,7 +85860,10 @@ static PyMethodDef SwigMethods[] = {
 		"DiGraph_ids(self) -> PyObject *\n"
 		"\n"
 		"\n"
-		"CRY CRY\n"
+		"Returns\n"
+		"-------\n"
+		"List\n"
+		"    the list of ids\n"
 		"\n"
 		""},
 	 { (char *)"DiGraph_arcs", _wrap_DiGraph_arcs, METH_VARARGS, (char *)"DiGraph_arcs(self) -> PyObject *"},
@@ -85861,7 +85873,12 @@ static PyMethodDef SwigMethods[] = {
 		"DiGraph_addNode(self) -> gum::NodeId\n"
 		"\n"
 		"\n"
-		"PLIPPLOP\n"
+		"Add a node by choosing a new NodeId\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"int\n"
+		"  the new NodeId\n"
 		"\n"
 		""},
 	 { (char *)"DiGraph_addNodeWithId", _wrap_DiGraph_addNodeWithId, METH_VARARGS, (char *)"DiGraph_addNodeWithId(self, id)"},
@@ -85869,7 +85886,17 @@ static PyMethodDef SwigMethods[] = {
 		"DiGraph_existsNode(self, id) -> bool\n"
 		"\n"
 		"\n"
-		"PLIPPLOPPLILPI\n"
+		"Check if a node with a certain id exists in the graph.\n"
+		"\n"
+		"Parameters\n"
+		"----------\n"
+		"id : int\n"
+		"    the checked id\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"bool\n"
+		"    True if the node exists\n"
 		"\n"
 		""},
 	 { (char *)"DiGraph_size", _wrap_DiGraph_size, METH_VARARGS, (char *)"DiGraph_size(self) -> gum::Size"},
@@ -86199,7 +86226,16 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"DiscretizedVariable_double_numerical", _wrap_DiscretizedVariable_double_numerical, METH_VARARGS, (char *)"DiscretizedVariable_double_numerical(self, indice) -> double"},
 	 { (char *)"DiscretizedVariable_double_index", _wrap_DiscretizedVariable_double_index, METH_VARARGS, (char *)"DiscretizedVariable_double_index(self, label) -> gum::Idx"},
 	 { (char *)"DiscretizedVariable_double_domainSize", _wrap_DiscretizedVariable_double_domainSize, METH_VARARGS, (char *)"DiscretizedVariable_double_domainSize(self) -> gum::Size"},
-	 { (char *)"DiscretizedVariable_double_domain", _wrap_DiscretizedVariable_double_domain, METH_VARARGS, (char *)"DiscretizedVariable_double_domain(self) -> std::string const"},
+	 { (char *)"DiscretizedVariable_double_domain", _wrap_DiscretizedVariable_double_domain, METH_VARARGS, (char *)"\n"
+		"DiscretizedVariable_double_domain(self) -> std::string const\n"
+		"\n"
+		"\n"
+		"Returns\n"
+		"-------\n"
+		"str\n"
+		"    the domain of the variable as a string\n"
+		"\n"
+		""},
 	 { (char *)"DiscretizedVariable_double_tick", _wrap_DiscretizedVariable_double_tick, METH_VARARGS, (char *)"DiscretizedVariable_double_tick(self, i) -> double const &"},
 	 { (char *)"DiscretizedVariable_double_swigregister", DiscretizedVariable_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"delete_MultiDimContainer_double", _wrap_delete_MultiDimContainer_double, METH_VARARGS, (char *)"delete_MultiDimContainer_double(self)"},

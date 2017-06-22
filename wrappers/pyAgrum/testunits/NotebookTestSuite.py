@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 # -*- encoding: UTF-8 -*-
 from __future__ import print_function
+import sys
+
+if sys.version_info >= (3,0):
+  import concurrent
 
 import glob
 import os
-import sys
 import traceback
 import time
-import concurrent
 
 
 import nbformat
@@ -46,6 +48,10 @@ def processeNotebook(notebook_filename):
 
 
 def runNotebooks():
+  if sys.version_info < (3,0):
+    print("No notebook tests in python2")
+    return 0
+
   errs = 0
 
   list = []
@@ -53,7 +59,9 @@ def runNotebooks():
     list.append(filename)
 
   startTime = time.time()
-  ## sequential
+
+
+  # sequential
   #for notebook_filename in sorted(list):
   #  errs+=processeNotebook(notebook_filename)
 
