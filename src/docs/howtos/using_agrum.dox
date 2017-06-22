@@ -9,56 +9,58 @@
  * - in src folder, a file named CMakeLists.txt like this one :
  *
  * \code{.cmake}
- * project(FOO)
- * cmake_minimum_required(VERSION 2.8)
- *
- * # do not forget to change this line if needed ("act install -d...")
- * set(AGRUM_INSTALLATION_DIRECTORY "installation_path")
- * set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
- *
- * find_package(aGrUM)
- *
- * if (aGrUM_FOUND)
- *   include_directories(${AGRUM_INCLUDE_DIR})
- *   link_directories(${AGRUM_LIB_DIR})
- * else (aGrUM_FOUND)
- *   message(FATAL_ERROR "Please install aGrUM")
- * endif (aGrUM_FOUND)
- *
- * # cmake -DCMAKE_BUILD_TYPE=DEBUG
- * # or
- * # cmake -DCMAKE_BUILD_TYPE=RELEASE
- * #     RELEASE is the default option (thanks to the next 3 lines)
- * if( NOT CMAKE_BUILD_TYPE )
- *   set( CMAKE_BUILD_TYPE Release)
- * endif()
- *
- * file(GLOB_RECURSE FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
- * file(GLOB_RECURSE FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
- *
- * add_executable (foo ${FOO_SOURCE})
- *
- * if ($CMAKE_BUILD_TYPE  STREQUAL "RELEASE") # release : act install release
- *   target_link_libraries(foo agrum)
- * else() # debug : act install debug
- *   target_link_libraries(foo agrum-dbg)
- * endif()
+project(FOO)
+cmake_minimum_required(VERSION 2.8)
+
+set (CMAKE_CXX_STANDARD 14)
+
+# do not forget to change this line if needed ("act install -d...")
+set(AGRUM_INSTALLATION_DIRECTORY "/home/phw/usr")
+set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
+
+find_package(aGrUM)
+
+if (aGrUM_FOUND)
+  include_directories(${AGRUM_INCLUDE_DIR})
+  link_directories(${AGRUM_LIB_DIR})
+else (aGrUM_FOUND)
+  message(FATAL_ERROR "Please install aGrUM")
+endif (aGrUM_FOUND)
+
+# cmake -DCMAKE_BUILD_TYPE=DEBUG
+# or
+# cmake -DCMAKE_BUILD_TYPE=RELEASE
+#     RELEASE is the default option (thanks to the next 3 lines)
+if( NOT CMAKE_BUILD_TYPE )
+  set( CMAKE_BUILD_TYPE RELEASE)
+endif()
+
+file(GLOB_RECURSE FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
+
+add_executable (foo ${FOO_SOURCE})
+
+if (${CMAKE_BUILD_TYPE}  STREQUAL "RELEASE") # release : act install release
+  target_link_libraries(foo agrum)
+else() # debug : act install debug
+  target_link_libraries(foo agrum-dbg)
+endif()
  * \endcode
  *
  * - a small minimum src/example.cpp :
  * \code{.cpp}
- * #include <iostream>
- *
- * #include <agrum/core/hashTable.h>
- *
- * int main(void) {
- *   gum::HashTable<std::string,int> h;
- *
- *   h.insert("Hello",1);
- *   h.insert("World",2);
- *
- *   std::cout<<h<<std::endl;
- * }
+#include <iostream>
+
+#include <agrum/core/hashTable.h>
+
+int main(void) {
+  gum::HashTable<std::string,int> h;
+
+  h.insert("Hello",1);
+  h.insert("World",2);
+
+  std::cout<<h<<std::endl;
+}
  * \endcode
  *
  * - to compile the project (from the project folder)
