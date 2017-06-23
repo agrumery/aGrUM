@@ -1,5 +1,21 @@
 # aGrUM Changelog
 
+## Changelog for 0.12.0
+* API
+  * new class EssentialGraph
+  * new class MarkovBlanket
+  * improved targets in MarginalTargetInference
+* pyAgrum
+  * update notebooks
+  * new swig-based documentation framework
+  * transparent background for dot grphs
+  * more windows-compliant agrum.lib.bn2csv
+* aGrUM
+  * PRM bug fixes
+  * improved CI in gitlab
+  * improved exception message in BN learning and O3PRM
+  * improving act
+
 ## Changelog for 0.11.2
 * aGrUM
   * a lot of internal changes for CI in gitlab (especially for future automatic generation of wheels)
