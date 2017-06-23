@@ -4,16 +4,16 @@
 * API
   * new class EssentialGraph
   * new class MarkovBlanket
-  * improved targets in MarginalTargetInference
+  * improved targets in MarginalTargettedInference
 * pyAgrum
   * update notebooks
   * new swig-based documentation framework
-  * transparent background for dot grphs
+  * transparent background for dot graphs
   * more windows-compliant agrum.lib.bn2csv
 * aGrUM
   * PRM bug fixes
   * improved CI in gitlab
-  * improved exception message in BN learning and O3PRM
+  * improved exception messages in BN learning and O3PRM
   * improving act
 
 ## Changelog for 0.11.2
