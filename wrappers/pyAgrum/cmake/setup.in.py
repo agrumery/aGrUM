@@ -25,7 +25,8 @@ flags = ["-fopenmp",
 options = ["-c++",
            "-I/usr/loca/include",
            "-I/usr/include",
-           "-I./pyAgrum/extensions"]
+           "-I./pyAgrum/extensions",
+           "-I./pyAgrum/doc"]
 
 my_ext = Extension( name='_pyAgrum',
     sources=swig_files,
