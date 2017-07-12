@@ -35,7 +35,7 @@
 #include <agrum/config.h>
 #include <agrum/learning/database/DBRow.h>
 
-#include <agrum/learning/database/nanodbc/nanodbc.h>
+#include <agrum/external/nanodbc/nanodbc.h>
 
 namespace gum {
 

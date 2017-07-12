@@ -21,7 +21,7 @@ set(PRM_DEPS "BN")
 set(LEARNING_DEPS "BN")
 
 # list of all folders by module
-set(BASE_DIRS "core" "graphicalModels" "graphs" "multidim" "variables")
+set(BASE_DIRS "core" "graphicalModels" "graphs" "multidim" "variables" "external")
 set(BN_DIRS "BN")
 set(CN_DIRS "CN")
 set(FMDP_DIRS "FMDP")

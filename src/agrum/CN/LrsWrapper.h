@@ -54,7 +54,7 @@
 #define MP
 // lrs stuff
 extern "C" {
-#include <agrum/core/math/lrslib/lrslib.h>
+#include <agrum/external/lrslib/lrslib.h>
 }
 /* *** from lrs, we need to know BASE to read multiple precision integers *** */
 #ifdef B32

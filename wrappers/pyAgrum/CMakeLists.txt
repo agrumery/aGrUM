@@ -52,7 +52,7 @@ set(AGRUM_FILE_VERSION "${CMAKE_CURRENT_SOURCE_DIR}/../../VERSION.txt")
 include(${AGRUM_FILE_VERSION})
 include("${AGRUM_SOURCE_DIR}/cmake/Config.agrum.cmake")
 configure_file("${AGRUM_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_BINARY_DIR}/agrum/config.h")
-#file(GLOB_RECURSE AGRUM_SOURCES "${AGRUM_SOURCE_DIR}/agrum/*.cpp"  ${AGRUM_SOURCE_DIR}/agrum/parts/math/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/parts/math/lrslib/lrsmp.c)
+#file(GLOB_RECURSE AGRUM_SOURCES "${AGRUM_SOURCE_DIR}/agrum/*.cpp"  ${AGRUM_SOURCE_DIR}/agrum/external/lrslib/lrslib.c ${AGRUM_SOURCE_DIR}/agrum/external/lrslib/lrsmp.c)
 
 #==
 #== Adding files in build tree

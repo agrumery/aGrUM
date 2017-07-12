@@ -36,7 +36,7 @@
 #include <agrum/learning/database/DBTransform.h>
 #include <agrum/learning/database/DBTransformIdentity.h>
 #include <agrum/learning/database/databaseVectInRAM.h>
-#include <agrum/learning/database/nanodbc/nanodbc.h>
+#include <agrum/external/nanodbc/nanodbc.h>
 #include <agrum/learning/database/nanodbcParser.h>
 
 namespace gum {
