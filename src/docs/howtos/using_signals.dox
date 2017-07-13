@@ -1,65 +1,73 @@
 /*!
  * \page using_signals How to use signaler/listener in aGrUM ?
- * 
+ *
  * aGrUM has its own implementation of signalers/listeners.
- * 
+ *
  * Let's say that <tt>class A</tt> has a method <tt>f(int i,char ch)</tt> and would
- * like
- * to give to everyone the right to know whenever <tt>f()</tt> is run.
- * 
- * @code
- * #include <agrum/tools/core/signal/signaler2.h> // Note the '2' because the signal we
- * want
- * will send 2 args (i and ch)
- * class A {
- *  public:
- *   gum::signaler2<int,char> onF; // Note that onF is public !
- * 
- *  void f(int i,char ch) {
- *     //do something
- *   GUM_EMIT2(onF,i,ch); // a signal (with 2 args i and ch) is emitted via onF.
- *   }
- * }
- * @endcode
- * 
+ * like to give to everyone the right to know whenever <tt>f()</tt> is run.
+ *
+ * \code{.cpp}
+#include <agrum/core/signal/signaler.h>
+
+class A {
+ public:
+  gum::Signaler2<int,char> onF; // Note that onF is public and will send an int and a char then 'Signaler2' is used.
+
+ void f(int i,char ch) {
+    //do something
+    GUM_EMIT2(onF,i,ch); // a signal (with 2 args i and ch) is emitted via the Signaler onF.
+  }
+};
+ @ \endcode
+ *
  * Note that for <tt>class A</tt>, adding signaler is very light : a new public
  * attribute and a GUM_EMITx when needed (where x is the number of args).
- * 
+ *
  * Now, how to listen to such a signal ?
- * @code
- * #include <agrum/tools/core/signal/listener.h>
- * 
- * class B : gum::listener {
- *  public:
- *   void whenF(const void *src,int i, char ch) {std::cout<<"object "<<src<<"run f
- * on
- * "<<i<<" and "<<ch<<std::endl;}
- * };
- * 
- * A a;
- * 
- * B b1;
- * B b2;
- * 
- * GUM_CONNECT( a,onF,b1,B::whenF );
- * GUM_CONNECT( a,onF,b2,B::whenF );
- * 
- * a.f(3,'a');
- * // b1.whenF and b2.whenF has been executed.
- * 
- * class C : gum::listener {
- *  public:
- *     void dummy(void *src,int i,char ch) {};
- * };
- * 
- * {
- *   C c;
- *   GUM_CONNECT( a,onF,c,C::dummy );
- *   a.f(4,'x');
- *   //c.dummy(), b1.whenF and b2.whenF has been executed.
- * } // c is destroyed...
- * 
- * a.f(5,'y');
- * //b1.whenF and b2.whenF has been executed.
- * @endcode
+ *
+ * \code{.cpp}
+#include <agrum/core/signal/Listener.h>
+
+class B : public gum::Listener {
+ public:
+  void whenF(const void *src,int i, char ch) { // note the void* src
+    std::cout<<"object "<<src<<" run f on "<<i<<" and "<<ch<<std::endl;
+  }
+};
+// we may have more than one listener
+class C : public gum::Listener {
+ public:
+  void dummy(void *src,int i,char ch) {
+    std::cout<<"dummy on "<<i<<" and "<<ch<<std::endl;
+  }
+};
+ * \endcode
+ *
+ * Now we have to connect
+ *
+ * \code{.cpp}
+int main(void) {
+  A a;
+
+  B b1;
+  B b2;
+
+  GUM_CONNECT( a,onF,b1,B::whenF );
+  GUM_CONNECT( a,onF,b2,B::whenF );
+
+  a.f(3,'a');
+  // b1.whenF and b2.whenF has been executed.
+
+
+  {
+    C c;
+    GUM_CONNECT( a,onF,c,C::dummy );
+    a.f(4,'x');
+    //c.dummy(), b1.whenF and b2.whenF has been executed.
+  } // c is destroyed...
+
+  a.f(5,'y');
+  //b1.whenF and b2.whenF has been executed.
+}
+ * \endcode
 */

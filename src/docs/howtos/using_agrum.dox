@@ -1,61 +1,74 @@
 /*!
- * \page using_agrum How to use aGrUM with CMake
+ * \page using_agrum How to create a simple project with aGrUM and cmake
  *
  * As a build system, aGrUM uses CMake (http://www.cmake.org). A minimal project
  * with
  * agrum should look like this (for a project foo):
  * - in the project folder, a sub-folder src,
  * - in src folder, your *.{cpp|h|etc.} files
- * - in src folder, a file named CMakeLists.txt like this one :
+ * - in the project folder, a file CMakeLists.txt like this one :
  *
  * \code{.cmake}
 project(FOO)
-cmake_minimum_required(VERSION 2.8)
-# classical options 
-# -DCMAKE_BUILD_TYPE=Debug|Release 
-# -G "MinGW Makefiles" 
-# -G "Visual Studio 16 2019" -A x64
-#
-# cmake -DCMAKE_BUILD_TYPE=Debug -G "Visual Studio 16 2019" -A x64
-# or
-# cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64
+# do not forget to change "FOO", "FOO_SOURCE" and "FOO_SOURCE_DIR" with the name of your project
+# do not forget to change the target "foo" with the name of your executable
 
+cmake_minimum_required(VERSION 2.8)
 set (CMAKE_CXX_STANDARD 14)
 
-find_package(OpenMP)
-if (OPENMP_FOUND)
-  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-endif()
-
-# do not forget to change this line if needed ("act install -d/folder/install/agrum.")
-set(AGRUM_INSTALLATION_DIRECTORY "/folder/install/agrum")
-
+# do not forget to change this line : the path where you installed aGrUM with ("act install -d...")
+set(AGRUM_INSTALLATION_DIRECTORY "/home/xxx/usr")
 set(aGrUM_DIR "${AGRUM_INSTALLATION_DIRECTORY}/lib/cmake/aGrUM/")
 find_package(aGrUM)
-
 if (aGrUM_FOUND)
-  include(${AGRUM_USE_FILE})
+  message("-- aGrUM found")
+  include_directories(${AGRUM_INCLUDE_DIR})
+  link_directories(${AGRUM_LIB_DIR})
 else (aGrUM_FOUND)
   message(FATAL_ERROR "Please install aGrUM")
 endif (aGrUM_FOUND)
 
-file(GLOB FOO_SOURCE ${FOO_SOURCE_DIR}/*.cpp)
-file(GLOB FOO_INCLUDE ${FOO_SOURCE_DIR}/*.h)
-
+file(GLOB_RECURSE FOO_SOURCE ${FOO_SOURCE_DIR}/src/*.cpp)
 add_executable (foo ${FOO_SOURCE})
-target_link_libraries(foo agrum)
 
+target_include_directories (foo PUBLIC src)
+
+# RELEASE is the default option
+if( NOT CMAKE_BUILD_TYPE )
+  set( CMAKE_BUILD_TYPE RELEASE)
+endif()
+
+if (${CMAKE_BUILD_TYPE}  STREQUAL "DEBUG") # do not forget to install agrum with 'act install debug'
+  target_link_libraries(foo agrum-dbg gomp)
+else() # do not forget to install agrum with 'act install release'
+  target_link_libraries(foo agrum gomp)
+endif()
+
+
+# (in this folder)
+# to compile release version
+#
+#     mkdir build_release
+#     cd build_release
+#     cmake .. -DCMAKE_BUILD_TYPE=RELEASE
+#     make
+#
+# to compile debug version
+#
+#     mkdir build_debug
+#     cd build_debug
+#     cmake .. -DCMAKE_BUILD_TYPE=DEBUG
+#     make
+#
  * \endcode
  *
- * - a small minimum src/FOO.cpp :
+ * - a small minimum src/example.cpp :
  * \code{.cpp}
 #include <iostream>
 
-#include <agrum/tools/core/hashTable.h>
+#include <agrum/core/hashTable.h>
 
-int main() {
+int main(void) {
   gum::HashTable<std::string,int> h;
 
   h.insert("Hello",1);
@@ -68,9 +81,9 @@ int main() {
  * - to compile the project (from the project folder)
  *
  * \code{.sh}
- *     mkdir build
- *     cd build
- *     cmake ../src/
+ *     mkdir build_release
+ *     cd build_release
+ *     cmake ..
  *     make
  * \endcode
  *
