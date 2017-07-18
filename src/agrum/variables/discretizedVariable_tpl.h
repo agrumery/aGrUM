@@ -35,7 +35,8 @@ namespace gum {
     eraseTicks();
     DiscreteVariable::_copy( aDRV );
 
-    for ( Idx i = 0; i <= aDRV.domainSize(); ++i ) {
+    for ( Idx i = 0; i < aDRV.__ticks_size; ++i ) {
+      GUM_TRACE_VAR(aDRV.__ticks[i]);
       addTick( (T_TICKS)aDRV.__ticks[i] );
     }
   }
@@ -92,17 +93,17 @@ namespace gum {
   DiscretizedVariable<T_TICKS>::DiscretizedVariable( const std::string& aName,
                                                      const std::string& aDesc )
       : DiscreteVariable( aName, aDesc )
-      , __ticks( INC_TICKS_ARRAY )
       , __ticks_size( (Size)0 ) {
     GUM_CONSTRUCTOR( DiscretizedVariable );
+    __ticks.reserve( INC_TICKS_ARRAY );
   }
 
   template <typename T_TICKS>
   DiscretizedVariable<T_TICKS>::DiscretizedVariable(
       const DiscretizedVariable<T_TICKS>& aDRV )
-      : DiscreteVariable( aDRV )
-      , __ticks( INC_TICKS_ARRAY ) {
+      : DiscreteVariable( aDRV ) {
     GUM_CONS_CPY( DiscretizedVariable );
+    __ticks.reserve( INC_TICKS_ARRAY );
     _copy( aDRV );
   }
 

@@ -166,11 +166,37 @@ namespace gum_tests {
 
     void testNumerical() {
       gum::DiscretizedVariable<double> d( "d", "Discretized variable" );
-      ;
       d.addTick( 3.1 ).addTick( 2.0 ).addTick( 4.0 );
 
       TS_ASSERT_EQUALS( d.numerical( 0 ), ( 2.0 + 3.1 ) / 2 );
       TS_ASSERT_EQUALS( d.numerical( 1 ), ( 4.0 + 3.1 ) / 2 );
+    }
+
+    void testCopyEmptyVariableWithZeros() {
+      gum::DiscretizedVariable<double> source( "angle", "" );
+
+      auto copy = source;
+
+      TS_ASSERT_THROWS_NOTHING( copy.addTick( 0 ) );
+      TS_ASSERT_THROWS_NOTHING( copy.addTick( 90 ) );
+      TS_ASSERT_THROWS_NOTHING( copy.addTick( 180 ) );
+
+      TS_ASSERT_EQUALS( copy.domainSize(), 2u );
+      TS_ASSERT_EQUALS( copy.toString(), "angle<[0;90[,[90;180]>" );
+      TS_ASSERT( !copy.empty() );
+    }
+
+    void testCopyEmptyVariableWithoutZeros() {
+      gum::DiscretizedVariable<double> source( "angle", "" );
+      auto copy = source;
+
+      TS_ASSERT_THROWS_NOTHING( copy.addTick( 1 ) );
+      TS_ASSERT_THROWS_NOTHING( copy.addTick( 90 ) );
+      TS_ASSERT_THROWS_NOTHING( copy.addTick( 180 ) );
+
+      TS_ASSERT_EQUALS( copy.domainSize(), 2u );
+      TS_ASSERT_EQUALS( copy.toString(), "angle<[1;90[,[90;180]>" );
+      TS_ASSERT( !copy.empty() );
     }
   };
 }
