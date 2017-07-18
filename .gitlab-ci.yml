@@ -343,7 +343,7 @@ pyAgrum_documentation:
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - pip install sphinx
     - python act doc pyAgrum --python=3
-    - deploy_ovh "pyAgrum/last/${CI_COMMIT_REF_NAME}"
+    - deploy_ovh "build/release/wrappers/pyAgrum/docs/html" "www/pyAgrum/last/${CI_COMMIT_REF_NAME}"
 
 pyAgrum_documentation_tags:
   only:
@@ -367,6 +367,6 @@ pyAgrum_documentation_tags:
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - pip install sphinx
     - python act doc pyAgrum --python=3
-    - deploy_ovh "pyAgrum/tags/${CI_COMMIT_TAG}"
-    - deploy_ovh "pyAgrum/last"
+    - deploy_ovh "build/release/wrappers/pyAgrum/docs/html" "www/pyAgrum/tags/${CI_COMMIT_TAG}"
+    - deploy_ovh "build/release/wrappers/pyAgrum/docs/html" "www/pyAgrum/last"
     
