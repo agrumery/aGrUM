@@ -273,8 +273,47 @@ namespace gum {
        *                            discrete type.
        */
       virtual void endDiscreteType() override;
-      /// @}
 
+      /**
+       * Start a discretized type declaration.
+       *
+       * @param name The discretized type's name.
+       *
+       * @throw DuplicateElement Raised if an object with the same name
+       *                         already exists.
+       */
+      virtual void startDiscretizedType( const std::string& name ) override;
+
+      /**
+       * Add a tick to the current discretized type.
+       *
+       * @param tick The tick value.
+       */
+      virtual void addTick(double tick) override;
+
+      /**
+       * End the current discretized type declaration.
+       *
+       * @throw OperationNotAllowed Raised if the current type is not a valid
+       *                            discrete type.
+       */
+      virtual void endDiscretizedType() override;
+
+      /**
+       * Add a range variable type declaration.
+       *
+       * @param name The variable's name
+       * @param minVal The variable's lower bound.
+       * @param maxVal The variable's upper bound.
+       *
+       * @throw DuplicateElement Raised if an object with the same name
+       *                         already exists.
+       * @throw OperationNotAllowed Raised if the range variable is not a valid
+       * discrete type.
+       */
+      virtual void
+      addRangeType( const std::string& name, long minVal, long maxVal ) override;
+      /// @}
 
       ///@name several checks for parsers
       /// @{

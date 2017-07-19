@@ -634,8 +634,8 @@ namespace gum_tests {
       TS_ASSERT( prm.isType( "angle" ) );
       const auto& angle = prm.type( "angle" );
       TS_ASSERT_EQUALS( angle.variable().labels().size(), (gum::Size)2 );
-      TS_ASSERT_EQUALS( angle.variable().labels().at( 0 ), "[0, 90[" );
-      TS_ASSERT_EQUALS( angle.variable().labels().at( 1 ), "[90, 180[" );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 0 ), "[0;90[" );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 1 ), "[90;180]" );
     }
 
     void testRealType2() {
@@ -653,9 +653,9 @@ namespace gum_tests {
       TS_ASSERT( prm.isType( "angle" ) );
       const auto& angle = prm.type( "angle" );
       TS_ASSERT_EQUALS( angle.variable().labels().size(), (gum::Size)3 );
-      TS_ASSERT_EQUALS( angle.variable().labels().at( 0 ), "[0, 90[" );
-      TS_ASSERT_EQUALS( angle.variable().labels().at( 1 ), "[90, 180[" );
-      TS_ASSERT_EQUALS( angle.variable().labels().at( 2 ), "[180, 360[" );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 0 ), "[0;90[" );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 1 ), "[90;180[" );
+      TS_ASSERT_EQUALS( angle.variable().labels().at( 2 ), "[180;360]" );
     }
 
     void testRealTypeError1() {

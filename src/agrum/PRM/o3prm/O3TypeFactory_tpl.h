@@ -157,19 +157,9 @@ namespace gum {
           PRMFactory<GUM_SCALAR> factory( __prm );
           for ( auto type : __o3IntTypes ) {
 
-            factory.startDiscreteType( type->name().label() );
+            factory.addRangeType(
+                type->name().label(), type->start().value(), type->end().value() );
 
-            auto n = type->end().value() - type->start().value();
-
-            for ( auto i = 0; i <= n; ++i ) {
-
-              std::stringstream s;
-              s << type->start().value() + i;
-
-              factory.addLabel( std::string( s.str() ) );
-            }
-
-            factory.endDiscreteType();
           }
         }
       }
@@ -182,16 +172,12 @@ namespace gum {
           PRMFactory<GUM_SCALAR> factory( __prm );
           for ( auto type : __o3RealTypes ) {
 
-            factory.startDiscreteType( type->name().label() );
+            factory.startDiscretizedType( type->name().label() );
 
-            for ( std::size_t idx = 1; idx < type->values().size(); ++idx ) {
-              std::stringstream label;
-              label << "[" << type->values()[idx - 1].value() << ", "
-                    << type->values()[idx].value() << "[";
-              factory.addLabel( label.str() );
+            for ( auto value : type->values() ) {
+              factory.addTick( value.value() );
             }
-
-            factory.endDiscreteType();
+            factory.endDiscretizedType();
           }
         }
       }

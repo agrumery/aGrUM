@@ -71,6 +71,11 @@ namespace gum {
                                       std::string        super = "" ) = 0;
       virtual void addLabel( const std::string& l, std::string extends = "" ) = 0;
       virtual void endDiscreteType() = 0;
+      virtual void startDiscretizedType( const std::string& name ) = 0;
+      virtual void addTick( double tick ) = 0;
+      virtual void endDiscretizedType() = 0;
+      virtual void
+      addRangeType( const std::string& name, long minVal, long maxVal ) = 0;
       virtual void startClass( const std::string&      c,
                                const std::string&      extends = "",
                                const Set<std::string>* implements = nullptr,

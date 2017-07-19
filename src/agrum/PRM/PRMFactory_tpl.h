@@ -30,68 +30,15 @@
 
 #include <agrum/core/math/formula.h>
 
+#include <agrum/variables/discretizedVariable.h>
+#include <agrum/variables/rangeVariable.h>
+
 #include <agrum/PRM/elements/PRMFormAttribute.h>
 #include <agrum/PRM/elements/PRMFuncAttribute.h>
 
 namespace gum {
 
   namespace prm {
-    template <typename GUM_SCALAR>
-    INLINE void PRMFactory<GUM_SCALAR>::addLabel( const std::string& l,
-                                                  std::string        extends ) {
-      if ( extends == "" ) {
-        PRMType<GUM_SCALAR>* t = static_cast<PRMType<GUM_SCALAR>*>(
-            __checkStack( 1, PRMObject::prm_type::TYPE ) );
-        LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
-
-        if ( !var ) {
-          GUM_ERROR( FatalError,
-                     "the current type's variable is not a LabelizedVariable." );
-        } else if ( t->__superType ) {
-          GUM_ERROR( OperationNotAllowed, "current type is a subtype." );
-        }
-
-        try {
-          var->addLabel( l );
-        } catch ( DuplicateElement& ) {
-          GUM_ERROR( DuplicateElement,
-                     "a label with the same value already exists" );
-        }
-      } else {
-        PRMType<GUM_SCALAR>* t = static_cast<PRMType<GUM_SCALAR>*>(
-            __checkStack( 1, PRMObject::prm_type::TYPE ) );
-        LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
-
-        if ( !var ) {
-          GUM_ERROR( FatalError,
-                     "the current type's variable is not a LabelizedVariable." );
-        } else if ( !t->__superType ) {
-          GUM_ERROR( OperationNotAllowed, "current type is not a subtype." );
-        }
-
-        bool found = false;
-
-        for ( Idx i = 0; i < t->__superType->__var->domainSize(); ++i ) {
-          if ( t->__superType->__var->label( i ) == extends ) {
-            try {
-              var->addLabel( l );
-            } catch ( DuplicateElement& ) {
-              GUM_ERROR( DuplicateElement,
-                         "a label with the same value already exists" );
-            }
-
-            t->__label_map->push_back( i );
-
-            found = true;
-            break;
-          }
-        }
-
-        if ( !found ) {
-          GUM_ERROR( NotFound, "inexistent label in super type." );
-        }
-      }
-    }
 
     template <typename GUM_SCALAR>
     INLINE void
@@ -1548,6 +1495,63 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
+    INLINE void PRMFactory<GUM_SCALAR>::addLabel( const std::string& l,
+                                                  std::string        extends ) {
+      if ( extends == "" ) {
+        PRMType<GUM_SCALAR>* t = static_cast<PRMType<GUM_SCALAR>*>(
+            __checkStack( 1, PRMObject::prm_type::TYPE ) );
+        LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
+
+        if ( !var ) {
+          GUM_ERROR( FatalError,
+                     "the current type's variable is not a LabelizedVariable." );
+        } else if ( t->__superType ) {
+          GUM_ERROR( OperationNotAllowed, "current type is a subtype." );
+        }
+
+        try {
+          var->addLabel( l );
+        } catch ( DuplicateElement& ) {
+          GUM_ERROR( DuplicateElement,
+                     "a label with the same value already exists" );
+        }
+      } else {
+        PRMType<GUM_SCALAR>* t = static_cast<PRMType<GUM_SCALAR>*>(
+            __checkStack( 1, PRMObject::prm_type::TYPE ) );
+        LabelizedVariable* var = dynamic_cast<LabelizedVariable*>( t->__var );
+
+        if ( !var ) {
+          GUM_ERROR( FatalError,
+                     "the current type's variable is not a LabelizedVariable." );
+        } else if ( !t->__superType ) {
+          GUM_ERROR( OperationNotAllowed, "current type is not a subtype." );
+        }
+
+        bool found = false;
+
+        for ( Idx i = 0; i < t->__superType->__var->domainSize(); ++i ) {
+          if ( t->__superType->__var->label( i ) == extends ) {
+            try {
+              var->addLabel( l );
+            } catch ( DuplicateElement& ) {
+              GUM_ERROR( DuplicateElement,
+                         "a label with the same value already exists" );
+            }
+
+            t->__label_map->push_back( i );
+
+            found = true;
+            break;
+          }
+        }
+
+        if ( !found ) {
+          GUM_ERROR( NotFound, "inexistent label in super type." );
+        }
+      }
+    }
+
+    template <typename GUM_SCALAR>
     INLINE void PRMFactory<GUM_SCALAR>::endDiscreteType() {
       PRMType<GUM_SCALAR>* t = static_cast<PRMType<GUM_SCALAR>*>(
           __checkStack( 1, PRMObject::prm_type::TYPE ) );
@@ -1563,6 +1567,77 @@ namespace gum {
 
       __prm->__types.insert( t );
       __stack.pop_back();
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE void PRMFactory<GUM_SCALAR>::startDiscretizedType( const std::string& name ) {
+      std::string real_name = __addPrefix( name );
+      if ( __prm->__typeMap.exists( real_name ) ) {
+        std::stringstream msg;
+        msg << "\"" << real_name << "\" is already used.";
+        GUM_ERROR( DuplicateElement, msg.str() );
+      }
+      auto var = DiscretizedVariable<double>( real_name, "" );
+      auto t = new PRMType<GUM_SCALAR>( var );
+      __stack.push_back( t );
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE void PRMFactory<GUM_SCALAR>::addTick( double tick ) {
+      PRMType<GUM_SCALAR>* t = static_cast<PRMType<GUM_SCALAR>*>(
+          __checkStack( 1, PRMObject::prm_type::TYPE ) );
+      DiscretizedVariable<double>* var =
+          dynamic_cast<DiscretizedVariable<double>*>( t->__var );
+
+      if ( !var ) {
+        GUM_ERROR( FatalError,
+                   "the current type's variable is not a LabelizedVariable." );
+      }
+
+      try {
+        var->addTick( tick );
+      } catch ( DefaultInLabel& e ) {
+        GUM_ERROR( OperationNotAllowed, "tick already in used for this variable" );
+      }
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE void PRMFactory<GUM_SCALAR>::endDiscretizedType() {
+      PRMType<GUM_SCALAR>* t = static_cast<PRMType<GUM_SCALAR>*>(
+          __checkStack( 1, PRMObject::prm_type::TYPE ) );
+
+      if ( t->variable().domainSize() < 2 ) {
+        GUM_ERROR( OperationNotAllowed,
+                   "current type is not a valid discrete type" );
+      }
+
+      __prm->__typeMap.insert( t->name(), t );
+
+      __prm->__types.insert( t );
+      __stack.pop_back();
+    }
+
+    template <typename GUM_SCALAR>
+    INLINE void PRMFactory<GUM_SCALAR>::addRangeType( const std::string& name,
+                                                      long               minVal,
+                                                      long               maxVal ) {
+      std::string real_name = __addPrefix( name );
+      if ( __prm->__typeMap.exists( real_name ) ) {
+        std::stringstream msg;
+        msg << "\"" << real_name << "\" is already used.";
+        GUM_ERROR( DuplicateElement, msg.str() );
+      }
+
+      auto var = RangeVariable( real_name, "", minVal, maxVal );
+      auto t = new PRMType<GUM_SCALAR>( var );
+
+      if ( t->variable().domainSize() < 2 ) {
+        GUM_ERROR( OperationNotAllowed,
+                   "current type is not a valid discrete type" );
+      }
+
+      __prm->__typeMap.insert( t->name(), t );
+      __prm->__types.insert( t );
     }
 
     template <typename GUM_SCALAR>
