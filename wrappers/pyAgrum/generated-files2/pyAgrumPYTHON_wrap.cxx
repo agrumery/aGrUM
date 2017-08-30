@@ -41826,6 +41826,74 @@ fail:
 
 SWIGINTERN PyObject *_wrap_new_DiscretizedVariable_double__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
+  std::string *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::DiscretizedVariable< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:new_DiscretizedVariable_double",&obj0,&obj1,&obj2)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(obj0, &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_DiscretizedVariable_double" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DiscretizedVariable_double" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "new_DiscretizedVariable_double" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DiscretizedVariable_double" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "new_DiscretizedVariable_double" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "new_DiscretizedVariable_double" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = (gum::DiscretizedVariable< double > *)new gum::DiscretizedVariable< double >((std::string const &)*arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__DiscretizedVariableT_double_t, SWIG_POINTER_NEW |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DiscretizedVariable_double__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
   gum::DiscretizedVariable< double > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -41858,14 +41926,14 @@ fail:
 
 SWIGINTERN PyObject *_wrap_new_DiscretizedVariable_double(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
-  PyObject *argv[3] = {
+  PyObject *argv[4] = {
     0
   };
   Py_ssize_t ii;
   
   if (!PyTuple_Check(args)) SWIG_fail;
   argc = PyObject_Length(args);
-  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
     argv[ii] = PyTuple_GET_ITEM(args,ii);
   }
   if (argc == 1) {
@@ -41873,7 +41941,7 @@ SWIGINTERN PyObject *_wrap_new_DiscretizedVariable_double(PyObject *self, PyObje
     int res = SWIG_ConvertPtr(argv[0], 0, SWIGTYPE_p_gum__DiscretizedVariableT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
-      return _wrap_new_DiscretizedVariable_double__SWIG_1(self, args);
+      return _wrap_new_DiscretizedVariable_double__SWIG_2(self, args);
     }
   }
   if (argc == 2) {
@@ -41888,11 +41956,28 @@ SWIGINTERN PyObject *_wrap_new_DiscretizedVariable_double(PyObject *self, PyObje
       }
     }
   }
+  if (argc == 3) {
+    int _v;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_new_DiscretizedVariable_double__SWIG_1(self, args);
+        }
+      }
+    }
+  }
   
 fail:
   SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'new_DiscretizedVariable_double'.\n"
     "  Possible C/C++ prototypes are:\n"
     "    gum::DiscretizedVariable< double >::DiscretizedVariable(std::string const &,std::string const &)\n"
+    "    gum::DiscretizedVariable< double >::DiscretizedVariable(std::string const &,std::string const &,std::vector< double,std::allocator< double > > const &)\n"
     "    gum::DiscretizedVariable< double >::DiscretizedVariable(gum::DiscretizedVariable< double > const &)\n");
   return 0;
 }
@@ -86214,6 +86299,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"randomDistribution_double", _wrap_randomDistribution_double, METH_VARARGS, (char *)"randomDistribution_double(n) -> Vector_double"},
 	 { (char *)"new_DiscretizedVariable_double", _wrap_new_DiscretizedVariable_double, METH_VARARGS, (char *)"\n"
 		"DiscretizedVariable_double(aName, aDesc)\n"
+		"DiscretizedVariable_double(aName, aDesc, ticks)\n"
 		"new_DiscretizedVariable_double(aDRV) -> DiscretizedVariable_double\n"
 		""},
 	 { (char *)"delete_DiscretizedVariable_double", _wrap_delete_DiscretizedVariable_double, METH_VARARGS, (char *)"delete_DiscretizedVariable_double(self)"},

@@ -99,6 +99,15 @@ namespace gum {
     DiscretizedVariable( const std::string& aName, const std::string& aDesc );
 
     /**
+    * Constructor
+    * @param aName the name
+    * @param aDesc the description
+    */
+    DiscretizedVariable( const std::string&   aName,
+                         const std::string&   aDesc,
+                         const std::vector<T_TICKS>& ticks );
+
+    /**
      * Copy constructor
      * @param aDRV
      */

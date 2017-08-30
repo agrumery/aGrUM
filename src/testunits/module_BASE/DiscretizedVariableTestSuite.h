@@ -54,6 +54,25 @@ namespace gum_tests {
       w.setDescription( "Lol" );  // change description does not change a variable
     }
 
+    void testConstructorWithTicks() {
+      gum::DiscretizedVariable<double> d(
+          "d", "Discretized variable", {3.1, 2.0, 4.0} );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( d["2.5"] );
+      TS_ASSERT_THROWS( d["0.5"], gum::OutOfLowerBound );
+      TS_ASSERT_THROWS( d["4.5"], gum::OutOfUpperBound );
+
+      TS_ASSERT_EQUALS( d.numerical( 0 ), ( 2.0 + 3.1 ) / 2 );
+      TS_ASSERT_EQUALS( d.numerical( 1 ), ( 4.0 + 3.1 ) / 2 );
+
+      d.addTick( -std::numeric_limits<double>::infinity() );
+      d.addTick( std::numeric_limits<double>::infinity() );
+
+      TS_GUM_ASSERT_THROWS_NOTHING( d["2.5"] );
+      TS_GUM_ASSERT_THROWS_NOTHING( d["0.5"] );
+      TS_GUM_ASSERT_THROWS_NOTHING( d["4.5"] );
+    }
+
     void testAddTicks() {
       gum::DiscretizedVariable<int> v( "var", "a var" );
 
@@ -188,7 +207,7 @@ namespace gum_tests {
 
     void testCopyEmptyVariableWithoutZeros() {
       gum::DiscretizedVariable<double> source( "angle", "" );
-      auto copy = source;
+      auto                             copy = source;
 
       TS_ASSERT_THROWS_NOTHING( copy.addTick( 1 ) );
       TS_ASSERT_THROWS_NOTHING( copy.addTick( 90 ) );

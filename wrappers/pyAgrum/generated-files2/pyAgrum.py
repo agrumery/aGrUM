@@ -4781,6 +4781,7 @@ class DiscretizedVariable_double(DiscreteVariable):
     def __init__(self, *args):
         """
         __init__(self, aName, aDesc) -> DiscretizedVariable_double
+        __init__(self, aName, aDesc, ticks) -> DiscretizedVariable_double
         __init__(self, aDRV) -> DiscretizedVariable_double
         """
         this = _pyAgrum.new_DiscretizedVariable_double(*args)
