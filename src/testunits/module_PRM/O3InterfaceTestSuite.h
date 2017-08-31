@@ -373,7 +373,7 @@ namespace gum_tests {
     void testSuperInterfaceError2() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "interface IFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -422,8 +422,8 @@ namespace gum_tests {
     void testSuperInterfaceWithAttributeOverload() {
       // Arrange
       std::stringstream input;
-      input << "type t_state extends boolean" << std::endl;
-      input << "OK:true, NOK:false;" << std::endl;
+      input << "type t_state extends boolean (" << std::endl;
+      input << "OK:true, NOK:false);" << std::endl;
       input << "interface IFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -488,7 +488,7 @@ namespace gum_tests {
       input << "interface IBar { " << std::endl
             << "t_state state;" << std::endl
             << "}" << std::endl
-            << "type t_state OK, NOK;";
+            << "type t_state labels(OK, NOK);";
       std::stringstream     output;
       gum::prm::PRM<double> prm;
       auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
@@ -514,8 +514,8 @@ namespace gum_tests {
       input << "interface IFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      input << "type t_state extends boolean" << std::endl
-            << "OK:true, NOK:false;" << std::endl;
+      input << "type t_state extends boolean (" << std::endl
+            << "OK:true, NOK:false);" << std::endl;
       std::stringstream     output;
       gum::prm::PRM<double> prm;
       auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
@@ -620,7 +620,7 @@ namespace gum_tests {
     void testInterfaceWithOverloading() {
       // Arrange
       std::stringstream input;
-      input << "type state extends boolean OK: true, NOK: false;";
+      input << "type state extends boolean (OK: true, NOK: false);";
       input << std::endl;
       input << "interface Plop { "
                "boolean state;"
@@ -685,7 +685,7 @@ namespace gum_tests {
     void testInterfaceWithOverloadingError1() {
       // Arrange
       std::stringstream input;
-      input << "type state extends boolean OK: true, NOK: false;";
+      input << "type state extends boolean (OK: true, NOK: false);";
       input << std::endl;
       input << "interface Plop { "
                "boolean state;"
@@ -719,7 +719,7 @@ namespace gum_tests {
     void testInterfaceWithOverloadingError2() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;";
+      input << "type state labels(OK, NOK);";
       input << std::endl;
       input << "interface Plop { "
                "boolean state;"

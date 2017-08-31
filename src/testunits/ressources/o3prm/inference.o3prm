@@ -22,23 +22,23 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-type t_state extends boolean
+type t_state extends boolean (
   OK: true,
-  NOK: false;
+  NOK: false);
 
-type t_ink extends t_state
+type t_ink extends t_state (
   NotEmpty: OK,
-  Empty:    NOK;
+  Empty:    NOK);
 
-type t_paper extends t_state
+type t_paper extends t_state (
   Ready:    OK,
   Jammed:   NOK,
-  Empty:    NOK;
+  Empty:    NOK);
 
-type t_degraded extends t_state
+type t_degraded extends t_state (
   OK: OK,
   Dysfunctional: NOK,
-  Degraded: NOK;
+  Degraded: NOK);
 
 class PowerSupply {
   t_state state { [ 0.5, 0.5 ] };

@@ -331,8 +331,8 @@ namespace gum_tests {
             << "  c2.printers = bw_printers;" << std::endl
             << "  c1.printers += color_printers;" << std::endl
             << "  c2.printers += color_printers;" << std::endl
-            << "  ParamClass param;" << std::endl
-            << "  param.room = r;" << std::endl
+            << "  ParamClass params;" << std::endl
+            << "  params.room = r;" << std::endl
             << "  ParamClass paramBis(lambda=0.001);" << std::endl
             << "  paramBis.room = r;" << std::endl
             << "}";

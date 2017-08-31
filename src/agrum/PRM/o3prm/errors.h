@@ -239,6 +239,9 @@ namespace gum {
       void O3PRM_SYSTEM_NOT_AN_ARRAY( const O3Label&   val,
                                       ErrorsContainer& errors );
 
+      void O3PRM_DEPRECATED_TYPE_WARNING( const O3Label&   type,
+                                          ErrorsContainer& errors );
+
     }  // o3prm
   }    // prm
 }  // gum

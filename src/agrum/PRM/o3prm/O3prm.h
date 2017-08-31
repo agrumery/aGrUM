@@ -224,11 +224,15 @@ namespace gum {
         LabelMap&       labels();
         const LabelMap& labels() const;
 
+        bool&       deprecated();
+        const bool& deprecated() const;
+
         private:
         O3Position __pos;
         O3Label    __name;
         O3Label    __superLabel;
         LabelMap   __labels;
+        bool       __dep_flag;
       };
 
       /**
@@ -260,11 +264,15 @@ namespace gum {
         O3Integer&       end();
         const O3Integer& end() const;
 
+        bool&       deprecated();
+        const bool& deprecated() const;
+
         private:
         O3Position __pos;
         O3Label    __name;
         O3Integer  __start;
         O3Integer  __end;
+        bool       __dep_flag;
       };
 
       /**
@@ -293,10 +301,14 @@ namespace gum {
         std::vector<O3Float>&       values();
         const std::vector<O3Float>& values() const;
 
+        bool&       deprecated();
+        const bool& deprecated() const;
+
         private:
         O3Position           __pos;
         O3Label              __name;
         std::vector<O3Float> __values;
+        bool                 __dep_flag;
       };
 
       /**

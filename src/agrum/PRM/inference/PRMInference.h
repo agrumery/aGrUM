@@ -220,8 +220,9 @@ namespace gum {
       /// @{
 
       /// Code alias.
-      typedef typename HashTable<const PRMInstance<GUM_SCALAR>*,
-                                 EMap*>::iterator_safe EvidenceIterator;
+      typedef
+          typename HashTable<const PRMInstance<GUM_SCALAR>*, EMap*>::iterator_safe
+              EvidenceIterator;
       /// Code alias.
       typedef typename HashTable<const PRMInstance<GUM_SCALAR>*,
                                  EMap*>::const_iterator_safe EvidenceConstIterator;

@@ -289,7 +289,7 @@ namespace gum {
        *
        * @param tick The tick value.
        */
-      virtual void addTick(double tick) override;
+      virtual void addTick( double tick ) override;
 
       /**
        * End the current discretized type declaration.

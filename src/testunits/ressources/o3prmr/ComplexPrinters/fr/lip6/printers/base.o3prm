@@ -1,11 +1,11 @@
-type t_state extends boolean
+type t_state extends boolean (
 	OK: true,
-    NOK: false;
+  NOK: false);
 
-type t_degraded extends t_state
+type t_degraded extends t_state (
 	OK: OK,
     Dysfunctional: NOK,
-    Degraded: NOK;
+    Degraded: NOK);
 
 class PowerSupply {
     t_state state { [ 0.99, 0.01 ] };

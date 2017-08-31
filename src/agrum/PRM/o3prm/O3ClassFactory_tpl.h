@@ -911,13 +911,13 @@ namespace gum {
       INLINE const PRMClassElement<GUM_SCALAR>*
                    O3ClassFactory<GUM_SCALAR>::__resolveSlotChain(
           const PRMClassElementContainer<GUM_SCALAR>& c, const O3Label& chain ) {
-        auto s = chain.label();
-        auto current = &c;
+        auto                     s = chain.label();
+        auto                     current = &c;
         std::vector<std::string> v;
 
-        decomposePath(chain.label(), v);
+        decomposePath( chain.label(), v );
 
-        for (size_t i=0;i<v.size();++i) {
+        for ( size_t i = 0; i < v.size(); ++i ) {
           auto link = v[i];
 
           if ( !__checkSlotChainLink( *current, chain, link ) ) {
@@ -926,7 +926,7 @@ namespace gum {
 
           auto elt = &( current->get( link ) );
 
-          if ( i == v.size() - 1) {
+          if ( i == v.size() - 1 ) {
             // last link, should be an attribute or aggregate
             return elt;
 

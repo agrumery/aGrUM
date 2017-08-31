@@ -1,10 +1,10 @@
 import fr.lip6.University.persons;
 import fr.lip6.University.course;
 
-type note extends gradation
+type note extends gradation(
 	A: high,
-    B: medium;
-    C: low;
+  B: medium,
+  C: low);
 
 class Registration {
     Course course;

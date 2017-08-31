@@ -1,10 +1,10 @@
-type hl extends boolean
+type hl extends boolean (
   HIGH : true,
-  LOW : false;
+  LOW : false);
 
-type hml HIGH, MEDIUM, LOW ;
+type hml labels(HIGH, MEDIUM, LOW);
 
-type ABC A, B, C ;
+type ABC labels(A, B, C);
 
 interface IProfessor {
   hml teachingAbility;

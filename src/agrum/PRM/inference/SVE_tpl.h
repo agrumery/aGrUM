@@ -125,8 +125,8 @@ namespace gum {
                                             NodeId                         node,
                                             BucketSet&                     pool,
                                             BucketSet& trash ) {
-      Set<const PRMInstance<GUM_SCALAR> *> ignore, eliminated;
-      Set<NodeId>                          delayedVars;
+      Set<const PRMInstance<GUM_SCALAR>*> ignore, eliminated;
+      Set<NodeId>                         delayedVars;
       // Downward elimination
       List<const PRMInstance<GUM_SCALAR>*> elim_list;
       ignore.insert( query );

@@ -1,4 +1,4 @@
-type state_type ok, nok;
+type state_type labels(ok, nok);
 
 class powersupply {
   state_type state { [0.2, 0.8] };

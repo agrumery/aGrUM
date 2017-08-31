@@ -1,4 +1,4 @@
-type val un,deux;
+type val labels(un,deux);
 
 interface IActor {
     val Productivity;

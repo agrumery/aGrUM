@@ -287,13 +287,17 @@ namespace gum {
       const std::string& O3Label::label() const { return __label; }
       std::string&       O3Label::label() { return __label; }
 
-      O3Type::O3Type() { GUM_CONSTRUCTOR( O3Type ); }
+      O3Type::O3Type()
+          : __dep_flag( false ) {
+        GUM_CONSTRUCTOR( O3Type );
+      }
 
       O3Type::O3Type( const O3Type& src )
           : __pos( src.__pos )
           , __name( src.__name )
           , __superLabel( src.__superLabel )
-          , __labels( src.__labels ) {
+          , __labels( src.__labels )
+          , __dep_flag( src.__dep_flag ) {
         GUM_CONS_CPY( O3Type );
       }
 
@@ -301,7 +305,8 @@ namespace gum {
           : __pos( std::move( src.__pos ) )
           , __name( std::move( src.__name ) )
           , __superLabel( std::move( src.__superLabel ) )
-          , __labels( std::move( src.__labels ) ) {
+          , __labels( std::move( src.__labels ) )
+          , __dep_flag( std::move( src.__dep_flag ) ) {
         GUM_CONS_MOV( O3Type );
       }
 
@@ -315,6 +320,7 @@ namespace gum {
         __name = src.__name;
         __superLabel = src.__superLabel;
         __labels = src.__labels;
+        __dep_flag = src.__dep_flag;
         return *this;
       }
 
@@ -326,6 +332,7 @@ namespace gum {
         __name = std::move( src.__name );
         __superLabel = std::move( src.__superLabel );
         __labels = std::move( src.__labels );
+        __dep_flag = std::move( src.__dep_flag );
         return *this;
       }
 
@@ -341,13 +348,20 @@ namespace gum {
       O3Position&       O3Type::position() { return __pos; }
       const O3Position& O3Type::position() const { return __pos; }
 
-      O3IntType::O3IntType() { GUM_CONSTRUCTOR( O3IntType ); }
+      bool&       O3Type::deprecated() { return __dep_flag; }
+      const bool& O3Type::deprecated() const { return __dep_flag; }
+
+      O3IntType::O3IntType()
+          : __dep_flag( false ) {
+        GUM_CONSTRUCTOR( O3IntType );
+      }
 
       O3IntType::O3IntType( const O3IntType& src )
           : __pos( src.__pos )
           , __name( src.__name )
           , __start( src.__start )
-          , __end( src.__end ) {
+          , __end( src.__end )
+          , __dep_flag( src.__dep_flag ) {
         GUM_CONS_CPY( O3IntType );
       }
 
@@ -355,7 +369,8 @@ namespace gum {
           : __pos( std::move( src.__pos ) )
           , __name( std::move( src.__name ) )
           , __start( std::move( src.__start ) )
-          , __end( std::move( src.__end ) ) {
+          , __end( std::move( src.__end ) )
+          , __dep_flag( std::move( src.__dep_flag ) ) {
         GUM_CONS_MOV( O3IntType );
       }
 
@@ -369,6 +384,7 @@ namespace gum {
         __name = src.__name;
         __start = src.__start;
         __end = src.__end;
+        __dep_flag = src.__dep_flag;
         return *this;
       }
 
@@ -380,6 +396,7 @@ namespace gum {
         __name = std::move( src.__name );
         __start = std::move( src.__start );
         __end = std::move( src.__end );
+        __dep_flag = std::move( src.__dep_flag );
         return *this;
       }
 
@@ -395,19 +412,27 @@ namespace gum {
       O3Position&       O3IntType::position() { return __pos; }
       const O3Position& O3IntType::position() const { return __pos; }
 
-      O3RealType::O3RealType() { GUM_CONSTRUCTOR( O3RealType ); }
+      bool&       O3IntType::deprecated() { return __dep_flag; }
+      const bool& O3IntType::deprecated() const { return __dep_flag; }
+
+      O3RealType::O3RealType()
+          : __dep_flag( false ) {
+        GUM_CONSTRUCTOR( O3RealType );
+      }
 
       O3RealType::O3RealType( const O3RealType& src )
           : __pos( src.__pos )
           , __name( src.__name )
-          , __values( src.__values ) {
+          , __values( src.__values )
+          , __dep_flag( src.__dep_flag ) {
         GUM_CONS_CPY( O3RealType );
       }
 
       O3RealType::O3RealType( O3RealType&& src )
           : __pos( std::move( src.__pos ) )
           , __name( std::move( src.__name ) )
-          , __values( std::move( src.__values ) ) {
+          , __values( std::move( src.__values ) )
+          , __dep_flag( std::move( src.__dep_flag ) ) {
         GUM_CONS_MOV( O3RealType );
       }
 
@@ -421,6 +446,7 @@ namespace gum {
         __pos = src.__pos;
         __name = src.__name;
         __values = src.__values;
+        __dep_flag = src.__dep_flag;
         return *this;
       }
 
@@ -432,19 +458,21 @@ namespace gum {
         __pos = std::move( src.__pos );
         __name = std::move( src.__name );
         __values = std::move( src.__values );
+        __dep_flag = std::move( src.__dep_flag );
         return *this;
       }
 
       O3Position&       O3RealType::position() { return __pos; }
       const O3Position& O3RealType::position() const { return __pos; }
 
-      O3Label& O3RealType::name() { return __name; }
-
+      O3Label&       O3RealType::name() { return __name; }
       const O3Label& O3RealType::name() const { return __name; }
 
-      std::vector<O3Float>& O3RealType::values() { return __values; }
-
+      std::vector<O3Float>&       O3RealType::values() { return __values; }
       const std::vector<O3Float>& O3RealType::values() const { return __values; }
+
+      bool&       O3RealType::deprecated() { return __dep_flag; }
+      const bool& O3RealType::deprecated() const { return __dep_flag; }
 
       O3PRM::O3PRM() {
         GUM_CONSTRUCTOR( O3PRM );

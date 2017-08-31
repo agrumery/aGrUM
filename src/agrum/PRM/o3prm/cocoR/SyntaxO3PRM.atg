@@ -79,15 +79,15 @@ std::string __prefix;
 bool __ok (Size n) { return errors().error_count == n; }
 
 void __addO3Type( O3Type t ) {
-  get_prm()->types().emplace_back( new O3Type{std::move( t )} );
+  get_prm()->types().emplace_back( new O3Type(std::move( t )) );
 }
 
 void __addO3IntType( O3IntType t ) {
-  get_prm()->int_types().emplace_back( new O3IntType{std::move( t )} );
+  get_prm()->int_types().emplace_back( new O3IntType(std::move( t )) );
 }
 
 void __addO3RealType( O3RealType t ) {
-  get_prm()->real_types().emplace_back( new O3RealType{std::move( t )} );
+  get_prm()->real_types().emplace_back( new O3RealType(std::move( t )) );
 }
 
 void __addO3Interface( O3Interface i ) {
@@ -118,6 +118,40 @@ void __split( const O3Label& value, O3Label& left, O3Label& right) {
                          value.position().column() + (int)idx );
     right = O3Label( pos, value.label().substr( idx + 1 ) );
   }
+}
+
+O3Label __setAnonTypeName(O3Class& c, O3Position& pos, O3Type& t) {
+  std::stringstream name;
+  name << "__" << c.name();
+  for (auto& l: t.labels()) {
+    name << '_' << l.first.label();
+  }
+  name << "__";
+  t.name().position() = pos;
+  t.name().label() = name.str();
+  return t.name();
+}
+
+O3Label __setAnonTypeName(O3Class& c, O3Position& pos, O3IntType& t) {
+  std::stringstream name;
+  name << "__" << c.name();
+  name << "_" << t.start().value() << '_' << t.end().value();
+  name << "__";
+  t.name().position() = pos;
+  t.name().label() = name.str();
+  return t.name();
+}
+
+O3Label __setAnonTypeName(O3Class& c, O3Position& pos, O3RealType& t) {
+  std::stringstream name;
+  name << "__" << c.name();
+  for (auto& v: t.values()) {
+    name << '_' << v.value();
+  }
+  name << "__";
+  t.name().position() = pos;
+  t.name().label() = name.str();
+  return t.name();
 }
 
 public:
@@ -171,6 +205,8 @@ system     = "system".
 dependson  = "dependson".
 default    = "default".
 implements = "implements".
+param      = "param".
+labels     = "labels".
 int        = "int".
 real       = "real".
 inc        =  "+=".
@@ -246,11 +282,15 @@ CLASS<O3Position& pos> =
 CLASS_BODY<O3Class& c> =
     CLASS_PARAMETER<c.parameters()>
   |
+    CLASS_ANON_TYPE_ATTR<c>
+  |
     CLASS_ELEMENT<c>
   .
 
 //________________________
 CLASS_PARAMETER<O3ParameterList& params> =
+  param
+  (
     (. auto name = O3Label(); .)
     (. auto val = O3Integer(); .)
     int
@@ -264,6 +304,38 @@ CLASS_PARAMETER<O3ParameterList& params> =
     (. auto pos = O3Position( narrow( scanner->filename() ), t->line, t->col ); .)
     LABEL<name> default FLOAT<val> ';'
     (. params.push_back( O3Parameter(pos, name, val) ); .)
+  )
+  .
+
+CLASS_ANON_TYPE_ATTR<O3Class& c> =
+  (. auto n = errors().error_count; .)
+  (. auto pos = O3Position(); .)
+  (. pos.file() = narrow( scanner->filename() ); .)
+  (. pos.line() = t->line; .)
+  (. pos.column() = t->col; .)
+  (. auto type = O3Label(); .)
+  (
+      (. auto t = O3Type(); .)
+      (. t.position() = pos; .)
+      labels '(' TYPE_VALUE_LIST<t.labels()> ')' 
+      (. type = __setAnonTypeName(c, pos, t); .)
+      (. if ( __ok( n ) ) { __addO3Type( std::move(t) ); } .)
+    |
+      (. auto t = O3IntType(); .)
+      (. t.position() = pos; .)
+      INT_TYPE_DECLARATION<t.start(), t.end()>
+      (. type = __setAnonTypeName(c, pos, t); .)
+      (. if ( __ok( n ) ) { __addO3IntType( std::move(t) ); } .)
+    |
+      (. auto t = O3RealType(); .)
+      (. t.position() = pos; .)
+      REAL_TYPE_DECLARATION<t.values()>
+      (. type = __setAnonTypeName(c, pos, t); .)
+      (. if ( __ok( n ) ) { __addO3RealType( std::move(t) ); } .)
+  )
+  (. auto name = O3Label(); .)
+  LABEL<name>
+  ATTRIBUTE<type, name, c>
   .
 
 //________________________
@@ -439,52 +511,97 @@ INTERFACE_BODY<O3InterfaceElementList& elts> =
 
 //________________________
 TYPE_UNIT =
+  (
+    TYPE_DECLARATION
+  |
+    DEPRECATED_INT_DECLARATION
+  | 
+    DEPRECATED_REAL_DECLARATION
+  )
+  .
+
+//________________________
+TYPE_DECLARATION =
   (. auto n = errors().error_count; .)
-  (
-    (. auto t = O3Type(); .)
-    TYPE_DECLARATION<t.position(), t.name(), t.superLabel(), t.labels()>
-    (. if ( __ok( n ) ) { __addO3Type( std::move(t) ); } .)
-  |
-    (. auto t = O3IntType(); .)
-    INT_TYPE_DECLARATION<t.position(), t.name(), t.start(), t.end()>
-    (. if ( __ok( n ) ) { __addO3IntType( std::move( t ) ); } .)
-  |
-    (. auto t= O3RealType(); .)
-    REAL_TYPE_DECLARATION<t.position(), t.name(), t.values()>
-    (. if ( __ok( n ) ) { __addO3RealType( std::move( t ) ); } .)
-  )
-  .
-
-//________________________
-TYPE_DECLARATION<O3Position& pos, O3Label& name, O3Label& super, LabelMap& labels> =
-  TYPE<pos>
-  PREFIXED_LABEL<name>
-  (
-    TYPE_VALUE_LIST<labels>
-    |
-    extends CHAIN<super> MAP<labels>
-  )
-  ';'
-  .
-
-//________________________
-TYPE<O3Position& pos> =
-  type
+  type 
+  (. auto pos = O3Position(); .)
   (. pos.file() = narrow( scanner->filename() ); .)
   (. pos.line() = t->line; .)
   (. pos.column() = t->col; .)
+  (. auto name = O3Label(); .)
+  PREFIXED_LABEL<name>
+  (
+    (. auto t = O3Type(); .)
+    (. t.name() = name; t.position() = pos; .)
+    (
+      DISCRETE_TYPE_DECLARATION<t.deprecated(), t.labels()>
+    |
+      EXTENDED_TYPE_DECLARATION<t.deprecated(), t.superLabel(), t.labels()>
+    )
+    (. if ( __ok( n ) ) { __addO3Type( std::move(t) ); } .)
+  |
+    (. auto t = O3IntType(); .)
+    (. t.name() = name; t.position() = pos; .)
+    INT_TYPE_DECLARATION<t.start(), t.end()>
+    (. if ( __ok( n ) ) { __addO3IntType( std::move(t) ); } .)
+  |
+    (. auto t = O3RealType(); .)
+    (. t.name() = name; t.position() = pos; .)
+    REAL_TYPE_DECLARATION<t.values()>
+    (. if ( __ok( n ) ) { __addO3RealType( std::move(t) ); } .)
+  )
+  ';'
   .
 
 //________________________
-INT_TYPE_DECLARATION<O3Position& pos, O3Label& name, O3Integer& start, O3Integer& end> =
-  INT<pos>
-  '('
-  INTEGER<start>
-  ','
-  INTEGER<end>
-  ')'
-  LABEL<name>
-  ';'
+DISCRETE_TYPE_DECLARATION<bool& deprecated, LabelMap& labels> =
+  (
+    labels 
+    '(' TYPE_VALUE_LIST<labels> ')'
+  |
+    DEPRECATED_DISCRETE_TYPE_DECLERATION<labels>
+    (. deprecated = true; .)
+  )
+  .
+
+//________________________
+EXTENDED_TYPE_DECLARATION<bool& deprecated, O3Label& super, LabelMap& labels> =
+  extends CHAIN<super>
+  (
+    '(' MAP<labels> ')'
+  |
+    DEPRECATED_EXTENDED_TYPE_DECLARATION<labels>
+    (. deprecated = true; .)
+  )
+  .
+
+//________________________
+DEPRECATED_DISCRETE_TYPE_DECLERATION<LabelMap& labels> =
+  TYPE_VALUE_LIST<labels>
+  .
+
+//________________________
+DEPRECATED_EXTENDED_TYPE_DECLARATION<LabelMap& labels> =
+  MAP<labels>
+  .
+
+//________________________
+INT_TYPE_DECLARATION<O3Integer& start, O3Integer& end> =
+  int '(' INTEGER<start> ',' INTEGER<end> ')'
+  .
+  
+//________________________
+REAL_TYPE_DECLARATION<O3FloatList& values> = 
+  real '(' FLOAT_LIST<values> ')'
+  .
+
+//________________________
+DEPRECATED_INT_DECLARATION =
+  (. auto n = errors().error_count; .)
+  (. auto t = O3IntType(); .)
+  (. t.deprecated() = true; .)
+  INT<t.position()> '(' INTEGER<t.start()> ',' INTEGER<t.end()> ')' LABEL<t.name()> ';'
+  (. if ( __ok( n ) ) { __addO3IntType( std::move( t ) ); } .)
   .
 
 //________________________
@@ -496,13 +613,12 @@ INT<O3Position& pos> =
   .
 
 //________________________
-REAL_TYPE_DECLARATION<O3Position& pos, O3Label& name, O3FloatList& values> =
-  REAL<pos>
-  '('
-  FLOAT_LIST<values>
-  ')'
-  LABEL<name>
-  ';'
+DEPRECATED_REAL_DECLARATION = 
+  (. auto n = errors().error_count; .)
+  (. auto t= O3RealType(); .)
+  (. t.deprecated() = true; .)
+  REAL<t.position()> '(' FLOAT_LIST<t.values()> ')' LABEL<t.name()> ';'
+  (. if ( __ok( n ) ) { __addO3RealType( std::move( t ) ); } .)
   .
 
 //________________________

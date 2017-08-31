@@ -1,9 +1,9 @@
 import fr.lip6.University.persons;
 import fr.lip6.University.registration;
 
-type difficult extends boolean
+type difficult extends boolean (
 	YES: true,
-    NO: false;
+  NO: false);
 
 class Course {
     Professor instructor;

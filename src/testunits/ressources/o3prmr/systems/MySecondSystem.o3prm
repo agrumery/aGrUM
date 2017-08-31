@@ -54,9 +54,9 @@ system MyKickAssSystem2 {
   c3.printers += color_printers;
   c4.printers += color_printers;
 
-  classes.ParamClass param;
-  param.aBoolParam = true;
-  param.aParameter = NOK;
+  classes.ParamClass p;
+  p.aBoolParam = true;
+  p.aParameter = NOK;
 
 }
 

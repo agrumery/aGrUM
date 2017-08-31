@@ -95,6 +95,7 @@ namespace gum {
         bool __isPrimitiveType( O3Type& type );
 
         bool __checkO3Types();
+        void __checkDepreactedO3Types();
         bool __addTypes2Dag();
         bool __addArcs2Dag();
         bool __checkLabels( O3Type& type );

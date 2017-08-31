@@ -145,7 +145,7 @@ namespace gum_tests {
     void testSimpleClass2() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "}";
@@ -176,7 +176,7 @@ namespace gum_tests {
     void testSimpleClass3() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state " << std::endl
@@ -220,7 +220,7 @@ namespace gum_tests {
     void testSimpleClassError1() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state " << std::endl
@@ -247,7 +247,7 @@ namespace gum_tests {
     void testSimpleClassError2() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson stat " << std::endl
@@ -272,7 +272,7 @@ namespace gum_tests {
     void testSimpleClassError3() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state " << std::endl
@@ -299,7 +299,7 @@ namespace gum_tests {
     void testSimpleRules1() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state {" << std::endl
@@ -343,7 +343,7 @@ namespace gum_tests {
     void testSimpleRules2() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state {" << std::endl
@@ -387,7 +387,7 @@ namespace gum_tests {
     void testSimpleRules3() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state {" << std::endl
@@ -431,7 +431,7 @@ namespace gum_tests {
     void testSimpleRules4() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state {" << std::endl
@@ -475,7 +475,7 @@ namespace gum_tests {
     void testSimpleRulesError1() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state {" << std::endl
@@ -501,7 +501,7 @@ namespace gum_tests {
     void testSimpleRulesError2() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state {" << std::endl
@@ -526,7 +526,7 @@ namespace gum_tests {
     void testSimpleRulesError3() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state {" << std::endl
@@ -553,8 +553,8 @@ namespace gum_tests {
       // Arrange
       std::stringstream input;
       input << "class Bar { " << std::endl
-            << "real lambda default 0.003;" << std::endl
-            << "int t default 8760;" << std::endl
+            << "param real lambda default 0.003;" << std::endl
+            << "param int t default 8760;" << std::endl
             << "boolean state { " << std::endl
             << "[ 'exp(-lambda*t)', '1-exp(-lambda*t)' ]" << std::endl
             << "};" << std::endl
@@ -587,10 +587,10 @@ namespace gum_tests {
     void testSimpleParameter2() {
       // Arrange
       std::stringstream input;
-      input << "type t_state OK, NOK;" << std::endl;
+      input << "type t_state labels(OK, NOK);" << std::endl;
       input << "class Bar { " << std::endl
-            << "real lambda default 0.003;" << std::endl
-            << "int t default 8760;" << std::endl
+            << "param real lambda default 0.003;" << std::endl
+            << "param int t default 8760;" << std::endl
             << "t_state state {[0.2, 0.8]};" << std::endl
             << "boolean isWorking dependson state {" << std::endl
             << "OK: 'exp(-lambda*t)', '1-exp(-lambda*t)';" << std::endl
@@ -702,13 +702,13 @@ namespace gum_tests {
     void testClassWithReference3() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
       input << "class Bar { " << std::endl
-            << "real lambda default 0.003;" << std::endl
-            << "int t default 8760;" << std::endl
+            << "param real lambda default 0.003;" << std::endl
+            << "param int t default 8760;" << std::endl
             << "Foo myFoo;" << std::endl
             << "boolean isWorking dependson myFoo.state {" << std::endl
             << "OK: 'exp(-lambda*t)', '1-exp(-lambda*t)';" << std::endl
@@ -764,13 +764,13 @@ namespace gum_tests {
     void testClassWithReference4() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "class Foo { " << std::endl
-            << "int t default 8760;" << std::endl
+            << "param int t default 8760;" << std::endl
             << "state state {[ 0.2, 0.8]};" << std::endl
             << "}" << std::endl;
       input << "class Bar { " << std::endl
-            << "real lambda default 0.003;" << std::endl
+            << "param real lambda default 0.003;" << std::endl
             << "Foo myFoo;" << std::endl
             << "boolean isWorking dependson myFoo.state {" << std::endl
             << "OK: 'exp(-lambda*myFoo.t)', '1-exp(-lambda*myFoo.t)';" << std::endl
@@ -826,13 +826,13 @@ namespace gum_tests {
     void testClassWithReferenceError1() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
       input << "class Bar { " << std::endl
-            << "real lambda default 0.003;" << std::endl
-            << "int t default 8760;" << std::endl
+            << "param real lambda default 0.003;" << std::endl
+            << "param int t default 8760;" << std::endl
             << "Foo myFoo;" << std::endl
             << "boolean isWorking dependson myfoo.state {" << std::endl
             << "OK: 'exp(-lambda*t)', '1-exp(-lambda*t)';" << std::endl
@@ -857,13 +857,13 @@ namespace gum_tests {
     void testClassWithReferenceError2() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
       input << "class Bar { " << std::endl
-            << "real lambda default 0.003;" << std::endl
-            << "int t default 8760;" << std::endl
+            << "param real lambda default 0.003;" << std::endl
+            << "param int t default 8760;" << std::endl
             << "Foo myFoo;" << std::endl
             << "boolean isWorking dependson myFoo.stat {" << std::endl
             << "OK: 'exp(-lambda*t)', '1-exp(-lambda*t)';" << std::endl
@@ -888,13 +888,13 @@ namespace gum_tests {
     void testClassWithReferenceError3() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
       input << "class Bar { " << std::endl
-            << "real lambda default 0.003;" << std::endl
-            << "int t default 8760;" << std::endl
+            << "param real lambda default 0.003;" << std::endl
+            << "param int t default 8760;" << std::endl
             << "boolean isWorking dependson myFoo.state {" << std::endl
             << "OK: 'exp(-lambda*t)', '1-exp(-lambda*t)';" << std::endl
             << "NOK: '1.0', '0.0';" << std::endl
@@ -927,7 +927,7 @@ namespace gum_tests {
             << "Bar myBar;" << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}" << std::endl;
-      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "type state extends boolean (OK: true, NOK:false);" << std::endl;
       input << "interface iFoo { " << std::endl
             << "Bar myBar;" << std::endl
             << "boolean state;" << std::endl
@@ -960,7 +960,7 @@ namespace gum_tests {
             << "Bar myBar;" << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}" << std::endl;
-      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "type state extends boolean (OK: true, NOK:false);" << std::endl;
       input << "interface iFoo { " << std::endl
             << "Bar myBar;" << std::endl
             << "boolean state;" << std::endl
@@ -1165,7 +1165,7 @@ namespace gum_tests {
     void testForAllAggregate() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1211,7 +1211,7 @@ namespace gum_tests {
     void testForAllAggregateArray() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1259,7 +1259,7 @@ namespace gum_tests {
     void testExistsAggregate() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1305,7 +1305,7 @@ namespace gum_tests {
     void testExistsAggregateArray() {
       // Arrange
       std::stringstream input;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1353,7 +1353,7 @@ namespace gum_tests {
     void testMinAggregate() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1399,7 +1399,7 @@ namespace gum_tests {
     void testMinAggregateArray() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1446,7 +1446,7 @@ namespace gum_tests {
     void testMaxAggregate() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1492,7 +1492,7 @@ namespace gum_tests {
     void testMaxAggregateArray() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1539,7 +1539,7 @@ namespace gum_tests {
     void testMedianAggregate() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1585,7 +1585,7 @@ namespace gum_tests {
     void testMedianAggregateArray() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1633,7 +1633,7 @@ namespace gum_tests {
     void testAmplitudeAggregate() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1679,7 +1679,7 @@ namespace gum_tests {
     void testAmplitudeAggregateArray() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1727,7 +1727,7 @@ namespace gum_tests {
     void testCountAggregate() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1773,7 +1773,7 @@ namespace gum_tests {
     void testCountAggregateArray() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1895,7 +1895,7 @@ namespace gum_tests {
       input << "interface Foo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "interface Boo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -1921,7 +1921,7 @@ namespace gum_tests {
     void testCountAggregateWithErrors5() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -2014,7 +2014,7 @@ namespace gum_tests {
       input << "class Foo implements iFoo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}";
-      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "type state extends boolean (OK: true, NOK:false);" << std::endl;
       input << "class Bar extends Foo { " << std::endl
             << "state state {[0.5, 0.5]};" << std::endl
             << "boolean isWorking dependson state {[0.5, 0.5, 0.5, 0.5]};"
@@ -2095,7 +2095,7 @@ namespace gum_tests {
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "class Foo implements iFoo { " << std::endl
             << "state state {[0.2, 0.8]};" << std::endl
             << "}";
@@ -2141,7 +2141,7 @@ namespace gum_tests {
       input << "class Foo { " << std::endl
             << "boolean state {[0.3, 0.7]};" << std::endl
             << "}" << std::endl;
-      input << "type state OK, NOK;" << std::endl;
+      input << "type state labels(OK, NOK);" << std::endl;
       input << "class Bar extends Foo { " << std::endl
             << "state state {[0.2, 0.8]};" << std::endl
             << "}";
@@ -2170,7 +2170,7 @@ namespace gum_tests {
       input << "class Foo implements iFoo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}" << std::endl;
-      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "type state extends boolean (OK: true, NOK:false);" << std::endl;
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -2209,7 +2209,7 @@ namespace gum_tests {
       input << "class Foo implements iFoo { " << std::endl
             << "boolean state {[0.2, 0.8]};" << std::endl
             << "}" << std::endl;
-      input << "type state extends boolean OK: true, NOK:false;" << std::endl;
+      input << "type state extends boolean (OK: true, NOK:false);" << std::endl;
       input << "interface iFoo { " << std::endl
             << "boolean state;" << std::endl
             << "}" << std::endl;
@@ -2241,7 +2241,7 @@ namespace gum_tests {
       // Arrange
       auto                  path = GET_RESSOURCES_PATH( "o3prm/printers.o3prm" );
       gum::prm::PRM<double> prm;
-      std::ifstream input( path );
+      std::ifstream         input( path );
       std::stringstream     output;
       auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
       // Act
@@ -2253,7 +2253,7 @@ namespace gum_tests {
     void testClassWithOverloading() {
       // Arrange
       std::stringstream input;
-      input << "type state extends boolean OK: true, NOK: false;";
+      input << "type state extends boolean (OK: true, NOK: false);";
       input << std::endl;
       input << "interface Plop { "
                "boolean state;"
@@ -2341,7 +2341,7 @@ namespace gum_tests {
     void testClassWithOverloadingError1() {
       // Arrange
       std::stringstream input;
-      input << "type state extends boolean OK: true, NOK: false;";
+      input << "type state extends boolean (OK: true, NOK: false);";
       input << std::endl;
       input << "interface Plop { "
                "boolean state;"
@@ -2378,7 +2378,7 @@ namespace gum_tests {
     void testAggregateWithError() {
       // Arrange
       std::stringstream input;
-      input << "int(0,10) state;" << std::endl;
+      input << "type state int(0,10);" << std::endl;
       input << "interface Foo { " << std::endl
             << "state state;" << std::endl
             << "}" << std::endl;
@@ -2398,6 +2398,298 @@ namespace gum_tests {
       std::stringstream msg;
       msg << "|8 col 26| Error : Illegal parent myFoos";
       TS_ASSERT_EQUALS( line, msg.str() );
+    }
+
+    void testAnonymousType1() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "labels(OK, NOK) state {[0.2, 0.8]};" << std::endl
+            << "boolean isWorking dependson state " << std::endl
+            << "// OK | NOK " << std::endl
+            << "  {[0.2, 0.4,  // false" << std::endl
+            << "   0.8, 0.6]}; // true" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
+      TS_ASSERT( prm.isClass( "Bar" ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT_EQUALS( bar.attributes().size(), (gum::Size)2 );
+      TS_ASSERT( bar.exists( "state" ) );
+      const auto& state = bar.get( "state" );
+      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
+      TS_ASSERT( bar.exists( "isWorking" ) );
+      const auto& isWorking = bar.get( "isWorking" );
+      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
+      const auto& cpf = isWorking.cpf();
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
+      auto i = gum::Instantiation( cpf );
+      i.setFirst();
+      TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.4, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.6, 1e-6 );
+      TS_ASSERT_EQUALS( bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+    }
+
+    void testAnonymousType2() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "labels(OK, NOK) state {[0.2, 0.8]};" << std::endl
+            << "labels(NOK, OK) isWorking dependson state " << std::endl
+            << "// OK | NOK " << std::endl
+            << "  {[0.2, 0.4,  // NOK" << std::endl
+            << "   0.8, 0.6]}; // OK" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
+      TS_ASSERT( prm.isClass( "Bar" ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT_EQUALS( bar.attributes().size(), (gum::Size)2 );
+      TS_ASSERT( bar.exists( "state" ) );
+      const auto& state = bar.get( "state" );
+      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
+      TS_ASSERT( bar.exists( "isWorking" ) );
+      const auto& isWorking = bar.get( "isWorking" );
+      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
+      const auto& cpf = isWorking.cpf();
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
+      auto i = gum::Instantiation( cpf );
+      i.setFirst();
+      TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.4, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.6, 1e-6 );
+      TS_ASSERT_EQUALS( bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+    }
+
+    void testAnonymousType3() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "int(0, 1) state {[0.2, 0.8]};" << std::endl
+            << "int(2, 3) isWorking dependson state " << std::endl
+            << "// 0 | 1 " << std::endl
+            << "  {[0.2, 0.4,  // 2" << std::endl
+            << "   0.8, 0.6]}; // 3" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
+      TS_ASSERT( prm.isClass( "Bar" ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT_EQUALS( bar.attributes().size(), (gum::Size)2 );
+      TS_ASSERT( bar.exists( "state" ) );
+      const auto& state = bar.get( "state" );
+      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
+      TS_ASSERT( bar.exists( "isWorking" ) );
+      const auto& isWorking = bar.get( "isWorking" );
+      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
+      const auto& cpf = isWorking.cpf();
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
+      auto i = gum::Instantiation( cpf );
+      i.setFirst();
+      TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.4, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.6, 1e-6 );
+      TS_ASSERT_EQUALS( bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+    }
+
+    void testAnonymousType4() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "real(0.0, 0.5, 1.0) state {[0.2, 0.8]};" << std::endl
+            << "real(2.0, 2.5, 3.0) isWorking dependson state " << std::endl
+            << "// 0.0-0.5 | 0.5-1.0 " << std::endl
+            << "{[ 0.2,      0.4,  // 2.0-2.5" << std::endl
+            << "   0.8,      0.6]}; // 2.5-3.0" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)1 );
+      TS_ASSERT( prm.isClass( "Bar" ) );
+      const auto& bar = prm.getClass( "Bar" );
+      TS_ASSERT_EQUALS( bar.attributes().size(), (gum::Size)2 );
+      TS_ASSERT( bar.exists( "state" ) );
+      const auto& state = bar.get( "state" );
+      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( state ) );
+      TS_ASSERT( bar.exists( "isWorking" ) );
+      const auto& isWorking = bar.get( "isWorking" );
+      TS_ASSERT( gum::prm::PRMClassElement<double>::isAttribute( isWorking ) );
+      const auto& cpf = isWorking.cpf();
+      TS_ASSERT( cpf.variablesSequence().exists( &( state.type().variable() ) ) );
+      TS_ASSERT_EQUALS( cpf.domainSize(), (gum::Size)4 );
+      auto i = gum::Instantiation( cpf );
+      i.setFirst();
+      TS_ASSERT_DELTA( cpf[i], 0.2, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.8, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.4, 1e-6 );
+      i.inc();
+      TS_ASSERT_DELTA( cpf[i], 0.6, 1e-6 );
+      TS_ASSERT_EQUALS( bar.referenceSlots().size(), (gum::Size)0 );
+      TS_ASSERT_THROWS( bar.super(), gum::NotFound );
+    }
+
+    void testAnonymousTypeError1() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "label(OK, NOK) state {[0.2, 0.8]};" << std::endl
+            << "boolean isWorking dependson state " << std::endl
+            << "// OK | NOK " << std::endl
+            << "  {[0.2, 0.4,  // false" << std::endl
+            << "   0.8, 0.6]}; // true" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "|2 col 6| Error : invalid declaration\n" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
+    }
+
+    void testAnonymousTypeError2() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "labels(&é, NOK) state {[0.2, 0.8]};" << std::endl
+            << "boolean isWorking dependson state " << std::endl
+            << "// OK | NOK " << std::endl
+            << "  {[0.2, 0.4,  // false" << std::endl
+            << "   0.8, 0.6]}; // true" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "|2 col 8| Error : invalid declaration\n" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
+    }
+
+    void testAnonymousTypeError3() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "in(0, 1) state {[0.2, 0.8]};" << std::endl
+            << "int(2, 3) isWorking dependson state " << std::endl
+            << "// 0 | 1 " << std::endl
+            << "  {[0.2, 0.4,  // 2" << std::endl
+            << "   0.8, 0.6]}; // 3" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "|2 col 3| Error : invalid declaration\n" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
+    }
+
+    void testAnonymousTypeError4() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "int(azeaz, 1) state {[0.2, 0.8]};" << std::endl
+            << "int(2, 3) isWorking dependson state " << std::endl
+            << "// 0 | 1 " << std::endl
+            << "  {[0.2, 0.4,  // 2" << std::endl
+            << "   0.8, 0.6]}; // 3" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "|2 col 5| Error : integer expected\n" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
+    }
+
+    void testAnonymousTypeError5() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "rel(0.0, 0.5, 1.0) state {[0.2, 0.8]};" << std::endl
+            << "real(2.0, 2.5, 3.0) isWorking dependson state " << std::endl
+            << "// 0.0-0.5 | 0.5-1.0 " << std::endl
+            << "{[ 0.2,      0.4,  // 2.0-2.5" << std::endl
+            << "   0.8,      0.6]}; // 2.5-3.0" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "|2 col 4| Error : invalid declaration\n" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
+    }
+
+    void testAnonymousTypeError6() {
+      // Arrange
+      std::stringstream input;
+      input << "class Bar { " << std::endl
+            << "real(FOO, 0.5, 1.0) state {[0.2, 0.8]};" << std::endl
+            << "real(2.0, 2.5, 3.0) isWorking dependson state " << std::endl
+            << "// 0.0-0.5 | 0.5-1.0 " << std::endl
+            << "{[ 0.2,      0.4,  // 2.0-2.5" << std::endl
+            << "   0.8,      0.6]}; // 2.5-3.0" << std::endl
+            << "}";
+      std::stringstream     output;
+      gum::prm::PRM<double> prm;
+      auto                  factory = gum::prm::o3prm::O3prmReader<double>( prm );
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING( factory.parseStream( input, output ) );
+      // Assert
+      TS_ASSERT_EQUALS( output.str(), "|2 col 6| Error : invalid declaration\n" );
+      TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
     }
   };
 

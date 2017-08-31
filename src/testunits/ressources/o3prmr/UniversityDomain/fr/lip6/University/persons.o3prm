@@ -1,13 +1,10 @@
 import fr.lip6.University.registration;
 
-type gradation 
-    high,
-    medium,
-    low;
+type gradation labels(high, medium, low);
 
-type intelligence extends boolean
+type intelligence extends boolean (
 	high: true,
-    low:  false;
+  low:  false);
 
 interface Person {
 }

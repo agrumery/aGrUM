@@ -870,10 +870,10 @@ namespace gum {
       __nameMap[overloader->name()] = overloader;
       __nameMap.insert( overloader->safeName(), overloader );
       __referenceSlots.insert( overloader );
-      PRMSlotChain<GUM_SCALAR>*               sc = 0;
-      PRMReferenceSlot<GUM_SCALAR>*           ref = 0;
-      PRMClassElement<GUM_SCALAR>*            next = 0;
-      std::vector<PRMSlotChain<GUM_SCALAR> *> toRemove, toAdd;
+      PRMSlotChain<GUM_SCALAR>*              sc = 0;
+      PRMReferenceSlot<GUM_SCALAR>*          ref = 0;
+      PRMClassElement<GUM_SCALAR>*           next = 0;
+      std::vector<PRMSlotChain<GUM_SCALAR>*> toRemove, toAdd;
 
       // Updating PRMSlotChain<GUM_SCALAR> which started with overloaded
       for ( const auto slotchain : __slotChains ) {

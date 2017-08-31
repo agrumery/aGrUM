@@ -22,7 +22,7 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-type t_state OK, NOK;
+type t_state labels(OK, NOK);
 
 class PowerSupply {
     t_state powState { [ 0.99, 0.01 ] };

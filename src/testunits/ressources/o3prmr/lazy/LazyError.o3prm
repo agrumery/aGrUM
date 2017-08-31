@@ -1,6 +1,6 @@
-int(0, 10) skill;
+type skill int(0, 10);
 
-type armor 2, 3, 4, 5, 6, none;
+type armor labels(2, 3, 4, 5, 6, none);
 
 interface BS {
   skill bs;

@@ -36,70 +36,70 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::__clean( std::string text ) const {
         // This could be way more faster with regex but there are not implemented
         // with gcc-4.8 !
-        text = replace(text, "Syntax error", "Error");
+        text = replace( text, "Syntax error", "Error" );
 
-        text = replace(text, "LABEL_OR_STAR_LIST", "declaration");
+        text = replace( text, "LABEL_OR_STAR_LIST", "declaration" );
 
-        text = replace(text, "ARRAY_REFERENCE_SLOT", "declaration");
-        text = replace(text, "FLOAT_AS_LABEL", "declaration");
-        text = replace(text, "FLOAT_OR_INT", "declaration");
-        text = replace(text, "INTEGER_AS_FLOAT", "declaration");
-        text = replace(text, "INTEGER_AS_LABEL", "declaration");
-        text = replace(text, "INT_TYPE_DECLARATION", "declaration");
-        text = replace(text, "LABEL_OR_INT", "declaration");
-        text = replace(text, "LABEL_OR_STAR", "declaration");
-        text = replace(text, "NAMED_CLASS_ELEMENT", "declaration");
-        text = replace(text, "REAL_TYPE_DECLARATION", "declaration");
+        text = replace( text, "ARRAY_REFERENCE_SLOT", "declaration" );
+        text = replace( text, "FLOAT_AS_LABEL", "declaration" );
+        text = replace( text, "FLOAT_OR_INT", "declaration" );
+        text = replace( text, "INTEGER_AS_FLOAT", "declaration" );
+        text = replace( text, "INTEGER_AS_LABEL", "declaration" );
+        text = replace( text, "INT_TYPE_DECLARATION", "declaration" );
+        text = replace( text, "LABEL_OR_INT", "declaration" );
+        text = replace( text, "LABEL_OR_STAR", "declaration" );
+        text = replace( text, "NAMED_CLASS_ELEMENT", "declaration" );
+        text = replace( text, "REAL_TYPE_DECLARATION", "declaration" );
 
-        text = replace(text, "AGGREGATE_PARENTS", "declaration");
-        text = replace(text, "CLASS_BODY", "declaration");
-        text = replace(text, "CLASS_DECLARATION", "declaration");
-        text = replace(text, "CLASS_ELEMENT", "declaration");
-        text = replace(text, "CLASS_PARAMETER", "declaration");
-        text = replace(text, "CLASS_UNIT", "declaration");
-        text = replace(text, "FLOAT_LIST", "declaration");
-        text = replace(text, "FORMULA_LIST", "declaration");
-        text = replace(text, "IDENTIFIER_LIST", "declaration");
-        text = replace(text, "IMPORT_BODY", "declaration");
-        text = replace(text, "IMPORT_DECLARATION", "declaration");
-        text = replace(text, "IMPORT_UNIT", "declaration");
-        text = replace(text, "INTERFACE_BODY", "declaration");
-        text = replace(text, "INTERFACE_DECLARATION", "declaration");
-        text = replace(text, "INTERFACE_UNIT", "declaration");
-        text = replace(text, "LABEL_LIST", "declaration");
-        text = replace(text, "PARAMETER_LIST", "declaration");
-        text = replace(text, "PREFIXED_LABEL", "declaration");
-        text = replace(text, "RAW_CPT", "declaration");
-        text = replace(text, "REFERENCE_SLOT", "declaration");
-        text = replace(text, "RULE_CPT", "declaration");
-        text = replace(text, "SYSTEM_BODY", "declaration");
-        text = replace(text, "SYSTEM_DECLARATION", "declaration");
-        text = replace(text, "SYSTEM_UNIT", "declaration");
-        text = replace(text, "TYPE_DECLARATION", "declaration");
-        text = replace(text, "TYPE_LABEL", "declaration");
-        text = replace(text, "TYPE_UNIT", "declaration");
-        text = replace(text, "TYPE_VALUE_LIST", "declaration");
+        text = replace( text, "AGGREGATE_PARENTS", "declaration" );
+        text = replace( text, "CLASS_BODY", "declaration" );
+        text = replace( text, "CLASS_DECLARATION", "declaration" );
+        text = replace( text, "CLASS_ELEMENT", "declaration" );
+        text = replace( text, "CLASS_PARAMETER", "declaration" );
+        text = replace( text, "CLASS_UNIT", "declaration" );
+        text = replace( text, "FLOAT_LIST", "declaration" );
+        text = replace( text, "FORMULA_LIST", "declaration" );
+        text = replace( text, "IDENTIFIER_LIST", "declaration" );
+        text = replace( text, "IMPORT_BODY", "declaration" );
+        text = replace( text, "IMPORT_DECLARATION", "declaration" );
+        text = replace( text, "IMPORT_UNIT", "declaration" );
+        text = replace( text, "INTERFACE_BODY", "declaration" );
+        text = replace( text, "INTERFACE_DECLARATION", "declaration" );
+        text = replace( text, "INTERFACE_UNIT", "declaration" );
+        text = replace( text, "LABEL_LIST", "declaration" );
+        text = replace( text, "PARAMETER_LIST", "declaration" );
+        text = replace( text, "PREFIXED_LABEL", "declaration" );
+        text = replace( text, "RAW_CPT", "declaration" );
+        text = replace( text, "REFERENCE_SLOT", "declaration" );
+        text = replace( text, "RULE_CPT", "declaration" );
+        text = replace( text, "SYSTEM_BODY", "declaration" );
+        text = replace( text, "SYSTEM_DECLARATION", "declaration" );
+        text = replace( text, "SYSTEM_UNIT", "declaration" );
+        text = replace( text, "TYPE_DECLARATION", "declaration" );
+        text = replace( text, "TYPE_LABEL", "declaration" );
+        text = replace( text, "TYPE_UNIT", "declaration" );
+        text = replace( text, "TYPE_VALUE_LIST", "declaration" );
 
-        text = replace(text, "AGGREGATE", "declaration");
-        text = replace(text, "ARRAY", "declaration");
-        text = replace(text, "ATTRIBUTE", "declaration");
-        text = replace(text, "CAST", "declaration");
-        text = replace(text, "CHAIN", "declaration");
-        text = replace(text, "CLASS", "declaration");
-        text = replace(text, "FLOAT", "declaration");
-        text = replace(text, "FORMULA", "declaration");
-        text = replace(text, "IDENTIFIER", "declaration");
-        text = replace(text, "INT", "declaration");
-        text = replace(text, "INTEGER", "declaration");
-        text = replace(text, "INTERFACE", "declaration");
-        text = replace(text, "LABEL", "declaration");
-        text = replace(text, "LINK", "declaration");
-        text = replace(text, "MAP", "declaration");
-        text = replace(text, "PARAMETER", "declaration");
-        text = replace(text, "REAL", "declaration");
-        text = replace(text, "RULE", "declaration");
-        text = replace(text, "TYPE", "declaration");
-        text = replace(text, "UNIT", "declaration");
+        text = replace( text, "AGGREGATE", "declaration" );
+        text = replace( text, "ARRAY", "declaration" );
+        text = replace( text, "ATTRIBUTE", "declaration" );
+        text = replace( text, "CAST", "declaration" );
+        text = replace( text, "CHAIN", "declaration" );
+        text = replace( text, "CLASS", "declaration" );
+        text = replace( text, "FLOAT", "declaration" );
+        text = replace( text, "FORMULA", "declaration" );
+        text = replace( text, "IDENTIFIER", "declaration" );
+        text = replace( text, "INT", "declaration" );
+        text = replace( text, "INTEGER", "declaration" );
+        text = replace( text, "INTERFACE", "declaration" );
+        text = replace( text, "LABEL", "declaration" );
+        text = replace( text, "LINK", "declaration" );
+        text = replace( text, "MAP", "declaration" );
+        text = replace( text, "PARAMETER", "declaration" );
+        text = replace( text, "REAL", "declaration" );
+        text = replace( text, "RULE", "declaration" );
+        text = replace( text, "TYPE", "declaration" );
+        text = replace( text, "UNIT", "declaration" );
 
         return text;
       }
@@ -269,7 +269,9 @@ namespace gum {
       O3prmReader<GUM_SCALAR>::showElegantErrors( std::ostream& o ) const {
         for ( Idx i = 0; i < __errors.count(); ++i ) {
           auto err = __errors.error( i );
-          o << __print( err ) << std::endl;
+          if ( err.is_error ) {
+            o << __print( err ) << std::endl;
+          }
         }
       }
 

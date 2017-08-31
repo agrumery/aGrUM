@@ -1570,7 +1570,8 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    INLINE void PRMFactory<GUM_SCALAR>::startDiscretizedType( const std::string& name ) {
+    INLINE void
+    PRMFactory<GUM_SCALAR>::startDiscretizedType( const std::string& name ) {
       std::string real_name = __addPrefix( name );
       if ( __prm->__typeMap.exists( real_name ) ) {
         std::stringstream msg;

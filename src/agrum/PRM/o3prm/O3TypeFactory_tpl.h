@@ -110,6 +110,8 @@ namespace gum {
         }
         __build = true;
 
+        // checking deprecated declarations
+        __checkDepreactedO3Types();
 
         // building types
         __buildTypes();
@@ -150,6 +152,28 @@ namespace gum {
       }
 
       template <typename GUM_SCALAR>
+      INLINE void O3TypeFactory<GUM_SCALAR>::__checkDepreactedO3Types() {
+
+        for ( auto& t : __o3_prm->types() ) {
+          if ( t->deprecated() ) {
+            O3PRM_DEPRECATED_TYPE_WARNING( t->name(), *__errors );
+          }
+        }
+
+        for ( auto& t : __o3_prm->int_types() ) {
+          if ( t->deprecated() ) {
+            O3PRM_DEPRECATED_TYPE_WARNING( t->name(), *__errors );
+          }
+        }
+
+        for ( auto& t : __o3_prm->real_types() ) {
+          if ( t->deprecated() ) {
+            O3PRM_DEPRECATED_TYPE_WARNING( t->name(), *__errors );
+          }
+        }
+      }
+
+      template <typename GUM_SCALAR>
       INLINE void O3TypeFactory<GUM_SCALAR>::__buildIntTypes() {
 
         if ( __checkO3IntTypes() ) {
@@ -159,7 +183,6 @@ namespace gum {
 
             factory.addRangeType(
                 type->name().label(), type->start().value(), type->end().value() );
-
           }
         }
       }

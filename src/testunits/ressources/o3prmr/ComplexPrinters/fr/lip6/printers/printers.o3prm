@@ -1,13 +1,13 @@
 import fr.lip6.printers.base;
 
-type t_ink extends t_state
+type t_ink extends t_state (
 	NotEmpty: OK,
-	Empty:    NOK;
+	Empty:    NOK);
 
-type t_paper extends t_state
+type t_paper extends t_state (
 	Ready:    OK,
 	Jammed:   NOK,
-	Empty:    NOK;
+	Empty:    NOK);
 
 class BWPrinter implements Printer {
     Room room;

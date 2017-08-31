@@ -1,4 +1,4 @@
-type t_color red, blue, green, yellow;
+type t_color labels(red, blue, green, yellow);
 
 class SomeClass {
    t_color color { [ 0.1, 0.2, 0.3, 0.4 ] };
