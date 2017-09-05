@@ -120,37 +120,37 @@ void __split( const O3Label& value, O3Label& left, O3Label& right) {
   }
 }
 
-O3Label __setAnonTypeName(O3Class& c, O3Position& pos, O3Type& t) {
-  std::stringstream name;
-  name << "__" << c.name();
+O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3Type& t) {
+  std::stringstream ss;
+  ss << "__" << c.name() << "_" << name.label();
   for (auto& l: t.labels()) {
-    name << '_' << l.first.label();
+    ss << '_' << l.first.label();
   }
-  name << "__";
+  ss << "__";
   t.name().position() = pos;
-  t.name().label() = name.str();
+  t.name().label() = ss.str();
   return t.name();
 }
 
-O3Label __setAnonTypeName(O3Class& c, O3Position& pos, O3IntType& t) {
-  std::stringstream name;
-  name << "__" << c.name();
-  name << "_" << t.start().value() << '_' << t.end().value();
-  name << "__";
+O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3IntType& t) {
+  std::stringstream ss;
+  ss << "__" << c.name() << "_" << name.label();
+  ss << "_" << t.start().value() << '_' << t.end().value();
+  ss << "__";
   t.name().position() = pos;
-  t.name().label() = name.str();
+  t.name().label() = ss.str();
   return t.name();
 }
 
-O3Label __setAnonTypeName(O3Class& c, O3Position& pos, O3RealType& t) {
-  std::stringstream name;
-  name << "__" << c.name();
+O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3RealType& t) {
+  std::stringstream ss;
+  ss << "__" << c.name() << "_" << name.label();
   for (auto& v: t.values()) {
-    name << '_' << v.value();
+    ss << '_' << v.value();
   }
-  name << "__";
+  ss << "__";
   t.name().position() = pos;
-  t.name().label() = name.str();
+  t.name().label() = ss.str();
   return t.name();
 }
 
@@ -314,27 +314,27 @@ CLASS_ANON_TYPE_ATTR<O3Class& c> =
   (. pos.line() = t->line; .)
   (. pos.column() = t->col; .)
   (. auto type = O3Label(); .)
+  (. auto name = O3Label(); .)
   (
       (. auto t = O3Type(); .)
       (. t.position() = pos; .)
-      labels '(' TYPE_VALUE_LIST<t.labels()> ')' 
-      (. type = __setAnonTypeName(c, pos, t); .)
+      labels '(' TYPE_VALUE_LIST<t.labels()> ')' LABEL_OR_INT<name>
+      (. type = __setAnonTypeName(c, name, pos, t); .)
       (. if ( __ok( n ) ) { __addO3Type( std::move(t) ); } .)
     |
       (. auto t = O3IntType(); .)
       (. t.position() = pos; .)
-      INT_TYPE_DECLARATION<t.start(), t.end()>
-      (. type = __setAnonTypeName(c, pos, t); .)
+      INT_TYPE_DECLARATION<t.start(), t.end()> LABEL_OR_INT<name>
+      (. type = __setAnonTypeName(c, name, pos, t); .)
       (. if ( __ok( n ) ) { __addO3IntType( std::move(t) ); } .)
     |
       (. auto t = O3RealType(); .)
       (. t.position() = pos; .)
-      REAL_TYPE_DECLARATION<t.values()>
-      (. type = __setAnonTypeName(c, pos, t); .)
+      REAL_TYPE_DECLARATION<t.values()> LABEL_OR_INT<name>
+      (. type = __setAnonTypeName(c, name, pos, t); .)
       (. if ( __ok( n ) ) { __addO3RealType( std::move(t) ); } .)
   )
-  (. auto name = O3Label(); .)
-  LABEL<name>
+  
   ATTRIBUTE<type, name, c>
   .
 
@@ -356,7 +356,7 @@ ARRAY_REFERENCE_SLOT<O3Label& type, O3ReferenceSlotList& refs> =
   (. auto name = O3Label(); .)
   '['
   ']'
-  LABEL<name>
+  LABEL_OR_INT<name>
   ';'
   (. refs.push_back( O3ReferenceSlot( type, name, isArray ) ); .)
   .
@@ -364,7 +364,7 @@ ARRAY_REFERENCE_SLOT<O3Label& type, O3ReferenceSlotList& refs> =
 //________________________
 NAMED_CLASS_ELEMENT<O3Label& type, O3Class& c> =
   (. auto name = O3Label(); .)
-  LABEL<name>
+  LABEL_OR_INT<name>
   (
     REFERENCE_SLOT<type, name, c>
   |
@@ -1005,8 +1005,13 @@ CAST<std::stringstream& s> =
 
 //________________________
 LINK<std::stringstream& s> =
-  label
-  (. s << narrow( t->val ); .)
+  (
+    label
+    (. s << narrow( t->val ); .)
+  |
+    integer
+    (. s << narrow( t->val ); .)
+  )
   .
 
 //________________________

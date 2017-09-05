@@ -29,9 +29,18 @@
 
 namespace gum {
   template <typename GUM_SCALAR>
-  INLINE std::string O3prmBNReader<GUM_SCALAR>::__getVariableName(
-      const std::string& path, const std::string& type, const std::string& name ) {
-    return path + name;  // path ends up with a "."
+  INLINE std::string
+  O3prmBNReader<GUM_SCALAR>::__getVariableName( const std::string& path,
+                                                const std::string& type,
+                                                const std::string& name,
+                                                const std::string& toRemove ) {
+    auto res = path + name;  // path ends up with a "."
+    if ( toRemove != "" ) {
+      if ( res.substr( 0, toRemove.size() ) == toRemove ) {
+        res = res.substr( toRemove.size() );
+      }
+    }
+    return res;
   }
 
   template <typename GUM_SCALAR>
@@ -82,22 +91,27 @@ namespace gum {
     gum::prm::PRM<GUM_SCALAR>* prm = reader.prm();
     __errors = reader.errorsContainer();
 
+
     if ( errors() == 0 ) {
+      std::string instanceName = "";
       if ( prm->isSystem( __entityName ) ) {
         __generateBN( prm->getSystem( __entityName ) );
       } else {
         if ( prm->isClass( __entityName ) ) {
-          ParseError warn( false,
-                           "No system '" + __entityName +
-                               "' found but class found. Generating instance.",
-                           __filename,
-                           0 );
+          ParseError warn(
+              false,
+              "No system '" + __entityName +
+                  "' found but class found. Generating unnamed instance.",
+              __filename,
+              0 );
           __errors.add( warn );
           gum::prm::PRMSystem<GUM_SCALAR> s( "S_" + __entityName );
+          instanceName = __getInstanceName( __entityName );
           auto i = new gum::prm::PRMInstance<GUM_SCALAR>(
-              __getInstanceName( __entityName ), prm->getClass( __entityName ) );
+              instanceName, prm->getClass( __entityName ) );
           s.add( i );
           __generateBN( s );
+          instanceName += ".";  // to be removed in __getVariableName
         } else {
           ParseError err( true,
                           "Neither system nor class '" + __entityName + "'.",

@@ -18,57 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-/**
- * @file
- * @brief This file contains getters and setters definition for
- * ApproximationScheme settings.
+/** @file
+ * @brief Outlined implementation of UAIBNReader
  *
- * @see ApproximationScheme
- *
- * @author Pierre-Henri WUILLEMIN
+ * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
+#include <agrum/PRM/o3prm/O3prmBNWriter.h>
 
-// To help IDE parsers
-#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
-
-namespace gum {
-
-  INLINE
-  std::string
-  IApproximationSchemeConfiguration::messageApproximationScheme() const {
-    std::stringstream s;
-
-    switch ( stateApproximationScheme() ) {
-      case ApproximationSchemeSTATE::Continue:
-        s << "in progress";
-        break;
-
-      case ApproximationSchemeSTATE::Epsilon:
-        s << "stopped with epsilon=" << epsilon();
-        break;
-
-      case ApproximationSchemeSTATE::Rate:
-        s << "stopped with rate=" << minEpsilonRate();
-        break;
-
-      case ApproximationSchemeSTATE::Limit:
-        s << "stopped with max iteration=" << maxIter();
-        break;
-
-      case ApproximationSchemeSTATE::TimeLimit:
-        s << "stopped with timeout=" << maxTime();
-        break;
-
-      case ApproximationSchemeSTATE::Stopped:
-        s << "stopped on request";
-        break;
-
-      case ApproximationSchemeSTATE::Undefined:
-        s << "undefined state";
-        break;
-    };
-
-    return s.str();
-  }
-
-}  // namespace gum
+template class gum::O3prmBNWriter<float>;
+template class gum::O3prmBNWriter<double>;

@@ -130,5 +130,36 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( bn.size(), (gum::Size)144 );
       reader.showElegantErrorsAndWarnings();
     }
+
+    void testNameWithOrWithoutSystem() {
+      // in a file with only one class and no system, there should not be any "."
+      // in the names
+      {
+        gum::BayesNet<double>      bn;
+        gum::O3prmBNReader<double> reader(
+            &bn, GET_RESSOURCES_PATH( "o3prm/Asia.o3prm" ) );
+        gum::Size res = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+        TS_ASSERT_EQUALS( res, (gum::Size)0 );
+        TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)1 );  // no system
+        for ( auto n : bn.nodes() ) {
+          TS_ASSERT( bn.variable( n ).name().find( "." ) != std::string::npos );
+        }
+      }
+      {
+        gum::BayesNet<double>      bn;
+        gum::O3prmBNReader<double> reader(
+            &bn,
+            GET_RESSOURCES_PATH( "o3prm/AsiaClassAndSystemWithTwoClasses.o3prm" ),
+            "Asia" );
+        gum::Size res = 0;
+        TS_GUM_ASSERT_THROWS_NOTHING( res = reader.proceed() );
+        TS_ASSERT_EQUALS( res, (gum::Size)0 );
+        TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
+        for ( auto n : bn.nodes() ) {
+          TS_ASSERT( bn.variable( n ).name().find( "." ) != std::string::npos );
+        }
+      }
+    }
   };
 }  // namespace gum_tests

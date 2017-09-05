@@ -24,6 +24,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
+#include <agrum/variables/discretizedVariable.h>
 #include <agrum/PRM/PRM.h>
 #include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/O3prmReader.h>
@@ -2691,6 +2692,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS( output.str(), "|2 col 6| Error : invalid declaration\n" );
       TS_ASSERT_EQUALS( prm.classes().size(), (gum::Size)0 );
     }
+
   };
 
 }  // namespace gum_tests

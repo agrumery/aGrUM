@@ -301,11 +301,6 @@ namespace gum {
      */
     virtual const std::vector<double>& history() const = 0;
 
-    /**
-     * @brief Configuration transmission.
-     * @param cfg The configuration to copy.
-     */
-    void copyConfiguration( const IApproximationSchemeConfiguration& cfg );
   };
 }  // namespace gum
 

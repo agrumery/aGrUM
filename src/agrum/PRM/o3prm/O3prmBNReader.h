@@ -109,7 +109,8 @@ namespace gum {
     void __generateBN( prm::PRMSystem<GUM_SCALAR>& system );
     static std::string __getVariableName( const std::string& path,
                                           const std::string& type,
-                                          const std::string& name );
+                                          const std::string& name,
+                                          const std::string& toRemove = "" );
     static std::string __getEntityName( const std::string& filename );
     static std::string __getInstanceName( const std::string& classname );
   };

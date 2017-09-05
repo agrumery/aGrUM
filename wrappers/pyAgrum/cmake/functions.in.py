@@ -51,9 +51,13 @@ def availableWriteBNExts():
     """
     return "bif|dsl|net|bifxml|uai"
 
-def loadBN(filename,listeners=None,verbose=True,**opts):
+def loadBN(filename,listeners=None,verbose=False,**opts):
     """
     :param filename: the name of file
+    :param listeners: list of functions to execute
+    :param verbose: printing or not warning messages
+    :param system: (for O3PRM) name of the system to flatten in a BN
+    :param classpath: (for O3PRM) list of folders containing classes
     :return: a BN from a file using one of the availableBNExts() suffixes.
     """
     bn=BayesNet()

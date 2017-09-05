@@ -178,6 +178,9 @@ namespace gum {
     /// from the index to the tick.
     /// @throws NotFound
     const T_TICKS& tick( Idx i ) const;
+
+    /// Return the list of ticks
+    const std::vector<T_TICKS>& ticks() const;
   };
 
 } /* namespace gum */
