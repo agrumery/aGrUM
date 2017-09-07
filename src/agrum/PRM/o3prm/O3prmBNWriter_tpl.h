@@ -22,8 +22,9 @@
 
 #include <agrum/PRM/o3prm/O3prmBNWriter.h>
 
-namespace gum {
+#define O3PRM_INDENT "  "
 
+namespace gum {
   /*
    * Default constructor.
    */
@@ -73,161 +74,155 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   INLINE std::string
-  O3prmBNWriter<GUM_SCALAR>::__extractAttribute( const IBayesNet<GUM_SCALAR>& bn, NodeId node ) {
+  O3prmBNWriter<GUM_SCALAR>::__extractAttribute( const IBayesNet<GUM_SCALAR>& bn,
+                                                 NodeId node ) {
     std::stringstream str;
-    str << __extractType(bn, node) << " ";
-    str << __extractName(bn, node) << " ";
-    if (bn.dag().parents(node).size() > 0) {
-      str << "dependson " << __extractParents(bn, node) << " ";
+    str << O3PRM_INDENT;
+    str << __extractType( bn, node ) << " ";
+    str << __extractName( bn, node ) << " ";
+    if ( bn.dag().parents( node ).size() > 0 ) {
+      str << "dependson " << __extractParents( bn, node ) << " ";
     }
-    str << " {" << __extractCPT(bn, node) << "};" << std::endl;
+    str << " {" << __extractCPT( bn, node ) << "};" << std::endl;
     return str.str();
   }
 
   template <typename GUM_SCALAR>
   INLINE std::string
-  O3prmBNWriter<GUM_SCALAR>::__extractParents(const IBayesNet<GUM_SCALAR>& bn, NodeId node) {
+  O3prmBNWriter<GUM_SCALAR>::__extractParents( const IBayesNet<GUM_SCALAR>& bn,
+                                               NodeId node ) {
     std::stringstream str;
-    auto var =&( bn.variable(node));
-    for (auto parent: bn.cpt(node).variablesSequence()) {
-      if (var != parent) {
+    auto              var = &( bn.variable( node ) );
+    for ( auto parent : bn.cpt( node ).variablesSequence() ) {
+      if ( var != parent ) {
         str << parent->name() << ", ";
       }
     }
-    return str.str().substr(0, str.str().size() - 2);
+    return str.str().substr( 0, str.str().size() - 2 );
   }
 
   template <typename GUM_SCALAR>
   INLINE std::string
-  O3prmBNWriter<GUM_SCALAR>::__extractCPT(const IBayesNet<GUM_SCALAR>& bn, NodeId node) {
-
-    Instantiation inst( bn.cpt(node) );
-    Instantiation jnst;
-    for ( auto var = inst.variablesSequence().rbegin();
-        var != inst.variablesSequence().rend();
-        --var ) {
-      jnst.add( **var );
-    }
-
+  O3prmBNWriter<GUM_SCALAR>::__extractCPT( const IBayesNet<GUM_SCALAR>& bn,
+                                           NodeId                       node ) {
     std::stringstream str;
-    str << "[" << std::endl;
-    for (jnst.begin(); !jnst.end(); jnst.inc()) {
-      inst.setVals( jnst );
-      str << bn.cpt(node)[inst] << ", ";
+    bool              first = true;
+    Instantiation     inst( bn.cpt( node ) );
+
+    str << "[";
+    if ( inst.nbrDim() == 1 ) {
+      // 1D potential
+      for ( inst.setFirst(); !inst.end(); inst.inc() ) {
+        if ( !first ) {
+          str << ", ";
+        } else {
+          first = false;
+        }
+        str << bn.cpt( node )[inst];
+      }
+    } else {
+      // (>1)D potential (with parents)
+      Instantiation jnst;
+      for ( auto var = inst.variablesSequence().rbegin();
+            var != inst.variablesSequence().rend();
+            --var ) {
+        jnst.add( **var );
+      }
+      inst.setFirst();
+      auto currentval = inst.val( 0 )+1;
+      for ( jnst.begin(); !jnst.end(); jnst.inc() ) {
+        inst.setVals( jnst );
+        if ( !first ) {
+          str << ", ";
+        } else {
+          first = false;
+        }
+        if ( currentval != inst.val( 0 ) ) {  // begining line
+          str << std::endl << O3PRM_INDENT << O3PRM_INDENT;
+          currentval = inst.val( 0 );
+        }
+        str << bn.cpt( node )[inst];
+      }
+      str << std::endl << O3PRM_INDENT;
     }
-    str << std::endl;
-    return str.str().substr(0, str.str().size()-3) + "]";
 
-    //try {
-    //auto cpt = std::vector<GUM_SCALAR>();
-    //auto inst = Instantiation(bn.cpt(node));
-    //for (inst.setFirst(); ! inst.end(); inst.inc()) {
-    //  cpt.push_back(bn.cpt(node)[inst]);
-    //}
-    //std::stringstream str;
-    //str << "[" << std::endl;
-    //for (size_t mod = 0; mod < bn.variable(node).domainSize(); ++mod) {
-    //  for (size_t i = mod; i < cpt.size();i += bn.variable(node).domainSize()) {
-    //    str << cpt[i] << ", ";
-    //  }
-    //  str << std::endl;
-    //}
-    //return str.str().substr(0, str.str().size()-3) + "]";
-    //} catch (gum::Exception& e) {
-    //  GUM_SHOWERROR(e);
-    //  throw e;
-    //}
-
-    // const auto& cpt = bn.cpt(node);
-    // auto inst = Instantiation(cpt);
-    // auto var = Instantiation();
-    // var.add(bn.variable(node));
-    // std::stringstream str;
-    // str << "[" << std::endl;
-    // //for (inst.setFirst(); ! inst.end(); inst.inc()) {
-    // //  str << cpt[inst] << ", ";
-    // //}
-    // //str << std::endl;
-    // for (var.setFirst(); ! var.end(); var.inc()) {
-    //   inst.setFirst();
-    //   inst.setVals(var);
-    //   for (;! inst.end(); inst.incOut(var)) {
-    //     str << cpt[inst] << ", ";
-    //   }
-    //   str << std::endl;
-    // }
-    // return str.str().substr(0, str.str().size()-3) + "]";
+    str << "]";
+    return str.str();
   }
- 
+
   template <typename GUM_SCALAR>
   INLINE std::string
-  O3prmBNWriter<GUM_SCALAR>::__extractType(const IBayesNet<GUM_SCALAR>& bn, NodeId node) {
-    switch (bn.variable(node).varType()) {
-      case gum::DiscreteVariable::VarType::Discretized:
-        {
-          auto double_var = dynamic_cast<const DiscretizedVariable<double>*>(&(bn.variable(node)));
-          if ( double_var != nullptr ) {
-            return __extractDiscretizedType<DiscretizedVariable<double>>(double_var);
-          } else {
-            auto float_var = dynamic_cast<const DiscretizedVariable<float>*>(&(bn.variable(node)));
-            if ( float_var != nullptr ) {
-              return __extractDiscretizedType<DiscretizedVariable<float>>(float_var);
-            }
+  O3prmBNWriter<GUM_SCALAR>::__extractType( const IBayesNet<GUM_SCALAR>& bn,
+                                            NodeId                       node ) {
+    switch ( bn.variable( node ).varType() ) {
+      case gum::DiscreteVariable::VarType::Discretized: {
+        auto double_var = dynamic_cast<const DiscretizedVariable<double>*>(
+            &( bn.variable( node ) ) );
+        if ( double_var != nullptr ) {
+          return __extractDiscretizedType<DiscretizedVariable<double>>(
+              double_var );
+        } else {
+          auto float_var = dynamic_cast<const DiscretizedVariable<float>*>(
+              &( bn.variable( node ) ) );
+          if ( float_var != nullptr ) {
+            return __extractDiscretizedType<DiscretizedVariable<float>>(
+                float_var );
           }
-          GUM_ERROR(InvalidArgument, "DiscretizedVariable ticks are neither doubles or floats");
         }
-      case gum::DiscreteVariable::VarType::Range:
-        {
-          return __extractRangeType(bn, node);
-        }
-      default:
-        {
-          return __extractLabelizedType(bn, node);
-        }
+        GUM_ERROR( InvalidArgument,
+                   "DiscretizedVariable ticks are neither doubles or floats" );
+      }
+      case gum::DiscreteVariable::VarType::Range: {
+        return __extractRangeType( bn, node );
+      }
+      default: { return __extractLabelizedType( bn, node ); }
     }
   }
 
   template <typename GUM_SCALAR>
   INLINE std::string
-  O3prmBNWriter<GUM_SCALAR>::__extractRangeType(const IBayesNet<GUM_SCALAR>& bn, NodeId node) {
-    const auto& var = static_cast<const RangeVariable&>(bn.variable(node));
+  O3prmBNWriter<GUM_SCALAR>::__extractRangeType( const IBayesNet<GUM_SCALAR>& bn,
+                                                 NodeId node ) {
+    const auto& var = static_cast<const RangeVariable&>( bn.variable( node ) );
     std::stringstream str;
     str << "int (" << var.minVal() << ", " << var.maxVal() << ")";
     return str.str();
   }
 
   template <typename GUM_SCALAR>
-  INLINE std::string
-  O3prmBNWriter<GUM_SCALAR>::__extractLabelizedType(const IBayesNet<GUM_SCALAR>& bn, NodeId node) {
+  INLINE std::string O3prmBNWriter<GUM_SCALAR>::__extractLabelizedType(
+      const IBayesNet<GUM_SCALAR>& bn, NodeId node ) {
     std::stringstream str;
     str << "labels(";
-    for (auto l: bn.variable(node).labels()) {
+    for ( auto l : bn.variable( node ).labels() ) {
       str << l << ", ";
     }
-    return str.str().substr(0, str.str().size() - 2) + ")";
+    return str.str().substr( 0, str.str().size() - 2 ) + ")";
   }
 
   template <typename GUM_SCALAR>
   template <typename VARTYPE>
   INLINE std::string
-  O3prmBNWriter<GUM_SCALAR>::__extractDiscretizedType(const VARTYPE* var) {
+  O3prmBNWriter<GUM_SCALAR>::__extractDiscretizedType( const VARTYPE* var ) {
     std::stringstream str;
     if ( var->ticks().size() > 3 ) {
       str << "real(" << var->ticks()[0];
-      for (size_t i = 1; i < var->ticks().size() - 1; ++i) {
+      for ( size_t i = 1; i < var->ticks().size() - 1; ++i ) {
         str << ", " << var->ticks()[i];
       }
       str << ")";
       return str.str();
     }
-    GUM_ERROR( InvalidArgument, "discretized variable does not have enough ticks");
+    GUM_ERROR( InvalidArgument,
+               "discretized variable does not have enough ticks" );
   }
 
   template <typename GUM_SCALAR>
   INLINE std::string
-  O3prmBNWriter<GUM_SCALAR>::__extractName(const IBayesNet<GUM_SCALAR>& bn, NodeId node) {
-    if (!bn.variable(node).name().empty()) {
-      return bn.variable(node).name();
+  O3prmBNWriter<GUM_SCALAR>::__extractName( const IBayesNet<GUM_SCALAR>& bn,
+                                            NodeId                       node ) {
+    if ( !bn.variable( node ).name().empty() ) {
+      return bn.variable( node ).name();
     } else {
       std::stringstream str;
       str << node;
