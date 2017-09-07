@@ -185,7 +185,7 @@ IMPROVE_BAYESNET_API(gum::BayesNet);
       writer.write( name, *self );
   };
 
-  std::string loadPRM(std::string name, std::string system="",std::string classpath="",PyObject *l=(PyObject*)0)
+  std::string loadO3PRM(std::string name, std::string system="",std::string classpath="",PyObject *l=(PyObject*)0)
   {
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
@@ -205,6 +205,11 @@ IMPROVE_BAYESNET_API(gum::BayesNet);
         throw(e);
       }
       return "";
+  };
+
+  void saveO3PRM(std::string name) {
+      gum::O3prmBNWriter<GUM_SCALAR> writer;
+      writer.write( name, *self );
   };
 
   std::string loadBIFXML(std::string name, PyObject *l=(PyObject*)0)

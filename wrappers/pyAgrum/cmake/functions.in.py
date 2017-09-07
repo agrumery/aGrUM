@@ -49,7 +49,7 @@ def availableWriteBNExts():
     """
     :return: a string which lists all suffixes for supported output BN file formats.
     """
-    return "bif|dsl|net|bifxml|uai"
+    return "bif|dsl|net|bifxml|o3prm|uai"
 
 def loadBN(filename,listeners=None,verbose=False,**opts):
     """
@@ -72,7 +72,7 @@ def loadBN(filename,listeners=None,verbose=False,**opts):
     elif extension=="NET":
         warns=bn.loadNET(filename,listeners)
     elif extension=="O3PRM":
-        warns=bn.loadPRM(filename,opts.get('system',''),opts.get('classpath',''),listeners)
+        warns=bn.loadO3PRM(filename,opts.get('system',''),opts.get('classpath',''),listeners)
     elif extension=="UAI":
         warns=bn.loadUAI(filename,listeners)
     else:
@@ -99,6 +99,8 @@ def saveBN(bn,filename):
         bn.saveNET(filename)
     elif extension=="UAI":
         bn.saveUAI(filename)
+    elif extension=="O3PRM":
+        bn.saveO3PRM(filename)
     else:
         raise Exception("extension "+filename.split('.')[-1]+" unknown. Please use "+availableWriteBNExts())
 

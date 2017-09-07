@@ -1709,7 +1709,7 @@ SwigPyObject_dealloc(PyObject *v)
       PyObject *res;
 
       /* PyObject_CallFunction() has the potential to silently drop
-         the active active exception.  In cases of unnamed temporary
+         the active exception.  In cases of unnamed temporary
          variable or where we just finished iterating over a generator
          StopIteration will be active right now, and this needs to
          remain true upon return from SwigPyObject_dealloc.  So save
@@ -2479,7 +2479,7 @@ SWIG_Python_ConvertFunctionPtr(PyObject *obj, void **ptr, swig_type_info *ty) {
   }
 }
 
-/* Convert a packed value value */
+/* Convert a packed pointer value */
 
 SWIGRUNTIME int
 SWIG_Python_ConvertPacked(PyObject *obj, void *ptr, size_t sz, swig_type_info *ty) {
@@ -4665,6 +4665,7 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
+#include <agrum/PRM/o3prm/O3prmBNWriter.h>
 #include <agrum/BN/io/UAI/UAIReader.h>
 #include <agrum/BN/io/UAI/UAIWriter.h>
 
@@ -4832,7 +4833,7 @@ namespace swig {
   template <class Type>
   struct traits_asptr {   
     static int asptr(PyObject *obj, Type **val) {
-      Type *p;
+      Type *p = 0;
       swig_type_info *descriptor = type_info<Type>();
       int res = descriptor ? SWIG_ConvertPtr(obj, (void **)&p, descriptor, 0) : SWIG_ERROR;
       if (SWIG_IsOK(res)) {
@@ -4894,14 +4895,14 @@ namespace swig {
 
   template <class Type> 
   struct traits_as<Type, value_category> {
-    static Type as(PyObject *obj, bool throw_error) {
+    static Type as(PyObject *obj) {
       Type v;
       int res = asval(obj, &v);
       if (!obj || !SWIG_IsOK(res)) {
 	if (!PyErr_Occurred()) {
 	  ::SWIG_Error(SWIG_TypeError,  swig::type_name<Type>());
 	}
-	if (throw_error) throw std::invalid_argument("bad type");
+	throw std::invalid_argument("bad type");
       }
       return v;
     }
@@ -4909,7 +4910,7 @@ namespace swig {
 
   template <class Type> 
   struct traits_as<Type, pointer_category> {
-    static Type as(PyObject *obj, bool throw_error) {
+    static Type as(PyObject *obj) {
       Type *v = 0;      
       int res = (obj ? traits_asptr<Type>::asptr(obj, &v) : SWIG_ERROR);
       if (SWIG_IsOK(res) && v) {
@@ -4921,21 +4922,17 @@ namespace swig {
 	  return *v;
 	}
       } else {
-	// Uninitialized return value, no Type() constructor required.
-	static Type *v_def = (Type*) malloc(sizeof(Type));
 	if (!PyErr_Occurred()) {
 	  SWIG_Error(SWIG_TypeError,  swig::type_name<Type>());
 	}
-	if (throw_error) throw std::invalid_argument("bad type");
-	memset(v_def,0,sizeof(Type));
-	return *v_def;
+	throw std::invalid_argument("bad type");
       }
     }
   };
 
   template <class Type> 
   struct traits_as<Type*, pointer_category> {
-    static Type* as(PyObject *obj, bool throw_error) {
+    static Type* as(PyObject *obj) {
       Type *v = 0;      
       int res = (obj ? traits_asptr<Type>::asptr(obj, &v) : SWIG_ERROR);
       if (SWIG_IsOK(res)) {
@@ -4944,15 +4941,14 @@ namespace swig {
 	if (!PyErr_Occurred()) {
 	  SWIG_Error(SWIG_TypeError,  swig::type_name<Type>());
 	}
-	if (throw_error) throw std::invalid_argument("bad type");
-	return 0;
+	throw std::invalid_argument("bad type");
       }
     }
   };
     
   template <class Type>
-  inline Type as(PyObject *obj, bool te = false) {
-    return traits_as<Type, typename traits<Type>::category>::as(obj, te);
+  inline Type as(PyObject *obj) {
+    return traits_as<Type, typename traits<Type>::category>::as(obj);
   }
 
   template <class Type> 
@@ -5572,8 +5568,8 @@ namespace swig
     {
       swig::SwigVar_PyObject item = PySequence_GetItem(_seq, _index);
       try {
-	return swig::as<T>(item, true);
-      } catch (std::exception& e) {
+	return swig::as<T>(item);
+      } catch (const std::invalid_argument& e) {
 	char msg[1024];
 	sprintf(msg, "in sequence element %d ", (int)_index);
 	if (!PyErr_Occurred()) {
@@ -6910,7 +6906,7 @@ SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveNET(gum::BayesNet< double > *self
       gum::NetWriter<double> writer;
       writer.write( name, *self );
   }
-SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadPRM__SWIG_0(gum::BayesNet< double > *self,std::string name,std::string system="",std::string classpath="",PyObject *l=(PyObject *) 0){
+SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadO3PRM__SWIG_0(gum::BayesNet< double > *self,std::string name,std::string system="",std::string classpath="",PyObject *l=(PyObject *) 0){
       std::stringstream stream;
       std::vector<PythonLoadListener> py_listener;
 
@@ -6929,6 +6925,10 @@ SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadPRM__SWIG_0(gum::BayesNet<
         throw(e);
       }
       return "";
+  }
+SWIGINTERN void gum_BayesNet_Sl_double_Sg__saveO3PRM(gum::BayesNet< double > *self,std::string name){
+      gum::O3prmBNWriter<double> writer;
+      writer.write( name, *self );
   }
 SWIGINTERN std::string gum_BayesNet_Sl_double_Sg__loadBIFXML__SWIG_0(gum::BayesNet< double > *self,std::string name,PyObject *l=(PyObject *) 0){
       std::stringstream stream;
@@ -8725,7 +8725,9 @@ SWIGINTERN PyObject *_wrap_SwigPyIterator___eq__(PyObject *SWIGUNUSEDPARM(self),
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -8759,7 +8761,9 @@ SWIGINTERN PyObject *_wrap_SwigPyIterator___ne__(PyObject *SWIGUNUSEDPARM(self),
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -8882,7 +8886,9 @@ SWIGINTERN PyObject *_wrap_SwigPyIterator___add__(PyObject *SWIGUNUSEDPARM(self)
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_swig__SwigPyIterator, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -8923,7 +8929,9 @@ SWIGINTERN PyObject *_wrap_SwigPyIterator___sub____SWIG_0(PyObject *SWIGUNUSEDPA
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_swig__SwigPyIterator, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -8957,7 +8965,9 @@ SWIGINTERN PyObject *_wrap_SwigPyIterator___sub____SWIG_1(PyObject *SWIGUNUSEDPA
   resultobj = SWIG_From_ptrdiff_t(static_cast< ptrdiff_t >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -27051,7 +27061,9 @@ SWIGINTERN PyObject *_wrap_Variable___eq__(PyObject *SWIGUNUSEDPARM(self), PyObj
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -27092,7 +27104,9 @@ SWIGINTERN PyObject *_wrap_Variable___ne__(PyObject *SWIGUNUSEDPARM(self), PyObj
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -27497,7 +27511,9 @@ SWIGINTERN PyObject *_wrap_DiscreteVariable___eq__(PyObject *SWIGUNUSEDPARM(self
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -27538,7 +27554,9 @@ SWIGINTERN PyObject *_wrap_DiscreteVariable___ne__(PyObject *SWIGUNUSEDPARM(self
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -29510,7 +29528,9 @@ SWIGINTERN PyObject *_wrap_Edge___eq__(PyObject *SWIGUNUSEDPARM(self), PyObject 
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -29551,7 +29571,9 @@ SWIGINTERN PyObject *_wrap_Edge___ne__(PyObject *SWIGUNUSEDPARM(self), PyObject 
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -29897,7 +29919,9 @@ SWIGINTERN PyObject *_wrap_Arc___eq__(PyObject *SWIGUNUSEDPARM(self), PyObject *
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -29938,7 +29962,9 @@ SWIGINTERN PyObject *_wrap_Arc___ne__(PyObject *SWIGUNUSEDPARM(self), PyObject *
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -30349,7 +30375,9 @@ SWIGINTERN PyObject *_wrap_DiGraph___eq__(PyObject *SWIGUNUSEDPARM(self), PyObje
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -30390,7 +30418,9 @@ SWIGINTERN PyObject *_wrap_DiGraph___ne__(PyObject *SWIGUNUSEDPARM(self), PyObje
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -32477,7 +32507,9 @@ SWIGINTERN PyObject *_wrap_UndiGraph___eq__(PyObject *SWIGUNUSEDPARM(self), PyOb
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -32518,7 +32550,9 @@ SWIGINTERN PyObject *_wrap_UndiGraph___ne__(PyObject *SWIGUNUSEDPARM(self), PyOb
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -33834,7 +33868,9 @@ SWIGINTERN PyObject *_wrap_MixedGraph___eq__(PyObject *SWIGUNUSEDPARM(self), PyO
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -33875,7 +33911,9 @@ SWIGINTERN PyObject *_wrap_MixedGraph___ne__(PyObject *SWIGUNUSEDPARM(self), PyO
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -35835,7 +35873,9 @@ SWIGINTERN PyObject *_wrap_CliqueGraph___ne__(PyObject *SWIGUNUSEDPARM(self), Py
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -35876,7 +35916,9 @@ SWIGINTERN PyObject *_wrap_CliqueGraph___eq__(PyObject *SWIGUNUSEDPARM(self), Py
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -42394,6 +42436,35 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_DiscretizedVariable_double_ticks(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::DiscretizedVariable< double > *arg1 = (gum::DiscretizedVariable< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:DiscretizedVariable_double_ticks",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__DiscretizedVariableT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DiscretizedVariable_double_ticks" "', argument " "1"" of type '" "gum::DiscretizedVariable< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::DiscretizedVariable< double > * >(argp1);
+  {
+    try {
+      result = (std::vector< double,std::allocator< double > > *) &((gum::DiscretizedVariable< double > const *)arg1)->ticks();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *DiscretizedVariable_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
@@ -43244,7 +43315,9 @@ SWIGINTERN PyObject *_wrap_MultiDimContainer_double___eq__(PyObject *SWIGUNUSEDP
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -43285,7 +43358,9 @@ SWIGINTERN PyObject *_wrap_MultiDimContainer_double___ne__(PyObject *SWIGUNUSEDP
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -44574,7 +44649,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___add__(PyObject *SWIGUNUSEDPARM(sel
   resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -44615,7 +44692,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___sub__(PyObject *SWIGUNUSEDPARM(sel
   resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -44656,7 +44735,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___mul__(PyObject *SWIGUNUSEDPARM(sel
   resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -44697,7 +44778,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___truediv____SWIG_0(PyObject *SWIGUN
   resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -44902,7 +44985,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___eq____SWIG_0(PyObject *SWIGUNUSEDP
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -44943,7 +45028,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___ne____SWIG_0(PyObject *SWIGUNUSEDP
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -45459,7 +45546,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___truediv____SWIG_1(PyObject *SWIGUN
   resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -45545,7 +45634,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___div__(PyObject *SWIGUNUSEDPARM(sel
   resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -45586,7 +45677,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___eq____SWIG_1(PyObject *SWIGUNUSEDP
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -45672,7 +45765,9 @@ SWIGINTERN PyObject *_wrap_Potential_double___ne____SWIG_1(PyObject *SWIGUNUSEDP
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -47672,7 +47767,9 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double___eq__(PyObject *SWIGUNUSEDPARM(self
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -47713,7 +47810,9 @@ SWIGINTERN PyObject *_wrap_IBayesNet_double___ne__(PyObject *SWIGUNUSEDPARM(self
   resultobj = SWIG_From_bool(static_cast< bool >(result));
   return resultobj;
 fail:
-  return NULL;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
 }
 
 
@@ -53455,7 +53554,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNet_double_loadO3PRM__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
   std::string arg2 ;
@@ -53471,17 +53570,17 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_0(PyObject *SWIGUNUSEDP
   PyObject * obj4 = 0 ;
   std::string result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:BayesNet_double_loadPRM",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:BayesNet_double_loadO3PRM",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_loadPRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_loadO3PRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "2"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "2"" of type '" "std::string""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -53490,7 +53589,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_0(PyObject *SWIGUNUSEDP
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj2, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "3"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "3"" of type '" "std::string""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -53499,7 +53598,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_0(PyObject *SWIGUNUSEDP
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj3, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "4"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "4"" of type '" "std::string""'"); 
     }
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -53507,7 +53606,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_0(PyObject *SWIGUNUSEDP
   arg5 = obj4;
   {
     try {
-      result = gum_BayesNet_Sl_double_Sg__loadPRM__SWIG_0(arg1,arg2,arg3,arg4,arg5);
+      result = gum_BayesNet_Sl_double_Sg__loadO3PRM__SWIG_0(arg1,arg2,arg3,arg4,arg5);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -53520,7 +53619,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNet_double_loadO3PRM__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
   std::string arg2 ;
@@ -53534,17 +53633,17 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_1(PyObject *SWIGUNUSEDP
   PyObject * obj3 = 0 ;
   std::string result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOO:BayesNet_double_loadPRM",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:BayesNet_double_loadO3PRM",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_loadPRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_loadO3PRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "2"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "2"" of type '" "std::string""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -53553,7 +53652,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_1(PyObject *SWIGUNUSEDP
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj2, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "3"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "3"" of type '" "std::string""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -53562,14 +53661,14 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_1(PyObject *SWIGUNUSEDP
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj3, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "4"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "4"" of type '" "std::string""'"); 
     }
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
     try {
-      result = gum_BayesNet_Sl_double_Sg__loadPRM__SWIG_0(arg1,arg2,arg3,arg4);
+      result = gum_BayesNet_Sl_double_Sg__loadO3PRM__SWIG_0(arg1,arg2,arg3,arg4);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -53582,7 +53681,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNet_double_loadO3PRM__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
   std::string arg2 ;
@@ -53594,17 +53693,17 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_2(PyObject *SWIGUNUSEDP
   PyObject * obj2 = 0 ;
   std::string result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:BayesNet_double_loadPRM",&obj0,&obj1,&obj2)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:BayesNet_double_loadO3PRM",&obj0,&obj1,&obj2)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_loadPRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_loadO3PRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "2"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "2"" of type '" "std::string""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -53613,14 +53712,14 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_2(PyObject *SWIGUNUSEDP
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj2, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "3"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "3"" of type '" "std::string""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
     try {
-      result = gum_BayesNet_Sl_double_Sg__loadPRM__SWIG_0(arg1,arg2,arg3);
+      result = gum_BayesNet_Sl_double_Sg__loadO3PRM__SWIG_0(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -53633,7 +53732,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNet_double_loadO3PRM__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
   std::string arg2 ;
@@ -53643,24 +53742,24 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM__SWIG_3(PyObject *SWIGUNUSEDP
   PyObject * obj1 = 0 ;
   std::string result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:BayesNet_double_loadPRM",&obj0,&obj1)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OO:BayesNet_double_loadO3PRM",&obj0,&obj1)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_loadPRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_loadO3PRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
   }
   arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadPRM" "', argument " "2"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_loadO3PRM" "', argument " "2"" of type '" "std::string""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
     try {
-      result = gum_BayesNet_Sl_double_Sg__loadPRM__SWIG_0(arg1,arg2);
+      result = gum_BayesNet_Sl_double_Sg__loadO3PRM__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -53673,7 +53772,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_BayesNet_double_loadO3PRM(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[6] = {
     0
@@ -53694,7 +53793,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM(PyObject *self, PyObject *arg
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_BayesNet_double_loadPRM__SWIG_3(self, args);
+        return _wrap_BayesNet_double_loadO3PRM__SWIG_3(self, args);
       }
     }
   }
@@ -53710,7 +53809,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM(PyObject *self, PyObject *arg
         int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_BayesNet_double_loadPRM__SWIG_2(self, args);
+          return _wrap_BayesNet_double_loadO3PRM__SWIG_2(self, args);
         }
       }
     }
@@ -53730,7 +53829,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM(PyObject *self, PyObject *arg
           int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
           _v = SWIG_CheckState(res);
           if (_v) {
-            return _wrap_BayesNet_double_loadPRM__SWIG_1(self, args);
+            return _wrap_BayesNet_double_loadO3PRM__SWIG_1(self, args);
           }
         }
       }
@@ -53753,7 +53852,7 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM(PyObject *self, PyObject *arg
           if (_v) {
             _v = (argv[4] != 0);
             if (_v) {
-              return _wrap_BayesNet_double_loadPRM__SWIG_0(self, args);
+              return _wrap_BayesNet_double_loadO3PRM__SWIG_0(self, args);
             }
           }
         }
@@ -53762,13 +53861,52 @@ SWIGINTERN PyObject *_wrap_BayesNet_double_loadPRM(PyObject *self, PyObject *arg
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'BayesNet_double_loadPRM'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'BayesNet_double_loadO3PRM'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::BayesNet< double >::loadPRM(std::string,std::string,std::string,PyObject *)\n"
-    "    gum::BayesNet< double >::loadPRM(std::string,std::string,std::string)\n"
-    "    gum::BayesNet< double >::loadPRM(std::string,std::string)\n"
-    "    gum::BayesNet< double >::loadPRM(std::string)\n");
+    "    gum::BayesNet< double >::loadO3PRM(std::string,std::string,std::string,PyObject *)\n"
+    "    gum::BayesNet< double >::loadO3PRM(std::string,std::string,std::string)\n"
+    "    gum::BayesNet< double >::loadO3PRM(std::string,std::string)\n"
+    "    gum::BayesNet< double >::loadO3PRM(std::string)\n");
   return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_BayesNet_double_saveO3PRM(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::BayesNet< double > *arg1 = (gum::BayesNet< double > *) 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:BayesNet_double_saveO3PRM",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__BayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "BayesNet_double_saveO3PRM" "', argument " "1"" of type '" "gum::BayesNet< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::BayesNet< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "BayesNet_double_saveO3PRM" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      gum_BayesNet_Sl_double_Sg__saveO3PRM(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
 }
 
 
@@ -86323,6 +86461,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		""},
 	 { (char *)"DiscretizedVariable_double_tick", _wrap_DiscretizedVariable_double_tick, METH_VARARGS, (char *)"DiscretizedVariable_double_tick(self, i) -> double const &"},
+	 { (char *)"DiscretizedVariable_double_ticks", _wrap_DiscretizedVariable_double_ticks, METH_VARARGS, (char *)"DiscretizedVariable_double_ticks(self) -> Vector_double"},
 	 { (char *)"DiscretizedVariable_double_swigregister", DiscretizedVariable_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"delete_MultiDimContainer_double", _wrap_delete_MultiDimContainer_double, METH_VARARGS, (char *)"delete_MultiDimContainer_double(self)"},
 	 { (char *)"MultiDimContainer_double_set", _wrap_MultiDimContainer_double_set, METH_VARARGS, (char *)"MultiDimContainer_double_set(self, i, value)"},
@@ -86652,12 +86791,13 @@ static PyMethodDef SwigMethods[] = {
 		"BayesNet_double_loadNET(self, name) -> std::string\n"
 		""},
 	 { (char *)"BayesNet_double_saveNET", _wrap_BayesNet_double_saveNET, METH_VARARGS, (char *)"BayesNet_double_saveNET(self, name)"},
-	 { (char *)"BayesNet_double_loadPRM", _wrap_BayesNet_double_loadPRM, METH_VARARGS, (char *)"\n"
-		"loadPRM(name, system, classpath, l) -> std::string\n"
-		"loadPRM(name, system, classpath) -> std::string\n"
-		"loadPRM(name, system) -> std::string\n"
-		"BayesNet_double_loadPRM(self, name) -> std::string\n"
+	 { (char *)"BayesNet_double_loadO3PRM", _wrap_BayesNet_double_loadO3PRM, METH_VARARGS, (char *)"\n"
+		"loadO3PRM(name, system, classpath, l) -> std::string\n"
+		"loadO3PRM(name, system, classpath) -> std::string\n"
+		"loadO3PRM(name, system) -> std::string\n"
+		"BayesNet_double_loadO3PRM(self, name) -> std::string\n"
 		""},
+	 { (char *)"BayesNet_double_saveO3PRM", _wrap_BayesNet_double_saveO3PRM, METH_VARARGS, (char *)"BayesNet_double_saveO3PRM(self, name)"},
 	 { (char *)"BayesNet_double_loadBIFXML", _wrap_BayesNet_double_loadBIFXML, METH_VARARGS, (char *)"\n"
 		"loadBIFXML(name, l) -> std::string\n"
 		"BayesNet_double_loadBIFXML(self, name) -> std::string\n"

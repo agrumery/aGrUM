@@ -122,7 +122,8 @@ class SwigPyIterator(_object):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_SwigPyIterator
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def value(self):
         """value(self) -> PyObject *"""
@@ -253,7 +254,8 @@ class JTGenerator(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_JTGenerator
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 JTGenerator_swigregister = _pyAgrum.JTGenerator_swigregister
 JTGenerator_swigregister(JTGenerator)
 
@@ -274,7 +276,8 @@ class PythonBNListener(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_PythonBNListener
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def whenNodeAdded(self, source, id):
         """whenNodeAdded(self, source, id)"""
@@ -345,7 +348,8 @@ class PythonLoadListener(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_PythonLoadListener
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 PythonLoadListener_swigregister = _pyAgrum.PythonLoadListener_swigregister
 PythonLoadListener_swigregister(PythonLoadListener)
 
@@ -370,7 +374,8 @@ class PythonApproximationListener(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_PythonApproximationListener
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def whenProgress(self, src, step, error, duration):
         """whenProgress(self, src, step, error, duration)"""
@@ -421,7 +426,8 @@ class BNGenerator(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_BNGenerator
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 BNGenerator_swigregister = _pyAgrum.BNGenerator_swigregister
 BNGenerator_swigregister(BNGenerator)
 
@@ -454,7 +460,8 @@ class IDGenerator(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_IDGenerator
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 IDGenerator_swigregister = _pyAgrum.IDGenerator_swigregister
 IDGenerator_swigregister(IDGenerator)
 
@@ -475,7 +482,8 @@ class PRMexplorer(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_PRMexplorer
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def load(self, *args):
         """
@@ -631,7 +639,7 @@ PRMexplorer_swigregister = _pyAgrum.PRMexplorer_swigregister
 PRMexplorer_swigregister(PRMexplorer)
 
 class Vector_double(_object):
-    """Proxy of C++ std::vector<(double)> class."""
+    """Proxy of C++ std::vector< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_double, name, value)
@@ -831,12 +839,13 @@ class Vector_double(_object):
         return _pyAgrum.Vector_double_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 Vector_double_swigregister = _pyAgrum.Vector_double_swigregister
 Vector_double_swigregister(Vector_double)
 
 class Vector_int(_object):
-    """Proxy of C++ std::vector<(unsigned int)> class."""
+    """Proxy of C++ std::vector< unsigned int > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_int, name, value)
@@ -1036,12 +1045,13 @@ class Vector_int(_object):
         return _pyAgrum.Vector_int_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_int
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 Vector_int_swigregister = _pyAgrum.Vector_int_swigregister
 Vector_int_swigregister(Vector_int)
 
 class Vector_string(_object):
-    """Proxy of C++ std::vector<(std::string)> class."""
+    """Proxy of C++ std::vector< std::string > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_string, name, value)
@@ -1241,7 +1251,8 @@ class Vector_string(_object):
         return _pyAgrum.Vector_string_capacity(self)
 
     __swig_destroy__ = _pyAgrum.delete_Vector_string
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 Vector_string_swigregister = _pyAgrum.Vector_string_swigregister
 Vector_string_swigregister(Vector_string)
 
@@ -1262,7 +1273,8 @@ class SetIteratorStaticEnd(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_SetIteratorStaticEnd
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 SetIteratorStaticEnd_swigregister = _pyAgrum.SetIteratorStaticEnd_swigregister
 SetIteratorStaticEnd_swigregister(SetIteratorStaticEnd)
 
@@ -1288,7 +1300,8 @@ class GumException(Exception):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_GumException
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def __str__(self):
         """__str__(self) -> std::string const"""
@@ -1340,7 +1353,8 @@ class IdError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_IdError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 IdError_swigregister = _pyAgrum.IdError_swigregister
 IdError_swigregister(IdError)
 
@@ -1368,7 +1382,8 @@ class FatalError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_FatalError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 FatalError_swigregister = _pyAgrum.FatalError_swigregister
 FatalError_swigregister(FatalError)
 
@@ -1396,7 +1411,8 @@ class UndefinedIteratorValue(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_UndefinedIteratorValue
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 UndefinedIteratorValue_swigregister = _pyAgrum.UndefinedIteratorValue_swigregister
 UndefinedIteratorValue_swigregister(UndefinedIteratorValue)
 
@@ -1424,7 +1440,8 @@ class UndefinedIteratorKey(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_UndefinedIteratorKey
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 UndefinedIteratorKey_swigregister = _pyAgrum.UndefinedIteratorKey_swigregister
 UndefinedIteratorKey_swigregister(UndefinedIteratorKey)
 
@@ -1452,7 +1469,8 @@ class NullElement(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_NullElement
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 NullElement_swigregister = _pyAgrum.NullElement_swigregister
 NullElement_swigregister(NullElement)
 
@@ -1480,7 +1498,8 @@ class UndefinedElement(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_UndefinedElement
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 UndefinedElement_swigregister = _pyAgrum.UndefinedElement_swigregister
 UndefinedElement_swigregister(UndefinedElement)
 
@@ -1508,7 +1527,8 @@ class SizeError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_SizeError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 SizeError_swigregister = _pyAgrum.SizeError_swigregister
 SizeError_swigregister(SizeError)
 
@@ -1536,7 +1556,8 @@ class EmptySet(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_EmptySet
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 EmptySet_swigregister = _pyAgrum.EmptySet_swigregister
 EmptySet_swigregister(EmptySet)
 
@@ -1564,7 +1585,8 @@ class InvalidArgumentsNumber(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_InvalidArgumentsNumber
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 InvalidArgumentsNumber_swigregister = _pyAgrum.InvalidArgumentsNumber_swigregister
 InvalidArgumentsNumber_swigregister(InvalidArgumentsNumber)
 
@@ -1592,7 +1614,8 @@ class InvalidArgument(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_InvalidArgument
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 InvalidArgument_swigregister = _pyAgrum.InvalidArgument_swigregister
 InvalidArgument_swigregister(InvalidArgument)
 
@@ -1620,7 +1643,8 @@ class IOError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_IOError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 IOError_swigregister = _pyAgrum.IOError_swigregister
 IOError_swigregister(IOError)
 
@@ -1648,7 +1672,8 @@ class FormatNotFound(IOError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_FormatNotFound
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 FormatNotFound_swigregister = _pyAgrum.FormatNotFound_swigregister
 FormatNotFound_swigregister(FormatNotFound)
 
@@ -1676,7 +1701,8 @@ class OperationNotAllowed(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_OperationNotAllowed
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 OperationNotAllowed_swigregister = _pyAgrum.OperationNotAllowed_swigregister
 OperationNotAllowed_swigregister(OperationNotAllowed)
 
@@ -1704,7 +1730,8 @@ class NotFound(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_NotFound
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 NotFound_swigregister = _pyAgrum.NotFound_swigregister
 NotFound_swigregister(NotFound)
 
@@ -1732,7 +1759,8 @@ class ReferenceError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_ReferenceError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 ReferenceError_swigregister = _pyAgrum.ReferenceError_swigregister
 ReferenceError_swigregister(ReferenceError)
 
@@ -1760,7 +1788,8 @@ class OutOfBounds(ReferenceError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_OutOfBounds
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 OutOfBounds_swigregister = _pyAgrum.OutOfBounds_swigregister
 OutOfBounds_swigregister(OutOfBounds)
 
@@ -1788,7 +1817,8 @@ class OutOfLowerBound(OutOfBounds):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_OutOfLowerBound
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 OutOfLowerBound_swigregister = _pyAgrum.OutOfLowerBound_swigregister
 OutOfLowerBound_swigregister(OutOfLowerBound)
 
@@ -1816,7 +1846,8 @@ class OutOfUpperBound(OutOfBounds):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_OutOfUpperBound
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 OutOfUpperBound_swigregister = _pyAgrum.OutOfUpperBound_swigregister
 OutOfUpperBound_swigregister(OutOfUpperBound)
 
@@ -1844,7 +1875,8 @@ class DuplicateElement(ReferenceError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_DuplicateElement
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 DuplicateElement_swigregister = _pyAgrum.DuplicateElement_swigregister
 DuplicateElement_swigregister(DuplicateElement)
 
@@ -1872,7 +1904,8 @@ class DuplicateLabel(ReferenceError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_DuplicateLabel
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 DuplicateLabel_swigregister = _pyAgrum.DuplicateLabel_swigregister
 DuplicateLabel_swigregister(DuplicateLabel)
 
@@ -1900,7 +1933,8 @@ class GraphError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_GraphError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 GraphError_swigregister = _pyAgrum.GraphError_swigregister
 GraphError_swigregister(GraphError)
 
@@ -1928,7 +1962,8 @@ class NoNeighbour(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_NoNeighbour
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 NoNeighbour_swigregister = _pyAgrum.NoNeighbour_swigregister
 NoNeighbour_swigregister(NoNeighbour)
 
@@ -1956,7 +1991,8 @@ class NoParent(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_NoParent
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 NoParent_swigregister = _pyAgrum.NoParent_swigregister
 NoParent_swigregister(NoParent)
 
@@ -1984,7 +2020,8 @@ class NoChild(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_NoChild
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 NoChild_swigregister = _pyAgrum.NoChild_swigregister
 NoChild_swigregister(NoChild)
 
@@ -2012,7 +2049,8 @@ class InvalidEdge(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_InvalidEdge
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 InvalidEdge_swigregister = _pyAgrum.InvalidEdge_swigregister
 InvalidEdge_swigregister(InvalidEdge)
 
@@ -2040,7 +2078,8 @@ class InvalidArc(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_InvalidArc
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 InvalidArc_swigregister = _pyAgrum.InvalidArc_swigregister
 InvalidArc_swigregister(InvalidArc)
 
@@ -2068,7 +2107,8 @@ class InvalidNode(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_InvalidNode
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 InvalidNode_swigregister = _pyAgrum.InvalidNode_swigregister
 InvalidNode_swigregister(InvalidNode)
 
@@ -2096,7 +2136,8 @@ class EmptyBSTree(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_EmptyBSTree
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 EmptyBSTree_swigregister = _pyAgrum.EmptyBSTree_swigregister
 EmptyBSTree_swigregister(EmptyBSTree)
 
@@ -2124,7 +2165,8 @@ class DefaultInLabel(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_DefaultInLabel
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 DefaultInLabel_swigregister = _pyAgrum.DefaultInLabel_swigregister
 DefaultInLabel_swigregister(DefaultInLabel)
 
@@ -2152,7 +2194,8 @@ class InvalidDirectedCycle(GraphError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_InvalidDirectedCycle
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 InvalidDirectedCycle_swigregister = _pyAgrum.InvalidDirectedCycle_swigregister
 InvalidDirectedCycle_swigregister(InvalidDirectedCycle)
 
@@ -2180,7 +2223,8 @@ class CPTError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_CPTError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 CPTError_swigregister = _pyAgrum.CPTError_swigregister
 CPTError_swigregister(CPTError)
 
@@ -2208,7 +2252,8 @@ class CPTNoSumTo1(CPTError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_CPTNoSumTo1
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 CPTNoSumTo1_swigregister = _pyAgrum.CPTNoSumTo1_swigregister
 CPTNoSumTo1_swigregister(CPTNoSumTo1)
 
@@ -2236,7 +2281,8 @@ class IncompatibleEvidence(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_IncompatibleEvidence
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 IncompatibleEvidence_swigregister = _pyAgrum.IncompatibleEvidence_swigregister
 IncompatibleEvidence_swigregister(IncompatibleEvidence)
 
@@ -2264,7 +2310,8 @@ class FactoryError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_FactoryError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 FactoryError_swigregister = _pyAgrum.FactoryError_swigregister
 FactoryError_swigregister(FactoryError)
 
@@ -2292,7 +2339,8 @@ class FactoryInvalidState(FactoryError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_FactoryInvalidState
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 FactoryInvalidState_swigregister = _pyAgrum.FactoryInvalidState_swigregister
 FactoryInvalidState_swigregister(FactoryInvalidState)
 
@@ -2320,7 +2368,8 @@ class WrongType(FactoryError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_WrongType
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 WrongType_swigregister = _pyAgrum.WrongType_swigregister
 WrongType_swigregister(WrongType)
 
@@ -2348,7 +2397,8 @@ class WrongClassElement(FactoryError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_WrongClassElement
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 WrongClassElement_swigregister = _pyAgrum.WrongClassElement_swigregister
 WrongClassElement_swigregister(WrongClassElement)
 
@@ -2376,7 +2426,8 @@ class TypeError(FactoryError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_TypeError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 TypeError_swigregister = _pyAgrum.TypeError_swigregister
 TypeError_swigregister(TypeError)
 
@@ -2404,7 +2455,8 @@ class LearningError(GumException):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_LearningError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 LearningError_swigregister = _pyAgrum.LearningError_swigregister
 LearningError_swigregister(LearningError)
 
@@ -2432,7 +2484,8 @@ class IncompatibleScoreApriori(LearningError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_IncompatibleScoreApriori
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 IncompatibleScoreApriori_swigregister = _pyAgrum.IncompatibleScoreApriori_swigregister
 IncompatibleScoreApriori_swigregister(IncompatibleScoreApriori)
 
@@ -2460,7 +2513,8 @@ class PossiblyIncompatibleScoreApriori(LearningError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_PossiblyIncompatibleScoreApriori
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 PossiblyIncompatibleScoreApriori_swigregister = _pyAgrum.PossiblyIncompatibleScoreApriori_swigregister
 PossiblyIncompatibleScoreApriori_swigregister(PossiblyIncompatibleScoreApriori)
 
@@ -2488,7 +2542,8 @@ class DatabaseError(LearningError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_DatabaseError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 DatabaseError_swigregister = _pyAgrum.DatabaseError_swigregister
 DatabaseError_swigregister(DatabaseError)
 
@@ -2516,7 +2571,8 @@ class MissingVariableInDatabase(LearningError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_MissingVariableInDatabase
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 MissingVariableInDatabase_swigregister = _pyAgrum.MissingVariableInDatabase_swigregister
 MissingVariableInDatabase_swigregister(MissingVariableInDatabase)
 
@@ -2544,7 +2600,8 @@ class UnknownLabelInDatabase(LearningError):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_UnknownLabelInDatabase
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 UnknownLabelInDatabase_swigregister = _pyAgrum.UnknownLabelInDatabase_swigregister
 UnknownLabelInDatabase_swigregister(UnknownLabelInDatabase)
 
@@ -2582,7 +2639,8 @@ class SyntaxError(IOError):
         return _pyAgrum.SyntaxError_line(self)
 
     __swig_destroy__ = _pyAgrum.delete_SyntaxError
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 SyntaxError_swigregister = _pyAgrum.SyntaxError_swigregister
 SyntaxError_swigregister(SyntaxError)
 
@@ -2660,7 +2718,8 @@ class Variable(_object):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_Variable
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def clone(self):
         """clone(self) -> Variable"""
@@ -2718,7 +2777,8 @@ class DiscreteVariable(Variable):
     VarType_Labelized = _pyAgrum.DiscreteVariable_VarType_Labelized
     VarType_Range = _pyAgrum.DiscreteVariable_VarType_Range
     __swig_destroy__ = _pyAgrum.delete_DiscreteVariable
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def clone(self):
         """clone(self) -> DiscreteVariable"""
@@ -2863,7 +2923,8 @@ class LabelizedVariable(DiscreteVariable):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_LabelizedVariable
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def clone(self):
         """clone(self) -> DiscreteVariable"""
@@ -2958,7 +3019,8 @@ class RangeVariable(DiscreteVariable):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_RangeVariable
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def clone(self):
         """clone(self) -> DiscreteVariable"""
@@ -3061,7 +3123,8 @@ class Edge(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_Edge
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def other(self, id):
         """
@@ -3162,7 +3225,8 @@ class Arc(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_Arc
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def tail(self):
         """
@@ -3291,7 +3355,8 @@ class DiGraph(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_DiGraph
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def __eq__(self, g):
         """__eq__(self, g) -> bool"""
@@ -3480,7 +3545,8 @@ class DAG(DiGraph):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_DAG
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def addArc(self, *args):
         """
@@ -3546,7 +3612,8 @@ class UndiGraph(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_UndiGraph
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def __eq__(self, g):
         """__eq__(self, g) -> bool"""
@@ -3690,7 +3757,8 @@ class MixedGraph(UndiGraph, DiGraph):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_MixedGraph
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def __eq__(self, g):
         """__eq__(self, g) -> bool"""
@@ -3852,7 +3920,8 @@ class CliqueGraph(UndiGraph):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_CliqueGraph
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def addEdge(self, first, second):
         """addEdge(self, first, second)"""
@@ -3983,7 +4052,8 @@ class Instantiation(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_Instantiation
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def nbrDim(self):
         """nbrDim(self) -> gum::Idx"""
@@ -4271,7 +4341,8 @@ class DAGmodel(_object):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_DAGmodel
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def property(self, name):
         """property(self, name) -> std::string const &"""
@@ -4391,7 +4462,8 @@ class EssentialGraph(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_EssentialGraph
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def mixedGraph(self):
         """mixedGraph(self) -> MixedGraph"""
@@ -4470,7 +4542,8 @@ class MarkovBlanket(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_MarkovBlanket
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def mb(self):
         """mb(self) -> DiGraph"""
@@ -4539,7 +4612,8 @@ class ApproximationScheme(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_ApproximationScheme
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def setEpsilon(self, eps):
         """setEpsilon(self, eps)"""
@@ -4790,7 +4864,8 @@ class DiscretizedVariable_double(DiscreteVariable):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_DiscretizedVariable_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def clone(self):
         """clone(self) -> DiscreteVariable"""
@@ -4856,11 +4931,16 @@ class DiscretizedVariable_double(DiscreteVariable):
         """tick(self, i) -> double const &"""
         return _pyAgrum.DiscretizedVariable_double_tick(self, i)
 
+
+    def ticks(self):
+        """ticks(self) -> Vector_double"""
+        return _pyAgrum.DiscretizedVariable_double_ticks(self)
+
 DiscretizedVariable_double_swigregister = _pyAgrum.DiscretizedVariable_double_swigregister
 DiscretizedVariable_double_swigregister(DiscretizedVariable_double)
 
 class MultiDimContainer_double(_object):
-    """Proxy of C++ gum::MultiDimContainer<(double)> class."""
+    """Proxy of C++ gum::MultiDimContainer< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, MultiDimContainer_double, name, value)
@@ -4871,7 +4951,8 @@ class MultiDimContainer_double(_object):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_MultiDimContainer_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def set(self, i, value):
         """set(self, i, value)"""
@@ -4981,7 +5062,7 @@ MultiDimContainer_double_swigregister = _pyAgrum.MultiDimContainer_double_swigre
 MultiDimContainer_double_swigregister(MultiDimContainer_double)
 
 class Potential_double(_object):
-    """Proxy of C++ gum::Potential<(double)> class."""
+    """Proxy of C++ gum::Potential< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Potential_double, name, value)
@@ -5008,7 +5089,8 @@ class Potential_double(_object):
 
 
     __swig_destroy__ = _pyAgrum.delete_Potential_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def newFactory(self):
         """newFactory(self) -> Potential_double"""
@@ -5461,7 +5543,7 @@ Potential_double_swigregister = _pyAgrum.Potential_double_swigregister
 Potential_double_swigregister(Potential_double)
 
 class UtilityTable_double(_object):
-    """Proxy of C++ gum::UtilityTable<(double)> class."""
+    """Proxy of C++ gum::UtilityTable< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, UtilityTable_double, name, value)
@@ -5469,7 +5551,8 @@ class UtilityTable_double(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, UtilityTable_double, name)
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_UtilityTable_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def __init__(self, *args):
         """
@@ -5700,7 +5783,7 @@ UtilityTable_double_swigregister = _pyAgrum.UtilityTable_double_swigregister
 UtilityTable_double_swigregister(UtilityTable_double)
 
 class IBayesNet_double(DAGmodel):
-    """Proxy of C++ gum::IBayesNet<(double)> class."""
+    """Proxy of C++ gum::IBayesNet< double > class."""
 
     __swig_setmethods__ = {}
     for _s in [DAGmodel]:
@@ -5715,7 +5798,8 @@ class IBayesNet_double(DAGmodel):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_IBayesNet_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def cpt(self, varId):
         """cpt(self, varId) -> Potential_double"""
@@ -5885,7 +5969,8 @@ class BayesNet_double(IBayesNet_double):
 
     fastPrototype = staticmethod(fastPrototype)
     __swig_destroy__ = _pyAgrum.delete_BayesNet_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def __init__(self, *args):
         """
@@ -6226,14 +6311,19 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_saveNET(self, name)
 
 
-    def loadPRM(self, *args):
+    def loadO3PRM(self, *args):
         """
-        loadPRM(self, name, system, classpath, l) -> std::string
-        loadPRM(self, name, system, classpath) -> std::string
-        loadPRM(self, name, system) -> std::string
-        loadPRM(self, name) -> std::string
+        loadO3PRM(self, name, system, classpath, l) -> std::string
+        loadO3PRM(self, name, system, classpath) -> std::string
+        loadO3PRM(self, name, system) -> std::string
+        loadO3PRM(self, name) -> std::string
         """
-        return _pyAgrum.BayesNet_double_loadPRM(self, *args)
+        return _pyAgrum.BayesNet_double_loadO3PRM(self, *args)
+
+
+    def saveO3PRM(self, name):
+        """saveO3PRM(self, name)"""
+        return _pyAgrum.BayesNet_double_saveO3PRM(self, name)
 
 
     def loadBIFXML(self, *args):
@@ -6275,7 +6365,7 @@ def BayesNet_double_fastPrototype(dotlike, domainSize=2):
     return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
 
 class BayesNetInference_double(_object):
-    """Proxy of C++ gum::BayesNetInference<(double)> class."""
+    """Proxy of C++ gum::BayesNetInference< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BayesNetInference_double, name, value)
@@ -6290,7 +6380,8 @@ class BayesNetInference_double(_object):
     StateOfInference_InferenceReady = _pyAgrum.BayesNetInference_double_StateOfInference_InferenceReady
     StateOfInference_Done = _pyAgrum.BayesNetInference_double_StateOfInference_Done
     __swig_destroy__ = _pyAgrum.delete_BayesNetInference_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def setBN(self, bn):
         """setBN(self, bn)"""
@@ -6450,7 +6541,7 @@ BayesNetInference_double_swigregister = _pyAgrum.BayesNetInference_double_swigre
 BayesNetInference_double_swigregister(BayesNetInference_double)
 
 class LazyPropagation_double(_object):
-    """Proxy of C++ gum::LazyPropagation<(double)> class."""
+    """Proxy of C++ gum::LazyPropagation< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LazyPropagation_double, name, value)
@@ -6471,7 +6562,8 @@ class LazyPropagation_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_LazyPropagation_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def setTriangulation(self, new_triangulation):
         """setTriangulation(self, new_triangulation)"""
@@ -6756,7 +6848,7 @@ LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregist
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
 class ShaferShenoyInference_double(_object):
-    """Proxy of C++ gum::ShaferShenoyInference<(double)> class."""
+    """Proxy of C++ gum::ShaferShenoyInference< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, ShaferShenoyInference_double, name, value)
@@ -6776,7 +6868,8 @@ class ShaferShenoyInference_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_ShaferShenoyInference_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def setTriangulation(self, new_triangulation):
         """setTriangulation(self, new_triangulation)"""
@@ -7056,7 +7149,7 @@ ShaferShenoyInference_double_swigregister = _pyAgrum.ShaferShenoyInference_doubl
 ShaferShenoyInference_double_swigregister(ShaferShenoyInference_double)
 
 class VariableElimination_double(_object):
-    """Proxy of C++ gum::VariableElimination<(double)> class."""
+    """Proxy of C++ gum::VariableElimination< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, VariableElimination_double, name, value)
@@ -7076,7 +7169,8 @@ class VariableElimination_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_VariableElimination_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def setTriangulation(self, new_triangulation):
         """setTriangulation(self, new_triangulation)"""
@@ -7318,7 +7412,7 @@ VariableElimination_double_swigregister = _pyAgrum.VariableElimination_double_sw
 VariableElimination_double_swigregister(VariableElimination_double)
 
 class GibbsInference_double(ApproximationScheme):
-    """Proxy of C++ gum::GibbsInference<(double)> class."""
+    """Proxy of C++ gum::GibbsInference< double > class."""
 
     __swig_setmethods__ = {}
     for _s in [ApproximationScheme]:
@@ -7338,7 +7432,8 @@ class GibbsInference_double(ApproximationScheme):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_GibbsInference_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
@@ -7630,7 +7725,7 @@ GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
 GibbsInference_double_swigregister(GibbsInference_double)
 
 class LoopyBeliefPropagation_double(ApproximationScheme):
-    """Proxy of C++ gum::LoopyBeliefPropagation<(double)> class."""
+    """Proxy of C++ gum::LoopyBeliefPropagation< double > class."""
 
     __swig_setmethods__ = {}
     for _s in [ApproximationScheme]:
@@ -7650,7 +7745,8 @@ class LoopyBeliefPropagation_double(ApproximationScheme):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_LoopyBeliefPropagation_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def setEvidence(self, evidces):
         if not isinstance(evidces, dict):
@@ -7942,7 +8038,7 @@ LoopyBeliefPropagation_double_swigregister = _pyAgrum.LoopyBeliefPropagation_dou
 LoopyBeliefPropagation_double_swigregister(LoopyBeliefPropagation_double)
 
 class BruteForceKL_double(_object):
-    """Proxy of C++ gum::BruteForceKL<(double)> class."""
+    """Proxy of C++ gum::BruteForceKL< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BruteForceKL_double, name, value)
@@ -7961,7 +8057,8 @@ class BruteForceKL_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_BruteForceKL_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def compute(self):
         """compute(self) -> PyObject *"""
@@ -7971,7 +8068,7 @@ BruteForceKL_double_swigregister = _pyAgrum.BruteForceKL_double_swigregister
 BruteForceKL_double_swigregister(BruteForceKL_double)
 
 class GibbsKL_double(ApproximationScheme):
-    """Proxy of C++ gum::GibbsKL<(double)> class."""
+    """Proxy of C++ gum::GibbsKL< double > class."""
 
     __swig_setmethods__ = {}
     for _s in [ApproximationScheme]:
@@ -7994,7 +8091,8 @@ class GibbsKL_double(ApproximationScheme):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_GibbsKL_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def compute(self):
         """compute(self) -> PyObject *"""
@@ -8099,7 +8197,7 @@ GibbsKL_double_swigregister = _pyAgrum.GibbsKL_double_swigregister
 GibbsKL_double_swigregister(GibbsKL_double)
 
 class CredalNet_double(_object):
-    """Proxy of C++ gum::credal::CredalNet<(double)> class."""
+    """Proxy of C++ gum::credal::CredalNet< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CredalNet_double, name, value)
@@ -8125,7 +8223,8 @@ class CredalNet_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_CredalNet_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def addNode(self, name, card):
         """addNode(self, name, card) -> gum::NodeId"""
@@ -8293,7 +8392,7 @@ CredalNet_double_swigregister = _pyAgrum.CredalNet_double_swigregister
 CredalNet_double_swigregister(CredalNet_double)
 
 class CNMonteCarloSampling_double(_object):
-    """Proxy of C++ gum::credal::CNMonteCarloSampling<(double)> class."""
+    """Proxy of C++ gum::credal::CNMonteCarloSampling< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CNMonteCarloSampling_double, name, value)
@@ -8309,7 +8408,8 @@ class CNMonteCarloSampling_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_CNMonteCarloSampling_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def makeInference(self):
         """makeInference(self)"""
@@ -8455,7 +8555,7 @@ CNMonteCarloSampling_double_swigregister = _pyAgrum.CNMonteCarloSampling_double_
 CNMonteCarloSampling_double_swigregister(CNMonteCarloSampling_double)
 
 class CNLoopyPropagation_double(_object):
-    """Proxy of C++ gum::credal::CNLoopyPropagation<(double)> class."""
+    """Proxy of C++ gum::credal::CNLoopyPropagation< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CNLoopyPropagation_double, name, value)
@@ -8497,7 +8597,8 @@ class CNLoopyPropagation_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_CNLoopyPropagation_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def insertEvidenceFile(self, path):
         """insertEvidenceFile(self, path)"""
@@ -8638,7 +8739,7 @@ CNLoopyPropagation_double_swigregister = _pyAgrum.CNLoopyPropagation_double_swig
 CNLoopyPropagation_double_swigregister(CNLoopyPropagation_double)
 
 class InfluenceDiagram_double(DAGmodel):
-    """Proxy of C++ gum::InfluenceDiagram<(double)> class."""
+    """Proxy of C++ gum::InfluenceDiagram< double > class."""
 
     __swig_setmethods__ = {}
     for _s in [DAGmodel]:
@@ -8650,7 +8751,8 @@ class InfluenceDiagram_double(DAGmodel):
     __getattr__ = lambda self, name: _swig_getattr(self, InfluenceDiagram_double, name)
     __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagram_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def __init__(self, *args):
         """
@@ -8866,7 +8968,7 @@ InfluenceDiagram_double_swigregister = _pyAgrum.InfluenceDiagram_double_swigregi
 InfluenceDiagram_double_swigregister(InfluenceDiagram_double)
 
 class InfluenceDiagramInference_double(_object):
-    """Proxy of C++ gum::InfluenceDiagramInference<(double)> class."""
+    """Proxy of C++ gum::InfluenceDiagramInference< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, InfluenceDiagramInference_double, name, value)
@@ -8882,7 +8984,8 @@ class InfluenceDiagramInference_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagramInference_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def makeInference(self):
         """makeInference(self)"""
@@ -9006,7 +9109,7 @@ InfluenceDiagramInference_double_swigregister = _pyAgrum.InfluenceDiagramInferen
 InfluenceDiagramInference_double_swigregister(InfluenceDiagramInference_double)
 
 class BNLearner_double(_object):
-    """Proxy of C++ gum::learning::BNLearner<(double)> class."""
+    """Proxy of C++ gum::learning::BNLearner< double > class."""
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BNLearner_double, name, value)
@@ -9031,7 +9134,8 @@ class BNLearner_double(_object):
         except __builtin__.Exception:
             self.this = this
     __swig_destroy__ = _pyAgrum.delete_BNLearner_double
-    __del__ = lambda self: None
+    def __del__(self):
+        return None
 
     def learnBN(self):
         """learnBN(self) -> BayesNet_double"""

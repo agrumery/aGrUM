@@ -9,7 +9,8 @@ interface generator."
 %include "docs.i"
 
 #pragma SWIG nowarn=341,342 // The 'using' keyword in type aliasing is not fully supported yet.
-#pragma SWIG nowarn=320 // Explicit template instantiation ignored.
+#pragma SWIG nowarn=320     // Explicit template instantiation ignored.
+
 
 %begin %{
 #include <cmath>
@@ -31,8 +32,9 @@ interface generator."
 //////////////////////////////////////////////////////////////////
 /* declaration of code modifiers for 'pythonification' of aGrUM */
 //////////////////////////////////////////////////////////////////
-%include "pythonize.i"
 %include "exceptions.i"
+%include "pythonize.i"
+
 
 
 //////////////////////////////////////////////////////////////////
@@ -97,3 +99,4 @@ InfluenceDiagramInference = InfluenceDiagramInference_double
 BNLearner =  BNLearner_double
 %}
 
+ // Explicit template instantiation ignored.

@@ -73,6 +73,7 @@
 #include <agrum/BN/io/BIFXML/BIFXMLBNReader.h>
 #include <agrum/BN/io/BIFXML/BIFXMLBNWriter.h>
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
+#include <agrum/PRM/o3prm/O3prmBNWriter.h>
 #include <agrum/BN/io/UAI/UAIReader.h>
 #include <agrum/BN/io/UAI/UAIWriter.h>
 
