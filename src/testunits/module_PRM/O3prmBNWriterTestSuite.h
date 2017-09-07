@@ -119,13 +119,13 @@ namespace gum_tests {
         const auto& cpt_1 = bn->cpt( node );
         auto        i = gum::Instantiation( cpt_1 );
 
-        const auto& cpt_2 = bn2.cpt( "baye." + name );
+        const auto& cpt_2 = bn2.cpt( name );
         auto        j = gum::Instantiation( cpt_2 );
         TS_ASSERT_EQUALS( i.domainSize(), j.domainSize() );
         if ( i.domainSize() == j.domainSize() ) {
           for ( i.setFirst(); !i.end(); i.inc() ) {
             for ( auto i_var : i.variablesSequence() ) {
-              const auto& j_var = bn2.variable( "baye." + i_var->name() );
+              const auto& j_var = bn2.variable( i_var->name() );
               j.chgVal( j_var, i.val( *i_var ) );
             }
             TS_ASSERT_DELTA( cpt_1[i], cpt_2[j], 1e-6 );

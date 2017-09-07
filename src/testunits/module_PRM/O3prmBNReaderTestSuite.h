@@ -143,7 +143,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS( res, (gum::Size)0 );
         TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)1 );  // no system
         for ( auto n : bn.nodes() ) {
-          TS_ASSERT( bn.variable( n ).name().find( "." ) != std::string::npos );
+          TS_ASSERT( bn.variable( n ).name().find( "." ) == std::string::npos );
         }
       }
       {

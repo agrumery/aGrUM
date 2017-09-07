@@ -129,7 +129,7 @@ namespace gum {
         const std::string& nn = __bn->variable( node ).name();
         __bn->variable( node ).setDescription( nn );
 
-        // trying to simplify the name
+        // trying to simplify the
         auto start = nn.find_first_of( '(' );
         auto end = nn.find_first_of( ')' );
         if ( 0 < start && start < end && end < nn.size() ) {
@@ -137,7 +137,8 @@ namespace gum {
           auto type = nn.substr( start + 1, end - start - 1 );
           auto name = nn.substr( end + 1, std::string::npos );
 
-          std::string newNameRadical = __getVariableName( path, type, name );
+          std::string newNameRadical =
+              __getVariableName( path, type, name, instanceName );
 
           std::string newName = newNameRadical;
           // forcing newName to be unique
@@ -148,7 +149,6 @@ namespace gum {
 
           names.insert( newName );
           __bn->changeVariableName( node, newName );
-
         } else {
           ParseError warn(
               false, "Name " + nn + " cannot be simplified.", __filename, 0 );
