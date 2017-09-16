@@ -29,8 +29,8 @@
 #include <utility>
 
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
-#include <agrum/BN/inference/evidenceInference.h>
-#include <agrum/BN/inference/jointTargetedInference.h>
+#include <agrum/BN/inference/tools/evidenceInference.h>
+#include <agrum/BN/inference/tools/jointTargetedInference.h>
 #include <agrum/config.h>
 #include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 

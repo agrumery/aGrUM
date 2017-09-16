@@ -32,7 +32,7 @@
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/relevantPotentialsFinderType.h>
+#include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/variables/labelizedVariable.h>
@@ -53,7 +53,7 @@ namespace gum_tests {
     gum::NodeId           i1, i2, i3, i4, i5;
 
     float __epsilon{1e-6f};
-    
+
     void setUp() {
       bn = new gum::BayesNet<float>();
 
@@ -96,7 +96,7 @@ namespace gum_tests {
       return true;
     }
 
-    
+
     // Testing when there is no evidence
     void testCreationAndInference() {
       try {
@@ -239,7 +239,7 @@ namespace gum_tests {
 
     void testSmartManagementOfJointTarget() {
       fill( *bn );
-      
+
       gum::ShaferShenoyInference<float> inf( bn );
       inf.addJointTarget( gum::NodeSet{0, 1, 2} );
       inf.addJointTarget( gum::NodeSet{2, 3} );
@@ -818,7 +818,7 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
     }
-    
+
 
     private:
     // Builds a BN to tst the inference

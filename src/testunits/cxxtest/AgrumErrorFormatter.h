@@ -19,8 +19,8 @@
 #include <agrum/config.h>
 #include <agrum/core/timer.h>
 
-#include <cxxtest/TestRunner.h>
 #include <cxxtest/TestListener.h>
+#include <cxxtest/TestRunner.h>
 #include <cxxtest/TestTracker.h>
 #include <cxxtest/ValueTraits.h>
 
@@ -49,13 +49,13 @@ namespace CxxTest {
   class AgrumErrorFormatter : public TestListener {
     private:
     gum::Timer* __clock;
-    double __totalTime;
-    int __nbrTest;
+    double      __totalTime;
+    int         __nbrTest;
 
     public:
     AgrumErrorFormatter( OutputStream* o,
-                         const char* preLine = ":",
-                         const char* postLine = "" )
+                         const char*   preLine = ":",
+                         const char*   postLine = "" )
         : _dotting( true )
         , _reported( false )
         , _o( o )
@@ -83,7 +83,7 @@ namespace CxxTest {
     }
 
     static void totalTests( OutputStream& o ) {
-      char s[WorldDescription::MAX_STRLEN_TOTAL_TESTS];
+      char                    s[WorldDescription::MAX_STRLEN_TOTAL_TESTS];
       const WorldDescription& wd = tracker().world();
       o << wd.strTotalTests( s )
         << ( wd.numTotalTests() == 1 ? " test" : " tests" );
@@ -125,7 +125,7 @@ namespace CxxTest {
 #endif  // NDEBUG
 
       ( *_o ) << endl
-              << "## Profiling : " << (gum::Size)( 1000.0 * long(__totalTime ))
+              << "## Profiling : " << ( gum::Size )( 1000.0 * __totalTime )
               << " ms ##" << endl;
 
       ( *_o ) << "Failed " << tracker().failedTests() << " of " << totalTests
@@ -159,13 +159,12 @@ namespace CxxTest {
       stop( file, line ) << "Error: Test failed " << expression << endl;
     }
 
-    void
-    failedAssert( const char* file, unsigned line, const char* expression ) {
+    void failedAssert( const char* file, unsigned line, const char* expression ) {
       stop( file, line ) << "Error: Assertion failed: " << expression << endl;
     }
 
     void failedAssertEquals( const char* file,
-                             unsigned line,
+                             unsigned    line,
                              const char* xStr,
                              const char* yStr,
                              const char* x,
@@ -175,23 +174,23 @@ namespace CxxTest {
     }
 
     void failedAssertSameData( const char* file,
-                               unsigned line,
+                               unsigned    line,
                                const char* xStr,
                                const char* yStr,
                                const char* sizeStr,
                                const void* x,
                                const void* y,
-                               unsigned size ) {
+                               unsigned    size ) {
       stop( file, line ) << "Error: Expected " << sizeStr << " (" << size
-                         << ") bytes to be equal at (" << xStr << ") and ("
-                         << yStr << "), found:" << endl;
+                         << ") bytes to be equal at (" << xStr << ") and (" << yStr
+                         << "), found:" << endl;
       dump( x, size );
       ( *_o ) << "     differs from" << endl;
       dump( y, size );
     }
 
     void failedAssertDelta( const char* file,
-                            unsigned line,
+                            unsigned    line,
                             const char* xStr,
                             const char* yStr,
                             const char* dStr,
@@ -204,7 +203,7 @@ namespace CxxTest {
     }
 
     void failedAssertDiffers( const char* file,
-                              unsigned line,
+                              unsigned    line,
                               const char* xStr,
                               const char* yStr,
                               const char* value ) {
@@ -213,7 +212,7 @@ namespace CxxTest {
     }
 
     void failedAssertLessThan( const char* file,
-                               unsigned line,
+                               unsigned    line,
                                const char* xStr,
                                const char* yStr,
                                const char* x,
@@ -223,7 +222,7 @@ namespace CxxTest {
     }
 
     void failedAssertLessThanEquals( const char* file,
-                                     unsigned line,
+                                     unsigned    line,
                                      const char* xStr,
                                      const char* yStr,
                                      const char* x,
@@ -233,19 +232,19 @@ namespace CxxTest {
     }
 
     void failedAssertRelation( const char* file,
-                               unsigned line,
+                               unsigned    line,
                                const char* relation,
                                const char* xStr,
                                const char* yStr,
                                const char* x,
                                const char* y ) {
-      stop( file, line ) << "Error: Expected " << relation << "( " << xStr
-                         << ", " << yStr << " ), found !" << relation << "( "
-                         << x << ", " << y << " )" << endl;
+      stop( file, line ) << "Error: Expected " << relation << "( " << xStr << ", "
+                         << yStr << " ), found !" << relation << "( " << x << ", "
+                         << y << " )" << endl;
     }
 
     void failedAssertPredicate( const char* file,
-                                unsigned line,
+                                unsigned    line,
                                 const char* predicate,
                                 const char* xStr,
                                 const char* x ) {
@@ -255,18 +254,19 @@ namespace CxxTest {
     }
 
     void failedAssertThrows( const char* file,
-                             unsigned line,
+                             unsigned    line,
                              const char* expression,
                              const char* type,
-                             bool otherThrown ) {
+                             bool        otherThrown ) {
       stop( file, line ) << "Error: Expected (" << expression << ") to throw ("
                          << type << ") but it "
                          << ( otherThrown ? "threw something else"
-                                          : "didn't throw" ) << endl;
+                                          : "didn't throw" )
+                         << endl;
     }
 
     void failedAssertThrowsNot( const char* file,
-                                unsigned line,
+                                unsigned    line,
                                 const char* expression ) {
       stop( file, line ) << "Error: Expected (" << expression
                          << ") not to throw, but it did" << endl;
@@ -335,11 +335,11 @@ namespace CxxTest {
 
     static void endl( OutputStream& o ) { OutputStream::endl( o ); }
 
-    bool _dotting;
-    bool _reported;
+    bool          _dotting;
+    bool          _reported;
     OutputStream* _o;
-    const char* _preLine;
-    const char* _postLine;
+    const char*   _preLine;
+    const char*   _postLine;
   };
 }
 

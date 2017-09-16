@@ -16,4 +16,17 @@
     TS_FAIL( "gum::Exception thrown" );                               \
   } )
 
+#define APPROXINFERENCE_TEST_BEGIN_ITERATION \
+  bool res = false;                          \
+  (void)res;                                 \
+  for ( int ii = 0; ii < 10; ii++ ) {
+
+#define APPROXINFERENCE_TEST_END_ITERATION( ERRMAX )   \
+  if ( __compareInference( bn, lazy, inf, ERRMAX ) ) { \
+    res = true;                                        \
+    break;                                             \
+  }                                                    \
+  std::cout << "![" << __LINE__ << "]"<<std::flush;                \
+  if ( ii == 4 ) TS_FAIL( "even with 10 tries." );    \
+  }
 #endif  // AGRUM_TEST_SUITE_H

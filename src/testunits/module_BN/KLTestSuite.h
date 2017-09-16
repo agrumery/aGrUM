@@ -30,6 +30,7 @@
 
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
+#include <agrum/BN/algorithms/divergence/gibbsKL2.h>
 
 // The graph used for the tests:
 //          1   2_          1 -> 3
@@ -140,6 +141,14 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS( vkl, (float)0.0 );
         TS_ASSERT_THROWS( gkl.history(), gum::OperationNotAllowed );
       }
+
+      {
+        gum::GibbsKL2<float> gkl( kl );
+        gkl.setMaxIter( 40 );
+        TS_GUM_ASSERT_THROWS_NOTHING( vkl = gkl.klPQ() );
+        TS_ASSERT_DIFFERS( vkl, (float)0.0 );
+        TS_ASSERT_THROWS( gkl.history(), gum::OperationNotAllowed );
+      }
     }
 
     void testBruteForceValues() {
@@ -197,11 +206,36 @@ namespace gum_tests {
           TS_ASSERT( kl.history().size() -
                          ( kl.nbrIterations() - kl.burnIn() ) / kl.periodSize() <
                      2 );
-
-          return;
+          break;
+        } else {
+          if ( ii == TESTKL_MAX_ITER_GIBBS_KL - 1 )
+            TS_FAIL( "even with many tries." );
         }
       }
-      TS_ASSERT( false );
+
+      // iterations for better robustness : KL may fail from time to time
+      for ( int ii = 0; ii < TESTKL_MAX_ITER_GIBBS_KL; ii++ ) {
+        gum::GibbsKL2<float> kl( netP, netQ );
+        kl.setVerbosity( true );
+        // very rough approximation in order to not penalize TestSuite
+        kl.setEpsilon( 1e-5 );
+        kl.setMinEpsilonRate( 1e-5 );
+        if ( fabs( kl.klPQ() - 0.241864114 ) <= 1e-1 ) {
+          GUM_TRACE( fabs( kl.klPQ() - 0.241864114 ) );
+          TS_ASSERT_DELTA( kl.klPQ(), 0.241864114, 1e-1 );
+          TS_ASSERT_DELTA( kl.klQP(), 0.399826689, 1e-1 );
+          TS_ASSERT_EQUALS( kl.errorPQ(), (gum::Size)0 );
+          TS_ASSERT_EQUALS( kl.errorQP(), (gum::Size)0 );
+          TS_ASSERT_DELTA( kl.hellinger(), 0.321089688, 1e-1 );
+          TS_ASSERT( kl.history().size() -
+                         ( kl.nbrIterations() - kl.burnIn() ) / kl.periodSize() <
+                     2 );
+          break;
+        } else {
+          if ( ii == TESTKL_MAX_ITER_GIBBS_KL - 1 )
+            TS_FAIL( "even with many tries." );
+        }
+      }
     }
   };
 }  // gum_tests

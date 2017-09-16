@@ -1,0 +1,88 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Pierre-Henri WUILLEMIN et Christophe GONZALES   *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+/**
+ * @file
+ * @brief This file implements a Hybrid sampling class using LoopyBeliefPropagation and
+ * an approximate Inference method.
+ *
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN
+ */
+
+#ifndef GUM_HYBRID_INFERENCE_H
+#define GUM_HYBRID_INFERENCE_H
+#include <agrum/BN/inference/weightedSampling.h>
+#include <agrum/BN/inference/importanceSampling.h>
+#include <agrum/BN/inference/MonteCarloSampling.h>
+#include <agrum/BN/inference/GibbsSampling.h>
+
+namespace gum {
+
+		/**
+		* @class HybridApproxInference hybridApproxInference.h
+		*<agrum/BN/inference/hybridApproxInference.h>
+		* @brief class for making hybrid sampling inference with loopy belief propagation and
+		* an approximation inference method in bayesian networks.
+		* @ingroup bn_approximation
+		*
+		* This class inherits of template class APPROX, which SHOULD be one of the 4 approximate
+		* inference methods (MonteCarlo, Weighted, Importance, Gibbs).
+		* It makes the inference with respect to the inherited class' method, after having
+		* initialized the estimators with the posteriors obtained by running LoopyBeliefPropagation
+		* algorithm.
+		*
+		*/
+
+  	template <typename GUM_SCALAR, template <typename> class APPROX>
+
+  	class HybridApproxInference : public APPROX<GUM_SCALAR> {
+
+		public:
+
+		   /**
+			 * Default constructor
+		    */
+			HybridApproxInference(const IBayesNet<GUM_SCALAR>* bn);
+
+		   /**
+			 * destructor
+			 */
+			virtual ~HybridApproxInference();
+
+			/// makes the inference by generating samples w.r.t the mother class' sampling method after initalizing  estimators with loopy belief propagation
+		   virtual void _makeInference();
+
+	};
+
+  extern template class HybridApproxInference<float, WeightedApproxInference>;
+  extern template class HybridApproxInference<double, WeightedApproxInference>;
+
+  extern template class HybridApproxInference<float, ImportanceApproxInference>;
+  extern template class HybridApproxInference<double, ImportanceApproxInference>;
+
+  extern template class HybridApproxInference<float, MonteCarloApproxInference>;
+  extern template class HybridApproxInference<double, MonteCarloApproxInference>;
+
+  extern template class HybridApproxInference<float, GibbsApproxInference>;
+  extern template class HybridApproxInference<double, GibbsApproxInference>;
+
+}
+
+#include <agrum/BN/inference/hybridApproxInference_tpl.h>
+#endif

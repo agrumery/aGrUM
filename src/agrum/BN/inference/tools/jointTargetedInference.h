@@ -29,7 +29,7 @@
 #define GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H
 
 
-#include <agrum/BN/inference/marginalTargetedInference.h>
+#include <agrum/BN/inference/tools/marginalTargetedInference.h>
 #include <agrum/config.h>
 
 
@@ -281,7 +281,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/jointTargetedInference_tpl.h>
+#include <agrum/BN/inference/tools/jointTargetedInference_tpl.h>
 
 
 #endif  // GUM_BAYES_NET_JOINT_TARGETED_INFERENCE_H

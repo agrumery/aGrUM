@@ -32,7 +32,7 @@
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
-#include <agrum/BN/inference/relevantPotentialsFinderType.h>
+#include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 
@@ -53,7 +53,7 @@ namespace gum_tests {
     gum::Potential<float> *e_i1, *e_i4;
 
     float __epsilon{1e-6f};
-    
+
     void setUp() {
       bn = new gum::BayesNet<float>();
 
@@ -112,7 +112,7 @@ namespace gum_tests {
 
       return true;
     }
-    
+
     // Testing when there is no evidence
     void testMakeInference() {
       fill( *bn );
@@ -851,7 +851,7 @@ namespace gum_tests {
 
 
 
-    
+
 
     private:
     // Builds a BN to test the inference

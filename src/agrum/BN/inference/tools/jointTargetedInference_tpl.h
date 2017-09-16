@@ -22,7 +22,7 @@
  * @brief Implementation of the non pure virtual methods of class
  * JointTargetedInference.
  */
-#include <agrum/BN/inference/jointTargetedInference.h>
+#include <agrum/BN/inference/tools/jointTargetedInference.h>
 
 namespace gum {
 

@@ -25,7 +25,7 @@
 #ifndef GUM_GIBBS_INFERENCE_H
 #define GUM_GIBBS_INFERENCE_H
 
-#include <agrum/BN/inference/marginalTargetedInference.h>
+#include <agrum/BN/inference/tools/marginalTargetedInference.h>
 #include <agrum/BN/samplers/GibbsSampler.h>
 #include <agrum/core/approximations/approximationScheme.h>
 

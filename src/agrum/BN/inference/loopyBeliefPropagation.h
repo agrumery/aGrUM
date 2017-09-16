@@ -25,7 +25,7 @@
 #ifndef GUM_LOOPYBELIEFPROPAGATION_H
 #define GUM_LOOPYBELIEFPROPAGATION_H
 
-#include <agrum/BN/inference/marginalTargetedInference.h>
+#include <agrum/BN/inference/tools/marginalTargetedInference.h>
 #include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {

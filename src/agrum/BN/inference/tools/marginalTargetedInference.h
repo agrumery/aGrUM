@@ -30,7 +30,7 @@
 
 #include <string>
 
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/tools/BayesNetInference.h>
 #include <agrum/config.h>
 
 
@@ -252,7 +252,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/marginalTargetedInference_tpl.h>
+#include <agrum/BN/inference/tools/marginalTargetedInference_tpl.h>
 
 
 #endif  // GUM_BAYES_NET_MARGINAL_TARGETED_INFERENCE_H

@@ -28,7 +28,7 @@
 #ifndef GUM_BAYES_NET_EVIDENCE_INFERENCE_H
 #define GUM_BAYES_NET_EVIDENCE_INFERENCE_H
 
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/tools/BayesNetInference.h>
 #include <agrum/config.h>
 
 
@@ -79,7 +79,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/evidenceInference_tpl.h>
+#include <agrum/BN/inference/tools/evidenceInference_tpl.h>
 
 
 #endif  // GUM_BAYES_NET_EVIDENCE_INFERENCE_H

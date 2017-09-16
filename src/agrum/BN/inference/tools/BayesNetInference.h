@@ -611,7 +611,7 @@ namespace gum {
 }  // namespace gum
 
 
-#include <agrum/BN/inference/BayesNetInference_tpl.h>
+#include <agrum/BN/inference/tools/BayesNetInference_tpl.h>
 
 
 #endif  // GUM_BAYES_NET_INFERENCE_H
