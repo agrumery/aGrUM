@@ -24,8 +24,8 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
+#include <agrum/BN/algorithms/divergence/GibbsKLold.h>
 #include <cmath>
 
-template class gum::GibbsKL<float>;
-template class gum::GibbsKL<double>;
+template class gum::GibbsKLold<float>;
+template class gum::GibbsKLold<double>;

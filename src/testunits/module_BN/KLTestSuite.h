@@ -28,7 +28,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
+#include <agrum/BN/algorithms/divergence/GibbsKLold.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
 #include <agrum/BN/algorithms/divergence/gibbsKL2.h>
 
@@ -135,7 +135,7 @@ namespace gum_tests {
       }
 
       {
-        gum::GibbsKL<float> gkl( kl );
+        gum::GibbsKLold<float> gkl( kl );
         gkl.setMaxIter( 40 );
         TS_GUM_ASSERT_THROWS_NOTHING( vkl = gkl.klPQ() );
         TS_ASSERT_DIFFERS( vkl, (float)0.0 );
@@ -192,7 +192,7 @@ namespace gum_tests {
 
       // iterations for better robustness : KL may fail from time to time
       for ( int ii = 0; ii < TESTKL_MAX_ITER_GIBBS_KL; ii++ ) {
-        gum::GibbsKL<float> kl( netP, netQ );
+        gum::GibbsKLold<float> kl( netP, netQ );
         kl.setVerbosity( true );
         // very rough approximation in order to not penalize TestSuite
         kl.setEpsilon( 1e-5 );

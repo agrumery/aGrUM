@@ -71,7 +71,7 @@ namespace gum {
   * @endcode
   */
   template <typename GUM_SCALAR>
-  class GibbsKL : public KL<GUM_SCALAR>,
+  class GibbsKLold : public KL<GUM_SCALAR>,
                   public ApproximationScheme,
                   public samplers::GibbsSampler<GUM_SCALAR> {
     public:
@@ -82,14 +82,14 @@ namespace gum {
      * or
      * compatible node sets.
      */
-    GibbsKL( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
+    GibbsKLold( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
 
     /** copy constructor
      */
-    GibbsKL( const KL<GUM_SCALAR>& kl );
+    GibbsKLold( const KL<GUM_SCALAR>& kl );
 
     /** destructor */
-    ~GibbsKL();
+    ~GibbsKLold();
 
     using samplers::GibbsSampler<GUM_SCALAR>::particle;
     using samplers::GibbsSampler<GUM_SCALAR>::initParticle;
@@ -112,12 +112,12 @@ namespace gum {
   };
 
 
-  extern template class GibbsKL<float>;
-  extern template class GibbsKL<double>;
+  extern template class GibbsKLold<float>;
+  extern template class GibbsKLold<double>;
 
 
 }  // namespace gum
 
-#include <agrum/BN/algorithms/divergence/GibbsKL_tpl.h>
+#include <agrum/BN/algorithms/divergence/GibbsKLold_tpl.h>
 
 #endif  // GUM_GIBBS_KL_H

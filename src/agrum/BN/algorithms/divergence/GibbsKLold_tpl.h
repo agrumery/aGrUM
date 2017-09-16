@@ -29,7 +29,7 @@
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/core/hashTable.h>
 
-#include <agrum/BN/algorithms/divergence/GibbsKL.h>
+#include <agrum/BN/algorithms/divergence/GibbsKLold.h>
 #include <agrum/BN/samplers/GibbsSampler.h>
 #include <agrum/core/approximations/approximationScheme.h>
 
@@ -43,12 +43,12 @@
 namespace gum {
 
   template <typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL( const IBayesNet<GUM_SCALAR>& P,
+  GibbsKLold<GUM_SCALAR>::GibbsKLold( const IBayesNet<GUM_SCALAR>& P,
                                 const IBayesNet<GUM_SCALAR>& Q )
       : KL<GUM_SCALAR>( P, Q )
       , ApproximationScheme()
       , samplers::GibbsSampler<GUM_SCALAR>( P ) {
-    GUM_CONSTRUCTOR( GibbsKL );
+    GUM_CONSTRUCTOR( GibbsKLold );
 
     setEpsilon( KL_DEFAULT_EPSILON );
     setMinEpsilonRate( KL_DEFAULT_MIN_EPSILON_RATE );
@@ -59,11 +59,11 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL( const KL<GUM_SCALAR>& kl )
+  GibbsKLold<GUM_SCALAR>::GibbsKLold( const KL<GUM_SCALAR>& kl )
       : KL<GUM_SCALAR>( kl )
       , ApproximationScheme()
       , samplers::GibbsSampler<GUM_SCALAR>( kl.p() ) {
-    GUM_CONSTRUCTOR( GibbsKL );
+    GUM_CONSTRUCTOR( GibbsKLold );
 
     setEpsilon( KL_DEFAULT_EPSILON );
     setMinEpsilonRate( KL_DEFAULT_MIN_EPSILON_RATE );
@@ -74,12 +74,12 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::~GibbsKL() {
-    GUM_DESTRUCTOR( GibbsKL );
+  GibbsKLold<GUM_SCALAR>::~GibbsKLold() {
+    GUM_DESTRUCTOR( GibbsKLold );
   }
 
   template <typename GUM_SCALAR>
-  void GibbsKL<GUM_SCALAR>::_computeKL() {
+  void GibbsKLold<GUM_SCALAR>::_computeKL() {
 
     gum::Instantiation Iq;
     _q.completeInstantiation( Iq );
