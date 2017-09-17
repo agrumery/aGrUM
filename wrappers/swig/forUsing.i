@@ -344,7 +344,7 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
 ADD_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_INFERENCE_API(gum::ShaferShenoyInference<double>)
 ADD_INFERENCE_API(gum::VariableElimination<double>)
-ADD_INFERENCE_API(gum::GibbsInference<double>)
+ADD_INFERENCE_API(gum::GibbsSampling<double>)
 ADD_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
 
 %define ADD_JOINT_INFERENCE_API(classname)

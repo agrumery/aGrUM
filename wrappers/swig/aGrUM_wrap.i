@@ -80,13 +80,13 @@
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/approximations/approximationScheme.h>
 
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/tools/BayesNetInference.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/BN/inference/GibbsSampling.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
@@ -170,7 +170,7 @@ namespace std {
   }
 }
 %enddef
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsInference<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
@@ -296,13 +296,13 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 %include <agrum/core/approximations/approximationScheme.h>
 
-%include <agrum/BN/inference/relevantPotentialsFinderType.h>
-%include <agrum/BN/inference/BayesNetInference.h>
+%import <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
+%include <agrum/BN/inference/tools/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
 %include <agrum/BN/inference/ShaferShenoyInference.h>
 %include <agrum/BN/inference/variableElimination.h>
 
-%include <agrum/BN/inference/GibbsInference.h>
+%include <agrum/BN/inference/GibbsSampling.h>
 %include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 %import <agrum/BN/algorithms/divergence/KL.h>
@@ -351,7 +351,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( ShaferShenoyInference_double ) gum::ShaferShenoyInference<double>;
 %template ( VariableElimination_double ) gum::VariableElimination<double>;
 
-%template ( GibbsInference_double ) gum::GibbsInference<double>;
+%template ( GibbsSampling_double ) gum::GibbsSampling<double>;
 %template ( LoopyBeliefPropagation_double ) gum::LoopyBeliefPropagation<double>;
 
 %template ( BruteForceKL_double ) gum::BruteForceKL<double>;

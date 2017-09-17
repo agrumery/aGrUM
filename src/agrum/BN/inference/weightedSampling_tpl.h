@@ -33,27 +33,27 @@ namespace gum {
 
 	/// Default constructor
   template <typename GUM_SCALAR>
-  WeightedApproxInference<GUM_SCALAR>::WeightedApproxInference(const IBayesNet<GUM_SCALAR>* BN)
+  WeightedSampling<GUM_SCALAR>::WeightedSampling(const IBayesNet<GUM_SCALAR>* BN)
   :  ApproximateInference<GUM_SCALAR>(BN) {
 
   	  this->setBurnIn(0);
-     GUM_CONSTRUCTOR(WeightedApproxInference);
+     GUM_CONSTRUCTOR(WeightedSampling);
 
   }
 
 
 	/// Destructor
   template <typename GUM_SCALAR>
-  WeightedApproxInference<GUM_SCALAR>::~WeightedApproxInference() {
+  WeightedSampling<GUM_SCALAR>::~WeightedSampling() {
 
-     GUM_DESTRUCTOR(WeightedApproxInference);
+     GUM_DESTRUCTOR(WeightedSampling);
 
   }
 
 
 	/// No burn in needed for Weighted sampling
   template <typename GUM_SCALAR>
-  Instantiation WeightedApproxInference<GUM_SCALAR>::_burnIn(){
+  Instantiation WeightedSampling<GUM_SCALAR>::_burnIn(){
    	gum::Instantiation I;
    	return I;
   }
@@ -61,7 +61,7 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  Instantiation WeightedApproxInference<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
+  Instantiation WeightedSampling<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
 
 	*w = 1.;
 	bool wrongValue = false;
@@ -105,7 +105,7 @@ namespace gum {
 
 
 	 template <typename GUM_SCALAR>
-    void WeightedApproxInference<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv) {
+    void WeightedSampling<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv) {
 
  	for (auto targ = targets.begin(); targ != targets.end(); ++targ)
 		this->addTarget(*targ);

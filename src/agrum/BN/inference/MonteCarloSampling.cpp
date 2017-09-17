@@ -1,4 +1,4 @@
 #include <agrum/BN/inference/MonteCarloSampling.h>
 
-template class gum::MonteCarloApproxInference<float>;
-template class gum::MonteCarloApproxInference<double>;
+template class gum::MonteCarloSampling<float>;
+template class gum::MonteCarloSampling<double>;

@@ -34,6 +34,7 @@ __project_url__ = 'http://agrum.org'
 
 import numpy as np
 from .functions import *
+from .deprecated import *
 
 # selection of imports extracted from dir(.pyAgrum)
 from .pyAgrum import statsObj
@@ -41,8 +42,9 @@ from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from .pyAgrum import Potential, Instantiation, UtilityTable
-from .pyAgrum import BruteForceKL, GibbsKL
-from .pyAgrum import LoopyBeliefPropagation, GibbsInference, LazyPropagation, ShaferShenoyInference, VariableElimination
+from .pyAgrum import BruteForceKL, GibbsSampling
+from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
+from .pyAgrum import LoopyBeliefPropagation, GibbsSampling
 from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener
 from .pyAgrum import BNGenerator, IDGenerator, JTGenerator
 from .pyAgrum import BNLearner
@@ -65,7 +67,7 @@ __all__=[
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
   'Potential','Instantiation','UtilityTable',
   'BruteForceKL','GibbsKL',
-  'LoopyBeliefPropagation','GibbsInference','LazyPropagation','ShaferShenoyInference','VariableElimination',
+  'LoopyBeliefPropagation','GibbsSampling','LazyPropagation','ShaferShenoyInference','VariableElimination',
   'PythonApproximationListener','PythonBNListener','PythonLoadListener',
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',

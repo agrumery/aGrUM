@@ -32,32 +32,32 @@ namespace gum {
 
   ///  default constructor
   template <typename GUM_SCALAR>
-  ImportanceApproxInference<GUM_SCALAR>::ImportanceApproxInference(const IBayesNet<GUM_SCALAR>* BN)
+  ImportanceSampling<GUM_SCALAR>::ImportanceSampling(const IBayesNet<GUM_SCALAR>* BN)
   :  ApproximateInference<GUM_SCALAR>(BN) {
 
   	 this->setBurnIn(0);
-    GUM_CONSTRUCTOR(ImportanceApproxInference);
+    GUM_CONSTRUCTOR(ImportanceSampling);
 
   }
 
 
   ///  destructor
   template <typename GUM_SCALAR>
-  ImportanceApproxInference<GUM_SCALAR>::~ImportanceApproxInference() {
+  ImportanceSampling<GUM_SCALAR>::~ImportanceSampling() {
 
-     GUM_DESTRUCTOR(ImportanceApproxInference);
+     GUM_DESTRUCTOR(ImportanceSampling);
 
   }
 
   /// no burn in needed for Importance sampling
   template <typename GUM_SCALAR>
-  Instantiation ImportanceApproxInference<GUM_SCALAR>::_burnIn(){
+  Instantiation ImportanceSampling<GUM_SCALAR>::_burnIn(){
   	  Instantiation I;
   	  return I;
   }
 
   template <typename GUM_SCALAR>
-  Instantiation ImportanceApproxInference<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
+  Instantiation ImportanceSampling<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
 
   	float probaP = 1.; float probaQ = 1.;
 
@@ -93,7 +93,7 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  void ImportanceApproxInference<GUM_SCALAR>::_unsharpenBN (BayesNetFragment<GUM_SCALAR>* bn, float epsilon ){
+  void ImportanceSampling<GUM_SCALAR>::_unsharpenBN (BayesNetFragment<GUM_SCALAR>* bn, float epsilon ){
 
 		for (auto nod: bn->nodes().asNodeSet()) {
 			Potential<GUM_SCALAR> *p = new Potential<GUM_SCALAR>();
@@ -105,7 +105,7 @@ namespace gum {
 	}
 
   template <typename GUM_SCALAR>
-  void ImportanceApproxInference<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets ,const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
+  void ImportanceSampling<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets ,const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
 
  	   Sequence<NodeId> sid;
 		for (NodeSet::iterator ev = hardEvNodes.begin(); ev != hardEvNodes.end(); ++ev)

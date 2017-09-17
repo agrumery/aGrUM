@@ -1,4 +1,4 @@
 #include <agrum/BN/inference/weightedSampling.h>
 
-template class gum::WeightedApproxInference<float>;
-template class gum::WeightedApproxInference<double>;
+template class gum::WeightedSampling<float>;
+template class gum::WeightedSampling<double>;

@@ -22,9 +22,9 @@ Inference
   :members:
   :inherited-members:
 
-.. autoclass:: pyAgrum.GibbsInference
+.. autoclass:: pyAgrum.GibbsSampling
 
-.. autoclass:: pyAgrum.pyAgrum.GibbsInference_double
+.. autoclass:: pyAgrum.pyAgrum.GibbsSampling_double
   :members:
   :herited-members:
 

@@ -25,8 +25,8 @@
  */
 
 
-#ifndef GUM_GIBBS_INFERENCE_2_H
-#define GUM_GIBBS_INFERENCE_2_H
+#ifndef GUM_GIBBS_SAMPLING_H
+#define GUM_GIBBS_SAMPLING_H
 
 #include <agrum/BN/inference/tools/approximateInference.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
@@ -35,8 +35,8 @@
 namespace gum {
 
   /**
-  * @class GibbsApproxInference gibbsApproxInference.h
-  *<agrum/BN/inference/gibbsApproxInference.h>
+  * @class GibbsSampling gibbsSampling.h
+  *<agrum/BN/inference/gibbsSampling.h>
   * @brief class for making Gibbs sampling inference in bayesian networks.
   * @ingroup bn_approximation
   *
@@ -49,19 +49,19 @@ namespace gum {
   */
 
   template <typename GUM_SCALAR>
-  class GibbsApproxInference : public ApproximateInference<GUM_SCALAR>,
+  class GibbsSampling : public ApproximateInference<GUM_SCALAR>,
                                public GibbsOperator<GUM_SCALAR> {
 
     public:
     /**
      * Default constructor
      */
-    GibbsApproxInference( const IBayesNet<GUM_SCALAR>* BN );
+    GibbsSampling( const IBayesNet<GUM_SCALAR>* BN );
 
     /**
   * Destructor
   */
-    virtual ~GibbsApproxInference();
+    virtual ~GibbsSampling();
 
     protected:
     /// draws a defined number of samples without updating the estimators
@@ -86,7 +86,7 @@ namespace gum {
     */
     virtual Instantiation
     _draw( float*                       w,
-           Instantiation                prev = NULL,
+           Instantiation                prev ,
            const IBayesNet<GUM_SCALAR>& bn = BayesNet<GUM_SCALAR>(),
            const NodeSet&               hardEvNodes = NodeSet(),
            const NodeProperty<Idx>&     hardEv = NodeProperty<Idx>() );
@@ -125,8 +125,8 @@ namespace gum {
     virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard );
   };
 
-  extern template class GibbsApproxInference<float>;
-  extern template class GibbsApproxInference<double>;
+  extern template class GibbsSampling<float>;
+  extern template class GibbsSampling<double>;
 }
 
 #include <agrum/BN/inference/GibbsSampling_tpl.h>

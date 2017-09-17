@@ -31,24 +31,24 @@ namespace gum {
 
   ///  default constructor
   template <typename GUM_SCALAR>
-  GibbsApproxInference<GUM_SCALAR>::GibbsApproxInference(const IBayesNet<GUM_SCALAR>* BN)
+  GibbsSampling<GUM_SCALAR>::GibbsSampling(const IBayesNet<GUM_SCALAR>* BN)
   :  ApproximateInference<GUM_SCALAR>(BN), GibbsOperator<GUM_SCALAR>(*BN) {
 
-     GUM_CONSTRUCTOR(GibbsApproxInference);
+     GUM_CONSTRUCTOR(GibbsSampling);
 
   }
 
 	/// destructor
   template <typename GUM_SCALAR>
-  GibbsApproxInference<GUM_SCALAR>::~GibbsApproxInference() {
+  GibbsSampling<GUM_SCALAR>::~GibbsSampling() {
 
-     GUM_DESTRUCTOR(GibbsApproxInference);
+     GUM_DESTRUCTOR(GibbsSampling);
 
   }
 
 
   template <typename GUM_SCALAR>
-  Instantiation GibbsApproxInference<GUM_SCALAR>::_monteCarloSample(const IBayesNet<GUM_SCALAR>& bn){
+  Instantiation GibbsSampling<GUM_SCALAR>::_monteCarloSample(const IBayesNet<GUM_SCALAR>& bn){
 
   		return GibbsOperator<GUM_SCALAR>::_monteCarloSample(bn);
 
@@ -56,7 +56,7 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  Instantiation GibbsApproxInference<GUM_SCALAR>::_burnIn(){
+  Instantiation GibbsSampling<GUM_SCALAR>::_burnIn(){
 
   	  gum::Instantiation Ip;
   	  float w = 1.;
@@ -76,7 +76,7 @@ namespace gum {
 	/// draws next sample for gibbs sampling
 
   template <typename GUM_SCALAR>
-  Instantiation GibbsApproxInference<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
+  Instantiation GibbsSampling<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
 
 		return this->drawNextInstance(w, prev, this->BN());
 	}
@@ -85,7 +85,7 @@ namespace gum {
 /* initializing node properties after contextualizing the BN in order for the computation to be lighter */
 
 	 template <typename GUM_SCALAR>
-    void GibbsApproxInference<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv) {
+    void GibbsSampling<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv) {
 
   		for (auto targ = targets.begin(); targ != targets.end(); ++targ)
 			this->addTarget(*targ);
@@ -100,7 +100,7 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  INLINE void GibbsApproxInference<GUM_SCALAR>::_onEvidenceAdded( const NodeId id,
+  INLINE void GibbsSampling<GUM_SCALAR>::_onEvidenceAdded( const NodeId id,
                                                             bool isHardEvidence ) {
     if ( isHardEvidence )
       this->addHardEvidence( id, this->hardEvidence()[id] );
@@ -111,7 +111,7 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  INLINE void GibbsApproxInference<GUM_SCALAR>::_onEvidenceErased( const NodeId id,
+  INLINE void GibbsSampling<GUM_SCALAR>::_onEvidenceErased( const NodeId id,
                                                  bool isHardEvidence ) {
     if ( isHardEvidence )
       this->eraseHardEvidence( id );
@@ -120,13 +120,13 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  INLINE void GibbsApproxInference<GUM_SCALAR>::_onAllEvidenceErased( bool contains_hard_evidence ){
+  INLINE void GibbsSampling<GUM_SCALAR>::_onAllEvidenceErased( bool contains_hard_evidence ){
     	this->eraseAllEvidenceOperator();
   }
 
   template <typename GUM_SCALAR>
   INLINE void
-  GibbsApproxInference<GUM_SCALAR>::_onEvidenceChanged( const NodeId id,
+  GibbsSampling<GUM_SCALAR>::_onEvidenceChanged( const NodeId id,
                                                   bool hasChangedSoftHard ) {
     if ( this->hardEvidence().exists( id ) ) {
       // soft evidence has been removed

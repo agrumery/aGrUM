@@ -52,7 +52,7 @@ def setTargets(self, targets):
 IMPROVE_INFERENCE_API(gum::LazyPropagation<double>)
 IMPROVE_INFERENCE_API(gum::ShaferShenoyInference<double>)
 IMPROVE_INFERENCE_API(gum::VariableElimination<double>)
-IMPROVE_INFERENCE_API(gum::GibbsInference<double>)
+IMPROVE_INFERENCE_API(gum::GibbsSampling<double>)
 IMPROVE_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
 
 

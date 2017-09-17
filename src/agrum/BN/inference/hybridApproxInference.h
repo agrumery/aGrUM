@@ -70,17 +70,17 @@ namespace gum {
 
 	};
 
-  extern template class HybridApproxInference<float, WeightedApproxInference>;
-  extern template class HybridApproxInference<double, WeightedApproxInference>;
+  extern template class HybridApproxInference<float, WeightedSampling>;
+  extern template class HybridApproxInference<double, WeightedSampling>;
 
-  extern template class HybridApproxInference<float, ImportanceApproxInference>;
-  extern template class HybridApproxInference<double, ImportanceApproxInference>;
+  extern template class HybridApproxInference<float, ImportanceSampling>;
+  extern template class HybridApproxInference<double, ImportanceSampling>;
 
-  extern template class HybridApproxInference<float, MonteCarloApproxInference>;
-  extern template class HybridApproxInference<double, MonteCarloApproxInference>;
+  extern template class HybridApproxInference<float, MonteCarloSampling>;
+  extern template class HybridApproxInference<double, MonteCarloSampling>;
 
-  extern template class HybridApproxInference<float, GibbsApproxInference>;
-  extern template class HybridApproxInference<double, GibbsApproxInference>;
+  extern template class HybridApproxInference<float, GibbsSampling>;
+  extern template class HybridApproxInference<double, GibbsSampling>;
 
 }
 

@@ -72,7 +72,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::HybridApproxInference<float, gum::WeightedApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::WeightedSampling> inf( &bn );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
         inf.setVerbosity( false );
         inf.makeInference();
@@ -97,7 +97,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::HybridApproxInference<float, gum::ImportanceApproxInference> inf(
+        gum::HybridApproxInference<float, gum::ImportanceSampling> inf(
             &bn );
         inf.addEvidence( bn.idFromName( ev ), 0 );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
@@ -121,7 +121,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::HybridApproxInference<float, gum::MonteCarloApproxInference> inf(
+        gum::HybridApproxInference<float, gum::MonteCarloSampling> inf(
             &bn );
         inf.addEvidence( bn.idFromName( ev ), 0 );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
@@ -147,7 +147,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::HybridApproxInference<float, gum::WeightedApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::WeightedSampling> inf( &bn );
         inf.addEvidence( bn.idFromName( ev ), 0 );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
         inf.setVerbosity( false );
@@ -173,7 +173,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::HybridApproxInference<float, gum::GibbsApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::GibbsSampling> inf( &bn );
         inf.addEvidence( bn.idFromName( "e" ), 0 );
         inf.addEvidence( bn.idFromName( "b" ), 1 );
         inf.addEvidence( bn.idFromName( "h" ), 0 );
@@ -203,7 +203,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::HybridApproxInference<float, gum::ImportanceApproxInference> inf(
+        gum::HybridApproxInference<float, gum::ImportanceSampling> inf(
             &bn );
         inf.addEvidence( bn.idFromName( "e" ), 0 );
         inf.addEvidence( bn.idFromName( "b" ), 1 );
@@ -230,7 +230,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION;
-        gum::HybridApproxInference<float, gum::GibbsApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::GibbsSampling> inf( &bn );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
         inf.makeInference();
@@ -249,7 +249,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION;
-        gum::HybridApproxInference<float, gum::GibbsApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::GibbsSampling> inf( &bn );
         inf.addEvidence( bn.idFromName( "a" ), 0 );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
@@ -269,7 +269,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION;
-        gum::HybridApproxInference<float, gum::GibbsApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::GibbsSampling> inf( &bn );
         inf.addEvidence( bn.idFromName( "d" ), 0 );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
@@ -294,7 +294,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION;
-        gum::HybridApproxInference<float, gum::WeightedApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::WeightedSampling> inf( &bn );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
         inf.makeInference();
@@ -313,7 +313,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION;
-        gum::HybridApproxInference<float, gum::ImportanceApproxInference> inf(
+        gum::HybridApproxInference<float, gum::ImportanceSampling> inf(
             &bn );
         inf.addEvidence( bn.idFromName( "a" ), 0 );
         inf.setVerbosity( false );
@@ -334,7 +334,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION;
-        gum::HybridApproxInference<float, gum::GibbsApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::GibbsSampling> inf( &bn );
         inf.addEvidence( bn.idFromName( "d" ), 0 );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
@@ -362,7 +362,7 @@ namespace gum_tests {
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION;
-        gum::HybridApproxInference<float, gum::GibbsApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::GibbsSampling> inf( &bn );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
         inf.makeInference();
@@ -391,7 +391,7 @@ namespace gum_tests {
 
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION;
-        gum::HybridApproxInference<float, gum::WeightedApproxInference> inf( &bn );
+        gum::HybridApproxInference<float, gum::WeightedSampling> inf( &bn );
         inf.setVerbosity( false );
         inf.setEpsilon( EPSILON_FOR_HYBRID );
         inf.makeInference();

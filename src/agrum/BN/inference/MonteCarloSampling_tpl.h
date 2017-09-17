@@ -32,25 +32,25 @@ namespace gum {
 
 	/// Default constructor
   template <typename GUM_SCALAR>
-  MonteCarloApproxInference<GUM_SCALAR>::MonteCarloApproxInference(const IBayesNet<GUM_SCALAR>* BN)
+  MonteCarloSampling<GUM_SCALAR>::MonteCarloSampling(const IBayesNet<GUM_SCALAR>* BN)
   :  ApproximateInference<GUM_SCALAR>(BN) {
 
   	 this->setBurnIn(0);
-    GUM_CONSTRUCTOR(MonteCarloApproxInference);
+    GUM_CONSTRUCTOR(MonteCarloSampling);
 
   }
 
   /// Destructor
   template <typename GUM_SCALAR>
-  MonteCarloApproxInference<GUM_SCALAR>::~MonteCarloApproxInference() {
+  MonteCarloSampling<GUM_SCALAR>::~MonteCarloSampling() {
 
-     GUM_DESTRUCTOR(MonteCarloApproxInference);
+     GUM_DESTRUCTOR(MonteCarloSampling);
 
   }
 
   /// no burn in needed for Monte Carlo sampling
   template <typename GUM_SCALAR>
-  Instantiation MonteCarloApproxInference<GUM_SCALAR>::_burnIn(){
+  Instantiation MonteCarloSampling<GUM_SCALAR>::_burnIn(){
   		gum::Instantiation I;
   	   return I;
   }
@@ -59,7 +59,7 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-  Instantiation MonteCarloApproxInference<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
+  Instantiation MonteCarloSampling<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
 
 	*w = 1.;
 	bool wrong_value = false;
@@ -86,7 +86,7 @@ namespace gum {
 
 
   template <typename GUM_SCALAR>
-    void MonteCarloApproxInference<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv) {
+    void MonteCarloSampling<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv) {
 
     	for (auto targ = targets.begin(); targ != targets.end(); ++targ)
 			this->addTarget(*targ);
