@@ -6557,6 +6557,11 @@ class LazyPropagation_double(_object):
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=args[0]#BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_LazyPropagation_double
     def __del__(self):
         return None
@@ -6863,6 +6868,11 @@ class ShaferShenoyInference_double(_object):
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=args[0]#BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_ShaferShenoyInference_double
     def __del__(self):
         return None
@@ -7164,6 +7174,11 @@ class VariableElimination_double(_object):
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=args[0]#BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_VariableElimination_double
     def __del__(self):
         return None
@@ -7423,6 +7438,11 @@ class GibbsSampling_double(_object):
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_GibbsSampling_double
     def __del__(self):
         return None
@@ -7736,6 +7756,11 @@ class LoopyBeliefPropagation_double(ApproximationScheme):
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_LoopyBeliefPropagation_double
     def __del__(self):
         return None
