@@ -4800,10 +4800,6 @@ class ApproximationScheme(_object):
 ApproximationScheme_swigregister = _pyAgrum.ApproximationScheme_swigregister
 ApproximationScheme_swigregister(ApproximationScheme)
 
-RelevantPotentialsFinderType_FIND_ALL = _pyAgrum.RelevantPotentialsFinderType_FIND_ALL
-RelevantPotentialsFinderType_DSEP_BAYESBALL_NODES = _pyAgrum.RelevantPotentialsFinderType_DSEP_BAYESBALL_NODES
-RelevantPotentialsFinderType_DSEP_BAYESBALL_POTENTIALS = _pyAgrum.RelevantPotentialsFinderType_DSEP_BAYESBALL_POTENTIALS
-RelevantPotentialsFinderType_DSEP_KOLLER_FRIEDMAN_2009 = _pyAgrum.RelevantPotentialsFinderType_DSEP_KOLLER_FRIEDMAN_2009
 FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_BARREN_NODES
 FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
@@ -7411,27 +7407,23 @@ class VariableElimination_double(_object):
 VariableElimination_double_swigregister = _pyAgrum.VariableElimination_double_swigregister
 VariableElimination_double_swigregister(VariableElimination_double)
 
-class GibbsInference_double(ApproximationScheme):
-    """Proxy of C++ gum::GibbsInference< double > class."""
+class GibbsSampling_double(_object):
+    """Proxy of C++ gum::GibbsSampling< double > class."""
 
     __swig_setmethods__ = {}
-    for _s in [ApproximationScheme]:
-        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, GibbsInference_double, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, GibbsSampling_double, name, value)
     __swig_getmethods__ = {}
-    for _s in [ApproximationScheme]:
-        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
-    __getattr__ = lambda self, name: _swig_getattr(self, GibbsInference_double, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, GibbsSampling_double, name)
     __repr__ = _swig_repr
 
     def __init__(self, BN):
-        """__init__(self, BN) -> GibbsInference_double"""
-        this = _pyAgrum.new_GibbsInference_double(BN)
+        """__init__(self, BN) -> GibbsSampling_double"""
+        this = _pyAgrum.new_GibbsSampling_double(BN)
         try:
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
-    __swig_destroy__ = _pyAgrum.delete_GibbsInference_double
+    __swig_destroy__ = _pyAgrum.delete_GibbsSampling_double
     def __del__(self):
         return None
 
@@ -7468,117 +7460,117 @@ class GibbsInference_double(ApproximationScheme):
 
     def hardEvidenceNodes(self):
         """hardEvidenceNodes(self) -> PyObject *"""
-        return _pyAgrum.GibbsInference_double_hardEvidenceNodes(self)
+        return _pyAgrum.GibbsSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
         """softEvidenceNodes(self) -> PyObject *"""
-        return _pyAgrum.GibbsInference_double_softEvidenceNodes(self)
+        return _pyAgrum.GibbsSampling_double_softEvidenceNodes(self)
 
 
     def targets(self):
         """targets(self) -> PyObject *"""
-        return _pyAgrum.GibbsInference_double_targets(self)
+        return _pyAgrum.GibbsSampling_double_targets(self)
 
 
     def setVerbosity(self, v):
         """setVerbosity(self, v)"""
-        return _pyAgrum.GibbsInference_double_setVerbosity(self, v)
+        return _pyAgrum.GibbsSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps):
         """setEpsilon(self, eps)"""
-        return _pyAgrum.GibbsInference_double_setEpsilon(self, eps)
+        return _pyAgrum.GibbsSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate):
         """setMinEpsilonRate(self, rate)"""
-        return _pyAgrum.GibbsInference_double_setMinEpsilonRate(self, rate)
+        return _pyAgrum.GibbsSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max):
         """setMaxIter(self, max)"""
-        return _pyAgrum.GibbsInference_double_setMaxIter(self, max)
+        return _pyAgrum.GibbsSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout):
         """setMaxTime(self, timeout)"""
-        return _pyAgrum.GibbsInference_double_setMaxTime(self, timeout)
+        return _pyAgrum.GibbsSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p):
         """setPeriodSize(self, p)"""
-        return _pyAgrum.GibbsInference_double_setPeriodSize(self, p)
+        return _pyAgrum.GibbsSampling_double_setPeriodSize(self, p)
 
 
     def setBurnIn(self, b):
         """setBurnIn(self, b)"""
-        return _pyAgrum.GibbsInference_double_setBurnIn(self, b)
+        return _pyAgrum.GibbsSampling_double_setBurnIn(self, b)
 
 
     def verbosity(self):
         """verbosity(self) -> bool"""
-        return _pyAgrum.GibbsInference_double_verbosity(self)
+        return _pyAgrum.GibbsSampling_double_verbosity(self)
 
 
     def epsilon(self):
         """epsilon(self) -> double"""
-        return _pyAgrum.GibbsInference_double_epsilon(self)
+        return _pyAgrum.GibbsSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self):
         """minEpsilonRate(self) -> double"""
-        return _pyAgrum.GibbsInference_double_minEpsilonRate(self)
+        return _pyAgrum.GibbsSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self):
         """maxIter(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_maxIter(self)
+        return _pyAgrum.GibbsSampling_double_maxIter(self)
 
 
     def maxTime(self):
         """maxTime(self) -> double"""
-        return _pyAgrum.GibbsInference_double_maxTime(self)
+        return _pyAgrum.GibbsSampling_double_maxTime(self)
 
 
     def periodSize(self):
         """periodSize(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_periodSize(self)
+        return _pyAgrum.GibbsSampling_double_periodSize(self)
 
 
     def burnIn(self):
         """burnIn(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_burnIn(self)
+        return _pyAgrum.GibbsSampling_double_burnIn(self)
 
 
     def nbrIterations(self):
         """nbrIterations(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrIterations(self)
+        return _pyAgrum.GibbsSampling_double_nbrIterations(self)
 
 
     def currentTime(self):
         """currentTime(self) -> double"""
-        return _pyAgrum.GibbsInference_double_currentTime(self)
+        return _pyAgrum.GibbsSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self):
         """messageApproximationScheme(self) -> std::string"""
-        return _pyAgrum.GibbsInference_double_messageApproximationScheme(self)
+        return _pyAgrum.GibbsSampling_double_messageApproximationScheme(self)
 
 
     def history(self):
         """history(self) -> Vector_double"""
-        return _pyAgrum.GibbsInference_double_history(self)
+        return _pyAgrum.GibbsSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
         """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
-        return _pyAgrum.GibbsInference_double_asIApproximationSchemeConfiguration(self)
+        return _pyAgrum.GibbsSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
         """makeInference(self)"""
-        return _pyAgrum.GibbsInference_double_makeInference(self)
+        return _pyAgrum.GibbsSampling_double_makeInference(self)
 
 
     def posterior(self, *args):
@@ -7586,12 +7578,12 @@ class GibbsInference_double(ApproximationScheme):
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
         """
-        return _pyAgrum.GibbsInference_double_posterior(self, *args)
+        return _pyAgrum.GibbsSampling_double_posterior(self, *args)
 
 
     def BN(self):
         """BN(self) -> IBayesNet_double"""
-        return _pyAgrum.GibbsInference_double_BN(self)
+        return _pyAgrum.GibbsSampling_double_BN(self)
 
 
     def addEvidence(self, *args):
@@ -7603,7 +7595,7 @@ class GibbsInference_double(ApproximationScheme):
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
         """
-        return _pyAgrum.GibbsInference_double_addEvidence(self, *args)
+        return _pyAgrum.GibbsSampling_double_addEvidence(self, *args)
 
 
     def chgEvidence(self, *args):
@@ -7615,7 +7607,7 @@ class GibbsInference_double(ApproximationScheme):
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
         """
-        return _pyAgrum.GibbsInference_double_chgEvidence(self, *args)
+        return _pyAgrum.GibbsSampling_double_chgEvidence(self, *args)
 
 
     def hasEvidence(self, *args):
@@ -7623,12 +7615,12 @@ class GibbsInference_double(ApproximationScheme):
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
         """
-        return _pyAgrum.GibbsInference_double_hasEvidence(self, *args)
+        return _pyAgrum.GibbsSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
         """eraseAllEvidence(self)"""
-        return _pyAgrum.GibbsInference_double_eraseAllEvidence(self)
+        return _pyAgrum.GibbsSampling_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args):
@@ -7636,12 +7628,12 @@ class GibbsInference_double(ApproximationScheme):
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
         """
-        return _pyAgrum.GibbsInference_double_eraseEvidence(self, *args)
+        return _pyAgrum.GibbsSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
         """hasHardEvidence(self, nodeName) -> bool"""
-        return _pyAgrum.GibbsInference_double_hasHardEvidence(self, nodeName)
+        return _pyAgrum.GibbsSampling_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args):
@@ -7649,32 +7641,32 @@ class GibbsInference_double(ApproximationScheme):
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
         """
-        return _pyAgrum.GibbsInference_double_hasSoftEvidence(self, *args)
+        return _pyAgrum.GibbsSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
         """nbrEvidence(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrEvidence(self)
+        return _pyAgrum.GibbsSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
         """nbrHardEvidence(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrHardEvidence(self)
+        return _pyAgrum.GibbsSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
         """nbrSoftEvidence(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrSoftEvidence(self)
+        return _pyAgrum.GibbsSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
         """eraseAllTargets(self)"""
-        return _pyAgrum.GibbsInference_double_eraseAllTargets(self)
+        return _pyAgrum.GibbsSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
         """addAllTargets(self)"""
-        return _pyAgrum.GibbsInference_double_addAllTargets(self)
+        return _pyAgrum.GibbsSampling_double_addAllTargets(self)
 
 
     def addTarget(self, *args):
@@ -7682,7 +7674,7 @@ class GibbsInference_double(ApproximationScheme):
         addTarget(self, target)
         addTarget(self, nodeName)
         """
-        return _pyAgrum.GibbsInference_double_addTarget(self, *args)
+        return _pyAgrum.GibbsSampling_double_addTarget(self, *args)
 
 
     def eraseTarget(self, *args):
@@ -7690,7 +7682,7 @@ class GibbsInference_double(ApproximationScheme):
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
         """
-        return _pyAgrum.GibbsInference_double_eraseTarget(self, *args)
+        return _pyAgrum.GibbsSampling_double_eraseTarget(self, *args)
 
 
     def isTarget(self, *args):
@@ -7698,12 +7690,12 @@ class GibbsInference_double(ApproximationScheme):
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
         """
-        return _pyAgrum.GibbsInference_double_isTarget(self, *args)
+        return _pyAgrum.GibbsSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
         """nbrTargets(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrTargets(self)
+        return _pyAgrum.GibbsSampling_double_nbrTargets(self)
 
 
     def H(self, *args):
@@ -7711,7 +7703,7 @@ class GibbsInference_double(ApproximationScheme):
         H(self, X) -> double
         H(self, nodeName) -> double
         """
-        return _pyAgrum.GibbsInference_double_H(self, *args)
+        return _pyAgrum.GibbsSampling_double_H(self, *args)
 
 
     def evidenceImpact(self, *args):
@@ -7719,10 +7711,10 @@ class GibbsInference_double(ApproximationScheme):
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
         """
-        return _pyAgrum.GibbsInference_double_evidenceImpact(self, *args)
+        return _pyAgrum.GibbsSampling_double_evidenceImpact(self, *args)
 
-GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
-GibbsInference_double_swigregister(GibbsInference_double)
+GibbsSampling_double_swigregister = _pyAgrum.GibbsSampling_double_swigregister
+GibbsSampling_double_swigregister(GibbsSampling_double)
 
 class LoopyBeliefPropagation_double(ApproximationScheme):
     """Proxy of C++ gum::LoopyBeliefPropagation< double > class."""
@@ -9421,7 +9413,7 @@ LazyPropagation = LazyPropagation_double
 ShaferShenoyInference = ShaferShenoyInference_double
 VariableElimination = VariableElimination_double
 
-GibbsInference = GibbsInference_double
+GibbsSampling = GibbsSampling_double
 LoopyBeliefPropagation = LoopyBeliefPropagation_double
 
 BruteForceKL = BruteForceKL_double

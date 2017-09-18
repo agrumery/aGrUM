@@ -3495,8 +3495,8 @@ namespace Swig {
 #define SWIGTYPE_p_gum__FactoryInvalidState swig_types[41]
 #define SWIGTYPE_p_gum__FatalError swig_types[42]
 #define SWIGTYPE_p_gum__FormatNotFound swig_types[43]
-#define SWIGTYPE_p_gum__GibbsInferenceT_double_t swig_types[44]
-#define SWIGTYPE_p_gum__GibbsKLT_double_t swig_types[45]
+#define SWIGTYPE_p_gum__GibbsKLT_double_t swig_types[44]
+#define SWIGTYPE_p_gum__GibbsSamplingT_double_t swig_types[45]
 #define SWIGTYPE_p_gum__GraphError swig_types[46]
 #define SWIGTYPE_p_gum__IApproximationSchemeConfiguration swig_types[47]
 #define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[48]
@@ -4672,13 +4672,13 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/approximations/approximationScheme.h>
 
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/tools/BayesNetInference.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/BN/inference/GibbsSampling.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
@@ -7502,157 +7502,157 @@ SWIGINTERN gum::Potential< double > gum_VariableElimination_Sl_double_Sg__eviden
 SWIGINTERN gum::Potential< double > gum_VariableElimination_Sl_double_Sg__evidenceImpact__SWIG_1(gum::VariableElimination< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setEvidence(gum::GibbsInference< double > *self,PyObject *evidces){}
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__updateEvidence(gum::GibbsInference< double > *self,PyObject *evidces){}
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setTargets(gum::GibbsInference< double > *self,PyObject *targets){}
-SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__hardEvidenceNodes(gum::GibbsInference< double > *self){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setEvidence(gum::GibbsSampling< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__updateEvidence(gum::GibbsSampling< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setTargets(gum::GibbsSampling< double > *self,PyObject *targets){}
+SWIGINTERN PyObject *gum_GibbsSampling_Sl_double_Sg__hardEvidenceNodes(gum::GibbsSampling< double > *self){
       return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
     }
-SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__softEvidenceNodes(gum::GibbsInference< double > *self){
+SWIGINTERN PyObject *gum_GibbsSampling_Sl_double_Sg__softEvidenceNodes(gum::GibbsSampling< double > *self){
       return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
     }
-SWIGINTERN PyObject *gum_GibbsInference_Sl_double_Sg__targets(gum::GibbsInference< double > *self){
+SWIGINTERN PyObject *gum_GibbsSampling_Sl_double_Sg__targets(gum::GibbsSampling< double > *self){
       return PyAgrumHelper::PySetFromNodeSet(self->targets() );
     }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setVerbosity(gum::GibbsInference< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setEpsilon(gum::GibbsInference< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setMinEpsilonRate(gum::GibbsInference< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setMaxIter(gum::GibbsInference< double > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setMaxTime(gum::GibbsInference< double > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setPeriodSize(gum::GibbsInference< double > *self,gum::Size p){ self->gum::ApproximationScheme::setPeriodSize(p); }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__setBurnIn(gum::GibbsInference< double > *self,gum::Size b){ self->gum::ApproximationScheme::setBurnIn(b); }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__verbosity(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::verbosity(); }
-SWIGINTERN double gum_GibbsInference_Sl_double_Sg__epsilon(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::epsilon(); }
-SWIGINTERN double gum_GibbsInference_Sl_double_Sg__minEpsilonRate(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::minEpsilonRate(); }
-SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__maxIter(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
-SWIGINTERN double gum_GibbsInference_Sl_double_Sg__maxTime(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
-SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__periodSize(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
-SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__burnIn(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::burnIn(); }
-SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__nbrIterations(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
-SWIGINTERN double gum_GibbsInference_Sl_double_Sg__currentTime(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
-SWIGINTERN std::string gum_GibbsInference_Sl_double_Sg__messageApproximationScheme(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
-SWIGINTERN std::vector< double,std::allocator< double > > const &gum_GibbsInference_Sl_double_Sg__history(gum::GibbsInference< double > const *self){ return self->gum::ApproximationScheme::history(); }
-SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_GibbsInference_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::GibbsInference< double > const *self){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setVerbosity(gum::GibbsSampling< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setEpsilon(gum::GibbsSampling< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setMinEpsilonRate(gum::GibbsSampling< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setMaxIter(gum::GibbsSampling< double > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setMaxTime(gum::GibbsSampling< double > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setPeriodSize(gum::GibbsSampling< double > *self,gum::Size p){ self->gum::ApproximationScheme::setPeriodSize(p); }
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__setBurnIn(gum::GibbsSampling< double > *self,gum::Size b){ self->gum::ApproximationScheme::setBurnIn(b); }
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__verbosity(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::verbosity(); }
+SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__epsilon(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::epsilon(); }
+SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__minEpsilonRate(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::minEpsilonRate(); }
+SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__maxIter(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
+SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__maxTime(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
+SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__periodSize(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__burnIn(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::burnIn(); }
+SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__nbrIterations(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
+SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__currentTime(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
+SWIGINTERN std::string gum_GibbsSampling_Sl_double_Sg__messageApproximationScheme(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_GibbsSampling_Sl_double_Sg__history(gum::GibbsSampling< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_GibbsSampling_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::GibbsSampling< double > const *self){
     return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__makeInference(gum::GibbsInference< double > *self){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__makeInference(gum::GibbsSampling< double > *self){
     self->gum::BayesNetInference<double>::makeInference();
   }
-SWIGINTERN gum::Potential< double > const gum_GibbsInference_Sl_double_Sg__posterior__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const var){
+SWIGINTERN gum::Potential< double > const gum_GibbsSampling_Sl_double_Sg__posterior__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId const var){
     return self->MarginalTargetedInference<double>::posterior(var);
   }
-SWIGINTERN gum::Potential< double > const gum_GibbsInference_Sl_double_Sg__posterior__SWIG_1(gum::GibbsInference< double > *self,std::string const nodeName){
+SWIGINTERN gum::Potential< double > const gum_GibbsSampling_Sl_double_Sg__posterior__SWIG_1(gum::GibbsSampling< double > *self,std::string const nodeName){
     return self->MarginalTargetedInference<double>::posterior(nodeName);
   }
-SWIGINTERN gum::IBayesNet< double > const &gum_GibbsInference_Sl_double_Sg__BN(gum::GibbsInference< double > const *self){
+SWIGINTERN gum::IBayesNet< double > const &gum_GibbsSampling_Sl_double_Sg__BN(gum::GibbsSampling< double > const *self){
     return self->BayesNetInference<double>::BN();
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const id,gum::Idx const val){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_1(gum::GibbsInference< double > *self,std::string const &nodeName,gum::Idx const val){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_1(gum::GibbsSampling< double > *self,std::string const &nodeName,gum::Idx const val){
     self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_2(gum::GibbsInference< double > *self,gum::NodeId const id,std::string const &val){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_2(gum::GibbsSampling< double > *self,gum::NodeId const id,std::string const &val){
     self->gum::BayesNetInference<double>::addEvidence(id,val);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_3(gum::GibbsInference< double > *self,std::string const &nodeName,std::string const &val){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_3(gum::GibbsSampling< double > *self,std::string const &nodeName,std::string const &val){
     self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_4(gum::GibbsInference< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_4(gum::GibbsSampling< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
    self->gum::BayesNetInference<double>::addEvidence(id,vals);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_5(gum::GibbsInference< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_5(gum::GibbsSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
     self->gum::BayesNetInference<double>::addEvidence(nodeName,vals);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const id,gum::Idx const val){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId const id,gum::Idx const val){
     self->gum::BayesNetInference<double>::chgEvidence(id,val);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_1(gum::GibbsInference< double > *self,std::string const &nodeName,gum::Idx const val){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_1(gum::GibbsSampling< double > *self,std::string const &nodeName,gum::Idx const val){
     self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_2(gum::GibbsInference< double > *self,gum::NodeId const id,std::string const &val){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_2(gum::GibbsSampling< double > *self,gum::NodeId const id,std::string const &val){
     self->gum::BayesNetInference<double>::chgEvidence(id,val);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_3(gum::GibbsInference< double > *self,std::string const &nodeName,std::string const &val){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_3(gum::GibbsSampling< double > *self,std::string const &nodeName,std::string const &val){
     self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_4(gum::GibbsInference< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_4(gum::GibbsSampling< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
    self->gum::BayesNetInference<double>::chgEvidence(id,vals);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_5(gum::GibbsInference< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_5(gum::GibbsSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
     self->gum::BayesNetInference<double>::chgEvidence(nodeName,vals);
   }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasEvidence__SWIG_0(gum::GibbsInference< double > const *self,gum::NodeId const id){
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasEvidence__SWIG_0(gum::GibbsSampling< double > const *self,gum::NodeId const id){
     return self->gum::BayesNetInference<double>::hasEvidence(id);
   }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasEvidence__SWIG_1(gum::GibbsInference< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasEvidence__SWIG_1(gum::GibbsSampling< double > const *self,std::string const &nodeName){
     return self->gum::BayesNetInference<double>::hasEvidence(nodeName);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseAllEvidence(gum::GibbsInference< double > *self){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseAllEvidence(gum::GibbsSampling< double > *self){
     self->gum::BayesNetInference<double>::eraseAllEvidence();
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseEvidence__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const id){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseEvidence__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId const id){
     self->gum::BayesNetInference<double>::eraseEvidence(id);
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseEvidence__SWIG_1(gum::GibbsInference< double > *self,std::string const &nodeName){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseEvidence__SWIG_1(gum::GibbsSampling< double > *self,std::string const &nodeName){
     self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
   }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::GibbsInference< double > const *self,gum::NodeId const id){
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::GibbsSampling< double > const *self,gum::NodeId const id){
     return self->gum::BayesNetInference<double>::hasSoftEvidence(id);
   }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasHardEvidence(gum::GibbsInference< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasHardEvidence(gum::GibbsSampling< double > const *self,std::string const &nodeName){
     return self->gum::BayesNetInference<double>::hasHardEvidence(nodeName);
   }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::GibbsInference< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::GibbsSampling< double > const *self,std::string const &nodeName){
     return self->gum::BayesNetInference<double>::hasSoftEvidence(nodeName);
   }
-SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__nbrEvidence(gum::GibbsInference< double > const *self){
+SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__nbrEvidence(gum::GibbsSampling< double > const *self){
     return self->gum::BayesNetInference<double>::nbrEvidence();
   }
-SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__nbrHardEvidence(gum::GibbsInference< double > const *self){
+SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__nbrHardEvidence(gum::GibbsSampling< double > const *self){
     return self->gum::BayesNetInference<double>::nbrHardEvidence();
   }
-SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__nbrSoftEvidence(gum::GibbsInference< double > const *self){
+SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__nbrSoftEvidence(gum::GibbsSampling< double > const *self){
     return self->gum::BayesNetInference<double>::nbrSoftEvidence();
   }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseAllTargets(gum::GibbsInference< double > *self){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseAllTargets(gum::GibbsSampling< double > *self){
       self->gum::MarginalTargetedInference<double>::eraseAllTargets();
     }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addAllTargets(gum::GibbsInference< double > *self){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addAllTargets(gum::GibbsSampling< double > *self){
       self->gum::MarginalTargetedInference<double>::addAllTargets();
     }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addTarget__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const target){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addTarget__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId const target){
       self->gum::MarginalTargetedInference<double>::addTarget(target);
     }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__addTarget__SWIG_1(gum::GibbsInference< double > *self,std::string const &nodeName){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__addTarget__SWIG_1(gum::GibbsSampling< double > *self,std::string const &nodeName){
       self->gum::MarginalTargetedInference<double>::addTarget(nodeName);
     }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseTarget__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const target){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseTarget__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId const target){
       self->gum::MarginalTargetedInference<double>::eraseTarget(target);
     }
-SWIGINTERN void gum_GibbsInference_Sl_double_Sg__eraseTarget__SWIG_1(gum::GibbsInference< double > *self,std::string const &nodeName){
+SWIGINTERN void gum_GibbsSampling_Sl_double_Sg__eraseTarget__SWIG_1(gum::GibbsSampling< double > *self,std::string const &nodeName){
       self->gum::MarginalTargetedInference<double>::eraseTarget(nodeName);
     }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__isTarget__SWIG_0(gum::GibbsInference< double > const *self,gum::NodeId const variable){
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__isTarget__SWIG_0(gum::GibbsSampling< double > const *self,gum::NodeId const variable){
       return self->gum::MarginalTargetedInference<double>::isTarget(variable);
     }
-SWIGINTERN bool gum_GibbsInference_Sl_double_Sg__isTarget__SWIG_1(gum::GibbsInference< double > const *self,std::string const &nodeName){
+SWIGINTERN bool gum_GibbsSampling_Sl_double_Sg__isTarget__SWIG_1(gum::GibbsSampling< double > const *self,std::string const &nodeName){
       return self->gum::MarginalTargetedInference<double>::isTarget(nodeName);
     }
-SWIGINTERN gum::Size gum_GibbsInference_Sl_double_Sg__nbrTargets(gum::GibbsInference< double > const *self){
+SWIGINTERN gum::Size gum_GibbsSampling_Sl_double_Sg__nbrTargets(gum::GibbsSampling< double > const *self){
       return self->gum::MarginalTargetedInference<double>::nbrTargets();
     }
-SWIGINTERN double gum_GibbsInference_Sl_double_Sg__H__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId const X){
+SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__H__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId const X){
      return self->gum::MarginalTargetedInference<double>::H(X);
    }
-SWIGINTERN double gum_GibbsInference_Sl_double_Sg__H__SWIG_1(gum::GibbsInference< double > *self,std::string const &nodeName){
+SWIGINTERN double gum_GibbsSampling_Sl_double_Sg__H__SWIG_1(gum::GibbsSampling< double > *self,std::string const &nodeName){
      return self->gum::MarginalTargetedInference<double>::H(nodeName);
    }
-SWIGINTERN gum::Potential< double > gum_GibbsInference_Sl_double_Sg__evidenceImpact__SWIG_0(gum::GibbsInference< double > *self,gum::NodeId target,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs){
+SWIGINTERN gum::Potential< double > gum_GibbsSampling_Sl_double_Sg__evidenceImpact__SWIG_0(gum::GibbsSampling< double > *self,gum::NodeId target,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs){
     return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
-SWIGINTERN gum::Potential< double > gum_GibbsInference_Sl_double_Sg__evidenceImpact__SWIG_1(gum::GibbsInference< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
+SWIGINTERN gum::Potential< double > gum_GibbsSampling_Sl_double_Sg__evidenceImpact__SWIG_1(gum::GibbsSampling< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
 SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setEvidence(gum::LoopyBeliefPropagation< double > *self,PyObject *evidces){}
@@ -66821,48 +66821,48 @@ SWIGINTERN PyObject *VariableElimination_double_swigregister(PyObject *SWIGUNUSE
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *_wrap_new_GibbsInference_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_GibbsSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
-  gum::GibbsInference< double > *result = 0 ;
+  gum::GibbsSampling< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:new_GibbsInference_double",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:new_GibbsSampling_double",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GibbsInference_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_GibbsSampling_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
   }
   arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
   {
     try {
-      result = (gum::GibbsInference< double > *)new gum::GibbsInference< double >((gum::IBayesNet< double > const *)arg1);
+      result = (gum::GibbsSampling< double > *)new gum::GibbsSampling< double >((gum::IBayesNet< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
     }
   }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__GibbsInferenceT_double_t, SWIG_POINTER_NEW |  0 );
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__GibbsSamplingT_double_t, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_GibbsInference_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_delete_GibbsSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:delete_GibbsInference_double",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, SWIG_POINTER_DISOWN |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_GibbsSampling_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GibbsInference_double" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_GibbsSampling_double" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
       delete arg1;
@@ -66878,25 +66878,25 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   PyObject *arg2 = (PyObject *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   arg2 = obj1;
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setEvidence(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setEvidence(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -66909,25 +66909,25 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_updateEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_updateEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   PyObject *arg2 = (PyObject *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_updateEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_updateEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_updateEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_updateEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   arg2 = obj1;
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__updateEvidence(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__updateEvidence(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -66940,25 +66940,25 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   PyObject *arg2 = (PyObject *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setTargets",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setTargets",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setTargets" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setTargets" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   arg2 = obj1;
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setTargets(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setTargets(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -66971,23 +66971,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hardEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_hardEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_hardEvidenceNodes",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_hardEvidenceNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_hardEvidenceNodes" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_hardEvidenceNodes" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (PyObject *)gum_GibbsInference_Sl_double_Sg__hardEvidenceNodes(arg1);
+      result = (PyObject *)gum_GibbsSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67000,23 +67000,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_softEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_softEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_softEvidenceNodes",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_softEvidenceNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_softEvidenceNodes" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_softEvidenceNodes" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (PyObject *)gum_GibbsInference_Sl_double_Sg__softEvidenceNodes(arg1);
+      result = (PyObject *)gum_GibbsSampling_Sl_double_Sg__softEvidenceNodes(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67029,23 +67029,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_targets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_targets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_targets",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_targets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_targets" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_targets" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (PyObject *)gum_GibbsInference_Sl_double_Sg__targets(arg1);
+      result = (PyObject *)gum_GibbsSampling_Sl_double_Sg__targets(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67058,9 +67058,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setVerbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setVerbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   bool arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67069,20 +67069,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_setVerbosity(PyObject *SWIGUNUS
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setVerbosity",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setVerbosity",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setVerbosity" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setVerbosity" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_bool(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_setVerbosity" "', argument " "2"" of type '" "bool""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_setVerbosity" "', argument " "2"" of type '" "bool""'");
   } 
   arg2 = static_cast< bool >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setVerbosity(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setVerbosity(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67095,9 +67095,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67106,20 +67106,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_setEpsilon(PyObject *SWIGUNUSED
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setEpsilon",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setEpsilon",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setEpsilon" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setEpsilon" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_setEpsilon" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_setEpsilon" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setEpsilon(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setEpsilon(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67132,9 +67132,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67143,20 +67143,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_setMinEpsilonRate(PyObject *SWI
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setMinEpsilonRate",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setMinEpsilonRate",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setMinEpsilonRate" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setMinEpsilonRate" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_setMinEpsilonRate" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_setMinEpsilonRate" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setMinEpsilonRate(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setMinEpsilonRate(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67169,9 +67169,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::Size arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67180,20 +67180,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_setMaxIter(PyObject *SWIGUNUSED
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setMaxIter",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setMaxIter",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setMaxIter" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setMaxIter" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_setMaxIter" "', argument " "2"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_setMaxIter" "', argument " "2"" of type '" "gum::Size""'");
   } 
   arg2 = static_cast< gum::Size >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setMaxIter(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setMaxIter(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67206,9 +67206,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   double arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67217,20 +67217,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_setMaxTime(PyObject *SWIGUNUSED
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setMaxTime",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setMaxTime",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setMaxTime" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setMaxTime" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_setMaxTime" "', argument " "2"" of type '" "double""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_setMaxTime" "', argument " "2"" of type '" "double""'");
   } 
   arg2 = static_cast< double >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setMaxTime(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setMaxTime(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67243,9 +67243,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setPeriodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setPeriodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::Size arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67254,20 +67254,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_setPeriodSize(PyObject *SWIGUNU
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setPeriodSize",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setPeriodSize",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setPeriodSize" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setPeriodSize" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_setPeriodSize" "', argument " "2"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_setPeriodSize" "', argument " "2"" of type '" "gum::Size""'");
   } 
   arg2 = static_cast< gum::Size >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setPeriodSize(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setPeriodSize(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67280,9 +67280,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_setBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_setBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::Size arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67291,20 +67291,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_setBurnIn(PyObject *SWIGUNUSEDP
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_setBurnIn",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_setBurnIn",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_setBurnIn" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_setBurnIn" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_setBurnIn" "', argument " "2"" of type '" "gum::Size""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_setBurnIn" "', argument " "2"" of type '" "gum::Size""'");
   } 
   arg2 = static_cast< gum::Size >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__setBurnIn(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__setBurnIn(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67317,23 +67317,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_verbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_verbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_verbosity",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_verbosity",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_verbosity" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_verbosity" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__verbosity((gum::GibbsInference< double > const *)arg1);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__verbosity((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67346,23 +67346,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_epsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_epsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   double result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_epsilon",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_epsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_epsilon" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_epsilon" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (double)gum_GibbsInference_Sl_double_Sg__epsilon((gum::GibbsInference< double > const *)arg1);
+      result = (double)gum_GibbsSampling_Sl_double_Sg__epsilon((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67375,23 +67375,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_minEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_minEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   double result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_minEpsilonRate",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_minEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_minEpsilonRate" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_minEpsilonRate" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (double)gum_GibbsInference_Sl_double_Sg__minEpsilonRate((gum::GibbsInference< double > const *)arg1);
+      result = (double)gum_GibbsSampling_Sl_double_Sg__minEpsilonRate((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67404,23 +67404,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_maxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_maxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::Size result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_maxIter",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_maxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_maxIter" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_maxIter" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_GibbsInference_Sl_double_Sg__maxIter((gum::GibbsInference< double > const *)arg1);
+      result = (gum::Size)gum_GibbsSampling_Sl_double_Sg__maxIter((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67433,23 +67433,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_maxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_maxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   double result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_maxTime",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_maxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_maxTime" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_maxTime" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (double)gum_GibbsInference_Sl_double_Sg__maxTime((gum::GibbsInference< double > const *)arg1);
+      result = (double)gum_GibbsSampling_Sl_double_Sg__maxTime((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67462,23 +67462,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_periodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_periodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::Size result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_periodSize",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_periodSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_periodSize" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_periodSize" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_GibbsInference_Sl_double_Sg__periodSize((gum::GibbsInference< double > const *)arg1);
+      result = (gum::Size)gum_GibbsSampling_Sl_double_Sg__periodSize((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67491,23 +67491,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_burnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_burnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::Size result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_burnIn",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_burnIn",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_burnIn" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_burnIn" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_GibbsInference_Sl_double_Sg__burnIn((gum::GibbsInference< double > const *)arg1);
+      result = (gum::Size)gum_GibbsSampling_Sl_double_Sg__burnIn((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67520,23 +67520,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_nbrIterations(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_nbrIterations(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::Size result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_nbrIterations",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_nbrIterations",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_nbrIterations" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_nbrIterations" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_GibbsInference_Sl_double_Sg__nbrIterations((gum::GibbsInference< double > const *)arg1);
+      result = (gum::Size)gum_GibbsSampling_Sl_double_Sg__nbrIterations((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67549,23 +67549,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_currentTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_currentTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   double result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_currentTime",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_currentTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_currentTime" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_currentTime" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (double)gum_GibbsInference_Sl_double_Sg__currentTime((gum::GibbsInference< double > const *)arg1);
+      result = (double)gum_GibbsSampling_Sl_double_Sg__currentTime((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67578,23 +67578,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_messageApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_messageApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   std::string result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_messageApproximationScheme",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_messageApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_messageApproximationScheme" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_messageApproximationScheme" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = gum_GibbsInference_Sl_double_Sg__messageApproximationScheme((gum::GibbsInference< double > const *)arg1);
+      result = gum_GibbsSampling_Sl_double_Sg__messageApproximationScheme((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67607,23 +67607,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_history(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_history(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   std::vector< double,std::allocator< double > > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_history",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_history",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_history" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_history" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (std::vector< double,std::allocator< double > > *) &gum_GibbsInference_Sl_double_Sg__history((gum::GibbsInference< double > const *)arg1);
+      result = (std::vector< double,std::allocator< double > > *) &gum_GibbsSampling_Sl_double_Sg__history((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67636,23 +67636,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::IApproximationSchemeConfiguration *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::IApproximationSchemeConfiguration *) &gum_GibbsInference_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::GibbsInference< double > const *)arg1);
+      result = (gum::IApproximationSchemeConfiguration *) &gum_GibbsSampling_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67665,22 +67665,22 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_makeInference",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_makeInference",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_makeInference" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_makeInference" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__makeInference(arg1);
+      gum_GibbsSampling_Sl_double_Sg__makeInference(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67693,9 +67693,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_posterior__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67705,20 +67705,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior__SWIG_0(PyObject *SWI
   PyObject * obj1 = 0 ;
   gum::Potential< double > result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_posterior",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_posterior" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_posterior" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_posterior" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_posterior" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = gum_GibbsInference_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
+      result = gum_GibbsSampling_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67731,9 +67731,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_posterior__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -67741,24 +67741,24 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior__SWIG_1(PyObject *SWI
   PyObject * obj1 = 0 ;
   gum::Potential< double > result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_posterior",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_posterior" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_posterior" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "GibbsInference_double_posterior" "', argument " "2"" of type '" "std::string const""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "GibbsSampling_double_posterior" "', argument " "2"" of type '" "std::string const""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
     try {
-      result = gum_GibbsInference_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
+      result = gum_GibbsSampling_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67771,7 +67771,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_posterior(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -67786,7 +67786,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior(PyObject *self, PyObj
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -67794,50 +67794,50 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_posterior(PyObject *self, PyObj
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_GibbsInference_double_posterior__SWIG_0(self, args);
+        return _wrap_GibbsSampling_double_posterior__SWIG_0(self, args);
       }
     }
   }
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_GibbsInference_double_posterior__SWIG_1(self, args);
+        return _wrap_GibbsSampling_double_posterior__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_posterior'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_posterior'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::posterior(gum::NodeId const)\n"
-    "    gum::GibbsInference< double >::posterior(std::string const)\n");
+    "    gum::GibbsSampling< double >::posterior(gum::NodeId const)\n"
+    "    gum::GibbsSampling< double >::posterior(std::string const)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::IBayesNet< double > *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_BN",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_BN",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_BN" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_BN" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::IBayesNet< double > *) &gum_GibbsInference_Sl_double_Sg__BN((gum::GibbsInference< double > const *)arg1);
+      result = (gum::IBayesNet< double > *) &gum_GibbsSampling_Sl_double_Sg__BN((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67850,9 +67850,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   gum::Idx arg3 ;
   void *argp1 = 0 ;
@@ -67865,25 +67865,25 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_0(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
   } 
   arg3 = static_cast< gum::Idx >(val3);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_0(arg1,arg2,arg3);
+      gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_0(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67896,9 +67896,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   gum::Idx arg3 ;
   void *argp1 = 0 ;
@@ -67910,31 +67910,31 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_1(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
   } 
   arg3 = static_cast< gum::Idx >(val3);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+      gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -67949,9 +67949,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   std::string *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -67963,31 +67963,31 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_2(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     std::string *ptr = (std::string *)0;
     res3 = SWIG_AsPtr_std_string(obj2, &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+      gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68002,9 +68002,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -68015,20 +68015,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_3(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
@@ -68036,16 +68036,16 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_3(PyObject *S
     std::string *ptr = (std::string *)0;
     res3 = SWIG_AsPtr_std_string(obj2, &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+      gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68062,9 +68062,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   std::vector< double,std::allocator< double > > *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -68076,31 +68076,31 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_4(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     res3 = swig::asptr(obj2, &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+      gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68115,9 +68115,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   std::vector< double,std::allocator< double > > *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -68128,20 +68128,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_5(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
@@ -68149,16 +68149,16 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence__SWIG_5(PyObject *S
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     res3 = swig::asptr(obj2, &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+      gum_GibbsSampling_Sl_double_Sg__addEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68175,7 +68175,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addEvidence(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
@@ -68190,7 +68190,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -68203,7 +68203,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
           _v = SWIG_CheckState(res);
         }
         if (_v) {
-          return _wrap_GibbsInference_double_addEvidence__SWIG_0(self, args);
+          return _wrap_GibbsSampling_double_addEvidence__SWIG_0(self, args);
         }
       }
     }
@@ -68211,7 +68211,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -68222,7 +68222,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
         int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_addEvidence__SWIG_2(self, args);
+          return _wrap_GibbsSampling_double_addEvidence__SWIG_2(self, args);
         }
       }
     }
@@ -68230,7 +68230,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -68241,7 +68241,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
         int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_addEvidence__SWIG_4(self, args);
+          return _wrap_GibbsSampling_double_addEvidence__SWIG_4(self, args);
         }
       }
     }
@@ -68249,7 +68249,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -68260,7 +68260,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
           _v = SWIG_CheckState(res);
         }
         if (_v) {
-          return _wrap_GibbsInference_double_addEvidence__SWIG_1(self, args);
+          return _wrap_GibbsSampling_double_addEvidence__SWIG_1(self, args);
         }
       }
     }
@@ -68268,7 +68268,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -68277,7 +68277,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
         int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_addEvidence__SWIG_3(self, args);
+          return _wrap_GibbsSampling_double_addEvidence__SWIG_3(self, args);
         }
       }
     }
@@ -68285,7 +68285,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -68294,28 +68294,28 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addEvidence(PyObject *self, PyO
         int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_addEvidence__SWIG_5(self, args);
+          return _wrap_GibbsSampling_double_addEvidence__SWIG_5(self, args);
         }
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_addEvidence'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_addEvidence'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::addEvidence(gum::NodeId const,gum::Idx const)\n"
-    "    gum::GibbsInference< double >::addEvidence(std::string const &,gum::Idx const)\n"
-    "    gum::GibbsInference< double >::addEvidence(gum::NodeId const,std::string const &)\n"
-    "    gum::GibbsInference< double >::addEvidence(std::string const &,std::string const &)\n"
-    "    gum::GibbsInference< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
-    "    gum::GibbsInference< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+    "    gum::GibbsSampling< double >::addEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::GibbsSampling< double >::addEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::GibbsSampling< double >::addEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::GibbsSampling< double >::addEvidence(std::string const &,std::string const &)\n"
+    "    gum::GibbsSampling< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::GibbsSampling< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_chgEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   gum::Idx arg3 ;
   void *argp1 = 0 ;
@@ -68328,25 +68328,25 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_0(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
   } 
   arg3 = static_cast< gum::Idx >(val3);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_0(arg1,arg2,arg3);
+      gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_0(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68359,9 +68359,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_chgEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   gum::Idx arg3 ;
   void *argp1 = 0 ;
@@ -68373,31 +68373,31 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_1(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
   } 
   arg3 = static_cast< gum::Idx >(val3);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+      gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68412,9 +68412,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_chgEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   std::string *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -68426,31 +68426,31 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_2(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     std::string *ptr = (std::string *)0;
     res3 = SWIG_AsPtr_std_string(obj2, &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+      gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68465,9 +68465,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_chgEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -68478,20 +68478,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_3(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
@@ -68499,16 +68499,16 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_3(PyObject *S
     std::string *ptr = (std::string *)0;
     res3 = SWIG_AsPtr_std_string(obj2, &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+      gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68525,9 +68525,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_chgEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   std::vector< double,std::allocator< double > > *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -68539,31 +68539,31 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_4(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     res3 = swig::asptr(obj2, &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+      gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68578,9 +68578,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_chgEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   std::vector< double,std::allocator< double > > *arg3 = 0 ;
   void *argp1 = 0 ;
@@ -68591,20 +68591,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_5(PyObject *S
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
@@ -68612,16 +68612,16 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence__SWIG_5(PyObject *S
     std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
     res3 = swig::asptr(obj2, &ptr);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
     }
     arg3 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__chgEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+      gum_GibbsSampling_Sl_double_Sg__chgEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68638,7 +68638,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_chgEvidence(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
@@ -68653,7 +68653,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -68666,7 +68666,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
           _v = SWIG_CheckState(res);
         }
         if (_v) {
-          return _wrap_GibbsInference_double_chgEvidence__SWIG_0(self, args);
+          return _wrap_GibbsSampling_double_chgEvidence__SWIG_0(self, args);
         }
       }
     }
@@ -68674,7 +68674,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -68685,7 +68685,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
         int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_chgEvidence__SWIG_2(self, args);
+          return _wrap_GibbsSampling_double_chgEvidence__SWIG_2(self, args);
         }
       }
     }
@@ -68693,7 +68693,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -68704,7 +68704,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
         int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_chgEvidence__SWIG_4(self, args);
+          return _wrap_GibbsSampling_double_chgEvidence__SWIG_4(self, args);
         }
       }
     }
@@ -68712,7 +68712,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -68723,7 +68723,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
           _v = SWIG_CheckState(res);
         }
         if (_v) {
-          return _wrap_GibbsInference_double_chgEvidence__SWIG_1(self, args);
+          return _wrap_GibbsSampling_double_chgEvidence__SWIG_1(self, args);
         }
       }
     }
@@ -68731,7 +68731,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -68740,7 +68740,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
         int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_chgEvidence__SWIG_3(self, args);
+          return _wrap_GibbsSampling_double_chgEvidence__SWIG_3(self, args);
         }
       }
     }
@@ -68748,7 +68748,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -68757,28 +68757,28 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_chgEvidence(PyObject *self, PyO
         int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_chgEvidence__SWIG_5(self, args);
+          return _wrap_GibbsSampling_double_chgEvidence__SWIG_5(self, args);
         }
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_chgEvidence'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_chgEvidence'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::chgEvidence(gum::NodeId const,gum::Idx const)\n"
-    "    gum::GibbsInference< double >::chgEvidence(std::string const &,gum::Idx const)\n"
-    "    gum::GibbsInference< double >::chgEvidence(gum::NodeId const,std::string const &)\n"
-    "    gum::GibbsInference< double >::chgEvidence(std::string const &,std::string const &)\n"
-    "    gum::GibbsInference< double >::chgEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
-    "    gum::GibbsInference< double >::chgEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+    "    gum::GibbsSampling< double >::chgEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::GibbsSampling< double >::chgEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::GibbsSampling< double >::chgEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::GibbsSampling< double >::chgEvidence(std::string const &,std::string const &)\n"
+    "    gum::GibbsSampling< double >::chgEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::GibbsSampling< double >::chgEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_hasEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -68788,20 +68788,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasEvidence__SWIG_0(PyObject *S
   PyObject * obj1 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_hasEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_hasEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_hasEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_hasEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__hasEvidence__SWIG_0((gum::GibbsInference< double > const *)arg1,arg2);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__hasEvidence__SWIG_0((gum::GibbsSampling< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68814,9 +68814,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_hasEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -68825,26 +68825,26 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasEvidence__SWIG_1(PyObject *S
   PyObject * obj1 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_hasEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_hasEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__hasEvidence__SWIG_1((gum::GibbsInference< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__hasEvidence__SWIG_1((gum::GibbsSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68859,7 +68859,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_hasEvidence(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -68874,7 +68874,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasEvidence(PyObject *self, PyO
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -68882,49 +68882,49 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasEvidence(PyObject *self, PyO
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_GibbsInference_double_hasEvidence__SWIG_0(self, args);
+        return _wrap_GibbsSampling_double_hasEvidence__SWIG_0(self, args);
       }
     }
   }
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_GibbsInference_double_hasEvidence__SWIG_1(self, args);
+        return _wrap_GibbsSampling_double_hasEvidence__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_hasEvidence'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_hasEvidence'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::hasEvidence(gum::NodeId const) const\n"
-    "    gum::GibbsInference< double >::hasEvidence(std::string const &) const\n");
+    "    gum::GibbsSampling< double >::hasEvidence(gum::NodeId const) const\n"
+    "    gum::GibbsSampling< double >::hasEvidence(std::string const &) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseAllEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_eraseAllEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_eraseAllEvidence",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_eraseAllEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_eraseAllEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_eraseAllEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__eraseAllEvidence(arg1);
+      gum_GibbsSampling_Sl_double_Sg__eraseAllEvidence(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68937,9 +68937,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -68948,20 +68948,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence__SWIG_0(PyObject 
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_eraseEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_eraseEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -68974,9 +68974,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -68984,26 +68984,26 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence__SWIG_1(PyObject 
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_eraseEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_eraseEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
+      gum_GibbsSampling_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69018,7 +69018,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_eraseEvidence(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -69033,7 +69033,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence(PyObject *self, P
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -69041,36 +69041,36 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseEvidence(PyObject *self, P
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_GibbsInference_double_eraseEvidence__SWIG_0(self, args);
+        return _wrap_GibbsSampling_double_eraseEvidence__SWIG_0(self, args);
       }
     }
   }
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_GibbsInference_double_eraseEvidence__SWIG_1(self, args);
+        return _wrap_GibbsSampling_double_eraseEvidence__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_eraseEvidence'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_eraseEvidence'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::eraseEvidence(gum::NodeId const)\n"
-    "    gum::GibbsInference< double >::eraseEvidence(std::string const &)\n");
+    "    gum::GibbsSampling< double >::eraseEvidence(gum::NodeId const)\n"
+    "    gum::GibbsSampling< double >::eraseEvidence(std::string const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasSoftEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_hasSoftEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69080,20 +69080,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasSoftEvidence__SWIG_0(PyObjec
   PyObject * obj1 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_hasSoftEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__hasSoftEvidence__SWIG_0((gum::GibbsInference< double > const *)arg1,arg2);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0((gum::GibbsSampling< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69106,9 +69106,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69117,26 +69117,26 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasHardEvidence(PyObject *SWIGU
   PyObject * obj1 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_hasHardEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_hasHardEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__hasHardEvidence((gum::GibbsInference< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__hasHardEvidence((gum::GibbsSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69151,9 +69151,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasSoftEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_hasSoftEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69162,26 +69162,26 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasSoftEvidence__SWIG_1(PyObjec
   PyObject * obj1 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__hasSoftEvidence__SWIG_1((gum::GibbsInference< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1((gum::GibbsSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69196,7 +69196,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_hasSoftEvidence(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_hasSoftEvidence(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -69211,7 +69211,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasSoftEvidence(PyObject *self,
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -69219,50 +69219,50 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_hasSoftEvidence(PyObject *self,
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_GibbsInference_double_hasSoftEvidence__SWIG_0(self, args);
+        return _wrap_GibbsSampling_double_hasSoftEvidence__SWIG_0(self, args);
       }
     }
   }
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_GibbsInference_double_hasSoftEvidence__SWIG_1(self, args);
+        return _wrap_GibbsSampling_double_hasSoftEvidence__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_hasSoftEvidence'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_hasSoftEvidence'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::hasSoftEvidence(gum::NodeId const) const\n"
-    "    gum::GibbsInference< double >::hasSoftEvidence(std::string const &) const\n");
+    "    gum::GibbsSampling< double >::hasSoftEvidence(gum::NodeId const) const\n"
+    "    gum::GibbsSampling< double >::hasSoftEvidence(std::string const &) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_nbrEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_nbrEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::Size result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_nbrEvidence",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_nbrEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_nbrEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_nbrEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_GibbsInference_Sl_double_Sg__nbrEvidence((gum::GibbsInference< double > const *)arg1);
+      result = (gum::Size)gum_GibbsSampling_Sl_double_Sg__nbrEvidence((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69275,23 +69275,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_nbrHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_nbrHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::Size result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_nbrHardEvidence",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_nbrHardEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_nbrHardEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_nbrHardEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_GibbsInference_Sl_double_Sg__nbrHardEvidence((gum::GibbsInference< double > const *)arg1);
+      result = (gum::Size)gum_GibbsSampling_Sl_double_Sg__nbrHardEvidence((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69304,23 +69304,23 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_nbrSoftEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_nbrSoftEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::Size result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_nbrSoftEvidence",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_nbrSoftEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_nbrSoftEvidence" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_nbrSoftEvidence" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_GibbsInference_Sl_double_Sg__nbrSoftEvidence((gum::GibbsInference< double > const *)arg1);
+      result = (gum::Size)gum_GibbsSampling_Sl_double_Sg__nbrSoftEvidence((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69333,22 +69333,22 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_eraseAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_eraseAllTargets",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_eraseAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_eraseAllTargets" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_eraseAllTargets" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__eraseAllTargets(arg1);
+      gum_GibbsSampling_Sl_double_Sg__eraseAllTargets(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69361,22 +69361,22 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_addAllTargets",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_addAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addAllTargets" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addAllTargets" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addAllTargets(arg1);
+      gum_GibbsSampling_Sl_double_Sg__addAllTargets(arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69389,9 +69389,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69400,20 +69400,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addTarget__SWIG_0(PyObject *SWI
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_addTarget",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addTarget" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addTarget" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_addTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_addTarget" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addTarget__SWIG_0(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__addTarget__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69426,9 +69426,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69436,26 +69436,26 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addTarget__SWIG_1(PyObject *SWI
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_addTarget",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_addTarget" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_addTarget" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__addTarget__SWIG_1(arg1,(std::string const &)*arg2);
+      gum_GibbsSampling_Sl_double_Sg__addTarget__SWIG_1(arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69470,7 +69470,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_addTarget(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_addTarget(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -69485,7 +69485,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addTarget(PyObject *self, PyObj
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -69493,36 +69493,36 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_addTarget(PyObject *self, PyObj
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_GibbsInference_double_addTarget__SWIG_0(self, args);
+        return _wrap_GibbsSampling_double_addTarget__SWIG_0(self, args);
       }
     }
   }
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_GibbsInference_double_addTarget__SWIG_1(self, args);
+        return _wrap_GibbsSampling_double_addTarget__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_addTarget'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_addTarget'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::addTarget(gum::NodeId const)\n"
-    "    gum::GibbsInference< double >::addTarget(std::string const &)\n");
+    "    gum::GibbsSampling< double >::addTarget(gum::NodeId const)\n"
+    "    gum::GibbsSampling< double >::addTarget(std::string const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_eraseTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69531,20 +69531,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseTarget__SWIG_0(PyObject *S
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_eraseTarget" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_eraseTarget" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_eraseTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_eraseTarget" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__eraseTarget__SWIG_0(arg1,arg2);
+      gum_GibbsSampling_Sl_double_Sg__eraseTarget__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69557,9 +69557,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_eraseTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69567,26 +69567,26 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseTarget__SWIG_1(PyObject *S
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_eraseTarget" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_eraseTarget" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      gum_GibbsInference_Sl_double_Sg__eraseTarget__SWIG_1(arg1,(std::string const &)*arg2);
+      gum_GibbsSampling_Sl_double_Sg__eraseTarget__SWIG_1(arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69601,7 +69601,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseTarget(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_eraseTarget(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -69616,7 +69616,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseTarget(PyObject *self, PyO
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -69624,36 +69624,36 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_eraseTarget(PyObject *self, PyO
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_GibbsInference_double_eraseTarget__SWIG_0(self, args);
+        return _wrap_GibbsSampling_double_eraseTarget__SWIG_0(self, args);
       }
     }
   }
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_GibbsInference_double_eraseTarget__SWIG_1(self, args);
+        return _wrap_GibbsSampling_double_eraseTarget__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_eraseTarget'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_eraseTarget'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::eraseTarget(gum::NodeId const)\n"
-    "    gum::GibbsInference< double >::eraseTarget(std::string const &)\n");
+    "    gum::GibbsSampling< double >::eraseTarget(gum::NodeId const)\n"
+    "    gum::GibbsSampling< double >::eraseTarget(std::string const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_isTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_isTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69663,20 +69663,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_isTarget__SWIG_0(PyObject *SWIG
   PyObject * obj1 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_isTarget",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_isTarget" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_isTarget" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_isTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_isTarget" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__isTarget__SWIG_0((gum::GibbsInference< double > const *)arg1,arg2);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__isTarget__SWIG_0((gum::GibbsSampling< double > const *)arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69689,9 +69689,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_isTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_isTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69700,26 +69700,26 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_isTarget__SWIG_1(PyObject *SWIG
   PyObject * obj1 = 0 ;
   bool result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_isTarget",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_isTarget" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_isTarget" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = (bool)gum_GibbsInference_Sl_double_Sg__isTarget__SWIG_1((gum::GibbsInference< double > const *)arg1,(std::string const &)*arg2);
+      result = (bool)gum_GibbsSampling_Sl_double_Sg__isTarget__SWIG_1((gum::GibbsSampling< double > const *)arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69734,7 +69734,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_isTarget(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_isTarget(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -69749,7 +69749,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_isTarget(PyObject *self, PyObje
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -69757,50 +69757,50 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_isTarget(PyObject *self, PyObje
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_GibbsInference_double_isTarget__SWIG_0(self, args);
+        return _wrap_GibbsSampling_double_isTarget__SWIG_0(self, args);
       }
     }
   }
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_GibbsInference_double_isTarget__SWIG_1(self, args);
+        return _wrap_GibbsSampling_double_isTarget__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_isTarget'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_isTarget'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::isTarget(gum::NodeId const) const\n"
-    "    gum::GibbsInference< double >::isTarget(std::string const &) const\n");
+    "    gum::GibbsSampling< double >::isTarget(gum::NodeId const) const\n"
+    "    gum::GibbsSampling< double >::isTarget(std::string const &) const\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_nbrTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_nbrTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   gum::Size result;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:GibbsInference_double_nbrTargets",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"O:GibbsSampling_double_nbrTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_nbrTargets" "', argument " "1"" of type '" "gum::GibbsInference< double > const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_nbrTargets" "', argument " "1"" of type '" "gum::GibbsSampling< double > const *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     try {
-      result = (gum::Size)gum_GibbsInference_Sl_double_Sg__nbrTargets((gum::GibbsInference< double > const *)arg1);
+      result = (gum::Size)gum_GibbsSampling_Sl_double_Sg__nbrTargets((gum::GibbsSampling< double > const *)arg1);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69813,9 +69813,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_H__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_H__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69825,20 +69825,20 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_H__SWIG_0(PyObject *SWIGUNUSEDP
   PyObject * obj1 = 0 ;
   double result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_H",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_H" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_H" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_H" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_H" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     try {
-      result = (double)gum_GibbsInference_Sl_double_Sg__H__SWIG_0(arg1,arg2);
+      result = (double)gum_GibbsSampling_Sl_double_Sg__H__SWIG_0(arg1,arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69851,9 +69851,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_H__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_H__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -69862,26 +69862,26 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_H__SWIG_1(PyObject *SWIGUNUSEDP
   PyObject * obj1 = 0 ;
   double result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsInference_double_H",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OO:GibbsSampling_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_H" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_H" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     res2 = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsInference_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "GibbsSampling_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     if (!ptr) {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsInference_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "GibbsSampling_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
     }
     arg2 = ptr;
   }
   {
     try {
-      result = (double)gum_GibbsInference_Sl_double_Sg__H__SWIG_1(arg1,(std::string const &)*arg2);
+      result = (double)gum_GibbsSampling_Sl_double_Sg__H__SWIG_1(arg1,(std::string const &)*arg2);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69896,7 +69896,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_H(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_H(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[3] = {
     0
@@ -69911,7 +69911,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_H(PyObject *self, PyObject *arg
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -69919,36 +69919,36 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_H(PyObject *self, PyObject *arg
         _v = SWIG_CheckState(res);
       }
       if (_v) {
-        return _wrap_GibbsInference_double_H__SWIG_0(self, args);
+        return _wrap_GibbsSampling_double_H__SWIG_0(self, args);
       }
     }
   }
   if (argc == 2) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
       _v = SWIG_CheckState(res);
       if (_v) {
-        return _wrap_GibbsInference_double_H__SWIG_1(self, args);
+        return _wrap_GibbsSampling_double_H__SWIG_1(self, args);
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_H'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_H'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::H(gum::NodeId const)\n"
-    "    gum::GibbsInference< double >::H(std::string const &)\n");
+    "    gum::GibbsSampling< double >::H(gum::NodeId const)\n"
+    "    gum::GibbsSampling< double >::H(std::string const &)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_evidenceImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   gum::NodeId arg2 ;
   std::vector< gum::NodeId,std::allocator< gum::NodeId > > arg3 ;
   void *argp1 = 0 ;
@@ -69960,29 +69960,29 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact__SWIG_0(PyObject
   PyObject * obj2 = 0 ;
   gum::Potential< double > result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_evidenceImpact" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_evidenceImpact" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsInference_double_evidenceImpact" "', argument " "2"" of type '" "gum::NodeId""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "GibbsSampling_double_evidenceImpact" "', argument " "2"" of type '" "gum::NodeId""'");
   } 
   arg2 = static_cast< gum::NodeId >(val2);
   {
     std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
     int res = swig::asptr(obj2, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "GibbsInference_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "GibbsSampling_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
     try {
-      result = gum_GibbsInference_Sl_double_Sg__evidenceImpact__SWIG_0(arg1,arg2,arg3);
+      result = gum_GibbsSampling_Sl_double_Sg__evidenceImpact__SWIG_0(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -69995,9 +69995,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_evidenceImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
-  gum::GibbsInference< double > *arg1 = (gum::GibbsInference< double > *) 0 ;
+  gum::GibbsSampling< double > *arg1 = (gum::GibbsSampling< double > *) 0 ;
   std::string arg2 ;
   std::vector< std::string,std::allocator< std::string > > arg3 ;
   void *argp1 = 0 ;
@@ -70007,17 +70007,17 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact__SWIG_1(PyObject
   PyObject * obj2 = 0 ;
   gum::Potential< double > result;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsInference_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0 |  0 );
+  if (!PyArg_ParseTuple(args,(char *)"OOO:GibbsSampling_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsInference_double_evidenceImpact" "', argument " "1"" of type '" "gum::GibbsInference< double > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "GibbsSampling_double_evidenceImpact" "', argument " "1"" of type '" "gum::GibbsSampling< double > *""'"); 
   }
-  arg1 = reinterpret_cast< gum::GibbsInference< double > * >(argp1);
+  arg1 = reinterpret_cast< gum::GibbsSampling< double > * >(argp1);
   {
     std::string *ptr = (std::string *)0;
     int res = SWIG_AsPtr_std_string(obj1, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "GibbsInference_double_evidenceImpact" "', argument " "2"" of type '" "std::string""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "GibbsSampling_double_evidenceImpact" "', argument " "2"" of type '" "std::string""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -70026,14 +70026,14 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact__SWIG_1(PyObject
     std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
     int res = swig::asptr(obj2, &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "GibbsInference_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "GibbsSampling_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
   }
   {
     try {
-      result = gum_GibbsInference_Sl_double_Sg__evidenceImpact__SWIG_1(arg1,arg2,arg3);
+      result = gum_GibbsSampling_Sl_double_Sg__evidenceImpact__SWIG_1(arg1,arg2,arg3);
     } catch (...) {
       SetPythonizeAgrumException();
       SWIG_fail;
@@ -70046,7 +70046,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_GibbsSampling_double_evidenceImpact(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
     0
@@ -70061,7 +70061,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact(PyObject *self, 
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       {
@@ -70072,7 +70072,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact(PyObject *self, 
         int res = swig::asptr(argv[2], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_evidenceImpact__SWIG_0(self, args);
+          return _wrap_GibbsSampling_double_evidenceImpact__SWIG_0(self, args);
         }
       }
     }
@@ -70080,7 +70080,7 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact(PyObject *self, 
   if (argc == 3) {
     int _v;
     void *vptr = 0;
-    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsInferenceT_double_t, 0);
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__GibbsSamplingT_double_t, 0);
     _v = SWIG_CheckState(res);
     if (_v) {
       int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
@@ -70089,25 +70089,25 @@ SWIGINTERN PyObject *_wrap_GibbsInference_double_evidenceImpact(PyObject *self, 
         int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
         _v = SWIG_CheckState(res);
         if (_v) {
-          return _wrap_GibbsInference_double_evidenceImpact__SWIG_1(self, args);
+          return _wrap_GibbsSampling_double_evidenceImpact__SWIG_1(self, args);
         }
       }
     }
   }
   
 fail:
-  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsInference_double_evidenceImpact'.\n"
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'GibbsSampling_double_evidenceImpact'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    gum::GibbsInference< double >::evidenceImpact(gum::NodeId,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const)\n"
-    "    gum::GibbsInference< double >::evidenceImpact(std::string,std::vector< std::string,std::allocator< std::string > > const)\n");
+    "    gum::GibbsSampling< double >::evidenceImpact(gum::NodeId,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const)\n"
+    "    gum::GibbsSampling< double >::evidenceImpact(std::string,std::vector< std::string,std::allocator< std::string > > const)\n");
   return 0;
 }
 
 
-SWIGINTERN PyObject *GibbsInference_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *GibbsSampling_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_gum__GibbsInferenceT_double_t, SWIG_NewClientData(obj));
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__GibbsSamplingT_double_t, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
@@ -87140,96 +87140,96 @@ static PyMethodDef SwigMethods[] = {
 		"VariableElimination_double_evidenceImpact(self, target, evs) -> Potential_double\n"
 		""},
 	 { (char *)"VariableElimination_double_swigregister", VariableElimination_double_swigregister, METH_VARARGS, NULL},
-	 { (char *)"new_GibbsInference_double", _wrap_new_GibbsInference_double, METH_VARARGS, (char *)"new_GibbsInference_double(BN) -> GibbsInference_double"},
-	 { (char *)"delete_GibbsInference_double", _wrap_delete_GibbsInference_double, METH_VARARGS, (char *)"delete_GibbsInference_double(self)"},
-	 { (char *)"GibbsInference_double_setEvidence", _wrap_GibbsInference_double_setEvidence, METH_VARARGS, (char *)"GibbsInference_double_setEvidence(self, evidces)"},
-	 { (char *)"GibbsInference_double_updateEvidence", _wrap_GibbsInference_double_updateEvidence, METH_VARARGS, (char *)"GibbsInference_double_updateEvidence(self, evidces)"},
-	 { (char *)"GibbsInference_double_setTargets", _wrap_GibbsInference_double_setTargets, METH_VARARGS, (char *)"GibbsInference_double_setTargets(self, targets)"},
-	 { (char *)"GibbsInference_double_hardEvidenceNodes", _wrap_GibbsInference_double_hardEvidenceNodes, METH_VARARGS, (char *)"GibbsInference_double_hardEvidenceNodes(self) -> PyObject *"},
-	 { (char *)"GibbsInference_double_softEvidenceNodes", _wrap_GibbsInference_double_softEvidenceNodes, METH_VARARGS, (char *)"GibbsInference_double_softEvidenceNodes(self) -> PyObject *"},
-	 { (char *)"GibbsInference_double_targets", _wrap_GibbsInference_double_targets, METH_VARARGS, (char *)"GibbsInference_double_targets(self) -> PyObject *"},
-	 { (char *)"GibbsInference_double_setVerbosity", _wrap_GibbsInference_double_setVerbosity, METH_VARARGS, (char *)"GibbsInference_double_setVerbosity(self, v)"},
-	 { (char *)"GibbsInference_double_setEpsilon", _wrap_GibbsInference_double_setEpsilon, METH_VARARGS, (char *)"GibbsInference_double_setEpsilon(self, eps)"},
-	 { (char *)"GibbsInference_double_setMinEpsilonRate", _wrap_GibbsInference_double_setMinEpsilonRate, METH_VARARGS, (char *)"GibbsInference_double_setMinEpsilonRate(self, rate)"},
-	 { (char *)"GibbsInference_double_setMaxIter", _wrap_GibbsInference_double_setMaxIter, METH_VARARGS, (char *)"GibbsInference_double_setMaxIter(self, max)"},
-	 { (char *)"GibbsInference_double_setMaxTime", _wrap_GibbsInference_double_setMaxTime, METH_VARARGS, (char *)"GibbsInference_double_setMaxTime(self, timeout)"},
-	 { (char *)"GibbsInference_double_setPeriodSize", _wrap_GibbsInference_double_setPeriodSize, METH_VARARGS, (char *)"GibbsInference_double_setPeriodSize(self, p)"},
-	 { (char *)"GibbsInference_double_setBurnIn", _wrap_GibbsInference_double_setBurnIn, METH_VARARGS, (char *)"GibbsInference_double_setBurnIn(self, b)"},
-	 { (char *)"GibbsInference_double_verbosity", _wrap_GibbsInference_double_verbosity, METH_VARARGS, (char *)"GibbsInference_double_verbosity(self) -> bool"},
-	 { (char *)"GibbsInference_double_epsilon", _wrap_GibbsInference_double_epsilon, METH_VARARGS, (char *)"GibbsInference_double_epsilon(self) -> double"},
-	 { (char *)"GibbsInference_double_minEpsilonRate", _wrap_GibbsInference_double_minEpsilonRate, METH_VARARGS, (char *)"GibbsInference_double_minEpsilonRate(self) -> double"},
-	 { (char *)"GibbsInference_double_maxIter", _wrap_GibbsInference_double_maxIter, METH_VARARGS, (char *)"GibbsInference_double_maxIter(self) -> gum::Size"},
-	 { (char *)"GibbsInference_double_maxTime", _wrap_GibbsInference_double_maxTime, METH_VARARGS, (char *)"GibbsInference_double_maxTime(self) -> double"},
-	 { (char *)"GibbsInference_double_periodSize", _wrap_GibbsInference_double_periodSize, METH_VARARGS, (char *)"GibbsInference_double_periodSize(self) -> gum::Size"},
-	 { (char *)"GibbsInference_double_burnIn", _wrap_GibbsInference_double_burnIn, METH_VARARGS, (char *)"GibbsInference_double_burnIn(self) -> gum::Size"},
-	 { (char *)"GibbsInference_double_nbrIterations", _wrap_GibbsInference_double_nbrIterations, METH_VARARGS, (char *)"GibbsInference_double_nbrIterations(self) -> gum::Size"},
-	 { (char *)"GibbsInference_double_currentTime", _wrap_GibbsInference_double_currentTime, METH_VARARGS, (char *)"GibbsInference_double_currentTime(self) -> double"},
-	 { (char *)"GibbsInference_double_messageApproximationScheme", _wrap_GibbsInference_double_messageApproximationScheme, METH_VARARGS, (char *)"GibbsInference_double_messageApproximationScheme(self) -> std::string"},
-	 { (char *)"GibbsInference_double_history", _wrap_GibbsInference_double_history, METH_VARARGS, (char *)"GibbsInference_double_history(self) -> Vector_double"},
-	 { (char *)"GibbsInference_double_asIApproximationSchemeConfiguration", _wrap_GibbsInference_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"GibbsInference_double_asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"},
-	 { (char *)"GibbsInference_double_makeInference", _wrap_GibbsInference_double_makeInference, METH_VARARGS, (char *)"GibbsInference_double_makeInference(self)"},
-	 { (char *)"GibbsInference_double_posterior", _wrap_GibbsInference_double_posterior, METH_VARARGS, (char *)"\n"
+	 { (char *)"new_GibbsSampling_double", _wrap_new_GibbsSampling_double, METH_VARARGS, (char *)"new_GibbsSampling_double(BN) -> GibbsSampling_double"},
+	 { (char *)"delete_GibbsSampling_double", _wrap_delete_GibbsSampling_double, METH_VARARGS, (char *)"delete_GibbsSampling_double(self)"},
+	 { (char *)"GibbsSampling_double_setEvidence", _wrap_GibbsSampling_double_setEvidence, METH_VARARGS, (char *)"GibbsSampling_double_setEvidence(self, evidces)"},
+	 { (char *)"GibbsSampling_double_updateEvidence", _wrap_GibbsSampling_double_updateEvidence, METH_VARARGS, (char *)"GibbsSampling_double_updateEvidence(self, evidces)"},
+	 { (char *)"GibbsSampling_double_setTargets", _wrap_GibbsSampling_double_setTargets, METH_VARARGS, (char *)"GibbsSampling_double_setTargets(self, targets)"},
+	 { (char *)"GibbsSampling_double_hardEvidenceNodes", _wrap_GibbsSampling_double_hardEvidenceNodes, METH_VARARGS, (char *)"GibbsSampling_double_hardEvidenceNodes(self) -> PyObject *"},
+	 { (char *)"GibbsSampling_double_softEvidenceNodes", _wrap_GibbsSampling_double_softEvidenceNodes, METH_VARARGS, (char *)"GibbsSampling_double_softEvidenceNodes(self) -> PyObject *"},
+	 { (char *)"GibbsSampling_double_targets", _wrap_GibbsSampling_double_targets, METH_VARARGS, (char *)"GibbsSampling_double_targets(self) -> PyObject *"},
+	 { (char *)"GibbsSampling_double_setVerbosity", _wrap_GibbsSampling_double_setVerbosity, METH_VARARGS, (char *)"GibbsSampling_double_setVerbosity(self, v)"},
+	 { (char *)"GibbsSampling_double_setEpsilon", _wrap_GibbsSampling_double_setEpsilon, METH_VARARGS, (char *)"GibbsSampling_double_setEpsilon(self, eps)"},
+	 { (char *)"GibbsSampling_double_setMinEpsilonRate", _wrap_GibbsSampling_double_setMinEpsilonRate, METH_VARARGS, (char *)"GibbsSampling_double_setMinEpsilonRate(self, rate)"},
+	 { (char *)"GibbsSampling_double_setMaxIter", _wrap_GibbsSampling_double_setMaxIter, METH_VARARGS, (char *)"GibbsSampling_double_setMaxIter(self, max)"},
+	 { (char *)"GibbsSampling_double_setMaxTime", _wrap_GibbsSampling_double_setMaxTime, METH_VARARGS, (char *)"GibbsSampling_double_setMaxTime(self, timeout)"},
+	 { (char *)"GibbsSampling_double_setPeriodSize", _wrap_GibbsSampling_double_setPeriodSize, METH_VARARGS, (char *)"GibbsSampling_double_setPeriodSize(self, p)"},
+	 { (char *)"GibbsSampling_double_setBurnIn", _wrap_GibbsSampling_double_setBurnIn, METH_VARARGS, (char *)"GibbsSampling_double_setBurnIn(self, b)"},
+	 { (char *)"GibbsSampling_double_verbosity", _wrap_GibbsSampling_double_verbosity, METH_VARARGS, (char *)"GibbsSampling_double_verbosity(self) -> bool"},
+	 { (char *)"GibbsSampling_double_epsilon", _wrap_GibbsSampling_double_epsilon, METH_VARARGS, (char *)"GibbsSampling_double_epsilon(self) -> double"},
+	 { (char *)"GibbsSampling_double_minEpsilonRate", _wrap_GibbsSampling_double_minEpsilonRate, METH_VARARGS, (char *)"GibbsSampling_double_minEpsilonRate(self) -> double"},
+	 { (char *)"GibbsSampling_double_maxIter", _wrap_GibbsSampling_double_maxIter, METH_VARARGS, (char *)"GibbsSampling_double_maxIter(self) -> gum::Size"},
+	 { (char *)"GibbsSampling_double_maxTime", _wrap_GibbsSampling_double_maxTime, METH_VARARGS, (char *)"GibbsSampling_double_maxTime(self) -> double"},
+	 { (char *)"GibbsSampling_double_periodSize", _wrap_GibbsSampling_double_periodSize, METH_VARARGS, (char *)"GibbsSampling_double_periodSize(self) -> gum::Size"},
+	 { (char *)"GibbsSampling_double_burnIn", _wrap_GibbsSampling_double_burnIn, METH_VARARGS, (char *)"GibbsSampling_double_burnIn(self) -> gum::Size"},
+	 { (char *)"GibbsSampling_double_nbrIterations", _wrap_GibbsSampling_double_nbrIterations, METH_VARARGS, (char *)"GibbsSampling_double_nbrIterations(self) -> gum::Size"},
+	 { (char *)"GibbsSampling_double_currentTime", _wrap_GibbsSampling_double_currentTime, METH_VARARGS, (char *)"GibbsSampling_double_currentTime(self) -> double"},
+	 { (char *)"GibbsSampling_double_messageApproximationScheme", _wrap_GibbsSampling_double_messageApproximationScheme, METH_VARARGS, (char *)"GibbsSampling_double_messageApproximationScheme(self) -> std::string"},
+	 { (char *)"GibbsSampling_double_history", _wrap_GibbsSampling_double_history, METH_VARARGS, (char *)"GibbsSampling_double_history(self) -> Vector_double"},
+	 { (char *)"GibbsSampling_double_asIApproximationSchemeConfiguration", _wrap_GibbsSampling_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"GibbsSampling_double_asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"},
+	 { (char *)"GibbsSampling_double_makeInference", _wrap_GibbsSampling_double_makeInference, METH_VARARGS, (char *)"GibbsSampling_double_makeInference(self)"},
+	 { (char *)"GibbsSampling_double_posterior", _wrap_GibbsSampling_double_posterior, METH_VARARGS, (char *)"\n"
 		"posterior(var) -> Potential_double\n"
-		"GibbsInference_double_posterior(self, nodeName) -> Potential_double\n"
+		"GibbsSampling_double_posterior(self, nodeName) -> Potential_double\n"
 		""},
-	 { (char *)"GibbsInference_double_BN", _wrap_GibbsInference_double_BN, METH_VARARGS, (char *)"GibbsInference_double_BN(self) -> IBayesNet_double"},
-	 { (char *)"GibbsInference_double_addEvidence", _wrap_GibbsInference_double_addEvidence, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_BN", _wrap_GibbsSampling_double_BN, METH_VARARGS, (char *)"GibbsSampling_double_BN(self) -> IBayesNet_double"},
+	 { (char *)"GibbsSampling_double_addEvidence", _wrap_GibbsSampling_double_addEvidence, METH_VARARGS, (char *)"\n"
 		"addEvidence(id, val)\n"
 		"addEvidence(nodeName, val)\n"
 		"addEvidence(id, val)\n"
 		"addEvidence(nodeName, val)\n"
 		"addEvidence(id, vals)\n"
-		"GibbsInference_double_addEvidence(self, nodeName, vals)\n"
+		"GibbsSampling_double_addEvidence(self, nodeName, vals)\n"
 		""},
-	 { (char *)"GibbsInference_double_chgEvidence", _wrap_GibbsInference_double_chgEvidence, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_chgEvidence", _wrap_GibbsSampling_double_chgEvidence, METH_VARARGS, (char *)"\n"
 		"chgEvidence(id, val)\n"
 		"chgEvidence(nodeName, val)\n"
 		"chgEvidence(id, val)\n"
 		"chgEvidence(nodeName, val)\n"
 		"chgEvidence(id, vals)\n"
-		"GibbsInference_double_chgEvidence(self, nodeName, vals)\n"
+		"GibbsSampling_double_chgEvidence(self, nodeName, vals)\n"
 		""},
-	 { (char *)"GibbsInference_double_hasEvidence", _wrap_GibbsInference_double_hasEvidence, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_hasEvidence", _wrap_GibbsSampling_double_hasEvidence, METH_VARARGS, (char *)"\n"
 		"hasEvidence(id) -> bool\n"
-		"GibbsInference_double_hasEvidence(self, nodeName) -> bool\n"
+		"GibbsSampling_double_hasEvidence(self, nodeName) -> bool\n"
 		""},
-	 { (char *)"GibbsInference_double_eraseAllEvidence", _wrap_GibbsInference_double_eraseAllEvidence, METH_VARARGS, (char *)"GibbsInference_double_eraseAllEvidence(self)"},
-	 { (char *)"GibbsInference_double_eraseEvidence", _wrap_GibbsInference_double_eraseEvidence, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_eraseAllEvidence", _wrap_GibbsSampling_double_eraseAllEvidence, METH_VARARGS, (char *)"GibbsSampling_double_eraseAllEvidence(self)"},
+	 { (char *)"GibbsSampling_double_eraseEvidence", _wrap_GibbsSampling_double_eraseEvidence, METH_VARARGS, (char *)"\n"
 		"eraseEvidence(id)\n"
-		"GibbsInference_double_eraseEvidence(self, nodeName)\n"
+		"GibbsSampling_double_eraseEvidence(self, nodeName)\n"
 		""},
-	 { (char *)"GibbsInference_double_hasHardEvidence", _wrap_GibbsInference_double_hasHardEvidence, METH_VARARGS, (char *)"GibbsInference_double_hasHardEvidence(self, nodeName) -> bool"},
-	 { (char *)"GibbsInference_double_hasSoftEvidence", _wrap_GibbsInference_double_hasSoftEvidence, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_hasHardEvidence", _wrap_GibbsSampling_double_hasHardEvidence, METH_VARARGS, (char *)"GibbsSampling_double_hasHardEvidence(self, nodeName) -> bool"},
+	 { (char *)"GibbsSampling_double_hasSoftEvidence", _wrap_GibbsSampling_double_hasSoftEvidence, METH_VARARGS, (char *)"\n"
 		"hasSoftEvidence(id) -> bool\n"
-		"GibbsInference_double_hasSoftEvidence(self, nodeName) -> bool\n"
+		"GibbsSampling_double_hasSoftEvidence(self, nodeName) -> bool\n"
 		""},
-	 { (char *)"GibbsInference_double_nbrEvidence", _wrap_GibbsInference_double_nbrEvidence, METH_VARARGS, (char *)"GibbsInference_double_nbrEvidence(self) -> gum::Size"},
-	 { (char *)"GibbsInference_double_nbrHardEvidence", _wrap_GibbsInference_double_nbrHardEvidence, METH_VARARGS, (char *)"GibbsInference_double_nbrHardEvidence(self) -> gum::Size"},
-	 { (char *)"GibbsInference_double_nbrSoftEvidence", _wrap_GibbsInference_double_nbrSoftEvidence, METH_VARARGS, (char *)"GibbsInference_double_nbrSoftEvidence(self) -> gum::Size"},
-	 { (char *)"GibbsInference_double_eraseAllTargets", _wrap_GibbsInference_double_eraseAllTargets, METH_VARARGS, (char *)"GibbsInference_double_eraseAllTargets(self)"},
-	 { (char *)"GibbsInference_double_addAllTargets", _wrap_GibbsInference_double_addAllTargets, METH_VARARGS, (char *)"GibbsInference_double_addAllTargets(self)"},
-	 { (char *)"GibbsInference_double_addTarget", _wrap_GibbsInference_double_addTarget, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_nbrEvidence", _wrap_GibbsSampling_double_nbrEvidence, METH_VARARGS, (char *)"GibbsSampling_double_nbrEvidence(self) -> gum::Size"},
+	 { (char *)"GibbsSampling_double_nbrHardEvidence", _wrap_GibbsSampling_double_nbrHardEvidence, METH_VARARGS, (char *)"GibbsSampling_double_nbrHardEvidence(self) -> gum::Size"},
+	 { (char *)"GibbsSampling_double_nbrSoftEvidence", _wrap_GibbsSampling_double_nbrSoftEvidence, METH_VARARGS, (char *)"GibbsSampling_double_nbrSoftEvidence(self) -> gum::Size"},
+	 { (char *)"GibbsSampling_double_eraseAllTargets", _wrap_GibbsSampling_double_eraseAllTargets, METH_VARARGS, (char *)"GibbsSampling_double_eraseAllTargets(self)"},
+	 { (char *)"GibbsSampling_double_addAllTargets", _wrap_GibbsSampling_double_addAllTargets, METH_VARARGS, (char *)"GibbsSampling_double_addAllTargets(self)"},
+	 { (char *)"GibbsSampling_double_addTarget", _wrap_GibbsSampling_double_addTarget, METH_VARARGS, (char *)"\n"
 		"addTarget(target)\n"
-		"GibbsInference_double_addTarget(self, nodeName)\n"
+		"GibbsSampling_double_addTarget(self, nodeName)\n"
 		""},
-	 { (char *)"GibbsInference_double_eraseTarget", _wrap_GibbsInference_double_eraseTarget, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_eraseTarget", _wrap_GibbsSampling_double_eraseTarget, METH_VARARGS, (char *)"\n"
 		"eraseTarget(target)\n"
-		"GibbsInference_double_eraseTarget(self, nodeName)\n"
+		"GibbsSampling_double_eraseTarget(self, nodeName)\n"
 		""},
-	 { (char *)"GibbsInference_double_isTarget", _wrap_GibbsInference_double_isTarget, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_isTarget", _wrap_GibbsSampling_double_isTarget, METH_VARARGS, (char *)"\n"
 		"isTarget(variable) -> bool\n"
-		"GibbsInference_double_isTarget(self, nodeName) -> bool\n"
+		"GibbsSampling_double_isTarget(self, nodeName) -> bool\n"
 		""},
-	 { (char *)"GibbsInference_double_nbrTargets", _wrap_GibbsInference_double_nbrTargets, METH_VARARGS, (char *)"GibbsInference_double_nbrTargets(self) -> gum::Size"},
-	 { (char *)"GibbsInference_double_H", _wrap_GibbsInference_double_H, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_nbrTargets", _wrap_GibbsSampling_double_nbrTargets, METH_VARARGS, (char *)"GibbsSampling_double_nbrTargets(self) -> gum::Size"},
+	 { (char *)"GibbsSampling_double_H", _wrap_GibbsSampling_double_H, METH_VARARGS, (char *)"\n"
 		"H(X) -> double\n"
-		"GibbsInference_double_H(self, nodeName) -> double\n"
+		"GibbsSampling_double_H(self, nodeName) -> double\n"
 		""},
-	 { (char *)"GibbsInference_double_evidenceImpact", _wrap_GibbsInference_double_evidenceImpact, METH_VARARGS, (char *)"\n"
+	 { (char *)"GibbsSampling_double_evidenceImpact", _wrap_GibbsSampling_double_evidenceImpact, METH_VARARGS, (char *)"\n"
 		"evidenceImpact(target, evs) -> Potential_double\n"
-		"GibbsInference_double_evidenceImpact(self, target, evs) -> Potential_double\n"
+		"GibbsSampling_double_evidenceImpact(self, target, evs) -> Potential_double\n"
 		""},
-	 { (char *)"GibbsInference_double_swigregister", GibbsInference_double_swigregister, METH_VARARGS, NULL},
+	 { (char *)"GibbsSampling_double_swigregister", GibbsSampling_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_LoopyBeliefPropagation_double", _wrap_new_LoopyBeliefPropagation_double, METH_VARARGS, (char *)"new_LoopyBeliefPropagation_double(BN) -> LoopyBeliefPropagation_double"},
 	 { (char *)"delete_LoopyBeliefPropagation_double", _wrap_delete_LoopyBeliefPropagation_double, METH_VARARGS, (char *)"delete_LoopyBeliefPropagation_double(self)"},
 	 { (char *)"LoopyBeliefPropagation_double_setEvidence", _wrap_LoopyBeliefPropagation_double_setEvidence, METH_VARARGS, (char *)"LoopyBeliefPropagation_double_setEvidence(self, evidces)"},
@@ -87758,9 +87758,6 @@ static void *_p_gum__SyntaxErrorTo_p_gum__IOError(void *x, int *SWIGUNUSEDPARM(n
 static void *_p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfiguration(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::IApproximationSchemeConfiguration *)  ((gum::ApproximationScheme *) x));
 }
-static void *_p_gum__GibbsInferenceT_double_tTo_p_gum__IApproximationSchemeConfiguration(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((gum::IApproximationSchemeConfiguration *) (gum::ApproximationScheme *) ((gum::GibbsInference< double > *) x));
-}
 static void *_p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__IApproximationSchemeConfiguration(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::IApproximationSchemeConfiguration *) (gum::ApproximationScheme *) ((gum::LoopyBeliefPropagation< double > *) x));
 }
@@ -88010,9 +88007,6 @@ static void *_p_gum__UtilityTableT_double_tTo_p_gum__MultiDimInterface(void *x, 
 static void *_p_gum__InstantiationTo_p_gum__MultiDimInterface(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::MultiDimInterface *)  ((gum::Instantiation *) x));
 }
-static void *_p_gum__GibbsInferenceT_double_tTo_p_gum__ApproximationScheme(void *x, int *SWIGUNUSEDPARM(newmemory)) {
-    return (void *)((gum::ApproximationScheme *)  ((gum::GibbsInference< double > *) x));
-}
 static void *_p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__ApproximationScheme(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((gum::ApproximationScheme *)  ((gum::LoopyBeliefPropagation< double > *) x));
 }
@@ -88120,8 +88114,8 @@ static swig_type_info _swigt__p_gum__FactoryError = {"_p_gum__FactoryError", "gu
 static swig_type_info _swigt__p_gum__FactoryInvalidState = {"_p_gum__FactoryInvalidState", "gum::FactoryInvalidState *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FatalError = {"_p_gum__FatalError", "gum::FatalError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__FormatNotFound = {"_p_gum__FormatNotFound", "gum::FormatNotFound *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_gum__GibbsInferenceT_double_t = {"_p_gum__GibbsInferenceT_double_t", "gum::GibbsInference< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__GibbsKLT_double_t = {"_p_gum__GibbsKLT_double_t", "gum::GibbsKL< double > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__GibbsSamplingT_double_t = {"_p_gum__GibbsSamplingT_double_t", "gum::GibbsSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__GraphError = {"_p_gum__GraphError", "gum::GraphError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__IApproximationSchemeConfiguration = {"_p_gum__IApproximationSchemeConfiguration", "gum::IApproximationSchemeConfiguration *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__IBayesNetT_double_t = {"_p_gum__IBayesNetT_double_t", "gum::IBayesNet< double > *", 0, 0, (void*)0, 0};
@@ -88281,8 +88275,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__FactoryInvalidState,
   &_swigt__p_gum__FatalError,
   &_swigt__p_gum__FormatNotFound,
-  &_swigt__p_gum__GibbsInferenceT_double_t,
   &_swigt__p_gum__GibbsKLT_double_t,
+  &_swigt__p_gum__GibbsSamplingT_double_t,
   &_swigt__p_gum__GraphError,
   &_swigt__p_gum__IApproximationSchemeConfiguration,
   &_swigt__p_gum__IBayesNetT_double_t,
@@ -88414,7 +88408,7 @@ static swig_cast_info _swigc__p_PythonLoadListener[] = {  {&_swigt__p_PythonLoad
 static swig_cast_info _swigc__p_allocator_type[] = {  {&_swigt__p_allocator_type, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_difference_type[] = {  {&_swigt__p_difference_type, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__ApproximationScheme[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, _p_gum__GibbsInferenceT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__LoopyBeliefPropagationT_double_t, _p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__ApproximationScheme, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__ApproximationScheme[] = {  {&_swigt__p_gum__LoopyBeliefPropagationT_double_t, _p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__ApproximationScheme, 0, 0},  {&_swigt__p_gum__ApproximationScheme, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__Arc[] = {  {&_swigt__p_gum__Arc, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__ArcGraphPart[] = {  {&_swigt__p_gum__DiGraph, _p_gum__DiGraphTo_p_gum__ArcGraphPart, 0, 0},  {&_swigt__p_gum__DAG, _p_gum__DAGTo_p_gum__ArcGraphPart, 0, 0},  {&_swigt__p_gum__MixedGraph, _p_gum__MixedGraphTo_p_gum__ArcGraphPart, 0, 0},  {&_swigt__p_gum__ArcGraphPart, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__BayesNetInferenceT_double_t[] = {  {&_swigt__p_gum__BayesNetInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -88442,10 +88436,10 @@ static swig_cast_info _swigc__p_gum__FactoryError[] = {  {&_swigt__p_gum__WrongC
 static swig_cast_info _swigc__p_gum__FactoryInvalidState[] = {  {&_swigt__p_gum__FactoryInvalidState, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FatalError[] = {  {&_swigt__p_gum__FatalError, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__FormatNotFound[] = {  {&_swigt__p_gum__FormatNotFound, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__GibbsInferenceT_double_t[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__GibbsKLT_double_t[] = {  {&_swigt__p_gum__GibbsKLT_double_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__GibbsSamplingT_double_t[] = {  {&_swigt__p_gum__GibbsSamplingT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__GraphError[] = {  {&_swigt__p_gum__InvalidDirectedCycle, _p_gum__InvalidDirectedCycleTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__NoNeighbour, _p_gum__NoNeighbourTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__InvalidNode, _p_gum__InvalidNodeTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__GraphError, 0, 0, 0},  {&_swigt__p_gum__DefaultInLabel, _p_gum__DefaultInLabelTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__NoChild, _p_gum__NoChildTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__InvalidEdge, _p_gum__InvalidEdgeTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__InvalidArc, _p_gum__InvalidArcTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__NoParent, _p_gum__NoParentTo_p_gum__GraphError, 0, 0},  {&_swigt__p_gum__EmptyBSTree, _p_gum__EmptyBSTreeTo_p_gum__GraphError, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_gum__IApproximationSchemeConfiguration[] = {  {&_swigt__p_gum__GibbsInferenceT_double_t, _p_gum__GibbsInferenceT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__LoopyBeliefPropagationT_double_t, _p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__IApproximationSchemeConfiguration, 0, 0, 0},  {&_swigt__p_gum__ApproximationScheme, _p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__genericBNLearner, _p_gum__learning__genericBNLearnerTo_p_gum__IApproximationSchemeConfiguration, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__IApproximationSchemeConfiguration[] = {  {&_swigt__p_gum__LoopyBeliefPropagationT_double_t, _p_gum__LoopyBeliefPropagationT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__GibbsKLT_double_t, _p_gum__GibbsKLT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__BNLearnerT_double_t, _p_gum__learning__BNLearnerT_double_tTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__IApproximationSchemeConfiguration, 0, 0, 0},  {&_swigt__p_gum__ApproximationScheme, _p_gum__ApproximationSchemeTo_p_gum__IApproximationSchemeConfiguration, 0, 0},  {&_swigt__p_gum__learning__genericBNLearner, _p_gum__learning__genericBNLearnerTo_p_gum__IApproximationSchemeConfiguration, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IBayesNetT_double_t[] = {  {&_swigt__p_gum__IBayesNetT_double_t, 0, 0, 0},  {&_swigt__p_gum__BayesNetT_double_t, _p_gum__BayesNetT_double_tTo_p_gum__IBayesNetT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IOError[] = {  {&_swigt__p_gum__FormatNotFound, _p_gum__FormatNotFoundTo_p_gum__IOError, 0, 0},  {&_swigt__p_gum__IOError, 0, 0, 0},  {&_swigt__p_gum__SyntaxError, _p_gum__SyntaxErrorTo_p_gum__IOError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IdError[] = {  {&_swigt__p_gum__IdError, 0, 0, 0},{0, 0, 0, 0}};
@@ -88603,8 +88597,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__FactoryInvalidState,
   _swigc__p_gum__FatalError,
   _swigc__p_gum__FormatNotFound,
-  _swigc__p_gum__GibbsInferenceT_double_t,
   _swigc__p_gum__GibbsKLT_double_t,
+  _swigc__p_gum__GibbsSamplingT_double_t,
   _swigc__p_gum__GraphError,
   _swigc__p_gum__IApproximationSchemeConfiguration,
   _swigc__p_gum__IBayesNetT_double_t,
@@ -89416,10 +89410,6 @@ SWIG_init(void) {
   PyDict_SetItemString(md,(char *)"cvar", SWIG_globals());
   SWIG_addvarlink(SWIG_globals(),(char *)"__list_end_safe",Swig_var___list_end_safe_get, Swig_var___list_end_safe_set);
   SWIG_addvarlink(SWIG_globals(),(char *)"__list_end",Swig_var___list_end_get, Swig_var___list_end_set);
-  SWIG_Python_SetConstant(d, "RelevantPotentialsFinderType_FIND_ALL",SWIG_From_int(static_cast< int >(gum::RelevantPotentialsFinderType::FIND_ALL)));
-  SWIG_Python_SetConstant(d, "RelevantPotentialsFinderType_DSEP_BAYESBALL_NODES",SWIG_From_int(static_cast< int >(gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_NODES)));
-  SWIG_Python_SetConstant(d, "RelevantPotentialsFinderType_DSEP_BAYESBALL_POTENTIALS",SWIG_From_int(static_cast< int >(gum::RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS)));
-  SWIG_Python_SetConstant(d, "RelevantPotentialsFinderType_DSEP_KOLLER_FRIEDMAN_2009",SWIG_From_int(static_cast< int >(gum::RelevantPotentialsFinderType::DSEP_KOLLER_FRIEDMAN_2009)));
   SWIG_Python_SetConstant(d, "FindBarrenNodesType_FIND_NO_BARREN_NODES",SWIG_From_int(static_cast< int >(gum::FindBarrenNodesType::FIND_NO_BARREN_NODES)));
   SWIG_Python_SetConstant(d, "FindBarrenNodesType_FIND_BARREN_NODES",SWIG_From_int(static_cast< int >(gum::FindBarrenNodesType::FIND_BARREN_NODES)));
   SWIG_Python_SetConstant(d, "BayesNetInference_double_StateOfInference_OutdatedBNStructure",SWIG_From_int(static_cast< int >(gum::BayesNetInference< double >::StateOfInference::OutdatedBNStructure)));
