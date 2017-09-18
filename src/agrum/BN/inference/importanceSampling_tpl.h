@@ -32,12 +32,12 @@ namespace gum {
 
   ///  default constructor
   template <typename GUM_SCALAR>
-  ImportanceSampling<GUM_SCALAR>::ImportanceSampling(const IBayesNet<GUM_SCALAR>* BN)
-  :  ApproximateInference<GUM_SCALAR>(BN) {
+  ImportanceSampling<GUM_SCALAR>::ImportanceSampling(
+      const IBayesNet<GUM_SCALAR>* BN )
+      : ApproximateInference<GUM_SCALAR>( BN ) {
 
-  	 this->setBurnIn(0);
-    GUM_CONSTRUCTOR(ImportanceSampling);
-
+    this->setBurnIn( 0 );
+    GUM_CONSTRUCTOR( ImportanceSampling );
   }
 
 
@@ -45,93 +45,100 @@ namespace gum {
   template <typename GUM_SCALAR>
   ImportanceSampling<GUM_SCALAR>::~ImportanceSampling() {
 
-     GUM_DESTRUCTOR(ImportanceSampling);
-
+    GUM_DESTRUCTOR( ImportanceSampling );
   }
 
   /// no burn in needed for Importance sampling
   template <typename GUM_SCALAR>
-  Instantiation ImportanceSampling<GUM_SCALAR>::_burnIn(){
-  	  Instantiation I;
-  	  return I;
+  Instantiation ImportanceSampling<GUM_SCALAR>::_burnIn() {
+    Instantiation I;
+    return I;
   }
 
   template <typename GUM_SCALAR>
-  Instantiation ImportanceSampling<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
+  Instantiation
+  ImportanceSampling<GUM_SCALAR>::_draw( float*                       w,
+                                         Instantiation                prev,
+                                         const IBayesNet<GUM_SCALAR>& bn,
+                                         const NodeSet&               hardEvNodes,
+                                         const NodeProperty<Idx>&     hardEv ) {
 
-  	float probaP = 1.; float probaQ = 1.;
+    GUM_SCALAR pSurQ = 1.;
 
-	do {
+    do {
 
-		prev.clear(); probaP = 1. ; probaQ = 1.;
+      prev.clear();
+      pSurQ = 1.;
+      for ( auto ev = hardEvNodes.beginSafe(); ev != hardEvNodes.endSafe();
+            ++ev ) {
+        prev.add( bn.variable( *ev ) );
+        prev.chgVal( bn.variable( *ev ), hardEv[*ev] );
+      }
 
-		for (auto ev = hardEvNodes.beginSafe(); ev != hardEvNodes.endSafe(); ++ev) {
+      for ( auto nod : this->BN().topologicalOrder() ) {
+        this->_addVarSample( nod, &prev, this->BN() );
+        auto probaQ = this->BN().cpt( nod ).get( prev );
+        auto probaP = bn.cpt( nod ).get( prev );
+        if ( ( probaP == 0 ) || ( probaQ == 0 ) ) {
+          pSurQ = 0;
+          continue;
+        }
+        pSurQ = probaP / probaQ;
+      }
+      if ( pSurQ > 0.0 ) {
+        for ( auto ev = hardEvNodes.beginSafe(); ev != hardEvNodes.endSafe();
+              ++ev ) {
+          pSurQ *= bn.cpt( *ev ).get( prev );
+        }
+      }
+    } while ( pSurQ == 0 );
 
-	  			prev.add(bn.variable(*ev));
-	  			prev.chgVal(bn.variable(*ev), hardEv[*ev]);
-
-	  	}
-
-	  	for (auto nod: this->BN().topologicalOrder()){
-
-	  		this->_addVarSample(nod, &prev, this->BN());
-	  		probaQ *= this->BN().cpt(nod).get(prev);
-			probaP *= bn.cpt(nod).get(prev);
-
-	  	}
-
-	  	for (auto ev = hardEvNodes.beginSafe(); ev != hardEvNodes.endSafe(); ++ev)
-			probaP *= bn.cpt(*ev).get(prev);
-
-	} while(probaP == 0);
-
-	*w = probaP/probaQ;
-	return prev;
-
-  	}
-
-
-
-  template <typename GUM_SCALAR>
-  void ImportanceSampling<GUM_SCALAR>::_unsharpenBN (BayesNetFragment<GUM_SCALAR>* bn, float epsilon ){
-
-		for (auto nod: bn->nodes().asNodeSet()) {
-			Potential<GUM_SCALAR> *p = new Potential<GUM_SCALAR>();
-		   *p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
-		   p->normalizeAsCPT();
-		   bn->installCPT(nod, p);
-		}
-
-	}
-
-  template <typename GUM_SCALAR>
-  void ImportanceSampling<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets ,const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
-
- 	   Sequence<NodeId> sid;
-		for (NodeSet::iterator ev = hardEvNodes.begin(); ev != hardEvNodes.end(); ++ev)
-  			sid << *ev;
-
-		for (Size i = 0; i < sid.size(); i++){
-
-  				bn->uninstallCPT(sid[i]);
- 				bn->uninstallNode(sid[i]);
-
- 		}
-
-  		for (auto targ = targets.begin(); targ != targets.end(); ++targ) {
-
-			if (this->BN().dag().exists(*targ))
-				this->addTarget(*targ);
-
-		}
-
-	  	auto minParam = bn->minNonZeroParam();
-		auto minAccepted = this->epsilon() / bn->maxVarDomainSize();
-
-		if (minParam < minAccepted)
-		 	this->_unsharpenBN(bn, minAccepted);
-
+    *w = pSurQ;
+    return prev;
   }
 
+
+  template <typename GUM_SCALAR>
+  void
+  ImportanceSampling<GUM_SCALAR>::_unsharpenBN( BayesNetFragment<GUM_SCALAR>* bn,
+                                                float epsilon ) {
+
+    GUM_CHECKPOINT;
+    for ( auto nod : bn->nodes().asNodeSet() ) {
+      Potential<GUM_SCALAR>* p = new Potential<GUM_SCALAR>();
+      *p = bn->cpt( nod ).isNonZeroMap().scale( epsilon ) + bn->cpt( nod );
+      p->normalizeAsCPT();
+      bn->installCPT( nod, p );
+    }
+  }
+
+  template <typename GUM_SCALAR>
+  void ImportanceSampling<GUM_SCALAR>::_onContextualize(
+      BayesNetFragment<GUM_SCALAR>* bn,
+      const NodeSet&                targets,
+      const NodeSet&                hardEvNodes,
+      const NodeProperty<Idx>&      hardEv ) {
+
+    GUM_CHECKPOINT;
+    Sequence<NodeId> sid;
+    for ( NodeSet::iterator ev = hardEvNodes.begin(); ev != hardEvNodes.end();
+          ++ev )
+      sid << *ev;
+
+    for ( Size i = 0; i < sid.size(); i++ ) {
+
+      bn->uninstallCPT( sid[i] );
+      bn->uninstallNode( sid[i] );
+    }
+
+    for ( auto targ = targets.begin(); targ != targets.end(); ++targ ) {
+
+      if ( this->BN().dag().exists( *targ ) ) this->addTarget( *targ );
+    }
+
+    auto minParam = bn->minNonZeroParam();
+    auto minAccepted = this->epsilon() / bn->maxVarDomainSize();
+
+    if ( minParam < minAccepted ) this->_unsharpenBN( bn, minAccepted );
+  }
 }
-

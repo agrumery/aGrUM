@@ -44,7 +44,7 @@ from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, Disc
 from .pyAgrum import Potential, Instantiation, UtilityTable
 from .pyAgrum import BruteForceKL, GibbsSampling
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
-from .pyAgrum import LoopyBeliefPropagation, GibbsSampling
+from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
 from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener
 from .pyAgrum import BNGenerator, IDGenerator, JTGenerator
 from .pyAgrum import BNLearner
@@ -67,7 +67,8 @@ __all__=[
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
   'Potential','Instantiation','UtilityTable',
   'BruteForceKL','GibbsKL',
-  'LoopyBeliefPropagation','GibbsSampling','LazyPropagation','ShaferShenoyInference','VariableElimination',
+  'LoopyBeliefPropagation','GibbsSampling','MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
+  'LazyPropagation','ShaferShenoyInference','VariableElimination',
   'PythonApproximationListener','PythonBNListener','PythonLoadListener',
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',

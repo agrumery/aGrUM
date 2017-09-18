@@ -3502,116 +3502,119 @@ namespace Swig {
 #define SWIGTYPE_p_gum__IBayesNetT_double_t swig_types[48]
 #define SWIGTYPE_p_gum__IOError swig_types[49]
 #define SWIGTYPE_p_gum__IdError swig_types[50]
-#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[51]
-#define SWIGTYPE_p_gum__IncompatibleScoreApriori swig_types[52]
-#define SWIGTYPE_p_gum__InfluenceDiagramInferenceT_double_t swig_types[53]
-#define SWIGTYPE_p_gum__InfluenceDiagramT_double_t swig_types[54]
-#define SWIGTYPE_p_gum__Instantiation swig_types[55]
-#define SWIGTYPE_p_gum__InvalidArc swig_types[56]
-#define SWIGTYPE_p_gum__InvalidArgument swig_types[57]
-#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[58]
-#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[59]
-#define SWIGTYPE_p_gum__InvalidEdge swig_types[60]
-#define SWIGTYPE_p_gum__InvalidNode swig_types[61]
-#define SWIGTYPE_p_gum__KLT_double_t swig_types[62]
-#define SWIGTYPE_p_gum__LabelizedVariable swig_types[63]
-#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[64]
-#define SWIGTYPE_p_gum__LearningError swig_types[65]
-#define SWIGTYPE_p_gum__ListT_gum__PotentialT_double_t_const_p_t swig_types[66]
-#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[67]
-#define SWIGTYPE_p_gum__MarkovBlanket swig_types[68]
-#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[69]
-#define SWIGTYPE_p_gum__MixedGraph swig_types[70]
-#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[71]
-#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[72]
-#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[73]
-#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[74]
-#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[75]
-#define SWIGTYPE_p_gum__MultiDimInterface swig_types[76]
-#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[77]
-#define SWIGTYPE_p_gum__NoChild swig_types[78]
-#define SWIGTYPE_p_gum__NoNeighbour swig_types[79]
-#define SWIGTYPE_p_gum__NoParent swig_types[80]
-#define SWIGTYPE_p_gum__NodeGraphPart swig_types[81]
-#define SWIGTYPE_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t swig_types[82]
-#define SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t swig_types[83]
-#define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[84]
-#define SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t swig_types[85]
-#define SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t swig_types[86]
-#define SWIGTYPE_p_gum__NotFound swig_types[87]
-#define SWIGTYPE_p_gum__NullElement swig_types[88]
-#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[89]
-#define SWIGTYPE_p_gum__OutOfBounds swig_types[90]
-#define SWIGTYPE_p_gum__OutOfLowerBound swig_types[91]
-#define SWIGTYPE_p_gum__OutOfUpperBound swig_types[92]
-#define SWIGTYPE_p_gum__PossiblyIncompatibleScoreApriori swig_types[93]
-#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[94]
-#define SWIGTYPE_p_gum__RangeVariable swig_types[95]
-#define SWIGTYPE_p_gum__ReferenceError swig_types[96]
-#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[97]
-#define SWIGTYPE_p_gum__SequenceT_unsigned_int_t swig_types[98]
-#define SWIGTYPE_p_gum__SetIteratorStaticEnd swig_types[99]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[100]
-#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[101]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[102]
-#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[103]
-#define SWIGTYPE_p_gum__SetT_gum__PotentialT_double_t_const_p_t swig_types[104]
-#define SWIGTYPE_p_gum__SetT_unsigned_int_t swig_types[105]
-#define SWIGTYPE_p_gum__SetT_unsigned_int_t__const_iterator swig_types[106]
-#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[107]
-#define SWIGTYPE_p_gum__SizeError swig_types[108]
-#define SWIGTYPE_p_gum__SyntaxError swig_types[109]
-#define SWIGTYPE_p_gum__Triangulation swig_types[110]
-#define SWIGTYPE_p_gum__TypeError swig_types[111]
-#define SWIGTYPE_p_gum__UndefinedElement swig_types[112]
-#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[113]
-#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[114]
-#define SWIGTYPE_p_gum__UndiGraph swig_types[115]
-#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[116]
-#define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[117]
-#define SWIGTYPE_p_gum__Variable swig_types[118]
-#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[119]
-#define SWIGTYPE_p_gum__VariableNodeMap swig_types[120]
-#define SWIGTYPE_p_gum__WrongClassElement swig_types[121]
-#define SWIGTYPE_p_gum__WrongType swig_types[122]
-#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[123]
-#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[124]
-#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[125]
-#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[126]
-#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[127]
-#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[128]
-#define SWIGTYPE_p_iterator_category swig_types[129]
-#define SWIGTYPE_p_msg swig_types[130]
-#define SWIGTYPE_p_node_const_iterator swig_types[131]
-#define SWIGTYPE_p_node_const_iterator_safe swig_types[132]
-#define SWIGTYPE_p_node_iterator swig_types[133]
-#define SWIGTYPE_p_node_iterator_safe swig_types[134]
-#define SWIGTYPE_p_p_PyObject swig_types[135]
-#define SWIGTYPE_p_size_type swig_types[136]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[137]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[138]
-#define SWIGTYPE_p_std__allocatorT_unsigned_int_t swig_types[139]
-#define SWIGTYPE_p_std__default_random_engine swig_types[140]
-#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[141]
-#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[142]
-#define SWIGTYPE_p_std__invalid_argument swig_types[143]
-#define SWIGTYPE_p_std__ostream swig_types[144]
-#define SWIGTYPE_p_std__string swig_types[145]
-#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[146]
-#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[147]
-#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[148]
-#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[149]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[150]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[151]
-#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[152]
-#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[153]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[154]
-#define SWIGTYPE_p_unsigned_int swig_types[155]
-#define SWIGTYPE_p_unsigned_long swig_types[156]
-#define SWIGTYPE_p_value_type swig_types[157]
-#define SWIGTYPE_p_void swig_types[158]
-static swig_type_info *swig_types[160];
-static swig_module_info swig_module = {swig_types, 159, 0, 0, 0, 0};
+#define SWIGTYPE_p_gum__ImportanceSamplingT_double_t swig_types[51]
+#define SWIGTYPE_p_gum__IncompatibleEvidence swig_types[52]
+#define SWIGTYPE_p_gum__IncompatibleScoreApriori swig_types[53]
+#define SWIGTYPE_p_gum__InfluenceDiagramInferenceT_double_t swig_types[54]
+#define SWIGTYPE_p_gum__InfluenceDiagramT_double_t swig_types[55]
+#define SWIGTYPE_p_gum__Instantiation swig_types[56]
+#define SWIGTYPE_p_gum__InvalidArc swig_types[57]
+#define SWIGTYPE_p_gum__InvalidArgument swig_types[58]
+#define SWIGTYPE_p_gum__InvalidArgumentsNumber swig_types[59]
+#define SWIGTYPE_p_gum__InvalidDirectedCycle swig_types[60]
+#define SWIGTYPE_p_gum__InvalidEdge swig_types[61]
+#define SWIGTYPE_p_gum__InvalidNode swig_types[62]
+#define SWIGTYPE_p_gum__KLT_double_t swig_types[63]
+#define SWIGTYPE_p_gum__LabelizedVariable swig_types[64]
+#define SWIGTYPE_p_gum__LazyPropagationT_double_t swig_types[65]
+#define SWIGTYPE_p_gum__LearningError swig_types[66]
+#define SWIGTYPE_p_gum__ListT_gum__PotentialT_double_t_const_p_t swig_types[67]
+#define SWIGTYPE_p_gum__LoopyBeliefPropagationT_double_t swig_types[68]
+#define SWIGTYPE_p_gum__MarkovBlanket swig_types[69]
+#define SWIGTYPE_p_gum__MissingVariableInDatabase swig_types[70]
+#define SWIGTYPE_p_gum__MixedGraph swig_types[71]
+#define SWIGTYPE_p_gum__MonteCarloSamplingT_double_t swig_types[72]
+#define SWIGTYPE_p_gum__MultiDimAdressable swig_types[73]
+#define SWIGTYPE_p_gum__MultiDimArrayT_double_t swig_types[74]
+#define SWIGTYPE_p_gum__MultiDimContainerT_double_t swig_types[75]
+#define SWIGTYPE_p_gum__MultiDimDecoratorT_double_t swig_types[76]
+#define SWIGTYPE_p_gum__MultiDimImplementationT_double_t swig_types[77]
+#define SWIGTYPE_p_gum__MultiDimInterface swig_types[78]
+#define SWIGTYPE_p_gum__MultiDimWithOffsetT_double_t swig_types[79]
+#define SWIGTYPE_p_gum__NoChild swig_types[80]
+#define SWIGTYPE_p_gum__NoNeighbour swig_types[81]
+#define SWIGTYPE_p_gum__NoParent swig_types[82]
+#define SWIGTYPE_p_gum__NodeGraphPart swig_types[83]
+#define SWIGTYPE_p_gum__NodePropertyT_gum__PotentialT_double_t_const_p_t swig_types[84]
+#define SWIGTYPE_p_gum__NodePropertyT_gum__SequenceT_std__string_t_t swig_types[85]
+#define SWIGTYPE_p_gum__NodePropertyT_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t_t swig_types[86]
+#define SWIGTYPE_p_gum__NodePropertyT_unsigned_int_t swig_types[87]
+#define SWIGTYPE_p_gum__NodePropertyT_unsigned_long_t swig_types[88]
+#define SWIGTYPE_p_gum__NotFound swig_types[89]
+#define SWIGTYPE_p_gum__NullElement swig_types[90]
+#define SWIGTYPE_p_gum__OperationNotAllowed swig_types[91]
+#define SWIGTYPE_p_gum__OutOfBounds swig_types[92]
+#define SWIGTYPE_p_gum__OutOfLowerBound swig_types[93]
+#define SWIGTYPE_p_gum__OutOfUpperBound swig_types[94]
+#define SWIGTYPE_p_gum__PossiblyIncompatibleScoreApriori swig_types[95]
+#define SWIGTYPE_p_gum__PotentialT_double_t swig_types[96]
+#define SWIGTYPE_p_gum__RangeVariable swig_types[97]
+#define SWIGTYPE_p_gum__ReferenceError swig_types[98]
+#define SWIGTYPE_p_gum__SequenceT_gum__DiscreteVariable_const_p_t swig_types[99]
+#define SWIGTYPE_p_gum__SequenceT_unsigned_int_t swig_types[100]
+#define SWIGTYPE_p_gum__SetIteratorStaticEnd swig_types[101]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t swig_types[102]
+#define SWIGTYPE_p_gum__SetT_gum__Arc_t__const_iterator swig_types[103]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t swig_types[104]
+#define SWIGTYPE_p_gum__SetT_gum__Edge_t__const_iterator swig_types[105]
+#define SWIGTYPE_p_gum__SetT_gum__PotentialT_double_t_const_p_t swig_types[106]
+#define SWIGTYPE_p_gum__SetT_unsigned_int_t swig_types[107]
+#define SWIGTYPE_p_gum__SetT_unsigned_int_t__const_iterator swig_types[108]
+#define SWIGTYPE_p_gum__ShaferShenoyInferenceT_double_t swig_types[109]
+#define SWIGTYPE_p_gum__SizeError swig_types[110]
+#define SWIGTYPE_p_gum__SyntaxError swig_types[111]
+#define SWIGTYPE_p_gum__Triangulation swig_types[112]
+#define SWIGTYPE_p_gum__TypeError swig_types[113]
+#define SWIGTYPE_p_gum__UndefinedElement swig_types[114]
+#define SWIGTYPE_p_gum__UndefinedIteratorKey swig_types[115]
+#define SWIGTYPE_p_gum__UndefinedIteratorValue swig_types[116]
+#define SWIGTYPE_p_gum__UndiGraph swig_types[117]
+#define SWIGTYPE_p_gum__UnknownLabelInDatabase swig_types[118]
+#define SWIGTYPE_p_gum__UtilityTableT_double_t swig_types[119]
+#define SWIGTYPE_p_gum__Variable swig_types[120]
+#define SWIGTYPE_p_gum__VariableEliminationT_double_t swig_types[121]
+#define SWIGTYPE_p_gum__VariableNodeMap swig_types[122]
+#define SWIGTYPE_p_gum__WeightedSamplingT_double_t swig_types[123]
+#define SWIGTYPE_p_gum__WrongClassElement swig_types[124]
+#define SWIGTYPE_p_gum__WrongType swig_types[125]
+#define SWIGTYPE_p_gum__credal__CNLoopyPropagationT_double_t swig_types[126]
+#define SWIGTYPE_p_gum__credal__CNMonteCarloSamplingT_double_gum__LazyPropagationT_double_t_t swig_types[127]
+#define SWIGTYPE_p_gum__credal__CredalNetT_double_t swig_types[128]
+#define SWIGTYPE_p_gum__learning__BNLearnerT_double_t swig_types[129]
+#define SWIGTYPE_p_gum__learning__DatabaseVectInRAM swig_types[130]
+#define SWIGTYPE_p_gum__learning__genericBNLearner swig_types[131]
+#define SWIGTYPE_p_iterator_category swig_types[132]
+#define SWIGTYPE_p_msg swig_types[133]
+#define SWIGTYPE_p_node_const_iterator swig_types[134]
+#define SWIGTYPE_p_node_const_iterator_safe swig_types[135]
+#define SWIGTYPE_p_node_iterator swig_types[136]
+#define SWIGTYPE_p_node_iterator_safe swig_types[137]
+#define SWIGTYPE_p_p_PyObject swig_types[138]
+#define SWIGTYPE_p_size_type swig_types[139]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[140]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[141]
+#define SWIGTYPE_p_std__allocatorT_unsigned_int_t swig_types[142]
+#define SWIGTYPE_p_std__default_random_engine swig_types[143]
+#define SWIGTYPE_p_std__functionT_double_fdoubleF_t swig_types[144]
+#define SWIGTYPE_p_std__functionT_double_fdouble_doubleF_t swig_types[145]
+#define SWIGTYPE_p_std__invalid_argument swig_types[146]
+#define SWIGTYPE_p_std__ostream swig_types[147]
+#define SWIGTYPE_p_std__string swig_types[148]
+#define SWIGTYPE_p_std__vectorT_PythonLoadListener_std__allocatorT_PythonLoadListener_t_t swig_types[149]
+#define SWIGTYPE_p_std__vectorT_double_std__allocatorT_double_t_t swig_types[150]
+#define SWIGTYPE_p_std__vectorT_gum__DiscreteVariable_const_p_std__allocatorT_gum__DiscreteVariable_const_p_t_t swig_types[151]
+#define SWIGTYPE_p_std__vectorT_std__string_std__allocatorT_std__string_t_t swig_types[152]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t swig_types[153]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_std__allocatorT_std__vectorT_std__vectorT_double_std__allocatorT_double_t_t_std__allocatorT_std__vectorT_double_std__allocatorT_double_t_t_t_t_t_t swig_types[154]
+#define SWIGTYPE_p_std__vectorT_unsigned_int_std__allocatorT_unsigned_int_t_t swig_types[155]
+#define SWIGTYPE_p_std__vectorT_unsigned_long_std__allocatorT_unsigned_long_t_t swig_types[156]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[157]
+#define SWIGTYPE_p_unsigned_int swig_types[158]
+#define SWIGTYPE_p_unsigned_long swig_types[159]
+#define SWIGTYPE_p_value_type swig_types[160]
+#define SWIGTYPE_p_void swig_types[161]
+static swig_type_info *swig_types[163];
+static swig_module_info swig_module = {swig_types, 162, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4679,6 +4682,10 @@ SWIG_AsVal_bool (PyObject *obj, bool *val)
 #include <agrum/BN/inference/variableElimination.h>
 
 #include <agrum/BN/inference/GibbsSampling.h>
+#include <agrum/BN/inference/importanceSampling.h>
+#include <agrum/BN/inference/weightedSampling.h>
+#include <agrum/BN/inference/MonteCarloSampling.h>
+
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
@@ -7653,6 +7660,465 @@ SWIGINTERN gum::Potential< double > gum_GibbsSampling_Sl_double_Sg__evidenceImpa
     return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
 SWIGINTERN gum::Potential< double > gum_GibbsSampling_Sl_double_Sg__evidenceImpact__SWIG_1(gum::GibbsSampling< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
+   return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setEvidence(gum::ImportanceSampling< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__updateEvidence(gum::ImportanceSampling< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setTargets(gum::ImportanceSampling< double > *self,PyObject *targets){}
+SWIGINTERN PyObject *gum_ImportanceSampling_Sl_double_Sg__hardEvidenceNodes(gum::ImportanceSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_ImportanceSampling_Sl_double_Sg__softEvidenceNodes(gum::ImportanceSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_ImportanceSampling_Sl_double_Sg__targets(gum::ImportanceSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->targets() );
+    }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setVerbosity(gum::ImportanceSampling< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setEpsilon(gum::ImportanceSampling< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setMinEpsilonRate(gum::ImportanceSampling< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setMaxIter(gum::ImportanceSampling< double > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setMaxTime(gum::ImportanceSampling< double > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setPeriodSize(gum::ImportanceSampling< double > *self,gum::Size p){ self->gum::ApproximationScheme::setPeriodSize(p); }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__setBurnIn(gum::ImportanceSampling< double > *self,gum::Size b){ self->gum::ApproximationScheme::setBurnIn(b); }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__verbosity(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::verbosity(); }
+SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__epsilon(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::epsilon(); }
+SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__minEpsilonRate(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::minEpsilonRate(); }
+SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__maxIter(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
+SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__maxTime(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
+SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__periodSize(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__burnIn(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::burnIn(); }
+SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__nbrIterations(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
+SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__currentTime(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
+SWIGINTERN std::string gum_ImportanceSampling_Sl_double_Sg__messageApproximationScheme(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_ImportanceSampling_Sl_double_Sg__history(gum::ImportanceSampling< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_ImportanceSampling_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::ImportanceSampling< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__makeInference(gum::ImportanceSampling< double > *self){
+    self->gum::BayesNetInference<double>::makeInference();
+  }
+SWIGINTERN gum::Potential< double > const gum_ImportanceSampling_Sl_double_Sg__posterior__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId const var){
+    return self->MarginalTargetedInference<double>::posterior(var);
+  }
+SWIGINTERN gum::Potential< double > const gum_ImportanceSampling_Sl_double_Sg__posterior__SWIG_1(gum::ImportanceSampling< double > *self,std::string const nodeName){
+    return self->MarginalTargetedInference<double>::posterior(nodeName);
+  }
+SWIGINTERN gum::IBayesNet< double > const &gum_ImportanceSampling_Sl_double_Sg__BN(gum::ImportanceSampling< double > const *self){
+    return self->BayesNetInference<double>::BN();
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_1(gum::ImportanceSampling< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_2(gum::ImportanceSampling< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_3(gum::ImportanceSampling< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_4(gum::ImportanceSampling< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::addEvidence(id,vals);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_5(gum::ImportanceSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,vals);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_1(gum::ImportanceSampling< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_2(gum::ImportanceSampling< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_3(gum::ImportanceSampling< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_4(gum::ImportanceSampling< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::chgEvidence(id,vals);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_5(gum::ImportanceSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,vals);
+  }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasEvidence__SWIG_0(gum::ImportanceSampling< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasEvidence(id);
+  }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasEvidence__SWIG_1(gum::ImportanceSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasEvidence(nodeName);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseAllEvidence(gum::ImportanceSampling< double > *self){
+    self->gum::BayesNetInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseEvidence__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId const id){
+    self->gum::BayesNetInference<double>::eraseEvidence(id);
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseEvidence__SWIG_1(gum::ImportanceSampling< double > *self,std::string const &nodeName){
+    self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
+  }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::ImportanceSampling< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(id);
+  }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasHardEvidence(gum::ImportanceSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasHardEvidence(nodeName);
+  }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::ImportanceSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(nodeName);
+  }
+SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__nbrEvidence(gum::ImportanceSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrEvidence();
+  }
+SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__nbrHardEvidence(gum::ImportanceSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrHardEvidence();
+  }
+SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__nbrSoftEvidence(gum::ImportanceSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrSoftEvidence();
+  }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseAllTargets(gum::ImportanceSampling< double > *self){
+      self->gum::MarginalTargetedInference<double>::eraseAllTargets();
+    }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addAllTargets(gum::ImportanceSampling< double > *self){
+      self->gum::MarginalTargetedInference<double>::addAllTargets();
+    }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addTarget__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::addTarget(target);
+    }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__addTarget__SWIG_1(gum::ImportanceSampling< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::addTarget(nodeName);
+    }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseTarget__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(target);
+    }
+SWIGINTERN void gum_ImportanceSampling_Sl_double_Sg__eraseTarget__SWIG_1(gum::ImportanceSampling< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(nodeName);
+    }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__isTarget__SWIG_0(gum::ImportanceSampling< double > const *self,gum::NodeId const variable){
+      return self->gum::MarginalTargetedInference<double>::isTarget(variable);
+    }
+SWIGINTERN bool gum_ImportanceSampling_Sl_double_Sg__isTarget__SWIG_1(gum::ImportanceSampling< double > const *self,std::string const &nodeName){
+      return self->gum::MarginalTargetedInference<double>::isTarget(nodeName);
+    }
+SWIGINTERN gum::Size gum_ImportanceSampling_Sl_double_Sg__nbrTargets(gum::ImportanceSampling< double > const *self){
+      return self->gum::MarginalTargetedInference<double>::nbrTargets();
+    }
+SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__H__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId const X){
+     return self->gum::MarginalTargetedInference<double>::H(X);
+   }
+SWIGINTERN double gum_ImportanceSampling_Sl_double_Sg__H__SWIG_1(gum::ImportanceSampling< double > *self,std::string const &nodeName){
+     return self->gum::MarginalTargetedInference<double>::H(nodeName);
+   }
+SWIGINTERN gum::Potential< double > gum_ImportanceSampling_Sl_double_Sg__evidenceImpact__SWIG_0(gum::ImportanceSampling< double > *self,gum::NodeId target,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs){
+    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+SWIGINTERN gum::Potential< double > gum_ImportanceSampling_Sl_double_Sg__evidenceImpact__SWIG_1(gum::ImportanceSampling< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
+   return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setEvidence(gum::WeightedSampling< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__updateEvidence(gum::WeightedSampling< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setTargets(gum::WeightedSampling< double > *self,PyObject *targets){}
+SWIGINTERN PyObject *gum_WeightedSampling_Sl_double_Sg__hardEvidenceNodes(gum::WeightedSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_WeightedSampling_Sl_double_Sg__softEvidenceNodes(gum::WeightedSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_WeightedSampling_Sl_double_Sg__targets(gum::WeightedSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->targets() );
+    }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setVerbosity(gum::WeightedSampling< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setEpsilon(gum::WeightedSampling< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setMinEpsilonRate(gum::WeightedSampling< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setMaxIter(gum::WeightedSampling< double > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setMaxTime(gum::WeightedSampling< double > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setPeriodSize(gum::WeightedSampling< double > *self,gum::Size p){ self->gum::ApproximationScheme::setPeriodSize(p); }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__setBurnIn(gum::WeightedSampling< double > *self,gum::Size b){ self->gum::ApproximationScheme::setBurnIn(b); }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__verbosity(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::verbosity(); }
+SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__epsilon(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::epsilon(); }
+SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__minEpsilonRate(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::minEpsilonRate(); }
+SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__maxIter(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
+SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__maxTime(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
+SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__periodSize(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__burnIn(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::burnIn(); }
+SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__nbrIterations(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
+SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__currentTime(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
+SWIGINTERN std::string gum_WeightedSampling_Sl_double_Sg__messageApproximationScheme(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_WeightedSampling_Sl_double_Sg__history(gum::WeightedSampling< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_WeightedSampling_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::WeightedSampling< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__makeInference(gum::WeightedSampling< double > *self){
+    self->gum::BayesNetInference<double>::makeInference();
+  }
+SWIGINTERN gum::Potential< double > const gum_WeightedSampling_Sl_double_Sg__posterior__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId const var){
+    return self->MarginalTargetedInference<double>::posterior(var);
+  }
+SWIGINTERN gum::Potential< double > const gum_WeightedSampling_Sl_double_Sg__posterior__SWIG_1(gum::WeightedSampling< double > *self,std::string const nodeName){
+    return self->MarginalTargetedInference<double>::posterior(nodeName);
+  }
+SWIGINTERN gum::IBayesNet< double > const &gum_WeightedSampling_Sl_double_Sg__BN(gum::WeightedSampling< double > const *self){
+    return self->BayesNetInference<double>::BN();
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_1(gum::WeightedSampling< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_2(gum::WeightedSampling< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_3(gum::WeightedSampling< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_4(gum::WeightedSampling< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::addEvidence(id,vals);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_5(gum::WeightedSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,vals);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_1(gum::WeightedSampling< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_2(gum::WeightedSampling< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_3(gum::WeightedSampling< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_4(gum::WeightedSampling< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::chgEvidence(id,vals);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_5(gum::WeightedSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,vals);
+  }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasEvidence__SWIG_0(gum::WeightedSampling< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasEvidence(id);
+  }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasEvidence__SWIG_1(gum::WeightedSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasEvidence(nodeName);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseAllEvidence(gum::WeightedSampling< double > *self){
+    self->gum::BayesNetInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseEvidence__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId const id){
+    self->gum::BayesNetInference<double>::eraseEvidence(id);
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseEvidence__SWIG_1(gum::WeightedSampling< double > *self,std::string const &nodeName){
+    self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
+  }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::WeightedSampling< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(id);
+  }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasHardEvidence(gum::WeightedSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasHardEvidence(nodeName);
+  }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::WeightedSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(nodeName);
+  }
+SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__nbrEvidence(gum::WeightedSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrEvidence();
+  }
+SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__nbrHardEvidence(gum::WeightedSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrHardEvidence();
+  }
+SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__nbrSoftEvidence(gum::WeightedSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrSoftEvidence();
+  }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseAllTargets(gum::WeightedSampling< double > *self){
+      self->gum::MarginalTargetedInference<double>::eraseAllTargets();
+    }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addAllTargets(gum::WeightedSampling< double > *self){
+      self->gum::MarginalTargetedInference<double>::addAllTargets();
+    }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addTarget__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::addTarget(target);
+    }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__addTarget__SWIG_1(gum::WeightedSampling< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::addTarget(nodeName);
+    }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseTarget__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(target);
+    }
+SWIGINTERN void gum_WeightedSampling_Sl_double_Sg__eraseTarget__SWIG_1(gum::WeightedSampling< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(nodeName);
+    }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__isTarget__SWIG_0(gum::WeightedSampling< double > const *self,gum::NodeId const variable){
+      return self->gum::MarginalTargetedInference<double>::isTarget(variable);
+    }
+SWIGINTERN bool gum_WeightedSampling_Sl_double_Sg__isTarget__SWIG_1(gum::WeightedSampling< double > const *self,std::string const &nodeName){
+      return self->gum::MarginalTargetedInference<double>::isTarget(nodeName);
+    }
+SWIGINTERN gum::Size gum_WeightedSampling_Sl_double_Sg__nbrTargets(gum::WeightedSampling< double > const *self){
+      return self->gum::MarginalTargetedInference<double>::nbrTargets();
+    }
+SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__H__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId const X){
+     return self->gum::MarginalTargetedInference<double>::H(X);
+   }
+SWIGINTERN double gum_WeightedSampling_Sl_double_Sg__H__SWIG_1(gum::WeightedSampling< double > *self,std::string const &nodeName){
+     return self->gum::MarginalTargetedInference<double>::H(nodeName);
+   }
+SWIGINTERN gum::Potential< double > gum_WeightedSampling_Sl_double_Sg__evidenceImpact__SWIG_0(gum::WeightedSampling< double > *self,gum::NodeId target,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs){
+    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+SWIGINTERN gum::Potential< double > gum_WeightedSampling_Sl_double_Sg__evidenceImpact__SWIG_1(gum::WeightedSampling< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
+   return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setEvidence(gum::MonteCarloSampling< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__updateEvidence(gum::MonteCarloSampling< double > *self,PyObject *evidces){}
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setTargets(gum::MonteCarloSampling< double > *self,PyObject *targets){}
+SWIGINTERN PyObject *gum_MonteCarloSampling_Sl_double_Sg__hardEvidenceNodes(gum::MonteCarloSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->hardEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_MonteCarloSampling_Sl_double_Sg__softEvidenceNodes(gum::MonteCarloSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->softEvidenceNodes() ) ;
+    }
+SWIGINTERN PyObject *gum_MonteCarloSampling_Sl_double_Sg__targets(gum::MonteCarloSampling< double > *self){
+      return PyAgrumHelper::PySetFromNodeSet(self->targets() );
+    }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setVerbosity(gum::MonteCarloSampling< double > *self,bool v){ self->gum::ApproximationScheme::setVerbosity(v); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setEpsilon(gum::MonteCarloSampling< double > *self,double eps){ self->gum::ApproximationScheme::setEpsilon(eps); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setMinEpsilonRate(gum::MonteCarloSampling< double > *self,double rate){ self->gum::ApproximationScheme::setMinEpsilonRate(rate); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setMaxIter(gum::MonteCarloSampling< double > *self,gum::Size max){ self->gum::ApproximationScheme::setMaxIter(max); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setMaxTime(gum::MonteCarloSampling< double > *self,double timeout){ self->gum::ApproximationScheme::setMaxTime(timeout); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setPeriodSize(gum::MonteCarloSampling< double > *self,gum::Size p){ self->gum::ApproximationScheme::setPeriodSize(p); }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__setBurnIn(gum::MonteCarloSampling< double > *self,gum::Size b){ self->gum::ApproximationScheme::setBurnIn(b); }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__verbosity(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::verbosity(); }
+SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__epsilon(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::epsilon(); }
+SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__minEpsilonRate(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::minEpsilonRate(); }
+SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__maxIter(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::maxIter(); }
+SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__maxTime(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::maxTime(); }
+SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__periodSize(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::periodSize(); }
+SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__burnIn(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::burnIn(); }
+SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__nbrIterations(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::nbrIterations(); }
+SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__currentTime(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::currentTime(); }
+SWIGINTERN std::string gum_MonteCarloSampling_Sl_double_Sg__messageApproximationScheme(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::messageApproximationScheme(); }
+SWIGINTERN std::vector< double,std::allocator< double > > const &gum_MonteCarloSampling_Sl_double_Sg__history(gum::MonteCarloSampling< double > const *self){ return self->gum::ApproximationScheme::history(); }
+SWIGINTERN gum::IApproximationSchemeConfiguration const &gum_MonteCarloSampling_Sl_double_Sg__asIApproximationSchemeConfiguration(gum::MonteCarloSampling< double > const *self){
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__makeInference(gum::MonteCarloSampling< double > *self){
+    self->gum::BayesNetInference<double>::makeInference();
+  }
+SWIGINTERN gum::Potential< double > const gum_MonteCarloSampling_Sl_double_Sg__posterior__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId const var){
+    return self->MarginalTargetedInference<double>::posterior(var);
+  }
+SWIGINTERN gum::Potential< double > const gum_MonteCarloSampling_Sl_double_Sg__posterior__SWIG_1(gum::MonteCarloSampling< double > *self,std::string const nodeName){
+    return self->MarginalTargetedInference<double>::posterior(nodeName);
+  }
+SWIGINTERN gum::IBayesNet< double > const &gum_MonteCarloSampling_Sl_double_Sg__BN(gum::MonteCarloSampling< double > const *self){
+    return self->BayesNetInference<double>::BN();
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_1(gum::MonteCarloSampling< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_2(gum::MonteCarloSampling< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(id,val);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_3(gum::MonteCarloSampling< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_4(gum::MonteCarloSampling< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::addEvidence(id,vals);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_5(gum::MonteCarloSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::addEvidence(nodeName,vals);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId const id,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_1(gum::MonteCarloSampling< double > *self,std::string const &nodeName,gum::Idx const val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_2(gum::MonteCarloSampling< double > *self,gum::NodeId const id,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(id,val);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_3(gum::MonteCarloSampling< double > *self,std::string const &nodeName,std::string const &val){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,val);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_4(gum::MonteCarloSampling< double > *self,gum::NodeId const id,std::vector< double,std::allocator< double > > const &vals){
+   self->gum::BayesNetInference<double>::chgEvidence(id,vals);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_5(gum::MonteCarloSampling< double > *self,std::string const &nodeName,std::vector< double,std::allocator< double > > const &vals){
+    self->gum::BayesNetInference<double>::chgEvidence(nodeName,vals);
+  }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasEvidence__SWIG_0(gum::MonteCarloSampling< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasEvidence(id);
+  }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasEvidence__SWIG_1(gum::MonteCarloSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasEvidence(nodeName);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseAllEvidence(gum::MonteCarloSampling< double > *self){
+    self->gum::BayesNetInference<double>::eraseAllEvidence();
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseEvidence__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId const id){
+    self->gum::BayesNetInference<double>::eraseEvidence(id);
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseEvidence__SWIG_1(gum::MonteCarloSampling< double > *self,std::string const &nodeName){
+    self->gum::BayesNetInference<double>::eraseEvidence(nodeName);
+  }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0(gum::MonteCarloSampling< double > const *self,gum::NodeId const id){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(id);
+  }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasHardEvidence(gum::MonteCarloSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasHardEvidence(nodeName);
+  }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1(gum::MonteCarloSampling< double > const *self,std::string const &nodeName){
+    return self->gum::BayesNetInference<double>::hasSoftEvidence(nodeName);
+  }
+SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__nbrEvidence(gum::MonteCarloSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrEvidence();
+  }
+SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__nbrHardEvidence(gum::MonteCarloSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrHardEvidence();
+  }
+SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__nbrSoftEvidence(gum::MonteCarloSampling< double > const *self){
+    return self->gum::BayesNetInference<double>::nbrSoftEvidence();
+  }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseAllTargets(gum::MonteCarloSampling< double > *self){
+      self->gum::MarginalTargetedInference<double>::eraseAllTargets();
+    }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addAllTargets(gum::MonteCarloSampling< double > *self){
+      self->gum::MarginalTargetedInference<double>::addAllTargets();
+    }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addTarget__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::addTarget(target);
+    }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__addTarget__SWIG_1(gum::MonteCarloSampling< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::addTarget(nodeName);
+    }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseTarget__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId const target){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(target);
+    }
+SWIGINTERN void gum_MonteCarloSampling_Sl_double_Sg__eraseTarget__SWIG_1(gum::MonteCarloSampling< double > *self,std::string const &nodeName){
+      self->gum::MarginalTargetedInference<double>::eraseTarget(nodeName);
+    }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__isTarget__SWIG_0(gum::MonteCarloSampling< double > const *self,gum::NodeId const variable){
+      return self->gum::MarginalTargetedInference<double>::isTarget(variable);
+    }
+SWIGINTERN bool gum_MonteCarloSampling_Sl_double_Sg__isTarget__SWIG_1(gum::MonteCarloSampling< double > const *self,std::string const &nodeName){
+      return self->gum::MarginalTargetedInference<double>::isTarget(nodeName);
+    }
+SWIGINTERN gum::Size gum_MonteCarloSampling_Sl_double_Sg__nbrTargets(gum::MonteCarloSampling< double > const *self){
+      return self->gum::MarginalTargetedInference<double>::nbrTargets();
+    }
+SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__H__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId const X){
+     return self->gum::MarginalTargetedInference<double>::H(X);
+   }
+SWIGINTERN double gum_MonteCarloSampling_Sl_double_Sg__H__SWIG_1(gum::MonteCarloSampling< double > *self,std::string const &nodeName){
+     return self->gum::MarginalTargetedInference<double>::H(nodeName);
+   }
+SWIGINTERN gum::Potential< double > gum_MonteCarloSampling_Sl_double_Sg__evidenceImpact__SWIG_0(gum::MonteCarloSampling< double > *self,gum::NodeId target,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const evs){
+    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
+  }
+SWIGINTERN gum::Potential< double > gum_MonteCarloSampling_Sl_double_Sg__evidenceImpact__SWIG_1(gum::MonteCarloSampling< double > *self,std::string target,std::vector< std::string,std::allocator< std::string > > const evs){
    return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }
 SWIGINTERN void gum_LoopyBeliefPropagation_Sl_double_Sg__setEvidence(gum::LoopyBeliefPropagation< double > *self,PyObject *evidces){}
@@ -70111,6 +70577,9876 @@ SWIGINTERN PyObject *GibbsSampling_double_swigregister(PyObject *SWIGUNUSEDPARM(
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_ImportanceSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::ImportanceSampling< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_ImportanceSampling_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_ImportanceSampling_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (gum::ImportanceSampling< double > *)new gum::ImportanceSampling< double >((gum::IBayesNet< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__ImportanceSamplingT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ImportanceSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_ImportanceSampling_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ImportanceSampling_double" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_updateEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_updateEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_updateEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__updateEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setTargets",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setTargets" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setTargets(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_hardEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_hardEvidenceNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_hardEvidenceNodes" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_ImportanceSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_softEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_softEvidenceNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_softEvidenceNodes" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_ImportanceSampling_Sl_double_Sg__softEvidenceNodes(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_targets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_targets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_targets" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_ImportanceSampling_Sl_double_Sg__targets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setVerbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setVerbosity",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setVerbosity" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_bool(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_setVerbosity" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setVerbosity(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setEpsilon",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setEpsilon" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_setEpsilon" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setEpsilon(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setMinEpsilonRate",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setMinEpsilonRate" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_setMinEpsilonRate" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setMinEpsilonRate(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setMaxIter",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setMaxIter" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_setMaxIter" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setMaxIter(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setMaxTime",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setMaxTime" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_setMaxTime" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setMaxTime(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setPeriodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setPeriodSize",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setPeriodSize" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_setPeriodSize" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setPeriodSize(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_setBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_setBurnIn",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_setBurnIn" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_setBurnIn" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__setBurnIn(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_verbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_verbosity",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_verbosity" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__verbosity((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_epsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_epsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_epsilon" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_ImportanceSampling_Sl_double_Sg__epsilon((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_minEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_minEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_minEpsilonRate" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_ImportanceSampling_Sl_double_Sg__minEpsilonRate((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_maxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_maxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_maxIter" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_ImportanceSampling_Sl_double_Sg__maxIter((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_maxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_maxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_maxTime" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_ImportanceSampling_Sl_double_Sg__maxTime((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_periodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_periodSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_periodSize" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_ImportanceSampling_Sl_double_Sg__periodSize((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_burnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_burnIn",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_burnIn" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_ImportanceSampling_Sl_double_Sg__burnIn((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_nbrIterations(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_nbrIterations",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_nbrIterations" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_ImportanceSampling_Sl_double_Sg__nbrIterations((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_currentTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_currentTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_currentTime" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_ImportanceSampling_Sl_double_Sg__currentTime((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_messageApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_messageApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_messageApproximationScheme" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = gum_ImportanceSampling_Sl_double_Sg__messageApproximationScheme((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_history(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_history",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_history" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (std::vector< double,std::allocator< double > > *) &gum_ImportanceSampling_Sl_double_Sg__history((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_ImportanceSampling_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_makeInference",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_makeInference" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__makeInference(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_posterior__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_posterior" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_posterior" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = gum_ImportanceSampling_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_posterior__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_posterior" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ImportanceSampling_double_posterior" "', argument " "2"" of type '" "std::string const""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_ImportanceSampling_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_posterior(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ImportanceSampling_double_posterior__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ImportanceSampling_double_posterior__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_posterior'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::posterior(gum::NodeId const)\n"
+    "    gum::ImportanceSampling< double >::posterior(std::string const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IBayesNet< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_BN",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_BN" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::IBayesNet< double > *) &gum_ImportanceSampling_Sl_double_Sg__BN((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_ImportanceSampling_double_addEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_addEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_addEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_ImportanceSampling_double_addEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_addEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_addEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_addEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::addEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::ImportanceSampling< double >::addEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::ImportanceSampling< double >::addEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::ImportanceSampling< double >::addEvidence(std::string const &,std::string const &)\n"
+    "    gum::ImportanceSampling< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::ImportanceSampling< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_chgEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_chgEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_chgEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_chgEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_chgEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_chgEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__chgEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_chgEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_ImportanceSampling_double_chgEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_chgEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_chgEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_ImportanceSampling_double_chgEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_chgEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_chgEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_chgEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::chgEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::ImportanceSampling< double >::chgEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::ImportanceSampling< double >::chgEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::ImportanceSampling< double >::chgEvidence(std::string const &,std::string const &)\n"
+    "    gum::ImportanceSampling< double >::chgEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::ImportanceSampling< double >::chgEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_hasEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_hasEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_hasEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__hasEvidence__SWIG_0((gum::ImportanceSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_hasEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_hasEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__hasEvidence__SWIG_1((gum::ImportanceSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_hasEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ImportanceSampling_double_hasEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ImportanceSampling_double_hasEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_hasEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::hasEvidence(gum::NodeId const) const\n"
+    "    gum::ImportanceSampling< double >::hasEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_eraseAllEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_eraseAllEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_eraseAllEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_eraseEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_eraseEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_eraseEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ImportanceSampling_double_eraseEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ImportanceSampling_double_eraseEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_eraseEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::eraseEvidence(gum::NodeId const)\n"
+    "    gum::ImportanceSampling< double >::eraseEvidence(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_hasSoftEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0((gum::ImportanceSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_hasHardEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__hasHardEvidence((gum::ImportanceSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_hasSoftEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1((gum::ImportanceSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_hasSoftEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ImportanceSampling_double_hasSoftEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ImportanceSampling_double_hasSoftEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_hasSoftEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::hasSoftEvidence(gum::NodeId const) const\n"
+    "    gum::ImportanceSampling< double >::hasSoftEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_nbrEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_nbrEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_nbrEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_ImportanceSampling_Sl_double_Sg__nbrEvidence((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_nbrHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_nbrHardEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_nbrHardEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_ImportanceSampling_Sl_double_Sg__nbrHardEvidence((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_nbrSoftEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_nbrSoftEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_nbrSoftEvidence" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_ImportanceSampling_Sl_double_Sg__nbrSoftEvidence((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_eraseAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_eraseAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_eraseAllTargets" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__eraseAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_addAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addAllTargets" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addTarget" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_addTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_addTarget" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__addTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_addTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ImportanceSampling_double_addTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ImportanceSampling_double_addTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_addTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::addTarget(gum::NodeId const)\n"
+    "    gum::ImportanceSampling< double >::addTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_eraseTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_eraseTarget" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_eraseTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__eraseTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_eraseTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_eraseTarget" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_ImportanceSampling_Sl_double_Sg__eraseTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_eraseTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ImportanceSampling_double_eraseTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ImportanceSampling_double_eraseTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_eraseTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::eraseTarget(gum::NodeId const)\n"
+    "    gum::ImportanceSampling< double >::eraseTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_isTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_isTarget" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_isTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__isTarget__SWIG_0((gum::ImportanceSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_isTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_isTarget" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_ImportanceSampling_Sl_double_Sg__isTarget__SWIG_1((gum::ImportanceSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_isTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ImportanceSampling_double_isTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ImportanceSampling_double_isTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_isTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::isTarget(gum::NodeId const) const\n"
+    "    gum::ImportanceSampling< double >::isTarget(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_nbrTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ImportanceSampling_double_nbrTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_nbrTargets" "', argument " "1"" of type '" "gum::ImportanceSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_ImportanceSampling_Sl_double_Sg__nbrTargets((gum::ImportanceSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_H__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_H" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_H" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (double)gum_ImportanceSampling_Sl_double_Sg__H__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_H__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ImportanceSampling_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_H" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ImportanceSampling_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "ImportanceSampling_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (double)gum_ImportanceSampling_Sl_double_Sg__H__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_H(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_ImportanceSampling_double_H__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_ImportanceSampling_double_H__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_H'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::H(gum::NodeId const)\n"
+    "    gum::ImportanceSampling< double >::H(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_evidenceImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_evidenceImpact" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ImportanceSampling_double_evidenceImpact" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ImportanceSampling_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_ImportanceSampling_Sl_double_Sg__evidenceImpact__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_evidenceImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::ImportanceSampling< double > *arg1 = (gum::ImportanceSampling< double > *) 0 ;
+  std::string arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:ImportanceSampling_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ImportanceSampling_double_evidenceImpact" "', argument " "1"" of type '" "gum::ImportanceSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::ImportanceSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ImportanceSampling_double_evidenceImpact" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "ImportanceSampling_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_ImportanceSampling_Sl_double_Sg__evidenceImpact__SWIG_1(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ImportanceSampling_double_evidenceImpact(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_evidenceImpact__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__ImportanceSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_ImportanceSampling_double_evidenceImpact__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'ImportanceSampling_double_evidenceImpact'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::ImportanceSampling< double >::evidenceImpact(gum::NodeId,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const)\n"
+    "    gum::ImportanceSampling< double >::evidenceImpact(std::string,std::vector< std::string,std::allocator< std::string > > const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *ImportanceSampling_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__ImportanceSamplingT_double_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_WeightedSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::WeightedSampling< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_WeightedSampling_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_WeightedSampling_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (gum::WeightedSampling< double > *)new gum::WeightedSampling< double >((gum::IBayesNet< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__WeightedSamplingT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_WeightedSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_WeightedSampling_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_WeightedSampling_double" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_updateEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_updateEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_updateEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__updateEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setTargets",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setTargets" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setTargets(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_hardEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_hardEvidenceNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_hardEvidenceNodes" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_WeightedSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_softEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_softEvidenceNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_softEvidenceNodes" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_WeightedSampling_Sl_double_Sg__softEvidenceNodes(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_targets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_targets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_targets" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_WeightedSampling_Sl_double_Sg__targets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setVerbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setVerbosity",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setVerbosity" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_bool(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_setVerbosity" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setVerbosity(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setEpsilon",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setEpsilon" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_setEpsilon" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setEpsilon(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setMinEpsilonRate",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setMinEpsilonRate" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_setMinEpsilonRate" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setMinEpsilonRate(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setMaxIter",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setMaxIter" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_setMaxIter" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setMaxIter(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setMaxTime",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setMaxTime" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_setMaxTime" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setMaxTime(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setPeriodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setPeriodSize",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setPeriodSize" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_setPeriodSize" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setPeriodSize(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_setBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_setBurnIn",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_setBurnIn" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_setBurnIn" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__setBurnIn(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_verbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_verbosity",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_verbosity" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__verbosity((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_epsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_epsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_epsilon" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_WeightedSampling_Sl_double_Sg__epsilon((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_minEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_minEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_minEpsilonRate" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_WeightedSampling_Sl_double_Sg__minEpsilonRate((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_maxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_maxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_maxIter" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_WeightedSampling_Sl_double_Sg__maxIter((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_maxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_maxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_maxTime" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_WeightedSampling_Sl_double_Sg__maxTime((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_periodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_periodSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_periodSize" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_WeightedSampling_Sl_double_Sg__periodSize((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_burnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_burnIn",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_burnIn" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_WeightedSampling_Sl_double_Sg__burnIn((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_nbrIterations(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_nbrIterations",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_nbrIterations" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_WeightedSampling_Sl_double_Sg__nbrIterations((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_currentTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_currentTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_currentTime" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_WeightedSampling_Sl_double_Sg__currentTime((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_messageApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_messageApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_messageApproximationScheme" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = gum_WeightedSampling_Sl_double_Sg__messageApproximationScheme((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_history(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_history",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_history" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (std::vector< double,std::allocator< double > > *) &gum_WeightedSampling_Sl_double_Sg__history((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_WeightedSampling_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_makeInference",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_makeInference" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__makeInference(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_posterior__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_posterior" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_posterior" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = gum_WeightedSampling_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_posterior__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_posterior" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "WeightedSampling_double_posterior" "', argument " "2"" of type '" "std::string const""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_WeightedSampling_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_posterior(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_WeightedSampling_double_posterior__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_WeightedSampling_double_posterior__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_posterior'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::posterior(gum::NodeId const)\n"
+    "    gum::WeightedSampling< double >::posterior(std::string const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IBayesNet< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_BN",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_BN" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::IBayesNet< double > *) &gum_WeightedSampling_Sl_double_Sg__BN((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_WeightedSampling_double_addEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_addEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_addEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_WeightedSampling_double_addEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_addEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_addEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_addEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::addEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::WeightedSampling< double >::addEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::WeightedSampling< double >::addEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::WeightedSampling< double >::addEvidence(std::string const &,std::string const &)\n"
+    "    gum::WeightedSampling< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::WeightedSampling< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_chgEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_chgEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_chgEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_chgEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_chgEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_chgEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__chgEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_chgEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_WeightedSampling_double_chgEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_chgEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_chgEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_WeightedSampling_double_chgEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_chgEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_chgEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_chgEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::chgEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::WeightedSampling< double >::chgEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::WeightedSampling< double >::chgEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::WeightedSampling< double >::chgEvidence(std::string const &,std::string const &)\n"
+    "    gum::WeightedSampling< double >::chgEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::WeightedSampling< double >::chgEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_hasEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_hasEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_hasEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__hasEvidence__SWIG_0((gum::WeightedSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_hasEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_hasEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__hasEvidence__SWIG_1((gum::WeightedSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_hasEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_WeightedSampling_double_hasEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_WeightedSampling_double_hasEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_hasEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::hasEvidence(gum::NodeId const) const\n"
+    "    gum::WeightedSampling< double >::hasEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_eraseAllEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_eraseAllEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_eraseAllEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_eraseEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_eraseEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_eraseEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_WeightedSampling_double_eraseEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_WeightedSampling_double_eraseEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_eraseEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::eraseEvidence(gum::NodeId const)\n"
+    "    gum::WeightedSampling< double >::eraseEvidence(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_hasSoftEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0((gum::WeightedSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_hasHardEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__hasHardEvidence((gum::WeightedSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_hasSoftEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1((gum::WeightedSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_hasSoftEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_WeightedSampling_double_hasSoftEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_WeightedSampling_double_hasSoftEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_hasSoftEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::hasSoftEvidence(gum::NodeId const) const\n"
+    "    gum::WeightedSampling< double >::hasSoftEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_nbrEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_nbrEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_nbrEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_WeightedSampling_Sl_double_Sg__nbrEvidence((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_nbrHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_nbrHardEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_nbrHardEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_WeightedSampling_Sl_double_Sg__nbrHardEvidence((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_nbrSoftEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_nbrSoftEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_nbrSoftEvidence" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_WeightedSampling_Sl_double_Sg__nbrSoftEvidence((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_eraseAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_eraseAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_eraseAllTargets" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__eraseAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_addAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addAllTargets" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addTarget" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_addTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_addTarget" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__addTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_addTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_WeightedSampling_double_addTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_WeightedSampling_double_addTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_addTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::addTarget(gum::NodeId const)\n"
+    "    gum::WeightedSampling< double >::addTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_eraseTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_eraseTarget" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_eraseTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__eraseTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_eraseTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_eraseTarget" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_WeightedSampling_Sl_double_Sg__eraseTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_eraseTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_WeightedSampling_double_eraseTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_WeightedSampling_double_eraseTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_eraseTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::eraseTarget(gum::NodeId const)\n"
+    "    gum::WeightedSampling< double >::eraseTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_isTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_isTarget" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_isTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__isTarget__SWIG_0((gum::WeightedSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_isTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_isTarget" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_WeightedSampling_Sl_double_Sg__isTarget__SWIG_1((gum::WeightedSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_isTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_WeightedSampling_double_isTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_WeightedSampling_double_isTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_isTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::isTarget(gum::NodeId const) const\n"
+    "    gum::WeightedSampling< double >::isTarget(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_nbrTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:WeightedSampling_double_nbrTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_nbrTargets" "', argument " "1"" of type '" "gum::WeightedSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_WeightedSampling_Sl_double_Sg__nbrTargets((gum::WeightedSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_H__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_H" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_H" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (double)gum_WeightedSampling_Sl_double_Sg__H__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_H__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:WeightedSampling_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_H" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "WeightedSampling_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "WeightedSampling_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (double)gum_WeightedSampling_Sl_double_Sg__H__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_H(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_WeightedSampling_double_H__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_WeightedSampling_double_H__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_H'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::H(gum::NodeId const)\n"
+    "    gum::WeightedSampling< double >::H(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_evidenceImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_evidenceImpact" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "WeightedSampling_double_evidenceImpact" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "WeightedSampling_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_WeightedSampling_Sl_double_Sg__evidenceImpact__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_evidenceImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::WeightedSampling< double > *arg1 = (gum::WeightedSampling< double > *) 0 ;
+  std::string arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:WeightedSampling_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "WeightedSampling_double_evidenceImpact" "', argument " "1"" of type '" "gum::WeightedSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::WeightedSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "WeightedSampling_double_evidenceImpact" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "WeightedSampling_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_WeightedSampling_Sl_double_Sg__evidenceImpact__SWIG_1(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_WeightedSampling_double_evidenceImpact(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_evidenceImpact__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__WeightedSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_WeightedSampling_double_evidenceImpact__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'WeightedSampling_double_evidenceImpact'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::WeightedSampling< double >::evidenceImpact(gum::NodeId,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const)\n"
+    "    gum::WeightedSampling< double >::evidenceImpact(std::string,std::vector< std::string,std::allocator< std::string > > const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *WeightedSampling_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__WeightedSamplingT_double_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_MonteCarloSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::MonteCarloSampling< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_MonteCarloSampling_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_MonteCarloSampling_double" "', argument " "1"" of type '" "gum::IBayesNet< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::IBayesNet< double > * >(argp1);
+  {
+    try {
+      result = (gum::MonteCarloSampling< double > *)new gum::MonteCarloSampling< double >((gum::IBayesNet< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_MonteCarloSampling_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_MonteCarloSampling_double",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_MonteCarloSampling_double" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      delete arg1;
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_updateEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_updateEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_updateEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__updateEvidence(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  PyObject *arg2 = (PyObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setTargets",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setTargets" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  arg2 = obj1;
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setTargets(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_hardEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_hardEvidenceNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_hardEvidenceNodes" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_MonteCarloSampling_Sl_double_Sg__hardEvidenceNodes(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_softEvidenceNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_softEvidenceNodes",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_softEvidenceNodes" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_MonteCarloSampling_Sl_double_Sg__softEvidenceNodes(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_targets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_targets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_targets" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (PyObject *)gum_MonteCarloSampling_Sl_double_Sg__targets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = result;
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setVerbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setVerbosity",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setVerbosity" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_bool(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_setVerbosity" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setVerbosity(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setEpsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setEpsilon",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setEpsilon" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_setEpsilon" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setEpsilon(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setMinEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setMinEpsilonRate",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setMinEpsilonRate" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_setMinEpsilonRate" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setMinEpsilonRate(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setMaxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setMaxIter",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setMaxIter" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_setMaxIter" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setMaxIter(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setMaxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setMaxTime",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setMaxTime" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_setMaxTime" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setMaxTime(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setPeriodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setPeriodSize",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setPeriodSize" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_setPeriodSize" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setPeriodSize(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_setBurnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::Size arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_setBurnIn",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_setBurnIn" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_setBurnIn" "', argument " "2"" of type '" "gum::Size""'");
+  } 
+  arg2 = static_cast< gum::Size >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__setBurnIn(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_verbosity(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_verbosity",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_verbosity" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__verbosity((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_epsilon(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_epsilon",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_epsilon" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_MonteCarloSampling_Sl_double_Sg__epsilon((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_minEpsilonRate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_minEpsilonRate",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_minEpsilonRate" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_MonteCarloSampling_Sl_double_Sg__minEpsilonRate((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_maxIter(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_maxIter",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_maxIter" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_MonteCarloSampling_Sl_double_Sg__maxIter((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_maxTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_maxTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_maxTime" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_MonteCarloSampling_Sl_double_Sg__maxTime((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_periodSize(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_periodSize",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_periodSize" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_MonteCarloSampling_Sl_double_Sg__periodSize((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_burnIn(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_burnIn",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_burnIn" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_MonteCarloSampling_Sl_double_Sg__burnIn((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_nbrIterations(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_nbrIterations",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_nbrIterations" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_MonteCarloSampling_Sl_double_Sg__nbrIterations((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_currentTime(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_currentTime",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_currentTime" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (double)gum_MonteCarloSampling_Sl_double_Sg__currentTime((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_messageApproximationScheme(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::string result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_messageApproximationScheme",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_messageApproximationScheme" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = gum_MonteCarloSampling_Sl_double_Sg__messageApproximationScheme((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_history(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_history",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_history" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (std::vector< double,std::allocator< double > > *) &gum_MonteCarloSampling_Sl_double_Sg__history((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(*result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_asIApproximationSchemeConfiguration(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IApproximationSchemeConfiguration *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_asIApproximationSchemeConfiguration",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_asIApproximationSchemeConfiguration" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::IApproximationSchemeConfiguration *) &gum_MonteCarloSampling_Sl_double_Sg__asIApproximationSchemeConfiguration((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IApproximationSchemeConfiguration, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_makeInference(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_makeInference",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_makeInference" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__makeInference(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_posterior__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_posterior" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_posterior" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = gum_MonteCarloSampling_Sl_double_Sg__posterior__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_posterior__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_posterior",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_posterior" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "MonteCarloSampling_double_posterior" "', argument " "2"" of type '" "std::string const""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_MonteCarloSampling_Sl_double_Sg__posterior__SWIG_1(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_posterior(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_posterior__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_posterior__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_posterior'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::posterior(gum::NodeId const)\n"
+    "    gum::MonteCarloSampling< double >::posterior(std::string const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_BN(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::IBayesNet< double > *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_BN",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_BN" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::IBayesNet< double > *) &gum_MonteCarloSampling_Sl_double_Sg__BN((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__IBayesNetT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_addEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_addEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_addEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_addEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_addEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_addEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_addEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_addEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_addEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::addEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::MonteCarloSampling< double >::addEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::MonteCarloSampling< double >::addEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::MonteCarloSampling< double >::addEvidence(std::string const &,std::string const &)\n"
+    "    gum::MonteCarloSampling< double >::addEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::MonteCarloSampling< double >::addEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_chgEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_chgEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  gum::Idx arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  unsigned long val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_unsigned_SS_long(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "gum::Idx""'");
+  } 
+  arg3 = static_cast< gum::Idx >(val3);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_1(arg1,(std::string const &)*arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_chgEvidence__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_2(arg1,arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_chgEvidence__SWIG_3(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_3(arg1,(std::string const &)*arg2,(std::string const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_chgEvidence__SWIG_4(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_4(arg1,arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_chgEvidence__SWIG_5(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_chgEvidence",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_chgEvidence" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__chgEvidence__SWIG_5(arg1,(std::string const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_chgEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_chgEvidence__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_chgEvidence__SWIG_2(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_chgEvidence__SWIG_4(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_unsigned_SS_long(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_chgEvidence__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_chgEvidence__SWIG_3(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< double,std::allocator< double > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_chgEvidence__SWIG_5(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_chgEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::chgEvidence(gum::NodeId const,gum::Idx const)\n"
+    "    gum::MonteCarloSampling< double >::chgEvidence(std::string const &,gum::Idx const)\n"
+    "    gum::MonteCarloSampling< double >::chgEvidence(gum::NodeId const,std::string const &)\n"
+    "    gum::MonteCarloSampling< double >::chgEvidence(std::string const &,std::string const &)\n"
+    "    gum::MonteCarloSampling< double >::chgEvidence(gum::NodeId const,std::vector< double,std::allocator< double > > const &)\n"
+    "    gum::MonteCarloSampling< double >::chgEvidence(std::string const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_hasEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_hasEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_hasEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__hasEvidence__SWIG_0((gum::MonteCarloSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_hasEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_hasEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_hasEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_hasEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__hasEvidence__SWIG_1((gum::MonteCarloSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_hasEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_hasEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_hasEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_hasEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::hasEvidence(gum::NodeId const) const\n"
+    "    gum::MonteCarloSampling< double >::hasEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_eraseAllEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_eraseAllEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_eraseAllEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__eraseAllEvidence(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_eraseEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_eraseEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_eraseEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__eraseEvidence__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_eraseEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_eraseEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_eraseEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_eraseEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__eraseEvidence__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_eraseEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_eraseEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_eraseEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_eraseEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::eraseEvidence(gum::NodeId const)\n"
+    "    gum::MonteCarloSampling< double >::eraseEvidence(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_hasSoftEvidence__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__hasSoftEvidence__SWIG_0((gum::MonteCarloSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_hasHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_hasHardEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_hasHardEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_hasHardEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__hasHardEvidence((gum::MonteCarloSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_hasSoftEvidence__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_hasSoftEvidence",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_hasSoftEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_hasSoftEvidence" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__hasSoftEvidence__SWIG_1((gum::MonteCarloSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_hasSoftEvidence(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_hasSoftEvidence__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_hasSoftEvidence__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_hasSoftEvidence'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::hasSoftEvidence(gum::NodeId const) const\n"
+    "    gum::MonteCarloSampling< double >::hasSoftEvidence(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_nbrEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_nbrEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_nbrEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_MonteCarloSampling_Sl_double_Sg__nbrEvidence((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_nbrHardEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_nbrHardEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_nbrHardEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_MonteCarloSampling_Sl_double_Sg__nbrHardEvidence((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_nbrSoftEvidence(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_nbrSoftEvidence",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_nbrSoftEvidence" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_MonteCarloSampling_Sl_double_Sg__nbrSoftEvidence((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_eraseAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_eraseAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_eraseAllTargets" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__eraseAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addAllTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_addAllTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addAllTargets" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addAllTargets(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addTarget" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_addTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_addTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_addTarget" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_addTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__addTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_addTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_addTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_addTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_addTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::addTarget(gum::NodeId const)\n"
+    "    gum::MonteCarloSampling< double >::addTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_eraseTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_eraseTarget" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_eraseTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__eraseTarget__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_eraseTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_eraseTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_eraseTarget" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_eraseTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      gum_MonteCarloSampling_Sl_double_Sg__eraseTarget__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_eraseTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_eraseTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_eraseTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_eraseTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::eraseTarget(gum::NodeId const)\n"
+    "    gum::MonteCarloSampling< double >::eraseTarget(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_isTarget__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_isTarget" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_isTarget" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__isTarget__SWIG_0((gum::MonteCarloSampling< double > const *)arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_isTarget__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  bool result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_isTarget",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_isTarget" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_isTarget" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (bool)gum_MonteCarloSampling_Sl_double_Sg__isTarget__SWIG_1((gum::MonteCarloSampling< double > const *)arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_isTarget(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_isTarget__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_isTarget__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_isTarget'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::isTarget(gum::NodeId const) const\n"
+    "    gum::MonteCarloSampling< double >::isTarget(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_nbrTargets(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Size result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:MonteCarloSampling_double_nbrTargets",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_nbrTargets" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    try {
+      result = (gum::Size)gum_MonteCarloSampling_Sl_double_Sg__nbrTargets((gum::MonteCarloSampling< double > const *)arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_H__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_H" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_H" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    try {
+      result = (double)gum_MonteCarloSampling_Sl_double_Sg__H__SWIG_0(arg1,arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_H__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:MonteCarloSampling_double_H",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_H" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MonteCarloSampling_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MonteCarloSampling_double_H" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (double)gum_MonteCarloSampling_Sl_double_Sg__H__SWIG_1(arg1,(std::string const &)*arg2);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_H(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 2) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_H__SWIG_0(self, args);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MonteCarloSampling_double_H__SWIG_1(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_H'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::H(gum::NodeId const)\n"
+    "    gum::MonteCarloSampling< double >::H(std::string const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_evidenceImpact__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  gum::NodeId arg2 ;
+  std::vector< gum::NodeId,std::allocator< gum::NodeId > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_evidenceImpact" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MonteCarloSampling_double_evidenceImpact" "', argument " "2"" of type '" "gum::NodeId""'");
+  } 
+  arg2 = static_cast< gum::NodeId >(val2);
+  {
+    std::vector< unsigned int,std::allocator< unsigned int > > *ptr = (std::vector< unsigned int,std::allocator< unsigned int > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "MonteCarloSampling_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_MonteCarloSampling_Sl_double_Sg__evidenceImpact__SWIG_0(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_evidenceImpact__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::MonteCarloSampling< double > *arg1 = (gum::MonteCarloSampling< double > *) 0 ;
+  std::string arg2 ;
+  std::vector< std::string,std::allocator< std::string > > arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  gum::Potential< double > result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:MonteCarloSampling_double_evidenceImpact",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MonteCarloSampling_double_evidenceImpact" "', argument " "1"" of type '" "gum::MonteCarloSampling< double > *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::MonteCarloSampling< double > * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    int res = SWIG_AsPtr_std_string(obj1, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "MonteCarloSampling_double_evidenceImpact" "', argument " "2"" of type '" "std::string""'"); 
+    }
+    arg2 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    std::vector< std::string,std::allocator< std::string > > *ptr = (std::vector< std::string,std::allocator< std::string > > *)0;
+    int res = swig::asptr(obj2, &ptr);
+    if (!SWIG_IsOK(res) || !ptr) {
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "MonteCarloSampling_double_evidenceImpact" "', argument " "3"" of type '" "std::vector< std::string,std::allocator< std::string > > const""'"); 
+    }
+    arg3 = *ptr;
+    if (SWIG_IsNewObj(res)) delete ptr;
+  }
+  {
+    try {
+      result = gum_MonteCarloSampling_Sl_double_Sg__evidenceImpact__SWIG_1(arg1,arg2,arg3);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new gum::Potential< double >(static_cast< const gum::Potential< double >& >(result))), SWIGTYPE_p_gum__PotentialT_double_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MonteCarloSampling_double_evidenceImpact(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 3) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< unsigned int,std::allocator< unsigned int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_evidenceImpact__SWIG_0(self, args);
+        }
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< std::string,std::allocator< std::string > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_MonteCarloSampling_double_evidenceImpact__SWIG_1(self, args);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'MonteCarloSampling_double_evidenceImpact'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::MonteCarloSampling< double >::evidenceImpact(gum::NodeId,std::vector< gum::NodeId,std::allocator< gum::NodeId > > const)\n"
+    "    gum::MonteCarloSampling< double >::evidenceImpact(std::string,std::vector< std::string,std::allocator< std::string > > const)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *MonteCarloSampling_double_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char *)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_gum__MonteCarloSamplingT_double_t, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_LoopyBeliefPropagation_double(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   gum::IBayesNet< double > *arg1 = (gum::IBayesNet< double > *) 0 ;
@@ -87230,6 +97566,276 @@ static PyMethodDef SwigMethods[] = {
 		"GibbsSampling_double_evidenceImpact(self, target, evs) -> Potential_double\n"
 		""},
 	 { (char *)"GibbsSampling_double_swigregister", GibbsSampling_double_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_ImportanceSampling_double", _wrap_new_ImportanceSampling_double, METH_VARARGS, (char *)"new_ImportanceSampling_double(BN) -> ImportanceSampling_double"},
+	 { (char *)"delete_ImportanceSampling_double", _wrap_delete_ImportanceSampling_double, METH_VARARGS, (char *)"delete_ImportanceSampling_double(self)"},
+	 { (char *)"ImportanceSampling_double_setEvidence", _wrap_ImportanceSampling_double_setEvidence, METH_VARARGS, (char *)"ImportanceSampling_double_setEvidence(self, evidces)"},
+	 { (char *)"ImportanceSampling_double_updateEvidence", _wrap_ImportanceSampling_double_updateEvidence, METH_VARARGS, (char *)"ImportanceSampling_double_updateEvidence(self, evidces)"},
+	 { (char *)"ImportanceSampling_double_setTargets", _wrap_ImportanceSampling_double_setTargets, METH_VARARGS, (char *)"ImportanceSampling_double_setTargets(self, targets)"},
+	 { (char *)"ImportanceSampling_double_hardEvidenceNodes", _wrap_ImportanceSampling_double_hardEvidenceNodes, METH_VARARGS, (char *)"ImportanceSampling_double_hardEvidenceNodes(self) -> PyObject *"},
+	 { (char *)"ImportanceSampling_double_softEvidenceNodes", _wrap_ImportanceSampling_double_softEvidenceNodes, METH_VARARGS, (char *)"ImportanceSampling_double_softEvidenceNodes(self) -> PyObject *"},
+	 { (char *)"ImportanceSampling_double_targets", _wrap_ImportanceSampling_double_targets, METH_VARARGS, (char *)"ImportanceSampling_double_targets(self) -> PyObject *"},
+	 { (char *)"ImportanceSampling_double_setVerbosity", _wrap_ImportanceSampling_double_setVerbosity, METH_VARARGS, (char *)"ImportanceSampling_double_setVerbosity(self, v)"},
+	 { (char *)"ImportanceSampling_double_setEpsilon", _wrap_ImportanceSampling_double_setEpsilon, METH_VARARGS, (char *)"ImportanceSampling_double_setEpsilon(self, eps)"},
+	 { (char *)"ImportanceSampling_double_setMinEpsilonRate", _wrap_ImportanceSampling_double_setMinEpsilonRate, METH_VARARGS, (char *)"ImportanceSampling_double_setMinEpsilonRate(self, rate)"},
+	 { (char *)"ImportanceSampling_double_setMaxIter", _wrap_ImportanceSampling_double_setMaxIter, METH_VARARGS, (char *)"ImportanceSampling_double_setMaxIter(self, max)"},
+	 { (char *)"ImportanceSampling_double_setMaxTime", _wrap_ImportanceSampling_double_setMaxTime, METH_VARARGS, (char *)"ImportanceSampling_double_setMaxTime(self, timeout)"},
+	 { (char *)"ImportanceSampling_double_setPeriodSize", _wrap_ImportanceSampling_double_setPeriodSize, METH_VARARGS, (char *)"ImportanceSampling_double_setPeriodSize(self, p)"},
+	 { (char *)"ImportanceSampling_double_setBurnIn", _wrap_ImportanceSampling_double_setBurnIn, METH_VARARGS, (char *)"ImportanceSampling_double_setBurnIn(self, b)"},
+	 { (char *)"ImportanceSampling_double_verbosity", _wrap_ImportanceSampling_double_verbosity, METH_VARARGS, (char *)"ImportanceSampling_double_verbosity(self) -> bool"},
+	 { (char *)"ImportanceSampling_double_epsilon", _wrap_ImportanceSampling_double_epsilon, METH_VARARGS, (char *)"ImportanceSampling_double_epsilon(self) -> double"},
+	 { (char *)"ImportanceSampling_double_minEpsilonRate", _wrap_ImportanceSampling_double_minEpsilonRate, METH_VARARGS, (char *)"ImportanceSampling_double_minEpsilonRate(self) -> double"},
+	 { (char *)"ImportanceSampling_double_maxIter", _wrap_ImportanceSampling_double_maxIter, METH_VARARGS, (char *)"ImportanceSampling_double_maxIter(self) -> gum::Size"},
+	 { (char *)"ImportanceSampling_double_maxTime", _wrap_ImportanceSampling_double_maxTime, METH_VARARGS, (char *)"ImportanceSampling_double_maxTime(self) -> double"},
+	 { (char *)"ImportanceSampling_double_periodSize", _wrap_ImportanceSampling_double_periodSize, METH_VARARGS, (char *)"ImportanceSampling_double_periodSize(self) -> gum::Size"},
+	 { (char *)"ImportanceSampling_double_burnIn", _wrap_ImportanceSampling_double_burnIn, METH_VARARGS, (char *)"ImportanceSampling_double_burnIn(self) -> gum::Size"},
+	 { (char *)"ImportanceSampling_double_nbrIterations", _wrap_ImportanceSampling_double_nbrIterations, METH_VARARGS, (char *)"ImportanceSampling_double_nbrIterations(self) -> gum::Size"},
+	 { (char *)"ImportanceSampling_double_currentTime", _wrap_ImportanceSampling_double_currentTime, METH_VARARGS, (char *)"ImportanceSampling_double_currentTime(self) -> double"},
+	 { (char *)"ImportanceSampling_double_messageApproximationScheme", _wrap_ImportanceSampling_double_messageApproximationScheme, METH_VARARGS, (char *)"ImportanceSampling_double_messageApproximationScheme(self) -> std::string"},
+	 { (char *)"ImportanceSampling_double_history", _wrap_ImportanceSampling_double_history, METH_VARARGS, (char *)"ImportanceSampling_double_history(self) -> Vector_double"},
+	 { (char *)"ImportanceSampling_double_asIApproximationSchemeConfiguration", _wrap_ImportanceSampling_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"ImportanceSampling_double_asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"},
+	 { (char *)"ImportanceSampling_double_makeInference", _wrap_ImportanceSampling_double_makeInference, METH_VARARGS, (char *)"ImportanceSampling_double_makeInference(self)"},
+	 { (char *)"ImportanceSampling_double_posterior", _wrap_ImportanceSampling_double_posterior, METH_VARARGS, (char *)"\n"
+		"posterior(var) -> Potential_double\n"
+		"ImportanceSampling_double_posterior(self, nodeName) -> Potential_double\n"
+		""},
+	 { (char *)"ImportanceSampling_double_BN", _wrap_ImportanceSampling_double_BN, METH_VARARGS, (char *)"ImportanceSampling_double_BN(self) -> IBayesNet_double"},
+	 { (char *)"ImportanceSampling_double_addEvidence", _wrap_ImportanceSampling_double_addEvidence, METH_VARARGS, (char *)"\n"
+		"addEvidence(id, val)\n"
+		"addEvidence(nodeName, val)\n"
+		"addEvidence(id, val)\n"
+		"addEvidence(nodeName, val)\n"
+		"addEvidence(id, vals)\n"
+		"ImportanceSampling_double_addEvidence(self, nodeName, vals)\n"
+		""},
+	 { (char *)"ImportanceSampling_double_chgEvidence", _wrap_ImportanceSampling_double_chgEvidence, METH_VARARGS, (char *)"\n"
+		"chgEvidence(id, val)\n"
+		"chgEvidence(nodeName, val)\n"
+		"chgEvidence(id, val)\n"
+		"chgEvidence(nodeName, val)\n"
+		"chgEvidence(id, vals)\n"
+		"ImportanceSampling_double_chgEvidence(self, nodeName, vals)\n"
+		""},
+	 { (char *)"ImportanceSampling_double_hasEvidence", _wrap_ImportanceSampling_double_hasEvidence, METH_VARARGS, (char *)"\n"
+		"hasEvidence(id) -> bool\n"
+		"ImportanceSampling_double_hasEvidence(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"ImportanceSampling_double_eraseAllEvidence", _wrap_ImportanceSampling_double_eraseAllEvidence, METH_VARARGS, (char *)"ImportanceSampling_double_eraseAllEvidence(self)"},
+	 { (char *)"ImportanceSampling_double_eraseEvidence", _wrap_ImportanceSampling_double_eraseEvidence, METH_VARARGS, (char *)"\n"
+		"eraseEvidence(id)\n"
+		"ImportanceSampling_double_eraseEvidence(self, nodeName)\n"
+		""},
+	 { (char *)"ImportanceSampling_double_hasHardEvidence", _wrap_ImportanceSampling_double_hasHardEvidence, METH_VARARGS, (char *)"ImportanceSampling_double_hasHardEvidence(self, nodeName) -> bool"},
+	 { (char *)"ImportanceSampling_double_hasSoftEvidence", _wrap_ImportanceSampling_double_hasSoftEvidence, METH_VARARGS, (char *)"\n"
+		"hasSoftEvidence(id) -> bool\n"
+		"ImportanceSampling_double_hasSoftEvidence(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"ImportanceSampling_double_nbrEvidence", _wrap_ImportanceSampling_double_nbrEvidence, METH_VARARGS, (char *)"ImportanceSampling_double_nbrEvidence(self) -> gum::Size"},
+	 { (char *)"ImportanceSampling_double_nbrHardEvidence", _wrap_ImportanceSampling_double_nbrHardEvidence, METH_VARARGS, (char *)"ImportanceSampling_double_nbrHardEvidence(self) -> gum::Size"},
+	 { (char *)"ImportanceSampling_double_nbrSoftEvidence", _wrap_ImportanceSampling_double_nbrSoftEvidence, METH_VARARGS, (char *)"ImportanceSampling_double_nbrSoftEvidence(self) -> gum::Size"},
+	 { (char *)"ImportanceSampling_double_eraseAllTargets", _wrap_ImportanceSampling_double_eraseAllTargets, METH_VARARGS, (char *)"ImportanceSampling_double_eraseAllTargets(self)"},
+	 { (char *)"ImportanceSampling_double_addAllTargets", _wrap_ImportanceSampling_double_addAllTargets, METH_VARARGS, (char *)"ImportanceSampling_double_addAllTargets(self)"},
+	 { (char *)"ImportanceSampling_double_addTarget", _wrap_ImportanceSampling_double_addTarget, METH_VARARGS, (char *)"\n"
+		"addTarget(target)\n"
+		"ImportanceSampling_double_addTarget(self, nodeName)\n"
+		""},
+	 { (char *)"ImportanceSampling_double_eraseTarget", _wrap_ImportanceSampling_double_eraseTarget, METH_VARARGS, (char *)"\n"
+		"eraseTarget(target)\n"
+		"ImportanceSampling_double_eraseTarget(self, nodeName)\n"
+		""},
+	 { (char *)"ImportanceSampling_double_isTarget", _wrap_ImportanceSampling_double_isTarget, METH_VARARGS, (char *)"\n"
+		"isTarget(variable) -> bool\n"
+		"ImportanceSampling_double_isTarget(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"ImportanceSampling_double_nbrTargets", _wrap_ImportanceSampling_double_nbrTargets, METH_VARARGS, (char *)"ImportanceSampling_double_nbrTargets(self) -> gum::Size"},
+	 { (char *)"ImportanceSampling_double_H", _wrap_ImportanceSampling_double_H, METH_VARARGS, (char *)"\n"
+		"H(X) -> double\n"
+		"ImportanceSampling_double_H(self, nodeName) -> double\n"
+		""},
+	 { (char *)"ImportanceSampling_double_evidenceImpact", _wrap_ImportanceSampling_double_evidenceImpact, METH_VARARGS, (char *)"\n"
+		"evidenceImpact(target, evs) -> Potential_double\n"
+		"ImportanceSampling_double_evidenceImpact(self, target, evs) -> Potential_double\n"
+		""},
+	 { (char *)"ImportanceSampling_double_swigregister", ImportanceSampling_double_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_WeightedSampling_double", _wrap_new_WeightedSampling_double, METH_VARARGS, (char *)"new_WeightedSampling_double(BN) -> WeightedSampling_double"},
+	 { (char *)"delete_WeightedSampling_double", _wrap_delete_WeightedSampling_double, METH_VARARGS, (char *)"delete_WeightedSampling_double(self)"},
+	 { (char *)"WeightedSampling_double_setEvidence", _wrap_WeightedSampling_double_setEvidence, METH_VARARGS, (char *)"WeightedSampling_double_setEvidence(self, evidces)"},
+	 { (char *)"WeightedSampling_double_updateEvidence", _wrap_WeightedSampling_double_updateEvidence, METH_VARARGS, (char *)"WeightedSampling_double_updateEvidence(self, evidces)"},
+	 { (char *)"WeightedSampling_double_setTargets", _wrap_WeightedSampling_double_setTargets, METH_VARARGS, (char *)"WeightedSampling_double_setTargets(self, targets)"},
+	 { (char *)"WeightedSampling_double_hardEvidenceNodes", _wrap_WeightedSampling_double_hardEvidenceNodes, METH_VARARGS, (char *)"WeightedSampling_double_hardEvidenceNodes(self) -> PyObject *"},
+	 { (char *)"WeightedSampling_double_softEvidenceNodes", _wrap_WeightedSampling_double_softEvidenceNodes, METH_VARARGS, (char *)"WeightedSampling_double_softEvidenceNodes(self) -> PyObject *"},
+	 { (char *)"WeightedSampling_double_targets", _wrap_WeightedSampling_double_targets, METH_VARARGS, (char *)"WeightedSampling_double_targets(self) -> PyObject *"},
+	 { (char *)"WeightedSampling_double_setVerbosity", _wrap_WeightedSampling_double_setVerbosity, METH_VARARGS, (char *)"WeightedSampling_double_setVerbosity(self, v)"},
+	 { (char *)"WeightedSampling_double_setEpsilon", _wrap_WeightedSampling_double_setEpsilon, METH_VARARGS, (char *)"WeightedSampling_double_setEpsilon(self, eps)"},
+	 { (char *)"WeightedSampling_double_setMinEpsilonRate", _wrap_WeightedSampling_double_setMinEpsilonRate, METH_VARARGS, (char *)"WeightedSampling_double_setMinEpsilonRate(self, rate)"},
+	 { (char *)"WeightedSampling_double_setMaxIter", _wrap_WeightedSampling_double_setMaxIter, METH_VARARGS, (char *)"WeightedSampling_double_setMaxIter(self, max)"},
+	 { (char *)"WeightedSampling_double_setMaxTime", _wrap_WeightedSampling_double_setMaxTime, METH_VARARGS, (char *)"WeightedSampling_double_setMaxTime(self, timeout)"},
+	 { (char *)"WeightedSampling_double_setPeriodSize", _wrap_WeightedSampling_double_setPeriodSize, METH_VARARGS, (char *)"WeightedSampling_double_setPeriodSize(self, p)"},
+	 { (char *)"WeightedSampling_double_setBurnIn", _wrap_WeightedSampling_double_setBurnIn, METH_VARARGS, (char *)"WeightedSampling_double_setBurnIn(self, b)"},
+	 { (char *)"WeightedSampling_double_verbosity", _wrap_WeightedSampling_double_verbosity, METH_VARARGS, (char *)"WeightedSampling_double_verbosity(self) -> bool"},
+	 { (char *)"WeightedSampling_double_epsilon", _wrap_WeightedSampling_double_epsilon, METH_VARARGS, (char *)"WeightedSampling_double_epsilon(self) -> double"},
+	 { (char *)"WeightedSampling_double_minEpsilonRate", _wrap_WeightedSampling_double_minEpsilonRate, METH_VARARGS, (char *)"WeightedSampling_double_minEpsilonRate(self) -> double"},
+	 { (char *)"WeightedSampling_double_maxIter", _wrap_WeightedSampling_double_maxIter, METH_VARARGS, (char *)"WeightedSampling_double_maxIter(self) -> gum::Size"},
+	 { (char *)"WeightedSampling_double_maxTime", _wrap_WeightedSampling_double_maxTime, METH_VARARGS, (char *)"WeightedSampling_double_maxTime(self) -> double"},
+	 { (char *)"WeightedSampling_double_periodSize", _wrap_WeightedSampling_double_periodSize, METH_VARARGS, (char *)"WeightedSampling_double_periodSize(self) -> gum::Size"},
+	 { (char *)"WeightedSampling_double_burnIn", _wrap_WeightedSampling_double_burnIn, METH_VARARGS, (char *)"WeightedSampling_double_burnIn(self) -> gum::Size"},
+	 { (char *)"WeightedSampling_double_nbrIterations", _wrap_WeightedSampling_double_nbrIterations, METH_VARARGS, (char *)"WeightedSampling_double_nbrIterations(self) -> gum::Size"},
+	 { (char *)"WeightedSampling_double_currentTime", _wrap_WeightedSampling_double_currentTime, METH_VARARGS, (char *)"WeightedSampling_double_currentTime(self) -> double"},
+	 { (char *)"WeightedSampling_double_messageApproximationScheme", _wrap_WeightedSampling_double_messageApproximationScheme, METH_VARARGS, (char *)"WeightedSampling_double_messageApproximationScheme(self) -> std::string"},
+	 { (char *)"WeightedSampling_double_history", _wrap_WeightedSampling_double_history, METH_VARARGS, (char *)"WeightedSampling_double_history(self) -> Vector_double"},
+	 { (char *)"WeightedSampling_double_asIApproximationSchemeConfiguration", _wrap_WeightedSampling_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"WeightedSampling_double_asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"},
+	 { (char *)"WeightedSampling_double_makeInference", _wrap_WeightedSampling_double_makeInference, METH_VARARGS, (char *)"WeightedSampling_double_makeInference(self)"},
+	 { (char *)"WeightedSampling_double_posterior", _wrap_WeightedSampling_double_posterior, METH_VARARGS, (char *)"\n"
+		"posterior(var) -> Potential_double\n"
+		"WeightedSampling_double_posterior(self, nodeName) -> Potential_double\n"
+		""},
+	 { (char *)"WeightedSampling_double_BN", _wrap_WeightedSampling_double_BN, METH_VARARGS, (char *)"WeightedSampling_double_BN(self) -> IBayesNet_double"},
+	 { (char *)"WeightedSampling_double_addEvidence", _wrap_WeightedSampling_double_addEvidence, METH_VARARGS, (char *)"\n"
+		"addEvidence(id, val)\n"
+		"addEvidence(nodeName, val)\n"
+		"addEvidence(id, val)\n"
+		"addEvidence(nodeName, val)\n"
+		"addEvidence(id, vals)\n"
+		"WeightedSampling_double_addEvidence(self, nodeName, vals)\n"
+		""},
+	 { (char *)"WeightedSampling_double_chgEvidence", _wrap_WeightedSampling_double_chgEvidence, METH_VARARGS, (char *)"\n"
+		"chgEvidence(id, val)\n"
+		"chgEvidence(nodeName, val)\n"
+		"chgEvidence(id, val)\n"
+		"chgEvidence(nodeName, val)\n"
+		"chgEvidence(id, vals)\n"
+		"WeightedSampling_double_chgEvidence(self, nodeName, vals)\n"
+		""},
+	 { (char *)"WeightedSampling_double_hasEvidence", _wrap_WeightedSampling_double_hasEvidence, METH_VARARGS, (char *)"\n"
+		"hasEvidence(id) -> bool\n"
+		"WeightedSampling_double_hasEvidence(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"WeightedSampling_double_eraseAllEvidence", _wrap_WeightedSampling_double_eraseAllEvidence, METH_VARARGS, (char *)"WeightedSampling_double_eraseAllEvidence(self)"},
+	 { (char *)"WeightedSampling_double_eraseEvidence", _wrap_WeightedSampling_double_eraseEvidence, METH_VARARGS, (char *)"\n"
+		"eraseEvidence(id)\n"
+		"WeightedSampling_double_eraseEvidence(self, nodeName)\n"
+		""},
+	 { (char *)"WeightedSampling_double_hasHardEvidence", _wrap_WeightedSampling_double_hasHardEvidence, METH_VARARGS, (char *)"WeightedSampling_double_hasHardEvidence(self, nodeName) -> bool"},
+	 { (char *)"WeightedSampling_double_hasSoftEvidence", _wrap_WeightedSampling_double_hasSoftEvidence, METH_VARARGS, (char *)"\n"
+		"hasSoftEvidence(id) -> bool\n"
+		"WeightedSampling_double_hasSoftEvidence(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"WeightedSampling_double_nbrEvidence", _wrap_WeightedSampling_double_nbrEvidence, METH_VARARGS, (char *)"WeightedSampling_double_nbrEvidence(self) -> gum::Size"},
+	 { (char *)"WeightedSampling_double_nbrHardEvidence", _wrap_WeightedSampling_double_nbrHardEvidence, METH_VARARGS, (char *)"WeightedSampling_double_nbrHardEvidence(self) -> gum::Size"},
+	 { (char *)"WeightedSampling_double_nbrSoftEvidence", _wrap_WeightedSampling_double_nbrSoftEvidence, METH_VARARGS, (char *)"WeightedSampling_double_nbrSoftEvidence(self) -> gum::Size"},
+	 { (char *)"WeightedSampling_double_eraseAllTargets", _wrap_WeightedSampling_double_eraseAllTargets, METH_VARARGS, (char *)"WeightedSampling_double_eraseAllTargets(self)"},
+	 { (char *)"WeightedSampling_double_addAllTargets", _wrap_WeightedSampling_double_addAllTargets, METH_VARARGS, (char *)"WeightedSampling_double_addAllTargets(self)"},
+	 { (char *)"WeightedSampling_double_addTarget", _wrap_WeightedSampling_double_addTarget, METH_VARARGS, (char *)"\n"
+		"addTarget(target)\n"
+		"WeightedSampling_double_addTarget(self, nodeName)\n"
+		""},
+	 { (char *)"WeightedSampling_double_eraseTarget", _wrap_WeightedSampling_double_eraseTarget, METH_VARARGS, (char *)"\n"
+		"eraseTarget(target)\n"
+		"WeightedSampling_double_eraseTarget(self, nodeName)\n"
+		""},
+	 { (char *)"WeightedSampling_double_isTarget", _wrap_WeightedSampling_double_isTarget, METH_VARARGS, (char *)"\n"
+		"isTarget(variable) -> bool\n"
+		"WeightedSampling_double_isTarget(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"WeightedSampling_double_nbrTargets", _wrap_WeightedSampling_double_nbrTargets, METH_VARARGS, (char *)"WeightedSampling_double_nbrTargets(self) -> gum::Size"},
+	 { (char *)"WeightedSampling_double_H", _wrap_WeightedSampling_double_H, METH_VARARGS, (char *)"\n"
+		"H(X) -> double\n"
+		"WeightedSampling_double_H(self, nodeName) -> double\n"
+		""},
+	 { (char *)"WeightedSampling_double_evidenceImpact", _wrap_WeightedSampling_double_evidenceImpact, METH_VARARGS, (char *)"\n"
+		"evidenceImpact(target, evs) -> Potential_double\n"
+		"WeightedSampling_double_evidenceImpact(self, target, evs) -> Potential_double\n"
+		""},
+	 { (char *)"WeightedSampling_double_swigregister", WeightedSampling_double_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_MonteCarloSampling_double", _wrap_new_MonteCarloSampling_double, METH_VARARGS, (char *)"new_MonteCarloSampling_double(BN) -> MonteCarloSampling_double"},
+	 { (char *)"delete_MonteCarloSampling_double", _wrap_delete_MonteCarloSampling_double, METH_VARARGS, (char *)"delete_MonteCarloSampling_double(self)"},
+	 { (char *)"MonteCarloSampling_double_setEvidence", _wrap_MonteCarloSampling_double_setEvidence, METH_VARARGS, (char *)"MonteCarloSampling_double_setEvidence(self, evidces)"},
+	 { (char *)"MonteCarloSampling_double_updateEvidence", _wrap_MonteCarloSampling_double_updateEvidence, METH_VARARGS, (char *)"MonteCarloSampling_double_updateEvidence(self, evidces)"},
+	 { (char *)"MonteCarloSampling_double_setTargets", _wrap_MonteCarloSampling_double_setTargets, METH_VARARGS, (char *)"MonteCarloSampling_double_setTargets(self, targets)"},
+	 { (char *)"MonteCarloSampling_double_hardEvidenceNodes", _wrap_MonteCarloSampling_double_hardEvidenceNodes, METH_VARARGS, (char *)"MonteCarloSampling_double_hardEvidenceNodes(self) -> PyObject *"},
+	 { (char *)"MonteCarloSampling_double_softEvidenceNodes", _wrap_MonteCarloSampling_double_softEvidenceNodes, METH_VARARGS, (char *)"MonteCarloSampling_double_softEvidenceNodes(self) -> PyObject *"},
+	 { (char *)"MonteCarloSampling_double_targets", _wrap_MonteCarloSampling_double_targets, METH_VARARGS, (char *)"MonteCarloSampling_double_targets(self) -> PyObject *"},
+	 { (char *)"MonteCarloSampling_double_setVerbosity", _wrap_MonteCarloSampling_double_setVerbosity, METH_VARARGS, (char *)"MonteCarloSampling_double_setVerbosity(self, v)"},
+	 { (char *)"MonteCarloSampling_double_setEpsilon", _wrap_MonteCarloSampling_double_setEpsilon, METH_VARARGS, (char *)"MonteCarloSampling_double_setEpsilon(self, eps)"},
+	 { (char *)"MonteCarloSampling_double_setMinEpsilonRate", _wrap_MonteCarloSampling_double_setMinEpsilonRate, METH_VARARGS, (char *)"MonteCarloSampling_double_setMinEpsilonRate(self, rate)"},
+	 { (char *)"MonteCarloSampling_double_setMaxIter", _wrap_MonteCarloSampling_double_setMaxIter, METH_VARARGS, (char *)"MonteCarloSampling_double_setMaxIter(self, max)"},
+	 { (char *)"MonteCarloSampling_double_setMaxTime", _wrap_MonteCarloSampling_double_setMaxTime, METH_VARARGS, (char *)"MonteCarloSampling_double_setMaxTime(self, timeout)"},
+	 { (char *)"MonteCarloSampling_double_setPeriodSize", _wrap_MonteCarloSampling_double_setPeriodSize, METH_VARARGS, (char *)"MonteCarloSampling_double_setPeriodSize(self, p)"},
+	 { (char *)"MonteCarloSampling_double_setBurnIn", _wrap_MonteCarloSampling_double_setBurnIn, METH_VARARGS, (char *)"MonteCarloSampling_double_setBurnIn(self, b)"},
+	 { (char *)"MonteCarloSampling_double_verbosity", _wrap_MonteCarloSampling_double_verbosity, METH_VARARGS, (char *)"MonteCarloSampling_double_verbosity(self) -> bool"},
+	 { (char *)"MonteCarloSampling_double_epsilon", _wrap_MonteCarloSampling_double_epsilon, METH_VARARGS, (char *)"MonteCarloSampling_double_epsilon(self) -> double"},
+	 { (char *)"MonteCarloSampling_double_minEpsilonRate", _wrap_MonteCarloSampling_double_minEpsilonRate, METH_VARARGS, (char *)"MonteCarloSampling_double_minEpsilonRate(self) -> double"},
+	 { (char *)"MonteCarloSampling_double_maxIter", _wrap_MonteCarloSampling_double_maxIter, METH_VARARGS, (char *)"MonteCarloSampling_double_maxIter(self) -> gum::Size"},
+	 { (char *)"MonteCarloSampling_double_maxTime", _wrap_MonteCarloSampling_double_maxTime, METH_VARARGS, (char *)"MonteCarloSampling_double_maxTime(self) -> double"},
+	 { (char *)"MonteCarloSampling_double_periodSize", _wrap_MonteCarloSampling_double_periodSize, METH_VARARGS, (char *)"MonteCarloSampling_double_periodSize(self) -> gum::Size"},
+	 { (char *)"MonteCarloSampling_double_burnIn", _wrap_MonteCarloSampling_double_burnIn, METH_VARARGS, (char *)"MonteCarloSampling_double_burnIn(self) -> gum::Size"},
+	 { (char *)"MonteCarloSampling_double_nbrIterations", _wrap_MonteCarloSampling_double_nbrIterations, METH_VARARGS, (char *)"MonteCarloSampling_double_nbrIterations(self) -> gum::Size"},
+	 { (char *)"MonteCarloSampling_double_currentTime", _wrap_MonteCarloSampling_double_currentTime, METH_VARARGS, (char *)"MonteCarloSampling_double_currentTime(self) -> double"},
+	 { (char *)"MonteCarloSampling_double_messageApproximationScheme", _wrap_MonteCarloSampling_double_messageApproximationScheme, METH_VARARGS, (char *)"MonteCarloSampling_double_messageApproximationScheme(self) -> std::string"},
+	 { (char *)"MonteCarloSampling_double_history", _wrap_MonteCarloSampling_double_history, METH_VARARGS, (char *)"MonteCarloSampling_double_history(self) -> Vector_double"},
+	 { (char *)"MonteCarloSampling_double_asIApproximationSchemeConfiguration", _wrap_MonteCarloSampling_double_asIApproximationSchemeConfiguration, METH_VARARGS, (char *)"MonteCarloSampling_double_asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"},
+	 { (char *)"MonteCarloSampling_double_makeInference", _wrap_MonteCarloSampling_double_makeInference, METH_VARARGS, (char *)"MonteCarloSampling_double_makeInference(self)"},
+	 { (char *)"MonteCarloSampling_double_posterior", _wrap_MonteCarloSampling_double_posterior, METH_VARARGS, (char *)"\n"
+		"posterior(var) -> Potential_double\n"
+		"MonteCarloSampling_double_posterior(self, nodeName) -> Potential_double\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_BN", _wrap_MonteCarloSampling_double_BN, METH_VARARGS, (char *)"MonteCarloSampling_double_BN(self) -> IBayesNet_double"},
+	 { (char *)"MonteCarloSampling_double_addEvidence", _wrap_MonteCarloSampling_double_addEvidence, METH_VARARGS, (char *)"\n"
+		"addEvidence(id, val)\n"
+		"addEvidence(nodeName, val)\n"
+		"addEvidence(id, val)\n"
+		"addEvidence(nodeName, val)\n"
+		"addEvidence(id, vals)\n"
+		"MonteCarloSampling_double_addEvidence(self, nodeName, vals)\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_chgEvidence", _wrap_MonteCarloSampling_double_chgEvidence, METH_VARARGS, (char *)"\n"
+		"chgEvidence(id, val)\n"
+		"chgEvidence(nodeName, val)\n"
+		"chgEvidence(id, val)\n"
+		"chgEvidence(nodeName, val)\n"
+		"chgEvidence(id, vals)\n"
+		"MonteCarloSampling_double_chgEvidence(self, nodeName, vals)\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_hasEvidence", _wrap_MonteCarloSampling_double_hasEvidence, METH_VARARGS, (char *)"\n"
+		"hasEvidence(id) -> bool\n"
+		"MonteCarloSampling_double_hasEvidence(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_eraseAllEvidence", _wrap_MonteCarloSampling_double_eraseAllEvidence, METH_VARARGS, (char *)"MonteCarloSampling_double_eraseAllEvidence(self)"},
+	 { (char *)"MonteCarloSampling_double_eraseEvidence", _wrap_MonteCarloSampling_double_eraseEvidence, METH_VARARGS, (char *)"\n"
+		"eraseEvidence(id)\n"
+		"MonteCarloSampling_double_eraseEvidence(self, nodeName)\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_hasHardEvidence", _wrap_MonteCarloSampling_double_hasHardEvidence, METH_VARARGS, (char *)"MonteCarloSampling_double_hasHardEvidence(self, nodeName) -> bool"},
+	 { (char *)"MonteCarloSampling_double_hasSoftEvidence", _wrap_MonteCarloSampling_double_hasSoftEvidence, METH_VARARGS, (char *)"\n"
+		"hasSoftEvidence(id) -> bool\n"
+		"MonteCarloSampling_double_hasSoftEvidence(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_nbrEvidence", _wrap_MonteCarloSampling_double_nbrEvidence, METH_VARARGS, (char *)"MonteCarloSampling_double_nbrEvidence(self) -> gum::Size"},
+	 { (char *)"MonteCarloSampling_double_nbrHardEvidence", _wrap_MonteCarloSampling_double_nbrHardEvidence, METH_VARARGS, (char *)"MonteCarloSampling_double_nbrHardEvidence(self) -> gum::Size"},
+	 { (char *)"MonteCarloSampling_double_nbrSoftEvidence", _wrap_MonteCarloSampling_double_nbrSoftEvidence, METH_VARARGS, (char *)"MonteCarloSampling_double_nbrSoftEvidence(self) -> gum::Size"},
+	 { (char *)"MonteCarloSampling_double_eraseAllTargets", _wrap_MonteCarloSampling_double_eraseAllTargets, METH_VARARGS, (char *)"MonteCarloSampling_double_eraseAllTargets(self)"},
+	 { (char *)"MonteCarloSampling_double_addAllTargets", _wrap_MonteCarloSampling_double_addAllTargets, METH_VARARGS, (char *)"MonteCarloSampling_double_addAllTargets(self)"},
+	 { (char *)"MonteCarloSampling_double_addTarget", _wrap_MonteCarloSampling_double_addTarget, METH_VARARGS, (char *)"\n"
+		"addTarget(target)\n"
+		"MonteCarloSampling_double_addTarget(self, nodeName)\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_eraseTarget", _wrap_MonteCarloSampling_double_eraseTarget, METH_VARARGS, (char *)"\n"
+		"eraseTarget(target)\n"
+		"MonteCarloSampling_double_eraseTarget(self, nodeName)\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_isTarget", _wrap_MonteCarloSampling_double_isTarget, METH_VARARGS, (char *)"\n"
+		"isTarget(variable) -> bool\n"
+		"MonteCarloSampling_double_isTarget(self, nodeName) -> bool\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_nbrTargets", _wrap_MonteCarloSampling_double_nbrTargets, METH_VARARGS, (char *)"MonteCarloSampling_double_nbrTargets(self) -> gum::Size"},
+	 { (char *)"MonteCarloSampling_double_H", _wrap_MonteCarloSampling_double_H, METH_VARARGS, (char *)"\n"
+		"H(X) -> double\n"
+		"MonteCarloSampling_double_H(self, nodeName) -> double\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_evidenceImpact", _wrap_MonteCarloSampling_double_evidenceImpact, METH_VARARGS, (char *)"\n"
+		"evidenceImpact(target, evs) -> Potential_double\n"
+		"MonteCarloSampling_double_evidenceImpact(self, target, evs) -> Potential_double\n"
+		""},
+	 { (char *)"MonteCarloSampling_double_swigregister", MonteCarloSampling_double_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_LoopyBeliefPropagation_double", _wrap_new_LoopyBeliefPropagation_double, METH_VARARGS, (char *)"new_LoopyBeliefPropagation_double(BN) -> LoopyBeliefPropagation_double"},
 	 { (char *)"delete_LoopyBeliefPropagation_double", _wrap_delete_LoopyBeliefPropagation_double, METH_VARARGS, (char *)"delete_LoopyBeliefPropagation_double(self)"},
 	 { (char *)"LoopyBeliefPropagation_double_setEvidence", _wrap_LoopyBeliefPropagation_double_setEvidence, METH_VARARGS, (char *)"LoopyBeliefPropagation_double_setEvidence(self, evidces)"},
@@ -88121,6 +98727,7 @@ static swig_type_info _swigt__p_gum__IApproximationSchemeConfiguration = {"_p_gu
 static swig_type_info _swigt__p_gum__IBayesNetT_double_t = {"_p_gum__IBayesNetT_double_t", "gum::IBayesNet< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__IOError = {"_p_gum__IOError", "gum::IOError *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__IdError = {"_p_gum__IdError", "gum::IdError *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__ImportanceSamplingT_double_t = {"_p_gum__ImportanceSamplingT_double_t", "gum::ImportanceSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__IncompatibleEvidence = {"_p_gum__IncompatibleEvidence", "gum::IncompatibleEvidence *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__IncompatibleScoreApriori = {"_p_gum__IncompatibleScoreApriori", "gum::IncompatibleScoreApriori *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__InfluenceDiagramInferenceT_double_t = {"_p_gum__InfluenceDiagramInferenceT_double_t", "gum::InfluenceDiagramInference< double > *", 0, 0, (void*)0, 0};
@@ -88141,6 +98748,7 @@ static swig_type_info _swigt__p_gum__LoopyBeliefPropagationT_double_t = {"_p_gum
 static swig_type_info _swigt__p_gum__MarkovBlanket = {"_p_gum__MarkovBlanket", "gum::MarkovBlanket *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__MissingVariableInDatabase = {"_p_gum__MissingVariableInDatabase", "gum::MissingVariableInDatabase *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__MixedGraph = {"_p_gum__MixedGraph", "gum::MixedGraph *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__MonteCarloSamplingT_double_t = {"_p_gum__MonteCarloSamplingT_double_t", "gum::MonteCarloSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__MultiDimAdressable = {"_p_gum__MultiDimAdressable", "gum::MultiDimAdressable *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__MultiDimArrayT_double_t = {"_p_gum__MultiDimArrayT_double_t", 0, 0, 0, 0, 0};
 static swig_type_info _swigt__p_gum__MultiDimContainerT_double_t = {"_p_gum__MultiDimContainerT_double_t", "gum::MultiDimContainer< double > *", 0, 0, (void*)0, 0};
@@ -88191,6 +98799,7 @@ static swig_type_info _swigt__p_gum__UtilityTableT_double_t = {"_p_gum__UtilityT
 static swig_type_info _swigt__p_gum__Variable = {"_p_gum__Variable", "gum::Variable *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__VariableEliminationT_double_t = {"_p_gum__VariableEliminationT_double_t", "gum::VariableElimination< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__VariableNodeMap = {"_p_gum__VariableNodeMap", "gum::VariableNodeMap *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_gum__WeightedSamplingT_double_t = {"_p_gum__WeightedSamplingT_double_t", "gum::WeightedSampling< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__WrongClassElement = {"_p_gum__WrongClassElement", "gum::WrongClassElement *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__WrongType = {"_p_gum__WrongType", "gum::WrongType *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_gum__credal__CNLoopyPropagationT_double_t = {"_p_gum__credal__CNLoopyPropagationT_double_t", "gum::credal::CNLoopyPropagation< double > *", 0, 0, (void*)0, 0};
@@ -88282,6 +98891,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__IBayesNetT_double_t,
   &_swigt__p_gum__IOError,
   &_swigt__p_gum__IdError,
+  &_swigt__p_gum__ImportanceSamplingT_double_t,
   &_swigt__p_gum__IncompatibleEvidence,
   &_swigt__p_gum__IncompatibleScoreApriori,
   &_swigt__p_gum__InfluenceDiagramInferenceT_double_t,
@@ -88302,6 +98912,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__MarkovBlanket,
   &_swigt__p_gum__MissingVariableInDatabase,
   &_swigt__p_gum__MixedGraph,
+  &_swigt__p_gum__MonteCarloSamplingT_double_t,
   &_swigt__p_gum__MultiDimAdressable,
   &_swigt__p_gum__MultiDimArrayT_double_t,
   &_swigt__p_gum__MultiDimContainerT_double_t,
@@ -88352,6 +98963,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_gum__Variable,
   &_swigt__p_gum__VariableEliminationT_double_t,
   &_swigt__p_gum__VariableNodeMap,
+  &_swigt__p_gum__WeightedSamplingT_double_t,
   &_swigt__p_gum__WrongClassElement,
   &_swigt__p_gum__WrongType,
   &_swigt__p_gum__credal__CNLoopyPropagationT_double_t,
@@ -88443,6 +99055,7 @@ static swig_cast_info _swigc__p_gum__IApproximationSchemeConfiguration[] = {  {&
 static swig_cast_info _swigc__p_gum__IBayesNetT_double_t[] = {  {&_swigt__p_gum__IBayesNetT_double_t, 0, 0, 0},  {&_swigt__p_gum__BayesNetT_double_t, _p_gum__BayesNetT_double_tTo_p_gum__IBayesNetT_double_t, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IOError[] = {  {&_swigt__p_gum__FormatNotFound, _p_gum__FormatNotFoundTo_p_gum__IOError, 0, 0},  {&_swigt__p_gum__IOError, 0, 0, 0},  {&_swigt__p_gum__SyntaxError, _p_gum__SyntaxErrorTo_p_gum__IOError, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IdError[] = {  {&_swigt__p_gum__IdError, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__ImportanceSamplingT_double_t[] = {  {&_swigt__p_gum__ImportanceSamplingT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IncompatibleEvidence[] = {  {&_swigt__p_gum__IncompatibleEvidence, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__IncompatibleScoreApriori[] = {  {&_swigt__p_gum__IncompatibleScoreApriori, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__InfluenceDiagramInferenceT_double_t[] = {  {&_swigt__p_gum__InfluenceDiagramInferenceT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -88463,6 +99076,7 @@ static swig_cast_info _swigc__p_gum__LoopyBeliefPropagationT_double_t[] = {  {&_
 static swig_cast_info _swigc__p_gum__MarkovBlanket[] = {  {&_swigt__p_gum__MarkovBlanket, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MissingVariableInDatabase[] = {  {&_swigt__p_gum__MissingVariableInDatabase, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MixedGraph[] = {  {&_swigt__p_gum__MixedGraph, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__MonteCarloSamplingT_double_t[] = {  {&_swigt__p_gum__MonteCarloSamplingT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MultiDimArrayT_double_t[] = {{&_swigt__p_gum__MultiDimArrayT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MultiDimAdressable[] = {  {&_swigt__p_gum__MultiDimAdressable, 0, 0, 0},  {&_swigt__p_gum__MultiDimContainerT_double_t, _p_gum__MultiDimContainerT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimImplementationT_double_t, _p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__MultiDimDecoratorT_double_t, _p_gum__MultiDimDecoratorT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__PotentialT_double_t, _p_gum__PotentialT_double_tTo_p_gum__MultiDimAdressable, 0, 0},  {&_swigt__p_gum__UtilityTableT_double_t, _p_gum__UtilityTableT_double_tTo_p_gum__MultiDimAdressable, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__MultiDimContainerT_double_t[] = {  {&_swigt__p_gum__MultiDimContainerT_double_t, 0, 0, 0},  {&_swigt__p_gum__MultiDimImplementationT_double_t, _p_gum__MultiDimImplementationT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimWithOffsetT_double_t, _p_gum__MultiDimWithOffsetT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimArrayT_double_t, _p_gum__MultiDimArrayT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__MultiDimDecoratorT_double_t, _p_gum__MultiDimDecoratorT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__PotentialT_double_t, _p_gum__PotentialT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},  {&_swigt__p_gum__UtilityTableT_double_t, _p_gum__UtilityTableT_double_tTo_p_gum__MultiDimContainerT_double_t, 0, 0},{0, 0, 0, 0}};
@@ -88513,6 +99127,7 @@ static swig_cast_info _swigc__p_gum__UtilityTableT_double_t[] = {  {&_swigt__p_g
 static swig_cast_info _swigc__p_gum__Variable[] = {  {&_swigt__p_gum__Variable, 0, 0, 0},  {&_swigt__p_gum__DiscreteVariable, _p_gum__DiscreteVariableTo_p_gum__Variable, 0, 0},  {&_swigt__p_gum__LabelizedVariable, _p_gum__LabelizedVariableTo_p_gum__Variable, 0, 0},  {&_swigt__p_gum__RangeVariable, _p_gum__RangeVariableTo_p_gum__Variable, 0, 0},  {&_swigt__p_gum__DiscretizedVariableT_double_t, _p_gum__DiscretizedVariableT_double_tTo_p_gum__Variable, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__VariableEliminationT_double_t[] = {  {&_swigt__p_gum__VariableEliminationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__VariableNodeMap[] = {  {&_swigt__p_gum__VariableNodeMap, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_gum__WeightedSamplingT_double_t[] = {  {&_swigt__p_gum__WeightedSamplingT_double_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__WrongClassElement[] = {  {&_swigt__p_gum__WrongClassElement, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__WrongType[] = {  {&_swigt__p_gum__WrongType, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_gum__credal__CNLoopyPropagationT_double_t[] = {  {&_swigt__p_gum__credal__CNLoopyPropagationT_double_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -88604,6 +99219,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__IBayesNetT_double_t,
   _swigc__p_gum__IOError,
   _swigc__p_gum__IdError,
+  _swigc__p_gum__ImportanceSamplingT_double_t,
   _swigc__p_gum__IncompatibleEvidence,
   _swigc__p_gum__IncompatibleScoreApriori,
   _swigc__p_gum__InfluenceDiagramInferenceT_double_t,
@@ -88624,6 +99240,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__MarkovBlanket,
   _swigc__p_gum__MissingVariableInDatabase,
   _swigc__p_gum__MixedGraph,
+  _swigc__p_gum__MonteCarloSamplingT_double_t,
   _swigc__p_gum__MultiDimAdressable,
   _swigc__p_gum__MultiDimArrayT_double_t,
   _swigc__p_gum__MultiDimContainerT_double_t,
@@ -88674,6 +99291,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_gum__Variable,
   _swigc__p_gum__VariableEliminationT_double_t,
   _swigc__p_gum__VariableNodeMap,
+  _swigc__p_gum__WeightedSamplingT_double_t,
   _swigc__p_gum__WrongClassElement,
   _swigc__p_gum__WrongType,
   _swigc__p_gum__credal__CNLoopyPropagationT_double_t,

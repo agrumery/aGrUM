@@ -386,6 +386,28 @@ namespace gum_tests {
       }
     }
 
+    void testImportanceDiabetes() {
+      gum::BayesNet<double>  bn;
+      gum::BIFReader<double> reader( &bn, GET_RESSOURCES_PATH( "Diabetes.bif" ) );
+      int                    nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_ASSERT( nbrErr == 0 );
+
+      try {
+        gum::ImportanceSampling<double> inf( &bn );
+        inf.setVerbosity( false );
+        inf.setMaxTime( 5 );
+        inf.setEpsilon( EPSILON_FOR_IMPORTANCE );
+        inf.makeInference();
+
+      } catch ( gum::Exception& e ) {
+
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+      TS_ASSERT( true );
+    }
+
 
     void testImportanceInfListener() {
       gum::BayesNet<float>  bn;
@@ -395,7 +417,7 @@ namespace gum_tests {
       TS_ASSERT( nbrErr == 0 );
 
       gum::ImportanceSampling<float> inf( &bn );
-      aSimpleImportanceListener             agsl( inf );
+      aSimpleImportanceListener      agsl( inf );
       inf.setVerbosity( true );
 
       try {
@@ -413,10 +435,10 @@ namespace gum_tests {
 
     private:
     template <typename GUM_SCALAR>
-    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&            bn,
-                              gum::LazyPropagation<GUM_SCALAR>&           lazy,
-                              gum::ImportanceSampling<GUM_SCALAR>& inf,
-                              double errmax = 5e-2 ) {
+    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&     bn,
+                             gum::LazyPropagation<GUM_SCALAR>&    lazy,
+                             gum::ImportanceSampling<GUM_SCALAR>& inf,
+                             double                               errmax = 5e-2 ) {
 
       GUM_SCALAR  err = static_cast<GUM_SCALAR>( 0 );
       std::string argstr = "";

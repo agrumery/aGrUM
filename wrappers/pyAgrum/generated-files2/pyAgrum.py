@@ -7736,6 +7736,948 @@ class GibbsSampling_double(_object):
 GibbsSampling_double_swigregister = _pyAgrum.GibbsSampling_double_swigregister
 GibbsSampling_double_swigregister(GibbsSampling_double)
 
+class ImportanceSampling_double(_object):
+    """Proxy of C++ gum::ImportanceSampling< double > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, ImportanceSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, ImportanceSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, BN):
+        """__init__(self, BN) -> ImportanceSampling_double"""
+        this = _pyAgrum.new_ImportanceSampling_double(BN)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_ImportanceSampling_double
+    def __del__(self):
+        return None
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self):
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.ImportanceSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self):
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.ImportanceSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self):
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.ImportanceSampling_double_targets(self)
+
+
+    def setVerbosity(self, v):
+        """setVerbosity(self, v)"""
+        return _pyAgrum.ImportanceSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps):
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.ImportanceSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate):
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.ImportanceSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max):
+        """setMaxIter(self, max)"""
+        return _pyAgrum.ImportanceSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout):
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.ImportanceSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p):
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.ImportanceSampling_double_setPeriodSize(self, p)
+
+
+    def setBurnIn(self, b):
+        """setBurnIn(self, b)"""
+        return _pyAgrum.ImportanceSampling_double_setBurnIn(self, b)
+
+
+    def verbosity(self):
+        """verbosity(self) -> bool"""
+        return _pyAgrum.ImportanceSampling_double_verbosity(self)
+
+
+    def epsilon(self):
+        """epsilon(self) -> double"""
+        return _pyAgrum.ImportanceSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self):
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.ImportanceSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self):
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.ImportanceSampling_double_maxIter(self)
+
+
+    def maxTime(self):
+        """maxTime(self) -> double"""
+        return _pyAgrum.ImportanceSampling_double_maxTime(self)
+
+
+    def periodSize(self):
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.ImportanceSampling_double_periodSize(self)
+
+
+    def burnIn(self):
+        """burnIn(self) -> gum::Size"""
+        return _pyAgrum.ImportanceSampling_double_burnIn(self)
+
+
+    def nbrIterations(self):
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.ImportanceSampling_double_nbrIterations(self)
+
+
+    def currentTime(self):
+        """currentTime(self) -> double"""
+        return _pyAgrum.ImportanceSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self):
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.ImportanceSampling_double_messageApproximationScheme(self)
+
+
+    def history(self):
+        """history(self) -> Vector_double"""
+        return _pyAgrum.ImportanceSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.ImportanceSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self):
+        """makeInference(self)"""
+        return _pyAgrum.ImportanceSampling_double_makeInference(self)
+
+
+    def posterior(self, *args):
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.ImportanceSampling_double_posterior(self, *args)
+
+
+    def BN(self):
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.ImportanceSampling_double_BN(self)
+
+
+    def addEvidence(self, *args):
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.ImportanceSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args):
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.ImportanceSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args):
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.ImportanceSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self):
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.ImportanceSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args):
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.ImportanceSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName):
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.ImportanceSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args):
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.ImportanceSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self):
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.ImportanceSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self):
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.ImportanceSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self):
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.ImportanceSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self):
+        """eraseAllTargets(self)"""
+        return _pyAgrum.ImportanceSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self):
+        """addAllTargets(self)"""
+        return _pyAgrum.ImportanceSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args):
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.ImportanceSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args):
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.ImportanceSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args):
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.ImportanceSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self):
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.ImportanceSampling_double_nbrTargets(self)
+
+
+    def H(self, *args):
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.ImportanceSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args):
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.ImportanceSampling_double_evidenceImpact(self, *args)
+
+ImportanceSampling_double_swigregister = _pyAgrum.ImportanceSampling_double_swigregister
+ImportanceSampling_double_swigregister(ImportanceSampling_double)
+
+class WeightedSampling_double(_object):
+    """Proxy of C++ gum::WeightedSampling< double > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, WeightedSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, WeightedSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, BN):
+        """__init__(self, BN) -> WeightedSampling_double"""
+        this = _pyAgrum.new_WeightedSampling_double(BN)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_WeightedSampling_double
+    def __del__(self):
+        return None
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self):
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.WeightedSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self):
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.WeightedSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self):
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.WeightedSampling_double_targets(self)
+
+
+    def setVerbosity(self, v):
+        """setVerbosity(self, v)"""
+        return _pyAgrum.WeightedSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps):
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.WeightedSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate):
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.WeightedSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max):
+        """setMaxIter(self, max)"""
+        return _pyAgrum.WeightedSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout):
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.WeightedSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p):
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.WeightedSampling_double_setPeriodSize(self, p)
+
+
+    def setBurnIn(self, b):
+        """setBurnIn(self, b)"""
+        return _pyAgrum.WeightedSampling_double_setBurnIn(self, b)
+
+
+    def verbosity(self):
+        """verbosity(self) -> bool"""
+        return _pyAgrum.WeightedSampling_double_verbosity(self)
+
+
+    def epsilon(self):
+        """epsilon(self) -> double"""
+        return _pyAgrum.WeightedSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self):
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.WeightedSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self):
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_maxIter(self)
+
+
+    def maxTime(self):
+        """maxTime(self) -> double"""
+        return _pyAgrum.WeightedSampling_double_maxTime(self)
+
+
+    def periodSize(self):
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_periodSize(self)
+
+
+    def burnIn(self):
+        """burnIn(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_burnIn(self)
+
+
+    def nbrIterations(self):
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrIterations(self)
+
+
+    def currentTime(self):
+        """currentTime(self) -> double"""
+        return _pyAgrum.WeightedSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self):
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.WeightedSampling_double_messageApproximationScheme(self)
+
+
+    def history(self):
+        """history(self) -> Vector_double"""
+        return _pyAgrum.WeightedSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.WeightedSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self):
+        """makeInference(self)"""
+        return _pyAgrum.WeightedSampling_double_makeInference(self)
+
+
+    def posterior(self, *args):
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.WeightedSampling_double_posterior(self, *args)
+
+
+    def BN(self):
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.WeightedSampling_double_BN(self)
+
+
+    def addEvidence(self, *args):
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.WeightedSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args):
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.WeightedSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args):
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.WeightedSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self):
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.WeightedSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args):
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.WeightedSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName):
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.WeightedSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args):
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.WeightedSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self):
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self):
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self):
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self):
+        """eraseAllTargets(self)"""
+        return _pyAgrum.WeightedSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self):
+        """addAllTargets(self)"""
+        return _pyAgrum.WeightedSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args):
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.WeightedSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args):
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.WeightedSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args):
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.WeightedSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self):
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrTargets(self)
+
+
+    def H(self, *args):
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.WeightedSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args):
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.WeightedSampling_double_evidenceImpact(self, *args)
+
+WeightedSampling_double_swigregister = _pyAgrum.WeightedSampling_double_swigregister
+WeightedSampling_double_swigregister(WeightedSampling_double)
+
+class MonteCarloSampling_double(_object):
+    """Proxy of C++ gum::MonteCarloSampling< double > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, MonteCarloSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, MonteCarloSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, BN):
+        """__init__(self, BN) -> MonteCarloSampling_double"""
+        this = _pyAgrum.new_MonteCarloSampling_double(BN)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_MonteCarloSampling_double
+    def __del__(self):
+        return None
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self):
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.MonteCarloSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self):
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.MonteCarloSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self):
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.MonteCarloSampling_double_targets(self)
+
+
+    def setVerbosity(self, v):
+        """setVerbosity(self, v)"""
+        return _pyAgrum.MonteCarloSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps):
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.MonteCarloSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate):
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.MonteCarloSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max):
+        """setMaxIter(self, max)"""
+        return _pyAgrum.MonteCarloSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout):
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.MonteCarloSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p):
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.MonteCarloSampling_double_setPeriodSize(self, p)
+
+
+    def setBurnIn(self, b):
+        """setBurnIn(self, b)"""
+        return _pyAgrum.MonteCarloSampling_double_setBurnIn(self, b)
+
+
+    def verbosity(self):
+        """verbosity(self) -> bool"""
+        return _pyAgrum.MonteCarloSampling_double_verbosity(self)
+
+
+    def epsilon(self):
+        """epsilon(self) -> double"""
+        return _pyAgrum.MonteCarloSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self):
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.MonteCarloSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self):
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_maxIter(self)
+
+
+    def maxTime(self):
+        """maxTime(self) -> double"""
+        return _pyAgrum.MonteCarloSampling_double_maxTime(self)
+
+
+    def periodSize(self):
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_periodSize(self)
+
+
+    def burnIn(self):
+        """burnIn(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_burnIn(self)
+
+
+    def nbrIterations(self):
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrIterations(self)
+
+
+    def currentTime(self):
+        """currentTime(self) -> double"""
+        return _pyAgrum.MonteCarloSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self):
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.MonteCarloSampling_double_messageApproximationScheme(self)
+
+
+    def history(self):
+        """history(self) -> Vector_double"""
+        return _pyAgrum.MonteCarloSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.MonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self):
+        """makeInference(self)"""
+        return _pyAgrum.MonteCarloSampling_double_makeInference(self)
+
+
+    def posterior(self, *args):
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.MonteCarloSampling_double_posterior(self, *args)
+
+
+    def BN(self):
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.MonteCarloSampling_double_BN(self)
+
+
+    def addEvidence(self, *args):
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.MonteCarloSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args):
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.MonteCarloSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args):
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.MonteCarloSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self):
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.MonteCarloSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args):
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.MonteCarloSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName):
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.MonteCarloSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args):
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.MonteCarloSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self):
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self):
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self):
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self):
+        """eraseAllTargets(self)"""
+        return _pyAgrum.MonteCarloSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self):
+        """addAllTargets(self)"""
+        return _pyAgrum.MonteCarloSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args):
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.MonteCarloSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args):
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.MonteCarloSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args):
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.MonteCarloSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self):
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrTargets(self)
+
+
+    def H(self, *args):
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.MonteCarloSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args):
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.MonteCarloSampling_double_evidenceImpact(self, *args)
+
+MonteCarloSampling_double_swigregister = _pyAgrum.MonteCarloSampling_double_swigregister
+MonteCarloSampling_double_swigregister(MonteCarloSampling_double)
+
 class LoopyBeliefPropagation_double(ApproximationScheme):
     """Proxy of C++ gum::LoopyBeliefPropagation< double > class."""
 
@@ -9439,6 +10381,10 @@ ShaferShenoyInference = ShaferShenoyInference_double
 VariableElimination = VariableElimination_double
 
 GibbsSampling = GibbsSampling_double
+ImportanceSampling=ImportanceSampling_double
+WeightedSampling=WeightedSampling_double
+MonteCarloSampling=MonteCarloSampling_double
+
 LoopyBeliefPropagation = LoopyBeliefPropagation_double
 
 BruteForceKL = BruteForceKL_double

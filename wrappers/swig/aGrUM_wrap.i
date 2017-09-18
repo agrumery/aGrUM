@@ -87,6 +87,10 @@
 #include <agrum/BN/inference/variableElimination.h>
 
 #include <agrum/BN/inference/GibbsSampling.h>
+#include <agrum/BN/inference/importanceSampling.h>
+#include <agrum/BN/inference/weightedSampling.h>
+#include <agrum/BN/inference/MonteCarloSampling.h>
+
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
@@ -171,8 +175,14 @@ namespace std {
 }
 %enddef
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::ImportanceSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::WeightedSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::MonteCarloSampling<double>)
+
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
+
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
+
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
@@ -303,6 +313,10 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/BN/inference/variableElimination.h>
 
 %include <agrum/BN/inference/GibbsSampling.h>
+%include <agrum/BN/inference/importanceSampling.h>
+%include <agrum/BN/inference/weightedSampling.h>
+%include <agrum/BN/inference/MonteCarloSampling.h>
+
 %include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 %import <agrum/BN/algorithms/divergence/KL.h>
@@ -352,6 +366,10 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( VariableElimination_double ) gum::VariableElimination<double>;
 
 %template ( GibbsSampling_double ) gum::GibbsSampling<double>;
+%template ( ImportanceSampling_double ) gum::ImportanceSampling<double>;
+%template ( WeightedSampling_double ) gum::WeightedSampling<double>;
+%template ( MonteCarloSampling_double ) gum::MonteCarloSampling<double>;
+
 %template ( LoopyBeliefPropagation_double ) gum::LoopyBeliefPropagation<double>;
 
 %template ( BruteForceKL_double ) gum::BruteForceKL<double>;

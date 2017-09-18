@@ -82,6 +82,10 @@ ShaferShenoyInference = ShaferShenoyInference_double
 VariableElimination = VariableElimination_double
 
 GibbsSampling = GibbsSampling_double
+ImportanceSampling=ImportanceSampling_double
+WeightedSampling=WeightedSampling_double
+MonteCarloSampling=MonteCarloSampling_double
+
 LoopyBeliefPropagation = LoopyBeliefPropagation_double
 
 BruteForceKL = BruteForceKL_double
