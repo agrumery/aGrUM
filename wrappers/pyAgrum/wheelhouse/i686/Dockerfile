@@ -30,5 +30,5 @@ RUN make install
 WORKDIR /opt
 RUN rm -rf cmake-3.7.2* swig-3.0.12*
 
-RUN rm -f python/cp26-cp26m* python/cp33-cp33m python/cp34-cp34m
+RUN rm -f python/cp26-cp26m* 
 
