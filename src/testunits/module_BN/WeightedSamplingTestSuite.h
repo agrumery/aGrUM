@@ -388,7 +388,7 @@ namespace gum_tests {
       TS_ASSERT( nbrErr == 0 );
 
       gum::WeightedSampling<float> inf( &bn );
-      aSimpleWeightedListener             agsl( inf );
+      aSimpleWeightedListener      agsl( inf );
       inf.setVerbosity( true );
 
       try {
@@ -404,12 +404,32 @@ namespace gum_tests {
     }
 
 
+    void testEvidenceAsTargetOnCplxBN() {
+      auto bn = gum::BayesNet<float>::fastPrototype(
+          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3 );
+
+      try {
+        gum::WeightedSampling<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "d" ), 0 );
+        inf.setVerbosity( false );
+        inf.setEpsilon( EPSILON_FOR_WEIGHTED );
+        inf.makeInference();
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( "d" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( bn.idFromName( "d" ) ) );
+
+      } catch ( gum::Exception& e ) {
+
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+    }
+
     private:
     template <typename GUM_SCALAR>
-    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&          bn,
-                             gum::LazyPropagation<GUM_SCALAR>&         lazy,
+    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&   bn,
+                             gum::LazyPropagation<GUM_SCALAR>&  lazy,
                              gum::WeightedSampling<GUM_SCALAR>& inf,
-                             double errmax = 5e-2 ) {
+                             double                             errmax = 5e-2 ) {
 
       GUM_SCALAR  err = static_cast<GUM_SCALAR>( 0 );
       std::string argstr = "";

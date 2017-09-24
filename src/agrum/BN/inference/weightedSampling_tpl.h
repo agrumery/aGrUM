@@ -100,19 +100,5 @@ namespace gum {
 	return prev;
 
   	}
-
-
-
-
-	 template <typename GUM_SCALAR>
-    void WeightedSampling<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv) {
-
- 	for (auto targ = targets.begin(); targ != targets.end(); ++targ)
-		this->addTarget(*targ);
-
-  	for (auto ev = hardEvNodes.begin(); ev != hardEvNodes.end(); ++ev)
-  		this->addEvidence(*ev, hardEv[*ev]);
-
-	}
 }
 

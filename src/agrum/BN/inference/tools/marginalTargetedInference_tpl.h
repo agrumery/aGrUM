@@ -237,6 +237,10 @@ namespace gum {
   template <typename GUM_SCALAR>
   const Potential<GUM_SCALAR>&
   MarginalTargetedInference<GUM_SCALAR>::posterior( const NodeId var ) {
+    if ( this->hardEvidenceNodes().contains( var ) ) {
+      return *( this->evidence()[var] );
+    }
+
     if ( !isTarget( var ) ) {
       // throws UndefinedElement if var is not a target
       GUM_ERROR( UndefinedElement, var << " is not a target node" );

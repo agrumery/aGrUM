@@ -28,125 +28,66 @@
 #ifndef GUM_GIBBS_OPERATOR_H
 #define GUM_GIBBS_OPERATOR_H
 
-#include <agrum/multidim/instantiation.h>
 #include <agrum/BN/IBayesNet.h>
+#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum {
 
-    /**
-     * @class GibbsOperator gibbsOperator.h <agrum/BN/inference/gibbsOperator.h>
-  	  * @brief class containing all variables and methods required for Gibbs sampling
-  	  *
-  	  * @ingroup bn_approximation
-     *
-     */
+  /**
+   * @class GibbsOperator gibbsOperator.h <agrum/BN/inference/gibbsOperator.h>
+   * @brief class containing all variables and methods required for Gibbssampling
+   *
+   * @ingroup bn_approximation
+   *
+   */
 
-    template <typename GUM_SCALAR>
-    class GibbsOperator {
+  template < typename GUM_SCALAR >
+  class GibbsOperator {
 
     public:
+    /**
+     *  constructors
+     */
+    GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
+                  Size                           nbr = 1,
+                  bool                           atRandom = false);
+    GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
+                  const NodeProperty< Idx >&     hardEv,
+                  Size                           nbr = 1,
+                  bool                           atRandom = false);
 
-		/**
-       * Default constructor
-       */
-		 GibbsOperator(const IBayesNet<GUM_SCALAR>& BN);
+    /**
+     * Destructor.
+     */
+    virtual ~GibbsOperator();
 
-      /**
-       * Destructor.
-       */
-		 virtual ~GibbsOperator();
+    // draws a Monte Carlo sample
+    Instantiation monteCarloSample();
 
-
-      /** Evidence management
-       * @{
-       */
-
-      /**
-       * Insert new evidence in GibbsOperator.
-       * @warning if an evidence already w.r.t. a given node and a new
-       * evidence w.r.t. this node is inserted, the old evidence is removed.
-       */
-		 virtual void addSoftEvidence (const Potential<GUM_SCALAR>& pot);
-
-      /**
-       * Insert new hard evidence in GibbsOperator.
-       * @warning if an evidence already w.r.t. a given node and a new
-       * evidence w.r.t. this node is inserted, the old evidence is removed.
-       */
-		 virtual void addHardEvidence( NodeId id, Idx pos );
-
-      /**
-       * Remove a given hard evidence from the graph.
-       */
-		 virtual void eraseHardEvidence( NodeId id);
-
-      /**
-       * Remove a given soft evidence from the graph.
-       */
-		 virtual void eraseSoftEvidence( NodeId id );
-
-      /**
-       * Remove all evidence from the graph.
-       */
-		 virtual void eraseAllEvidenceOperator();
-      /** @} */
+    /// draws next sample of Gibbs sampling
+    Instantiation nextSample(Instantiation prev);
 
     protected:
+    /// number of samples drawn
+    Size                           _counting;
+    const IBayesNet< GUM_SCALAR >& _sampling_bn;
+    const NodeProperty< Idx >*     _hardEv;
+    Sequence< NodeId >             _samplingNodes;
 
-       /// set of nodes that can be sampled
-       NodeSet sample_nodes;
-
-       /// number of samples drawn
-    	 static int counting;
-
-		 /// draws a Monte Carlo sample
-		 /**
-		 * @param bn the reference bayesian network
-		 *
-		 * This Monte Carlo sample generates a good starting point for Gibbs sampling, because it returns
-		 * a sample consistent with the evidence, and it also initializes attributes needed for Gibbs sampling.
-		 */
-		 virtual Instantiation _monteCarloSample(const IBayesNet<GUM_SCALAR>& bn);
-
-		 /// draws next sample of Gibbs sampling
-		 virtual Instantiation drawNextInstance (float* w , Instantiation prev, const IBayesNet<GUM_SCALAR>& bn); //, const NodeSet& hardEvNodes);
-
-	private:
-       const IBayesNet<GUM_SCALAR>& __bayesNet;
-
-       /// a list of all the evidence stored into the graph
-       NodeProperty<const Potential<GUM_SCALAR>*> __evidences;
-
-       /// a list of hard evidence
-       NodeProperty<Idx> __hard_evidences;
-
-      /// a table of instantiation for each cpt
-       NodeProperty<Instantiation*> __cpt_idx;
-
-       NodeProperty<Instantiation*> __sampling_idx;
-
-       /// a table of children for each node
-       NodeProperty<std::vector<NodeId>*> __node_children;
-
-       /// a table of potential for posterior computed in the markov blanket
-       NodeProperty<Potential<GUM_SCALAR>*> __sampling_posterior;
-
-       /// intializes all attributes needed for Gibbs sampling
-		 virtual void initAttributes(const IBayesNet<GUM_SCALAR>* bn);
-
-		 /// adds a node to current instantiation
-		 virtual void _addVarSample(NodeId nod, Instantiation* I, const IBayesNet<GUM_SCALAR>& bn);
-		 virtual void _GibbsSample(NodeId id, Instantiation* I, const IBayesNet<GUM_SCALAR>& bn);
-		 virtual void __drawVar( NodeId id, Instantiation* prev, const IBayesNet<GUM_SCALAR>& bn);
-		 virtual void __setValVar( NodeId id, Idx choice, Instantiation* prev, const IBayesNet<GUM_SCALAR>& bn);
+    Size _nbr;
+    bool _atRandom;
 
 
-	};
+    private:
+    void __updateSamplingNodes();
+    // adds a node to current instantiation
+    void __drawVarMonteCarlo(NodeId nod, Instantiation* I);
+    void __GibbsSample(NodeId id, Instantiation* I);
+  };
 
-  extern template class GibbsOperator<float>;
-  extern template class GibbsOperator<double>;
-
+  extern template class GibbsOperator< float >;
+  extern template class GibbsOperator< double >;
 }
 
 #include <agrum/BN/inference/tools/gibbsOperator_tpl.h>

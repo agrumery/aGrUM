@@ -45,7 +45,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   GibbsKL<GUM_SCALAR>::GibbsKL( const IBayesNet<GUM_SCALAR>& P,
-                                  const IBayesNet<GUM_SCALAR>& Q )
+                                const IBayesNet<GUM_SCALAR>& Q )
       : KL<GUM_SCALAR>( P, Q )
       , ApproximationScheme()
       , GibbsOperator<GUM_SCALAR>( P ) {
@@ -64,7 +64,8 @@ namespace gum {
   GibbsKL<GUM_SCALAR>::GibbsKL( const KL<GUM_SCALAR>& kl )
       : KL<GUM_SCALAR>( kl )
       , ApproximationScheme()
-      , GibbsOperator<GUM_SCALAR>( kl.p() ) {
+      // Gibbs operator with 10% of nodes changes at random between each samples
+      , GibbsOperator<GUM_SCALAR>( kl.p(), 1 + ( kl.p().size() / 10 ), true ) {
     GUM_CONSTRUCTOR( GibbsKL );
 
     setEpsilon( GIBBSKL_DEFAULT_EPSILON );
@@ -88,7 +89,7 @@ namespace gum {
     _q.completeInstantiation( Iq );
 
 
-    gum::Instantiation I = this->_monteCarloSample( this->_p );  // p or q ?
+    gum::Instantiation I = this->monteCarloSample();
     initApproximationScheme();
 
     // map between particle() variables and _q variables (using name of vars)
@@ -99,11 +100,9 @@ namespace gum {
                   &_q.variableFromName( I.variable( ite ).name() ) );
     }
 
-    float w = 1.;
-
     // BURN IN
     for ( Idx i = 0; i < burnIn(); i++ )
-      I = this->drawNextInstance( &w, I, this->_p );
+      I = this->nextSample( I );
 
     // SAMPLING
     _klPQ = _klQP = _hellinger = (GUM_SCALAR)0.0;
@@ -117,7 +116,7 @@ namespace gum {
     do {
 
       this->disableMinEpsilonRate();
-      I = this->drawNextInstance( &w, I, this->_p );
+      I = this->nextSample( I );
       updateApproximationScheme();
 
       //_p.synchroInstantiations( Ip,I);

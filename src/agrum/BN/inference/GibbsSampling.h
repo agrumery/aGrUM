@@ -50,7 +50,7 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   class GibbsSampling : public ApproximateInference<GUM_SCALAR>,
-                               public GibbsOperator<GUM_SCALAR> {
+                        public GibbsOperator<GUM_SCALAR> {
 
     public:
     /**
@@ -76,20 +76,12 @@ namespace gum {
     * @param hardEv hard evidences values
     *
     * Uses the Gibbs sampling method to generate a new sample given the previous
-* one.
-    * The method is implemented in the inherited class GibbsOperator. This function
-* only makes the
-    * call to it.
-*It consists of choosing one node x to sample, given the instantiation of all other
-* nodes.
-*It requires computing  of P( x \given instantiation_markovblanket(x)).
+    * one. The method is implemented in the inherited class GibbsOperator. This
+    * function only makes the call to it. It consists of choosing one node x to
+    * sample, given the instantiation of all other nodes. It requires computing  of
+    * P( x \given instantiation_markovblanket(x)).
     */
-    virtual Instantiation
-    _draw( float*                       w,
-           Instantiation                prev ,
-           const IBayesNet<GUM_SCALAR>& bn = BayesNet<GUM_SCALAR>(),
-           const NodeSet&               hardEvNodes = NodeSet(),
-           const NodeProperty<Idx>&     hardEv = NodeProperty<Idx>() );
+    virtual Instantiation _draw( float* w, Instantiation prev );
 
     /// draws a Monte Carlo sample
     /**
@@ -102,22 +94,7 @@ namespace gum {
     * class Approximate Inference because it also initializes attributes needed for
     * Gibbs sampling.
     */
-    virtual Instantiation _monteCarloSample( const IBayesNet<GUM_SCALAR>& bn );
-
-    /// fired when Bayesian network is contextualized
-    /**
-    * @param bn the contextualized BayesNetFragment
-    * @param targets inference target variables
-    * @param hardEvNodes hard evidence nodes
-    * @param hardEv hard evidences values
-    *
-    * Adds the evidence and target variables.
-    *
-    */
-    virtual void _onContextualize( BayesNetFragment<GUM_SCALAR>* bn,
-                                   const NodeSet&                targets,
-                                   const NodeSet&                hardEvNodes,
-                                   const NodeProperty<Idx>&      hardEv );
+    virtual Instantiation _monteCarloSample();
 
     virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence );
     virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence );

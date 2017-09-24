@@ -221,8 +221,7 @@ namespace gum_tests {
         kl.setEpsilon( 1e-5 );
         kl.setMinEpsilonRate( 1e-5 );
         if ( fabs( kl.klPQ() - 0.241864114 ) <= 1e-1 ) {
-          GUM_TRACE( fabs( kl.klPQ() - 0.241864114 ) );
-          TS_ASSERT_DELTA( kl.klPQ(), 0.241864114, 1e-1 );
+          TS_ASSERT_DELTA( kl.klPQ(), (float)0.241864114, (float)1e-1 );
           TS_ASSERT_DELTA( kl.klQP(), 0.399826689, 1e-1 );
           TS_ASSERT_EQUALS( kl.errorPQ(), (gum::Size)0 );
           TS_ASSERT_EQUALS( kl.errorQP(), (gum::Size)0 );

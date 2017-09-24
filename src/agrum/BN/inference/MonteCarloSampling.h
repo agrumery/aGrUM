@@ -80,20 +80,6 @@ namespace gum {
         _draw(float *w, Instantiation prev, const IBayesNet<GUM_SCALAR> &bn = BayesNet<GUM_SCALAR>(),
               const NodeSet &hardEvNodes = NodeSet(), const NodeProperty<Idx> &hardEv = NodeProperty<Idx>());
 
-        ///fired when Bayesian network is contextualized
-        /**
-        * @param bn the contextualized BayesNetFragment
-       * @param targets inference target variables
-       * @param hardEvNodes hard evidence nodes
-       * @param hardEv hard evidences values
-       *
-       * Adds the target and evidence variables.
-       *
-       */
-        virtual void
-        _onContextualize(BayesNetFragment<GUM_SCALAR> *bn, const NodeSet &targets, const NodeSet &hardEvNodes,
-                         const NodeProperty<Idx> &hardEv);
-
     };
 
     extern template

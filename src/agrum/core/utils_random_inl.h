@@ -29,6 +29,9 @@
 namespace gum {
 
   INLINE
+  Idx randomValue( const Size max ) { return ( Idx )( rand() % max ); }
+
+  INLINE
   double randomProba() { return ( (double)rand() ) / ( (double)RAND_MAX ); }
 
   INLINE

@@ -75,14 +75,14 @@ namespace gum {
       const Idx nodeset_id = Idx( _nodesets.size() );
       _nodesets.push_back( &ids );
 
-      // compute the size of the nodeset and allocate a counting correspondingly
+      // compute the size of the nodeset and allocate a _counting correspondingly
       Size size = 1;
 
       for ( const auto id : ids ) {
         size *= _modalities->operator[]( id );
       }
 
-      // allocate the counting set
+      // allocate the _counting set
       _countings.push_back( std::vector<double, CountAlloc>( size, 0 ) );
 
       return nodeset_id;
@@ -572,7 +572,7 @@ namespace gum {
         result_down[j] = ( result_domain[j] - 1 ) * result_offset[j];
       }
 
-      // now, fill the subset counting vector: first loop over the variables
+      // now, fill the subset _counting vector: first loop over the variables
       // X's in table that do not belong to result and, for each value of
       // these X's, loop over the variables in both table and result. As
       // such, in the internal loop, the offsets of "result" need only be
@@ -614,7 +614,7 @@ namespace gum {
     // computes the countings of the subsets from those of their supersets
     template <typename IdSetAlloc, typename CountAlloc>
     void RecordCounter<IdSetAlloc, CountAlloc>::countSubsets() {
-      // computes a queue of the subsets that can be considered for counting
+      // computes a queue of the subsets that can be considered for _counting
       // to do so, simply fill it with the nodes without parents in the
       // subset lattice
       List<NodeId> setFIFO;
@@ -631,7 +631,7 @@ namespace gum {
         NodeId new_set = setFIFO.front();
         setFIFO.popFront();
 
-        // perform the counting
+        // perform the _counting
         __countOneSubset( new_set );
 
         // update the subset lattice and add, if needed, new sets into setFIFO
@@ -735,7 +735,7 @@ namespace gum {
 
           if ( subset ) {
             // assign the superset to the subset and allocate the subset's
-            // counting
+            // _counting
             __set_state[i] = SetState::STRICT_SUBSET;
             __set2thread_id[i].second = NodeId( index );
             __subset_lattice.addArc( NodeId( index ), i );

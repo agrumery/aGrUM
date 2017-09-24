@@ -288,6 +288,11 @@ namespace gum {
     */
     const Potential<GUM_SCALAR>& translate( GUM_SCALAR v ) const;
 
+    /**
+     * @brief get a value at random from a 1-D distribution
+     */
+    Idx draw() const;
+
     ///@}
 
     // ========================================================================

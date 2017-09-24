@@ -19,7 +19,8 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implements approximate inference algorithms from Loopy Belief Propagation.
+ * @brief Implements approximate inference algorithms from Loopy Belief
+ * Propagation.
  *
  * @author Paul ALAM & Pierre-Henri WUILLEMIN
  *
@@ -33,57 +34,53 @@ namespace gum {
 
 
   template <typename GUM_SCALAR, template <typename> class APPROX>
-  HybridApproxInference<GUM_SCALAR, APPROX>::HybridApproxInference(const IBayesNet<GUM_SCALAR>* BN)
-  : APPROX<GUM_SCALAR>(BN){
+  HybridApproxInference<GUM_SCALAR, APPROX>::HybridApproxInference(
+      const IBayesNet<GUM_SCALAR>* BN )
+      : APPROX<GUM_SCALAR>( BN ) {
 
- 		GUM_CONSTRUCTOR(HybridApproxInference);
-
-	}
+    GUM_CONSTRUCTOR( HybridApproxInference );
+  }
 
 
   template <typename GUM_SCALAR, template <typename> class APPROX>
   HybridApproxInference<GUM_SCALAR, APPROX>::~HybridApproxInference() {
 
-     GUM_DESTRUCTOR(HybridApproxInference);
-
+    GUM_DESTRUCTOR( HybridApproxInference );
   }
 
 
   template <typename GUM_SCALAR, template <typename> class APPROX>
-  void HybridApproxInference<GUM_SCALAR, APPROX>::_makeInference(){
+  void HybridApproxInference<GUM_SCALAR, APPROX>::_makeInference() {
 
-		LoopyBeliefPropagation<GUM_SCALAR> lbp (&this->BN());
-  	   lbp.setMaxIter(DEFAULT_LBP_MAX_ITER);
-  	   lbp.makeInference();
+    LoopyBeliefPropagation<GUM_SCALAR> lbp( &this->BN() );
+    lbp.setMaxIter( DEFAULT_LBP_MAX_ITER );
+    lbp.makeInference();
 
-		const auto &bn = this->BN();
-  		auto hardEv = this->hardEvidence();
-  		auto hardEvNodes = this->hardEvidenceNodes();
+    const auto& bn = this->BN();
+    auto        hardEv = this->hardEvidence();
+    auto        hardEvNodes = this->hardEvidenceNodes();
 
-  		if (!this->isContextualized)
-  			this->contextualize();
+    if ( !this->isContextualized ) this->contextualize();
 
-  	  	if (!this->isSetEstimator)
-  	  		this->_setEstimatorFromLBP(&lbp, this->hardEvidenceNodes() );
+    if ( !this->isSetEstimator )
+      this->_setEstimatorFromLBP( &lbp, this->hardEvidenceNodes() );
 
-  		this->initApproximationScheme();
-		gum::Instantiation Ip;
-		float w = .0;//
+    this->initApproximationScheme();
+    gum::Instantiation Ip;
+    float              w = .0;  //
 
-		// Burn in
-		Ip = this->_burnIn();
+    // Burn in
+    Ip = this->_burnIn();
 
-		do {
+    do {
 
-			Ip = this->_draw(&w, Ip, bn, hardEvNodes, hardEv);
-  			this->__estimator.update(Ip,w);
-			this->updateApproximationScheme();
+      Ip = this->_draw( &w, Ip );
+      this->__estimator.update( Ip, w );
+      this->updateApproximationScheme();
 
-		} while(this->continueApproximationScheme(this->__estimator.confidence()));
+    } while (
+        this->continueApproximationScheme( this->__estimator.confidence() ) );
 
-		this->isSetEstimator = false;
-
+    this->isSetEstimator = false;
   }
-
-
 }

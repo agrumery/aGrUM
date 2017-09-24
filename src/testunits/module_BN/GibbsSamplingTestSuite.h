@@ -368,8 +368,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
       TS_ASSERT( nbrErr == 0 );
 
-      gum::GibbsSampling<float> inf( &bn );
-      aSimpleGibbsApproxListener       agsl( inf );
+      gum::GibbsSampling<float>  inf( &bn );
+      aSimpleGibbsApproxListener agsl( inf );
       inf.setVerbosity( true );
 
       try {
@@ -386,12 +386,52 @@ namespace gum_tests {
     }
 
 
+    void testGibbsApproxDiabetes() {
+      gum::BayesNet<double>  bn;
+      gum::BIFReader<double> reader( &bn, GET_RESSOURCES_PATH( "Diabetes.bif" ) );
+      int                    nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_ASSERT( nbrErr == 0 );
+
+      try {
+        gum::GibbsSampling<double> inf( &bn );
+        inf.addEvidence( "bg_24", 0 );
+        inf.setVerbosity( false );
+        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        inf.setMaxTime( 10 );
+        inf.makeInference();
+      } catch ( gum::Exception e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
+
+    void testEvidenceAsTargetOnCplxBN() {
+      auto bn = gum::BayesNet<float>::fastPrototype(
+          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3 );
+
+      try {
+        gum::GibbsSampling<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "d" ), 0 );
+        inf.setVerbosity( false );
+        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        inf.makeInference();
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( "d" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( bn.idFromName( "d" ) ) );
+
+      } catch ( gum::Exception& e ) {
+
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+    }
+
     private:
     template <typename GUM_SCALAR>
-    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&       bn,
-                             gum::LazyPropagation<GUM_SCALAR>&      lazy,
-                             gum::GibbsSampling<GUM_SCALAR>& inf,
-                             double                                 errmax ) {
+    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&  bn,
+                             gum::LazyPropagation<GUM_SCALAR>& lazy,
+                             gum::GibbsSampling<GUM_SCALAR>&   inf,
+                             double                            errmax ) {
 
       gum::Potential<float> softness, pl, pi;
       softness.fill( 1e-1 );

@@ -31,115 +31,43 @@ namespace gum {
 
   ///  default constructor
   template <typename GUM_SCALAR>
-  GibbsSampling<GUM_SCALAR>::GibbsSampling(const IBayesNet<GUM_SCALAR>* BN)
-  :  ApproximateInference<GUM_SCALAR>(BN), GibbsOperator<GUM_SCALAR>(*BN) {
-
-     GUM_CONSTRUCTOR(GibbsSampling);
-
+  GibbsSampling<GUM_SCALAR>::GibbsSampling( const IBayesNet<GUM_SCALAR>* BN )
+      : ApproximateInference<GUM_SCALAR>( BN )
+      , GibbsOperator<GUM_SCALAR>( *BN ) {
+    GUM_CONSTRUCTOR( GibbsSampling );
   }
 
-	/// destructor
+  /// destructor
   template <typename GUM_SCALAR>
   GibbsSampling<GUM_SCALAR>::~GibbsSampling() {
-
-     GUM_DESTRUCTOR(GibbsSampling);
-
+    GUM_DESTRUCTOR( GibbsSampling );
   }
 
 
   template <typename GUM_SCALAR>
-  Instantiation GibbsSampling<GUM_SCALAR>::_monteCarloSample(const IBayesNet<GUM_SCALAR>& bn){
-
-  		return GibbsOperator<GUM_SCALAR>::_monteCarloSample(bn);
-
+  Instantiation GibbsSampling<GUM_SCALAR>::_monteCarloSample() {
+    return GibbsOperator<GUM_SCALAR>::monteCarloSample( samplingBN() );
   }
 
 
   template <typename GUM_SCALAR>
-  Instantiation GibbsSampling<GUM_SCALAR>::_burnIn(){
+  Instantiation GibbsSampling<GUM_SCALAR>::_burnIn() {
 
-  	  gum::Instantiation Ip;
-  	  float w = 1.;
+    gum::Instantiation Ip;
+    if ( this->burnIn() == 0 ) return Ip;
 
-  	  Ip = _monteCarloSample(this->BN());
+    float w = 1.;
+    Ip = _monteCarloSample();
+    for ( Size i = 1; i < this->burnIn(); i++ )
+      Ip = this->_draw( &w, Ip );
 
-	  if (this->burnIn() == 0)
-	  		return Ip;
-
-	  for (Size i = 1; i < this->burnIn(); i++)
-	  		Ip = this->_draw(&w, Ip);
-
-	  	return Ip;
-
+    return Ip;
   }
 
-	/// draws next sample for gibbs sampling
+  /// draws next sample for gibbs sampling
 
   template <typename GUM_SCALAR>
-  Instantiation GibbsSampling<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
-
-		return this->drawNextInstance(w, prev, this->BN());
-	}
-
-
-/* initializing node properties after contextualizing the BN in order for the computation to be lighter */
-
-	 template <typename GUM_SCALAR>
-    void GibbsSampling<GUM_SCALAR>::_onContextualize(BayesNetFragment<GUM_SCALAR>* bn, const NodeSet& targets, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv) {
-
-  		for (auto targ = targets.begin(); targ != targets.end(); ++targ)
-			this->addTarget(*targ);
-
-	  	for (auto ev = hardEvNodes.begin(); ev != hardEvNodes.end(); ++ev)
-	  		this->addEvidence(*ev, hardEv[*ev]);
-
-
-	 }
-
-
-
-
-  template <typename GUM_SCALAR>
-  INLINE void GibbsSampling<GUM_SCALAR>::_onEvidenceAdded( const NodeId id,
-                                                            bool isHardEvidence ) {
-    if ( isHardEvidence )
-      this->addHardEvidence( id, this->hardEvidence()[id] );
-    else {
-      this->addSoftEvidence( *( this->evidence()[id] ) );
-    }
-
+  Instantiation GibbsSampling<GUM_SCALAR>::_draw( float* w, Instantiation prev ) {
+    return this->drawNextInstance( w, prev,samplingBN() );
   }
-
-  template <typename GUM_SCALAR>
-  INLINE void GibbsSampling<GUM_SCALAR>::_onEvidenceErased( const NodeId id,
-                                                 bool isHardEvidence ) {
-    if ( isHardEvidence )
-      this->eraseHardEvidence( id );
-
-  }
-
-
-  template <typename GUM_SCALAR>
-  INLINE void GibbsSampling<GUM_SCALAR>::_onAllEvidenceErased( bool contains_hard_evidence ){
-    	this->eraseAllEvidenceOperator();
-  }
-
-  template <typename GUM_SCALAR>
-  INLINE void
-  GibbsSampling<GUM_SCALAR>::_onEvidenceChanged( const NodeId id,
-                                                  bool hasChangedSoftHard ) {
-    if ( this->hardEvidence().exists( id ) ) {
-      // soft evidence has been removed
-      	this->eraseSoftEvidence( id );
-      	this->addHardEvidence( id, this->hardEvidence()[id] );
-    } else {
-      // hard evidence has been removed
-         this->eraseHardEvidence( id );
-      	this->addSoftEvidence( *( this->evidence()[id] ) );
-    }
-  }
-
-
-
 }
-

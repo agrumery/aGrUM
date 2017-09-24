@@ -5,8 +5,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/MonteCarloSampling.h>
+#include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/BN/io/BIF/BIFReader.h>
@@ -386,7 +386,7 @@ namespace gum_tests {
       TS_ASSERT( nbrErr == 0 );
 
       gum::MonteCarloSampling<float> inf( &bn );
-      aSimpleMCListener                     agsl( inf );
+      aSimpleMCListener              agsl( inf );
       inf.setVerbosity( true );
 
       try {
@@ -395,19 +395,57 @@ namespace gum_tests {
         inf.setEpsilon( EPSILON_FOR_MONTECARLO );
         inf.makeInference();
 
-      } catch ( gum::Exception e ) TS_ASSERT( false );
+      } catch ( gum::Exception e ) {
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
 
       TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize(), inf.nbrIterations() );
       TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
     }
 
+    void testConstructor() {
+      gum::BayesNet<float>  bn;
+      gum::BIFReader<float> reader( &bn, GET_RESSOURCES_PATH( "alarm.bif" ) );
+      int                   nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_ASSERT( nbrErr == 0 );
+      try {
+        gum::MonteCarloSampling<float> inf( &bn );
+        inf.setEpsilon( EPSILON_FOR_MONTECARLO );
+      } catch ( gum::Exception e ) {
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+    }
+
+
+    void testEvidenceAsTargetOnCplxBN() {
+      auto bn = gum::BayesNet<float>::fastPrototype(
+          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3 );
+
+      try {
+        gum::MonteCarloSampling<float> inf( &bn );
+        inf.addEvidence( bn.idFromName( "d" ), 0 );
+        inf.setVerbosity( false );
+        inf.setEpsilon( EPSILON_FOR_MONTECARLO );
+        inf.makeInference();
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( "d" ) );
+        TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( bn.idFromName( "d" ) ) );
+
+      } catch ( gum::Exception& e ) {
+
+        GUM_SHOWERROR( e );
+        TS_ASSERT( false );
+      }
+    }
 
     private:
     template <typename GUM_SCALAR>
-    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&            bn,
-                             gum::LazyPropagation<GUM_SCALAR>&           lazy,
+    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&     bn,
+                             gum::LazyPropagation<GUM_SCALAR>&    lazy,
                              gum::MonteCarloSampling<GUM_SCALAR>& inf,
-                             double errmax = 5e-2 ) {
+                             double                               errmax = 5e-2 ) {
 
       GUM_SCALAR  err = static_cast<GUM_SCALAR>( 0 );
       std::string argstr = "";

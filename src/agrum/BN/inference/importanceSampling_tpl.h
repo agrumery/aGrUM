@@ -56,12 +56,8 @@ namespace gum {
   }
 
   template <typename GUM_SCALAR>
-  Instantiation
-  ImportanceSampling<GUM_SCALAR>::_draw( float*                       w,
-                                         Instantiation                prev,
-                                         const IBayesNet<GUM_SCALAR>& bn,
-                                         const NodeSet&               hardEvNodes,
-                                         const NodeProperty<Idx>&     hardEv ) {
+  Instantiation ImportanceSampling<GUM_SCALAR>::_draw( float*        w,
+                                                       Instantiation prev ) {
 
     GUM_SCALAR pSurQ = 1.;
 
@@ -69,16 +65,15 @@ namespace gum {
 
       prev.clear();
       pSurQ = 1.;
-      for ( auto ev = hardEvNodes.beginSafe(); ev != hardEvNodes.endSafe();
-            ++ev ) {
-        prev.add( bn.variable( *ev ) );
-        prev.chgVal( bn.variable( *ev ), hardEv[*ev] );
+      for ( auto ev : this->hardEvidenceNodes()) {
+        prev.add( BN().variable( ev ) );
+        prev.chgVal( BN().variable( ev ), this->evidence()[ev] );
       }
 
       for ( auto nod : this->BN().topologicalOrder() ) {
-        this->_addVarSample( nod, &prev, this->BN() );
-        auto probaQ = this->BN().cpt( nod ).get( prev );
-        auto probaP = bn.cpt( nod ).get( prev );
+        this->_addVarSample( nod, &prev);
+        auto probaQ = BN().cpt( nod ).get( prev );
+        auto probaP = _frag->cpt( nod ).get( prev );
         if ( ( probaP == 0 ) || ( probaQ == 0 ) ) {
           pSurQ = 0;
           continue;
@@ -102,8 +97,6 @@ namespace gum {
   void
   ImportanceSampling<GUM_SCALAR>::_unsharpenBN( BayesNetFragment<GUM_SCALAR>* bn,
                                                 float epsilon ) {
-
-    GUM_CHECKPOINT;
     for ( auto nod : bn->nodes().asNodeSet() ) {
       Potential<GUM_SCALAR>* p = new Potential<GUM_SCALAR>();
       *p = bn->cpt( nod ).isNonZeroMap().scale( epsilon ) + bn->cpt( nod );
@@ -114,31 +107,39 @@ namespace gum {
 
   template <typename GUM_SCALAR>
   void ImportanceSampling<GUM_SCALAR>::_onContextualize(
-      BayesNetFragment<GUM_SCALAR>* bn,
-      const NodeSet&                targets,
-      const NodeSet&                hardEvNodes,
-      const NodeProperty<Idx>&      hardEv ) {
-
+      BayesNetFragment<GUM_SCALAR>* bn ) {
+    /*
+  Sequence<NodeId> sid;
+  for ( NodeSet::iterator ev = hardEvNodes.begin(); ev != hardEvNodes.end();
+        ++ev )
+    sid << *ev;
+*/
+    auto hardEvNodes = this->hardEvidenceNodes();
+    auto hardEv = this->hardEvidence();
+    auto targets = this->targets();
     GUM_CHECKPOINT;
-    Sequence<NodeId> sid;
-    for ( NodeSet::iterator ev = hardEvNodes.begin(); ev != hardEvNodes.end();
-          ++ev )
-      sid << *ev;
+    for ( auto ev : hardEvNodes ) {
 
-    for ( Size i = 0; i < sid.size(); i++ ) {
-
-      bn->uninstallCPT( sid[i] );
-      bn->uninstallNode( sid[i] );
+      GUM_CHECKPOINT;
+      bn->uninstallCPT( ev );
+      GUM_TRACE_VAR( ev );
+      GUM_TRACE_VAR( this->hardEvidenceNodes() );
+      bn->installCPT( ev, new Potential<GUM_SCALAR>( *this->evidence()[ev] ) );
+      GUM_CHECKPOINT;
+      // we keep the variables with hard evidence but alone
+      // bn->uninstallNode( sid[i] );
     }
 
+    GUM_CHECKPOINT;
     for ( auto targ = targets.begin(); targ != targets.end(); ++targ ) {
-
       if ( this->BN().dag().exists( *targ ) ) this->addTarget( *targ );
     }
 
+    GUM_CHECKPOINT;
     auto minParam = bn->minNonZeroParam();
     auto minAccepted = this->epsilon() / bn->maxVarDomainSize();
 
+    GUM_CHECKPOINT;
     if ( minParam < minAccepted ) this->_unsharpenBN( bn, minAccepted );
   }
 }
