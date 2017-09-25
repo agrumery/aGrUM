@@ -33,37 +33,31 @@
 namespace gum {
 
 
-  template <typename GUM_SCALAR, template <typename> class APPROX>
-  HybridApproxInference<GUM_SCALAR, APPROX>::HybridApproxInference(
-      const IBayesNet<GUM_SCALAR>* BN )
-      : APPROX<GUM_SCALAR>( BN ) {
+  template < typename GUM_SCALAR, template < typename > class APPROX >
+  HybridApproxInference< GUM_SCALAR, APPROX >::HybridApproxInference(
+    const IBayesNet< GUM_SCALAR >* BN)
+      : APPROX< GUM_SCALAR >(BN) {
 
-    GUM_CONSTRUCTOR( HybridApproxInference );
+    GUM_CONSTRUCTOR(HybridApproxInference);
   }
 
 
-  template <typename GUM_SCALAR, template <typename> class APPROX>
-  HybridApproxInference<GUM_SCALAR, APPROX>::~HybridApproxInference() {
+  template < typename GUM_SCALAR, template < typename > class APPROX >
+  HybridApproxInference< GUM_SCALAR, APPROX >::~HybridApproxInference() {
 
-    GUM_DESTRUCTOR( HybridApproxInference );
+    GUM_DESTRUCTOR(HybridApproxInference);
   }
 
 
-  template <typename GUM_SCALAR, template <typename> class APPROX>
-  void HybridApproxInference<GUM_SCALAR, APPROX>::_makeInference() {
+  template < typename GUM_SCALAR, template < typename > class APPROX >
+  void HybridApproxInference< GUM_SCALAR, APPROX >::_makeInference() {
 
-    LoopyBeliefPropagation<GUM_SCALAR> lbp( &this->BN() );
-    lbp.setMaxIter( DEFAULT_LBP_MAX_ITER );
+    LoopyBeliefPropagation< GUM_SCALAR > lbp(&this->BN());
+    lbp.setMaxIter(DEFAULT_LBP_MAX_ITER);
     lbp.makeInference();
 
-    const auto& bn = this->BN();
-    auto        hardEv = this->hardEvidence();
-    auto        hardEvNodes = this->hardEvidenceNodes();
-
-    if ( !this->isContextualized ) this->contextualize();
-
-    if ( !this->isSetEstimator )
-      this->_setEstimatorFromLBP( &lbp, this->hardEvidenceNodes() );
+    if (!this->isSetEstimator)
+      this->_setEstimatorFromLBP(&lbp);
 
     this->initApproximationScheme();
     gum::Instantiation Ip;
@@ -74,12 +68,11 @@ namespace gum {
 
     do {
 
-      Ip = this->_draw( &w, Ip );
-      this->__estimator.update( Ip, w );
+      Ip = this->_draw(&w, Ip);
+      this->__estimator.update(Ip, w);
       this->updateApproximationScheme();
 
-    } while (
-        this->continueApproximationScheme( this->__estimator.confidence() ) );
+    } while (this->continueApproximationScheme(this->__estimator.confidence()));
 
     this->isSetEstimator = false;
   }

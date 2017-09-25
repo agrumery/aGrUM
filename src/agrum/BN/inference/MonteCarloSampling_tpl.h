@@ -19,7 +19,8 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of Monte Carlo Sampling for inference in Bayesian Networks.
+ * @brief Implementation of Monte Carlo Sampling for inference in Bayesian
+ * Networks.
  *
  * @author Paul ALAM & Pierre-Henri WUILLEMIN
  */
@@ -30,60 +31,54 @@
 
 namespace gum {
 
-	/// Default constructor
-  template <typename GUM_SCALAR>
-  MonteCarloSampling<GUM_SCALAR>::MonteCarloSampling(const IBayesNet<GUM_SCALAR>* BN)
-  :  ApproximateInference<GUM_SCALAR>(BN) {
+  /// Default constructor
+  template < typename GUM_SCALAR >
+  MonteCarloSampling< GUM_SCALAR >::MonteCarloSampling(
+    const IBayesNet< GUM_SCALAR >* BN)
+      : ApproximateInference< GUM_SCALAR >(BN) {
 
-  	 this->setBurnIn(0);
+    this->setBurnIn(0);
     GUM_CONSTRUCTOR(MonteCarloSampling);
-
   }
 
   /// Destructor
-  template <typename GUM_SCALAR>
-  MonteCarloSampling<GUM_SCALAR>::~MonteCarloSampling() {
+  template < typename GUM_SCALAR >
+  MonteCarloSampling< GUM_SCALAR >::~MonteCarloSampling() {
 
-     GUM_DESTRUCTOR(MonteCarloSampling);
-
+    GUM_DESTRUCTOR(MonteCarloSampling);
   }
 
   /// no burn in needed for Monte Carlo sampling
-  template <typename GUM_SCALAR>
-  Instantiation MonteCarloSampling<GUM_SCALAR>::_burnIn(){
-  		gum::Instantiation I;
-  	   return I;
+  template < typename GUM_SCALAR >
+  Instantiation MonteCarloSampling< GUM_SCALAR >::_burnIn() {
+    gum::Instantiation I;
+    return I;
   }
 
 
+  template < typename GUM_SCALAR >
+  Instantiation
+  MonteCarloSampling< GUM_SCALAR >::_draw(float*                         w,
+                                          Instantiation                  prev,
+                                          const IBayesNet< GUM_SCALAR >& bn,
+                                          const NodeSet&             hardEvNodes,
+                                          const NodeProperty< Idx >& hardEv) {
 
+    *w = 1.;
+    bool wrong_value = false;
+    do {
+      wrong_value = false;
+      prev.clear();
+      for (auto nod : this->BN().topologicalOrder()) {
+        this->_addVarSample(nod, &prev);
+        if (this->hardEvidenceNodes().contains(nod) and
+            prev.val(this->BN().variable(nod)) != this->hardEvidence()[nod]) {
+          wrong_value = true;
+          break;
+        }
+      }
+    } while (wrong_value);
 
-  template <typename GUM_SCALAR>
-  Instantiation MonteCarloSampling<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
-
-	*w = 1.;
-	bool wrong_value = false;
-
-	do{
-
-		wrong_value = false; prev.clear();
-
-		for (auto nod: this->BN().topologicalOrder()){
-
-			  	this->_addVarSample(nod, &prev, this->BN());
-
-				if (this->hardEvidenceNodes().contains(nod) and prev.val(this->BN().variable(nod)) != this->hardEvidence()[nod]) {
-						wrong_value = true;
-						break;
-				}
-		}
-
-	} while (wrong_value);
-
-	return prev;
-
-  	}
-
-
+    return prev;
+  }
 }
-

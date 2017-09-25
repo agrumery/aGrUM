@@ -73,14 +73,17 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  const IBayesNet< GUM_SCALAR >& ApproximateInference< GUM_SCALAR >::samplingBN() {
+  INLINE const IBayesNet< GUM_SCALAR >&
+               ApproximateInference< GUM_SCALAR >::samplingBN() {
     this->prepareInference();
-    return *__samplingBN;
+    if (__samplingBN == nullptr)
+      return this->BN();
+    else
+      return *__samplingBN;
   }
   template < typename GUM_SCALAR >
   void ApproximateInference< GUM_SCALAR >::_setEstimatorFromBN() {
-
-    __estimator.setFromBN(__samplingBN, this->hardEvidenceNodes());
+    __estimator.setFromBN(&samplingBN(), this->hardEvidenceNodes());
     this->isSetEstimator = true;
   }
 
@@ -160,8 +163,6 @@ namespace gum {
     //@todo This should be in __prepareInference
     if (!isContextualized) {
       this->contextualize();
-    } else {
-      __samplingBN = &(this->BN());
     }
 
     if (!isSetEstimator) this->_setEstimatorFromBN();
@@ -187,11 +188,11 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ApproximateInference< GUM_SCALAR >::_addVarSample(NodeId         nod,
                                                          Instantiation* I) {
-    gum::Instantiation Itop = gum::Instantiation(__samplingBN->cpt(nod));
-    Itop.erase(__samplingBN->variable(nod));
+    gum::Instantiation Itop = gum::Instantiation(samplingBN().cpt(nod));
+    Itop.erase(samplingBN().variable(nod));
 
-    I->add(__samplingBN->variable(nod));
-    I->chgVal(__samplingBN->variable(nod),
-              __samplingBN->cpt(nod).extract(*I).draw());
+    I->add(samplingBN().variable(nod));
+    I->chgVal(samplingBN().variable(nod),
+              samplingBN().cpt(nod).extract(*I).draw());
   }
 }

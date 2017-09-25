@@ -50,7 +50,6 @@ namespace gum {
 		*/
 
   	template <typename GUM_SCALAR, template <typename> class APPROX>
-
   	class HybridApproxInference : public APPROX<GUM_SCALAR> {
 
 		public:

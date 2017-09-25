@@ -30,44 +30,45 @@
 namespace gum {
 
   ///  default constructor
-  template <typename GUM_SCALAR>
-  GibbsSampling<GUM_SCALAR>::GibbsSampling( const IBayesNet<GUM_SCALAR>* BN )
-      : ApproximateInference<GUM_SCALAR>( BN )
-      , GibbsOperator<GUM_SCALAR>( *BN ) {
-    GUM_CONSTRUCTOR( GibbsSampling );
+  template < typename GUM_SCALAR >
+  GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* BN)
+      : ApproximateInference< GUM_SCALAR >(BN)
+      , GibbsOperator< GUM_SCALAR >(*BN) {
+    GUM_CONSTRUCTOR(GibbsSampling);
   }
 
   /// destructor
-  template <typename GUM_SCALAR>
-  GibbsSampling<GUM_SCALAR>::~GibbsSampling() {
-    GUM_DESTRUCTOR( GibbsSampling );
+  template < typename GUM_SCALAR >
+  GibbsSampling< GUM_SCALAR >::~GibbsSampling() {
+    GUM_DESTRUCTOR(GibbsSampling);
   }
 
 
-  template <typename GUM_SCALAR>
-  Instantiation GibbsSampling<GUM_SCALAR>::_monteCarloSample() {
-    return GibbsOperator<GUM_SCALAR>::monteCarloSample( samplingBN() );
+  template < typename GUM_SCALAR >
+  Instantiation GibbsSampling< GUM_SCALAR >::_monteCarloSample() {
+    return GibbsOperator< GUM_SCALAR >::monteCarloSample();
   }
 
 
-  template <typename GUM_SCALAR>
-  Instantiation GibbsSampling<GUM_SCALAR>::_burnIn() {
+  template < typename GUM_SCALAR >
+  Instantiation GibbsSampling< GUM_SCALAR >::_burnIn() {
 
     gum::Instantiation Ip;
-    if ( this->burnIn() == 0 ) return Ip;
+    if (this->burnIn() == 0) return Ip;
 
     float w = 1.;
     Ip = _monteCarloSample();
-    for ( Size i = 1; i < this->burnIn(); i++ )
-      Ip = this->_draw( &w, Ip );
+    for (Size i = 1; i < this->burnIn(); i++)
+      Ip = this->_draw(&w, Ip);
 
     return Ip;
   }
 
   /// draws next sample for gibbs sampling
 
-  template <typename GUM_SCALAR>
-  Instantiation GibbsSampling<GUM_SCALAR>::_draw( float* w, Instantiation prev ) {
-    return this->drawNextInstance( w, prev,samplingBN() );
+  template < typename GUM_SCALAR >
+  Instantiation GibbsSampling< GUM_SCALAR >::_draw(float* w, Instantiation prev) {
+    *w = 1.0;
+    return this->nextSample(prev);
   }
 }

@@ -90,7 +90,7 @@ namespace gum {
 
 				}
 
-				this->_addVarSample(nod, &prev, this->BN());
+				this->_addVarSample(nod, &prev);
 
 
 		}
