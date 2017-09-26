@@ -95,11 +95,6 @@ namespace gum {
     * Gibbs sampling.
     */
     virtual Instantiation _monteCarloSample();
-
-    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence );
-    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence );
-    virtual void _onAllEvidenceErased( bool contains_hard_evidence );
-    virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard );
   };
 
   extern template class GibbsSampling<float>;

@@ -144,7 +144,7 @@ namespace gum {
     private:
     /// the set of single posteriors computed during the last inference
     /** the posteriors are owned by LazyPropagation. */
-    HashTable<std::string, const Potential<GUM_SCALAR>*> __target_posteriors;
+    HashTable<std::string, Potential<GUM_SCALAR>*> __target_posteriors;
   };
 
   extern template class Estimator<float>;

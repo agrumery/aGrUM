@@ -77,8 +77,7 @@ namespace gum {
         *
         */
         virtual Instantiation
-        _draw(float *w, Instantiation prev, const IBayesNet<GUM_SCALAR> &bn = BayesNet<GUM_SCALAR>(),
-              const NodeSet &hardEvNodes = NodeSet(), const NodeProperty<Idx> &hardEv = NodeProperty<Idx>());
+        _draw(float *w, Instantiation prev);
 
     };
 

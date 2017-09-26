@@ -510,7 +510,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Idx Potential< GUM_SCALAR >::draw() const {
     if (this->nbrDim() != 1) {
-      GUM_ERROR(InvalidArgument,
+      GUM_ERROR(FatalError,
                 "To draw from a potential, the dimension must be 1")
     }
 

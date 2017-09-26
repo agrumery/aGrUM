@@ -57,12 +57,8 @@ namespace gum {
 
 
   template < typename GUM_SCALAR >
-  Instantiation
-  MonteCarloSampling< GUM_SCALAR >::_draw(float*                         w,
-                                          Instantiation                  prev,
-                                          const IBayesNet< GUM_SCALAR >& bn,
-                                          const NodeSet&             hardEvNodes,
-                                          const NodeProperty< Idx >& hardEv) {
+  Instantiation MonteCarloSampling< GUM_SCALAR >::_draw(float*        w,
+                                                        Instantiation prev) {
 
     *w = 1.;
     bool wrong_value = false;
@@ -78,7 +74,7 @@ namespace gum {
         }
       }
     } while (wrong_value);
-
+    GUM_TRACE(prev);
     return prev;
   }
 }

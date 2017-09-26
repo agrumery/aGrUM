@@ -69,6 +69,6 @@ namespace gum {
   template < typename GUM_SCALAR >
   Instantiation GibbsSampling< GUM_SCALAR >::_draw(float* w, Instantiation prev) {
     *w = 1.0;
-    return this->nextSample(prev);
+    return GibbsOperator< GUM_SCALAR >::nextSample(prev);
   }
 }

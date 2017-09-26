@@ -32,61 +32,54 @@
 
 namespace gum {
 
-    /**
-        * @class WeightedInference weightedInference.h
-        *<agrum/BN/inference/weightedInference.h>
-        * @brief class for making Weighted sampling inference in bayesian networks.
-        * @ingroup bn_approximation
-        *
-        * This class overrides pure function declared in the inherited class ApproximateInference.
-        * It defines the way Weighted sampling draws a sample.
-        *
-        */
+  /**
+      * @class WeightedInference weightedInference.h
+      *<agrum/BN/inference/weightedInference.h>
+      * @brief class for making Weighted sampling inference in bayesian networks.
+      * @ingroup bn_approximation
+      *
+      * This class overrides pure function declared in the inherited class
+    *ApproximateInference.
+      * It defines the way Weighted sampling draws a sample.
+      *
+      */
 
-    template<typename GUM_SCALAR>
-    class WeightedSampling : public ApproximateInference<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class WeightedSampling : public ApproximateInference< GUM_SCALAR > {
 
     public:
+    /**
+     * Default constructor
+     */
+    WeightedSampling(const IBayesNet< GUM_SCALAR >* BN);
 
-        /**
-         * Default constructor
-         */
-        WeightedSampling(const IBayesNet<GUM_SCALAR> *BN);
-
-        /**
-         * Destructor
-         */
-        virtual ~WeightedSampling();
+    /**
+     * Destructor
+     */
+    virtual ~WeightedSampling();
 
     protected:
+    /// draws a defined number of samples without updating the estimators
+    virtual Instantiation _burnIn();
 
-        /// draws a defined number of samples without updating the estimators
-        virtual Instantiation _burnIn();
+    /// draws a sample according to Weighted sampling
+    /**
+    * @param w the weight of sample being generated
+    * @param prev the previous sample generated
+    * @param bn the bayesian network containing the evidence
+    * @param hardEvNodes hard evidence nodes
+    * @param hardEv hard evidences values
+    *
+    * Generates a new sample in topological order. Each sample has a weight bias.
+    * The sample weight is the product of each node's weight.
+    *
+    */
+    virtual Instantiation _draw(float* w, Instantiation prev);
+  };
 
-        /// draws a sample according to Weighted sampling
-        /**
-        * @param w the weight of sample being generated
-        * @param prev the previous sample generated
-        * @param bn the bayesian network containing the evidence
-        * @param hardEvNodes hard evidence nodes
-        * @param hardEv hard evidences values
-        *
-        * Generates a new sample in topological order. Each sample has a weight bias.
-        * The sample weight is the product of each node's weight.
-        *
-        */
-        virtual Instantiation
-        _draw(float *w, Instantiation prev, const IBayesNet<GUM_SCALAR> &bn = BayesNet<GUM_SCALAR>(),
-              const NodeSet &hardEvNodes = NodeSet(), const NodeProperty<Idx> &hardEv = NodeProperty<Idx>());
+  extern template class WeightedSampling< float >;
 
-    };
-
-    extern template
-    class WeightedSampling<float>;
-
-    extern template
-    class WeightedSampling<double>;
-
+  extern template class WeightedSampling< double >;
 }
 
 #include <agrum/BN/inference/weightedSampling_tpl.h>

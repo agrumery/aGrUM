@@ -19,7 +19,8 @@
  ***************************************************************************/
 /**
  * @file
- * @brief This file implements a Hybrid sampling class using LoopyBeliefPropagation and
+ * @brief This file implements a Hybrid sampling class using LoopyBeliefPropagation
+ * and
  * an approximate Inference method.
  *
  * @author Paul ALAM & Pierre-Henri WUILLEMIN
@@ -27,60 +28,62 @@
 
 #ifndef GUM_HYBRID_INFERENCE_H
 #define GUM_HYBRID_INFERENCE_H
-#include <agrum/BN/inference/weightedSampling.h>
-#include <agrum/BN/inference/importanceSampling.h>
-#include <agrum/BN/inference/MonteCarloSampling.h>
 #include <agrum/BN/inference/GibbsSampling.h>
+#include <agrum/BN/inference/MonteCarloSampling.h>
+#include <agrum/BN/inference/importanceSampling.h>
+#include <agrum/BN/inference/weightedSampling.h>
 
 namespace gum {
 
-		/**
-		* @class HybridApproxInference hybridApproxInference.h
-		*<agrum/BN/inference/hybridApproxInference.h>
-		* @brief class for making hybrid sampling inference with loopy belief propagation and
-		* an approximation inference method in bayesian networks.
-		* @ingroup bn_approximation
-		*
-		* This class inherits of template class APPROX, which SHOULD be one of the 4 approximate
-		* inference methods (MonteCarlo, Weighted, Importance, Gibbs).
-		* It makes the inference with respect to the inherited class' method, after having
-		* initialized the estimators with the posteriors obtained by running LoopyBeliefPropagation
-		* algorithm.
-		*
-		*/
+  /**
+  * @class HybridApproxInference hybridApproxInference.h
+  *<agrum/BN/inference/hybridApproxInference.h>
+  * @brief class for making hybrid sampling inference with loopy belief propagation
+  *and
+  * an approximation inference method in bayesian networks.
+  * @ingroup bn_approximation
+  *
+  * This class inherits of template class APPROX, which SHOULD be one of the 4
+  *approximate
+  * inference methods (MonteCarlo, Weighted, Importance, Gibbs).
+  * It makes the inference with respect to the inherited class' method, after
+  *having
+  * initialized the estimators with the posteriors obtained by running
+  *LoopyBeliefPropagation
+  * algorithm.
+  *
+  */
 
-  	template <typename GUM_SCALAR, template <typename> class APPROX>
-  	class HybridApproxInference : public APPROX<GUM_SCALAR> {
+  template < typename GUM_SCALAR, template < typename > class APPROX >
+  class HybridApproxInference : public APPROX< GUM_SCALAR > {
 
-		public:
+    public:
+    /**
+          * Default constructor
+     */
+    HybridApproxInference(const IBayesNet< GUM_SCALAR >* bn);
 
-		   /**
-			 * Default constructor
-		    */
-			HybridApproxInference(const IBayesNet<GUM_SCALAR>* bn);
+    /**
+          * destructor
+          */
+    virtual ~HybridApproxInference();
 
-		   /**
-			 * destructor
-			 */
-			virtual ~HybridApproxInference();
+    /// makes the inference by generating samples w.r.t the mother class' sampling
+    /// method after initalizing  estimators with loopy belief propagation
+    virtual void _makeInference();
+  };
 
-			/// makes the inference by generating samples w.r.t the mother class' sampling method after initalizing  estimators with loopy belief propagation
-		   virtual void _makeInference();
+  extern template class HybridApproxInference< float, WeightedSampling >;
+  extern template class HybridApproxInference< double, WeightedSampling >;
 
-	};
+  extern template class HybridApproxInference< float, ImportanceSampling >;
+  extern template class HybridApproxInference< double, ImportanceSampling >;
 
-  extern template class HybridApproxInference<float, WeightedSampling>;
-  extern template class HybridApproxInference<double, WeightedSampling>;
+  extern template class HybridApproxInference< float, MonteCarloSampling >;
+  extern template class HybridApproxInference< double, MonteCarloSampling >;
 
-  extern template class HybridApproxInference<float, ImportanceSampling>;
-  extern template class HybridApproxInference<double, ImportanceSampling>;
-
-  extern template class HybridApproxInference<float, MonteCarloSampling>;
-  extern template class HybridApproxInference<double, MonteCarloSampling>;
-
-  extern template class HybridApproxInference<float, GibbsSampling>;
-  extern template class HybridApproxInference<double, GibbsSampling>;
-
+  extern template class HybridApproxInference< float, GibbsSampling >;
+  extern template class HybridApproxInference< double, GibbsSampling >;
 }
 
 #include <agrum/BN/inference/hybridApproxInference_tpl.h>

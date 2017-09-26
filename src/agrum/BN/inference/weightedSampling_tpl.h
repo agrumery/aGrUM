@@ -31,74 +31,60 @@
 namespace gum {
 
 
-	/// Default constructor
-  template <typename GUM_SCALAR>
-  WeightedSampling<GUM_SCALAR>::WeightedSampling(const IBayesNet<GUM_SCALAR>* BN)
-  :  ApproximateInference<GUM_SCALAR>(BN) {
+  /// Default constructor
+  template < typename GUM_SCALAR >
+  WeightedSampling< GUM_SCALAR >::WeightedSampling(
+    const IBayesNet< GUM_SCALAR >* BN)
+      : ApproximateInference< GUM_SCALAR >(BN) {
 
-  	  this->setBurnIn(0);
-     GUM_CONSTRUCTOR(WeightedSampling);
-
+    this->setBurnIn(0);
+    GUM_CONSTRUCTOR(WeightedSampling);
   }
 
 
-	/// Destructor
-  template <typename GUM_SCALAR>
-  WeightedSampling<GUM_SCALAR>::~WeightedSampling() {
+  /// Destructor
+  template < typename GUM_SCALAR >
+  WeightedSampling< GUM_SCALAR >::~WeightedSampling() {
 
-     GUM_DESTRUCTOR(WeightedSampling);
-
+    GUM_DESTRUCTOR(WeightedSampling);
   }
 
 
-	/// No burn in needed for Weighted sampling
-  template <typename GUM_SCALAR>
-  Instantiation WeightedSampling<GUM_SCALAR>::_burnIn(){
-   	gum::Instantiation I;
-   	return I;
+  /// No burn in needed for Weighted sampling
+  template < typename GUM_SCALAR >
+  Instantiation WeightedSampling< GUM_SCALAR >::_burnIn() {
+    gum::Instantiation I;
+    return I;
   }
 
 
+  template < typename GUM_SCALAR >
+  Instantiation WeightedSampling< GUM_SCALAR >::_draw(float*        w,
+                                                      Instantiation prev) {
+    *w = 1.;
+    bool wrongValue = false;
+    do {
+      prev.clear();
+      wrongValue = false;
+      *w = 1.;
 
-  template <typename GUM_SCALAR>
-  Instantiation WeightedSampling<GUM_SCALAR>::_draw(float* w, Instantiation prev, const IBayesNet<GUM_SCALAR>& bn, const NodeSet& hardEvNodes, const NodeProperty<Idx>& hardEv){
+      for (auto nod : this->BN().topologicalOrder()) {
+        if (this->hardEvidenceNodes().contains(nod)) {
+          prev.add(this->BN().variable(nod));
+          prev.chgVal(this->BN().variable(nod), this->hardEvidence()[nod]);
+          auto localp = this->BN().cpt(nod).get(prev);
 
-	*w = 1.;
-	bool wrongValue = false;
+          if (localp == 0) {
+            wrongValue = true;
+            break;
+          }
 
-	do {
-
-		prev.clear(); wrongValue = false; *w = 1.;
-
-		for (auto nod: this->BN().topologicalOrder()){
-
-				if (this->hardEvidenceNodes().contains(nod)) {
-
-					prev.add(this->BN().variable(nod));
-					prev.chgVal(this->BN().variable(nod), this->hardEvidence()[nod] );
-					auto localp = this->BN().cpt(nod).get(prev);
-
-					if (localp == 0) {
-
-						wrongValue = true;
-						break;
-
-					}
-
-					*w *=  localp;
-					continue;
-
-				}
-
-				this->_addVarSample(nod, &prev);
-
-
-		}
-
-	} while (wrongValue);
-
-	return prev;
-
-  	}
+          *w *= localp;
+        } else {
+          this->_addVarSample(nod, &prev);
+        }
+      }
+    } while (wrongValue);
+    return prev;
+  }
 }
-

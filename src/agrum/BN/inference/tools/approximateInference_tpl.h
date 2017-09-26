@@ -99,14 +99,12 @@ namespace gum {
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
   ApproximateInference< GUM_SCALAR >::_posterior(const NodeId id) {
-    GUM_CHECKPOINT;
     return __estimator.posterior(this->BN().variable(id));
   }
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
   ApproximateInference< GUM_SCALAR >::_posterior(const std::string& name) {
-    GUM_CHECKPOINT;
     return _posterior(this->BN().idFromName(name));
   }
 
@@ -129,24 +127,25 @@ namespace gum {
 
     dSeparation dsep = gum::dSeparation();
     NodeSet     requisite;
-    dsep.requisiteNodes(__samplingBN->dag(),
-                        this->targets(),
-                        this->hardEvidenceNodes(),
-                        this->softEvidenceNodes(),
-                        requisite);
-    requisite += this->hardEvidenceNodes() + this->targets();
+    dsep.requisiteNodes(
+      this->BN().dag(),
+      this->BN().nodes().asNodeSet(),  // no target for approximateInference
+      this->hardEvidenceNodes(),
+      this->softEvidenceNodes(),  // should be empty
+      requisite);
+    requisite += this->hardEvidenceNodes();
 
-    auto nonRequisite = __samplingBN->dag().asNodeSet() - requisite;
+    auto nonRequisite = this->BN().dag().asNodeSet() - requisite;
 
     for (auto elmt : nonRequisite)
       __samplingBN->uninstallNode(elmt);
-
+    GUM_TRACE(__samplingBN->toDot());
     for (auto hard : this->hardEvidenceNodes()) {
       gum::Instantiation I;
       I.add(this->BN().variable(hard));
       I.chgVal(this->BN().variable(hard), this->hardEvidence()[hard]);
 
-      for (const auto& child : __samplingBN->dag().children(hard)) {
+      for (const auto& child : this->BN().dag().children(hard)) {
         gum::Potential< GUM_SCALAR >* p = new gum::Potential< GUM_SCALAR >();
         *p = this->BN().cpt(child).extract(I);
         __samplingBN->installCPT(child, p);
@@ -178,7 +177,8 @@ namespace gum {
       Ip = this->_draw(&w, Ip);
       __estimator.update(Ip, w);
       updateApproximationScheme();
-
+      std::cout << Ip << __estimator.posterior(this->BN().variableFromName("h"))
+                << "  " << __estimator.confidence() << std::endl;
     } while (continueApproximationScheme(__estimator.confidence()));
 
     this->isSetEstimator = false;
@@ -189,10 +189,12 @@ namespace gum {
   void ApproximateInference< GUM_SCALAR >::_addVarSample(NodeId         nod,
                                                          Instantiation* I) {
     gum::Instantiation Itop = gum::Instantiation(samplingBN().cpt(nod));
+    Itop.forgetMaster();
     Itop.erase(samplingBN().variable(nod));
 
     I->add(samplingBN().variable(nod));
+    GUM_TRACE(samplingBN().cpt(nod).extract(Itop));
     I->chgVal(samplingBN().variable(nod),
-              samplingBN().cpt(nod).extract(*I).draw());
+              samplingBN().cpt(nod).extract(Itop).draw());
   }
 }
