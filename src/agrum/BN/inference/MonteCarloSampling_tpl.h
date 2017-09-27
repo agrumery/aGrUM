@@ -74,7 +74,6 @@ namespace gum {
         }
       }
     } while (wrong_value);
-    GUM_TRACE(prev);
     return prev;
   }
 }

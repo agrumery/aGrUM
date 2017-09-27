@@ -851,7 +851,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(total, 3);
     }
 
-    void testEliminatationOffAllVariables() {
+    void /*test*/EliminatationOffAllVariables() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
 

@@ -139,7 +139,6 @@ namespace gum {
 
     for (auto elmt : nonRequisite)
       __samplingBN->uninstallNode(elmt);
-    GUM_TRACE(__samplingBN->toDot());
     for (auto hard : this->hardEvidenceNodes()) {
       gum::Instantiation I;
       I.add(this->BN().variable(hard));
@@ -177,8 +176,6 @@ namespace gum {
       Ip = this->_draw(&w, Ip);
       __estimator.update(Ip, w);
       updateApproximationScheme();
-      std::cout << Ip << __estimator.posterior(this->BN().variableFromName("h"))
-                << "  " << __estimator.confidence() << std::endl;
     } while (continueApproximationScheme(__estimator.confidence()));
 
     this->isSetEstimator = false;
@@ -188,12 +185,9 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ApproximateInference< GUM_SCALAR >::_addVarSample(NodeId         nod,
                                                          Instantiation* I) {
-    gum::Instantiation Itop = gum::Instantiation(samplingBN().cpt(nod));
-    Itop.forgetMaster();
-    Itop.erase(samplingBN().variable(nod));
+    gum::Instantiation Itop = gum::Instantiation(*I);
 
     I->add(samplingBN().variable(nod));
-    GUM_TRACE(samplingBN().cpt(nod).extract(Itop));
     I->chgVal(samplingBN().variable(nod),
               samplingBN().cpt(nod).extract(Itop).draw());
   }
