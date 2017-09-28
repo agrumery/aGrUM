@@ -91,3 +91,6 @@ apps/pyAgrum/samples/roc_alarm.dsl-alarm.csv-KINKEDTUBE-TRUE.png
 *.swp
 *.whl
 wrappers/pyAgrum/sphinx/sphinx_warnings.txt
+
+# VS Code working folder
+.vscode/
