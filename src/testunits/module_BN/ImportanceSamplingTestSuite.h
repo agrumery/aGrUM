@@ -349,17 +349,13 @@ namespace gum_tests {
 
       try {
         gum::ImportanceSampling< float > inf(&bn);
-        GUM_CHECKPOINT;
         inf.addEvidence(bn.idFromName("d"), 0);
         TS_ASSERT_THROWS(inf.addEvidence("i", std::vector< float >{1, 0, 1}),
                          gum::FatalError);
 
-        GUM_TRACE_VAR(inf.evidence());
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_IMPORTANCE);
-        GUM_TRACE_VAR(inf.evidence());
         inf.makeInference();
-        GUM_CHECKPOINT;
         TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"));
         TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 

@@ -31,10 +31,14 @@
 
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>
+#include <cxxtest/AgrumApproximationUtils.h>  // must be last include
 
 
 #define EPSILON_FOR_GIBBS_SIMPLE_TEST 5e-2
 #define EPSILON_FOR_GIBBS 5e-2
+
+#define EPSILON_FOR_GIBBS_HARD_TEST 8e-1 // it is a KL divergence
+#define EPSILON_FOR_HARD_GIBBS 1e-2
 
 namespace gum_tests {
 
@@ -44,18 +48,18 @@ namespace gum_tests {
     std::string __mess;
 
     public:
-    aSimpleGibbsApproxListener( gum::ApproximationScheme& sch )
-        : gum::ApproximationSchemeListener( sch )
-        , __nbr( 0 )
-        , __mess( "" ){};
+    aSimpleGibbsApproxListener(gum::ApproximationScheme& sch)
+        : gum::ApproximationSchemeListener(sch)
+        , __nbr(0)
+        , __mess(""){};
 
-    void whenProgress( const void*     buffer,
-                       const gum::Size a,
-                       const double    b,
-                       const double    c ) {
+    void whenProgress(const void*     buffer,
+                      const gum::Size a,
+                      const double    b,
+                      const double    c) {
       __nbr++;
     }
-    void whenStop( const void* buffer, const std::string s ) { __mess = s; }
+    void whenStop(const void* buffer, const std::string s) { __mess = s; }
 
     int         getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
@@ -64,408 +68,402 @@ namespace gum_tests {
 
 
     public:
-    void testGibbsApproxBinaryTreeWithoutEvidence() {
-      auto bn = gum::BayesNet<float>::fastPrototype(
-          "a->d->f;b->d->g;b->e->h;c->e;i->j->h" );
+    void testGibbsSimpleBN() {
+      auto bn =
+        gum::BayesNet< float >::fastPrototype("a->b->c->f;d->b->e->f;e->g");
+      unsharpen(bn);
 
-      gum::LazyPropagation<float> lazy( &bn );
+      gum::LazyPropagation< float > lazy(&bn);
       lazy.makeInference();
 
       try {
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
-        inf.setVerbosity( false );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.setVerbosity(false);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
+      }
+    }
+    void testGibbsApproxBinaryTreeWithoutEvidence() {
+      auto bn = gum::BayesNet< float >::fastPrototype(
+        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      unsharpen(bn);
+
+      gum::LazyPropagation< float > lazy(&bn);
+      lazy.addEvidence("d", 0);
+      lazy.addEvidence("g", 1);
+      lazy.makeInference();
+
+      try {
+        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence("d", 0);
+        inf.addEvidence("g", 1);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.setVerbosity(false);
+        inf.makeInference();
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxBinaryTreeWithEvidenceOnRoot() {
-      auto bn = gum::BayesNet<float>::fastPrototype(
-          "a->d->f;b->d->g;b->e->h;c->e;i->j->h" );
+      auto bn = gum::BayesNet< float >::fastPrototype(
+        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      unsharpen(bn);
       std::string ev = "b";
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( ev ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( ev ), 0 );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
-        inf.setVerbosity( false );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName(ev), 0);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.setVerbosity(false);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
 
     }  //
 
     void testGibbsApproxBinaryTreeWithEvidenceOnLeaf() {
-      auto bn = gum::BayesNet<float>::fastPrototype(
-          "a->d->f;b->d->g;b->e->h;c->e;i->j->h" );
+      auto bn = gum::BayesNet< float >::fastPrototype(
+        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      unsharpen(bn);
       std::string ev = "h";
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( ev ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( ev ), 0 );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
-        inf.setVerbosity( false );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName(ev), 0);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.setVerbosity(false);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxBinaryTreeWithEvidenceOnMid() {
-      auto bn = gum::BayesNet<float>::fastPrototype(
-          "a->d->f;b->d->g;b->e->h;c->e;i->j->h" );
+      auto bn = gum::BayesNet< float >::fastPrototype(
+        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      unsharpen(bn);
       std::string ev = "e";
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( ev ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( ev ), 0 );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
-        inf.setVerbosity( false );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName(ev), 0);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.setVerbosity(false);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxBinaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet<float>::fastPrototype(
-          "a->d->f;b->d->g;b->e->h;c->e;i->j->h" );
+      auto bn = gum::BayesNet< float >::fastPrototype(
+        "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
+      unsharpen(bn);
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( "e" ), 0 );
-        lazy.addEvidence( bn.idFromName( "b" ), 1 );
-        lazy.addEvidence( bn.idFromName( "h" ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName("e"), 0);
+        lazy.addEvidence(bn.idFromName("b"), 1);
+        lazy.addEvidence(bn.idFromName("h"), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( "e" ), 0 );
-        inf.addEvidence( bn.idFromName( "b" ), 1 );
-        inf.addEvidence( bn.idFromName( "h" ), 0 );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
-        inf.setVerbosity( false );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName("e"), 0);
+        inf.addEvidence(bn.idFromName("b"), 1);
+        inf.addEvidence(bn.idFromName("h"), 0);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.setVerbosity(false);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxNaryTreeWithMultipleEvidence() {
-      auto bn = gum::BayesNet<float>::fastPrototype(
-          "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h" );
+      auto bn = gum::BayesNet< float >::fastPrototype(
+        "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
+      unsharpen(bn);
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( "e" ), 0 );
-        lazy.addEvidence( bn.idFromName( "b" ), 1 );
-        lazy.addEvidence( bn.idFromName( "h" ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName("e"), 0);
+        lazy.addEvidence(bn.idFromName("b"), 1);
+        lazy.addEvidence(bn.idFromName("h"), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( "e" ), 0 );
-        inf.addEvidence( bn.idFromName( "b" ), 1 );
-        inf.addEvidence( bn.idFromName( "h" ), 0 );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName("e"), 0);
+        inf.addEvidence(bn.idFromName("b"), 1);
+        inf.addEvidence(bn.idFromName("h"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxSimpleBN() {
-      auto bn = gum::BayesNet<float>::fastPrototype( "a->b->c;a->d->c", 3 );
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
+      unsharpen(bn);
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
+        gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( "a" ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( "a" ), 0 );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName("a"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( "d" ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( "d" ), 0 );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName("d"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxCplxBN() {
-      auto bn = gum::BayesNet<float>::fastPrototype(
-          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3 );
+      auto bn = gum::BayesNet< float >::fastPrototype(
+        "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+      unsharpen(bn);
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
+        gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( "a" ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( "a" ), 0 );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName("a"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
-        lazy.addEvidence( bn.idFromName( "d" ), 0 );
+        gum::LazyPropagation< float > lazy(&bn);
+        lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( "d" ), 0 );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName("d"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_SIMPLE_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxAsia() {
-      gum::BayesNet<float>  bn;
-      gum::BIFReader<float> reader( &bn, GET_RESSOURCES_PATH( "asia.bif" ) );
-      int                   nbrErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
-      TS_ASSERT( nbrErr == 0 );
+      gum::BayesNet< float >  bn;
+      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
+      int                     nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_ASSERT(nbrErr == 0);
 
       try {
 
-        gum::LazyPropagation<float> lazy( &bn );
+        gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_HARD_GIBBS);
+        inf.setMinEpsilonRate(0.001);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION( 3 * EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_HARD_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxAlarm() {
-      gum::BayesNet<float>  bn;
-      gum::BIFReader<float> reader( &bn, GET_RESSOURCES_PATH( "alarm.bif" ) );
-      int                   nbrErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
-      TS_ASSERT( nbrErr == 0 );
+      gum::BayesNet< float >  bn;
+      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      int                     nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_ASSERT(nbrErr == 0);
 
       try {
-        gum::LazyPropagation<float> lazy( &bn );
+        gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
         APPROXINFERENCE_TEST_BEGIN_ITERATION
-        gum::GibbsSampling<float> inf( &bn );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_HARD_GIBBS);
+        inf.setMinEpsilonRate(0.001);
         inf.makeInference();
         // alarm is not good for GibbsApprox
-        APPROXINFERENCE_TEST_END_ITERATION( 25 * EPSILON_FOR_GIBBS_SIMPLE_TEST )
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_GIBBS_HARD_TEST)
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
     }
 
     void testGibbsApproxInfListener() {
-      gum::BayesNet<float>  bn;
-      gum::BIFReader<float> reader( &bn, GET_RESSOURCES_PATH( "alarm.bif" ) );
-      int                   nbrErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
-      TS_ASSERT( nbrErr == 0 );
+      gum::BayesNet< float >  bn;
+      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
+      int                     nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_ASSERT(nbrErr == 0);
 
-      gum::GibbsSampling<float>  inf( &bn );
-      aSimpleGibbsApproxListener agsl( inf );
-      inf.setVerbosity( true );
+      gum::GibbsSampling< float > inf(&bn);
+      aSimpleGibbsApproxListener  agsl(inf);
+      inf.setVerbosity(true);
 
       try {
         // Testing the inference
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-      } catch ( gum::Exception e ) {
-        TS_ASSERT( false );
+      } catch (gum::Exception e) {
+        TS_ASSERT(false);
       }
-      TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize() + inf.burnIn(),
-                        inf.nbrIterations() );
-      TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
+      TS_ASSERT_EQUALS(agsl.getNbr() * inf.periodSize() + inf.burnIn(),
+                       inf.nbrIterations());
+      TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""));
     }
 
 
     void testGibbsApproxDiabetes() {
-      gum::BayesNet<double>  bn;
-      gum::BIFReader<double> reader( &bn, GET_RESSOURCES_PATH( "Diabetes.bif" ) );
-      int                    nbrErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
-      TS_ASSERT( nbrErr == 0 );
+      gum::BayesNet< double >  bn;
+      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("Diabetes.bif"));
+      int                      nbrErr = 0;
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
+      TS_ASSERT(nbrErr == 0);
 
       try {
-        gum::GibbsSampling<double> inf( &bn );
-        inf.addEvidence( "bg_24", 0 );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
-        inf.setMaxTime( 10 );
+        gum::GibbsSampling< double > inf(&bn);
+        inf.addEvidence("bg_24", 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.setMaxTime(10);
         inf.makeInference();
-      } catch ( gum::Exception e ) {
-        GUM_SHOWERROR( e );
+      } catch (gum::Exception e) {
+        GUM_SHOWERROR(e);
       }
     }
 
 
     void testEvidenceAsTargetOnCplxBN() {
-      auto bn = gum::BayesNet<float>::fastPrototype(
-          "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3 );
+      auto bn = gum::BayesNet< float >::fastPrototype(
+        "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
+      unsharpen(bn);
 
       try {
-        gum::GibbsSampling<float> inf( &bn );
-        inf.addEvidence( bn.idFromName( "d" ), 0 );
-        inf.setVerbosity( false );
-        inf.setEpsilon( EPSILON_FOR_GIBBS );
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName("d"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
         inf.makeInference();
-        TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( "d" ) );
-        TS_GUM_ASSERT_THROWS_NOTHING( inf.posterior( bn.idFromName( "d" ) ) );
 
-      } catch ( gum::Exception& e ) {
+        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior("d"));
+        TS_GUM_ASSERT_THROWS_NOTHING(inf.posterior(bn.idFromName("d")));
 
-        GUM_SHOWERROR( e );
-        TS_ASSERT( false );
+      } catch (gum::Exception& e) {
+
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
-    }
-
-    private:
-    template <typename GUM_SCALAR>
-    bool __compareInference( const gum::BayesNet<GUM_SCALAR>&  bn,
-                             gum::LazyPropagation<GUM_SCALAR>& lazy,
-                             gum::GibbsSampling<GUM_SCALAR>&   inf,
-                             double                            errmax ) {
-
-      gum::Potential<float> softness, pl, pi;
-      softness.fill( 1e-1 );
-      float       err = static_cast<float>( 0 );
-      std::string argstr = "";
-      float       e;
-
-
-      for ( const auto& node : bn.nodes() ) {
-
-        if ( !inf.BN().dag().exists( node ) ) continue;
-
-        try {
-
-          pl = ( lazy.posterior( node ) + softness ).normalize();
-          pi = ( inf.posterior( node ) + softness ).normalize();
-          e = pl.KL( pi );
-
-        } catch ( gum::FatalError f ) {
-          e = std::numeric_limits<GUM_SCALAR>::infinity();
-
-        } catch ( gum::NotFound e ) {
-          continue;
-        }
-
-        if ( e > err ) {
-          err = e;
-          argstr = bn.variable( node ).name() + " (err=" + std::to_string( err ) +
-                   ") : \n";
-          argstr += "  lazy : " + pl.toString() + "\n";
-          argstr += "  inf : " + pi.toString() + " \n";
-        }
-      }
-      return err <= errmax;
     }
   };
 }  // namespace gum_tests

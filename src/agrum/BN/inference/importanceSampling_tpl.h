@@ -70,7 +70,9 @@ namespace gum {
       }
 
       for (auto nod : this->samplingBN().topologicalOrder()) {
-        this->_addVarSample(nod, &prev);
+        if (!this->hasHardEvidence(nod)) {
+          this->_addVarSample(nod, &prev);
+        }
         auto probaP = this->BN().cpt(nod).get(prev);
         auto probaQ = this->samplingBN().cpt(nod).get(prev);
         if ((probaP == 0) || (probaQ == 0)) {
@@ -117,11 +119,6 @@ namespace gum {
       GUM_CHECKPOINT;
       // we keep the variables with hard evidence but alone
       // bn->uninstallNode( sid[i] );
-    }
-
-    GUM_CHECKPOINT;
-    for (auto targ : this->targets()) {
-      if (this->BN().dag().exists(targ)) this->addTarget(targ);
     }
 
     GUM_CHECKPOINT;

@@ -29,7 +29,12 @@ bool __compareInference(const gum::BayesNet< GUM_SCALAR >&  bn,
 
     } catch (gum::FatalError) {
       // 0 in a proba
-      e = std::numeric_limits< GUM_SCALAR >::infinity();
+      try {
+        // we cannot use KL, we use quadratic error
+        e = (inf.posterior(node) - lazy.posterior(node)).sq().sum();
+      } catch (gum::FatalError) {
+        e = std::numeric_limits< GUM_SCALAR >::infinity();
+      }
 
     }
 
@@ -45,7 +50,10 @@ bool __compareInference(const gum::BayesNet< GUM_SCALAR >&  bn,
       argstr += "  inf : " + inf.posterior(node).toString() + " \n";
     }
   }
-  if (err > errmax) GUM_TRACE(argstr)
+  if (err > errmax) {
+    GUM_TRACE(argstr);
+    GUM_TRACE(inf.messageApproximationScheme());
+  }
   return err <= errmax;
 }
 
