@@ -63,6 +63,7 @@ cd ${WHEELHOUSE_DIR}/pyAgrum
 # Compile wheels
 for PYBIN in /opt/python/*/bin
 do
+  rm -rf ${WHEELHOUSE_DIR}/pyAgrum/build
   "${PYBIN}/python" ${WHEELHOUSE_DIR}/pyAgrum/setup.py sdist
   "${PYBIN}/python" ${WHEELHOUSE_DIR}/pyAgrum/setup.py bdist_wheel
 done
