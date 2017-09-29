@@ -14,7 +14,7 @@ cp ${AGRUM_DIR}/wrappers/swig/* ${WHEELHOUSE_DIR}/pyAgrum/pyAgrum
 # Extracting pyAgrum version from VERSION.txt
 MAJOR=$(cat ${AGRUM_DIR}/VERSION.txt | grep AGRUM_VERSION_MAJOR | sed 's/set(AGRUM_VERSION_MAJOR "\(.*\)")/\1/')
 MINOR=$(cat ${AGRUM_DIR}/VERSION.txt | grep AGRUM_VERSION_MINOR | sed 's/set(AGRUM_VERSION_MINOR "\(.*\)")/\1/')
-PATCH=$(cat ${AGRUM_DIR}/VERSION.txt | grep 'set(AGRUM_VERSION_PATCH' | sed 's/set(AGRUM_VERSION_PATCH "\([0-9]\).*")/\1/' | grep -v AGRUM_VERSION_PATCH)
+PATCH=$(cat ${AGRUM_DIR}/VERSION.txt | grep 'set(AGRUM_VERSION_PATCH' | sed 's/set(AGRUM_VERSION_PATCH "\(.*\)")/\1/' | grep -v AGRUM_VERSION_PATCH)
 
 if [ -z $MAJOR ]
 then
