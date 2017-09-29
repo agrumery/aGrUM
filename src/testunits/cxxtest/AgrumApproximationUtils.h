@@ -9,11 +9,11 @@ void unsharpen(const gum::BayesNet< GUM_SCALAR >& bn) {
     bn.cpt(nod).normalizeAsCPT();
   }
 }
-template < typename GUM_SCALAR, template < typename > class INFERENCE >
-bool __compareInference(const gum::BayesNet< GUM_SCALAR >&  bn,
-                        gum::LazyPropagation< GUM_SCALAR >& lazy,
-                        INFERENCE< GUM_SCALAR >&            inf,
-                        double                              errmax = 5e-2) {
+template < typename GUM_SCALAR >
+bool __compareInference(const gum::BayesNet< GUM_SCALAR >&       bn,
+                        gum::LazyPropagation< GUM_SCALAR >&      lazy,
+                        gum::ApproximateInference< GUM_SCALAR >& inf,
+                        double                                   errmax = 5e-2) {
 
   GUM_SCALAR  err = static_cast< GUM_SCALAR >(0);
   std::string argstr = "";
@@ -50,10 +50,10 @@ bool __compareInference(const gum::BayesNet< GUM_SCALAR >&  bn,
       argstr += "  inf : " + inf.posterior(node).toString() + " \n";
     }
   }
-  if (err > errmax) {
+  /*if (err > errmax) {
     GUM_TRACE(argstr);
     GUM_TRACE(inf.messageApproximationScheme());
-  }
+  }*/
   return err <= errmax;
 }
 

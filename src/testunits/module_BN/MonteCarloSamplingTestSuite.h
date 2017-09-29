@@ -58,11 +58,11 @@ namespace gum_tests {
       lazy.makeInference();
 
       try {
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
@@ -78,11 +78,11 @@ namespace gum_tests {
       lazy.makeInference();
 
       try {
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
         TS_ASSERT(false);
@@ -103,12 +103,12 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
       } catch (gum::Exception& e) {
 
         GUM_SHOWERROR(e);
@@ -127,13 +127,13 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.setVerbosity(false);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -153,13 +153,13 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName(ev), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName(ev), 0);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.setVerbosity(false);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -180,7 +180,7 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName("h"), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName("e"), 0);
         inf.addEvidence(bn.idFromName("b"), 1);
@@ -188,7 +188,7 @@ namespace gum_tests {
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.setVerbosity(false);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 
@@ -210,7 +210,7 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName("h"), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName("e"), 0);
         inf.addEvidence(bn.idFromName("b"), 1);
@@ -218,7 +218,7 @@ namespace gum_tests {
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 
@@ -237,12 +237,12 @@ namespace gum_tests {
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 
@@ -256,13 +256,13 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName("a"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 
@@ -276,13 +276,13 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 
@@ -301,12 +301,12 @@ namespace gum_tests {
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 
@@ -320,13 +320,13 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName("a"), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName("a"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 
@@ -340,13 +340,13 @@ namespace gum_tests {
         lazy.addEvidence(bn.idFromName("d"), 0);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.addEvidence(bn.idFromName("d"), 0);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -366,12 +366,12 @@ namespace gum_tests {
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 
@@ -393,12 +393,12 @@ namespace gum_tests {
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
 
-        APPROXINFERENCE_TEST_BEGIN_ITERATION
+        GUM_APPROX_TEST_BEGIN_ITERATION
         gum::MonteCarloSampling< float > inf(&bn);
         inf.setVerbosity(false);
         inf.setEpsilon(EPSILON_FOR_MONTECARLO);
         inf.makeInference();
-        APPROXINFERENCE_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_MONTECARLO_SIMPLE_TEST)
 
       } catch (gum::Exception& e) {
 

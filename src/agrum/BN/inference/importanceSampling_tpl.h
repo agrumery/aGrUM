@@ -108,24 +108,14 @@ namespace gum {
   void ImportanceSampling< GUM_SCALAR >::_onContextualize(
     BayesNetFragment< GUM_SCALAR >* bn) {
 
-    GUM_TRACE_VAR(this->hardEvidenceNodes());
     for (auto ev : this->hardEvidenceNodes()) {
-
-      GUM_CHECKPOINT;
       bn->uninstallCPT(ev);
-      GUM_TRACE_VAR(ev);
-      GUM_TRACE_VAR(this->hardEvidenceNodes());
       bn->installCPT(ev, new Potential< GUM_SCALAR >(*this->evidence()[ev]));
-      GUM_CHECKPOINT;
       // we keep the variables with hard evidence but alone
       // bn->uninstallNode( sid[i] );
     }
-
-    GUM_CHECKPOINT;
     auto minParam = bn->minNonZeroParam();
     auto minAccepted = this->epsilon() / bn->maxVarDomainSize();
-
-    GUM_CHECKPOINT;
     if (minParam < minAccepted) this->_unsharpenBN(bn, minAccepted);
   }
 }
