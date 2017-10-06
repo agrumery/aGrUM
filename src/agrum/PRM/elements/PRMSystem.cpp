@@ -34,4 +34,8 @@ namespace gum {
     template class PRMSystem<double>;
 
   } /* namespace prm */
+#ifdef __clang__
+  template class HashFuncMediumCastKey<gum::prm::PRMSystem<float>*>;
+  template class HashFuncMediumCastKey<gum::prm::PRMSystem<double>*>;
+#endif
 } /* namespace gum */
