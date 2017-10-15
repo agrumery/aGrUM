@@ -47,13 +47,10 @@ namespace gum {
 
     public:
     /**
-     *  constructors
+     *  constructor
      */
     GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
-                  Size                           nbr = 1,
-                  bool                           atRandom = false);
-    GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
-                  const NodeProperty< Idx >&     hardEv,
+                  const NodeProperty< Idx >*     hardEv,
                   Size                           nbr = 1,
                   bool                           atRandom = false);
 
@@ -62,7 +59,16 @@ namespace gum {
      */
     virtual ~GibbsOperator();
 
-    // draws a Monte Carlo sample
+    /** Getters and setters*/
+    Size nbrDrawnVar() const { return _nbr; }
+
+    void setNbrDrawnVar(Size _nbr) { _nbr = _nbr; }
+
+    bool isDrawnAtRandom() const { return _atRandom; }
+
+    void setDrawnAtRandom(bool _atRandom) { _atRandom = _atRandom; }
+
+    /// draws a Monte Carlo sample
     Instantiation monteCarloSample();
 
     /// draws next sample of Gibbs sampling
@@ -76,6 +82,8 @@ namespace gum {
     Sequence< NodeId >             _samplingNodes;
 
     Size _nbr;
+
+    protected:
     bool _atRandom;
 
 

@@ -14,8 +14,8 @@
 
 #include <cxxtest/AgrumApproximationUtils.h>  // must be last include
 
-#define EPSILON_FOR_MONTECARLO_SIMPLE_TEST 9e-2
-#define EPSILON_FOR_MONTECARLO 9e-2
+#define EPSILON_FOR_MONTECARLO_SIMPLE_TEST 15e-2
+#define EPSILON_FOR_MONTECARLO 2e-1
 
 namespace gum_tests {
 

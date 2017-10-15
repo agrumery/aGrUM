@@ -33,11 +33,11 @@
 #include <agrum/core/approximations/approximationSchemeListener.h>
 #include <cxxtest/AgrumApproximationUtils.h>  // must be last include
 
-#define EPSILON_FOR_HYBRID_SIMPLE_TEST 5e-2
-#define EPSILON_FOR_HYBRID 5e-2
+#define EPSILON_FOR_HYBRID_SIMPLE_TEST 2e-1
+#define EPSILON_FOR_HYBRID 1e-1
 
-#define EPSILON_FOR_HYBRID_HARD_TEST 9e-1
-#define EPSILON_FOR_HARD_HYBRID 1e-2
+#define EPSILON_FOR_HYBRID_HARD_TEST 3.5e-1
+#define EPSILON_FOR_HARD_HYBRID 1.5e-1
 
 namespace gum_tests {
 

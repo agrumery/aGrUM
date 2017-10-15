@@ -64,13 +64,20 @@ namespace gum {
     HybridApproxInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
-          * destructor
-          */
+     * destructor
+     */
     virtual ~HybridApproxInference();
 
     /// makes the inference by generating samples w.r.t the mother class' sampling
     /// method after initalizing  estimators with loopy belief propagation
     virtual void _makeInference();
+
+    void setVirtualLBPSize(GUM_SCALAR vlbpsize) {
+      if (vlbpsize > 0) _virtualLBPSize = vlbpsize;
+    };
+
+    protected:
+    GUM_SCALAR _virtualLBPSize;
   };
 
   extern template class HybridApproxInference< float, WeightedSampling >;

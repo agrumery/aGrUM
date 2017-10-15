@@ -28,7 +28,8 @@
 
 
 #include <agrum/BN/inference/hybridApproxInference.h>
-#define DEFAULT_LBP_MAX_ITER 20
+
+#define DEFAULT_VIRTUAL_LBP_SIZE 1000
 
 namespace gum {
 
@@ -36,8 +37,8 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class APPROX >
   HybridApproxInference< GUM_SCALAR, APPROX >::HybridApproxInference(
     const IBayesNet< GUM_SCALAR >* BN)
-      : APPROX< GUM_SCALAR >(BN) {
-
+      : APPROX< GUM_SCALAR >(BN)
+      , _virtualLBPSize(DEFAULT_VIRTUAL_LBP_SIZE) {
     GUM_CONSTRUCTOR(HybridApproxInference);
   }
 
@@ -53,27 +54,12 @@ namespace gum {
   void HybridApproxInference< GUM_SCALAR, APPROX >::_makeInference() {
 
     LoopyBeliefPropagation< GUM_SCALAR > lbp(&this->BN());
-    lbp.setMaxIter(DEFAULT_LBP_MAX_ITER);
     lbp.makeInference();
 
-    if (!this->isSetEstimator)
-      this->_setEstimatorFromLBP(&lbp);
+    if (!this->isSetEstimator) {
+      this->_setEstimatorFromLBP(&lbp,_virtualLBPSize);
+    }
 
-    this->initApproximationScheme();
-    gum::Instantiation Ip;
-    float              w = .0;  //
-
-    // Burn in
-    Ip = this->_burnIn();
-
-    do {
-
-      Ip = this->_draw(&w, Ip);
-      this->__estimator.update(Ip, w);
-      this->updateApproximationScheme();
-
-    } while (this->continueApproximationScheme(this->__estimator.confidence()));
-
-    this->isSetEstimator = false;
+    this->_loopApproxInference();
   }
 }

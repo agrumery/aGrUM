@@ -32,7 +32,7 @@
 #define GIBBS_DEFAULT_MIN_EPSILON_RATE 1e-4
 #define GIBBS_DEFAULT_PERIOD_SIZE 500
 #define GIBBS_DEFAULT_VERBOSITY false
-#define GIBBS_DEFAULT_BURNIN 3000
+#define GIBBS_DEFAULT_BURNIN 10000
 
 // to ease parsing for IDE
 #include <agrum/BN/inference/tools/BayesNetInference.h>

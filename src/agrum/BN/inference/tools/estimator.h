@@ -71,7 +71,8 @@ namespace gum {
     * sets the estimatoor object with posteriors obtained by LoopyBeliefPropagation
     */
     void setFromLBP( LoopyBeliefPropagation<GUM_SCALAR>* lbp,
-                     const NodeSet&                      hardEvidence );
+                     const NodeSet&                      hardEvidence,
+                     GUM_SCALAR     virtualLBPSize );
     /** @} */
 
     /// computes the maximum length of confidence interval for each possible value

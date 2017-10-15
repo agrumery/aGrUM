@@ -27003,6 +27003,90 @@ SWIGINTERN PyObject *SyntaxError_swigregister(PyObject *SWIGUNUSEDPARM(self), Py
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_randomValue__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Size arg1 ;
+  unsigned long val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Idx result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:randomValue",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_long(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "randomValue" "', argument " "1"" of type '" "gum::Size""'");
+  } 
+  arg1 = static_cast< gum::Size >(val1);
+  {
+    try {
+      result = (gum::Idx)gum::randomValue(arg1);
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_randomValue__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Idx result;
+  
+  if (!PyArg_ParseTuple(args,(char *)":randomValue")) SWIG_fail;
+  {
+    try {
+      result = (gum::Idx)gum::randomValue();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_randomValue(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[2] = {
+    0
+  };
+  Py_ssize_t ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = PyObject_Length(args);
+  for (ii = 0; (ii < 1) && (ii < argc); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 0) {
+    return _wrap_randomValue__SWIG_1(self, args);
+  }
+  if (argc == 1) {
+    int _v;
+    {
+      int res = SWIG_AsVal_unsigned_SS_long(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_randomValue__SWIG_0(self, args);
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number or type of arguments for overloaded function 'randomValue'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    gum::randomValue(gum::Size const)\n"
+    "    gum::randomValue()\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap_randomProba(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   double result;
@@ -45072,6 +45156,35 @@ SWIGINTERN PyObject *_wrap_Potential_double_translate(PyObject *SWIGUNUSEDPARM(s
     }
   }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Potential_double_draw(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  gum::Potential< double > *arg1 = (gum::Potential< double > *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  gum::Idx result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Potential_double_draw",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_gum__PotentialT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Potential_double_draw" "', argument " "1"" of type '" "gum::Potential< double > const *""'"); 
+  }
+  arg1 = reinterpret_cast< gum::Potential< double > * >(argp1);
+  {
+    try {
+      result = (gum::Idx)((gum::Potential< double > const *)arg1)->draw();
+    } catch (...) {
+      SetPythonizeAgrumException();
+      SWIG_fail;
+    }
+  }
+  resultobj = SWIG_From_unsigned_SS_long(static_cast< unsigned long >(result));
   return resultobj;
 fail:
   return NULL;
@@ -96193,6 +96306,10 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"SyntaxError_line", _wrap_SyntaxError_line, METH_VARARGS, (char *)"SyntaxError_line(self) -> gum::Size"},
 	 { (char *)"delete_SyntaxError", _wrap_delete_SyntaxError, METH_VARARGS, (char *)"delete_SyntaxError(self)"},
 	 { (char *)"SyntaxError_swigregister", SyntaxError_swigregister, METH_VARARGS, NULL},
+	 { (char *)"randomValue", _wrap_randomValue, METH_VARARGS, (char *)"\n"
+		"randomValue(max=2) -> gum::Idx\n"
+		"randomValue() -> gum::Idx\n"
+		""},
 	 { (char *)"randomProba", _wrap_randomProba, METH_VARARGS, (char *)"randomProba() -> double"},
 	 { (char *)"randomGeneratorSeed", _wrap_randomGeneratorSeed, METH_VARARGS, (char *)"randomGeneratorSeed() -> unsigned int"},
 	 { (char *)"initRandom", _wrap_initRandom, METH_VARARGS, (char *)"\n"
@@ -96863,6 +96980,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Potential_double_normalizeAsCPT", _wrap_Potential_double_normalizeAsCPT, METH_VARARGS, (char *)"Potential_double_normalizeAsCPT(self)"},
 	 { (char *)"Potential_double_scale", _wrap_Potential_double_scale, METH_VARARGS, (char *)"Potential_double_scale(self, v) -> Potential_double"},
 	 { (char *)"Potential_double_translate", _wrap_Potential_double_translate, METH_VARARGS, (char *)"Potential_double_translate(self, v) -> Potential_double"},
+	 { (char *)"Potential_double_draw", _wrap_Potential_double_draw, METH_VARARGS, (char *)"Potential_double_draw(self) -> gum::Idx"},
 	 { (char *)"Potential_double___add__", _wrap_Potential_double___add__, METH_VARARGS, (char *)"Potential_double___add__(self, p2) -> Potential_double"},
 	 { (char *)"Potential_double___sub__", _wrap_Potential_double___sub__, METH_VARARGS, (char *)"Potential_double___sub__(self, p2) -> Potential_double"},
 	 { (char *)"Potential_double___mul__", _wrap_Potential_double___mul__, METH_VARARGS, (char *)"Potential_double___mul__(self, p2) -> Potential_double"},

@@ -29,27 +29,15 @@
 #include <agrum/core/utils_random.h>
 
 namespace gum {
-  template < typename GUM_SCALAR >
-  GibbsOperator< GUM_SCALAR >::GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
-                                             Size                           nbr,
-                                             bool atRandom)
-      : _counting(0)
-      , _sampling_bn(BN)
-      , _hardEv(nullptr)
-      , _nbr(nbr)
-      , _atRandom(atRandom) {
-    __updateSamplingNodes();
-    GUM_CONSTRUCTOR(GibbsOperator);
-  }
 
   template < typename GUM_SCALAR >
   GibbsOperator< GUM_SCALAR >::GibbsOperator(const IBayesNet< GUM_SCALAR >& BN,
-                                             const NodeProperty< Idx >&     hardEv,
+                                             const NodeProperty< Idx >*     hardEv,
                                              Size                           nbr,
                                              bool atRandom)
       : _counting(0)
       , _sampling_bn(BN)
-      , _hardEv(&hardEv)
+      , _hardEv(hardEv)
       , _nbr(nbr)
       , _atRandom(atRandom) {
     __updateSamplingNodes();

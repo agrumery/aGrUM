@@ -14,8 +14,8 @@
 #include <agrum/core/approximations/approximationSchemeListener.h>
 #include <cxxtest/AgrumApproximationUtils.h>  // must be last include
 
-#define EPSILON_FOR_IMPORTANCE_SIMPLE_TEST 5e-2
-#define EPSILON_FOR_IMPORTANCE 5e-2
+#define EPSILON_FOR_IMPORTANCE_SIMPLE_TEST 15e-2
+#define EPSILON_FOR_IMPORTANCE 7e-2
 
 
 namespace gum_tests {

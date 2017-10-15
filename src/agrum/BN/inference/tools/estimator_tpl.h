@@ -93,23 +93,22 @@ namespace gum {
   template < typename GUM_SCALAR >
   void
   Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
-                                      const NodeSet& hardEvidence) {
+                                      const NodeSet& hardEvidence,
+                                      GUM_SCALAR     virtualLBPSize) {
 
-    for (gum::NodeGraphPartIterator iter = lbp->BN().nodes().begin();
-         iter != lbp->BN().nodes().end();
-         ++iter) {
+    for (const auto& node : lbp->BN().nodes()) {
 
-      if (!hardEvidence.contains(*iter)) {
+      if (!hardEvidence.contains(node)) {
 
         std::vector< GUM_SCALAR > v;
-        auto                      p = lbp->posterior(*iter);
+        auto                      p = lbp->posterior(node);
         gum::Instantiation        inst(p);
 
         for (inst.setFirst(); !inst.end(); ++inst) {
-          v.push_back(p[inst] * lbp->nbrIterations());
+          v.push_back(p[inst] * virtualLBPSize);
         }
 
-        _estimator.insert(lbp->BN().variable(*iter).name(), v);
+        _estimator.insert(lbp->BN().variable(node).name(), v);
       }
     }
   }

@@ -34,11 +34,11 @@
 #include <cxxtest/AgrumApproximationUtils.h>  // must be last include
 
 
-#define EPSILON_FOR_GIBBS_SIMPLE_TEST 5e-2
-#define EPSILON_FOR_GIBBS 5e-2
+#define EPSILON_FOR_GIBBS_SIMPLE_TEST 2e-1
+#define EPSILON_FOR_GIBBS 1e-1
 
-#define EPSILON_FOR_GIBBS_HARD_TEST 8e-1 // it is a KL divergence
-#define EPSILON_FOR_HARD_GIBBS 1e-2
+#define EPSILON_FOR_GIBBS_HARD_TEST 3.5e-1
+#define EPSILON_FOR_HARD_GIBBS 1.5e-1
 
 namespace gum_tests {
 

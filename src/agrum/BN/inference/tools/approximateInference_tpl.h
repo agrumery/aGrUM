@@ -32,12 +32,12 @@
 
 
 #define DEFAULT_MAXITER 10000000
-#define DEFAULT_MIN_EPSILON_RATE 1e-2
-#define DEFAULT_PERIOD_SIZE 500
+#define DEFAULT_PERIOD_SIZE 100
 #define DEFAULT_VERBOSITY false
-#define DEFAULT_BURNIN 2000
+#define DEFAULT_BURNIN 0
 #define DEFAULT_TIMEOUT 6000
 #define DEFAULT_EPSILON 1e-2
+#define DEFAULT_MIN_EPSILON_RATE 1e-5
 
 
 namespace gum {
@@ -89,9 +89,9 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ApproximateInference< GUM_SCALAR >::_setEstimatorFromLBP(
-    LoopyBeliefPropagation< GUM_SCALAR >* lbp) {
+    LoopyBeliefPropagation< GUM_SCALAR >* lbp, GUM_SCALAR virtualLBPSize) {
 
-    __estimator.setFromLBP(lbp, this->hardEvidenceNodes());
+    __estimator.setFromLBP(lbp, this->hardEvidenceNodes(), virtualLBPSize);
     this->isSetEstimator = true;
   }
 
@@ -158,12 +158,16 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void ApproximateInference< GUM_SCALAR >::_makeInference() {
+    if (!isSetEstimator) this->_setEstimatorFromBN();
+    _loopApproxInference();
+  }
+
+  template < typename GUM_SCALAR >
+  void ApproximateInference< GUM_SCALAR >::_loopApproxInference() {
     //@todo This should be in __prepareInference
     if (!isContextualized) {
       this->contextualize();
     }
-
-    if (!isSetEstimator) this->_setEstimatorFromBN();
 
     initApproximationScheme();
     gum::Instantiation Ip;

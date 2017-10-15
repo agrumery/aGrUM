@@ -116,8 +116,8 @@ namespace gum {
     return _enabled_max_iter;
   }
 
-  // stopping criterion on timeout If the criterion was disabled it will be
-  // enabled
+  // stopping criterion on timeout (in seconds)
+  // If the criterion was disabled it will be enabled
   INLINE void ApproximationScheme::setMaxTime( double timeout ) {
     if ( timeout <= 0. ) {
       GUM_ERROR( OutOfLowerBound, "timeout should be >0." );

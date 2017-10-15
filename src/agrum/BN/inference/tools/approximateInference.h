@@ -54,8 +54,8 @@ namespace gum {
    * and from ApproximationScheme.
    */
 
-  template <typename GUM_SCALAR>
-  class ApproximateInference : public MarginalTargetedInference<GUM_SCALAR>,
+  template < typename GUM_SCALAR >
+  class ApproximateInference : public MarginalTargetedInference< GUM_SCALAR >,
                                public ApproximationScheme {
 
     public:
@@ -69,7 +69,7 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the BN is not copied but only
              * referenced by the inference algorithm. */
 
-    ApproximateInference( const IBayesNet<GUM_SCALAR>* bn );
+    ApproximateInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
     virtual ~ApproximateInference();
@@ -81,7 +81,7 @@ namespace gum {
     // ############################################################################
     /// @{
     /// get the BayesNet which is used to really perform the sampling
-    const IBayesNet<GUM_SCALAR>& samplingBN();
+    const IBayesNet< GUM_SCALAR >& samplingBN();
 
     /// Computes and returns the posterior of a node.
     /**
@@ -95,7 +95,7 @@ namespace gum {
      * @throw UndefinedElement if node is not in the set of targets.
      * @throw NotFound if node is not in the BN.
      */
-    virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id );
+    virtual const Potential< GUM_SCALAR >& _posterior(const NodeId id);
 
     /// Computes and returns the posterior of a node referred by it's name.
     /**
@@ -111,7 +111,7 @@ namespace gum {
      * targets.
      * @throw NotFound if node corresponding to name is not in the BN.
      */
-    virtual const Potential<GUM_SCALAR>& _posterior( const std::string& name );
+    virtual const Potential< GUM_SCALAR >& _posterior(const std::string& name);
     /// @}
 
 
@@ -137,7 +137,8 @@ namespace gum {
     /// Initializes the estimators object linked to the simulation
     /**
      * Initializes the estimator object by creating a hashtable between non
-     * evidence nodes and a 0-filled potential which will approximate the node's posterior
+     * evidence nodes and a 0-filled potential which will approximate the node's
+     * posterior
      *
      */
     virtual void _setEstimatorFromBN();
@@ -145,18 +146,20 @@ namespace gum {
     /// Initializes the estimators object linked to the simulation
     /**
      * @param lbp a LoopyBeliefPropagation object
+     * @param virtualLBPSize the size of the equivalent sampling by LBP
      *
      * Initializes the estimator object by creating a hashtable between
      * non evidence nodes and the current approximation of the node's posterior
      * obtained by running LoopyBeliefPropagation algorithm
      *
      */
-    virtual void _setEstimatorFromLBP( LoopyBeliefPropagation<GUM_SCALAR>* lbp );
+    virtual void _setEstimatorFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
+                                      GUM_SCALAR     virtualLBPSize);
     ///@}
 
     protected:
     /// Estimator object designed to approximate target posteriors
-    Estimator<GUM_SCALAR> __estimator;
+    Estimator< GUM_SCALAR > __estimator;
 
     /// whether the Estimator object has been initialized
     bool isSetEstimator = false;
@@ -171,15 +174,13 @@ namespace gum {
     /**
     * @param w the weight of sample being generated
     * @param prev the previous sample generated
-    * @param bn the bayesian network containing the evidence
-    * @param hardEvNodes hard evidence nodes
-    * @param hardEv hard evidences values
     *
     */
-    virtual Instantiation _draw( float* w, Instantiation prev ) = 0;
+    virtual Instantiation _draw(float* w, Instantiation prev) = 0;
 
     /// makes the inference by generating samples
     virtual void _makeInference();
+    void         _loopApproxInference();
 
     /// adds a node to current instantiation
     /**
@@ -189,8 +190,7 @@ namespace gum {
     * generates random value based on the BN's CPT's and adds the node to the
     * Instantiation with that value
     */
-    virtual void
-    _addVarSample( NodeId nod, Instantiation* I);
+    virtual void _addVarSample(NodeId nod, Instantiation* I);
 
 
     /// fired when Bayesian network is contextualized
@@ -201,48 +201,46 @@ namespace gum {
     * @param hardEv hard evidences values
     *
     */
-    virtual void _onContextualize( BayesNetFragment<GUM_SCALAR>* bn ){};
+    virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn){};
 
 
-    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence ) {
-      if ( !isHardEvidence ) {
-        GUM_ERROR( FatalError,
-                   "Approximated inference only accept hard evidence" );
+    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence) {
+      if (!isHardEvidence) {
+        GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
       }
     };
 
-    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence ){};
+    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence){};
 
-    virtual void _onAllEvidenceErased( bool contains_hard_evidence ){};
+    virtual void _onAllEvidenceErased(bool contains_hard_evidence){};
 
-    virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard ) {
-      if ( hasChangedSoftHard ) {
-        GUM_ERROR( FatalError,
-                   "Approximated inference only accept hard evidence" );
+    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) {
+      if (hasChangedSoftHard) {
+        GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
       }
     };
 
-    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn ){};
+    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn){};
 
     virtual void _updateOutdatedBNStructure(){};
 
     virtual void _updateOutdatedBNPotentials(){};
 
-    virtual void _onMarginalTargetAdded( const NodeId id ){};
+    virtual void _onMarginalTargetAdded(const NodeId id){};
 
-    virtual void _onMarginalTargetErased( const NodeId id ){};
+    virtual void _onMarginalTargetErased(const NodeId id){};
 
     virtual void _onAllMarginalTargetsAdded(){};
 
     virtual void _onAllMarginalTargetsErased(){};
 
     private:
-    BayesNetFragment<GUM_SCALAR>* __samplingBN;
+    BayesNetFragment< GUM_SCALAR >* __samplingBN;
   };
 
 
-  extern template class ApproximateInference<float>;
-  extern template class ApproximateInference<double>;
+  extern template class ApproximateInference< float >;
+  extern template class ApproximateInference< double >;
 }
 
 #include <agrum/BN/inference/tools/approximateInference_tpl.h>

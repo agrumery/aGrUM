@@ -16,8 +16,8 @@
 #include <cxxtest/AgrumApproximationUtils.h>  // must be last include
 
 
-#define EPSILON_FOR_WEIGHTED_SIMPLE_TEST 5e-2
-#define EPSILON_FOR_WEIGHTED 5e-2
+#define EPSILON_FOR_WEIGHTED_SIMPLE_TEST 15e-2
+#define EPSILON_FOR_WEIGHTED 2e-1
 
 
 namespace gum_tests {

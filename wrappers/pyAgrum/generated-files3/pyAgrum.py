@@ -2645,6 +2645,13 @@ SyntaxError_swigregister = _pyAgrum.SyntaxError_swigregister
 SyntaxError_swigregister(SyntaxError)
 
 
+def randomValue(max: 'gum::Size const'=2) -> "gum::Idx":
+    """
+    randomValue(max=2) -> gum::Idx
+    randomValue() -> gum::Idx
+    """
+    return _pyAgrum.randomValue(max)
+
 def randomProba() -> "double":
     """randomProba() -> double"""
     return _pyAgrum.randomProba()
@@ -5221,6 +5228,11 @@ class Potential_double(_object):
 
 
         return val
+
+
+    def draw(self) -> "gum::Idx":
+        """draw(self) -> gum::Idx"""
+        return _pyAgrum.Potential_double_draw(self)
 
 
     def __add__(self, p2: 'Potential_double') -> "gum::Potential< double >":

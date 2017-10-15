@@ -107,8 +107,8 @@ class TestDictFeature(GibbsTestCase):
 
     ie2 = gum.GibbsSampling(self.bn)
     ie2.setVerbosity(False)
-    ie2.setEpsilon(0.01)
-    ie2.setMinEpsilonRate(0.01)
+    ie2.setEpsilon(0.001)
+    ie2.setMinEpsilonRate(0.001)
     ie2.setEvidence({'s': 'no', 'w': 'yes'})
     ie2.makeInference()
     result2 = ie2.posterior(self.r).tolist()
