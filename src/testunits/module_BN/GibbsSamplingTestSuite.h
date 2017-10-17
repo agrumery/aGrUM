@@ -37,8 +37,8 @@
 #define EPSILON_FOR_GIBBS_SIMPLE_TEST 2e-1
 #define EPSILON_FOR_GIBBS 1e-1
 
-#define EPSILON_FOR_GIBBS_HARD_TEST 3.5e-1
-#define EPSILON_FOR_HARD_GIBBS 1.5e-1
+#define EPSILON_FOR_GIBBS_HARD_TEST 2e-1
+#define EPSILON_FOR_HARD_GIBBS 1e-1
 
 namespace gum_tests {
 
@@ -374,31 +374,6 @@ namespace gum_tests {
       }
     }
 
-    void testGibbsApproxAlarm() {
-      gum::BayesNet< float >  bn;
-      gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
-      int                     nbrErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
-
-      try {
-        gum::LazyPropagation< float > lazy(&bn);
-        lazy.makeInference();
-
-        GUM_APPROX_TEST_BEGIN_ITERATION
-        gum::GibbsSampling< float > inf(&bn);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_HARD_GIBBS);
-        inf.setMinEpsilonRate(0.001);
-        inf.makeInference();
-        // alarm is not good for GibbsApprox
-        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_GIBBS_HARD_TEST)
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-        TS_ASSERT(false);
-      }
-    }
-
     void testGibbsApproxInfListener() {
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
@@ -422,27 +397,6 @@ namespace gum_tests {
                        inf.nbrIterations());
       TS_ASSERT_DIFFERS(agsl.getMess(), std::string(""));
     }
-
-
-    void testGibbsApproxDiabetes() {
-      gum::BayesNet< double >  bn;
-      gum::BIFReader< double > reader(&bn, GET_RESSOURCES_PATH("Diabetes.bif"));
-      int                      nbrErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
-      TS_ASSERT(nbrErr == 0);
-
-      try {
-        gum::GibbsSampling< double > inf(&bn);
-        inf.addEvidence("bg_24", 0);
-        inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_GIBBS);
-        inf.setMaxTime(10);
-        inf.makeInference();
-      } catch (gum::Exception e) {
-        GUM_SHOWERROR(e);
-      }
-    }
-
 
     void testEvidenceAsTargetOnCplxBN() {
       auto bn = gum::BayesNet< float >::fastPrototype(

@@ -25,7 +25,6 @@
 #include <agrum/core/exceptions.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/GibbsInference.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>

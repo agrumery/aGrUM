@@ -10,10 +10,12 @@ void unsharpen(const gum::BayesNet< GUM_SCALAR >& bn) {
   }
 }
 template < typename GUM_SCALAR >
-bool __compareInference(const gum::BayesNet< GUM_SCALAR >&       bn,
-                        gum::LazyPropagation< GUM_SCALAR >&      lazy,
-                        gum::ApproximateInference< GUM_SCALAR >& inf,
-                        double                                   errmax = 5e-2) {
+bool compareInference(const std::string&                       file,
+                      int                                      line,
+                      const gum::BayesNet< GUM_SCALAR >&       bn,
+                      gum::LazyPropagation< GUM_SCALAR >&      lazy,
+                      gum::ApproximateInference< GUM_SCALAR >& inf,
+                      double                                   errmax = 5e-2) {
 
   GUM_SCALAR  err = static_cast< GUM_SCALAR >(0);
   std::string argstr = "";
@@ -32,10 +34,24 @@ bool __compareInference(const gum::BayesNet< GUM_SCALAR >&       bn,
     }
   }
   if (err > errmax) {
-    GUM_TRACE(argstr);
-    GUM_TRACE(inf.messageApproximationScheme());
+    GUM__PRINT(file, line, argstr);
+    GUM__PRINT(file, line, inf.messageApproximationScheme());
   }
   return err <= errmax;
 }
 
+
+#define GUM_APPROX_TEST_BEGIN_ITERATION \
+  bool res = false;                     \
+  (void)res;                            \
+  for (int ii = 0; ii < 10; ii++) {
+
+#define GUM_APPROX_TEST_END_ITERATION(ERRMAX)                        \
+  if (compareInference(__FILE__, __LINE__, bn, lazy, inf, ERRMAX)) { \
+    res = true;                                                      \
+    break;                                                           \
+  }                                                                  \
+  std::cout << "![" << __LINE__ << "]" << std::flush;                \
+  if (ii == 10) TS_FAIL("even with 10 tries.");                      \
+  }
 #endif  // AGRUM_AGRUMAPPROXIMATIONUTILS_H_H

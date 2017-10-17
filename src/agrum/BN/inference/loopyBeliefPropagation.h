@@ -25,8 +25,7 @@
 #ifndef GUM_LOOPYBELIEFPROPAGATION_H
 #define GUM_LOOPYBELIEFPROPAGATION_H
 
-#include <agrum/BN/inference/tools/marginalTargetedInference.h>
-#include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/BN/inference/tools/approximateInference.h>
 
 namespace gum {
   /**
@@ -37,8 +36,7 @@ namespace gum {
 *
 */
   template <typename GUM_SCALAR>
-  class LoopyBeliefPropagation : public ApproximationScheme,
-                                 public MarginalTargetedInference<GUM_SCALAR> {
+  class LoopyBeliefPropagation : public ApproximateInference<GUM_SCALAR> {
     public:
     /**
      * Default constructor

@@ -28,7 +28,7 @@
 #ifndef GUM_GIBBS_SAMPLING_H
 #define GUM_GIBBS_SAMPLING_H
 
-#include <agrum/BN/inference/tools/approximateInference.h>
+#include <agrum/BN/inference/tools/samplingInference.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
 
 
@@ -49,7 +49,7 @@ namespace gum {
   */
 
   template <typename GUM_SCALAR>
-  class GibbsSampling : public ApproximateInference<GUM_SCALAR>,
+  class GibbsSampling : public SamplingInference<GUM_SCALAR>,
                         public GibbsOperator<GUM_SCALAR> {
 
     public:

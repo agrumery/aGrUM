@@ -28,7 +28,7 @@
 #ifndef GUM_WEIGHTED_INFERENCE_H
 #define GUM_WEIGHTED_INFERENCE_H
 
-#include <agrum/BN/inference/tools/approximateInference.h>
+#include <agrum/BN/inference/tools/samplingInference.h>
 
 namespace gum {
 
@@ -45,7 +45,7 @@ namespace gum {
       */
 
   template < typename GUM_SCALAR >
-  class WeightedSampling : public ApproximateInference< GUM_SCALAR > {
+  class WeightedSampling : public SamplingInference< GUM_SCALAR > {
 
     public:
     /**

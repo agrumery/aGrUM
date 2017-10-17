@@ -25,7 +25,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/BN/inference/GibbsSampling.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
@@ -110,7 +110,7 @@ namespace gum_tests {
         test_waiting();
         inf_ValElim.makeInference();
 
-        gum::GibbsInference<double> inf_gibbs( bn );
+        gum::GibbsSampling<double> inf_gibbs( bn );
         inf_gibbs.setVerbosity( false );
         inf_gibbs.setEpsilon( 1e-3 );
         inf_gibbs.setMinEpsilonRate( 1e-3 );
@@ -182,7 +182,7 @@ namespace gum_tests {
       test_waiting();
       inf_VarElim.makeInference();
 
-      gum::GibbsInference<double> inf_gibbs( bn );
+      gum::GibbsSampling<double> inf_gibbs( bn );
       for ( auto pot : list_pot )
         inf_gibbs.addEvidence( *pot );
       inf_gibbs.setVerbosity( false );
@@ -253,7 +253,7 @@ namespace gum_tests {
       test_waiting();
       inf_VarElim.makeInference();
 
-      gum::GibbsInference<double> inf_gibbs( bn );
+      gum::GibbsSampling<double> inf_gibbs( bn );
       for ( auto pot : list_pot )
         inf_gibbs.addEvidence( *pot );
       inf_gibbs.setVerbosity( false );
@@ -326,7 +326,7 @@ namespace gum_tests {
       list_pot.insert( &e_i4 );
 
       {
-        gum::GibbsInference<float> inf( &bn );
+        gum::GibbsSampling<float> inf( &bn );
         inf.setVerbosity( false );
         inf.makeInference();
         {

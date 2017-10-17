@@ -44,17 +44,16 @@ namespace gum {
   template <typename GUM_SCALAR>
   LoopyBeliefPropagation<GUM_SCALAR>::LoopyBeliefPropagation(
       const IBayesNet<GUM_SCALAR>* BN )
-      : ApproximationScheme()
-      , MarginalTargetedInference<GUM_SCALAR>( BN ) {
+      : ApproximateInference<GUM_SCALAR>( BN ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( LoopyBeliefPropagation );
 
-    setEpsilon( LBP_DEFAULT_EPSILON );
-    setMinEpsilonRate( LBP_DEFAULT_MIN_EPSILON_RATE );
-    setMaxIter( LBP_DEFAULT_MAXITER );
-    setVerbosity( LBP_DEFAULT_VERBOSITY );
-    setPeriodSize( LBP_DEFAULT_PERIOD_SIZE );
-    setBurnIn(0); //no burn in for LBP
+    this->setEpsilon( LBP_DEFAULT_EPSILON );
+    this->setMinEpsilonRate( LBP_DEFAULT_MIN_EPSILON_RATE );
+    this->setMaxIter( LBP_DEFAULT_MAXITER );
+    this->setVerbosity( LBP_DEFAULT_VERBOSITY );
+    this->setPeriodSize( LBP_DEFAULT_PERIOD_SIZE );
+    this->setBurnIn(0); //no burn in for LBP
 
     __init_messages();
   }
@@ -218,7 +217,7 @@ namespace gum {
   template <typename GUM_SCALAR>
   void LoopyBeliefPropagation<GUM_SCALAR>::_makeInference() {
     __initStats();
-    initApproximationScheme();
+    this->initApproximationScheme();
 
     std::vector<NodeId> shuffleIds;
     for ( const auto& node : this->BN().nodes() )
@@ -229,12 +228,12 @@ namespace gum {
     GUM_SCALAR error = 0.0;
     do {
       std::shuffle( std::begin( shuffleIds ), std::end( shuffleIds ), engine );
-      updateApproximationScheme();
+      this->updateApproximationScheme();
       for ( const auto& node : shuffleIds ) {
         GUM_SCALAR e = __updateNodeMessage( node );
         if ( e > error ) error = e;
       }
-    } while ( continueApproximationScheme( error ) );
+    } while ( this->continueApproximationScheme( error ) );
   }
 
 

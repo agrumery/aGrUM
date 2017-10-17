@@ -28,6 +28,8 @@
 
 #ifndef GUM_HYBRID_INFERENCE_H
 #define GUM_HYBRID_INFERENCE_H
+#include <agrum/BN/inference/tools/marginalTargetedInference.h>
+#include <agrum/BN/inference/tools/approximateInference.h>
 #include <agrum/BN/inference/GibbsSampling.h>
 #include <agrum/BN/inference/MonteCarloSampling.h>
 #include <agrum/BN/inference/importanceSampling.h>

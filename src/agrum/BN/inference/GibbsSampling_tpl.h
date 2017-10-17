@@ -26,29 +26,29 @@
 
 #include <agrum/BN/inference/GibbsSampling.h>
 
-#define GIBBS_DEFAULT_EPSILON 1e-4 * std::log(2)
-#define GIBBS_DEFAULT_MIN_EPSILON_RATE 1e-6 * std::log(2)
-#define GIBBS_DEFAULT_BURNIN 1000
+#define GIBBS_SAMPLING_DEFAULT_EPSILON 1e-4 * std::log(2)
+#define GIBBS_SAMPLING_DEFAULT_MIN_EPSILON_RATE 1e-6 * std::log(2)
+#define GIBBS_SAMPLING_DEFAULT_BURNIN 1000
 
-#define GIBBS_POURCENT_DRAWN_SAMPLE 10 // percent drawn
-#define GIBBS_DRAWN_AT_RANDOM false
+#define GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE 50 // percent drawn
+#define GIBBS_SAMPLING_DRAWN_AT_RANDOM false
 
 namespace gum {
 
   ///  default constructor
   template < typename GUM_SCALAR >
   GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* BN)
-      : ApproximateInference< GUM_SCALAR >(BN)
+      : SamplingInference< GUM_SCALAR >(BN)
       , GibbsOperator< GUM_SCALAR >(
           *BN,
           &this->hardEvidence(),
-          1 + (BN->size() * GIBBS_POURCENT_DRAWN_SAMPLE / 100),
-          GIBBS_DRAWN_AT_RANDOM) {
+          1 + (BN->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
+          GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsSampling);
 
-    this->setEpsilon(GIBBS_DEFAULT_EPSILON);
-    this->setMinEpsilonRate(GIBBS_DEFAULT_MIN_EPSILON_RATE);
-    this->setBurnIn(GIBBS_DEFAULT_BURNIN);
+    this->setEpsilon(GIBBS_SAMPLING_DEFAULT_EPSILON);
+    this->setMinEpsilonRate(GIBBS_SAMPLING_DEFAULT_MIN_EPSILON_RATE);
+    this->setBurnIn(GIBBS_SAMPLING_DEFAULT_BURNIN);
   }
 
   /// destructor

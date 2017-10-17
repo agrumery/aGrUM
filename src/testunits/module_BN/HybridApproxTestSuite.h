@@ -26,6 +26,7 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/hybridApproxInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/loopyBeliefPropagation.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/variables/labelizedVariable.h>
 
@@ -36,8 +37,8 @@
 #define EPSILON_FOR_HYBRID_SIMPLE_TEST 2e-1
 #define EPSILON_FOR_HYBRID 1e-1
 
-#define EPSILON_FOR_HYBRID_HARD_TEST 3.5e-1
-#define EPSILON_FOR_HARD_HYBRID 1.5e-1
+#define EPSILON_FOR_HYBRID_HARD_TEST 2e-1
+#define EPSILON_FOR_HARD_HYBRID 6e-2
 
 namespace gum_tests {
 
@@ -45,6 +46,7 @@ namespace gum_tests {
     private:
     int         __nbr;
     std::string __mess;
+
     public:
     aSimpleHybridListener(gum::ApproximationScheme& sch)
         : gum::ApproximationSchemeListener(sch)
@@ -72,6 +74,10 @@ namespace gum_tests {
       try {
         gum::LazyPropagation< float > lazy(&bn);
         lazy.makeInference();
+
+        gum::LoopyBeliefPropagation< float > lbp(&bn);
+        lbp.makeInference();
+        compareInference(__FILE__, __LINE__, bn, lazy, lbp);
 
         GUM_APPROX_TEST_BEGIN_ITERATION
         gum::HybridApproxInference< float, gum::WeightedSampling > inf(&bn);
@@ -392,9 +398,9 @@ namespace gum_tests {
         GUM_APPROX_TEST_BEGIN_ITERATION;
         gum::HybridApproxInference< float, gum::WeightedSampling > inf(&bn);
         inf.setVerbosity(false);
-        inf.setEpsilon(EPSILON_FOR_HYBRID);
+        inf.setEpsilon(EPSILON_FOR_HARD_HYBRID);
         inf.makeInference();
-        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_SIMPLE_TEST);
+        GUM_APPROX_TEST_END_ITERATION(EPSILON_FOR_HYBRID_HARD_TEST);
 
       } catch (gum::Exception& e) {
 

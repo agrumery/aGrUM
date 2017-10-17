@@ -29,7 +29,7 @@
 
 #include <agrum/BN/inference/hybridApproxInference.h>
 
-#define DEFAULT_VIRTUAL_LBP_SIZE 1000
+#define DEFAULT_VIRTUAL_LBP_SIZE 5000
 
 namespace gum {
 
@@ -54,10 +54,13 @@ namespace gum {
   void HybridApproxInference< GUM_SCALAR, APPROX >::_makeInference() {
 
     LoopyBeliefPropagation< GUM_SCALAR > lbp(&this->BN());
+    for (const auto x : this->hardEvidence()) {
+      lbp.addEvidence(x.first, x.second);
+    }
     lbp.makeInference();
 
     if (!this->isSetEstimator) {
-      this->_setEstimatorFromLBP(&lbp,_virtualLBPSize);
+      this->_setEstimatorFromLBP(&lbp, _virtualLBPSize);
     }
 
     this->_loopApproxInference();

@@ -28,7 +28,7 @@
 #ifndef GUM_MONTE_CARLO_INFERENCE_H
 #define GUM_MONTE_CARLO_INFERENCE_H
 
-#include <agrum/BN/inference/tools/approximateInference.h>
+#include <agrum/BN/inference/tools/samplingInference.h>
 
 namespace gum {
 
@@ -45,7 +45,7 @@ namespace gum {
 
 
     template<typename GUM_SCALAR>
-    class MonteCarloSampling : public ApproximateInference<GUM_SCALAR> {
+    class MonteCarloSampling : public SamplingInference<GUM_SCALAR> {
 
     public:
 
