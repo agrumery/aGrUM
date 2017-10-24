@@ -112,7 +112,7 @@ namespace gum {
     GUM_SCALAR _wtotal;
 
     /// number of generated samples
-    int _ntotal;
+    Size _ntotal;
 
     /// bayesian network on which approximation is done
     const IBayesNet<GUM_SCALAR>* _bn;

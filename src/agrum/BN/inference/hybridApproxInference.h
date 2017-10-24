@@ -28,11 +28,11 @@
 
 #ifndef GUM_HYBRID_INFERENCE_H
 #define GUM_HYBRID_INFERENCE_H
-#include <agrum/BN/inference/tools/marginalTargetedInference.h>
-#include <agrum/BN/inference/tools/approximateInference.h>
 #include <agrum/BN/inference/GibbsSampling.h>
 #include <agrum/BN/inference/MonteCarloSampling.h>
 #include <agrum/BN/inference/importanceSampling.h>
+#include <agrum/BN/inference/tools/approximateInference.h>
+#include <agrum/BN/inference/tools/marginalTargetedInference.h>
 #include <agrum/BN/inference/weightedSampling.h>
 
 namespace gum {
@@ -93,6 +93,18 @@ namespace gum {
 
   extern template class HybridApproxInference< float, GibbsSampling >;
   extern template class HybridApproxInference< double, GibbsSampling >;
+
+  template < typename GUM_SCALAR >
+  using HybridMonteCarloSampling =
+    HybridApproxInference< GUM_SCALAR, MonteCarloSampling >;
+  template < typename GUM_SCALAR >
+  using HybridWeightedSampling =
+    HybridApproxInference< GUM_SCALAR, WeightedSampling >;
+  template < typename GUM_SCALAR >
+  using HybridImportanceSampling =
+    HybridApproxInference< GUM_SCALAR, ImportanceSampling >;
+  template < typename GUM_SCALAR >
+  using HybridGibbsSampling = HybridApproxInference< GUM_SCALAR, GibbsSampling >;
 }
 
 #include <agrum/BN/inference/hybridApproxInference_tpl.h>

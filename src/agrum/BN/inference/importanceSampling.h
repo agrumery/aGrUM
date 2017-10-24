@@ -52,7 +52,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    ImportanceSampling( const IBayesNet<GUM_SCALAR>* BN );
+    ImportanceSampling( const IBayesNet<GUM_SCALAR>* bn );
 
 
     /**

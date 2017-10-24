@@ -47,7 +47,10 @@ namespace gum {
    *
    * The goal of this class is to define the genereal scheme used by all
    * sampling inference algorithms,
-   * which are implemented as derived classes of SamplingInference.
+   * which are implemented as derived classes of ApproximateInference.
+   * This class inherits from MarginalTargetedInference for the handling of
+   * marginal targets
+   * and from ApproximationScheme.
    */
 
   template < typename GUM_SCALAR >

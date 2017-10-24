@@ -26,23 +26,23 @@
 
 #include <agrum/BN/inference/GibbsSampling.h>
 
-#define GIBBS_SAMPLING_DEFAULT_EPSILON 1e-4 * std::log(2)
-#define GIBBS_SAMPLING_DEFAULT_MIN_EPSILON_RATE 1e-6 * std::log(2)
-#define GIBBS_SAMPLING_DEFAULT_BURNIN 1000
+#define GIBBS_SAMPLING_DEFAULT_EPSILON std::exp(-1.6)
+#define GIBBS_SAMPLING_DEFAULT_MIN_EPSILON_RATE std::exp(-5)
+#define GIBBS_SAMPLING_DEFAULT_BURNIN 300
 
 #define GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE 50 // percent drawn
-#define GIBBS_SAMPLING_DRAWN_AT_RANDOM false
+#define GIBBS_SAMPLING_DRAWN_AT_RANDOM true
 
 namespace gum {
 
   ///  default constructor
   template < typename GUM_SCALAR >
-  GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* BN)
-      : SamplingInference< GUM_SCALAR >(BN)
+  GibbsSampling< GUM_SCALAR >::GibbsSampling(const IBayesNet< GUM_SCALAR >* bn)
+      : SamplingInference< GUM_SCALAR >(bn)
       , GibbsOperator< GUM_SCALAR >(
-          *BN,
+          *bn,
           &this->hardEvidence(),
-          1 + (BN->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
+          1 + (bn->size() * GIBBS_SAMPLING_POURCENT_DRAWN_SAMPLE / 100),
           GIBBS_SAMPLING_DRAWN_AT_RANDOM) {
     GUM_CONSTRUCTOR(GibbsSampling);
 

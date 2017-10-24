@@ -53,7 +53,6 @@ namespace gum {
     this->setMaxIter( LBP_DEFAULT_MAXITER );
     this->setVerbosity( LBP_DEFAULT_VERBOSITY );
     this->setPeriodSize( LBP_DEFAULT_PERIOD_SIZE );
-    this->setBurnIn(0); //no burn in for LBP
 
     __init_messages();
   }

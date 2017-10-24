@@ -90,6 +90,7 @@
 #include <agrum/BN/inference/importanceSampling.h>
 #include <agrum/BN/inference/weightedSampling.h>
 #include <agrum/BN/inference/MonteCarloSampling.h>
+#include <agrum/BN/inference/hybridApproxInference.h>
 
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 
@@ -145,7 +146,7 @@ namespace std {
 }
 
 
-%define ADD_APPROXIMATIONSCHEME_API(parent,classname)
+%define ADD_APPROXIMATIONSCHEME_API(parent,classname...)
 %extend classname {
   using parent::setVerbosity;
   using parent::setEpsilon;
@@ -153,7 +154,6 @@ namespace std {
   using parent::setMaxIter;
   using parent::setMaxTime;
   using parent::setPeriodSize;
-  using parent::setBurnIn;
 
   using parent::verbosity;
   using parent::epsilon;
@@ -161,7 +161,6 @@ namespace std {
   using parent::maxIter;
   using parent::maxTime;
   using parent::periodSize;
-  using parent::burnIn;
 
   using parent::nbrIterations;
   using parent::currentTime;
@@ -178,6 +177,9 @@ ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::ImportanceSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::WeightedSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::MonteCarloSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::HybridApproxInference<double,gum::ImportanceSampling>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::HybridApproxInference<double,gum::WeightedSampling>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::HybridApproxInference<double,gum::GibbsSampling>)
 
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
 
@@ -316,6 +318,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %include <agrum/BN/inference/importanceSampling.h>
 %include <agrum/BN/inference/weightedSampling.h>
 %include <agrum/BN/inference/MonteCarloSampling.h>
+%include <agrum/BN/inference/hybridApproxInference.h>
 
 %include <agrum/BN/inference/loopyBeliefPropagation.h>
 
@@ -369,6 +372,9 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( ImportanceSampling_double ) gum::ImportanceSampling<double>;
 %template ( WeightedSampling_double ) gum::WeightedSampling<double>;
 %template ( MonteCarloSampling_double ) gum::MonteCarloSampling<double>;
+%template ( HybridImportanceSampling_double ) gum::HybridApproxInference<double,gum::ImportanceSampling>;
+%template ( HybridWeightedSampling_double ) gum::HybridApproxInference<double,gum::WeightedSampling>;
+%template ( HybridGibbsSampling_double ) gum::HybridApproxInference<double,gum::GibbsSampling>;
 
 %template ( LoopyBeliefPropagation_double ) gum::LoopyBeliefPropagation<double>;
 

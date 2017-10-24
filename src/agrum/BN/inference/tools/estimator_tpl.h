@@ -32,7 +32,7 @@ namespace gum {
 
     GUM_CONSTRUCTOR(Estimator);
     _wtotal = (GUM_SCALAR)0.;
-    _ntotal = 0;
+    _ntotal = (Size)0;
     _bn = nullptr;
   }
 
@@ -111,6 +111,8 @@ namespace gum {
         _estimator.insert(lbp->BN().variable(node).name(), v);
       }
     }
+    _ntotal = (Size)virtualLBPSize;
+    _wtotal = virtualLBPSize;
   }
 
   /*update the Estimator given an instantiation I with weight bias w*/
@@ -119,7 +121,7 @@ namespace gum {
   void Estimator< GUM_SCALAR >::update(Instantiation I, GUM_SCALAR w) {
 
     _wtotal += w;
-    _ntotal += 1;
+    _ntotal += (Size)1;
 
     for (Idx i = 0; i < I.nbrDim(); i++) {
       if (_estimator.exists(I.variable(i).name()))

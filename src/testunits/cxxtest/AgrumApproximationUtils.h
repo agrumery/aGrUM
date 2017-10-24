@@ -33,10 +33,10 @@ bool compareInference(const std::string&                       file,
       argstr += "  inf : " + inf.posterior(node).toString() + " \n";
     }
   }
-  if (err > errmax) {
+  /*if (err > errmax) {
     GUM__PRINT(file, line, argstr);
     GUM__PRINT(file, line, inf.messageApproximationScheme());
-  }
+  }*/
   return err <= errmax;
 }
 

@@ -52,7 +52,7 @@ namespace gum {
         /**
          * Default constructor
          */
-        MonteCarloSampling(const IBayesNet<GUM_SCALAR> *BN);
+        MonteCarloSampling(const IBayesNet<GUM_SCALAR> *bn);
 
         /**
          * Destructor

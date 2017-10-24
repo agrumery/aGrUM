@@ -299,7 +299,7 @@ namespace gum_tests {
         TS_ASSERT( false );
       }
 
-      TS_ASSERT_EQUALS( mcl.nbr() * lp.periodSize() + lp.burnIn(),
+      TS_ASSERT_EQUALS( mcl.nbr() * lp.periodSize(),
                         lp.nbrIterations() );
       TS_ASSERT_DIFFERS( mcl.msg(), std::string( "" ) );
 

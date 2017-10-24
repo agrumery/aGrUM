@@ -51,7 +51,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    WeightedSampling(const IBayesNet< GUM_SCALAR >* BN);
+    WeightedSampling(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
      * Destructor

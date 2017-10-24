@@ -34,7 +34,6 @@
 #define DEFAULT_MAXITER 10000000
 #define DEFAULT_PERIOD_SIZE 100
 #define DEFAULT_VERBOSITY false
-#define DEFAULT_BURNIN 0
 #define DEFAULT_TIMEOUT 6000
 #define DEFAULT_EPSILON 1e-2
 #define DEFAULT_MIN_EPSILON_RATE 1e-5
@@ -55,7 +54,6 @@ namespace gum {
     this->setVerbosity(DEFAULT_VERBOSITY);
     this->setPeriodSize(DEFAULT_PERIOD_SIZE);
     this->setMaxTime(DEFAULT_TIMEOUT);
-    this->setBurnIn(DEFAULT_BURNIN);
     GUM_CONSTRUCTOR(SamplingInference);
   }
 

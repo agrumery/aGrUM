@@ -33,19 +33,6 @@
 
 namespace gum {
 
-    /**
-     * @class ApproximateInference approximateInference.h
-     * <agrum/BN/inference/approximateInference.h>
-     * @brief A generic class for making approximate inference in bayesian networks
-     * adapted
-     *
-     * @ingroup bn_approximation
-     *
-     * The goal of this class is to define the general scheme used by all
-     * approximate inference algorithms, which are implemented as derived classes of ApproximateInference.
-     * This class inherits from MarginalTargetedInference for the handling of
-     * marginal targets and from ApproximationScheme.
-     */
   template < typename GUM_SCALAR >
   class ApproximateInference : public MarginalTargetedInference< GUM_SCALAR >,
                                public ApproximationScheme {

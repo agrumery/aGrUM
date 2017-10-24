@@ -33,10 +33,9 @@ namespace gum {
   ///  default constructor
   template < typename GUM_SCALAR >
   ImportanceSampling< GUM_SCALAR >::ImportanceSampling(
-    const IBayesNet< GUM_SCALAR >* BN)
-      : SamplingInference< GUM_SCALAR >(BN) {
+    const IBayesNet< GUM_SCALAR >* bn)
+      : SamplingInference< GUM_SCALAR >(bn) {
 
-    this->setBurnIn(0);
     GUM_CONSTRUCTOR(ImportanceSampling);
   }
 

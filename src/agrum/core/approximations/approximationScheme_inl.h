@@ -159,13 +159,6 @@ namespace gum {
     return _period_size;
   }
 
-  // size of burn in on number of iteration
-  INLINE void ApproximationScheme::setBurnIn( Size b ) {
-    _burn_in = b;
-  }
-
-  INLINE Size ApproximationScheme::burnIn( void ) const { return _burn_in; }
-
   // verbosity
   INLINE void ApproximationScheme::setVerbosity( bool v ) { _verbosity = v; }
 

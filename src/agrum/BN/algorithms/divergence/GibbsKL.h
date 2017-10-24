@@ -39,46 +39,45 @@
 
 namespace gum {
 
-/**
-  * GibbsKL2 computes the KL divergence betweens 2 BNs using an approximation
-  *pattern
-  *: GIBBS sampling.
-  *
-  * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
-  *computations are made once. The second is for free :)
-  * GibbsKL allows as well to compute in the same time the Hellinger distance
-  *(\f$
-  *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001)
-  * and Bhattacharya distance (Kaylath,T. 1967)
-  *
-  * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
-  *case, KL
-  *keeps working but trace this error (errorPQ() and errorQP()). In those cases,
-  *Hellinger distance approximation is under-evaluated.
-  *
-  * @warning : convergence and stop criteria are designed w.r.t the main
-  *computation
-  *: KL(P||Q). The 3 others have no guarantee.
-  *
-  * snippets :
-  * @code
-  * gum::KL base_kl(net1,net2);
-  * if (base_kl.difficulty()!=KL::HEAVY) {
-  *  gum::BruteForceKL kl(base_kl);
-  *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
-  * } else {
-  *  gum::GibbsKL2 kl(base_kl);
-  *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
-  * }
-  * @endcode
-  */
+  /**
+    * GibbsKL2 computes the KL divergence betweens 2 BNs using an approximation
+    *pattern
+    *: GIBBS sampling.
+    *
+    * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
+    *computations are made once. The second is for free :)
+    * GibbsKL allows as well to compute in the same time the Hellinger distance
+    *(\f$
+    *\sqrt{\sum_i (\sqrt{p_i}-\sqrt{q_i})^2}\f$) (Kokolakis and Nanopoulos, 2001)
+    * and Bhattacharya distance (Kaylath,T. 1967)
+    *
+    * It may happen that P*ln(P/Q) is not computable (Q=0 and P!=0). In such a
+    *case, KL
+    *keeps working but trace this error (errorPQ() and errorQP()). In those cases,
+    *Hellinger distance approximation is under-evaluated.
+    *
+    * @warning : convergence and stop criteria are designed w.r.t the main
+    *computation
+    *: KL(P||Q). The 3 others have no guarantee.
+    *
+    * snippets :
+    * @code
+    * gum::KL base_kl(net1,net2);
+    * if (base_kl.difficulty()!=KL::HEAVY) {
+    *  gum::BruteForceKL kl(base_kl);
+    *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
+    * } else {
+    *  gum::GibbsKL2 kl(base_kl);
+    *  std::cout<<"KL net1||net2 :"<<kl.klPQ()<<std::endl;
+    * }
+    * @endcode
+    */
 
-  template <typename GUM_SCALAR>
-  class GibbsKL : public KL<GUM_SCALAR>,
+  template < typename GUM_SCALAR >
+  class GibbsKL : public KL< GUM_SCALAR >,
                   public ApproximationScheme,
-                  public GibbsOperator<GUM_SCALAR> {
+                  public GibbsOperator< GUM_SCALAR > {
     public:
-
     /* no default constructor */
 
     /** constructor must give 2 BNs
@@ -88,34 +87,46 @@ namespace gum {
      */
 
 
-    GibbsKL( const IBayesNet<GUM_SCALAR>& P, const IBayesNet<GUM_SCALAR>& Q );
+    GibbsKL(const IBayesNet< GUM_SCALAR >& P, const IBayesNet< GUM_SCALAR >& Q);
 
     /** copy constructor
      */
-    GibbsKL( const KL<GUM_SCALAR>& kl );
+    GibbsKL(const KL< GUM_SCALAR >& kl);
 
     /** destructor */
     ~GibbsKL();
 
+    /**
+     * @brief Number of burn in for one iteration.
+     * @param b The number of burn in.
+     * @throw OutOfLowerBound Raised if b < 1.
+     */
+    void setBurnIn(Size b) { this->_burn_in = b; };
+
+    /**
+     * @brief Returns the number of burn in.
+     * @return Returns the number of burn in.
+     */
+    Size burnIn(void) const { return this->_burn_in; };
 
     protected:
-    void _computeKL( void );
+    void _computeKL(void);
 
-    using KL<GUM_SCALAR>::_p;
-    using KL<GUM_SCALAR>::_q;
-    using KL<GUM_SCALAR>::_hellinger;
-    using KL<GUM_SCALAR>::_bhattacharya;
+    using KL< GUM_SCALAR >::_p;
+    using KL< GUM_SCALAR >::_q;
+    using KL< GUM_SCALAR >::_hellinger;
+    using KL< GUM_SCALAR >::_bhattacharya;
 
-    using KL<GUM_SCALAR>::_klPQ;
-    using KL<GUM_SCALAR>::_klQP;
+    using KL< GUM_SCALAR >::_klPQ;
+    using KL< GUM_SCALAR >::_klQP;
 
-    using KL<GUM_SCALAR>::_errorPQ;
-    using KL<GUM_SCALAR>::_errorQP;
+    using KL< GUM_SCALAR >::_errorPQ;
+    using KL< GUM_SCALAR >::_errorQP;
   };
 
 
-  extern template class GibbsKL<float>;
-  extern template class GibbsKL<double>;
+  extern template class GibbsKL< float >;
+  extern template class GibbsKL< double >;
 
 
 }  // namespace gum

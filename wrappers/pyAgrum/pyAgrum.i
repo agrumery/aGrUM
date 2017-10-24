@@ -85,6 +85,9 @@ GibbsSampling = GibbsSampling_double
 ImportanceSampling=ImportanceSampling_double
 WeightedSampling=WeightedSampling_double
 MonteCarloSampling=MonteCarloSampling_double
+HybridImportanceSampling=HybridImportanceSampling_double
+HybridGibbsSampling=HybridGibbsSampling_double
+HybridWeightedSampling=HybridWeightedSampling_double
 
 LoopyBeliefPropagation = LoopyBeliefPropagation_double
 

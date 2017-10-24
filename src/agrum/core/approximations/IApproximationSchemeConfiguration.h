@@ -256,19 +256,6 @@ namespace gum {
     virtual Size periodSize( void ) const = 0;
 
     /**
-     * @brief Number of burn in for one iteration.
-     * @param b The number of burn in.
-     * @throw OutOfLowerBound Raised if b < 1.
-     */
-    virtual void setBurnIn( Size b ) = 0;
-
-    /**
-     * @brief Returns the number of burn in.
-     * @return Returns the number of burn in.
-     */
-    virtual Size burnIn( void ) const = 0;
-
-    /**
      * @brief Set the verbosity on (true) or off (false).
      * @param v If true, then verbosity is turned on.
      */

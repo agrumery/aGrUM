@@ -279,19 +279,6 @@ namespace gum {
     Size periodSize( void ) const;
 
     /**
-     * @brief Number of burn in for one iteration.
-     * @param b The number of burn in.
-     * @throw OutOfLowerBound Raised if b < 1.
-     */
-    void setBurnIn( Size b );
-
-    /**
-     * @brief Returns the number of burn in.
-     * @return Returns the number of burn in.
-     */
-    Size burnIn( void ) const;
-
-    /**
      * @brief Set the verbosity on (true) or off (false).
      * @param v If true, then verbosity is turned on.
      */

@@ -28,8 +28,8 @@
 #ifndef GUM_GIBBS_SAMPLING_H
 #define GUM_GIBBS_SAMPLING_H
 
-#include <agrum/BN/inference/tools/samplingInference.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
+#include <agrum/BN/inference/tools/samplingInference.h>
 
 
 namespace gum {
@@ -48,20 +48,33 @@ namespace gum {
   *
   */
 
-  template <typename GUM_SCALAR>
-  class GibbsSampling : public SamplingInference<GUM_SCALAR>,
-                        public GibbsOperator<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class GibbsSampling : public SamplingInference< GUM_SCALAR >,
+                        public GibbsOperator< GUM_SCALAR > {
 
     public:
     /**
      * Default constructor
      */
-    GibbsSampling( const IBayesNet<GUM_SCALAR>* BN );
+    GibbsSampling(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
   * Destructor
   */
     virtual ~GibbsSampling();
+
+    /**
+     * @brief Number of burn in for one iteration.
+     * @param b The number of burn in.
+     * @throw OutOfLowerBound Raised if b < 1.
+     */
+    void setBurnIn(Size b) { this->_burn_in = b; };
+
+    /**
+     * @brief Returns the number of burn in.
+     * @return Returns the number of burn in.
+     */
+    Size burnIn(void) const { return this->_burn_in; };
 
     protected:
     /// draws a defined number of samples without updating the estimators
@@ -81,7 +94,7 @@ namespace gum {
     * sample, given the instantiation of all other nodes. It requires computing  of
     * P( x \given instantiation_markovblanket(x)).
     */
-    virtual Instantiation _draw( float* w, Instantiation prev );
+    virtual Instantiation _draw(float* w, Instantiation prev);
 
     /// draws a Monte Carlo sample
     /**
@@ -97,8 +110,8 @@ namespace gum {
     virtual Instantiation _monteCarloSample();
   };
 
-  extern template class GibbsSampling<float>;
-  extern template class GibbsSampling<double>;
+  extern template class GibbsSampling< float >;
+  extern template class GibbsSampling< double >;
 }
 
 #include <agrum/BN/inference/GibbsSampling_tpl.h>
