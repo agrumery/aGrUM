@@ -457,16 +457,8 @@ epub_exclude_files = ['search.html']
 #
 # epub_use_index = True
 
-
 autodoc_member_order = 'alphabetically'
 autoclass_content = 'class'
-
-autodoc_default_flags = ['members',
-                         #'private-members',
-                         #'special-members',
-                         #'undoc-members',
-                         #'show-inheritance',
-                         ]
 
 ############################ TRANSLATER SWIG type #############
 import re
@@ -511,7 +503,8 @@ def process_docstring(app, what, name, obj, options, lines):
 
 def process_signature(app, what, name, obj, options, signature, return_annotation):
   signature = substitution4swigautodoc(signature)
-  return_annotation = substitution4swigautodoc(return_annotation)
+  #return_annotation = substitution4swigautodoc(return_annotation)
+  return_annotation = None
   return signature, return_annotation
 
 
@@ -528,8 +521,9 @@ def skip(app, what, name, obj, skip, options):
     return True
   return None
 
-autodoc_default_flags = ['members',
+autodoc_default_flags = [#'members',
                          #'private-members', 'special-members',
+                         'inherited-members',
                          #'undoc-members','show-inheritance'
                          ]
 def setup(app):

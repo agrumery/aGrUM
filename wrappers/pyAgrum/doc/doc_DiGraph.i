@@ -24,6 +24,10 @@ tail : int
   the id of the tail node
 head : int
   the id of the head node
+
+Warnings
+--------
+InvalidNode raised if head or tail does not belong to the graph nodes.
 "
 
 %feature("docstring") gum::DiGraph::addNode
@@ -59,7 +63,7 @@ Set
 
 %feature("docstring") gum::DiGraph::clear
 "
-Clear the DiGraph of all nodes and arcs.
+Remove all the nodes and arcs from the graph.
 "
 
 %feature("docstring") gum::DiGraph::empty
@@ -203,9 +207,9 @@ Examples
 --------
 >>> import pyAgrum as gum
 >>> bn = gum.DiGraph()
->>> bn.addNode()
->>> bn.addNode()
->>> bn.addArc(0,1)
+>>> a = bn.addNode()
+>>> b = bn.addNode()
+>>> bn.addArc(a,b)
 >>> bn.toDot()
 digraph {
 	0;
@@ -220,4 +224,8 @@ Returns
 -------
 List
     the list of the nodes Ids in a topological order
+
+Warnings
+--------
+InvalidDirectedCycle raised if this graph contains cycles
 "

@@ -12,13 +12,11 @@ Arc
 ^^^
 
 .. autoclass:: pyAgrum.Arc
-  :members:
 
 Edge
 ^^^^
 
 .. autoclass:: pyAgrum.Edge
-  :members:
 
 Directed Graphs
 ---------------
@@ -27,12 +25,11 @@ Digraph
 ^^^^^^^
 
 .. autoclass:: pyAgrum.DiGraph
-  :members:
 
 Directed Acyclic Graph
 ^^^^^^^^^^^^^^^^^^^^^^
+
 .. autoclass:: pyAgrum.DAG
-  :members:
 
 Undirected Graphs
 -----------------
@@ -41,15 +38,13 @@ UndiGraph
 ^^^^^^^^^
 
 .. autoclass:: pyAgrum.UndiGraph
-  :members:
 
 Clique Graph
 ^^^^^^^^^^^^
 
 .. autoclass:: pyAgrum.CliqueGraph
-  :members:
 
 Mixed Graph
 -----------
-  .. autoclass:: pyAgrum.MixedGraph
-    :members:
+ 
+.. autoclass:: pyAgrum.MixedGraph
