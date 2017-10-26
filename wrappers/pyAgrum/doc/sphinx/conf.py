@@ -467,6 +467,7 @@ gumReplaceList = [
   ('gum::Idx', 'int'),
   ('gum::Size', 'int'),
   ('gum::NodeId', 'int'),
+  ('gum::NodeSet', 'Set'),
   ('std::string', 'str'),
   ('gum::', 'pyAgrum.'),
   ('_double ', ' '),

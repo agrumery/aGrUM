@@ -32,6 +32,14 @@ InvalidNode raised if head or tail does not belong to the graph nodes.
 
 %feature("docstring") gum::DiGraph::addNode
 "
+Returns
+-------
+int
+  the new NodeId
+"
+
+%feature("docstring") gum::DiGraph::addNodeWithId
+"
 Add a node by choosing a new NodeId.
 
 Returns
@@ -201,7 +209,7 @@ int
 Returns
 -------
 str
-    a description of the graph
+    a friendly display of the graph in DOT format 
 
 Examples
 --------

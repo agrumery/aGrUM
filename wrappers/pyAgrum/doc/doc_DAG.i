@@ -46,7 +46,7 @@ Warnings
 Returns
 -------
 str
-    a description of the graph
+    a friendly display of the graph in DOT format 
 
 Examples
 --------
