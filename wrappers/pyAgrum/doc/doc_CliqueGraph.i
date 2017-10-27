@@ -127,7 +127,7 @@ bool
 "
 Parameters
 ----------
-edge : Edge
+edge : pyAgrum.Edge
 	the edge to be checked
 clique1 : int 
 	one extremity of the edge

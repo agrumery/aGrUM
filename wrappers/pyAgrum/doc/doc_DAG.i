@@ -34,31 +34,9 @@ head : int
 
 Warnings
 --------
-	InvalidDirectedCircle raised if any (directed) cycle is created by this arc.
+	InvalidDirectedCircle raised if any (directed) cycle is created by this arc
 	
 Warnings
 --------
-	InvalidNode raised if head or tail does not belong to the graph nodes.
-"
-
-%feature("docstring") gum::DAG::toDot
-"
-Returns
--------
-str
-    a friendly display of the graph in DOT format 
-
-Examples
---------
->>> import pyAgrum as gum
->>> bn = gum.DAG()
->>> a = bn.addNode()
->>> b = bn.addNode()
->>> bn.addArc(a,b)
->>> bn.toDot()
-DAG {
-	0;
-	1;
-	0 -> 1;
-}
+	InvalidNode raised if head or tail does not belong to the graph nodes
 "

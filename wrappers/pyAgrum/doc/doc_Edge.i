@@ -13,7 +13,7 @@ aN1 : int
   the nodeId of the first node
 aN2 : int
   the nodeId of the secondnode
-src: Edge
+src: pyAgrum.Edge
   the Edge to copy
 "
 

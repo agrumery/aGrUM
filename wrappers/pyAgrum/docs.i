@@ -6,7 +6,10 @@
 %include "doc_CliqueGraph.i"
 %include "doc_MixedGraph.i"
 
+%include "doc_Variable.i"
+%include "doc_DiscreteVariable.i"
 %include "doc_LabelizedVariable.i"
 %include "doc_DiscretizedVariable.i"
+%include "doc_RangeVariable.i"
 
 %include "doc_BayesNet.i"

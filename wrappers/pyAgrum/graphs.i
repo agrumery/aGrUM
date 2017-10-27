@@ -14,7 +14,6 @@
 ADD_IDS_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
 ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 
-
 %extend gum::DiGraph {
   PyObject *arcs() { // add for the sub-classes (including MixedGraph)
     PyObject* q=PyList_New(0);

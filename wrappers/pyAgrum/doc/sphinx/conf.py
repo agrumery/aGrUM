@@ -522,10 +522,11 @@ def skip(app, what, name, obj, skip, options):
     return True
   return None
 
-autodoc_default_flags = [#'members',
+autodoc_default_flags = ['members',
                          #'private-members', 'special-members',
                          'inherited-members',
-                         #'undoc-members','show-inheritance'
+                         #'undoc-members',
+                         #'show-inheritance'
                          ]
 def setup(app):
   app.connect('autodoc-process-docstring', process_docstring)

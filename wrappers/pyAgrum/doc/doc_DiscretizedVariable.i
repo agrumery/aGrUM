@@ -1,3 +1,5 @@
+%ignore gum::DisceteVariable::clone;
+
 %feature("docstring") gum::DiscretizedVariable
 "
 DiscretizedVariable is a discrete random variable with a set of ``ticks`` defining intervalls.
@@ -20,12 +22,22 @@ aDDRV: pyAgrum.DiscretizedVariable
 Examples
 --------
 >>> import pyAgrum as gum
->>> v=gum.DiscretizedVariable('v','a descr')
->>> print(v)
-v<>
->>> v.addTick(1).addTick(3.14).addTick(0.4).addTick(0.2)
->>> print(w)
-a<[0.2;0.4[,[0.4;1[,[1;3.14]>
+>>>
+>>> vX=gum.DiscretizedVariable('X','X has been discretized')
+>>> vX.addTick(1).addTick(2).addTick(3).addTick(3.1415) #doctest: +ELLIPSIS
+>>> ## <pyAgrum.pyAgrum.DiscretizedVariable;...>
+>>> print(vX)
+>>> ## X<[1;2[,[2;3[,[3;3.1415]>
+>>>
+>>> vX.isTick(4)
+>>> ## False
+>>>
+>>> vX.labels()
+>>> ## ('[1;2[', '[2;3[', '[3;3.1415]')
+>>>
+>>> # where is the real value 2.5 ?
+>>> vX.index('2.5')
+>>> ## 1
 "
 
 %feature("docstring") gum::DiscretizedVariable::domain
@@ -34,4 +46,12 @@ Returns
 -------
 str
     the domain of the variable as a string
+"
+
+%feature("docstring") gum::DiscretizedVariable::clone
+"
+Returns
+-------
+pyAgrum.DiscretizedVariable
+	a copy of the DiscretizedVariable
 "

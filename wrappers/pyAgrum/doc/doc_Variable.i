@@ -1,0 +1,35 @@
+%feature("docstring") gum::Variable::description
+"
+Returns
+-------
+str
+	the description of the variable
+"
+
+%feature("docstring") gum::Variable::name
+"
+Returns
+-------
+str
+	the name of the variable
+"
+
+%feature("docstring") gum::Variable::setDescription
+"
+set the description of the variable.
+
+Parameters
+----------
+str
+	the new description of the variable
+"
+
+%feature("docstring") gum::Variable::setName
+"
+sets the name of the variable.
+
+Parameters
+----------
+str
+	the new description of the variable
+"

@@ -8,7 +8,6 @@ There are 3 types of discrete random variables in aGrUM/pyAgrum : LabelizedVaria
 Common API for Random Discrete Variables
 ----------------------------------------
 .. autoclass:: pyAgrum.DiscreteVariable
-  :members:
 
 Concrete classes for Random Discrete Variables
 ----------------------------------------------
@@ -17,7 +16,6 @@ LabelizedVariable
 ^^^^^^^^^^^^^^^^^
 
 .. autoclass:: pyAgrum.LabelizedVariable
-  :members:
 
 DiscretizedVariable
 ^^^^^^^^^^^^^^^^^^^
@@ -25,10 +23,8 @@ DiscretizedVariable
 .. autoclass:: pyAgrum.DiscretizedVariable
 
 .. autoclass:: pyAgrum.pyAgrum.DiscretizedVariable_double
-  :members:
 
 RangeVariable
 ^^^^^^^^^^^^^
 
 .. autoclass:: pyAgrum.RangeVariable
-  :members:

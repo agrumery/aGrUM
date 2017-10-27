@@ -42,10 +42,14 @@ int
 "
 Add a node by choosing a new NodeId.
 
-Returns
--------
-int
-  the new NodeId
+Parameters
+----------
+id : int
+  The id of the new node
+
+Warnings
+--------
+DuplicateElement raised if the given id is already used
 "
 
 %feature("docstring") gum::UndiGraph::clear
@@ -185,7 +189,7 @@ nodesSet : Set
 
 Returns
 -------
-UndiGraph
+pyAgrum.UndiGraph
     The partial graph formed by the nodes given in parameter 
 "
 

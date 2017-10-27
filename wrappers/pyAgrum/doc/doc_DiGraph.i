@@ -42,10 +42,14 @@ int
 "
 Add a node by choosing a new NodeId.
 
-Returns
--------
-int
-  the new NodeId
+Parameters
+----------
+id : int
+  The id of the new node
+
+Warnings
+--------
+DuplicateElement raised if the given id is already used
 "
 
 %feature("docstring") gum::DiGraph::arcs
@@ -210,20 +214,6 @@ Returns
 -------
 str
     a friendly display of the graph in DOT format 
-
-Examples
---------
->>> import pyAgrum as gum
->>> bn = gum.DiGraph()
->>> a = bn.addNode()
->>> b = bn.addNode()
->>> bn.addArc(a,b)
->>> bn.toDot()
-digraph {
-	0;
-	1;
-	0 -> 1;
-}
 "
 
 %feature("docstring") gum::DiGraph::topologicalOrder

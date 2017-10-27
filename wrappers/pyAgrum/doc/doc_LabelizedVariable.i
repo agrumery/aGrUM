@@ -1,3 +1,5 @@
+%ignore gum::DisceteVariable::clone;
+
 %feature("docstring") gum::LabelizedVariable
 "
 LabelizedVariable is a discrete random variable with a customizable sequence of labels.
@@ -5,6 +7,8 @@ LabelizedVariable is a discrete random variable with a customizable sequence of 
 Available constructors:
 
     ``LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable``
+
+    ``LabelizedVariable(aName, aDesc='') -> LabelizedVariable``
 
     ``LabelizedVariable(aLDRV) -> LabelizedVariable``
 
@@ -15,19 +19,39 @@ aName: str
 aDesc: str
   The (optional) description of the variable
 nbrLabel: int
-  The number of labels to create. By default , the value start from '0' to 'nbrLabel-1'
+  The number of labels to create (2 by default)
 aLDRV: pyAgrum.LabelizedVariable
   Another `LabelizedVariable` that will be copied
 
 Examples
 --------
 >>> import pyAgrum as gum
->>> v=gum.LabelizedVariable('v')
->>> print(v)
-v<0,1>
->>> w=gum.LabelizedVariable('w','',4)
->>> print(w)
-w<0,1,2,3>
+>>>
+>>> # creating a variable with 3 labels : '0', '1' and '2'
+>>> va=gum.LabelizedVariable('a','a labelized variable',3)
+>>> print(va)
+>>> ## a<0,1,2>
+>>>
+>>> va.addLabel('foo')
+>>> print(va)
+>>> ## a<0,1,2,foo>
+>>>
+>>> va.chgLabel(1,'bar')
+>>> print(va)
+>>> a<0,bar,2,foo>
+>>>
+>>> vb=gum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
+>>> print(vb)
+>>> ## b<A,B,C>
+>>> 
+>>> vb.labels()
+>>> ## ('A', 'B', 'C')
+>>> 
+>>> vb.isLabel('E')
+>>> ## False
+>>> 
+>>> vb.label(2)
+>>> ## 'B'
 "
 
 
@@ -37,4 +61,12 @@ Returns
 -------
 str
     the domain of the variable as a string
+"
+
+%feature("docstring") gum::LabelizedVariable::clone
+"
+Returns
+-------
+pyAgrum.LabelizedVariable
+	a copy of the LabelizedVariable
 "
