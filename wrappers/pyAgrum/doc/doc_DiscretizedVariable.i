@@ -55,3 +55,65 @@ Returns
 pyAgrum.DiscretizedVariable
 	a copy of the DiscretizedVariable
 "
+
+%feature("docstring") gum::DiscretizedVariable::addTick
+"
+Parameters
+----------
+aTick : double
+	the Tick to be added
+
+Returns
+-------
+pyAgrum.DiscretizedVariable
+	the discretized variable
+
+Warnings
+--------
+DefaultInLabel raised if the Tick is already defined
+"
+
+%feature("docstring") gum::DiscretizedVariable::eraseTicks
+"
+erase all the Ticks 
+"
+
+%feature("docstring") gum::DiscretizedVariable::isTick
+"
+Parameters
+----------
+aTick : double
+	the Tick to be tested
+
+Returns
+-------
+bool :
+	True if the Tick already exists
+"
+
+%feature("docstring") gum::DiscretizedVariable::tick
+"
+Indicate the index of the Tick
+
+Parameters
+----------
+i : int
+	the index of the Tick
+
+Returns
+-------
+aTick : double
+	the index-th Tick
+
+Warnings
+--------
+NotFound raised if the index is greater than the number of Ticks
+"
+
+%feature("docstring") gum::DiscretizedVariable::ticks
+"
+Returns
+-------
+tuple :
+	a tuple containing all the Ticks
+"

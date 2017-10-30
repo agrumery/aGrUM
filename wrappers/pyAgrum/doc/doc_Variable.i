@@ -20,7 +20,7 @@ set the description of the variable.
 
 Parameters
 ----------
-str
+theValue : str
 	the new description of the variable
 "
 
@@ -30,6 +30,6 @@ sets the name of the variable.
 
 Parameters
 ----------
-str
+theValue : str
 	the new description of the variable
 "

@@ -5,7 +5,6 @@ Instantiation
 -------------
 
 .. autoclass:: pyAgrum.Instantiation
-  :members:
 
 Potential
 ---------
@@ -13,4 +12,3 @@ Potential
 .. autoclass:: pyAgrum.Potential
 
 .. autoclass:: pyAgrum.pyAgrum.Potential_double
-  :members:

@@ -1,4 +1,7 @@
 %ignore gum::DisceteVariable::clone;
+%ignore gum::DisceteVariable::label;
+%ignore gum::DisceteVariable::index;
+
 
 %feature("docstring") gum::LabelizedVariable
 "
@@ -54,6 +57,45 @@ Examples
 >>> ## 'B'
 "
 
+%feature("docstring") gum::LabelizedVariable::changeLabel
+"
+Change the label at the specified index
+
+Parameters
+----------
+pos : int
+	the index of the label to be changed
+aLabel : str
+	the label to be added to the labelized variable
+
+Warnings
+--------
+DuplicatedElement raised if the variable already contains the new label
+
+Warnings
+--------
+OutOfBounds raised if the index is greater than the size of the variable
+"
+
+%feature("docstring") gum::LabelizedVariable::eraseLabels
+"
+Erase all the labels from the variable.
+"
+
+%feature("docstring") gum::LabelizedVariable::isLabel
+"
+Indicates whether the variable already has the label passed in argument
+
+Parameters
+----------
+aLabel : str
+	the label to be tested
+
+Returns
+-------
+bool
+	True if the label already exists
+"
 
 %feature("docstring") gum::LabelizedVariable::domain
 "

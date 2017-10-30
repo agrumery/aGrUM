@@ -1,4 +1,6 @@
 %ignore gum::DisceteVariable::clone;
+%ignore gum::DisceteVariable::label;
+%ignore gum::DisceteVariable::index;
 
 %feature("docstring") gum::RangeVariable
 "
@@ -55,4 +57,91 @@ Returns
 -------
 pyAgrum.RangeVariable
 	a copy of the RangeVariable
+"
+
+%feature("docstring") gum::RangeVariable::belongs
+"
+Parameters
+----------
+val : long
+  the value to be tested
+
+Returns
+-------
+bool:
+  True if the value in parameters belongs to the variable's interval.
+"
+
+%feature("docstring") gum::RangeVariable::minVal
+"
+Returns
+-------
+long :
+  the lower bound of the variable
+"
+
+%feature("docstring") gum::RangeVariable::maxVal
+"
+Returns
+-------
+long :
+  the upper bound of the variable.
+"
+
+%feature("docstring") gum::RangeVariable::setMaxVal
+"
+Set a new value of the upper bound
+
+Parameters
+----------
+maxVal : long
+  The new value of the upper bound
+
+Warnings
+--------
+An error should be raised if the value is lower than the lower bound.
+"
+
+%feature("docstring") gum::RangeVariable::setMinVal
+"
+Set a new value of the lower bound
+
+Parameters
+----------
+minVal : long
+  The new value of the lower bound
+
+Warnings
+--------
+An error should be raised if the value is higher than the upper bound.
+"
+
+%feature("docstring") gum::RangeVariable::index
+"
+Parameters
+----------
+arg2 : str
+  a label
+
+Returns
+-------
+int
+  the indice of the label
+"
+
+%feature("docstring") gum::RangeVariable::label
+"
+Parameters
+----------
+indice : int
+  the index of the label we wish to return
+
+Returns
+-------
+str
+  the indice-th label
+
+Warnings
+--------
+OutOfBound raised if the variable does not contain the label
 "

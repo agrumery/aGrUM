@@ -56,7 +56,7 @@ bool
 "
 Parameters
 ----------
-str
+label : str
 	a label
 
 Returns
@@ -69,7 +69,7 @@ int
 "
 Parameters
 ----------
-int
+i : int
 	the index of the label we wish to return
 
 Returns
@@ -94,7 +94,7 @@ tuple
 "
 Parameters
 ----------
-int
+indice : int
 	an index
 
 Returns
@@ -131,6 +131,7 @@ Returns
 -------
 pyAgrum.RangeVariable
 	the range variable
+
 Warnings
 -------
 RuntimeError raised if the variable is not a RangeVariable
@@ -146,7 +147,10 @@ str
 
 %feature("docstring") gum::DiscreteVariable::varType
 "
-Warnings
+returns the type of variable
+
+Returns
 -------
-à faire
+int :
+	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
 "

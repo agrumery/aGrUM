@@ -12,4 +12,6 @@
 %include "doc_DiscretizedVariable.i"
 %include "doc_RangeVariable.i"
 
+%include "doc_Instantiation.i"
+
 %include "doc_BayesNet.i"
