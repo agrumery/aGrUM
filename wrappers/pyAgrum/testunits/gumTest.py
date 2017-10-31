@@ -5,7 +5,7 @@ import platform
 import sys
 from sys import platform as os_platform
 
-os.chdir(os.path.dirname('./' + __file__))
+os.chdir(os.path.dirname( __file__))
 libagrum = os.path.abspath("../../../build/release/wrappers")
 sys.path.insert(0, libagrum)  # to force to use local pyAgrum for the tests (and not installed one)
 

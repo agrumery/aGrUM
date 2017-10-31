@@ -27,7 +27,7 @@ class GibbsTestCase(pyAgrumTestCase):
                               [0.9, 0.1]]
     self.bn.cpt(self.r)[:] = [[0.8, 0.2],
                               [0.2, 0.8]]
-    self.bn.cpt(self.w)[0, 0, :] = [1, 0]
+    self.bn.cpt(self.w)[0, 0, :] = [0.9, 0.1]
     self.bn.cpt(self.w)[0, 1, :] = [0.1, 0.9]
     self.bn.cpt(self.w)[1, 0, :] = [0.1, 0.9]
     self.bn.cpt(self.w)[1, 1, :] = [0.01, 0.99]
@@ -78,45 +78,62 @@ class GibbsTestCase(pyAgrumTestCase):
 
 class TestDictFeature(GibbsTestCase):
   def testDictOfSequences(self):
-    ie = gum.GibbsSampling(self.bn)
+    proto = gum.LazyPropagation(self.bn)
+    proto.addEvidence('s', 1)
+    proto.addEvidence('w', 0)
+    proto.makeInference()
+
+    ie = gum.ImportanceSampling(self.bn)
     ie.setVerbosity(False)
     ie.setEpsilon(0.01)
-    ie.setMinEpsilonRate(0.01)
+    ie.setMinEpsilonRate(0.0001)
     ie.setEvidence({'s': [0, 1], 'w': (1, 0)})
+    print(ie.evidence(0))
     ie.makeInference()
     result = ie.posterior(self.r)
+    self.assertGreatEqual(0.01, (proto - result).abs().max())
 
-    ie2 = gum.GibbsSampling(self.bn)
+    ie2 = gum.ImportanceSampling(self.bn)
     ie2.setVerbosity(False)
     ie2.setEpsilon(0.01)
-    ie2.setMinEpsilonRate(0.01)
+    ie2.setMinEpsilonRate(0.0001)
     ie2.setEvidence({'s': 1, 'w': 0})
     ie2.makeInference()
     result2 = ie2.posterior(self.r)
-
-    self.assertDelta(result.tolist(), result2.tolist(),2)
+    self.assertGreatEqual(0.01, (proto - result2).abs().max())
 
   def testDictOfLabels(self):
-    ie = gum.GibbsSampling(self.bn)
+    protoie = gum.LazyPropagation(self.bn)
+    protoie.addEvidence('s', 0)
+    protoie.addEvidence('w', 1)
+    protoie.makeInference()
+    proto=protoie.posterior(self.r)
+    print(proto.tolist())
+
+    ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
     ie.setEpsilon(0.01)
-    ie.setMinEpsilonRate(0.001)
+    ie.setMinEpsilonRate(0.0001)
     ie.setEvidence({'s': 0, 'w': 1})
     ie.makeInference()
-    result = ie.posterior(self.r).tolist()
+    result = ie.posterior(self.r)
+    print(result.tolist())
+    print((proto - result).abs().max())
+    self.assertGreatEqual(0.01, (proto - result).abs().max())
 
-    ie2 = gum.GibbsSampling(self.bn)
+    ie2 = gum.LoopyGibbsSampling(self.bn)
     ie2.setVerbosity(False)
     ie2.setEpsilon(0.01)
-    ie2.setMinEpsilonRate(0.001)
+    ie2.setMinEpsilonRate(0.0001)
     ie2.setEvidence({'s': 'no', 'w': 'yes'})
     ie2.makeInference()
-    result2 = ie2.posterior(self.r).tolist()
-
-    self.assertListsAlmostEqual(result, result2, 2)
+    result2 = ie2.posterior(self.r)
+    print(result2.tolist())
+    (proto - result2).abs().max()
+    self.assertGreatEqual(0.01, (proto - result2).abs().max())
 
   def testDictOfLabelsWithId(self):
-    ie = gum.GibbsSampling(self.bn)
+    ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
     ie.setEpsilon(0.05)
     ie.setMinEpsilonRate(0.01)
@@ -124,7 +141,7 @@ class TestDictFeature(GibbsTestCase):
     ie.makeInference()
     result = ie.posterior(self.r)
 
-    ie2 = gum.GibbsSampling(self.bn)
+    ie2 = gum.LoopyGibbsSampling(self.bn)
     ie2.setVerbosity(False)
     ie2.setEpsilon(0.05)
     ie2.setMinEpsilonRate(0.01)
@@ -137,7 +154,7 @@ class TestDictFeature(GibbsTestCase):
     self.assertListsAlmostEqual(result.tolist(), result2.tolist())
 
   def testWithDifferentVariables(self):
-    ie = gum.GibbsSampling(self.bn)
+    ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.01)
@@ -145,7 +162,7 @@ class TestDictFeature(GibbsTestCase):
     ie.makeInference()
     result = ie.posterior(self.s).tolist()
 
-    ie = gum.GibbsSampling(self.bni)
+    ie = gum.LoopyGibbsSampling(self.bni)
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.01)
@@ -154,7 +171,7 @@ class TestDictFeature(GibbsTestCase):
     result2 = ie.posterior(self.si).tolist()
     self.assertDelta(result, result2)
 
-    ie = gum.GibbsSampling(self.bn)
+    ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.01)
@@ -163,7 +180,7 @@ class TestDictFeature(GibbsTestCase):
     result = ie.posterior(self.s).tolist()
     self.assertDelta(result, result2)
 
-    ie = gum.GibbsSampling(self.bni)
+    ie = gum.LoopyGibbsSampling(self.bni)
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.01)
@@ -175,14 +192,14 @@ class TestDictFeature(GibbsTestCase):
 
 class TestInferenceResults(GibbsTestCase):
   def testOpenBayesSiteExamples(self):
-    ie = gum.GibbsSampling(self.bn)
+    ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.01)
     result = ie.posterior(self.w)
     self.assertDelta(result.tolist(), [0.3529, 0.6471])
 
-    ie = gum.GibbsSampling(self.bn)
+    ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.01)
@@ -192,7 +209,7 @@ class TestInferenceResults(GibbsTestCase):
     self.assertDelta(result.tolist(), [0.082, 0.918])
 
   def testWikipediaExample(self):
-    ie = gum.GibbsSampling(self.bn2)
+    ie = gum.LoopyGibbsSampling(self.bn2)
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.001)

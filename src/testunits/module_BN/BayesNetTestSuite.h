@@ -964,6 +964,13 @@ namespace gum_tests {
 
       TS_ASSERT_THROWS( bn = gum::BayesNet<int>::fastPrototype( "a->b->c->a" ),
                         gum::InvalidDirectedCycle );
+
+      bn=gum.BayesNet<char>::fastPrototype("a{yes|maybe|no}->b->c;a->c");
+      TS_ASSERT_EQUALS( bn.size(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS( bn.sizeArcs(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS(
+              bn.dim(),
+              gum::Size( ( 3 - 1 ) + ( 3 * ( 2 - 1 ) ) + ( 3 * 2 * ( 2 - 1 ) ) ) );
     }
   };
 

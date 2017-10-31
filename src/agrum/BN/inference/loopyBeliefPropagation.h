@@ -41,7 +41,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    LoopyBeliefPropagation( const IBayesNet<GUM_SCALAR>* BN );
+    LoopyBeliefPropagation( const IBayesNet<GUM_SCALAR>* bn );
 
     /**
      * Destructor.

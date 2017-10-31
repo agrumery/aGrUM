@@ -43,8 +43,8 @@ namespace gum {
   /// default constructor
   template <typename GUM_SCALAR>
   LoopyBeliefPropagation<GUM_SCALAR>::LoopyBeliefPropagation(
-      const IBayesNet<GUM_SCALAR>* BN )
-      : ApproximateInference<GUM_SCALAR>( BN ) {
+      const IBayesNet<GUM_SCALAR>* bn )
+      : ApproximateInference<GUM_SCALAR>( bn ) {
     // for debugging purposes
     GUM_CONSTRUCTOR( LoopyBeliefPropagation );
 

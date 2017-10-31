@@ -349,8 +349,9 @@ ADD_INFERENCE_API(gum::MonteCarloSampling<double>)
 ADD_INFERENCE_API(gum::WeightedSampling<double>)
 ADD_INFERENCE_API(gum::ImportanceSampling<double>)
 ADD_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
-ADD_INFERENCE_API(gum::HybridApproxInference<double,gum::ImportanceSampling>)
-ADD_INFERENCE_API(gum::HybridApproxInference<double,gum::GibbsSampling>)
+ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::ImportanceSampling>)
+ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
+ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::WeightedSampling>)
 
 %define ADD_JOINT_INFERENCE_API(classname)
 %extend classname {
@@ -403,10 +404,10 @@ ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
 }
 %enddef
 ADD_GIBBS_OPERATOR_API(gum::GibbsSampling<double>)
-ADD_GIBBS_OPERATOR_API(gum::HybridApproxInference<double,gum::GibbsSampling>)
+ADD_GIBBS_OPERATOR_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
 ADD_GIBBS_OPERATOR_API(gum::GibbsKL<double>)
 
-%extend gum::HybridApproxInference<double,gum::GibbsSampling> {
+%extend gum::LoopySamplingInference<double,gum::GibbsSampling> {
   gum::Size burnIn() const { return self->gum::GibbsSampling<double>::burnIn();}
   void setBurnIn(gum::Size b) { self->gum::GibbsSampling<double>::setBurnIn(b);}
 }
