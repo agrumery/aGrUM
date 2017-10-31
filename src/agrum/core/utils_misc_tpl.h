@@ -26,19 +26,21 @@
 
 // to help IDE parser
 #include <agrum/core/utils_misc.h>
+#include <algorithm>
+#include <functional>
 #include <iostream>
 #include <string>
 #include <tuple>
 #include <type_traits>
 
 namespace std {
-  template <typename T>
-  ostream& operator<<( ostream& stream, const vector<T>& val ) {
+  template < typename T >
+  ostream& operator<<(ostream& stream, const vector< T >& val) {
     bool deja = false;
     stream << "[";
 
-    for ( const auto& v : val ) {
-      if ( deja )
+    for (const auto& v : val) {
+      if (deja)
         stream << " , ";
       else
         deja = true;
@@ -50,10 +52,26 @@ namespace std {
     return stream;
   }
 
-  template <typename T1, typename T2>
-  ostream& operator<<( ostream& stream, const pair<T1, T2>& val ) {
+  template < typename T1, typename T2 >
+  ostream& operator<<(ostream& stream, const pair< T1, T2 >& val) {
     stream << "(" << val.first << "," << val.second << ")";
     return stream;
   }
 
+  template < class T >
+  bool hasUniqueElts(std::vector< T > const& x) {
+    if (x.size() <= 1) return true;
+    if (x.size() == 2) return x[0] != x[1];
+    
+    auto refless = [](T const* l, T const* r) { return *l < *r; };
+    auto refeq = [](T const* l, T const* r) { return *l == *r; };
+
+    std::vector< T const* > vp;
+    vp.reserve(x.size());
+    for (size_t i = 0; i < x.size(); ++i)
+      vp.push_back(&x[i]);
+    sort(vp.begin(), vp.end(), refless);  // O(N log N)
+    // if no adjacent pair (vp_n,vp_n+1) has *vp_n == *vp_n+1
+    return std::adjacent_find(vp.begin(), vp.end(), refeq) == vp.end();
+  }
 } /* namespace std */
