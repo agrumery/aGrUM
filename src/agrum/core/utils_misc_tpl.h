@@ -62,7 +62,7 @@ namespace std {
   bool hasUniqueElts(std::vector< T > const& x) {
     if (x.size() <= 1) return true;
     if (x.size() == 2) return x[0] != x[1];
-    
+
     auto refless = [](T const* l, T const* r) { return *l < *r; };
     auto refeq = [](T const* l, T const* r) { return *l == *r; };
 
