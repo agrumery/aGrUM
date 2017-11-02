@@ -9,9 +9,26 @@
 
 %feature("docstring") gum::Instantiation
 "
-Warnings
---------
-A faire
+Class for assigning/browsing values to tuples of discrete variables.
+
+Instantiation is designed to assign values to tuples of variables and to efficiently loop over values of subsets of variables.
+
+Available constructors:
+
+	``Instantiation() -> Instantiation``
+
+	``Instantiation(aI) -> Instantiation``
+
+Parameters
+----------
+aI: pyAgrum.Instantiation
+  The Instantiation we copy
+
+Returns
+-------
+pyAgrum.Instantiation
+	An empty tuple or a copy of the one in parameters
+
 "
 
 %feature("docstring") gum::Instantiation::add
@@ -59,10 +76,6 @@ Warnings
 %feature("docstring") gum::Instantiation::clear
 "
 Erase all variables from an Instantiation.
-
-Warnings
---------
-?
 "
 
 %feature("docstring") gum::Instantiation::contains
@@ -392,7 +405,21 @@ Removes the flag overflow.
 
 %feature("docstring") gum::Instantiation::val
 "
-Returns the current value of the variable at position i. 
+Parameters
+----------
+i : int
+	The index of the variable.
+var : pyAgrum.DiscreteVariable
+	The variable the value of which we wish to know
+
+Returns
+-------
+int
+	the current value of the variable.
+
+Warnings
+--------
+    NotFound raised if the element cannot be found. 
 "
 
 %feature("docstring") gum::Instantiation::variable

@@ -10,11 +10,11 @@ Available constructors:
 
 	``RangeVariable(aName, aDesc='',minVal, maxVal) -> RangeVariable``
 
-	``RangeVariable(aName, aDesc='',minVal) -> DiscreRangeVariableteVariable``
+	``RangeVariable(aName, aDesc='',minVal) -> RangeVariable``
 
-    ``RangeVariable(aName, aDesc='') -> RangeVariable``
+  ``RangeVariable(aName, aDesc='') -> RangeVariable``
 
-    ``RangeVariable(aRV) -> RangeVariable``
+  ``RangeVariable(aRV) -> RangeVariable``
 
 Parameters
 ----------
