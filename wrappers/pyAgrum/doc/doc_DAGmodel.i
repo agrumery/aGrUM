@@ -72,27 +72,28 @@ A Faire
 
 %feature("docstring") gum::DAGmodel::size
 "
-in DAGmodel
-
-Warnings
---------
-A Faire
+Returns
+-------
+int
+    the number of nodes in the graph
 "
 
 %feature("docstring") gum::DAGmodel::sizeArcs
 "
-in DAGmodel
-
-Warnings
---------
-A Faire
+Returns
+-------
+int
+    the number of arcs in the graph
 "
 
 %feature("docstring") gum::DAGmodel::topologicalOrder
 "
-in DAGmodel
+Returns
+-------
+List
+    the list of the nodes Ids in a topological order
 
 Warnings
 --------
-A Faire
+InvalidDirectedCycle raised if this graph contains cycles
 "

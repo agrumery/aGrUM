@@ -1,5 +1,10 @@
 %feature("docstring") gum::IBayesNet::dim
 "
+Returns the dimension (the number of free parameters) in this bayes net.
+
+dim(G)=∑i∈nodes((ri−1)⋅qi) where ri is the number of instantiations of node i and qi is the number of instantiations of its parents. 
+in IBayesNet
+
 in IBayesNet
 
 Warnings
@@ -72,9 +77,8 @@ A Faire
 
 %feature("docstring") gum::IBayesNet::toDot
 "
-in IBayesNet
-
-Warnings
---------
-A Faire
+Returns
+-------
+str
+    a friendly display of the graph in DOT format 
 "
