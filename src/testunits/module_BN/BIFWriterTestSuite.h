@@ -43,55 +43,55 @@ namespace gum_tests {
 
   class BIFWriterTestSuite : public CxxTest::TestSuite {
     private:
-    bool __compareFile( std::string f1, std::string f2 ) {
+    bool __compareFile(std::string f1, std::string f2) {
       std::ifstream file1, file2;
-      file1.open( f1, std::ios::binary );
-      file2.open( f2, std::ios::binary );
+      file1.open(f1, std::ios::binary);
+      file2.open(f2, std::ios::binary);
 
       //---------- compare number of lines in both files ------------------//
       int c1, c2;
       c1 = 0;
       c2 = 0;
       std::string str;
-      while ( !file1.eof() ) {
-        getline( file1, str );
+      while (!file1.eof()) {
+        getline(file1, str);
         c1++;
       }
-      while ( !file2.eof() ) {
-        getline( file2, str );
+      while (!file2.eof()) {
+        getline(file2, str);
         c2++;
       }
 
-      if ( c1 != c2 ) return false;
+      if (c1 != c2) return false;
 
       //---------- compare two files line by line ------------------//
       file1.clear();  //  set new value for error control state  //
-      file1.seekg( 0, std::ios::beg );
+      file1.seekg(0, std::ios::beg);
       file2.clear();
-      file2.seekg( 0, std::ios::beg );
+      file2.seekg(0, std::ios::beg);
 
       char string1[256], string2[256];
       int  j = 0;
-      while ( !file1.eof() ) {
-        file1.getline( string1, 256 );
-        file2.getline( string2, 256 );
+      while (!file1.eof()) {
+        file1.getline(string1, 256);
+        file2.getline(string2, 256);
 
         // get rid of linux or windows eol
-        if ( strlen( string1 ) > 0 ) {
-          for ( char* p = string1 + strlen( string1 ) - 1; p >= string1; p-- ) {
-            if ( *p == '\n' )
+        if (strlen(string1) > 0) {
+          for (char* p = string1 + strlen(string1) - 1; p >= string1; p--) {
+            if (*p == '\n')
               *p = '\0';
-            else if ( *p == '\r' )
+            else if (*p == '\r')
               *p = '\0';
             else
               break;
           }
         }
-        if ( strlen( string2 ) > 0 ) {
-          for ( char* p = string2 + strlen( string2 ) - 1; p >= string2; p-- ) {
-            if ( *p == '\n' )
+        if (strlen(string2) > 0) {
+          for (char* p = string2 + strlen(string2) - 1; p >= string2; p--) {
+            if (*p == '\n')
               *p = '\0';
-            else if ( *p == '\r' )
+            else if (*p == '\r')
               *p = '\0';
             else
               break;
@@ -99,10 +99,13 @@ namespace gum_tests {
         }
 
         j++;
-        if ( strcmp( string1, string2 ) != 0 ) {
-          GUM_TRACE( f2 << ":" << j );
-          GUM_TRACE_VAR( string1 );
-          GUM_TRACE_VAR( string2 );
+        // we do not compare the comments (can contain version number of agrum
+        if ((strncmp(string1, "//", 2) == 0) && (strncmp(string2, "//", 2) == 0))
+          continue;
+        if (strcmp(string1, string2) != 0) {
+          GUM_TRACE(f2 << ":" << j);
+          GUM_TRACE_VAR(string1);
+          GUM_TRACE_VAR(string2);
           return false;
         }
       }
@@ -111,73 +114,72 @@ namespace gum_tests {
     }
 
     public:
-    gum::BayesNet<double>* bn;
-    gum::NodeId            i1, i2, i3, i4, i5;
+    gum::BayesNet< double >* bn;
+    gum::NodeId              i1, i2, i3, i4, i5;
 
     void setUp() {
-      bn = new gum::BayesNet<double>();
+      bn = new gum::BayesNet< double >();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
-      gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
+      gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
 
-      i1 = bn->add( n1 );
-      i2 = bn->add( n2 );
-      i3 = bn->add( n3 );
-      i4 = bn->add( n4 );
-      i5 = bn->add( n5 );
+      i1 = bn->add(n1);
+      i2 = bn->add(n2);
+      i3 = bn->add(n3);
+      i4 = bn->add(n4);
+      i5 = bn->add(n5);
 
-      bn->addArc( i1, i3 );
-      bn->addArc( i1, i4 );
-      bn->addArc( i3, i5 );
-      bn->addArc( i4, i5 );
-      bn->addArc( i2, i4 );
-      bn->addArc( i2, i5 );
+      bn->addArc(i1, i3);
+      bn->addArc(i1, i4);
+      bn->addArc(i3, i5);
+      bn->addArc(i4, i5);
+      bn->addArc(i2, i4);
+      bn->addArc(i2, i5);
 
-      fill( *bn );
+      fill(*bn);
     }
 
     void tearDown() { delete bn; }
 
     void testConstuctor() {
-      gum::BIFWriter<double>* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::BIFWriter<double>() );
+      gum::BIFWriter< double >* writer = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFWriter< double >());
       delete writer;
     }
 
     void testWriter_ostream() {
-      gum::BIFWriter<double> writer;
+      gum::BIFWriter< double > writer;
       // Uncomment this to check the ouput
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
     void testWriter_string() {
-      gum::BIFWriter<double> writer;
-      std::string file = GET_RESSOURCES_PATH( "BIFWriter_TestFile.txt" );
-      TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
+      gum::BIFWriter< double > writer;
+      std::string file = GET_RESSOURCES_PATH("BIFWriter_TestFile.txt");
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
       try {
-        writer.write( file, *bn );
-        TS_ASSERT( true );
-      } catch ( gum::IOError& ) {
-        TS_ASSERT( false );
+        writer.write(file, *bn);
+        TS_ASSERT(true);
+      } catch (gum::IOError&) {
+        TS_ASSERT(false);
       }
 
-      TS_ASSERT(
-          __compareFile( file, GET_RESSOURCES_PATH( "BIFWriter_Model.txt" ) ) )
+      TS_ASSERT(__compareFile(file, GET_RESSOURCES_PATH("BIFWriter_Model.txt")))
     }
 
     private:
     // Builds a BN to test the inference
-    void fill( gum::BayesNet<double>& bn ) {
-      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
-      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
-      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
-      bn.cpt( i4 ).fillWith(  // clang-format off
+    void fill(gum::BayesNet< double >& bn) {
+      bn.cpt(i1).fillWith({0.2, 0.8});
+      bn.cpt(i2).fillWith({0.3, 0.7});
+      bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
+      bn.cpt(i4).fillWith(  // clang-format off
                              {0.4, 0.6,
                               0.5, 0.5,
                               0.5, 0.5,
                               1.0, 0.0} );  // clang-format on
-      bn.cpt( i5 ).fillWith(                           // clang-format off
+      bn.cpt(i5).fillWith(                          // clang-format off
                              {0.3, 0.6, 0.1,
                               0.5, 0.5, 0.0,
                               0.5, 0.5, 0.0,

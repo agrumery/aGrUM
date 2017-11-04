@@ -95,8 +95,7 @@ namespace gum {
       // we already are in target mode. So no this->_setTargetedMode();  is needed
       _onAllJointTargetsErased();
       __joint_targets.clear();
-      this->__state =
-          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__setState(BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure);
     }
   }
 
@@ -147,8 +146,7 @@ namespace gum {
     this->_setTargetedMode();  // does nothing if already in targeted mode
     __joint_targets.insert( joint_target );
     _onJointTargetAdded( joint_target );
-    this->__state =
-        BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+    this->__setState(BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure);
   }
 
 
@@ -177,8 +175,7 @@ namespace gum {
       // so, no this->_setTargetedMode();  is necessary
       _onJointTargetErased( joint_target );
       __joint_targets.erase( joint_target );
-      this->__state =
-          BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure;
+      this->__setState(BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure);
     }
   }
 

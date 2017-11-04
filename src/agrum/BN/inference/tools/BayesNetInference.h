@@ -56,19 +56,19 @@ namespace gum {
   // JointTargetedInference, the class for computing joint posteriors, should
   // have access to the states of Inference and change them when needed: this
   // will be a friend of Inference
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class JointTargetedInference;
 
   // MarginalTargetedInference, the class for computing marginal posteriors,
   // should have access to the states of Inference and change them when needed:
   // this should be a friend of Inference
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class MarginalTargetedInference;
 
   // EvidenceInference, the class for computing the probability of evidence,
   // should have access to the states of Inference and change them when needed:
   // this will be a friend of Inference
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class EvidenceInference;
 
 
@@ -135,7 +135,7 @@ namespace gum {
    *   step may even be empty.
    */
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class BayesNetInference {
     public:
     /**
@@ -180,7 +180,7 @@ namespace gum {
     enum class StateOfInference {
       OutdatedBNStructure,
       OutdatedBNPotentials,
-      InferenceReady,
+      ReadyForInference,
       Done
     };
 
@@ -193,7 +193,7 @@ namespace gum {
     /// default constructor
     /** @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    BayesNetInference( const IBayesNet<GUM_SCALAR>* bn );
+    BayesNetInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// default constructor with a null BN (useful for virtual inheritance)
     /** @warning BayesNetInference is virtually inherited by
@@ -223,18 +223,24 @@ namespace gum {
      * @warning By default, all the nodes of the Bayes net are targets.
      * @warning note that, by aGrUM's rule, the bn is not copied into the
      * inference engine but only referenced. */
-    virtual void setBN(const IBayesNet<GUM_SCALAR> *bn);
+    virtual void setBN(const IBayesNet< GUM_SCALAR >* bn);
 
     /// Returns a constant reference over the IBayesNet referenced by this class
     /** @throws UndefinedElement is raised if no Bayes net has been assigned to
      * the inference. */
-    virtual const IBayesNet<GUM_SCALAR>& BN() const final;
+    virtual const IBayesNet< GUM_SCALAR >& BN() const final;
 
     /// get the domain sizes of the random variables of the BN
-    virtual const NodeProperty<Size>& domainSizes() const final;
+    virtual const NodeProperty< Size >& domainSizes() const final;
 
     /// returns whether the inference object is in a ready state
     virtual bool isInferenceReady() const noexcept final;
+    /// returns whether the inference object is in a OutdatedBNStructure state
+    virtual bool isInferenceOutdatedBNStructure() const noexcept final;
+    /// returns whether the inference object is in a OutdatedBNPotential state
+    virtual bool isInferenceOutdatedBNPotentials() const noexcept final;
+    /// returns whether the inference object is in a InferenceDone state
+    virtual bool isInferenceDone() const noexcept final;
 
     /// returns whether the inference object is in a done state
     /** The inference object is in a done state when the posteriors can be
@@ -260,7 +266,6 @@ namespace gum {
 
     /// returns the state of the inference engine
     virtual StateOfInference state() const noexcept final;
-
     /// @}
 
 
@@ -275,7 +280,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id already has an evidence
      */
-    virtual void addEvidence( const NodeId id, const Idx val ) final;
+    virtual void addEvidence(const NodeId id, const Idx val) final;
 
     /// adds a new hard evidence on node named nodeName
     /**
@@ -283,7 +288,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if nodeName already has an evidence
      */
-    virtual void addEvidence( const std::string& nodeName, const Idx val ) final;
+    virtual void addEvidence(const std::string& nodeName, const Idx val) final;
 
     /// adds a new hard evidence on node id
     /**
@@ -291,7 +296,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id already has an evidence
      */
-    virtual void addEvidence( const NodeId id, const std::string& label ) final;
+    virtual void addEvidence(const NodeId id, const std::string& label) final;
 
     /// adds a new hard evidence on node named nodeName
     /**
@@ -299,8 +304,8 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if nodeName already has an evidence
      */
-    virtual void addEvidence( const std::string& nodeName,
-                              const std::string& label ) final;
+    virtual void addEvidence(const std::string& nodeName,
+                             const std::string& label) final;
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
@@ -310,8 +315,8 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void addEvidence( const NodeId                   id,
-                              const std::vector<GUM_SCALAR>& vals ) final;
+    virtual void addEvidence(const NodeId                     id,
+                             const std::vector< GUM_SCALAR >& vals) final;
 
     /// adds a new evidence on node named nodeName (might be soft or hard)
     /**
@@ -321,8 +326,8 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node nodeName
      */
-    virtual void addEvidence( const std::string&             nodeName,
-                              const std::vector<GUM_SCALAR>& vals ) final;
+    virtual void addEvidence(const std::string&               nodeName,
+                             const std::vector< GUM_SCALAR >& vals) final;
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
@@ -333,7 +338,7 @@ namespace gum {
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void addEvidence( const Potential<GUM_SCALAR>& pot ) final;
+    virtual void addEvidence(const Potential< GUM_SCALAR >& pot) final;
 
     /// adds a new evidence on node id (might be soft or hard)
     /**
@@ -344,7 +349,7 @@ namespace gum {
      * evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void addEvidence( Potential<GUM_SCALAR>&& pot ) final;
+    virtual void addEvidence(Potential< GUM_SCALAR >&& pot) final;
 
     /// adds a new set of evidence
     /**
@@ -356,7 +361,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void
-    addSetOfEvidence( const Set<const Potential<GUM_SCALAR>*>& potlist ) final;
+    addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potlist) final;
 
     /// adds a new list of evidence
     /**
@@ -368,7 +373,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void
-    addListOfEvidence( const List<const Potential<GUM_SCALAR>*>& potlist ) final;
+    addListOfEvidence(const List< const Potential< GUM_SCALAR >* >& potlist) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -376,7 +381,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence( const NodeId id, const Idx val ) final;
+    virtual void chgEvidence(const NodeId id, const Idx val) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -384,7 +389,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence( const std::string& nodeName, const Idx val ) final;
+    virtual void chgEvidence(const std::string& nodeName, const Idx val) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -392,7 +397,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence( const NodeId id, const std::string& label ) final;
+    virtual void chgEvidence(const NodeId id, const std::string& label) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -400,8 +405,8 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence( const std::string& nodeName,
-                              const std::string& label ) final;
+    virtual void chgEvidence(const std::string& nodeName,
+                             const std::string& label) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
@@ -411,8 +416,8 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void chgEvidence( const NodeId                   id,
-                              const std::vector<GUM_SCALAR>& vals ) final;
+    virtual void chgEvidence(const NodeId                     id,
+                             const std::vector< GUM_SCALAR >& vals) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
@@ -422,8 +427,8 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void chgEvidence( const std::string&             nodeName,
-                              const std::vector<GUM_SCALAR>& vals ) final;
+    virtual void chgEvidence(const std::string&               nodeName,
+                             const std::vector< GUM_SCALAR >& vals) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
     /**
@@ -434,37 +439,37 @@ namespace gum {
      *        have an evidence
      * @throw FatalError if pot=[0,0,...,0]
      */
-    virtual void chgEvidence( const Potential<GUM_SCALAR>& pot ) final;
+    virtual void chgEvidence(const Potential< GUM_SCALAR >& pot) final;
 
     /// removes all the evidence entered into the network
     virtual void eraseAllEvidence() final;
 
     /// removed the evidence, if any, corresponding to node id
-    virtual void eraseEvidence( const NodeId id ) final;
+    virtual void eraseEvidence(const NodeId id) final;
 
     /// removed the evidence, if any, corresponding to node of name nodeName
-    virtual void eraseEvidence( const std::string& nodeName ) final;
+    virtual void eraseEvidence(const std::string& nodeName) final;
 
     /// indicates whether some node(s) have received evidence
     virtual bool hasEvidence() const final;
 
     /// indicates whether node id has received an evidence
-    virtual bool hasEvidence( const NodeId id ) const final;
+    virtual bool hasEvidence(const NodeId id) const final;
 
     /// indicates whether node id has received a hard evidence
-    virtual bool hasHardEvidence( const NodeId id ) const final;
+    virtual bool hasHardEvidence(const NodeId id) const final;
 
     /// indicates whether node id has received a soft evidence
-    virtual bool hasSoftEvidence( const NodeId id ) const final;
+    virtual bool hasSoftEvidence(const NodeId id) const final;
     /// indicates whether node id has received an evidence
 
-    virtual bool hasEvidence( const std::string& nodeName ) const final;
+    virtual bool hasEvidence(const std::string& nodeName) const final;
 
     /// indicates whether node id has received a hard evidence
-    virtual bool hasHardEvidence( const std::string& nodeName ) const final;
+    virtual bool hasHardEvidence(const std::string& nodeName) const final;
 
     /// indicates whether node id has received a soft evidence
-    virtual bool hasSoftEvidence( const std::string& nodeName ) const final;
+    virtual bool hasSoftEvidence(const std::string& nodeName) const final;
 
     /// returns the number of evidence entered into the Bayesian network
     virtual Size nbrEvidence() const final;
@@ -476,7 +481,7 @@ namespace gum {
     virtual Size nbrSoftEvidence() const final;
 
     /// returns the set of evidence
-    const NodeProperty<const Potential<GUM_SCALAR>*>& evidence() const;
+    const NodeProperty< const Potential< GUM_SCALAR >* >& evidence() const;
 
     /// returns the set of nodes with soft evidence
     const NodeSet& softEvidenceNodes() const;
@@ -485,20 +490,23 @@ namespace gum {
     const NodeSet& hardEvidenceNodes() const;
 
     /// indicate for each node with hard evidence which value it took
-    const NodeProperty<Idx>& hardEvidence() const;
+    const NodeProperty< Idx >& hardEvidence() const;
 
     /// @}
 
 
     protected:
+    /// fired when the stage is changed
+    virtual void _onStateChanged() = 0;
+
     /// fired after a new evidence is inserted
-    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence ) = 0;
+    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence) = 0;
 
     /// fired before an evidence is removed
-    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence ) = 0;
+    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence) = 0;
 
     /// fired before all the evidence are erased
-    virtual void _onAllEvidenceErased( bool contains_hard_evidence ) = 0;
+    virtual void _onAllEvidenceErased(bool contains_hard_evidence) = 0;
 
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
@@ -508,11 +516,10 @@ namespace gum {
      * Hard or from Hard to Soft
      *
      */
-    virtual void _onEvidenceChanged( const NodeId id,
-                                     bool         hasChangedSoftHard ) = 0;
+    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
-    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn ) = 0;
+    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) = 0;
 
     /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
@@ -570,16 +577,16 @@ namespace gum {
     StateOfInference __state{StateOfInference::OutdatedBNStructure};
 
     /// the Bayes net on which we perform inferences
-    const IBayesNet<GUM_SCALAR>* __bn{nullptr};
+    const IBayesNet< GUM_SCALAR >* __bn{nullptr};
 
     /// the domain sizes of the random variables
-    NodeProperty<Size> __domain_sizes;
+    NodeProperty< Size > __domain_sizes;
 
     /// the set of evidence entered into the network
-    NodeProperty<const Potential<GUM_SCALAR>*> __evidence;
+    NodeProperty< const Potential< GUM_SCALAR >* > __evidence;
 
     /// assign to each node with a hard evidence the index of its observed value
-    NodeProperty<Idx> __hard_evidence;
+    NodeProperty< Idx > __hard_evidence;
 
     /// the set of nodes that received soft evidence
     NodeSet __soft_evidence_nodes;
@@ -587,24 +594,28 @@ namespace gum {
     /// the set of nodes that received hard evidence
     NodeSet __hard_evidence_nodes;
 
+    /// set the state of the inference engine and
+    /// call the notification _onStateChanged
+    /// when necessary (i.e. when the state has effectively changed).
+    virtual void __setState(const StateOfInference state) final;
 
     /// create the internal structure for a hard evidence
-    Potential<GUM_SCALAR> __createHardEvidence( NodeId id, Idx val ) const;
+    Potential< GUM_SCALAR > __createHardEvidence(NodeId id, Idx val) const;
 
     /// checks whether a potential corresponds to a hard evidence or not
-    bool __isHardEvidence( const Potential<GUM_SCALAR>& pot, Idx& val ) const;
+    bool __isHardEvidence(const Potential< GUM_SCALAR >& pot, Idx& val) const;
 
     /// computes the domain sizes of the random variables
     void __computeDomainSizes();
 
     /// assigns a BN during the inference engine construction
-    void __setBayesNetDuringConstruction( const IBayesNet<GUM_SCALAR>* bn );
+    void __setBayesNetDuringConstruction(const IBayesNet< GUM_SCALAR >* bn);
 
 
     /// allow JointInference to access the single targets and inference states
-    friend MarginalTargetedInference<GUM_SCALAR>;
-    friend JointTargetedInference<GUM_SCALAR>;
-    friend EvidenceInference<GUM_SCALAR>;
+    friend MarginalTargetedInference< GUM_SCALAR >;
+    friend JointTargetedInference< GUM_SCALAR >;
+    friend EvidenceInference< GUM_SCALAR >;
   };
 
 
