@@ -58,8 +58,7 @@ namespace gum {
   INLINE Estimator< GUM_SCALAR >::~Estimator() {
     GUM_DESTRUCTOR(Estimator);
     // remove all the posteriors computed
-    for (const auto& pot : __target_posteriors)
-      delete pot.second;
+    clear();
   }
 
 
@@ -88,8 +87,8 @@ namespace gum {
     }
   }
 
-  /// we multiply the posteriors obtained by LoopyBeliefPropagation by the it's
-  /// number of iterations
+  // we multiply the posteriors obtained by LoopyBeliefPropagation by the it's
+  // number of iterations
   template < typename GUM_SCALAR >
   void
   Estimator< GUM_SCALAR >::setFromLBP(LoopyBeliefPropagation< GUM_SCALAR >* lbp,
@@ -190,5 +189,15 @@ namespace gum {
     }
 
     return ic_max;
+  }
+
+  template < typename GUM_SCALAR >
+  void Estimator< GUM_SCALAR >::clear() {
+    _estimator.clear();
+    _wtotal = (GUM_SCALAR)0;
+    _ntotal = Size(0);
+    for (const auto& pot : __target_posteriors)
+      delete pot.second;
+    __target_posteriors.clear();
   }
 }

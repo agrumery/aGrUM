@@ -23,6 +23,7 @@
  * BayesNetInference.
  */
 
+#include <agrum/BN/inference/tools/BayesNetInference.h>
 
 namespace gum {
 

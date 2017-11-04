@@ -232,6 +232,12 @@ namespace gum {
 
     virtual void _onAllMarginalTargetsErased(){};
 
+    virtual void _onStateChanged() {
+      if (this->isInferenceReady()) {
+        __estimator.clear();
+      }
+    };
+
     private:
     BayesNetFragment< GUM_SCALAR >* __samplingBN;
   };

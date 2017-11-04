@@ -419,5 +419,29 @@ namespace gum_tests {
         TS_ASSERT(false);
       }
     }
+
+    void testMultipleInferenceWithSameEngine() {
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
+      unsharpen(bn);
+
+      try {
+        gum::GibbsSampling< float > inf(&bn);
+        inf.addEvidence(bn.idFromName("d"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.makeInference();
+
+        inf.eraseAllEvidence();
+        inf.addEvidence(bn.idFromName("d"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_GIBBS);
+        inf.makeInference();
+
+      } catch (gum::Exception& e) {
+
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
+      }
+    }
   };
 }  // namespace gum_tests

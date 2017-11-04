@@ -24,9 +24,9 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/loopySamplingInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
+#include <agrum/BN/inference/loopySamplingInference.h>
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/variables/labelizedVariable.h>
 
@@ -67,7 +67,7 @@ namespace gum_tests {
 
   class loopySamplingInferenceTestSuite : public CxxTest::TestSuite {
     public:
-    void /*test*/HybridBinaryTreeWithoutEvidence() {
+    void /*test*/ HybridBinaryTreeWithoutEvidence() {
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
@@ -92,7 +92,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/HybridBinaryTreeWithEvidenceOnRoot() {
+    void /*test*/ HybridBinaryTreeWithEvidenceOnRoot() {
 
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
@@ -117,7 +117,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/HybridBinaryTreeWithEvidenceOnLeaf() {
+    void /*test*/ HybridBinaryTreeWithEvidenceOnLeaf() {
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "h";
@@ -141,7 +141,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/HybridBinaryTreeWithEvidenceOnMid() {
+    void /*test*/ HybridBinaryTreeWithEvidenceOnMid() {
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
       std::string ev = "e";
@@ -166,7 +166,7 @@ namespace gum_tests {
       }
     }
 
-    void /*test*/HybridBinaryTreeWithMultipleEvidence() {
+    void /*test*/ HybridBinaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e;i->j->h");
 
@@ -196,7 +196,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/HybridNaryTreeWithMultipleEvidence() {
+    void /*test*/ HybridNaryTreeWithMultipleEvidence() {
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a[4]->d[8]->f[3];b->d->g[5];b->e[4]->h;c->e;i[10]->j[3]->h");
 
@@ -226,7 +226,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/HybridSimpleBN() {
+    void /*test*/ HybridSimpleBN() {
       auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
 
       try {
@@ -289,7 +289,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/HybridCplxBN() {
+    void /*test*/ HybridCplxBN() {
       auto bn = gum::BayesNet< float >::fastPrototype(
         "a->d->f;b->d->g;b->e->h;c->e->g;i->j->h;c->j;x->c;x->j;", 3);
 
@@ -352,7 +352,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/HybridAsia() {
+    void /*test*/ HybridAsia() {
 
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("asia.bif"));
@@ -381,7 +381,7 @@ namespace gum_tests {
     }
 
 
-    void /*test*/HybridAlarm() {
+    void /*test*/ HybridAlarm() {
 
       gum::BayesNet< float >  bn;
       gum::BIFReader< float > reader(&bn, GET_RESSOURCES_PATH("alarm.bif"));
@@ -409,29 +409,29 @@ namespace gum_tests {
       }
     }
 
-      void testMultipleInferenceWithSameEngine() {
-        auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
-        unsharpen(bn);
+    void testMultipleInferenceWithSameEngine() {
+      auto bn = gum::BayesNet< float >::fastPrototype("a->b->c;a->d->c", 3);
+      unsharpen(bn);
 
-        try {
-          gum::LoopyGibbsSampling< float > inf(&bn);
-          inf.addEvidence(bn.idFromName("d"), 0);
-          inf.setVerbosity(false);
-          inf.setEpsilon(EPSILON_FOR_GIBBS);
-          inf.makeInference();
+      try {
+        gum::LoopySamplingInference< float, gum::WeightedSampling > inf(&bn);
+        inf.addEvidence(bn.idFromName("d"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_HARD_HYBRID);
+        inf.makeInference();
 
-          inf.eraseAllEvidence();
-          inf.addEvidence(bn.idFromName("d"), 0);
-          inf.setVerbosity(false);
-          inf.setEpsilon(EPSILON_FOR_GIBBS);
-          inf.makeInference();
+        inf.eraseAllEvidence();
+        inf.addEvidence(bn.idFromName("d"), 0);
+        inf.setVerbosity(false);
+        inf.setEpsilon(EPSILON_FOR_HARD_HYBRID);
+        inf.makeInference();
 
-        } catch (gum::Exception& e) {
+      } catch (gum::Exception& e) {
 
-          GUM_SHOWERROR(e);
-          TS_ASSERT(false);
-        }
+        GUM_SHOWERROR(e);
+        TS_ASSERT(false);
       }
+    }
   };
 
 }  /// gum_tests
