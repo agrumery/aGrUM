@@ -7,12 +7,12 @@ from sys import platform as os_platform
 
 os.chdir(os.path.dirname(__file__ if __file__[0] == '/' else "./" + __file__))
 
-mod="release"
-if len(sys.argv)>1:
-  mod=sys.argv[1]
-print("Mode detected : "+mod)
+mod = "release"
+if len(sys.argv) > 1:
+  mod = sys.argv[1]
+print("Mode detected : " + mod)
 
-if mod=="debug":
+if mod == "debug":
   libagrum = os.path.abspath("../../../build/debug/wrappers")
 else:
   libagrum = os.path.abspath("../../../build/release/wrappers")
