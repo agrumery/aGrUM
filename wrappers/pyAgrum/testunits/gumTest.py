@@ -6,7 +6,16 @@ import sys
 from sys import platform as os_platform
 
 os.chdir(os.path.dirname(__file__ if __file__[0] == '/' else "./" + __file__))
-libagrum = os.path.abspath("../../../build/release/wrappers")
+
+mod="release"
+if len(sys.argv)>1:
+  mod=sys.argv[1]
+print("Mode detected : "+mod)
+
+if mod=="debug":
+  libagrum = os.path.abspath("../../../build/debug/wrappers")
+else:
+  libagrum = os.path.abspath("../../../build/release/wrappers")
 sys.path.insert(0, libagrum)  # to force to use local pyAgrum for the tests (and not installed one)
 
 import pyAgrum as gum

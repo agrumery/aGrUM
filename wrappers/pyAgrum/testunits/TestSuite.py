@@ -31,7 +31,7 @@ from tests import AggregatorsForBNTestSuite
 from tests import PRMexplorerTestSuite
 from tests import AllIncrementalInferenceTestSuite
 from tests import LazyPropagationTestSuite
-from tests import GibbsTestSuite
+from tests import SamplingTestSuite
 from tests import LoopyBeliefPropagationTestSuite
 
 import time
@@ -51,7 +51,7 @@ tests = list()
 #tests.append(BNLearnerTestSuite.ts)
 #tests.append(AggregatorsForBNTestSuite.ts)
 #tests.append(PRMexplorerTestSuite.ts)
-tests.append(GibbsTestSuite.ts)
+tests.append(SamplingTestSuite.ts)
 #tests.append(LoopyBeliefPropagationTestSuite.ts)
 
 tests = unittest.TestSuite(tests)
