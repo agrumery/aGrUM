@@ -7,16 +7,24 @@ from sys import platform as os_platform
 
 os.chdir(os.path.dirname(__file__ if __file__[0] == '/' else "./" + __file__))
 
-mod = "release"
-if len(sys.argv) > 1:
-  mod = sys.argv[1]
-print("Mode detected : " + mod)
+mod = "standalone"
+testNotebooks = False
 
-if mod == "debug":
-  libagrum = os.path.abspath("../../../build/debug/wrappers")
-else:
-  libagrum = os.path.abspath("../../../build/release/wrappers")
-sys.path.insert(0, libagrum)  # to force to use local pyAgrum for the tests (and not installed one)
+for cde in sys.argv:
+  if cde in ["debug", "release"]:
+    mod = cde
+  elif cde in ["all"]:
+    testNotebooks = (cde == "all")
+
+print("+ Mode detected : " + mod)
+print("+ Testing notebooks : "+str(testNotebooks))
+
+if mod != "standalone":
+  if mod == "debug":
+    libagrum = os.path.abspath("../../../build/debug/wrappers")
+  else:
+    libagrum = os.path.abspath("../../../build/release/wrappers")
+  sys.path.insert(0, libagrum)  # to force to use local pyAgrum for the tests (and not installed one)
 
 import pyAgrum as gum
 
@@ -39,20 +47,21 @@ except:
   print("=> Error in TestSuite")
 
 if len(sys.argv) == 2 and sys.argv[1] == 'all':
-  print("\n")
-  print("*******************")
-  print("Notebook Test Suite")
-  print("*******************")
-  from NotebookTestSuite import runNotebooks
+  if testNotebooks:
+    print("\n")
+    print("*******************")
+    print("Notebook Test Suite")
+    print("*******************")
+    from NotebookTestSuite import runNotebooks
 
-  try:
-    total_errs += runNotebooks()
-  except NameError:
-    pass
-  except:
-    total_errs += 1
-    print("=> Error in NotebookTestSuite")
+    try:
+      total_errs += runNotebooks()
+    except NameError:
+      pass
+    except:
+      total_errs += 1
+      print("=> Error in NotebookTestSuite")
 
-  print("\n\nErrors : " + str(total_errs))
+    print("\n\nErrors : " + str(total_errs))
 
 sys.exit(total_errs)

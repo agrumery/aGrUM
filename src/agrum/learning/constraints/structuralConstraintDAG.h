@@ -25,7 +25,7 @@
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_DAG_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/graphs/algorithms/DAGCycleDetector.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>

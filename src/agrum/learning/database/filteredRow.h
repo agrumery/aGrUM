@@ -25,7 +25,7 @@
 #ifndef GUM_LEARNING_FILTERED_ROW_H
 #define GUM_LEARNING_FILTERED_ROW_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <vector>
 
 namespace gum {

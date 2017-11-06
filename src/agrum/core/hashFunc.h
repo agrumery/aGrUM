@@ -33,7 +33,7 @@
 #include <type_traits>
 #include <utility>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/refPtr.h>
 
 namespace gum {

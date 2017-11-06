@@ -30,7 +30,7 @@
 #include <string>
 #include <type_traits>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/bijection.h>
 
 namespace gum {

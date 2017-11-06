@@ -26,7 +26,7 @@
 */
 #ifndef GUM_DAGMODEL_H
 #define GUM_DAGMODEL_H
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>

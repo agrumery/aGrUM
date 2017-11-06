@@ -44,7 +44,7 @@
 #define GUM_CAST static_cast
 #endif
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/utils_dir.h>
 #include <agrum/core/utils_random.h>

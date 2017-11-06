@@ -36,7 +36,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/database/DBRow.h>
 #include <agrum/learning/database/DBRowFilter.h>
 #include <agrum/learning/database/DBTransform.h>

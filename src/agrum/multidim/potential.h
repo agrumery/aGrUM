@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/set.h>
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/multiDimImplementation.h>

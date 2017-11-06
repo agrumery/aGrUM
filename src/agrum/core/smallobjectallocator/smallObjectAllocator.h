@@ -29,7 +29,7 @@
 #define GUM_SMALL_OBJECT_ALLOCATOR_H
 
 // ============================================================================
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 // ============================================================================
 #include <agrum/core/hashTable.h>
 #include <agrum/core/smallobjectallocator/fixedAllocator.h>

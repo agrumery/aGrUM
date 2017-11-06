@@ -53,7 +53,7 @@
 #ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_UNDIGRAPH_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/OMPThreads.h>
 #include <agrum/core/set.h>
 #include <agrum/graphs/undiGraph.h>

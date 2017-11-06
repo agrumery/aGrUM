@@ -26,7 +26,7 @@
 #ifndef GUM_I_CPT_GENERATOR_H
 #define GUM_I_CPT_GENERATOR_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum {

@@ -30,7 +30,7 @@
 #define GUM_SIGNALER0_H
 #include <functional>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/list.h>
 #include <agrum/core/signal/signaler.h>
 

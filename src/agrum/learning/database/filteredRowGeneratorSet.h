@@ -46,7 +46,7 @@
 #ifndef GUM_LEARNING_FILTERED_ROW_GENERATOR_SET_H
 #define GUM_LEARNING_FILTERED_ROW_GENERATOR_SET_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/database/filteredRow.h>
 #include <agrum/learning/database/filteredRowGenerator.h>
 
@@ -91,7 +91,7 @@ namespace gum {
 
       /// default constructor
       FilteredRowGeneratorSet ();
- 
+
       /// copy constructor
       FilteredRowGeneratorSet ( const FilteredRowGeneratorSet<Generator>& from );
 
@@ -102,7 +102,7 @@ namespace gum {
       ~FilteredRowGeneratorSet ();
 
       /// @}
-      
+
 
       // ##########################################################################
       /// @name Operators
@@ -147,9 +147,9 @@ namespace gum {
       template <class NewGenerator>
       void insertGenerator( const NewGenerator& generator );
 
-      /// returns the number of generators 
+      /// returns the number of generators
       Size nbGenerators() const noexcept;
-      
+
       /** @brief returns true if there are still rows that can be output
        * by the set of generators */
       bool hasRows();

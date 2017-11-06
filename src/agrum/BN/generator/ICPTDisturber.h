@@ -28,7 +28,7 @@
 #define GUM_I_CPT_DISTURBER_H
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum {

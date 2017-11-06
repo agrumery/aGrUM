@@ -144,23 +144,23 @@ class TestInferenceResults(SamplingTestCase):
     proto = protoie.posterior(self.w)
 
     ie = gum.LoopyWeightedSampling(self.bn)
-    ie.setVerbosity(False)
-    ie.setEpsilon(0.01)
-    ie.setMinEpsilonRate(0.01)
-    msg = self.iterTest(proto, ie, self.s, {})
+    ie.setVerbosity(True)
+    ie.setEpsilon(0.05)
+    ie.setMinEpsilonRate(0.001)
+    msg = self.iterTest(proto, ie, self.w, {})
     if msg is not None:
       self.fail(msg)
 
     protoie = gum.LazyPropagation(self.bn)
     protoie.makeInference()
-    ie.setEvidence({'s': 1, 'c': 0})
+    ie.setEvidence({'s': 0, 'c': 0})
     proto = protoie.posterior(self.w)
 
     ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
-    ie.setEpsilon(0.01)
-    ie.setMinEpsilonRate(0.01)
-    msg = self.iterTest(proto, ie, self.s, {'s': 1, 'c': 0})
+    ie.setEpsilon(0.05)
+    ie.setMinEpsilonRate(0.001)
+    msg = self.iterTest(proto, ie, self.w, {'s': 0, 'c': 0})
     if msg is not None:
       self.fail(msg)
 

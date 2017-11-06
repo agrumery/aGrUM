@@ -27,7 +27,7 @@
 #ifndef GUM_JUNCTION_TREE_STRATEGY_H
 #define GUM_JUNCTION_TREE_STRATEGY_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/graphs/cliqueGraph.h>
 #include <agrum/graphs/graphElements.h>

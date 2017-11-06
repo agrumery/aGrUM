@@ -195,7 +195,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onContextualize(
-    BayesNetFragment< GUM_SCALAR >* bn){};
+    BayesNetFragment< GUM_SCALAR >* bn) {}
 
 
   template < typename GUM_SCALAR >
@@ -204,15 +204,15 @@ namespace gum {
     if (!isHardEvidence) {
       GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
     }
-  };
+  }
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onEvidenceErased(const NodeId id,
-                                                          bool isHardEvidence){};
+                                                          bool isHardEvidence) {}
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onAllEvidenceErased(
-    bool contains_hard_evidence){};
+    bool contains_hard_evidence) {}
 
   template < typename GUM_SCALAR >
   void
@@ -221,34 +221,35 @@ namespace gum {
     if (hasChangedSoftHard) {
       GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
     }
-  };
+  }
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onBayesNetChanged(
-    const IBayesNet< GUM_SCALAR >* bn){};
+    const IBayesNet< GUM_SCALAR >* bn) {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_updateOutdatedBNStructure(){};
+  void SamplingInference< GUM_SCALAR >::_updateOutdatedBNStructure() {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_updateOutdatedBNPotentials(){};
+  void SamplingInference< GUM_SCALAR >::_updateOutdatedBNPotentials() {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId id){};
+  void SamplingInference< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId id) {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id){};
+  void SamplingInference< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id) {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_onAllMarginalTargetsAdded(){};
+  void SamplingInference< GUM_SCALAR >::_onAllMarginalTargetsAdded() {}
 
   template < typename GUM_SCALAR >
-  void SamplingInference< GUM_SCALAR >::_onAllMarginalTargetsErased(){};
+  void SamplingInference< GUM_SCALAR >::_onAllMarginalTargetsErased() {}
 
   template < typename GUM_SCALAR >
   void SamplingInference< GUM_SCALAR >::_onStateChanged() {
     if (this->isInferenceReady()) {
       __estimator.clear();
+      this->initApproximationScheme();
     }
-  };
+  }
 }

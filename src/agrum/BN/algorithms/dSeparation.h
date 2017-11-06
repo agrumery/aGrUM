@@ -29,7 +29,7 @@
 
 
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 
 namespace gum {

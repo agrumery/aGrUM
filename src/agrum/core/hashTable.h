@@ -36,7 +36,7 @@
 #include <utility>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/hashFunc.h>
 
 namespace gum {

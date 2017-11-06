@@ -31,7 +31,7 @@
 #include <string>
 
 #include <agrum/BN/inference/tools/BayesNetInference.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 
 namespace gum {

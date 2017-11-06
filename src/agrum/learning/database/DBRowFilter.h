@@ -27,7 +27,7 @@
 
 #include <limits>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/database/DBHandler.h>
 #include <agrum/learning/database/DBRowTranslatorSet.h>
 #include <agrum/learning/database/filteredRowGeneratorSet.h>

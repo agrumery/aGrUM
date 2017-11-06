@@ -32,7 +32,7 @@
 
 #include <cmath>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/hashTable.h>
 
 #define GUM_LEARNING_CONFIDENCE_PROBA 0.05

@@ -30,7 +30,7 @@
 
 
 #include <agrum/BN/inference/tools/marginalTargetedInference.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 
 namespace gum {

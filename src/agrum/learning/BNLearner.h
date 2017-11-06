@@ -31,7 +31,7 @@
 #include <sstream>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>

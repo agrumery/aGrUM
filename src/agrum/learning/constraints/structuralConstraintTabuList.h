@@ -36,7 +36,7 @@
 
 #include <limits>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/bijection.h>
 #include <agrum/learning/constraints/structuralConstraint.h>
 #include <agrum/learning/structureUtils/graphChange.h>

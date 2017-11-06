@@ -28,7 +28,7 @@
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_GENERATOR_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/multidim/multiDimFunctionGraph.h>
 
 namespace gum {

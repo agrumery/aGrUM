@@ -23,7 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/graphs/algorithms/triangulations/eliminationStrategies/defaultEliminationSequenceStrategy.h>
 #include <agrum/graphs/algorithms/triangulations/junctionTreeStrategies/defaultJunctionTreeStrategy.h>

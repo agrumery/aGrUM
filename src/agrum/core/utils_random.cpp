@@ -25,7 +25,7 @@
  */
 #include <chrono>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/utils_misc.h>
 
 #ifdef GUM_NO_INLINE

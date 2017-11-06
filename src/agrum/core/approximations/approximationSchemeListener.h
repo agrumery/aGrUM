@@ -27,7 +27,7 @@
 #ifndef APPROXIMATIONSCHEMELISTENER_H
 #define APPROXIMATIONSCHEMELISTENER_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/signal/listener.h>
 
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>

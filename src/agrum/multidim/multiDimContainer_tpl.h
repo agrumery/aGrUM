@@ -24,7 +24,7 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <algorithm>
 
 

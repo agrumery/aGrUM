@@ -26,7 +26,7 @@
 #ifndef GUM_MULTI_DIM_ARRAY_H
 #define GUM_MULTI_DIM_ARRAY_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/multidim/multiDimWithOffset.h>
 #include <vector>
 

@@ -28,7 +28,7 @@
 #include <string>
 
 #include <agrum/PRM/elements/PRMObject.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #ifndef GUM_NAME_GENERATOR_H
 #define GUM_NAME_GENERATOR_H

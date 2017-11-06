@@ -34,7 +34,7 @@
 #ifndef GUM_LEARNING_SCORE_H
 #define GUM_LEARNING_SCORE_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/math/math.h>
 
 #include <agrum/learning/scores_and_tests/cache4Score.h>

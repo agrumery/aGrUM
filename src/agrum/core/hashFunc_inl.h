@@ -25,7 +25,7 @@
 #include <string>
 #include <utility>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 // to ease parsing in IDE
 #include <agrum/core/hashFunc.h>

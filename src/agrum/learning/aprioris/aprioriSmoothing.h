@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/aprioris/apriori.h>
 
 namespace gum {

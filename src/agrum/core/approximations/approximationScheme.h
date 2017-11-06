@@ -35,7 +35,7 @@
 
 #include <cmath>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/timer.h>
@@ -353,10 +353,6 @@ namespace gum {
      */
     bool continueApproximationScheme(double error);
 
-    /**
-     * @brief reset the approximation scheme
-     */
-    void reset();
 
     ///  @}
 

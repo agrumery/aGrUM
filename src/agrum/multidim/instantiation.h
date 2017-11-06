@@ -29,7 +29,7 @@
 #include <ostream>
 #include <sstream>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/hashTable.h>
 #include <agrum/multidim/multiDimInterface.h>

@@ -25,7 +25,7 @@
 #include <sstream>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/variables/discreteVariable.h>
 

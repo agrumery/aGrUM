@@ -28,7 +28,7 @@
 
 #include <limits>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 

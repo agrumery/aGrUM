@@ -40,7 +40,7 @@
 
 #include <type_traits>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/graphs/diGraph.h>
 #include <agrum/learning/structureUtils/graphChange.h>
 

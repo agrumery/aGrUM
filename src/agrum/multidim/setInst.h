@@ -30,7 +30,7 @@
 
 #include <ostream>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/bijection.h>
 #include <agrum/multidim/multiDimAdressable.h>

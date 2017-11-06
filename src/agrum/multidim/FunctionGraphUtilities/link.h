@@ -28,7 +28,7 @@
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H
 
 // ============================================================================
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 // ============================================================================
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // ============================================================================

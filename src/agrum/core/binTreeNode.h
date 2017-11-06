@@ -26,7 +26,7 @@
 #ifndef GUM_BIN_TREE_NODE_H
 #define GUM_BIN_TREE_NODE_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 

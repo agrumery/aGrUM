@@ -47,7 +47,7 @@
 #ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_ON_SUBDIGRAPH_H
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_ON_SUBDIGRAPH_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/OMPThreads.h>
 #include <agrum/core/set.h>
 #include <agrum/graphs/diGraph.h>

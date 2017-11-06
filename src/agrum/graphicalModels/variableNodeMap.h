@@ -29,7 +29,7 @@
 #include <iostream>
 #include <string>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/bijection.h>
 #include <agrum/graphs/graphElements.h>

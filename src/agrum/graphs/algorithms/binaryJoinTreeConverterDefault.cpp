@@ -23,7 +23,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/priorityQueue.h>
 #include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>

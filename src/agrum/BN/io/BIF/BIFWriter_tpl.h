@@ -20,7 +20,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 // to ease parsing in IDE
 #include <agrum/BN/io/BIF/BIFWriter.h>

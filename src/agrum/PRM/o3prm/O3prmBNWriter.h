@@ -39,7 +39,7 @@
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/variables/rangeVariable.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
   /**

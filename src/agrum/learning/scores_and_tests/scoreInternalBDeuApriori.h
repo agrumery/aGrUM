@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.h>
 
 namespace gum {

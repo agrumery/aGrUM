@@ -24,7 +24,7 @@
  */
 #ifndef GUM_SPANNING_FOREST_H
 #define GUM_SPANNING_FOREST_H
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/undiGraph.h>

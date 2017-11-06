@@ -34,7 +34,7 @@
 #include <agrum/BN/inference/tools/evidenceInference.h>
 #include <agrum/BN/inference/tools/jointTargetedInference.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 
 namespace gum {

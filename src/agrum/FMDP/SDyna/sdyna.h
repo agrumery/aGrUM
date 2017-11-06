@@ -28,7 +28,7 @@
 #ifndef GUM_SDYNA_H
 #define GUM_SDYNA_H
 // =========================================================================
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>

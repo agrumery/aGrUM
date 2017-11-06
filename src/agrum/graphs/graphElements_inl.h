@@ -25,7 +25,7 @@
 #include <algorithm>
 #include <iostream>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 // to facilitate parsing
 #include <agrum/graphs/graphElements.h>

@@ -37,7 +37,7 @@
 #include <vector>
 #include <limits>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 #include <agrum/learning/database/DBRow.h>
 #include <agrum/learning/database/filteredRow.h>
@@ -135,13 +135,13 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
       typename std::enable_if<isDBCellTranslator<NewTranslator>::value, void>::type
 #else // for the doxygen documentation:
-      void 
+      void
 #endif // DOXYGEN_SHOULD_SKIP_THIS
       insertTranslator( const NewTranslator& translator,
           Idx  deb_cols,
           Size nb_times = 1,
           Idx  incr = std::numeric_limits<Idx>::max () );
-      
+
       /// execute all the translations on the current database row
       void translate();
 

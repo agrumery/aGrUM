@@ -28,7 +28,7 @@
 #ifndef GUM_CONCRETE_LEAF_H
 #define GUM_CONCRETE_LEAF_H
 // =========================================================================
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/core/multiPriorityQueue.h>
 #include <agrum/core/sequence.h>

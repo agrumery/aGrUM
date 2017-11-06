@@ -31,7 +31,7 @@
 #include <cstdlib>
 
 #include <agrum/BN/generator/ICPTDisturber.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 

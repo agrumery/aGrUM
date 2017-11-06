@@ -41,7 +41,7 @@
 #define GUM_DEFAULT_ELIMINATION_SEQUENCE_STRATEGY_H
 
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/algorithms/simplicialSet.h>
 #include <agrum/graphs/algorithms/triangulations/eliminationStrategies/unconstrainedEliminationSequenceStrategy.h>

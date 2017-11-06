@@ -58,7 +58,7 @@
 #ifndef GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H
 #define GUM_LEARNING_GRAPH_CHANGES_GENERATOR_4_K2_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/OMPThreads.h>
 #include <agrum/core/sequence.h>
 #include <agrum/core/set.h>

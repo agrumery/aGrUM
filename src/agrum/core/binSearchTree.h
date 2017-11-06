@@ -28,7 +28,7 @@
 #ifndef GUM_BIN_SEARCH_TREE_H
 #define GUM_BIN_SEARCH_TREE_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/binTreeNode.h>
 

@@ -33,7 +33,7 @@
 #ifndef GUM_LEARNING_PARAM_ESTIMATOR_H
 #define GUM_LEARNING_PARAM_ESTIMATOR_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/aprioris/apriori.h>
 #include <agrum/learning/scores_and_tests/counter.h>
 #include <agrum/learning/scores_and_tests/scoreInternalApriori.h>

@@ -18,8 +18,8 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef GUM_AGRUM_H
+#define GUM_AGRUM_H
 
 /// gum is the global namespace for all aGrUM entities
 namespace gum {
@@ -43,11 +43,16 @@ namespace gum {
     namespace lp {}
   }
 
-  /// namespace for all particles for approximation inference based on
-  /// simulation
-  namespace samplers {}
-
   /// namespace for all probabilistic relational models entities
   namespace prm {}
 }
-#endif  // CONFIG_H
+
+#include <agrum/config.h>
+
+#include <agrum/core/debug.h>
+#include <agrum/core/exceptions.h>
+#include <agrum/core/inline.h>
+#include <agrum/core/types.h>
+#include <agrum/core/utils_misc.h>
+
+#endif  // GUM_AGRUM_H

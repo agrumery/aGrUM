@@ -32,7 +32,7 @@
 #include <sstream>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #ifndef HAVE_MKSTEMP  // mainly windows
 #include <io.h>

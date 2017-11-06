@@ -30,7 +30,7 @@
 #ifndef GUM_ELIMINATION_SEQUENCE_STRATEGY_H
 #define GUM_ELIMINATION_SEQUENCE_STRATEGY_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/undiGraph.h>
 

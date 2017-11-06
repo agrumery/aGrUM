@@ -33,7 +33,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>

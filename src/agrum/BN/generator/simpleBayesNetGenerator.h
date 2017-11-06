@@ -33,7 +33,7 @@
 #include <vector>
 
 #include <agrum/BN/generator/IBayesNetGenerator.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 
