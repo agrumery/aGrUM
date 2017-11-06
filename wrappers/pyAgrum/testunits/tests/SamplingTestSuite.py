@@ -3,22 +3,24 @@ import unittest
 
 import pyAgrum as gum
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
-
+import time
 
 class SamplingTestCase(pyAgrumTestCase):
   def iterTest(self, goalPotential, inferenceEngine, target, evs, seuil=0.1, nbr=10):
     min = 1000
 
     for i in range(nbr):
+      deb=time.time()
       inferenceEngine.eraseAllEvidence()
       inferenceEngine.setEvidence(evs)
       inferenceEngine.makeInference()
       result = inferenceEngine.posterior(target)
+      fin=time.time()
       diff = (goalPotential - result).abs().max()
       if diff <= seuil:
         return None
       else:
-        print("!", end="")
+        print("{:1.4f}[{:2.3f}]!".format(diff,fin-deb), end="")
       if min > diff:
         min = diff
 
@@ -110,8 +112,8 @@ class TestDictFeature(SamplingTestCase):
 
   def testWithDifferentVariables(self):
     protoie = gum.LazyPropagation(self.bn)
-    protoie.addEvidence('s', 0)
-    protoie.addEvidence('w', 1)
+    protoie.addEvidence('r', 1)
+    protoie.addEvidence('w', 0)
     protoie.makeInference()
     proto = protoie.posterior(self.s)
 
@@ -119,9 +121,9 @@ class TestDictFeature(SamplingTestCase):
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.01)
-    # msg = self.iterTest(proto, ie, self.s, {'r': [0, 1], 'w': (1, 0)})
-    # if msg is not None:
-    #   self.fail(msg)
+    msg = self.iterTest(proto, ie, self.s, {'r': [0, 1], 'w': (1, 0)})
+    if msg is not None:
+      self.fail(msg)
 
     ie2 = gum.LoopyGibbsSampling(self.bn)
     ie2.setVerbosity(False)
@@ -129,7 +131,6 @@ class TestDictFeature(SamplingTestCase):
     ie2.setMinEpsilonRate(0.01)
     ie2.setEvidence({'r': 1, 'w': 0})
     ie2.makeInference()
-    print(ie.posterior('s'))
 
     msg = self.iterTest(proto, ie2, self.s, {'r': 1, 'w': 0})
     if msg is not None:
@@ -144,10 +145,11 @@ class TestInferenceResults(SamplingTestCase):
 
     ie = gum.LoopyWeightedSampling(self.bn)
     ie.setVerbosity(False)
-    ie.setEpsilon(0.1)
+    ie.setEpsilon(0.01)
     ie.setMinEpsilonRate(0.01)
-    result = ie.posterior(self.w)
-    self.assertGreaterEqual(0.1, (proto - result).abs().max())
+    msg = self.iterTest(proto, ie, self.s, {})
+    if msg is not None:
+      self.fail(msg)
 
     protoie = gum.LazyPropagation(self.bn)
     protoie.makeInference()
@@ -156,23 +158,24 @@ class TestInferenceResults(SamplingTestCase):
 
     ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
-    ie.setEpsilon(0.1)
+    ie.setEpsilon(0.01)
     ie.setMinEpsilonRate(0.01)
-    ie.setEvidence({'s': 1, 'c': 0})
-    ie.makeInference()
-    result = ie.posterior(self.w)
-    self.assertGreaterEqual(0.1, (proto - result).abs().max())
+    msg = self.iterTest(proto, ie, self.s, {'s': 1, 'c': 0})
+    if msg is not None:
+      self.fail(msg)
 
   def WikipediaExample(self):
-    ie = gum.LoopyGibbsSampling(self.bn2)
+    protoie = gum.LazyPropagation(self.bn2)
+    protoie.makeInference()
+    proto = protoie.posterior('w2')
+
+    ie = gum.LoopyWeightedSampling(self.bn2)
     ie.setVerbosity(False)
-    ie.setEpsilon(0.1)
+    ie.setEpsilon(0.01)
     ie.setMinEpsilonRate(0.001)
-    ie.setEvidence({'w2': 1})
-    ie.makeInference()
-    result = ie.posterior(self.r2)
-    expected = [1 - 0.3577, 0.3577]
-    self.assertDelta(result.tolist(), expected)
+    msg = self.iterTest(proto, ie, 'w2', {})
+    if msg is not None:
+      self.fail(msg)
 
 
 ts = unittest.TestSuite()
