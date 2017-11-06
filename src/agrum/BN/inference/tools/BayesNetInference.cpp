@@ -18,7 +18,4 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/BN/inference/GibbsSampling.h>
-
-template class gum::GibbsSampling<float>;
-template class gum::GibbsSampling<double>;
+#include <agrum/BN/inference/tools/BayesNetInference.h>

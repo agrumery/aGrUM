@@ -199,44 +199,32 @@ namespace gum {
     * @param hardEv hard evidences values
     *
     */
-    virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn){};
+    virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn);
 
 
-    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence) {
-      if (!isHardEvidence) {
-        GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
-      }
-    };
+    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence);
 
-    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence){};
+    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence);
 
-    virtual void _onAllEvidenceErased(bool contains_hard_evidence){};
+    virtual void _onAllEvidenceErased(bool contains_hard_evidence);
 
-    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) {
-      if (hasChangedSoftHard) {
-        GUM_ERROR(FatalError, "Approximated inference only accept hard evidence");
-      }
-    };
+    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard);
 
-    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn){};
+    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn);
 
-    virtual void _updateOutdatedBNStructure(){};
+    virtual void _updateOutdatedBNStructure();
 
-    virtual void _updateOutdatedBNPotentials(){};
+    virtual void _updateOutdatedBNPotentials();
 
-    virtual void _onMarginalTargetAdded(const NodeId id){};
+    virtual void _onMarginalTargetAdded(const NodeId id);
 
-    virtual void _onMarginalTargetErased(const NodeId id){};
+    virtual void _onMarginalTargetErased(const NodeId id);
 
-    virtual void _onAllMarginalTargetsAdded(){};
+    virtual void _onAllMarginalTargetsAdded();
 
-    virtual void _onAllMarginalTargetsErased(){};
+    virtual void _onAllMarginalTargetsErased();
 
-    virtual void _onStateChanged() {
-      if (this->isInferenceReady()) {
-        __estimator.clear();
-      }
-    };
+    virtual void _onStateChanged();
 
     private:
     BayesNetFragment< GUM_SCALAR >* __samplingBN;

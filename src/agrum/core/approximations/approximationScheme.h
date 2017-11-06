@@ -110,7 +110,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    ApproximationScheme( bool v = false );
+    ApproximationScheme(bool v = false);
 
     virtual ~ApproximationScheme();
 
@@ -129,13 +129,13 @@ namespace gum {
      * @param eps The new epsilon value.
      * @throw OutOfLowerBound Raised if eps < 0.
      */
-    void setEpsilon( double eps );
+    void setEpsilon(double eps);
 
     /**
      * @brief Returns the value of epsilon.
      * @return Returns the value of epsilon.
      */
-    double epsilon( void ) const;
+    double epsilon(void) const;
 
     /**
      * @brief Disable stopping criterion on epsilon.
@@ -164,13 +164,13 @@ namespace gum {
      * @param rate The minimal epsilon rate.
      * @throw OutOfLowerBound if rate<0
      */
-    void setMinEpsilonRate( double rate );
+    void setMinEpsilonRate(double rate);
 
     /**
      * @brief Returns the value of the minimal epsilon rate.
      * @return Returns the value of the minimal epsilon rate.
      */
-    double minEpsilonRate( void ) const;
+    double minEpsilonRate(void) const;
 
     /**
      * @brief Disable stopping criterion on epsilon rate.
@@ -198,13 +198,13 @@ namespace gum {
      * @param max The maximum number of iterations.
      * @throw OutOfLowerBound Raised if max <= 1.
      */
-    void setMaxIter( Size max );
+    void setMaxIter(Size max);
 
     /**
      * @brief Returns the criterion on number of iterations.
      * @return Returns the criterion on number of iterations.
      */
-    Size maxIter( void ) const;
+    Size maxIter(void) const;
 
     /**
      * @brief Disable stopping criterion on max iterations.
@@ -232,19 +232,19 @@ namespace gum {
      * @param timeout The timeout value in seconds.
      * @throw OutOfLowerBound Raised if timeout <= 0.0.
      */
-    void setMaxTime( double timeout );
+    void setMaxTime(double timeout);
 
     /**
      * @brief Returns the timeout (in seconds).
      * @return Returns the timeout (in seconds).
      */
-    double maxTime( void ) const;
+    double maxTime(void) const;
 
     /**
      * @brief Returns the current running time in second.
      * @return Returns the current running time in second.
      */
-    double currentTime( void ) const;
+    double currentTime(void) const;
 
     /**
      * @brief Disable stopping criterion on timeout.
@@ -270,25 +270,25 @@ namespace gum {
      * @param p The new period value.
      * @throw OutOfLowerBound Raised if p < 1.
      */
-    void setPeriodSize( Size p );
+    void setPeriodSize(Size p);
 
     /**
      * @brief Returns the period size.
      * @return Returns the period size.
      */
-    Size periodSize( void ) const;
+    Size periodSize(void) const;
 
     /**
      * @brief Set the verbosity on (true) or off (false).
      * @param v If true, then verbosity is turned on.
      */
-    void setVerbosity( bool v );
+    void setVerbosity(bool v);
 
     /**
      * @brief Returns true if verbosity is enabled.
      * @return Returns true if verbosity is enabled.
      */
-    bool verbosity( void ) const;
+    bool verbosity(void) const;
 
     /**
      * @brief Returns the approximation scheme state.
@@ -309,7 +309,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the scheme did not performed or
      * if verbosity is set to false.
      */
-    const std::vector<double>& history() const;
+    const std::vector< double >& history() const;
 
     /**
      * @brief Initialise the scheme.
@@ -328,7 +328,7 @@ namespace gum {
      * @brief Update the scheme w.r.t the new error and increment steps.
      * @param incr The new increment steps.
      */
-    void updateApproximationScheme( unsigned int incr = 1 );
+    void updateApproximationScheme(unsigned int incr = 1);
 
     /**
      * @brief Returns the remaining burn in.
@@ -351,7 +351,12 @@ namespace gum {
      * @throw OperationNotAllowed Raised if state !=
      * ApproximationSchemeSTATE::Continue.
      */
-    bool continueApproximationScheme( double error );
+    bool continueApproximationScheme(double error);
+
+    /**
+     * @brief reset the approximation scheme
+     */
+    void reset();
 
     ///  @}
 
@@ -360,7 +365,7 @@ namespace gum {
      * @brief Stop the scheme given a new state.
      * @param new_state The scheme new state.
      */
-    void _stopScheme( ApproximationSchemeSTATE new_state );
+    void _stopScheme(ApproximationSchemeSTATE new_state);
 
     protected:
     /// Current epsilon.
@@ -382,7 +387,7 @@ namespace gum {
     ApproximationSchemeSTATE _current_state;
 
     /// The scheme history, used only if verbosity == true.
-    std::vector<double> _history;
+    std::vector< double > _history;
 
     /// Threshold for convergence.
     double _eps;

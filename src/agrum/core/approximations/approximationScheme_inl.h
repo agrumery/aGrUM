@@ -30,6 +30,7 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
+#include <agrum/config.h>
 // To help IDE parser
 #include <agrum/core/approximations/approximationScheme.h>
 
