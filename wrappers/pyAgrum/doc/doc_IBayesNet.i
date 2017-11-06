@@ -1,78 +1,88 @@
 %feature("docstring") gum::IBayesNet::dim
 "
-Returns the dimension (the number of free parameters) in this bayes net.
+Returns the dimension (the number of free parameters) in this BayesNet.
 
 dim(G)=∑i∈nodes((ri−1)⋅qi) where ri is the number of instantiations of node i and qi is the number of instantiations of its parents. 
 in IBayesNet
 
-in IBayesNet
-
-Warnings
---------
-A Faire
+Returns
+-------
+int 
+	the dimension of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::jointProbability
 "
-in IBayesNet
+Parameters
+----------
+i : pyAgrum.instantiation
+	an instantiation of the variables
+
+Returns
+-------
+double
+	a parameter of the joint probability for the BayesNet
 
 Warnings
 --------
-A Faire
+a variable not present in the instantiation is assumed to be instantiated to 0
 "
 
 %feature("docstring") gum::IBayesNet::log2JointProbability
 "
-in IBayesNet
+Parameters
+----------
+i : pyAgrum.instantiation
+	an instantiation of the variables
+
+Returns
+-------
+double
+	a parameter of the log joint probability for the BayesNet
 
 Warnings
 --------
-A Faire
+a variable not present in the instantiation is assumed to be instantiated to 0
 "
 
 %feature("docstring") gum::IBayesNet::maxNonOneParam
 "
-in IBayesNet
-
-Warnings
---------
-A Faire
+Returns
+-------
+double
+	The biggest value (not equal to 1) in the CPTs of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::maxParam
 "
-in IBayesNet
-
-Warnings
---------
-A Faire
+Returns
+-------
+double
+    the biggest value in the CPTs of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::maxVarDomainSize
 "
-in IBayesNet
-
-Warnings
---------
-A Faire
+Returns
+-------
+int
+	the biggest domain size among the variables of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::minNonZeroParam
 "
-in IBayesNet
-
-Warnings
---------
-A Faire
+Returns
+-------
+double
+    the smallest value (not equal to 0) in the CPTs of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::minParam
 "
-in IBayesNet
-
-Warnings
---------
-A Faire
+Returns
+-------
+double
+    the smallest value in the CPTs of the BayesNet
 "
 
 %feature("docstring") gum::IBayesNet::toDot

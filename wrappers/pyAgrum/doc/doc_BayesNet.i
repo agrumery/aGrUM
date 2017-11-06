@@ -563,9 +563,10 @@ Warnings
 
 %feature("docstring") gum::BayesNet::ids
 "
-Warnings
---------
-A Faire
+Returns
+-------
+list :
+	The lisf variables ids.
 "
 
 %feature("docstring") gum::BayesNet::loadBIF
@@ -686,30 +687,46 @@ FatalError raised if file is not valid
 
 %feature("docstring") gum::BayesNet::minimalCondSet
 "
-Warnings
---------
-A Faire
-"
+Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
 
-%feature("docstring") gum::BayesNet::moralGraph
-"
-Warnings
---------
-A Faire
+Parameters
+----------
+target : int
+	The id of the target
+targets : list
+	The ids of the targets
+list : list
+	The list of available variables
+
+Returns
+-------
+Set
+	The minimal set of variables
 "
 
 %feature("docstring") gum::BayesNet::names
 "
-Warnings
---------
-A Faire
+Returns
+-------
+list
+	The names of the BayesNet variables
 "
 
 %feature("docstring") gum::BayesNet::nodeId
 "
+Parameters
+----------
+var : pyAgrum.DiscreteVariable
+	a variable
+
+Returns
+-------
+int
+	the id of the variable
+
 Warnings
 --------
-A Faire
+IndexError raised if the BayesNet does not contain the variable
 "
 
 %feature("docstring") gum::BayesNet::parents
@@ -727,9 +744,24 @@ Set
 
 %feature("docstring") gum::BayesNet::reverseArc
 "
+Reverses an arc while preserving the same joint distribution. 
+
+Parameters
+----------
+tail
+	(int) the id of the tail variable
+head
+	(int) the id of the head variable
+tail
+	(str) the name of the tail variable
+head
+	(str) the name of the head variable
+arc : pyAgrum.Arc
+	an arc 
+
 Warnings
 --------
-A Faire
+InvalidArc raised if the arc does not exsit or if its reversal would induce a directed cycle.
 "
 
 %feature("docstring") gum::BayesNet::saveBIF
@@ -798,16 +830,38 @@ name : str
 
 %feature("docstring") gum::BayesNet::variable
 "
+Parameters
+----------
+id : int
+	a variable's id
+name : str
+	a variable's name
+
+Returns
+-------
+pyAgrum.DiscreteVariable
+	the variable
+
 Warnings
 --------
-A Faire
+IndexError if the BayesNet does not contain the variable
 "
 
 %feature("docstring") gum::BayesNet::variableFromName
 "
+Parameters
+----------
+name : str
+	a variable's name
+
+Returns
+-------
+pyAgrum.DiscreteVariable
+	the variable
+
 Warnings
 --------
-A Faire
+IndexError if the BayesNet does not contain the variable
 "
 
 %feature("docstring") gum::BayesNet::variableNodeMap

@@ -1,73 +1,73 @@
+%ignore gum::DAGmodel::property;
+%ignore gum::DAGmodel::propertyWithDefault;
+%ignore gum::DAGmodel::setProperty;
+
 %feature("docstring") gum::DAGmodel::log10DomainSize
 "
-in DAGmodel
-
-Warnings
---------
-A Faire
+Returns
+-------
+double
+	The log10 domain size of the joint probability for the model.
 "
 
 %feature("docstring") gum::DAGmodel::completeInstantiation
 "
-in DAGmodel
+Get an instantiation over all the variables of the model.
 
-Warnings
---------
-A Faire
+Parameters
+----------
+i : pyAgrum.instantiation
+	the instantiation to complete
 "
 
 %feature("docstring") gum::DAGmodel::dag
 "
-in DAGmodel
-
-Warnings
---------
-A Faire
+Returns
+-------
+pyAgrum.DAG
+	a constant reference to the dag of this BayesNet.
 "
 
 %feature("docstring") gum::DAGmodel::empty
 "
-in DAGmodel
-
-Warnings
---------
-A Faire
+Returns
+-------
+bool
+	True if the model is empty
 "
 
 %feature("docstring") gum::DAGmodel::hasSameStructure
 "
-in DAGmodel
+Parameters
+----------
+pyAgrum.DAGmodel
+	a direct acyclic model
 
-Warnings
---------
-A Faire
+Returns
+-------
+bool
+    True if all the named node are the same and all the named arcs are the same 
 "
 
 %feature("docstring") gum::DAGmodel::property
 "
-in DAGmodel
-
 Warnings
 --------
-A Faire
+N'est plus référencée
 "
 
 %feature("docstring") gum::DAGmodel::propertyWithDefault
 "
-in DAGmodel
-
 Warnings
 --------
-A Faire
+N'est plus référencée
 "
 
 %feature("docstring") gum::DAGmodel::setProperty
 "
-in DAGmodel
-
 Warnings
 --------
-A Faire
+N'est plus référencée
 "
 
 %feature("docstring") gum::DAGmodel::size
@@ -96,4 +96,14 @@ List
 Warnings
 --------
 InvalidDirectedCycle raised if this graph contains cycles
+"
+
+%feature("docstring") gum::DAGmodel::moralGraph
+"
+Returns the moral graph of the BayesNet, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
+
+Returns
+-------
+pyAgrum.UndiGraph
+	The moral graph
 "
