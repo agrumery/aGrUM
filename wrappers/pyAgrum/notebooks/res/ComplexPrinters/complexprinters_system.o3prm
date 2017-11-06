@@ -22,25 +22,25 @@
 // Author: Lionel Torti.
 // ============================================================================
 
-type t_state extends boolean
+type t_state extends boolean (
   OK: true,
-  NOK: false;
+  NOK: false);
 
-type t_ink extends t_state
+type t_ink extends t_state (
   NotEmpty: OK,
-  Empty:    NOK;
+  Empty:    NOK);
 
-type t_paper extends t_state
+type t_paper extends t_state (
   Ready:    OK,
   Jammed:   NOK,
-  Empty:    NOK;
+  Empty:    NOK);
 
-type t_degraded extends t_state
+type t_degraded extends t_state (
   OK: OK,
   Dysfunctional: NOK,
-  Degraded: NOK;
+  Degraded: NOK);
 
-int(0,5) mycount;
+type mycount int(0,5);
 
 class PowerSupply {
   t_state state { [ 0.99, 0.01 ] };
@@ -123,8 +123,8 @@ class SafeComputer implements Equipment {
 }
 
 class ParamClass {
-	real lambda default 0.4;
-	int t default 4;
+	param real lambda default 0.4;
+	param int t default 4;
 
   Room room;
   t_ink hasInk { ["lambda", "1-lambda"] };
@@ -160,8 +160,8 @@ system aSys {
   c1.printers += color_printers;
   c2.printers += color_printers;
 
-  ParamClass param;
-  param.room = r;
+  ParamClass p;
+  p.room = r;
 
   ParamClass paramBis(lambda=0.001);
   paramBis.room = r;

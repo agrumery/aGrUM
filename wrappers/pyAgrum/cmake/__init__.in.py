@@ -42,7 +42,7 @@ from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
 from .pyAgrum import Potential, Instantiation, UtilityTable
-from .pyAgrum import BruteForceKL, GibbsSampling
+from .pyAgrum import BruteForceKL, GibbsKL
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
 from .pyAgrum import LoopyImportanceSampling,LoopyGibbsSampling,LoopyWeightedSampling

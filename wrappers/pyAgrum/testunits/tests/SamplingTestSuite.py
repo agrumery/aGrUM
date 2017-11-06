@@ -145,7 +145,7 @@ class TestInferenceResults(SamplingTestCase):
 
     ie = gum.LoopyWeightedSampling(self.bn)
     ie.setVerbosity(True)
-    ie.setEpsilon(0.05)
+    ie.setEpsilon(0.02)
     ie.setMinEpsilonRate(0.001)
     msg = self.iterTest(proto, ie, self.w, {})
     if msg is not None:
@@ -158,7 +158,7 @@ class TestInferenceResults(SamplingTestCase):
 
     ie = gum.LoopyGibbsSampling(self.bn)
     ie.setVerbosity(False)
-    ie.setEpsilon(0.05)
+    ie.setEpsilon(0.02)
     ie.setMinEpsilonRate(0.001)
     msg = self.iterTest(proto, ie, self.w, {'s': 0, 'c': 0})
     if msg is not None:

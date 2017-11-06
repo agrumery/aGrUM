@@ -46,22 +46,21 @@ except:
   total_errs += 1
   print("=> Error in TestSuite")
 
-if len(sys.argv) == 2 and sys.argv[1] == 'all':
-  if testNotebooks:
-    print("\n")
-    print("*******************")
-    print("Notebook Test Suite")
-    print("*******************")
-    from NotebookTestSuite import runNotebooks
+if testNotebooks:
+  print("\n")
+  print("*******************")
+  print("Notebook Test Suite")
+  print("*******************")
+  from NotebookTestSuite import runNotebooks
 
-    try:
-      total_errs += runNotebooks()
-    except NameError:
-      pass
-    except:
-      total_errs += 1
-      print("=> Error in NotebookTestSuite")
+  try:
+    total_errs += runNotebooks()
+  except NameError:
+    pass
+  except:
+    total_errs += 1
+    print("=> Error in NotebookTestSuite")
 
-    print("\n\nErrors : " + str(total_errs))
+print("\n\nErrors : " + str(total_errs))
 
 sys.exit(total_errs)

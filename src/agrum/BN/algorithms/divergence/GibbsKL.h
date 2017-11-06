@@ -40,9 +40,8 @@
 namespace gum {
 
   /**
-    * GibbsKL2 computes the KL divergence betweens 2 BNs using an approximation
-    *pattern
-    *: GIBBS sampling.
+    * GibbsKL computes the KL divergence betweens 2 BNs using an approximation
+    *pattern:  GIBBS sampling.
     *
     * KL.process() computes KL(P||Q) using klPQ() and KL(Q||P) using klQP(). The
     *computations are made once. The second is for free :)
