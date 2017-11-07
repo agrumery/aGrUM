@@ -210,13 +210,13 @@ windows_aGrUM_build:
   <<: *windows_template
   stage: agrum
   script:
-    - python act --no-fun install release aGrUM %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun lib release aGrUM %ACT_OPTIONS%
+    - python act --no-fun install release aGrUM %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun install release aGrUM %ACT_OPTIONS%
 
 windows_pyAgrum_build:
   <<: *windows_template
   stage: pyagrum
   script:
-    - python act --no-fun install release pyAgrum %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun lib release pyAgrum %ACT_OPTIONS%
+    - python act --no-fun install release pyAgrum %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun install release pyAgrum %ACT_OPTIONS%
 
 windows_aGrUM_test:
   <<: *windows_template
