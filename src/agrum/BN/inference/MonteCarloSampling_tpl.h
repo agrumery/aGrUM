@@ -65,7 +65,7 @@ namespace gum {
       prev.clear();
       for (auto nod : this->BN().topologicalOrder()) {
         this->_addVarSample(nod, &prev);
-        if (this->hardEvidenceNodes().contains(nod) and
+        if (this->hardEvidenceNodes().contains(nod) &&
             prev.val(this->BN().variable(nod)) != this->hardEvidence()[nod]) {
           wrong_value = true;
           break;

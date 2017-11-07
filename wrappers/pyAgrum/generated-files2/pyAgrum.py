@@ -6375,7 +6375,7 @@ class BayesNetInference_double(_object):
     __repr__ = _swig_repr
     StateOfInference_OutdatedBNStructure = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNStructure
     StateOfInference_OutdatedBNPotentials = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNPotentials
-    StateOfInference_InferenceReady = _pyAgrum.BayesNetInference_double_StateOfInference_InferenceReady
+    StateOfInference_ReadyForInference = _pyAgrum.BayesNetInference_double_StateOfInference_ReadyForInference
     StateOfInference_Done = _pyAgrum.BayesNetInference_double_StateOfInference_Done
     __swig_destroy__ = _pyAgrum.delete_BayesNetInference_double
     def __del__(self):
@@ -6399,6 +6399,21 @@ class BayesNetInference_double(_object):
     def isInferenceReady(self):
         """isInferenceReady(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isInferenceReady(self)
+
+
+    def isInferenceOutdatedBNStructure(self):
+        """isInferenceOutdatedBNStructure(self) -> bool"""
+        return _pyAgrum.BayesNetInference_double_isInferenceOutdatedBNStructure(self)
+
+
+    def isInferenceOutdatedBNPotentials(self):
+        """isInferenceOutdatedBNPotentials(self) -> bool"""
+        return _pyAgrum.BayesNetInference_double_isInferenceOutdatedBNPotentials(self)
+
+
+    def isInferenceDone(self):
+        """isInferenceDone(self) -> bool"""
+        return _pyAgrum.BayesNetInference_double_isInferenceDone(self)
 
 
     def isDone(self):

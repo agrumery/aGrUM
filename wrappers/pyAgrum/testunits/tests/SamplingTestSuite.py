@@ -1,4 +1,5 @@
 # -*- encoding: UTF-8 -*-
+from __future__ import print_function
 import unittest
 
 import pyAgrum as gum
@@ -26,17 +27,17 @@ class SamplingTestCase(pyAgrumTestCase):
 
     return "Approximations always bad : on {} tests, {:1.7}>{:1.7}".format(nbr, min, seuil)
 
-  def unsharpen(bn):
+  def unsharpen(self,bn):
     for nod in bn.ids():
       bn.cpt(nod).translate(bn.maxParam() / 2).normalizeAsCPT()
 
   def setUp(self):
     self.bn = gum.fastBN("c->s{no|yes}->w{no|yes};c->r->w")
-    SamplingTestCase.unsharpen(self.bn)
+    self.unsharpen(self.bn)
     self.c, self.s, self.w, self.r = [self.bn.idFromName(s) for s in "cswr"]
 
     self.bn2 = gum.fastBN("r2->s2->w2;r2->w2")
-    SamplingTestCase.unsharpen(self.bn2)
+    self.unsharpen(self.bn2)
     self.r2, self.s2, self.w2 = [self.bn2.idFromName(s) for s in ["s2", "w2", "r2"]]
 
 

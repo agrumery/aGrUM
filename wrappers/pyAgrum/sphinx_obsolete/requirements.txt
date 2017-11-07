@@ -1,4 +1,0 @@
-ipython
-tkinter
-numpy
-pydotplus
