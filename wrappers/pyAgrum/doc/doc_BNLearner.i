@@ -1,6 +1,22 @@
 %feature("docstring") gum::learning::BNLearner
 "
+Available constructors:
+	``BNLearner(filename) -> BNLearner``
 
+	``BNLearner(filename,src,parse_database=false) -> BNLearner``
+
+	``BNLearner(learner) -> BNLearner``
+
+Parameters
+----------
+filename: str
+	the file to learn from
+src : pyAgrum.BayesNet
+	the Bayesian network used to find thoes modalities
+parse_database : bool
+	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables. 
+learner : pyAgrum.BNLearner
+	the BNLearner to copy
 "
 
 %feature("docstring") gum::learning::BNLearner::asIApproximationSchemeConfiguration

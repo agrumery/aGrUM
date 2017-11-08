@@ -2,7 +2,6 @@
 %ignore gum::DisceteVariable::label;
 %ignore gum::DisceteVariable::index;
 
-
 %feature("docstring") gum::LabelizedVariable
 "
 LabelizedVariable is a discrete random variable with a customizable sequence of labels.
@@ -55,6 +54,25 @@ Examples
 >>> 
 >>> vb.label(2)
 >>> ## 'B'
+"
+
+%feature("docstring") gum::LabelizedVariable::addLabel
+"
+Add a label with a new index (we assume that we will NEVER remove a label).
+
+Parameters
+----------
+aLabel : str
+  the label to be added to the labelized variable
+
+Returns
+-------
+pyAgrum.LabelizedVariable
+  the labelized variable
+
+Warnings
+--------
+DuplicateElement raised is raised if the variable already contains the label
 "
 
 %feature("docstring") gum::LabelizedVariable::changeLabel

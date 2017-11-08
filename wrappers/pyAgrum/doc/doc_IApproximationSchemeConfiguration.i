@@ -1,5 +1,7 @@
 %feature("docstring") gum::IApproximationSchemeConfiguration::addForbiddenArc
 "
+The arc in parameters won't be added.
+
 Parameters
 ----------
 arc : pyAgrum
@@ -12,15 +14,11 @@ head :
 	a variable's name (str)
 tail :
 	a variable's name (str)
-
-Warnings
---------
-A continuer ?
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::addMandatoryArc
 "
-Allow to add prior structural knowledge
+Allow to add prior structural knowledge.
 
 Parameters
 ----------
@@ -37,7 +35,7 @@ tail :
 
 Warnings
 --------
-A continuer ?
+InvalidDirectedCycle raised if the added arc creates a directed cycle in the DAG
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::burnIn
@@ -66,6 +64,8 @@ double
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::eraseForbiddenArc
 "
+Allow the arc in parameter to be added if necessary.
+
 Parameters
 ----------
 arc : pyAgrum
@@ -78,10 +78,6 @@ head :
 	a variable's name (str)
 tail :
 	a variable's name (str)
-
-Warnings
---------
-A continuer ?
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::eraseMandatoryArc
@@ -98,10 +94,6 @@ head :
 	a variable's name (str)
 tail :
 	a variable's name (str)
-
-Warnings
---------
-A continuer ?
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::history
@@ -380,49 +372,38 @@ Use no apriori.
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useScoreAIC
 "
-Warnings
---------
-A Faire
+Indicate that we wish to use an AIC score.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useScoreBD
 "
-Warnings
---------
-A Faire
+Indicate that we wish to use a BD score.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useScoreBDeu
 "
-Warnings
---------
-A Faire
+Indicate that we wish to use a BDeu score.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useScoreBIC
 "
-Warnings
---------
-A Faire
+Indicate that we wish to use a BIC score.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useScoreK2
 "
-Warnings
---------
-A Faire
+Indicate that we wish to use a K2 score.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useScoreLog2Likelihood
 "
-Warnings
---------
-A Faire
+Indicate that we wish to use a Log2Likelihood score.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::verbosity
 "
-Warnings
---------
-A Faire
+Returns
+-------
+bool
+	True if the verbosity is enabled
 "
