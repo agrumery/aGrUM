@@ -8,3 +8,15 @@
         return self.index(label)
   %}
 }
+
+%feature("shadow") gum::LabelizedVariable::addLabel(const std::string aLabel) %{
+def addLabel(self,*args):
+  $action(self,*args)
+  return self
+%}
+
+%feature("shadow") gum::DiscretizedVariable<double>::addTick(const double& aTick) %{
+def addTick(self,*args):
+  $action(self,*args)
+  return self
+%}

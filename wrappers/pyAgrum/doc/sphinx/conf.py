@@ -504,8 +504,8 @@ def process_docstring(app, what, name, obj, options, lines):
 
 def process_signature(app, what, name, obj, options, signature, return_annotation):
   signature = substitution4swigautodoc(signature)
-  #return_annotation = substitution4swigautodoc(return_annotation)
-  return_annotation = None
+  return_annotation = substitution4swigautodoc(return_annotation)
+  #return_annotation = None
   return signature, return_annotation
 
 

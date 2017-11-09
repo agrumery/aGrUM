@@ -1,5 +1,3 @@
-%ignore gum::Potential::populate;
-
 %feature("docstring") gum::Potential
 "
 Class representing a potential.
@@ -96,6 +94,13 @@ Returns
 -------
 double
   the entropy of the potential
+"
+
+%feature("docstring") gum::Potential::populate
+"
+Returns
+-------
+à Faire
 "
 
 %feature("docstring") gum::Potential::extract

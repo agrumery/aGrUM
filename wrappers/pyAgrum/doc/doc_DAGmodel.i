@@ -1,7 +1,3 @@
-%ignore gum::DAGmodel::property;
-%ignore gum::DAGmodel::propertyWithDefault;
-%ignore gum::DAGmodel::setProperty;
-
 %feature("docstring") gum::DAGmodel::log10DomainSize
 "
 Returns
