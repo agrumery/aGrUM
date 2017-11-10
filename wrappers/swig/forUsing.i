@@ -352,7 +352,7 @@ ADD_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
 ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::ImportanceSampling>)
 ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
 ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::WeightedSampling>)
-
+ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::MonteCarloSampling>)
 
 %define ADD_SAMPLING_INFERENCE_API(classname...)
 %extend classname  {
@@ -369,6 +369,7 @@ ADD_SAMPLING_INFERENCE_API(gum::ImportanceSampling<double>)
 ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::ImportanceSampling>)
 ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
 ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::WeightedSampling>)
+ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::MonteCarloSampling>)
 
 %define ADD_JOINT_INFERENCE_API(classname)
 %extend classname {

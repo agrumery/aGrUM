@@ -180,6 +180,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::MonteCarloSampling<dou
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::ImportanceSampling>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::WeightedSampling>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::GibbsSampling>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::MonteCarloSampling>)
 
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
 
@@ -375,6 +376,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( LoopyImportanceSampling_double ) gum::LoopySamplingInference<double,gum::ImportanceSampling>;
 %template ( LoopyWeightedSampling_double ) gum::LoopySamplingInference<double,gum::WeightedSampling>;
 %template ( LoopyGibbsSampling_double ) gum::LoopySamplingInference<double,gum::GibbsSampling>;
+%template ( LoopyMonteCarloSampling_double ) gum::LoopySamplingInference<double,gum::MonteCarloSampling>;
 
 %template ( LoopyBeliefPropagation_double ) gum::LoopyBeliefPropagation<double>;
 

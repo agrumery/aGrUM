@@ -88,6 +88,7 @@ MonteCarloSampling=MonteCarloSampling_double
 LoopyImportanceSampling=LoopyImportanceSampling_double
 LoopyGibbsSampling=LoopyGibbsSampling_double
 LoopyWeightedSampling=LoopyWeightedSampling_double
+LoopyMonteCarloSampling=LoopyMonteCarloSampling_double
 
 LoopyBeliefPropagation = LoopyBeliefPropagation_double
 

@@ -59,7 +59,7 @@ IMPROVE_INFERENCE_API(LoopyBeliefPropagation<double>)
 IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::GibbsSampling>)
 IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::ImportanceSampling>)
 IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::WeightedSampling>)
-
+IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::MonteCarloSampling>)
 
 %define IMPROVE_JOINT_INFERENCE_API(classname)
 %extend classname {
@@ -126,3 +126,4 @@ IMPROVE_APPROX_INFERENCE_API(LoopyBeliefPropagation,LoopyBeliefPropagation<doubl
 IMPROVE_APPROX_INFERENCE_API(LoopySamplingInference,LoopySamplingInference<double,gum::GibbsSampling>)
 IMPROVE_APPROX_INFERENCE_API(LoopySamplingInference,LoopySamplingInference<double,gum::ImportanceSampling>)
 IMPROVE_APPROX_INFERENCE_API(LoopySamplingInference,LoopySamplingInference<double,gum::WeightedSampling>)
+IMPROVE_APPROX_INFERENCE_API(LoopySamplingInference,LoopySamplingInference<double,gum::MonteCarloSampling>)

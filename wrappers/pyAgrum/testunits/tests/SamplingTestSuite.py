@@ -122,6 +122,7 @@ class TestDictFeature(SamplingTestCase):
     ie.setVerbosity(False)
     ie.setEpsilon(0.1)
     ie.setMinEpsilonRate(0.01)
+
     msg = self.iterTest(proto, ie, self.s, {'r': [0, 1], 'w': (1, 0)})
     if msg is not None:
       self.fail(msg)
@@ -134,6 +135,15 @@ class TestDictFeature(SamplingTestCase):
     ie2.makeInference()
 
     msg = self.iterTest(proto, ie2, self.s, {'r': 1, 'w': 0})
+    if msg is not None:
+      self.fail(msg)
+
+    ie3 = gum.LoopyMonteCarloSampling(self.bn)
+    ie3.setVerbosity(False)
+    ie3.setEpsilon(0.1)
+    ie3.setMinEpsilonRate(0.01)
+    
+    msg = self.iterTest(proto, ie3, self.s, {'r': [0, 1], 'w': (1, 0)})
     if msg is not None:
       self.fail(msg)
 
@@ -175,6 +185,14 @@ class TestInferenceResults(SamplingTestCase):
     ie.setEpsilon(0.01)
     ie.setMinEpsilonRate(0.001)
     msg = self.iterTest(proto, ie, 'w2', {})
+    if msg is not None:
+      self.fail(msg)
+
+    ie2 = gum.LoopyMonteCarloSampling(self.bn2)
+    ie2.setVerbosity(False)
+    ie2.setEpsilon(0.01)
+    ie2.setMinEpsilonRate(0.001)
+    msg = self.iterTest(proto, ie2, 'w2', {})
     if msg is not None:
       self.fail(msg)
 
