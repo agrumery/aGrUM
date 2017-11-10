@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <agrum/CN/credalNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/utils_string.h>
 
 namespace gum {

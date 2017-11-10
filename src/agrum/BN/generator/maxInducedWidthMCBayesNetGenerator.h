@@ -27,7 +27,7 @@
 #ifndef GUM_MAX_INDUCED_WIDTH_MC_BAYES_NET_GENERATOR
 #define GUM_MAX_INDUCED_WIDTH_MC_BAYES_NET_GENERATOR
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <fstream>
 #include <iostream>

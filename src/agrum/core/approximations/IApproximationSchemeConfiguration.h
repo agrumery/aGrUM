@@ -32,7 +32,7 @@
 
 #include <cmath>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/timer.h>
 
@@ -254,19 +254,6 @@ namespace gum {
      * @return Returns the period size.
      */
     virtual Size periodSize( void ) const = 0;
-
-    /**
-     * @brief Number of burn in for one iteration.
-     * @param b The number of burn in.
-     * @throw OutOfLowerBound Raised if b < 1.
-     */
-    virtual void setBurnIn( Size b ) = 0;
-
-    /**
-     * @brief Returns the number of burn in.
-     * @return Returns the number of burn in.
-     */
-    virtual Size burnIn( void ) const = 0;
 
     /**
      * @brief Set the verbosity on (true) or off (false).

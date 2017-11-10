@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include <agrum/CN/LrsWrapper.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
   namespace credal {
@@ -287,7 +287,7 @@ namespace gum {
 
       // not precise point probability, initialize lrs
 
-      __coutOff();
+      // __coutOff();
 
       __initLrs();
 
@@ -312,7 +312,7 @@ namespace gum {
                                     ( __lrsOutput[0] )[1] == 0 )
                                       ? 1L
                                       : 0L ) ) {
-              __coutOn();
+              // __coutOn();
               /*for ( decltype(Q->n) i = 0; i < Q->n; i++ )
                 pmp ("", output[i]);*/
               GUM_ERROR( FatalError,
@@ -338,7 +338,7 @@ namespace gum {
 
       __freeLrs();
 
-      __coutOn();
+      // __coutOn();
     }
 
     template <typename GUM_SCALAR>
@@ -361,7 +361,7 @@ namespace gum {
                    "vertices, current state is still : "
                        << __setUpStateNames[__state] );
 
-      __coutOff();
+      // __coutOff();
 
       __getVolume = true;
 
@@ -402,7 +402,7 @@ namespace gum {
 
       __freeLrs();
 
-      __coutOn();
+      // __coutOn();
     }
 
     template <typename GUM_SCALAR>
@@ -415,7 +415,7 @@ namespace gum {
             "current state is still : "
                 << __setUpStateNames[static_cast<int>( __state )] );
 
-      __coutOff();
+      // __coutOff();
 
       __initLrs();
 
@@ -480,7 +480,7 @@ namespace gum {
 
       __freeLrs();
 
-      __coutOn();
+      // __coutOn();
     }
 
     template <typename GUM_SCALAR>
@@ -594,7 +594,7 @@ namespace gum {
       // use &chars[0] as a char*
 
       if ( !lrs_init( &chars[0] ) ) {
-        __coutOn();
+        // __coutOn();
         GUM_ERROR( FatalError,
                    "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_init" );
       }
@@ -605,7 +605,7 @@ namespace gum {
       __dat = lrs_alloc_dat( &chars[0] );
 
       if ( __dat == nullptr ) {
-        __coutOn();
+        // __coutOn();
         GUM_ERROR( FatalError,
                    "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dat" );
       }
@@ -622,7 +622,7 @@ namespace gum {
       __dic = lrs_alloc_dic( __dat );
 
       if ( __dic == nullptr ) {
-        __coutOn();
+        // __coutOn();
         GUM_ERROR( FatalError,
                    "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_alloc_dic" );
       }
@@ -631,7 +631,7 @@ namespace gum {
 
       /* Pivot to a starting dictionary */
       if ( !lrs_getfirstbasis( &__dic, __dat, &__Lin, 0L ) ) {
-        __coutOn();
+        // __coutOn();
         GUM_ERROR(
             FatalError,
             "LRSWrapper< GUM_SCALAR >::__initLrs : failed lrs_getfirstbasis" );
@@ -648,7 +648,7 @@ namespace gum {
         startcol++; /* col zero not treated as redundant   */
 
         if ( !__dat->restart ) {
-          __coutOn();
+          // __coutOn();
 
           for ( decltype( __dat->nredundcol ) col = startcol;
                 col < __dat->nredundcol;
@@ -702,7 +702,7 @@ namespace gum {
 
       lrs_close( &chars[0] );
 
-      __coutOn();
+      // __coutOn();
     }
 
     template <typename GUM_SCALAR>

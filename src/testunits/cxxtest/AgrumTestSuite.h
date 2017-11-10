@@ -15,5 +15,4 @@
     GUM_SHOWERROR( e );                                               \
     TS_FAIL( "gum::Exception thrown" );                               \
   } )
-
 #endif  // AGRUM_TEST_SUITE_H

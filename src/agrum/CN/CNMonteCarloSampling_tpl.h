@@ -54,6 +54,7 @@ namespace gum {
 
       /// auto bsize = this->burnIn();
       auto psize = this->periodSize();
+/*
 
       auto remaining = this->remainingBurnIn();
 
@@ -88,6 +89,7 @@ namespace gum {
 
         } while ( ( remaining > 0 ) && this->continueApproximationScheme( eps ) );
       }
+*/
 
       if ( this->continueApproximationScheme( eps ) ) {
 

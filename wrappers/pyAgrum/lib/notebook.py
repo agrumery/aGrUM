@@ -24,10 +24,10 @@ tools for BN analysis in jupyter notebook
 """
 from __future__ import print_function
 
+import base64
 import time
 
 import IPython.display
-import base64
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -37,8 +37,7 @@ from IPython.core.display import Image, display_png
 from IPython.core.pylabtools import print_figure
 from IPython.display import display, HTML, SVG
 from matplotlib.backends.backend_agg import FigureCanvasAgg as fc
-from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot,_proba2bgcolor
-
+from pyAgrum.lib.bn2graph import BN2dot, proba2histo, BNinference2dot, _proba2bgcolor
 
 _cdict = {
   'red'  : ((0.0, 0.1, 0.3),
@@ -49,6 +48,7 @@ _cdict = {
             (1.0, 1, 0.8))
 }
 _INFOcmap = mpl.colors.LinearSegmentedColormap('my_colormap', _cdict, 256)
+
 
 def configuration():
   """
@@ -144,7 +144,7 @@ def getDot(dotstring, size="4", format="png"):
   :param format: render as "png" or "svg"
   :return: the HTML representation of the graph
   """
-  g=dot.graph_from_dot_data(dotstring)
+  g = dot.graph_from_dot_data(dotstring)
   g.set_bgcolor("transparent")
   return getGraph(g, size, format)
 
@@ -283,6 +283,19 @@ def animApproximationScheme(apsc, scale=np.log10):
 
   h.setWhenStop(stopper)
   h.setWhenProgress(progresser)
+
+
+def showApproximationScheme(apsc, scale=np.log10):
+  if apsc.verbosity():
+    if len(apsc.history()) < 10:
+      plt.xlim(1, 10)
+    else:
+      plt.xlim(1, len(apsc.history()))
+    plt.title("{0} \n Time : {1} s | Iterations : {2} | Espilon : {3}".format(x, apsc.currentTime(), apsc.nbrIterations(),
+                                                                              apsc.epsilon()))
+    plt.plot(scale(apsc.history()), 'g')
+  else:
+    ie2.messageApproximationScheme()
 
 
 def showBN(bn, size="4", format="svg", arcvals=None, vals=None, cmap=None):

@@ -1,6 +1,5 @@
-
-%define IMPROVE_INFERENCE_API(classname)
-%feature("shadow") classname::setEvidence %{
+%define IMPROVE_INFERENCE_API(classname...)
+%feature("shadow") gum::classname::setEvidence %{
 def setEvidence(self, evidces):
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
@@ -9,7 +8,7 @@ def setEvidence(self, evidces):
         self.addEvidence(k,v)
 %}
 
-%feature("shadow") classname::updateEvidence %{
+%feature("shadow") gum::classname::updateEvidence %{
 def updateEvidence(self, evidces):
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
@@ -21,7 +20,7 @@ def updateEvidence(self, evidces):
             self.addEvidence(k,v)
 %}
 
-%feature("shadow") classname::setTargets %{
+%feature("shadow") gum::classname::setTargets %{
 def setTargets(self, targets):
     if not isinstance(targets, set):
         raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
@@ -33,7 +32,7 @@ def setTargets(self, targets):
 
 
 // these void class extensions are rewritten by "shadow" declarations
-%extend classname {
+%extend gum::classname {
     void setEvidence(PyObject *evidces) {}
     void updateEvidence(PyObject *evidces) {}
     void setTargets(PyObject* targets) {}
@@ -49,11 +48,17 @@ def setTargets(self, targets):
     }
 }
 %enddef
-IMPROVE_INFERENCE_API(gum::LazyPropagation<double>)
-IMPROVE_INFERENCE_API(gum::ShaferShenoyInference<double>)
-IMPROVE_INFERENCE_API(gum::VariableElimination<double>)
-IMPROVE_INFERENCE_API(gum::GibbsInference<double>)
-IMPROVE_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
+IMPROVE_INFERENCE_API(LazyPropagation<double>)
+IMPROVE_INFERENCE_API(ShaferShenoyInference<double>)
+IMPROVE_INFERENCE_API(VariableElimination<double>)
+IMPROVE_INFERENCE_API(GibbsSampling<double>)
+IMPROVE_INFERENCE_API(ImportanceSampling<double>)
+IMPROVE_INFERENCE_API(WeightedSampling<double>)
+IMPROVE_INFERENCE_API(MonteCarloSampling<double>)
+IMPROVE_INFERENCE_API(LoopyBeliefPropagation<double>)
+IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::GibbsSampling>)
+IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::ImportanceSampling>)
+IMPROVE_INFERENCE_API(LoopySamplingInference<double,gum::WeightedSampling>)
 
 
 %define IMPROVE_JOINT_INFERENCE_API(classname)
@@ -95,3 +100,29 @@ IMPROVE_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
 IMPROVE_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
 IMPROVE_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
 IMPROVE_JOINT_INFERENCE_API(gum::VariableElimination<double>)
+
+
+// create a reference to python BN into python inference
+%define IMPROVE_EXACT_INFERENCE_API(classname)
+%pythonappend gum::classname<double>::classname %{
+  self._bn=args[0] #BN
+%}
+%enddef
+IMPROVE_EXACT_INFERENCE_API(LazyPropagation)
+IMPROVE_EXACT_INFERENCE_API(ShaferShenoyInference)
+IMPROVE_EXACT_INFERENCE_API(VariableElimination)
+
+
+%define IMPROVE_APPROX_INFERENCE_API(constructor,classname...)
+%pythonappend gum::classname::constructor %{
+  self._bn=bn  #BN
+%}
+%enddef
+IMPROVE_APPROX_INFERENCE_API(GibbsSampling,GibbsSampling<double>)
+IMPROVE_APPROX_INFERENCE_API(ImportanceSampling,ImportanceSampling<double>)
+IMPROVE_APPROX_INFERENCE_API(WeightedSampling,WeightedSampling<double>)
+IMPROVE_APPROX_INFERENCE_API(MonteCarloSampling,MonteCarloSampling<double>)
+IMPROVE_APPROX_INFERENCE_API(LoopyBeliefPropagation,LoopyBeliefPropagation<double>)
+IMPROVE_APPROX_INFERENCE_API(LoopySamplingInference,LoopySamplingInference<double,gum::GibbsSampling>)
+IMPROVE_APPROX_INFERENCE_API(LoopySamplingInference,LoopySamplingInference<double,gum::ImportanceSampling>)
+IMPROVE_APPROX_INFERENCE_API(LoopySamplingInference,LoopySamplingInference<double,gum::WeightedSampling>)

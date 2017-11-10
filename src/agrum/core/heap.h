@@ -33,7 +33,7 @@
 #include <utility>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 

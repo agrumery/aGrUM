@@ -27,7 +27,7 @@
 #ifndef GUM_MATH_POW_H
 #define GUM_MATH_POW_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 

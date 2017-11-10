@@ -53,7 +53,7 @@
 #ifndef GUM_LEARNING_COUNTER_H
 #define GUM_LEARNING_COUNTER_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/math/math.h>
 #include <agrum/learning/scores_and_tests/recordCounter.h>
 #include <vector>

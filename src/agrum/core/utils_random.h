@@ -36,7 +36,7 @@
 #include <utility>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 
@@ -44,8 +44,15 @@ namespace gum {
   /// @{
 
   /**
-   * @brief Returns a random number between 0 and 1 included (i.e. a proba).
-   * @return Returns a random number between 0 and 1 included (i.e. a proba).
+   * @brief Returns a random Idx between 0 and max-1 included.
+   * @return Returns a random Odxbetween 0 and max-1 included (i.e. a proba).
+   * By default, max=2
+   */
+  Idx randomValue( const Size max = 2 );
+
+  /**
+   * @brief Returns a random double between 0 and 1 included (i.e. a proba).
+   * @return Returns a random double between 0 and 1 included (i.e. a proba).
    */
   double randomProba();
 

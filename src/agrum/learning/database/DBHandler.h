@@ -27,7 +27,7 @@
 
 #include <utility>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/database/DBRow.h>
 
 #define CACHE_SIZE 128

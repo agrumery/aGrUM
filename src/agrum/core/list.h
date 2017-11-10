@@ -33,7 +33,7 @@
 #include <sstream>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/refPtr.h>
 
 #define GUM_DEFAULT_ITERATOR_NUMBER 4

@@ -26,7 +26,7 @@
  */
 #ifndef GUM_APPROXIMATION_POLICY_H
 #define GUM_APPROXIMATION_POLICY_H
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 

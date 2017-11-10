@@ -23,7 +23,7 @@
  * @author Jean-Philippe DUBUS and Christophe GONZALES
  */
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/graphs/algorithms/spanningForestPrim.h>
 

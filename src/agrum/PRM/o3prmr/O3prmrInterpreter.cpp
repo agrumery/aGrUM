@@ -24,10 +24,10 @@
  * @author Pierre-Henri WUILLEMIN, Ni NI, Lionel TORTI & Vincent RENAUDINEAU
  */
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/tools/BayesNetInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/variableElimination.h>
 

@@ -29,7 +29,7 @@
 #include <ostream>
 #include <string>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/hashFunc.h>
 #include <agrum/variables/variable.h>

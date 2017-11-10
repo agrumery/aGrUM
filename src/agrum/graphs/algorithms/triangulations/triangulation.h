@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/sequence.h>
 #include <agrum/graphs/cliqueGraph.h>
 #include <vector>

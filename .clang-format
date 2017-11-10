@@ -10,6 +10,7 @@ ColumnLimit: 83
 MaxEmptyLinesToKeep: 2
 
 IndentWidth: 2
+ContinuationIndentWidth: 2
 UseTab: Never
 
 AccessModifierOffset: 0
@@ -20,13 +21,14 @@ SpacesBeforeTrailingComments: 2
 
 Cpp11BracedListStyle: true
 BreakBeforeBraces: Attach
-SpacesInParentheses: true
+SpacesInParentheses: false
 SpaceInEmptyParentheses: false
 
 AlwaysBreakTemplateDeclarations: true
 BreakBeforeBinaryOperators: NonAssignment
 BreakConstructorInitializersBeforeComma: true
 BreakBeforeBinaryOperators: false
+SpacesInAngles: true
 #clang-format-4.0
 #BreakStringLiterals: true
 

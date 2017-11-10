@@ -28,7 +28,7 @@
 
 #include <limits>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/priorityQueue.h>
 #include <agrum/multidim/operators/multiDimCombinationDefault.h>

@@ -45,7 +45,7 @@
 #include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/PRM/o3prm/cocoR/Parser.h>
 #include <agrum/PRM/o3prm/cocoR/Scanner.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/errorsContainer.h>
 #include <agrum/core/utils_string.h>
 

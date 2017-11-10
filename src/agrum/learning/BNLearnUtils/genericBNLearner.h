@@ -33,7 +33,7 @@
 #include <sstream>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/bijection.h>
 #include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>
@@ -808,24 +808,6 @@ namespace gum {
       Size periodSize( void ) const {
         if ( __current_algorithm != nullptr )
           return __current_algorithm->periodSize();
-        else
-          GUM_ERROR( FatalError, "No chosen algorithm for learning" );
-      };
-      /// @}
-
-      /// size of burn in on number of iteration
-      /// @{
-
-      /// @throw OutOfLowerBound if b<1
-      void setBurnIn( Size b ) {
-        __K2.approximationScheme().setBurnIn( b );
-        __greedy_hill_climbing.setBurnIn( b );
-        __local_search_with_tabu_list.setBurnIn( b );
-      };
-
-      Size burnIn( void ) const {
-        if ( __current_algorithm != nullptr )
-          return __current_algorithm->burnIn();
         else
           GUM_ERROR( FatalError, "No chosen algorithm for learning" );
       };

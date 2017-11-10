@@ -23,7 +23,7 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <typeinfo>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

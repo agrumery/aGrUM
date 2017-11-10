@@ -25,7 +25,7 @@
 #ifndef GUM_LEARNING_FILTERED_ROW_GENERATOR_H
 #define GUM_LEARNING_FILTERED_ROW_GENERATOR_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/database/filteredRow.h>
 
 namespace gum {

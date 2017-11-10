@@ -36,7 +36,7 @@
 #ifndef GUM_LEARNING_SCORE_INTERNAL_APRIORI_H
 #define GUM_LEARNING_SCORE_INTERNAL_APRIORI_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <vector>
 
 namespace gum {

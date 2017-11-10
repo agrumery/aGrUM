@@ -29,7 +29,7 @@
 #include <iostream>
 #include <utility>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/priorityQueue.h>
 #include <agrum/graphs/cliqueGraph.h>

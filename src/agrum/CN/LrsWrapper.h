@@ -29,7 +29,7 @@
 #ifndef __LRSWrapper_WRAPPER__H__
 #define __LRSWrapper_WRAPPER__H__
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <cmath>
 #ifdef HAVE_UNISTD_H

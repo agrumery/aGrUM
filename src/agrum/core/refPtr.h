@@ -30,7 +30,7 @@
 
 #include <new>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 

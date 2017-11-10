@@ -29,7 +29,7 @@
 #include <utility>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/aprioris/apriori.h>
 #include <agrum/learning/scores_and_tests/counter.h>
 

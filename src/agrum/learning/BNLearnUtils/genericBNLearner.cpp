@@ -28,7 +28,7 @@
 
 #include <algorithm>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 

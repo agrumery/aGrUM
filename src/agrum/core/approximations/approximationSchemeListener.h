@@ -27,7 +27,7 @@
 #ifndef APPROXIMATIONSCHEMELISTENER_H
 #define APPROXIMATIONSCHEMELISTENER_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/signal/listener.h>
 
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
@@ -67,7 +67,7 @@ namespace gum {
      * @param time The time.
      */
     virtual void whenProgress( const void*  src,
-                               const Size   pourcent,
+                               const Size   step,
                                const double error,
                                const double time ) = 0;
 

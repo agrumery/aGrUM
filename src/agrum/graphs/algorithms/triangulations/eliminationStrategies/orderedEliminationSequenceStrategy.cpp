@@ -25,7 +25,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/graphs/algorithms/triangulations/eliminationStrategies/orderedEliminationSequenceStrategy.h>
 

@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/graphs/cliqueGraph.h>
 #include <agrum/graphs/algorithms/triangulations/eliminationStrategies/eliminationSequenceStrategy.h>

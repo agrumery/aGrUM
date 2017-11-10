@@ -2645,6 +2645,13 @@ SyntaxError_swigregister = _pyAgrum.SyntaxError_swigregister
 SyntaxError_swigregister(SyntaxError)
 
 
+def randomValue(max: 'gum::Size const'=2) -> "gum::Idx":
+    """
+    randomValue(max=2) -> gum::Idx
+    randomValue() -> gum::Idx
+    """
+    return _pyAgrum.randomValue(max)
+
 def randomProba() -> "double":
     """randomProba() -> double"""
     return _pyAgrum.randomProba()
@@ -4730,16 +4737,6 @@ class ApproximationScheme(_object):
         return _pyAgrum.ApproximationScheme_periodSize(self)
 
 
-    def setBurnIn(self, b: 'gum::Size') -> "void":
-        """setBurnIn(self, b)"""
-        return _pyAgrum.ApproximationScheme_setBurnIn(self, b)
-
-
-    def burnIn(self) -> "gum::Size":
-        """burnIn(self) -> gum::Size"""
-        return _pyAgrum.ApproximationScheme_burnIn(self)
-
-
     def setVerbosity(self, v: 'bool') -> "void":
         """setVerbosity(self, v)"""
         return _pyAgrum.ApproximationScheme_setVerbosity(self, v)
@@ -4800,10 +4797,6 @@ class ApproximationScheme(_object):
 ApproximationScheme_swigregister = _pyAgrum.ApproximationScheme_swigregister
 ApproximationScheme_swigregister(ApproximationScheme)
 
-RelevantPotentialsFinderType_FIND_ALL = _pyAgrum.RelevantPotentialsFinderType_FIND_ALL
-RelevantPotentialsFinderType_DSEP_BAYESBALL_NODES = _pyAgrum.RelevantPotentialsFinderType_DSEP_BAYESBALL_NODES
-RelevantPotentialsFinderType_DSEP_BAYESBALL_POTENTIALS = _pyAgrum.RelevantPotentialsFinderType_DSEP_BAYESBALL_POTENTIALS
-RelevantPotentialsFinderType_DSEP_KOLLER_FRIEDMAN_2009 = _pyAgrum.RelevantPotentialsFinderType_DSEP_KOLLER_FRIEDMAN_2009
 FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_BARREN_NODES
 FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
@@ -5225,6 +5218,11 @@ class Potential_double(_object):
 
 
         return val
+
+
+    def draw(self) -> "gum::Idx":
+        """draw(self) -> gum::Idx"""
+        return _pyAgrum.Potential_double_draw(self)
 
 
     def __add__(self, p2: 'Potential_double') -> "gum::Potential< double >":
@@ -6377,7 +6375,7 @@ class BayesNetInference_double(_object):
     __repr__ = _swig_repr
     StateOfInference_OutdatedBNStructure = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNStructure
     StateOfInference_OutdatedBNPotentials = _pyAgrum.BayesNetInference_double_StateOfInference_OutdatedBNPotentials
-    StateOfInference_InferenceReady = _pyAgrum.BayesNetInference_double_StateOfInference_InferenceReady
+    StateOfInference_ReadyForInference = _pyAgrum.BayesNetInference_double_StateOfInference_ReadyForInference
     StateOfInference_Done = _pyAgrum.BayesNetInference_double_StateOfInference_Done
     __swig_destroy__ = _pyAgrum.delete_BayesNetInference_double
     def __del__(self):
@@ -6401,6 +6399,21 @@ class BayesNetInference_double(_object):
     def isInferenceReady(self) -> "bool":
         """isInferenceReady(self) -> bool"""
         return _pyAgrum.BayesNetInference_double_isInferenceReady(self)
+
+
+    def isInferenceOutdatedBNStructure(self) -> "bool":
+        """isInferenceOutdatedBNStructure(self) -> bool"""
+        return _pyAgrum.BayesNetInference_double_isInferenceOutdatedBNStructure(self)
+
+
+    def isInferenceOutdatedBNPotentials(self) -> "bool":
+        """isInferenceOutdatedBNPotentials(self) -> bool"""
+        return _pyAgrum.BayesNetInference_double_isInferenceOutdatedBNPotentials(self)
+
+
+    def isInferenceDone(self) -> "bool":
+        """isInferenceDone(self) -> bool"""
+        return _pyAgrum.BayesNetInference_double_isInferenceDone(self)
 
 
     def isDone(self) -> "bool":
@@ -6561,6 +6574,11 @@ class LazyPropagation_double(_object):
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=args[0]#BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_LazyPropagation_double
     def __del__(self):
         return None
@@ -6867,6 +6885,11 @@ class ShaferShenoyInference_double(_object):
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=args[0]#BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_ShaferShenoyInference_double
     def __del__(self):
         return None
@@ -7168,6 +7191,11 @@ class VariableElimination_double(_object):
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=args[0]#BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_VariableElimination_double
     def __del__(self):
         return None
@@ -7411,27 +7439,370 @@ class VariableElimination_double(_object):
 VariableElimination_double_swigregister = _pyAgrum.VariableElimination_double_swigregister
 VariableElimination_double_swigregister(VariableElimination_double)
 
-class GibbsInference_double(ApproximationScheme):
-    """Proxy of C++ gum::GibbsInference< double > class."""
+class GibbsSampling_double(_object):
+    """Proxy of C++ gum::GibbsSampling< double > class."""
 
     __swig_setmethods__ = {}
-    for _s in [ApproximationScheme]:
-        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, GibbsInference_double, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, GibbsSampling_double, name, value)
     __swig_getmethods__ = {}
-    for _s in [ApproximationScheme]:
-        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
-    __getattr__ = lambda self, name: _swig_getattr(self, GibbsInference_double, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, GibbsSampling_double, name)
     __repr__ = _swig_repr
 
-    def __init__(self, BN: 'IBayesNet_double'):
-        """__init__(self, BN) -> GibbsInference_double"""
-        this = _pyAgrum.new_GibbsInference_double(BN)
+    def __init__(self, bn: 'IBayesNet_double'):
+        """__init__(self, bn) -> GibbsSampling_double"""
+        this = _pyAgrum.new_GibbsSampling_double(bn)
         try:
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
-    __swig_destroy__ = _pyAgrum.delete_GibbsInference_double
+
+        self._bn=bn#BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_GibbsSampling_double
+    def __del__(self):
+        return None
+
+    def setBurnIn(self, b: 'gum::Size') -> "void":
+        """setBurnIn(self, b)"""
+        return _pyAgrum.GibbsSampling_double_setBurnIn(self, b)
+
+
+    def burnIn(self) -> "gum::Size":
+        """burnIn(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_burnIn(self)
+
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> "PyObject *":
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.GibbsSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self) -> "PyObject *":
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.GibbsSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self) -> "PyObject *":
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.GibbsSampling_double_targets(self)
+
+
+    def setVerbosity(self, v: 'bool') -> "void":
+        """setVerbosity(self, v)"""
+        return _pyAgrum.GibbsSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps: 'double') -> "void":
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.GibbsSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate: 'double') -> "void":
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.GibbsSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max: 'gum::Size') -> "void":
+        """setMaxIter(self, max)"""
+        return _pyAgrum.GibbsSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout: 'double') -> "void":
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.GibbsSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p: 'gum::Size') -> "void":
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.GibbsSampling_double_setPeriodSize(self, p)
+
+
+    def verbosity(self) -> "bool":
+        """verbosity(self) -> bool"""
+        return _pyAgrum.GibbsSampling_double_verbosity(self)
+
+
+    def epsilon(self) -> "double":
+        """epsilon(self) -> double"""
+        return _pyAgrum.GibbsSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self) -> "double":
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.GibbsSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self) -> "gum::Size":
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_maxIter(self)
+
+
+    def maxTime(self) -> "double":
+        """maxTime(self) -> double"""
+        return _pyAgrum.GibbsSampling_double_maxTime(self)
+
+
+    def periodSize(self) -> "gum::Size":
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_periodSize(self)
+
+
+    def nbrIterations(self) -> "gum::Size":
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_nbrIterations(self)
+
+
+    def currentTime(self) -> "double":
+        """currentTime(self) -> double"""
+        return _pyAgrum.GibbsSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self) -> "std::string":
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.GibbsSampling_double_messageApproximationScheme(self)
+
+
+    def history(self) -> "std::vector< double,std::allocator< double > > const &":
+        """history(self) -> Vector_double"""
+        return _pyAgrum.GibbsSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.GibbsSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self) -> "void":
+        """makeInference(self)"""
+        return _pyAgrum.GibbsSampling_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.GibbsSampling_double_posterior(self, *args)
+
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.GibbsSampling_double_BN(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.GibbsSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.GibbsSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.GibbsSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.GibbsSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args) -> "void":
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.GibbsSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.GibbsSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.GibbsSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """eraseAllTargets(self)"""
+        return _pyAgrum.GibbsSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """addAllTargets(self)"""
+        return _pyAgrum.GibbsSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.GibbsSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.GibbsSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.GibbsSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.GibbsSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args) -> "gum::Potential< double >":
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.GibbsSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.GibbsSampling_double_currentPosterior(self, *args)
+
+
+    def nbrDrawnVar(self) -> "gum::Size":
+        """nbrDrawnVar(self) -> gum::Size"""
+        return _pyAgrum.GibbsSampling_double_nbrDrawnVar(self)
+
+
+    def setNbrDrawnVar(self, _nbr: 'gum::Size') -> "void":
+        """setNbrDrawnVar(self, _nbr)"""
+        return _pyAgrum.GibbsSampling_double_setNbrDrawnVar(self, _nbr)
+
+
+    def isDrawnAtRandom(self) -> "bool":
+        """isDrawnAtRandom(self) -> bool"""
+        return _pyAgrum.GibbsSampling_double_isDrawnAtRandom(self)
+
+
+    def setDrawnAtRandom(self, _atRandom: 'bool') -> "void":
+        """setDrawnAtRandom(self, _atRandom)"""
+        return _pyAgrum.GibbsSampling_double_setDrawnAtRandom(self, _atRandom)
+
+GibbsSampling_double_swigregister = _pyAgrum.GibbsSampling_double_swigregister
+GibbsSampling_double_swigregister(GibbsSampling_double)
+
+class ImportanceSampling_double(_object):
+    """Proxy of C++ gum::ImportanceSampling< double > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, ImportanceSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, ImportanceSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: 'IBayesNet_double'):
+        """__init__(self, bn) -> ImportanceSampling_double"""
+        this = _pyAgrum.new_ImportanceSampling_double(bn)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=bn#BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_ImportanceSampling_double
     def __del__(self):
         return None
 
@@ -7468,117 +7839,107 @@ class GibbsInference_double(ApproximationScheme):
 
     def hardEvidenceNodes(self) -> "PyObject *":
         """hardEvidenceNodes(self) -> PyObject *"""
-        return _pyAgrum.GibbsInference_double_hardEvidenceNodes(self)
+        return _pyAgrum.ImportanceSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self) -> "PyObject *":
         """softEvidenceNodes(self) -> PyObject *"""
-        return _pyAgrum.GibbsInference_double_softEvidenceNodes(self)
+        return _pyAgrum.ImportanceSampling_double_softEvidenceNodes(self)
 
 
     def targets(self) -> "PyObject *":
         """targets(self) -> PyObject *"""
-        return _pyAgrum.GibbsInference_double_targets(self)
+        return _pyAgrum.ImportanceSampling_double_targets(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
         """setVerbosity(self, v)"""
-        return _pyAgrum.GibbsInference_double_setVerbosity(self, v)
+        return _pyAgrum.ImportanceSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
         """setEpsilon(self, eps)"""
-        return _pyAgrum.GibbsInference_double_setEpsilon(self, eps)
+        return _pyAgrum.ImportanceSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
         """setMinEpsilonRate(self, rate)"""
-        return _pyAgrum.GibbsInference_double_setMinEpsilonRate(self, rate)
+        return _pyAgrum.ImportanceSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
         """setMaxIter(self, max)"""
-        return _pyAgrum.GibbsInference_double_setMaxIter(self, max)
+        return _pyAgrum.ImportanceSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
         """setMaxTime(self, timeout)"""
-        return _pyAgrum.GibbsInference_double_setMaxTime(self, timeout)
+        return _pyAgrum.ImportanceSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
         """setPeriodSize(self, p)"""
-        return _pyAgrum.GibbsInference_double_setPeriodSize(self, p)
-
-
-    def setBurnIn(self, b: 'gum::Size') -> "void":
-        """setBurnIn(self, b)"""
-        return _pyAgrum.GibbsInference_double_setBurnIn(self, b)
+        return _pyAgrum.ImportanceSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
         """verbosity(self) -> bool"""
-        return _pyAgrum.GibbsInference_double_verbosity(self)
+        return _pyAgrum.ImportanceSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
         """epsilon(self) -> double"""
-        return _pyAgrum.GibbsInference_double_epsilon(self)
+        return _pyAgrum.ImportanceSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
         """minEpsilonRate(self) -> double"""
-        return _pyAgrum.GibbsInference_double_minEpsilonRate(self)
+        return _pyAgrum.ImportanceSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
         """maxIter(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_maxIter(self)
+        return _pyAgrum.ImportanceSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
         """maxTime(self) -> double"""
-        return _pyAgrum.GibbsInference_double_maxTime(self)
+        return _pyAgrum.ImportanceSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
         """periodSize(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_periodSize(self)
-
-
-    def burnIn(self) -> "gum::Size":
-        """burnIn(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_burnIn(self)
+        return _pyAgrum.ImportanceSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
         """nbrIterations(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrIterations(self)
+        return _pyAgrum.ImportanceSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
         """currentTime(self) -> double"""
-        return _pyAgrum.GibbsInference_double_currentTime(self)
+        return _pyAgrum.ImportanceSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
         """messageApproximationScheme(self) -> std::string"""
-        return _pyAgrum.GibbsInference_double_messageApproximationScheme(self)
+        return _pyAgrum.ImportanceSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
         """history(self) -> Vector_double"""
-        return _pyAgrum.GibbsInference_double_history(self)
+        return _pyAgrum.ImportanceSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
-        return _pyAgrum.GibbsInference_double_asIApproximationSchemeConfiguration(self)
+        return _pyAgrum.ImportanceSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self) -> "void":
         """makeInference(self)"""
-        return _pyAgrum.GibbsInference_double_makeInference(self)
+        return _pyAgrum.ImportanceSampling_double_makeInference(self)
 
 
     def posterior(self, *args) -> "gum::Potential< double > const":
@@ -7586,12 +7947,12 @@ class GibbsInference_double(ApproximationScheme):
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
         """
-        return _pyAgrum.GibbsInference_double_posterior(self, *args)
+        return _pyAgrum.ImportanceSampling_double_posterior(self, *args)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
         """BN(self) -> IBayesNet_double"""
-        return _pyAgrum.GibbsInference_double_BN(self)
+        return _pyAgrum.ImportanceSampling_double_BN(self)
 
 
     def addEvidence(self, *args) -> "void":
@@ -7603,7 +7964,7 @@ class GibbsInference_double(ApproximationScheme):
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
         """
-        return _pyAgrum.GibbsInference_double_addEvidence(self, *args)
+        return _pyAgrum.ImportanceSampling_double_addEvidence(self, *args)
 
 
     def chgEvidence(self, *args) -> "void":
@@ -7615,7 +7976,7 @@ class GibbsInference_double(ApproximationScheme):
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
         """
-        return _pyAgrum.GibbsInference_double_chgEvidence(self, *args)
+        return _pyAgrum.ImportanceSampling_double_chgEvidence(self, *args)
 
 
     def hasEvidence(self, *args) -> "bool":
@@ -7623,12 +7984,12 @@ class GibbsInference_double(ApproximationScheme):
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
         """
-        return _pyAgrum.GibbsInference_double_hasEvidence(self, *args)
+        return _pyAgrum.ImportanceSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
         """eraseAllEvidence(self)"""
-        return _pyAgrum.GibbsInference_double_eraseAllEvidence(self)
+        return _pyAgrum.ImportanceSampling_double_eraseAllEvidence(self)
 
 
     def eraseEvidence(self, *args) -> "void":
@@ -7636,12 +7997,12 @@ class GibbsInference_double(ApproximationScheme):
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
         """
-        return _pyAgrum.GibbsInference_double_eraseEvidence(self, *args)
+        return _pyAgrum.ImportanceSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
         """hasHardEvidence(self, nodeName) -> bool"""
-        return _pyAgrum.GibbsInference_double_hasHardEvidence(self, nodeName)
+        return _pyAgrum.ImportanceSampling_double_hasHardEvidence(self, nodeName)
 
 
     def hasSoftEvidence(self, *args) -> "bool":
@@ -7649,32 +8010,32 @@ class GibbsInference_double(ApproximationScheme):
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
         """
-        return _pyAgrum.GibbsInference_double_hasSoftEvidence(self, *args)
+        return _pyAgrum.ImportanceSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
         """nbrEvidence(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrEvidence(self)
+        return _pyAgrum.ImportanceSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
         """nbrHardEvidence(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrHardEvidence(self)
+        return _pyAgrum.ImportanceSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
         """nbrSoftEvidence(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrSoftEvidence(self)
+        return _pyAgrum.ImportanceSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self) -> "void":
         """eraseAllTargets(self)"""
-        return _pyAgrum.GibbsInference_double_eraseAllTargets(self)
+        return _pyAgrum.ImportanceSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self) -> "void":
         """addAllTargets(self)"""
-        return _pyAgrum.GibbsInference_double_addAllTargets(self)
+        return _pyAgrum.ImportanceSampling_double_addAllTargets(self)
 
 
     def addTarget(self, *args) -> "void":
@@ -7682,7 +8043,7 @@ class GibbsInference_double(ApproximationScheme):
         addTarget(self, target)
         addTarget(self, nodeName)
         """
-        return _pyAgrum.GibbsInference_double_addTarget(self, *args)
+        return _pyAgrum.ImportanceSampling_double_addTarget(self, *args)
 
 
     def eraseTarget(self, *args) -> "void":
@@ -7690,7 +8051,7 @@ class GibbsInference_double(ApproximationScheme):
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
         """
-        return _pyAgrum.GibbsInference_double_eraseTarget(self, *args)
+        return _pyAgrum.ImportanceSampling_double_eraseTarget(self, *args)
 
 
     def isTarget(self, *args) -> "bool":
@@ -7698,12 +8059,12 @@ class GibbsInference_double(ApproximationScheme):
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
         """
-        return _pyAgrum.GibbsInference_double_isTarget(self, *args)
+        return _pyAgrum.ImportanceSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self) -> "gum::Size":
         """nbrTargets(self) -> gum::Size"""
-        return _pyAgrum.GibbsInference_double_nbrTargets(self)
+        return _pyAgrum.ImportanceSampling_double_nbrTargets(self)
 
 
     def H(self, *args) -> "double":
@@ -7711,7 +8072,7 @@ class GibbsInference_double(ApproximationScheme):
         H(self, X) -> double
         H(self, nodeName) -> double
         """
-        return _pyAgrum.GibbsInference_double_H(self, *args)
+        return _pyAgrum.ImportanceSampling_double_H(self, *args)
 
 
     def evidenceImpact(self, *args) -> "gum::Potential< double >":
@@ -7719,31 +8080,1660 @@ class GibbsInference_double(ApproximationScheme):
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
         """
-        return _pyAgrum.GibbsInference_double_evidenceImpact(self, *args)
+        return _pyAgrum.ImportanceSampling_double_evidenceImpact(self, *args)
 
-GibbsInference_double_swigregister = _pyAgrum.GibbsInference_double_swigregister
-GibbsInference_double_swigregister(GibbsInference_double)
 
-class LoopyBeliefPropagation_double(ApproximationScheme):
-    """Proxy of C++ gum::LoopyBeliefPropagation< double > class."""
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.ImportanceSampling_double_currentPosterior(self, *args)
+
+ImportanceSampling_double_swigregister = _pyAgrum.ImportanceSampling_double_swigregister
+ImportanceSampling_double_swigregister(ImportanceSampling_double)
+
+class WeightedSampling_double(_object):
+    """Proxy of C++ gum::WeightedSampling< double > class."""
 
     __swig_setmethods__ = {}
-    for _s in [ApproximationScheme]:
-        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
-    __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyBeliefPropagation_double, name, value)
+    __setattr__ = lambda self, name, value: _swig_setattr(self, WeightedSampling_double, name, value)
     __swig_getmethods__ = {}
-    for _s in [ApproximationScheme]:
-        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
-    __getattr__ = lambda self, name: _swig_getattr(self, LoopyBeliefPropagation_double, name)
+    __getattr__ = lambda self, name: _swig_getattr(self, WeightedSampling_double, name)
     __repr__ = _swig_repr
 
-    def __init__(self, BN: 'IBayesNet_double'):
-        """__init__(self, BN) -> LoopyBeliefPropagation_double"""
-        this = _pyAgrum.new_LoopyBeliefPropagation_double(BN)
+    def __init__(self, bn: 'IBayesNet_double'):
+        """__init__(self, bn) -> WeightedSampling_double"""
+        this = _pyAgrum.new_WeightedSampling_double(bn)
         try:
             self.this.append(this)
         except __builtin__.Exception:
             self.this = this
+
+        self._bn=bn#BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_WeightedSampling_double
+    def __del__(self):
+        return None
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> "PyObject *":
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.WeightedSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self) -> "PyObject *":
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.WeightedSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self) -> "PyObject *":
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.WeightedSampling_double_targets(self)
+
+
+    def setVerbosity(self, v: 'bool') -> "void":
+        """setVerbosity(self, v)"""
+        return _pyAgrum.WeightedSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps: 'double') -> "void":
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.WeightedSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate: 'double') -> "void":
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.WeightedSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max: 'gum::Size') -> "void":
+        """setMaxIter(self, max)"""
+        return _pyAgrum.WeightedSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout: 'double') -> "void":
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.WeightedSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p: 'gum::Size') -> "void":
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.WeightedSampling_double_setPeriodSize(self, p)
+
+
+    def verbosity(self) -> "bool":
+        """verbosity(self) -> bool"""
+        return _pyAgrum.WeightedSampling_double_verbosity(self)
+
+
+    def epsilon(self) -> "double":
+        """epsilon(self) -> double"""
+        return _pyAgrum.WeightedSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self) -> "double":
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.WeightedSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self) -> "gum::Size":
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_maxIter(self)
+
+
+    def maxTime(self) -> "double":
+        """maxTime(self) -> double"""
+        return _pyAgrum.WeightedSampling_double_maxTime(self)
+
+
+    def periodSize(self) -> "gum::Size":
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_periodSize(self)
+
+
+    def nbrIterations(self) -> "gum::Size":
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrIterations(self)
+
+
+    def currentTime(self) -> "double":
+        """currentTime(self) -> double"""
+        return _pyAgrum.WeightedSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self) -> "std::string":
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.WeightedSampling_double_messageApproximationScheme(self)
+
+
+    def history(self) -> "std::vector< double,std::allocator< double > > const &":
+        """history(self) -> Vector_double"""
+        return _pyAgrum.WeightedSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.WeightedSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self) -> "void":
+        """makeInference(self)"""
+        return _pyAgrum.WeightedSampling_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.WeightedSampling_double_posterior(self, *args)
+
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.WeightedSampling_double_BN(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.WeightedSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.WeightedSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.WeightedSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.WeightedSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args) -> "void":
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.WeightedSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.WeightedSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.WeightedSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """eraseAllTargets(self)"""
+        return _pyAgrum.WeightedSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """addAllTargets(self)"""
+        return _pyAgrum.WeightedSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.WeightedSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.WeightedSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.WeightedSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.WeightedSampling_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.WeightedSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args) -> "gum::Potential< double >":
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.WeightedSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.WeightedSampling_double_currentPosterior(self, *args)
+
+WeightedSampling_double_swigregister = _pyAgrum.WeightedSampling_double_swigregister
+WeightedSampling_double_swigregister(WeightedSampling_double)
+
+class MonteCarloSampling_double(_object):
+    """Proxy of C++ gum::MonteCarloSampling< double > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, MonteCarloSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, MonteCarloSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: 'IBayesNet_double'):
+        """__init__(self, bn) -> MonteCarloSampling_double"""
+        this = _pyAgrum.new_MonteCarloSampling_double(bn)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=bn#BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_MonteCarloSampling_double
+    def __del__(self):
+        return None
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> "PyObject *":
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.MonteCarloSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self) -> "PyObject *":
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.MonteCarloSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self) -> "PyObject *":
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.MonteCarloSampling_double_targets(self)
+
+
+    def setVerbosity(self, v: 'bool') -> "void":
+        """setVerbosity(self, v)"""
+        return _pyAgrum.MonteCarloSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps: 'double') -> "void":
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.MonteCarloSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate: 'double') -> "void":
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.MonteCarloSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max: 'gum::Size') -> "void":
+        """setMaxIter(self, max)"""
+        return _pyAgrum.MonteCarloSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout: 'double') -> "void":
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.MonteCarloSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p: 'gum::Size') -> "void":
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.MonteCarloSampling_double_setPeriodSize(self, p)
+
+
+    def verbosity(self) -> "bool":
+        """verbosity(self) -> bool"""
+        return _pyAgrum.MonteCarloSampling_double_verbosity(self)
+
+
+    def epsilon(self) -> "double":
+        """epsilon(self) -> double"""
+        return _pyAgrum.MonteCarloSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self) -> "double":
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.MonteCarloSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self) -> "gum::Size":
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_maxIter(self)
+
+
+    def maxTime(self) -> "double":
+        """maxTime(self) -> double"""
+        return _pyAgrum.MonteCarloSampling_double_maxTime(self)
+
+
+    def periodSize(self) -> "gum::Size":
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_periodSize(self)
+
+
+    def nbrIterations(self) -> "gum::Size":
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrIterations(self)
+
+
+    def currentTime(self) -> "double":
+        """currentTime(self) -> double"""
+        return _pyAgrum.MonteCarloSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self) -> "std::string":
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.MonteCarloSampling_double_messageApproximationScheme(self)
+
+
+    def history(self) -> "std::vector< double,std::allocator< double > > const &":
+        """history(self) -> Vector_double"""
+        return _pyAgrum.MonteCarloSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.MonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self) -> "void":
+        """makeInference(self)"""
+        return _pyAgrum.MonteCarloSampling_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.MonteCarloSampling_double_posterior(self, *args)
+
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.MonteCarloSampling_double_BN(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.MonteCarloSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.MonteCarloSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.MonteCarloSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.MonteCarloSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args) -> "void":
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.MonteCarloSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.MonteCarloSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.MonteCarloSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """eraseAllTargets(self)"""
+        return _pyAgrum.MonteCarloSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """addAllTargets(self)"""
+        return _pyAgrum.MonteCarloSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.MonteCarloSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.MonteCarloSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.MonteCarloSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.MonteCarloSampling_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.MonteCarloSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args) -> "gum::Potential< double >":
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.MonteCarloSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.MonteCarloSampling_double_currentPosterior(self, *args)
+
+MonteCarloSampling_double_swigregister = _pyAgrum.MonteCarloSampling_double_swigregister
+MonteCarloSampling_double_swigregister(MonteCarloSampling_double)
+
+class LoopyImportanceSampling_double(_object):
+    """Proxy of C++ gum::LoopySamplingInference< double,gum::ImportanceSampling > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyImportanceSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, LoopyImportanceSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: 'IBayesNet_double'):
+        """__init__(self, bn) -> LoopyImportanceSampling_double"""
+        this = _pyAgrum.new_LoopyImportanceSampling_double(bn)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=bn#BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_LoopyImportanceSampling_double
+    def __del__(self):
+        return None
+
+    def _makeInference(self) -> "void":
+        """_makeInference(self)"""
+        return _pyAgrum.LoopyImportanceSampling_double__makeInference(self)
+
+
+    def setVirtualLBPSize(self, vlbpsize: 'double') -> "void":
+        """setVirtualLBPSize(self, vlbpsize)"""
+        return _pyAgrum.LoopyImportanceSampling_double_setVirtualLBPSize(self, vlbpsize)
+
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> "PyObject *":
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.LoopyImportanceSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self) -> "PyObject *":
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.LoopyImportanceSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self) -> "PyObject *":
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.LoopyImportanceSampling_double_targets(self)
+
+
+    def setVerbosity(self, v: 'bool') -> "void":
+        """setVerbosity(self, v)"""
+        return _pyAgrum.LoopyImportanceSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps: 'double') -> "void":
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.LoopyImportanceSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate: 'double') -> "void":
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.LoopyImportanceSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max: 'gum::Size') -> "void":
+        """setMaxIter(self, max)"""
+        return _pyAgrum.LoopyImportanceSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout: 'double') -> "void":
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.LoopyImportanceSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p: 'gum::Size') -> "void":
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.LoopyImportanceSampling_double_setPeriodSize(self, p)
+
+
+    def verbosity(self) -> "bool":
+        """verbosity(self) -> bool"""
+        return _pyAgrum.LoopyImportanceSampling_double_verbosity(self)
+
+
+    def epsilon(self) -> "double":
+        """epsilon(self) -> double"""
+        return _pyAgrum.LoopyImportanceSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self) -> "double":
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.LoopyImportanceSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self) -> "gum::Size":
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.LoopyImportanceSampling_double_maxIter(self)
+
+
+    def maxTime(self) -> "double":
+        """maxTime(self) -> double"""
+        return _pyAgrum.LoopyImportanceSampling_double_maxTime(self)
+
+
+    def periodSize(self) -> "gum::Size":
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.LoopyImportanceSampling_double_periodSize(self)
+
+
+    def nbrIterations(self) -> "gum::Size":
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.LoopyImportanceSampling_double_nbrIterations(self)
+
+
+    def currentTime(self) -> "double":
+        """currentTime(self) -> double"""
+        return _pyAgrum.LoopyImportanceSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self) -> "std::string":
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.LoopyImportanceSampling_double_messageApproximationScheme(self)
+
+
+    def history(self) -> "std::vector< double,std::allocator< double > > const &":
+        """history(self) -> Vector_double"""
+        return _pyAgrum.LoopyImportanceSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.LoopyImportanceSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self) -> "void":
+        """makeInference(self)"""
+        return _pyAgrum.LoopyImportanceSampling_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_posterior(self, *args)
+
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.LoopyImportanceSampling_double_BN(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.LoopyImportanceSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args) -> "void":
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.LoopyImportanceSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyImportanceSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyImportanceSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyImportanceSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """eraseAllTargets(self)"""
+        return _pyAgrum.LoopyImportanceSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """addAllTargets(self)"""
+        return _pyAgrum.LoopyImportanceSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.LoopyImportanceSampling_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args) -> "gum::Potential< double >":
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_currentPosterior(self, *args)
+
+LoopyImportanceSampling_double_swigregister = _pyAgrum.LoopyImportanceSampling_double_swigregister
+LoopyImportanceSampling_double_swigregister(LoopyImportanceSampling_double)
+
+class LoopyWeightedSampling_double(_object):
+    """Proxy of C++ gum::LoopySamplingInference< double,gum::WeightedSampling > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyWeightedSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, LoopyWeightedSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: 'IBayesNet_double'):
+        """__init__(self, bn) -> LoopyWeightedSampling_double"""
+        this = _pyAgrum.new_LoopyWeightedSampling_double(bn)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=bn#BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_LoopyWeightedSampling_double
+    def __del__(self):
+        return None
+
+    def _makeInference(self) -> "void":
+        """_makeInference(self)"""
+        return _pyAgrum.LoopyWeightedSampling_double__makeInference(self)
+
+
+    def setVirtualLBPSize(self, vlbpsize: 'double') -> "void":
+        """setVirtualLBPSize(self, vlbpsize)"""
+        return _pyAgrum.LoopyWeightedSampling_double_setVirtualLBPSize(self, vlbpsize)
+
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> "PyObject *":
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.LoopyWeightedSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self) -> "PyObject *":
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.LoopyWeightedSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self) -> "PyObject *":
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.LoopyWeightedSampling_double_targets(self)
+
+
+    def setVerbosity(self, v: 'bool') -> "void":
+        """setVerbosity(self, v)"""
+        return _pyAgrum.LoopyWeightedSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps: 'double') -> "void":
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.LoopyWeightedSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate: 'double') -> "void":
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.LoopyWeightedSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max: 'gum::Size') -> "void":
+        """setMaxIter(self, max)"""
+        return _pyAgrum.LoopyWeightedSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout: 'double') -> "void":
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.LoopyWeightedSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p: 'gum::Size') -> "void":
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.LoopyWeightedSampling_double_setPeriodSize(self, p)
+
+
+    def verbosity(self) -> "bool":
+        """verbosity(self) -> bool"""
+        return _pyAgrum.LoopyWeightedSampling_double_verbosity(self)
+
+
+    def epsilon(self) -> "double":
+        """epsilon(self) -> double"""
+        return _pyAgrum.LoopyWeightedSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self) -> "double":
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.LoopyWeightedSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self) -> "gum::Size":
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.LoopyWeightedSampling_double_maxIter(self)
+
+
+    def maxTime(self) -> "double":
+        """maxTime(self) -> double"""
+        return _pyAgrum.LoopyWeightedSampling_double_maxTime(self)
+
+
+    def periodSize(self) -> "gum::Size":
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.LoopyWeightedSampling_double_periodSize(self)
+
+
+    def nbrIterations(self) -> "gum::Size":
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.LoopyWeightedSampling_double_nbrIterations(self)
+
+
+    def currentTime(self) -> "double":
+        """currentTime(self) -> double"""
+        return _pyAgrum.LoopyWeightedSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self) -> "std::string":
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.LoopyWeightedSampling_double_messageApproximationScheme(self)
+
+
+    def history(self) -> "std::vector< double,std::allocator< double > > const &":
+        """history(self) -> Vector_double"""
+        return _pyAgrum.LoopyWeightedSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.LoopyWeightedSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self) -> "void":
+        """makeInference(self)"""
+        return _pyAgrum.LoopyWeightedSampling_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_posterior(self, *args)
+
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.LoopyWeightedSampling_double_BN(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.LoopyWeightedSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args) -> "void":
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.LoopyWeightedSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyWeightedSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyWeightedSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyWeightedSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """eraseAllTargets(self)"""
+        return _pyAgrum.LoopyWeightedSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """addAllTargets(self)"""
+        return _pyAgrum.LoopyWeightedSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.LoopyWeightedSampling_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args) -> "gum::Potential< double >":
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_currentPosterior(self, *args)
+
+LoopyWeightedSampling_double_swigregister = _pyAgrum.LoopyWeightedSampling_double_swigregister
+LoopyWeightedSampling_double_swigregister(LoopyWeightedSampling_double)
+
+class LoopyGibbsSampling_double(_object):
+    """Proxy of C++ gum::LoopySamplingInference< double,gum::GibbsSampling > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyGibbsSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, LoopyGibbsSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: 'IBayesNet_double'):
+        """__init__(self, bn) -> LoopyGibbsSampling_double"""
+        this = _pyAgrum.new_LoopyGibbsSampling_double(bn)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=bn#BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_LoopyGibbsSampling_double
+    def __del__(self):
+        return None
+
+    def _makeInference(self) -> "void":
+        """_makeInference(self)"""
+        return _pyAgrum.LoopyGibbsSampling_double__makeInference(self)
+
+
+    def setVirtualLBPSize(self, vlbpsize: 'double') -> "void":
+        """setVirtualLBPSize(self, vlbpsize)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setVirtualLBPSize(self, vlbpsize)
+
+
+    def setEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self) -> "PyObject *":
+        """hardEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.LoopyGibbsSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self) -> "PyObject *":
+        """softEvidenceNodes(self) -> PyObject *"""
+        return _pyAgrum.LoopyGibbsSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self) -> "PyObject *":
+        """targets(self) -> PyObject *"""
+        return _pyAgrum.LoopyGibbsSampling_double_targets(self)
+
+
+    def setVerbosity(self, v: 'bool') -> "void":
+        """setVerbosity(self, v)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps: 'double') -> "void":
+        """setEpsilon(self, eps)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate: 'double') -> "void":
+        """setMinEpsilonRate(self, rate)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max: 'gum::Size') -> "void":
+        """setMaxIter(self, max)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout: 'double') -> "void":
+        """setMaxTime(self, timeout)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p: 'gum::Size') -> "void":
+        """setPeriodSize(self, p)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setPeriodSize(self, p)
+
+
+    def verbosity(self) -> "bool":
+        """verbosity(self) -> bool"""
+        return _pyAgrum.LoopyGibbsSampling_double_verbosity(self)
+
+
+    def epsilon(self) -> "double":
+        """epsilon(self) -> double"""
+        return _pyAgrum.LoopyGibbsSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self) -> "double":
+        """minEpsilonRate(self) -> double"""
+        return _pyAgrum.LoopyGibbsSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self) -> "gum::Size":
+        """maxIter(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_maxIter(self)
+
+
+    def maxTime(self) -> "double":
+        """maxTime(self) -> double"""
+        return _pyAgrum.LoopyGibbsSampling_double_maxTime(self)
+
+
+    def periodSize(self) -> "gum::Size":
+        """periodSize(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_periodSize(self)
+
+
+    def nbrIterations(self) -> "gum::Size":
+        """nbrIterations(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_nbrIterations(self)
+
+
+    def currentTime(self) -> "double":
+        """currentTime(self) -> double"""
+        return _pyAgrum.LoopyGibbsSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self) -> "std::string":
+        """messageApproximationScheme(self) -> std::string"""
+        return _pyAgrum.LoopyGibbsSampling_double_messageApproximationScheme(self)
+
+
+    def history(self) -> "std::vector< double,std::allocator< double > > const &":
+        """history(self) -> Vector_double"""
+        return _pyAgrum.LoopyGibbsSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
+        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        return _pyAgrum.LoopyGibbsSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self) -> "void":
+        """makeInference(self)"""
+        return _pyAgrum.LoopyGibbsSampling_double_makeInference(self)
+
+
+    def posterior(self, *args) -> "gum::Potential< double > const":
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_posterior(self, *args)
+
+
+    def BN(self) -> "gum::IBayesNet< double > const &":
+        """BN(self) -> IBayesNet_double"""
+        return _pyAgrum.LoopyGibbsSampling_double_BN(self)
+
+
+    def addEvidence(self, *args) -> "void":
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args) -> "void":
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args) -> "bool":
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self) -> "void":
+        """eraseAllEvidence(self)"""
+        return _pyAgrum.LoopyGibbsSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args) -> "void":
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
+        """hasHardEvidence(self, nodeName) -> bool"""
+        return _pyAgrum.LoopyGibbsSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args) -> "bool":
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self) -> "gum::Size":
+        """nbrEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self) -> "gum::Size":
+        """nbrHardEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self) -> "gum::Size":
+        """nbrSoftEvidence(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self) -> "void":
+        """eraseAllTargets(self)"""
+        return _pyAgrum.LoopyGibbsSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self) -> "void":
+        """addAllTargets(self)"""
+        return _pyAgrum.LoopyGibbsSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args) -> "void":
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args) -> "void":
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args) -> "bool":
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self) -> "gum::Size":
+        """nbrTargets(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_nbrTargets(self)
+
+
+    def H(self, *args) -> "double":
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args) -> "gum::Potential< double >":
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_currentPosterior(self, *args)
+
+
+    def nbrDrawnVar(self) -> "gum::Size":
+        """nbrDrawnVar(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_nbrDrawnVar(self)
+
+
+    def setNbrDrawnVar(self, _nbr: 'gum::Size') -> "void":
+        """setNbrDrawnVar(self, _nbr)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setNbrDrawnVar(self, _nbr)
+
+
+    def isDrawnAtRandom(self) -> "bool":
+        """isDrawnAtRandom(self) -> bool"""
+        return _pyAgrum.LoopyGibbsSampling_double_isDrawnAtRandom(self)
+
+
+    def setDrawnAtRandom(self, _atRandom: 'bool') -> "void":
+        """setDrawnAtRandom(self, _atRandom)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setDrawnAtRandom(self, _atRandom)
+
+
+    def burnIn(self) -> "gum::Size":
+        """burnIn(self) -> gum::Size"""
+        return _pyAgrum.LoopyGibbsSampling_double_burnIn(self)
+
+
+    def setBurnIn(self, b: 'gum::Size') -> "void":
+        """setBurnIn(self, b)"""
+        return _pyAgrum.LoopyGibbsSampling_double_setBurnIn(self, b)
+
+LoopyGibbsSampling_double_swigregister = _pyAgrum.LoopyGibbsSampling_double_swigregister
+LoopyGibbsSampling_double_swigregister(LoopyGibbsSampling_double)
+
+class LoopyBeliefPropagation_double(_object):
+    """Proxy of C++ gum::LoopyBeliefPropagation< double > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyBeliefPropagation_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, LoopyBeliefPropagation_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bn: 'IBayesNet_double'):
+        """__init__(self, bn) -> LoopyBeliefPropagation_double"""
+        this = _pyAgrum.new_LoopyBeliefPropagation_double(bn)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=bn#BN
+
+
+
     __swig_destroy__ = _pyAgrum.delete_LoopyBeliefPropagation_double
     def __del__(self):
         return None
@@ -7824,11 +9814,6 @@ class LoopyBeliefPropagation_double(ApproximationScheme):
         return _pyAgrum.LoopyBeliefPropagation_double_setPeriodSize(self, p)
 
 
-    def setBurnIn(self, b: 'gum::Size') -> "void":
-        """setBurnIn(self, b)"""
-        return _pyAgrum.LoopyBeliefPropagation_double_setBurnIn(self, b)
-
-
     def verbosity(self) -> "bool":
         """verbosity(self) -> bool"""
         return _pyAgrum.LoopyBeliefPropagation_double_verbosity(self)
@@ -7857,11 +9842,6 @@ class LoopyBeliefPropagation_double(ApproximationScheme):
     def periodSize(self) -> "gum::Size":
         """periodSize(self) -> gum::Size"""
         return _pyAgrum.LoopyBeliefPropagation_double_periodSize(self)
-
-
-    def burnIn(self) -> "gum::Size":
-        """burnIn(self) -> gum::Size"""
-        return _pyAgrum.LoopyBeliefPropagation_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
@@ -8094,6 +10074,16 @@ class GibbsKL_double(ApproximationScheme):
     def __del__(self):
         return None
 
+    def setBurnIn(self, b: 'gum::Size') -> "void":
+        """setBurnIn(self, b)"""
+        return _pyAgrum.GibbsKL_double_setBurnIn(self, b)
+
+
+    def burnIn(self) -> "gum::Size":
+        """burnIn(self) -> gum::Size"""
+        return _pyAgrum.GibbsKL_double_burnIn(self)
+
+
     def compute(self) -> "PyObject *":
         """compute(self) -> PyObject *"""
         return _pyAgrum.GibbsKL_double_compute(self)
@@ -8129,11 +10119,6 @@ class GibbsKL_double(ApproximationScheme):
         return _pyAgrum.GibbsKL_double_setPeriodSize(self, p)
 
 
-    def setBurnIn(self, b: 'gum::Size') -> "void":
-        """setBurnIn(self, b)"""
-        return _pyAgrum.GibbsKL_double_setBurnIn(self, b)
-
-
     def verbosity(self) -> "bool":
         """verbosity(self) -> bool"""
         return _pyAgrum.GibbsKL_double_verbosity(self)
@@ -8164,11 +10149,6 @@ class GibbsKL_double(ApproximationScheme):
         return _pyAgrum.GibbsKL_double_periodSize(self)
 
 
-    def burnIn(self) -> "gum::Size":
-        """burnIn(self) -> gum::Size"""
-        return _pyAgrum.GibbsKL_double_burnIn(self)
-
-
     def nbrIterations(self) -> "gum::Size":
         """nbrIterations(self) -> gum::Size"""
         return _pyAgrum.GibbsKL_double_nbrIterations(self)
@@ -8192,6 +10172,26 @@ class GibbsKL_double(ApproximationScheme):
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
         """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
         return _pyAgrum.GibbsKL_double_asIApproximationSchemeConfiguration(self)
+
+
+    def nbrDrawnVar(self) -> "gum::Size":
+        """nbrDrawnVar(self) -> gum::Size"""
+        return _pyAgrum.GibbsKL_double_nbrDrawnVar(self)
+
+
+    def setNbrDrawnVar(self, _nbr: 'gum::Size') -> "void":
+        """setNbrDrawnVar(self, _nbr)"""
+        return _pyAgrum.GibbsKL_double_setNbrDrawnVar(self, _nbr)
+
+
+    def isDrawnAtRandom(self) -> "bool":
+        """isDrawnAtRandom(self) -> bool"""
+        return _pyAgrum.GibbsKL_double_isDrawnAtRandom(self)
+
+
+    def setDrawnAtRandom(self, _atRandom: 'bool') -> "void":
+        """setDrawnAtRandom(self, _atRandom)"""
+        return _pyAgrum.GibbsKL_double_setDrawnAtRandom(self, _atRandom)
 
 GibbsKL_double_swigregister = _pyAgrum.GibbsKL_double_swigregister
 GibbsKL_double_swigregister(GibbsKL_double)
@@ -8451,11 +10451,6 @@ class CNMonteCarloSampling_double(_object):
         return _pyAgrum.CNMonteCarloSampling_double_setPeriodSize(self, p)
 
 
-    def setBurnIn(self, b: 'gum::Size') -> "void":
-        """setBurnIn(self, b)"""
-        return _pyAgrum.CNMonteCarloSampling_double_setBurnIn(self, b)
-
-
     def verbosity(self) -> "bool":
         """verbosity(self) -> bool"""
         return _pyAgrum.CNMonteCarloSampling_double_verbosity(self)
@@ -8484,11 +10479,6 @@ class CNMonteCarloSampling_double(_object):
     def periodSize(self) -> "gum::Size":
         """periodSize(self) -> gum::Size"""
         return _pyAgrum.CNMonteCarloSampling_double_periodSize(self)
-
-
-    def burnIn(self) -> "gum::Size":
-        """burnIn(self) -> gum::Size"""
-        return _pyAgrum.CNMonteCarloSampling_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
@@ -8635,11 +10625,6 @@ class CNLoopyPropagation_double(_object):
         return _pyAgrum.CNLoopyPropagation_double_setPeriodSize(self, p)
 
 
-    def setBurnIn(self, b: 'gum::Size') -> "void":
-        """setBurnIn(self, b)"""
-        return _pyAgrum.CNLoopyPropagation_double_setBurnIn(self, b)
-
-
     def verbosity(self) -> "bool":
         """verbosity(self) -> bool"""
         return _pyAgrum.CNLoopyPropagation_double_verbosity(self)
@@ -8668,11 +10653,6 @@ class CNLoopyPropagation_double(_object):
     def periodSize(self) -> "gum::Size":
         """periodSize(self) -> gum::Size"""
         return _pyAgrum.CNLoopyPropagation_double_periodSize(self)
-
-
-    def burnIn(self) -> "gum::Size":
-        """burnIn(self) -> gum::Size"""
-        return _pyAgrum.CNLoopyPropagation_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
@@ -9182,11 +11162,6 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_setPeriodSize(self, p)
 
 
-    def setBurnIn(self, b: 'gum::Size') -> "void":
-        """setBurnIn(self, b)"""
-        return _pyAgrum.BNLearner_double_setBurnIn(self, b)
-
-
     def verbosity(self) -> "bool":
         """verbosity(self) -> bool"""
         return _pyAgrum.BNLearner_double_verbosity(self)
@@ -9215,11 +11190,6 @@ class BNLearner_double(_object):
     def periodSize(self) -> "gum::Size":
         """periodSize(self) -> gum::Size"""
         return _pyAgrum.BNLearner_double_periodSize(self)
-
-
-    def burnIn(self) -> "gum::Size":
-        """burnIn(self) -> gum::Size"""
-        return _pyAgrum.BNLearner_double_burnIn(self)
 
 
     def nbrIterations(self) -> "gum::Size":
@@ -9421,7 +11391,14 @@ LazyPropagation = LazyPropagation_double
 ShaferShenoyInference = ShaferShenoyInference_double
 VariableElimination = VariableElimination_double
 
-GibbsInference = GibbsInference_double
+GibbsSampling = GibbsSampling_double
+ImportanceSampling=ImportanceSampling_double
+WeightedSampling=WeightedSampling_double
+MonteCarloSampling=MonteCarloSampling_double
+LoopyImportanceSampling=LoopyImportanceSampling_double
+LoopyGibbsSampling=LoopyGibbsSampling_double
+LoopyWeightedSampling=LoopyWeightedSampling_double
+
 LoopyBeliefPropagation = LoopyBeliefPropagation_double
 
 BruteForceKL = BruteForceKL_double

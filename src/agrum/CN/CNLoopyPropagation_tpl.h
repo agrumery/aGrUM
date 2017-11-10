@@ -673,7 +673,7 @@ namespace gum {
         std::vector<std::vector<GUM_SCALAR>>              msg_p;
         std::vector<GUM_SCALAR>                           distri( 2 );
 
-        // +1 from start to avoid counting itself
+        // +1 from start to avoid _counting itself
         // use const iterators when available with cbegin
         for ( auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd;
               ++jt ) {
@@ -978,7 +978,7 @@ namespace gum {
 
         Idx pos;
 
-        // +1 from start to avoid counting itself
+        // +1 from start to avoid _counting itself
         // use const iterators with cbegin when available
         for ( auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd;
               ++jt ) {
@@ -1151,7 +1151,7 @@ namespace gum {
         std::vector<std::vector<GUM_SCALAR>>              msg_p;
         std::vector<GUM_SCALAR>                           distri( 2 );
 
-        // +1 from start to avoid counting itself
+        // +1 from start to avoid _counting itself
         // use const_iterators if available
         for ( auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd;
               ++jt ) {
@@ -1368,7 +1368,7 @@ namespace gum {
             std::vector<std::vector<GUM_SCALAR>>              msg_p;
             std::vector<GUM_SCALAR>                           distri( 2 );
 
-            // +1 from start to avoid counting itself
+            // +1 from start to avoid _counting itself
             // cbegin
             for ( auto jt = ++parents->begin(), theEnd = parents->end();
                   jt != theEnd;

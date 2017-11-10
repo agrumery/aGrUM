@@ -500,7 +500,7 @@ namespace gum_tests {
       } catch ( gum::Exception e ) {
         TS_ASSERT( false );
       }
-      TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize() + inf.burnIn(),
+      TS_ASSERT_EQUALS( agsl.getNbr() * inf.periodSize(),
                         inf.nbrIterations() );
       TS_ASSERT_DIFFERS( agsl.getMess(), std::string( "" ) );
     }

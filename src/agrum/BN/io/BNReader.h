@@ -31,7 +31,7 @@
 #define GUM_BN_READER_H
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <iostream>
 #include <string>
 

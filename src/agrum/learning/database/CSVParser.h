@@ -44,7 +44,7 @@
 #include <istream>
 #include <string>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/database/DBRow.h>
 
 namespace gum {

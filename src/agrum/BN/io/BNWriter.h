@@ -31,7 +31,7 @@
 #define GUM_BN_WRITER_H
 
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <iostream>
 #include <string>
 

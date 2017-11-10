@@ -26,7 +26,7 @@
 #ifndef GUM_GROUNDED_INFERENCE_H
 #define GUM_GROUNDED_INFERENCE_H
 
-#include <agrum/BN/inference/marginalTargetedInference.h>
+#include <agrum/BN/inference/tools/marginalTargetedInference.h>
 #include <agrum/PRM/inference/PRMInference.h>
 
 namespace gum {

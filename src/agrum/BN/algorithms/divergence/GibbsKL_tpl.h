@@ -21,83 +21,98 @@
  * @file
  * @brief KL divergence between BNs -- implementation using Gibbs sampling
  *
- * @author Pierre-Henri WUILLEMIN
+ * @author Paul ALAM & Pierre-Henri WUILLEMIN
  */
 
-#include <cmath>
 
 #include <agrum/BN/IBayesNet.h>
-#include <agrum/core/hashTable.h>
-
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
-#include <agrum/BN/samplers/GibbsSampler.h>
+#include <agrum/BN/inference/tools/gibbsOperator.h>
 #include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/core/hashTable.h>
+#include <cmath>
 
-#define KL_DEFAULT_MAXITER 10000000
-#define KL_DEFAULT_EPSILON 1e-10
-#define KL_DEFAULT_MIN_EPSILON_RATE 1e-10
-#define KL_DEFAULT_PERIOD_SIZE 500
-#define KL_DEFAULT_VERBOSITY false
-#define KL_DEFAULT_BURNIN 3000
+#define GIBBSKL_DEFAULT_MAXITER 10000000
+#define GIBBSKL_DEFAULT_EPSILON 1e-10
+#define GIBBSKL_DEFAULT_MIN_EPSILON_RATE 1e-10
+#define GIBBSKL_DEFAULT_PERIOD_SIZE 200
+#define GIBBSKL_DEFAULT_VERBOSITY false
+#define GIBBSKL_DEFAULT_BURNIN 2000
+#define GIBBSKL_DEFAULT_TIMEOUT 6000
+
+#define GIBBSKL_POURCENT_DRAWN_SAMPLE 10 // percent drawn
+#define GIBBSKL_DRAWN_AT_RANDOM false
 
 namespace gum {
 
-  template <typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL( const IBayesNet<GUM_SCALAR>& P,
-                                const IBayesNet<GUM_SCALAR>& Q )
-      : KL<GUM_SCALAR>( P, Q )
+
+  template < typename GUM_SCALAR >
+  GibbsKL< GUM_SCALAR >::GibbsKL(const IBayesNet< GUM_SCALAR >& P,
+                                 const IBayesNet< GUM_SCALAR >& Q)
+      : KL< GUM_SCALAR >(P, Q)
       , ApproximationScheme()
-      , samplers::GibbsSampler<GUM_SCALAR>( P ) {
-    GUM_CONSTRUCTOR( GibbsKL );
+      , GibbsOperator< GUM_SCALAR >(
+          P,
+          nullptr,
+          1 + (P.size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+          GIBBSKL_DRAWN_AT_RANDOM) {
+    GUM_CONSTRUCTOR(GibbsKL);
 
-    setEpsilon( KL_DEFAULT_EPSILON );
-    setMinEpsilonRate( KL_DEFAULT_MIN_EPSILON_RATE );
-    setMaxIter( KL_DEFAULT_MAXITER );
-    setVerbosity( KL_DEFAULT_VERBOSITY );
-    setBurnIn( KL_DEFAULT_BURNIN );
-    setPeriodSize( KL_DEFAULT_PERIOD_SIZE );
+    setEpsilon(GIBBSKL_DEFAULT_EPSILON);
+    setMinEpsilonRate(GIBBSKL_DEFAULT_MIN_EPSILON_RATE);
+    setMaxIter(GIBBSKL_DEFAULT_MAXITER);
+    setVerbosity(GIBBSKL_DEFAULT_VERBOSITY);
+    setBurnIn(GIBBSKL_DEFAULT_BURNIN);
+    setPeriodSize(GIBBSKL_DEFAULT_PERIOD_SIZE);
+    setMaxTime(GIBBSKL_DEFAULT_TIMEOUT);
   }
 
-  template <typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::GibbsKL( const KL<GUM_SCALAR>& kl )
-      : KL<GUM_SCALAR>( kl )
+  template < typename GUM_SCALAR >
+  GibbsKL< GUM_SCALAR >::GibbsKL(const KL< GUM_SCALAR >& kl)
+      : KL< GUM_SCALAR >(kl)
       , ApproximationScheme()
-      , samplers::GibbsSampler<GUM_SCALAR>( kl.p() ) {
-    GUM_CONSTRUCTOR( GibbsKL );
+      // Gibbs operator with 10% of nodes changes at random between each samples
+      , GibbsOperator< GUM_SCALAR >(
+          kl.p(),
+          nullptr,
+          1 + (kl.p().size() * GIBBSKL_POURCENT_DRAWN_SAMPLE / 100),
+          true) {
+    GUM_CONSTRUCTOR(GibbsKL);
 
-    setEpsilon( KL_DEFAULT_EPSILON );
-    setMinEpsilonRate( KL_DEFAULT_MIN_EPSILON_RATE );
-    setMaxIter( KL_DEFAULT_MAXITER );
-    setVerbosity( KL_DEFAULT_VERBOSITY );
-    setBurnIn( KL_DEFAULT_BURNIN );
-    setPeriodSize( KL_DEFAULT_PERIOD_SIZE );
+    setEpsilon(GIBBSKL_DEFAULT_EPSILON);
+    setMinEpsilonRate(GIBBSKL_DEFAULT_MIN_EPSILON_RATE);
+    setMaxIter(GIBBSKL_DEFAULT_MAXITER);
+    setVerbosity(GIBBSKL_DEFAULT_VERBOSITY);
+    setBurnIn(GIBBSKL_DEFAULT_BURNIN);
+    setPeriodSize(GIBBSKL_DEFAULT_PERIOD_SIZE);
+    setMaxTime(GIBBSKL_DEFAULT_TIMEOUT);
   }
 
-  template <typename GUM_SCALAR>
-  GibbsKL<GUM_SCALAR>::~GibbsKL() {
-    GUM_DESTRUCTOR( GibbsKL );
+  template < typename GUM_SCALAR >
+  GibbsKL< GUM_SCALAR >::~GibbsKL() {
+    GUM_DESTRUCTOR(GibbsKL);
   }
 
-  template <typename GUM_SCALAR>
-  void GibbsKL<GUM_SCALAR>::_computeKL() {
+  template < typename GUM_SCALAR >
+  void GibbsKL< GUM_SCALAR >::_computeKL() {
 
     gum::Instantiation Iq;
-    _q.completeInstantiation( Iq );
+    _q.completeInstantiation(Iq);
 
-    initParticle();
+
+    gum::Instantiation I = this->monteCarloSample();
     initApproximationScheme();
 
     // map between particle() variables and _q variables (using name of vars)
-    HashTable<const DiscreteVariable*, const DiscreteVariable*> map;
+    HashTable< const DiscreteVariable*, const DiscreteVariable* > map;
 
-    for ( Idx ite = 0; ite < particle().nbrDim(); ++ite ) {
-      map.insert( &particle().variable( ite ),
-                  &_q.variableFromName( particle().variable( ite ).name() ) );
+    for (Idx ite = 0; ite < I.nbrDim(); ++ite) {
+      map.insert(&I.variable(ite), &_q.variableFromName(I.variable(ite).name()));
     }
 
     // BURN IN
-    for ( Idx i = 0; i < burnIn(); i++ )
-      nextParticle();
+    for (Idx i = 0; i < burnIn(); i++)
+      I = this->nextSample(I);
 
     // SAMPLING
     _klPQ = _klQP = _hellinger = (GUM_SCALAR)0.0;
@@ -109,56 +124,54 @@ namespace gum {
     GUM_SCALAR pp, pq;
 
     do {
-      /// check_rate=false;
-      this->disableMinEpsilonRate();  // replace check_rate = false
-      nextParticle();
+
+      this->disableMinEpsilonRate();
+      I = this->nextSample(I);
       updateApproximationScheme();
 
-      //_p.synchroInstantiations( Ip,particle() );
-      Iq.setValsFrom( map, particle() );
+      //_p.synchroInstantiations( Ip,I);
+      Iq.setValsFrom(map, I);
 
-      pp = _p.jointProbability( particle() );
-      pq = _q.jointProbability( Iq );
+      pp = _p.jointProbability(I);
+      pq = _q.jointProbability(Iq);
 
-      if ( pp != (GUM_SCALAR)0.0 ) {
-        _hellinger += std::pow( std::sqrt( pp ) - std::sqrt( pq ), 2 ) / pp;
+      if (pp != (GUM_SCALAR)0.0) {
+        _hellinger += std::pow(std::sqrt(pp) - std::sqrt(pq), 2) / pp;
 
-        if ( pq != (GUM_SCALAR)0.0 ) {
-          _bhattacharya += std::sqrt( pq / pp );  // std::sqrt(pp*pq)/pp
+        if (pq != (GUM_SCALAR)0.0) {
+          _bhattacharya += std::sqrt(pq / pp);  // std::sqrt(pp*pq)/pp
           /// check_rate=true;
           this->enableMinEpsilonRate();  // replace check_rate=true;
           ratio = pq / pp;
-          delta = (GUM_SCALAR)log2( ratio );
+          delta = (GUM_SCALAR)log2(ratio);
           _klPQ += delta;
         } else {
           _errorPQ++;
         }
       }
 
-      if ( pq != (GUM_SCALAR)0.0 ) {
-        if ( pp != (GUM_SCALAR)0.0 ) {
+      if (pq != (GUM_SCALAR)0.0) {
+        if (pp != (GUM_SCALAR)0.0) {
           // if we are here, it is certain that delta and ratio have been
           // computed
           // further lines above. (for now #112-113)
-          _klQP += ( GUM_SCALAR )( -delta * ratio );
+          _klQP += (GUM_SCALAR)(-delta * ratio);
         } else {
           _errorQP++;
         }
       }
 
-      if ( this->isEnabledMinEpsilonRate() /* replace check_rate */ ) {
+      if (this->isEnabledMinEpsilonRate()) {  // replace check_rate
         // delta is used as a temporary variable
         delta = _klPQ / nbrIterations();
-        error = (GUM_SCALAR)std::abs( delta - oldPQ );
+        error = (GUM_SCALAR)std::abs(delta - oldPQ);
         oldPQ = delta;
       }
-    } while ( continueApproximationScheme( error /*,check_rate*/ ) );
+    } while (continueApproximationScheme(error));  //
 
-    _klPQ = -_klPQ / ( nbrIterations() );
-    _klQP = -_klQP / ( nbrIterations() );
-    _hellinger = std::sqrt( _hellinger / nbrIterations() );
-    _bhattacharya = -std::log( _bhattacharya );
+    _klPQ = -_klPQ / (nbrIterations());
+    _klQP = -_klQP / (nbrIterations());
+    _hellinger = std::sqrt(_hellinger / nbrIterations());
+    _bhattacharya = -std::log(_bhattacharya);
   }
-
-}  // namespace gum
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
+}

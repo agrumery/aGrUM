@@ -37,7 +37,7 @@
 #include <string>
 
 #include <agrum/ID/io/IDWriter.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 

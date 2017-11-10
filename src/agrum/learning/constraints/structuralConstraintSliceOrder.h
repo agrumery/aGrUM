@@ -36,7 +36,7 @@
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_SLICE_ORDER_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintSetStatic.h>
 

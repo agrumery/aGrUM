@@ -28,7 +28,7 @@
 
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/cliqueGraph.h>
 

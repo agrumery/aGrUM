@@ -173,6 +173,7 @@ def getPost(current, target):
         line = 'copy /Y "wrappers\pyAgrum\Release\_pyAgrum.pyd" "wrappers\pyAgrum\." & ' + cfg.python + " ..\\..\\wrappers\\pyAgrum\\testunits\\"+gumTest
       else:
         line = cfg.python + " ../../wrappers/pyAgrum/testunits/"+gumTest
+      line+=" "+current['mode']    
       return line, True
   return "", False
 

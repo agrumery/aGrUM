@@ -26,7 +26,7 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/multidim/partialInstantiationRegister4MultiDim.h>
 
 namespace gum {

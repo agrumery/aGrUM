@@ -25,7 +25,7 @@
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 
 /// include the inlined functions if necessary
@@ -78,7 +78,7 @@ namespace gum {
     RowGeneratorIdentity* RowGeneratorIdentity::copyFactory () const {
       return new RowGeneratorIdentity ( *this );
     }
-    
+
 
   } /* namespace learning */
 

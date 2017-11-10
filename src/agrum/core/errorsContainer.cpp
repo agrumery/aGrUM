@@ -22,7 +22,7 @@
  *
  * @author Pierre-Henri WUILLEMIN
  */
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/errorsContainer.h>
 

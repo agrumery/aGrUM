@@ -25,7 +25,7 @@
 #include <iostream>
 #include <sstream>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/graphs/graphElements.h>
 

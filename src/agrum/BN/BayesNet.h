@@ -30,7 +30,7 @@
 
 #include <utility>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/hashTable.h>
 
@@ -79,7 +79,7 @@ namespace gum {
     public:
     /**
      * Create a bn with a dotlike syntax : 'a->b->c;b->d;'. The domain size maybe
-     * specified using 'a[10]'. Note that if the dotlike string contains such a
+     * specified using 'a[10]' or using 'a{yes|maybe|no}'. Note that if the dotlike string contains such a
      * specification  for an already defined variable, the first specification will
      * be used.
      *

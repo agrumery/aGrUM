@@ -27,7 +27,7 @@
  * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <iostream>
 #include <vector>

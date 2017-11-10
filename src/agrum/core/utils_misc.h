@@ -44,7 +44,7 @@
 #define GUM_CAST static_cast
 #endif
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/utils_dir.h>
 #include <agrum/core/utils_random.h>
@@ -56,25 +56,34 @@ namespace std {
   /// @{
 
   /**
-   * @brief Used for hashtables (among other aGrUM classes).
+   * @brief 'std::cout<<' operator for pairs.
    * @tparam T1 The pair's first's type.
    * @tparam T2 The pair's second's type.
    * @param stream The stream to print to.
    * @param val The pair to print to stream.
    * @return Returns stream.
    */
-  template <typename T1, typename T2>
-  ostream& operator<<( ostream& stream, const pair<T1, T2>& val );
+  template < typename T1, typename T2 >
+  ostream& operator<<(ostream& stream, const pair< T1, T2 >& val);
 
   /**
-   * @brief Used for hashtables (among other aGrUM classes).
+   * @brief 'std::cout<<' operator for vectors.
    * @tparam T The vector's elements type.
    * @param stream The stream to print to.
    * @param val The std::vector to print to stream.
    * @return Returns stream.
    */
-  template <typename T>
-  ostream& operator<<( ostream& stream, const vector<T>& val );
+  template < typename T >
+  ostream& operator<<(ostream& stream, const vector< T >& val);
+
+  /**
+   * @brief check if a vector consists in unique values (no duplicate).
+   * @tparam T The vector's elements type.
+   * @param x the vector
+   * @return Returns true if the vector has no duplicate.
+   */
+  template < typename T >
+  bool hasUniqueElts(std::vector< T > const& x);
 
   /// @}
 
@@ -98,17 +107,17 @@ namespace gum {
    * @param T1 The type to test for.
    * @param T2 The expected type.
    */
-  template <typename T1, typename T2>
+  template < typename T1, typename T2 >
   using forbidden_type =
-      typename std::enable_if<!std::is_same<T1, T2>::value, int>::type;
+    typename std::enable_if< !std::is_same< T1, T2 >::value, int >::type;
 
   /**
    * @brief Implements a stream with the same behaviour as /dev/null.
    */
   struct NullStream : std::ostream {
     NullStream()
-        : std::ios( 0 )
-        , std::ostream( 0 ) {}
+        : std::ios(0)
+        , std::ostream(0) {}
   };
 
   /**
@@ -118,26 +127,26 @@ namespace gum {
    * @param size Number of bytes to copy.
    * @return Returns true if OK.
    */
-  bool Memcmp( const void* const _in, const void* const _out, unsigned long size );
+  bool Memcmp(const void* const _in, const void* const _out, unsigned long size);
 
   /**
    * @brief Used for debug purpose.
    */
-  void __atexit( void );
+  void __atexit(void);
 
   /**
    * @brief Indicate whether two elements are (almost) different or not.
    * @tparam T The type of the elements to compare.
    */
-  template <typename T>
+  template < typename T >
   struct AlmostDifferent {
-    bool operator()( const T& t1, const T& t2 ) {
-      if ( t1 == t2 )
+    bool operator()(const T& t1, const T& t2) {
+      if (t1 == t2)
         return false;
-      else if ( t1 == 0 )
-        return ( std::abs( t2 ) > 1e-5 );
+      else if (t1 == 0)
+        return (std::abs(t2) > 1e-5);
       else
-        return ( std::abs( t2 - t1 ) / t1 > 1e-5 );
+        return (std::abs(t2 - t1) / t1 > 1e-5);
     }
   };
 
@@ -145,9 +154,9 @@ namespace gum {
    * @brief Indicate whether two elements are (almost) different or not.
    * @tparam T The type of the elements to compare.
    */
-  template <typename T>
-  struct AlmostDifferent<T*> {
-    bool operator()( const T* t1, const T* t2 ) { return ( t1 != t2 ); }
+  template < typename T >
+  struct AlmostDifferent< T* > {
+    bool operator()(const T* t1, const T* t2) { return (t1 != t2); }
   };
 
   /// @}

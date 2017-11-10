@@ -22,7 +22,7 @@
  * @brief Implementation of the Potential class.
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/multidim/potential.h>
 
 template class gum::Potential<float>;

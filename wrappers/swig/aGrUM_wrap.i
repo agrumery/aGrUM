@@ -80,13 +80,18 @@
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/approximations/approximationScheme.h>
 
-#include <agrum/BN/inference/BayesNetInference.h>
+#include <agrum/BN/inference/tools/BayesNetInference.h>
 
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/BN/inference/GibbsInference.h>
+#include <agrum/BN/inference/GibbsSampling.h>
+#include <agrum/BN/inference/importanceSampling.h>
+#include <agrum/BN/inference/weightedSampling.h>
+#include <agrum/BN/inference/MonteCarloSampling.h>
+#include <agrum/BN/inference/loopySamplingInference.h>
+
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 #include <agrum/BN/algorithms/divergence/KL.h>
@@ -141,7 +146,7 @@ namespace std {
 }
 
 
-%define ADD_APPROXIMATIONSCHEME_API(parent,classname)
+%define ADD_APPROXIMATIONSCHEME_API(parent,classname...)
 %extend classname {
   using parent::setVerbosity;
   using parent::setEpsilon;
@@ -149,7 +154,6 @@ namespace std {
   using parent::setMaxIter;
   using parent::setMaxTime;
   using parent::setPeriodSize;
-  using parent::setBurnIn;
 
   using parent::verbosity;
   using parent::epsilon;
@@ -157,7 +161,6 @@ namespace std {
   using parent::maxIter;
   using parent::maxTime;
   using parent::periodSize;
-  using parent::burnIn;
 
   using parent::nbrIterations;
   using parent::currentTime;
@@ -170,9 +173,18 @@ namespace std {
   }
 }
 %enddef
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsInference<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::ImportanceSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::WeightedSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::MonteCarloSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::ImportanceSampling>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::WeightedSampling>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::GibbsSampling>)
+
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
+
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
+
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
 ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
@@ -296,13 +308,18 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %import <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 %include <agrum/core/approximations/approximationScheme.h>
 
-%include <agrum/BN/inference/relevantPotentialsFinderType.h>
-%include <agrum/BN/inference/BayesNetInference.h>
+%import <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
+%include <agrum/BN/inference/tools/BayesNetInference.h>
 %include <agrum/BN/inference/lazyPropagation.h>
 %include <agrum/BN/inference/ShaferShenoyInference.h>
 %include <agrum/BN/inference/variableElimination.h>
 
-%include <agrum/BN/inference/GibbsInference.h>
+%include <agrum/BN/inference/GibbsSampling.h>
+%include <agrum/BN/inference/importanceSampling.h>
+%include <agrum/BN/inference/weightedSampling.h>
+%include <agrum/BN/inference/MonteCarloSampling.h>
+%include <agrum/BN/inference/loopySamplingInference.h>
+
 %include <agrum/BN/inference/loopyBeliefPropagation.h>
 
 %import <agrum/BN/algorithms/divergence/KL.h>
@@ -351,7 +368,14 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( ShaferShenoyInference_double ) gum::ShaferShenoyInference<double>;
 %template ( VariableElimination_double ) gum::VariableElimination<double>;
 
-%template ( GibbsInference_double ) gum::GibbsInference<double>;
+%template ( GibbsSampling_double ) gum::GibbsSampling<double>;
+%template ( ImportanceSampling_double ) gum::ImportanceSampling<double>;
+%template ( WeightedSampling_double ) gum::WeightedSampling<double>;
+%template ( MonteCarloSampling_double ) gum::MonteCarloSampling<double>;
+%template ( LoopyImportanceSampling_double ) gum::LoopySamplingInference<double,gum::ImportanceSampling>;
+%template ( LoopyWeightedSampling_double ) gum::LoopySamplingInference<double,gum::WeightedSampling>;
+%template ( LoopyGibbsSampling_double ) gum::LoopySamplingInference<double,gum::GibbsSampling>;
+
 %template ( LoopyBeliefPropagation_double ) gum::LoopyBeliefPropagation<double>;
 
 %template ( BruteForceKL_double ) gum::BruteForceKL<double>;

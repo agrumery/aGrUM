@@ -33,7 +33,7 @@
 
 #include <string>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/learning/scores_and_tests/score.h>
 #include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
 

@@ -21,7 +21,7 @@
 #define GUM_EDGE_GRAPH_PART_H
 
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <algorithm>
 #include <utility>
 

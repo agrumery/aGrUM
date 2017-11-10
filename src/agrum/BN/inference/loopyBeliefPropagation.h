@@ -25,8 +25,7 @@
 #ifndef GUM_LOOPYBELIEFPROPAGATION_H
 #define GUM_LOOPYBELIEFPROPAGATION_H
 
-#include <agrum/BN/inference/marginalTargetedInference.h>
-#include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/BN/inference/tools/approximateInference.h>
 
 namespace gum {
   /**
@@ -36,14 +35,13 @@ namespace gum {
 * @ingroup bn_inference
 *
 */
-  template <typename GUM_SCALAR>
-  class LoopyBeliefPropagation : public ApproximationScheme,
-                                 public MarginalTargetedInference<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class LoopyBeliefPropagation : public ApproximateInference< GUM_SCALAR > {
     public:
     /**
      * Default constructor
      */
-    LoopyBeliefPropagation( const IBayesNet<GUM_SCALAR>* BN );
+    LoopyBeliefPropagation(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
      * Destructor.
@@ -51,23 +49,25 @@ namespace gum {
     virtual ~LoopyBeliefPropagation();
 
     protected:
-    virtual void _onEvidenceAdded( const NodeId id, bool isHardEvidence ){};
+    virtual void _onStateChanged(){};
 
-    virtual void _onEvidenceErased( const NodeId id, bool isHardEvidence ){};
+    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence){};
 
-    virtual void _onAllEvidenceErased( bool contains_hard_evidence ){};
+    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence){};
 
-    virtual void _onEvidenceChanged( const NodeId id, bool hasChangedSoftHard ){};
+    virtual void _onAllEvidenceErased(bool contains_hard_evidence){};
 
-    virtual void _onBayesNetChanged( const IBayesNet<GUM_SCALAR>* bn ){};
+    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard){};
+
+    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn){};
 
     virtual void _updateOutdatedBNStructure();
 
     virtual void _updateOutdatedBNPotentials(){};
 
-    virtual void _onMarginalTargetAdded( const NodeId id ){};
+    virtual void _onMarginalTargetAdded(const NodeId id){};
 
-    virtual void _onMarginalTargetErased( const NodeId id ){};
+    virtual void _onMarginalTargetErased(const NodeId id){};
 
     virtual void _onAllMarginalTargetsAdded(){};
 
@@ -75,25 +75,25 @@ namespace gum {
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential<GUM_SCALAR>& _posterior( const NodeId id );
+    virtual const Potential< GUM_SCALAR >& _posterior(const NodeId id);
 
     virtual void _makeInference();
 
     // will be used in both directions :
     // for x->y, (x,y) and (y,x) will be in __messages
-    ArcProperty<Potential<GUM_SCALAR>>  __messages;
-    NodeProperty<Potential<GUM_SCALAR>> __posteriors;
+    ArcProperty< Potential< GUM_SCALAR > >  __messages;
+    NodeProperty< Potential< GUM_SCALAR > > __posteriors;
 
     void __initStats();
 
-    void                  __init_messages();
-    Potential<GUM_SCALAR> __computeProdPi( NodeId X );
-    Potential<GUM_SCALAR> __computeProdPi( NodeId X, NodeId except );
-    Potential<GUM_SCALAR> __computeProdLambda( NodeId node );
-    Potential<GUM_SCALAR> __computeProdLambda( NodeId X, NodeId except );
+    void                    __init_messages();
+    Potential< GUM_SCALAR > __computeProdPi(NodeId X);
+    Potential< GUM_SCALAR > __computeProdPi(NodeId X, NodeId except);
+    Potential< GUM_SCALAR > __computeProdLambda(NodeId node);
+    Potential< GUM_SCALAR > __computeProdLambda(NodeId X, NodeId except);
 
     // return the max differential KL for this node
-    GUM_SCALAR __updateNodeMessage( NodeId X );
+    GUM_SCALAR __updateNodeMessage(NodeId X);
   };
 
   // extern template class LoopyBeliefPropagation<float>;

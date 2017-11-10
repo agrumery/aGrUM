@@ -23,7 +23,7 @@
 * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
 */
 #include <agrum/CN/inferenceEngine.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
   namespace credal {

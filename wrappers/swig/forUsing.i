@@ -181,7 +181,7 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
 
 #####################################
 #####################################
-%define ADD_INFERENCE_API(classname)
+%define ADD_INFERENCE_API(classname...)
 %extend classname  {
   void makeInference(void) {
     self->gum::BayesNetInference<double>::makeInference();
@@ -344,8 +344,31 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
 ADD_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_INFERENCE_API(gum::ShaferShenoyInference<double>)
 ADD_INFERENCE_API(gum::VariableElimination<double>)
-ADD_INFERENCE_API(gum::GibbsInference<double>)
+ADD_INFERENCE_API(gum::GibbsSampling<double>)
+ADD_INFERENCE_API(gum::MonteCarloSampling<double>)
+ADD_INFERENCE_API(gum::WeightedSampling<double>)
+ADD_INFERENCE_API(gum::ImportanceSampling<double>)
 ADD_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
+ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::ImportanceSampling>)
+ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
+ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::WeightedSampling>)
+
+
+%define ADD_SAMPLING_INFERENCE_API(classname...)
+%extend classname  {
+    const gum::Potential<double>& currentPosterior(const NodeId id)
+        {return self->gum::SamplingInference<double>::currentPosterior(id);};
+    const gum::Potential<double>& currentPosterior(const std::string& name)
+        {return self->gum::SamplingInference<double>::currentPosterior(name);};
+}
+%enddef
+ADD_SAMPLING_INFERENCE_API(gum::GibbsSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::MonteCarloSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::WeightedSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::ImportanceSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::ImportanceSampling>)
+ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
+ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::WeightedSampling>)
 
 %define ADD_JOINT_INFERENCE_API(classname)
 %extend classname {
@@ -386,3 +409,23 @@ ADD_INFERENCE_API(gum::LoopyBeliefPropagation<double>)
 %enddef
 ADD_JOINT_INFERENCE_API(gum::LazyPropagation<double>)
 ADD_JOINT_INFERENCE_API(gum::ShaferShenoyInference<double>)
+
+
+%define ADD_GIBBS_OPERATOR_API(classname...)
+%extend classname {
+    /** Getters and setters*/
+    gum::Size nbrDrawnVar() const { return self->GibbsOperator<double>::nbrDrawnVar(); }
+    void setNbrDrawnVar(Size _nbr) { self->GibbsOperator<double>::setNbrDrawnVar(_nbr); }
+    bool isDrawnAtRandom() const { return self->GibbsOperator<double>::isDrawnAtRandom(); }
+    void setDrawnAtRandom(bool _atRandom) { self->GibbsOperator<double>::setDrawnAtRandom(_atRandom); }
+}
+%enddef
+ADD_GIBBS_OPERATOR_API(gum::GibbsSampling<double>)
+ADD_GIBBS_OPERATOR_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
+ADD_GIBBS_OPERATOR_API(gum::GibbsKL<double>)
+
+%extend gum::LoopySamplingInference<double,gum::GibbsSampling> {
+  gum::Size burnIn() const { return self->gum::GibbsSampling<double>::burnIn();}
+  void setBurnIn(gum::Size b) { self->gum::GibbsSampling<double>::setBurnIn(b);}
+}
+

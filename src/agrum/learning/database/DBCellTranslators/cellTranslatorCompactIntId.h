@@ -33,7 +33,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/set.h>
 #include <agrum/learning/database/DBCellTranslator.h>
 

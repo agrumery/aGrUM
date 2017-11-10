@@ -75,7 +75,7 @@ between 0 and 100
 #include <string>
 
 #include <agrum/BN/io/BNReader.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/signal/signaler.h>
 #include <agrum/core/signal/signaler2.h>
 #include <agrum/external/tinyxml/ticpp/ticpp.h>

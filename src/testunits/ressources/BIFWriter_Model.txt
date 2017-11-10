@@ -1,6 +1,5 @@
-
 network "unnamedBN" {
-   property software aGrUM;
+// written by aGrUM 0.12.0.9
 }
 
 variable 1 {

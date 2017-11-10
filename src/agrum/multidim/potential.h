@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/set.h>
 #include <agrum/multidim/multiDimDecorator.h>
 #include <agrum/multidim/multiDimImplementation.h>
@@ -287,6 +287,11 @@ namespace gum {
     * @brief create a new potential added with v from *this
     */
     const Potential<GUM_SCALAR>& translate( GUM_SCALAR v ) const;
+
+    /**
+     * @brief get a value at random from a 1-D distribution
+     */
+    Idx draw() const;
 
     ///@}
 

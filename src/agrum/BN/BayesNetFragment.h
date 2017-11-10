@@ -27,7 +27,7 @@
 #ifndef GUM_BAYES_NET_FRAGMENT_H
 #define GUM_BAYES_NET_FRAGMENT_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/graphs/parts/listeners/diGraphListener.h>

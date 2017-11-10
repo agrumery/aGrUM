@@ -27,7 +27,7 @@
 #define GUM_TIMER_H
 #include <chrono>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 
 namespace gum {

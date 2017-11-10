@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/exceptions.h>
 #include <agrum/learning/aprioris/aprioriTypes.h>
 

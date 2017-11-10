@@ -35,7 +35,7 @@
 #include <vector>
 
 #include <agrum/BN/BayesNet.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/graphs/DAG.h>
 

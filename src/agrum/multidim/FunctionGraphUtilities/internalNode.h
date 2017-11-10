@@ -28,7 +28,7 @@
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/FunctionGraphUtilities/link.h>

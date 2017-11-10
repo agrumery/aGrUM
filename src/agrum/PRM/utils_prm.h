@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>

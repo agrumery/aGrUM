@@ -29,7 +29,7 @@
 #include <random>
 #include <vector>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/core/utils_random.h>
 
 namespace gum {

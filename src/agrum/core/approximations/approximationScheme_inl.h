@@ -30,6 +30,7 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
+#include <agrum/agrum.h>
 // To help IDE parser
 #include <agrum/core/approximations/approximationScheme.h>
 
@@ -116,8 +117,8 @@ namespace gum {
     return _enabled_max_iter;
   }
 
-  // stopping criterion on timeout If the criterion was disabled it will be
-  // enabled
+  // stopping criterion on timeout (in seconds)
+  // If the criterion was disabled it will be enabled
   INLINE void ApproximationScheme::setMaxTime( double timeout ) {
     if ( timeout <= 0. ) {
       GUM_ERROR( OutOfLowerBound, "timeout should be >0." );
@@ -158,13 +159,6 @@ namespace gum {
   INLINE Size ApproximationScheme::periodSize( void ) const {
     return _period_size;
   }
-
-  // size of burn in on number of iteration
-  INLINE void ApproximationScheme::setBurnIn( Size b ) {
-    _burn_in = b;
-  }
-
-  INLINE Size ApproximationScheme::burnIn( void ) const { return _burn_in; }
 
   // verbosity
   INLINE void ApproximationScheme::setVerbosity( bool v ) { _verbosity = v; }
@@ -315,7 +309,7 @@ namespace gum {
     if ( stateApproximationScheme() == ApproximationSchemeSTATE::Continue ) {
       if ( onProgress.hasListener() ) {
         GUM_EMIT3( onProgress,
-                   ( _current_step * 100 ) / _max_iter,
+                   _current_step,
                    _current_epsilon,
                    timer_step );
       }

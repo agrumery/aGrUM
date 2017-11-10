@@ -26,7 +26,7 @@
 #ifndef GUM_LEARNING_STRUCTURAL_CONSTRAINT_UNDIGRAPH_H
 #define GUM_LEARNING_STRUCTURAL_CONSTRAINT_UNDIGRAPH_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 #include <agrum/graphs/undiGraph.h>
 #include <agrum/learning/constraints/structuralConstraint.h>
 #include <agrum/learning/structureUtils/graphChange.h>

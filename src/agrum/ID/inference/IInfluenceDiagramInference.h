@@ -29,7 +29,7 @@
 #define GUM_IINFLUENCE_DIAGRAM_INFERENCE_H
 
 #include <agrum/ID/influenceDiagram.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
   /**

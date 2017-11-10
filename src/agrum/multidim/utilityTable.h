@@ -27,7 +27,7 @@
 #ifndef GUM_UTILITY_TABLE_H
 #define GUM_UTILITY_TABLE_H
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimDecorator.h>

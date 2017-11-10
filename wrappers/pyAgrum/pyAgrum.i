@@ -81,7 +81,14 @@ LazyPropagation = LazyPropagation_double
 ShaferShenoyInference = ShaferShenoyInference_double
 VariableElimination = VariableElimination_double
 
-GibbsInference = GibbsInference_double
+GibbsSampling = GibbsSampling_double
+ImportanceSampling=ImportanceSampling_double
+WeightedSampling=WeightedSampling_double
+MonteCarloSampling=MonteCarloSampling_double
+LoopyImportanceSampling=LoopyImportanceSampling_double
+LoopyGibbsSampling=LoopyGibbsSampling_double
+LoopyWeightedSampling=LoopyWeightedSampling_double
+
 LoopyBeliefPropagation = LoopyBeliefPropagation_double
 
 BruteForceKL = BruteForceKL_double

@@ -28,7 +28,7 @@
 #include <sstream>
 #include <string>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 

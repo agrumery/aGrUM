@@ -31,7 +31,7 @@
 #include <string>
 #include <utility>
 
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/hashTable.h>
 

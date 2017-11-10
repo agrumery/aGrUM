@@ -28,7 +28,7 @@
 #include <cstdlib>
 
 #include <agrum/BN/generator/ICPTGenerator.h>
-#include <agrum/config.h>
+#include <agrum/agrum.h>
 
 namespace gum {
 
