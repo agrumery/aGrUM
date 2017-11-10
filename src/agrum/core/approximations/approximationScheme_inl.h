@@ -309,7 +309,7 @@ namespace gum {
     if ( stateApproximationScheme() == ApproximationSchemeSTATE::Continue ) {
       if ( onProgress.hasListener() ) {
         GUM_EMIT3( onProgress,
-                   ( _current_step * 100 ) / _max_iter,
+                   _current_step,
                    _current_epsilon,
                    timer_step );
       }

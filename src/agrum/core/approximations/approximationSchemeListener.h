@@ -67,7 +67,7 @@ namespace gum {
      * @param time The time.
      */
     virtual void whenProgress( const void*  src,
-                               const Size   pourcent,
+                               const Size   step,
                                const double error,
                                const double time ) = 0;
 

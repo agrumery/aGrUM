@@ -7751,6 +7751,14 @@ class GibbsSampling_double(_object):
         return _pyAgrum.GibbsSampling_double_evidenceImpact(self, *args)
 
 
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.GibbsSampling_double_currentPosterior(self, *args)
+
+
     def nbrDrawnVar(self) -> "gum::Size":
         """nbrDrawnVar(self) -> gum::Size"""
         return _pyAgrum.GibbsSampling_double_nbrDrawnVar(self)
@@ -8074,6 +8082,14 @@ class ImportanceSampling_double(_object):
         """
         return _pyAgrum.ImportanceSampling_double_evidenceImpact(self, *args)
 
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.ImportanceSampling_double_currentPosterior(self, *args)
+
 ImportanceSampling_double_swigregister = _pyAgrum.ImportanceSampling_double_swigregister
 ImportanceSampling_double_swigregister(ImportanceSampling_double)
 
@@ -8378,6 +8394,14 @@ class WeightedSampling_double(_object):
         """
         return _pyAgrum.WeightedSampling_double_evidenceImpact(self, *args)
 
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.WeightedSampling_double_currentPosterior(self, *args)
+
 WeightedSampling_double_swigregister = _pyAgrum.WeightedSampling_double_swigregister
 WeightedSampling_double_swigregister(WeightedSampling_double)
 
@@ -8681,6 +8705,14 @@ class MonteCarloSampling_double(_object):
         evidenceImpact(self, target, evs) -> Potential_double
         """
         return _pyAgrum.MonteCarloSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.MonteCarloSampling_double_currentPosterior(self, *args)
 
 MonteCarloSampling_double_swigregister = _pyAgrum.MonteCarloSampling_double_swigregister
 MonteCarloSampling_double_swigregister(MonteCarloSampling_double)
@@ -8996,6 +9028,14 @@ class LoopyImportanceSampling_double(_object):
         """
         return _pyAgrum.LoopyImportanceSampling_double_evidenceImpact(self, *args)
 
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.LoopyImportanceSampling_double_currentPosterior(self, *args)
+
 LoopyImportanceSampling_double_swigregister = _pyAgrum.LoopyImportanceSampling_double_swigregister
 LoopyImportanceSampling_double_swigregister(LoopyImportanceSampling_double)
 
@@ -9310,6 +9350,14 @@ class LoopyWeightedSampling_double(_object):
         """
         return _pyAgrum.LoopyWeightedSampling_double_evidenceImpact(self, *args)
 
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.LoopyWeightedSampling_double_currentPosterior(self, *args)
+
 LoopyWeightedSampling_double_swigregister = _pyAgrum.LoopyWeightedSampling_double_swigregister
 LoopyWeightedSampling_double_swigregister(LoopyWeightedSampling_double)
 
@@ -9623,6 +9671,14 @@ class LoopyGibbsSampling_double(_object):
         evidenceImpact(self, target, evs) -> Potential_double
         """
         return _pyAgrum.LoopyGibbsSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args) -> "gum::Potential< double > const &":
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+        """
+        return _pyAgrum.LoopyGibbsSampling_double_currentPosterior(self, *args)
 
 
     def nbrDrawnVar(self) -> "gum::Size":

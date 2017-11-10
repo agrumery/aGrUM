@@ -95,6 +95,18 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
+  SamplingInference< GUM_SCALAR >::currentPosterior(const NodeId id) {
+    return __estimator.posterior(this->BN().variable(id));
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR >&
+  SamplingInference< GUM_SCALAR >::currentPosterior(const std::string& name) {
+    return currentPosterior(this->BN().idFromName(name));
+  }
+
+  template < typename GUM_SCALAR >
+  const Potential< GUM_SCALAR >&
   SamplingInference< GUM_SCALAR >::_posterior(const NodeId id) {
     return __estimator.posterior(this->BN().variable(id));
   }

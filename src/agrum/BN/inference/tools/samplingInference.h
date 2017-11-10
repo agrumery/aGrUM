@@ -71,6 +71,38 @@ namespace gum {
 
     /// destructor
     virtual ~SamplingInference();
+
+    /// Computes and returns the actual estimation of the posterior of a node.
+    /**
+     * @returns a const ref to the posterior probability of the node.
+     * @param id the node for which we need a posterior probability
+     *
+     * @warning for efficiency reasons, the potential is returned by reference.
+     * In order to ensure that the potential may still exist even if the Inference
+     * object is destroyed, the user has to copy it explicitly.
+     *
+     * @throw UndefinedElement if node is not in the set of targets.
+     * @throw NotFound if node is not in the BN.
+     */
+    const Potential< GUM_SCALAR >& currentPosterior(const NodeId id);
+
+    /// Computes and returns the actual estimation of the posterior of a node by
+    /// its name.
+    /**
+     * @returns a const ref to the posterior probability of the node referred by
+     * name.
+     * @param name the name of the node for which we need a posterior probability
+     *
+     * @warning for efficiency reasons, the potential is returned by reference.
+     * In order to ensure that the potential may still exist even if the Inference
+     * object is destroyed, the user has to copy it explicitly.
+     *
+     * @throw UndefinedElement if node corresponding to name is not in the set of
+     * targets.
+     * @throw NotFound if node corresponding to name is not in the BN.
+     */
+    const Potential< GUM_SCALAR >& currentPosterior(const std::string& name);
+    /// @}
     /// @}
 
 

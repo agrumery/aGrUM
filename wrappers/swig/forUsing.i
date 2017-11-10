@@ -353,6 +353,23 @@ ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::ImportanceSampling>)
 ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
 ADD_INFERENCE_API(gum::LoopySamplingInference<double,gum::WeightedSampling>)
 
+
+%define ADD_SAMPLING_INFERENCE_API(classname...)
+%extend classname  {
+    const gum::Potential<double>& currentPosterior(const NodeId id)
+        {return self->gum::SamplingInference<double>::currentPosterior(id);};
+    const gum::Potential<double>& currentPosterior(const std::string& name)
+        {return self->gum::SamplingInference<double>::currentPosterior(name);};
+}
+%enddef
+ADD_SAMPLING_INFERENCE_API(gum::GibbsSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::MonteCarloSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::WeightedSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::ImportanceSampling<double>)
+ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::ImportanceSampling>)
+ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::GibbsSampling>)
+ADD_SAMPLING_INFERENCE_API(gum::LoopySamplingInference<double,gum::WeightedSampling>)
+
 %define ADD_JOINT_INFERENCE_API(classname)
 %extend classname {
   const Potential<double> posterior( const NodeId var ) {
