@@ -284,7 +284,7 @@ Parameters
 ----------
 i : pyAgrum.Instantiation
   The sequence of variables with which to reorder this Instantiation.
-v : ?
+v : list
     The new order of variables for this Instantiation. 
 "
 

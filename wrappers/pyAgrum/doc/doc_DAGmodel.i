@@ -45,27 +45,6 @@ bool
     True if all the named node are the same and all the named arcs are the same 
 "
 
-%feature("docstring") gum::DAGmodel::property
-"
-Warnings
---------
-N'est plus référencée
-"
-
-%feature("docstring") gum::DAGmodel::propertyWithDefault
-"
-Warnings
---------
-N'est plus référencée
-"
-
-%feature("docstring") gum::DAGmodel::setProperty
-"
-Warnings
---------
-N'est plus référencée
-"
-
 %feature("docstring") gum::DAGmodel::size
 "
 Returns
@@ -102,4 +81,25 @@ Returns
 -------
 pyAgrum.UndiGraph
 	The moral graph
+"
+
+%feature("docstring") gum::DAGmodel::property
+"
+Warnings
+--------
+Unreferenced function
+"
+
+%feature("docstring") gum::DAGmodel::propertyWithDefault
+"
+Warnings
+--------
+Unreferenced function
+"
+
+%feature("docstring") gum::DAGmodel::setProperty
+"
+Warnings
+--------
+Unreferenced function
 "

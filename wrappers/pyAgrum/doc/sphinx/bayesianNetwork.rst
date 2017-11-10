@@ -7,8 +7,10 @@ Model
 -----
 
 .. autoclass:: pyAgrum.BayesNet
+			:exclude-members: setProperty, property, propertyWithDefault
 
 .. autoclass:: pyAgrum.pyAgrum.BayesNet_double
+			:exclude-members: setProperty, property, propertyWithDefault
 
 Inference
 ---------

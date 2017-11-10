@@ -504,8 +504,8 @@ def process_docstring(app, what, name, obj, options, lines):
 
 def process_signature(app, what, name, obj, options, signature, return_annotation):
   signature = substitution4swigautodoc(signature)
-  return_annotation = substitution4swigautodoc(return_annotation)
-  #return_annotation = None
+  #return_annotation = substitution4swigautodoc(return_annotation)
+  return_annotation = None
   return signature, return_annotation
 
 
@@ -515,7 +515,9 @@ def skip(app, what, name, obj, skip, options):
                 '__swig_destroy__', '_s',             # swig members
                 'clone',  # special gum members
                 )
+
   exclude = name in exclusions
+
   if exclude:
     return True
   if skip:
@@ -526,7 +528,7 @@ autodoc_default_flags = ['members',
                          #'private-members', 'special-members',
                          'inherited-members',
                          #'undoc-members',
-                         #'show-inheritance'
+                         #'show-inheritance',
                          ]
 def setup(app):
   app.connect('autodoc-process-docstring', process_docstring)

@@ -96,13 +96,6 @@ double
   the entropy of the potential
 "
 
-%feature("docstring") gum::Potential::populate
-"
-Returns
--------
-à Faire
-"
-
 %feature("docstring") gum::Potential::extract
 "
 create a new Potential extracted from self given a partial instantiation.
@@ -171,6 +164,13 @@ pyAgrum.Potential
 Warnings
 --------
     SizeError Raised if v size's does not matches the domain size. 
+"
+
+%feature("docstring") gum::Potential::populate
+"
+Warnings
+--------
+See fillWith to fill the potential.
 "
 
 %feature("docstring") gum::Potential::get

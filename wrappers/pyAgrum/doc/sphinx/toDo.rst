@@ -1,5 +1,5 @@
-Problèmes de type dans les signatures
--------------------------------------
+Problèmes de type dans les signatures générées
+----------------------------------------------
 
 gum::Idx -> int
 gum::Size -> int
@@ -10,16 +10,10 @@ Problèmes d'exceptions
 
 RangeVar.setMinVal(new_minval) (resp. setMaxVal(new_maxval)) ne renvoie pas d'erreur si new_minval>maxval (resp. new_maxval<minval)
 
-Problèmes avec doc de :
------------------------
-addLabel
-addTick
-%ignore gum::Potential::populate
-%ignore gum::DAGmodel::property;
-%ignore gum::DAGmodel::propertyWithDefault;
-%ignore gum::DAGmodel::setProperty;
+Potential.add devrait envoyer une erreur lorsqu'on y passe une DiscretizedVariable sans tick.
 
-Utiliser un ignore, en plus de ne pas documenter la fonction, fait qu'elle n'est pas implémentée, ce qui pose problème dans les jeux de test
+Nouvelles fonctions
+-------------------
 
-FillWith = populate ? Si oui il faut changer les tests.
-Supprimer property et setProperty ?
+- gum::LabelizedVariable::addTicks
+- gum::DiscretizedVariable::addLabels
