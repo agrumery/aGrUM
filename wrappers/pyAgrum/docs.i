@@ -18,7 +18,9 @@
 %include "doc_BayesNet.i"
 %include "doc_DAGmodel.i"
 %include "doc_IBayesNet.i"
-%include "doc_LazyPropagation.i"
+
+%include "doc_GenericInference.i"
+
+%include "doc_IApproximationSchemeConfiguration.i"
 
 %include "doc_BNLearner.i"
-%include "doc_IApproximationSchemeConfiguration.i"

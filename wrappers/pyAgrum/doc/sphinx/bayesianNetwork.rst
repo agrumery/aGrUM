@@ -15,63 +15,120 @@ Model
 Exact Inference
 ---------------
 
+Lazy Propagation
+~~~~~~~~~~~~~~~~
+
 .. autoclass:: pyAgrum.LazyPropagation
+			:inherited-members:
 
 .. autoclass:: pyAgrum.pyAgrum.LazyPropagation_double
+
+Shafer Shenoy Inference
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.ShaferShenoyInference
 
 .. autoclass:: pyAgrum.pyAgrum.ShaferShenoyInference_double
 
+Variable Elimination
+~~~~~~~~~~~~~~~~~~~~
+
 .. autoclass:: pyAgrum.VariableElimination
 
-.. autoclass:: pyAgrum.VariableElimination_double
+.. autoclass:: pyAgrum.pyAgrum.VariableElimination_double
 
 Approximate Inference
 ---------------------
 
+Loopy Belief Propagation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. autoclass:: pyAgrum.LoopyBeliefPropagation
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.LoopyBeliefPropagation_double
+			:exclude-members: asIApproximationSchemeConfiguration
+
+Gibbs Sampling
+~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.GibbsSampling
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.GibbsSampling_double
+			:exclude-members: asIApproximationSchemeConfiguration
+
+Monte Carlo Sampling
+~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.MonteCarloSampling
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.MonteCarloSampling_double
+			:exclude-members: asIApproximationSchemeConfiguration
+
+Weighted Sampling
+~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.WeightedSampling
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.WeightedSampling_double
+			:exclude-members: asIApproximationSchemeConfiguration
+
+Importance Sampling
+~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.ImportanceSampling
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.ImportanceSampling_double
+			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy version
 -------------
 
+Loopy Gibbs Sampling
+~~~~~~~~~~~~~~~~~~~~
+
 .. autoclass:: pyAgrum.LoopyGibbsSampling
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.LoopyGibbsSampling_double
+			:exclude-members: asIApproximationSchemeConfiguration
+
+Loopy Monte Carlo Sampling
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.LoopyMonteCarloSampling
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.LoopyMonteCarloSampling_double
+			:exclude-members: asIApproximationSchemeConfiguration
+
+Loopy Weighted Sampling
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.LoopyWeightedSampling
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.LoopyWeightedSampling_double
+			:exclude-members: asIApproximationSchemeConfiguration
+
+Loopy Importance Sampling
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.LoopyImportanceSampling
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.LoopyImportanceSampling_double
+			:exclude-members: asIApproximationSchemeConfiguration
 
 Learning
 --------
 
 .. autoclass:: pyAgrum.BNLearner
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.BNLearner_double
+			:exclude-members: asIApproximationSchemeConfiguration

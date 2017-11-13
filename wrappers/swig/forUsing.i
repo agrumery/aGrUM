@@ -332,7 +332,6 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
      return self->gum::MarginalTargetedInference<double>::H(nodeName);
    }
 
-
   Potential<double> evidenceImpact(NodeId target,const std::vector<NodeId> evs){
     return self->gum::MarginalTargetedInference<double>::evidenceImpact(target,evs);
   }

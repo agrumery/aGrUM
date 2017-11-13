@@ -5,6 +5,8 @@ gum::Idx -> int
 gum::Size -> int
 gum::NodeSet -> set
 
+Inférence.BN devrait retourner un BayesNet ?
+
 Problèmes d'exceptions
 ----------------------
 

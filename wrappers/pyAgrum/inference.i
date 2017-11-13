@@ -1,6 +1,11 @@
 %define IMPROVE_INFERENCE_API(classname...)
 %feature("shadow") gum::classname::setEvidence %{
 def setEvidence(self, evidces):
+    """
+    Warnings
+    --------
+    setEvidence in inference.i
+    """
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
     self.eraseAllEvidence()
@@ -10,6 +15,11 @@ def setEvidence(self, evidces):
 
 %feature("shadow") gum::classname::updateEvidence %{
 def updateEvidence(self, evidces):
+    """
+    Warnings
+    --------
+    updateEvidence in inference.i
+    """
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -22,6 +32,11 @@ def updateEvidence(self, evidces):
 
 %feature("shadow") gum::classname::setTargets %{
 def setTargets(self, targets):
+    """
+    Warnings
+    --------
+    setTargets in inference.i
+    """
     if not isinstance(targets, set):
         raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -29,7 +44,6 @@ def setTargets(self, targets):
     for k in targets:
         self.addTarget(k)
 %}
-
 
 // these void class extensions are rewritten by "shadow" declarations
 %extend gum::classname {
@@ -48,6 +62,7 @@ def setTargets(self, targets):
     }
 }
 %enddef
+
 IMPROVE_INFERENCE_API(LazyPropagation<double>)
 IMPROVE_INFERENCE_API(ShaferShenoyInference<double>)
 IMPROVE_INFERENCE_API(VariableElimination<double>)
