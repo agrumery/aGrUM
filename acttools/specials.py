@@ -70,8 +70,13 @@ def specialActions(current):
     return True
 
   if current["action"] == "guideline":
-    # trace(current,"Special action [autoindent]")
-    guideline(current)
+    # trace(current,"Special action [guideline]")
+    nbrError=guideline(current,current['correction'])
+    if nbrError>0:
+      critic("Guideline error(s) found.",None,nbrError)
+    else:
+      notif("No guideline error found.")
+
     print("")
     return True
 
@@ -79,12 +84,12 @@ def specialActions(current):
     wheel(current)
     return True
 
-  if current["oneByOne"] == True:
+  if current["oneByOne"]:
     trace(current, "Special action [oneByOne]")
     checkAgrumMemoryLeaks(current)
     return True
 
-  if current["stats"] == True:
+  if current["stats"]:
     profileAgrum(current)
     return True
 

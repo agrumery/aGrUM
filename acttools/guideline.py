@@ -1,5 +1,5 @@
-#!/ usr / bin / python
-#- * - coding : utf - 8 - * -
+#!/usr/bin/python
+# -*- coding : utf-8 -*-
 
 #***************************************************************************
 #* Copyright(C) 2015 by Pierre - Henri WUILLEMIN *
@@ -28,12 +28,20 @@ from .utils import trace, notif, critic, warn, error, recglob, srcAgrum
 from .configuration import cfg
 
 
-def guideline(current,modif=True):
-  notif("[aGrUM guideline]")
+def guideline(current,modif=False):
+  if modif:
+    notif("[aGrUM guideline (with correction)]")
+  else:
+    notif("[aGrUM guideline]")
+
+  nbrError=0
+
   notif("  # [*.cpp] file for every [*.h] file ")
-  _checkCppFileExists(current,modif)
+  nbrError+=_checkCppFileExists(current,modif)
   notif("  # check for GPL license")
-  _checkForGPLlicense(current,modif)
+  nbrError+=_checkForGPLlicense(current,modif)
+
+  return nbrError
 
 def __addGPLatTop(filename):
   with open(filename,"r") as origine:
@@ -43,6 +51,8 @@ def __addGPLatTop(filename):
     dest.write(code)
 
 def _checkForGPLlicense(current,modif):
+  nbrError=0
+
   exceptions=['/mvsc/','/external/','/cxxtest/','Parser','Scanner']
   for agrumfile in srcAgrum():
     if any(subs in agrumfile for subs in exceptions):
@@ -58,11 +68,14 @@ def _checkForGPLlicense(current,modif):
          nbr+=1
 
     if "Copyright (C) 20" not in fragment:
+      nbrError+=1
       if modif:
         __addGPLatTop(agrumfile)
         notif("    ["+agrumfile+"] has no copyright in its first lines : [changed]")
       else:
         notif("    ["+agrumfile+"] has no copyright in its first lines")
+
+  return nbrError
 
 def __addCppFileForHeader(header, cppfile):
   subinclude=header[4:] # remove the /src
@@ -72,8 +85,9 @@ def __addCppFileForHeader(header, cppfile):
     out.write(_template_cpp.replace("{include_file}", subinclude))
 
 def _checkCppFileExists(current,modif):
-  exceptions=['/mvsc/','/signal/','/external/','agrum.h','inline.h']
+  nbrError=0
 
+  exceptions=['/mvsc/','/signal/','/external/','multidim/patterns/','agrum.h','inline.h']
   for header in recglob("src/agrum", "*.h"):
     if any(subs in header for subs in exceptions):
       continue
@@ -85,11 +99,14 @@ def _checkCppFileExists(current,modif):
       continue
     cppfile=subs+"cpp"
     if not os.path.isfile(cppfile):
+      nbrError+=1
       if modif:
         __addCppFileForHeader(header, cppfile)
         error("No cpp file for ["+header+"h] : [added]")
       else:
         error("No cpp file for ["+header+"h]")
+
+  return nbrError
 
 _template_license="""
 /**************************************************************************

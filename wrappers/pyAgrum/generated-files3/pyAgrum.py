@@ -5301,7 +5301,7 @@ class Instantiation(_object):
         Returns
         -------
         int
-            The number of variables in the Instantiation. 
+            The number of variables in the Instantiation.
 
         """
         return _pyAgrum.Instantiation_nbrDim(self)
@@ -5340,7 +5340,7 @@ class Instantiation(_object):
 
         Warnings
         --------
-        NotFound raised if v does not belong to this Instantiation. 
+        NotFound raised if v does not belong to this Instantiation.
 
         """
         return _pyAgrum.Instantiation_erase(self, v)
@@ -5365,7 +5365,7 @@ class Instantiation(_object):
         Returns
         -------
         int
-            The product of the variable's domain size in the Instantiation. 
+            The product of the variable's domain size in the Instantiation.
 
         """
         return _pyAgrum.Instantiation_domainSize(self)
@@ -5379,7 +5379,7 @@ class Instantiation(_object):
         Returns
         -------
         int
-           the position of the variable v. 
+           the position of the variable v.
 
         Parameters
         ----------
@@ -5388,7 +5388,7 @@ class Instantiation(_object):
 
         Warnings
         --------
-        NotFound raised if v does not belong to the instantiation. 
+        NotFound raised if v does not belong to the instantiation.
 
         """
         return _pyAgrum.Instantiation_pos(self, v)
@@ -5414,7 +5414,7 @@ class Instantiation(_object):
 
         Warnings
         --------
-            NotFound raised if the element cannot be found. 
+            NotFound raised if the element cannot be found.
 
         """
         return _pyAgrum.Instantiation_val(self, *args)
@@ -5433,11 +5433,11 @@ class Instantiation(_object):
         Returns
         -------
         pyAgrum.DiscreteVariable
-          the variable at position i in the tuple. 
+          the variable at position i in the tuple.
 
         Warnings
         --------
-            NotFound raised if the element cannot be found. 
+            NotFound raised if the element cannot be found.
 
         """
         return _pyAgrum.Instantiation_variable(self, i)
@@ -5472,7 +5472,7 @@ class Instantiation(_object):
 
         Warnings
         --------
-            OutOfBound  Raised if newval is not a possible value for the variable. 
+            OutOfBound  Raised if newval is not a possible value for the variable.
 
         """
         return _pyAgrum.Instantiation_chgVal(self, *args)
@@ -5515,7 +5515,7 @@ class Instantiation(_object):
         Returns
         -------
         bool :
-            True if the variable is in the Instantiation. 
+            True if the variable is in the Instantiation.
 
         """
         return _pyAgrum.Instantiation_contains(self, *args)
@@ -5529,7 +5529,7 @@ class Instantiation(_object):
         Returns
         -------
         List
-            the sequence of DiscreteVariable of this instantiation. 
+            the sequence of DiscreteVariable of this instantiation.
 
         """
         return _pyAgrum.Instantiation_variablesSequence(self)
@@ -5543,7 +5543,7 @@ class Instantiation(_object):
         Returns
         -------
         bool
-            True if the instantiation is empty. 
+            True if the instantiation is empty.
 
         """
         return _pyAgrum.Instantiation_empty(self)
@@ -5557,7 +5557,7 @@ class Instantiation(_object):
         Returns
         -------
         bool
-          True if the current value of the tuple is correct 
+          True if the current value of the tuple is correct
 
         """
         return _pyAgrum.Instantiation_inOverflow(self)
@@ -5593,7 +5593,7 @@ class Instantiation(_object):
         Returns
         -------
         bool
-            True if the Instantiation reached the end. 
+            True if the Instantiation reached the end.
 
         """
         return _pyAgrum.Instantiation_end(self)
@@ -5607,7 +5607,7 @@ class Instantiation(_object):
         Returns
         -------
         bool:
-          True if the Instantiation reached the rend. 
+          True if the Instantiation reached the rend.
 
         """
         return _pyAgrum.Instantiation_rend(self)
@@ -5618,7 +5618,7 @@ class Instantiation(_object):
         inc(self)
 
 
-        Operator ++. 
+        Operator ++.
 
         """
         return _pyAgrum.Instantiation_inc(self)
@@ -5629,7 +5629,7 @@ class Instantiation(_object):
         dec(self)
 
 
-        Operator –.
+        Operator --.
 
         """
         return _pyAgrum.Instantiation_dec(self)
@@ -5645,7 +5645,7 @@ class Instantiation(_object):
         Parameters
         ----------
         i : pyAgrum.Instantiation
-            The set of variables to increment in this Instantiation. 
+            The set of variables to increment in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_incIn(self, i)
@@ -5656,7 +5656,7 @@ class Instantiation(_object):
         decIn(self, i)
 
 
-        Operator – for the variables in i.
+        Operator -- for the variables in i.
 
         Parameters
         ----------
@@ -5677,7 +5677,7 @@ class Instantiation(_object):
         Parameters
         ----------
         i : Instantiation
-            The set of variable to not increment in this Instantiation. 
+            The set of variable to not increment in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_incOut(self, i)
@@ -5688,12 +5688,12 @@ class Instantiation(_object):
         decOut(self, i)
 
 
-        Operator – for the variables not in i.
+        Operator -- for the variables not in i.
 
         Parameters
         ----------
         i : pyAgrum.Instantiation
-          The set of variables to not decrement in this Instantiation. 
+          The set of variables to not decrement in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_decOut(self, i)
@@ -5709,7 +5709,7 @@ class Instantiation(_object):
         Parameters
         ----------
         v : pyAgrum.DiscreteVariable
-            The variable not to increment in this Instantiation. 
+            The variable not to increment in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_incNotVar(self, v)
@@ -5720,12 +5720,12 @@ class Instantiation(_object):
         decNotVar(self, v)
 
 
-        Operator – for vars which are not v.
+        Operator -- for vars which are not v.
 
         Parameters
         ----------
         v : pyAgrum.DiscreteVariable
-          The varaible not to decrement in this Instantiation. 
+          The varaible not to decrement in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_decNotVar(self, v)
@@ -5745,7 +5745,7 @@ class Instantiation(_object):
 
         Warnings
         --------
-        NotFound raised if variable v does not belong to the Instantiation. 
+        NotFound raised if variable v does not belong to the Instantiation.
 
         """
         return _pyAgrum.Instantiation_incVar(self, v)
@@ -5756,7 +5756,7 @@ class Instantiation(_object):
         decVar(self, v)
 
 
-        Operator – for variable v only. 
+        Operator -- for variable v only.
 
         Parameters
         ----------
@@ -5765,7 +5765,7 @@ class Instantiation(_object):
 
         Warnings
         --------
-        NotFound raised if variable v does not belong to the Instantiation. 
+        NotFound raised if variable v does not belong to the Instantiation.
 
         """
         return _pyAgrum.Instantiation_decVar(self, v)
@@ -5803,7 +5803,7 @@ class Instantiation(_object):
         Parameters
         ----------
         i : pyAgrum.Instantiation
-          The variables to which their first value is assigned in this Instantiation. 
+          The variables to which their first value is assigned in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_setFirstIn(self, i)
@@ -5819,7 +5819,7 @@ class Instantiation(_object):
         Parameters
         ----------
         i : pyAgrum.Instantiation
-            The variables to which their last value is assigned in this Instantiation. 
+            The variables to which their last value is assigned in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_setLastIn(self, i)
@@ -5846,7 +5846,7 @@ class Instantiation(_object):
         setLastOut(self, i)
 
 
-        Assign the last values in the Instantiation for the variables not in i. 
+        Assign the last values in the Instantiation for the variables not in i.
 
         Parameters
         ----------
@@ -5862,7 +5862,7 @@ class Instantiation(_object):
         setFirstNotVar(self, v)
 
 
-        Assign the first values to variables different of v. 
+        Assign the first values to variables different of v.
 
         Parameters
         ----------
@@ -5883,7 +5883,7 @@ class Instantiation(_object):
         Parameters
         ----------
         v : pyAgrum.DiscreteVariable
-            The variable that will not be set to its last value in this Instantiation. 
+            The variable that will not be set to its last value in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_setLastNotVar(self, v)
@@ -5899,7 +5899,7 @@ class Instantiation(_object):
         Parameters
         ----------
         v : pyAgrum.DiscreteVariable
-            The variable that will be set to its first value in this Instantiation. 
+            The variable that will be set to its first value in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_setFirstVar(self, v)
@@ -5915,7 +5915,7 @@ class Instantiation(_object):
         Parameters
         ----------
         v : pyAgrum.DiscreteVariable
-          The variable that will be set to its last value in this Instantiation. 
+          The variable that will be set to its last value in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_setLastVar(self, v)
@@ -5939,7 +5939,7 @@ class Instantiation(_object):
         Returns
         -------
         int
-          the hamming distance of this instantiation. 
+          the hamming distance of this instantiation.
 
         """
         return _pyAgrum.Instantiation_hamming(self)
@@ -5956,14 +5956,14 @@ class Instantiation(_object):
         reorder(self, i)
 
 
-        Reorder vars of this instantiation giving the order in v (or i). 
+        Reorder vars of this instantiation giving the order in v (or i).
 
         Parameters
         ----------
         i : pyAgrum.Instantiation
           The sequence of variables with which to reorder this Instantiation.
         v : list
-            The new order of variables for this Instantiation. 
+            The new order of variables for this Instantiation.
 
         """
         return _pyAgrum.Instantiation_reorder(self, *args)
@@ -6549,7 +6549,7 @@ class ApproximationScheme(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.ApproximationScheme_currentTime(self)
@@ -8538,12 +8538,9 @@ class IBayesNet_double(DAGmodel):
 
         Returns the dimension (the number of free parameters) in this BayesNet.
 
-        dim(G)=∑i∈nodes((ri−1)⋅qi) where ri is the number of instantiations of node i and qi is the number of instantiations of its parents. 
-        in IBayesNet
-
         Returns
         -------
-        int 
+        int
         	the dimension of the BayesNet
 
         """
@@ -8628,7 +8625,7 @@ class IBayesNet_double(DAGmodel):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format 
+            a friendly display of the graph in DOT format
 
         """
         return _pyAgrum.IBayesNet_double_toDot(self)
@@ -11670,7 +11667,7 @@ class GibbsSampling_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.GibbsSampling_double_currentTime(self)
@@ -12169,7 +12166,7 @@ class ImportanceSampling_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.ImportanceSampling_double_currentTime(self)
@@ -12648,7 +12645,7 @@ class WeightedSampling_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.WeightedSampling_double_currentTime(self)
@@ -13127,7 +13124,7 @@ class MonteCarloSampling_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.MonteCarloSampling_double_currentTime(self)
@@ -13616,7 +13613,7 @@ class LoopyImportanceSampling_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.LoopyImportanceSampling_double_currentTime(self)
@@ -14105,7 +14102,7 @@ class LoopyWeightedSampling_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.LoopyWeightedSampling_double_currentTime(self)
@@ -14594,7 +14591,7 @@ class LoopyGibbsSampling_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.LoopyGibbsSampling_double_currentTime(self)
@@ -15103,7 +15100,7 @@ class LoopyBeliefPropagation_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.LoopyBeliefPropagation_double_currentTime(self)
@@ -15354,7 +15351,7 @@ class GibbsKL_double(ApproximationScheme):
         Parameters
         ----------
         b : int
-        	size of burn in on number of iteration 
+        	size of burn in on number of iteration
 
         """
         return _pyAgrum.GibbsKL_double_setBurnIn(self, b)
@@ -15593,7 +15590,7 @@ class GibbsKL_double(ApproximationScheme):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.GibbsKL_double_currentTime(self)
@@ -16092,7 +16089,7 @@ class CNMonteCarloSampling_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_currentTime(self)
@@ -16433,7 +16430,7 @@ class CNLoopyPropagation_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.CNLoopyPropagation_double_currentTime(self)
@@ -17192,7 +17189,7 @@ class BNLearner_double(_object):
         Returns
         -------
         double
-        	get the current running time in second (double) 
+        	get the current running time in second (double)
 
         """
         return _pyAgrum.BNLearner_double_currentTime(self)
@@ -17243,7 +17240,7 @@ class BNLearner_double(_object):
         learnDAG(self) -> DAG
 
 
-        learn a structure from a file (must have read the db before) 
+        learn a structure from a file (must have read the db before)
 
         Returns
         -------
@@ -17303,7 +17300,7 @@ class BNLearner_double(_object):
 
         Warnings
         --------
-        MissingVariableInDatabase raised if a variable of the BN is not found in the database. 
+        MissingVariableInDatabase raised if a variable of the BN is not found in the database.
 
         """
         return _pyAgrum.BNLearner_double_idFromName(self, var_name)
@@ -17430,7 +17427,7 @@ class BNLearner_double(_object):
         Parameters
         ----------
         weight : double
-        	pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used. 
+        	pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
 
         """
         return _pyAgrum.BNLearner_double_useAprioriSmoothing(self, *args)
@@ -17450,7 +17447,7 @@ class BNLearner_double(_object):
 
         Warnings
         --------
-        à compléter
+        TBD
 
         """
         return _pyAgrum.BNLearner_double_useAprioriDirichlet(self, filename)
@@ -17478,10 +17475,10 @@ class BNLearner_double(_object):
 
         Parameters
         ----------
-        tabu_size : int 
+        tabu_size : int
         	The size of the tabu list
-        nb_decrease : int 
-        	The max number of changes decreasing the score consecutively that we allow to apply 
+        nb_decrease : int
+        	The max number of changes decreasing the score consecutively that we allow to apply
 
         """
         return _pyAgrum.BNLearner_double_useLocalSearchWithTabuList(self, *args)

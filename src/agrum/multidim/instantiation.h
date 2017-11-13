@@ -558,7 +558,7 @@ namespace gum {
     /// @{
 
     /**
-     * @brief Operator ++.
+     * @brief Operator increment.
      *
      * Note that this operator never throws an exception when it reaches the
      * end of the possible values of the tuple of variables of the
@@ -580,7 +580,7 @@ namespace gum {
     void inc();
 
     /**
-     * @brief Operator --.
+     * @brief Operator decrement
      *
      * Note that this operator never throws an exception when it reaches the
      * end of the possible values of the tuple of variables of the
@@ -602,7 +602,7 @@ namespace gum {
     void dec();
 
     /**
-     * @brief Operator ++ for the variables in i.
+     * @brief Operator increment for the variables in i.
      *
      * Note that, if the Instantiation is related to a MultiDimAdressable, then
      * the corresponding value in the latter is updated.
@@ -624,7 +624,7 @@ namespace gum {
     void incIn(const Instantiation& i);
 
     /**
-     * @brief Operator -- for the variables in i.
+     * @brief Operator decrement for the variables in i.
      *
      * Note that, if the Instantiation is related to a MultiDimAdressable, then
      * the corresponding value in the latter is updated.
@@ -646,7 +646,7 @@ namespace gum {
     void decIn(const Instantiation& i);
 
     /**
-     * @brief Operator ++ for the variables not in i.
+     * @brief Operator increment for the variables not in i.
      *
      * Note that, if the Instantiation is related to a MultiDimAdressable, then
      * the corresponding value in the latter is updated.
@@ -668,7 +668,7 @@ namespace gum {
     void incOut(const Instantiation& i);
 
     /**
-     * @brief Operator -- for the variables not in i.
+     * @brief Operator decrement for the variables not in i.
      *
      * Note that, if the Instantiation is related to a MultiDimAdressable, then
      * the corresponding value in the latter is updated. Note also that this
@@ -689,7 +689,7 @@ namespace gum {
     void decOut(const Instantiation& i);
 
     /**
-     * @brief Operator ++ for vars which are not v.
+     * @brief Operator increment for vars which are not v.
      *
      * Note that, if the Instantiation is related to a MultiDimAdressable, then
      * the corresponding value in the latter is updated. Note also that this
@@ -706,7 +706,7 @@ namespace gum {
     void incNotVar(const DiscreteVariable& v);
 
     /**
-     * @brief Operator -- for vars which are not v.
+     * @brief Operator decrement for vars which are not v.
      *
      * Note that, if the Instantiation is related to a MultiDimAdressable,
      * then the corresponding value in the latter is updated.
@@ -725,7 +725,7 @@ namespace gum {
     void decNotVar(const DiscreteVariable& v);
 
     /**
-     * @brief Operator ++ for variable v only.
+     * @brief Operator increment for variable v only.
      *
      * This function increment only variable v. Trying to increment the last
      * possible value results in an overflow (no exception is thrown in this
@@ -743,7 +743,7 @@ namespace gum {
     void incVar(const DiscreteVariable& v);
 
     /**
-     * @brief Operator -- for variable v only.
+     * @brief Operator decrement for variable v only.
      *
      * This function decrement only variable v. Trying to decrement the last
      * possible value results in an overflow (no exception is thrown in this

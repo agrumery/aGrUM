@@ -70,7 +70,7 @@ Warnings
 
 Warnings
 --------
-    OutOfBound  Raised if newval is not a possible value for the variable. 
+    OutOfBound  Raised if newval is not a possible value for the variable.
 "
 
 %feature("docstring") gum::Instantiation::clear
@@ -90,17 +90,17 @@ v : pyAgrum.DiscreteVariable
 Returns
 -------
 bool :
-    True if the variable is in the Instantiation. 
+    True if the variable is in the Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::dec
 "
-Operator –.
+Operator --.
 "
 
 %feature("docstring") gum::Instantiation::decIn
 "
-Operator – for the variables in i.
+Operator -- for the variables in i.
 
 Parameters
 ----------
@@ -110,27 +110,27 @@ i : pyAgrum.Instantiation
 
 %feature("docstring") gum::Instantiation::decNotVar
 "
-Operator – for vars which are not v.
+Operator -- for vars which are not v.
 
 Parameters
 ----------
 v : pyAgrum.DiscreteVariable
-  The varaible not to decrement in this Instantiation. 
+  The varaible not to decrement in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::decOut
 "
-Operator – for the variables not in i.
+Operator -- for the variables not in i.
 
 Parameters
 ----------
 i : pyAgrum.Instantiation
-  The set of variables to not decrement in this Instantiation. 
+  The set of variables to not decrement in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::decVar
 "
-Operator – for variable v only. 
+Operator -- for variable v only.
 
 Parameters
 ----------
@@ -139,7 +139,7 @@ v : pyAgrum.DiscreteVariable
 
 Warnings
 --------
-NotFound raised if variable v does not belong to the Instantiation. 
+NotFound raised if variable v does not belong to the Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::domainSize
@@ -147,7 +147,7 @@ NotFound raised if variable v does not belong to the Instantiation.
 Returns
 -------
 int
-    The product of the variable's domain size in the Instantiation. 
+    The product of the variable's domain size in the Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::empty
@@ -155,7 +155,7 @@ int
 Returns
 -------
 bool
-    True if the instantiation is empty. 
+    True if the instantiation is empty.
 "
 
 %feature("docstring") gum::Instantiation::end
@@ -163,7 +163,7 @@ bool
 Returns
 -------
 bool
-    True if the Instantiation reached the end. 
+    True if the Instantiation reached the end.
 "
 
 %feature("docstring") gum::Instantiation::erase
@@ -175,7 +175,7 @@ v : pyAgrum.DiscreteVariable
 
 Warnings
 --------
-NotFound raised if v does not belong to this Instantiation. 
+NotFound raised if v does not belong to this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::hamming
@@ -183,7 +183,7 @@ NotFound raised if v does not belong to this Instantiation.
 Returns
 -------
 int
-  the hamming distance of this instantiation. 
+  the hamming distance of this instantiation.
 "
 
 %feature("docstring") gum::Instantiation::inOverflow
@@ -191,12 +191,12 @@ int
 Returns
 -------
 bool
-  True if the current value of the tuple is correct 
+  True if the current value of the tuple is correct
 "
 
 %feature("docstring") gum::Instantiation::inc
 "
-Operator ++. 
+Operator ++.
 "
 
 %feature("docstring") gum::Instantiation::incIn
@@ -206,7 +206,7 @@ Operator ++ for the variables in i.
 Parameters
 ----------
 i : pyAgrum.Instantiation
-    The set of variables to increment in this Instantiation. 
+    The set of variables to increment in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::incNotVar
@@ -216,7 +216,7 @@ Operator ++ for vars which are not v.
 Parameters
 ----------
 v : pyAgrum.DiscreteVariable
-    The variable not to increment in this Instantiation. 
+    The variable not to increment in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::incOut
@@ -226,7 +226,7 @@ Operator ++ for the variables not in i.
 Parameters
 ----------
 i : Instantiation
-    The set of variable to not increment in this Instantiation. 
+    The set of variable to not increment in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::incVar
@@ -240,7 +240,7 @@ v : pyAgrum.DiscreteVariable
 
 Warnings
 --------
-NotFound raised if variable v does not belong to the Instantiation. 
+NotFound raised if variable v does not belong to the Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::nbrDim
@@ -248,7 +248,7 @@ NotFound raised if variable v does not belong to the Instantiation.
 Returns
 -------
 int
-    The number of variables in the Instantiation. 
+    The number of variables in the Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::pos
@@ -256,7 +256,7 @@ int
 Returns
 -------
 int
-   the position of the variable v. 
+   the position of the variable v.
 
 Parameters
 ----------
@@ -265,7 +265,7 @@ v : pyAgrum.DiscreteVariable
 
 Warnings
 --------
-NotFound raised if v does not belong to the instantiation. 
+NotFound raised if v does not belong to the instantiation.
 "
 
 %feature("docstring") gum::Instantiation::rend
@@ -273,19 +273,19 @@ NotFound raised if v does not belong to the instantiation.
 Returns
 -------
 bool:
-  True if the Instantiation reached the rend. 
+  True if the Instantiation reached the rend.
 "
 
 %feature("docstring") gum::Instantiation::reorder
 "
-Reorder vars of this instantiation giving the order in v (or i). 
+Reorder vars of this instantiation giving the order in v (or i).
 
 Parameters
 ----------
 i : pyAgrum.Instantiation
   The sequence of variables with which to reorder this Instantiation.
 v : list
-    The new order of variables for this Instantiation. 
+    The new order of variables for this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::setFirst
@@ -300,12 +300,12 @@ Assign the first values in the Instantiation for the variables in i.
 Parameters
 ----------
 i : pyAgrum.Instantiation
-  The variables to which their first value is assigned in this Instantiation. 
+  The variables to which their first value is assigned in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::setFirstNotVar
 "
-Assign the first values to variables different of v. 
+Assign the first values to variables different of v.
 
 Parameters
 ----------
@@ -330,7 +330,7 @@ Assign the first value in the Instantiation for var v.
 Parameters
 ----------
 v : pyAgrum.DiscreteVariable
-    The variable that will be set to its first value in this Instantiation. 
+    The variable that will be set to its first value in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::setLast
@@ -345,7 +345,7 @@ Assign the last values in the Instantiation for the variables in i.
 Parameters
 ----------
 i : pyAgrum.Instantiation
-    The variables to which their last value is assigned in this Instantiation. 
+    The variables to which their last value is assigned in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::setLastNotVar
@@ -355,12 +355,12 @@ Assign the last values to variables different of v.
 Parameters
 ----------
 v : pyAgrum.DiscreteVariable
-    The variable that will not be set to its last value in this Instantiation. 
+    The variable that will not be set to its last value in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::setLastOut
 "
-Assign the last values in the Instantiation for the variables not in i. 
+Assign the last values in the Instantiation for the variables not in i.
 
 Parameters
 ----------
@@ -375,7 +375,7 @@ Assign the last value in the Instantiation for var v.
 Parameters
 ----------
 v : pyAgrum.DiscreteVariable
-  The variable that will be set to its last value in this Instantiation. 
+  The variable that will be set to its last value in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::setVals
@@ -419,7 +419,7 @@ int
 
 Warnings
 --------
-    NotFound raised if the element cannot be found. 
+    NotFound raised if the element cannot be found.
 "
 
 %feature("docstring") gum::Instantiation::variable
@@ -432,11 +432,11 @@ i : int
 Returns
 -------
 pyAgrum.DiscreteVariable
-  the variable at position i in the tuple. 
+  the variable at position i in the tuple.
 
 Warnings
 --------
-    NotFound raised if the element cannot be found. 
+    NotFound raised if the element cannot be found.
 "
 
 %feature("docstring") gum::Instantiation::variablesSequence
@@ -444,5 +444,5 @@ Warnings
 Returns
 -------
 List
-    the sequence of DiscreteVariable of this instantiation. 
+    the sequence of DiscreteVariable of this instantiation.
 "
