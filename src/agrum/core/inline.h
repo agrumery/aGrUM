@@ -46,7 +46,7 @@
 // MSVC, but it still doesn't use GCC's always_inline. This is useful in
 // (common) situations where MSVC needs forceinline but GCC is still doing fine
 // with just inline.  (from eigen library)
-#if ( defined _MSC_VER ) || ( defined __INTEL_COMPILER )
+#if (defined _MSC_VER) || (defined __INTEL_COMPILER)
 #define ENFORCED_INLINE __forceinline
 #else
 #define ENFORCED_INLINE inline
@@ -61,16 +61,16 @@
 // compilation error:
 //   Eval.h:91: sorry, unimplemented: inlining failed in call to '...' :
 //   function body not available (from eigen library)
-#if GNUC_AT_LEAST( 4, 0 )
-#define ALWAYS_INLINE __attribute__( ( always_inline ) ) inline
+#if GNUC_AT_LEAST(4, 0)
+#define ALWAYS_INLINE __attribute__((always_inline)) inline
 #else
 #define ALWAYS_INLINE ENFORCED_INLINE
 #endif
 
-#if ( defined __GNUC__ )
-#define NO_INLINE __attribute__( ( noinline ) )
-#elif ( defined _MSC_VER )
-#define NEVER_INLINE __declspec( noinline )
+#if (defined __GNUC__)
+#define NO_INLINE __attribute__((noinline))
+#elif (defined _MSC_VER)
+#define NEVER_INLINE __declspec(noinline)
 #else
 #define NEVER_INLINE
 #endif

@@ -2744,29 +2744,88 @@ class Variable(_object):
 
 
     def setName(self, theValue: 'std::string const &') -> "void":
-        """setName(self, theValue)"""
+        """
+        setName(self, theValue)
+
+
+        sets the name of the variable.
+
+        Parameters
+        ----------
+        theValue : str
+        	the new description of the variable
+
+        """
         return _pyAgrum.Variable_setName(self, theValue)
 
 
     def name(self) -> "std::string const &":
-        """name(self) -> std::string const &"""
+        """
+        name(self) -> std::string const &
+
+
+        Returns
+        -------
+        str
+        	the name of the variable
+
+        """
         return _pyAgrum.Variable_name(self)
 
 
     def setDescription(self, theValue: 'std::string const &') -> "void":
-        """setDescription(self, theValue)"""
+        """
+        setDescription(self, theValue)
+
+
+        set the description of the variable.
+
+        Parameters
+        ----------
+        theValue : str
+        	the new description of the variable
+
+        """
         return _pyAgrum.Variable_setDescription(self, theValue)
 
 
     def description(self) -> "std::string const &":
-        """description(self) -> std::string const &"""
+        """
+        description(self) -> std::string const &
+
+
+        Returns
+        -------
+        str
+        	the description of the variable
+
+        """
         return _pyAgrum.Variable_description(self)
 
 Variable_swigregister = _pyAgrum.Variable_swigregister
 Variable_swigregister(Variable)
 
 class DiscreteVariable(Variable):
-    """Proxy of C++ gum::DiscreteVariable class."""
+    """
+
+    DiscreteVariable is the base class for discrete random variable.
+
+    Available constructors:
+
+        ``DiscreteVariable(aName, aDesc='') -> DiscreteVariable``
+
+        ``DiscreteVariable(aDRV) -> DiscreteVariable``
+
+    Parameters
+    ----------
+    aName: str
+      The name of the variable
+    aDesc: str
+      The (optional) description of the variable
+    aDRV: pyAgrum.DiscreteVariable
+      Another `DiscreteVariable` that will be copied
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [Variable]:
@@ -2788,32 +2847,93 @@ class DiscreteVariable(Variable):
         return None
 
     def clone(self) -> "gum::DiscreteVariable *":
-        """clone(self) -> DiscreteVariable"""
+        """
+        clone(self) -> DiscreteVariable
+
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	a copy of the DiscreteVariable
+
+        """
         return _pyAgrum.DiscreteVariable_clone(self)
 
 
     def empty(self) -> "bool":
-        """empty(self) -> bool"""
+        """
+        empty(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the domain size < 2
+
+        """
         return _pyAgrum.DiscreteVariable_empty(self)
 
 
     def domainSize(self) -> "gum::Size":
-        """domainSize(self) -> gum::Size"""
+        """
+        domainSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of modalities in the variable domain
+
+        """
         return _pyAgrum.DiscreteVariable_domainSize(self)
 
 
     def labels(self) -> "std::vector< std::string,std::allocator< std::string > >":
-        """labels(self) -> Vector_string"""
+        """
+        labels(self) -> Vector_string
+
+
+        Returns
+        -------
+        tuple
+        	a tuple containing the labels
+
+        """
         return _pyAgrum.DiscreteVariable_labels(self)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
-        """numerical(self, indice) -> double"""
+        """
+        numerical(self, indice) -> double
+
+
+        Parameters
+        ----------
+        indice : int
+        	an index
+
+        Returns
+        -------
+        float
+        	the numerical representation of the indice-th value
+
+        """
         return _pyAgrum.DiscreteVariable_numerical(self, indice)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
-        """varType(self) -> gum::DiscreteVariable::VarType"""
+        """
+        varType(self) -> gum::DiscreteVariable::VarType
+
+
+        returns the type of variable
+
+        Returns
+        -------
+        int :
+        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+
+        """
         return _pyAgrum.DiscreteVariable_varType(self)
 
 
@@ -2828,12 +2948,44 @@ class DiscreteVariable(Variable):
 
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
-        """index(self, label) -> gum::Idx"""
+        """
+        index(self, label) -> gum::Idx
+
+
+        Parameters
+        ----------
+        label : str
+        	a label
+
+        Returns
+        -------
+        int
+        	the indice of the label
+
+        """
         return _pyAgrum.DiscreteVariable_index(self, label)
 
 
     def label(self, i: 'gum::Idx') -> "std::string":
-        """label(self, i) -> std::string"""
+        """
+        label(self, i) -> std::string
+
+
+        Parameters
+        ----------
+        i : int
+        	the index of the label we wish to return
+
+        Returns
+        -------
+        str
+        	the indice-th label
+
+        Warnings
+        --------
+        OutOfBound raised if the variable does not contain the label
+
+        """
         return _pyAgrum.DiscreteVariable_label(self, i)
 
 
@@ -2843,12 +2995,30 @@ class DiscreteVariable(Variable):
 
 
     def toStringWithDescription(self) -> "std::string const":
-        """toStringWithDescription(self) -> std::string const"""
+        """
+        toStringWithDescription(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	a description of the variable
+
+        """
         return _pyAgrum.DiscreteVariable_toStringWithDescription(self)
 
 
     def domain(self) -> "std::string const":
-        """domain(self) -> std::string const"""
+        """
+        domain(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the domain of the variable
+
+        """
         return _pyAgrum.DiscreteVariable_domain(self)
 
 
@@ -2857,17 +3027,54 @@ class DiscreteVariable(Variable):
 
 
     def toLabelizedVar(self) -> "gum::LabelizedVariable &":
-        """toLabelizedVar(self) -> LabelizedVariable"""
+        """
+        toLabelizedVar(self) -> LabelizedVariable
+
+
+        Returns
+        -------
+        pyAgrum.LabelizedVariable
+        	the labelized variable
+        Warnings
+        -------
+        RuntimeError raised if the variable is not a LabelizedVariable
+
+        """
         return _pyAgrum.DiscreteVariable_toLabelizedVar(self)
 
 
     def toRangeVar(self) -> "gum::RangeVariable &":
-        """toRangeVar(self) -> RangeVariable"""
+        """
+        toRangeVar(self) -> RangeVariable
+
+
+        Returns
+        -------
+        pyAgrum.RangeVariable
+        	the range variable
+
+        Warnings
+        -------
+        RuntimeError raised if the variable is not a RangeVariable
+
+        """
         return _pyAgrum.DiscreteVariable_toRangeVar(self)
 
 
     def toDiscretizedVar(self) -> "gum::DiscretizedVariable< double > &":
-        """toDiscretizedVar(self) -> DiscretizedVariable_double"""
+        """
+        toDiscretizedVar(self) -> DiscretizedVariable_double
+
+
+        Returns
+        -------
+        pyAgrum.DiscretizedVariable
+        	the discretized variable
+        Warnings
+        -------
+        RuntimeError raised if the variable is not a DiscretizedVariable
+
+        """
         return _pyAgrum.DiscreteVariable_toDiscretizedVar(self)
 
 DiscreteVariable_swigregister = _pyAgrum.DiscreteVariable_swigregister
@@ -2882,6 +3089,8 @@ class LabelizedVariable(DiscreteVariable):
 
         ``LabelizedVariable(aName, aDesc='', nbrLabel=2) -> LabelizedVariable``
 
+        ``LabelizedVariable(aName, aDesc='') -> LabelizedVariable``
+
         ``LabelizedVariable(aLDRV) -> LabelizedVariable``
 
     Parameters
@@ -2891,19 +3100,39 @@ class LabelizedVariable(DiscreteVariable):
     aDesc: str
       The (optional) description of the variable
     nbrLabel: int
-      The number of labels to create. By default , the value start from '0' to 'nbrLabel-1'
+      The number of labels to create (2 by default)
     aLDRV: pyAgrum.LabelizedVariable
       Another `LabelizedVariable` that will be copied
 
     Examples
     --------
     >>> import pyAgrum as gum
-    >>> v=gum.LabelizedVariable('v')
-    >>> print(v)
-    v<0,1>
-    >>> w=gum.LabelizedVariable('w','',4)
-    >>> print(w)
-    w<0,1,2,3>
+    >>>
+    >>> # creating a variable with 3 labels : '0', '1' and '2'
+    >>> va=gum.LabelizedVariable('a','a labelized variable',3)
+    >>> print(va)
+    >>> ## a<0,1,2>
+    >>>
+    >>> va.addLabel('foo')
+    >>> print(va)
+    >>> ## a<0,1,2,foo>
+    >>>
+    >>> va.chgLabel(1,'bar')
+    >>> print(va)
+    >>> a<0,bar,2,foo>
+    >>>
+    >>> vb=gum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
+    >>> print(vb)
+    >>> ## b<A,B,C>
+    >>> 
+    >>> vb.labels()
+    >>> ## ('A', 'B', 'C')
+    >>> 
+    >>> vb.isLabel('E')
+    >>> ## False
+    >>> 
+    >>> vb.label(2)
+    >>> ## 'B'
 
     """
 
@@ -2934,53 +3163,188 @@ class LabelizedVariable(DiscreteVariable):
         return None
 
     def clone(self) -> "gum::DiscreteVariable *":
-        """clone(self) -> DiscreteVariable"""
+        """
+        clone(self) -> DiscreteVariable
+
+
+        Returns
+        -------
+        pyAgrum.LabelizedVariable
+        	a copy of the LabelizedVariable
+
+        """
         return _pyAgrum.LabelizedVariable_clone(self)
 
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
-        """index(self, label) -> gum::Idx"""
+        """
+        index(self, label) -> gum::Idx
+
+
+        Parameters
+        ----------
+        label : str
+        	a label
+
+        Returns
+        -------
+        int
+        	the indice of the label
+
+        """
         return _pyAgrum.LabelizedVariable_index(self, label)
 
 
     def isLabel(self, aLabel: 'std::string const &') -> "bool":
-        """isLabel(self, aLabel) -> bool"""
+        """
+        isLabel(self, aLabel) -> bool
+
+
+        Indicates whether the variable already has the label passed in argument
+
+        Parameters
+        ----------
+        aLabel : str
+        	the label to be tested
+
+        Returns
+        -------
+        bool
+        	True if the label already exists
+
+        """
         return _pyAgrum.LabelizedVariable_isLabel(self, aLabel)
 
 
     def addLabel(self,*args):
+      """
+      Add a label with a new index (we assume that we will NEVER remove a label).
+
+      Parameters
+      ----------
+      aLabel : str
+      	the label to be added to the labelized variable
+
+      Returns
+      -------
+      pyAgrum.LabelizedVariable
+      	the labelized variable
+
+      Warnings
+      --------
+      DuplicateElement raised is raised if the variable already contains the label
+      """
       _pyAgrum.LabelizedVariable_addLabel(self,*args)
       return self
 
 
 
     def changeLabel(self, pos: 'gum::Idx', aLabel: 'std::string const') -> "void":
-        """changeLabel(self, pos, aLabel)"""
+        """
+        changeLabel(self, pos, aLabel)
+
+
+        Change the label at the specified index
+
+        Parameters
+        ----------
+        pos : int
+        	the index of the label to be changed
+        aLabel : str
+        	the label to be added to the labelized variable
+
+        Warnings
+        --------
+        DuplicatedElement raised if the variable already contains the new label
+
+        Warnings
+        --------
+        OutOfBounds raised if the index is greater than the size of the variable
+
+        """
         return _pyAgrum.LabelizedVariable_changeLabel(self, pos, aLabel)
 
 
     def eraseLabels(self) -> "void":
-        """eraseLabels(self)"""
+        """
+        eraseLabels(self)
+
+
+        Erase all the labels from the variable.
+
+        """
         return _pyAgrum.LabelizedVariable_eraseLabels(self)
 
 
     def label(self, i: 'gum::Idx') -> "std::string":
-        """label(self, i) -> std::string"""
+        """
+        label(self, i) -> std::string
+
+
+        Parameters
+        ----------
+        i : int
+        	the index of the label we wish to return
+
+        Returns
+        -------
+        str
+        	the indice-th label
+
+        Warnings
+        --------
+        OutOfBound raised if the variable does not contain the label
+
+        """
         return _pyAgrum.LabelizedVariable_label(self, i)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
-        """numerical(self, indice) -> double"""
+        """
+        numerical(self, indice) -> double
+
+
+        Parameters
+        ----------
+        indice : int
+        	an index
+
+        Returns
+        -------
+        float
+        	the numerical representation of the indice-th value
+
+        """
         return _pyAgrum.LabelizedVariable_numerical(self, indice)
 
 
     def domainSize(self) -> "gum::Size":
-        """domainSize(self) -> gum::Size"""
+        """
+        domainSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of modalities in the variable domain
+
+        """
         return _pyAgrum.LabelizedVariable_domainSize(self)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
-        """varType(self) -> gum::DiscreteVariable::VarType"""
+        """
+        varType(self) -> gum::DiscreteVariable::VarType
+
+
+        returns the type of variable
+
+        Returns
+        -------
+        int :
+        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+
+        """
         return _pyAgrum.LabelizedVariable_varType(self)
 
 
@@ -3001,7 +3365,55 @@ LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
 LabelizedVariable_swigregister(LabelizedVariable)
 
 class RangeVariable(DiscreteVariable):
-    """Proxy of C++ gum::RangeVariable class."""
+    """
+
+    RangeVariable represents a variable with a range of integers as domain.
+
+    Available constructors:
+
+    	``RangeVariable(aName, aDesc='',minVal, maxVal) -> RangeVariable``
+
+    	``RangeVariable(aName, aDesc='',minVal) -> RangeVariable``
+
+      ``RangeVariable(aName, aDesc='') -> RangeVariable``
+
+      ``RangeVariable(aRV) -> RangeVariable``
+
+    Parameters
+    ----------
+    aName: str
+      The name of the variable
+    aDesc: str
+      The (optional) description of the variable
+    minVal : int
+      The minimal integer of the interval
+    maxVal : int
+      The maximal integer of the interval
+    aDV: pyAgrum.RangeVariable
+      Another `RangeVariable` that will be copied
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>>
+    >>> vI=gum.gum.RangeVariable('I','I in [4,10]',4,10)
+    >>> print(vI)
+    >>> ## I[4-10]
+    >>> 
+    >>> vX.maxVal()
+    >>> ## 10
+    >>> 
+    >>> vX.belongs(1)
+    >>> ## False
+    >>> 
+    >>> # where is the value 5 ?
+    >>> vX.index('5')
+    >>> ## 1
+    >>> 
+    >>> vi.labels()
+    >>> ## ('4', '5', '6', '7', '8', '9', '10')
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [DiscreteVariable]:
@@ -3030,62 +3442,208 @@ class RangeVariable(DiscreteVariable):
         return None
 
     def clone(self) -> "gum::DiscreteVariable *":
-        """clone(self) -> DiscreteVariable"""
+        """
+        clone(self) -> DiscreteVariable
+
+
+        Returns
+        -------
+        pyAgrum.RangeVariable
+        	a copy of the RangeVariable
+
+        """
         return _pyAgrum.RangeVariable_clone(self)
 
 
     def domainSize(self) -> "gum::Size":
-        """domainSize(self) -> gum::Size"""
+        """
+        domainSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of modalities in the variable domain
+
+        """
         return _pyAgrum.RangeVariable_domainSize(self)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
-        """varType(self) -> gum::DiscreteVariable::VarType"""
+        """
+        varType(self) -> gum::DiscreteVariable::VarType
+
+
+        returns the type of variable
+
+        Returns
+        -------
+        int :
+        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+
+        """
         return _pyAgrum.RangeVariable_varType(self)
 
 
     def label(self, indice: 'gum::Idx') -> "std::string":
-        """label(self, indice) -> std::string"""
+        """
+        label(self, indice) -> std::string
+
+
+        Parameters
+        ----------
+        indice : int
+          the index of the label we wish to return
+
+        Returns
+        -------
+        str
+          the indice-th label
+
+        Warnings
+        --------
+        OutOfBound raised if the variable does not contain the label
+
+        """
         return _pyAgrum.RangeVariable_label(self, indice)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
-        """numerical(self, indice) -> double"""
+        """
+        numerical(self, indice) -> double
+
+
+        Parameters
+        ----------
+        indice : int
+        	an index
+
+        Returns
+        -------
+        float
+        	the numerical representation of the indice-th value
+
+        """
         return _pyAgrum.RangeVariable_numerical(self, indice)
 
 
     def minVal(self) -> "long":
-        """minVal(self) -> long"""
+        """
+        minVal(self) -> long
+
+
+        Returns
+        -------
+        long :
+          the lower bound of the variable
+
+        """
         return _pyAgrum.RangeVariable_minVal(self)
 
 
     def setMinVal(self, minVal: 'long') -> "void":
-        """setMinVal(self, minVal)"""
+        """
+        setMinVal(self, minVal)
+
+
+        Set a new value of the lower bound
+
+        Parameters
+        ----------
+        minVal : long
+          The new value of the lower bound
+
+        Warnings
+        --------
+        An error should be raised if the value is higher than the upper bound.
+
+        """
         return _pyAgrum.RangeVariable_setMinVal(self, minVal)
 
 
     def maxVal(self) -> "long":
-        """maxVal(self) -> long"""
+        """
+        maxVal(self) -> long
+
+
+        Returns
+        -------
+        long :
+          the upper bound of the variable.
+
+        """
         return _pyAgrum.RangeVariable_maxVal(self)
 
 
     def setMaxVal(self, maxVal: 'long') -> "void":
-        """setMaxVal(self, maxVal)"""
+        """
+        setMaxVal(self, maxVal)
+
+
+        Set a new value of the upper bound
+
+        Parameters
+        ----------
+        maxVal : long
+          The new value of the upper bound
+
+        Warnings
+        --------
+        An error should be raised if the value is lower than the lower bound.
+
+        """
         return _pyAgrum.RangeVariable_setMaxVal(self, maxVal)
 
 
     def belongs(self, val: 'long') -> "bool":
-        """belongs(self, val) -> bool"""
+        """
+        belongs(self, val) -> bool
+
+
+        Parameters
+        ----------
+        val : long
+          the value to be tested
+
+        Returns
+        -------
+        bool:
+          True if the value in parameters belongs to the variable's interval.
+
+        """
         return _pyAgrum.RangeVariable_belongs(self, val)
 
 
     def index(self, arg2: 'std::string const &') -> "gum::Idx":
-        """index(self, arg2) -> gum::Idx"""
+        """
+        index(self, arg2) -> gum::Idx
+
+
+        Parameters
+        ----------
+        arg2 : str
+          a label
+
+        Returns
+        -------
+        int
+          the indice of the label
+
+        """
         return _pyAgrum.RangeVariable_index(self, arg2)
 
 
     def domain(self) -> "std::string const":
-        """domain(self) -> std::string const"""
+        """
+        domain(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the domain of the variable
+
+        """
         return _pyAgrum.RangeVariable_domain(self)
 
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
@@ -3108,7 +3666,7 @@ class Edge(_object):
       the nodeId of the first node
     aN2 : int
       the nodeId of the secondnode
-    src: Edge
+    src: pyAgrum.Edge
       the Edge to copy
 
     """
@@ -3376,12 +3934,29 @@ class DiGraph(_object):
 
 
     def eraseNode(self, id: 'gum::NodeId const') -> "void":
-        """eraseNode(self, id)"""
+        """
+        eraseNode(self, id)
+
+
+        Erase the node and all the related arcs.
+
+        Parameters
+        ----------
+        id : int
+        	the id of the node
+
+        """
         return _pyAgrum.DiGraph_eraseNode(self, id)
 
 
     def clear(self) -> "void":
-        """clear(self)"""
+        """
+        clear(self)
+
+
+        Remove all the nodes and arcs from the graph.
+
+        """
         return _pyAgrum.DiGraph_clear(self)
 
 
@@ -3391,7 +3966,16 @@ class DiGraph(_object):
 
 
     def toDot(self) -> "std::string const":
-        """toDot(self) -> std::string const"""
+        """
+        toDot(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format 
+
+        """
         return _pyAgrum.DiGraph_toDot(self)
 
 
@@ -3399,6 +3983,17 @@ class DiGraph(_object):
         """
         topologicalOrder(self, clear=True) -> gum::Sequence< gum::NodeId > const
         topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &
+
+
+        Returns
+        -------
+        List
+            the list of the nodes Ids in a topological order
+
+        Warnings
+        --------
+        InvalidDirectedCycle raised if this graph contains cycles
+
         """
         return _pyAgrum.DiGraph_topologicalOrder(self, clear)
 
@@ -3418,17 +4013,54 @@ class DiGraph(_object):
 
 
     def arcs(self) -> "PyObject *":
-        """arcs(self) -> PyObject *"""
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        List
+        	the list of the arcs
+
+        """
         return _pyAgrum.DiGraph_arcs(self)
 
 
     def parents(self, id: 'gum::NodeId') -> "PyObject *":
-        """parents(self, id) -> PyObject *"""
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
         return _pyAgrum.DiGraph_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId') -> "PyObject *":
-        """children(self, id) -> PyObject *"""
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
         return _pyAgrum.DiGraph_children(self, id)
 
 
@@ -3436,8 +4068,6 @@ class DiGraph(_object):
         """
         addNode(self) -> gum::NodeId
 
-
-        Add a node by choosing a new NodeId
 
         Returns
         -------
@@ -3449,7 +4079,22 @@ class DiGraph(_object):
 
 
     def addNodeWithId(self, id: 'gum::NodeId const') -> "void":
-        """addNodeWithId(self, id)"""
+        """
+        addNodeWithId(self, id)
+
+
+        Add a node by choosing a new NodeId.
+
+        Parameters
+        ----------
+        id : int
+          The id of the new node
+
+        Warnings
+        --------
+        DuplicateElement raised if the given id is already used
+
+        """
         return _pyAgrum.DiGraph_addNodeWithId(self, id)
 
 
@@ -3475,12 +4120,32 @@ class DiGraph(_object):
 
 
     def size(self) -> "gum::Size":
-        """size(self) -> gum::Size"""
+        """
+        size(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
         return _pyAgrum.DiGraph_size(self)
 
 
     def empty(self) -> "bool":
-        """empty(self) -> bool"""
+        """
+        empty(self) -> bool
+
+
+        Check if the graph is empty.
+
+        Returns
+        -------
+        bool
+            True if the graph is empty
+
+        """
         return _pyAgrum.DiGraph_empty(self)
 
 
@@ -3488,44 +4153,146 @@ class DiGraph(_object):
         """
         addArc(self, tail, head)
         addArc(self, n1, n2)
+
+
+        Add an arc from tail to head.
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail node
+        head : int
+          the id of the head node
+
+        Warnings
+        --------
+        InvalidNode raised if head or tail does not belong to the graph nodes.
+
         """
         return _pyAgrum.DiGraph_addArc(self, *args)
 
 
     def eraseArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """eraseArc(self, n1, n2)"""
+        """
+        eraseArc(self, n1, n2)
+
+
+        Erase the arc between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        """
         return _pyAgrum.DiGraph_eraseArc(self, n1, n2)
 
 
     def existsArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
-        """existsArc(self, n1, n2) -> bool"""
+        """
+        existsArc(self, n1, n2) -> bool
+
+
+        Check if an arc exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+        	the id of the tail node
+        n2 : int
+        	the id of the head node
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
         return _pyAgrum.DiGraph_existsArc(self, n1, n2)
 
 
     def eraseParents(self, n: 'gum::NodeId const') -> "void":
-        """eraseParents(self, n)"""
+        """
+        eraseParents(self, n)
+
+
+        Erase the arcs coming to the node.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the child node
+
+        """
         return _pyAgrum.DiGraph_eraseParents(self, n)
 
 
     def eraseChildren(self, n: 'gum::NodeId const') -> "void":
-        """eraseChildren(self, n)"""
+        """
+        eraseChildren(self, n)
+
+
+        Erase the arcs heading through the node's children.
+
+        Parameters
+        ----------
+        n : int
+        	the id of the parent node
+
+        """
         return _pyAgrum.DiGraph_eraseChildren(self, n)
 
 
     def sizeArcs(self) -> "gum::Size":
-        """sizeArcs(self) -> gum::Size"""
+        """
+        sizeArcs(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyAgrum.DiGraph_sizeArcs(self)
 
 
     def emptyArcs(self) -> "bool":
-        """emptyArcs(self) -> bool"""
+        """
+        emptyArcs(self) -> bool
+
+
+        Check if the graph doesn't contains arcs.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains arcs
+
+        """
         return _pyAgrum.DiGraph_emptyArcs(self)
 
 DiGraph_swigregister = _pyAgrum.DiGraph_swigregister
 DiGraph_swigregister(DiGraph)
 
 class DAG(DiGraph):
-    """Proxy of C++ gum::DAG class."""
+    """
+
+    DAG represents a Directed Acyclic Graph.
+
+    Available constructors:
+        ``DAG() -> DAG``
+
+        ``DAG(src) -> DAG``
+
+    Parameters
+    ----------
+    src : :class: DAG
+      the DAG to copy
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [DiGraph]:
@@ -3559,44 +4326,48 @@ class DAG(DiGraph):
         """
         addArc(self, tail, head)
         addArc(self, n1, n2)
+
+
+        Add an arc from tail to head.
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail node
+        head : int
+          the id of the head node
+
+        Warnings
+        --------
+        	InvalidDirectedCircle raised if any (directed) cycle is created by this arc
+
+        Warnings
+        --------
+        	InvalidNode raised if head or tail does not belong to the graph nodes
+
         """
         return _pyAgrum.DAG_addArc(self, *args)
-
-
-    def eraseArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """eraseArc(self, n1, n2)"""
-        return _pyAgrum.DAG_eraseArc(self, n1, n2)
-
-
-    def existsArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
-        """existsArc(self, n1, n2) -> bool"""
-        return _pyAgrum.DAG_existsArc(self, n1, n2)
-
-
-    def eraseParents(self, n: 'gum::NodeId const') -> "void":
-        """eraseParents(self, n)"""
-        return _pyAgrum.DAG_eraseParents(self, n)
-
-
-    def eraseChildren(self, n: 'gum::NodeId const') -> "void":
-        """eraseChildren(self, n)"""
-        return _pyAgrum.DAG_eraseChildren(self, n)
-
-
-    def sizeArcs(self) -> "gum::Size":
-        """sizeArcs(self) -> gum::Size"""
-        return _pyAgrum.DAG_sizeArcs(self)
-
-
-    def emptyArcs(self) -> "bool":
-        """emptyArcs(self) -> bool"""
-        return _pyAgrum.DAG_emptyArcs(self)
 
 DAG_swigregister = _pyAgrum.DAG_swigregister
 DAG_swigregister(DAG)
 
 class UndiGraph(_object):
-    """Proxy of C++ gum::UndiGraph class."""
+    """
+
+    UndiGraph represents an Undirected Graph.
+
+    Available constructors:
+        ``UndiGraph() -> UndiGraph``
+
+        ``UndiGraph(src) -> UndiGraph``
+
+    Parameters
+    ----------
+    src : :class: UndiGraph
+      the UndiGraph to copy
+
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, UndiGraph, name, value)
@@ -3633,12 +4404,29 @@ class UndiGraph(_object):
 
 
     def eraseNode(self, id: 'gum::NodeId const') -> "void":
-        """eraseNode(self, id)"""
+        """
+        eraseNode(self, id)
+
+
+        Erase the node and all the adjacent edges.
+
+        Parameters
+        ----------
+        id : int
+          the id of the node
+
+        """
         return _pyAgrum.UndiGraph_eraseNode(self, id)
 
 
     def clear(self) -> "void":
-        """clear(self)"""
+        """
+        clear(self)
+
+
+        Remove all the nodes and edges from the graph.
+
+        """
         return _pyAgrum.UndiGraph_clear(self)
 
 
@@ -3648,94 +4436,313 @@ class UndiGraph(_object):
 
 
     def toDot(self) -> "std::string const":
-        """toDot(self) -> std::string const"""
+        """
+        toDot(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format 
+
+        """
         return _pyAgrum.UndiGraph_toDot(self)
 
 
     def hasUndirectedCycle(self) -> "bool":
-        """hasUndirectedCycle(self) -> bool"""
+        """
+        hasUndirectedCycle(self) -> bool
+
+
+        Checks whether the graph contains cycles.
+
+        Returns
+        -------
+        bool
+            True if the graph contains a cycle
+
+        """
         return _pyAgrum.UndiGraph_hasUndirectedCycle(self)
 
 
     def partialUndiGraph(self, nodesSet: 'gum::NodeSet') -> "gum::UndiGraph":
-        """partialUndiGraph(self, nodesSet) -> UndiGraph"""
+        """
+        partialUndiGraph(self, nodesSet) -> UndiGraph
+
+
+        Parameters
+        ----------
+        nodesSet : Set
+            The set of nodes composing the partial graph
+
+        Returns
+        -------
+        pyAgrum.UndiGraph
+            The partial graph formed by the nodes given in parameter 
+
+        """
         return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
 
 
     def ids(self) -> "PyObject *":
-        """ids(self) -> PyObject *"""
+        """
+        ids(self) -> PyObject *
+
+
+        Returns
+        -------
+        List
+            the list of ids
+
+        """
         return _pyAgrum.UndiGraph_ids(self)
 
 
     def edges(self) -> "PyObject *":
-        """edges(self) -> PyObject *"""
+        """
+        edges(self) -> PyObject *
+
+
+        Returns
+        -------
+        List
+          the list of the edges
+
+        """
         return _pyAgrum.UndiGraph_edges(self)
 
 
     def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
-        """neighbours(self, id) -> PyObject *"""
+        """
+        neighbours(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        Set
+            The set of edges adjacent to the given node 
+
+        """
         return _pyAgrum.UndiGraph_neighbours(self, id)
 
 
     def addNode(self) -> "gum::NodeId":
-        """addNode(self) -> gum::NodeId"""
+        """
+        addNode(self) -> gum::NodeId
+
+
+        Returns
+        -------
+        int
+          the new NodeId
+
+        """
         return _pyAgrum.UndiGraph_addNode(self)
 
 
     def addNodeWithId(self, id: 'gum::NodeId const') -> "void":
-        """addNodeWithId(self, id)"""
+        """
+        addNodeWithId(self, id)
+
+
+        Add a node by choosing a new NodeId.
+
+        Parameters
+        ----------
+        id : int
+          The id of the new node
+
+        Warnings
+        --------
+        DuplicateElement raised if the given id is already used
+
+        """
         return _pyAgrum.UndiGraph_addNodeWithId(self, id)
 
 
     def existsNode(self, id: 'gum::NodeId const') -> "bool":
-        """existsNode(self, id) -> bool"""
+        """
+        existsNode(self, id) -> bool
+
+
+        Check if a node with a certain id exists in the graph.
+
+        Parameters
+        ----------
+        id : int
+            the checked id
+
+        Returns
+        -------
+        bool
+            True if the node exists
+
+        """
         return _pyAgrum.UndiGraph_existsNode(self, id)
 
 
     def size(self) -> "gum::Size":
-        """size(self) -> gum::Size"""
+        """
+        size(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
         return _pyAgrum.UndiGraph_size(self)
 
 
     def empty(self) -> "bool":
-        """empty(self) -> bool"""
+        """
+        empty(self) -> bool
+
+
+        Check if the graph is empty.
+
+        Returns
+        -------
+        bool
+            True if the graph is empty
+
+        """
         return _pyAgrum.UndiGraph_empty(self)
 
 
     def addEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """addEdge(self, n1, n2)"""
+        """
+        addEdge(self, n1, n2)
+
+
+        Insert a new edge into the graph.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one node of the new inserted edge
+        n2 : int
+          the id of the other node of the new inserted edge
+
+        Warnings
+        --------
+        InvalidNode raised if n1 or n2 does not belong to the graph nodes.
+
+        """
         return _pyAgrum.UndiGraph_addEdge(self, n1, n2)
 
 
     def eraseEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """eraseEdge(self, n1, n2)"""
+        """
+        eraseEdge(self, n1, n2)
+
+
+        Erase the edge between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of the tail node
+        n2 : int
+          the id of the head node
+
+        """
         return _pyAgrum.UndiGraph_eraseEdge(self, n1, n2)
 
 
     def existsEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
-        """existsEdge(self, n1, n2) -> bool"""
+        """
+        existsEdge(self, n1, n2) -> bool
+
+
+        Check if an edge exists bewteen n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one extremity of the edge
+        n2 : int
+          the id of the other extremity if tge edge
+
+        Returns
+        -------
+        bool
+            True if the arc exists
+
+        """
         return _pyAgrum.UndiGraph_existsEdge(self, n1, n2)
 
 
     def sizeEdges(self) -> "gum::Size":
-        """sizeEdges(self) -> gum::Size"""
+        """
+        sizeEdges(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of edges in the graph
+
+        """
         return _pyAgrum.UndiGraph_sizeEdges(self)
 
 
     def emptyEdges(self) -> "bool":
-        """emptyEdges(self) -> bool"""
+        """
+        emptyEdges(self) -> bool
+
+
+        Check if the graph doesn't contains edges.
+
+        Returns
+        -------
+        bool
+            True if the graph doesn't contains edges
+
+        """
         return _pyAgrum.UndiGraph_emptyEdges(self)
 
 
     def eraseNeighbours(self, n: 'gum::NodeId const') -> "void":
-        """eraseNeighbours(self, n)"""
+        """
+        eraseNeighbours(self, n)
+
+
+        Erase all the edges adjacent to a given node.
+
+        Parameters
+        ----------
+        n : int
+          the id of the node
+
+        """
         return _pyAgrum.UndiGraph_eraseNeighbours(self, n)
 
 UndiGraph_swigregister = _pyAgrum.UndiGraph_swigregister
 UndiGraph_swigregister(UndiGraph)
 
 class MixedGraph(UndiGraph, DiGraph):
-    """Proxy of C++ gum::MixedGraph class."""
+    """
+
+    MixedGraph represents a Clique Graph.
+
+    Available constructors:
+        ``MixedGraph() -> MixedGraph``
+
+        ``MixedGraph(src) -> MixedGraph``
+
+    Parameters
+    ----------
+    src : :class: MixedGraph
+      the MixedGraph to copy
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [UndiGraph, DiGraph]:
@@ -3778,27 +4785,93 @@ class MixedGraph(UndiGraph, DiGraph):
 
 
     def eraseNode(self, id: 'gum::NodeId const') -> "void":
-        """eraseNode(self, id)"""
+        """
+        eraseNode(self, id)
+
+
+        Erase the node and all the adjacent edges.
+
+        Parameters
+        ----------
+        id : int
+          the id of the node
+
+        """
         return _pyAgrum.MixedGraph_eraseNode(self, id)
 
 
     def clear(self) -> "void":
-        """clear(self)"""
+        """
+        clear(self)
+
+
+        Remove all the nodes and edges from the graph.
+
+        """
         return _pyAgrum.MixedGraph_clear(self)
 
 
     def mixedOrientedPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
-        """mixedOrientedPath(self, node1, node2) -> Vector_int"""
+        """
+        mixedOrientedPath(self, node1, node2) -> Vector_int
+
+
+        Parameters
+        ----------
+        node1 : int
+        	the id form which the path begins
+        node2 : int
+        	the id to witch the path ends
+
+        Returns
+        -------
+        List
+        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs) 
+
+        Warnings
+        --------
+        NotFound raised if no path can be found between the two nodes
+
+        """
         return _pyAgrum.MixedGraph_mixedOrientedPath(self, node1, node2)
 
 
     def mixedUnorientedPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > > const":
-        """mixedUnorientedPath(self, node1, node2) -> Vector_int"""
+        """
+        mixedUnorientedPath(self, node1, node2) -> Vector_int
+
+
+        Parameters
+        ----------
+        node1 : int
+        	the id from which the path begins 
+        node2 : int
+        	the id to which the path ends
+
+        Returns
+        -------
+        List
+        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs) 
+
+        Warnings
+        --------
+        NotFound raised if no path can be found between the two nodes
+
+        """
         return _pyAgrum.MixedGraph_mixedUnorientedPath(self, node1, node2)
 
 
     def toDot(self) -> "std::string const":
-        """toDot(self) -> std::string const"""
+        """
+        toDot(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format 
+
+        """
         return _pyAgrum.MixedGraph_toDot(self)
 
 
@@ -3806,101 +4879,25 @@ class MixedGraph(UndiGraph, DiGraph):
         """__str__(self) -> std::string const"""
         return _pyAgrum.MixedGraph___str__(self)
 
-
-    def addNode(self) -> "gum::NodeId":
-        """addNode(self) -> gum::NodeId"""
-        return _pyAgrum.MixedGraph_addNode(self)
-
-
-    def addNodeWithId(self, id: 'gum::NodeId const') -> "void":
-        """addNodeWithId(self, id)"""
-        return _pyAgrum.MixedGraph_addNodeWithId(self, id)
-
-
-    def existsNode(self, id: 'gum::NodeId const') -> "bool":
-        """existsNode(self, id) -> bool"""
-        return _pyAgrum.MixedGraph_existsNode(self, id)
-
-
-    def size(self) -> "gum::Size":
-        """size(self) -> gum::Size"""
-        return _pyAgrum.MixedGraph_size(self)
-
-
-    def empty(self) -> "bool":
-        """empty(self) -> bool"""
-        return _pyAgrum.MixedGraph_empty(self)
-
-
-    def addEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """addEdge(self, n1, n2)"""
-        return _pyAgrum.MixedGraph_addEdge(self, n1, n2)
-
-
-    def eraseEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """eraseEdge(self, n1, n2)"""
-        return _pyAgrum.MixedGraph_eraseEdge(self, n1, n2)
-
-
-    def existsEdge(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
-        """existsEdge(self, n1, n2) -> bool"""
-        return _pyAgrum.MixedGraph_existsEdge(self, n1, n2)
-
-
-    def sizeEdges(self) -> "gum::Size":
-        """sizeEdges(self) -> gum::Size"""
-        return _pyAgrum.MixedGraph_sizeEdges(self)
-
-
-    def emptyEdges(self) -> "bool":
-        """emptyEdges(self) -> bool"""
-        return _pyAgrum.MixedGraph_emptyEdges(self)
-
-
-    def eraseNeighbours(self, n: 'gum::NodeId const') -> "void":
-        """eraseNeighbours(self, n)"""
-        return _pyAgrum.MixedGraph_eraseNeighbours(self, n)
-
-
-    def addArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """addArc(self, n1, n2)"""
-        return _pyAgrum.MixedGraph_addArc(self, n1, n2)
-
-
-    def eraseArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "void":
-        """eraseArc(self, n1, n2)"""
-        return _pyAgrum.MixedGraph_eraseArc(self, n1, n2)
-
-
-    def existsArc(self, n1: 'gum::NodeId const', n2: 'gum::NodeId const') -> "bool":
-        """existsArc(self, n1, n2) -> bool"""
-        return _pyAgrum.MixedGraph_existsArc(self, n1, n2)
-
-
-    def eraseParents(self, n: 'gum::NodeId const') -> "void":
-        """eraseParents(self, n)"""
-        return _pyAgrum.MixedGraph_eraseParents(self, n)
-
-
-    def eraseChildren(self, n: 'gum::NodeId const') -> "void":
-        """eraseChildren(self, n)"""
-        return _pyAgrum.MixedGraph_eraseChildren(self, n)
-
-
-    def sizeArcs(self) -> "gum::Size":
-        """sizeArcs(self) -> gum::Size"""
-        return _pyAgrum.MixedGraph_sizeArcs(self)
-
-
-    def emptyArcs(self) -> "bool":
-        """emptyArcs(self) -> bool"""
-        return _pyAgrum.MixedGraph_emptyArcs(self)
-
 MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
 MixedGraph_swigregister(MixedGraph)
 
 class CliqueGraph(UndiGraph):
-    """Proxy of C++ gum::CliqueGraph class."""
+    """
+
+    CliqueGraph represents a Clique Graph.
+
+    Available constructors:
+        ``CliqueGraph() -> CliqueGraph``
+
+        ``CliqueGraph(src) -> CliqueGraph``
+
+    Parameters
+    ----------
+    src : :class: CliqueGraph
+      the CliqueGraph to copy
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [UndiGraph]:
@@ -3931,47 +4928,173 @@ class CliqueGraph(UndiGraph):
         return None
 
     def addEdge(self, first: 'gum::NodeId const', second: 'gum::NodeId const') -> "void":
-        """addEdge(self, first, second)"""
+        """
+        addEdge(self, first, second)
+
+
+        Insert a new edge into the graph.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of one node of the new inserted edge
+        n2 : int
+          the id of the other node of the new inserted edge
+
+        Warnings
+        --------
+        InvalidNode raised if n1 or n2 does not belong to the graph nodes.
+
+        """
         return _pyAgrum.CliqueGraph_addEdge(self, first, second)
 
 
     def eraseEdge(self, edge: 'Edge') -> "void":
-        """eraseEdge(self, edge)"""
+        """
+        eraseEdge(self, edge)
+
+
+        Erase the edge between n1 and n2.
+
+        Parameters
+        ----------
+        n1 : int
+          the id of the tail node
+        n2 : int
+          the id of the head node
+
+        """
         return _pyAgrum.CliqueGraph_eraseEdge(self, edge)
 
 
     def clearEdges(self) -> "void":
-        """clearEdges(self)"""
+        """
+        clearEdges(self)
+
+
+        Remove all edges and their separators 
+
+        """
         return _pyAgrum.CliqueGraph_clearEdges(self)
 
 
     def eraseNode(self, node: 'gum::NodeId const') -> "void":
-        """eraseNode(self, node)"""
+        """
+        eraseNode(self, node)
+
+
+        Erase the node and all the adjacent edges.
+
+        Parameters
+        ----------
+        id : int
+          the id of the node
+
+        """
         return _pyAgrum.CliqueGraph_eraseNode(self, node)
 
 
     def clear(self) -> "void":
-        """clear(self)"""
+        """
+        clear(self)
+
+
+        Remove all the nodes and edges from the graph.
+
+        """
         return _pyAgrum.CliqueGraph_clear(self)
 
 
     def container(self, idNode: 'gum::NodeId const') -> "gum::NodeId":
-        """container(self, idNode) -> gum::NodeId"""
+        """
+        container(self, idNode) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        idNode : int
+        	the id of the node
+
+        Returns
+        -------
+        int
+        	the id of a clique containing the node
+
+        Warnings
+        --------
+        NotFound raised if no clique contains idNode	
+
+        """
         return _pyAgrum.CliqueGraph_container(self, idNode)
 
 
     def setClique(self, idClique: 'gum::NodeId const', new_clique: 'gum::NodeSet const &') -> "void":
-        """setClique(self, idClique, new_clique)"""
+        """
+        setClique(self, idClique, new_clique)
+
+
+        changes the set of nodes included into a given clique
+
+        Parameters
+        ----------
+        idClique : int
+        	the id of the clique
+        new_clique : Set
+        	the new set of nodes to be included in the clique
+
+        Warnings
+        --------
+        NotFound exception if idClique is not a clique of the graph
+
+        """
         return _pyAgrum.CliqueGraph_setClique(self, idClique, new_clique)
 
 
     def addToClique(self, clique_id: 'gum::NodeId const', node_id: 'gum::NodeId const') -> "void":
-        """addToClique(self, clique_id, node_id)"""
+        """
+        addToClique(self, clique_id, node_id)
+
+
+        Change the set of nodes included into a given clique and returns the new set 
+
+        Parameters
+        ----------
+        clique_id : int
+        	the id of the clique
+        node_id : int
+        	the id of the node
+
+        Warnings
+        --------
+        NotFound raised if clique_id does not exist
+
+        Warnings
+        --------
+        DuplicateElement raised if clique_id set already contains the ndoe
+
+        """
         return _pyAgrum.CliqueGraph_addToClique(self, clique_id, node_id)
 
 
     def eraseFromClique(self, clique_id: 'gum::NodeId const', node_id: 'gum::NodeId const') -> "void":
-        """eraseFromClique(self, clique_id, node_id)"""
+        """
+        eraseFromClique(self, clique_id, node_id)
+
+
+        Remove a node from a clique
+
+        Parameters
+        ----------
+        clique_id : int
+        	the id of the clique
+        node_id : int
+        	the id of the node
+
+        Warnings
+        --------
+        NotFound raised if clique_id does not exist
+
+        """
         return _pyAgrum.CliqueGraph_eraseFromClique(self, clique_id, node_id)
 
 
@@ -3979,22 +5102,80 @@ class CliqueGraph(UndiGraph):
         """
         separator(self, edge) -> gum::NodeSet const
         separator(self, clique1, clique) -> gum::NodeSet const &
+
+
+        Parameters
+        ----------
+        edge : pyAgrum.Edge
+        	the edge to be checked
+        clique1 : int 
+        	one extremity of the edge
+        clique : int 
+        	the other extremity of the edge
+
+        Returns
+        -------
+        Set
+        	the separator included in a given edge
+
+        Warnings
+        --------
+        NotFound raised if the edge does not belong to the clique graph
+
         """
         return _pyAgrum.CliqueGraph_separator(self, *args)
 
 
     def containerPath(self, node1: 'gum::NodeId const', node2: 'gum::NodeId const') -> "std::vector< gum::NodeId,std::allocator< gum::NodeId > >":
-        """containerPath(self, node1, node2) -> Vector_int"""
+        """
+        containerPath(self, node1, node2) -> Vector_int
+
+
+        Parameters
+        ----------
+        node1 : int
+        	the id of one node
+        node2 : int
+        	the id of the other node
+
+        Returns
+        -------
+        List
+        	a path from a clique containing node1 to a clique containing node2
+
+        Warnings
+        --------
+        NotFound raised if such path cannot be found
+
+        """
         return _pyAgrum.CliqueGraph_containerPath(self, node1, node2)
 
 
     def hasRunningIntersection(self) -> "bool":
-        """hasRunningIntersection(self) -> bool"""
+        """
+        hasRunningIntersection(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the running intersection property holds 
+
+        """
         return _pyAgrum.CliqueGraph_hasRunningIntersection(self)
 
 
     def isJoinTree(self) -> "bool":
-        """isJoinTree(self) -> bool"""
+        """
+        isJoinTree(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the graph is a join tree 
+
+        """
         return _pyAgrum.CliqueGraph_isJoinTree(self)
 
 
@@ -4004,7 +5185,16 @@ class CliqueGraph(UndiGraph):
 
 
     def toDot(self) -> "std::string const":
-        """toDot(self) -> std::string const"""
+        """
+        toDot(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format 
+
+        """
         return _pyAgrum.CliqueGraph_toDot(self)
 
 
@@ -4019,7 +5209,25 @@ class CliqueGraph(UndiGraph):
 
 
     def clique(self, clique: 'gum::NodeId const') -> "PyObject *":
-        """clique(self, clique) -> PyObject *"""
+        """
+        clique(self, clique) -> PyObject *
+
+
+        Parameters
+        ----------
+        idClique : int
+        	the id of the clique
+
+        Returns
+        -------
+        Set
+        	The set of nodes included in the clique
+
+        Warnings
+        --------
+        NotFound raised if the clique does not belong to the clique graph
+
+        """
         return _pyAgrum.CliqueGraph_clique(self, clique)
 
 
@@ -4035,7 +5243,30 @@ CliqueGraph_swigregister = _pyAgrum.CliqueGraph_swigregister
 CliqueGraph_swigregister(CliqueGraph)
 
 class Instantiation(_object):
-    """Proxy of C++ gum::Instantiation class."""
+    """
+
+    Class for assigning/browsing values to tuples of discrete variables.
+
+    Instantiation is designed to assign values to tuples of variables and to efficiently loop over values of subsets of variables.
+
+    Available constructors:
+
+    	``Instantiation() -> Instantiation``
+
+    	``Instantiation(aI) -> Instantiation``
+
+    Parameters
+    ----------
+    aI: pyAgrum.Instantiation
+      The Instantiation we copy
+
+    Returns
+    -------
+    pyAgrum.Instantiation
+    	An empty tuple or a copy of the one in parameters
+
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Instantiation, name, value)
@@ -4063,32 +5294,103 @@ class Instantiation(_object):
         return None
 
     def nbrDim(self) -> "gum::Idx":
-        """nbrDim(self) -> gum::Idx"""
+        """
+        nbrDim(self) -> gum::Idx
+
+
+        Returns
+        -------
+        int
+            The number of variables in the Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_nbrDim(self)
 
 
     def add(self, v: 'DiscreteVariable') -> "void":
-        """add(self, v)"""
+        """
+        add(self, v)
+
+
+        Adds a new variable in the Instantiation.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+          The new variable added to the Instantiation
+
+        Warnings
+        --------
+        DuplicateElement Raised if the variable is already in this Instantiation
+
+
+        """
         return _pyAgrum.Instantiation_add(self, v)
 
 
     def erase(self, v: 'DiscreteVariable') -> "void":
-        """erase(self, v)"""
+        """
+        erase(self, v)
+
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+          The variable to be removed from this Instantiation.
+
+        Warnings
+        --------
+        NotFound raised if v does not belong to this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_erase(self, v)
 
 
     def clear(self) -> "void":
-        """clear(self)"""
+        """
+        clear(self)
+
+
+        Erase all variables from an Instantiation.
+
+        """
         return _pyAgrum.Instantiation_clear(self)
 
 
     def domainSize(self) -> "gum::Size":
-        """domainSize(self) -> gum::Size"""
+        """
+        domainSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            The product of the variable's domain size in the Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_domainSize(self)
 
 
     def pos(self, v: 'DiscreteVariable') -> "gum::Idx":
-        """pos(self, v) -> gum::Idx"""
+        """
+        pos(self, v) -> gum::Idx
+
+
+        Returns
+        -------
+        int
+           the position of the variable v. 
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            the variable for which its position is return.
+
+        Warnings
+        --------
+        NotFound raised if v does not belong to the instantiation. 
+
+        """
         return _pyAgrum.Instantiation_pos(self, v)
 
 
@@ -4096,17 +5398,48 @@ class Instantiation(_object):
         """
         val(self, i) -> gum::Idx
         val(self, var) -> gum::Idx
+
+
+        Parameters
+        ----------
+        i : int
+        	The index of the variable.
+        var : pyAgrum.DiscreteVariable
+        	The variable the value of which we wish to know
+
+        Returns
+        -------
+        int
+        	the current value of the variable.
+
+        Warnings
+        --------
+            NotFound raised if the element cannot be found. 
+
         """
         return _pyAgrum.Instantiation_val(self, *args)
 
 
-    def valFromPtr(self, pvar: 'DiscreteVariable') -> "gum::Idx":
-        """valFromPtr(self, pvar) -> gum::Idx"""
-        return _pyAgrum.Instantiation_valFromPtr(self, pvar)
-
-
     def variable(self, i: 'gum::Idx') -> "gum::DiscreteVariable const &":
-        """variable(self, i) -> DiscreteVariable"""
+        """
+        variable(self, i) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        i : int
+          The index of the variable
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+          the variable at position i in the tuple. 
+
+        Warnings
+        --------
+            NotFound raised if the element cannot be found. 
+
+        """
         return _pyAgrum.Instantiation_variable(self, i)
 
 
@@ -4115,12 +5448,54 @@ class Instantiation(_object):
         chgVal(self, v, newval) -> Instantiation
         chgVal(self, v, newval) -> Instantiation
         chgVal(self, varPos, newval) -> Instantiation
+
+
+        Assign newval to v (or to the variable at position varPos) in the Instantiation.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+          The variable whose value is assigned
+        newval : pyAgrum.DiscreteVariable
+          The index of the value assigned
+        varPos : int
+          The index of the variable whose value is assigned in the tuple of variables of the Instantiation
+
+        Returns
+        -------
+        pyAgrum.Instantiation
+            The modified instantiation
+
+        Warnings
+        --------
+            NotFound  Raised if variable v does not belong to the instantiation.
+
+        Warnings
+        --------
+            OutOfBound  Raised if newval is not a possible value for the variable. 
+
         """
         return _pyAgrum.Instantiation_chgVal(self, *args)
 
 
     def setVals(self, i: 'Instantiation') -> "gum::Instantiation &":
-        """setVals(self, i) -> Instantiation"""
+        """
+        setVals(self, i) -> Instantiation
+
+
+        Assign the values from i in the Instantiation.
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+          An Instantiation in which the new values are searched
+
+        Returns
+        -------
+        pyAgrum.Instantiation
+          a reference to the instantiation
+
+        """
         return _pyAgrum.Instantiation_setVals(self, i)
 
 
@@ -4128,181 +5503,422 @@ class Instantiation(_object):
         """
         contains(self, v) -> bool
         contains(self, v) -> bool
+
+
+        Indicates whether a given variable belongs to the Instantiation.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable for which the test is made.
+
+        Returns
+        -------
+        bool :
+            True if the variable is in the Instantiation. 
+
         """
         return _pyAgrum.Instantiation_contains(self, *args)
 
 
     def variablesSequence(self) -> "gum::Sequence< gum::DiscreteVariable const * > const &":
-        """variablesSequence(self) -> gum::Sequence< gum::DiscreteVariable const * > const &"""
+        """
+        variablesSequence(self) -> gum::Sequence< gum::DiscreteVariable const * > const &
+
+
+        Returns
+        -------
+        List
+            the sequence of DiscreteVariable of this instantiation. 
+
+        """
         return _pyAgrum.Instantiation_variablesSequence(self)
 
 
     def empty(self) -> "bool":
-        """empty(self) -> bool"""
+        """
+        empty(self) -> bool
+
+
+        Returns
+        -------
+        bool
+            True if the instantiation is empty. 
+
+        """
         return _pyAgrum.Instantiation_empty(self)
 
 
     def inOverflow(self) -> "bool":
-        """inOverflow(self) -> bool"""
+        """
+        inOverflow(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if the current value of the tuple is correct 
+
+        """
         return _pyAgrum.Instantiation_inOverflow(self)
 
 
     def unsetOverflow(self) -> "void":
-        """unsetOverflow(self)"""
+        """
+        unsetOverflow(self)
+
+
+        Removes the flag overflow.
+
+        """
         return _pyAgrum.Instantiation_unsetOverflow(self)
 
 
     def unsetEnd(self) -> "void":
-        """unsetEnd(self)"""
+        """
+        unsetEnd(self)
+
+
+        Alias for unsetOverflow().
+
+        """
         return _pyAgrum.Instantiation_unsetEnd(self)
 
 
     def end(self) -> "bool":
-        """end(self) -> bool"""
+        """
+        end(self) -> bool
+
+
+        Returns
+        -------
+        bool
+            True if the Instantiation reached the end. 
+
+        """
         return _pyAgrum.Instantiation_end(self)
 
 
     def rend(self) -> "bool":
-        """rend(self) -> bool"""
+        """
+        rend(self) -> bool
+
+
+        Returns
+        -------
+        bool:
+          True if the Instantiation reached the rend. 
+
+        """
         return _pyAgrum.Instantiation_rend(self)
 
 
     def inc(self) -> "void":
-        """inc(self)"""
+        """
+        inc(self)
+
+
+        Operator ++. 
+
+        """
         return _pyAgrum.Instantiation_inc(self)
 
 
     def dec(self) -> "void":
-        """dec(self)"""
+        """
+        dec(self)
+
+
+        Operator –.
+
+        """
         return _pyAgrum.Instantiation_dec(self)
 
 
     def incIn(self, i: 'Instantiation') -> "void":
-        """incIn(self, i)"""
+        """
+        incIn(self, i)
+
+
+        Operator ++ for the variables in i.
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+            The set of variables to increment in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_incIn(self, i)
 
 
     def decIn(self, i: 'Instantiation') -> "void":
-        """decIn(self, i)"""
+        """
+        decIn(self, i)
+
+
+        Operator – for the variables in i.
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+          The set of variables to decrement in this Instantiation
+
+        """
         return _pyAgrum.Instantiation_decIn(self, i)
 
 
     def incOut(self, i: 'Instantiation') -> "void":
-        """incOut(self, i)"""
+        """
+        incOut(self, i)
+
+
+        Operator ++ for the variables not in i.
+
+        Parameters
+        ----------
+        i : Instantiation
+            The set of variable to not increment in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_incOut(self, i)
 
 
     def decOut(self, i: 'Instantiation') -> "void":
-        """decOut(self, i)"""
+        """
+        decOut(self, i)
+
+
+        Operator – for the variables not in i.
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+          The set of variables to not decrement in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_decOut(self, i)
 
 
     def incNotVar(self, v: 'DiscreteVariable') -> "void":
-        """incNotVar(self, v)"""
+        """
+        incNotVar(self, v)
+
+
+        Operator ++ for vars which are not v.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable not to increment in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_incNotVar(self, v)
 
 
     def decNotVar(self, v: 'DiscreteVariable') -> "void":
-        """decNotVar(self, v)"""
+        """
+        decNotVar(self, v)
+
+
+        Operator – for vars which are not v.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+          The varaible not to decrement in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_decNotVar(self, v)
 
 
     def incVar(self, v: 'DiscreteVariable') -> "void":
-        """incVar(self, v)"""
+        """
+        incVar(self, v)
+
+
+        Operator ++ for variable v only.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable to increment in this Instantiation.
+
+        Warnings
+        --------
+        NotFound raised if variable v does not belong to the Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_incVar(self, v)
 
 
     def decVar(self, v: 'DiscreteVariable') -> "void":
-        """decVar(self, v)"""
+        """
+        decVar(self, v)
+
+
+        Operator – for variable v only. 
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+         The variable to decrement in this Instantiation.
+
+        Warnings
+        --------
+        NotFound raised if variable v does not belong to the Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_decVar(self, v)
 
 
     def setFirst(self) -> "void":
-        """setFirst(self)"""
+        """
+        setFirst(self)
+
+
+        Assign the first values to the tuple of the Instantiation.
+
+        """
         return _pyAgrum.Instantiation_setFirst(self)
 
 
     def setLast(self) -> "void":
-        """setLast(self)"""
+        """
+        setLast(self)
+
+
+        Assign the last values in the Instantiation.
+
+        """
         return _pyAgrum.Instantiation_setLast(self)
 
 
     def setFirstIn(self, i: 'Instantiation') -> "void":
-        """setFirstIn(self, i)"""
+        """
+        setFirstIn(self, i)
+
+
+        Assign the first values in the Instantiation for the variables in i.
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+          The variables to which their first value is assigned in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_setFirstIn(self, i)
 
 
     def setLastIn(self, i: 'Instantiation') -> "void":
-        """setLastIn(self, i)"""
+        """
+        setLastIn(self, i)
+
+
+        Assign the last values in the Instantiation for the variables in i.
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+            The variables to which their last value is assigned in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_setLastIn(self, i)
 
 
     def setFirstOut(self, i: 'Instantiation') -> "void":
-        """setFirstOut(self, i)"""
+        """
+        setFirstOut(self, i)
+
+
+        Assign the first values in the Instantiation for the variables not in i.
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+            The variable that will not be set to their first value in this Instantiation.
+
+        """
         return _pyAgrum.Instantiation_setFirstOut(self, i)
 
 
     def setLastOut(self, i: 'Instantiation') -> "void":
-        """setLastOut(self, i)"""
+        """
+        setLastOut(self, i)
+
+
+        Assign the last values in the Instantiation for the variables not in i. 
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+            The variables that will not be set to their last value in this Instantiation.
+
+        """
         return _pyAgrum.Instantiation_setLastOut(self, i)
 
 
     def setFirstNotVar(self, v: 'DiscreteVariable') -> "void":
-        """setFirstNotVar(self, v)"""
+        """
+        setFirstNotVar(self, v)
+
+
+        Assign the first values to variables different of v. 
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+          The variable that will not be set to its first value in this Instantiation.
+
+        """
         return _pyAgrum.Instantiation_setFirstNotVar(self, v)
 
 
     def setLastNotVar(self, v: 'DiscreteVariable') -> "void":
-        """setLastNotVar(self, v)"""
+        """
+        setLastNotVar(self, v)
+
+
+        Assign the last values to variables different of v.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable that will not be set to its last value in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_setLastNotVar(self, v)
 
 
     def setFirstVar(self, v: 'DiscreteVariable') -> "void":
-        """setFirstVar(self, v)"""
+        """
+        setFirstVar(self, v)
+
+
+        Assign the first value in the Instantiation for var v.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable that will be set to its first value in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_setFirstVar(self, v)
 
 
     def setLastVar(self, v: 'DiscreteVariable') -> "void":
-        """setLastVar(self, v)"""
+        """
+        setLastVar(self, v)
+
+
+        Assign the last value in the Instantiation for var v.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+          The variable that will be set to its last value in this Instantiation. 
+
+        """
         return _pyAgrum.Instantiation_setLastVar(self, v)
-
-
-    def actAsSlave(self, aMD: 'MultiDimAdressable') -> "bool":
-        """actAsSlave(self, aMD) -> bool"""
-        return _pyAgrum.Instantiation_actAsSlave(self, aMD)
-
-
-    def forgetMaster(self) -> "bool":
-        """forgetMaster(self) -> bool"""
-        return _pyAgrum.Instantiation_forgetMaster(self)
-
-
-    def isSlave(self) -> "bool":
-        """isSlave(self) -> bool"""
-        return _pyAgrum.Instantiation_isSlave(self)
-
-
-    def isMaster(self, *args) -> "bool":
-        """
-        isMaster(self, m) -> bool
-        isMaster(self, m) -> bool
-        """
-        return _pyAgrum.Instantiation_isMaster(self, *args)
-
-
-    def synchronizeWithMaster(self, m: 'MultiDimAdressable') -> "void":
-        """synchronizeWithMaster(self, m)"""
-        return _pyAgrum.Instantiation_synchronizeWithMaster(self, m)
-
-
-    def addWithMaster(self, m: 'MultiDimAdressable', v: 'DiscreteVariable') -> "void":
-        """addWithMaster(self, m, v)"""
-        return _pyAgrum.Instantiation_addWithMaster(self, m, v)
-
-
-    def eraseWithMaster(self, m: 'MultiDimAdressable', v: 'DiscreteVariable') -> "void":
-        """eraseWithMaster(self, m, v)"""
-        return _pyAgrum.Instantiation_eraseWithMaster(self, m, v)
 
 
     def __iadd__(self, depl: 'gum::Size') -> "gum::Instantiation &":
@@ -4316,7 +5932,16 @@ class Instantiation(_object):
 
 
     def hamming(self) -> "gum::Idx":
-        """hamming(self) -> gum::Idx"""
+        """
+        hamming(self) -> gum::Idx
+
+
+        Returns
+        -------
+        int
+          the hamming distance of this instantiation. 
+
+        """
         return _pyAgrum.Instantiation_hamming(self)
 
 
@@ -4329,6 +5954,17 @@ class Instantiation(_object):
         """
         reorder(self, v)
         reorder(self, i)
+
+
+        Reorder vars of this instantiation giving the order in v (or i). 
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+          The sequence of variables with which to reorder this Instantiation.
+        v : list
+            The new order of variables for this Instantiation. 
+
         """
         return _pyAgrum.Instantiation_reorder(self, *args)
 
@@ -4352,22 +5988,55 @@ class DAGmodel(_object):
         return None
 
     def property(self, name: 'std::string const &') -> "std::string const &":
-        """property(self, name) -> std::string const &"""
+        """
+        property(self, name) -> std::string const &
+
+
+        Warnings
+        --------
+        Unreferenced function
+
+        """
         return _pyAgrum.DAGmodel_property(self, name)
 
 
     def propertyWithDefault(self, name: 'std::string const &', byDefault: 'std::string const &') -> "std::string const &":
-        """propertyWithDefault(self, name, byDefault) -> std::string const &"""
+        """
+        propertyWithDefault(self, name, byDefault) -> std::string const &
+
+
+        Warnings
+        --------
+        Unreferenced function
+
+        """
         return _pyAgrum.DAGmodel_propertyWithDefault(self, name, byDefault)
 
 
     def setProperty(self, name: 'std::string const &', value: 'std::string const &') -> "void":
-        """setProperty(self, name, value)"""
+        """
+        setProperty(self, name, value)
+
+
+        Warnings
+        --------
+        Unreferenced function
+
+        """
         return _pyAgrum.DAGmodel_setProperty(self, name, value)
 
 
     def dag(self) -> "gum::DAG const &":
-        """dag(self) -> DAG"""
+        """
+        dag(self) -> DAG
+
+
+        Returns
+        -------
+        pyAgrum.DAG
+        	a constant reference to the dag of this BayesNet.
+
+        """
         return _pyAgrum.DAGmodel_dag(self)
 
 
@@ -4377,17 +6046,44 @@ class DAGmodel(_object):
 
 
     def size(self) -> "gum::Size":
-        """size(self) -> gum::Size"""
+        """
+        size(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
         return _pyAgrum.DAGmodel_size(self)
 
 
     def sizeArcs(self) -> "gum::Size":
-        """sizeArcs(self) -> gum::Size"""
+        """
+        sizeArcs(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyAgrum.DAGmodel_sizeArcs(self)
 
 
     def empty(self) -> "bool":
-        """empty(self) -> bool"""
+        """
+        empty(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the model is empty
+
+        """
         return _pyAgrum.DAGmodel_empty(self)
 
 
@@ -4412,7 +6108,18 @@ class DAGmodel(_object):
 
 
     def completeInstantiation(self, I: 'Instantiation') -> "void":
-        """completeInstantiation(self, I)"""
+        """
+        completeInstantiation(self, I)
+
+
+        Get an instantiation over all the variables of the model.
+
+        Parameters
+        ----------
+        i : pyAgrum.instantiation
+        	the instantiation to complete
+
+        """
         return _pyAgrum.DAGmodel_completeInstantiation(self, I)
 
 
@@ -4425,6 +6132,15 @@ class DAGmodel(_object):
         """
         moralGraph(self, clear=True) -> UndiGraph
         moralGraph(self) -> UndiGraph
+
+
+        Returns the moral graph of the BayesNet, formed by adding edges between all pairs of nodes that have a common child, and then making all edges in the graph undirected.
+
+        Returns
+        -------
+        pyAgrum.UndiGraph
+        	The moral graph
+
         """
         return _pyAgrum.DAGmodel_moralGraph(self, clear)
 
@@ -4433,17 +6149,51 @@ class DAGmodel(_object):
         """
         topologicalOrder(self, clear=True) -> gum::Sequence< gum::NodeId > const
         topologicalOrder(self) -> gum::Sequence< gum::NodeId > const &
+
+
+        Returns
+        -------
+        List
+            the list of the nodes Ids in a topological order
+
+        Warnings
+        --------
+        InvalidDirectedCycle raised if this graph contains cycles
+
         """
         return _pyAgrum.DAGmodel_topologicalOrder(self, clear)
 
 
     def log10DomainSize(self) -> "double":
-        """log10DomainSize(self) -> double"""
+        """
+        log10DomainSize(self) -> double
+
+
+        Returns
+        -------
+        double
+        	The log10 domain size of the joint probability for the model.
+
+        """
         return _pyAgrum.DAGmodel_log10DomainSize(self)
 
 
     def hasSameStructure(self, other: 'DAGmodel') -> "bool":
-        """hasSameStructure(self, other) -> bool"""
+        """
+        hasSameStructure(self, other) -> bool
+
+
+        Parameters
+        ----------
+        pyAgrum.DAGmodel
+        	a direct acyclic model
+
+        Returns
+        -------
+        bool
+            True if all the named node are the same and all the named arcs are the same 
+
+        """
         return _pyAgrum.DAGmodel_hasSameStructure(self, other)
 
 DAGmodel_swigregister = _pyAgrum.DAGmodel_swigregister
@@ -4623,12 +6373,34 @@ class ApproximationScheme(_object):
         return None
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.ApproximationScheme_setEpsilon(self, eps)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.ApproximationScheme_epsilon(self)
 
 
@@ -4648,12 +6420,30 @@ class ApproximationScheme(_object):
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.ApproximationScheme_setMinEpsilonRate(self, rate)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.ApproximationScheme_minEpsilonRate(self)
 
 
@@ -4673,12 +6463,34 @@ class ApproximationScheme(_object):
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.ApproximationScheme_setMaxIter(self, max)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.ApproximationScheme_maxIter(self)
 
 
@@ -4698,17 +6510,48 @@ class ApproximationScheme(_object):
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.ApproximationScheme_setMaxTime(self, timeout)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.ApproximationScheme_maxTime(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.ApproximationScheme_currentTime(self)
 
 
@@ -4728,22 +6571,66 @@ class ApproximationScheme(_object):
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.ApproximationScheme_setPeriodSize(self, p)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.ApproximationScheme_periodSize(self)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.ApproximationScheme_setVerbosity(self, v)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.ApproximationScheme_verbosity(self)
 
 
@@ -4753,12 +6640,33 @@ class ApproximationScheme(_object):
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.ApproximationScheme_nbrIterations(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.ApproximationScheme_history(self)
 
 
@@ -4826,12 +6734,22 @@ class DiscretizedVariable_double(DiscreteVariable):
     Examples
     --------
     >>> import pyAgrum as gum
-    >>> v=gum.DiscretizedVariable('v','a descr')
-    >>> print(v)
-    v<>
-    >>> v.addTick(1).addTick(3.14).addTick(0.4).addTick(0.2)
-    >>> print(w)
-    a<[0.2;0.4[,[0.4;1[,[1;3.14]>
+    >>>
+    >>> vX=gum.DiscretizedVariable('X','X has been discretized')
+    >>> vX.addTick(1).addTick(2).addTick(3).addTick(3.1415) #doctest: +ELLIPSIS
+    >>> ## <pyAgrum.pyAgrum.DiscretizedVariable;...>
+    >>> print(vX)
+    >>> ## X<[1;2[,[2;3[,[3;3.1415]>
+    >>>
+    >>> vX.isTick(4)
+    >>> ## False
+    >>>
+    >>> vX.labels()
+    >>> ## ('[1;2[', '[2;3[', '[3;3.1415]')
+    >>>
+    >>> # where is the real value 2.5 ?
+    >>> vX.index('2.5')
+    >>> ## 1
 
     """
 
@@ -4861,48 +6779,158 @@ class DiscretizedVariable_double(DiscreteVariable):
         return None
 
     def clone(self) -> "gum::DiscreteVariable *":
-        """clone(self) -> DiscreteVariable"""
+        """
+        clone(self) -> DiscreteVariable
+
+
+        Returns
+        -------
+        pyAgrum.DiscretizedVariable
+        	a copy of the DiscretizedVariable
+
+        """
         return _pyAgrum.DiscretizedVariable_double_clone(self)
 
 
     def varType(self) -> "gum::DiscreteVariable::VarType":
-        """varType(self) -> gum::DiscreteVariable::VarType"""
+        """
+        varType(self) -> gum::DiscreteVariable::VarType
+
+
+        returns the type of variable
+
+        Returns
+        -------
+        int :
+        	the type of the variable, 0: DiscretizedVariable, 1: LabelizedVariable, 2: RangeVariable
+
+        """
         return _pyAgrum.DiscretizedVariable_double_varType(self)
 
 
     def isTick(self, aTick: 'double const &') -> "bool":
-        """isTick(self, aTick) -> bool"""
+        """
+        isTick(self, aTick) -> bool
+
+
+        Parameters
+        ----------
+        aTick : double
+        	the Tick to be tested
+
+        Returns
+        -------
+        bool :
+        	True if the Tick already exists
+
+        """
         return _pyAgrum.DiscretizedVariable_double_isTick(self, aTick)
 
 
     def addTick(self,*args):
+      """
+      Parameters
+      ----------
+      aTick : double
+    	the Tick to be added
+
+      Returns
+      -------
+      pyAgrum.DiscretizedVariable
+      	the discretized variable
+
+      Warnings
+      --------
+      DefaultInLabel raised if the Tick is already defined
+      """
       _pyAgrum.DiscretizedVariable_double_addTick(self,*args)
       return self
 
 
 
     def eraseTicks(self) -> "void":
-        """eraseTicks(self)"""
+        """
+        eraseTicks(self)
+
+
+        erase all the Ticks 
+
+        """
         return _pyAgrum.DiscretizedVariable_double_eraseTicks(self)
 
 
     def label(self, i: 'gum::Idx') -> "std::string":
-        """label(self, i) -> std::string"""
+        """
+        label(self, i) -> std::string
+
+
+        Parameters
+        ----------
+        i : int
+        	the index of the label we wish to return
+
+        Returns
+        -------
+        str
+        	the indice-th label
+
+        Warnings
+        --------
+        OutOfBound raised if the variable does not contain the label
+
+        """
         return _pyAgrum.DiscretizedVariable_double_label(self, i)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
-        """numerical(self, indice) -> double"""
+        """
+        numerical(self, indice) -> double
+
+
+        Parameters
+        ----------
+        indice : int
+        	an index
+
+        Returns
+        -------
+        float
+        	the numerical representation of the indice-th value
+
+        """
         return _pyAgrum.DiscretizedVariable_double_numerical(self, indice)
 
 
     def index(self, label: 'std::string const &') -> "gum::Idx":
-        """index(self, label) -> gum::Idx"""
+        """
+        index(self, label) -> gum::Idx
+
+
+        Parameters
+        ----------
+        label : str
+        	a label
+
+        Returns
+        -------
+        int
+        	the indice of the label
+
+        """
         return _pyAgrum.DiscretizedVariable_double_index(self, label)
 
 
     def domainSize(self) -> "gum::Size":
-        """domainSize(self) -> gum::Size"""
+        """
+        domainSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of modalities in the variable domain
+
+        """
         return _pyAgrum.DiscretizedVariable_double_domainSize(self)
 
 
@@ -4921,12 +6949,41 @@ class DiscretizedVariable_double(DiscreteVariable):
 
 
     def tick(self, i: 'gum::Idx') -> "double const &":
-        """tick(self, i) -> double const &"""
+        """
+        tick(self, i) -> double const &
+
+
+        Indicate the index of the Tick
+
+        Parameters
+        ----------
+        i : int
+        	the index of the Tick
+
+        Returns
+        -------
+        aTick : double
+        	the index-th Tick
+
+        Warnings
+        --------
+        NotFound raised if the index is greater than the number of Ticks
+
+        """
         return _pyAgrum.DiscretizedVariable_double_tick(self, i)
 
 
     def ticks(self) -> "std::vector< double,std::allocator< double > > const &":
-        """ticks(self) -> Vector_double"""
+        """
+        ticks(self) -> Vector_double
+
+
+        Returns
+        -------
+        tuple :
+        	a tuple containing all the Ticks
+
+        """
         return _pyAgrum.DiscretizedVariable_double_ticks(self)
 
 DiscretizedVariable_double_swigregister = _pyAgrum.DiscretizedVariable_double_swigregister
@@ -5055,7 +7112,28 @@ MultiDimContainer_double_swigregister = _pyAgrum.MultiDimContainer_double_swigre
 MultiDimContainer_double_swigregister(MultiDimContainer_double)
 
 class Potential_double(_object):
-    """Proxy of C++ gum::Potential< double > class."""
+    """
+
+    Class representing a potential.
+
+    Available constructors:
+
+      ``Potential() -> Potential``
+
+      ``Potential(src) -> Potential``
+
+    Parameters
+    ----------
+    src: pyAgrum.Potential
+      The Potential to copy
+
+    Returns
+    -------
+    pyAgrum.Potential
+      The new Potential
+
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Potential_double, name, value)
@@ -5086,47 +7164,138 @@ class Potential_double(_object):
         return None
 
     def newFactory(self) -> "gum::Potential< double > *":
-        """newFactory(self) -> Potential_double"""
+        """
+        newFactory(self) -> Potential_double
+
+
+        Erase the Potential content and create a new empty one.
+
+        Returns
+        -------
+        pyAgrum.Potential
+         a reference to the new Potential
+
+        """
         return _pyAgrum.Potential_double_newFactory(self)
 
 
     def isNonZeroMap(self) -> "gum::Potential< double >":
-        """isNonZeroMap(self) -> Potential_double"""
+        """
+        isNonZeroMap(self) -> Potential_double
+
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a boolean-like potential using the predicate isNonZero
+
+        """
         return _pyAgrum.Potential_double_isNonZeroMap(self)
 
 
     def sum(self) -> "double":
-        """sum(self) -> double"""
+        """
+        sum(self) -> double
+
+
+        Returns
+        -------
+        double :
+          the sum of all elements in the Potential
+
+        """
         return _pyAgrum.Potential_double_sum(self)
 
 
     def product(self) -> "double":
-        """product(self) -> double"""
+        """
+        product(self) -> double
+
+
+        Returns
+        -------
+        double
+          the product of all elements in the Potential
+
+        """
         return _pyAgrum.Potential_double_product(self)
 
 
     def max(self) -> "double":
-        """max(self) -> double"""
+        """
+        max(self) -> double
+
+
+        Returns
+        -------
+        double
+          the maximum of all elements in the Potential
+
+        """
         return _pyAgrum.Potential_double_max(self)
 
 
     def min(self) -> "double":
-        """min(self) -> double"""
+        """
+        min(self) -> double
+
+
+        Returns
+        -------
+        double
+          the min of all elements in the Potential
+
+        """
         return _pyAgrum.Potential_double_min(self)
 
 
     def maxNonOne(self) -> "double":
-        """maxNonOne(self) -> double"""
+        """
+        maxNonOne(self) -> double
+
+
+        Returns
+        -------
+        double
+          the maximum of non one elements in the Potential
+
+        Warnings
+        --------
+        NotFound raised if all value == 1.0
+
+        """
         return _pyAgrum.Potential_double_maxNonOne(self)
 
 
     def minNonZero(self) -> "double":
-        """minNonZero(self) -> double"""
+        """
+        minNonZero(self) -> double
+
+
+        Returns
+        -------
+        double
+          the min of non zero elements in the Potential
+
+        Warnings
+        --------
+        NotFound raised if all value == 0.0
+
+        """
         return _pyAgrum.Potential_double_minNonZero(self)
 
 
     def entropy(self) -> "double":
-        """entropy(self) -> double"""
+        """
+        entropy(self) -> double
+
+
+        Returns
+        -------
+        double
+          the entropy of the potential
+
+        """
         return _pyAgrum.Potential_double_entropy(self)
 
 
@@ -5134,6 +7303,24 @@ class Potential_double(_object):
         """
         fillWith(self, v) -> Potential_double
         fillWith(self, v) -> Potential_double
+
+
+        Automatically fills the potential with the values in v.
+
+        Parameters
+        ----------
+        v : list
+            a list containing the values to fill the Potential with.
+
+        Returns
+        -------
+        pyAgrum.Potential
+              a reference to the modified potentia
+
+        Warnings
+        --------
+            SizeError Raised if v size's does not matches the domain size. 
+
         """
         val = _pyAgrum.Potential_double_fillWith(self, *args)
 
@@ -5145,7 +7332,18 @@ class Potential_double(_object):
 
 
     def abs(self) -> "gum::Potential< double > const &":
-        """abs(self) -> Potential_double"""
+        """
+        abs(self) -> Potential_double
+
+
+        Apply abs on every element of the container
+
+        Returns
+        -------
+        pyAgrum.Potential
+            a reference to the modified potential.
+
+        """
         val = _pyAgrum.Potential_double_abs(self)
 
         self._notSync=True
@@ -5156,7 +7354,18 @@ class Potential_double(_object):
 
 
     def normalize(self) -> "gum::Potential< double > const &":
-        """normalize(self) -> Potential_double"""
+        """
+        normalize(self) -> Potential_double
+
+
+        Normalize the Potential (do nothing if sum is 0)
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a reference to the normalized Potential
+
+        """
         val = _pyAgrum.Potential_double_normalize(self)
 
         self._notSync=True
@@ -5167,7 +7376,13 @@ class Potential_double(_object):
 
 
     def sq(self) -> "gum::Potential< double > const &":
-        """sq(self) -> Potential_double"""
+        """
+        sq(self) -> Potential_double
+
+
+        Square all the values in the Potential
+
+        """
         val = _pyAgrum.Potential_double_sq(self)
 
         self._notSync=True
@@ -5178,17 +7393,76 @@ class Potential_double(_object):
 
 
     def KL(self, p: 'Potential_double') -> "double":
-        """KL(self, p) -> double"""
+        """
+        KL(self, p) -> double
+
+
+        Compute the Kullback-Leibler divergence between the potential and p, check the compatibility and call fastKL.
+
+        Parameters
+        ----------
+        p : pyAgrum.Potential
+          the potential from which we want to calculate the divergence.
+
+        Returns
+        -------
+        float
+          The value of the divergence
+
+        Warnings
+        --------
+          InvalidArgument raised if p is not compatible with the potential (dimension, variables)
+
+        Warnings
+        --------
+          FatalError raised if a zero is found in p or the potential and not in the other. 
+
+        """
         return _pyAgrum.Potential_double_KL(self, p)
 
 
     def fastKL(self, p: 'Potential_double') -> "double":
-        """fastKL(self, p) -> double"""
+        """
+        fastKL(self, p) -> double
+
+
+        compute KL divergence between this and p without testing compatibilty (undefined errors may occur in this case)
+
+        Parameters
+        ----------
+        p : pyAgrum.Potential
+          the potential from which we want to calculate the divergence.
+
+        Returns
+        -------
+        float
+          The value of the divergence
+
+        Warnings
+        --------
+        FatalError raised if a zero is found in p or this and not in the other. 
+
+        """
         return _pyAgrum.Potential_double_fastKL(self, p)
 
 
     def normalizeAsCPT(self) -> "void":
-        """normalizeAsCPT(self)"""
+        """
+        normalizeAsCPT(self)
+
+
+        Normalize the Potential as a CPT
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a reference to the normalized Potential
+
+        Warnings
+        --------
+        FatalError if some distribution sums to 0
+
+        """
         val = _pyAgrum.Potential_double_normalizeAsCPT(self)
 
         self._notSync=True
@@ -5199,7 +7473,22 @@ class Potential_double(_object):
 
 
     def scale(self, v: 'double') -> "gum::Potential< double > const &":
-        """scale(self, v) -> Potential_double"""
+        """
+        scale(self, v) -> Potential_double
+
+
+        Create a new potential multiplied by v.
+
+        Parameters
+        ----------
+        v : double
+          a multiplier
+
+        Returns
+        -------
+          a reference to the modified potential
+
+        """
         val = _pyAgrum.Potential_double_scale(self, v)
 
         self._notSync=True
@@ -5210,7 +7499,22 @@ class Potential_double(_object):
 
 
     def translate(self, v: 'double') -> "gum::Potential< double > const &":
-        """translate(self, v) -> Potential_double"""
+        """
+        translate(self, v) -> Potential_double
+
+
+        Create a new potential added with v.
+
+        Parameters
+        ----------
+        v : double
+          The value to be added
+
+        Returns
+        -------
+          a reference to the modified potential
+
+        """
         val = _pyAgrum.Potential_double_translate(self, v)
 
         self._notSync=True
@@ -5270,6 +7574,22 @@ class Potential_double(_object):
         """
         extract(self, inst) -> Potential_double
         extract(self, dict) -> Potential_double
+
+
+        create a new Potential extracted from self given a partial instantiation.
+
+        Parameters
+        ----------
+        inst : pyAgrum.instantiation
+          a partial instantiation
+        dict : dict
+          a dictionnary containing discrete variables (?)
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the new Potential
+
         """
         return _pyAgrum.Potential_double_extract(self, *args)
 
@@ -5278,52 +7598,228 @@ class Potential_double(_object):
         """
         reorganize(self, vars) -> Potential_double
         reorganize(self, varnames) -> Potential_double
+
+
+        Create a new Potential with another order.
+
+        Returns
+        -------
+        varnames : list
+          a list of the var names in the new order
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a reference to the modified potential
+
         """
         return _pyAgrum.Potential_double_reorganize(self, *args)
 
 
     def putFirst(self, varname: 'PyObject *') -> "gum::Potential< double >":
-        """putFirst(self, varname) -> Potential_double"""
+        """
+        putFirst(self, varname) -> Potential_double
+
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable for which the index should be 0.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a reference to the modified potential
+
+        Warnings
+        --------
+        InvalidArgument raised if the var is not in the potential 
+
+        """
         return _pyAgrum.Potential_double_putFirst(self, varname)
 
 
     def margSumOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """margSumOut(self, varnames) -> Potential_double"""
+        """
+        margSumOut(self, varnames) -> Potential_double
+
+
+        Projection using sum as operation.
+
+        Parameters
+        ----------
+        varnames : set
+          the set of vars to eliminate
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the projected Potential
+
+        Warnings
+        --------
+        InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
+
+        """
         return _pyAgrum.Potential_double_margSumOut(self, varnames)
 
 
     def margProdOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """margProdOut(self, varnames) -> Potential_double"""
+        """
+        margProdOut(self, varnames) -> Potential_double
+
+
+        Projection using multiplication as operation.
+
+        Parameters
+        ----------
+        varnames : set
+          the set of vars to eliminate
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the projected Potential
+
+        Warnings
+        --------
+        InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
+
+        """
         return _pyAgrum.Potential_double_margProdOut(self, varnames)
 
 
     def margMaxOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """margMaxOut(self, varnames) -> Potential_double"""
+        """
+        margMaxOut(self, varnames) -> Potential_double
+
+
+        Projection using max as operation.
+
+        Parameters
+        ----------
+        varnames : set
+          the set of vars to eliminate
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the projected Potential
+
+        Warnings
+        --------
+        InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
+
+        """
         return _pyAgrum.Potential_double_margMaxOut(self, varnames)
 
 
     def margMinOut(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """margMinOut(self, varnames) -> Potential_double"""
+        """
+        margMinOut(self, varnames) -> Potential_double
+
+
+        Projection using min as operation.
+
+        Parameters
+        ----------
+        varnames : set
+          the set of vars to eliminate
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the projected Potential
+
+        Warnings
+        --------
+        InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
+
+        """
         return _pyAgrum.Potential_double_margMinOut(self, varnames)
 
 
     def margSumIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """margSumIn(self, varnames) -> Potential_double"""
+        """
+        margSumIn(self, varnames) -> Potential_double
+
+
+        Projection using sum as operation.
+
+        Parameters
+        ----------
+        varnames : set
+          the set of vars to keep
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the projected Potential
+
+        """
         return _pyAgrum.Potential_double_margSumIn(self, varnames)
 
 
     def margProdIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """margProdIn(self, varnames) -> Potential_double"""
+        """
+        margProdIn(self, varnames) -> Potential_double
+
+
+        Projection using multiplication as operation.
+
+        Parameters
+        ----------
+        varnames : set
+          the set of vars to keep
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the projected Potential
+
+        """
         return _pyAgrum.Potential_double_margProdIn(self, varnames)
 
 
     def margMaxIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """margMaxIn(self, varnames) -> Potential_double"""
+        """
+        margMaxIn(self, varnames) -> Potential_double
+
+
+        Projection using max as operation.
+
+        Parameters
+        ----------
+        varnames : set
+          the set of vars to keep
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the projected Potential
+
+        """
         return _pyAgrum.Potential_double_margMaxIn(self, varnames)
 
 
     def margMinIn(self, varnames: 'PyObject *') -> "gum::Potential< double >":
-        """margMinIn(self, varnames) -> Potential_double"""
+        """
+        margMinIn(self, varnames) -> Potential_double
+
+
+        Projection using min as operation.
+
+        Parameters
+        ----------
+        varnames : set
+          the set of vars to keep
+
+        Returns
+        -------
+        pyAgrum.Potential
+          the projected Potential
+
+        """
         return _pyAgrum.Potential_double_margMinIn(self, varnames)
 
 
@@ -5468,12 +7964,39 @@ class Potential_double(_object):
 
 
     def get(self, i: 'Instantiation') -> "double":
-        """get(self, i) -> double"""
+        """
+        get(self, i) -> double
+
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+          an Instantiation
+
+        Returns
+        -------
+        double
+          the value of the instantiation
+
+        """
         return _pyAgrum.Potential_double_get(self, i)
 
 
     def set(self, i: 'Instantiation', value: 'double const &') -> "void":
-        """set(self, i, value)"""
+        """
+        set(self, i, value)
+
+
+        Change the value pointed by i
+
+        Parameters
+        ----------
+        i : pyAgrum.Instantiation
+          The Instantiation to be changed
+        value : double
+          The new value of the Instantiation
+
+        """
         val = _pyAgrum.Potential_double_set(self, i, value)
 
         self._notSync=True
@@ -5483,42 +8006,150 @@ class Potential_double(_object):
 
 
     def empty(self) -> "bool":
-        """empty(self) -> bool"""
+        """
+        empty(self) -> bool
+
+
+        Returns
+        -------
+        bool
+            Returns true if no variable is in the potential. 
+
+        """
         return _pyAgrum.Potential_double_empty(self)
 
 
     def pos(self, v: 'DiscreteVariable') -> "gum::Idx":
-        """pos(self, v) -> gum::Idx"""
+        """
+        pos(self, v) -> gum::Idx
+
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable for which the index is returned.
+
+        Returns
+        -------
+            Returns the index of a variable. 
+
+        Warnigs
+        -------
+            NotFound raised if v is not in this multidimensional matrix. 
+
+        """
         return _pyAgrum.Potential_double_pos(self, v)
 
 
     def contains(self, v: 'DiscreteVariable') -> "bool":
-        """contains(self, v) -> bool"""
+        """
+        contains(self, v) -> bool
+
+
+        Parameters
+        ----------
+        v : pyAgrum.Potential
+            a DiscreteVariable.
+
+        Returns
+        -------
+        bool
+            True if the var is in the potential
+
+        """
         return _pyAgrum.Potential_double_contains(self, v)
 
 
     def nbrDim(self) -> "gum::Idx":
-        """nbrDim(self) -> gum::Idx"""
+        """
+        nbrDim(self) -> gum::Idx
+
+
+        Returns
+        -------
+        int
+          the number of vars in the multidimensional container. 
+
+        """
         return _pyAgrum.Potential_double_nbrDim(self)
 
 
     def variable(self, i: 'gum::Idx') -> "gum::DiscreteVariable const &":
-        """variable(self, i) -> DiscreteVariable"""
+        """
+        variable(self, i) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        i : int 
+          An index of this multidimensional matrix.
+
+        Returns
+        -------
+          the varible at the ith index 
+
+        Warnings
+        --------
+          NotFound raised if i does not reference a variable in this multidimensional matrix. 
+
+        """
         return _pyAgrum.Potential_double_variable(self, i)
 
 
     def populate(self, v: 'Vector_double') -> "void":
-        """populate(self, v)"""
+        """
+        populate(self, v)
+
+
+        Warnings
+        --------
+        See fillWith to fill the potential.
+
+        """
         return _pyAgrum.Potential_double_populate(self, v)
 
 
     def fill(self, d: 'double const &') -> "void":
-        """fill(self, d)"""
+        """
+        fill(self, d)
+
+
+        Automatically fills the potential with v.
+
+        Parameters
+        ----------
+        v : double
+            the desired value of the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+              a reference to the modified potential.
+
+        """
         return _pyAgrum.Potential_double_fill(self, d)
 
 
     def remove(self, var: 'DiscreteVariable') -> "void":
-        """remove(self, var)"""
+        """
+        remove(self, var)
+
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+            The variable to be removed
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a reference to the modified potential
+
+        Warnings
+        --------
+        IndexError raised if the var is not in the potential 
+
+        """
         val = _pyAgrum.Potential_double_remove(self, var)
 
         self._notSync=True
@@ -5528,7 +8159,22 @@ class Potential_double(_object):
 
 
     def add(self, v: 'DiscreteVariable') -> "void":
-        """add(self, v)"""
+        """
+        add(self, v)
+
+
+        Add a discrete variable to the potential.
+
+        Parameters
+        ----------
+        v : pyAgrum.DiscreteVariable
+          the var to be added
+
+        Warnings
+        --------
+        Error raised if DiscretizedVariable added with no Tick.
+
+        """
         val = _pyAgrum.Potential_double_add(self, v)
 
         self._notSync=True
@@ -5830,12 +8476,48 @@ class IBayesNet_double(DAGmodel):
 
 
     def jointProbability(self, i: 'Instantiation') -> "double":
-        """jointProbability(self, i) -> double"""
+        """
+        jointProbability(self, i) -> double
+
+
+        Parameters
+        ----------
+        i : pyAgrum.instantiation
+        	an instantiation of the variables
+
+        Returns
+        -------
+        double
+        	a parameter of the joint probability for the BayesNet
+
+        Warnings
+        --------
+        a variable not present in the instantiation is assumed to be instantiated to 0
+
+        """
         return _pyAgrum.IBayesNet_double_jointProbability(self, i)
 
 
     def log2JointProbability(self, i: 'Instantiation') -> "double":
-        """log2JointProbability(self, i) -> double"""
+        """
+        log2JointProbability(self, i) -> double
+
+
+        Parameters
+        ----------
+        i : pyAgrum.instantiation
+        	an instantiation of the variables
+
+        Returns
+        -------
+        double
+        	a parameter of the log joint probability for the BayesNet
+
+        Warnings
+        --------
+        a variable not present in the instantiation is assumed to be instantiated to 0
+
+        """
         return _pyAgrum.IBayesNet_double_log2JointProbability(self, i)
 
 
@@ -5850,37 +8532,105 @@ class IBayesNet_double(DAGmodel):
 
 
     def dim(self) -> "gum::Size":
-        """dim(self) -> gum::Size"""
+        """
+        dim(self) -> gum::Size
+
+
+        Returns the dimension (the number of free parameters) in this BayesNet.
+
+        dim(G)=∑i∈nodes((ri−1)⋅qi) where ri is the number of instantiations of node i and qi is the number of instantiations of its parents. 
+        in IBayesNet
+
+        Returns
+        -------
+        int 
+        	the dimension of the BayesNet
+
+        """
         return _pyAgrum.IBayesNet_double_dim(self)
 
 
     def maxVarDomainSize(self) -> "gum::Size":
-        """maxVarDomainSize(self) -> gum::Size"""
+        """
+        maxVarDomainSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the biggest domain size among the variables of the BayesNet
+
+        """
         return _pyAgrum.IBayesNet_double_maxVarDomainSize(self)
 
 
     def minParam(self) -> "double":
-        """minParam(self) -> double"""
+        """
+        minParam(self) -> double
+
+
+        Returns
+        -------
+        double
+            the smallest value in the CPTs of the BayesNet
+
+        """
         return _pyAgrum.IBayesNet_double_minParam(self)
 
 
     def maxParam(self) -> "double":
-        """maxParam(self) -> double"""
+        """
+        maxParam(self) -> double
+
+
+        Returns
+        -------
+        double
+            the biggest value in the CPTs of the BayesNet
+
+        """
         return _pyAgrum.IBayesNet_double_maxParam(self)
 
 
     def minNonZeroParam(self) -> "double":
-        """minNonZeroParam(self) -> double"""
+        """
+        minNonZeroParam(self) -> double
+
+
+        Returns
+        -------
+        double
+            the smallest value (not equal to 0) in the CPTs of the BayesNet
+
+        """
         return _pyAgrum.IBayesNet_double_minNonZeroParam(self)
 
 
     def maxNonOneParam(self) -> "double":
-        """maxNonOneParam(self) -> double"""
+        """
+        maxNonOneParam(self) -> double
+
+
+        Returns
+        -------
+        double
+        	The biggest value (not equal to 1) in the CPTs of the BayesNet
+
+        """
         return _pyAgrum.IBayesNet_double_maxNonOneParam(self)
 
 
     def toDot(self) -> "std::string":
-        """toDot(self) -> std::string"""
+        """
+        toDot(self) -> std::string
+
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format 
+
+        """
         return _pyAgrum.IBayesNet_double_toDot(self)
 
 
@@ -5932,16 +8682,16 @@ class BayesNet_double(IBayesNet_double):
     BayesNet represents a Bayesian Network.
 
     Available constructors:
-        ``BayesNet(name='') -> BayesNet``
+    	``BayesNet(name='') -> BayesNet``
 
-        ``BayesNet(source) -> BayesNet``
+    	``BayesNet(source) -> BayesNet``
 
     Parameters
     ----------
     name: str
-      the name of the Bayes Net (optional)
-    source : :class:BayesNet
-      the Bayesian network to copy
+    	the name of the Bayes Net (optional)
+    source : pyAgrum.BayesNet
+    	the Bayesian network to copy
 
     """
 
@@ -5961,6 +8711,23 @@ class BayesNet_double(IBayesNet_double):
         fastPrototype(dotlike) -> BayesNet_double
 
 
+        Create a bn with a dotlike syntax : 'a->b->c;b->d;'.
+
+        The domain size maybe specified using 'a[10]'.
+
+        Note that if the dotlike string contains such a specification for an already defined variable, the first specification will be used.
+
+        Parameters
+        ----------
+        dotlike : str
+        	the string containing the specification
+        domainSize : int
+        	the default domain size for variables
+
+        Returns
+        -------
+        pyAgrum.BayesNet
+        	the resulting bayesian network 
 
         """
         return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
@@ -5988,7 +8755,23 @@ class BayesNet_double(IBayesNet_double):
         cpt(self, name) -> Potential_double
 
 
-        FOO BAR
+        Returns the CPT of a variable.
+
+        Parameters
+        ----------
+        VarId : int
+        	A variable's id in the pyAgrum.BayesNet.
+        name : str
+        	A variable's name in the pyAgrum.BayesNet.
+
+        Returns
+        -------
+        pyAgrum.Potential
+        	The variable's CPT. 
+
+        Warnings
+        --------
+        	NotFound raised if no variable's id matches varId. 
 
         """
         val = _pyAgrum.BayesNet_double_cpt(self, *args)
@@ -6000,7 +8783,15 @@ class BayesNet_double(IBayesNet_double):
 
 
     def variableNodeMap(self) -> "gum::VariableNodeMap const &":
-        """variableNodeMap(self) -> VariableNodeMap"""
+        """
+        variableNodeMap(self) -> VariableNodeMap
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.BayesNet_double_variableNodeMap(self)
 
 
@@ -6011,6 +8802,38 @@ class BayesNet_double(IBayesNet_double):
         add(self, variable, aContent) -> gum::NodeId
         add(self, variable, id) -> gum::NodeId
         add(self, variable, aContent, id) -> gum::NodeId
+
+
+        Add a variable to the pyAgrum.BayesNet. 
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable added
+        name : str 
+        	the variable name
+        nbrmod : int
+        	the numbre of modalities for the new variable
+        id : int
+        	the variable forced id in the pyAgrum.BayesNet
+
+        Returns
+        -------
+        int 
+        	the id of the new node
+
+        Warnings
+        --------
+        DuplicateLabel raised if variable.name() is already used in this pyAgrum.BayesNet. 
+
+        Warnings
+        --------
+        NotAllowed if nbrmod<2
+
+        Warnings
+        --------
+        DuplicateElement raised if id is already used. 
+
         """
         return _pyAgrum.BayesNet_double_add(self, *args)
 
@@ -6022,7 +8845,20 @@ class BayesNet_double(IBayesNet_double):
         erase(self, var)
 
 
-        FOO BAR
+        Remove a variable from the gum::BayesNet.
+
+        Removes the corresponding variable from the gum::BayesNet and from all of it's children gum::Potential.
+
+        If no variable matches the given id, then nothing is done.
+
+        Parameters
+        ----------
+        id : int
+        	The variable's id to remove. 
+        name : str
+        	The variable's name to remove.
+        var : pyAgrum.DiscreteVariable
+        	A reference on the variable to remove. 
 
         """
         return _pyAgrum.BayesNet_double_erase(self, *args)
@@ -6032,6 +8868,24 @@ class BayesNet_double(IBayesNet_double):
         """
         variable(self, id) -> DiscreteVariable
         variable(self, name) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        id : int
+        	a variable's id
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Warnings
+        --------
+        IndexError if the BayesNet does not contain the variable
+
         """
         return _pyAgrum.BayesNet_double_variable(self, *args)
 
@@ -6040,22 +8894,98 @@ class BayesNet_double(IBayesNet_double):
         """
         changeVariableName(self, id, new_name)
         changeVariableName(self, name, new_name)
+
+
+        Changes a variable's name in the gum::BayesNet.
+
+        This will change the gum::DiscreteVariable names in the gum::BayesNet.
+
+        Parameters
+        ----------
+        new_name : str
+        	the new name of the variable
+        NodeId : int
+        	the id of the node
+        name : str
+        	the name of the variable
+
+        Warnings
+        --------
+        	DuplicateLabel raised if new_name is already used in this BayesNet.
+        	NotFound raised if no variable matches id. 
+
         """
         return _pyAgrum.BayesNet_double_changeVariableName(self, *args)
 
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
-        """nodeId(self, var) -> gum::NodeId"""
+        """
+        nodeId(self, var) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        var : pyAgrum.DiscreteVariable
+        	a variable
+
+        Returns
+        -------
+        int
+        	the id of the variable
+
+        Warnings
+        --------
+        IndexError raised if the BayesNet does not contain the variable
+
+        """
         return _pyAgrum.BayesNet_double_nodeId(self, var)
 
 
     def idFromName(self, name: 'std::string const &') -> "gum::NodeId":
-        """idFromName(self, name) -> gum::NodeId"""
+        """
+        idFromName(self, name) -> gum::NodeId
+
+
+        Returns a variable's id given its name in the BayesNet.
+
+        Parameters
+        ----------
+        name : str
+        	The variable's name from which the id is returned.
+
+        Returns
+        -------
+        int :
+        	The variable's node id. 
+
+        Warnings
+        --------
+        	NotFound raised if name does not match a variable in the BayesNet
+
+        """
         return _pyAgrum.BayesNet_double_idFromName(self, name)
 
 
     def variableFromName(self, name: 'std::string const &') -> "gum::DiscreteVariable const &":
-        """variableFromName(self, name) -> DiscreteVariable"""
+        """
+        variableFromName(self, name) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Warnings
+        --------
+        IndexError if the BayesNet does not contain the variable
+
+        """
         return _pyAgrum.BayesNet_double_variableFromName(self, name)
 
 
@@ -6063,6 +8993,25 @@ class BayesNet_double(IBayesNet_double):
         """
         addArc(self, tail, head)
         addArc(self, tail, head)
+
+
+        Add an arc in the BN, and update arc.head's CPT.
+
+        Parameters
+        ----------
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
+        Warnings
+        --------
+        	InvalidEdge raised if arc.tail and/or arc.head are not in the BN. 
+
         """
         return _pyAgrum.BayesNet_double_addArc(self, *args)
 
@@ -6072,17 +9021,55 @@ class BayesNet_double(IBayesNet_double):
         eraseArc(self, arc)
         eraseArc(self, tail, head)
         eraseArc(self, tail, head)
+
+
+        Removes an arc in the BN, and update head's CTP.
+
+        If (tail, head) doesn't exist, the nothing happens.
+
+        Parameters
+        ----------
+        arc : pyAgrum.Arc 
+        	The arc to be removed.
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BayesNet_double_eraseArc(self, *args)
 
 
     def beginTopologyTransformation(self) -> "void":
-        """beginTopologyTransformation(self)"""
+        """
+        beginTopologyTransformation(self)
+
+
+        When inserting/removing arcs, node CPTs change their dimension with a cost in time.
+        begin Multiple Change for all CPTs
+        These functions delay the CPTs change to be done just once at the end of a sequence of topology modification, begins a sequence of insertions/deletions of arcs without changing the dimensions of the CPTs.
+
+        """
         return _pyAgrum.BayesNet_double_beginTopologyTransformation(self)
 
 
     def endTopologyTransformation(self) -> "void":
-        """endTopologyTransformation(self)"""
+        """
+        endTopologyTransformation(self)
+
+
+        Terminates a sequence of insertions/deletions of arcs by adjusting all CPTs dimensions.
+        End Multiple Change for all CPTs.
+
+        Returns
+        -------
+        pyAgrum.BayesNet
+
+        """
         return _pyAgrum.BayesNet_double_endTopologyTransformation(self)
 
 
@@ -6091,6 +9078,27 @@ class BayesNet_double(IBayesNet_double):
         reverseArc(self, tail, head)
         reverseArc(self, tail, head)
         reverseArc(self, arc)
+
+
+        Reverses an arc while preserving the same joint distribution. 
+
+        Parameters
+        ----------
+        tail
+        	(int) the id of the tail variable
+        head
+        	(int) the id of the head variable
+        tail
+        	(str) the name of the tail variable
+        head
+        	(str) the name of the head variable
+        arc : pyAgrum.Arc
+        	an arc 
+
+        Warnings
+        --------
+        InvalidArc raised if the arc does not exsit or if its reversal would induce a directed cycle.
+
         """
         return _pyAgrum.BayesNet_double_reverseArc(self, *args)
 
@@ -6099,6 +9107,32 @@ class BayesNet_double(IBayesNet_double):
         """
         addNoisyOR(self, variable, externalWeight) -> gum::NodeId
         addNoisyOR(self, variable, externalWeight, id) -> gum::NodeId
+
+
+        Add a variable, it's associate node and a noisyOR implementation.
+
+        Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep the addNoisyOR as an alias for addNoisyORCompound.
+
+        (The id of the new variable can be automatically generated.)
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	The variable added by copy
+        externalWeight : double
+        	the added external weight
+        id : int
+        	The proposed id for the variable.
+
+        Returns
+        -------
+        int
+        	the id of the added variable. 
+
+        Warnings
+        --------
+        	DuplicateElement raised if id is already used 
+
         """
         return _pyAgrum.BayesNet_double_addNoisyOR(self, *args)
 
@@ -6107,6 +9141,28 @@ class BayesNet_double(IBayesNet_double):
         """
         addNoisyORNet(self, variable, externalWeight) -> gum::NodeId
         addNoisyORNet(self, variable, externalWeight, id) -> gum::NodeId
+
+
+        Add a variable, its associate node and a noisyOR implementation.
+
+        Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep the addNoisyOR as an alias for addNoisyORCompound.
+
+        (The id of the new variable can be automatically generated.)
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	The variable added by copy
+        externalWeight : double
+        	the added external weight
+        id : int
+        	The proposed id for the variable.
+
+        Returns
+        -------
+        int
+        	the id of the added variable.
+
         """
         return _pyAgrum.BayesNet_double_addNoisyORNet(self, *args)
 
@@ -6115,6 +9171,32 @@ class BayesNet_double(IBayesNet_double):
         """
         addNoisyORCompound(self, variable, externalWeight) -> gum::NodeId
         addNoisyORCompound(self, variable, externalWeight, id) -> gum::NodeId
+
+
+        Add a variable, it's associate node and a noisyOR implementation.
+
+        Since it seems that the 'classical' noisyOR is the Compound noisyOR, we keep the addNoisyOR as an alias for addNoisyORCompound.
+
+        (The id of the new variable can be automatically generated.)
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	The variable added by copy
+        externalWeight : double
+        	the added external weight
+        id : int
+        	The proposed id for the variable.
+
+        Returns
+        -------
+        int
+        	the id of the added variable.
+
+        Warnings
+        --------
+        	DuplicateElement raised if id is already used 
+
         """
         return _pyAgrum.BayesNet_double_addNoisyORCompound(self, *args)
 
@@ -6123,6 +9205,30 @@ class BayesNet_double(IBayesNet_double):
         """
         addNoisyAND(self, variable, externalWeight, id) -> gum::NodeId
         addNoisyAND(self, variable, externalWeight) -> gum::NodeId
+
+
+        Add a variable, its associate node and a noisyAND implementation.
+
+        (The id of the new variable can be automatically generated.)
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	The variable added by copy
+        externalWeight : double
+        	the added external weight
+        id : int
+        	The proposed id for the variable.
+
+        Returns
+        -------
+        int
+        	the id of the added variable.
+
+        Warnings
+        --------
+        	DuplicateElement raised if id is already used  
+
         """
         return _pyAgrum.BayesNet_double_addNoisyAND(self, *args)
 
@@ -6131,22 +9237,109 @@ class BayesNet_double(IBayesNet_double):
         """
         addLogit(self, variable, externalWeight, id) -> gum::NodeId
         addLogit(self, variable, externalWeight) -> gum::NodeId
+
+
+        Add a variable, its associate node and a Logit implementation.
+
+        (The id of the new variable can be automatically generated.)
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	The variable added by copy
+        externalWeight : double
+        	the added external weight
+        id : int
+        	The proposed id for the variable.
+        Returns
+        -------
+        int
+        	the id of the added variable.
+
+        Warnings
+        --------
+        	DuplicateElement raised if id is already used 
+
         """
         return _pyAgrum.BayesNet_double_addLogit(self, *args)
 
 
     def addOR(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """addOR(self, variable) -> gum::NodeId"""
+        """
+        addOR(self, variable) -> gum::NodeId
+
+
+        Add a variable, it's associate node and an OR implementation.
+
+        The id of the new variable is automatically generated.
+
+        Warnings
+        --------
+        	If parents are not boolean, all value>1 is True
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	The variable added by copy
+
+        Returns
+        -------
+        int
+        	the id of the added variable.
+
+        Warnings
+        --------
+        	SizeError raised if variable.domainSize()>2 
+
+        """
         return _pyAgrum.BayesNet_double_addOR(self, variable)
 
 
     def addAND(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """addAND(self, variable) -> gum::NodeId"""
+        """
+        addAND(self, variable) -> gum::NodeId
+
+
+        Add a variable, it's associate node and an AND implementation.
+
+        The id of the new variable is automatically generated.
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	The variable added by copy.
+
+        Returns
+        -------
+        int
+        	the id of the added variable. 
+
+        Warnings
+        --------
+        	SizeError if variable.domainSize()>2 
+
+        """
         return _pyAgrum.BayesNet_double_addAND(self, variable)
 
 
     def addAMPLITUDE(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """addAMPLITUDE(self, variable) -> gum::NodeId"""
+        """
+        addAMPLITUDE(self, variable) -> gum::NodeId
+
+
+        Others aggregators
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable to be added
+
+        Returns
+        -------
+        int
+        	the id of the added value
+
+        """
         return _pyAgrum.BayesNet_double_addAMPLITUDE(self, variable)
 
 
@@ -6154,6 +9347,20 @@ class BayesNet_double(IBayesNet_double):
         """
         addCOUNT(self, variable, Value=1) -> gum::NodeId
         addCOUNT(self, variable) -> gum::NodeId
+
+
+        Others aggregators
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable to be added
+
+        Returns
+        -------
+        int
+        	the id of the added value
+
         """
         return _pyAgrum.BayesNet_double_addCOUNT(self, variable, Value)
 
@@ -6162,6 +9369,20 @@ class BayesNet_double(IBayesNet_double):
         """
         addEXISTS(self, variable, Value=1) -> gum::NodeId
         addEXISTS(self, variable) -> gum::NodeId
+
+
+        Others aggregators
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable to be added
+
+        Returns
+        -------
+        int
+        	the id of the added value
+
         """
         return _pyAgrum.BayesNet_double_addEXISTS(self, variable, Value)
 
@@ -6170,22 +9391,84 @@ class BayesNet_double(IBayesNet_double):
         """
         addFORALL(self, variable, Value=1) -> gum::NodeId
         addFORALL(self, variable) -> gum::NodeId
+
+
+        Others aggregators
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable to be added
+
+        Returns
+        -------
+        int
+        	the id of the added variable.
+
         """
         return _pyAgrum.BayesNet_double_addFORALL(self, variable, Value)
 
 
     def addMAX(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """addMAX(self, variable) -> gum::NodeId"""
+        """
+        addMAX(self, variable) -> gum::NodeId
+
+
+        Others aggregators
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable to be added
+
+        Returns
+        -------
+        int
+        	the id of the added value
+
+        """
         return _pyAgrum.BayesNet_double_addMAX(self, variable)
 
 
     def addMEDIAN(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """addMEDIAN(self, variable) -> gum::NodeId"""
+        """
+        addMEDIAN(self, variable) -> gum::NodeId
+
+
+        Others aggregators
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable to be added
+
+        Returns
+        -------
+        int
+        	the id of the added value
+
+        """
         return _pyAgrum.BayesNet_double_addMEDIAN(self, variable)
 
 
     def addMIN(self, variable: 'DiscreteVariable') -> "gum::NodeId":
-        """addMIN(self, variable) -> gum::NodeId"""
+        """
+        addMIN(self, variable) -> gum::NodeId
+
+
+        Others aggregators
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable to be added
+
+        Returns
+        -------
+        int
+        	the id of the added value
+
+        """
         return _pyAgrum.BayesNet_double_addMIN(self, variable)
 
 
@@ -6193,12 +9476,40 @@ class BayesNet_double(IBayesNet_double):
         """
         addWeightedArc(self, tail, head, causalWeight)
         addWeightedArc(self, tail, head, causalWeight)
+
+
+        Add an arc in the BN, and update arc.head's CPT.
+
+        Parameters
+        ----------
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+        causalWeight : double
+        	the added causal weight
+
+        Warnings
+        --------
+            InvalidArc raised if arc.tail and/or arc.head are not in the BN.
+            InvalidArc raised if variable in arc.head is not a NoisyOR variable. 
+
         """
         return _pyAgrum.BayesNet_double_addWeightedArc(self, *args)
 
 
     def generateCPTs(self) -> "void":
-        """generateCPTs(self)"""
+        """
+        generateCPTs(self)
+
+
+        Randomly generates CPTs for a given structure.
+
+        """
         return _pyAgrum.BayesNet_double_generateCPTs(self)
 
 
@@ -6206,6 +9517,17 @@ class BayesNet_double(IBayesNet_double):
         """
         generateCPT(self, node)
         generateCPT(self, name)
+
+
+        Randomly generate CPT for a given node in a given structure.
+
+        Parameters
+        ----------
+        node : int
+        	The variable's id.
+        name : str 
+        	The variable's name.
+
         """
         return _pyAgrum.BayesNet_double_generateCPT(self, *args)
 
@@ -6214,47 +9536,146 @@ class BayesNet_double(IBayesNet_double):
         """
         changePotential(self, id, newPot)
         changePotential(self, name, newPot)
+
+
+        change the CPT associated to nodeId to newPot delete the old CPT associated to nodeId.
+
+        Parameters
+        ----------
+        newPot : pyAgrum.Potential
+        	the new potential
+        NodeId : int
+        	the id of the node
+        name : str
+        	the name of the variable
+
+        Warnings
+        --------
+        	NotAllowed raised if newPot has not the same signature as __probaMap[NodeId] 
+
         """
         return _pyAgrum.BayesNet_double_changePotential(self, *args)
 
 
     def dag(self) -> "gum::DAG const &":
-        """dag(self) -> DAG"""
+        """
+        dag(self) -> DAG
+
+
+        Returns
+        -------
+        pyAgrum.DAG
+        	a constant reference to the dag of this BayesNet.
+
+        """
         return _pyAgrum.BayesNet_double_dag(self)
 
 
     def size(self) -> "gum::Size":
-        """size(self) -> gum::Size"""
+        """
+        size(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
         return _pyAgrum.BayesNet_double_size(self)
 
 
     def log10DomainSize(self) -> "double":
-        """log10DomainSize(self) -> double"""
+        """
+        log10DomainSize(self) -> double
+
+
+        Returns
+        -------
+        double
+        	The log10 domain size of the joint probability for the model.
+
+        """
         return _pyAgrum.BayesNet_double_log10DomainSize(self)
 
 
     def ids(self) -> "PyObject *":
-        """ids(self) -> PyObject *"""
+        """
+        ids(self) -> PyObject *
+
+
+        Returns
+        -------
+        list :
+        	The lisf variables ids.
+
+        """
         return _pyAgrum.BayesNet_double_ids(self)
 
 
     def names(self) -> "PyObject *":
-        """names(self) -> PyObject *"""
+        """
+        names(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The names of the BayesNet variables
+
+        """
         return _pyAgrum.BayesNet_double_names(self)
 
 
     def arcs(self) -> "PyObject *":
-        """arcs(self) -> PyObject *"""
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the BayesNet
+
+        """
         return _pyAgrum.BayesNet_double_arcs(self)
 
 
     def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """parents(self, id) -> PyObject *"""
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
         return _pyAgrum.BayesNet_double_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """children(self, id) -> PyObject *"""
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
         return _pyAgrum.BayesNet_double_children(self, id)
 
 
@@ -6262,6 +9683,24 @@ class BayesNet_double(IBayesNet_double):
         """
         minimalCondSet(self, target, list) -> PyObject
         minimalCondSet(self, targets, list) -> PyObject *
+
+
+        Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
+
+        Parameters
+        ----------
+        target : int
+        	The id of the target
+        targets : list
+        	The ids of the targets
+        list : list
+        	The list of available variables
+
+        Returns
+        -------
+        Set
+        	The minimal set of variables
+
         """
         return _pyAgrum.BayesNet_double_minimalCondSet(self, *args)
 
@@ -6272,14 +9711,38 @@ class BayesNet_double(IBayesNet_double):
         loadBIF(self, name) -> std::string
 
 
-        FOO BAR
+        Load a BIF file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        Warnings
+        --------
+        IOError raised if file not found
+
+        Warnings
+        --------
+        FatalError raised if file is not valid
 
         """
         return _pyAgrum.BayesNet_double_loadBIF(self, *args)
 
 
     def saveBIF(self, name: 'std::string') -> "void":
-        """saveBIF(self, name)"""
+        """
+        saveBIF(self, name)
+
+
+        Save the BayesNet in a BIF file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        """
         return _pyAgrum.BayesNet_double_saveBIF(self, name)
 
 
@@ -6287,12 +9750,40 @@ class BayesNet_double(IBayesNet_double):
         """
         loadDSL(self, name, l) -> std::string
         loadDSL(self, name) -> std::string
+
+
+        Load a DSL file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        Warnings
+        --------
+        IOError raised if file not found
+
+        Warnings
+        --------
+        FatalError raised if file is not valid
+
         """
         return _pyAgrum.BayesNet_double_loadDSL(self, *args)
 
 
     def saveDSL(self, name: 'std::string') -> "void":
-        """saveDSL(self, name)"""
+        """
+        saveDSL(self, name)
+
+
+        Save the BayesNet in a DSL file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        """
         return _pyAgrum.BayesNet_double_saveDSL(self, name)
 
 
@@ -6300,12 +9791,40 @@ class BayesNet_double(IBayesNet_double):
         """
         loadNET(self, name, l) -> std::string
         loadNET(self, name) -> std::string
+
+
+        Load a NET file.
+
+        Parameters
+        ----------
+        name : str
+        	the name's file
+
+        Warnings
+        --------
+        IOError raised if file not found
+
+        Warnings
+        --------
+        FatalError raised if file is not valid
+
         """
         return _pyAgrum.BayesNet_double_loadNET(self, *args)
 
 
     def saveNET(self, name: 'std::string') -> "void":
-        """saveNET(self, name)"""
+        """
+        saveNET(self, name)
+
+
+        Save the BayesNet in a NET file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        """
         return _pyAgrum.BayesNet_double_saveNET(self, name)
 
 
@@ -6315,12 +9834,52 @@ class BayesNet_double(IBayesNet_double):
         loadO3PRM(self, name, system, classpath) -> std::string
         loadO3PRM(self, name, system) -> std::string
         loadO3PRM(self, name) -> std::string
+
+
+        Load an O3PRM file.
+
+        Warnings
+        --------
+        The O3PRM language is the only language allowing to manipulate not only DiscretizedVariable but also RangeVariable and LabelizedVariable.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+        system : str
+        	the system's name
+        classpath : str
+        	the classpath
+
+        Warnings
+        --------
+        IOError raised if file not found
+
+        Warnings
+        --------
+        FatalError raised if file is not valid
+
         """
         return _pyAgrum.BayesNet_double_loadO3PRM(self, *args)
 
 
     def saveO3PRM(self, name: 'std::string') -> "void":
-        """saveO3PRM(self, name)"""
+        """
+        saveO3PRM(self, name)
+
+
+        Save the BayesNet in an O3PRM file.
+
+        Warnings
+        --------
+        The O3PRM language is the only language allowing to manipulate not only DiscretizedVariable but also RangeVariable and LabelizedVariable.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        """
         return _pyAgrum.BayesNet_double_saveO3PRM(self, name)
 
 
@@ -6328,12 +9887,40 @@ class BayesNet_double(IBayesNet_double):
         """
         loadBIFXML(self, name, l) -> std::string
         loadBIFXML(self, name) -> std::string
+
+
+        Load a BIFXML file.
+
+        Parameters
+        ----------
+        name : str
+        	the name's file
+
+        Warnings
+        --------
+        IOError raised if file not found
+
+        Warnings
+        --------
+        FatalError raised if file is not valid
+
         """
         return _pyAgrum.BayesNet_double_loadBIFXML(self, *args)
 
 
     def saveBIFXML(self, name: 'std::string') -> "void":
-        """saveBIFXML(self, name)"""
+        """
+        saveBIFXML(self, name)
+
+
+        Save the BayesNet in a BIFXML file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        """
         return _pyAgrum.BayesNet_double_saveBIFXML(self, name)
 
 
@@ -6341,12 +9928,40 @@ class BayesNet_double(IBayesNet_double):
         """
         loadUAI(self, name, l) -> std::string
         loadUAI(self, name) -> std::string
+
+
+        Load an UAI file.
+
+        Parameters
+        ----------
+        name : str
+        	the name's file
+
+        Warnings
+        --------
+        IOError raised if file not found
+
+        Warnings
+        --------
+        FatalError raised if file is not valid
+
         """
         return _pyAgrum.BayesNet_double_loadUAI(self, *args)
 
 
     def saveUAI(self, name: 'std::string') -> "void":
-        """saveUAI(self, name)"""
+        """
+        saveUAI(self, name)
+
+
+        Save the BayesNet in an UAI file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        """
         return _pyAgrum.BayesNet_double_saveUAI(self, name)
 
 BayesNet_double_swigregister = _pyAgrum.BayesNet_double_swigregister
@@ -6358,6 +9973,23 @@ def BayesNet_double_fastPrototype(dotlike: 'std::string const &', domainSize: 'g
     BayesNet_double_fastPrototype(dotlike) -> BayesNet_double
 
 
+    Create a bn with a dotlike syntax : 'a->b->c;b->d;'.
+
+    The domain size maybe specified using 'a[10]'.
+
+    Note that if the dotlike string contains such a specification for an already defined variable, the first specification will be used.
+
+    Parameters
+    ----------
+    dotlike : str
+    	the string containing the specification
+    domainSize : int
+    	the default domain size for variables
+
+    Returns
+    -------
+    pyAgrum.BayesNet
+    	the resulting bayesian network 
 
     """
     return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
@@ -6584,32 +10216,80 @@ class LazyPropagation_double(_object):
         return None
 
     def setTriangulation(self, new_triangulation: 'Triangulation') -> "void":
-        """setTriangulation(self, new_triangulation)"""
+        """
+        setTriangulation(self, new_triangulation)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_setTriangulation(self, new_triangulation)
 
 
     def setRelevantPotentialsFinderType(self, type: 'gum::RelevantPotentialsFinderType') -> "void":
-        """setRelevantPotentialsFinderType(self, type)"""
+        """
+        setRelevantPotentialsFinderType(self, type)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_setRelevantPotentialsFinderType(self, type)
 
 
     def setFindBarrenNodesType(self, type: 'gum::FindBarrenNodesType') -> "void":
-        """setFindBarrenNodesType(self, type)"""
+        """
+        setFindBarrenNodesType(self, type)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_setFindBarrenNodesType(self, type)
 
 
     def joinTree(self) -> "gum::JoinTree const *":
-        """joinTree(self) -> CliqueGraph"""
+        """
+        joinTree(self) -> CliqueGraph
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_joinTree(self)
 
 
     def junctionTree(self) -> "gum::JunctionTree const *":
-        """junctionTree(self) -> CliqueGraph"""
+        """
+        junctionTree(self) -> CliqueGraph
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_junctionTree(self)
 
 
     def evidenceProbability(self) -> "double":
-        """evidenceProbability(self) -> double"""
+        """
+        evidenceProbability(self) -> double
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_evidenceProbability(self)
 
 
@@ -6645,47 +10325,119 @@ class LazyPropagation_double(_object):
 
 
     def hardEvidenceNodes(self) -> "PyObject *":
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self) -> "PyObject *":
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_softEvidenceNodes(self)
 
 
     def targets(self) -> "PyObject *":
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_targets(self)
 
 
     def jointPosterior(self, list: 'PyObject *') -> "gum::Potential< double >":
-        """jointPosterior(self, list) -> Potential_double"""
+        """
+        jointPosterior(self, list) -> Potential_double
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_jointPosterior(self, list)
 
 
     def addJointTarget(self, list: 'PyObject *') -> "void":
-        """addJointTarget(self, list)"""
+        """
+        addJointTarget(self, list)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_addJointTarget(self, list)
 
 
     def eraseJointTarget(self, list: 'PyObject *') -> "void":
-        """eraseJointTarget(self, list)"""
+        """
+        eraseJointTarget(self, list)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_eraseJointTarget(self, list)
 
 
     def isJointTarget(self, list: 'PyObject *') -> "bool":
-        """isJointTarget(self, list) -> bool"""
+        """
+        isJointTarget(self, list) -> bool
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_isJointTarget(self, list)
 
 
     def jointTargets(self) -> "PyObject *":
-        """jointTargets(self) -> PyObject *"""
+        """
+        jointTargets(self) -> PyObject *
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_jointTargets(self)
 
 
     def makeInference(self) -> "void":
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_makeInference(self)
 
 
@@ -6693,12 +10445,26 @@ class LazyPropagation_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_posterior(self, *args)
 
 
     def BN(self) -> "gum::IBayesNet< double > const &":
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_BN(self)
 
 
@@ -6710,6 +10476,12 @@ class LazyPropagation_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_addEvidence(self, *args)
 
@@ -6722,6 +10494,12 @@ class LazyPropagation_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_chgEvidence(self, *args)
 
@@ -6730,12 +10508,26 @@ class LazyPropagation_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self) -> "void":
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_eraseAllEvidence(self)
 
 
@@ -6743,12 +10535,26 @@ class LazyPropagation_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName: 'std::string const &') -> "bool":
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_hasHardEvidence(self, nodeName)
 
 
@@ -6756,32 +10562,78 @@ class LazyPropagation_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self) -> "gum::Size":
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self) -> "gum::Size":
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self) -> "gum::Size":
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self) -> "void":
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_eraseAllTargets(self)
 
 
     def addAllTargets(self) -> "void":
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_addAllTargets(self)
 
 
@@ -6789,6 +10641,12 @@ class LazyPropagation_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_addTarget(self, *args)
 
@@ -6797,6 +10655,12 @@ class LazyPropagation_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_eraseTarget(self, *args)
 
@@ -6805,12 +10669,26 @@ class LazyPropagation_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_isTarget(self, *args)
 
 
     def nbrTargets(self) -> "gum::Size":
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_nbrTargets(self)
 
 
@@ -6818,6 +10696,12 @@ class LazyPropagation_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_H(self, *args)
 
@@ -6826,32 +10710,78 @@ class LazyPropagation_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_evidenceImpact(self, *args)
 
 
     def eraseAllJointTargets(self) -> "void":
-        """eraseAllJointTargets(self)"""
+        """
+        eraseAllJointTargets(self)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_eraseAllJointTargets(self)
 
 
     def eraseAllMarginalTargets(self) -> "void":
-        """eraseAllMarginalTargets(self)"""
+        """
+        eraseAllMarginalTargets(self)
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_eraseAllMarginalTargets(self)
 
 
     def nbrJointTargets(self) -> "gum::Size":
-        """nbrJointTargets(self) -> gum::Size"""
+        """
+        nbrJointTargets(self) -> gum::Size
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_nbrJointTargets(self)
 
 
     def I(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
-        """I(self, X, Y) -> double"""
+        """
+        I(self, X, Y) -> double
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_I(self, X, Y)
 
 
     def VI(self, X: 'gum::NodeId const', Y: 'gum::NodeId const') -> "double":
-        """VI(self, X, Y) -> double"""
+        """
+        VI(self, X, Y) -> double
+
+
+        Warnings
+        --------
+        A faire
+
+        """
         return _pyAgrum.LazyPropagation_double_VI(self, X, Y)
 
 
@@ -6859,6 +10789,12 @@ class LazyPropagation_double(_object):
         """
         evidenceJointImpact(self, targets, evs) -> Potential_double
         evidenceJointImpact(self, targets, evs) -> Potential_double
+
+
+        Warnings
+        --------
+        A faire
+
         """
         return _pyAgrum.LazyPropagation_double_evidenceJointImpact(self, *args)
 
@@ -7521,82 +11457,249 @@ class GibbsSampling_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.GibbsSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.GibbsSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.GibbsSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.GibbsSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.GibbsSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.GibbsSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.GibbsSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.GibbsSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.GibbsSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.GibbsSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.GibbsSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.GibbsSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.GibbsSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.GibbsSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.GibbsSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.GibbsSampling_double_history(self)
 
 
@@ -7853,82 +11956,249 @@ class ImportanceSampling_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.ImportanceSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.ImportanceSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.ImportanceSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.ImportanceSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.ImportanceSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.ImportanceSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.ImportanceSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.ImportanceSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.ImportanceSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.ImportanceSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.ImportanceSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.ImportanceSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.ImportanceSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.ImportanceSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.ImportanceSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.ImportanceSampling_double_history(self)
 
 
@@ -8165,82 +12435,249 @@ class WeightedSampling_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.WeightedSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.WeightedSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.WeightedSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.WeightedSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.WeightedSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.WeightedSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.WeightedSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.WeightedSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.WeightedSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.WeightedSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.WeightedSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.WeightedSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.WeightedSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.WeightedSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.WeightedSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.WeightedSampling_double_history(self)
 
 
@@ -8477,82 +12914,249 @@ class MonteCarloSampling_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.MonteCarloSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.MonteCarloSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.MonteCarloSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.MonteCarloSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.MonteCarloSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.MonteCarloSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.MonteCarloSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.MonteCarloSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.MonteCarloSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.MonteCarloSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.MonteCarloSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.MonteCarloSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.MonteCarloSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.MonteCarloSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.MonteCarloSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.MonteCarloSampling_double_history(self)
 
 
@@ -8799,82 +13403,249 @@ class LoopyImportanceSampling_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_history(self)
 
 
@@ -9121,82 +13892,249 @@ class LoopyWeightedSampling_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_history(self)
 
 
@@ -9443,82 +14381,249 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_history(self)
 
 
@@ -9785,82 +14890,249 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_history(self)
 
 
@@ -10075,12 +15347,30 @@ class GibbsKL_double(ApproximationScheme):
         return None
 
     def setBurnIn(self, b: 'gum::Size') -> "void":
-        """setBurnIn(self, b)"""
+        """
+        setBurnIn(self, b)
+
+
+        Parameters
+        ----------
+        b : int
+        	size of burn in on number of iteration 
+
+        """
         return _pyAgrum.GibbsKL_double_setBurnIn(self, b)
 
 
     def burnIn(self) -> "gum::Size":
-        """burnIn(self) -> gum::Size"""
+        """
+        burnIn(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	size of burn in on number of iteration
+
+        """
         return _pyAgrum.GibbsKL_double_burnIn(self)
 
 
@@ -10090,82 +15380,249 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.GibbsKL_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.GibbsKL_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.GibbsKL_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.GibbsKL_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.GibbsKL_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.GibbsKL_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.GibbsKL_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.GibbsKL_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.GibbsKL_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.GibbsKL_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.GibbsKL_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.GibbsKL_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.GibbsKL_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.GibbsKL_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.GibbsKL_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.GibbsKL_double_history(self)
 
 
@@ -10422,82 +15879,249 @@ class CNMonteCarloSampling_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_history(self)
 
 
@@ -10596,82 +16220,249 @@ class CNLoopyPropagation_double(_object):
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_history(self)
 
 
@@ -11089,7 +16880,27 @@ InfluenceDiagramInference_double_swigregister = _pyAgrum.InfluenceDiagramInferen
 InfluenceDiagramInference_double_swigregister(InfluenceDiagramInference_double)
 
 class BNLearner_double(_object):
-    """Proxy of C++ gum::learning::BNLearner< double > class."""
+    """
+
+    Available constructors:
+    	``BNLearner(filename) -> BNLearner``
+
+    	``BNLearner(filename,src,parse_database=false) -> BNLearner``
+
+    	``BNLearner(learner) -> BNLearner``
+
+    Parameters
+    ----------
+    filename: str
+    	the file to learn from
+    src : pyAgrum.BayesNet
+    	the Bayesian network used to find thoes modalities
+    parse_database : bool
+    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables. 
+    learner : pyAgrum.BNLearner
+    	the BNLearner to copy
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BNLearner_double, name, value)
@@ -11118,7 +16929,18 @@ class BNLearner_double(_object):
         return None
 
     def learnBN(self) -> "gum::BayesNet< double >":
-        """learnBN(self) -> BayesNet_double"""
+        """
+        learnBN(self) -> BayesNet_double
+
+
+        learn a BayesNet from a file (must have read the db before) 
+
+        Returns
+        -------
+        pyAgrum.BayesNet
+        	the learned BayesNet
+
+        """
         return _pyAgrum.BNLearner_double_learnBN(self)
 
 
@@ -11128,157 +16950,472 @@ class BNLearner_double(_object):
         learnParameters(self, dag) -> BayesNet_double
         learnParameters(self, bn, take_into_account_score=True) -> BayesNet_double
         learnParameters(self, bn) -> BayesNet_double
+
+
+        learns a BN (its parameters) when its structure is known.
+
+        Parameters
+        ----------
+        dag : pyAgrum.DAG
+        bn : pyAgrum.BayesNet
+        take_into_account_score : bool
+        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX () 
+
+        Returns
+        -------
+        pyAgrum.BayesNet
+        	the learned BayesNet
+
+        Warnings
+        --------
+        MissingVariableInDatabase if a variable of the BN is not found in the database
+
+        Warnings
+        --------
+        UnknownLabelInDatabase raise if a label is found in the database that do not correspond to the variable
+
         """
         return _pyAgrum.BNLearner_double_learnParameters(self, *args)
 
 
     def setVerbosity(self, v: 'bool') -> "void":
-        """setVerbosity(self, v)"""
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
         return _pyAgrum.BNLearner_double_setVerbosity(self, v)
 
 
     def setEpsilon(self, eps: 'double') -> "void":
-        """setEpsilon(self, eps)"""
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
         return _pyAgrum.BNLearner_double_setEpsilon(self, eps)
 
 
     def setMinEpsilonRate(self, rate: 'double') -> "void":
-        """setMinEpsilonRate(self, rate)"""
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
         return _pyAgrum.BNLearner_double_setMinEpsilonRate(self, rate)
 
 
     def setMaxIter(self, max: 'gum::Size') -> "void":
-        """setMaxIter(self, max)"""
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
         return _pyAgrum.BNLearner_double_setMaxIter(self, max)
 
 
     def setMaxTime(self, timeout: 'double') -> "void":
-        """setMaxTime(self, timeout)"""
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
         return _pyAgrum.BNLearner_double_setMaxTime(self, timeout)
 
 
     def setPeriodSize(self, p: 'gum::Size') -> "void":
-        """setPeriodSize(self, p)"""
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.BNLearner_double_setPeriodSize(self, p)
 
 
     def verbosity(self) -> "bool":
-        """verbosity(self) -> bool"""
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
         return _pyAgrum.BNLearner_double_verbosity(self)
 
 
     def epsilon(self) -> "double":
-        """epsilon(self) -> double"""
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
         return _pyAgrum.BNLearner_double_epsilon(self)
 
 
     def minEpsilonRate(self) -> "double":
-        """minEpsilonRate(self) -> double"""
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
         return _pyAgrum.BNLearner_double_minEpsilonRate(self)
 
 
     def maxIter(self) -> "gum::Size":
-        """maxIter(self) -> gum::Size"""
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
         return _pyAgrum.BNLearner_double_maxIter(self)
 
 
     def maxTime(self) -> "double":
-        """maxTime(self) -> double"""
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
         return _pyAgrum.BNLearner_double_maxTime(self)
 
 
     def periodSize(self) -> "gum::Size":
-        """periodSize(self) -> gum::Size"""
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
         return _pyAgrum.BNLearner_double_periodSize(self)
 
 
     def nbrIterations(self) -> "gum::Size":
-        """nbrIterations(self) -> gum::Size"""
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        Warnings
+        --------
+        a completer
+
+        """
         return _pyAgrum.BNLearner_double_nbrIterations(self)
 
 
     def currentTime(self) -> "double":
-        """currentTime(self) -> double"""
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double) 
+
+        """
         return _pyAgrum.BNLearner_double_currentTime(self)
 
 
     def messageApproximationScheme(self) -> "std::string":
-        """messageApproximationScheme(self) -> std::string"""
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
         return _pyAgrum.BNLearner_double_messageApproximationScheme(self)
 
 
     def history(self) -> "std::vector< double,std::allocator< double > > const &":
-        """history(self) -> Vector_double"""
+        """
+        history(self) -> Vector_double
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.BNLearner_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.BNLearner_double_asIApproximationSchemeConfiguration(self)
 
 
     def learnDAG(self) -> "gum::DAG":
-        """learnDAG(self) -> DAG"""
+        """
+        learnDAG(self) -> DAG
+
+
+        learn a structure from a file (must have read the db before) 
+
+        Returns
+        -------
+        pyAgrum.DAG
+        	the learned DAG
+
+        """
         return _pyAgrum.BNLearner_double_learnDAG(self)
 
 
     def names(self) -> "std::vector< std::string,std::allocator< std::string > > const &":
-        """names(self) -> Vector_string"""
+        """
+        names(self) -> Vector_string
+
+
+        Returns
+        -------
+        str
+        	the names of the variables in the database
+
+        """
         return _pyAgrum.BNLearner_double_names(self)
 
 
     def modalities(self) -> "std::vector< gum::Size,std::allocator< gum::Size > > const &":
-        """modalities(self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &"""
+        """
+        modalities(self) -> std::vector< gum::Size,std::allocator< gum::Size > > const &
+
+
+        Returns
+        -------
+        vector<pos,size>
+        	the number of modalities of the database's variables.
+
+        Warnings
+        --------
+        A Faire
+
+        """
         return _pyAgrum.BNLearner_double_modalities(self)
 
 
     def idFromName(self, var_name: 'std::string const &') -> "gum::NodeId":
-        """idFromName(self, var_name) -> gum::NodeId"""
+        """
+        idFromName(self, var_name) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        var_names : str
+        	a variable's name
+
+        Returns
+        -------
+        int
+        	the node id corresponding to a variable name
+
+        Warnings
+        --------
+        MissingVariableInDatabase raised if a variable of the BN is not found in the database. 
+
+        """
         return _pyAgrum.BNLearner_double_idFromName(self, var_name)
 
 
     def nameFromId(self, id: 'gum::NodeId') -> "std::string const &":
-        """nameFromId(self, id) -> std::string const &"""
+        """
+        nameFromId(self, id) -> std::string const &
+
+
+        Parameters
+        ----------
+        id
+        	a node id
+
+        Returns
+        -------
+        str
+        	the variable's name
+
+        """
         return _pyAgrum.BNLearner_double_nameFromId(self, id)
 
 
     def useScoreAIC(self) -> "void":
-        """useScoreAIC(self)"""
+        """
+        useScoreAIC(self)
+
+
+        Indicate that we wish to use an AIC score.
+
+        """
         return _pyAgrum.BNLearner_double_useScoreAIC(self)
 
 
     def useScoreBD(self) -> "void":
-        """useScoreBD(self)"""
+        """
+        useScoreBD(self)
+
+
+        Indicate that we wish to use a BD score.
+
+        """
         return _pyAgrum.BNLearner_double_useScoreBD(self)
 
 
     def useScoreBDeu(self) -> "void":
-        """useScoreBDeu(self)"""
+        """
+        useScoreBDeu(self)
+
+
+        Indicate that we wish to use a BDeu score.
+
+        """
         return _pyAgrum.BNLearner_double_useScoreBDeu(self)
 
 
     def useScoreBIC(self) -> "void":
-        """useScoreBIC(self)"""
+        """
+        useScoreBIC(self)
+
+
+        Indicate that we wish to use a BIC score.
+
+        """
         return _pyAgrum.BNLearner_double_useScoreBIC(self)
 
 
     def useScoreK2(self) -> "void":
-        """useScoreK2(self)"""
+        """
+        useScoreK2(self)
+
+
+        Indicate that we wish to use a K2 score.
+
+        """
         return _pyAgrum.BNLearner_double_useScoreK2(self)
 
 
     def useScoreLog2Likelihood(self) -> "void":
-        """useScoreLog2Likelihood(self)"""
+        """
+        useScoreLog2Likelihood(self)
+
+
+        Indicate that we wish to use a Log2Likelihood score.
+
+        """
         return _pyAgrum.BNLearner_double_useScoreLog2Likelihood(self)
 
 
     def setAprioriWeight(self, weight: 'double') -> "void":
-        """setAprioriWeight(self, weight)"""
+        """
+        setAprioriWeight(self, weight)
+
+
+        Parameters
+        ----------
+        weight : double
+        	the apriori weight
+
+        """
         return _pyAgrum.BNLearner_double_setAprioriWeight(self, weight)
 
 
     def useNoApriori(self) -> "void":
-        """useNoApriori(self)"""
+        """
+        useNoApriori(self)
+
+
+        Use no apriori.
+
+        """
         return _pyAgrum.BNLearner_double_useNoApriori(self)
 
 
@@ -11286,17 +17423,47 @@ class BNLearner_double(_object):
         """
         useAprioriSmoothing(self, weight=-1)
         useAprioriSmoothing(self)
+
+
+        Use the apriori smoothing.
+
+        Parameters
+        ----------
+        weight : double
+        	pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used. 
+
         """
         return _pyAgrum.BNLearner_double_useAprioriSmoothing(self, *args)
 
 
     def useAprioriDirichlet(self, filename: 'std::string const &') -> "void":
-        """useAprioriDirichlet(self, filename)"""
+        """
+        useAprioriDirichlet(self, filename)
+
+
+        Use the Dirichlet apriori.
+
+        Parameters
+        ----------
+        filename : str
+        	the Dirichlet related database
+
+        Warnings
+        --------
+        à compléter
+
+        """
         return _pyAgrum.BNLearner_double_useAprioriDirichlet(self, filename)
 
 
     def useGreedyHillClimbing(self) -> "void":
-        """useGreedyHillClimbing(self)"""
+        """
+        useGreedyHillClimbing(self)
+
+
+        Indicate that we wish to use a greedy hill climbing algorithm.
+
+        """
         return _pyAgrum.BNLearner_double_useGreedyHillClimbing(self)
 
 
@@ -11305,6 +17472,17 @@ class BNLearner_double(_object):
         useLocalSearchWithTabuList(self, tabu_size=100, nb_decrease=2)
         useLocalSearchWithTabuList(self, tabu_size=100)
         useLocalSearchWithTabuList(self)
+
+
+        indicate that we wish to use a local search with tabu list
+
+        Parameters
+        ----------
+        tabu_size : int 
+        	The size of the tabu list
+        nb_decrease : int 
+        	The max number of changes decreasing the score consecutively that we allow to apply 
+
         """
         return _pyAgrum.BNLearner_double_useLocalSearchWithTabuList(self, *args)
 
@@ -11314,12 +17492,30 @@ class BNLearner_double(_object):
         useK2(self, l)
         useK2(self, order)
         useK2(self, order)
+
+
+        Indicate that we wish to use K2.
+
+        Parameters
+        ----------
+        order : list
+        	a list of ids
+
         """
         return _pyAgrum.BNLearner_double_useK2(self, *args)
 
 
     def setMaxIndegree(self, max_indegree: 'gum::Size') -> "void":
-        """setMaxIndegree(self, max_indegree)"""
+        """
+        setMaxIndegree(self, max_indegree)
+
+
+        Parameters
+        ----------
+        max_indegree : int
+        	the limit number of parents
+
+        """
         return _pyAgrum.BNLearner_double_setMaxIndegree(self, max_indegree)
 
 
@@ -11327,6 +17523,12 @@ class BNLearner_double(_object):
         """
         setSliceOrder(self, l)
         setSliceOrder(self, slice_order)
+
+
+        Warnings
+        --------
+        A Faire
+
         """
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)
 
@@ -11336,6 +17538,23 @@ class BNLearner_double(_object):
         addForbiddenArc(self, arc)
         addForbiddenArc(self, tail, head)
         addForbiddenArc(self, tail, head)
+
+
+        The arc in parameters won't be added.
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_double_addForbiddenArc(self, *args)
 
@@ -11345,6 +17564,23 @@ class BNLearner_double(_object):
         eraseForbiddenArc(self, arc)
         eraseForbiddenArc(self, tail, head)
         eraseForbiddenArc(self, tail, head)
+
+
+        Allow the arc in parameter to be added if necessary.
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_double_eraseForbiddenArc(self, *args)
 
@@ -11354,6 +17590,27 @@ class BNLearner_double(_object):
         addMandatoryArc(self, arc)
         addMandatoryArc(self, tail, head)
         addMandatoryArc(self, tail, head)
+
+
+        Allow to add prior structural knowledge.
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
+        Warnings
+        --------
+        InvalidDirectedCycle raised if the added arc creates a directed cycle in the DAG
+
         """
         return _pyAgrum.BNLearner_double_addMandatoryArc(self, *args)
 
@@ -11363,12 +17620,36 @@ class BNLearner_double(_object):
         eraseMandatoryArc(self, arc)
         eraseMandatoryArc(self, tail, head)
         eraseMandatoryArc(self, tail, head)
+
+
+        Parameters
+        ----------
+        arc : pyAgrum
+        	an arc
+        head :
+        	a variable's id (int)
+        tail :
+        	a variable's id (int)
+        head :
+        	a variable's name (str)
+        tail :
+        	a variable's name (str)
+
         """
         return _pyAgrum.BNLearner_double_eraseMandatoryArc(self, *args)
 
 
     def setInitialDAG(self, g: 'DAG') -> "void":
-        """setInitialDAG(self, g)"""
+        """
+        setInitialDAG(self, g)
+
+
+        Parameters
+        ----------
+        dag : pyAgrum.DAG
+        	an initial DAG structure
+
+        """
         return _pyAgrum.BNLearner_double_setInitialDAG(self, g)
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister

@@ -26,68 +26,69 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>::UtilityTable()
-      : MultiDimDecorator<GUM_SCALAR>( new MultiDimArray<GUM_SCALAR> ) {
-    GUM_CONSTRUCTOR( UtilityTable );
+  template < typename GUM_SCALAR >
+  INLINE UtilityTable< GUM_SCALAR >::UtilityTable()
+      : MultiDimDecorator< GUM_SCALAR >(new MultiDimArray< GUM_SCALAR >) {
+    GUM_CONSTRUCTOR(UtilityTable);
   }
 
-  template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>::UtilityTable(
-      MultiDimImplementation<GUM_SCALAR>* aContent )
-      : MultiDimDecorator<GUM_SCALAR>( aContent ) {
-    GUM_CONSTRUCTOR( UtilityTable );
+  template < typename GUM_SCALAR >
+  INLINE UtilityTable< GUM_SCALAR >::UtilityTable(
+    MultiDimImplementation< GUM_SCALAR >* aContent)
+      : MultiDimDecorator< GUM_SCALAR >(aContent) {
+    GUM_CONSTRUCTOR(UtilityTable);
   }
 
-  template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>::~UtilityTable() {
-    GUM_DESTRUCTOR( UtilityTable );
+  template < typename GUM_SCALAR >
+  INLINE UtilityTable< GUM_SCALAR >::~UtilityTable() {
+    GUM_DESTRUCTOR(UtilityTable);
   }
 
-  template <typename GUM_SCALAR>
-  INLINE
-  UtilityTable<GUM_SCALAR>::UtilityTable( const UtilityTable<GUM_SCALAR>& toCopy )
-      : MultiDimDecorator<GUM_SCALAR>(
-            static_cast<MultiDimImplementation<GUM_SCALAR>*>(
-                toCopy.content()->newFactory() ) ) {
-    const Sequence<const DiscreteVariable*>& varSeq = toCopy.variablesSequence();
+  template < typename GUM_SCALAR >
+  INLINE UtilityTable< GUM_SCALAR >::UtilityTable(
+    const UtilityTable< GUM_SCALAR >& toCopy)
+      : MultiDimDecorator< GUM_SCALAR >(
+          static_cast< MultiDimImplementation< GUM_SCALAR >* >(
+            toCopy.content()->newFactory())) {
+    const Sequence< const DiscreteVariable* >& varSeq = toCopy.variablesSequence();
 
-    for ( Sequence<const DiscreteVariable*>::iterator_safe iter =
-              varSeq.beginSafe();
-          iter != varSeq.endSafe();
-          ++iter ) {
-      this->add( **iter );
+    for (Sequence< const DiscreteVariable* >::iterator_safe iter =
+           varSeq.beginSafe();
+         iter != varSeq.endSafe();
+         ++iter) {
+      this->add(**iter);
     }
 
-    Instantiation i1( toCopy );
-    Instantiation i2( *this );
+    Instantiation i1(toCopy);
+    Instantiation i2(*this);
 
-    for ( i1.setFirst(), i2.setFirstIn( i1 ); !i1.end(); ++i1, i2.incIn( i1 ) ) {
-      this->set( i2, toCopy[i1] );
+    for (i1.setFirst(), i2.setFirstIn(i1); !i1.end(); ++i1, i2.incIn(i1)) {
+      this->set(i2, toCopy[i1]);
     }
 
-    GUM_CONS_CPY( UtilityTable );
+    GUM_CONS_CPY(UtilityTable);
   }
 
-  template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>& UtilityTable<GUM_SCALAR>::
-  operator=( const UtilityTable<GUM_SCALAR>& toCopy ) {
-    GUM_ERROR( OperationNotAllowed,
-               "No copy for UtilityTable : how to choose the implementation ?" );
+  template < typename GUM_SCALAR >
+  INLINE UtilityTable< GUM_SCALAR >& UtilityTable< GUM_SCALAR >::
+  operator=(const UtilityTable< GUM_SCALAR >& toCopy) {
+    GUM_ERROR(OperationNotAllowed,
+              "No copy for UtilityTable : how to choose the implementation ?");
     return *this;
   }
 
-  template <typename GUM_SCALAR>
-  INLINE UtilityTable<GUM_SCALAR>* UtilityTable<GUM_SCALAR>::newFactory() const {
-    return new UtilityTable<GUM_SCALAR>(
-        static_cast<MultiDimImplementation<GUM_SCALAR>*>(
-            this->content()->newFactory() ) );
+  template < typename GUM_SCALAR >
+  INLINE UtilityTable< GUM_SCALAR >*
+         UtilityTable< GUM_SCALAR >::newFactory() const {
+    return new UtilityTable< GUM_SCALAR >(
+      static_cast< MultiDimImplementation< GUM_SCALAR >* >(
+        this->content()->newFactory()));
   }
 
-  template <typename GUM_SCALAR>
-  INLINE void UtilityTable<GUM_SCALAR>::_swap( const DiscreteVariable* x,
-                                               const DiscreteVariable* y ) {
-    MultiDimDecorator<GUM_SCALAR>::content()->swap( *x, *y );
+  template < typename GUM_SCALAR >
+  INLINE void UtilityTable< GUM_SCALAR >::_swap(const DiscreteVariable* x,
+                                                const DiscreteVariable* y) {
+    MultiDimDecorator< GUM_SCALAR >::content()->swap(*x, *y);
   }
 
 } /* namespace gum */

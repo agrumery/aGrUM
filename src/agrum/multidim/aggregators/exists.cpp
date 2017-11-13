@@ -26,5 +26,5 @@
 
 #include <agrum/multidim/aggregators/exists.h>
 
-template class gum::aggregator::Exists<float>;
-template class gum::aggregator::Exists<double>;
+template class gum::aggregator::Exists< float >;
+template class gum::aggregator::Exists< double >;

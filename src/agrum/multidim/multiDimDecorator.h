@@ -52,8 +52,8 @@ namespace gum {
    * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
    * matrix.
    */
-  template <typename GUM_SCALAR>
-  class MultiDimDecorator : public MultiDimContainer<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class MultiDimDecorator : public MultiDimContainer< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -64,28 +64,28 @@ namespace gum {
      * @brief Class constructor.
      * @param aContent The implementation used by this MultiDimDecorator.
      */
-    MultiDimDecorator( MultiDimImplementation<GUM_SCALAR>* aContent = nullptr,
-                       GUM_SCALAR empty_value = (GUM_SCALAR)0 );
+    MultiDimDecorator(MultiDimImplementation< GUM_SCALAR >* aContent = nullptr,
+                      GUM_SCALAR empty_value = (GUM_SCALAR)0);
 
     /**
      * @brief copy constructor & assignment
      */
-    MultiDimDecorator( const MultiDimDecorator<GUM_SCALAR>& from );
+    MultiDimDecorator(const MultiDimDecorator< GUM_SCALAR >& from);
 
     /**
      * @brief copy operator
      */
-    MultiDimDecorator<GUM_SCALAR>& operator=( const MultiDimDecorator& from );
+    MultiDimDecorator< GUM_SCALAR >& operator=(const MultiDimDecorator& from);
 
     /**
      * @brief Class move constructor & assignment
      */
-    MultiDimDecorator( MultiDimDecorator<GUM_SCALAR>&& );
+    MultiDimDecorator(MultiDimDecorator< GUM_SCALAR >&&);
 
     /**
      * @brief Copy operator.
      */
-    MultiDimDecorator<GUM_SCALAR>& operator=( MultiDimDecorator&& from );
+    MultiDimDecorator< GUM_SCALAR >& operator=(MultiDimDecorator&& from);
 
     /**
      * @brief Class destructor.
@@ -102,17 +102,17 @@ namespace gum {
 
     virtual Size domainSize() const final;
 
-    virtual void add( const DiscreteVariable& v ) final;
+    virtual void add(const DiscreteVariable& v) final;
 
-    virtual void erase( const DiscreteVariable& var ) final;
+    virtual void erase(const DiscreteVariable& var) final;
 
-    virtual const Sequence<const DiscreteVariable*>&
+    virtual const Sequence< const DiscreteVariable* >&
                                     variablesSequence() const final;
-    virtual const DiscreteVariable& variable( Idx ) const final;
+    virtual const DiscreteVariable& variable(Idx) const final;
 
-    virtual Idx pos( const DiscreteVariable& var ) const final;
+    virtual Idx pos(const DiscreteVariable& var) const final;
 
-    virtual bool contains( const DiscreteVariable& var ) const final;
+    virtual bool contains(const DiscreteVariable& var) const final;
 
     virtual bool empty() const final;
 
@@ -122,24 +122,24 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual bool unregisterSlave( Instantiation& i ) final;
+    virtual bool unregisterSlave(Instantiation& i) final;
 
-    virtual bool registerSlave( Instantiation& i ) final;
+    virtual bool registerSlave(Instantiation& i) final;
 
-    virtual void changeNotification( Instantiation&                i,
-                                     const DiscreteVariable* const var,
-                                     const Idx&                    oldval,
-                                     const Idx&                    newval ) final;
+    virtual void changeNotification(Instantiation&                i,
+                                    const DiscreteVariable* const var,
+                                    const Idx&                    oldval,
+                                    const Idx&                    newval) final;
 
-    virtual void setChangeNotification( Instantiation& i ) final;
+    virtual void setChangeNotification(Instantiation& i) final;
 
-    virtual void setFirstNotification( Instantiation& i ) final;
+    virtual void setFirstNotification(Instantiation& i) final;
 
-    virtual void setLastNotification( Instantiation& i ) final;
+    virtual void setLastNotification(Instantiation& i) final;
 
-    virtual void setIncNotification( Instantiation& i ) final;
+    virtual void setIncNotification(Instantiation& i) final;
 
-    virtual void setDecNotification( Instantiation& i ) final;
+    virtual void setDecNotification(Instantiation& i) final;
 
     virtual void notifyChange() const final;
 
@@ -154,17 +154,16 @@ namespace gum {
      *
      * Calls _get as a r-value.
      */
-    virtual void set( const Instantiation& i,
-                      const GUM_SCALAR&    value ) const final;
+    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const final;
 
     /**
      * @brief Default implementation of MultiDimContainer::get().
      *
      * Calls _get as a l-value.
      */
-    virtual GUM_SCALAR get( const Instantiation& i ) const final;
+    virtual GUM_SCALAR get(const Instantiation& i) const final;
 
-    virtual void fill( const GUM_SCALAR& d ) const final;
+    virtual void fill(const GUM_SCALAR& d) const final;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the values in
@@ -184,7 +183,7 @@ namespace gum {
      * @throw SizeError Raised if v size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void populate( const std::vector<GUM_SCALAR>& v ) const final;
+    virtual void populate(const std::vector< GUM_SCALAR >& v) const final;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the values in
@@ -204,13 +203,13 @@ namespace gum {
      * @throw SizeError Raised if l size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void populate( std::initializer_list<GUM_SCALAR> l ) const final;
+    virtual void populate(std::initializer_list< GUM_SCALAR > l) const final;
 
     /**
      * @brief Apply a function on every element of the container
      * @param f the function to apply
      */
-    virtual void apply( std::function<GUM_SCALAR( GUM_SCALAR )> f ) const final;
+    virtual void apply(std::function< GUM_SCALAR(GUM_SCALAR) > f) const final;
 
     /**
      * @brief compute lfold for this container
@@ -218,18 +217,18 @@ namespace gum {
      * @param base the initial value
      */
     virtual GUM_SCALAR
-    reduce( std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
-            GUM_SCALAR base ) const final;
+    reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+           GUM_SCALAR base) const final;
 
-    virtual MultiDimDecorator<GUM_SCALAR>* newFactory() const = 0;
+    virtual MultiDimDecorator< GUM_SCALAR >* newFactory() const = 0;
 
-    virtual void beginMultipleChanges( void ) final;
+    virtual void beginMultipleChanges(void) final;
 
-    virtual void endMultipleChanges( void ) final;
+    virtual void endMultipleChanges(void) final;
 
-    virtual void endMultipleChanges( const GUM_SCALAR& ) final;
+    virtual void endMultipleChanges(const GUM_SCALAR&) final;
 
-    virtual const std::string toString( const Instantiation* i ) const;
+    virtual const std::string toString(const Instantiation* i) const;
 
     virtual const std::string toString() const;
 
@@ -243,12 +242,12 @@ namespace gum {
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual const MultiDimImplementation<GUM_SCALAR>* content() const final;
+    virtual const MultiDimImplementation< GUM_SCALAR >* content() const final;
 
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual MultiDimImplementation<GUM_SCALAR>* content() final;
+    virtual MultiDimImplementation< GUM_SCALAR >* content() final;
 
     /// @}
     protected:
@@ -256,12 +255,12 @@ namespace gum {
      * protecte method to swap the implementation behind the Potential
      * @warning unsafe method for slave Instantiations !
      */
-    void _swapContent( MultiDimImplementation<GUM_SCALAR>* aContent ) const;
+    void _swapContent(MultiDimImplementation< GUM_SCALAR >* aContent) const;
 
     /**
      * The true container.
      */
-    mutable MultiDimImplementation<GUM_SCALAR>* _content;
+    mutable MultiDimImplementation< GUM_SCALAR >* _content;
 
     /**
      * Return a data, given a Insantiation - final method.
@@ -269,7 +268,7 @@ namespace gum {
      * @throw NullElement
      * @throw NotFound
      */
-    GUM_SCALAR& _get( const Instantiation& i ) const final;
+    GUM_SCALAR& _get(const Instantiation& i) const final;
 
     /**
      * value of the MultiDimDecorator if no dimension.

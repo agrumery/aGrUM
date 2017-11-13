@@ -59,8 +59,8 @@ namespace gum {
    * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
    * matrix.
    */
-  template <typename GUM_SCALAR>
-  class MultiDimImplementation : public MultiDimContainer<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class MultiDimImplementation : public MultiDimContainer< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -76,7 +76,7 @@ namespace gum {
      * @brief Copy constructor.
      * @param from The MultiDimImplementation to copy.
      */
-    MultiDimImplementation( const MultiDimImplementation<GUM_SCALAR>& from );
+    MultiDimImplementation(const MultiDimImplementation< GUM_SCALAR >& from);
 
     /**
      * @brief Class destructor.
@@ -148,18 +148,18 @@ namespace gum {
 
     virtual Size domainSize() const;
 
-    virtual void add( const DiscreteVariable& v );
+    virtual void add(const DiscreteVariable& v);
 
-    virtual void erase( const DiscreteVariable& v );
+    virtual void erase(const DiscreteVariable& v);
 
-    virtual const Sequence<const DiscreteVariable*>&
-    variablesSequence( void ) const;
+    virtual const Sequence< const DiscreteVariable* >&
+    variablesSequence(void) const;
 
-    virtual const DiscreteVariable& variable( Idx i ) const;
+    virtual const DiscreteVariable& variable(Idx i) const;
 
-    virtual Idx pos( const DiscreteVariable& v ) const;
+    virtual Idx pos(const DiscreteVariable& v) const;
 
-    virtual bool contains( const DiscreteVariable& v ) const;
+    virtual bool contains(const DiscreteVariable& v) const;
 
     virtual bool empty() const;
 
@@ -169,9 +169,9 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual bool registerSlave( Instantiation& i );
+    virtual bool registerSlave(Instantiation& i);
 
-    virtual bool unregisterSlave( Instantiation& i );
+    virtual bool unregisterSlave(Instantiation& i);
 
     /// @}
     // =========================================================================
@@ -179,15 +179,15 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    using MultiDimContainer<GUM_SCALAR>::get;
+    using MultiDimContainer< GUM_SCALAR >::get;
 
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0;
 
-    virtual void beginMultipleChanges( void );
+    virtual void beginMultipleChanges(void);
 
-    virtual void endMultipleChanges( void );
+    virtual void endMultipleChanges(void);
 
-    virtual void endMultipleChanges( const GUM_SCALAR& );
+    virtual void endMultipleChanges(const GUM_SCALAR&);
 
     /// @}
 
@@ -200,13 +200,13 @@ namespace gum {
     /**
      * @brief Synchronize content after MultipleChanges.
      */
-    virtual void _commitMultipleChanges( void );
+    virtual void _commitMultipleChanges(void);
 
     /**
      * @brief Synchronize content after MultipleChanges.
      * @param value Default value for uninitialized values.
      */
-    virtual void _commitMultipleChanges( const GUM_SCALAR& value );
+    virtual void _commitMultipleChanges(const GUM_SCALAR& value);
 
     /**
      * @brief Get the actual change method of this MultiDimImplementation.
@@ -226,7 +226,7 @@ namespace gum {
      * @return Returns a constant reference over the list of slaved
      * instantiations.
      */
-    const List<Instantiation*>& _slaves() const;
+    const List< Instantiation* >& _slaves() const;
 
     /**
      * @brief Replace variable x by y.
@@ -237,7 +237,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 
     /**
      * @brief Inverts variables at position p1 and p2
@@ -248,26 +248,26 @@ namespace gum {
      * @param p1 The first position.
      * @param p2 The second position.
      */
-    virtual void _invert( Idx p1, Idx p2 );
+    virtual void _invert(Idx p1, Idx p2);
 
     /// @}
 
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual const MultiDimImplementation<GUM_SCALAR>* content() const final;
+    virtual const MultiDimImplementation< GUM_SCALAR >* content() const final;
 
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual MultiDimImplementation<GUM_SCALAR>* content() final;
+    virtual MultiDimImplementation< GUM_SCALAR >* content() final;
 
     private:
     /// List of discrete variables (dimensions).
-    Sequence<const DiscreteVariable*> __vars;
+    Sequence< const DiscreteVariable* > __vars;
 
     /// List of instantiations of the tuples (sequences) of variables.
-    List<Instantiation*> __slaveInstantiations;
+    List< Instantiation* > __slaveInstantiations;
 
     /// Used to represent in which change method this MultiDimImplementation is.
     enum class __InternalChangeMethod : char { DIRECT_CHANGE, MULTIPLE_CHANGE };
@@ -294,9 +294,9 @@ namespace gum {
    * @brief For friendly displaying the content of the array.
    * @ingroup multidim_group
    */
-  template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream&,
-                            const MultiDimImplementation<GUM_SCALAR>& );
+  template < typename GUM_SCALAR >
+  std::ostream& operator<<(std::ostream&,
+                           const MultiDimImplementation< GUM_SCALAR >&);
 
 } /* namespace gum */
 

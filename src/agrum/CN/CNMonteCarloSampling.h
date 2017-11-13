@@ -55,14 +55,15 @@ namespace gum {
      *0 for a sample
      * the test is made once
      */
-    template <typename GUM_SCALAR, class BNInferenceEngine=LazyPropagation<GUM_SCALAR> >
+    template < typename GUM_SCALAR,
+               class BNInferenceEngine = LazyPropagation< GUM_SCALAR > >
     class CNMonteCarloSampling
-        : public MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine> {
+      : public MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine > {
       private:
       /** To easily acces MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine
        * >
        * methods. */
-      using __infEs = MultipleInferenceEngine<GUM_SCALAR, BNInferenceEngine>;
+      using __infEs = MultipleInferenceEngine< GUM_SCALAR, BNInferenceEngine >;
 
       /// @name Private initialization methods
       /// @{
@@ -94,7 +95,7 @@ namespace gum {
        * passing argument (i.e. big enough to represent \c value)
        * @param value The constant integer we want to binarize.
        */
-      inline void __binaryRep( std::vector<bool>& toFill, const Idx value ) const;
+      inline void __binaryRep(std::vector< bool >& toFill, const Idx value) const;
 
       /// @}
 
@@ -106,7 +107,7 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used by the algorithm.
        */
-      CNMonteCarloSampling( const CredalNet<GUM_SCALAR>& credalNet );
+      CNMonteCarloSampling(const CredalNet< GUM_SCALAR >& credalNet);
       /** Destructor. */
       virtual ~CNMonteCarloSampling();
       /// @}
@@ -121,8 +122,8 @@ namespace gum {
 
       /// unsigned int notOptDelete;
 
-      virtual void insertEvidenceFile( const std::string& path ) {
-        InferenceEngine<GUM_SCALAR>::insertEvidenceFile( path );
+      virtual void insertEvidenceFile(const std::string& path) {
+        InferenceEngine< GUM_SCALAR >::insertEvidenceFile(path);
       };
 
       protected:
@@ -130,8 +131,9 @@ namespace gum {
     };
 
 
-    extern template class CNMonteCarloSampling<float, LazyPropagation<float>>;
-    extern template class CNMonteCarloSampling<double, LazyPropagation<double>>;
+    extern template class CNMonteCarloSampling< float, LazyPropagation< float > >;
+    extern template class CNMonteCarloSampling< double,
+                                                LazyPropagation< double > >;
 
 
   }  // namespace cn

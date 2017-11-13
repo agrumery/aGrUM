@@ -47,11 +47,11 @@ namespace gum {
      * Note that a <tt>Max</tt> aggregator with a binary aggregator variable is
      * the \f$ \exists \neq 0\f$ aggregator.
      */
-    template <typename GUM_SCALAR>
-    class Max : public MultiDimAggregator<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class Max : public MultiDimAggregator< GUM_SCALAR > {
       public:
       Max();
-      Max( const Max<GUM_SCALAR>& from );
+      Max(const Max< GUM_SCALAR >& from);
       virtual ~Max();
 
       /**
@@ -72,21 +72,19 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+      virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
-      virtual std::string aggregatorName( void ) const;
+      virtual std::string aggregatorName(void) const;
 
       protected:
-      virtual Idx _neutralElt( void ) const;
-      virtual Idx _fold( const DiscreteVariable& v,
-                         Idx                     i1,
-                         Idx                     i2,
-                         bool&                   stop_iteration ) const;
+      virtual Idx _neutralElt(void) const;
+      virtual Idx
+      _fold(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
     };
 
 
-    extern template class Max<float>;
-    extern template class Max<double>;
+    extern template class Max< float >;
+    extern template class Max< double >;
 
 
   }  // aggregator

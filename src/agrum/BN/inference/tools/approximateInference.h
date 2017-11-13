@@ -42,4 +42,4 @@ namespace gum {
   };
 }
 
-#endif //GUM_APPROXIMATE_INFERENCE_H
+#endif  // GUM_APPROXIMATE_INFERENCE_H

@@ -63,9 +63,9 @@ namespace gum {
      *for
      * details.
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
-    class ScoreAIC : public Score<IdSetAlloc, CountAlloc> {
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
+    class ScoreAIC : public Score< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -80,21 +80,21 @@ namespace gum {
        * @param min_range The minimal range.
        * @param max_range The maximal range.
        */
-      template <typename RowFilter>
-      ScoreAIC( const RowFilter&         filter,
-                const std::vector<Size>& var_modalities,
-                Apriori<IdSetAlloc, CountAlloc>& apriori,
-                Size min_range = 0,
-                Size max_range = std::numeric_limits<Size>::max() );
+      template < typename RowFilter >
+      ScoreAIC(const RowFilter&           filter,
+               const std::vector< Size >& var_modalities,
+               Apriori< IdSetAlloc, CountAlloc >& apriori,
+               Size min_range = 0,
+               Size max_range = std::numeric_limits< Size >::max());
 
       /// copy constructor
-      ScoreAIC( const ScoreAIC<IdSetAlloc, CountAlloc>& );
+      ScoreAIC(const ScoreAIC< IdSetAlloc, CountAlloc >&);
 
       /// move constructor
-      ScoreAIC( ScoreAIC<IdSetAlloc, CountAlloc>&& );
+      ScoreAIC(ScoreAIC< IdSetAlloc, CountAlloc >&&);
 
       /// virtual copy factory
-      virtual ScoreAIC<IdSetAlloc, CountAlloc>* copyFactory() const;
+      virtual ScoreAIC< IdSetAlloc, CountAlloc >* copyFactory() const;
 
       /// destructor
       virtual ~ScoreAIC();
@@ -107,7 +107,7 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      virtual double score( Idx nodeset_index ) final;
+      virtual double score(Idx nodeset_index) final;
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -151,8 +151,8 @@ namespace gum {
        * @throws InvalidArgument is raised if the apriori is not handled yet by
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
-      static bool isAprioriCompatible( const std::string& apriori_type,
-                                       double             weight = 1.0f );
+      static bool isAprioriCompatible(const std::string& apriori_type,
+                                      double             weight = 1.0f);
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -175,7 +175,7 @@ namespace gum {
        * method isAprioriCompatible (the method needs be updated to take it into
        * account). */
       static bool
-      isAprioriCompatible( const Apriori<IdSetAlloc, CountAlloc>& apriori );
+      isAprioriCompatible(const Apriori< IdSetAlloc, CountAlloc >& apriori);
 
       /// returns the internal apriori of the score
       /** Some scores include an apriori. For instance, the K2 score is a BD
@@ -193,14 +193,14 @@ namespace gum {
        * same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
+      virtual const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
       internalApriori() const noexcept final;
 
       /// @}
 
       private:
       /// the internal apriori of the score
-      ScoreInternalNoApriori<IdSetAlloc, CountAlloc> __internal_apriori;
+      ScoreInternalNoApriori< IdSetAlloc, CountAlloc > __internal_apriori;
     };
 
   } /* namespace learning */

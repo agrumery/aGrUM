@@ -47,10 +47,11 @@ namespace gum {
    *
    */
 
-  typedef HashTableConstIteratorSafe<LeafPair*, std::vector<Size>> pair_iterator;
+  typedef HashTableConstIteratorSafe< LeafPair*, std::vector< Size > >
+    pair_iterator;
 
 
-  template <bool isInitial = false>
+  template < bool isInitial = false >
   class FusionContext {
 
     public:
@@ -62,7 +63,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    FusionContext( AbstractLeaf* );
+    FusionContext(AbstractLeaf*);
 
     // ###################################################################
     /// Default destructor
@@ -72,11 +73,11 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( FusionContext ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(FusionContext));
     }
 
     /// @}
@@ -90,15 +91,15 @@ namespace gum {
     ///
     // ###################################################################
     public:
-    bool containsAssociatedLeaf( AbstractLeaf* l ) {
-      return __containsAssociatedLeaf( l, Int2Type<isInitial>() );
+    bool containsAssociatedLeaf(AbstractLeaf* l) {
+      return __containsAssociatedLeaf(l, Int2Type< isInitial >());
     }
 
     private:
-    bool __containsAssociatedLeaf( AbstractLeaf* l, Int2Type<false> ) {
-      return __leaf2Pair.exists( l );
+    bool __containsAssociatedLeaf(AbstractLeaf* l, Int2Type< false >) {
+      return __leaf2Pair.exists(l);
     }
-    bool __containsAssociatedLeaf( AbstractLeaf*, Int2Type<true> ) {
+    bool __containsAssociatedLeaf(AbstractLeaf*, Int2Type< true >) {
       return false;
     }
 
@@ -106,35 +107,35 @@ namespace gum {
     ///
     // ###################################################################
     public:
-    bool associateLeaf( AbstractLeaf* l ) {
-      return __associateLeaf( l, Int2Type<isInitial>() );
+    bool associateLeaf(AbstractLeaf* l) {
+      return __associateLeaf(l, Int2Type< isInitial >());
     }
 
     private:
-    bool __associateLeaf( AbstractLeaf*, Int2Type<false> );
-    bool __associateLeaf( AbstractLeaf*, Int2Type<true> ) { return false; }
+    bool __associateLeaf(AbstractLeaf*, Int2Type< false >);
+    bool __associateLeaf(AbstractLeaf*, Int2Type< true >) { return false; }
 
 
     // ###################################################################
     ///
     // ###################################################################
     public:
-    bool updateAssociatedLeaf( AbstractLeaf* l ) {
-      return __updateAssociatedLeaf( l, Int2Type<isInitial>() );
+    bool updateAssociatedLeaf(AbstractLeaf* l) {
+      return __updateAssociatedLeaf(l, Int2Type< isInitial >());
     }
 
     private:
-    bool __updateAssociatedLeaf( AbstractLeaf*, Int2Type<false> );
-    bool __updateAssociatedLeaf( AbstractLeaf*, Int2Type<true> ) { return false; }
+    bool __updateAssociatedLeaf(AbstractLeaf*, Int2Type< false >);
+    bool __updateAssociatedLeaf(AbstractLeaf*, Int2Type< true >) { return false; }
 
     public:
     bool updateAllAssociatedLeaves() {
-      return __updateAllAssociatedLeaves( Int2Type<isInitial>() );
+      return __updateAllAssociatedLeaves(Int2Type< isInitial >());
     }
 
     private:
-    bool __updateAllAssociatedLeaves( Int2Type<false> );
-    bool __updateAllAssociatedLeaves( Int2Type<true> ) { return false; }
+    bool __updateAllAssociatedLeaves(Int2Type< false >);
+    bool __updateAllAssociatedLeaves(Int2Type< true >) { return false; }
 
 
     // ###################################################################
@@ -143,13 +144,13 @@ namespace gum {
     /// fusioncontexts might be using it)
     // ###################################################################
     public:
-    bool deassociateLeaf( AbstractLeaf* l ) {
-      return __deassociateLeaf( l, Int2Type<isInitial>() );
+    bool deassociateLeaf(AbstractLeaf* l) {
+      return __deassociateLeaf(l, Int2Type< isInitial >());
     }
 
     private:
-    bool __deassociateLeaf( AbstractLeaf*, Int2Type<false> );
-    bool __deassociateLeaf( AbstractLeaf*, Int2Type<true> ) { return false; }
+    bool __deassociateLeaf(AbstractLeaf*, Int2Type< false >);
+    bool __deassociateLeaf(AbstractLeaf*, Int2Type< true >) { return false; }
 
     /// @}
 
@@ -162,17 +163,17 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    bool addPair( LeafPair* p );
+    bool addPair(LeafPair* p);
 
     // ###################################################################
     ///
     // ###################################################################
-    bool updatePair( LeafPair* p );
+    bool updatePair(LeafPair* p);
 
     // ###################################################################
     ///
     // ###################################################################
-    bool removePair( LeafPair* p );
+    bool removePair(LeafPair* p);
 
 
     pair_iterator beginPairs() { return __pairsHeap.allValues().beginSafe(); }
@@ -212,30 +213,32 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    LeafPair* leafAssociatedPair( AbstractLeaf* l ) {
-      return __leaf2Pair.getWithDefault( l, nullptr );
+    LeafPair* leafAssociatedPair(AbstractLeaf* l) {
+      return __leaf2Pair.getWithDefault(l, nullptr);
     }
 
     // ###################################################################
     ///
     // ###################################################################
     public:
-    Set<LeafPair*> associatedPairs() {
-      return __associatedPairs( Int2Type<isInitial>() );
+    Set< LeafPair* > associatedPairs() {
+      return __associatedPairs(Int2Type< isInitial >());
     }
 
     private:
-    Set<LeafPair*> __associatedPairs( Int2Type<false> );
-    Set<LeafPair*> __associatedPairs( Int2Type<true> ) { return Set<LeafPair*>(); }
+    Set< LeafPair* > __associatedPairs(Int2Type< false >);
+    Set< LeafPair* > __associatedPairs(Int2Type< true >) {
+      return Set< LeafPair* >();
+    }
     /// @}
 
     public:
     std::string toString();
 
     private:
-    MultiPriorityQueue<LeafPair*, double, std::less<double>> __pairsHeap;
+    MultiPriorityQueue< LeafPair*, double, std::less< double > > __pairsHeap;
 
-    HashTable<AbstractLeaf*, LeafPair*> __leaf2Pair;
+    HashTable< AbstractLeaf*, LeafPair* > __leaf2Pair;
 
     AbstractLeaf* __leaf;
   };

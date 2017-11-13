@@ -52,48 +52,48 @@ namespace gum {
        *
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
        */
-      template <typename GUM_SCALAR>
+      template < typename GUM_SCALAR >
       class O3SystemFactory {
 
         public:
-        O3SystemFactory( PRM<GUM_SCALAR>&          prm,
-                         O3PRM&                    o3_prm,
-                         O3NameSolver<GUM_SCALAR>& solver,
-                         ErrorsContainer&          errors );
-        O3SystemFactory( const O3SystemFactory<GUM_SCALAR>& src );
-        O3SystemFactory( O3SystemFactory<GUM_SCALAR>&& src );
+        O3SystemFactory(PRM< GUM_SCALAR >&          prm,
+                        O3PRM&                      o3_prm,
+                        O3NameSolver< GUM_SCALAR >& solver,
+                        ErrorsContainer&            errors);
+        O3SystemFactory(const O3SystemFactory< GUM_SCALAR >& src);
+        O3SystemFactory(O3SystemFactory< GUM_SCALAR >&& src);
         ~O3SystemFactory();
-        O3SystemFactory<GUM_SCALAR>&
-        operator=( const O3SystemFactory<GUM_SCALAR>& src );
-        O3SystemFactory<GUM_SCALAR>&
-        operator=( O3SystemFactory<GUM_SCALAR>&& src );
+        O3SystemFactory< GUM_SCALAR >&
+        operator=(const O3SystemFactory< GUM_SCALAR >& src);
+        O3SystemFactory< GUM_SCALAR >&
+        operator=(O3SystemFactory< GUM_SCALAR >&& src);
 
         void build();
 
         private:
-        PRM<GUM_SCALAR>*          __prm;
-        O3PRM*                    __o3_prm;
-        O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer*          __errors;
+        PRM< GUM_SCALAR >*          __prm;
+        O3PRM*                      __o3_prm;
+        O3NameSolver< GUM_SCALAR >* __solver;
+        ErrorsContainer*            __errors;
 
-        HashTable<std::string, O3Instance*> __nameMap;
+        HashTable< std::string, O3Instance* > __nameMap;
 
-        void __addInstances( PRMFactory<GUM_SCALAR>& factory, O3System& sys );
+        void __addInstances(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        void __addAssignments( PRMFactory<GUM_SCALAR>& factory, O3System& sys );
+        void __addAssignments(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        void __addIncrements( PRMFactory<GUM_SCALAR>& factory, O3System& sys );
+        void __addIncrements(PRMFactory< GUM_SCALAR >& factory, O3System& sys);
 
-        bool __checkSystem( O3System& sys );
+        bool __checkSystem(O3System& sys);
 
-        bool __checkIncrements( O3System& sys );
+        bool __checkIncrements(O3System& sys);
 
-        bool __checkParameters( const PRMClass<GUM_SCALAR>& type,
-                                const O3Instance&           inst );
+        bool __checkParameters(const PRMClass< GUM_SCALAR >& type,
+                               const O3Instance&             inst);
 
-        bool __checkInstance( O3System& sys );
+        bool __checkInstance(O3System& sys);
 
-        bool __checkAssignments( O3System& sys );
+        bool __checkAssignments(O3System& sys);
       };
 
     }  // o3prm
@@ -104,8 +104,8 @@ namespace gum {
 #include <agrum/PRM/o3prm/O3SystemFactory_tpl.h>
 
 
-extern template class gum::prm::o3prm::O3SystemFactory<float>;
-extern template class gum::prm::o3prm::O3SystemFactory<double>;
+extern template class gum::prm::o3prm::O3SystemFactory< float >;
+extern template class gum::prm::o3prm::O3SystemFactory< double >;
 
 
 #endif  // GUM_PRM_O3PRM_O3SYSTEM_FACTORY_H

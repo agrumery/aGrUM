@@ -64,10 +64,10 @@ namespace gum {
       GreedyHillClimbing();
 
       /// copy constructor
-      GreedyHillClimbing( const GreedyHillClimbing& from );
+      GreedyHillClimbing(const GreedyHillClimbing& from);
 
       /// move constructor
-      GreedyHillClimbing( GreedyHillClimbing&& from );
+      GreedyHillClimbing(GreedyHillClimbing&& from);
 
       /// destructor
       ~GreedyHillClimbing();
@@ -80,10 +80,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GreedyHillClimbing& operator=( const GreedyHillClimbing& from );
+      GreedyHillClimbing& operator=(const GreedyHillClimbing& from);
 
       /// move operator
-      GreedyHillClimbing& operator=( GreedyHillClimbing&& from );
+      GreedyHillClimbing& operator=(GreedyHillClimbing&& from);
 
       /// @}
 
@@ -103,10 +103,10 @@ namespace gum {
        * @param modal the domain sizes of the random variables observed in the
        * database
        * @param initial_dag the DAG we start from for our learning */
-      template <typename GRAPH_CHANGES_SELECTOR>
-      DAG learnStructure( GRAPH_CHANGES_SELECTOR&  selector,
-                          const std::vector<Size>& modal,
-                          DAG                      initial_dag = DAG() );
+      template < typename GRAPH_CHANGES_SELECTOR >
+      DAG learnStructure(GRAPH_CHANGES_SELECTOR&    selector,
+                         const std::vector< Size >& modal,
+                         DAG                        initial_dag = DAG());
 
       /// learns the structure and the parameters of a BN
       /** @param selector A selector class that computes the best changes that
@@ -119,16 +119,16 @@ namespace gum {
        * database
        * @param translator The cell translator to use.
        * @param initial_dag the DAG we start from for our learning */
-      template <typename GUM_SCALAR = double,
-                typename GRAPH_CHANGES_SELECTOR,
-                typename PARAM_ESTIMATOR,
-                typename CELL_TRANSLATORS>
-      BayesNet<GUM_SCALAR> learnBN( GRAPH_CHANGES_SELECTOR&         selector,
-                                    PARAM_ESTIMATOR&                estimator,
-                                    const std::vector<std::string>& names,
-                                    const std::vector<Size>&        modal,
-                                    const CELL_TRANSLATORS&         translator,
-                                    DAG initial_dag = DAG() );
+      template < typename GUM_SCALAR = double,
+                 typename GRAPH_CHANGES_SELECTOR,
+                 typename PARAM_ESTIMATOR,
+                 typename CELL_TRANSLATORS >
+      BayesNet< GUM_SCALAR > learnBN(GRAPH_CHANGES_SELECTOR&           selector,
+                                     PARAM_ESTIMATOR&                  estimator,
+                                     const std::vector< std::string >& names,
+                                     const std::vector< Size >&        modal,
+                                     const CELL_TRANSLATORS&           translator,
+                                     DAG initial_dag = DAG());
 
       /// @}
     };

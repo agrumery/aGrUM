@@ -50,7 +50,7 @@ namespace gum {
    *
    */
   class PartialOrderedEliminationSequenceStrategy
-      : public EliminationSequenceStrategy {
+    : public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -91,7 +91,7 @@ namespace gum {
      * @warning the graph is altered during the triangulation.
      * @warning note that, by aGrUM's rule, the graph and the sequence are not
      * copied but only referenced by the elimination sequence algorithm. */
-    virtual bool setGraph( UndiGraph* graph, const NodeProperty<Size>* dom_sizes );
+    virtual bool setGraph(UndiGraph* graph, const NodeProperty< Size >* dom_sizes);
 
     /// sets a new partial ordering constraint on the elimination sequence
     /** @param subsets the list of the subsets constituting the partial ordering
@@ -103,14 +103,14 @@ namespace gum {
      * then these nodes are simply ignored.
      * @warning note that, by aGrUM's rule, the partial ordering is not copied
      * but only referenced by the elimination sequence algorithm. */
-    virtual bool setPartialOrder( const List<NodeSet>* subsets );
+    virtual bool setPartialOrder(const List< NodeSet >* subsets);
 
     /// clears the sequence (to prepare, for instance, a new elimination
     /// sequence)
     virtual void clear();
 
     /// returns the current partial ordering
-    const List<NodeSet>* partialOrder() const noexcept;
+    const List< NodeSet >* partialOrder() const noexcept;
 
     /// indicates if a new partial ordering is needed
     /** if the current partial ordering does not contain all the nodes of the
@@ -123,10 +123,10 @@ namespace gum {
 
     protected:
     /// the subsets constituting the partial ordering
-    const List<NodeSet>* _subsets{nullptr};
+    const List< NodeSet >* _subsets{nullptr};
 
     /// the iterator indicating which is the current subset on which we work
-    List<NodeSet>::const_iterator _subset_iter;
+    List< NodeSet >::const_iterator _subset_iter;
 
     /// the nodes which can be currently eliminated
     NodeSet _nodeset;
@@ -140,7 +140,7 @@ namespace gum {
      * partial ordering.
      * @return true if some nodes in _graph do not belong to subsets or if
      * _graph is not defnined (nullptr) */
-    bool _isPartialOrderNeeded( const List<NodeSet>* subsets ) const;
+    bool _isPartialOrderNeeded(const List< NodeSet >* subsets) const;
 
 
     // ############################################################################
@@ -163,17 +163,18 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph, the domain sizes and
      * the sequence are not copied but only referenced by the elimination
      * sequence algorithm. */
-    PartialOrderedEliminationSequenceStrategy( UndiGraph*                graph,
-                                               const NodeProperty<Size>* dom_sizes,
-                                               const List<NodeSet>*      subsets );
+    PartialOrderedEliminationSequenceStrategy(
+      UndiGraph*                  graph,
+      const NodeProperty< Size >* dom_sizes,
+      const List< NodeSet >*      subsets);
 
     /// copy constructor
     PartialOrderedEliminationSequenceStrategy(
-        const PartialOrderedEliminationSequenceStrategy& );
+      const PartialOrderedEliminationSequenceStrategy&);
 
     /// move constructor
     PartialOrderedEliminationSequenceStrategy(
-        PartialOrderedEliminationSequenceStrategy&& );
+      PartialOrderedEliminationSequenceStrategy&&);
 
     /// @}
   };

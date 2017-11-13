@@ -26,7 +26,7 @@
 #include <agrum/core/refPtr.h>
 
 
-template class gum::RefPtr<int>;
-template class gum::RefPtr<long>;
-template class gum::RefPtr<float>;
-template class gum::RefPtr<double>;
+template class gum::RefPtr< int >;
+template class gum::RefPtr< long >;
+template class gum::RefPtr< float >;
+template class gum::RefPtr< double >;

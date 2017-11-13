@@ -29,41 +29,41 @@
 
 namespace gum {
 
-  template <int v>
+  template < int v >
   struct Int2Type {
     enum { value = v };
   };
 
   enum TESTNAME { GTEST = 1, CHI2TEST = 2, LEASTSQUARETEST = 3 };
-  template <TESTNAME, class A, class B, class C>
+  template < TESTNAME, class A, class B, class C >
   struct TestSelect {
     typedef A type;
   };
-  template <class A, class B, class C>
-  struct TestSelect<CHI2TEST, A, B, C> {
+  template < class A, class B, class C >
+  struct TestSelect< CHI2TEST, A, B, C > {
     typedef B type;
   };
-  template <class A, class B, class C>
-  struct TestSelect<LEASTSQUARETEST, A, B, C> {
+  template < class A, class B, class C >
+  struct TestSelect< LEASTSQUARETEST, A, B, C > {
     typedef C type;
   };
 
-  template <bool, class A, class B>
+  template < bool, class A, class B >
   struct ValueSelect {
     typedef A type;
   };
-  template <class A, class B>
-  struct ValueSelect<false, A, B> {
+  template < class A, class B >
+  struct ValueSelect< false, A, B > {
     typedef B type;
   };
 
   enum LEARNERNAME { IMDDILEARNER = 1, ITILEARNER = 2 };
-  template <LEARNERNAME, class A, class B>
+  template < LEARNERNAME, class A, class B >
   struct LearnerSelect {
     typedef A type;
   };
-  template <class A, class B>
-  struct LearnerSelect<ITILEARNER, A, B> {
+  template < class A, class B >
+  struct LearnerSelect< ITILEARNER, A, B > {
     typedef B type;
   };
 

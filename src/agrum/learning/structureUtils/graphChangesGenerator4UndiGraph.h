@@ -104,12 +104,12 @@ namespace gum {
      *
      * @ingroup learning_group
      */
-    template <typename STRUCT_CONSTRAINT>
+    template < typename STRUCT_CONSTRAINT >
     class GraphChangesGenerator4UndiGraph
-        : public IGraphChangesGenerator4UndiGraph {
+      : public IGraphChangesGenerator4UndiGraph {
       public:
       /// the iterator for parsing the list of possible graph change operators
-      using iterator = typename Set<GraphChange>::const_iterator;
+      using iterator = typename Set< GraphChange >::const_iterator;
 
       /// the const iterator for parsing the list of graph change operators
       using const_iterator = iterator;
@@ -120,15 +120,15 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphChangesGenerator4UndiGraph( STRUCT_CONSTRAINT& constraint );
+      GraphChangesGenerator4UndiGraph(STRUCT_CONSTRAINT& constraint);
 
       /// copy constructor
       GraphChangesGenerator4UndiGraph(
-          const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from );
+        const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from);
 
       /// move operator
       GraphChangesGenerator4UndiGraph(
-          GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from );
+        GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from);
 
       /// destructor
       virtual ~GraphChangesGenerator4UndiGraph();
@@ -141,12 +141,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
-      operator=( const GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>& from );
+      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&
+      operator=(const GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >& from);
 
       /// move operator
-      GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&
-      operator=( GraphChangesGenerator4UndiGraph<STRUCT_CONSTRAINT>&& from );
+      GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&
+      operator=(GraphChangesGenerator4UndiGraph< STRUCT_CONSTRAINT >&& from);
 
       /// @}
 
@@ -172,16 +172,16 @@ namespace gum {
       STRUCT_CONSTRAINT& constraint() const noexcept;
 
       /// sets a new graph from which the operator will compute possible changes
-      void setGraph( const UndiGraph& graph );
+      void setGraph(const UndiGraph& graph);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph( const EdgeAddition& change );
+      void modifyGraph(const EdgeAddition& change);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph( const EdgeDeletion& change );
+      void modifyGraph(const EdgeDeletion& change);
 
       /// notify the operator set of a change applied to the graph
-      void modifyGraph( const GraphChange& change );
+      void modifyGraph(const GraphChange& change);
 
       /// empty the set of possible change operators that can be applied
       void clearChanges() noexcept;
@@ -190,7 +190,7 @@ namespace gum {
       void notifyGetCompleted();
 
       /// sets the maximum number of threads used to compute the set of changes
-      void setMaxNbThreads( Size nb ) noexcept;
+      void setMaxNbThreads(Size nb) noexcept;
 
       /// @}
 
@@ -202,14 +202,14 @@ namespace gum {
       STRUCT_CONSTRAINT* _constraint;
 
       /// the current set of operators
-      Set<GraphChange> _legal_changes;
+      Set< GraphChange > _legal_changes;
 
       /// create the set of legal and illegal changes from a given graph
       void _createChanges();
 
       private:
 /// the max number of threads authorized
-#if defined( _OPENMP ) && defined( NDEBUG )
+#if defined(_OPENMP) && defined(NDEBUG)
       Size __max_threads_number{getMaxNumberOfThreads()};
 #else
       Size __max_threads_number{1};

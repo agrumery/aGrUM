@@ -60,7 +60,7 @@ namespace gum {
      * becomes the new triangulation algorithm associated with the junction tree
      * strategy */
     virtual JunctionTreeStrategy*
-    copyFactory( StaticTriangulation* triangulation = nullptr ) const = 0;
+    copyFactory(StaticTriangulation* triangulation = nullptr) const = 0;
 
     /// @}
 
@@ -90,19 +90,19 @@ namespace gum {
     virtual const CliqueGraph& junctionTree() = 0;
 
     /// assigns the triangulation to the junction tree strategy
-    virtual void setTriangulation( StaticTriangulation* triangulation ) = 0;
+    virtual void setTriangulation(StaticTriangulation* triangulation) = 0;
 
     /** @brief assigns a new triangulation to the junction tree strategy
      * during a move construction */
-    virtual void moveTriangulation( StaticTriangulation* triangulation );
+    virtual void moveTriangulation(StaticTriangulation* triangulation);
 
     /** @brief returns, for each node, the clique of the junction tree which was
      * created by its deletion */
-    virtual const NodeProperty<NodeId>& createdCliques() = 0;
+    virtual const NodeProperty< NodeId >& createdCliques() = 0;
 
     /** @brief returns the Id of the clique of the junction tree created by the
      * elimination of a given node during the triangulation process */
-    virtual NodeId createdClique( const NodeId id ) = 0;
+    virtual NodeId createdClique(const NodeId id) = 0;
 
     /// resets the current junction tree strategy data structures
     virtual void clear() = 0;
@@ -124,10 +124,10 @@ namespace gum {
     JunctionTreeStrategy();
 
     /// copy constructor
-    JunctionTreeStrategy( const JunctionTreeStrategy& from );
+    JunctionTreeStrategy(const JunctionTreeStrategy& from);
 
     /// move constructor
-    JunctionTreeStrategy( JunctionTreeStrategy&& from );
+    JunctionTreeStrategy(JunctionTreeStrategy&& from);
 
     /// @}
   };

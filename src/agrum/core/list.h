@@ -46,25 +46,25 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  template <typename Val>
+  template < typename Val >
   class ListBucket;
-  template <typename Val>
+  template < typename Val >
   class ListIterator;
-  template <typename Val>
+  template < typename Val >
   class ListConstIterator;
-  template <typename Val>
+  template < typename Val >
   class ListIteratorSafe;
-  template <typename Val>
+  template < typename Val >
   class ListConstIteratorSafe;
-  template <typename Val, typename Alloc>
+  template < typename Val, typename Alloc >
   class List;
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 #ifndef SWIG  // SWIG cannot read these lines
   /// an << operator for List
-  template <typename Val, typename Alloc>
-  std::ostream& operator<<( std::ostream& stream, const List<Val, Alloc>& list );
+  template < typename Val, typename Alloc >
+  std::ostream& operator<<(std::ostream& stream, const List< Val, Alloc >& list);
 #endif  // SWIG
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -97,7 +97,7 @@ namespace gum {
    *
    * @tparam Val The values type stored in the gum::ListBucket.
    */
-  template <typename Val>
+  template < typename Val >
   class ListBucket {
     private:
     /**
@@ -120,33 +120,33 @@ namespace gum {
      * @brief Default constructor.
      * @param v The value stored in the gum::ListBucket.
      */
-    explicit ListBucket( const Val& v );
+    explicit ListBucket(const Val& v);
 
     /**
      * @brief Constructor for Val rvalues.
      * @param v The value stored in the gum::ListBucket.
      */
-    explicit ListBucket( Val&& v ) noexcept;
+    explicit ListBucket(Val&& v) noexcept;
 
     /**
      * @brief Emplace (universal) constructor.
      * @tparam Args The emplace values type.
      * @param args The emplace values.
      */
-    template <typename... Args>
-    explicit ListBucket( Emplace, Args&&... args );
+    template < typename... Args >
+    explicit ListBucket(Emplace, Args&&... args);
 
     /**
      * @brief Copy constructor.
      * @param src The gum::ListBucket to copy.
      */
-    ListBucket( const ListBucket<Val>& src );
+    ListBucket(const ListBucket< Val >& src);
 
     /**
      * @brief Move constructor should be useless.
      * @param src The gum::ListBucket to move.
      */
-    ListBucket( ListBucket<Val>&& src ) = delete;
+    ListBucket(ListBucket< Val >&& src) = delete;
 
     /**
      * @brief Class destructor.
@@ -170,28 +170,28 @@ namespace gum {
      * @param src The gum::ListBucket to copy.
      * @return This gum::ListBucket.
      */
-    ListBucket<Val>& operator=( const ListBucket<Val>& src );
+    ListBucket< Val >& operator=(const ListBucket< Val >& src);
 
     /**
      * @brief Move operator.
      * @param src The gum::ListBucket to move.
      * @return This gum::ListBucket.
      */
-    ListBucket<Val>& operator=( ListBucket<Val>&& src ) = delete;
+    ListBucket< Val >& operator=(ListBucket< Val >&& src) = delete;
 
     /**
      * @brief Equality check.
      * @param src The gum::ListBucket to test for equality.
      * @return Returns true if src and this gum::ListBucket are equal.
      */
-    bool operator==( const ListBucket<Val>& src ) const;
+    bool operator==(const ListBucket< Val >& src) const;
 
     /**
      * @brief Inequality check.
      * @param src The gum::ListBucket to test for inequality.
      * @return Returns true if src and this gum::ListBucket are not equal.
      */
-    bool operator!=( const ListBucket<Val>& src ) const;
+    bool operator!=(const ListBucket< Val >& src) const;
 
     /// @}
     // ============================================================================
@@ -215,30 +215,30 @@ namespace gum {
      * @brief Returns the bucket toward the next element.
      * @return Returns the bucket toward the next element.
      */
-    const ListBucket<Val>* next() const noexcept;
+    const ListBucket< Val >* next() const noexcept;
 
     /**
      * @brief Returns the bucket toward the preceding element.
      * @return Returns the bucket toward the preceding element.
      */
-    const ListBucket<Val>* previous() const noexcept;
+    const ListBucket< Val >* previous() const noexcept;
 
     /// @}
 
     private:
     /// All the list containers and iterators should be able to access the
     /// buckets.
-    template <typename T, typename A>
+    template < typename T, typename A >
     friend class List;
-    friend class ListIterator<Val>;
-    friend class ListConstIterator<Val>;
-    friend class ListIteratorSafe<Val>;
-    friend class ListConstIteratorSafe<Val>;
+    friend class ListIterator< Val >;
+    friend class ListConstIterator< Val >;
+    friend class ListIteratorSafe< Val >;
+    friend class ListConstIteratorSafe< Val >;
 
     /// @{
     /// Chaining toward the adjacent elements.
-    ListBucket<Val>* __prev{nullptr};
-    ListBucket<Val>* __next{nullptr};
+    ListBucket< Val >* __prev{nullptr};
+    ListBucket< Val >* __next{nullptr};
     /// @}
 
     /// Val is the value contained in the box.
@@ -363,7 +363,7 @@ namespace gum {
    * @tparam Val The values type stored in the gum::List.
    * @tparam Alloc The allocator for the values stored in the gum::List.
    */
-  template <typename Val, typename Alloc = std::allocator<Val>>
+  template < typename Val, typename Alloc = std::allocator< Val > >
   class List {
     public:
     /// Types for STL compliance.
@@ -376,15 +376,15 @@ namespace gum {
     using size_type = std::size_t;
     using difference_type = std::ptrdiff_t;
     using allocator_type = Alloc;
-    using iterator = ListIterator<Val>;
-    using const_iterator = ListConstIterator<Val>;
-    using iterator_safe = ListIteratorSafe<Val>;
-    using const_iterator_safe = ListConstIteratorSafe<Val>;
+    using iterator = ListIterator< Val >;
+    using const_iterator = ListConstIterator< Val >;
+    using iterator_safe = ListIteratorSafe< Val >;
+    using const_iterator_safe = ListConstIteratorSafe< Val >;
     /// @}
 
     /// Type of the allocator for ListBuckets.
     using BucketAllocator =
-        typename Alloc::template rebind<ListBucket<Val>>::other;
+      typename Alloc::template rebind< ListBucket< Val > >::other;
 
     /// Locations around iterators where insertions of new elements can take /
     /// place.
@@ -410,7 +410,7 @@ namespace gum {
      *
      * @param src the list the contents of which is copied into the current one.
      */
-    List( const List<Val, Alloc>& src );
+    List(const List< Val, Alloc >& src);
 
     /**
      * @brief Ceneralized copy constructor.
@@ -423,20 +423,20 @@ namespace gum {
      * @param src the list the contents of which is copied into the current one.
      * @tparam OtherAlloc The other allocator.
      */
-    template <typename OtherAlloc>
-    List( const List<Val, OtherAlloc>& src );
+    template < typename OtherAlloc >
+    List(const List< Val, OtherAlloc >& src);
 
     /**
      * @brief Move constructor.
      * @param src The gum::List to move.
      */
-    List( List<Val, Alloc>&& src );
+    List(List< Val, Alloc >&& src);
 
     /**
      * @brief Initializer_list constructor.
      * @param list The initializer list.
      */
-    List( std::initializer_list<Val> list );
+    List(std::initializer_list< Val > list);
 
     /**
      * @brief Class destructor.
@@ -759,7 +759,7 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& pushFront( const Val& val );
+    Val& pushFront(const Val& val);
 
     /**
      * @brief Inserts a new element (a move) at the beginning of the chained
@@ -770,7 +770,7 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& pushFront( Val&& val );
+    Val& pushFront(Val&& val);
 
     /**
      * @brief An alias for pushFront used for STL compliance.
@@ -781,8 +781,8 @@ namespace gum {
      * @param args The emplace values.
      * @return Returns a reference on the copy inserted into the list.
      */
-    template <typename... Args>
-    Val& push_front( Args&&... args );
+    template < typename... Args >
+    Val& push_front(Args&&... args);
 
     /**
      * @brief Emplace elements at the beginning of the chained list.
@@ -793,8 +793,8 @@ namespace gum {
      * @param args The arguments passed to the constructor.
      * @return Returns a reference on the copy inserted into the list.
      */
-    template <typename... Args>
-    Val& emplaceFront( Args&&... args );
+    template < typename... Args >
+    Val& emplaceFront(Args&&... args);
 
     /**
      * @brief Inserts a new element (a copy) at the end of the chained list.
@@ -808,7 +808,7 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& pushBack( const Val& val );
+    Val& pushBack(const Val& val);
 
     /**
      * @brief Inserts a new element (a move) at the end of the chained list.
@@ -822,7 +822,7 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& pushBack( Val&& val );
+    Val& pushBack(Val&& val);
 
     /**
      * @brief An alias for pushBack used for STL compliance.
@@ -832,8 +832,8 @@ namespace gum {
      * @param args The emplace arguments values.
      * @return Returns a reference on the copy inserted into the list.
      */
-    template <typename... Args>
-    Val& push_back( Args&&... args );
+    template < typename... Args >
+    Val& push_back(Args&&... args);
 
     /**
      * @brief Emplace elements at the end of the chained list.
@@ -845,8 +845,8 @@ namespace gum {
      * @param args The arguments passed to the constructor
      * @return A reference on the copy inserted into the list.
      */
-    template <typename... Args>
-    Val& emplaceBack( Args&&... args );
+    template < typename... Args >
+    Val& emplaceBack(Args&&... args);
 
     /**
      * @brief Inserts a new element at the end of the chained list (alias of
@@ -857,7 +857,7 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& insert( const Val& val );
+    Val& insert(const Val& val);
 
     /**
      * @brief Inserts a new element at the end of the chained list (alias of
@@ -868,7 +868,7 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& insert( Val&& val );
+    Val& insert(Val&& val);
 
     /**
      * @brief Inserts a new element at the ith pos of the chained list.
@@ -883,7 +883,7 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& insert( unsigned int pos, const Val& val );
+    Val& insert(unsigned int pos, const Val& val);
 
     /**
      * @brief Insert an rvalue at the ith pos of the chained list.
@@ -896,7 +896,7 @@ namespace gum {
      * @param val The value to insert.
      * @return Returns a reference on the copy inserted into the list.
      */
-    Val& insert( unsigned int pos, Val&& val );
+    Val& insert(unsigned int pos, Val&& val);
 
     /**
      * @brief Inserts a new element before or after a given iterator.
@@ -908,9 +908,9 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& insert( const const_iterator_safe& iter,
-                 const Val&                 val,
-                 location                   place = location::BEFORE );
+    Val& insert(const const_iterator_safe& iter,
+                const Val&                 val,
+                location                   place = location::BEFORE);
 
     /**
      * @brief Inserts an rvalue before or after a given iterator.
@@ -922,9 +922,9 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted.
      */
-    Val& insert( const const_iterator_safe& iter,
-                 Val&&                      val,
-                 location                   place = location::BEFORE );
+    Val& insert(const const_iterator_safe& iter,
+                Val&&                      val,
+                location                   place = location::BEFORE);
 
     /**
      * @brief Inserts a new element before or after a given iterator.
@@ -936,9 +936,9 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list.
      * Rather, it is a copy of val that is inserted.
      */
-    Val& insert( const const_iterator& iter,
-                 const Val&            val,
-                 location              place = location::BEFORE );
+    Val& insert(const const_iterator& iter,
+                const Val&            val,
+                location              place = location::BEFORE);
 
     /**
      * @brief Inserts an rvalue before or after a given iterator.
@@ -950,9 +950,9 @@ namespace gum {
      * @warning Note that \e val is not actually inserted into the list. Rather,
      * it is a copy of val that is inserted.
      */
-    Val& insert( const const_iterator& iter,
-                 Val&&                 val,
-                 location              place = location::BEFORE );
+    Val& insert(const const_iterator& iter,
+                Val&&                 val,
+                location              place = location::BEFORE);
 
     /**
      * @brief Emplace a new element before a given iterator.
@@ -967,8 +967,8 @@ namespace gum {
      * @param args The arguments passed to the constructor
      * @return Returns a reference on the copy inserted into the list.
      */
-    template <typename... Args>
-    Val& emplace( const const_iterator& iter, Args&&... args );
+    template < typename... Args >
+    Val& emplace(const const_iterator& iter, Args&&... args);
 
     /**
      * @brief Emplace a new element before a given safe iterator.
@@ -983,8 +983,8 @@ namespace gum {
      * @param args the arguments passed to the constructor.
      * @return Returns a reference on the copy inserted into the list.
      */
-    template <typename... Args>
-    Val& emplace( const const_iterator_safe& iter, Args&&... args );
+    template < typename... Args >
+    Val& emplace(const const_iterator_safe& iter, Args&&... args);
 
     /**
      * @brief Returns a reference to first element of a list, if any.
@@ -1014,7 +1014,7 @@ namespace gum {
      * @param val the value of the element we wish to check the existence of.
      * @return Returns true if val is in the gum::List.
      */
-    bool exists( const Val& val ) const;
+    bool exists(const Val& val) const;
 
     /**
      * @brief Erases the ith element of the List (the first one is in position
@@ -1025,7 +1025,7 @@ namespace gum {
      *
      * @param i The position in the list of the element we wish to remove.
      */
-    void erase( unsigned int i );
+    void erase(unsigned int i);
 
     /**
      * @brief Erases the element of the List pointed to by the safe iterator.
@@ -1036,7 +1036,7 @@ namespace gum {
      *
      * @param iter An iterator pointing to the element to remove.
      */
-    void erase( const iterator_safe& iter );
+    void erase(const iterator_safe& iter);
 
     /**
      * @brief Erases the element of the List pointed to by the safe const
@@ -1048,7 +1048,7 @@ namespace gum {
      *
      * @param iter An iterator pointing to the element to remove.
      */
-    void erase( const const_iterator_safe& iter );
+    void erase(const const_iterator_safe& iter);
 
     /**
      * @brief erases the first element encountered with a given value.
@@ -1060,7 +1060,7 @@ namespace gum {
      *
      * @param val The value of the element we wish to remove.
      */
-    void eraseByVal( const Val& val );
+    void eraseByVal(const Val& val);
 
     /**
      * @brief erases all the elements encountered with a given value
@@ -1072,7 +1072,7 @@ namespace gum {
      *
      * @param val the value of the element we wish to remove.
      */
-    void eraseAllVal( const Val& val );
+    void eraseAllVal(const Val& val);
 
     /**
      * @brief Removes the last element of a List, if any.
@@ -1107,7 +1107,7 @@ namespace gum {
      * @brief Swap the current list with another one.
      * @param other_list The list to swap elements with.
      */
-    void swap( List& other_list );
+    void swap(List& other_list);
 
     /**
      * @brief Converts a list into a string.
@@ -1122,8 +1122,8 @@ namespace gum {
      * @tparam Mount The type of mountains.
      * @tparam OtherAlloc The mountains type allocator.
      */
-    template <typename Mount, typename OtherAlloc = std::allocator<Mount>>
-    List<Mount, OtherAlloc> map( Mount ( *f )( Val ) ) const;
+    template < typename Mount, typename OtherAlloc = std::allocator< Mount > >
+    List< Mount, OtherAlloc > map(Mount (*f)(Val)) const;
 
     /**
      * @brief Creates a list of mountains from a list of val.
@@ -1132,8 +1132,8 @@ namespace gum {
      * @tparam Mount The type of mountains.
      * @tparam OtherAlloc The mountains type allocator.
      */
-    template <typename Mount, typename OtherAlloc = std::allocator<Mount>>
-    List<Mount, OtherAlloc> map( Mount ( *f )( Val& ) ) const;
+    template < typename Mount, typename OtherAlloc = std::allocator< Mount > >
+    List< Mount, OtherAlloc > map(Mount (*f)(Val&)) const;
 
     /**
      * @brief Creates a list of mountains from a list of val.
@@ -1142,8 +1142,8 @@ namespace gum {
      * @tparam Mount The type of mountains.
      * @tparam OtherAlloc The mountains type allocator.
      */
-    template <typename Mount, typename OtherAlloc = std::allocator<Mount>>
-    List<Mount, OtherAlloc> map( Mount ( *f )( const Val& ) ) const;
+    template < typename Mount, typename OtherAlloc = std::allocator< Mount > >
+    List< Mount, OtherAlloc > map(Mount (*f)(const Val&)) const;
 
     /**
      * @brief Creates a list of mountains with a given value from a list of
@@ -1153,8 +1153,8 @@ namespace gum {
      * @tparam Mount The type of mountains.
      * @tparam OtherAlloc The mountains type allocator.
      */
-    template <typename Mount, typename OtherAlloc = std::allocator<Mount>>
-    List<Mount, OtherAlloc> map( const Mount& mount ) const;
+    template < typename Mount, typename OtherAlloc = std::allocator< Mount > >
+    List< Mount, OtherAlloc > map(const Mount& mount) const;
 
     /// @}
     // ============================================================================
@@ -1180,7 +1180,7 @@ namespace gum {
      * List.
      * @return Returns this gum::List.
      */
-    List<Val, Alloc>& operator=( const List<Val, Alloc>& src );
+    List< Val, Alloc >& operator=(const List< Val, Alloc >& src);
 
     /**
      * @brief Generalized copy operator.
@@ -1199,8 +1199,8 @@ namespace gum {
      * List.
      * @return Returns this gum::List.
      */
-    template <typename OtherAlloc>
-    List<Val, Alloc>& operator=( const List<Val, OtherAlloc>& src );
+    template < typename OtherAlloc >
+    List< Val, Alloc >& operator=(const List< Val, OtherAlloc >& src);
 
     /**
      * @brief Move operator.
@@ -1208,7 +1208,7 @@ namespace gum {
      * @param src The gum::List to move.
      * @return Returns this gum::List.
      */
-    List<Val, Alloc>& operator=( List<Val, Alloc>&& src );
+    List< Val, Alloc >& operator=(List< Val, Alloc >&& src);
 
     /**
      * @brief Inserts a new element at the end of the list (alias of pushBack).
@@ -1222,7 +1222,7 @@ namespace gum {
      * @param val Tha value inserted int the list.
      * @return Returns a reference on the copy inserted into the list.
      */
-    Val& operator+=( const Val& val );
+    Val& operator+=(const Val& val);
 
     /**
      * @brief Inserts a new element at the end of the list (alias of pushBack).
@@ -1236,7 +1236,7 @@ namespace gum {
      * @param val Tha value inserted int the list.
      * @return Returns a reference on the copy inserted into the list.
      */
-    Val& operator+=( Val&& val );
+    Val& operator+=(Val&& val);
 
     /**
      * @brief Checks whether two lists are identical (same elements in the same
@@ -1247,8 +1247,8 @@ namespace gum {
      * @return Returns true if src and this gum::List are identical.
      * @tparam OtherAlloc The other allocator.
      */
-    template <typename OtherAlloc>
-    bool operator==( const List<Val, OtherAlloc>& src ) const;
+    template < typename OtherAlloc >
+    bool operator==(const List< Val, OtherAlloc >& src) const;
 
     /**
      * @brief Checks whether two lists are different (different elements or
@@ -1259,8 +1259,8 @@ namespace gum {
      * @return Returns true if src and this gum::List are identical.
      * @tparam OtherAlloc The other allocator.
      */
-    template <typename OtherAlloc>
-    bool operator!=( const List<Val, OtherAlloc>& src ) const;
+    template < typename OtherAlloc >
+    bool operator!=(const List< Val, OtherAlloc >& src) const;
 
     /**
      * @brief Returns the ith element in the current chained list.
@@ -1274,7 +1274,7 @@ namespace gum {
      * @return Returns a reference on the element stored at the ith position in
      * the list.
      */
-    Val& operator[]( const unsigned int i );
+    Val& operator[](const unsigned int i);
 
     /**
      * @brief Returns the const ith element in the current chained list.
@@ -1288,22 +1288,22 @@ namespace gum {
      * @return Returns a reference on the element stored at the ith position in
      * the list.
      */
-    const Val& operator[]( const unsigned int i ) const;
+    const Val& operator[](const unsigned int i) const;
 
     /// @}
 
     private:
     /// A pointer on the first element of the chained list.
-    ListBucket<Val>* __deb_list{nullptr};
+    ListBucket< Val >* __deb_list{nullptr};
 
     /// A pointer on the last element of the chained list.
-    ListBucket<Val>* __end_list{nullptr};
+    ListBucket< Val >* __end_list{nullptr};
 
     /// The number of elements in the list.
     unsigned int __nb_elements{0};
 
     /// The list of "safe" iterators attached to the list.
-    mutable std::vector<const_iterator_safe*> __safe_iterators;
+    mutable std::vector< const_iterator_safe* > __safe_iterators;
 
     /// The allocator for the buckets.
     mutable BucketAllocator __alloc_bucket;
@@ -1317,8 +1317,8 @@ namespace gum {
      * @tparam OtherAlloc The other allocator.
      * @param src The gum::List to copy.
      */
-    template <typename OtherAlloc>
-    void __copy_elements( const List<Val, OtherAlloc>& src );
+    template < typename OtherAlloc >
+    void __copy_elements(const List< Val, OtherAlloc >& src);
 
     /**
      * @brief Returns the bucket corresponding to the ith position in the list.
@@ -1329,7 +1329,7 @@ namespace gum {
      * @param i The position of the returned element.
      * @return Returns the gum::ListBucket of the ith element.
      */
-    ListBucket<Val>* __getIthBucket( unsigned int i ) const noexcept;
+    ListBucket< Val >* __getIthBucket(unsigned int i) const noexcept;
 
     /**
      * @brief Returns the bucket corresponding to a given value.
@@ -1344,7 +1344,7 @@ namespace gum {
      * return.
      * @return Returns the bucket corresponding to a given value.
      */
-    ListBucket<Val>* __getBucket( const Val& val ) const noexcept;
+    ListBucket< Val >* __getBucket(const Val& val) const noexcept;
 
     /**
      * @brief Removes an element from a chained list.
@@ -1357,21 +1357,21 @@ namespace gum {
      * @param bucket A pointer on the bucket in the chained list
      * we wish to remove.
      */
-    void __erase( ListBucket<Val>* bucket );
+    void __erase(ListBucket< Val >* bucket);
 
     /**
      * @brief Create a new bucket with a given value.
      * @param val The value of the new bucket.
      * @return Returns the bucket holding val.
      */
-    ListBucket<Val>* __createBucket( const Val& val ) const;
+    ListBucket< Val >* __createBucket(const Val& val) const;
 
     /**
      * @brief Create a new bucket with a given value.
      * @param val The value of the new bucket.
      * @return Returns the bucket holding val.
      */
-    ListBucket<Val>* __createBucket( Val&& val ) const;
+    ListBucket< Val >* __createBucket(Val&& val) const;
 
     /**
      * Create an emplace bucket.
@@ -1379,22 +1379,22 @@ namespace gum {
      * @param args The emplace arguments.
      * @return Returns the bucket holding the new value.
      */
-    template <typename... Args>
-    ListBucket<Val>* __createEmplaceBucket( Args&&... args ) const;
+    template < typename... Args >
+    ListBucket< Val >* __createEmplaceBucket(Args&&... args) const;
 
     /**
      * @brief Insert a bucket at the front of the list.
      * @param new_elt The new element pushed at the front of the gum::List.
      * @return Returns a refefence over the value stored in the gum::List.
      */
-    Val& __pushFront( ListBucket<Val>* new_elt );
+    Val& __pushFront(ListBucket< Val >* new_elt);
 
     /**
      * @brief Insert a bucket at the end of the list.
      * @param new_elt The new element pushed at the end of the gum::List.
      * @return Returns a refefence over the value stored in the gum::List.
      */
-    Val& __pushBack( ListBucket<Val>* new_elt );
+    Val& __pushBack(ListBucket< Val >* new_elt);
 
     /**
      * @brief Insert a new bucket before another one.
@@ -1402,7 +1402,8 @@ namespace gum {
      * @param current_elt The element before which new_elt will be inserted.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insertBefore( ListBucket<Val>* new_elt, ListBucket<Val>* current_elt );
+    Val& __insertBefore(ListBucket< Val >* new_elt,
+                        ListBucket< Val >* current_elt);
 
     /**
      * @brief Insert a new bucket after another one.
@@ -1410,7 +1411,7 @@ namespace gum {
      * @param current_elt The element before which new_elt will be inserted.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insertAfter( ListBucket<Val>* new_elt, ListBucket<Val>* current_elt );
+    Val& __insertAfter(ListBucket< Val >* new_elt, ListBucket< Val >* current_elt);
 
     /**
      * @brief Inserts a new bucket before or after the location pointed to by
@@ -1420,9 +1421,9 @@ namespace gum {
      * @param place Where to insert the new element relatively to the iterator.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insert( const const_iterator_safe& iter,
-                   ListBucket<Val>*           new_elt,
-                   location                   place );
+    Val& __insert(const const_iterator_safe& iter,
+                  ListBucket< Val >*         new_elt,
+                  location                   place);
 
     /**
      * @brief Inserts a new bucket before or after the location pointed to by
@@ -1432,16 +1433,16 @@ namespace gum {
      * @param place Where to insert the new element relatively to the iterator.
      * @return Returns a reference over the value stored in the gum::List.
      */
-    Val& __insert( const const_iterator& iter,
-                   ListBucket<Val>*      new_elt,
-                   location              place );
+    Val& __insert(const const_iterator& iter,
+                  ListBucket< Val >*    new_elt,
+                  location              place);
 
     /// ListIterator should be a friend to optimize access to elements
     /// @{
-    friend class ListIterator<Val>;
-    friend class ListConstIterator<Val>;
-    friend class ListIteratorSafe<Val>;
-    friend class ListConstIteratorSafe<Val>;
+    friend class ListIterator< Val >;
+    friend class ListConstIterator< Val >;
+    friend class ListIteratorSafe< Val >;
+    friend class ListConstIteratorSafe< Val >;
     /// @}
   };
 
@@ -1497,7 +1498,7 @@ namespace gum {
    *
    * @tparam Val The gum::List values type.
    */
-  template <typename Val>
+  template < typename Val >
   class ListConstIterator {
     public:
     /// Types for STL compliance.
@@ -1527,20 +1528,20 @@ namespace gum {
      * @brief Constructor for a begin.
      * @tparam Alloc The gum::List allocator.
      */
-    template <typename Alloc>
-    ListConstIterator( const List<Val, Alloc>& theList ) noexcept;
+    template < typename Alloc >
+    ListConstIterator(const List< Val, Alloc >& theList) noexcept;
 
     /**
      * @brief Copy constructor.
      * @param src The gum::ListConstIterator to copy.
      */
-    ListConstIterator( const ListConstIterator<Val>& src ) noexcept;
+    ListConstIterator(const ListConstIterator< Val >& src) noexcept;
 
     /**
      * @brief Move constructor.
      * @param src The gum::ListConstIterator to move.
      */
-    ListConstIterator( ListConstIterator<Val>&& src ) noexcept;
+    ListConstIterator(ListConstIterator< Val >&& src) noexcept;
 
     /**
      * @brief Constructor for an iterator pointing to the \e ind_eltth element
@@ -1550,7 +1551,7 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element does not exist in
      * the list.
      */
-    ListConstIterator( const List<Val>& theList, unsigned int ind_elt );
+    ListConstIterator(const List< Val >& theList, unsigned int ind_elt);
 
     /**
      * @brief Class Desctructor.
@@ -1599,8 +1600,8 @@ namespace gum {
      * @param src The gum::ListConstIterator to copy.
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIterator<Val>&
-    operator=( const ListConstIterator<Val>& src ) noexcept;
+    ListConstIterator< Val >&
+    operator=(const ListConstIterator< Val >& src) noexcept;
 
     /**
      * @brief Move operator.
@@ -1608,7 +1609,7 @@ namespace gum {
      * @param src The gum::ListConstIterator to move.
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIterator<Val>& operator=( ListConstIterator<Val>&& src ) noexcept;
+    ListConstIterator< Val >& operator=(ListConstIterator< Val >&& src) noexcept;
 
     /**
      * @brief Makes the iterator point to the next element in the List.
@@ -1623,14 +1624,14 @@ namespace gum {
      *
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIterator<Val>& operator++() noexcept;
+    ListConstIterator< Val >& operator++() noexcept;
 
     /**
      * @brief Makes the iterator point to i elements further in the List.
      * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIterator<Val>& operator+=( difference_type i ) noexcept;
+    ListConstIterator< Val >& operator+=(difference_type i) noexcept;
 
     /**
      * @brief Makes the iterator point to the preceding element in the List.
@@ -1645,7 +1646,7 @@ namespace gum {
      *
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIterator<Val>& operator--() noexcept;
+    ListConstIterator< Val >& operator--() noexcept;
 
     /**
      * @brief Makes the iterator point to i elements befor in the List.
@@ -1653,7 +1654,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIterator<Val>& operator-=( difference_type i ) noexcept;
+    ListConstIterator< Val >& operator-=(difference_type i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i further elements in the
@@ -1661,7 +1662,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIterator.
      */
-    ListConstIterator<Val> operator+( difference_type i ) noexcept;
+    ListConstIterator< Val > operator+(difference_type i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i preceding elements in the
@@ -1669,7 +1670,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIterator.
      */
-    ListConstIterator<Val> operator-( difference_type i ) noexcept;
+    ListConstIterator< Val > operator-(difference_type i) noexcept;
 
     /**
      * @brief Checks whether two iterators point toward different elements.
@@ -1680,7 +1681,7 @@ namespace gum {
      * @param src The gum::ListConstIterator to test for inequality.
      * @return Returns true if src and this are equal.
      */
-    bool operator!=( const ListConstIterator<Val>& src ) const noexcept;
+    bool operator!=(const ListConstIterator< Val >& src) const noexcept;
 
     /**
      * @brief Checks whether two iterators point toward the same elements.
@@ -1691,7 +1692,7 @@ namespace gum {
      * @param src The gum::ListConstIterator to test for equality.
      * @return Returns true if src and this are equal.
      */
-    bool operator==( const ListConstIterator<Val>& src ) const noexcept;
+    bool operator==(const ListConstIterator< Val >& src) const noexcept;
 
     /**
      * @brief Gives access to the content of the iterator.
@@ -1714,21 +1715,21 @@ namespace gum {
      * @brief Class List must be a friend because it uses the getBucket method
      * to speed up some processes.
      */
-    template <typename T, typename A>
+    template < typename T, typename A >
     friend class List;
 
     /// The bucket in the chained list pointed to by the iterator.
-    ListBucket<Val>* __bucket{nullptr};
+    ListBucket< Val >* __bucket{nullptr};
 
     /// Returns the bucket the iterator is pointing to.
-    ListBucket<Val>* __getBucket() const noexcept;
+    ListBucket< Val >* __getBucket() const noexcept;
   };
 
   /// For STL compliance, a distance operator.
-  template <typename Val>
-  typename ListConstIterator<Val>::difference_type
-  operator-( const ListConstIterator<Val>& iter1,
-             const ListConstIterator<Val>& iter2 );
+  template < typename Val >
+  typename ListConstIterator< Val >::difference_type
+  operator-(const ListConstIterator< Val >& iter1,
+            const ListConstIterator< Val >& iter2);
 
   // ===========================================================================
   // ===                         UNSAFE LIST ITERATORS                       ===
@@ -1782,8 +1783,8 @@ namespace gum {
    *
    * @tparam Val The gum::List values type.
    */
-  template <typename Val>
-  class ListIterator : public ListConstIterator<Val> {
+  template < typename Val >
+  class ListIterator : public ListConstIterator< Val > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -1813,20 +1814,20 @@ namespace gum {
      * @tparam Alloc The gum::List allocator.
      * @param theList The list to iterate over.
      */
-    template <typename Alloc>
-    ListIterator( const List<Val, Alloc>& theList ) noexcept;
+    template < typename Alloc >
+    ListIterator(const List< Val, Alloc >& theList) noexcept;
 
     /**
      * @brief Copy constructor.
      * @param src The gum::ListIterator to copy.
      */
-    ListIterator( const ListIterator<Val>& src ) noexcept;
+    ListIterator(const ListIterator< Val >& src) noexcept;
 
     /**
      * @brief Move constructor.
      * @param src The gum::ListIterator to move.
      */
-    ListIterator( ListIterator<Val>&& src ) noexcept;
+    ListIterator(ListIterator< Val >&& src) noexcept;
 
     /**
      * @brief Constructor for an iterator pointing to the \e ind_eltth element
@@ -1836,7 +1837,7 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element does not exist in
      * the list.
      */
-    ListIterator( const List<Val>& theList, unsigned int ind_elt );
+    ListIterator(const List< Val >& theList, unsigned int ind_elt);
 
     /**
      * @brief Class destructor.
@@ -1849,9 +1850,9 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    using ListConstIterator<Val>::clear;
-    using ListConstIterator<Val>::setToEnd;
-    using ListConstIterator<Val>::isEnd;
+    using ListConstIterator< Val >::clear;
+    using ListConstIterator< Val >::setToEnd;
+    using ListConstIterator< Val >::isEnd;
 
     /// @}
 
@@ -1868,7 +1869,7 @@ namespace gum {
      * @param src The gum::ListIterator to copy.
      * @return Returns this gum::ListIterator.
      */
-    ListIterator<Val>& operator=( const ListIterator<Val>& src ) noexcept;
+    ListIterator< Val >& operator=(const ListIterator< Val >& src) noexcept;
 
     /// move operator
     /**
@@ -1879,7 +1880,7 @@ namespace gum {
      * @param src The gum::ListIterator to move.
      * @return Returns this gum::ListIterator.
      */
-    ListIterator<Val>& operator=( ListIterator<Val>&& src ) noexcept;
+    ListIterator< Val >& operator=(ListIterator< Val >&& src) noexcept;
 
     /**
      * @brief Makes the iterator point to the next element in the List.
@@ -1895,14 +1896,14 @@ namespace gum {
      *
      * @return Returns this gum::ListIterator.
      */
-    ListIterator<Val>& operator++() noexcept;
+    ListIterator< Val >& operator++() noexcept;
 
     /**
      * @brief Makes the iterator point to i elements further in the List.
      * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListIterator.
      */
-    ListIterator<Val>& operator+=( difference_type i ) noexcept;
+    ListIterator< Val >& operator+=(difference_type i) noexcept;
 
     /**
      * @brief Makes the iterator point to the preceding element in the List.
@@ -1917,7 +1918,7 @@ namespace gum {
      *
      * @return Returns this gum::ListIterator.
      */
-    ListIterator<Val>& operator--() noexcept;
+    ListIterator< Val >& operator--() noexcept;
 
     /**
      * @brief Makes the iterator point to i elements befor in the List.
@@ -1925,7 +1926,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListIterator.
      */
-    ListIterator<Val>& operator-=( difference_type i ) noexcept;
+    ListIterator< Val >& operator-=(difference_type i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i further elements in the
@@ -1933,7 +1934,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListIterator.
      */
-    ListIterator<Val> operator+( difference_type i ) noexcept;
+    ListIterator< Val > operator+(difference_type i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i preceding elements in the
@@ -1941,14 +1942,14 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListIterator.
      */
-    ListIterator<Val> operator-( difference_type i ) noexcept;
+    ListIterator< Val > operator-(difference_type i) noexcept;
 
     /// Adding gum::ListConstIterator operator support.
     /// @{
-    using ListConstIterator<Val>::operator==;
-    using ListConstIterator<Val>::operator!=;
-    using ListConstIterator<Val>::operator*;
-    using ListConstIterator<Val>::operator->;
+    using ListConstIterator< Val >::operator==;
+    using ListConstIterator< Val >::operator!=;
+    using ListConstIterator< Val >::operator*;
+    using ListConstIterator< Val >::operator->;
     /// @}
 
     /**
@@ -2017,7 +2018,7 @@ namespace gum {
    *
    * @tparam Val The gum::List values type.
    */
-  template <typename Val>
+  template < typename Val >
   class ListConstIteratorSafe {
     public:
     /// Types for STL compliance.
@@ -2047,14 +2048,14 @@ namespace gum {
      * @brief Constructor for a begin.
      * @tparam Alloc The gum::List allocator.
      */
-    template <typename Alloc>
-    ListConstIteratorSafe( const List<Val, Alloc>& theList );
+    template < typename Alloc >
+    ListConstIteratorSafe(const List< Val, Alloc >& theList);
 
     /**
      * @brief Copy constructor.
      * @param src The gum::ListConstIteratorSafe to copy.
      */
-    ListConstIteratorSafe( const ListConstIteratorSafe<Val>& src );
+    ListConstIteratorSafe(const ListConstIteratorSafe< Val >& src);
 
     /**
      * @brief Constructor for an iterator pointing to the \e ind_eltth element
@@ -2064,14 +2065,14 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element does not exist in
      * the list.
      */
-    template <typename Alloc>
-    ListConstIteratorSafe( const List<Val, Alloc>& theList, unsigned int ind_elt );
+    template < typename Alloc >
+    ListConstIteratorSafe(const List< Val, Alloc >& theList, unsigned int ind_elt);
 
     /**
      * @brief Move constructor.
      * @param src The gum::ListConstIterator to move.
      */
-    ListConstIteratorSafe( ListConstIteratorSafe<Val>&& src );
+    ListConstIteratorSafe(ListConstIteratorSafe< Val >&& src);
 
     /**
      * @brief Class Desctructor.
@@ -2121,7 +2122,8 @@ namespace gum {
      * @param src The gum::ListConstIteratorSafe to copy.
      * @return Returns this gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val>& operator=( const ListConstIteratorSafe<Val>& src );
+    ListConstIteratorSafe< Val >&
+    operator=(const ListConstIteratorSafe< Val >& src);
 
     /**
      * @brief Move operator.
@@ -2129,7 +2131,7 @@ namespace gum {
      * @param src The gum::ListConstIteratorSafe to move.
      * @return Returns this gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val>& operator=( ListConstIteratorSafe<Val>&& src );
+    ListConstIteratorSafe< Val >& operator=(ListConstIteratorSafe< Val >&& src);
 
     /**
      * @brief Makes the iterator point to the next element in the List.
@@ -2144,14 +2146,14 @@ namespace gum {
      *
      * @return Returns this gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val>& operator++() noexcept;
+    ListConstIteratorSafe< Val >& operator++() noexcept;
 
     /**
      * @brief Makes the iterator point to i elements further in the List.
      * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListConstIterator.
      */
-    ListConstIteratorSafe<Val>& operator+=( difference_type i ) noexcept;
+    ListConstIteratorSafe< Val >& operator+=(difference_type i) noexcept;
 
     /**
      * @brief Makes the iterator point to the preceding element in the List.
@@ -2166,7 +2168,7 @@ namespace gum {
      *
      * @return Returns this gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val>& operator--() noexcept;
+    ListConstIteratorSafe< Val >& operator--() noexcept;
 
     /**
      * @brief Makes the iterator point to i elements befor in the List.
@@ -2174,7 +2176,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val>& operator-=( difference_type i ) noexcept;
+    ListConstIteratorSafe< Val >& operator-=(difference_type i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i further elements in the
@@ -2182,7 +2184,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIteratoSafe.
      */
-    ListConstIteratorSafe<Val> operator+( difference_type i ) noexcept;
+    ListConstIteratorSafe< Val > operator+(difference_type i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i preceding elements in the
@@ -2190,7 +2192,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIteratorSafe.
      */
-    ListConstIteratorSafe<Val> operator-( difference_type i ) noexcept;
+    ListConstIteratorSafe< Val > operator-(difference_type i) noexcept;
 
     /**
      * @brief Checks whether two iterators point toward different elements.
@@ -2201,7 +2203,7 @@ namespace gum {
      * @param src The gum::ListConstIteratorSafe to test for inequality.
      * @return Returns true if src and this are equal.
      */
-    bool operator!=( const ListConstIteratorSafe<Val>& src ) const;
+    bool operator!=(const ListConstIteratorSafe< Val >& src) const;
 
     /**
      * @brief Checks whether two iterators point toward the same elements.
@@ -2212,7 +2214,7 @@ namespace gum {
      * @param src The gum::ListConstIteratorSafe to test for equality.
      * @return Returns true if src and this are equal.
      */
-    bool operator==( const ListConstIteratorSafe<Val>& src ) const;
+    bool operator==(const ListConstIteratorSafe< Val >& src) const;
 
     /**
      * @brief Gives access to the content of the iterator.
@@ -2234,46 +2236,46 @@ namespace gum {
     /// class List must be a friend because it uses the getBucket method to
     /// speed up some processes.
     /// @{
-    template <typename T, typename A>
+    template < typename T, typename A >
     friend class List;
-    friend class ListConstIterator<Val>;
+    friend class ListConstIterator< Val >;
     /// @}
 
     /// The list the iterator is pointing to.
-    const List<Val, std::allocator<Val>>* __list{nullptr};
+    const List< Val, std::allocator< Val > >* __list{nullptr};
 
     /// The bucket in the chained list pointed to by the iterator.
-    ListBucket<Val>* __bucket{nullptr};
+    ListBucket< Val >* __bucket{nullptr};
 
     /// The bucket we should start from when we are pointing on a deleted
     /// bucket and we decide to do a ++.
-    ListBucket<Val>* __next_current_bucket{nullptr};
+    ListBucket< Val >* __next_current_bucket{nullptr};
 
     /// The bucket we should start from when we are pointing on a deleted
     /// bucket and we decide to do a --.
-    ListBucket<Val>* __prev_current_bucket{nullptr};
+    ListBucket< Val >* __prev_current_bucket{nullptr};
 
     /// Indicates whether the bucket the iterator points to has been deleted.
     bool __null_pointing{false};
 
     /// Returns the bucket the iterator is pointing to.
-    ListBucket<Val>* __getBucket() const noexcept;
+    ListBucket< Val >* __getBucket() const noexcept;
 
     /// Remove the iterator for its list' safe iterators list.
     void __removeFromSafeList() const;
 
     /// Makes the iterator point to the next element in the List.
-    ListConstIteratorSafe<Val>& __opPlus( unsigned int i ) noexcept;
+    ListConstIteratorSafe< Val >& __opPlus(unsigned int i) noexcept;
 
     /// Makes the iterator point to i elements before in the List.
-    ListConstIteratorSafe<Val>& __opMinus( unsigned int i ) noexcept;
+    ListConstIteratorSafe< Val >& __opMinus(unsigned int i) noexcept;
   };
 
   /// For STL compliance, a distance operator.
-  template <typename Val>
-  typename ListConstIteratorSafe<Val>::difference_type
-  operator-( const ListConstIteratorSafe<Val>& iter1,
-             const ListConstIteratorSafe<Val>& iter2 );
+  template < typename Val >
+  typename ListConstIteratorSafe< Val >::difference_type
+  operator-(const ListConstIteratorSafe< Val >& iter1,
+            const ListConstIteratorSafe< Val >& iter2);
 
   // ===========================================================================
   // ===                             LIST ITERATORS                          ===
@@ -2327,8 +2329,8 @@ namespace gum {
    *
    * @tparam Val The gum::List values type.
    */
-  template <typename Val>
-  class ListIteratorSafe : public ListConstIteratorSafe<Val> {
+  template < typename Val >
+  class ListIteratorSafe : public ListConstIteratorSafe< Val > {
     public:
     /// Types for STL compliance.
     /// @{
@@ -2357,14 +2359,14 @@ namespace gum {
      * @brief Constructor for a begin.
      * @tparam Alloc The gum::List allocator.
      */
-    template <typename Alloc>
-    ListIteratorSafe( const List<Val, Alloc>& theList );
+    template < typename Alloc >
+    ListIteratorSafe(const List< Val, Alloc >& theList);
 
     /**
      * @brief Copy constructor.
      * @param src The gum::ListConstIteratorSafe to copy.
      */
-    ListIteratorSafe( const ListIteratorSafe<Val>& src );
+    ListIteratorSafe(const ListIteratorSafe< Val >& src);
 
     /**
      * @brief Constructor for an iterator pointing to the \e ind_eltth element
@@ -2374,14 +2376,14 @@ namespace gum {
      * @throw UndefinedIteratorValue Raised if the element does not exist in
      * the list.
      */
-    template <typename Alloc>
-    ListIteratorSafe( const List<Val, Alloc>& theList, unsigned int ind_elt );
+    template < typename Alloc >
+    ListIteratorSafe(const List< Val, Alloc >& theList, unsigned int ind_elt);
 
     /**
      * @brief Move constructor.
      * @param src The gum::ListConstIterator to move.
      */
-    ListIteratorSafe( ListIteratorSafe<Val>&& src );
+    ListIteratorSafe(ListIteratorSafe< Val >&& src);
 
     /**
      * @brief Class Desctructor.
@@ -2394,9 +2396,9 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    using ListConstIteratorSafe<Val>::clear;
-    using ListConstIteratorSafe<Val>::setToEnd;
-    using ListConstIteratorSafe<Val>::isEnd;
+    using ListConstIteratorSafe< Val >::clear;
+    using ListConstIteratorSafe< Val >::setToEnd;
+    using ListConstIteratorSafe< Val >::isEnd;
 
     /// @}
     // ============================================================================
@@ -2412,7 +2414,7 @@ namespace gum {
      * @param src The gum::ListIteratorSafe to copy.
      * @return Returns this gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val>& operator=( const ListIteratorSafe<Val>& src );
+    ListIteratorSafe< Val >& operator=(const ListIteratorSafe< Val >& src);
 
     /**
      * @brief Move operator.
@@ -2420,7 +2422,7 @@ namespace gum {
      * @param src The gum::ListIteratorSafe to move.
      * @return Returns this gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val>& operator=( ListIteratorSafe<Val>&& src );
+    ListIteratorSafe< Val >& operator=(ListIteratorSafe< Val >&& src);
 
     /**
      * @brief Makes the iterator point to the next element in the List.
@@ -2435,14 +2437,14 @@ namespace gum {
      *
      * @return Returns this gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val>& operator++() noexcept;
+    ListIteratorSafe< Val >& operator++() noexcept;
 
     /**
      * @brief Makes the iterator point to i elements further in the List.
      * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListIterator.
      */
-    ListIteratorSafe<Val>& operator+=( difference_type i ) noexcept;
+    ListIteratorSafe< Val >& operator+=(difference_type i) noexcept;
 
     /**
      * @brief Makes the iterator point to the preceding element in the List.
@@ -2457,7 +2459,7 @@ namespace gum {
      *
      * @return Returns this gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val>& operator--() noexcept;
+    ListIteratorSafe< Val >& operator--() noexcept;
 
     /**
      * @brief Makes the iterator point to i elements befor in the List.
@@ -2465,7 +2467,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns this gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val>& operator-=( difference_type i ) noexcept;
+    ListIteratorSafe< Val >& operator-=(difference_type i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i further elements in the
@@ -2473,7 +2475,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListConstIteratoSafe.
      */
-    ListIteratorSafe<Val> operator+( difference_type i ) noexcept;
+    ListIteratorSafe< Val > operator+(difference_type i) noexcept;
 
     /**
      * @brief Returns a new iterator pointing to i preceding elements in the
@@ -2481,7 +2483,7 @@ namespace gum {
      * @param i The number of steps to move the iterator.
      * @return Returns a new gum::ListIteratorSafe.
      */
-    ListIteratorSafe<Val> operator-( difference_type i ) noexcept;
+    ListIteratorSafe< Val > operator-(difference_type i) noexcept;
 
     /**
      * @brief Gives access to the content of the iterator.
@@ -2499,31 +2501,31 @@ namespace gum {
 
     /// Adding gum::ListConstIteratorSafe operator support.
     /// @{
-    using ListConstIteratorSafe<Val>::operator!=;
-    using ListConstIteratorSafe<Val>::operator==;
-    using ListConstIteratorSafe<Val>::operator*;
-    using ListConstIteratorSafe<Val>::operator->;
+    using ListConstIteratorSafe< Val >::operator!=;
+    using ListConstIteratorSafe< Val >::operator==;
+    using ListConstIteratorSafe< Val >::operator*;
+    using ListConstIteratorSafe< Val >::operator->;
     /// @}
   };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // constructor and destructor for the iterator that represents end and rend
   template <>
-  ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept;
+  ListConstIteratorSafe< Debug >::ListConstIteratorSafe() noexcept;
   template <>
-  ListConstIteratorSafe<Debug>::~ListConstIteratorSafe();
+  ListConstIteratorSafe< Debug >::~ListConstIteratorSafe();
   template <>
-  ListConstIterator<Debug>::ListConstIterator() noexcept;
+  ListConstIterator< Debug >::ListConstIterator() noexcept;
   template <>
-  ListConstIterator<Debug>::~ListConstIterator() noexcept;
+  ListConstIterator< Debug >::~ListConstIterator() noexcept;
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 } /* namespace gum */
 
 
-extern template class gum::List<bool>;
-extern template class gum::List<int>;
-extern template class gum::List<unsigned int>;
+extern template class gum::List< bool >;
+extern template class gum::List< int >;
+extern template class gum::List< unsigned int >;
 
 
 // always include the implementation of the templates

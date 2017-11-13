@@ -50,8 +50,8 @@ namespace gum {
    * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
    * matrix.
    */
-  template <typename GUM_SCALAR>
-  class Potential : public MultiDimDecorator<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class Potential : public MultiDimDecorator< GUM_SCALAR > {
 
     public:
     // =========================================================================
@@ -71,7 +71,7 @@ namespace gum {
      * @brief Creates an potential around aContent.
      * @param aContent The implementation of this Potential.
      */
-    Potential( MultiDimImplementation<GUM_SCALAR>* aContent );
+    Potential(MultiDimImplementation< GUM_SCALAR >* aContent);
 
     /**
      * @brief Copy constructor.
@@ -83,19 +83,19 @@ namespace gum {
      * @param aContent The implementation to use in this Potential.
      * @param src The MultiDimContainer to copy.
      */
-    Potential( MultiDimImplementation<GUM_SCALAR>*  aContent,
-               const MultiDimContainer<GUM_SCALAR>& src );
+    Potential(MultiDimImplementation< GUM_SCALAR >*  aContent,
+              const MultiDimContainer< GUM_SCALAR >& src);
     /**
      * @brief Copy constructor & assignment
      */
-    Potential( const Potential<GUM_SCALAR>& src );
-    Potential<GUM_SCALAR>& operator=( const Potential<GUM_SCALAR>& src );
+    Potential(const Potential< GUM_SCALAR >& src);
+    Potential< GUM_SCALAR >& operator=(const Potential< GUM_SCALAR >& src);
 
     /**
      * move constructor & assignement
      **/
-    Potential( Potential<GUM_SCALAR>&& from );
-    Potential<GUM_SCALAR>& operator=( Potential<GUM_SCALAR>&& src );
+    Potential(Potential< GUM_SCALAR >&& from);
+    Potential< GUM_SCALAR >& operator=(Potential< GUM_SCALAR >&& src);
 
 
     /**
@@ -109,7 +109,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual Potential<GUM_SCALAR>* newFactory() const;
+    virtual Potential< GUM_SCALAR >* newFactory() const;
 
     /// @}
     // ========================================================================
@@ -122,69 +122,69 @@ namespace gum {
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential<GUM_SCALAR>
-    margSumOut( const Set<const DiscreteVariable*>& del_vars ) const;
+    Potential< GUM_SCALAR >
+    margSumOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using sum as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential<GUM_SCALAR>
-    margSumIn( const Set<const DiscreteVariable*>& kept_vars ) const;
+    Potential< GUM_SCALAR >
+    margSumIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential<GUM_SCALAR>
-    margProdOut( const Set<const DiscreteVariable*>& del_vars ) const;
+    Potential< GUM_SCALAR >
+    margProdOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using multiplication as operation (and
      * implementation-optimized operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential<GUM_SCALAR>
-    margProdIn( const Set<const DiscreteVariable*>& kept_vars ) const;
+    Potential< GUM_SCALAR >
+    margProdIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential<GUM_SCALAR>
-    margMinOut( const Set<const DiscreteVariable*>& del_vars ) const;
+    Potential< GUM_SCALAR >
+    margMinOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using min as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential<GUM_SCALAR>
-    margMinIn( const Set<const DiscreteVariable*>& kept_vars ) const;
+    Potential< GUM_SCALAR >
+    margMinIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param del_vars is the set of vars to eliminate
      */
-    Potential<GUM_SCALAR>
-    margMaxOut( const Set<const DiscreteVariable*>& del_vars ) const;
+    Potential< GUM_SCALAR >
+    margMaxOut(const Set< const DiscreteVariable* >& del_vars) const;
 
     /**
      * Projection using max as operation (and implementation-optimized
      * operations)
      * @param kept_vars is the set of vars to keep
      */
-    Potential<GUM_SCALAR>
-    margMaxIn( const Set<const DiscreteVariable*>& kept_vars ) const;
+    Potential< GUM_SCALAR >
+    margMaxIn(const Set< const DiscreteVariable* >& kept_vars) const;
 
     /**
      * create a boolean-like potential using the predicate isNonZero
      */
-    Potential<GUM_SCALAR> isNonZeroMap() const;
+    Potential< GUM_SCALAR > isNonZeroMap() const;
 
     /// sum of all elements in the Potential
     GUM_SCALAR sum() const;
@@ -208,18 +208,18 @@ namespace gum {
      * @throw InvalidArgument if not all and only the vars of the potential are
      * in vars
      */
-    Potential<GUM_SCALAR>
-    reorganize( const std::vector<const DiscreteVariable*>& vars ) const;
+    Potential< GUM_SCALAR >
+    reorganize(const std::vector< const DiscreteVariable* >& vars) const;
 
     /** create a new Potential extracted from *this given a partial
      * instantiation
      */
-    Potential<GUM_SCALAR> extract( const Instantiation& inst ) const;
+    Potential< GUM_SCALAR > extract(const Instantiation& inst) const;
 
     /** create a new Potential with a certain variable in first
      * @throw InvalidArgument if the var is not in the potential
      */
-    Potential<GUM_SCALAR> putFirst( const DiscreteVariable* var ) const;
+    Potential< GUM_SCALAR > putFirst(const DiscreteVariable* var) const;
 
     /**
      * @brief Automatically fills the potential with the values in
@@ -229,30 +229,30 @@ namespace gum {
      * @throw SizeError Raised if v size's does not matches this
      * MultiDimContainer domain size.
      */
-    const Potential<GUM_SCALAR>&
-    fillWith( const std::vector<GUM_SCALAR>& v ) const;
+    const Potential< GUM_SCALAR >&
+    fillWith(const std::vector< GUM_SCALAR >& v) const;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the value v
      *
      * @param v contains the data.
      */
-    const Potential<GUM_SCALAR>& fillWith( const GUM_SCALAR& v ) const;
+    const Potential< GUM_SCALAR >& fillWith(const GUM_SCALAR& v) const;
 
     /**
      * @brief Apply abs on every element of the container
      */
-    const Potential<GUM_SCALAR>& abs() const;
+    const Potential< GUM_SCALAR >& abs() const;
 
     /**
      * @brief normalisation of this do nothing if sum is 0
      */
-    const Potential<GUM_SCALAR>& normalize() const;
+    const Potential< GUM_SCALAR >& normalize() const;
 
     /**
      * @brief apply $x^2$ on every element of the container
      */
-    const Potential<GUM_SCALAR>& sq() const;
+    const Potential< GUM_SCALAR >& sq() const;
 
     /**
      * @brief compute KL divergence between this and p
@@ -262,7 +262,7 @@ namespace gum {
      * @throws gum::FatalError if a zero is found in p or this and not in the
      * other.
      */
-    GUM_SCALAR KL( const Potential<GUM_SCALAR>& p ) const;
+    GUM_SCALAR KL(const Potential< GUM_SCALAR >& p) const;
 
     /**
      * @brief compute KL divergence between this and p without testing compatibilty
@@ -270,7 +270,7 @@ namespace gum {
      * @throws gum::FatalError if a zero is found in p or this and not in the
      * other.
      */
-    GUM_SCALAR fastKL( const Potential<GUM_SCALAR>& p ) const;
+    GUM_SCALAR fastKL(const Potential< GUM_SCALAR >& p) const;
 
     /**
      * @brief normalisation of this as a CPT
@@ -281,12 +281,12 @@ namespace gum {
     /**
      * @brief create a new potential multiplied by v from *this
      */
-    const Potential<GUM_SCALAR>& scale( GUM_SCALAR v ) const;
+    const Potential< GUM_SCALAR >& scale(GUM_SCALAR v) const;
 
     /**
     * @brief create a new potential added with v from *this
     */
-    const Potential<GUM_SCALAR>& translate( GUM_SCALAR v ) const;
+    const Potential< GUM_SCALAR >& translate(GUM_SCALAR v) const;
 
     /**
      * @brief get a value at random from a 1-D distribution
@@ -302,104 +302,103 @@ namespace gum {
 
 
     /// the function to be used to add two Potentials
-    Potential<GUM_SCALAR> operator+( const Potential<GUM_SCALAR>& p2 ) const {
-      if ( p2.empty() )
-        return Potential<GUM_SCALAR>( *this ).translate( p2._empty_value );
-      if ( this->empty() )
-        return Potential<GUM_SCALAR>( p2 ).translate( this->_empty_value );
+    Potential< GUM_SCALAR > operator+(const Potential< GUM_SCALAR >& p2) const {
+      if (p2.empty())
+        return Potential< GUM_SCALAR >(*this).translate(p2._empty_value);
+      if (this->empty())
+        return Potential< GUM_SCALAR >(p2).translate(this->_empty_value);
 
-      return Potential<GUM_SCALAR>( *this->content() + *p2.content() );
+      return Potential< GUM_SCALAR >(*this->content() + *p2.content());
     }
 
     /// the function to be used to subtract two Potentials
-    Potential<GUM_SCALAR> operator-( const Potential<GUM_SCALAR>& p2 ) const {
-      if ( p2.empty() )
-        return Potential<GUM_SCALAR>( *this ).translate( -p2._empty_value );
-      if ( this->empty() ) {
-        auto p = Potential<GUM_SCALAR>( p2 );
-        p.apply( [this]( GUM_SCALAR x ) { return this->_empty_value - x; } );
+    Potential< GUM_SCALAR > operator-(const Potential< GUM_SCALAR >& p2) const {
+      if (p2.empty())
+        return Potential< GUM_SCALAR >(*this).translate(-p2._empty_value);
+      if (this->empty()) {
+        auto p = Potential< GUM_SCALAR >(p2);
+        p.apply([this](GUM_SCALAR x) { return this->_empty_value - x; });
         return p;
       }
-      return Potential<GUM_SCALAR>( *this->content() - *p2.content() );
+      return Potential< GUM_SCALAR >(*this->content() - *p2.content());
     }
 
     /// the function to be used to multiply two Potentials
-    Potential<GUM_SCALAR> operator*( const Potential<GUM_SCALAR>& p2 ) const {
-      if ( p2.empty() )
-        return Potential<GUM_SCALAR>( *this ).scale( p2._empty_value );
-      if ( this->empty() )
-        return Potential<GUM_SCALAR>( p2 ).scale( this->_empty_value );
+    Potential< GUM_SCALAR > operator*(const Potential< GUM_SCALAR >& p2) const {
+      if (p2.empty()) return Potential< GUM_SCALAR >(*this).scale(p2._empty_value);
+      if (this->empty())
+        return Potential< GUM_SCALAR >(p2).scale(this->_empty_value);
 
-      return Potential<GUM_SCALAR>( *this->content() * *p2.content() );
+      return Potential< GUM_SCALAR >(*this->content() * *p2.content());
     }
 
     /// the function to be used to divide two Potentials
-    Potential<GUM_SCALAR> operator/( const Potential<GUM_SCALAR>& p2 ) const {
-      if ( p2.empty() )
-        return Potential<GUM_SCALAR>( *this ).scale( 1 / p2._empty_value );
-      if ( this->empty() ) {
-        auto p = Potential<GUM_SCALAR>( p2 );
-        p.apply( [this]( GUM_SCALAR x ) { return this->_empty_value / x; } );
+    Potential< GUM_SCALAR > operator/(const Potential< GUM_SCALAR >& p2) const {
+      if (p2.empty())
+        return Potential< GUM_SCALAR >(*this).scale(1 / p2._empty_value);
+      if (this->empty()) {
+        auto p = Potential< GUM_SCALAR >(p2);
+        p.apply([this](GUM_SCALAR x) { return this->_empty_value / x; });
         return p;
       }
-      return Potential<GUM_SCALAR>( *this->content() / *p2.content() );
+      return Potential< GUM_SCALAR >(*this->content() / *p2.content());
     }
 
-    Potential<GUM_SCALAR>& operator+=( const Potential<GUM_SCALAR>& r ) {
+    Potential< GUM_SCALAR >& operator+=(const Potential< GUM_SCALAR >& r) {
       *this = *this + r;
       return *this;
     }
 
-    Potential<GUM_SCALAR>& operator*=( const Potential<GUM_SCALAR>& r ) {
+    Potential< GUM_SCALAR >& operator*=(const Potential< GUM_SCALAR >& r) {
       *this = *this * r;
       return *this;
     }
 
-    Potential<GUM_SCALAR>& operator-=( const Potential<GUM_SCALAR>& r ) {
+    Potential< GUM_SCALAR >& operator-=(const Potential< GUM_SCALAR >& r) {
       *this = *this - r;
       return *this;
     }
 
-    Potential<GUM_SCALAR>& operator/=( const Potential<GUM_SCALAR>& r ) {
+    Potential< GUM_SCALAR >& operator/=(const Potential< GUM_SCALAR >& r) {
       *this = *this / r;
       return *this;
     }
 
-    bool operator==( const Potential<GUM_SCALAR>& r ) const {
-      if ( this->empty() ) {
-        if ( r.empty() )
+    bool operator==(const Potential< GUM_SCALAR >& r) const {
+      if (this->empty()) {
+        if (r.empty())
           return this->_empty_value == r._empty_value;
         else
           return false;
       } else {
-        if ( r.empty() )
+        if (r.empty())
           return false;
         else
-          return ( *this->_content ) == ( *r._content );
+          return (*this->_content) == (*r._content);
       }
     }
 
-    bool operator!=( const Potential<GUM_SCALAR>& r ) const {
-      return !operator==( r );
+    bool operator!=(const Potential< GUM_SCALAR >& r) const {
+      return !operator==(r);
     }
 
     virtual const std::string toString() const {
-      return MultiDimDecorator<GUM_SCALAR>::toString();
+      return MultiDimDecorator< GUM_SCALAR >::toString();
     }
 
     ///@}
 
     protected:
-    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 
 
-    Set<const DiscreteVariable*>
-    _complementVars( const Set<const DiscreteVariable*>& del_vars ) const;
+    Set< const DiscreteVariable* >
+    _complementVars(const Set< const DiscreteVariable* >& del_vars) const;
   };
 
 
-  extern template class Potential<float>;
-  extern template class Potential<double>;
+  extern template class Potential< float >;
+  extern template class Potential< double >;
 
 
 } /* namespace gum */

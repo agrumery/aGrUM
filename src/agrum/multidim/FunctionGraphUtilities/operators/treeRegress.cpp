@@ -27,4 +27,4 @@
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.h>
 
-template class gum::TreeRegress<double, std::multiplies, std::plus>;
+template class gum::TreeRegress< double, std::multiplies, std::plus >;

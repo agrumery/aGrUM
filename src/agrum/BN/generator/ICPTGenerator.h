@@ -37,7 +37,7 @@ namespace gum {
    * This abstract class is an implementation of the strategy pattern to
    * help changing CPT generation policies for the BayesNetGenerator class.
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class ICPTGenerator {
     public:
     // ############################################################################
@@ -64,13 +64,13 @@ namespace gum {
      * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
-    virtual void generateCPT( const Idx&                   varId,
-                              const Potential<GUM_SCALAR>& cpt ) = 0;
+    virtual void generateCPT(const Idx&                     varId,
+                             const Potential< GUM_SCALAR >& cpt) = 0;
     /// @}
   };
 
-  extern template class ICPTGenerator<float>;
-  extern template class ICPTGenerator<double>;
+  extern template class ICPTGenerator< float >;
+  extern template class ICPTGenerator< double >;
 
 } /* namespace gum */
 

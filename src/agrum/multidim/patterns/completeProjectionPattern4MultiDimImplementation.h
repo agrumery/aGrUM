@@ -33,27 +33,27 @@
 namespace gum {
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
-      const MultiDimImplementation<GUM_SCALAR>& ttable,
-      Instantiation*                            instantiation ) {
+    const MultiDimImplementation< GUM_SCALAR >& ttable,
+    Instantiation*                              instantiation) {
 #endif
 
-    typename CompleteProjectionRegister4MultiDim<GUM_SCALAR>::CompleteProjectionPtr
-        func;
+    typename CompleteProjectionRegister4MultiDim<
+      GUM_SCALAR >::CompleteProjectionPtr func;
 
     // get the appropriate function to perform the operation
     try {
       // try to find func(ttable,del_vars) in the register
-      func = CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().get(
-          GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.name() );
-    } catch ( NotFound& ) {
-      func = CompleteProjectionRegister4MultiDim<GUM_SCALAR>::Register().get(
-          GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.basename() );
+      func = CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().get(
+        GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.name());
+    } catch (NotFound&) {
+      func = CompleteProjectionRegister4MultiDim< GUM_SCALAR >::Register().get(
+        GUM_MULTI_DIM_COMPLETE_PROJECTION_FUNC_NAME, ttable.basename());
     }
 
     // perform the projection
-    return func( &ttable, instantiation );
+    return func(&ttable, instantiation);
   }
 
 } /* End of namespace gum */

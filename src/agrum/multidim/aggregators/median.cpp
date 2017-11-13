@@ -26,5 +26,5 @@
 
 #include <agrum/multidim/aggregators/median.h>
 
-template class gum::aggregator::Median<float>;
-template class gum::aggregator::Median<double>;
+template class gum::aggregator::Median< float >;
+template class gum::aggregator::Median< double >;

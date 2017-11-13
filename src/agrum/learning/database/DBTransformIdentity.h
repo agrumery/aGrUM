@@ -78,10 +78,10 @@ namespace gum {
       DBTransformIdentity();
 
       /// copy constructor
-      DBTransformIdentity( const DBTransformIdentity& );
+      DBTransformIdentity(const DBTransformIdentity&);
 
       /// move constructor
-      DBTransformIdentity( DBTransformIdentity&& );
+      DBTransformIdentity(DBTransformIdentity&&);
 
       /// destructor
       virtual ~DBTransformIdentity();
@@ -95,10 +95,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransformIdentity& operator=( const DBTransformIdentity& );
+      DBTransformIdentity& operator=(const DBTransformIdentity&);
 
       /// move operator
-      DBTransformIdentity& operator=( DBTransformIdentity&& );
+      DBTransformIdentity& operator=(DBTransformIdentity&&);
 
       /// @}
 
@@ -110,8 +110,8 @@ namespace gum {
 
       /// transforms a vector of DBrows
       /** @return true if the transformation could be performed successfully. */
-      virtual bool transform( std::vector<DBRow>&      db,
-                              std::vector<std::string> miss ) const;
+      virtual bool transform(std::vector< DBRow >&      db,
+                             std::vector< std::string > miss) const;
 
       /// @}
     };

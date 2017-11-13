@@ -30,14 +30,14 @@
 namespace gum {
   //@beforeMerging is this really faster ?
   // Specialized pow function with integers (faster implementation).
-  INLINE unsigned long intPow( unsigned long base, unsigned long exponent ) {
-    if ( exponent == 0 ) {
+  INLINE unsigned long intPow(unsigned long base, unsigned long exponent) {
+    if (exponent == 0) {
       return 1UL;
     }
 
     unsigned long out = base;
 
-    for ( unsigned long i = 1; i < exponent; i++ )
+    for (unsigned long i = 1; i < exponent; i++)
       out *= base;
 
     return out;
@@ -45,18 +45,16 @@ namespace gum {
 
   //@beforeMerging is this really faster ?
   // Specialized base 2 pow function with integer.
-  INLINE unsigned long int2Pow( unsigned long exponent ) {
-    return 1UL << exponent;
-  }
+  INLINE unsigned long int2Pow(unsigned long exponent) { return 1UL << exponent; }
 
   //@beforeMerging is this really faster ?
   // Given an integer, compute it's - superior - and closest power of two, i.e.
   // the number of bits necessary to represent this integer as well as the
   // maximum integer that can be represented by those bits.
-  INLINE void superiorPow( unsigned long  card,
-                           unsigned long& num_bits,
-                           unsigned long& new_card ) {
-    if ( card == 0 ) {
+  INLINE void superiorPow(unsigned long  card,
+                          unsigned long& num_bits,
+                          unsigned long& new_card) {
+    if (card == 0) {
       num_bits = 0;
       new_card = 1;
       return;
@@ -65,7 +63,7 @@ namespace gum {
     num_bits = 1;
     new_card = 2;
 
-    while ( new_card < card ) {
+    while (new_card < card) {
       new_card *= 2;
       num_bits++;
     }

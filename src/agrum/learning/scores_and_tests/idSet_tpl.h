@@ -32,78 +32,79 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template <typename Alloc>
-    INLINE IdSet<Alloc>::IdSet() {
-      GUM_CONSTRUCTOR( IdSet );
+    template < typename Alloc >
+    INLINE IdSet< Alloc >::IdSet() {
+      GUM_CONSTRUCTOR(IdSet);
     }
 
     /// initializer list constructor
-    template <typename Alloc>
-    INLINE IdSet<Alloc>::IdSet( const std::initializer_list<Idx> list ) {
-      GUM_CONSTRUCTOR( IdSet );
+    template < typename Alloc >
+    INLINE IdSet< Alloc >::IdSet(const std::initializer_list< Idx > list) {
+      GUM_CONSTRUCTOR(IdSet);
 
-      if ( list.size() ) __size = 1;
+      if (list.size()) __size = 1;
 
-      __ids.reserve( list.size() );
+      __ids.reserve(list.size());
 
-      for ( auto i : list ) {
-        __ids.push_back( i );
+      for (auto i : list) {
+        __ids.push_back(i);
         __size *= 2;
       }
 
-      std::sort( __ids.begin(), __ids.end() );
+      std::sort(__ids.begin(), __ids.end());
     }
 
     /// default constructor
-    template <typename Alloc>
-    template <typename OtherAlloc>
-    INLINE IdSet<Alloc>::IdSet( const std::vector<Idx, OtherAlloc>& ids, Size sz )
-        : __ids( ids )
-        , __size( sz ) {
-      GUM_CONSTRUCTOR( IdSet );
-      std::sort( __ids.begin(), __ids.end() );
+    template < typename Alloc >
+    template < typename OtherAlloc >
+    INLINE IdSet< Alloc >::IdSet(const std::vector< Idx, OtherAlloc >& ids,
+                                 Size sz)
+        : __ids(ids)
+        , __size(sz) {
+      GUM_CONSTRUCTOR(IdSet);
+      std::sort(__ids.begin(), __ids.end());
     }
 
     /// copy constructor
-    template <typename Alloc>
-    INLINE IdSet<Alloc>::IdSet( const IdSet<Alloc>& from )
-        : __ids( from.__ids )
-        , __size( from.__size ) {
-      GUM_CONS_CPY( IdSet );
+    template < typename Alloc >
+    INLINE IdSet< Alloc >::IdSet(const IdSet< Alloc >& from)
+        : __ids(from.__ids)
+        , __size(from.__size) {
+      GUM_CONS_CPY(IdSet);
     }
 
     /// generalized copy constructor
-    template <typename Alloc>
-    template <typename OtherAlloc>
-    INLINE IdSet<Alloc>::IdSet( const IdSet<OtherAlloc>& from )
-        : __size( from.__size ) {
-      __ids.reserve( from.__ids.size() );
+    template < typename Alloc >
+    template < typename OtherAlloc >
+    INLINE IdSet< Alloc >::IdSet(const IdSet< OtherAlloc >& from)
+        : __size(from.__size) {
+      __ids.reserve(from.__ids.size());
 
-      for ( auto id : from.__ids ) {
-        __ids.push_back( id );
+      for (auto id : from.__ids) {
+        __ids.push_back(id);
       }
 
-      GUM_CONS_CPY( IdSet );
+      GUM_CONS_CPY(IdSet);
     }
 
     /// move constructor
-    template <typename Alloc>
-    INLINE IdSet<Alloc>::IdSet( IdSet<Alloc>&& from )
-        : __ids( std::move( from.__ids ) )
-        , __size( from.__size ) {
-      GUM_CONS_MOV( IdSet );
+    template < typename Alloc >
+    INLINE IdSet< Alloc >::IdSet(IdSet< Alloc >&& from)
+        : __ids(std::move(from.__ids))
+        , __size(from.__size) {
+      GUM_CONS_MOV(IdSet);
     }
 
     /// destructor
-    template <typename Alloc>
-    INLINE IdSet<Alloc>::~IdSet() {
-      GUM_DESTRUCTOR( IdSet );
+    template < typename Alloc >
+    INLINE IdSet< Alloc >::~IdSet() {
+      GUM_DESTRUCTOR(IdSet);
     }
 
     /// copy operator
-    template <typename Alloc>
-    INLINE IdSet<Alloc>& IdSet<Alloc>::operator=( const IdSet<Alloc>& from ) {
-      if ( this != &from ) {
+    template < typename Alloc >
+    INLINE IdSet< Alloc >& IdSet< Alloc >::operator=(const IdSet< Alloc >& from) {
+      if (this != &from) {
         __ids = from.__ids;
         __size = from.__size;
       }
@@ -112,13 +113,14 @@ namespace gum {
     }
 
     /// generalized copy operator
-    template <typename Alloc>
-    template <typename OtherAlloc>
-    INLINE IdSet<Alloc>& IdSet<Alloc>::operator=( const IdSet<OtherAlloc>& from ) {
+    template < typename Alloc >
+    template < typename OtherAlloc >
+    INLINE IdSet< Alloc >& IdSet< Alloc >::
+    operator=(const IdSet< OtherAlloc >& from) {
       __ids.clear();
 
-      for ( auto id : from.__ids ) {
-        __ids.push_back( id );
+      for (auto id : from.__ids) {
+        __ids.push_back(id);
       }
 
       __size = from.__size;
@@ -127,10 +129,10 @@ namespace gum {
     }
 
     /// move operator
-    template <typename Alloc>
-    INLINE IdSet<Alloc>& IdSet<Alloc>::operator=( IdSet<Alloc>&& from ) {
-      if ( this != &from ) {
-        __ids = std::move( from.__ids );
+    template < typename Alloc >
+    INLINE IdSet< Alloc >& IdSet< Alloc >::operator=(IdSet< Alloc >&& from) {
+      if (this != &from) {
+        __ids = std::move(from.__ids);
         __size = from.__size;
       }
 
@@ -138,24 +140,24 @@ namespace gum {
     }
 
     /// returns the id stored at a given index
-    template <typename Alloc>
-    INLINE Idx IdSet<Alloc>::operator[]( Idx index ) const noexcept {
+    template < typename Alloc >
+    INLINE Idx IdSet< Alloc >::operator[](Idx index) const noexcept {
       return __ids[index];
     }
 
     /// inserts a new element into the set
-    template <typename Alloc>
-    INLINE IdSet<Alloc>& IdSet<Alloc>::operator<<( Idx id ) {
+    template < typename Alloc >
+    INLINE IdSet< Alloc >& IdSet< Alloc >::operator<<(Idx id) {
       Size min_index = 0, max_index = __ids.size();
       Size middle;
 
       // search for id by dichotomy
-      while ( max_index > min_index ) {
-        middle = ( max_index + min_index ) / 2;
+      while (max_index > min_index) {
+        middle = (max_index + min_index) / 2;
 
-        if ( __ids[middle] == id ) return *this;
+        if (__ids[middle] == id) return *this;
 
-        if ( __ids[middle] < id )
+        if (__ids[middle] < id)
           min_index = middle + 1;
         else
           max_index = middle;
@@ -165,64 +167,64 @@ namespace gum {
       // it can correspond to end(), i.e., the insertion has to take place
       // after the last element of the vector, but this is OK, the STL vector
       // allows for this operation.
-      __ids.insert( __ids.begin() + min_index, id );
+      __ids.insert(__ids.begin() + min_index, id);
       __size *= 2;
 
       return *this;
     }
 
     /// returns true if both sets are equal
-    template <typename Alloc>
-    template <typename OtherAlloc>
-    INLINE bool IdSet<Alloc>::operator==( const IdSet<OtherAlloc>& from ) const
-        noexcept {
+    template < typename Alloc >
+    template < typename OtherAlloc >
+    INLINE bool IdSet< Alloc >::operator==(const IdSet< OtherAlloc >& from) const
+      noexcept {
       auto sz = __ids.size();
 
-      if ( sz != from.__ids.size() ) return false;
+      if (sz != from.__ids.size()) return false;
 
-      for ( Idx i = 0; i < sz; ++i ) {
-        if ( __ids[i] != from.__ids[i] ) return false;
+      for (Idx i = 0; i < sz; ++i) {
+        if (__ids[i] != from.__ids[i]) return false;
       }
 
       return true;
     }
 
     /// returns true if the sets differ
-    template <typename Alloc>
-    template <typename OtherAlloc>
-    INLINE bool IdSet<Alloc>::operator!=( const IdSet<OtherAlloc>& from ) const
-        noexcept {
-      return !operator==( from );
+    template < typename Alloc >
+    template < typename OtherAlloc >
+    INLINE bool IdSet< Alloc >::operator!=(const IdSet< OtherAlloc >& from) const
+      noexcept {
+      return !operator==(from);
     }
 
     /// returns the set of ids contained in the object
-    template <typename Alloc>
-    INLINE const std::vector<Idx, Alloc>& IdSet<Alloc>::ids() const noexcept {
+    template < typename Alloc >
+    INLINE const std::vector< Idx, Alloc >& IdSet< Alloc >::ids() const noexcept {
       return __ids;
     }
 
     /// returns the domain size of the id set
-    template <typename Alloc>
-    INLINE Size IdSet<Alloc>::size() const noexcept {
+    template < typename Alloc >
+    INLINE Size IdSet< Alloc >::size() const noexcept {
       return __size;
     }
 
     /// sets the domain size of the set
-    template <typename Alloc>
-    INLINE void IdSet<Alloc>::setSize( Idx sz ) noexcept {
+    template < typename Alloc >
+    INLINE void IdSet< Alloc >::setSize(Idx sz) noexcept {
       __size = sz;
     }
 
     /// returns the content of the set as a string
-    template <typename Alloc>
-    std::string IdSet<Alloc>::toString() const noexcept {
+    template < typename Alloc >
+    std::string IdSet< Alloc >::toString() const noexcept {
       std::stringstream str;
 
       str << '{';
       bool deja = false;
 
-      for ( Idx i = 0; i < __ids.size(); ++i ) {
-        if ( deja )
+      for (Idx i = 0; i < __ids.size(); ++i) {
+        if (deja)
           str << " , ";
         else
           deja = true;
@@ -236,90 +238,90 @@ namespace gum {
     }
 
     /// indicates wether the current object is a subset of 'otherset'
-    template <typename Alloc>
-    template <typename OtherAlloc>
-    INLINE bool IdSet<Alloc>::isSubset( const IdSet<OtherAlloc>& otherset ) const
-        noexcept {
-      Size min_index = Size( 0 ), max_index = Size( otherset.__ids.size() );
-      Size size = Size( __ids.size() );
-      for ( Idx i = 0; i < size; ++i ) {
+    template < typename Alloc >
+    template < typename OtherAlloc >
+    INLINE bool IdSet< Alloc >::isSubset(const IdSet< OtherAlloc >& otherset) const
+      noexcept {
+      Size min_index = Size(0), max_index = Size(otherset.__ids.size());
+      Size size = Size(__ids.size());
+      for (Idx i = 0; i < size; ++i) {
         Size middle, tmp_max_index = max_index;
         Idx  nb = __ids[i];
 
         // search for nb by dichotomy
-        while ( tmp_max_index > min_index ) {
-          middle = ( tmp_max_index + min_index ) / 2;
+        while (tmp_max_index > min_index) {
+          middle = (tmp_max_index + min_index) / 2;
 
-          if ( otherset[middle] == nb ) {
+          if (otherset[middle] == nb) {
             min_index = middle;
             break;
           }
 
-          if ( otherset[middle] < nb )
+          if (otherset[middle] < nb)
             min_index = middle + 1;
           else
             tmp_max_index = middle;
         }
 
         // check if we found nb
-        if ( tmp_max_index <= min_index ) return false;
+        if (tmp_max_index <= min_index) return false;
       }
 
       return true;
     }
 
     // the display operator
-    template <typename Alloc>
-    std::ostream& operator<<( std::ostream& stream, const IdSet<Alloc>& idset ) {
+    template < typename Alloc >
+    std::ostream& operator<<(std::ostream& stream, const IdSet< Alloc >& idset) {
       return stream << idset.toString();
     }
 
   } /* namespace learning */
 
   // the hash function for idSets
-  template <typename Alloc>
-  Size HashFunc<learning::IdSet<Alloc>>::
-  operator()( const learning::IdSet<Alloc>& key ) const {
+  template < typename Alloc >
+  Size HashFunc< learning::IdSet< Alloc > >::
+  operator()(const learning::IdSet< Alloc >& key) const {
     Size h = 0;
-    const std::vector<Idx, Alloc>& vect = key.ids();
+    const std::vector< Idx, Alloc >& vect = key.ids();
 
-    for ( Idx i = 0; i < Size( vect.size() ); ++i )
+    for (Idx i = 0; i < Size(vect.size()); ++i)
       h += i * vect[i];
 
-    return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
+    return ((h * HashFuncConst::gold) & this->_hash_mask);
   }
 
   /// the hash function for pairs (idSet,Idx)
-  template <typename Alloc>
-  Size HashFunc<std::pair<learning::IdSet<Alloc>, Idx>>::
-  operator()( const std::pair<learning::IdSet<Alloc>, Idx>& key ) const {
+  template < typename Alloc >
+  Size HashFunc< std::pair< learning::IdSet< Alloc >, Idx > >::
+  operator()(const std::pair< learning::IdSet< Alloc >, Idx >& key) const {
     Size h = 0;
     Idx  i;
-    const std::vector<Idx, Alloc>& vect = key.first.ids();
+    const std::vector< Idx, Alloc >& vect = key.first.ids();
 
-    for ( i = 0; i < Size( vect.size() ); ++i )
+    for (i = 0; i < Size(vect.size()); ++i)
       h += i * vect[i];
 
     h *= i * key.second;
 
-    return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
+    return ((h * HashFuncConst::gold) & this->_hash_mask);
   }
 
   /// the hash function for pairs (idSet,Idx)
-  template <typename Alloc>
-  Size HashFunc<std::tuple<learning::IdSet<Alloc>, Idx, Idx>>::
-  operator()( const std::tuple<learning::IdSet<Alloc>, Idx, Idx>& key ) const {
+  template < typename Alloc >
+  Size HashFunc< std::tuple< learning::IdSet< Alloc >, Idx, Idx > >::
+  operator()(const std::tuple< learning::IdSet< Alloc >, Idx, Idx >& key) const {
     Size h = 0;
     Size i;
-    const std::vector<Idx, Alloc>& vect = std::get<0>( key ).ids();
+    const std::vector< Idx, Alloc >& vect = std::get< 0 >(key).ids();
 
-    for ( i = 0; i < vect.size(); ++i )
+    for (i = 0; i < vect.size(); ++i)
       h += i * vect[i];
 
-    h *= i * std::get<1>( key );
-    h *= ++i * std::get<2>( key );
+    h *= i * std::get< 1 >(key);
+    h *= ++i * std::get< 2 >(key);
 
-    return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
+    return ((h * HashFuncConst::gold) & this->_hash_mask);
   }
 
 } /* namespace gum */

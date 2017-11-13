@@ -41,9 +41,10 @@ namespace gum {
    *
    * @brief Class used to perform Decision Tree Operation in the FMDP Framework
    */
-  template <typename GUM_SCALAR,
-            template <typename> class COMBINEOPERATOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
+  template < typename GUM_SCALAR,
+             template < typename > class COMBINEOPERATOR,
+             template < typename > class TerminalNodePolicy =
+               ExactTerminalNodePolicy >
   class TreeOperator {
     public:
     // ============================================================================
@@ -55,15 +56,16 @@ namespace gum {
      * @brief Default constructor.
      */
     TreeOperator(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt1,
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt2 );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2);
 
     /**
      * @brief Default constructor.
      */
-    TreeOperator( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt1,
-                  const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dt2,
-                  const HashTable<const DiscreteVariable*, Idx> givenContext );
+    TreeOperator(
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt1,
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dt2,
+      const HashTable< const DiscreteVariable*, Idx >                givenContext);
 
     /**
      * @brief Default destructor.
@@ -78,34 +80,34 @@ namespace gum {
 
     /// Computes and builds the Function Graph that is the result of the
     /// operation
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* compute();
 
     /// @}
 
     private:
     /// The main recursion function
-    NodeId __xPloreDT1( NodeId currentNodeId );
+    NodeId __xPloreDT1(NodeId currentNodeId);
 
     /// The main recursion function
-    NodeId __xPloreDT2( NodeId currentNodeId );
+    NodeId __xPloreDT2(NodeId currentNodeId);
 
-    NodeId __checkRedundancy( const DiscreteVariable*, NodeId* );
+    NodeId __checkRedundancy(const DiscreteVariable*, NodeId*);
 
     /// The two function graphs used for the operation
-    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt1;
-    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __dt2;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __dt1;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __dt2;
 
     /// The resulting function graph
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __rd;
 
     /// The function to be performed on the leaves
-    const COMBINEOPERATOR<GUM_SCALAR> __combine;
+    const COMBINEOPERATOR< GUM_SCALAR > __combine;
 
-    HashTable<const DiscreteVariable*, Idx> __context;
+    HashTable< const DiscreteVariable*, Idx > __context;
     NodeId __curDT1Leaf;
   };
 
-  extern template class TreeOperator<double, std::plus>;
+  extern template class TreeOperator< double, std::plus >;
 
 }  // namespace gum
 

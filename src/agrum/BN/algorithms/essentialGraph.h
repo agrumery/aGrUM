@@ -42,31 +42,33 @@ namespace gum {
    * Essential graph is a mixed graph (Chain Graph) that represents the class of
    * markov equivalent Bayesian Networks (with the same independency model).
    *
-   * The main goal of this class is to nest the algorithm to build the essential graph
-   * from a BN and to encapsulate the representation (as a MixedGraph) of the essential
+   * The main goal of this class is to nest the algorithm to build the essential
+   * graph
+   * from a BN and to encapsulate the representation (as a MixedGraph) of the
+   * essential
    * graph.
    *
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
   class EssentialGraph {
     public:
-    EssentialGraph( const DAGmodel& m );
+    EssentialGraph(const DAGmodel& m);
     ~EssentialGraph();
 
     /// @return a copy of the mixed graph
     MixedGraph mixedGraph();
 
     /// @return a dot representation of this essentialGraph
-    std::string toDot( void ) const;
+    std::string toDot(void) const;
 
     /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& parents( const NodeId id ) const;
+    const NodeSet& parents(const NodeId id) const;
 
     /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& children( const NodeId id ) const;
+    const NodeSet& children(const NodeId id) const;
 
     /// wrapping @ref MixedGraph::parents(id)
-    const NodeSet& neighbours( const NodeId id ) const;
+    const NodeSet& neighbours(const NodeId id) const;
 
     /// wrapping @ref MixedGraph::sizeArcs()
     Size sizeArcs() const;
@@ -89,7 +91,7 @@ namespace gum {
 
     private:
     void __buildEssentialGraph();
-    bool __strongly_protected( NodeId a, NodeId b );
+    bool __strongly_protected(NodeId a, NodeId b);
 
     const DAGmodel& __dag;
     MixedGraph      __mg;

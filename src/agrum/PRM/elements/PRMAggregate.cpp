@@ -30,8 +30,8 @@
 namespace gum {
   namespace prm {
 
-    template class PRMAggregate<float>;
-    template class PRMAggregate<double>;
+    template class PRMAggregate< float >;
+    template class PRMAggregate< double >;
 
   } /* namespace prm */
 } /* namespace gum */

@@ -59,7 +59,7 @@ namespace gum {
      * @brief Default constructor.
      */
     MultiDimFunctionGraphGenerator(
-        Idx maxVar, Idx minVar, const Sequence<const DiscreteVariable*>& varSeq );
+      Idx maxVar, Idx minVar, const Sequence< const DiscreteVariable* >& varSeq);
 
     /**
      * @brief Class destructor.
@@ -71,22 +71,22 @@ namespace gum {
     /**
      * @brief Generates a MultiDimFunctionGraph.
      */
-    MultiDimFunctionGraph<double>* generate();
+    MultiDimFunctionGraph< double >* generate();
 
 
     private:
     /**
      * @brief Creates a leaf.
      */
-    bool __createLeaf( NodeId currentNodeId, HashTable<NodeId, Idx>& node2MinVar );
+    bool __createLeaf(NodeId currentNodeId, HashTable< NodeId, Idx >& node2MinVar);
 
     /**
      * @brief Generate a variable position.
      */
-    Idx __generateVarPos( Idx offset, Idx span );
+    Idx __generateVarPos(Idx offset, Idx span);
 
     /// The variables
-    const Sequence<const DiscreteVariable*> __varSeq;
+    const Sequence< const DiscreteVariable* > __varSeq;
 
     /// The total number of variables
     Idx __nbTotalVar;

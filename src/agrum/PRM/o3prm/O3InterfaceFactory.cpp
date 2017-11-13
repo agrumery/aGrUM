@@ -28,5 +28,5 @@
 
 #include <agrum/PRM/o3prm/O3InterfaceFactory.h>
 
-template class gum::prm::o3prm::O3InterfaceFactory<float>;
-template class gum::prm::o3prm::O3InterfaceFactory<double>;
+template class gum::prm::o3prm::O3InterfaceFactory< float >;
+template class gum::prm::o3prm::O3InterfaceFactory< double >;

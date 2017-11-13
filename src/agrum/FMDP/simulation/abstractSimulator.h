@@ -68,7 +68,7 @@ namespace gum {
     /// @{
 
     /// Sets the intial statefrom which we begun the simulation
-    INLINE void setInitialState( const Instantiation& initialState ) {
+    INLINE void setInitialState(const Instantiation& initialState) {
       _currentState = initialState;
     }
     void setInitialStateRandomly();
@@ -79,7 +79,7 @@ namespace gum {
 
     public:
     /// Sets the final states upon which a run is over
-    INLINE void setEndState( const Instantiation& endState ) {
+    INLINE void setEndState(const Instantiation& endState) {
       _endState = endState;
     }
 
@@ -93,7 +93,7 @@ namespace gum {
     virtual double reward() = 0;
 
     ///
-    virtual void perform( Idx ) = 0;
+    virtual void perform(Idx) = 0;
 
     /// @}
 
@@ -102,12 +102,11 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    virtual const DiscreteVariable*
-    primeVar( const DiscreteVariable* mainVar ) = 0;
+    virtual const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) = 0;
 
     /// Iteration over the variables of the simulated probleme
-    virtual SequenceIteratorSafe<const DiscreteVariable*> beginVariables() = 0;
-    virtual SequenceIteratorSafe<const DiscreteVariable*> endVariables() = 0;
+    virtual SequenceIteratorSafe< const DiscreteVariable* > beginVariables() = 0;
+    virtual SequenceIteratorSafe< const DiscreteVariable* > endVariables() = 0;
 
     /// @}
 
@@ -116,11 +115,11 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    virtual const std::string& actionName( Idx ) = 0;
+    virtual const std::string& actionName(Idx) = 0;
 
     /// Iteration over the variables of the simulated probleme
-    virtual SequenceIteratorSafe<Idx> beginActions() = 0;
-    virtual SequenceIteratorSafe<Idx> endActions() = 0;
+    virtual SequenceIteratorSafe< Idx > beginActions() = 0;
+    virtual SequenceIteratorSafe< Idx > endActions() = 0;
 
 
     /// @}

@@ -52,12 +52,12 @@ namespace gum {
     /**
      * @brief Class constructor.
      */
-    Parent( NodeId pi, Idx m );
+    Parent(NodeId pi, Idx m);
 
     /**
      * @brief Copy constructor.
      */
-    Parent( const Parent& src );
+    Parent(const Parent& src);
 
     // ============================================================================
     /// @name Allocators and Deallocators redefinition
@@ -67,12 +67,12 @@ namespace gum {
     /**
      * @brief New operator.
      */
-    void* operator new( size_t s );
+    void* operator new(size_t s);
 
     /**
      * @brief Delete operator.
      */
-    void operator delete( void* p );
+    void operator delete(void* p);
 
     /// @}
     // ============================================================================
@@ -80,11 +80,11 @@ namespace gum {
     // ============================================================================
     /// @{
 
-    bool operator==( const Parent& comp ) const;
+    bool operator==(const Parent& comp) const;
 
-    bool operator!=( const Parent& comp ) const;
+    bool operator!=(const Parent& comp) const;
 
-    Parent& operator=( const Parent& src );
+    Parent& operator=(const Parent& src);
     /// @}
   };
 
@@ -120,10 +120,10 @@ namespace gum {
     NodeId* __nodeSons;
 
     /// The list of the node's parent
-    LinkedList<Parent> __nodeParents;
+    LinkedList< Parent > __nodeParents;
 
     /// @brief Set the node variable.
-    void __setNodeVar( const DiscreteVariable* v );
+    void __setNodeVar(const DiscreteVariable* v);
 
     public:
     // ============================================================================
@@ -143,7 +143,7 @@ namespace gum {
      * Creates a node and attached the specified variable.
      * Initializes the sons.
      */
-    InternalNode( const DiscreteVariable* v );
+    InternalNode(const DiscreteVariable* v);
 
     /**
      * @brief Constructor
@@ -155,7 +155,7 @@ namespace gum {
      * @warning You'd better known what you're doing if you're using this one.
      * sons must have the size of domainSize of v or the program will fail!
      */
-    InternalNode( const DiscreteVariable* v, NodeId* sons );
+    InternalNode(const DiscreteVariable* v, NodeId* sons);
 
     /**
      * @brief Class destructors.
@@ -170,12 +170,12 @@ namespace gum {
     /**
      * @brief New operator.
      */
-    void* operator new( size_t s );
+    void* operator new(size_t s);
 
     /**
      * @brief Delete operator.
      */
-    void operator delete( void* p );
+    void operator delete(void* p);
 
     /// @}
     // ============================================================================
@@ -190,7 +190,7 @@ namespace gum {
      * @warning You'd better known what you're doing if you're using this one.
      * sons must have the size of domainSize of v or the program will fail!
      */
-    void setNode( const DiscreteVariable* v, NodeId* sons );
+    void setNode(const DiscreteVariable* v, NodeId* sons);
 
     /// @}
     // ============================================================================
@@ -201,7 +201,7 @@ namespace gum {
     /**
      * @brief Set the node variable.
      */
-    void setNodeVar( const DiscreteVariable* v );
+    void setNodeVar(const DiscreteVariable* v);
 
     /**
      * @brief Returns the node variable.
@@ -217,12 +217,12 @@ namespace gum {
     /**
      * @brief Sets the node's son.
      */
-    void setSon( Idx modality, NodeId son );
+    void setSon(Idx modality, NodeId son);
 
     /**
      * @brief Returns the son at a given index.
      */
-    NodeId son( Idx modality ) const;
+    NodeId son(Idx modality) const;
 
     /**
      * @brief Returns the number of sons.
@@ -238,22 +238,22 @@ namespace gum {
     /**
      * @brief Adds a parent.
      */
-    void addParent( NodeId parent, Idx modality );
+    void addParent(NodeId parent, Idx modality);
 
     /**
      * @brief Removes a parent.
      */
-    void removeParent( NodeId parent, Idx modality );
+    void removeParent(NodeId parent, Idx modality);
 
     /**
      * @brief Returns the list of parents.
      */
-    Link<Parent>* parents();
+    Link< Parent >* parents();
 
     /**
      * @brief Returns the list of parents.
      */
-    const Link<Parent>* parents() const;
+    const Link< Parent >* parents() const;
 
     /// @}
     // ============================================================================
@@ -264,12 +264,12 @@ namespace gum {
     /**
      * @brief Allocates a table of nodeid of the size given in parameter.
      */
-    static NodeId* allocateNodeSons( const DiscreteVariable* v );
+    static NodeId* allocateNodeSons(const DiscreteVariable* v);
 
     /**
      * @brief Deallocates a NodeSons table.
      */
-    static void deallocateNodeSons( const DiscreteVariable* v, NodeId* s );
+    static void deallocateNodeSons(const DiscreteVariable* v, NodeId* s);
 
     /// @}
   };

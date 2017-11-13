@@ -49,24 +49,25 @@ namespace gum {
      * LazyPropagation.
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
-    template <typename GUM_SCALAR, class BNInferenceEngine>
-    class MultipleInferenceEngine : public InferenceEngine<GUM_SCALAR> {
+    template < typename GUM_SCALAR, class BNInferenceEngine >
+    class MultipleInferenceEngine : public InferenceEngine< GUM_SCALAR > {
       private:
       /** To easily access InferenceEngine< GUM_SCALAR > methods. */
-      typedef InferenceEngine<GUM_SCALAR> __infE;
+      typedef InferenceEngine< GUM_SCALAR > __infE;
 
-      typedef NodeProperty<std::vector<NodeId>>                  __cluster;
-      typedef NodeProperty<std::vector<std::vector<GUM_SCALAR>>> __credalSet;
-      typedef NodeProperty<std::vector<GUM_SCALAR>>              __margi;
-      typedef NodeProperty<GUM_SCALAR>                           __expe;
+      typedef NodeProperty< std::vector< NodeId > >                    __cluster;
+      typedef NodeProperty< std::vector< std::vector< GUM_SCALAR > > > __credalSet;
+      typedef NodeProperty< std::vector< GUM_SCALAR > >                __margi;
+      typedef NodeProperty< GUM_SCALAR >                               __expe;
 
-      typedef IBayesNet<GUM_SCALAR>               __bnet;
-      typedef std::vector<__margi>                __margis;
-      typedef std::vector<__expe>                 __expes;
-      typedef std::vector<__credalSet>            __credalSets;
-      typedef std::vector<std::vector<__cluster>> __clusters;
+      typedef IBayesNet< GUM_SCALAR >                 __bnet;
+      typedef std::vector< __margi >                  __margis;
+      typedef std::vector< __expe >                   __expes;
+      typedef std::vector< __credalSet >              __credalSets;
+      typedef std::vector< std::vector< __cluster > > __clusters;
 
-      typedef typename std::vector<HashTable<std::string, std::vector<GUM_SCALAR>>>
+      typedef
+        typename std::vector< HashTable< std::string, std::vector< GUM_SCALAR > > >
           __modals;
 
       /**
@@ -82,9 +83,9 @@ namespace gum {
        *\c
        *false otherwise and by default.
        */
-      inline void __updateThreadCredalSets( const NodeId&                  id,
-                                            const std::vector<GUM_SCALAR>& vertex,
-                                            const bool& elimRedund );
+      inline void __updateThreadCredalSets(const NodeId&                    id,
+                                           const std::vector< GUM_SCALAR >& vertex,
+                                           const bool& elimRedund);
 
       protected:
       /** Threads lower marginals, one per thread. */
@@ -105,14 +106,14 @@ namespace gum {
       __clusters _l_clusters;
 
       /** Threads IBayesNet. */
-      typename std::vector<__bnet*> _workingSet;
+      typename std::vector< __bnet* > _workingSet;
       /** Threads evidence. */
-      typename std::vector<List<const Potential<GUM_SCALAR>*>*> _workingSetE;
+      typename std::vector< List< const Potential< GUM_SCALAR >* >* > _workingSetE;
 
       /** Threads BNInferenceEngine. */
-      typename std::vector<BNInferenceEngine*> _l_inferenceEngine;
+      typename std::vector< BNInferenceEngine* > _l_inferenceEngine;
       /** Threads optimal IBayesNet. */
-      std::vector<VarMod2BNsMap<GUM_SCALAR>*> _l_optimalNet;
+      std::vector< VarMod2BNsMap< GUM_SCALAR >* > _l_optimalNet;
       /** Fusion of threads optimal IBayesNet. */
       // OptBN< GUM_SCALAR > _threadFusion; // we should use this OptBN if omp
       // is
@@ -132,9 +133,9 @@ namespace gum {
        *false
        *otherwise.
        */
-      void _initThreadsData( const Size& num_threads,
-                             const bool  __storeVertices,
-                             const bool  __storeBNOpt );
+      void _initThreadsData(const Size& num_threads,
+                            const bool  __storeVertices,
+                            const bool  __storeBNOpt);
 
       /// @}
 
@@ -152,9 +153,9 @@ namespace gum {
        *false otherwise and by default.
        * @return \c True if the IBayesNet is kept (for now), \c False otherwise.
        */
-      inline bool _updateThread( const NodeId&                  id,
-                                 const std::vector<GUM_SCALAR>& vertex,
-                                 const bool& elimRedund = false );
+      inline bool _updateThread(const NodeId&                    id,
+                                const std::vector< GUM_SCALAR >& vertex,
+                                const bool& elimRedund = false);
 
       /**
        * @brief Fusion of threads marginals.
@@ -199,7 +200,7 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used.
        */
-      MultipleInferenceEngine( const CredalNet<GUM_SCALAR>& credalNet );
+      MultipleInferenceEngine(const CredalNet< GUM_SCALAR >& credalNet);
 
       /** Destructor. */
       virtual ~MultipleInferenceEngine();
@@ -226,10 +227,11 @@ namespace gum {
     };
 
 
-    extern template class MultipleInferenceEngine<double,
-                                                  gum::LazyPropagation<double>>;
-    extern template class MultipleInferenceEngine<float,
-                                                  gum::LazyPropagation<float>>;
+    extern template class MultipleInferenceEngine<
+      double,
+      gum::LazyPropagation< double > >;
+    extern template class MultipleInferenceEngine< float,
+                                                   gum::LazyPropagation< float > >;
 
   }  // end of namespace
 }

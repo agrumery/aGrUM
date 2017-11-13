@@ -37,14 +37,14 @@
  * @param str The std::string to cast.
  * @return Returns the std::wstring of str.
  */
-std::wstring widen( const std::string& str );
+std::wstring widen(const std::string& str);
 
 /**
  * @brief Cast a std::wstring into a std::string.
  * @param str The std::wstring to cast.
  * @return Returns the std::string of str.
  */
-std::string narrow( const std::wstring& str );
+std::string narrow(const std::wstring& str);
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/cast_unicode_inl.h>

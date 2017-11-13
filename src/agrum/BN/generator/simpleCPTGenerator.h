@@ -39,8 +39,8 @@ namespace gum {
    *
    * This class implements a CPTGenerator CPT generation algorithm.
    */
-  template <typename GUM_SCALAR>
-  class SimpleCPTGenerator : public ICPTGenerator<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class SimpleCPTGenerator : public ICPTGenerator< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -66,12 +66,12 @@ namespace gum {
      * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
-    virtual void generateCPT( const Idx& varId, const Potential<GUM_SCALAR>& cpt );
+    virtual void generateCPT(const Idx& varId, const Potential< GUM_SCALAR >& cpt);
   };
 
 
-  extern template class SimpleCPTGenerator<float>;
-  extern template class SimpleCPTGenerator<double>;
+  extern template class SimpleCPTGenerator< float >;
+  extern template class SimpleCPTGenerator< double >;
 
 } /* namespace gum */
 

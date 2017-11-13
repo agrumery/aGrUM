@@ -44,27 +44,27 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template <typename GUM_SCALAR>
-  class Chi2TestPolicy : public ITestPolicy<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class Chi2TestPolicy : public ITestPolicy< GUM_SCALAR > {
 
     public:
     Chi2TestPolicy()
-        : ITestPolicy<GUM_SCALAR>()
+        : ITestPolicy< GUM_SCALAR >()
         , __conTab()
-        , __chi2Score( 0 ) {
-      GUM_CONSTRUCTOR( Chi2TestPolicy )
+        , __chi2Score(0) {
+      GUM_CONSTRUCTOR(Chi2TestPolicy)
     }
 
-    virtual ~Chi2TestPolicy() { GUM_DESTRUCTOR( Chi2TestPolicy ) }
+    virtual ~Chi2TestPolicy() { GUM_DESTRUCTOR(Chi2TestPolicy) }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( Chi2TestPolicy ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(Chi2TestPolicy));
     }
 
     // ############################################################################
@@ -75,7 +75,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    void addObservation( Idx attr, GUM_SCALAR value );
+    void addObservation(Idx attr, GUM_SCALAR value);
 
     /// @}
 
@@ -90,8 +90,8 @@ namespace gum {
     /// relevant
     // ============================================================================
     bool isTestRelevant() const {
-      return ( this->nbObservation() > 20 &&
-               this->nbObservation() > __conTab.attrASize() * 5 );
+      return (this->nbObservation() > 20 &&
+              this->nbObservation() > __conTab.attrASize() * 5);
     }
 
     /// @}
@@ -119,13 +119,13 @@ namespace gum {
 
     /// @}
 
-    const ContingencyTable<Idx, GUM_SCALAR>& ct() const { return __conTab; }
+    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return __conTab; }
 
-    void add( const Chi2TestPolicy<GUM_SCALAR>& src );
+    void add(const Chi2TestPolicy< GUM_SCALAR >& src);
 
     std::string toString() const {
       std::stringstream ss;
-      ss << ITestPolicy<GUM_SCALAR>::toString()
+      ss << ITestPolicy< GUM_SCALAR >::toString()
          << "\t\t\tContingency Table : " << std::endl
          << __conTab.toString() << std::endl
          << "\t\t\tGStat : " << this->score() << std::endl
@@ -135,7 +135,7 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable<Idx, GUM_SCALAR> __conTab;
+    ContingencyTable< Idx, GUM_SCALAR > __conTab;
 
     mutable double __chi2Score;
   };

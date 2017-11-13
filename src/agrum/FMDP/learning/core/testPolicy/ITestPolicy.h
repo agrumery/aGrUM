@@ -43,7 +43,7 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class ITestPolicy {
 
     public:
@@ -56,24 +56,24 @@ namespace gum {
     ///
     // ============================================================================
     ITestPolicy()
-        : __isModified( false )
-        , __nbObs( 0 ) {
-      GUM_CONSTRUCTOR( ITestPolicy )
+        : __isModified(false)
+        , __nbObs(0) {
+      GUM_CONSTRUCTOR(ITestPolicy)
     }
 
     // ============================================================================
     ///
     // ============================================================================
-    virtual ~ITestPolicy() { GUM_DESTRUCTOR( ITestPolicy ) }
+    virtual ~ITestPolicy() { GUM_DESTRUCTOR(ITestPolicy) }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( ITestPolicy ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(ITestPolicy));
     }
 
     /// @}
@@ -87,7 +87,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    virtual void addObservation( Idx attr, GUM_SCALAR value ) {
+    virtual void addObservation(Idx attr, GUM_SCALAR value) {
       __isModified = true;
       __nbObs++;
     }
@@ -137,7 +137,7 @@ namespace gum {
     // ============================================================================
     ///
     // ============================================================================
-    void add( const ITestPolicy<GUM_SCALAR>& src ) {
+    void add(const ITestPolicy< GUM_SCALAR >& src) {
       __isModified = true;
       __nbObs += src.nbObservation();
     }

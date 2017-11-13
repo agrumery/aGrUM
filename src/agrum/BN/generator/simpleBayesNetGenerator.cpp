@@ -24,5 +24,5 @@
  */
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 
-template class gum::SimpleBayesNetGenerator<float>;
-template class gum::SimpleBayesNetGenerator<double>;
+template class gum::SimpleBayesNetGenerator< float >;
+template class gum::SimpleBayesNetGenerator< double >;

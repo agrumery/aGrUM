@@ -42,7 +42,7 @@ namespace gum {
    * #include <agrum/core/approximations/approximationPolicy.h>
    * @endcode
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class ApproximationPolicy {
 
     public:
@@ -59,7 +59,7 @@ namespace gum {
     /**
      *  @brief Copy constructor.
      */
-    ApproximationPolicy( const ApproximationPolicy<GUM_SCALAR>* md ){};
+    ApproximationPolicy(const ApproximationPolicy< GUM_SCALAR >* md){};
 
     /// @}
     // ===========================================================================
@@ -73,45 +73,45 @@ namespace gum {
      * @param value The converted value.
      * @return The value approximation representation.
      */
-    virtual GUM_SCALAR fromExact( const GUM_SCALAR& value ) const = 0;
+    virtual GUM_SCALAR fromExact(const GUM_SCALAR& value) const = 0;
 
     /**
      * @brief Combine using addition with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    virtual void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineAdd(const ApproximationPolicy< GUM_SCALAR >* ap) = 0;
 
     /**
      * @brief Combine using substraction with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    virtual void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineSub(const ApproximationPolicy< GUM_SCALAR >* ap) = 0;
 
     /**
      * @brief Combine using multiplication with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    virtual void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineMult(const ApproximationPolicy< GUM_SCALAR >* ap) = 0;
 
     /**
      * @brief Combine using division with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    virtual void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineDiv(const ApproximationPolicy< GUM_SCALAR >* ap) = 0;
 
     /**
      * @brief Combine using max with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    virtual void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineMax(const ApproximationPolicy< GUM_SCALAR >* ap) = 0;
 
     /**
      * @brief Combine using min with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    virtual void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap ) = 0;
+    virtual void combineMin(const ApproximationPolicy< GUM_SCALAR >* ap) = 0;
 
     /// @}
   };

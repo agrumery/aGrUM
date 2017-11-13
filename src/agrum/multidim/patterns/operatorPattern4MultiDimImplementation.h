@@ -34,21 +34,21 @@
 namespace gum {
 
 #ifdef GUM_MULTI_DIM_OPERATOR_NAME
-  template <typename T>
-  MultiDimImplementation<T>*
-  GUM_MULTI_DIM_OPERATOR_NAME( const MultiDimImplementation<T>& impl1,
-                               const MultiDimImplementation<T>& impl2 ) {
+  template < typename T >
+  MultiDimImplementation< T >*
+  GUM_MULTI_DIM_OPERATOR_NAME(const MultiDimImplementation< T >& impl1,
+                              const MultiDimImplementation< T >& impl2) {
 #endif
 
-    typename OperatorRegister4MultiDim<T>::OperatorPtr func;
-    bool                                               swapped_names = false;
+    typename OperatorRegister4MultiDim< T >::OperatorPtr func;
+    bool                                                 swapped_names = false;
 
     // get the appropriate function to perform the operation
     try {
       // try to find +(impl1,impl2) in the register
-      func = OperatorRegister4MultiDim<T>::Register().get(
-          GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.name(), impl2.name() );
-    } catch ( NotFound& ) {
+      func = OperatorRegister4MultiDim< T >::Register().get(
+        GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.name(), impl2.name());
+    } catch (NotFound&) {
 
 #ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
 
@@ -58,14 +58,14 @@ namespace gum {
         // instance, we wrote +(MultiDimArray,MultiDimSparse) but not
         // +(MultiDimSparse,MultiDimArray) and we called
         // +(MultiDimSparse,MultiDimArray)
-        func = OperatorRegister4MultiDim<T>::Register().get(
-            GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl2.name(), impl1.name() );
+        func = OperatorRegister4MultiDim< T >::Register().get(
+          GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl2.name(), impl1.name());
         swapped_names = true;
-      } catch ( NotFound& ) {
+      } catch (NotFound&) {
 #endif /* GUM_MULTI_DIM_SYMMETRIC_OPERATOR */
 
-        func = OperatorRegister4MultiDim<T>::Register().get(
-            GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.basename(), impl2.basename() );
+        func = OperatorRegister4MultiDim< T >::Register().get(
+          GUM_MULTI_DIM_OPERATOR_FUNC_NAME, impl1.basename(), impl2.basename());
 
 #ifdef GUM_MULTI_DIM_SYMMETRIC_OPERATOR
       }
@@ -74,10 +74,10 @@ namespace gum {
     }
 
     // perform the addition
-    if ( swapped_names )
-      return func( &impl2, &impl1 );
+    if (swapped_names)
+      return func(&impl2, &impl1);
     else
-      return func( &impl1, &impl2 );
+      return func(&impl1, &impl2);
   }
 }
 #endif /* GUM_OPERATOR_PATTERN_ALLOWED */

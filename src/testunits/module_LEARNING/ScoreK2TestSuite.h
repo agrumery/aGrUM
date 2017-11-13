@@ -35,147 +35,153 @@ namespace gum_tests {
   class ScoreK2TestSuite : public CxxTest::TestSuite {
     public:
     void test_k2() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
 
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
 
       auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
+        gum::learning::make_DB_row_filter(database, translators, generators);
 
-      std::vector<gum::Size> modalities = filter.modalities();
+      std::vector< gum::Size > modalities = filter.modalities();
 
       gum::learning::AprioriNoApriori<> apriori;
       gum::learning::AprioriSmoothing<> apriori2;
-      gum::learning::ScoreK2<>          score( filter, modalities, apriori );
+      gum::learning::ScoreK2<>          score(filter, modalities, apriori);
 
-      TS_GUM_ASSERT_THROWS_NOTHING( gum::learning::ScoreK2<>::isAprioriCompatible(
-          gum::learning::AprioriNoApriori<>::type::type ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(gum::learning::ScoreK2<>::isAprioriCompatible(
+        gum::learning::AprioriNoApriori<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::learning::ScoreK2<>::isAprioriCompatible( apriori ) );
-      TS_ASSERT_THROWS( gum::learning::ScoreK2<>::isAprioriCompatible( apriori2 ),
-                        gum::IncompatibleScoreApriori );
-      TS_ASSERT_THROWS( gum::learning::ScoreK2<>::isAprioriCompatible(
-                            gum::learning::AprioriSmoothing<>::type::type ),
-                        gum::IncompatibleScoreApriori );
-      apriori2.setWeight( 0 );
-      TS_ASSERT_THROWS( gum::learning::ScoreK2<>::isAprioriCompatible( apriori2 ),
-                        gum::PossiblyIncompatibleScoreApriori );
+        gum::learning::ScoreK2<>::isAprioriCompatible(apriori));
+      TS_ASSERT_THROWS(gum::learning::ScoreK2<>::isAprioriCompatible(apriori2),
+                       gum::IncompatibleScoreApriori);
+      TS_ASSERT_THROWS(gum::learning::ScoreK2<>::isAprioriCompatible(
+                         gum::learning::AprioriSmoothing<>::type::type),
+                       gum::IncompatibleScoreApriori);
+      apriori2.setWeight(0);
+      TS_ASSERT_THROWS(gum::learning::ScoreK2<>::isAprioriCompatible(apriori2),
+                       gum::PossiblyIncompatibleScoreApriori);
 
-      gum::Idx id1 = score.addNodeSet( 3 );
-      gum::Idx id2 = score.addNodeSet( 1 );
+      gum::Idx id1 = score.addNodeSet(3);
+      gum::Idx id2 = score.addNodeSet(1);
 
-      TS_ASSERT_DELTA( score.score( id1 ), -996.781, 0.05 );
+      TS_ASSERT_DELTA(score.score(id1), -996.781, 0.05);
 
-      TS_ASSERT_DELTA( score.score( id1 ), -996.781, 0.05 );
-      TS_ASSERT_DELTA( score.score( id2 ), -3030.73, 0.05 );
-
-      score.clear();
-      id1 = score.addNodeSet( 0 );
-      id2 = score.addNodeSet( 2 );
-      TS_ASSERT_DELTA( score.score( id1 ), -10006.1, 0.05 );
-      TS_ASSERT_DELTA( score.score( id2 ), -9935.8, 0.05 );
+      TS_ASSERT_DELTA(score.score(id1), -996.781, 0.05);
+      TS_ASSERT_DELTA(score.score(id2), -3030.73, 0.05);
 
       score.clear();
-      id1 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-      id2 = score.addNodeSet( 1, std::vector<gum::Idx>{4} );
-      TS_ASSERT_DELTA( score.score( id1 ), -991.062, 0.05 );
-      TS_ASSERT_DELTA( score.score( id2 ), -3030.55, 0.05 );
+      id1 = score.addNodeSet(0);
+      id2 = score.addNodeSet(2);
+      TS_ASSERT_DELTA(score.score(id1), -10006.1, 0.05);
+      TS_ASSERT_DELTA(score.score(id2), -9935.8, 0.05);
 
       score.clear();
-      id1 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-      TS_ASSERT_DELTA( score.score( id1 ), -1014.4, 0.05 );
+      id1 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+      id2 = score.addNodeSet(1, std::vector< gum::Idx >{4});
+      TS_ASSERT_DELTA(score.score(id1), -991.062, 0.05);
+      TS_ASSERT_DELTA(score.score(id2), -3030.55, 0.05);
+
+      score.clear();
+      id1 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
+      TS_ASSERT_DELTA(score.score(id1), -1014.4, 0.05);
 
       gum::Idx id3, id4, id5, id6, id7;
       score.clear();
-      id1 = score.addNodeSet( 3 );
-      id2 = score.addNodeSet( 1 );
-      id3 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-      id4 = score.addNodeSet( 2 );
-      id5 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-      id6 = score.addNodeSet( 2 );
-      id7 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
+      id1 = score.addNodeSet(3);
+      id2 = score.addNodeSet(1);
+      id3 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
+      id4 = score.addNodeSet(2);
+      id5 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+      id6 = score.addNodeSet(2);
+      id7 = score.addNodeSet(3, std::vector< gum::Idx >{4});
 
-      TS_ASSERT_DELTA( score.score( id1 ), -996.781, 0.05 );
-      TS_ASSERT_DELTA( score.score( id2 ), -3030.73, 0.05 );
-      TS_ASSERT_DELTA( score.score( id3 ), -1014.4, 0.05 );
-      TS_ASSERT_DELTA( score.score( id4 ), -9935.8, 0.05 );
-      TS_ASSERT_DELTA( score.score( id5 ), -991.062, 0.05 );
-      TS_ASSERT_DELTA( score.score( id6 ), -9935.8, 0.05 );
-      TS_ASSERT_DELTA( score.score( id7 ), -991.062, 0.05 );
+      TS_ASSERT_DELTA(score.score(id1), -996.781, 0.05);
+      TS_ASSERT_DELTA(score.score(id2), -3030.73, 0.05);
+      TS_ASSERT_DELTA(score.score(id3), -1014.4, 0.05);
+      TS_ASSERT_DELTA(score.score(id4), -9935.8, 0.05);
+      TS_ASSERT_DELTA(score.score(id5), -991.062, 0.05);
+      TS_ASSERT_DELTA(score.score(id6), -9935.8, 0.05);
+      TS_ASSERT_DELTA(score.score(id7), -991.062, 0.05);
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
-      
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
+
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
 
       auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
-      std::vector<gum::Idx>             modalities = filter.modalities();
+        gum::learning::make_DB_row_filter(database, translators, generators);
+      std::vector< gum::Idx >           modalities = filter.modalities();
       gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::ScoreK2<>          score( filter, modalities, apriori );
+      gum::learning::ScoreK2<>          score(filter, modalities, apriori);
       // score.useCache ( false );
 
       gum::Idx id1, id2, id3, id4, id5, id6, id7;
-      for ( gum::Idx i = 0; i < 10000; ++i ) {
+      for (gum::Idx i = 0; i < 10000; ++i) {
         score.clear();
-        id1 = score.addNodeSet( 3 );
-        id2 = score.addNodeSet( 1 );
-        id3 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-        id4 = score.addNodeSet( 2 );
-        id5 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-        id6 = score.addNodeSet( 2 );
-        id7 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-        TS_ASSERT_DELTA( score.score( id1 ), -996.781, 0.05 );
-        TS_ASSERT_DELTA( score.score( id2 ), -3030.73, 0.05 );
-        TS_ASSERT_DELTA( score.score( id3 ), -1014.4, 0.05 );
-        TS_ASSERT_DELTA( score.score( id4 ), -9935.8, 0.05 );
-        TS_ASSERT_DELTA( score.score( id5 ), -991.062, 0.05 );
-        TS_ASSERT_DELTA( score.score( id6 ), -9935.8, 0.05 );
-        TS_ASSERT_DELTA( score.score( id7 ), -991.062, 0.05 );
+        id1 = score.addNodeSet(3);
+        id2 = score.addNodeSet(1);
+        id3 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
+        id4 = score.addNodeSet(2);
+        id5 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+        id6 = score.addNodeSet(2);
+        id7 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+        TS_ASSERT_DELTA(score.score(id1), -996.781, 0.05);
+        TS_ASSERT_DELTA(score.score(id2), -3030.73, 0.05);
+        TS_ASSERT_DELTA(score.score(id3), -1014.4, 0.05);
+        TS_ASSERT_DELTA(score.score(id4), -9935.8, 0.05);
+        TS_ASSERT_DELTA(score.score(id5), -991.062, 0.05);
+        TS_ASSERT_DELTA(score.score(id6), -9935.8, 0.05);
+        TS_ASSERT_DELTA(score.score(id7), -991.062, 0.05);
       }
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
       auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
-      std::vector<gum::Idx>             modalities = filter.modalities();
+        gum::learning::make_DB_row_filter(database, translators, generators);
+      std::vector< gum::Idx >           modalities = filter.modalities();
       gum::learning::AprioriNoApriori<> apriori;
-      gum::learning::ScoreK2<>          score( filter, modalities, apriori );
+      gum::learning::ScoreK2<>          score(filter, modalities, apriori);
 
       gum::Idx id1, id2, id3, id4, id5, id6, id7;
-      for ( gum::Idx i = 0; i < 4; ++i ) {
+      for (gum::Idx i = 0; i < 4; ++i) {
         score.clearCache();
-        id1 = score.addNodeSet( 3 );
-        id2 = score.addNodeSet( 1 );
-        id3 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-        id4 = score.addNodeSet( 2 );
-        id5 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-        id6 = score.addNodeSet( 2 );
-        id7 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-        TS_ASSERT_DELTA( score.score( id1 ), -996.781, 0.05 );
-        TS_ASSERT_DELTA( score.score( id2 ), -3030.73, 0.05 );
-        TS_ASSERT_DELTA( score.score( id3 ), -1014.4, 0.05 );
-        TS_ASSERT_DELTA( score.score( id4 ), -9935.8, 0.05 );
-        TS_ASSERT_DELTA( score.score( id5 ), -991.062, 0.05 );
-        TS_ASSERT_DELTA( score.score( id6 ), -9935.8, 0.05 );
-        TS_ASSERT_DELTA( score.score( id7 ), -991.062, 0.05 );
+        id1 = score.addNodeSet(3);
+        id2 = score.addNodeSet(1);
+        id3 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
+        id4 = score.addNodeSet(2);
+        id5 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+        id6 = score.addNodeSet(2);
+        id7 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+        TS_ASSERT_DELTA(score.score(id1), -996.781, 0.05);
+        TS_ASSERT_DELTA(score.score(id2), -3030.73, 0.05);
+        TS_ASSERT_DELTA(score.score(id3), -1014.4, 0.05);
+        TS_ASSERT_DELTA(score.score(id4), -9935.8, 0.05);
+        TS_ASSERT_DELTA(score.score(id5), -991.062, 0.05);
+        TS_ASSERT_DELTA(score.score(id6), -9935.8, 0.05);
+        TS_ASSERT_DELTA(score.score(id7), -991.062, 0.05);
       }
     }
   };

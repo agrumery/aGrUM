@@ -31,19 +31,18 @@ namespace gum_tests {
   class DAGModelTestSuite : public CxxTest::TestSuite {
     public:
     void testEquality() {
-      auto bn = gum::BayesNet<int>::fastPrototype( "a->b->c;a->c" );
+      auto bn = gum::BayesNet< int >::fastPrototype("a->b->c;a->c");
 
-      TS_ASSERT( bn.hasSameStructure( bn ) );
-      TS_ASSERT( bn.hasSameStructure(
-          gum::BayesNet<int>::fastPrototype( "a->b->c;a->c" ) ) );
-      TS_ASSERT( !bn.hasSameStructure(
-          gum::BayesNet<int>::fastPrototype( "b->a->c;b->c" ) ) );
+      TS_ASSERT(bn.hasSameStructure(bn));
       TS_ASSERT(
-          !bn.hasSameStructure( gum::BayesNet<int>::fastPrototype( "b->a" ) ) );
+        bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("a->b->c;a->c")));
       TS_ASSERT(
-          !bn.hasSameStructure( gum::BayesNet<float>::fastPrototype( "b->a" ) ) );
+        !bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("b->a->c;b->c")));
+      TS_ASSERT(!bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("b->a")));
       TS_ASSERT(
-          !bn.hasSameStructure( gum::BayesNet<int>::fastPrototype( "b->a->d" ) ) );
+        !bn.hasSameStructure(gum::BayesNet< float >::fastPrototype("b->a")));
+      TS_ASSERT(
+        !bn.hasSameStructure(gum::BayesNet< int >::fastPrototype("b->a->d")));
     }
   };
 }

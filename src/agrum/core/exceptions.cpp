@@ -34,42 +34,42 @@
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-  const std::string __createMsg( const std::string& filename,
-                                 const std::string& function,
-                                 const int          line,
-                                 const std::string& msg ) {
+  const std::string __createMsg(const std::string& filename,
+                                const std::string& function,
+                                const int          line,
+                                const std::string& msg) {
     std::stringstream stream;
     stream << std::endl
-           << "<" << filename << "> " << function << "() #" << std::setw( 6 )
+           << "<" << filename << "> " << function << "() #" << std::setw(6)
            << std::dec << line << " :" << std::endl
            << "--------------" << std::endl
            << "! " << msg << std::endl
            << "--------------" << std::endl;
     return stream.str();
   }
-  Exception::Exception( const Exception& e )
-      : _msg( e._msg )
-      , _type( e._type ) {}
+  Exception::Exception(const Exception& e)
+      : _msg(e._msg)
+      , _type(e._type) {}
 
-  Exception::Exception( const std::string aMsg, const std::string aType )
-      : _msg( aMsg )
-      , _type( aType ) {
+  Exception::Exception(const std::string aMsg, const std::string aType)
+      : _msg(aMsg)
+      , _type(aType) {
 #ifndef NDEBUG
 #ifdef HAVE_EXECINFO_H
 #define callStackDepth 20
     void*  array[callStackDepth];
     size_t size;
     char** strings;
-    size = backtrace( array, callStackDepth );
-    strings = backtrace_symbols( array, size );
+    size = backtrace(array, callStackDepth);
+    strings = backtrace_symbols(array, size);
 
     std::stringstream stream;
 
-    for ( size_t i = 1; i < size; ++i ) {
+    for (size_t i = 1; i < size; ++i) {
       stream << i << " :" << strings[i] << std::endl;
     }
 
-    free( strings );
+    free(strings);
     _callstack = stream.str();
 #else   // HAVE_EXECINFO_H
     _callstack = "Callstack only in linux debug mode when execinfo.h available";

@@ -27,4 +27,4 @@
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
 
-template class gum::TreeOperator<double, std::plus>;
+template class gum::TreeOperator< double, std::plus >;

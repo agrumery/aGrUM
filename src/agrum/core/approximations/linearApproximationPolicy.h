@@ -48,9 +48,9 @@ namespace gum {
    *
    * @tparam GUM_SCALAR The type used for computations.
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class LinearApproximationPolicy
-      : public virtual ApproximationPolicy<GUM_SCALAR> {
+    : public virtual ApproximationPolicy< GUM_SCALAR > {
     public:
     // ===========================================================================
     /// @name Constructors / Destructors
@@ -65,15 +65,15 @@ namespace gum {
      * @param eps The epsilon.
      * @throw OutOfBound if out of bounds (low<high, eps>0)
      */
-    LinearApproximationPolicy( GUM_SCALAR low = (GUM_SCALAR)0.0,
-                               GUM_SCALAR high = (GUM_SCALAR)1.0,
-                               GUM_SCALAR eps = (GUM_SCALAR)0.1 );
+    LinearApproximationPolicy(GUM_SCALAR low = (GUM_SCALAR)0.0,
+                              GUM_SCALAR high = (GUM_SCALAR)1.0,
+                              GUM_SCALAR eps = (GUM_SCALAR)0.1);
 
     /**
      * @brief Copy constructor.
      * @param md The gum::LinearApproximationPolicy to copy.
      */
-    LinearApproximationPolicy( const LinearApproximationPolicy<GUM_SCALAR>* md );
+    LinearApproximationPolicy(const LinearApproximationPolicy< GUM_SCALAR >* md);
 
     /// @}
 
@@ -87,45 +87,45 @@ namespace gum {
      * @param value The converted value.
      * @return The value approximation representation.
      */
-    GUM_SCALAR fromExact( const GUM_SCALAR& value ) const;
+    GUM_SCALAR fromExact(const GUM_SCALAR& value) const;
 
     /**
      * @brief Combine using addition with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineAdd( const ApproximationPolicy<GUM_SCALAR>* ap );
+    void combineAdd(const ApproximationPolicy< GUM_SCALAR >* ap);
 
     /**
      * @brief Combine using substraction with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineSub( const ApproximationPolicy<GUM_SCALAR>* ap );
+    void combineSub(const ApproximationPolicy< GUM_SCALAR >* ap);
 
     /**
      * @brief Combine using multiplication with the given
      * gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMult( const ApproximationPolicy<GUM_SCALAR>* ap );
+    void combineMult(const ApproximationPolicy< GUM_SCALAR >* ap);
 
     /**
      * @brief Combine using division with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineDiv( const ApproximationPolicy<GUM_SCALAR>* ap );
+    void combineDiv(const ApproximationPolicy< GUM_SCALAR >* ap);
 
     /**
      * @brief Combine using max with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMax( const ApproximationPolicy<GUM_SCALAR>* ap );
+    void combineMax(const ApproximationPolicy< GUM_SCALAR >* ap);
 
     /**
      * @brief Combine using min with the given gum::ApproximationPolicy.
      * @param ap The policy to combine with.
      */
-    void combineMin( const ApproximationPolicy<GUM_SCALAR>* ap );
+    void combineMin(const ApproximationPolicy< GUM_SCALAR >* ap);
 
     /**
      * @brief Convert value to his approximation.
@@ -136,7 +136,7 @@ namespace gum {
      * @throw OutOfLowerBound Raised if value is out of bounds.
      * @throw OutOfUpperBound Raised if value is out of bounds.
      */
-    GUM_SCALAR safeFromExact( const GUM_SCALAR& value );
+    GUM_SCALAR safeFromExact(const GUM_SCALAR& value);
 
     /**
      * @brief Encode a given value into its approximation representation.
@@ -145,7 +145,7 @@ namespace gum {
      * @throw OutOfLowerBound Raised if value is out of bounds.
      * @throw OutOfUpperBound Raised if value is out of bounds.
      */
-    Idx encode( const GUM_SCALAR& value ) const;
+    Idx encode(const GUM_SCALAR& value) const;
 
     /**
      * @brief Convert approximation representation to value.
@@ -153,13 +153,13 @@ namespace gum {
      * @return Returns the value decoded from its approximation
      * reprensentation.
      */
-    GUM_SCALAR decode( Idx representation ) const;
+    GUM_SCALAR decode(Idx representation) const;
 
     /**
      * @brief Sets approximation factor.
      * @param e The new epsilon value.
      */
-    virtual void setEpsilon( const GUM_SCALAR& e );
+    virtual void setEpsilon(const GUM_SCALAR& e);
 
     /**
      * @brief Set bounds in a whole.
@@ -167,15 +167,15 @@ namespace gum {
      * @param newHighLimit New higher bound.
      * @throw OutOfBounds Raised if new bounds are not legit.
      */
-    virtual void setLimits( const GUM_SCALAR& newLowLimit,
-                            const GUM_SCALAR& newHighLimit );
+    virtual void setLimits(const GUM_SCALAR& newLowLimit,
+                           const GUM_SCALAR& newHighLimit);
 
     /**
      * @brief Sets lowest possible value.
      * @param newLowLimit New lower bound.
      * @throw OutOfUpperBound Raised if out of bound.
      */
-    virtual void setLowLimit( const GUM_SCALAR& newLowLimit );
+    virtual void setLowLimit(const GUM_SCALAR& newLowLimit);
 
     /**
      * @brief Gets lowest possible value.
@@ -188,7 +188,7 @@ namespace gum {
      * @param newHighLimit New higher bound.
      * @throw OutOfLowerBound Raised if out of bound.
      */
-    virtual void setHighLimit( const GUM_SCALAR& newHighLimit );
+    virtual void setHighLimit(const GUM_SCALAR& newHighLimit);
 
     /**
      * @brief Gets Highest possible value.
@@ -216,14 +216,14 @@ namespace gum {
      * @param value The value to encode.
      * @return The encoded value.
      */
-    Idx __encode( const GUM_SCALAR& value ) const;
+    Idx __encode(const GUM_SCALAR& value) const;
 
     /**
      * @brief Concretely computes the approximate value from representation.
      * @param representation The approximate value to decode.
      * @return The decoded value.
      */
-    GUM_SCALAR __decode( const GUM_SCALAR& representation ) const;
+    GUM_SCALAR __decode(const GUM_SCALAR& representation) const;
 
     /**
      * @brief Get the number of interval.
@@ -236,8 +236,8 @@ namespace gum {
 }
 
 
-extern template class gum::LinearApproximationPolicy<float>;
-extern template class gum::LinearApproximationPolicy<double>;
+extern template class gum::LinearApproximationPolicy< float >;
+extern template class gum::LinearApproximationPolicy< double >;
 
 
 // Always inline template classes implementation.

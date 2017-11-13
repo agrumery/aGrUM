@@ -48,8 +48,8 @@ namespace gum {
    *     never check if it is the case.
    */
   // clang-format on
-  template <typename GUM_SCALAR>
-  class MultiDimNoisyAND : public MultiDimICIModel<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class MultiDimNoisyAND : public MultiDimICIModel< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Constructors / Destructors
@@ -60,10 +60,10 @@ namespace gum {
      * Default constructor.
      * @throw gum::InvalidArgument if external_weight is null.
      */
-    MultiDimNoisyAND( GUM_SCALAR external_weight,
-                      GUM_SCALAR default_weight = (GUM_SCALAR)1.0 );
+    MultiDimNoisyAND(GUM_SCALAR external_weight,
+                     GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
 
-    MultiDimNoisyAND( const MultiDimNoisyAND<GUM_SCALAR>& from );
+    MultiDimNoisyAND(const MultiDimNoisyAND< GUM_SCALAR >& from);
 
     /**
      * Copy constructor using a bijection to swap variables from source.
@@ -72,8 +72,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimNoisyAND(
-        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimNoisyAND<GUM_SCALAR>& from );
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+      const MultiDimNoisyAND< GUM_SCALAR >& from);
 
     /**
      * Destructor.
@@ -99,7 +99,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
     // ============================================================================
     /// @name Accessors / Modifiers
@@ -107,9 +107,9 @@ namespace gum {
     /// @{
 
     public:
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
-    const std::string toString( void ) const;
+    const std::string toString(void) const;
 
     /**
      * @brief Returns the real name of the multiDimArray.
@@ -127,13 +127,13 @@ namespace gum {
     /// @}
   };
 
-  extern template class MultiDimNoisyAND<float>;
-  extern template class MultiDimNoisyAND<double>;
+  extern template class MultiDimNoisyAND< float >;
+  extern template class MultiDimNoisyAND< double >;
 
   /// For friendly displaying the content of the array.
-  template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream&                       s,
-                            const MultiDimNoisyAND<GUM_SCALAR>& ag );
+  template < typename GUM_SCALAR >
+  std::ostream& operator<<(std::ostream&                         s,
+                           const MultiDimNoisyAND< GUM_SCALAR >& ag);
 
 } /* namespace gum */
 

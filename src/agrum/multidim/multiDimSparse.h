@@ -44,8 +44,8 @@ namespace gum {
    * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
    * table.
    */
-  template <typename GUM_SCALAR>
-  class MultiDimSparse : public MultiDimWithOffset<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class MultiDimSparse : public MultiDimWithOffset< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -56,7 +56,7 @@ namespace gum {
      * @brief Default constructor: creates an empty null dimensional matrix.
      * @param default_value The default value of this MultiDimSparse.
      */
-    MultiDimSparse( const GUM_SCALAR& default_value );
+    MultiDimSparse(const GUM_SCALAR& default_value);
 
     /**
      * @brief Copy constructor.
@@ -66,7 +66,7 @@ namespace gum {
      *
      * @param from The MultiDimSparse to copy.
      */
-    MultiDimSparse( const MultiDimSparse<GUM_SCALAR>& from );
+    MultiDimSparse(const MultiDimSparse< GUM_SCALAR >& from);
 
     /**
      * @todo operator=
@@ -89,17 +89,17 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
-    void add( const DiscreteVariable& v );
+    void add(const DiscreteVariable& v);
 
-    void erase( const DiscreteVariable& v );
+    void erase(const DiscreteVariable& v);
 
-    virtual void fill( const GUM_SCALAR& d ) const;
+    virtual void fill(const GUM_SCALAR& d) const;
 
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
-    virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
+    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
 
     virtual const std::string& name() const;
 
@@ -110,33 +110,33 @@ namespace gum {
     protected:
     /// The true data : the values is mutable since we can change the value
     /// in a const multiDimArray
-    mutable HashTable<Size, GUM_SCALAR> _params;
+    mutable HashTable< Size, GUM_SCALAR > _params;
 
     /// The default value.
     mutable GUM_SCALAR _default;
 
     /// Synchronise content after MultipleChanges.
-    virtual void _commitMultipleChanges( void );
+    virtual void _commitMultipleChanges(void);
 
     /**
      * @warning Will raise an OperationNotAllowed as this use its own internal
      * datastructure.
      */
-    virtual GUM_SCALAR& _get( const Instantiation& i ) const;
+    virtual GUM_SCALAR& _get(const Instantiation& i) const;
 
     // =========================================================================
     /// @name Inherited methods
     // =========================================================================
     /// @{
 
-    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 
     /// @}
   };
 
 
-  extern template class MultiDimSparse<float>;
-  extern template class MultiDimSparse<double>;
+  extern template class MultiDimSparse< float >;
+  extern template class MultiDimSparse< double >;
 
 
 } /* namespace gum */

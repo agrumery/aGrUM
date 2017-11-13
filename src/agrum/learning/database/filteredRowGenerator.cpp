@@ -29,4 +29,3 @@
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/database/filteredRowGenerator_inl.h>
 #endif /* GUM_NO_INLINE */
-

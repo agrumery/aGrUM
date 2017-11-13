@@ -25,19 +25,19 @@ namespace gum {
   namespace learning {
 
     INLINE bool CSVParser::next() {
-      while ( getline( __instream, __line ) ) {
+      while (getline(__instream, __line)) {
         __noLine++;
 
-        if ( __line.size() == 0 ) continue;
+        if (__line.size() == 0) continue;
 
         // fast recognition of commented or empty lines lines
-        Size lastPos = Size( __line.find_first_not_of( __spaces, 0 ) );
+        Size lastPos = Size(__line.find_first_not_of(__spaces, 0));
 
-        if ( lastPos == Size( std::string::npos ) ) continue;
+        if (lastPos == Size(std::string::npos)) continue;
 
-        if ( __line.at( lastPos ) == __commentMarker ) continue;
+        if (__line.at(lastPos) == __commentMarker) continue;
 
-        __tokenize( __line );
+        __tokenize(__line);
         return true;
       }
 
@@ -45,34 +45,34 @@ namespace gum {
     }
 
     // search for quote taking into account the '\'...
-    INLINE Size CSVParser::__correspondingQuoteMarker( const std::string& str,
-                                                       Size pos ) const {
+    INLINE Size CSVParser::__correspondingQuoteMarker(const std::string& str,
+                                                      Size pos) const {
       Size res = pos, before;
 
-      while ( true ) {
-        res = Size( str.find_first_of( __quoteMarker, res + 1 ) );
+      while (true) {
+        res = Size(str.find_first_of(__quoteMarker, res + 1));
 
-        if ( res == Size( std::string::npos ) ) return res;  // no quote found
+        if (res == Size(std::string::npos)) return res;  // no quote found
 
-        before = Size( str.find_last_not_of( '\\', res - 1 ) );
+        before = Size(str.find_last_not_of('\\', res - 1));
 
-        if ( before == Size( std::string::npos ) )
+        if (before == Size(std::string::npos))
           return res;  // quote found, it is the good one
 
-        if ( ( res - before ) % 2 == 1 )
+        if ((res - before) % 2 == 1)
           return res;  // the quote is the good one, even if there are some '\'
                        // before
       }
     }
 
-    INLINE const std::vector<std::string>& CSVParser::current() const {
-      if ( __emptyData ) GUM_ERROR( NullElement, "No parsed data" );
+    INLINE const std::vector< std::string >& CSVParser::current() const {
+      if (__emptyData) GUM_ERROR(NullElement, "No parsed data");
 
       return __data;
     }
 
     INLINE const Size CSVParser::noLine() const {
-      if ( __noLine == 0 ) GUM_ERROR( NullElement, "No parsed data" );
+      if (__noLine == 0) GUM_ERROR(NullElement, "No parsed data");
 
       return __noLine;
     }

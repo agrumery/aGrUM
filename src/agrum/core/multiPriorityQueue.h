@@ -43,12 +43,12 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // templates provided by this file
-  template <typename Val, typename Priority, typename Cmp, typename Alloc>
+  template < typename Val, typename Priority, typename Cmp, typename Alloc >
   class MultiPriorityQueue;
 
-  template <typename Val, typename Priority, typename Cmp, typename Alloc>
-  std::ostream& operator<<( std::ostream&,
-                            const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& );
+  template < typename Val, typename Priority, typename Cmp, typename Alloc >
+  std::ostream& operator<<(std::ostream&,
+                           const MultiPriorityQueue< Val, Priority, Cmp, Alloc >&);
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -117,14 +117,14 @@ namespace gum {
    * @tparam Cmp The priorities comparator.
    * @tparam Alloc The values allocator.
    */
-  template <typename Val,
-            typename Priority = int,
-            typename Cmp = std::less<Priority>,
-            typename Alloc = std::allocator<Val>>
+  template < typename Val,
+             typename Priority = int,
+             typename Cmp = std::less< Priority >,
+             typename Alloc = std::allocator< Val > >
   class MultiPriorityQueue {
 
     /// Making all MultiPriorityQueue friend with themselves.
-    template <typename V, typename P, typename C, typename A>
+    template < typename V, typename P, typename C, typename A >
     friend class MultiPriorityQueue;
 
     public:
@@ -140,12 +140,12 @@ namespace gum {
     /// @}
 
     /// The allocator for the indices.
-    using IndexAlloc =
-        typename Alloc::template rebind<std::pair<Val, std::vector<Size>>>::other;
+    using IndexAlloc = typename Alloc::template rebind<
+      std::pair< Val, std::vector< Size > > >::other;
 
     /// The allocator for the heap.
     using HeapAlloc =
-        typename Alloc::template rebind<std::pair<Priority, const Val*>>::other;
+      typename Alloc::template rebind< std::pair< Priority, const Val* > >::other;
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -162,8 +162,8 @@ namespace gum {
      * elements (could be for instance vectors or hashtables).
      */
     explicit MultiPriorityQueue(
-        Cmp  compare = Cmp(),
-        Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY );
+      Cmp  compare = Cmp(),
+      Size capacity = GUM_MULTIPLE_PRIORITY_QUEUE_DEFAULT_CAPACITY);
 
     /**
      * @brief Initializer list constructor.
@@ -174,14 +174,14 @@ namespace gum {
      * @param list The initializer list.
      */
     explicit MultiPriorityQueue(
-        std::initializer_list<std::pair<Val, Priority>> list );
+      std::initializer_list< std::pair< Val, Priority > > list);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::MultiPriorityQueue to copy.
      */
     MultiPriorityQueue(
-        const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& from );
+      const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
 
     /// generalized copy constructor
     /**
@@ -189,15 +189,15 @@ namespace gum {
      * @param from The gum::MultiPriorityQueue to copy.
      * @tparam OtherAlloc The other gum::MultiPriorityQueue allocator.
      */
-    template <typename OtherAlloc>
+    template < typename OtherAlloc >
     MultiPriorityQueue(
-        const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>& from );
+      const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::MultiPriorityQueue to move.
      */
-    MultiPriorityQueue( MultiPriorityQueue<Val, Priority, Cmp, Alloc>&& from );
+    MultiPriorityQueue(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from);
 
     /**
      * @brief Class destructor.
@@ -220,8 +220,8 @@ namespace gum {
      *
      * @param from The gum::MultiPriorityQueue to copy.
      */
-    MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-    operator=( const MultiPriorityQueue<Val, Priority, Cmp, Alloc>& from );
+    MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
+    operator=(const MultiPriorityQueue< Val, Priority, Cmp, Alloc >& from);
 
     /**
      * @brief Generalized copy operator.
@@ -234,16 +234,16 @@ namespace gum {
      * @param from The gum::MultiPriorityQueue to copy.
      * @tparam OtherAlloc The other gum::MultiPriorityQueue allocator.
      */
-    template <typename OtherAlloc>
-    MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-    operator=( const MultiPriorityQueue<Val, Priority, Cmp, OtherAlloc>& from );
+    template < typename OtherAlloc >
+    MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
+    operator=(const MultiPriorityQueue< Val, Priority, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move operator.
      * @param from The gum::MultiPriorityQueue to copy.
      */
-    MultiPriorityQueue<Val, Priority, Cmp, Alloc>&
-    operator=( MultiPriorityQueue<Val, Priority, Cmp, Alloc>&& from );
+    MultiPriorityQueue< Val, Priority, Cmp, Alloc >&
+    operator=(MultiPriorityQueue< Val, Priority, Cmp, Alloc >&& from);
 
     /**
      * @brief Returns the element at index "index_elt" from the priority queue.
@@ -252,7 +252,7 @@ namespace gum {
      * queue.
      * @throw NotFound Raised if the element does not exist.
      */
-    const Val& operator[]( Size index_elt ) const;
+    const Val& operator[](Size index_elt) const;
 
     /// @}
     // ============================================================================
@@ -277,7 +277,7 @@ namespace gum {
      * @param val The value to check if it is in the priority queue.
      * @return Returns true if the priority queue cotains the given value.
      */
-    bool contains( const Val& val ) const;
+    bool contains(const Val& val) const;
 
     /**
      * @brief Returns the element at the top of the priority queue.
@@ -310,7 +310,7 @@ namespace gum {
      * @return Returns the index of the element inserted into the priority
      * queue.
      */
-    Size insert( const Val& val, const Priority& priority );
+    Size insert(const Val& val, const Priority& priority);
 
     /**
      * @brief Inserts (by move) a new element in the priority queue.
@@ -323,7 +323,7 @@ namespace gum {
      * @return Returns the index of the element inserted into the priority
      * queue.
      */
-    Size insert( Val&& val, Priority&& priority );
+    Size insert(Val&& val, Priority&& priority);
 
     /**
      * @brief Emplace a new element into the priority queue.
@@ -335,8 +335,8 @@ namespace gum {
      * @param args The emplace arguments.
      * @return the index of the element inserted into the priority queue.
      */
-    template <typename... Args>
-    Size emplace( Args&&... args );
+    template < typename... Args >
+    Size emplace(Args&&... args);
 
     /**
      * @brief Removes the top of the priority queue (but does not return it).
@@ -364,7 +364,7 @@ namespace gum {
      *
      * @param index represents the position of the element to be removed.
      */
-    void eraseByPos( Size index );
+    void eraseByPos(Size index);
 
     /**
      * @brief Removes a given element from the priority queue (but does not
@@ -378,7 +378,7 @@ namespace gum {
      *
      * @param val the element we wish to remove.
      */
-    void erase( const Val& val );
+    void erase(const Val& val);
 
     /**
      * @brief Modifies the priority of the element at position "index" of the
@@ -389,7 +389,7 @@ namespace gum {
      * @return Returns the elements new priority.
      * @throw NotFound Raised if the element cannot be found.
      */
-    Size setPriorityByPos( Size index, const Priority& new_priority );
+    Size setPriorityByPos(Size index, const Priority& new_priority);
 
     /**
      * @brief Modifies the priority of the element at position "index" of the
@@ -400,7 +400,7 @@ namespace gum {
      * @return Returns the elements new priority.
      * @throw NotFound Raised if the element cannot be found.
      */
-    Size setPriorityByPos( Size index, Priority&& new_priority );
+    Size setPriorityByPos(Size index, Priority&& new_priority);
 
     /**
      * @brief Modifies the priority of each instance of a given element.
@@ -408,7 +408,7 @@ namespace gum {
      * @param new_priority The values new priority.
      * @throw NotFound Raised if the element cannot be found.
      */
-    void setPriority( const Val& elt, const Priority& new_priority );
+    void setPriority(const Val& elt, const Priority& new_priority);
 
     /**
      * @brief Returns the priority of an instance of the value passed in
@@ -422,7 +422,7 @@ namespace gum {
      * argument.
      * @throw NotFound Raised if the element cannot be found.
      */
-    const Priority& priority( const Val& elt ) const;
+    const Priority& priority(const Val& elt) const;
 
     /**
      * @brief Removes all the elements from the queue.
@@ -440,7 +440,7 @@ namespace gum {
      * @return Returns a gum::HashTable the keys of which are the values stored
      * in the queue.
      */
-    const HashTable<Val, std::vector<Size>>& allValues() const;
+    const HashTable< Val, std::vector< Size > >& allValues() const;
 
     /**
      * @brief Displays the content of the queue.
@@ -469,16 +469,16 @@ namespace gum {
      * @return Changes the size of the internal structure storing the priority
      * queue.
      */
-    void resize( Size new_size );
+    void resize(Size new_size);
 
     /// @}
 
     private:
     /// An array storing all the elements of the heap as well as their score.
-    std::vector<std::pair<Priority, const Val*>, HeapAlloc> __heap;
+    std::vector< std::pair< Priority, const Val* >, HeapAlloc > __heap;
 
     /// A hashtable for quickly finding the elements by their value.
-    HashTable<Val, std::vector<Size>, IndexAlloc> __indices;
+    HashTable< Val, std::vector< Size >, IndexAlloc > __indices;
 
     /// The number of elements in the heap.
     Size __nb_elements{0};
@@ -490,8 +490,8 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::MultiPriorityQueue<std::string>;
-extern template class gum::MultiPriorityQueue<int, int>;
+extern template class gum::MultiPriorityQueue< std::string >;
+extern template class gum::MultiPriorityQueue< int, int >;
 
 
 // always include the implementation of the templates

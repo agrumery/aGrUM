@@ -28,7 +28,7 @@
 
 #include <string>
 
-#include <agrum/core/inline.h>
+#include <agrum/agrum.h>
 
 #include <agrum/core/sequence.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
@@ -38,9 +38,9 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
 
-  class ScheduleCliqueStoreMultiDim : public ScheduleOperation<GUM_SCALAR> {
+  class ScheduleCliqueStoreMultiDim : public ScheduleOperation< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -49,16 +49,16 @@ namespace gum {
 
     /// default constructor
     ScheduleCliqueStoreMultiDim(
-        const ScheduleMultiDim<GUM_SCALAR>& table,
-        NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*>>&
-               clique_tables,
-        NodeId clique );
+      const ScheduleMultiDim< GUM_SCALAR >& table,
+      NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >&
+             clique_tables,
+      NodeId clique);
 
     /// copy constructor
-    ScheduleCliqueStoreMultiDim( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& );
+    ScheduleCliqueStoreMultiDim(const ScheduleCliqueStoreMultiDim< GUM_SCALAR >&);
 
     /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleCliqueStoreMultiDim<GUM_SCALAR>* newFactory() const;
+    virtual ScheduleCliqueStoreMultiDim< GUM_SCALAR >* newFactory() const;
 
     /// destructor
     virtual ~ScheduleCliqueStoreMultiDim();
@@ -71,18 +71,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ScheduleCliqueStoreMultiDim<GUM_SCALAR>&
-    operator=( const ScheduleCliqueStoreMultiDim<GUM_SCALAR>& );
+    ScheduleCliqueStoreMultiDim< GUM_SCALAR >&
+    operator=(const ScheduleCliqueStoreMultiDim< GUM_SCALAR >&);
 
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const;
+    bool operator==(const ScheduleOperation< GUM_SCALAR >&) const;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const;
+    bool operator!=(const ScheduleOperation< GUM_SCALAR >&) const;
 
     /// @}
 
@@ -107,13 +107,14 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used
      * by
      * the resulting table ) */
-    std::pair<long, long> memoryUsage() const;
+    std::pair< long, long > memoryUsage() const;
 
     /// returns the set of multidims passed in argument to the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimArgs() const;
+    const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >& multiDimArgs() const;
 
     /// returns the set of multidims that should be the result of the operation
-    const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>& multiDimResults() const;
+    const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
+    multiDimResults() const;
 
     /// displays the content of the operation
     std::string toString() const;
@@ -122,16 +123,16 @@ namespace gum {
 
     private:
     // the table to store into the clique
-    ScheduleMultiDim<GUM_SCALAR> __table;
+    ScheduleMultiDim< GUM_SCALAR > __table;
 
     // a mapping assigning to each clique a set of tables
-    NodeProperty<Set<const MultiDimImplementation<GUM_SCALAR>*>>* __tableSet;
+    NodeProperty< Set< const MultiDimImplementation< GUM_SCALAR >* > >* __tableSet;
 
     // the clique into which the table will be stored
     NodeId __clique;
 
     /// the set of ScheduleMultidims passed in arguments
-    mutable Sequence<const ScheduleMultiDim<GUM_SCALAR>*>* __args;
+    mutable Sequence< const ScheduleMultiDim< GUM_SCALAR >* >* __args;
   };
 
 } /* namespace gum */

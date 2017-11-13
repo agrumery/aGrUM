@@ -34,24 +34,24 @@
 
 namespace gum {
 
-  ApproximationScheme::ApproximationScheme( bool v )
-      : _current_state( ApproximationSchemeSTATE::Undefined )
-      , _eps( 5e-2 )
-      , _enabled_eps( true )
-      , _min_rate_eps( 1e-2 )
-      , _enabled_min_rate_eps( true )
-      , _max_time( 1. )
-      , _enabled_max_time( false )
-      , _max_iter( (Size)10000 )
-      , _enabled_max_iter( true )
-      , _burn_in( (Size)0 )
-      , _period_size( (Size)1 )
-      , _verbosity( v ) {
-    GUM_CONSTRUCTOR( ApproximationScheme );
+  ApproximationScheme::ApproximationScheme(bool v)
+      : _current_state(ApproximationSchemeSTATE::Undefined)
+      , _eps(5e-2)
+      , _enabled_eps(true)
+      , _min_rate_eps(1e-2)
+      , _enabled_min_rate_eps(true)
+      , _max_time(1.)
+      , _enabled_max_time(false)
+      , _max_iter((Size)10000)
+      , _enabled_max_iter(true)
+      , _burn_in((Size)0)
+      , _period_size((Size)1)
+      , _verbosity(v) {
+    GUM_CONSTRUCTOR(ApproximationScheme);
   }
 
   ApproximationScheme::~ApproximationScheme() {
-    GUM_DESTRUCTOR( ApproximationScheme );
+    GUM_DESTRUCTOR(ApproximationScheme);
   }
 
 }  // namespace gum

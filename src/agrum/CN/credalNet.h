@@ -82,7 +82,7 @@ namespace gum {
      * ... ).
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class CredalNet {
       public:
       /** @brief NodeType to speed-up computations in some algorithms */
@@ -115,8 +115,8 @@ namespace gum {
        *upper
        *probabilities.
        */
-      CredalNet( const std::string& src_min_num,
-                 const std::string& src_max_den = "" );
+      CredalNet(const std::string& src_min_num,
+                const std::string& src_max_den = "");
 
       /**
        * Constructor for interval defined credal network which takes 2 BayesNet.
@@ -132,8 +132,8 @@ namespace gum {
        *probabilities.
        */
       CredalNet(
-          const BayesNet<GUM_SCALAR>& src_min_num,
-          const BayesNet<GUM_SCALAR>& src_max_den = BayesNet<GUM_SCALAR>() );
+        const BayesNet< GUM_SCALAR >& src_min_num,
+        const BayesNet< GUM_SCALAR >& src_max_den = BayesNet< GUM_SCALAR >());
 
       /**
        * Destructor.
@@ -151,14 +151,14 @@ namespace gum {
        * @param card The cardinality of the variable
        * @return The \c NodeId of the variable in the network
        */
-      NodeId addNode( const std::string& name, const Size& card );
+      NodeId addNode(const std::string& name, const Size& card);
 
       /**
        * @brief Adds an arc between two nodes.
        * @param tail The \c NodeId of the tail node
        * @param head The \c NodeId of the head node
        */
-      void addArc( const NodeId& tail, const NodeId& head );
+      void addArc(const NodeId& tail, const NodeId& head);
 
       /**
        * @brief %Set the vertices of the credal sets ( all of the conditionals )
@@ -177,8 +177,9 @@ namespace gum {
        * Second is the credal set vertice index
        * Third is the vertex
        */
-      void setCPTs( const NodeId&                                            id,
-                    const std::vector<std::vector<std::vector<GUM_SCALAR>>>& cpt );
+      void
+      setCPTs(const NodeId&                                                  id,
+              const std::vector< std::vector< std::vector< GUM_SCALAR > > >& cpt);
 
       /**
        * @brief %Set the vertices of one credal set of a given node ( any
@@ -200,9 +201,9 @@ namespace gum {
        *credal net
        *!
        */
-      void setCPT( const NodeId&                               id,
-                   Size&                                       entry,
-                   const std::vector<std::vector<GUM_SCALAR>>& cpt );
+      void setCPT(const NodeId&                                   id,
+                  Size&                                           entry,
+                  const std::vector< std::vector< GUM_SCALAR > >& cpt);
 
       /**
        * @brief %Set the vertices of one credal set of a given node ( any
@@ -225,9 +226,9 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void setCPT( const NodeId&                               id,
-                   Instantiation                               ins,
-                   const std::vector<std::vector<GUM_SCALAR>>& cpt );
+      void setCPT(const NodeId&                                   id,
+                  Instantiation                                   ins,
+                  const std::vector< std::vector< GUM_SCALAR > >& cpt);
 
       /**
        * @brief %Set the interval constraints of the credal sets of a given node
@@ -244,9 +245,9 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void fillConstraints( const NodeId&                  id,
-                            const std::vector<GUM_SCALAR>& lower,
-                            const std::vector<GUM_SCALAR>& upper );
+      void fillConstraints(const NodeId&                    id,
+                           const std::vector< GUM_SCALAR >& lower,
+                           const std::vector< GUM_SCALAR >& upper);
 
       /**
        * @brief %Set the interval constraints of a credal set of a given node (
@@ -266,10 +267,10 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void fillConstraint( const NodeId&                  id,
-                           const Idx&                     entry,
-                           const std::vector<GUM_SCALAR>& lower,
-                           const std::vector<GUM_SCALAR>& upper );
+      void fillConstraint(const NodeId&                    id,
+                          const Idx&                       entry,
+                          const std::vector< GUM_SCALAR >& lower,
+                          const std::vector< GUM_SCALAR >& upper);
 
       /**
        * @brief %Set the interval constraints of a credal sets of a given node (
@@ -287,10 +288,10 @@ namespace gum {
        * @note we forget the master ref of \c ins to check variable order in the
        *instantiation ( to get index ), therefor we pass it by value
        */
-      void fillConstraint( const NodeId&                  id,
-                           Instantiation                  ins,
-                           const std::vector<GUM_SCALAR>& lower,
-                           const std::vector<GUM_SCALAR>& upper );
+      void fillConstraint(const NodeId&                    id,
+                          Instantiation                    ins,
+                          const std::vector< GUM_SCALAR >& lower,
+                          const std::vector< GUM_SCALAR >& upper);
 
       /**
        * @brief %Get an \c Instantiation from a node id, usefull to fill the
@@ -298,14 +299,14 @@ namespace gum {
        * @param id The \c NodeId we want an instantiation from
        * @return The instantiation
        */
-      Instantiation instantiation( const NodeId& id );
+      Instantiation instantiation(const NodeId& id);
 
       /**
        * @brief %Get the cardinality of a node
        * @param id The \c NodeId of the node
        * @return The cardinality of the node
        */
-      Size domainSize( const NodeId& id );
+      Size domainSize(const NodeId& id);
 
       /// @}
 
@@ -348,9 +349,9 @@ namespace gum {
        *zeroes
        *are not kept.
        */
-      void bnToCredal( const GUM_SCALAR beta,
-                       const bool       oneNet,
-                       const bool       keepZeroes = false );
+      void bnToCredal(const GUM_SCALAR beta,
+                      const bool       oneNet,
+                      const bool       keepZeroes = false);
 
       /**
        * @deprecated Use intervalToCredal ( lrsWrapper with no input / output
@@ -405,7 +406,7 @@ namespace gum {
        *zeroes
        *are not kept.
        */
-      void idmLearning( const Idx s = 0, const bool keepZeroes = false );
+      void idmLearning(const Idx s = 0, const bool keepZeroes = false);
 
       /**
        * Approximate binarization. Each bit has a lower and upper probability
@@ -439,8 +440,8 @@ namespace gum {
        *j)
        *\f$.
        */
-      void saveBNsMinMax( const std::string& min_path,
-                          const std::string& max_path ) const;
+      void saveBNsMinMax(const std::string& min_path,
+                         const std::string& max_path) const;
 
       // PH void vacants ( int &result ) const;
       // PH void notVacants ( int &result ) const;
@@ -471,27 +472,29 @@ namespace gum {
        * a
        * DAG, it's CPTs does not matter).
        */
-      const BayesNet<GUM_SCALAR>& src_bn() const;
+      const BayesNet< GUM_SCALAR >& src_bn() const;
 
       /**
        * @return Returs a constant reference to the actual BayesNet (used as a
        * DAG,
        * it's CPTs does not matter).
        */
-      const BayesNet<GUM_SCALAR>& current_bn() const;
+      const BayesNet< GUM_SCALAR >& current_bn() const;
 
       /**
        * @return Returns a constant reference to the ( up-to-date ) CredalNet
        * CPTs.
        */
-      const NodeProperty<std::vector<std::vector<std::vector<GUM_SCALAR>>>>&
+      const NodeProperty<
+        std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
       credalNet_currentCpt() const;
 
       /**
        * @return Returns a constant reference to the ( up-to-date ) CredalNet
        * CPTs.
        */
-      const NodeProperty<std::vector<std::vector<std::vector<GUM_SCALAR>>>>&
+      const NodeProperty<
+        std::vector< std::vector< std::vector< GUM_SCALAR > > > >&
       credalNet_srcCpt() const;
 
       /**
@@ -500,7 +503,7 @@ namespace gum {
        * CredalNet
        * __current_bn if any, __src_bn otherwise.
        */
-      NodeType currentNodeType( const NodeId& id ) const;
+      NodeType currentNodeType(const NodeId& id) const;
 
       /**
        * @param id The constant reference to the choosen NodeId
@@ -508,7 +511,7 @@ namespace gum {
        * CredalNet
        * in __src_bn.
        */
-      NodeType nodeType( const NodeId& id ) const;
+      NodeType nodeType(const NodeId& id) const;
 
       /**
        * @return Returns a constant reference to the lowest perturbation of the
@@ -553,7 +556,7 @@ namespace gum {
        *X over the "true" modality, i.e. \f$ \underline{p}(X = 1 \mid pa(X) = j)
        *\f$.
        */
-      const std::vector<std::vector<GUM_SCALAR>>& get_CPT_min() const;
+      const std::vector< std::vector< GUM_SCALAR > >& get_CPT_min() const;
 
       /**
        * Used with binary networks to speed-up L2U inference.
@@ -563,7 +566,7 @@ namespace gum {
        *X over the "true" modality, i.e. \f$ \overline{p}(X = 1 \mid pa(X) = j)
        *\f$.
        */
-      const std::vector<std::vector<GUM_SCALAR>>& get_CPT_max() const;
+      const std::vector< std::vector< GUM_SCALAR > >& get_CPT_max() const;
 
       // PH const std::vector< std::vector< NodeId > > & var_bits() const;
 
@@ -612,31 +615,31 @@ namespace gum {
       bool __separatelySpecified;
 
       /** @brief Original BayesNet (used as a DAG). Is never modified. */
-      BayesNet<GUM_SCALAR> __src_bn;
+      BayesNet< GUM_SCALAR > __src_bn;
 
       /** @brief BayesNet used to store lower probabilities. */
-      BayesNet<GUM_SCALAR> __src_bn_min;
+      BayesNet< GUM_SCALAR > __src_bn_min;
       /** @brief BayesNet used to store upper probabilities. */
-      BayesNet<GUM_SCALAR> __src_bn_max;
+      BayesNet< GUM_SCALAR > __src_bn_max;
 
       /** @brief Up-to-date BayesNet (used as a DAG). */
-      BayesNet<GUM_SCALAR>* __current_bn;  // = nullptr;
+      BayesNet< GUM_SCALAR >* __current_bn;  // = nullptr;
 
       /** @brief This CredalNet original CPTs. */
-      NodeProperty<std::vector<std::vector<std::vector<GUM_SCALAR>>>>
-          __credalNet_src_cpt;
+      NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >
+        __credalNet_src_cpt;
 
       /** @brief This CredalNet up-to-date CPTs. */
-      NodeProperty<std::vector<std::vector<std::vector<GUM_SCALAR>>>>*
-          __credalNet_current_cpt;  // =  nullptr;
+      NodeProperty< std::vector< std::vector< std::vector< GUM_SCALAR > > > >*
+        __credalNet_current_cpt;  // =  nullptr;
 
       /** @deprecated @brief Corresponding bits of each variable. */
-      NodeProperty<std::vector<NodeId>> __var_bits;
+      NodeProperty< std::vector< NodeId > > __var_bits;
 
       /** @brief The NodeType of each node from the ORIGINAL network. */
-      NodeProperty<NodeType> __original_nodeType;
+      NodeProperty< NodeType > __original_nodeType;
       /** @brief The NodeType of each node from the up-to-date network. */
-      NodeProperty<NodeType>* __current_nodeType;  // = nullptr;
+      NodeProperty< NodeType >* __current_nodeType;  // = nullptr;
 
       /** @brief Used by L2U, to know if lower and upper probabilities over the
        * second modality has been stored in order to speed-up the algorithm. */
@@ -647,7 +650,7 @@ namespace gum {
        * probabilities of each node X over the "true" modality, i.e. \f$
        * \underline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      typename std::vector<std::vector<GUM_SCALAR>> __binCptMin;
+      typename std::vector< std::vector< GUM_SCALAR > > __binCptMin;
 
       /**
        * @brief Used with binary networks to speed-up L2U inference. Store the
@@ -655,7 +658,7 @@ namespace gum {
        * probabilities of each node X over the "true" modality, i.e. \f$
        * \overline{p}(X = 1 \mid pa(X) = j) \f$.
        */
-      typename std::vector<std::vector<GUM_SCALAR>> __binCptMax;
+      typename std::vector< std::vector< GUM_SCALAR > > __binCptMax;
 
       /** @brief %Set the NodeType of each node */
       void __sort_varType();
@@ -667,7 +670,8 @@ namespace gum {
        * @return Returns the cardinality of the Decision Node.
        */
       int __find_dNode_card(
-          const std::vector<std::vector<std::vector<GUM_SCALAR>>>& var_cpt ) const;
+        const std::vector< std::vector< std::vector< GUM_SCALAR > > >& var_cpt)
+        const;
 
       /**
        * Computes the vertices of each credal set according to their interval
@@ -688,14 +692,14 @@ namespace gum {
       /** @brief Initialize private BayesNet variables after the Constructor has
        * been
        * called */
-      void __initCNNets( const std::string& src_min_num,
-                         const std::string& src_max_den );
+      void __initCNNets(const std::string& src_min_num,
+                        const std::string& src_max_den);
 
       /** @brief Initialize private BayesNet variables after the Constructor has
        * been
        * called */
-      void __initCNNets( const BayesNet<GUM_SCALAR>& src_min_num,
-                         const BayesNet<GUM_SCALAR>& src_max_den );
+      void __initCNNets(const BayesNet< GUM_SCALAR >& src_min_num,
+                        const BayesNet< GUM_SCALAR >& src_max_den);
 
       /**
        * @deprecated
@@ -713,7 +717,7 @@ namespace gum {
        *
        * @param bn_dest The reference to the new copy
        */
-      void __bnCopy( BayesNet<GUM_SCALAR>& bn_dest );
+      void __bnCopy(BayesNet< GUM_SCALAR >& bn_dest);
 
       // void __H2Vcdd ( const std::vector< std::vector< GUM_SCALAR > > & h_rep,
       // std::vector< std::vector< GUM_SCALAR > > & v_rep ) const;
@@ -728,14 +732,14 @@ namespace gum {
        * @param v_rep A reference to the V-representation of the same credal
        *set.
        */
-      void __H2Vlrs( const std::vector<std::vector<GUM_SCALAR>>& h_rep,
-                     std::vector<std::vector<GUM_SCALAR>>&       v_rep ) const;
+      void __H2Vlrs(const std::vector< std::vector< GUM_SCALAR > >& h_rep,
+                    std::vector< std::vector< GUM_SCALAR > >&       v_rep) const;
 
     };  // CredalNet
 
 
-    extern template class CredalNet<float>;
-    extern template class CredalNet<double>;
+    extern template class CredalNet< float >;
+    extern template class CredalNet< double >;
 
   }  // namespace credal
 }  // namespace gum

@@ -63,10 +63,10 @@ namespace gum {
      * aprioris are taken into account during structure learning and parameter
      * learning.
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
     class ScoreInternalK2Apriori
-        : public ScoreInternalApriori<IdSetAlloc, CountAlloc> {
+      : public ScoreInternalApriori< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -77,16 +77,16 @@ namespace gum {
       ScoreInternalK2Apriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>*
+      virtual ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >*
       copyFactory() const final;
 
       /// copy constructor
       ScoreInternalK2Apriori(
-          const ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>& from );
+        const ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >& from);
 
       /// move constructor
       ScoreInternalK2Apriori(
-          ScoreInternalK2Apriori<IdSetAlloc, CountAlloc>&& from );
+        ScoreInternalK2Apriori< IdSetAlloc, CountAlloc >&& from);
 
       /// destructor
       virtual ~ScoreInternalK2Apriori();
@@ -100,12 +100,12 @@ namespace gum {
 
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
-          const std::vector<Size>& modalities,
-          std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              target_nodesets,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              conditioning_nodesets ) final;
+        const std::vector< Size >& modalities,
+        std::vector< std::vector< double, CountAlloc > >& counts,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          target_nodesets,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          conditioning_nodesets) final;
 
       /// @}
     };

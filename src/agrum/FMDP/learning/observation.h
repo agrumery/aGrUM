@@ -57,21 +57,21 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    Observation() { GUM_CONSTRUCTOR( Observation ) }
+    Observation() { GUM_CONSTRUCTOR(Observation) }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~Observation() { GUM_DESTRUCTOR( Observation ) }
+    ~Observation() { GUM_DESTRUCTOR(Observation) }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( Observation ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(Observation));
     }
 
     /// @}
@@ -88,10 +88,10 @@ namespace gum {
      * @throws NotFound if variable is not in this observation
      */
     // ###################################################################
-    INLINE Idx modality( const DiscreteVariable* var ) const {
+    INLINE Idx modality(const DiscreteVariable* var) const {
       return __varInst[var];
     }
-    INLINE Idx rModality( const DiscreteVariable* var ) const {
+    INLINE Idx rModality(const DiscreteVariable* var) const {
       return __rInst[var];
     }
 
@@ -103,11 +103,11 @@ namespace gum {
      * this variable
      */
     // ###################################################################
-    INLINE void setModality( const DiscreteVariable* var, Idx modality ) {
-      __varInst.insert( var, modality );
+    INLINE void setModality(const DiscreteVariable* var, Idx modality) {
+      __varInst.insert(var, modality);
     }
-    INLINE void setRModality( const DiscreteVariable* var, Idx modality ) {
-      __rInst.insert( var, modality );
+    INLINE void setRModality(const DiscreteVariable* var, Idx modality) {
+      __rInst.insert(var, modality);
     }
 
     // ###################################################################
@@ -118,7 +118,7 @@ namespace gum {
     // ###################################################################
     // Sets the reward obtained during this observation
     // ###################################################################
-    void setReward( double reward ) { __reward = reward; }
+    void setReward(double reward) { __reward = reward; }
 
     /// @}
     ///
@@ -133,7 +133,7 @@ namespace gum {
     /// Returns an const safe iterator on the beginning of the list of
     /// variables in this observation
     // ###################################################################
-    HashTableConstIteratorSafe<const DiscreteVariable*, Idx>
+    HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
     cbeginVariablesSafe() const {
       return __varInst.cbeginSafe();
     }
@@ -142,7 +142,7 @@ namespace gum {
     /// Returns an const safe iterator on the end of the list of
     /// variables in this observation
     // ###################################################################
-    HashTableConstIteratorSafe<const DiscreteVariable*, Idx>
+    HashTableConstIteratorSafe< const DiscreteVariable*, Idx >
     cendVariablesSafe() const {
       return __varInst.cendSafe();
     }
@@ -151,8 +151,8 @@ namespace gum {
 
     private:
     /// Table giving for every variables its instantiation
-    HashTable<const DiscreteVariable*, Idx> __varInst;
-    HashTable<const DiscreteVariable*, Idx> __rInst;
+    HashTable< const DiscreteVariable*, Idx > __varInst;
+    HashTable< const DiscreteVariable*, Idx > __rInst;
 
     /// The reward associated to this transition
     double __reward;

@@ -38,10 +38,10 @@ namespace gum {
 
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME
 #define GUM_MULTI_DIM_COMPLETE_PROJECTION_TYPE GUM_SCALAR
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   GUM_SCALAR GUM_MULTI_DIM_COMPLETE_PROJECTION_NAME(
-      const MultiDimImplementation<GUM_SCALAR>* table,
-      Instantiation*                            instantiation = 0 )
+    const MultiDimImplementation< GUM_SCALAR >* table,
+    Instantiation*                              instantiation = 0)
 #endif
 
 // clang-format off
@@ -87,22 +87,21 @@ namespace gum {
 
     // now, parse the table and compute the projection. Start with the
     // neutral element
-    Instantiation table_inst( table );
+    Instantiation table_inst(table);
     GUM_SCALAR    current_val = GUM_MULTI_DIM_COMPLETE_PROJECTION_NEUTRAL;
 
-    if ( instantiation ) {
+    if (instantiation) {
       GUM_SCALAR old_val = current_val;
       Size       current_ptr = 0;
 
-      for ( Size i = 0; i < nb_elt; ++i, ++table_inst ) {
+      for (Size i = 0; i < nb_elt; ++i, ++table_inst) {
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
-        GUM_MULTI_DIM_COMPLETE_PROJECTION( &current_val,
-                                           table->get( table_inst ) );
+        GUM_MULTI_DIM_COMPLETE_PROJECTION(&current_val, table->get(table_inst));
 #else
-        GUM_MULTI_DIM_COMPLETE_PROJECTION( current_val, table->get( table_inst ) );
+        GUM_MULTI_DIM_COMPLETE_PROJECTION(current_val, table->get(table_inst));
 #endif  // GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
 
-        if ( current_val != old_val ) {
+        if (current_val != old_val) {
           old_val = current_val;
           current_ptr = i;
         }
@@ -111,36 +110,35 @@ namespace gum {
       // put the table's variables into the instantiation
       instantiation->forgetMaster();
       instantiation->clear();
-      const Sequence<const DiscreteVariable*>& table_vars =
-          table->variablesSequence();
+      const Sequence< const DiscreteVariable* >& table_vars =
+        table->variablesSequence();
 
-      for ( const auto var : table_vars )
-        instantiation->add( *var );
+      for (const auto var : table_vars)
+        instantiation->add(*var);
 
       // return the result
-      instantiation->operator+=( current_ptr );
-      return table->get( *instantiation );
+      instantiation->operator+=(current_ptr);
+      return table->get(*instantiation);
     } else {
 #ifdef GUM_MULTI_DIM_COMPLETE_PROJECTION_POINTER
       GUM_SCALAR old_val = current_val;
       Size       current_ptr = 0;
 
-      for ( Size i = 0; i < nb_elt; ++i, ++table_inst ) {
-        GUM_MULTI_DIM_COMPLETE_PROJECTION( &current_val,
-                                           table->get( table_inst ) );
+      for (Size i = 0; i < nb_elt; ++i, ++table_inst) {
+        GUM_MULTI_DIM_COMPLETE_PROJECTION(&current_val, table->get(table_inst));
 
-        if ( current_val != old_val ) {
+        if (current_val != old_val) {
           old_val = current_val;
           current_ptr = i;
         }
       }
 
       table_inst.setFirst();
-      table_inst += current_ptr return table->get( table_inst );
+      table_inst += current_ptr return table->get(table_inst);
 #else
 
-      for ( Size i = 0; i < nb_elt; ++i, ++table_inst ) {
-        GUM_MULTI_DIM_COMPLETE_PROJECTION( current_val, table->get( table_inst ) );
+      for (Size i = 0; i < nb_elt; ++i, ++table_inst) {
+        GUM_MULTI_DIM_COMPLETE_PROJECTION(current_val, table->get(table_inst));
       }
 
       return current_val;

@@ -27,5 +27,5 @@
 // to help IDE parser
 #include <agrum/core/priorityQueue.h>
 
-template class gum::PriorityQueue<std::string>;
-template class gum::PriorityQueue<int, int>;
+template class gum::PriorityQueue< std::string >;
+template class gum::PriorityQueue< int, int >;

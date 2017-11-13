@@ -28,17 +28,19 @@
 #ifndef GUM_COMPLETE_PROJECTION_REGISTER_4_MULTI_DIM_H
 #define GUM_COMPLETE_PROJECTION_REGISTER_4_MULTI_DIM_H
 
-#include <agrum/core/hashTable.h>
-#include <agrum/core/set.h>
-#include <agrum/variables/discreteVariable.h>
 #include <iostream>
 #include <string>
 #include <utility>
 
+#include <agrum/core/hashTable.h>
+#include <agrum/core/set.h>
+#include <agrum/variables/discreteVariable.h>
+#include <agrum/multidim/instantiation.h>
+
 namespace gum {
 
   // the base object used by the projections
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class MultiDimImplementation;
 
   // ===========================================================================
@@ -57,12 +59,12 @@ namespace gum {
    *
    */
   // clang-format on
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class CompleteProjectionRegister4MultiDim {
     public:
     /// the type of functions used by the register
-    typedef GUM_SCALAR ( *CompleteProjectionPtr )(
-        const MultiDimImplementation<GUM_SCALAR>*, Instantiation* instantiation );
+    typedef GUM_SCALAR (*CompleteProjectionPtr)(
+      const MultiDimImplementation< GUM_SCALAR >*, Instantiation* instantiation);
 
     // =========================================================================
     /// @name Accessors / Modifiers
@@ -91,9 +93,9 @@ namespace gum {
      * MultiDimImplementations. This constraint is imposed by the C++ typing
      * system.
      */
-    void insert( const std::string&    projection_name,
-                 const std::string&    type_multidim,
-                 CompleteProjectionPtr newFunction );
+    void insert(const std::string&    projection_name,
+                const std::string&    type_multidim,
+                CompleteProjectionPtr newFunction);
 
     /**
      * @brief Removes a given entry from the register.
@@ -109,8 +111,8 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function to remove
      */
-    void erase( const std::string& projection_name,
-                const std::string& type_multidim );
+    void erase(const std::string& projection_name,
+               const std::string& type_multidim);
 
     /**
      * @brief Indicates whether a given entry exists in the register.
@@ -126,8 +128,8 @@ namespace gum {
      * @param type_multidim the \e real type of the multiDim taken in argument
      * by the function we look for.
      */
-    bool exists( const std::string& projection_name,
-                 const std::string& type_multidim ) const;
+    bool exists(const std::string& projection_name,
+                const std::string& type_multidim) const;
 
     /**
      * @brief returns the specialized projection operator assigned to a given
@@ -145,8 +147,8 @@ namespace gum {
      * by the function we look for @throws NotFound exception is thrown if the
      * operator we look for does not exist within this register.
      */
-    CompleteProjectionPtr get( const std::string& projection_name,
-                               const std::string& type_multidim ) const;
+    CompleteProjectionPtr get(const std::string& projection_name,
+                              const std::string& type_multidim) const;
 
     /// @}
 
@@ -176,7 +178,7 @@ namespace gum {
 
     /// copy operator: never to be used
     CompleteProjectionRegister4MultiDim(
-        const CompleteProjectionRegister4MultiDim& );
+      const CompleteProjectionRegister4MultiDim&);
 
     /// Destructor
     ~CompleteProjectionRegister4MultiDim();
@@ -184,7 +186,7 @@ namespace gum {
     /// @}
 
     /// The set of associations for a given projection type
-    typedef HashTable<std::string, CompleteProjectionPtr> CompleteProjectionSet;
+    typedef HashTable< std::string, CompleteProjectionPtr > CompleteProjectionSet;
 
     /**
      * @brief A mapping from the types of MultiDimImplementations to
@@ -195,17 +197,16 @@ namespace gum {
      * MultiDimImplementation is associated a function to project this subtype
      * of hypermatrix (the CompleteProjectionPtr)
      */
-    HashTable<std::string, CompleteProjectionSet*> __set;
+    HashTable< std::string, CompleteProjectionSet* > __set;
   };
 
   /// A function to more easily register new projection functions in MultiDims
   /// @ingroup multidim_op_group
-  template <typename GUM_SCALAR>
-  void
-  registerCompleteProjection( const std::string& projection_name,
-                              const std::string& type_multidim,
-                              typename CompleteProjectionRegister4MultiDim<
-                                  GUM_SCALAR>::CompleteProjectionPtr function );
+  template < typename GUM_SCALAR >
+  void registerCompleteProjection(const std::string& projection_name,
+                                  const std::string& type_multidim,
+                                  typename CompleteProjectionRegister4MultiDim<
+                                    GUM_SCALAR >::CompleteProjectionPtr function);
 
 } /* namespace gum */
 

@@ -63,28 +63,28 @@ namespace gum {
        *
        * @tparam GUM_SCALAR The scalar type to use with the gum::prm::PRM.
        */
-      template <typename GUM_SCALAR>
+      template < typename GUM_SCALAR >
       class O3prmReader {
         public:
         O3prmReader();
-        O3prmReader( PRM<GUM_SCALAR>& prm );
-        O3prmReader( const O3prmReader& src );
-        O3prmReader( O3prmReader&& src );
+        O3prmReader(PRM< GUM_SCALAR >& prm);
+        O3prmReader(const O3prmReader& src);
+        O3prmReader(O3prmReader&& src);
         ~O3prmReader();
-        O3prmReader& operator=( const O3prmReader& src );
-        O3prmReader& operator=( O3prmReader&& src );
+        O3prmReader& operator=(const O3prmReader& src);
+        O3prmReader& operator=(O3prmReader&& src);
 
         /// Read file and load its content using a PRMFactory.
         /// The package parameter set the file's content package.
-        Size readFile( const std::string& file, const std::string& module = "" );
+        Size readFile(const std::string& file, const std::string& module = "");
 
         /// With readString method, you must set the current path
         /// to search from import yourself, using addClassPath.
-        Size readString( const std::string& string );
+        Size readString(const std::string& string);
 
-        void parseStream( std::istream& input,
-                          std::ostream& output,
-                          std::string   module = "" );
+        void parseStream(std::istream& input,
+                         std::ostream& output,
+                         std::string   module = "");
         /**
          * @brief This methods defines the list of paths to look for o3prm
          * files.
@@ -93,7 +93,7 @@ namespace gum {
          *
          * @param class_path A semicolon separated list of paths.
          */
-        void setClassPath( const std::string& class_path );
+        void setClassPath(const std::string& class_path);
 
         /**
          * @brief Add a list of paths to look for o3prm
@@ -103,10 +103,10 @@ namespace gum {
          *
          * @param class_path A semicolon separated list of paths.
          */
-        void addClassPath( const std::string& class_path );
+        void addClassPath(const std::string& class_path);
 
-        gum::prm::PRM<GUM_SCALAR>*       prm() { return __prm; }
-        const gum::prm::PRM<GUM_SCALAR>* prm() const { return __prm; }
+        gum::prm::PRM< GUM_SCALAR >*       prm() { return __prm; }
+        const gum::prm::PRM< GUM_SCALAR >* prm() const { return __prm; }
 
         /// @{
         /// publishing Errors API
@@ -120,50 +120,50 @@ namespace gum {
         const ErrorsContainer& errorsContainer() const;
 
         /// line of ith error or warning
-        Idx errLine( Idx i ) const;
+        Idx errLine(Idx i) const;
         /// col of ith error or warning
-        Idx errCol( Idx i ) const;
+        Idx errCol(Idx i) const;
         /// filename of ith error or warning
-        std::wstring errFilename( Idx i ) const;
+        std::wstring errFilename(Idx i) const;
         /// type of ith error or warning
-        bool errIsError( Idx i ) const;
+        bool errIsError(Idx i) const;
         /// message of ith error or warning
-        std::string errMsg( Idx i ) const;
+        std::string errMsg(Idx i) const;
 
         /// send on std::cerr the list of errors
-        void showElegantErrors( std::ostream& o = std::cerr ) const;
+        void showElegantErrors(std::ostream& o = std::cerr) const;
 
         /// send on std::cerr the list of errors or warnings
-        void showElegantErrorsAndWarnings( std::ostream& o = std::cerr ) const;
+        void showElegantErrorsAndWarnings(std::ostream& o = std::cerr) const;
 
         /// send on std::cerr the number of errors and the number of warnings
-        void showErrorCounts( std::ostream& o = std::cerr ) const;
+        void showErrorCounts(std::ostream& o = std::cerr) const;
         /// @}
 
         private:
-        PRM<GUM_SCALAR>*         __prm;
-        std::unique_ptr<O3PRM>   __o3_prm;
-        std::vector<std::string> __class_path;
-        Set<std::string>         __imported;
+        PRM< GUM_SCALAR >*         __prm;
+        std::unique_ptr< O3PRM >   __o3_prm;
+        std::vector< std::string > __class_path;
+        Set< std::string >         __imported;
 
         // Needed when file can't be parse (can not open it for exemple)
         ErrorsContainer __errors;
 
-        void __readStream( std::istream&      input,
-                           const std::string& file,
-                           std::string        module = "" );
+        void __readStream(std::istream&      input,
+                          const std::string& file,
+                          std::string        module = "");
 
-        void __parseImport( const O3Import& i, const std::string& module_path );
+        void __parseImport(const O3Import& i, const std::string& module_path);
 
-        void __parseStream( std::istream&      input,
-                            const std::string& filename,
-                            const std::string& module );
+        void __parseStream(std::istream&      input,
+                           const std::string& filename,
+                           const std::string& module);
 
-        std::vector<const O3Import*> __copyImports();
+        std::vector< const O3Import* > __copyImports();
 
-        std::string __clean( std::string text ) const;
-        std::string __print( const ParseError& err ) const;
-        std::string __readStream( std::istream& input );
+        std::string __clean(std::string text) const;
+        std::string __print(const ParseError& err) const;
+        std::string __readStream(std::istream& input);
       };
 
     }  // o3prm
@@ -174,8 +174,8 @@ namespace gum {
 #include <agrum/PRM/o3prm/O3prmReader_tpl.h>
 
 
-extern template class gum::prm::o3prm::O3prmReader<float>;
-extern template class gum::prm::o3prm::O3prmReader<double>;
+extern template class gum::prm::o3prm::O3prmReader< float >;
+extern template class gum::prm::o3prm::O3prmReader< double >;
 
 
 #endif  // GUM_PRM_O3PRM_O3PRM_FACTORY_H

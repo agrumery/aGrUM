@@ -44,7 +44,7 @@ namespace gum {
   // ###################################################################
   E_GreedyDecider::E_GreedyDecider() {
 
-    GUM_CONSTRUCTOR( E_GreedyDecider )
+    GUM_CONSTRUCTOR(E_GreedyDecider)
 
     __sss = 1.0;
   }
@@ -55,7 +55,7 @@ namespace gum {
    *
    */
   // ###################################################################
-  E_GreedyDecider::~E_GreedyDecider() { GUM_DESTRUCTOR( E_GreedyDecider ) }
+  E_GreedyDecider::~E_GreedyDecider() { GUM_DESTRUCTOR(E_GreedyDecider) }
 
 
   // ==========================================================================
@@ -67,11 +67,11 @@ namespace gum {
    *
    */
   // ###################################################################
-  void E_GreedyDecider::initialize( const FMDP<double>* fmdp ) {
-    IDecisionStrategy::initialize( fmdp );
-    for ( auto varIter = fmdp->beginVariables(); varIter != fmdp->endVariables();
-          ++varIter )
-      __sss *= (double)( *varIter )->domainSize();
+  void E_GreedyDecider::initialize(const FMDP< double >* fmdp) {
+    IDecisionStrategy::initialize(fmdp);
+    for (auto varIter = fmdp->beginVariables(); varIter != fmdp->endVariables();
+         ++varIter)
+      __sss *= (double)(*varIter)->domainSize();
   }
 
 
@@ -86,12 +86,12 @@ namespace gum {
    * @param reachedState : the state reached after the transition
    */
   // ###################################################################
-  void E_GreedyDecider::checkState( const Instantiation& reachedState,
-                                    Idx                  actionId ) {
-    if ( __statecpt.nbVisitedStates() == 0 )
-      __statecpt.reset( reachedState );
-    else if ( !__statecpt.checkState( reachedState ) )
-      __statecpt.addState( reachedState );
+  void E_GreedyDecider::checkState(const Instantiation& reachedState,
+                                   Idx                  actionId) {
+    if (__statecpt.nbVisitedStates() == 0)
+      __statecpt.reset(reachedState);
+    else if (!__statecpt.checkState(reachedState))
+      __statecpt.addState(reachedState);
   }
 
   // ###################################################################
@@ -100,23 +100,23 @@ namespace gum {
    * @return a set containing every optimal actions on that state
    */
   // ###################################################################
-  ActionSet E_GreedyDecider::stateOptimalPolicy( const Instantiation& curState ) {
+  ActionSet E_GreedyDecider::stateOptimalPolicy(const Instantiation& curState) {
 
     double explo = (double)std::rand() / (double)RAND_MAX;
     double temp =
-        std::pow( ( __sss - (double)__statecpt.nbVisitedStates() ) / __sss, 3.0 );
+      std::pow((__sss - (double)__statecpt.nbVisitedStates()) / __sss, 3.0);
     double exploThreshold = temp < 0.1 ? 0.1 : temp;
 
     //      std::cout << exploThreshold << std::endl;
 
-    ActionSet optimalSet = IDecisionStrategy::stateOptimalPolicy( curState );
-    if ( explo > exploThreshold ) {
+    ActionSet optimalSet = IDecisionStrategy::stateOptimalPolicy(curState);
+    if (explo > exploThreshold) {
       //        std::cout << "Exploit : " << optimalSet << std::endl;
       return optimalSet;
     }
 
-    if ( _allActions.size() > optimalSet.size() ) {
-      ActionSet ret( _allActions );
+    if (_allActions.size() > optimalSet.size()) {
+      ActionSet ret(_allActions);
       ret -= optimalSet;
       //        std::cout << "Explore : " << ret << std::endl;
       return ret;

@@ -51,10 +51,10 @@ namespace gum {
    */
 
 
-  template <TESTNAME AttributeSelection, bool isScalar>
+  template < TESTNAME AttributeSelection, bool isScalar >
   class ConcreteLeaf : public AbstractLeaf {
 
-    typedef typename ValueSelect<isScalar, double, Idx>::type ValueType;
+    typedef typename ValueSelect< isScalar, double, Idx >::type ValueType;
 
     public:
     // ==========================================================================
@@ -65,28 +65,28 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    ConcreteLeaf( NodeId leafId,
-                  NodeDatabase<AttributeSelection, isScalar>* n1,
-                  const Sequence<ValueType>* valueDomain )
-        : AbstractLeaf( leafId )
-        , __n1( n1 )
-        , __valueDomain( valueDomain ) {
-      GUM_CONSTRUCTOR( ConcreteLeaf )
+    ConcreteLeaf(NodeId leafId,
+                 NodeDatabase< AttributeSelection, isScalar >* n1,
+                 const Sequence< ValueType >* valueDomain)
+        : AbstractLeaf(leafId)
+        , __n1(n1)
+        , __valueDomain(valueDomain) {
+      GUM_CONSTRUCTOR(ConcreteLeaf)
     }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ConcreteLeaf() { GUM_DESTRUCTOR( ConcreteLeaf ) }
+    ~ConcreteLeaf() { GUM_DESTRUCTOR(ConcreteLeaf) }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( ConcreteLeaf ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(ConcreteLeaf));
     }
 
     /// @}
@@ -94,26 +94,26 @@ namespace gum {
     // ###################################################################
     /// Gaves the leaf effectif for given modality
     // ###################################################################
-    virtual double effectif( Idx moda ) const {
-      return __effectif( moda, Int2Type<isScalar>() );
+    virtual double effectif(Idx moda) const {
+      return __effectif(moda, Int2Type< isScalar >());
     }
 
     private:
-    double __effectif( Idx moda, Int2Type<true> ) const {
-      return (double)__n1->effectif( Idx( __valueDomain->atPos( moda ) ) );
+    double __effectif(Idx moda, Int2Type< true >) const {
+      return (double)__n1->effectif(Idx(__valueDomain->atPos(moda)));
     }
-    double __effectif( Idx moda, Int2Type<false> ) const {
-      return (double)__n1->effectif( moda );
+    double __effectif(Idx moda, Int2Type< false >) const {
+      return (double)__n1->effectif(moda);
     }
 
     public:
     virtual double total() const { return __n1->nbObservation(); }
 
-    Idx nbModa() const { return __nbModa( Int2Type<isScalar>() ); }
+    Idx nbModa() const { return __nbModa(Int2Type< isScalar >()); }
 
     private:
-    Idx __nbModa( Int2Type<true> ) const { return __valueDomain->size(); }
-    Idx __nbModa( Int2Type<false> ) const { return __n1->valueDomain(); }
+    Idx __nbModa(Int2Type< true >) const { return __valueDomain->size(); }
+    Idx __nbModa(Int2Type< false >) const { return __n1->valueDomain(); }
 
     public:
     std::string toString() {
@@ -123,8 +123,8 @@ namespace gum {
     }
 
     private:
-    NodeDatabase<AttributeSelection, isScalar>* __n1;
-    const Sequence<ValueType>* __valueDomain;
+    NodeDatabase< AttributeSelection, isScalar >* __n1;
+    const Sequence< ValueType >* __valueDomain;
   };
 
 

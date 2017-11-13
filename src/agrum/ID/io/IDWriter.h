@@ -43,7 +43,7 @@ namespace gum {
    * All classes used to write an influence diagram in a stream or
    * a file must inherit from this class
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
 
   class IDWriter {
     public:
@@ -64,8 +64,8 @@ namespace gum {
      * @param infdiag The influence diagram writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::ostream&                       output,
-                        const InfluenceDiagram<GUM_SCALAR>& infdiag ) = 0;
+    virtual void write(std::ostream&                         output,
+                       const InfluenceDiagram< GUM_SCALAR >& infdiag) = 0;
 
     /**
      * Writes an Influence Diagram in the file referenced by filePath.
@@ -76,8 +76,8 @@ namespace gum {
      * @param infdiag The Influence Diagram writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::string                         filePath,
-                        const InfluenceDiagram<GUM_SCALAR>& infdiag ) = 0;
+    virtual void write(std::string                           filePath,
+                       const InfluenceDiagram< GUM_SCALAR >& infdiag) = 0;
   };
 } /* namespace gum */
 

@@ -57,7 +57,7 @@ namespace gum {
      * @param msg The parsing error message.
      * @param line The line where the parsing error occured.
      */
-    ParseError( bool is_error, const std::string& msg, Idx line );
+    ParseError(bool is_error, const std::string& msg, Idx line);
 
     /**
      * @brief Class constructor.
@@ -67,11 +67,11 @@ namespace gum {
      * @param line The line where the parsing error occured.
      * @param col The column where the parsing error occured.
      */
-    ParseError( bool               is_error,
-                const std::string& msg,
-                const std::string& filename,
-                Idx                line,
-                Idx                col = 0 );
+    ParseError(bool               is_error,
+               const std::string& msg,
+               const std::string& filename,
+               Idx                line,
+               Idx                col = 0);
 
     /**
      * @brief Class constructor.
@@ -82,18 +82,18 @@ namespace gum {
      * @param line The line where the parsing error occured.
      * @param col The column where the parsing error occured.
      */
-    ParseError( bool               is_error,
-                const std::string& msg,
-                const std::string& filename,
-                const std::string& code,
-                Idx                line,
-                Idx                col = 0 );
+    ParseError(bool               is_error,
+               const std::string& msg,
+               const std::string& filename,
+               const std::string& code,
+               Idx                line,
+               Idx                col = 0);
 
     /**
      * @brief Copy constructor.
      * @param cont The gum::ParseError to copy.
      */
-    ParseError( const ParseError& cont );
+    ParseError(const ParseError& cont);
 
     /// @}
     // ============================================================================
@@ -106,7 +106,7 @@ namespace gum {
      * @param cont The gum::ParseError to copy.
      * @return Returns this gum::ParseError.
      */
-    ParseError operator=( const ParseError& cont );
+    ParseError operator=(const ParseError& cont);
 
     /// @}
     // ============================================================================
@@ -157,7 +157,7 @@ namespace gum {
   class ErrorsContainer {
 
     /// The list of gum::ParseError contained in this gum::ErrorsContainer.
-    mutable std::vector<ParseError> errors;
+    mutable std::vector< ParseError > errors;
 
     public:
     /// Number of errors detected.
@@ -180,7 +180,7 @@ namespace gum {
      * @brief Copy constructor.
      * @param cont The ErrorsContainer to copy.
      */
-    ErrorsContainer( const ErrorsContainer& cont );
+    ErrorsContainer(const ErrorsContainer& cont);
 
     /// @}
     // ============================================================================
@@ -192,7 +192,7 @@ namespace gum {
      * @brief Add an error object to the container.
      * @param error The gum::ParseError to add.
      */
-    void add( ParseError error );
+    void add(ParseError error);
 
     /**
      * @brief Returns the i-th error.
@@ -200,7 +200,7 @@ namespace gum {
      * @return Returns the i-th error.
      * @throw OutOfBounds Raised if there is less than i errors.
      */
-    ParseError error( Idx i ) const;
+    ParseError error(Idx i) const;
 
     /**
      * @brief Returns the last added error.
@@ -216,10 +216,10 @@ namespace gum {
      * @param line The error's line.
      * @param col The error's column.
      */
-    void addError( const std::string& msg,
-                   const std::string& filename,
-                   Idx                line,
-                   Idx                col );
+    void addError(const std::string& msg,
+                  const std::string& filename,
+                  Idx                line,
+                  Idx                col);
 
     /**
      * @brief Adds a warning.
@@ -228,17 +228,17 @@ namespace gum {
      * @param line The warning's line.
      * @param col The warning's column.
      */
-    void addWarning( const std::string& msg,
-                     const std::string& filename,
-                     Idx                line,
-                     Idx                col );
+    void addWarning(const std::string& msg,
+                    const std::string& filename,
+                    Idx                line,
+                    Idx                col);
 
     /**
      * @brief Add an exception.
      * @param msg The exception's message.
      * @param filename The exception's file.
      */
-    void addException( const std::string& msg, const std::string& filename );
+    void addException(const std::string& msg, const std::string& filename);
 
     /**
      * @brief Returns the number of errors and warnings.
@@ -250,31 +250,31 @@ namespace gum {
      * @brief Print errors on output stream.
      * @param o The output strem to send results.
      */
-    void syntheticResults( std::ostream& o ) const;
+    void syntheticResults(std::ostream& o) const;
 
     /**
      * @brief Print errors on output stream.
      * @param o The output strem to send results.
      */
-    void simpleErrors( std::ostream& o ) const;
+    void simpleErrors(std::ostream& o) const;
 
     /**
      * @brief Print errors on output stream.
      * @param o The output strem to send results.
      */
-    void simpleErrorsAndWarnings( std::ostream& o ) const;
+    void simpleErrorsAndWarnings(std::ostream& o) const;
 
     /**
      * @brief Print errors on output stream.
      * @param o The output strem to send results.
      */
-    void elegantErrors( std::ostream& o ) const;
+    void elegantErrors(std::ostream& o) const;
 
     /**
      * @brief Print errors on output stream.
      * @param o The output strem to send results.
      */
-    void elegantErrorsAndWarnings( std::ostream& o ) const;
+    void elegantErrorsAndWarnings(std::ostream& o) const;
 
     /// @}
     // ============================================================================
@@ -290,7 +290,7 @@ namespace gum {
      * @param msg The error's message.
      */
     void
-    Error( const std::wstring& filename, Idx line, Idx col, const wchar_t* msg );
+    Error(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
 
     /**
      * @brief For adding warnings.
@@ -300,14 +300,14 @@ namespace gum {
      * @param msg The warning's message.
      */
     void
-    Warning( const std::wstring& filename, Idx line, Idx col, const wchar_t* msg );
+    Warning(const std::wstring& filename, Idx line, Idx col, const wchar_t* msg);
 
     /**
      * @brief For adding exceptions.
      * @param filename The exception's file.
      * @param msg The exception's message.
      */
-    void Exception( const std::wstring& filename, const wchar_t* msg );
+    void Exception(const std::wstring& filename, const wchar_t* msg);
 
     /// @}
     // ============================================================================
@@ -320,14 +320,14 @@ namespace gum {
      * @param cont The gum::ErrorsContainer to add.
      * @return Return the sum of two gum::ErrorsContainer.
      */
-    ErrorsContainer operator+( const ErrorsContainer& cont ) const;
+    ErrorsContainer operator+(const ErrorsContainer& cont) const;
 
     /**
      * @brief Copy Operator.
      * @param cont The gum::ErrorsContainer to copy.
      * @return Returns this gum::ErrorsContainer.
      */
-    ErrorsContainer operator=( const ErrorsContainer& cont );
+    ErrorsContainer operator=(const ErrorsContainer& cont);
 
     /**
      * @brief Add the content of a gum::ErrorsContainer to this
@@ -335,7 +335,7 @@ namespace gum {
      * @param cont The gum::ErrorsContainer to add to this.
      * @return Returns this gum::ErrorsContainer.
      */
-    ErrorsContainer operator+=( const ErrorsContainer& cont );
+    ErrorsContainer operator+=(const ErrorsContainer& cont);
 
     /// @}
 

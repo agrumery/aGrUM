@@ -26,8 +26,8 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/inference/ShaferShenoyInference.h>
-#include <agrum/BN/inference/loopySamplingInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
+#include <agrum/BN/inference/loopySamplingInference.h>
 #include <agrum/BN/inference/variableElimination.h>
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/multidim/multiDimArray.h>

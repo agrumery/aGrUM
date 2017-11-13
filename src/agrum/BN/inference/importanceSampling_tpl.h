@@ -63,12 +63,12 @@ namespace gum {
     do {
       prev.clear();
       pSurQ = 1.;
-      for (auto ev : this->hardEvidenceNodes()) {
+      for (const auto ev : this->hardEvidenceNodes()) {
         prev.add(this->BN().variable(ev));
         prev.chgVal(this->BN().variable(ev), this->hardEvidence()[ev]);
       }
 
-      for (auto nod : this->samplingBN().topologicalOrder()) {
+      for (const auto nod : this->samplingBN().topologicalOrder()) {
         if (!this->hasHardEvidence(nod)) {
           this->_addVarSample(nod, &prev);
         }
@@ -81,7 +81,7 @@ namespace gum {
         }
       }
       if (pSurQ > 0.0) {
-        for (auto ev : this->hardEvidenceNodes()) {
+        for (const auto ev : this->hardEvidenceNodes()) {
           pSurQ *= this->samplingBN().cpt(ev).get(prev);
         }
       }
@@ -95,7 +95,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void ImportanceSampling< GUM_SCALAR >::_unsharpenBN(
     BayesNetFragment< GUM_SCALAR >* bn, float epsilon) {
-    for (auto nod : bn->nodes().asNodeSet()) {
+    for (const auto nod : bn->nodes().asNodeSet()) {
       Potential< GUM_SCALAR >* p = new Potential< GUM_SCALAR >();
       *p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
       p->normalizeAsCPT();
@@ -107,7 +107,7 @@ namespace gum {
   void ImportanceSampling< GUM_SCALAR >::_onContextualize(
     BayesNetFragment< GUM_SCALAR >* bn) {
 
-    for (auto ev : this->hardEvidenceNodes()) {
+    for (const auto ev : this->hardEvidenceNodes()) {
       bn->uninstallCPT(ev);
       bn->installCPT(ev, new Potential< GUM_SCALAR >(*this->evidence()[ev]));
       // we keep the variables with hard evidence but alone

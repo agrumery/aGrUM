@@ -48,7 +48,7 @@ namespace gum {
    * @return Returns a random Odxbetween 0 and max-1 included (i.e. a proba).
    * By default, max=2
    */
-  Idx randomValue( const Size max = 2 );
+  Idx randomValue(const Size max = 2);
 
   /**
    * @brief Returns a random double between 0 and 1 included (i.e. a proba).
@@ -62,8 +62,8 @@ namespace gum {
    * @return Return a random discrete distribution.
    * @tparam GUM_SCALAR The type used for representing probabilities.
    */
-  template <typename GUM_SCALAR>
-  std::vector<GUM_SCALAR> randomDistribution( Size n );
+  template < typename GUM_SCALAR >
+  std::vector< GUM_SCALAR > randomDistribution(Size n);
 
   /**
    * @brief Returns the aGrUM's seed used by the std::generators.
@@ -74,12 +74,12 @@ namespace gum {
   /**
    * @brief Initialize random generator seed.
    */
-  void initRandom( unsigned int seed = 0 );
+  void initRandom(unsigned int seed = 0);
 
   /**
    * define a random_engine with correct seed
    */
-  std::default_random_engine getRandomGenerator( unsigned int seed = 0 );
+  std::default_random_engine getRandomGenerator(unsigned int seed = 0);
 
   /// @}
 } /* namespace gum */

@@ -29,35 +29,36 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori() {
-      GUM_CONSTRUCTOR( ScoreInternalApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE ScoreInternalApriori< IdSetAlloc, CountAlloc >::ScoreInternalApriori() {
+      GUM_CONSTRUCTOR(ScoreInternalApriori);
     }
 
     /// destructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::~ScoreInternalApriori() {
-      GUM_DESTRUCTOR( ScoreInternalApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE
+      ScoreInternalApriori< IdSetAlloc, CountAlloc >::~ScoreInternalApriori() {
+      GUM_DESTRUCTOR(ScoreInternalApriori);
     }
 
     /// copy constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori(
-        const ScoreInternalApriori& from ) {
-      GUM_CONS_CPY( ScoreInternalApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE ScoreInternalApriori< IdSetAlloc, CountAlloc >::ScoreInternalApriori(
+      const ScoreInternalApriori& from) {
+      GUM_CONS_CPY(ScoreInternalApriori);
     }
 
     /// move constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalApriori<IdSetAlloc, CountAlloc>::ScoreInternalApriori(
-        ScoreInternalApriori&& from ) {
-      GUM_CONS_MOV( ScoreInternalApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE ScoreInternalApriori< IdSetAlloc, CountAlloc >::ScoreInternalApriori(
+      ScoreInternalApriori&& from) {
+      GUM_CONS_MOV(ScoreInternalApriori);
     }
 
     /// indicates whether the apriori is potentially informative
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE bool
-    ScoreInternalApriori<IdSetAlloc, CountAlloc>::isInformative() const {
+    ScoreInternalApriori< IdSetAlloc, CountAlloc >::isInformative() const {
       return true;
     }
 

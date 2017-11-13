@@ -20,5 +20,5 @@
 
 #include <agrum/BN/io/UAI/UAIReader.h>
 
-template class gum::UAIReader<float>;
-template class gum::UAIReader<double>;
+template class gum::UAIReader< float >;
+template class gum::UAIReader< double >;

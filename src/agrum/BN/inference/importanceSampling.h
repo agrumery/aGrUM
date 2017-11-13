@@ -45,14 +45,14 @@ namespace gum {
       */
 
 
-  template <typename GUM_SCALAR>
-  class ImportanceSampling : public SamplingInference<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class ImportanceSampling : public SamplingInference< GUM_SCALAR > {
 
     public:
     /**
      * Default constructor
      */
-    ImportanceSampling( const IBayesNet<GUM_SCALAR>* bn );
+    ImportanceSampling(const IBayesNet< GUM_SCALAR >* bn);
 
 
     /**
@@ -78,7 +78,7 @@ namespace gum {
     * Each node added to the sample (in a topological order) has a weight.
     * The sample's weight is the product of all weights.
     */
-    virtual Instantiation _draw( float* w, Instantiation prev );
+    virtual Instantiation _draw(float* w, Instantiation prev);
 
 
     /// modifies the cpts of a BN in order to tend to uniform distributions
@@ -91,8 +91,8 @@ namespace gum {
     * normalizing
     *
     */
-    virtual void _unsharpenBN( BayesNetFragment<GUM_SCALAR>* bn,
-                               float                         epsilon = 1e-2 );
+    virtual void _unsharpenBN(BayesNetFragment< GUM_SCALAR >* bn,
+                              float                           epsilon = 1e-2);
 
     /// fired when Bayesian network is contextualized
     /**
@@ -105,12 +105,12 @@ namespace gum {
    * BN.
    *
    */
-    virtual void _onContextualize( BayesNetFragment<GUM_SCALAR>* bn );
+    virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn);
   };
 
-  extern template class ImportanceSampling<float>;
+  extern template class ImportanceSampling< float >;
 
-  extern template class ImportanceSampling<double>;
+  extern template class ImportanceSampling< double >;
 }
 
 #include <agrum/BN/inference/importanceSampling_tpl.h>

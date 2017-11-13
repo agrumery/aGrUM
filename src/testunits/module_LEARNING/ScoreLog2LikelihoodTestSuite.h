@@ -34,144 +34,150 @@ namespace gum_tests {
   class ScoreLog2LikelihoodTestSuite : public CxxTest::TestSuite {
     public:
     void test_LL() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
-      
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
+
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
 
       auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
+        gum::learning::make_DB_row_filter(database, translators, generators);
 
-      std::vector<gum::Size> modalities( 8, 2 );
+      std::vector< gum::Size > modalities(8, 2);
 
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight( 0 );
-      gum::learning::ScoreLog2Likelihood<> score( filter, modalities, apriori );
+      apriori.setWeight(0);
+      gum::learning::ScoreLog2Likelihood<> score(filter, modalities, apriori);
 
       TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::learning::ScoreLog2Likelihood<>::isAprioriCompatible(
-              gum::learning::AprioriSmoothing<>::type::type ) );
+        gum::learning::ScoreLog2Likelihood<>::isAprioriCompatible(
+          gum::learning::AprioriSmoothing<>::type::type));
       TS_GUM_ASSERT_THROWS_NOTHING(
-          gum::learning::ScoreLog2Likelihood<>::isAprioriCompatible( apriori ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( score.isAprioriCompatible(
-          gum::learning::AprioriSmoothing<>::type::type ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( score.isAprioriCompatible( apriori ) );
+        gum::learning::ScoreLog2Likelihood<>::isAprioriCompatible(apriori));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        score.isAprioriCompatible(gum::learning::AprioriSmoothing<>::type::type));
+      TS_GUM_ASSERT_THROWS_NOTHING(score.isAprioriCompatible(apriori));
 
-      gum::Idx id1 = score.addNodeSet( 3 );
-      gum::Idx id2 = score.addNodeSet( 1 );
-      TS_ASSERT_DELTA( score.score( id1 ), -988.314, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id2 ), -3023.254, 1e-2 );
-
-      score.clear();
-      id1 = score.addNodeSet( 0 );
-      id2 = score.addNodeSet( 2 );
-      TS_ASSERT_DELTA( score.score( id1 ), -9999.767, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id2 ), -9929.478, 1e-2 );
+      gum::Idx id1 = score.addNodeSet(3);
+      gum::Idx id2 = score.addNodeSet(1);
+      TS_ASSERT_DELTA(score.score(id1), -988.314, 1e-2);
+      TS_ASSERT_DELTA(score.score(id2), -3023.254, 1e-2);
 
       score.clear();
-      id1 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-      id2 = score.addNodeSet( 1, std::vector<gum::Idx>{4} );
-      TS_ASSERT_DELTA( score.score( id1 ), -978.407, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id2 ), -3017.57, 1e-2 );
+      id1 = score.addNodeSet(0);
+      id2 = score.addNodeSet(2);
+      TS_ASSERT_DELTA(score.score(id1), -9999.767, 1e-2);
+      TS_ASSERT_DELTA(score.score(id2), -9929.478, 1e-2);
 
       score.clear();
-      id1 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-      TS_ASSERT_DELTA( score.score( id1 ), -985.801, 1e-2 );
+      id1 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+      id2 = score.addNodeSet(1, std::vector< gum::Idx >{4});
+      TS_ASSERT_DELTA(score.score(id1), -978.407, 1e-2);
+      TS_ASSERT_DELTA(score.score(id2), -3017.57, 1e-2);
+
+      score.clear();
+      id1 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
+      TS_ASSERT_DELTA(score.score(id1), -985.801, 1e-2);
       return;
       gum::Idx id3, id4, id5, id6, id7;
       score.clear();
-      id1 = score.addNodeSet( 3 );
-      id2 = score.addNodeSet( 1 );
-      id3 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-      id4 = score.addNodeSet( 2 );
-      id5 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-      id6 = score.addNodeSet( 2 );
-      id7 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-      TS_ASSERT_DELTA( score.score( id1 ), -988.314, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id2 ), -3023.254, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id3 ), -985.801, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id4 ), -9929.478, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id5 ), -978.407, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id6 ), -9929.478, 1e-2 );
-      TS_ASSERT_DELTA( score.score( id7 ), -978.407, 1e-2 );
+      id1 = score.addNodeSet(3);
+      id2 = score.addNodeSet(1);
+      id3 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
+      id4 = score.addNodeSet(2);
+      id5 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+      id6 = score.addNodeSet(2);
+      id7 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+      TS_ASSERT_DELTA(score.score(id1), -988.314, 1e-2);
+      TS_ASSERT_DELTA(score.score(id2), -3023.254, 1e-2);
+      TS_ASSERT_DELTA(score.score(id3), -985.801, 1e-2);
+      TS_ASSERT_DELTA(score.score(id4), -9929.478, 1e-2);
+      TS_ASSERT_DELTA(score.score(id5), -978.407, 1e-2);
+      TS_ASSERT_DELTA(score.score(id6), -9929.478, 1e-2);
+      TS_ASSERT_DELTA(score.score(id7), -978.407, 1e-2);
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
-      
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
+
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
 
-       auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
-      std::vector<gum::Idx>             modalities = filter.modalities();
+      auto filter =
+        gum::learning::make_DB_row_filter(database, translators, generators);
+      std::vector< gum::Idx >           modalities = filter.modalities();
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight( 0 );
-      gum::learning::ScoreLog2Likelihood<> score( filter, modalities, apriori );
+      apriori.setWeight(0);
+      gum::learning::ScoreLog2Likelihood<> score(filter, modalities, apriori);
       // score.useCache ( false );
 
       gum::Idx id1, id2, id3, id4, id5, id6, id7;
-      for ( gum::Idx i = 0; i < 10000; ++i ) {
+      for (gum::Idx i = 0; i < 10000; ++i) {
         score.clear();
-        id1 = score.addNodeSet( 3 );
-        id2 = score.addNodeSet( 1 );
-        id3 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-        id4 = score.addNodeSet( 2 );
-        id5 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-        id6 = score.addNodeSet( 2 );
-        id7 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-        TS_ASSERT_DELTA( score.score( id1 ), -988.314, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id2 ), -3023.254, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id3 ), -985.801, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id4 ), -9929.478, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id5 ), -978.407, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id6 ), -9929.478, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id7 ), -978.407, 1e-2 );
+        id1 = score.addNodeSet(3);
+        id2 = score.addNodeSet(1);
+        id3 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
+        id4 = score.addNodeSet(2);
+        id5 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+        id6 = score.addNodeSet(2);
+        id7 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+        TS_ASSERT_DELTA(score.score(id1), -988.314, 1e-2);
+        TS_ASSERT_DELTA(score.score(id2), -3023.254, 1e-2);
+        TS_ASSERT_DELTA(score.score(id3), -985.801, 1e-2);
+        TS_ASSERT_DELTA(score.score(id4), -9929.478, 1e-2);
+        TS_ASSERT_DELTA(score.score(id5), -978.407, 1e-2);
+        TS_ASSERT_DELTA(score.score(id6), -9929.478, 1e-2);
+        TS_ASSERT_DELTA(score.score(id7), -978.407, 1e-2);
       }
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
-      
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
+
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
       auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
-      std::vector<gum::Idx>             modalities = filter.modalities();
+        gum::learning::make_DB_row_filter(database, translators, generators);
+      std::vector< gum::Idx >           modalities = filter.modalities();
       gum::learning::AprioriSmoothing<> apriori;
-      apriori.setWeight( 0 );
-      gum::learning::ScoreLog2Likelihood<> score( filter, modalities, apriori );
+      apriori.setWeight(0);
+      gum::learning::ScoreLog2Likelihood<> score(filter, modalities, apriori);
       // score.useCache ( false );
 
       gum::Idx id1, id2, id3, id4, id5, id6, id7;
-      for ( gum::Idx i = 0; i < 4; ++i ) {
+      for (gum::Idx i = 0; i < 4; ++i) {
         score.clearCache();
-        id1 = score.addNodeSet( 3 );
-        id2 = score.addNodeSet( 1 );
-        id3 = score.addNodeSet( 3, std::vector<gum::Idx>{1, 2} );
-        id4 = score.addNodeSet( 2 );
-        id5 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-        id6 = score.addNodeSet( 2 );
-        id7 = score.addNodeSet( 3, std::vector<gum::Idx>{4} );
-        TS_ASSERT_DELTA( score.score( id1 ), -988.314, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id2 ), -3023.254, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id3 ), -985.801, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id4 ), -9929.478, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id5 ), -978.407, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id6 ), -9929.478, 1e-2 );
-        TS_ASSERT_DELTA( score.score( id7 ), -978.407, 1e-2 );
+        id1 = score.addNodeSet(3);
+        id2 = score.addNodeSet(1);
+        id3 = score.addNodeSet(3, std::vector< gum::Idx >{1, 2});
+        id4 = score.addNodeSet(2);
+        id5 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+        id6 = score.addNodeSet(2);
+        id7 = score.addNodeSet(3, std::vector< gum::Idx >{4});
+        TS_ASSERT_DELTA(score.score(id1), -988.314, 1e-2);
+        TS_ASSERT_DELTA(score.score(id2), -3023.254, 1e-2);
+        TS_ASSERT_DELTA(score.score(id3), -985.801, 1e-2);
+        TS_ASSERT_DELTA(score.score(id4), -9929.478, 1e-2);
+        TS_ASSERT_DELTA(score.score(id5), -978.407, 1e-2);
+        TS_ASSERT_DELTA(score.score(id6), -9929.478, 1e-2);
+        TS_ASSERT_DELTA(score.score(id7), -978.407, 1e-2);
       }
     }
   };

@@ -70,7 +70,7 @@ namespace gum {
   Instantiation GibbsOperator< GUM_SCALAR >::monteCarloSample() {
     gum::Instantiation I;
 
-    for (auto nod : _sampling_bn.topologicalOrder()) {
+    for (const auto nod : _sampling_bn.topologicalOrder()) {
       I.add(_sampling_bn.variable(nod));
       if (_hardEv != nullptr && _hardEv->exists(nod)) {
         I.chgVal(_sampling_bn.variable(nod), (*_hardEv)[nod]);
@@ -108,7 +108,7 @@ namespace gum {
     gum::Instantiation Itop(*I);
     Itop.erase(_sampling_bn.variable(id));
     gum::Potential< GUM_SCALAR > p = _sampling_bn.cpt(id).extract(Itop);
-    for (auto nod : _sampling_bn.dag().children(id))
+    for (const auto nod : _sampling_bn.dag().children(id))
       p *= _sampling_bn.cpt(nod).extract(Itop);
     GUM_ASSERT(p.nbrDim() == 1);
     if (p.sum() != 0) {

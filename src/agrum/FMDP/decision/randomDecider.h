@@ -67,9 +67,9 @@ namespace gum {
     // ###################################################################
     /// @{
     public:
-    void checkState( const Instantiation& newState, Idx actionId ) {}
+    void checkState(const Instantiation& newState, Idx actionId) {}
 
-    ActionSet stateOptimalPolicy( const Instantiation& curState ) {
+    ActionSet stateOptimalPolicy(const Instantiation& curState) {
       return _allActions;
     }
   };

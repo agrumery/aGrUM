@@ -61,7 +61,7 @@ namespace gum {
      * auto filter = make_DB_row_filter ( database, translators, generators );
      * @endcode
      */
-    template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+    template < typename DBHandler, typename TranslatorSet, typename GeneratorSet >
     class DBRowFilter {
       public:
       // ##########################################################################
@@ -72,18 +72,18 @@ namespace gum {
 
       /// default constructor
       DBRowFilter(
-          const DBHandler&     handler,
-          const TranslatorSet& translator_set,
-          const GeneratorSet&  generator_set,
-          Size initialization_range = std::numeric_limits<Size>::max() ) noexcept;
+        const DBHandler&     handler,
+        const TranslatorSet& translator_set,
+        const GeneratorSet&  generator_set,
+        Size initialization_range = std::numeric_limits< Size >::max()) noexcept;
 
       /// copy constructor
-      DBRowFilter( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-                       filter ) noexcept;
+      DBRowFilter(const DBRowFilter< DBHandler, TranslatorSet, GeneratorSet >&
+                    filter) noexcept;
 
       /// move constructor
       DBRowFilter(
-          DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& filter ) noexcept;
+        DBRowFilter< DBHandler, TranslatorSet, GeneratorSet >&& filter) noexcept;
 
       /// destructor
       virtual ~DBRowFilter() noexcept;
@@ -97,12 +97,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-      operator=( const DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& );
+      DBRowFilter< DBHandler, TranslatorSet, GeneratorSet >&
+      operator=(const DBRowFilter< DBHandler, TranslatorSet, GeneratorSet >&);
 
       /// move operator
-      DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&
-      operator=( DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>&& );
+      DBRowFilter< DBHandler, TranslatorSet, GeneratorSet >&
+      operator=(DBRowFilter< DBHandler, TranslatorSet, GeneratorSet >&&);
 
       /// @}
 
@@ -173,10 +173,10 @@ namespace gum {
 
       /** @brief returns the number of modalities of the variables, as stored
        * into the cell filters */
-      std::vector<Size> modalities() const;
+      std::vector< Size > modalities() const;
 
       /// returns the names of the variables
-      const std::vector<std::string>& variableNames() const noexcept;
+      const std::vector< std::string >& variableNames() const noexcept;
 
       /// returns the number of variables
       Size nbVariables() const noexcept;
@@ -203,7 +203,7 @@ namespace gum {
       /** @param db_range the number of rows to parse in the database to
        * initialize the cell filters. If db_range is larger than the size of the
        * database, then the whole database is parsed. */
-      void __initCellFilters( Size db_range );
+      void __initCellFilters(Size db_range);
     };
 
     /// a helper used to easily create a DBRowFilter
@@ -224,18 +224,19 @@ namespace gum {
      * auto filter = make_DB_row_filter( database, translators, generators, 0 );
      * @endcode
      */
-    template <typename Database, typename TranslatorSet, typename GeneratorSet>
-    constexpr DBRowFilter<typename Database::Handler, TranslatorSet, GeneratorSet>
+    template < typename Database, typename TranslatorSet, typename GeneratorSet >
+    constexpr DBRowFilter< typename Database::Handler,
+                           TranslatorSet,
+                           GeneratorSet >
     make_DB_row_filter(
-        const Database&      database,
-        const TranslatorSet& translator_set,
-        const GeneratorSet&  generator_set,
-        Size initialization_range = std::numeric_limits<Size>::max() ) {
-      return DBRowFilter<typename Database::Handler, TranslatorSet, GeneratorSet>(
-          database.handler(),
-          translator_set,
-          generator_set,
-          initialization_range );
+      const Database&      database,
+      const TranslatorSet& translator_set,
+      const GeneratorSet&  generator_set,
+      Size initialization_range = std::numeric_limits< Size >::max()) {
+      return DBRowFilter< typename Database::Handler,
+                          TranslatorSet,
+                          GeneratorSet >(
+        database.handler(), translator_set, generator_set, initialization_range);
     }
 
   } /* namespace learning */

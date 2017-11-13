@@ -24,8 +24,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/algorithms/BayesBall.h>
+#include <agrum/BN/generator/simpleBayesNetGenerator.h>
 
 namespace gum_tests {
 
@@ -37,27 +37,27 @@ namespace gum_tests {
 
 
     void testRequisiteNodes() {
-      gum::SimpleBayesNetGenerator<float> gen( 50, 200, 2 );
-      gum::BayesNet<float>                bn;
-      gen.generateBN( bn );
-      gum::Set<gum::NodeId> requisite;
+      gum::SimpleBayesNetGenerator< float > gen(50, 200, 2);
+      gum::BayesNet< float >                bn;
+      gen.generateBN(bn);
+      gum::Set< gum::NodeId > requisite;
 
-      gum::Set<gum::NodeId>      query, hardEvidence, softEvidence;
-      gum::Sequence<gum::NodeId> nodes_seq;
+      gum::Set< gum::NodeId >      query, hardEvidence, softEvidence;
+      gum::Sequence< gum::NodeId > nodes_seq;
 
-      for ( const auto node : bn.nodes() )
-        nodes_seq.insert( node );
+      for (const auto node : bn.nodes())
+        nodes_seq.insert(node);
 
-      for ( gum::Idx i = 0; i < 5; ++i )
-        hardEvidence.insert( nodes_seq.atPos( i ) );
+      for (gum::Idx i = 0; i < 5; ++i)
+        hardEvidence.insert(nodes_seq.atPos(i));
 
-      for ( gum::Idx j = 24; j > 19; --j )
-        query.insert( nodes_seq.atPos( j ) );
+      for (gum::Idx j = 24; j > 19; --j)
+        query.insert(nodes_seq.atPos(j));
 
-      TS_ASSERT_THROWS_NOTHING( gum::BayesBall::requisiteNodes(
-          bn.dag(), query, hardEvidence, softEvidence, requisite ) );
+      TS_ASSERT_THROWS_NOTHING(gum::BayesBall::requisiteNodes(
+        bn.dag(), query, hardEvidence, softEvidence, requisite));
 
-      TS_ASSERT( requisite.size() >= 5 );
+      TS_ASSERT(requisite.size() >= 5);
     }
   };
 }

@@ -40,66 +40,66 @@ namespace gum {
   // ===========================================================================
   // ===========================================================================
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>::BinSearchTreeIterator()
-      : _node( 0 )
-      , _next_node( 0 )
-      , _prev_node( 0 )
-      , _parent( 0 )
-      , _left_child( 0 )
-      , _right_child( 0 )
-      , _tree( 0 )
-      , _next_iter( 0 ) {
-    GUM_CONSTRUCTOR( BinSearchTreeIterator );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >::BinSearchTreeIterator()
+      : _node(0)
+      , _next_node(0)
+      , _prev_node(0)
+      , _parent(0)
+      , _left_child(0)
+      , _right_child(0)
+      , _tree(0)
+      , _next_iter(0) {
+    GUM_CONSTRUCTOR(BinSearchTreeIterator);
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>::BinSearchTreeIterator(
-      const BinSearchTreeIterator<Val, Cmp, Node>& from )
-      : _node( from._node )
-      , _next_node( from._next_node )
-      , _prev_node( from._prev_node )
-      , _parent( from._parent )
-      , _left_child( from._left_child )
-      , _right_child( from._right_child )
-      , _tree( from._tree ) {
-    GUM_CONS_CPY( BinSearchTreeIterator );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >::BinSearchTreeIterator(
+    const BinSearchTreeIterator< Val, Cmp, Node >& from)
+      : _node(from._node)
+      , _next_node(from._next_node)
+      , _prev_node(from._prev_node)
+      , _parent(from._parent)
+      , _left_child(from._left_child)
+      , _right_child(from._right_child)
+      , _tree(from._tree) {
+    GUM_CONS_CPY(BinSearchTreeIterator);
 
-    if ( _tree ) {
+    if (_tree) {
       _next_iter = _tree->_iterator_list;
       _tree->_iterator_list = this;
     } else
       _next_iter = 0;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE void BinSearchTreeIterator<Val, Cmp, Node>::_initialize(
-      const BinSearchTree<Val, Cmp, Node>* tree,
-      const Node* current_node,
-      bool        add_to_iterator_list ) {
+  template < typename Val, class Cmp, class Node >
+  INLINE void BinSearchTreeIterator< Val, Cmp, Node >::_initialize(
+    const BinSearchTree< Val, Cmp, Node >* tree,
+    const Node* current_node,
+    bool        add_to_iterator_list) {
     // remember: we do not check here whether the iterator already belongs to
     // a tree. We assume that it is not so.
 
-    _tree = const_cast<BinSearchTree<Val, Cmp, Node>*>( tree );
-    _node = const_cast<Node*>( current_node );
+    _tree = const_cast< BinSearchTree< Val, Cmp, Node >* >(tree);
+    _node = const_cast< Node* >(current_node);
 
-    if ( add_to_iterator_list && _tree ) {
+    if (add_to_iterator_list && _tree) {
       _next_iter = _tree->_iterator_list;
       _tree->_iterator_list = this;
     }
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE void BinSearchTreeIterator<Val, Cmp, Node>::_detachFromTree() {
-    if ( _tree ) {
-      BinSearchTreeIterator<Val, Cmp, Node> *iter, *prev_iter = 0;
+  template < typename Val, class Cmp, class Node >
+  INLINE void BinSearchTreeIterator< Val, Cmp, Node >::_detachFromTree() {
+    if (_tree) {
+      BinSearchTreeIterator< Val, Cmp, Node > *iter, *prev_iter = 0;
 
-      for ( iter = _tree->_iterator_list; iter != this && iter;
-            prev_iter = iter, iter = iter->_next_iter ) {
+      for (iter = _tree->_iterator_list; iter != this && iter;
+           prev_iter = iter, iter = iter->_next_iter) {
       }
 
-      if ( iter ) {
-        if ( prev_iter )
+      if (iter) {
+        if (prev_iter)
           prev_iter->_next_iter = _next_iter;
         else
           _tree->_iterator_list = _next_iter;
@@ -107,16 +107,16 @@ namespace gum {
     }
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>::~BinSearchTreeIterator() {
-    GUM_DESTRUCTOR( BinSearchTreeIterator );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >::~BinSearchTreeIterator() {
+    GUM_DESTRUCTOR(BinSearchTreeIterator);
 
     // remove the iterator from its tree iterator's list
     _detachFromTree();
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE void BinSearchTreeIterator<Val, Cmp, Node>::clear() {
+  template < typename Val, class Cmp, class Node >
+  INLINE void BinSearchTreeIterator< Val, Cmp, Node >::clear() {
     // remove the iterator from its tree iterator's list
     _detachFromTree();
 
@@ -131,21 +131,21 @@ namespace gum {
     _next_iter = 0;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-         BinSearchTreeIterator<Val, Cmp, Node>::
-  operator=( const BinSearchTreeIterator<Val, Cmp, Node>& from ) {
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >&
+         BinSearchTreeIterator< Val, Cmp, Node >::
+  operator=(const BinSearchTreeIterator< Val, Cmp, Node >& from) {
     // avoid self assignment
-    if ( this != &from ) {
-      GUM_OP_CPY( BinSearchTreeIterator );
+    if (this != &from) {
+      GUM_OP_CPY(BinSearchTreeIterator);
 
       // if from and this belong to different trees, detach this from its
       // current tree
-      if ( from._tree != _tree ) {
+      if (from._tree != _tree) {
         _detachFromTree();
         _tree = from._tree;
 
-        if ( _tree ) {
+        if (_tree) {
           _next_iter = _tree->_iterator_list;
           _tree->_iterator_list = this;
         } else
@@ -164,43 +164,43 @@ namespace gum {
     return *this;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const Val& BinSearchTreeIterator<Val, Cmp, Node>::operator*() const {
-    if ( _node ) return _node->value();
+  template < typename Val, class Cmp, class Node >
+  INLINE const Val& BinSearchTreeIterator< Val, Cmp, Node >::operator*() const {
+    if (_node) return _node->value();
 
-    GUM_ERROR( UndefinedIteratorValue,
-               "the iterator does not point to a node of the binary tree" );
+    GUM_ERROR(UndefinedIteratorValue,
+              "the iterator does not point to a node of the binary tree");
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE Node* BinSearchTree<Val, Cmp, Node>::_minNode( Node* node ) const {
+  template < typename Val, class Cmp, class Node >
+  INLINE Node* BinSearchTree< Val, Cmp, Node >::_minNode(Node* node) const {
     Node* prevNode = 0;
 
-    for ( ; node; prevNode = node, node = node->leftChild() ) {
+    for (; node; prevNode = node, node = node->leftChild()) {
     }
 
     return prevNode;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE Node* BinSearchTree<Val, Cmp, Node>::_maxNode( Node* node ) const {
+  template < typename Val, class Cmp, class Node >
+  INLINE Node* BinSearchTree< Val, Cmp, Node >::_maxNode(Node* node) const {
     Node* prevNode = 0;
 
-    for ( ; node; prevNode = node, node = node->rightChild() ) {
+    for (; node; prevNode = node, node = node->rightChild()) {
     }
 
     return prevNode;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE Node* BinSearchTree<Val, Cmp, Node>::_succNode( Node* node ) const {
-    if ( !node ) return 0;
+  template < typename Val, class Cmp, class Node >
+  INLINE Node* BinSearchTree< Val, Cmp, Node >::_succNode(Node* node) const {
+    if (!node) return 0;
 
-    if ( node->rightChild() ) return _minNode( node->rightChild() );
+    if (node->rightChild()) return _minNode(node->rightChild());
 
     Node* par = node->parent();
 
-    while ( par && ( node->parentDir() == BinTreeDir::RIGHT_CHILD ) ) {
+    while (par && (node->parentDir() == BinTreeDir::RIGHT_CHILD)) {
       node = par;
       par = par->parent();
     }
@@ -208,15 +208,15 @@ namespace gum {
     return par;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE Node* BinSearchTree<Val, Cmp, Node>::_prevNode( Node* node ) const {
-    if ( !node ) return 0;
+  template < typename Val, class Cmp, class Node >
+  INLINE Node* BinSearchTree< Val, Cmp, Node >::_prevNode(Node* node) const {
+    if (!node) return 0;
 
-    if ( node->leftChild() ) return _maxNode( node->leftChild() );
+    if (node->leftChild()) return _maxNode(node->leftChild());
 
     Node* par = node->parent();
 
-    while ( par && ( node->parentDir() == BinTreeDir::LEFT_CHILD ) ) {
+    while (par && (node->parentDir() == BinTreeDir::LEFT_CHILD)) {
       node = par;
       par = par->parent();
     }
@@ -224,15 +224,15 @@ namespace gum {
     return par;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-         BinSearchTreeIterator<Val, Cmp, Node>::operator++() {
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >&
+         BinSearchTreeIterator< Val, Cmp, Node >::operator++() {
     // if there is a current node, use it to compute the next node, else use
     // directly _next_node (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operator++)
-    _node = _node ? _tree->_succNode( _node ) : _next_node;
+    _node = _node ? _tree->_succNode(_node) : _next_node;
 
-    if ( !_node ) {
+    if (!_node) {
       _next_node = 0;
       _prev_node = 0;
       _parent = 0;
@@ -243,16 +243,16 @@ namespace gum {
     return *this;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-         BinSearchTreeIterator<Val, Cmp, Node>::operator--() {
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >&
+         BinSearchTreeIterator< Val, Cmp, Node >::operator--() {
     // if there is a current node, use it to compute the preceding node, else
     // use
     // directly _prev_node (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operator--)
-    _node = _node ? _tree->_prevNode( _node ) : _prev_node;
+    _node = _node ? _tree->_prevNode(_node) : _prev_node;
 
-    if ( !_node ) {
+    if (!_node) {
       _next_node = 0;
       _prev_node = 0;
       _parent = 0;
@@ -263,41 +263,39 @@ namespace gum {
     return *this;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE bool BinSearchTreeIterator<Val, Cmp, Node>::
-  operator==( const BinSearchTreeIterator<Val, Cmp, Node>& from ) const {
-    if ( _node )
-      return ( _node == from._node );
+  template < typename Val, class Cmp, class Node >
+  INLINE bool BinSearchTreeIterator< Val, Cmp, Node >::
+  operator==(const BinSearchTreeIterator< Val, Cmp, Node >& from) const {
+    if (_node)
+      return (_node == from._node);
     else
-      return ( ( _node == from._node ) && ( _tree == from._tree ) &&
-               ( _next_node == from._next_node ) &&
-               ( _prev_node == from._prev_node ) && ( _parent == from._parent ) &&
-               ( _left_child == from._left_child ) &&
-               ( _right_child == from._right_child ) );
+      return ((_node == from._node) && (_tree == from._tree) &&
+              (_next_node == from._next_node) && (_prev_node == from._prev_node) &&
+              (_parent == from._parent) && (_left_child == from._left_child) &&
+              (_right_child == from._right_child));
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE bool BinSearchTreeIterator<Val, Cmp, Node>::
-  operator!=( const BinSearchTreeIterator<Val, Cmp, Node>& from ) const {
-    if ( _node )
-      return ( _node != from._node );
+  template < typename Val, class Cmp, class Node >
+  INLINE bool BinSearchTreeIterator< Val, Cmp, Node >::
+  operator!=(const BinSearchTreeIterator< Val, Cmp, Node >& from) const {
+    if (_node)
+      return (_node != from._node);
     else
-      return ( ( _node != from._node ) || ( _tree != from._tree ) ||
-               ( _next_node != from._next_node ) ||
-               ( _prev_node != from._prev_node ) || ( _parent != from._parent ) ||
-               ( _left_child != from._left_child ) ||
-               ( _right_child != from._right_child ) );
+      return ((_node != from._node) || (_tree != from._tree) ||
+              (_next_node != from._next_node) || (_prev_node != from._prev_node) ||
+              (_parent != from._parent) || (_left_child != from._left_child) ||
+              (_right_child != from._right_child));
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-         BinSearchTreeIterator<Val, Cmp, Node>::up() {
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >&
+         BinSearchTreeIterator< Val, Cmp, Node >::up() {
     // if there is a current node, use it to compute its parent node, else use
     // directly _parent (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operation up)
     _node = _node ? _node->parent() : _parent;
 
-    if ( !_node ) {
+    if (!_node) {
       _next_node = 0;
       _prev_node = 0;
       _parent = 0;
@@ -308,15 +306,15 @@ namespace gum {
     return *this;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-         BinSearchTreeIterator<Val, Cmp, Node>::downLeft() {
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >&
+         BinSearchTreeIterator< Val, Cmp, Node >::downLeft() {
     // if there is a current node, use it to compute its left child, else use
     // directly _left_child (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operation downLeft)
     _node = _node ? _node->leftChild() : _left_child;
 
-    if ( !_node ) {
+    if (!_node) {
       _next_node = 0;
       _prev_node = 0;
       _parent = 0;
@@ -327,15 +325,15 @@ namespace gum {
     return *this;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>&
-         BinSearchTreeIterator<Val, Cmp, Node>::downRight() {
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >&
+         BinSearchTreeIterator< Val, Cmp, Node >::downRight() {
     // if there is a current node, use it to compute its right child, else use
     // directly _right_child (this case obtains when the iterator was pointing
     // toward a node that has been deleted before we use operation downRight)
     _node = _node ? _node->rightChild() : _right_child;
 
-    if ( !_node ) {
+    if (!_node) {
       _next_node = 0;
       _prev_node = 0;
       _parent = 0;
@@ -352,44 +350,43 @@ namespace gum {
   // ===========================================================================
   // ===========================================================================
 
-  template <typename Val, class Cmp, class Node>
-  BinSearchTree<Val, Cmp, Node>::BinSearchTree( bool uniqueness_policy )
-      : _root( 0 )
-      , _iterator_list( 0 )
-      , _uniqueness_policy( uniqueness_policy )
-      , _nb_elements( 0 ) {
-    GUM_CONSTRUCTOR( BinSearchTree );
-    _iter_end._initialize( this, 0, false );
+  template < typename Val, class Cmp, class Node >
+  BinSearchTree< Val, Cmp, Node >::BinSearchTree(bool uniqueness_policy)
+      : _root(0)
+      , _iterator_list(0)
+      , _uniqueness_policy(uniqueness_policy)
+      , _nb_elements(0) {
+    GUM_CONSTRUCTOR(BinSearchTree);
+    _iter_end._initialize(this, 0, false);
   }
 
-  template <typename Val, class Cmp, class Node>
-  BinSearchTree<Val, Cmp, Node>::BinSearchTree(
-      const BinSearchTree<Val, Cmp, Node>& from )
-      : _root( 0 )
-      , _iterator_list( 0 )
-      , _uniqueness_policy( from._uniqueness_policy ) {
+  template < typename Val, class Cmp, class Node >
+  BinSearchTree< Val, Cmp, Node >::BinSearchTree(
+    const BinSearchTree< Val, Cmp, Node >& from)
+      : _root(0)
+      , _iterator_list(0)
+      , _uniqueness_policy(from._uniqueness_policy) {
     // for debugging purposes
-    GUM_CONS_CPY( BinSearchTree );
+    GUM_CONS_CPY(BinSearchTree);
 
     // copy the content of BinSearchTree "from"
-    _root = _copy( from._root );
+    _root = _copy(from._root);
     _nb_elements = from._nb_elements;
 
     // initialize the end/rend iterator
-    _iter_end._initialize( this, 0, false );
+    _iter_end._initialize(this, 0, false);
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE void BinSearchTree<Val, Cmp, Node>::clear() {
+  template < typename Val, class Cmp, class Node >
+  INLINE void BinSearchTree< Val, Cmp, Node >::clear() {
     // first we clear all the iterators, i.e., we detach them from the tree
-    for ( iterator *iter = _iterator_list, *next_iter = 0; iter;
-          iter = next_iter ) {
+    for (iterator *iter = _iterator_list, *next_iter = 0; iter; iter = next_iter) {
       next_iter = iter->_next_iter;
       iter->clear();
     }
 
     // now, delete the whole tree
-    _deleteSubTree( _root );
+    _deleteSubTree(_root);
     _root = 0;
     _nb_elements = 0;
 
@@ -397,20 +394,20 @@ namespace gum {
     // on the content of the tree
   }
 
-  template <typename Val, class Cmp, class Node>
-  BinSearchTree<Val, Cmp, Node>& BinSearchTree<Val, Cmp, Node>::
-  operator=( const BinSearchTree<Val, Cmp, Node>& from ) {
+  template < typename Val, class Cmp, class Node >
+  BinSearchTree< Val, Cmp, Node >& BinSearchTree< Val, Cmp, Node >::
+  operator=(const BinSearchTree< Val, Cmp, Node >& from) {
     // avoid self assignment
-    if ( this != &from ) {
+    if (this != &from) {
       // for debugging purposes
-      GUM_OP_CPY( BinSearchTree );
+      GUM_OP_CPY(BinSearchTree);
 
       // if the tree is not currently empty, remove it
       clear();
 
       // copy binary tree "from"
       _uniqueness_policy = from._uniqueness_policy;
-      _root = _copy( from._root );  // note that we can copy from's tree structure
+      _root = _copy(from._root);  // note that we can copy from's tree structure
       // as from and this have the same ordering _cmp
       _nb_elements = from._nb_elements;
 
@@ -422,133 +419,132 @@ namespace gum {
     return *this;
   }
 
-  template <typename Val, class Cmp, class Node>
-  BinSearchTree<Val, Cmp, Node>::~BinSearchTree() {
+  template < typename Val, class Cmp, class Node >
+  BinSearchTree< Val, Cmp, Node >::~BinSearchTree() {
     // for debugging purposes
-    GUM_DESTRUCTOR( BinSearchTree );
+    GUM_DESTRUCTOR(BinSearchTree);
 
     // clear all the iterators and remove all nodes
     clear();
   }
 
-  template <typename Val, class Cmp, class Node>
-  Node* BinSearchTree<Val, Cmp, Node>::_copy( Node* node,
-                                              Node*      parent,
-                                              BinTreeDir dir ) {
+  template < typename Val, class Cmp, class Node >
+  Node* BinSearchTree< Val, Cmp, Node >::_copy(Node* node,
+                                               Node*      parent,
+                                               BinTreeDir dir) {
     // if there is no node to copy, abort
-    if ( !node ) return 0;
+    if (!node) return 0;
 
     // create the copy of node
-    Node* new_node = new Node( *node );
+    Node* new_node = new Node(*node);
 
-    if ( parent ) parent->insertChild( *new_node, dir );
+    if (parent) parent->insertChild(*new_node, dir);
 
     // if necessary, create the left and right subgraphs
-    _copy( node->leftChild(), new_node, BinTreeDir::LEFT_CHILD );
-    _copy( node->rightChild(), new_node, BinTreeDir::RIGHT_CHILD );
+    _copy(node->leftChild(), new_node, BinTreeDir::LEFT_CHILD);
+    _copy(node->rightChild(), new_node, BinTreeDir::RIGHT_CHILD);
 
     return new_node;
   }
 
-  template <typename Val, class Cmp, class Node>
-  void BinSearchTree<Val, Cmp, Node>::_deleteSubTree( Node* node ) {
+  template < typename Val, class Cmp, class Node >
+  void BinSearchTree< Val, Cmp, Node >::_deleteSubTree(Node* node) {
     // if there is no node to remove, return
-    if ( !node ) return;
+    if (!node) return;
 
     // delete the left and right subgraphs
-    _deleteSubTree( node->leftChild() );
-    _deleteSubTree( node->rightChild() );
+    _deleteSubTree(node->leftChild());
+    _deleteSubTree(node->rightChild());
 
     // delete the node itself
     delete node;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE Node* BinSearchTree<Val, Cmp, Node>::_insert( const Val& val ) {
+  template < typename Val, class Cmp, class Node >
+  INLINE Node* BinSearchTree< Val, Cmp, Node >::_insert(const Val& val) {
     // if the tree is not empty, search the binary search tree to know
     // where the node should be inserted
-    if ( _root ) {
+    if (_root) {
       Node* node = _root;
 
-      while ( true ) {
-        if ( _cmp( val, node->value() ) )
-          if ( !node->leftChild() ) {
+      while (true) {
+        if (_cmp(val, node->value()))
+          if (!node->leftChild()) {
             // here we are on a leaf => insert the new node
             ++_nb_elements;
-            return node->insertLeftChild( val );
+            return node->insertLeftChild(val);
           } else {
             node = node->leftChild();
           }
-        else if ( _cmp( node->value(), val ) || !_uniqueness_policy )
-          if ( !node->rightChild() ) {
+        else if (_cmp(node->value(), val) || !_uniqueness_policy)
+          if (!node->rightChild()) {
             // here we are on a leaf => insert the new node
             ++_nb_elements;
-            return node->insertRightChild( val );
+            return node->insertRightChild(val);
           } else {
             node = node->rightChild();
           }
         else {
           // here we found a node with the same key and the uniqueness policy
           // is set. So we should raise an exception
-          GUM_ERROR( DuplicateElement,
-                     "key already defined in binary search tree" );
+          GUM_ERROR(DuplicateElement, "key already defined in binary search tree");
         }
       }
     }
 
     // here the tree is empty, just create a new node
-    _root = new Node( val );
+    _root = new Node(val);
     ++_nb_elements;
     return _root;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const Val& BinSearchTree<Val, Cmp, Node>::insert( const Val& val ) {
-    return _insert( val )->value();
+  template < typename Val, class Cmp, class Node >
+  INLINE const Val& BinSearchTree< Val, Cmp, Node >::insert(const Val& val) {
+    return _insert(val)->value();
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const Val& BinSearchTree<Val, Cmp, Node>::rootValue() const {
-    if ( _root == 0 ) {
-      GUM_ERROR( NotFound, "no value in an empty Binary Search tree" );
+  template < typename Val, class Cmp, class Node >
+  INLINE const Val& BinSearchTree< Val, Cmp, Node >::rootValue() const {
+    if (_root == 0) {
+      GUM_ERROR(NotFound, "no value in an empty Binary Search tree");
     }
 
     return _root->value();
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const Val& BinSearchTree<Val, Cmp, Node>::minValue() const {
-    if ( _root == 0 ) {
-      GUM_ERROR( NotFound, "no minimal value in an empty Binary Search tree" );
+  template < typename Val, class Cmp, class Node >
+  INLINE const Val& BinSearchTree< Val, Cmp, Node >::minValue() const {
+    if (_root == 0) {
+      GUM_ERROR(NotFound, "no minimal value in an empty Binary Search tree");
     }
 
-    return _minNode( _root )->value();
+    return _minNode(_root)->value();
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const Val& BinSearchTree<Val, Cmp, Node>::maxValue() const {
-    if ( _root == 0 ) {
-      GUM_ERROR( NotFound, "no maximal value in an empty Binary Search tree" );
+  template < typename Val, class Cmp, class Node >
+  INLINE const Val& BinSearchTree< Val, Cmp, Node >::maxValue() const {
+    if (_root == 0) {
+      GUM_ERROR(NotFound, "no maximal value in an empty Binary Search tree");
     }
 
-    return _maxNode( _root )->value();
+    return _maxNode(_root)->value();
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE Node* BinSearchTree<Val, Cmp, Node>::_getNode( const Val& val ) const {
+  template < typename Val, class Cmp, class Node >
+  INLINE Node* BinSearchTree< Val, Cmp, Node >::_getNode(const Val& val) const {
     // if the tree is not empty, search the binary search tree to know
     // where the node could be
-    if ( _root ) {
+    if (_root) {
       Node* node = _root;
 
-      while ( true ) {
-        if ( _cmp( val, node->value() ) ) {
-          if ( !node->leftChild() )
+      while (true) {
+        if (_cmp(val, node->value())) {
+          if (!node->leftChild())
             return 0;
           else
             node = node->leftChild();
-        } else if ( _cmp( node->value(), val ) ) {
-          if ( !node->rightChild() )
+        } else if (_cmp(node->value(), val)) {
+          if (!node->rightChild())
             return 0;
           else
             node = node->rightChild();
@@ -560,29 +556,29 @@ namespace gum {
     }
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE bool BinSearchTree<Val, Cmp, Node>::contains( const Val& val ) const {
-    return ( _getNode( val ) != 0 );
+  template < typename Val, class Cmp, class Node >
+  INLINE bool BinSearchTree< Val, Cmp, Node >::contains(const Val& val) const {
+    return (_getNode(val) != 0);
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE Size BinSearchTree<Val, Cmp, Node>::size() const {
+  template < typename Val, class Cmp, class Node >
+  INLINE Size BinSearchTree< Val, Cmp, Node >::size() const {
     return _nb_elements;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE bool BinSearchTree<Val, Cmp, Node>::empty() const {
-    return ( _nb_elements == 0 );
+  template < typename Val, class Cmp, class Node >
+  INLINE bool BinSearchTree< Val, Cmp, Node >::empty() const {
+    return (_nb_elements == 0);
   }
 
-  template <typename Val, class Cmp, class Node>
-  const std::string BinSearchTree<Val, Cmp, Node>::toString() const {
+  template < typename Val, class Cmp, class Node >
+  const std::string BinSearchTree< Val, Cmp, Node >::toString() const {
     bool              deja = false;
     std::stringstream stream;
     stream << "[";
 
-    for ( const_iterator iter = begin(); iter != end(); ++iter, deja = true ) {
-      if ( deja ) stream << " , ";
+    for (const_iterator iter = begin(); iter != end(); ++iter, deja = true) {
+      if (deja) stream << " , ";
 
       stream << *iter;
     }
@@ -592,96 +588,96 @@ namespace gum {
     return stream.str();
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE bool BinSearchTree<Val, Cmp, Node>::uniquenessPolicy() const {
+  template < typename Val, class Cmp, class Node >
+  INLINE bool BinSearchTree< Val, Cmp, Node >::uniquenessPolicy() const {
     return _uniqueness_policy;
   }
 
-  template <typename Val, class Cmp, class Node>
+  template < typename Val, class Cmp, class Node >
   INLINE void
-  BinSearchTree<Val, Cmp, Node>::setUniquenessPolicy( const bool new_policy ) {
+  BinSearchTree< Val, Cmp, Node >::setUniquenessPolicy(const bool new_policy) {
     _uniqueness_policy = new_policy;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>
-         BinSearchTree<Val, Cmp, Node>::begin() {
-    BinSearchTreeIterator<Val, Cmp, Node> iter;
-    iter._initialize( this, _minNode( _root ), true );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >
+         BinSearchTree< Val, Cmp, Node >::begin() {
+    BinSearchTreeIterator< Val, Cmp, Node > iter;
+    iter._initialize(this, _minNode(_root), true);
     return iter;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>
-         BinSearchTree<Val, Cmp, Node>::begin() const {
-    BinSearchTreeIterator<Val, Cmp, Node> iter;
-    iter._initialize( this, _minNode( _root ), true );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >
+         BinSearchTree< Val, Cmp, Node >::begin() const {
+    BinSearchTreeIterator< Val, Cmp, Node > iter;
+    iter._initialize(this, _minNode(_root), true);
     return iter;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>
-         BinSearchTree<Val, Cmp, Node>::rbegin() {
-    BinSearchTreeIterator<Val, Cmp, Node> iter;
-    iter._initialize( this, _maxNode( _root ), true );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >
+         BinSearchTree< Val, Cmp, Node >::rbegin() {
+    BinSearchTreeIterator< Val, Cmp, Node > iter;
+    iter._initialize(this, _maxNode(_root), true);
     return iter;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>
-         BinSearchTree<Val, Cmp, Node>::rbegin() const {
-    BinSearchTreeIterator<Val, Cmp, Node> iter;
-    iter._initialize( this, _maxNode( _root ), true );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >
+         BinSearchTree< Val, Cmp, Node >::rbegin() const {
+    BinSearchTreeIterator< Val, Cmp, Node > iter;
+    iter._initialize(this, _maxNode(_root), true);
     return iter;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const BinSearchTreeIterator<Val, Cmp, Node>&
-               BinSearchTree<Val, Cmp, Node>::end() {
+  template < typename Val, class Cmp, class Node >
+  INLINE const BinSearchTreeIterator< Val, Cmp, Node >&
+               BinSearchTree< Val, Cmp, Node >::end() {
     return _iter_end;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const BinSearchTreeIterator<Val, Cmp, Node>&
-               BinSearchTree<Val, Cmp, Node>::end() const {
+  template < typename Val, class Cmp, class Node >
+  INLINE const BinSearchTreeIterator< Val, Cmp, Node >&
+               BinSearchTree< Val, Cmp, Node >::end() const {
     return _iter_end;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const BinSearchTreeIterator<Val, Cmp, Node>&
-               BinSearchTree<Val, Cmp, Node>::rend() {
+  template < typename Val, class Cmp, class Node >
+  INLINE const BinSearchTreeIterator< Val, Cmp, Node >&
+               BinSearchTree< Val, Cmp, Node >::rend() {
     return _iter_end;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE const BinSearchTreeIterator<Val, Cmp, Node>&
-               BinSearchTree<Val, Cmp, Node>::rend() const {
+  template < typename Val, class Cmp, class Node >
+  INLINE const BinSearchTreeIterator< Val, Cmp, Node >&
+               BinSearchTree< Val, Cmp, Node >::rend() const {
     return _iter_end;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>
-         BinSearchTree<Val, Cmp, Node>::root() {
-    BinSearchTreeIterator<Val, Cmp, Node> iter;
-    iter._initialize( this, _root, true );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >
+         BinSearchTree< Val, Cmp, Node >::root() {
+    BinSearchTreeIterator< Val, Cmp, Node > iter;
+    iter._initialize(this, _root, true);
     return iter;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE BinSearchTreeIterator<Val, Cmp, Node>
-         BinSearchTree<Val, Cmp, Node>::root() const {
-    BinSearchTreeIterator<Val, Cmp, Node> iter;
-    iter._initialize( this, _root, true );
+  template < typename Val, class Cmp, class Node >
+  INLINE BinSearchTreeIterator< Val, Cmp, Node >
+         BinSearchTree< Val, Cmp, Node >::root() const {
+    BinSearchTreeIterator< Val, Cmp, Node > iter;
+    iter._initialize(this, _root, true);
     return iter;
   }
 
-  template <typename Val, class Cmp, class Node>
-  void BinSearchTree<Val, Cmp, Node>::_erase( Node* node ) {
-    if ( !node ) return;
+  template < typename Val, class Cmp, class Node >
+  void BinSearchTree< Val, Cmp, Node >::_erase(Node* node) {
+    if (!node) return;
 
     // update all the iterators pointing to node that they should point
     // elsewhere
-    __updateEraseIterators( node );
+    __updateEraseIterators(node);
 
     // update the number of elements contained in the tree
     --_nb_elements;
@@ -689,18 +685,18 @@ namespace gum {
     // now remove the node from the tree:
 
     // if the node has no children, then just remove it
-    if ( !node->leftChild() && !node->rightChild() ) {
+    if (!node->leftChild() && !node->rightChild()) {
       // if the node was the only one in the tree, then the tree becomes empty
-      if ( !node->parent() ) _root = 0;
+      if (!node->parent()) _root = 0;
 
       // note that, when node has a parent, there is no need to remove the
       // link between node and this parent: this will be taken care of by
       // node's destructor.
     }
     // if there is just a right child
-    else if ( !node->leftChild() ) {
+    else if (!node->leftChild()) {
       // just relink the right child with the parent (if any)
-      if ( !node->parent() ) {
+      if (!node->parent()) {
         // in this case, no need to remove the link between "node" and its
         // child:
         // this will be taken care of by the destructor of "node"
@@ -708,15 +704,15 @@ namespace gum {
       } else {
         Node *     parent = node->parent(), *child = node->rightChild();
         BinTreeDir dir = node->parentDir();
-        parent->eraseLink( dir );
+        parent->eraseLink(dir);
         node->eraseRightLink();
-        parent->insertChild( *child, dir );
+        parent->insertChild(*child, dir);
       }
     }
     // if there is just a left child
-    else if ( !node->rightChild() ) {
+    else if (!node->rightChild()) {
       // just relink the left child with the parent (if any)
-      if ( !node->parent() ) {
+      if (!node->parent()) {
         // in this case, no need to remove the link between "node" and its
         // child:
         // this will be taken care of by the destructor of "node"
@@ -724,22 +720,22 @@ namespace gum {
       } else {
         Node *     parent = node->parent(), *child = node->leftChild();
         BinTreeDir dir = node->parentDir();
-        parent->eraseLink( dir );
+        parent->eraseLink(dir);
         node->eraseLeftLink();
-        parent->insertChild( *child, dir );
+        parent->insertChild(*child, dir);
       }
     }
     // ok, here there are two children
     else {
-      __eraseWithTwoChildren( node );
+      __eraseWithTwoChildren(node);
     }
 
     // now we shall physically remove node from memory
     delete node;
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE void BinSearchTree<Val, Cmp, Node>::__eraseWithTwoChildren( Node* node ) {
+  template < typename Val, class Cmp, class Node >
+  INLINE void BinSearchTree< Val, Cmp, Node >::__eraseWithTwoChildren(Node* node) {
     // the idea is to get the successor of "node" and substitute "node" by
     // it.  As "node" has two children, we are sure that the successor is one
     // of node's descendants. Moreover, by its very definition, this
@@ -754,15 +750,15 @@ namespace gum {
     //    is a left child of this parent. We just need to put the right child
     //    of the successor (if any) as the left child of its parent, and to
     //    replace "node" by the successor.
-    Node* successor = _succNode( node );
+    Node* successor = _succNode(node);
 
-    if ( successor == node->rightChild() ) {  // proceed to case 1:
+    if (successor == node->rightChild()) {  // proceed to case 1:
       Node* left_child = node->leftChild();
       node->eraseLeftLink();
       node->eraseRightLink();
-      successor->insertLeftChild( *left_child );
+      successor->insertLeftChild(*left_child);
 
-      if ( !node->parent() ) {
+      if (!node->parent()) {
         // in this case, no need to remove the link between "node" and the
         // successor: this will be taken care of by the destructor of "node"
         _root = successor;
@@ -770,74 +766,74 @@ namespace gum {
         // rechain node's parent with its successor
         BinTreeDir par_dir = node->parentDir();
         Node*      parent = node->parent();
-        parent->eraseLink( par_dir );
-        parent->insertChild( *successor, par_dir );
+        parent->eraseLink(par_dir);
+        parent->insertChild(*successor, par_dir);
       }
     } else {  // proceed to case 2:
       Node* parent = successor->parent();
       parent->eraseLeftLink();
 
-      if ( successor->rightChild() ) {
+      if (successor->rightChild()) {
         Node* succ_child = successor->rightChild();
         successor->eraseRightLink();
-        parent->insertLeftChild( *succ_child );
+        parent->insertLeftChild(*succ_child);
       }
 
       Node *left = node->leftChild(), *right = node->rightChild();
       node->eraseLeftLink();
       node->eraseRightLink();
-      successor->insertLeftChild( *left );
-      successor->insertRightChild( *right );
+      successor->insertLeftChild(*left);
+      successor->insertRightChild(*right);
 
-      if ( !node->parent() ) {
+      if (!node->parent()) {
         _root = successor;
       } else {
         // rechain node's parent with its successor
         BinTreeDir par_dir = node->parentDir();
         Node*      parent = node->parent();
-        parent->eraseLink( par_dir );
-        parent->insertChild( *successor, par_dir );
+        parent->eraseLink(par_dir);
+        parent->insertChild(*successor, par_dir);
       }
     }
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE void BinSearchTree<Val, Cmp, Node>::erase( const Val& val ) {
-    Node* n = _getNode( val );
+  template < typename Val, class Cmp, class Node >
+  INLINE void BinSearchTree< Val, Cmp, Node >::erase(const Val& val) {
+    Node* n = _getNode(val);
 
-    if ( n == nullptr )
-      GUM_ERROR( gum::NotFound, "Value \"" << val << "\" not found" );
+    if (n == nullptr)
+      GUM_ERROR(gum::NotFound, "Value \"" << val << "\" not found");
 
-    _erase( n );
+    _erase(n);
   }
 
-  template <typename Val, class Cmp, class Node>
-  INLINE void BinSearchTree<Val, Cmp, Node>::erase( const iterator& iter ) {
-    _erase( iter._node );
+  template < typename Val, class Cmp, class Node >
+  INLINE void BinSearchTree< Val, Cmp, Node >::erase(const iterator& iter) {
+    _erase(iter._node);
   }
 
-  template <typename Val, class Cmp, class Node>
-  void BinSearchTree<Val, Cmp, Node>::__updateEraseIterators( Node* node ) {
-    for ( iterator* iter = _iterator_list; iter; iter = iter->_next_iter ) {
+  template < typename Val, class Cmp, class Node >
+  void BinSearchTree< Val, Cmp, Node >::__updateEraseIterators(Node* node) {
+    for (iterator* iter = _iterator_list; iter; iter = iter->_next_iter) {
       // if the iterator points toward the node to be deleted, make its _node
       // field point to 0 and update accordingly its other fields
-      if ( iter->_node == node ) {
+      if (iter->_node == node) {
         iter->_node = 0;
-        iter->_next_node = _succNode( node );
-        iter->_prev_node = _prevNode( node );
+        iter->_next_node = _succNode(node);
+        iter->_prev_node = _prevNode(node);
         iter->_parent = node->parent();
         iter->_left_child = node->leftChild();
         iter->_right_child = node->rightChild();
-      } else if ( !iter->_node ) {
-        if ( iter->_next_node == node ) iter->_next_node = _succNode( node );
+      } else if (!iter->_node) {
+        if (iter->_next_node == node) iter->_next_node = _succNode(node);
 
-        if ( iter->_prev_node == node ) iter->_prev_node = _prevNode( node );
+        if (iter->_prev_node == node) iter->_prev_node = _prevNode(node);
 
-        if ( iter->_parent == node ) iter->_parent = node->parent();
+        if (iter->_parent == node) iter->_parent = node->parent();
 
-        if ( iter->_left_child == node ) iter->_left_child = node->leftChild();
+        if (iter->_left_child == node) iter->_left_child = node->leftChild();
 
-        if ( iter->_right_child == node ) iter->_right_child = node->rightChild();
+        if (iter->_right_child == node) iter->_right_child = node->rightChild();
       }
     }
   }

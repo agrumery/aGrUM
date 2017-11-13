@@ -36,22 +36,22 @@ namespace gum_tests {
 
   class FuncAttributeTestSuite : public CxxTest::TestSuite {
     private:
-    typedef gum::prm::PRMFuncAttribute<double> PRMAttribute;
-    ClassElementTestSuiteAbstract*             __classEltTestSuite;
-    gum::prm::PRMType<double>*                 __boolean;
-    gum::prm::PRMType<double>*                 __state;
+    typedef gum::prm::PRMFuncAttribute< double > PRMAttribute;
+    ClassElementTestSuiteAbstract*               __classEltTestSuite;
+    gum::prm::PRMType< double >*                 __boolean;
+    gum::prm::PRMType< double >*                 __state;
 
     public:
     void setUp() {
       __classEltTestSuite = new ClassElementTestSuiteAbstract;
-      __boolean = gum::prm::PRMType<double>::boolean();
+      __boolean = gum::prm::PRMType< double >::boolean();
       gum::LabelizedVariable state{"state", "A state variable", 0};
-      state.addLabel( "OK" );
-      state.addLabel( "NOK" );
-      std::vector<gum::Idx> map;
-      map.push_back( 1 );
-      map.push_back( 0 );
-      __state = new gum::prm::PRMType<double>{*__boolean, map, state};
+      state.addLabel("OK");
+      state.addLabel("NOK");
+      std::vector< gum::Idx > map;
+      map.push_back(1);
+      map.push_back(0);
+      __state = new gum::prm::PRMType< double >{*__boolean, map, state};
     }
 
     void tearDown() {
@@ -65,107 +65,107 @@ namespace gum_tests {
     void testIsReferenceSlot() {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
-      var.addLabel( "False" );
-      var.addLabel( "True" );
-      gum::prm::PRMType<double> type{var};
-      PRMAttribute              attr( "my_attr", type );
-      bool                      expected = false;
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::PRMType< double > type{var};
+      PRMAttribute                attr("my_attr", type);
+      bool                        expected = false;
       // Act & Assert
-      __classEltTestSuite->testIsReferenceSlot( attr, expected );
+      __classEltTestSuite->testIsReferenceSlot(attr, expected);
     }
 
     void testIsAttribute() {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
-      var.addLabel( "False" );
-      var.addLabel( "True" );
-      gum::prm::PRMType<double> type{var};
-      PRMAttribute              attr( "my_attr", type );
-      bool                      expected = true;
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::PRMType< double > type{var};
+      PRMAttribute                attr("my_attr", type);
+      bool                        expected = true;
       // Act & Assert
-      __classEltTestSuite->testIsAttribute( attr, expected );
+      __classEltTestSuite->testIsAttribute(attr, expected);
     }
 
     void testIsSlotChain() {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
-      var.addLabel( "False" );
-      var.addLabel( "True" );
-      gum::prm::PRMType<double> type{var};
-      PRMAttribute              attr( "my_attr", type );
-      bool                      expected = false;
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::PRMType< double > type{var};
+      PRMAttribute                attr("my_attr", type);
+      bool                        expected = false;
       // Act & Assert
-      __classEltTestSuite->testIsSlotChain( attr, expected );
+      __classEltTestSuite->testIsSlotChain(attr, expected);
     }
 
     void testSetNodeId() {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
-      var.addLabel( "False" );
-      var.addLabel( "True" );
-      gum::prm::PRMType<double> type{var};
-      PRMAttribute              attr( "my_attr", type );
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::PRMType< double > type{var};
+      PRMAttribute                attr("my_attr", type);
       // Act & Assert
-      __classEltTestSuite->testSetNodeId( attr );
+      __classEltTestSuite->testSetNodeId(attr);
     }
 
     void testObjType() {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
-      var.addLabel( "False" );
-      var.addLabel( "True" );
-      gum::prm::PRMType<double> type{var};
-      PRMAttribute              attr( "my_attr", type );
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::PRMType< double > type{var};
+      PRMAttribute                attr("my_attr", type);
       // Act & Assert
-      __classEltTestSuite->test_obj_type( attr );
+      __classEltTestSuite->test_obj_type(attr);
     }
 
     void testSafeName() {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
-      var.addLabel( "False" );
-      var.addLabel( "True" );
-      gum::prm::PRMType<double> type{var};
-      PRMAttribute              attr( "my_attr", type );
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::PRMType< double > type{var};
+      PRMAttribute                attr("my_attr", type);
 
       // Act & Assert
-      __classEltTestSuite->testSafeName( attr );
+      __classEltTestSuite->testSafeName(attr);
     }
 
     void testCast_NotAllowed() {
       // Arrange
       gum::LabelizedVariable var{"boolean", "A boolean discrete variable", 0};
-      var.addLabel( "False" );
-      var.addLabel( "True" );
-      gum::prm::PRMType<double> type{var};
-      PRMAttribute              attr( "my_attr", type );
+      var.addLabel("False");
+      var.addLabel("True");
+      gum::prm::PRMType< double > type{var};
+      PRMAttribute                attr("my_attr", type);
 
       // Act & Assert
-      __classEltTestSuite->testCast_NotAllowed( attr );
+      __classEltTestSuite->testCast_NotAllowed(attr);
     }
 
     void testCast() {
       // Arrange
       gum::LabelizedVariable boolean_var{
-          "boolean", "A boolean discrete variable", 0};
-      boolean_var.addLabel( "False" );
-      boolean_var.addLabel( "True" );
+        "boolean", "A boolean discrete variable", 0};
+      boolean_var.addLabel("False");
+      boolean_var.addLabel("True");
 
       gum::LabelizedVariable state_var{
-          "state", "A binary discete variable to represent a state", 0};
-      state_var.addLabel( "OK" );
-      state_var.addLabel( "NOK" );
+        "state", "A binary discete variable to represent a state", 0};
+      state_var.addLabel("OK");
+      state_var.addLabel("NOK");
 
-      std::vector<gum::Idx> map;
-      map.push_back( 1 );
-      map.push_back( 0 );
+      std::vector< gum::Idx > map;
+      map.push_back(1);
+      map.push_back(0);
 
-      gum::prm::PRMType<double> boolean{boolean_var};
-      gum::prm::PRMType<double> state{boolean, map, state_var};
-      PRMAttribute              attr( "my_attr", state );
+      gum::prm::PRMType< double > boolean{boolean_var};
+      gum::prm::PRMType< double > state{boolean, map, state_var};
+      PRMAttribute                attr("my_attr", state);
 
       // Act & Assert
-      __classEltTestSuite->testCast( attr, boolean );
+      __classEltTestSuite->testCast(attr, boolean);
     }
     /// @}
 
@@ -177,11 +177,11 @@ namespace gum_tests {
       PRMAttribute* attr = nullptr;
       // Act & Assert
       try {
-        attr = new PRMAttribute( name, *__boolean );
-      } catch ( ... ) {  // TS_ASSERT_THROWS_NOTHING does ! work
-        TS_FAIL( "Exception raised." );
+        attr = new PRMAttribute(name, *__boolean);
+      } catch (...) {  // TS_ASSERT_THROWS_NOTHING does ! work
+        TS_FAIL("Exception raised.");
       }
-      TS_ASSERT_THROWS_NOTHING( delete attr );
+      TS_ASSERT_THROWS_NOTHING(delete attr);
     }
     /// }
 
@@ -189,62 +189,60 @@ namespace gum_tests {
     /// @{
     void testType() {
       // Arrange
-      PRMAttribute attr( "attr", *__boolean );
+      PRMAttribute attr("attr", *__boolean);
       auto&        expected = *__boolean;
       // Act
       auto& actual = attr.type();
       // Assert
-      TS_ASSERT_EQUALS( expected, actual );
-      TS_ASSERT_DIFFERS( &expected, &actual );
+      TS_ASSERT_EQUALS(expected, actual);
+      TS_ASSERT_DIFFERS(&expected, &actual);
     }
 
     void testTypeConst() {
       // Arrange
-      PRMAttribute attr( "attr", *__boolean );
+      PRMAttribute attr("attr", *__boolean);
       const auto&  attr_const = attr;
       const auto&  expected = *__boolean;
       // Act
       const auto& actual = attr_const.type();
       // Assert
-      TS_ASSERT_EQUALS( expected, actual );
-      TS_ASSERT_DIFFERS( &expected, &actual );
+      TS_ASSERT_EQUALS(expected, actual);
+      TS_ASSERT_DIFFERS(&expected, &actual);
     }
 
     void testCpf() {
       // Arrange
-      PRMAttribute           attr( "attr", *__boolean );
-      gum::Potential<double> expected;
+      PRMAttribute             attr("attr", *__boolean);
+      gum::Potential< double > expected;
       expected << attr.type().variable();
       // Act
       auto& actual = attr.cpf();
       // Assert
-      gum::Instantiation i( expected );
-      gum::Instantiation j( actual );
-      for ( i.setFirst(), j.setFirst(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
-        TS_ASSERT_EQUALS( expected[i], actual[j] );
+      gum::Instantiation i(expected);
+      gum::Instantiation j(actual);
+      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+        TS_ASSERT_EQUALS(expected[i], actual[j]);
       }
-      TS_ASSERT( i.end() );
-      TS_ASSERT( j.end() );
+      TS_ASSERT(i.end());
+      TS_ASSERT(j.end());
     }
 
     void testCpfConst() {
       // Arrange
-      PRMAttribute           attr( "attr", *__boolean );
-      const auto&            attr_const = attr;
-      gum::Potential<double> expected;
+      PRMAttribute             attr("attr", *__boolean);
+      const auto&              attr_const = attr;
+      gum::Potential< double > expected;
       expected << attr.type().variable();
       // Act
       const auto& actual = attr_const.cpf();
       // Assert
-      gum::Instantiation i( expected );
-      gum::Instantiation j( actual );
-      for ( i.setFirst(), j.setFirst(); !( i.end() || j.end() );
-            i.inc(), j.inc() ) {
-        TS_ASSERT_EQUALS( expected[i], actual[j] );
+      gum::Instantiation i(expected);
+      gum::Instantiation j(actual);
+      for (i.setFirst(), j.setFirst(); !(i.end() || j.end()); i.inc(), j.inc()) {
+        TS_ASSERT_EQUALS(expected[i], actual[j]);
       }
-      TS_ASSERT( i.end() );
-      TS_ASSERT( j.end() );
+      TS_ASSERT(i.end());
+      TS_ASSERT(j.end());
     }
 
     /// @}
@@ -253,42 +251,42 @@ namespace gum_tests {
     /// @{
     void testAddParentCheckChild() {
       // Arrange
-      PRMAttribute parent( "attr", *__boolean );
-      PRMAttribute child( "attr", *__boolean );
+      PRMAttribute parent("attr", *__boolean);
+      PRMAttribute child("attr", *__boolean);
       auto         before = child.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
+      TS_ASSERT_THROWS_NOTHING(child.addParent(parent));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( !child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT_EQUALS(before, after);
+      TS_ASSERT(!child.cpf().contains(parent.type().variable()));
     }
 
     void testAddParentDupplicateError() {
       // Arrange
-      PRMAttribute parent( "attr", *__boolean );
-      PRMAttribute child( "attr", *__boolean );
-      child.addParent( parent );
+      PRMAttribute parent("attr", *__boolean);
+      PRMAttribute child("attr", *__boolean);
+      child.addParent(parent);
       auto before = child.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING( child.addParent( parent ) );
+      TS_ASSERT_THROWS_NOTHING(child.addParent(parent));
       // Assert
       auto after = child.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( !child.cpf().contains( parent.type().variable() ) );
+      TS_ASSERT_EQUALS(before, after);
+      TS_ASSERT(!child.cpf().contains(parent.type().variable()));
     }
 
     void testAddChild() {
       // Arrange
-      PRMAttribute parent( "attr", *__boolean );
-      PRMAttribute child( "attr", *__boolean );
+      PRMAttribute parent("attr", *__boolean);
+      PRMAttribute child("attr", *__boolean);
       auto         before = parent.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING( parent.addChild( child ) );
+      TS_ASSERT_THROWS_NOTHING(parent.addChild(child));
       // Assert
       auto after = parent.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS( before, after );
-      TS_ASSERT( !parent.cpf().contains( child.type().variable() ) );
+      TS_ASSERT_EQUALS(before, after);
+      TS_ASSERT(!parent.cpf().contains(child.type().variable()));
     }
     /// @}
 
@@ -296,56 +294,55 @@ namespace gum_tests {
     /// @{
     void testGetCastDescendant() {
       // Arrange
-      PRMAttribute                    state( "state", *__state );
-      gum::prm::PRMAttribute<double>* cast = nullptr;
+      PRMAttribute                      state("state", *__state);
+      gum::prm::PRMAttribute< double >* cast = nullptr;
       // Act
-      TS_ASSERT_THROWS_NOTHING( cast = state.getCastDescendant() );
+      TS_ASSERT_THROWS_NOTHING(cast = state.getCastDescendant());
       // Assert
-      TS_ASSERT_DIFFERS( cast, nullptr );
-      TS_ASSERT_EQUALS( cast->type(), *__boolean );
-      TS_ASSERT_DIFFERS( &( cast->type().variable() ),
-                         &( __boolean->variable() ) );
-      TS_ASSERT( cast->cpf().contains( cast->type().variable() ) );
-      TS_ASSERT( cast->cpf().contains( state.type().variable() ) );
-      TS_ASSERT_THROWS_NOTHING( delete cast );
+      TS_ASSERT_DIFFERS(cast, nullptr);
+      TS_ASSERT_EQUALS(cast->type(), *__boolean);
+      TS_ASSERT_DIFFERS(&(cast->type().variable()), &(__boolean->variable()));
+      TS_ASSERT(cast->cpf().contains(cast->type().variable()));
+      TS_ASSERT(cast->cpf().contains(state.type().variable()));
+      TS_ASSERT_THROWS_NOTHING(delete cast);
     }
 
     void testSetAsCastDescendant() {
       // Arrange
-      PRMAttribute boolean( "boolean", *__boolean );
-      PRMAttribute state( "state", *__state );
+      PRMAttribute boolean("boolean", *__boolean);
+      PRMAttribute state("state", *__state);
       auto         before = boolean.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS_NOTHING( state.setAsCastDescendant( &boolean ) );
+      TS_ASSERT_THROWS_NOTHING(state.setAsCastDescendant(&boolean));
       // Assert
       auto after = boolean.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS( before + 1, after );
+      TS_ASSERT_EQUALS(before + 1, after);
     }
 
     void testSetAsCastDescendantOperationNotAllowed() {
       // Arrange
-      PRMAttribute boolean( "boolean", *__boolean );
-      PRMAttribute boolean_bis( "boolean", *__boolean );
+      PRMAttribute boolean("boolean", *__boolean);
+      PRMAttribute boolean_bis("boolean", *__boolean);
       auto         before = boolean.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS( boolean_bis.setAsCastDescendant( &boolean ),
-                        gum::OperationNotAllowed );
+      TS_ASSERT_THROWS(boolean_bis.setAsCastDescendant(&boolean),
+                       gum::OperationNotAllowed);
       // Assert
       auto after = boolean.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS( before, after );
+      TS_ASSERT_EQUALS(before, after);
     }
 
     void testSetAsCastDescendantTypeError() {
       // Arrange
       gum::LabelizedVariable foovar{"Foo", "Bar", 5};
-      PRMAttribute           foo( "foobar", foovar );
-      PRMAttribute           state( "state", *__state );
+      PRMAttribute           foo("foobar", foovar);
+      PRMAttribute           state("state", *__state);
       auto                   before = foo.cpf().variablesSequence().size();
       // Act
-      TS_ASSERT_THROWS( state.setAsCastDescendant( &foo ), gum::WrongType );
+      TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::WrongType);
       // Assert
       auto after = foo.cpf().variablesSequence().size();
-      TS_ASSERT_EQUALS( before, after );
+      TS_ASSERT_EQUALS(before, after);
     }
 
     /// @}

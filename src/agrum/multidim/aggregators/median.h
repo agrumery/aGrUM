@@ -53,14 +53,14 @@ namespace gum {
      * which is not in the range of the variables. In that case, we choose
      * (arbitrarilly by excess) the value 2.
      */
-    template <typename GUM_SCALAR>
-    class Median : public MultiDimAggregator<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class Median : public MultiDimAggregator< GUM_SCALAR > {
       public:
       Median();
-      Median( const Median<GUM_SCALAR>& from );
+      Median(const Median< GUM_SCALAR >& from);
       virtual ~Median();
 
-      virtual std::string aggregatorName( void ) const;
+      virtual std::string aggregatorName(void) const;
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -79,25 +79,23 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+      virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
       protected:
-      virtual Idx _buildValue( const gum::Instantiation& i ) const;
+      virtual Idx _buildValue(const gum::Instantiation& i) const;
 
       // fold scheme is not used, these methods are neutralized
-      virtual Idx _neutralElt( void ) const { return 0; };
-      virtual Idx _fold( const DiscreteVariable& v,
-                         Idx                     i1,
-                         Idx                     i2,
-                         bool&                   stop_iteration ) const;
+      virtual Idx _neutralElt(void) const { return 0; };
+      virtual Idx
+      _fold(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
 
       private:
       Idx __value;
     };
 
 
-    extern template class Median<float>;
-    extern template class Median<double>;
+    extern template class Median< float >;
+    extern template class Median< double >;
 
 
   }  // aggregator

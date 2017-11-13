@@ -37,9 +37,9 @@ namespace gum {
 
   INLINE
   double Timer::step() const {
-    std::chrono::duration<double, std::milli> ms;
+    std::chrono::duration< double, std::milli > ms;
     ;
-    if ( _sleeping )
+    if (_sleeping)
       ms = _pause - _start;
     else
       ms = std::chrono::high_resolution_clock::now() - _start;
@@ -48,7 +48,7 @@ namespace gum {
 
   INLINE
   double Timer::pause() {
-    if ( !_sleeping ) {
+    if (!_sleeping) {
       _pause = std::chrono::high_resolution_clock::now();
       _sleeping = true;
     }
@@ -58,7 +58,7 @@ namespace gum {
 
   INLINE
   double Timer::resume() {
-    if ( _sleeping ) {
+    if (_sleeping) {
       _start += std::chrono::high_resolution_clock::now() - _pause;
       _sleeping = false;
     }

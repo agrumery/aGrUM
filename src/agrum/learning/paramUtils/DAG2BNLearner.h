@@ -57,10 +57,10 @@ namespace gum {
       DAG2BNLearner();
 
       /// copy constructor
-      DAG2BNLearner( const DAG2BNLearner& from );
+      DAG2BNLearner(const DAG2BNLearner& from);
 
       /// move constructor
-      DAG2BNLearner( DAG2BNLearner&& from );
+      DAG2BNLearner(DAG2BNLearner&& from);
 
       /// destructor
       ~DAG2BNLearner();
@@ -73,14 +73,15 @@ namespace gum {
       /// @{
 
       /// create a BN
-      template <typename GUM_SCALAR = double,
-                typename PARAM_ESTIMATOR,
-                typename CELL_TRANSLATORS>
-      static BayesNet<GUM_SCALAR> createBN( PARAM_ESTIMATOR& estimator,
-                                            const DAG&       dag,
-                                            const std::vector<std::string>& names,
-                                            const std::vector<Size>&        modal,
-                                            const CELL_TRANSLATORS& translator );
+      template < typename GUM_SCALAR = double,
+                 typename PARAM_ESTIMATOR,
+                 typename CELL_TRANSLATORS >
+      static BayesNet< GUM_SCALAR >
+      createBN(PARAM_ESTIMATOR&                  estimator,
+               const DAG&                        dag,
+               const std::vector< std::string >& names,
+               const std::vector< Size >&        modal,
+               const CELL_TRANSLATORS&           translator);
 
       /// @}
 
@@ -88,10 +89,10 @@ namespace gum {
       /// copy a potential into another whose variables' sequence differs
       /** The variables of both potential should be the same, only their
        * order differs */
-      template <typename GUM_SCALAR = double>
+      template < typename GUM_SCALAR = double >
       static void
-      __probaVarReordering( gum::Potential<GUM_SCALAR>&       pot,
-                            const gum::Potential<GUM_SCALAR>& other_pot );
+      __probaVarReordering(gum::Potential< GUM_SCALAR >&       pot,
+                           const gum::Potential< GUM_SCALAR >& other_pot);
     };
 
   } /* namespace learning */

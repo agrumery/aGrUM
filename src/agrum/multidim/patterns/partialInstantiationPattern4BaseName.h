@@ -40,10 +40,10 @@ namespace gum {
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME
 #define GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE GUM_SCALAR
-  template <typename GUM_SCALAR>
-  MultiDimImplementation<GUM_SCALAR>* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
-      const MultiDimImplementation<GUM_SCALAR>* table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars )
+  template < typename GUM_SCALAR >
+  MultiDimImplementation< GUM_SCALAR >* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_NAME(
+    const MultiDimImplementation< GUM_SCALAR >* table,
+    const HashTable< const DiscreteVariable*, Idx >& inst_vars)
 #endif
 
 // clang-format off
@@ -63,21 +63,21 @@ namespace gum {
   {
 
     // get the variables of the uninstantiated table
-    const Sequence<const DiscreteVariable*>& table_vars =
-        table->variablesSequence();
+    const Sequence< const DiscreteVariable* >& table_vars =
+      table->variablesSequence();
 
     // Compute the offset of the variables. In addition, get the offset in
     // table induced by the instantiation inst_var
     Idx table_alone_offset = 0;
     Idx offset = 1;
-    HashTable<const DiscreteVariable*, Idx> var1offset( table_vars.size() );
+    HashTable< const DiscreteVariable*, Idx > var1offset(table_vars.size());
 
-    for ( const auto var : table_vars ) {
-      if ( inst_vars.exists( var ) ) {
+    for (const auto var : table_vars) {
+      if (inst_vars.exists(var)) {
         table_alone_offset += inst_vars[var] * offset;
       }
 
-      var1offset.insert( var, offset );
+      var1offset.insert(var, offset);
       offset *= var->domainSize();
     }
 
@@ -88,21 +88,21 @@ namespace gum {
     // variables sequence of table (true) or not (false). If this Boolean is
     // true, then we can fill result by parsing both table and result using
     // only 1-increments.
-    Sequence<const DiscreteVariable*> result_varSeq;
-    std::vector<Idx>                  table_and_result_offset;
-    std::vector<Idx>                  table_and_result_domain;
-    Idx                               result_domain_size = 1;
-    bool                              has_before_incr = true;
-    bool                              found_inst_var = false;
+    Sequence< const DiscreteVariable* > result_varSeq;
+    std::vector< Idx >                  table_and_result_offset;
+    std::vector< Idx >                  table_and_result_domain;
+    Idx                                 result_domain_size = 1;
+    bool                                has_before_incr = true;
+    bool                                found_inst_var = false;
 
-    for ( const auto var : table_vars ) {
-      if ( !inst_vars.exists( var ) ) {
-        table_and_result_domain.push_back( var->domainSize() );
-        table_and_result_offset.push_back( var1offset[var] );
+    for (const auto var : table_vars) {
+      if (!inst_vars.exists(var)) {
+        table_and_result_domain.push_back(var->domainSize());
+        table_and_result_offset.push_back(var1offset[var]);
         result_domain_size *= var->domainSize();
         result_varSeq << var;
 
-        if ( found_inst_var ) has_before_incr = false;
+        if (found_inst_var) has_before_incr = false;
       } else {
         found_inst_var = true;
       }
@@ -117,22 +117,22 @@ namespace gum {
     // increment B twice, then the offset should be 80, which means that we
     // shall increment A once and decrease B by 10.  The value by which
     // variables shall be decreased is indicated in table_and_result_down
-    std::vector<Idx> table_and_result_value = table_and_result_domain;
-    std::vector<Idx> table_and_result_down = table_and_result_offset;
+    std::vector< Idx > table_and_result_value = table_and_result_domain;
+    std::vector< Idx > table_and_result_down = table_and_result_offset;
 
-    for ( unsigned int i = 0; i < table_and_result_down.size(); ++i )
-      table_and_result_down[i] *= ( table_and_result_domain[i] - 1 );
+    for (unsigned int i = 0; i < table_and_result_down.size(); ++i)
+      table_and_result_down[i] *= (table_and_result_domain[i] - 1);
 
     // create a table "result" containing only the variables that are not
     // instantiated: the variables are stored in the order in which they
     // appear in "table". Hence, ++ operations on an instantiation on table
     // will more or less correspond to a ++ operation on an instantiation on
     // result
-    MultiDimArray<GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE>* result =
-        new MultiDimArray<GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE>;
+    MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >* result =
+      new MultiDimArray< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE >;
     result->beginMultipleChanges();
 
-    for ( const auto var : result_varSeq )
+    for (const auto var : result_varSeq)
       *result << *var;
 
     result->endMultipleChanges();
@@ -140,11 +140,11 @@ namespace gum {
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
     // fill the matrix with any element
     {
-      const Instantiation table_inst( table );
-      const GUM_SCALAR&   any_element = *( table->get( table_inst ) );
+      const Instantiation table_inst(table);
+      const GUM_SCALAR&   any_element = *(table->get(table_inst));
 
-      for ( Idx i = 0; i < result_domain_size; ++i ) {
-        result->unsafeSet( i, new GUM_SCALAR( any_element ) );
+      for (Idx i = 0; i < result_domain_size; ++i) {
+        result->unsafeSet(i, new GUM_SCALAR(any_element));
       }
     }
 #endif /* GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER */
@@ -153,20 +153,20 @@ namespace gum {
     // that were not instantiated. ptable and presult are pointers on the
     // arrays that are directly used for this loop
     GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* presult =
-        const_cast<GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE*>(
-            &( result->unsafeGet( 0 ) ) );
-    Instantiation table_inst( table );
+      const_cast< GUM_MULTI_DIM_PARTIAL_INSTANTIATION_TYPE* >(
+        &(result->unsafeGet(0)));
+    Instantiation table_inst(table);
     table_inst += table_alone_offset;
 
     // but before doing so, check whether the instantiated variables are the
     // last ones or not. If so, we can optimize the parsing of ptable and
     // presult as both tables need be parsed using only 1-increments
-    if ( has_before_incr ) {
-      for ( Idx i = 0; i < result_domain_size; ++i ) {
+    if (has_before_incr) {
+      for (Idx i = 0; i < result_domain_size; ++i) {
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-        **presult = *( table->get( table_inst ) );
+        **presult = *(table->get(table_inst));
 #else
-        *presult = table->get( table_inst );
+        *presult = table->get(table_inst);
 #endif
 
         // update the offset of result and table
@@ -177,18 +177,18 @@ namespace gum {
       // here, some uninstantiated variables exist after the instantiated
       // ones in the variables sequence of table. So, we must perform a more
       // complicated parsing of ptable
-      for ( Idx j = 0; j < result_domain_size; ++j ) {
+      for (Idx j = 0; j < result_domain_size; ++j) {
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER
-        **presult = *( table->get( table_inst ) );
+        **presult = *(table->get(table_inst));
 #else
-        *presult = table->get( table_inst );
+        *presult = table->get(table_inst);
 #endif
 
         // update the offset of table for the outer loop
-        for ( unsigned int k = 0; k < table_and_result_value.size(); ++k ) {
+        for (unsigned int k = 0; k < table_and_result_value.size(); ++k) {
           --table_and_result_value[k];
 
-          if ( table_and_result_value[k] ) {
+          if (table_and_result_value[k]) {
             table_inst += table_and_result_offset[k];
             break;
           }

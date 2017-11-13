@@ -55,7 +55,7 @@ namespace gum {
     /**
      * @brief Default constructor.
      */
-    O4DGContext( Idx*, Idx );
+    O4DGContext(Idx*, Idx);
 
     /**
      * @brief Default destructor.
@@ -65,12 +65,12 @@ namespace gum {
     /**
      * @brief Operator new overload to use the SmallObjectAllocator
      */
-    void* operator new( size_t s );
+    void* operator new(size_t s);
 
     /**
      * @brief Operator delete overload to use the SmallObjectAllocator
      */
-    void operator delete( void* p );
+    void operator delete(void* p);
     /// @}
 
     // ============================================================================
@@ -79,13 +79,13 @@ namespace gum {
 
     /// @{
     /// Set DG1 diagram current explored Node
-    void setDG1Node( const NodeId& );
+    void setDG1Node(const NodeId&);
 
     /// Get DG1 diagram current explored Node
     const NodeId& DG1Node() const { return __DG1ExploredNode; }
 
     /// Set DG2 diagram current explored Node
-    void setDG2Node( const NodeId& );
+    void setDG2Node(const NodeId&);
 
     /// Get DG2 diagram current explored Node
     const NodeId& DG2Node() const { return __DG2ExploredNode; }
@@ -97,10 +97,10 @@ namespace gum {
     /// @{
 
     /// Changes given variable modality
-    void chgVarModality( Idx, Idx );
+    void chgVarModality(Idx, Idx);
 
     /// Changes given variable modality
-    Idx varModality( Idx );
+    Idx varModality(Idx);
 
     /// @}
     // ============================================================================
@@ -109,7 +109,7 @@ namespace gum {
     /// @{
 
     /// Returns o4DGContext key
-    const double& key( short int* instNeeded );
+    const double& key(short int* instNeeded);
 
     /// @}
 

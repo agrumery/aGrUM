@@ -62,7 +62,7 @@ namespace gum {
   class MultiDimInterface {
     public:
     /// Alias for Sequence<DiscreteVariable*>::iterator.
-    typedef Sequence<const DiscreteVariable*>::iterator iterator;
+    typedef Sequence< const DiscreteVariable* >::iterator iterator;
 
     /**
      * @brief Class destructor.
@@ -101,7 +101,7 @@ namespace gum {
      * sequence of variables.
      * @throw OperationNotAllowed Raised if this object is non mutable.
      */
-    virtual void add( const DiscreteVariable& v ) = 0;
+    virtual void add(const DiscreteVariable& v) = 0;
 
     /**
      * @brief Removes a var from the variables of the multidimensional matrix.
@@ -110,13 +110,14 @@ namespace gum {
      * @throw OperationNotAllowed Raised if this object is non mutable.
      * @throw NotFound Raised if v does not belong to this.
      */
-    virtual void erase( const DiscreteVariable& v ) = 0;
+    virtual void erase(const DiscreteVariable& v) = 0;
 
     /**
      * @brief Returns a const ref to the sequence of DiscreteVariable*.
      * @return Returns a const ref to the sequence of DiscreteVariable*.
      */
-    virtual const Sequence<const DiscreteVariable*>& variablesSequence() const = 0;
+    virtual const Sequence< const DiscreteVariable* >&
+    variablesSequence() const = 0;
 
     /**
      * @brief Returns a const ref to the ith var.
@@ -125,7 +126,7 @@ namespace gum {
      * @throw NotFound Raised if i does not reference a variable in this
      * multidimensional matrix.
      */
-    virtual const DiscreteVariable& variable( Idx i ) const = 0;
+    virtual const DiscreteVariable& variable(Idx i) const = 0;
 
     /**
      * @brief Returns the index of a variable.
@@ -133,20 +134,20 @@ namespace gum {
      * @return Returns the index of a variable.
      * @throw NotFound Raised if v is not in this multidimensional matrix.
      */
-    virtual Idx pos( const DiscreteVariable& v ) const = 0;
+    virtual Idx pos(const DiscreteVariable& v) const = 0;
 
     /**
      * @brief Returns true if var is in *this.
      * @param v A DiscreteVariable.
      * @return Returns true if var is in *this.
      */
-    virtual bool contains( const DiscreteVariable& v ) const = 0;
+    virtual bool contains(const DiscreteVariable& v) const = 0;
 
     /**
      * @brief Returns true if no var is in *this.
      * @return Returns true if no var is in *this.
      */
-    virtual bool empty( void ) const = 0;
+    virtual bool empty(void) const = 0;
 
     /**
      * @brief Swap two variables in this multidim.
@@ -160,7 +161,7 @@ namespace gum {
      * @throw OperationNotAllowed If y and x are not interchangeable.
      * @throw DuplicateElement If y is already in this MultiDim.
      */
-    void swap( const DiscreteVariable& x, const DiscreteVariable& y );
+    void swap(const DiscreteVariable& x, const DiscreteVariable& y);
 
     /// @}
     // =========================================================================
@@ -211,7 +212,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y ) = 0;
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y) = 0;
   };
 
   /**
@@ -232,7 +233,7 @@ namespace gum {
    * sequence of variables.
    * @throw OperationNotAllowed Raised if *this is non mutable.
    */
-  MultiDimInterface& operator<<( MultiDimInterface& c, const DiscreteVariable& v );
+  MultiDimInterface& operator<<(MultiDimInterface& c, const DiscreteVariable& v);
 
   /**
    * @brief Removes a var from the variables of the MutliDimAdressing.
@@ -241,7 +242,7 @@ namespace gum {
    * @throw OperationNotAllowed Raised if this object is non mutable.
    * @throw NotFound Raised if v does not belong to this
    */
-  MultiDimInterface& operator>>( MultiDimInterface& c, const DiscreteVariable& v );
+  MultiDimInterface& operator>>(MultiDimInterface& c, const DiscreteVariable& v);
 
 } /* namespace gum */
 

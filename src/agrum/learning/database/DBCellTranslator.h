@@ -66,8 +66,8 @@
 
 #include <cstring>
 #include <iostream>
-#include <vector>
 #include <type_traits>
+#include <vector>
 
 #include <agrum/agrum.h>
 #include <agrum/learning/database/DBRow.h>
@@ -90,9 +90,9 @@ namespace gum {
     /** To check at compile time that a type T is a DBCellTranslator, use
      * gum::isDBCellTranslator<T>::value which will be a Boolean True or
      * False */
-    template<typename Type>
-    struct isDBCellTranslator :
-      public std::is_base_of<BaseDBCellTranslator,Type> {};
+    template < typename Type >
+    struct isDBCellTranslator
+      : public std::is_base_of< BaseDBCellTranslator, Type > {};
 
 
     /** @class DBCellTranslator
@@ -145,7 +145,7 @@ namespace gum {
      * are read from the database by the cell translator and how many it will
      * produce in the output vector.
      */
-    template <int Nb_inputs, int Nb_outputs>
+    template < int Nb_inputs, int Nb_outputs >
     class DBCellTranslator : public BaseDBCellTranslator {
       public:
       /// the number of DBRow cells read by the translator
@@ -164,13 +164,13 @@ namespace gum {
       DBCellTranslator() noexcept;
 
       /// copy constructor
-      DBCellTranslator( const DBCellTranslator<Nb_inputs, Nb_outputs>& ) noexcept;
+      DBCellTranslator(const DBCellTranslator< Nb_inputs, Nb_outputs >&) noexcept;
 
       /// move constructor
-      DBCellTranslator( DBCellTranslator<Nb_inputs, Nb_outputs>&& ) noexcept;
+      DBCellTranslator(DBCellTranslator< Nb_inputs, Nb_outputs >&&) noexcept;
 
       /// virtual copy constructor
-      virtual DBCellTranslator<Nb_inputs, Nb_outputs>* copyFactory() = 0;
+      virtual DBCellTranslator< Nb_inputs, Nb_outputs >* copyFactory() = 0;
 
       /// destructor
       virtual ~DBCellTranslator() noexcept;
@@ -184,12 +184,12 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBCellTranslator<Nb_inputs, Nb_outputs>&
-      operator=( const DBCellTranslator<Nb_inputs, Nb_outputs>& from );
+      DBCellTranslator< Nb_inputs, Nb_outputs >&
+      operator=(const DBCellTranslator< Nb_inputs, Nb_outputs >& from);
 
       /// move operator
-      DBCellTranslator<Nb_inputs, Nb_outputs>&
-      operator=( DBCellTranslator<Nb_inputs, Nb_outputs>&& from );
+      DBCellTranslator< Nb_inputs, Nb_outputs >&
+      operator=(DBCellTranslator< Nb_inputs, Nb_outputs >&& from);
 
       /// @}
 
@@ -201,23 +201,23 @@ namespace gum {
 
       /// sets a new DBRow to translate
       /** DBRow is the type of the data read from the database */
-      void setInputRow( const DBRow& row ) noexcept;
+      void setInputRow(const DBRow& row) noexcept;
 
       /// sets a new FilteredRow to which the translator will write its output
       /** Every DBCellTranslator transforms a DBRow into a FilteredRow. */
-      void setOutputRow( FilteredRow& row ) noexcept;
+      void setOutputRow(FilteredRow& row) noexcept;
 
       /// sets the input DBRow's columns read by the translator
-      void setInputCols( const std::vector<Idx>& cols );
+      void setInputCols(const std::vector< Idx >& cols);
 
       /// sets the input DBRow's columns read by the translator
-      void setInputCols( Idx start ) noexcept;
+      void setInputCols(Idx start) noexcept;
 
       /// sets the output FilteredRow's columns written by the translator
       /** If the DBCellTranslator outputs N columns, then those will be written
        * in
        * the output vector at indices start, start+1, ..., start+N-1. */
-      void setOutputCols( Idx start ) noexcept;
+      void setOutputCols(Idx start) noexcept;
 
       /// returns the current input DBRow
       const DBRow& inputRow() const noexcept;
@@ -226,7 +226,7 @@ namespace gum {
       FilteredRow& outputFilteredRow() noexcept;
 
       /// returns the row of unsigned int of the current output FilteredRow
-      std::vector<float>& outputRow() noexcept;
+      std::vector< float >& outputRow() noexcept;
 
       /// returns the set of input DBRow's columns used by the translator
       const Idx* inputCols() const noexcept;
@@ -236,10 +236,10 @@ namespace gum {
       const Idx* outputCols() const noexcept;
 
       /// returns the DBCell read at the ith input column of translator
-      const DBCell& in( Idx i ) const noexcept;
+      const DBCell& in(Idx i) const noexcept;
 
       /// returns the FilteredRow cell corresponding to the ith output column
-      float& out( Idx i ) noexcept;
+      float& out(Idx i) noexcept;
 
       /// performs a translation
       virtual void translate() = 0;
@@ -266,7 +266,7 @@ namespace gum {
        * found in the columns they translate. They can thus push back the
        * numbers
        * of such values into vector "modals". */
-      virtual void modalities( std::vector<Size>& domain_sizes ) const = 0;
+      virtual void modalities(std::vector< Size >& domain_sizes) const = 0;
 
       /// back-translate a given output (i.e., returns its input value)
       /** @param col the column in _output_cols corresponding to the translated
@@ -274,7 +274,7 @@ namespace gum {
        * @param translated_val the value in _output_cols of which we want to
        * know the original value (that which was actually read from the
        * database) */
-      virtual std::string translateBack( Idx col, float translated_val ) const = 0;
+      virtual std::string translateBack(Idx col, float translated_val) const = 0;
 
       /// returns the size of the input for this cell translator
       Size inputSize() const noexcept;
@@ -302,9 +302,9 @@ namespace gum {
     };
 
     /// for friendly displaying the content of translators
-    template <int Nb_inputs, int Nb_outputs>
-    std::ostream& operator<<( std::ostream&,
-                              const DBCellTranslator<Nb_inputs, Nb_outputs>& );
+    template < int Nb_inputs, int Nb_outputs >
+    std::ostream& operator<<(std::ostream&,
+                             const DBCellTranslator< Nb_inputs, Nb_outputs >&);
 
   } /* namespace learning */
 

@@ -29,13 +29,13 @@
 
 namespace gum {
 #ifdef __clang__
-  template class HashFuncMediumCastKey<gum::prm::PRMClass<float>*>;
-  template class HashFuncMediumCastKey<gum::prm::PRMClass<double>*>;
-#endif 
+  template class HashFuncMediumCastKey< gum::prm::PRMClass< float >* >;
+  template class HashFuncMediumCastKey< gum::prm::PRMClass< double >* >;
+#endif
   namespace prm {
 
-    template class PRMClass<float>;
-    template class PRMClass<double>;
+    template class PRMClass< float >;
+    template class PRMClass< double >;
 
   } /* namespace prm */
 } /* namespace gum */

@@ -38,7 +38,7 @@ namespace gum {
   IApproximationSchemeConfiguration::messageApproximationScheme() const {
     std::stringstream s;
 
-    switch ( stateApproximationScheme() ) {
+    switch (stateApproximationScheme()) {
       case ApproximationSchemeSTATE::Continue:
         s << "in progress";
         break;

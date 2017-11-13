@@ -32,61 +32,61 @@ namespace gum {
 
   // sets the conditioning nodes (useful for computing degrees of freedom)
   INLINE void
-  Chi2::setConditioningNodes( const std::vector<Idx>& db_conditioning_ids ) {
+  Chi2::setConditioningNodes(const std::vector< Idx >& db_conditioning_ids) {
     __conditioning_size = 1;
-    for ( Idx i = 0; i < db_conditioning_ids.size(); ++i ) {
+    for (Idx i = 0; i < db_conditioning_ids.size(); ++i) {
       __conditioning_size *= __modalities[db_conditioning_ids[i]];
     }
   }
 
   // returns the number of degrees of freedom
-  INLINE Size Chi2::degreesOfFreedom( const std::pair<Idx, Idx>& pair ) {
-    return ( __conditioning_size * ( __modalities[pair.first] - 1 ) *
-             ( __modalities[pair.second] - 1 ) );
+  INLINE Size Chi2::degreesOfFreedom(const std::pair< Idx, Idx >& pair) {
+    return (__conditioning_size * (__modalities[pair.first] - 1) *
+            (__modalities[pair.second] - 1));
   }
 
   // returns the number of degrees of freedom
-  INLINE Size Chi2::degreesOfFreedom( Idx var1, Idx var2 ) {
-    return ( __conditioning_size * ( __modalities[var1] - 1 ) *
-             ( __modalities[var2] - 1 ) );
+  INLINE Size Chi2::degreesOfFreedom(Idx var1, Idx var2) {
+    return (__conditioning_size * (__modalities[var1] - 1) *
+            (__modalities[var2] - 1));
   }
 
   // computes the critical value according to the number of degrees of freedom
-  ALWAYS_INLINE double Chi2::criticalValue( const std::pair<Idx, Idx>& pair ) {
-    Idx DF = degreesOfFreedom( pair );
+  ALWAYS_INLINE double Chi2::criticalValue(const std::pair< Idx, Idx >& pair) {
+    Idx DF = degreesOfFreedom(pair);
 
     // try to see if the threshold is not already in cache
     try {
       return __critical_values[DF];
-    } catch ( const Exception& ) {
+    } catch (const Exception&) {
       // here we have to compute the threshold of the chi2
       // we use Gary Perlman's algorithm
-      double value = __criticalValue( __confidence_proba, DF );
-      __critical_values.insert( DF, value );
+      double value = __criticalValue(__confidence_proba, DF);
+      __critical_values.insert(DF, value);
       return value;
     }
   }
 
   // computes the critical value according to the number of degrees of freedom
-  ALWAYS_INLINE double Chi2::criticalValue( Idx var1, Idx var2 ) {
-    Size DF = degreesOfFreedom( var1, var2 );
+  ALWAYS_INLINE double Chi2::criticalValue(Idx var1, Idx var2) {
+    Size DF = degreesOfFreedom(var1, var2);
 
     // try to see if the threshold is not already in cache
     try {
       return __critical_values[DF];
-    } catch ( const Exception& ) {
+    } catch (const Exception&) {
       // here we have to compute the threshold of the chi2
       // we use Gary Perlman's algorithm
-      double value = __criticalValue( __confidence_proba, DF );
-      __critical_values.insert( DF, value );
+      double value = __criticalValue(__confidence_proba, DF);
+      __critical_values.insert(DF, value);
       return value;
     }
   }
 
   // modifies the confidence proba
-  INLINE void Chi2::setConfidenceProba( double new_proba ) {
+  INLINE void Chi2::setConfidenceProba(double new_proba) {
     // if we did not change the confidence proba, do nothing
-    if ( __confidence_proba == new_proba ) return;
+    if (__confidence_proba == new_proba) return;
 
     __confidence_proba = new_proba;
 

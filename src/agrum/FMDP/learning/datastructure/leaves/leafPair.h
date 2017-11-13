@@ -56,25 +56,25 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    LeafPair( AbstractLeaf* l1, AbstractLeaf* l2 )
-        : __l1( l1 )
-        , __l2( l2 ) {
-      GUM_CONSTRUCTOR( LeafPair )
+    LeafPair(AbstractLeaf* l1, AbstractLeaf* l2)
+        : __l1(l1)
+        , __l2(l2) {
+      GUM_CONSTRUCTOR(LeafPair)
     }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~LeafPair() { GUM_DESTRUCTOR( LeafPair ) }
+    ~LeafPair() { GUM_DESTRUCTOR(LeafPair) }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( LeafPair ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(LeafPair));
     }
 
     /// @}
@@ -105,18 +105,18 @@ namespace gum {
     // ###################################################################
     /// Returns true if pair has leaf in it
     // ###################################################################
-    bool contains( NodeId testedId ) {
-      return __l1->contains( testedId ) || __l2->contains( testedId );
+    bool contains(NodeId testedId) {
+      return __l1->contains(testedId) || __l2->contains(testedId);
     }
 
     // ###################################################################
     /// Returns a leaf matching data and having given id as id
     // ###################################################################
-    AbstractLeaf* convert2Leaf( NodeId leafId ) const {
-      return new ComposedLeaf( leafId, __l1, __l2 );
+    AbstractLeaf* convert2Leaf(NodeId leafId) const {
+      return new ComposedLeaf(leafId, __l1, __l2);
     }
 
-    AbstractLeaf* otherLeaf( AbstractLeaf* l ) const {
+    AbstractLeaf* otherLeaf(AbstractLeaf* l) const {
       return l == __l1 ? __l2 : __l1;
     }
 

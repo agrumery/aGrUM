@@ -39,7 +39,7 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class BayesNetFactory;
 
   /**
@@ -71,15 +71,16 @@ namespace gum {
    * You can print a BayesNet using
    * gum::operator<<(std::ostream&, const BayesNet<GUM_SCALAR>&).
    */
-  template <typename GUM_SCALAR>
-  class BayesNet : public IBayesNet<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class BayesNet : public IBayesNet< GUM_SCALAR > {
 
-    friend class BayesNetFactory<GUM_SCALAR>;
+    friend class BayesNetFactory< GUM_SCALAR >;
 
     public:
     /**
      * Create a bn with a dotlike syntax : 'a->b->c;b->d;'. The domain size maybe
-     * specified using 'a[10]' or using 'a{yes|maybe|no}'. Note that if the dotlike string contains such a
+     * specified using 'a[10]' or using 'a{yes|maybe|no}'. Note that if the dotlike
+     * string contains such a
      * specification  for an already defined variable, the first specification will
      * be used.
      *
@@ -87,8 +88,8 @@ namespace gum {
      * @param domainSize the default domain size for variables
      * @return the resulting bayesian network
      */
-    static BayesNet<GUM_SCALAR> fastPrototype( const std::string& dotlike,
-                                               Size               domainSize = 2 );
+    static BayesNet< GUM_SCALAR > fastPrototype(const std::string& dotlike,
+                                                Size               domainSize = 2);
 
     // ===========================================================================
     /// @name Constructors and Destructor
@@ -105,7 +106,7 @@ namespace gum {
      *
      * @param name The BayesNet's name.
      */
-    BayesNet( std::string name );
+    BayesNet(std::string name);
 
     /**
      * @brief Destructor.
@@ -115,7 +116,7 @@ namespace gum {
     /**
      * @brief Copy constructor.
      */
-    BayesNet( const BayesNet<GUM_SCALAR>& source );
+    BayesNet(const BayesNet< GUM_SCALAR >& source);
 
     /// @}
     // ===========================================================================
@@ -129,7 +130,7 @@ namespace gum {
      * @param source The copied BayesNet.
      * @return The copy of source.
      */
-    BayesNet<GUM_SCALAR>& operator=( const BayesNet<GUM_SCALAR>& source );
+    BayesNet< GUM_SCALAR >& operator=(const BayesNet< GUM_SCALAR >& source);
 
     /// @}
     // ===========================================================================
@@ -144,13 +145,13 @@ namespace gum {
      * @return The variable's CPT.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
+    virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const;
 
     /**
      * @brief Returns the CPT of a variable.
      */
-    const Potential<GUM_SCALAR>& cpt( const std::string& name ) const {
-      return cpt( idFromName( name ) );
+    const Potential< GUM_SCALAR >& cpt(const std::string& name) const {
+      return cpt(idFromName(name));
     };
 
     /**
@@ -175,7 +176,7 @@ namespace gum {
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
      */
-    NodeId add( const DiscreteVariable& variable );
+    NodeId add(const DiscreteVariable& variable);
 
     /**
     * @brief Shortcut for add(gum::LabelizedVariable(name,name,nbrmod))
@@ -188,7 +189,7 @@ namespace gum {
      *                        gum::BayesNet.
      * @throws NotAllowed if nbrmod<2
      */
-    NodeId add( const std::string& name, unsigned int nbrmod );
+    NodeId add(const std::string& name, unsigned int nbrmod);
 
     /**
      * @brief Add a variable to the gum::BayesNet.
@@ -205,8 +206,8 @@ namespace gum {
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
      */
-    NodeId add( const DiscreteVariable&             variable,
-                MultiDimImplementation<GUM_SCALAR>* aContent );
+    NodeId add(const DiscreteVariable&               variable,
+               MultiDimImplementation< GUM_SCALAR >* aContent);
 
     /**
      * @brief Add a variable to the gum::BayesNet.
@@ -225,7 +226,7 @@ namespace gum {
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
      */
-    NodeId add( const DiscreteVariable& variable, NodeId id );
+    NodeId add(const DiscreteVariable& variable, NodeId id);
 
     /**
      * @brief Add a variable to the gum::BayesNet.
@@ -242,9 +243,9 @@ namespace gum {
      * @throws DuplicateLabel Raised if variable.name() is already used in this
      *                        gum::BayesNet.
      */
-    NodeId add( const DiscreteVariable&             variable,
-                MultiDimImplementation<GUM_SCALAR>* aContent,
-                NodeId                              id );
+    NodeId add(const DiscreteVariable&               variable,
+               MultiDimImplementation< GUM_SCALAR >* aContent,
+               NodeId                                id);
 
     /**
      * @brief Remove a variable from the gum::BayesNet.
@@ -256,12 +257,12 @@ namespace gum {
      *
      * @param id The variable's id to remove.
      */
-    void erase( NodeId id );
+    void erase(NodeId id);
 
     /**
      * @brief Removes a variable from the gum::BayesNet.
      */
-    void erase( const std::string& name ) { erase( idFromName( name ) ); };
+    void erase(const std::string& name) { erase(idFromName(name)); };
 
     /**
      * @brief Remove a variable from the gum::BayesNet.
@@ -273,7 +274,7 @@ namespace gum {
      *
      * @param var A reference on the variable to remove.
      */
-    void erase( const DiscreteVariable& var );
+    void erase(const DiscreteVariable& var);
 
     /**
      * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
@@ -285,14 +286,14 @@ namespace gum {
      * @throw NotFound Raised if id does not match a a variable in the
      *                 gum::BayesNet.
      */
-    const DiscreteVariable& variable( NodeId id ) const;
+    const DiscreteVariable& variable(NodeId id) const;
 
     /**
      * @brief Returns a gum::DiscreteVariable given its gum::NodeId in the
      *        gum::BayesNet.
      */
-    const DiscreteVariable& variable( const std::string& name ) const {
-      return variable( idFromName( name ) );
+    const DiscreteVariable& variable(const std::string& name) const {
+      return variable(idFromName(name));
     };
 
     /**
@@ -304,14 +305,13 @@ namespace gum {
      *                        gum::BayesNet.
      * @throws NotFound Raised if no variable matches id.
      */
-    void changeVariableName( NodeId id, const std::string& new_name );
+    void changeVariableName(NodeId id, const std::string& new_name);
 
     /**
      * @brief Changes a variable's name.
      */
-    void changeVariableName( const std::string& name,
-                             const std::string& new_name ) {
-      changeVariableName( idFromName( name ), new_name );
+    void changeVariableName(const std::string& name, const std::string& new_name) {
+      changeVariableName(idFromName(name), new_name);
     }
 
     /**
@@ -322,7 +322,7 @@ namespace gum {
      *         gum::BayesNet.
      * @throw NotFound If var is not in the gum::BayesNet.
      */
-    NodeId nodeId( const DiscreteVariable& var ) const;
+    NodeId nodeId(const DiscreteVariable& var) const;
 
     /**
      * @brief Returns a variable's id given its name in the gum::BayesNet.
@@ -332,7 +332,7 @@ namespace gum {
      * @throw NotFound Raised if name does not match a variable in the
      * gum::BayesNet.
      */
-    NodeId idFromName( const std::string& name ) const;
+    NodeId idFromName(const std::string& name) const;
 
     /**
      * @brief Returns a variable given its name in the gum::BayesNet.
@@ -343,7 +343,7 @@ namespace gum {
      * @throw NotFound Raised if name does not match a variable in the
      * gum::BayesNet.
      */
-    const DiscreteVariable& variableFromName( const std::string& name ) const;
+    const DiscreteVariable& variableFromName(const std::string& name) const;
     /// @}
 
     // ===========================================================================
@@ -358,13 +358,13 @@ namespace gum {
      * @param tail as NodeId
      * @throw InvalidEdge If arc.tail and/or arc.head are not in the BN.
      */
-    void addArc( NodeId tail, NodeId head );
+    void addArc(NodeId tail, NodeId head);
 
     /**
      * Add an arc in the BN, and update arc.head's CPT.
      */
-    void addArc( const std::string& tail, const std::string& head ) {
-      addArc( idFromName( tail ), idFromName( head ) );
+    void addArc(const std::string& tail, const std::string& head) {
+      addArc(idFromName(tail), idFromName(head));
     }
 
     /**
@@ -373,7 +373,7 @@ namespace gum {
      * If (tail, head) doesn't exist, the nothing happens.
      * @param arc The arc removed.
      */
-    void eraseArc( const Arc& arc );
+    void eraseArc(const Arc& arc);
 
     /**
      * Removes an arc in the BN, and update head's CTP.
@@ -382,13 +382,13 @@ namespace gum {
      * @param head and
      * @param tail as NodeId
      */
-    void eraseArc( NodeId tail, NodeId head );
+    void eraseArc(NodeId tail, NodeId head);
 
     /**
      * Removes an arc in the BN, and update head's CTP.
      */
-    void eraseArc( const std::string& tail, const std::string& head ) {
-      eraseArc( idFromName( tail ), idFromName( head ) );
+    void eraseArc(const std::string& tail, const std::string& head) {
+      eraseArc(idFromName(tail), idFromName(head));
     }
 
     /**
@@ -419,11 +419,11 @@ namespace gum {
      * @throws InvalidArc exception if the arc does not exist or if its reversal
      * would induce a directed cycle. */
     /// @{
-    void reverseArc( NodeId tail, NodeId head );
-    void reverseArc( const std::string& tail, const std::string& head ) {
-      reverseArc( idFromName( tail ), idFromName( head ) );
+    void reverseArc(NodeId tail, NodeId head);
+    void reverseArc(const std::string& tail, const std::string& head) {
+      reverseArc(idFromName(tail), idFromName(head));
     }
-    void reverseArc( const Arc& arc );
+    void reverseArc(const Arc& arc);
     /// @}
 
     /// @}
@@ -449,12 +449,11 @@ namespace gum {
      * @{
      */
 
-    NodeId addNoisyOR( const DiscreteVariable& variable,
-                       GUM_SCALAR              externalWeight );
-    NodeId addNoisyORNet( const DiscreteVariable& variable,
-                          GUM_SCALAR              externalWeight );
-    NodeId addNoisyORCompound( const DiscreteVariable& variable,
-                               GUM_SCALAR              externalWeight );
+    NodeId addNoisyOR(const DiscreteVariable& variable, GUM_SCALAR externalWeight);
+    NodeId addNoisyORNet(const DiscreteVariable& variable,
+                         GUM_SCALAR              externalWeight);
+    NodeId addNoisyORCompound(const DiscreteVariable& variable,
+                              GUM_SCALAR              externalWeight);
     /** @} */
 
     /**
@@ -473,15 +472,15 @@ namespace gum {
      *
      * @{
      */
-    NodeId addNoisyOR( const DiscreteVariable& variable,
-                       GUM_SCALAR              externalWeight,
-                       NodeId                  id );
-    NodeId addNoisyORNet( const DiscreteVariable& variable,
-                          GUM_SCALAR              externalWeight,
-                          NodeId                  id );
-    NodeId addNoisyORCompound( const DiscreteVariable& variable,
-                               GUM_SCALAR              externalWeight,
-                               NodeId                  id );
+    NodeId addNoisyOR(const DiscreteVariable& variable,
+                      GUM_SCALAR              externalWeight,
+                      NodeId                  id);
+    NodeId addNoisyORNet(const DiscreteVariable& variable,
+                         GUM_SCALAR              externalWeight,
+                         NodeId                  id);
+    NodeId addNoisyORCompound(const DiscreteVariable& variable,
+                              GUM_SCALAR              externalWeight,
+                              NodeId                  id);
     /** @} */
 
     /**
@@ -494,9 +493,9 @@ namespace gum {
      *!!!
      * @return the id of the added variable.
      */
-    NodeId addNoisyAND( const DiscreteVariable& variable,
-                        GUM_SCALAR              externalWeight,
-                        NodeId                  id );
+    NodeId addNoisyAND(const DiscreteVariable& variable,
+                       GUM_SCALAR              externalWeight,
+                       NodeId                  id);
 
     /**
      * Add a variable, its associate node and a noisyAND implementation. The id
@@ -506,8 +505,8 @@ namespace gum {
      * @param externalWeight see gum::MultiDimNoisyAND
      * @return the id of the added variable.
      */
-    NodeId addNoisyAND( const DiscreteVariable& variable,
-                        GUM_SCALAR              externalWeight );
+    NodeId addNoisyAND(const DiscreteVariable& variable,
+                       GUM_SCALAR              externalWeight);
 
     /**
      * Add a variable, its associate node and a Logit implementation.
@@ -519,9 +518,9 @@ namespace gum {
      *!!!
      * @return the id of the added variable.
      */
-    NodeId addLogit( const DiscreteVariable& variable,
-                     GUM_SCALAR              externalWeight,
-                     NodeId                  id );
+    NodeId addLogit(const DiscreteVariable& variable,
+                    GUM_SCALAR              externalWeight,
+                    NodeId                  id);
 
     /**
      * Add a variable, its associate node and a Logit implementation. The id of
@@ -531,7 +530,7 @@ namespace gum {
      * @param externalWeight see gum::MultiDimLogit
      * @return the id of the added variable.
      */
-    NodeId addLogit( const DiscreteVariable& variable, GUM_SCALAR externalWeight );
+    NodeId addLogit(const DiscreteVariable& variable, GUM_SCALAR externalWeight);
 
     /**
      * Add a variable, it's associate node and an OR implementation. The id of
@@ -544,7 +543,7 @@ namespace gum {
      * @return the id of the added variable.
      * @throws SizeError if variable.domainSize()>2
      */
-    NodeId addOR( const DiscreteVariable& variable );
+    NodeId addOR(const DiscreteVariable& variable);
 
     /**
      * Add a variable, it's associate node and an AND implementation. The id of
@@ -557,19 +556,19 @@ namespace gum {
      * @return the id of the added variable.
      * @throws SizeError if variable.domainSize()>2
      */
-    NodeId addAND( const DiscreteVariable& variable );
+    NodeId addAND(const DiscreteVariable& variable);
 
     /**
      * Others aggregators
      * @{
      */
-    NodeId addAMPLITUDE( const DiscreteVariable& variable );
-    NodeId addCOUNT( const DiscreteVariable& variable, Idx Value = 1 );
-    NodeId addEXISTS( const DiscreteVariable& variable, Idx Value = 1 );
-    NodeId addFORALL( const DiscreteVariable& variable, Idx Value = 1 );
-    NodeId addMAX( const DiscreteVariable& variable );
-    NodeId addMEDIAN( const DiscreteVariable& variable );
-    NodeId addMIN( const DiscreteVariable& variable );
+    NodeId addAMPLITUDE(const DiscreteVariable& variable);
+    NodeId addCOUNT(const DiscreteVariable& variable, Idx Value = 1);
+    NodeId addEXISTS(const DiscreteVariable& variable, Idx Value = 1);
+    NodeId addFORALL(const DiscreteVariable& variable, Idx Value = 1);
+    NodeId addMAX(const DiscreteVariable& variable);
+    NodeId addMEDIAN(const DiscreteVariable& variable);
+    NodeId addMIN(const DiscreteVariable& variable);
     /**
      * @}
      */
@@ -582,7 +581,7 @@ namespace gum {
      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
      */
-    void addWeightedArc( NodeId tail, NodeId head, GUM_SCALAR causalWeight );
+    void addWeightedArc(NodeId tail, NodeId head, GUM_SCALAR causalWeight);
 
     /**
      * Add an arc in the BN, and update arc.head's CPT.
@@ -594,10 +593,10 @@ namespace gum {
      * @throw InvalidArc If arc.tail and/or arc.head are not in the BN.
      * @throw InvalidArc If variable in arc.head is not a NoisyOR variable.
      */
-    void addWeightedArc( const std::string& tail,
-                         const std::string& head,
-                         GUM_SCALAR         causalWeight ) {
-      addWeightedArc( idFromName( tail ), idFromName( head ), causalWeight );
+    void addWeightedArc(const std::string& tail,
+                        const std::string& head,
+                        GUM_SCALAR         causalWeight) {
+      addWeightedArc(idFromName(tail), idFromName(head), causalWeight);
     };
     /// @}
 
@@ -605,19 +604,19 @@ namespace gum {
     void generateCPTs() const;
 
     /// randomly generate CPT for a given node in a given structure
-    void generateCPT( NodeId node ) const;
-    void generateCPT( const std::string& name ) const {
-      generateCPT( idFromName( name ) );
+    void generateCPT(NodeId node) const;
+    void generateCPT(const std::string& name) const {
+      generateCPT(idFromName(name));
     };
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @throw NotAllowed if newPot has not the same signature as
     /// __probaMap[NodeId]
-    void changePotential( NodeId id, Potential<GUM_SCALAR>* newPot );
-    void changePotential( const std::string&     name,
-                          Potential<GUM_SCALAR>* newPot ) {
-      changePotential( idFromName( name ), newPot );
+    void changePotential(NodeId id, Potential< GUM_SCALAR >* newPot);
+    void changePotential(const std::string&       name,
+                         Potential< GUM_SCALAR >* newPot) {
+      changePotential(idFromName(name), newPot);
     }
 
     private:
@@ -625,35 +624,35 @@ namespace gum {
     void __clearPotentials();
 
     /// copy of potentials from a BN to another, using names of vars as ref.
-    void __copyPotentials( const BayesNet<GUM_SCALAR>& bn );
+    void __copyPotentials(const BayesNet< GUM_SCALAR >& bn);
 
     /// the map between variable and id
     VariableNodeMap __varMap;
 
     /// Mapping between the variable's id and their CPT.
-    NodeProperty<Potential<GUM_SCALAR>*> __probaMap;
+    NodeProperty< Potential< GUM_SCALAR >* > __probaMap;
     // HashTable<NodeId, Potential<GUM_SCALAR>* > __probaMap;
 
     /// change the CPT associated to nodeId to newPot
     /// delete the old CPT associated to nodeId.
     /// @warning no verification of dimensions are performer
     /// @see changePotential
-    void _unsafeChangePotential( NodeId id, Potential<GUM_SCALAR>* newPot );
+    void _unsafeChangePotential(NodeId id, Potential< GUM_SCALAR >* newPot);
 
     public:
-    using IBayesNet<GUM_SCALAR>::dag;
-    using IBayesNet<GUM_SCALAR>::size;
-    using IBayesNet<GUM_SCALAR>::nodes;
-    using IBayesNet<GUM_SCALAR>::log10DomainSize;
+    using IBayesNet< GUM_SCALAR >::dag;
+    using IBayesNet< GUM_SCALAR >::size;
+    using IBayesNet< GUM_SCALAR >::nodes;
+    using IBayesNet< GUM_SCALAR >::log10DomainSize;
   };
 
   /// Prints map's DAG in output using the Graphviz-dot format.
-  template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream&               output,
-                            const BayesNet<GUM_SCALAR>& map );
+  template < typename GUM_SCALAR >
+  std::ostream& operator<<(std::ostream&                 output,
+                           const BayesNet< GUM_SCALAR >& map);
 
-  extern template class BayesNet<float>;
-  extern template class BayesNet<double>;
+  extern template class BayesNet< float >;
+  extern template class BayesNet< double >;
 
 } /* namespace gum */
 

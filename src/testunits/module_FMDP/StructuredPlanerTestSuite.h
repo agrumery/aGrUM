@@ -39,48 +39,47 @@ namespace gum_tests {
 
     void run() {
 
-      gum::FMDP<double>              fmdp( true );
-      gum::StructuredPlaner<double>* planer = nullptr;
+      gum::FMDP< double >              fmdp(true);
+      gum::StructuredPlaner< double >* planer = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
-          planer =
-              gum::StructuredPlaner<double>::spumddInstance( 0.9, 0.01, false ) );
+        planer =
+          gum::StructuredPlaner< double >::spumddInstance(0.9, 0.01, false));
 
-      gum::FMDPDatReader<double> reader( &fmdp, file );
-      TS_GUM_ASSERT_THROWS_NOTHING( reader.trace( false ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( reader.proceed() );
+      gum::FMDPDatReader< double > reader(&fmdp, file);
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.trace(false));
+      TS_GUM_ASSERT_THROWS_NOTHING(reader.proceed());
 
-      TS_GUM_ASSERT_THROWS_NOTHING( planer->initialize( &fmdp ) );
-      TS_GUM_ASSERT_THROWS_NOTHING( planer->makePlanning( 10 ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(planer->initialize(&fmdp));
+      TS_GUM_ASSERT_THROWS_NOTHING(planer->makePlanning(10));
 
 
       std::ofstream __traceAlgoSaveFile;
-      __traceAlgoSaveFile.open( GET_RESSOURCES_PATH( "FMDP/PlannedPolicy.dot" ),
-                                std::ios::out | std::ios::trunc );
-      if ( !__traceAlgoSaveFile ) return;
-      TS_GUM_ASSERT_THROWS_NOTHING( __traceAlgoSaveFile << fmdp.toString() );
+      __traceAlgoSaveFile.open(GET_RESSOURCES_PATH("FMDP/PlannedPolicy.dot"),
+                               std::ios::out | std::ios::trunc);
+      if (!__traceAlgoSaveFile) return;
+      TS_GUM_ASSERT_THROWS_NOTHING(__traceAlgoSaveFile << fmdp.toString());
       __traceAlgoSaveFile.close();
 
-      int deletedFile =
-          std::remove( GET_RESSOURCES_PATH( "FMDP/PlannedPolicy.dot" ) );
-      if ( deletedFile != 0 )
+      int deletedFile = std::remove(GET_RESSOURCES_PATH("FMDP/PlannedPolicy.dot"));
+      if (deletedFile != 0)
         std::cout << "Couldn't delete output file." << std::endl;
 
-      TS_GUM_ASSERT_THROWS_NOTHING( delete planer );
+      TS_GUM_ASSERT_THROWS_NOTHING(delete planer);
     }
 
     public:
     void testPlanningCoffee() {
-      file = GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" );
+      file = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
       run();
     }
 
     void testPlanningTinyFactory() {
-      file = GET_RESSOURCES_PATH( "FMDP/factory/tiny-factory.dat" );
+      file = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
       run();
     }
 
     void testPlanningTaxi() {
-      file = GET_RESSOURCES_PATH( "FMDP/taxi/taxi.dat" );
+      file = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
       run();
     }
   };

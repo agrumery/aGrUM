@@ -28,8 +28,8 @@
 #define GUM_UTILS_STRING_H
 
 #include <cstdlib>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include <agrum/agrum.h>
@@ -52,13 +52,13 @@ namespace gum {
    * @brief Returns the lowercase version of str.
    * @return Returns the lowercase version of str.
    */
-  std::string toLower( std::string str );
+  std::string toLower(std::string str);
 
   /**
    * @brief Returns true if value ends with ending.
    * @return Returns true if value ends with ending.
    */
-  bool endsWith( std::string const& value, std::string const& ending );
+  bool endsWith(std::string const& value, std::string const& ending);
 
   /**
    * @brief Split str using the delimiter
@@ -66,8 +66,8 @@ namespace gum {
    * @param delimiter string
    * @return Vector of splitted strings
    */
-  std::vector<std::string> split( const std::string& orig,
-                                  const std::string& delimiter );
+  std::vector< std::string > split(const std::string& orig,
+                                   const std::string& delimiter);
 
   /**
    * @brief Replace val by new_val in s.
@@ -76,7 +76,9 @@ namespace gum {
    * @param new_val The new value to replace val in s.
    * @return A new string with val replaced by new_val.
    */
-  std::string replace(const std::string& s, const std::string& val, const std::string& new_val);
+  std::string replace(const std::string& s,
+                      const std::string& val,
+                      const std::string& new_val);
 
   /// @}
 } /* namespace gum */

@@ -59,10 +59,10 @@ namespace gum {
    * for information on this format.
    *
    */
-  template <typename GUM_SCALAR,
-            template <typename> class IApproximationPolicy = ExactPolicy>
-  class CNFWriter : public BNWriter<GUM_SCALAR>,
-                    public IApproximationPolicy<GUM_SCALAR> {
+  template < typename GUM_SCALAR,
+             template < typename > class IApproximationPolicy = ExactPolicy >
+  class CNFWriter : public BNWriter< GUM_SCALAR >,
+                    public IApproximationPolicy< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -88,8 +88,8 @@ namespace gum {
      * @param bn The Bayesian Network writen in output.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write( std::ostream&                output,
-                        const IBayesNet<GUM_SCALAR>& bn ) = 0;
+    virtual void write(std::ostream&                  output,
+                       const IBayesNet< GUM_SCALAR >& bn) = 0;
 
     /**
      * Writes a Bayesian Network in the referenced file using the BN format.
@@ -99,17 +99,17 @@ namespace gum {
      * @param bn The Bayesian Network writed in the file.
      * @throws IOError Raised if and I/O error occurs.
      */
-    virtual void write( std::string                  filePath,
-                        const IBayesNet<GUM_SCALAR>& bn ) = 0;
+    virtual void write(std::string                    filePath,
+                       const IBayesNet< GUM_SCALAR >& bn) = 0;
 
-    inline GUM_SCALAR fromExact( const GUM_SCALAR& value ) const {
-      return IApproximationPolicy<GUM_SCALAR>::fromExact( value );
+    inline GUM_SCALAR fromExact(const GUM_SCALAR& value) const {
+      return IApproximationPolicy< GUM_SCALAR >::fromExact(value);
     }
   };
 
 
-  extern template class CNFWriter<float>;
-  extern template class CNFWriter<double>;
+  extern template class CNFWriter< float >;
+  extern template class CNFWriter< double >;
 
 } /* namespace gum */
 

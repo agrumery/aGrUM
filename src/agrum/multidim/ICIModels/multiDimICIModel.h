@@ -53,8 +53,8 @@ namespace gum {
    * the causes.
    */
   // clang-format on
-  template <typename GUM_SCALAR>
-  class MultiDimICIModel : public MultiDimReadOnly<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class MultiDimICIModel : public MultiDimReadOnly< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Constructors / Destructors
@@ -64,13 +64,13 @@ namespace gum {
     /**
      * Default constructor.
      */
-    MultiDimICIModel( GUM_SCALAR external_weight,
-                      GUM_SCALAR default_weight = (GUM_SCALAR)1.0 );
+    MultiDimICIModel(GUM_SCALAR external_weight,
+                     GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
 
     /**
      * Default constructor.
      */
-    MultiDimICIModel( const MultiDimICIModel<GUM_SCALAR>& from );
+    MultiDimICIModel(const MultiDimICIModel< GUM_SCALAR >& from);
 
     /**
      * @brief Copy constructor using a bijection to swap variables from source.
@@ -79,8 +79,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimICIModel(
-        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimICIModel<GUM_SCALAR>& from );
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+      const MultiDimICIModel< GUM_SCALAR >& from);
 
     /**
      * Destructor.
@@ -94,26 +94,26 @@ namespace gum {
     /// @{
 
     public:
-    const std::string toString( void ) const override;
+    const std::string toString(void) const override;
 
     // @todo : optimisation with a always up-to-date value associated to each
     // instantiation
-    virtual void changeNotification( gum::Instantiation&,
-                                     const gum::DiscreteVariable* const,
-                                     const gum::Idx&,
-                                     const gum::Idx& ) override{};
+    virtual void changeNotification(gum::Instantiation&,
+                                    const gum::DiscreteVariable* const,
+                                    const gum::Idx&,
+                                    const gum::Idx&) override{};
 
-    virtual void setFirstNotification( gum::Instantiation& ) override{};
+    virtual void setFirstNotification(gum::Instantiation&) override{};
 
-    virtual void setLastNotification( gum::Instantiation& ) override{};
+    virtual void setLastNotification(gum::Instantiation&) override{};
 
-    virtual void setIncNotification( gum::Instantiation& ) override{};
+    virtual void setIncNotification(gum::Instantiation&) override{};
 
-    virtual void setDecNotification( gum::Instantiation& ) override{};
+    virtual void setDecNotification(gum::Instantiation&) override{};
 
-    virtual void setChangeNotification( gum::Instantiation& ) override{};
+    virtual void setChangeNotification(gum::Instantiation&) override{};
 
-    const std::string toString( const gum::Instantiation* i ) const override {
+    const std::string toString(const gum::Instantiation* i) const override {
       return i->toString();
     };
 
@@ -127,7 +127,7 @@ namespace gum {
      * size than this MultiDimContainer.
      **/
     virtual void
-    copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const override;
+    copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
 
     /**
      * @return the real number of parameters used for this table. This function
@@ -135,13 +135,13 @@ namespace gum {
      */
     virtual Size realSize() const override { return this->nbrDim(); };
 
-    GUM_SCALAR causalWeight( const DiscreteVariable& v ) const;
+    GUM_SCALAR causalWeight(const DiscreteVariable& v) const;
 
-    void causalWeight( const DiscreteVariable& v, GUM_SCALAR w ) const;
+    void causalWeight(const DiscreteVariable& v, GUM_SCALAR w) const;
 
     GUM_SCALAR externalWeight() const;
 
-    void externalWeight( GUM_SCALAR w ) const;
+    void externalWeight(GUM_SCALAR w) const;
 
     /**
      * @brief returns the real name of the multiDimArray
@@ -169,16 +169,16 @@ namespace gum {
     /// \f$ P(e | c_i) \f$ in Henrion (89) in a hashtable with a default_value.
     mutable GUM_SCALAR __default_weight;
 
-    mutable HashTable<const DiscreteVariable*, GUM_SCALAR> __causal_weights;
+    mutable HashTable< const DiscreteVariable*, GUM_SCALAR > __causal_weights;
     /// @}
 
-    virtual void _swap( const DiscreteVariable* x,
-                        const DiscreteVariable* y ) override;
+    virtual void _swap(const DiscreteVariable* x,
+                       const DiscreteVariable* y) override;
   };
 
 
-  extern template class MultiDimICIModel<float>;
-  extern template class MultiDimICIModel<double>;
+  extern template class MultiDimICIModel< float >;
+  extern template class MultiDimICIModel< double >;
 
 } /* namespace gum */
 

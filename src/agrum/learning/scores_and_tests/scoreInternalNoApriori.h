@@ -63,10 +63,10 @@ namespace gum {
      * aprioris are taken into account during structure learning and parameter
      * learning.
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
     class ScoreInternalNoApriori
-        : public ScoreInternalApriori<IdSetAlloc, CountAlloc> {
+      : public ScoreInternalApriori< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -77,16 +77,16 @@ namespace gum {
       ScoreInternalNoApriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalNoApriori<IdSetAlloc, CountAlloc>*
+      virtual ScoreInternalNoApriori< IdSetAlloc, CountAlloc >*
       copyFactory() const final;
 
       /// copy constructor
       ScoreInternalNoApriori(
-          const ScoreInternalNoApriori<IdSetAlloc, CountAlloc>& from );
+        const ScoreInternalNoApriori< IdSetAlloc, CountAlloc >& from);
 
       /// move constructor
       ScoreInternalNoApriori(
-          ScoreInternalNoApriori<IdSetAlloc, CountAlloc>&& from );
+        ScoreInternalNoApriori< IdSetAlloc, CountAlloc >&& from);
 
       /// destructor
       virtual ~ScoreInternalNoApriori();
@@ -100,12 +100,12 @@ namespace gum {
 
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
-          const std::vector<Size>& modalities,
-          std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              target_nodesets,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              conditioning_nodesets ) final;
+        const std::vector< Size >& modalities,
+        std::vector< std::vector< double, CountAlloc > >& counts,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          target_nodesets,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          conditioning_nodesets) final;
 
       /// indicates whether the apriori is potentially informative
       virtual bool isInformative() const final;

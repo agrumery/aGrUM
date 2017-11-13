@@ -84,12 +84,12 @@ namespace gum {
     // ============================================================================
     /// Copy Constructor (does nothing since we use a Singleton)
     // ============================================================================
-    SmallObjectAllocator( const SmallObjectAllocator& )  {};
+    SmallObjectAllocator(const SmallObjectAllocator&){};
 
     // ============================================================================
     /// Operator = (does nothing since we use a Singleton)
     // ============================================================================
-    SmallObjectAllocator& operator=( const SmallObjectAllocator& ) {
+    SmallObjectAllocator& operator=(const SmallObjectAllocator&) {
       return instance();
     }
 
@@ -110,7 +110,7 @@ namespace gum {
     // ============================================================================
     /// Allocates a block
     // ============================================================================
-    void* allocate( const size_t& objectSize );
+    void* allocate(const size_t& objectSize);
 
     // ============================================================================
     /// Deallocates an object
@@ -118,7 +118,7 @@ namespace gum {
     /// @param objectSize is the size of that object (useful for faster
     /// deallocation)
     // ============================================================================
-    void deallocate( void* pDeallocatedObject, const size_t& objectSize );
+    void deallocate(void* pDeallocatedObject, const size_t& objectSize);
 
     /// @}
 
@@ -126,9 +126,9 @@ namespace gum {
     /// Displays the number of allocation and deallocation made so far
     // ============================================================================
     void displayStats() {
-      GUM_TRACE( "Nb Small Allocation : " << nbAllocation
-                                          << " -  Nb Small Deallocation : "
-                                          << nbDeallocation );
+      GUM_TRACE("Nb Small Allocation : " << nbAllocation
+                                         << " -  Nb Small Deallocation : "
+                                         << nbDeallocation);
     }
 
     Idx nbAlloc() { return nbAllocation; }
@@ -138,7 +138,7 @@ namespace gum {
     // ============================================================================
     /// The pool containing FixedAllocator
     // ============================================================================
-    typedef HashTable<Size, FixedAllocator*> __Pool;
+    typedef HashTable< Size, FixedAllocator* > __Pool;
     __Pool __pool;
 
     // ============================================================================
@@ -157,8 +157,8 @@ namespace gum {
 }  // namespace gum
 
 // Macro used to shorten code in classes using SmallObjectAllocator
-#define SOA_ALLOCATE( x ) SmallObjectAllocator::instance().allocate( x )
-#define SOA_DEALLOCATE( x, y ) SmallObjectAllocator::instance().deallocate( x, y )
+#define SOA_ALLOCATE(x) SmallObjectAllocator::instance().allocate(x)
+#define SOA_DEALLOCATE(x, y) SmallObjectAllocator::instance().deallocate(x, y)
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/smallobjectallocator/smallObjectAllocator_inl.h>

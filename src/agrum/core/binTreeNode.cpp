@@ -28,4 +28,4 @@
 #include <agrum/core/binTreeNode.h>
 
 
-template class gum::BinTreeNode<int>;
+template class gum::BinTreeNode< int >;

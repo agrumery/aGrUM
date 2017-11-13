@@ -32,61 +32,56 @@
 
 namespace gum {
 
-    /**
-        * @class MonteCarloInference monteCarloInference.h
-        *<agrum/BN/inference/monteCarloInference.h>
-        * @brief class for making Monte Carlo sampling inference in bayesian networks.
-        * @ingroup bn_approximation
-        *
-        * This class overrides pure function declared in the inherited class ApproximateInference.
-        * It defines the way Monte Carlo sampling draws a sample.
-        *
-        */
+  /**
+      * @class MonteCarloInference monteCarloInference.h
+      *<agrum/BN/inference/monteCarloInference.h>
+      * @brief class for making Monte Carlo sampling inference in bayesian
+    *networks.
+      * @ingroup bn_approximation
+      *
+      * This class overrides pure function declared in the inherited class
+    *ApproximateInference.
+      * It defines the way Monte Carlo sampling draws a sample.
+      *
+      */
 
 
-    template<typename GUM_SCALAR>
-    class MonteCarloSampling : public SamplingInference<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class MonteCarloSampling : public SamplingInference< GUM_SCALAR > {
 
     public:
+    /**
+     * Default constructor
+     */
+    MonteCarloSampling(const IBayesNet< GUM_SCALAR >* bn);
 
-        /**
-         * Default constructor
-         */
-        MonteCarloSampling(const IBayesNet<GUM_SCALAR> *bn);
-
-        /**
-         * Destructor
-         */
-        virtual ~MonteCarloSampling();
+    /**
+     * Destructor
+     */
+    virtual ~MonteCarloSampling();
 
     protected:
+    /// draws a defined number of samples without updating the estimators
+    virtual Instantiation _burnIn();
 
-        /// draws a defined number of samples without updating the estimators
-        virtual Instantiation _burnIn();
+    /// draws a sample according to classic Monte Carlo sampling
+    /**
+    * @param w the weight of sample being generated
+    * @param prev the previous sample generated
+    * @param bn the bayesian network containing the evidence
+    * @param hardEvNodes hard evidence nodes
+    * @param hardEv hard evidences values
+    *
+    * Generates a new sample using forward sampling, rejecting
+    * samples not consistent with evidence
+    *
+    */
+    virtual Instantiation _draw(float* w, Instantiation prev);
+  };
 
-        /// draws a sample according to classic Monte Carlo sampling
-        /**
-        * @param w the weight of sample being generated
-        * @param prev the previous sample generated
-        * @param bn the bayesian network containing the evidence
-        * @param hardEvNodes hard evidence nodes
-        * @param hardEv hard evidences values
-        *
-        * Generates a new sample using forward sampling, rejecting
-        * samples not consistent with evidence
-        *
-        */
-        virtual Instantiation
-        _draw(float *w, Instantiation prev);
+  extern template class MonteCarloSampling< float >;
 
-    };
-
-    extern template
-    class MonteCarloSampling<float>;
-
-    extern template
-    class MonteCarloSampling<double>;
-
+  extern template class MonteCarloSampling< double >;
 }
 
 #include <agrum/BN/inference/MonteCarloSampling_tpl.h>

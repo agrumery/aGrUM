@@ -31,74 +31,72 @@
 namespace gum {
 
   INLINE
-  Parent::Parent( NodeId pi, Idx m )
-      : parentId( pi )
-      , modality( m ) {}
+  Parent::Parent(NodeId pi, Idx m)
+      : parentId(pi)
+      , modality(m) {}
 
 
   INLINE
-  Parent::Parent( const Parent& src )
-      : parentId( src.parentId )
-      , modality( src.modality ) {}
+  Parent::Parent(const Parent& src)
+      : parentId(src.parentId)
+      , modality(src.modality) {}
 
   INLINE
-  void* Parent::operator new( size_t s ) {
-    return SmallObjectAllocator::instance().allocate( s );
+  void* Parent::operator new(size_t s) {
+    return SmallObjectAllocator::instance().allocate(s);
   }
 
   INLINE
-  void Parent::operator delete( void* p ) {
-    SmallObjectAllocator::instance().deallocate( p, sizeof( Parent ) );
+  void Parent::operator delete(void* p) {
+    SmallObjectAllocator::instance().deallocate(p, sizeof(Parent));
   }
 
   INLINE
-  bool Parent::operator==( const Parent& comp ) const {
-    if ( comp.parentId == this->parentId && comp.modality == this->modality )
+  bool Parent::operator==(const Parent& comp) const {
+    if (comp.parentId == this->parentId && comp.modality == this->modality)
       return true;
     return false;
   }
 
   INLINE
-  bool Parent::operator!=( const Parent& comp ) const {
-    return !( comp == *this );
-  }
+  bool Parent::operator!=(const Parent& comp) const { return !(comp == *this); }
 
   INLINE
-  Parent& Parent::operator=( const Parent& src ) {
+  Parent& Parent::operator=(const Parent& src) {
     this->parentId = src.parentId;
     this->modality = src.modality;
     return *this;
   }
 
   INLINE
-  void* InternalNode::operator new( size_t s ) {
-    return SmallObjectAllocator::instance().allocate( s );
+  void* InternalNode::operator new(size_t s) {
+    return SmallObjectAllocator::instance().allocate(s);
   }
 
   INLINE
-  void InternalNode::operator delete( void* p ) {
-    SmallObjectAllocator::instance().deallocate( p, sizeof( InternalNode ) );
+  void InternalNode::operator delete(void* p) {
+    SmallObjectAllocator::instance().deallocate(p, sizeof(InternalNode));
   }
 
   INLINE
   const DiscreteVariable* InternalNode::nodeVar() const { return __nodeVar; }
 
   INLINE
-  void InternalNode::setSon( Idx modality, NodeId son ) {
+  void InternalNode::setSon(Idx modality, NodeId son) {
     __nodeSons[modality] = son;
   }
 
   INLINE
-  NodeId InternalNode::son( Idx modality ) const { return __nodeSons[modality]; }
+  NodeId InternalNode::son(Idx modality) const { return __nodeSons[modality]; }
 
   INLINE
   Idx InternalNode::nbSons() const { return __nodeVar->domainSize(); }
 
   INLINE
-  Link<Parent>* InternalNode::parents() { return __nodeParents.list(); }
+  Link< Parent >* InternalNode::parents() { return __nodeParents.list(); }
 
   INLINE
-  const Link<Parent>* InternalNode::parents() const {
+  const Link< Parent >* InternalNode::parents() const {
     return __nodeParents.list();
   }
 }  // namespace gum

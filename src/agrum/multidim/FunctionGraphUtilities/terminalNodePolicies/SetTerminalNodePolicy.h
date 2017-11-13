@@ -41,7 +41,7 @@ namespace gum {
    * of value
    */
   // clang-format on
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class SetTerminalNodePolicy {
 
     public:
@@ -53,20 +53,20 @@ namespace gum {
     /// @{
 
     /// Insert a new terminal node with given value
-    void addTerminalNode( const NodeId& n, const GUM_SCALAR& v ) {
-      if ( __map.exists( n ) ) *( __map[n] ) += v;
-      __map.insert( n, new GUM_SCALAR( v ) );
+    void addTerminalNode(const NodeId& n, const GUM_SCALAR& v) {
+      if (__map.exists(n)) *(__map[n]) += v;
+      __map.insert(n, new GUM_SCALAR(v));
     }
 
     /// Remove node matching given id
-    void eraseTerminalNode( const NodeId& n ) {
-      if ( __map.exists( n ) ) __map.erase( n );
+    void eraseTerminalNode(const NodeId& n) {
+      if (__map.exists(n)) __map.erase(n);
     }
 
     /// Erase all terminal nodes
     void clearAllTerminalNodes() {
-      for ( auto nodeIter = __map.beginSafe(); nodeIter != __map.endSafe();
-            ++nodeIter )
+      for (auto nodeIter = __map.beginSafe(); nodeIter != __map.endSafe();
+           ++nodeIter)
         delete nodeIter.val();
       __map.clear();
     }
@@ -78,13 +78,13 @@ namespace gum {
     /// @{
 
     /// Returns true if a terminal node matching this id exists
-    bool existsTerminalNodeWithId( const NodeId& n ) const {
-      return __map.exists( n );
+    bool existsTerminalNodeWithId(const NodeId& n) const {
+      return __map.exists(n);
     }
 
     /// Returns true if a terminal node matching this value exists
-    bool existsTerminalNodeWithValue( const GUM_SCALAR& v ) const {
-      return terminalNodeId( v ) != 0;
+    bool existsTerminalNodeWithValue(const GUM_SCALAR& v) const {
+      return terminalNodeId(v) != 0;
     }
 
     /// @}
@@ -94,15 +94,15 @@ namespace gum {
     /// @{
 
     /// Returns the value of the terminal node that has the given id
-    const GUM_SCALAR& terminalNodeValue( const NodeId& n ) const {
-      return *( __map[n] );
+    const GUM_SCALAR& terminalNodeValue(const NodeId& n) const {
+      return *(__map[n]);
     }
 
     /// Returns the id of the terminal node that has the given value
-    const NodeId& terminalNodeId( const GUM_SCALAR& v ) const {
-      for ( auto nodeIter = __map.beginSafe(); nodeIter != __map.endSafe();
-            ++nodeIter )
-        if ( *( nodeIter.val() ) == v ) return nodeIter.key();
+    const NodeId& terminalNodeId(const GUM_SCALAR& v) const {
+      for (auto nodeIter = __map.beginSafe(); nodeIter != __map.endSafe();
+           ++nodeIter)
+        if (*(nodeIter.val()) == v) return nodeIter.key();
       return jocker;
     }
 
@@ -123,7 +123,7 @@ namespace gum {
 
     /// Returns the value of the current terminal nodes pointed by the constant
     /// safe iterator
-    const GUM_SCALAR& value() const { return *( __mappy.val() ); }
+    const GUM_SCALAR& value() const { return *(__mappy.val()); }
 
     /// Returns the id of the current terminal nodes pointed by the constant
     /// safe iterator
@@ -131,8 +131,8 @@ namespace gum {
 
     private:
     /// The mapping between NodeIds and Value Sets
-    HashTable<NodeId, GUM_SCALAR*>                          __map;
-    mutable HashTableConstIteratorSafe<NodeId, GUM_SCALAR*> __mappy;
+    HashTable< NodeId, GUM_SCALAR* >                          __map;
+    mutable HashTableConstIteratorSafe< NodeId, GUM_SCALAR* > __mappy;
 
     const NodeId jocker = 0;
   };

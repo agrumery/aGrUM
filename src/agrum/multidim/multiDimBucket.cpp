@@ -29,7 +29,7 @@
 
 namespace gum {
 
-  template class MultiDimBucket<float>;
-  template class MultiDimBucket<double>;
+  template class MultiDimBucket< float >;
+  template class MultiDimBucket< double >;
 
 }  // namespace gum

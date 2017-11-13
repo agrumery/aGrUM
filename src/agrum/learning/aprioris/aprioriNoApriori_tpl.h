@@ -29,60 +29,60 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>::AprioriNoApriori() {
-      setWeight( 0 );
-      GUM_CONSTRUCTOR( AprioriNoApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE AprioriNoApriori< IdSetAlloc, CountAlloc >::AprioriNoApriori() {
+      setWeight(0);
+      GUM_CONSTRUCTOR(AprioriNoApriori);
     }
 
     /// copy constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>::AprioriNoApriori(
-        const AprioriNoApriori<IdSetAlloc, CountAlloc>& from )
-        : Apriori<IdSetAlloc, CountAlloc>( from ) {
-      GUM_CONS_CPY( AprioriNoApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE AprioriNoApriori< IdSetAlloc, CountAlloc >::AprioriNoApriori(
+      const AprioriNoApriori< IdSetAlloc, CountAlloc >& from)
+        : Apriori< IdSetAlloc, CountAlloc >(from) {
+      GUM_CONS_CPY(AprioriNoApriori);
     }
 
     /// move constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>::AprioriNoApriori(
-        AprioriNoApriori<IdSetAlloc, CountAlloc>&& from )
-        : Apriori<IdSetAlloc, CountAlloc>( std::move( from ) ) {
-      GUM_CONS_MOV( AprioriNoApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE AprioriNoApriori< IdSetAlloc, CountAlloc >::AprioriNoApriori(
+      AprioriNoApriori< IdSetAlloc, CountAlloc >&& from)
+        : Apriori< IdSetAlloc, CountAlloc >(std::move(from)) {
+      GUM_CONS_MOV(AprioriNoApriori);
     }
 
     /// virtual copy constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>*
-           AprioriNoApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
-      return new AprioriNoApriori<IdSetAlloc, CountAlloc>( *this );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE AprioriNoApriori< IdSetAlloc, CountAlloc >*
+           AprioriNoApriori< IdSetAlloc, CountAlloc >::copyFactory() const {
+      return new AprioriNoApriori< IdSetAlloc, CountAlloc >(*this);
     }
 
     /// destructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE AprioriNoApriori<IdSetAlloc, CountAlloc>::~AprioriNoApriori() {
-      GUM_DESTRUCTOR( AprioriNoApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE AprioriNoApriori< IdSetAlloc, CountAlloc >::~AprioriNoApriori() {
+      GUM_DESTRUCTOR(AprioriNoApriori);
     }
 
     /// include the apriori into a given set of counts
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void AprioriNoApriori<IdSetAlloc, CountAlloc>::compute() {}
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void AprioriNoApriori< IdSetAlloc, CountAlloc >::compute() {}
 
     /// sets the weight of the a priori
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void AprioriNoApriori<IdSetAlloc, CountAlloc>::setWeight( double ) {}
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void AprioriNoApriori< IdSetAlloc, CountAlloc >::setWeight(double) {}
 
     /// indicates whether an apriori is of a certain type
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE bool
-    AprioriNoApriori<IdSetAlloc, CountAlloc>::isOfType( const std::string& type ) {
-      return AprioriNoAprioriType::isOfType( type );
+    AprioriNoApriori< IdSetAlloc, CountAlloc >::isOfType(const std::string& type) {
+      return AprioriNoAprioriType::isOfType(type);
     }
 
     /// returns the type of the apriori
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE const std::string&
-                 AprioriNoApriori<IdSetAlloc, CountAlloc>::getType() const noexcept {
+                 AprioriNoApriori< IdSetAlloc, CountAlloc >::getType() const noexcept {
       return AprioriNoAprioriType::type;
     }
 

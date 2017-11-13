@@ -52,60 +52,63 @@ namespace gum_tests {
   class K2TestSuite : public CxxTest::TestSuite {
     public:
     void test_k2_asia() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
 
       auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
+        gum::learning::make_DB_row_filter(database, translators, generators);
 
-      std::vector<gum::Size> modalities = filter.modalities();
+      std::vector< gum::Size > modalities = filter.modalities();
 
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<>          score( filter, modalities, apriori );
+      gum::learning::ScoreK2<>          score(filter, modalities, apriori);
 
       gum::learning::StructuralConstraintDAG struct_constraint(
-          gum::Size( modalities.size() ) );
+        gum::Size(modalities.size()));
 
-      gum::learning::ParamEstimatorML<> estimator( filter, modalities, apriori );
+      gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori);
 
-      std::vector<gum::NodeId> order( filter.modalities().size() );
-      for ( gum::NodeId i = 0; i < order.size(); ++i ) {
+      std::vector< gum::NodeId > order(filter.modalities().size());
+      for (gum::NodeId i = 0; i < order.size(); ++i) {
         order[i] = i;
       }
 
-      gum::learning::GraphChangesGenerator4K2<decltype( struct_constraint )>
-          op_set( struct_constraint );
+      gum::learning::GraphChangesGenerator4K2< decltype(struct_constraint) >
+        op_set(struct_constraint);
 
-      gum::learning::GraphChangesSelector4DiGraph<decltype( score ),
-                                                  decltype( struct_constraint ),
-                                                  decltype( op_set )>
-          selector( score, struct_constraint, op_set );
+      gum::learning::GraphChangesSelector4DiGraph< decltype(score),
+                                                   decltype(struct_constraint),
+                                                   decltype(op_set) >
+        selector(score, struct_constraint, op_set);
 
       gum::learning::K2 k2;
-      k2.setOrder( order );
-      k2.approximationScheme().setEpsilon( 1000 );
+      k2.setOrder(order);
+      k2.approximationScheme().setEpsilon(1000);
 
       try {
-        gum::BayesNet<float> bn = k2.learnBN<float>( selector,
-                                                     estimator,
-                                                     database.variableNames(),
-                                                     modalities,
-                                                     filter.translatorSet() );
-
-        gum::BayesNet<double> bn2 = k2.learnBN<double>( selector,
+        gum::BayesNet< float > bn = k2.learnBN< float >(selector,
                                                         estimator,
                                                         database.variableNames(),
                                                         modalities,
-                                                        filter.translatorSet() );
-        TS_ASSERT( bn.dag().arcs().size() == 8 );
-        TS_ASSERT( bn2.dag().arcs().size() == 8 );
-      } catch ( gum::Exception& e ) {
-        GUM_SHOWERROR( e );
+                                                        filter.translatorSet());
+
+        gum::BayesNet< double > bn2 =
+          k2.learnBN< double >(selector,
+                               estimator,
+                               database.variableNames(),
+                               modalities,
+                               filter.translatorSet());
+        TS_ASSERT(bn.dag().arcs().size() == 8);
+        TS_ASSERT(bn2.dag().arcs().size() == 8);
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
       }
     }
 
@@ -114,7 +117,8 @@ namespace gum_tests {
     void xtest_k2_asia_bis () {
       gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv"
     ) );
-    gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
+    gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId>
+translators;
       translators.insertTranslator ( 0, 8 );
 
 gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
@@ -178,7 +182,8 @@ gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
       gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv"
     ) );
 
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
+      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId>
+translators;
       translators.insertTranslator ( 0, 8 );
 
       gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
@@ -218,7 +223,8 @@ gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
       gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "asia.csv"
     ) );
 
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
+      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId>
+translators;
       translators.insertTranslator ( 0, 8 );
 
       gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
@@ -269,7 +275,8 @@ gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
       gum::learning::DatabaseFromCSV database ( GET_RESSOURCES_PATH( "alarm.csv"
     ) );
 
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
+      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId>
+translators;
       translators.insertTranslator ( 0, 37 );
 
       gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>

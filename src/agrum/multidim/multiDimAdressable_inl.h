@@ -34,34 +34,34 @@
 namespace gum {
 
   INLINE
-  MultiDimAdressable::MultiDimAdressable( MultiDimAdressable&& from )
-      : MultiDimInterface( std::forward<MultiDimInterface>( from ) ) {
-    GUM_CONS_MOV( MultiDimAdressable );
+  MultiDimAdressable::MultiDimAdressable(MultiDimAdressable&& from)
+      : MultiDimInterface(std::forward< MultiDimInterface >(from)) {
+    GUM_CONS_MOV(MultiDimAdressable);
   }
 
   INLINE MultiDimAdressable::MultiDimAdressable() {
-    GUM_CONSTRUCTOR( MultiDimAdressable );
+    GUM_CONSTRUCTOR(MultiDimAdressable);
   }
 
   INLINE
-  MultiDimAdressable::MultiDimAdressable( const MultiDimAdressable& from ) {
-    GUM_CONS_CPY( MultiDimAdressable );
+  MultiDimAdressable::MultiDimAdressable(const MultiDimAdressable& from) {
+    GUM_CONS_CPY(MultiDimAdressable);
   }
 
   INLINE MultiDimAdressable::~MultiDimAdressable() {
-    GUM_DESTRUCTOR( MultiDimAdressable );
+    GUM_DESTRUCTOR(MultiDimAdressable);
   }
 
   INLINE MultiDimAdressable& MultiDimAdressable::
-  operator=( const MultiDimAdressable& from ) {
-    GUM_OP_CPY( MultiDimAdressable );
-    MultiDimInterface::operator=( from );
+  operator=(const MultiDimAdressable& from) {
+    GUM_OP_CPY(MultiDimAdressable);
+    MultiDimInterface::operator=(from);
     return *this;
   }
   INLINE MultiDimAdressable& MultiDimAdressable::
-  operator=( MultiDimAdressable&& from ) {
-    GUM_OP_MOV( MultiDimAdressable );
-    MultiDimInterface::operator=( std::forward<MultiDimInterface>( from ) );
+  operator=(MultiDimAdressable&& from) {
+    GUM_OP_MOV(MultiDimAdressable);
+    MultiDimInterface::operator=(std::forward< MultiDimInterface >(from));
     return *this;
   }
 

@@ -51,7 +51,7 @@ namespace gum {
    *
    */
 
-  template <typename GUM_SCALAR_A, typename GUM_SCALAR_B>
+  template < typename GUM_SCALAR_A, typename GUM_SCALAR_B >
   class ContingencyTable {
 
     public:
@@ -73,11 +73,11 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( ContingencyTable ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(ContingencyTable));
     }
 
     /// @}
@@ -90,33 +90,33 @@ namespace gum {
 
     /// Increments the number of sample for case( iattr, ivalue )
 
-    void add( GUM_SCALAR_A valueA, GUM_SCALAR_B valueB );
+    void add(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB);
 
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx joint( GUM_SCALAR_A valueA, GUM_SCALAR_B valueB ) const {
+    Idx joint(GUM_SCALAR_A valueA, GUM_SCALAR_B valueB) const {
       return __jointTable.exists(
-                 std::pair<GUM_SCALAR_A, GUM_SCALAR_B>( valueA, valueB ) )
-                 ? __jointTable[std::pair<GUM_SCALAR_A, GUM_SCALAR_B>( valueA,
-                                                                       valueB )]
-                 : 0;
+               std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA, valueB))
+               ? __jointTable[std::pair< GUM_SCALAR_A, GUM_SCALAR_B >(valueA,
+                                                                      valueB)]
+               : 0;
     }
 
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx attrAMarginal( GUM_SCALAR_A valueA ) const {
-      return __attrAMarginalTable.exists( valueA ) ? __attrAMarginalTable[valueA]
-                                                   : 0;
+    Idx attrAMarginal(GUM_SCALAR_A valueA) const {
+      return __attrAMarginalTable.exists(valueA) ? __attrAMarginalTable[valueA]
+                                                 : 0;
     }
 
 
     /// Returns the number of samples for case (iattr, ivalue)
 
-    Idx attrBMarginal( GUM_SCALAR_B valueB ) const {
-      return __attrAMarginalTable.exists( valueB ) ? __attrAMarginalTable[valueB]
-                                                   : 0;
+    Idx attrBMarginal(GUM_SCALAR_B valueB) const {
+      return __attrAMarginalTable.exists(valueB) ? __attrAMarginalTable[valueB]
+                                                 : 0;
     }
 
 
@@ -124,10 +124,10 @@ namespace gum {
 
     //        Idx aMarginal( GUM_SCALAR_A iattr ) { return
     //        __attrMarginalTable[iattr]; }
-    HashTableConstIteratorSafe<GUM_SCALAR_A, Idx> attrABeginSafe() const {
+    HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrABeginSafe() const {
       return __attrAMarginalTable.cbeginSafe();
     }
-    HashTableConstIteratorSafe<GUM_SCALAR_A, Idx> attrAEndSafe() const {
+    HashTableConstIteratorSafe< GUM_SCALAR_A, Idx > attrAEndSafe() const {
       return __attrAMarginalTable.cendSafe();
     }
 
@@ -136,10 +136,10 @@ namespace gum {
 
     //        Idx vMarginal( GUM_SCALAR_B ivalue ) { return
     //        __valueMarginalTable[ivalue]; }
-    HashTableConstIteratorSafe<GUM_SCALAR_B, Idx> attrBBeginSafe() const {
+    HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBBeginSafe() const {
       return __attrBMarginalTable.cbeginSafe();
     }
-    HashTableConstIteratorSafe<GUM_SCALAR_B, Idx> attrBEndSafe() const {
+    HashTableConstIteratorSafe< GUM_SCALAR_B, Idx > attrBEndSafe() const {
       return __attrBMarginalTable.cendSafe();
     }
 
@@ -155,8 +155,8 @@ namespace gum {
 
     /// @}
 
-    ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>&
-    operator+=( const ContingencyTable<GUM_SCALAR_A, GUM_SCALAR_B>& src );
+    ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >&
+    operator+=(const ContingencyTable< GUM_SCALAR_A, GUM_SCALAR_B >& src);
 
     std::string toString() const {
       std::stringstream ss;
@@ -176,9 +176,9 @@ namespace gum {
      * If someone ever use this class and has time to correctly implements
      * a efficient contingency table, you're welcome
      */
-    HashTable<std::pair<GUM_SCALAR_A, GUM_SCALAR_B>, Idx> __jointTable;
-    HashTable<GUM_SCALAR_A, Idx> __attrAMarginalTable;
-    HashTable<GUM_SCALAR_B, Idx> __attrBMarginalTable;
+    HashTable< std::pair< GUM_SCALAR_A, GUM_SCALAR_B >, Idx > __jointTable;
+    HashTable< GUM_SCALAR_A, Idx > __attrAMarginalTable;
+    HashTable< GUM_SCALAR_B, Idx > __attrBMarginalTable;
   };
 
 } /* namespace gum */

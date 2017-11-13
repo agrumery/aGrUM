@@ -68,14 +68,14 @@ namespace gum {
     /**
      * @brief Copy constructor.
      */
-    MultiDimAdressable( const MultiDimAdressable& from );
-    MultiDimAdressable& operator=( const MultiDimAdressable& from );
+    MultiDimAdressable(const MultiDimAdressable& from);
+    MultiDimAdressable& operator=(const MultiDimAdressable& from);
 
     /**
      * @brief Class move constructor.
      */
-    MultiDimAdressable( MultiDimAdressable&& );
-    MultiDimAdressable& operator=( MultiDimAdressable&& from );
+    MultiDimAdressable(MultiDimAdressable&&);
+    MultiDimAdressable& operator=(MultiDimAdressable&& from);
 
 
     /**
@@ -93,28 +93,28 @@ namespace gum {
     * virtualize the access to master pointer.
     * @return Returns the master of this MultiDimAdressable.
     */
-    virtual MultiDimAdressable& getMasterRef( void ) = 0;
+    virtual MultiDimAdressable& getMasterRef(void) = 0;
 
     /**
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the master of this MultiDimAdressable.
     */
-    virtual const MultiDimAdressable& getMasterRef( void ) const = 0;
+    virtual const MultiDimAdressable& getMasterRef(void) const = 0;
 
     /**
      * @brief Register i as a slave of this MultiDimAdressable.
      * @param i The Instantiation to enslave.
      * @return Returns true if i becomes a slave of this MultiDimAdressable.
      */
-    virtual bool registerSlave( Instantiation& i ) = 0;
+    virtual bool registerSlave(Instantiation& i) = 0;
 
     /**
      * @brief Unregister i as a slave of this MultiDimAdressable.
      * @param i The Instantiation to free.
      * @return Returns true, whatever happens.
      */
-    virtual bool unregisterSlave( Instantiation& i ) = 0;
+    virtual bool unregisterSlave(Instantiation& i) = 0;
 
     /**
      * @brief Listen to changes in a given Instantiation.
@@ -123,47 +123,47 @@ namespace gum {
      * @param oldval The old value.
      * @param newval The changed value.
      */
-    virtual void changeNotification( Instantiation&                i,
-                                     const DiscreteVariable* const var,
-                                     const Idx&                    oldval,
-                                     const Idx&                    newval ) = 0;
+    virtual void changeNotification(Instantiation&                i,
+                                    const DiscreteVariable* const var,
+                                    const Idx&                    oldval,
+                                    const Idx&                    newval) = 0;
 
     /**
      * @brief Listen to setFirst in a given Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setFirstNotification( Instantiation& i ) = 0;
+    virtual void setFirstNotification(Instantiation& i) = 0;
 
     /**
      * @brief Listen to setLast in a given Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setLastNotification( Instantiation& i ) = 0;
+    virtual void setLastNotification(Instantiation& i) = 0;
 
     /**
      * @brief Listen to increment in a given Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setIncNotification( Instantiation& i ) = 0;
+    virtual void setIncNotification(Instantiation& i) = 0;
 
     /**
      * @brief Listen to increment in each recorded Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setDecNotification( Instantiation& i ) = 0;
+    virtual void setDecNotification(Instantiation& i) = 0;
 
     /**
      * @brief Listen to an assignment of a value in a Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setChangeNotification( Instantiation& i ) = 0;
+    virtual void setChangeNotification(Instantiation& i) = 0;
 
     /**
      * @brief Return a string representation of internal data about i in this.
      * @param i The Instantiation to represent.
      * @return Return a string representation of internal data about i in this.
      */
-    virtual const std::string toString( const Instantiation* i ) const = 0;
+    virtual const std::string toString(const Instantiation* i) const = 0;
 
     /// @}
   };

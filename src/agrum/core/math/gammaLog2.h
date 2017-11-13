@@ -53,19 +53,19 @@ namespace gum {
      * @brief Default constructor.
      * @param requires_precision Set if precision is required or not.
      */
-    GammaLog2( bool requires_precision = false );
+    GammaLog2(bool requires_precision = false);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::GammaLog2 to copy.
      */
-    GammaLog2( const GammaLog2& from );
+    GammaLog2(const GammaLog2& from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::GammaLog2 to move.
      */
-    GammaLog2( GammaLog2&& from );
+    GammaLog2(GammaLog2&& from);
 
     /**
      * @brief Class destructor.
@@ -82,13 +82,13 @@ namespace gum {
      * @brief Returns log2 ( gamma (x) ) for x > 0.
      * @throws OutOfBounds Raised if raised if x <= 0.
      */
-    double operator()( double x ) const;
+    double operator()(double x) const;
 
     /**
      * @brief Sets whether we need more precision for small values.
      * @param p If true, precision is enable.
      */
-    void setPrecision( bool p );
+    void setPrecision(bool p);
 
     /// @}
     // ============================================================================
@@ -102,7 +102,7 @@ namespace gum {
      * @return Returns log2 ( gamma (x) ) for x >= 0.
      * @throws OutOfBounds Raised if x <= 0.
      */
-    double gammaLog2( double x ) const;
+    double gammaLog2(double x) const;
 
     /// @}
 
@@ -117,7 +117,7 @@ namespace gum {
     static constexpr double __log_sqrt_2pi{GUM_LOG_SQRT_2PI};
 
     /// The 5000 values from 0 to 50 by step of 1/100.
-    static const std::vector<double> __small_values;
+    static const std::vector< double > __small_values;
   };
 
 } /* namespace gum */

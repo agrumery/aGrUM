@@ -28,49 +28,49 @@ namespace gum_tests {
   class RefPtrTestSuite : public CxxTest::TestSuite {
     public:
     void testConstructors() {
-      gum::RefPtr<int> ptr1( new int( 4 ) );
+      gum::RefPtr< int > ptr1(new int(4));
 
-      TS_ASSERT( ptr1 );
+      TS_ASSERT(ptr1);
 
-      gum::RefPtr<int> ptr2 = ptr1, ptr3;
+      gum::RefPtr< int > ptr2 = ptr1, ptr3;
 
-      TS_ASSERT_EQUALS( ptr1, ptr2 );
+      TS_ASSERT_EQUALS(ptr1, ptr2);
 
-      TS_ASSERT_DIFFERS( ptr1, ptr3 );
+      TS_ASSERT_DIFFERS(ptr1, ptr3);
 
       ptr3 = ptr1;
 
-      TS_ASSERT_EQUALS( ptr1, ptr3 );
+      TS_ASSERT_EQUALS(ptr1, ptr3);
     }
 
     void testModify() {
-      gum::RefPtr<int> ptr1( new int( 4 ) );
-      gum::RefPtr<int> ptr2 = ptr1, ptr3;
+      gum::RefPtr< int > ptr1(new int(4));
+      gum::RefPtr< int > ptr2 = ptr1, ptr3;
       ptr3 = ptr1;
 
-      TS_ASSERT_EQUALS( ptr1, ptr2 );
+      TS_ASSERT_EQUALS(ptr1, ptr2);
 
       ptr2.clear();
 
-      TS_ASSERT_DIFFERS( ptr1, ptr2 );
+      TS_ASSERT_DIFFERS(ptr1, ptr2);
 
       *ptr1 = 5;
 
-      TS_ASSERT_EQUALS( *ptr1, 5 );
+      TS_ASSERT_EQUALS(*ptr1, 5);
 
       ptr1 = 0;
 
-      TS_ASSERT_EQUALS( ptr1.refCount(), 0U );
+      TS_ASSERT_EQUALS(ptr1.refCount(), 0U);
 
       ptr2 = ptr1;
 
-      TS_ASSERT_EQUALS( ptr2.refCount(), 0U );
+      TS_ASSERT_EQUALS(ptr2.refCount(), 0U);
     }
 
     struct toto {
       int xxx;
       toto()
-          : xxx( 4 ){};
+          : xxx(4){};
 
       int getY() { return xxx; }
     };
@@ -78,19 +78,19 @@ namespace gum_tests {
     struct titi : public toto {
       int yyy;
       titi()
-          : yyy( 3 ){};
+          : yyy(3){};
 
       int getY() { return yyy; }
     };
 
     void testDowncast() {
-      gum::RefPtr<titi> ptr1( new titi );
+      gum::RefPtr< titi > ptr1(new titi);
 
-      TS_ASSERT_EQUALS( ptr1->getY(), 3 );
+      TS_ASSERT_EQUALS(ptr1->getY(), 3);
 
-      gum::RefPtr<toto> ptr2( ptr1 );
+      gum::RefPtr< toto > ptr2(ptr1);
 
-      TS_ASSERT_DIFFERS( ptr1->getY(), ptr2->getY() );
+      TS_ASSERT_DIFFERS(ptr1->getY(), ptr2->getY());
     }
   };
 }

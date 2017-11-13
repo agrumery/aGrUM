@@ -31,22 +31,22 @@
 namespace gum {
 
   // Default Constructor
-  template <typename GUM_SCALAR>
-  IInfluenceDiagramInference<GUM_SCALAR>::IInfluenceDiagramInference(
-      const InfluenceDiagram<GUM_SCALAR>& infDiag )
-      : __infDiag( infDiag ) {
-    GUM_CONSTRUCTOR( IInfluenceDiagramInference );
+  template < typename GUM_SCALAR >
+  IInfluenceDiagramInference< GUM_SCALAR >::IInfluenceDiagramInference(
+    const InfluenceDiagram< GUM_SCALAR >& infDiag)
+      : __infDiag(infDiag) {
+    GUM_CONSTRUCTOR(IInfluenceDiagramInference);
   }
 
   // Destructor
-  template <typename GUM_SCALAR>
-  IInfluenceDiagramInference<GUM_SCALAR>::~IInfluenceDiagramInference() {
-    GUM_DESTRUCTOR( IInfluenceDiagramInference );
+  template < typename GUM_SCALAR >
+  IInfluenceDiagramInference< GUM_SCALAR >::~IInfluenceDiagramInference() {
+    GUM_DESTRUCTOR(IInfluenceDiagramInference);
   }
 
-  template <typename GUM_SCALAR>
-  const InfluenceDiagram<GUM_SCALAR>&
-  IInfluenceDiagramInference<GUM_SCALAR>::influenceDiagram() const {
+  template < typename GUM_SCALAR >
+  const InfluenceDiagram< GUM_SCALAR >&
+  IInfluenceDiagramInference< GUM_SCALAR >::influenceDiagram() const {
     return __infDiag;
   }
 

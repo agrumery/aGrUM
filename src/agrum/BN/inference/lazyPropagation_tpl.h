@@ -441,7 +441,7 @@ namespace gum {
     // 1/ create an undirected graph containing only the nodes and no edge
     const auto& bn = this->BN();
     __graph.clear();
-    for (auto node : bn.dag())
+    for (const auto node : bn.dag())
       __graph.addNode(node);
 
     // 2/ if we wish to exploit barren nodes, we shall remove them from the BN
@@ -627,14 +627,14 @@ namespace gum {
     }
 
     // remove all the potentials created during the last inference
-    for (auto& potlist : __created_potentials)
-      for (auto pot : potlist.second)
+    for (const auto& potlist : __created_potentials)
+      for (const auto pot : potlist.second)
         delete pot;
     __created_potentials.clear();
 
     // remove all the potentials created to take into account hard evidence
     // during the last inference
-    for (auto pot_pair : __hard_ev_projected_CPTs)
+    for (const auto pot_pair : __hard_ev_projected_CPTs)
       delete pot_pair.second;
     __hard_ev_projected_CPTs.clear();
 
@@ -694,7 +694,7 @@ namespace gum {
           if (hard_nodes.size() == variables.size()) {
             Instantiation inst;
             const auto&   vars = cpt.variablesSequence();
-            for (auto var : vars)
+            for (const auto var : vars)
               inst << *var;
             for (Size i = 0; i < hard_nodes.size(); ++i) {
               inst.chgVal(variables[i], hard_evidence[bn.nodeId(*(variables[i]))]);
@@ -718,7 +718,7 @@ namespace gum {
             // there should be only one potential in new_cpt_list
             if (new_cpt_list.size() != 1) {
               // remove the CPT created to avoid memory leaks
-              for (auto pot : new_cpt_list) {
+              for (const auto pot : new_cpt_list) {
                 if (!marg_cpt_set.contains(pot)) delete pot;
               }
               GUM_ERROR(FatalError,
@@ -775,7 +775,7 @@ namespace gum {
       __separator_potentials[arc].clear();
       if (__created_potentials.exists(arc)) {
         auto& arc_created_potentials = __created_potentials[arc];
-        for (auto pot : arc_created_potentials)
+        for (const auto pot : arc_created_potentials)
           delete pot;
         arc_created_potentials.clear();
       }
@@ -842,7 +842,7 @@ namespace gum {
 
     // now, add to the set of invalidated cliques those that contain projected
     // CPTs that were changed.
-    for (auto node : nodes_with_projected_CPTs_changed) {
+    for (const auto node : nodes_with_projected_CPTs_changed) {
       const auto clique = __node_to_clique[node];
       invalidated_cliques.insert(clique);
       for (const auto neighbor : __JT->neighbours(clique)) {
@@ -888,7 +888,7 @@ namespace gum {
 
     // remove all the evidence that were entered into __node_to_soft_evidence
     // and __clique_potentials and add the new soft ones
-    for (auto& pot_pair : __node_to_soft_evidence) {
+    for (const auto& pot_pair : __node_to_soft_evidence) {
       __clique_potentials[__node_to_clique[pot_pair.first]].erase(pot_pair.second);
     }
     __node_to_soft_evidence.clear();
@@ -929,7 +929,7 @@ namespace gum {
       // there should be only one potential in new_cpt_list
       if (new_cpt_list.size() != 1) {
         // remove the CPT created to avoid memory leaks
-        for (auto pot : new_cpt_list) {
+        for (const auto pot : new_cpt_list) {
           if (!marg_cpt_set.contains(pot)) delete pot;
         }
         GUM_ERROR(FatalError,
@@ -1066,7 +1066,7 @@ namespace gum {
       const Sequence< const DiscreteVariable* >& vars =
         (**iter).variablesSequence();
       bool found = false;
-      for (auto var : vars) {
+      for (const auto var : vars) {
         if (requisite_nodes.exists(bn.nodeId(*var))) {
           found = true;
           break;
@@ -1188,7 +1188,7 @@ namespace gum {
     HashTable< const Potential< GUM_SCALAR >*, Set< const DiscreteVariable* > >
                                    pot2barren_var;
     Set< const DiscreteVariable* > empty_var_set;
-    for (auto elt : var2pots) {
+    for (const auto elt : var2pots) {
       if (elt.second.size() == 1) {  // here we have a barren variable
         const Potential< GUM_SCALAR >* pot = *(elt.second.begin());
         if (!pot2barren_var.exists(pot)) {
@@ -1203,7 +1203,7 @@ namespace gum {
     // set of potentials, else just project the potential
     MultiDimProjection< GUM_SCALAR, Potential > projector(LPNewprojPotential);
     __PotentialSet projected_pots;
-    for (auto elt : pot2barren_var) {
+    for (const auto elt : pot2barren_var) {
       // remove the current potential from pot_list as, anyway, we will change
       // it
       const Potential< GUM_SCALAR >* pot = elt.first;
@@ -1418,7 +1418,7 @@ namespace gum {
     }
 
     // remove the potentials that were created in new_pot_list
-    for (auto pot : new_pot_list)
+    for (const auto pot : new_pot_list)
       if (!pot_list.exists(pot)) delete pot;
 
     // check that the joint posterior is different from a 0 vector: this would
@@ -1600,7 +1600,7 @@ namespace gum {
     }
 
     // remove the potentials that were created in new_pot_list
-    for (auto pot : new_pot_list)
+    for (const auto pot : new_pot_list)
       if (!pot_list.exists(pot)) delete pot;
 
     // check that the joint posterior is different from a 0 vector: this would

@@ -42,7 +42,7 @@ namespace gum {
 #ifndef NDEBUG
 
   namespace __debug__ {
-    typedef std::map<std::string, int> DEBUG_MAP;
+    typedef std::map< std::string, int > DEBUG_MAP;
 
     // this static hashtable only on debug mode.
     static DEBUG_MAP& __sizeof() {
@@ -64,56 +64,56 @@ namespace gum {
       return *deletion;
     }
 
-    std::string __getFile( const char* f ) {
-      std::string s( f );
-      return s.erase( 0, s.rfind( "/" ) + 1 );
+    std::string __getFile(const char* f) {
+      std::string s(f);
+      return s.erase(0, s.rfind("/") + 1);
     }
 
-    void __show_trace( const char* zeKey,
-                       const char* zeFile,
-                       long        zeLine,
-                       const char* zeMsg,
-                       const void* zePtr ) {
+    void __show_trace(const char* zeKey,
+                      const char* zeFile,
+                      long        zeLine,
+                      const char* zeMsg,
+                      const void* zePtr) {
 #ifdef GUM_DEEP_TRACE_ON
-      std::cerr << std::setw( 40 ) << std::setfill( ' ' ) << __getFile( zeFile )
-                << "#" << std::setfill( '0' ) << std::setw( 5 ) << std::dec
-                << zeLine << " : " << zeMsg << " <" << zeKey << "> [" << std::hex
-                << zePtr << "]" << std::dec << std::endl;
+      std::cerr << std::setw(40) << std::setfill(' ') << __getFile(zeFile) << "#"
+                << std::setfill('0') << std::setw(5) << std::dec << zeLine << " : "
+                << zeMsg << " <" << zeKey << "> [" << std::hex << zePtr << "]"
+                << std::dec << std::endl;
 #endif  // TRACE_CONSTRUCTION_ON
     }
 
-    void __inc_creation( const char* zeKey,
-                         const char* zeFile,
-                         long        zeLine,
-                         const char* zeMsg,
-                         const void* zePtr,
-                         int         zeSize ) {
-      __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
+    void __inc_creation(const char* zeKey,
+                        const char* zeFile,
+                        long        zeLine,
+                        const char* zeMsg,
+                        const void* zePtr,
+                        int         zeSize) {
+      __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
 
       __creation()[zeKey]++;
       __sizeof()[zeKey] = zeSize;
     }
 
     // to handle static element of agrum library
-    void __dec_creation( const char* zeKey,
-                         const char* zeFile,
-                         long        zeLine,
-                         const char* zeMsg,
-                         const void* zePtr ) {
-      __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
+    void __dec_creation(const char* zeKey,
+                        const char* zeFile,
+                        long        zeLine,
+                        const char* zeMsg,
+                        const void* zePtr) {
+      __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
       __creation()[zeKey]--;
     }
 
-    void __inc_deletion( const char* zeKey,
-                         const char* zeFile,
-                         long        zeLine,
-                         const char* zeMsg,
-                         const void* zePtr ) {
-      __show_trace( zeKey, zeFile, zeLine, zeMsg, zePtr );
+    void __inc_deletion(const char* zeKey,
+                        const char* zeFile,
+                        long        zeLine,
+                        const char* zeMsg,
+                        const void* zePtr) {
+      __show_trace(zeKey, zeFile, zeLine, zeMsg, zePtr);
       __deletion()[zeKey]++;
     }
 
-    void __dumpObjects( void ) {
+    void __dumpObjects(void) {
       Size   nb_err = 0;
       double total_size = 0.0;
 
@@ -122,126 +122,120 @@ namespace gum {
       int  widthColSizeOf = 5;
       int  widthColItemsNumber = 8;
 
-      std::cout << std::setfill( '=' ) << "|" << std::setw( widthColLibelle + 2 )
-                << ""
-                << "|" << std::setw( widthColSizeOf + 4 ) << ""
-                << "|" << std::setw( widthColItemsNumber + 2 ) << ""
-                << "|" << std::setw( widthColItemsNumber + 2 ) << ""
+      std::cout << std::setfill('=') << "|" << std::setw(widthColLibelle + 2) << ""
+                << "|" << std::setw(widthColSizeOf + 4) << ""
+                << "|" << std::setw(widthColItemsNumber + 2) << ""
+                << "|" << std::setw(widthColItemsNumber + 2) << ""
                 << "|" << std::endl;
-      std::cout << std::setfill( ' ' ) << "| " << std::left
-                << std::setw( widthColLibelle ) << "Class Name" << std::right
-                << " |   " << std::setw( widthColSizeOf ) << "Size"
-                << " | " << std::setw( widthColItemsNumber ) << "#Const"
-                << " | " << std::setw( widthColItemsNumber ) << "#Dest"
+      std::cout << std::setfill(' ') << "| " << std::left
+                << std::setw(widthColLibelle) << "Class Name" << std::right
+                << " |   " << std::setw(widthColSizeOf) << "Size"
+                << " | " << std::setw(widthColItemsNumber) << "#Const"
+                << " | " << std::setw(widthColItemsNumber) << "#Dest"
                 << " |" << std::endl;
-      std::cout << std::setfill( '-' ) << "|" << std::setw( widthColLibelle + 2 )
-                << ""
-                << "|" << std::setw( widthColSizeOf + 4 ) << ""
-                << "|" << std::setw( widthColItemsNumber + 2 ) << ""
-                << "|" << std::setw( widthColItemsNumber + 2 ) << ""
+      std::cout << std::setfill('-') << "|" << std::setw(widthColLibelle + 2) << ""
+                << "|" << std::setw(widthColSizeOf + 4) << ""
+                << "|" << std::setw(widthColItemsNumber + 2) << ""
+                << "|" << std::setw(widthColItemsNumber + 2) << ""
                 << "|" << std::endl;
       // list of created objects
-      std::map<std::string, std::string> res;
+      std::map< std::string, std::string > res;
 
-      for ( DEBUG_MAP::const_iterator xx = __creation().begin();
-            xx != __creation().end();
-            ++xx ) {
+      for (DEBUG_MAP::const_iterator xx = __creation().begin();
+           xx != __creation().end();
+           ++xx) {
         std::stringstream stream;
         int               zeCreatedObjs = xx->second;
         int               zeDeletedObjts = -1;
         int               size = __sizeof()[xx->first];
 
-        stream << std::setfill( fillChar = ( fillChar == '_' ) ? ' ' : '_' )
-               << "| " << std::setw( widthColLibelle ) << std::left << xx->first
-               << " | " << std::right << std::setw( widthColSizeOf ) << size
-               << " o | " << std::setw( widthColItemsNumber ) << zeCreatedObjs
-               << " | ";
+        stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
+               << std::setw(widthColLibelle) << std::left << xx->first << " | "
+               << std::right << std::setw(widthColSizeOf) << size << " o | "
+               << std::setw(widthColItemsNumber) << zeCreatedObjs << " | ";
 
-        if ( size > 0 ) total_size += zeCreatedObjs * ( size / 1024.0 );
+        if (size > 0) total_size += zeCreatedObjs * (size / 1024.0);
 
         try {
           zeDeletedObjts = __deletion()[xx->first];
-          stream << std::setfill( fillChar ) << std::setw( widthColItemsNumber )
+          stream << std::setfill(fillChar) << std::setw(widthColItemsNumber)
                  << zeDeletedObjts;
-        } catch ( NotFound& ) {
-          stream << std::setfill( fillChar ) << std::setw( widthColItemsNumber )
+        } catch (NotFound&) {
+          stream << std::setfill(fillChar) << std::setw(widthColItemsNumber)
                  << "?????";
         }
 
         stream << " |";
         ;
 
-        if ( zeCreatedObjs != zeDeletedObjts ) {
-          nb_err += std::abs( zeDeletedObjts - zeCreatedObjs );
+        if (zeCreatedObjs != zeDeletedObjts) {
+          nb_err += std::abs(zeDeletedObjts - zeCreatedObjs);
           stream << "<--- failed";
         }
 
-        res.insert( make_pair( xx->first, stream.str() ) );
+        res.insert(make_pair(xx->first, stream.str()));
         // res.push_back( stream.str() );
       }
 
       // list of deleted objects, but not created (?)
-      for ( DEBUG_MAP::const_iterator xx = __deletion().begin();
-            xx != __deletion().end();
-            ++xx ) {
+      for (DEBUG_MAP::const_iterator xx = __deletion().begin();
+           xx != __deletion().end();
+           ++xx) {
         try {
           __creation()[xx->first];
-        } catch ( NotFound& ) {
+        } catch (NotFound&) {
           std::stringstream stream;
-          fillChar = ( fillChar == '_' ) ? ' ' : '_';
-          stream << std::setfill( fillChar = ( fillChar == '_' ) ? ' ' : '_' )
-                 << "| " << std::setw( widthColLibelle ) << std::left
-                 << xx->first + " "
-                 << " | " << std::right << std::setw( widthColSizeOf )
+          fillChar = (fillChar == '_') ? ' ' : '_';
+          stream << std::setfill(fillChar = (fillChar == '_') ? ' ' : '_') << "| "
+                 << std::setw(widthColLibelle) << std::left << xx->first + " "
+                 << " | " << std::right << std::setw(widthColSizeOf)
                  << __sizeof()[xx->first] << " o | "
-                 << std::setw( widthColItemsNumber ) << "?????"
-                 << " | " << std::setw( widthColItemsNumber ) << xx->second
+                 << std::setw(widthColItemsNumber) << "?????"
+                 << " | " << std::setw(widthColItemsNumber) << xx->second
                  << " |<--- failed";
-          res.insert( make_pair( xx->first, stream.str() ) );
+          res.insert(make_pair(xx->first, stream.str()));
           // res.push_back( stream.str() );
           nb_err += xx->second;
         }
       }
 
-      for ( const auto iter : res ) {
+      for (const auto iter : res) {
         std::cout << iter.second << std::endl;
       }
 
-      std::cout << std::setfill( '-' );
+      std::cout << std::setfill('-');
 
-      std::cout << "|-" << std::setw( widthColLibelle ) << ""
-                << "-|-" << std::setw( widthColSizeOf + 2 ) << ""
-                << "-|-" << std::setw( widthColItemsNumber ) << ""
-                << "-|-" << std::setw( widthColItemsNumber ) << ""
+      std::cout << "|-" << std::setw(widthColLibelle) << ""
+                << "-|-" << std::setw(widthColSizeOf + 2) << ""
+                << "-|-" << std::setw(widthColItemsNumber) << ""
+                << "-|-" << std::setw(widthColItemsNumber) << ""
                 << "-|" << std::endl;
 
-      std::cout << std::setfill( ' ' );
+      std::cout << std::setfill(' ');
 
-      if ( nb_err == 0 ) {
-        std::cout << "| " << std::setw( widthColLibelle ) << "NO MEMORY LEAK !"
+      if (nb_err == 0) {
+        std::cout << "| " << std::setw(widthColLibelle) << "NO MEMORY LEAK !"
                   << " | "
-                  << std::setw( widthColSizeOf + widthColItemsNumber * 2 + 9 )
-                  << ""
+                  << std::setw(widthColSizeOf + widthColItemsNumber * 2 + 9) << ""
                   << "|" << std::endl;
       } else {
-        std::cout << "| " << std::setw( widthColLibelle ) << "Memory leaks found "
+        std::cout << "| " << std::setw(widthColLibelle) << "Memory leaks found "
                   << ""
                   << " | "
-                  << std::setw( widthColSizeOf + widthColItemsNumber * 2 - 6 )
+                  << std::setw(widthColSizeOf + widthColItemsNumber * 2 - 6)
                   << nb_err << " object(s)     "
                   << "|" << std::endl;
       }
 
-      std::cout << "| " << std::setw( widthColLibelle ) << "total "
+      std::cout << "| " << std::setw(widthColLibelle) << "total "
                 << " | " << std::fixed
-                << std::setw( widthColSizeOf + widthColItemsNumber * 2 - 4 )
-                << std::setprecision( 2 ) << total_size << " Ko          "
+                << std::setw(widthColSizeOf + widthColItemsNumber * 2 - 4)
+                << std::setprecision(2) << total_size << " Ko          "
                 << "|" << std::endl;
 
-      std::cout << std::setfill( '=' ) << "|" << std::setw( widthColLibelle + 2 )
+      std::cout << std::setfill('=') << "|" << std::setw(widthColLibelle + 2) << ""
+                << "|" << std::setw(widthColSizeOf + widthColItemsNumber * 2 + 10)
                 << ""
-                << "|"
-                << std::setw( widthColSizeOf + widthColItemsNumber * 2 + 10 ) << ""
                 << "|" << std::endl;
     }
 
@@ -249,7 +243,7 @@ namespace gum {
     // exit())
     void __staticCorrections() {}
 
-    void __atexit( void ) {
+    void __atexit(void) {
       __staticCorrections();
       __dumpObjects();
       __creation().clear();

@@ -53,8 +53,8 @@ namespace gum {
     /**
      * Default constructor.
      */
-    FMDPSimulator( const FMDP<double>* fmdp );
-    FMDPSimulator( const std::string& resource );
+    FMDPSimulator(const FMDP< double >* fmdp);
+    FMDPSimulator(const std::string& resource);
 
     /**
      * Default destructor.
@@ -69,9 +69,9 @@ namespace gum {
     /// @{
 
     ///
-    double reward() { return __fmdp->reward()->get( this->_currentState ); }
+    double reward() { return __fmdp->reward()->get(this->_currentState); }
 
-    void perform( Idx );
+    void perform(Idx);
 
     /// @}
 
@@ -80,15 +80,15 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const DiscreteVariable* primeVar( const DiscreteVariable* mainVar ) {
-      return __fmdp->main2prime( mainVar );
+    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
+      return __fmdp->main2prime(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe<const DiscreteVariable*> beginVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
       return __fmdp->beginVariables();
     }
-    SequenceIteratorSafe<const DiscreteVariable*> endVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
       return __fmdp->endVariables();
     }
 
@@ -99,28 +99,28 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    virtual const std::string& actionName( Idx actionId ) {
-      return __fmdp->actionName( actionId );
+    virtual const std::string& actionName(Idx actionId) {
+      return __fmdp->actionName(actionId);
     }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe<Idx> beginActions() { return __fmdp->beginActions(); }
-    SequenceIteratorSafe<Idx> endActions() { return __fmdp->endActions(); }
+    SequenceIteratorSafe< Idx > beginActions() { return __fmdp->beginActions(); }
+    SequenceIteratorSafe< Idx > endActions() { return __fmdp->endActions(); }
     /// @}
 
     protected:
-    virtual double _transitionProbability( const DiscreteVariable* var,
-                                           const Instantiation&    transit,
-                                           Idx                     actionId ) {
-      return reinterpret_cast<const MultiDimFunctionGraph<double>*>(
-                 __fmdp->transition( actionId, var ) )
-          ->get( transit );
+    virtual double _transitionProbability(const DiscreteVariable* var,
+                                          const Instantiation&    transit,
+                                          Idx                     actionId) {
+      return reinterpret_cast< const MultiDimFunctionGraph< double >* >(
+               __fmdp->transition(actionId, var))
+        ->get(transit);
     }
 
     private:
     /// The Factored Markov Decision Process that describes how the system
     /// evolves
-    FMDP<double>* __fmdp;
+    FMDP< double >* __fmdp;
 
     /// Just to know if it should be deleted in the end
     const bool __loaded;

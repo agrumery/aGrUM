@@ -34,105 +34,103 @@ namespace gum {
   namespace learning {
 
     /// copy a potential into another whose variables' sequence differs
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     void DAG2BNLearner::__probaVarReordering(
-        gum::Potential<GUM_SCALAR>&       pot,
-        const gum::Potential<GUM_SCALAR>& other_pot ) {
+      gum::Potential< GUM_SCALAR >&       pot,
+      const gum::Potential< GUM_SCALAR >& other_pot) {
       // check that the variables are identical
-      if ( !pot.variablesSequence()
-                .diffSet( other_pot.variablesSequence() )
-                .empty() ) {
-        GUM_ERROR( gum::CPTError,
-                   "the potentials do not have the same variables" );
+      if (!pot.variablesSequence()
+             .diffSet(other_pot.variablesSequence())
+             .empty()) {
+        GUM_ERROR(gum::CPTError, "the potentials do not have the same variables");
       }
 
       // perform the copy
-      Instantiation i( other_pot );
-      Instantiation j( pot );
-      for ( i.setFirst(); !i.end(); ++i ) {
-        j.setVals( i );
-        pot.set( j, other_pot[i] );
+      Instantiation i(other_pot);
+      Instantiation j(pot);
+      for (i.setFirst(); !i.end(); ++i) {
+        j.setVals(i);
+        pot.set(j, other_pot[i]);
       }
     }
 
     /// create a BN
-    template <typename GUM_SCALAR,
-              typename PARAM_ESTIMATOR,
-              typename CELL_TRANSLATORS>
-    BayesNet<GUM_SCALAR>
-    DAG2BNLearner::createBN( PARAM_ESTIMATOR&                estimator,
-                             const DAG&                      dag,
-                             const std::vector<std::string>& names,
-                             const std::vector<Size>&        modal,
-                             const CELL_TRANSLATORS&         translator ) {
-      BayesNet<GUM_SCALAR> bn;
+    template < typename GUM_SCALAR,
+               typename PARAM_ESTIMATOR,
+               typename CELL_TRANSLATORS >
+    BayesNet< GUM_SCALAR >
+    DAG2BNLearner::createBN(PARAM_ESTIMATOR&                  estimator,
+                            const DAG&                        dag,
+                            const std::vector< std::string >& names,
+                            const std::vector< Size >&        modal,
+                            const CELL_TRANSLATORS&           translator) {
+      BayesNet< GUM_SCALAR > bn;
 
       // create a bn with dummy parameters corresponding to the dag
-      for ( const auto id : dag ) {
+      for (const auto id : dag) {
         // create the labelized variable
-        std::vector<std::string> labels;
-        for ( Idx i 
-                = 0; i < modal[id]; ++i ) {
-          labels.push_back( translator.translateBack( id, i ) );
+        std::vector< std::string > labels;
+        for (Idx i = 0; i < modal[id]; ++i) {
+          labels.push_back(translator.translateBack(id, i));
         }
-        sort( labels.begin(), labels.end() );
+        sort(labels.begin(), labels.end());
 
-        LabelizedVariable variable( names[id], "", 0 );
-        for ( auto s : labels ) {
-          variable.addLabel( s );
+        LabelizedVariable variable(names[id], "", 0);
+        for (auto s : labels) {
+          variable.addLabel(s);
         }
-        bn.add( variable, id );
+        bn.add(variable, id);
       }
 
       // add the arcs
       bn.beginTopologyTransformation();
-      for ( const auto& arc : dag.arcs() ) {
-        bn.addArc( arc.tail(), arc.head() );
+      for (const auto& arc : dag.arcs()) {
+        bn.addArc(arc.tail(), arc.head());
       }
       bn.endTopologyTransformation();
 
       // estimate the parameters
       const VariableNodeMap& varmap = bn.variableNodeMap();
-      for ( const auto id : dag ) {
+      for (const auto id : dag) {
         estimator.clear();
 
         // get the sequence of variables and make the targets be the last
-        Potential<GUM_SCALAR>& pot =
-            const_cast<Potential<GUM_SCALAR>&>( bn.cpt( id ) );
-        const DiscreteVariable& var = varmap.get( id );
+        Potential< GUM_SCALAR >& pot =
+          const_cast< Potential< GUM_SCALAR >& >(bn.cpt(id));
+        const DiscreteVariable& var = varmap.get(id);
 
         // get the variables of the CPT of id in the correct order
-        Sequence<const DiscreteVariable*> vars = pot.variablesSequence();
-        if ( vars.pos( &var ) != vars.size() - 1 ) {
-          vars.erase( &var );
-          vars.insert( &var );
+        Sequence< const DiscreteVariable* > vars = pot.variablesSequence();
+        if (vars.pos(&var) != vars.size() - 1) {
+          vars.erase(&var);
+          vars.insert(&var);
         }
 
         // setup the estimation
-        if ( vars.size() > 1 ) {
-          std::vector<Idx> cond_ids( vars.size() - 1 );
-          for ( Idx i = 0; i < cond_ids.size(); ++i ) {
-            cond_ids[i] = varmap.get( *( vars[i] ) );
+        if (vars.size() > 1) {
+          std::vector< Idx > cond_ids(vars.size() - 1);
+          for (Idx i = 0; i < cond_ids.size(); ++i) {
+            cond_ids[i] = varmap.get(*(vars[i]));
           }
-          estimator.addNodeSet( id, cond_ids );
+          estimator.addNodeSet(id, cond_ids);
         } else {
-          estimator.addNodeSet( id );
+          estimator.addNodeSet(id);
         }
 
         // assign the parameters to the potentials
         Idx index = 0;
 
         // create a potential with the appropriate size
-        Potential<GUM_SCALAR> ordered_pot;
+        Potential< GUM_SCALAR > ordered_pot;
         ordered_pot.beginMultipleChanges();
-        for ( const auto var : vars ) {
-          ordered_pot.add( *var );
+        for (const auto var : vars) {
+          ordered_pot.add(*var);
         }
         ordered_pot.endMultipleChanges();
-        estimator.setParameters( index, ordered_pot );
+        estimator.setParameters(index, ordered_pot);
 
         // assign the potential to the BN
-        __probaVarReordering( pot, ordered_pot );
+        __probaVarReordering(pot, ordered_pot);
       }
 
       return bn;

@@ -31,65 +31,65 @@
 #endif  // GUM_NOINLINE
 
 namespace gum {
-  EssentialGraph::EssentialGraph( const DAGmodel& m )
-      : __dag( m ) {
+  EssentialGraph::EssentialGraph(const DAGmodel& m)
+      : __dag(m) {
     __buildEssentialGraph();
   }
 
   EssentialGraph::~EssentialGraph() {}
 
   void EssentialGraph::__buildEssentialGraph() {
-    for ( const auto& node : __dag.nodes() ) {
-      __mg.addNode( node );
+    for (const auto& node : __dag.nodes()) {
+      __mg.addNode(node);
     }
-    for ( const auto& arc : __dag.arcs() ) {
-      __mg.addArc( arc.tail(), arc.head() );
+    for (const auto& arc : __dag.arcs()) {
+      __mg.addArc(arc.tail(), arc.head());
     }
 
-    std::vector<Arc> v;
+    std::vector< Arc > v;
     do {
       v.clear();
-      for ( const auto x : __dag.topologicalOrder() )
-        for ( const auto y : __mg.children( x ) )
-          if ( !__strongly_protected( x, y ) ) v.push_back( Arc( x, y ) );
-      for ( const auto& arc : v ) {
-        __mg.eraseArc( arc );
-        __mg.addEdge( arc.tail(), arc.head() );
+      for (const auto x : __dag.topologicalOrder())
+        for (const auto y : __mg.children(x))
+          if (!__strongly_protected(x, y)) v.push_back(Arc(x, y));
+      for (const auto& arc : v) {
+        __mg.eraseArc(arc);
+        __mg.addEdge(arc.tail(), arc.head());
       }
-    } while ( v.size() > 0 );
+    } while (v.size() > 0);
   }
 
-  bool EssentialGraph::__strongly_protected( NodeId a, NodeId b ) {
+  bool EssentialGraph::__strongly_protected(NodeId a, NodeId b) {
     // testing a->b from
     // A Characterization of Markov Equivalence Classes for Acyclic Digraphs (2001)
     //  Steen A. Andersson, David Madigan, and Michael D. Perlman*
 
     // condition (c)
-    if ( ( __mg.parents( a ) - __mg.parents( b ) ).size() > 0 ) {
+    if ((__mg.parents(a) - __mg.parents(b)).size() > 0) {
       return true;
     }
 
     NodeSet cs;
-    for ( const auto& c : __mg.parents( b ) ) {
+    for (const auto& c : __mg.parents(b)) {
       // condition (b) & (c)
-      if ( c == a ) {
+      if (c == a) {
         continue;
       }
-      if ( !__mg.existsEdge( c, a ) ) {
+      if (!__mg.existsEdge(c, a)) {
         return true;
       } else {
-        cs.insert( c );
+        cs.insert(c);
       }
     }
 
     // condition (d)
-    NodeSet ss( cs );
-    if ( cs.size() < 2 ) {
+    NodeSet ss(cs);
+    if (cs.size() < 2) {
       return false;
     } else {
-      for ( const auto& i : cs ) {
-        ss = ss - __mg.neighbours( i );
-        if ( ss.size() < 2 ) {
+      for (const auto& i : cs) {
+        ss = ss - __mg.neighbours(i);
+        if (ss.size() < 2) {
           return false;
         }
       }
@@ -97,29 +97,29 @@ namespace gum {
     }
   }
 
-  std::string EssentialGraph::toDot( void ) const {
+  std::string EssentialGraph::toDot(void) const {
     std::stringstream output;
     std::stringstream nodeStream;
     std::stringstream edgeStream;
-    List<NodeId>      treatedNodes;
+    List< NodeId >    treatedNodes;
     output << "digraph \""
            << "no_name\" {" << std::endl;
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
 
-    for ( const auto node : __mg.nodes() ) {
-      nodeStream << tab << node << "[label=\"" << __dag.variable( node ).name()
+    for (const auto node : __mg.nodes()) {
+      nodeStream << tab << node << "[label=\"" << __dag.variable(node).name()
                  << "\"];";
 
-      for ( const auto nei : __mg.neighbours( node ) )
-        if ( !treatedNodes.exists( nei ) )
+      for (const auto nei : __mg.neighbours(node))
+        if (!treatedNodes.exists(nei))
           edgeStream << tab << node << " -> " << nei << " [dir=none];"
                      << std::endl;
 
-      for ( const auto chi : __mg.children( node ) )
+      for (const auto chi : __mg.children(node))
         edgeStream << tab << node << " -> " << chi << " [color=red];" << std::endl;
 
-      treatedNodes.insert( node );
+      treatedNodes.insert(node);
     }
 
     output << nodeStream.str() << std::endl

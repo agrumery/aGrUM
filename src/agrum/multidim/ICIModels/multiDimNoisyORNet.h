@@ -48,8 +48,8 @@ namespace gum {
    *     never check if it is the case.
    */
   // clang-format on
-  template <typename GUM_SCALAR>
-  class MultiDimNoisyORNet : public MultiDimICIModel<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class MultiDimNoisyORNet : public MultiDimICIModel< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Constructors / Destructors
@@ -57,10 +57,10 @@ namespace gum {
     /// @{
 
     /// Default constructor.
-    MultiDimNoisyORNet( GUM_SCALAR external_weight,
-                        GUM_SCALAR default_weight = (GUM_SCALAR)1.0 );
+    MultiDimNoisyORNet(GUM_SCALAR external_weight,
+                       GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
 
-    MultiDimNoisyORNet( const MultiDimNoisyORNet<GUM_SCALAR>& from );
+    MultiDimNoisyORNet(const MultiDimNoisyORNet< GUM_SCALAR >& from);
 
     /**
      * Copy constructor using a bijection to swap variables from source.
@@ -69,8 +69,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimNoisyORNet(
-        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimNoisyORNet<GUM_SCALAR>& from );
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+      const MultiDimNoisyORNet< GUM_SCALAR >& from);
 
     /// Destructor.
     virtual ~MultiDimNoisyORNet();
@@ -94,7 +94,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
     // ============================================================================
     /// @name Accessors / Modifiers
@@ -102,9 +102,9 @@ namespace gum {
     /// @{
 
     public:
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
-    const std::string toString( void ) const;
+    const std::string toString(void) const;
 
     ///
     /**
@@ -123,13 +123,13 @@ namespace gum {
     /// @}
   };
 
-  extern template class MultiDimNoisyORNet<float>;
-  extern template class MultiDimNoisyORNet<double>;
+  extern template class MultiDimNoisyORNet< float >;
+  extern template class MultiDimNoisyORNet< double >;
 
   /// For friendly displaying the content of the array.
-  template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream&                         s,
-                            const MultiDimNoisyORNet<GUM_SCALAR>& ag );
+  template < typename GUM_SCALAR >
+  std::ostream& operator<<(std::ostream&                           s,
+                           const MultiDimNoisyORNet< GUM_SCALAR >& ag);
 
 } /* namespace gum */
 

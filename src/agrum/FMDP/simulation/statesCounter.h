@@ -70,11 +70,11 @@ namespace gum {
     // ==========================================================================
     /// @{
 
-    void incState( const Instantiation& );
+    void incState(const Instantiation&);
 
-    void reset( const Instantiation& );
+    void reset(const Instantiation&);
 
-    const MultiDimFunctionGraph<int>* counter();
+    const MultiDimFunctionGraph< int >* counter();
 
     /// @}
 
@@ -92,44 +92,44 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    bool isTerminal( NodeId ni ) const { return __counter->isTerminalNode( ni ); }
+    bool isTerminal(NodeId ni) const { return __counter->isTerminalNode(ni); }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    const DiscreteVariable* nodeVar( NodeId ni ) const {
-      return __counter->node( ni )->nodeVar();
+    const DiscreteVariable* nodeVar(NodeId ni) const {
+      return __counter->node(ni)->nodeVar();
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    NodeId nodeSon( NodeId ni, Idx modality ) const {
-      return __counter->node( ni )->son( modality );
+    NodeId nodeSon(NodeId ni, Idx modality) const {
+      return __counter->node(ni)->son(modality);
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    Idx nodeNbObservation( NodeId ni ) const { return __counter->nodeValue( ni ); }
+    Idx nodeNbObservation(NodeId ni) const { return __counter->nodeValue(ni); }
 
-    void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
-      for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-                __counter->variablesSequence().beginSafe();
-            varIter != __counter->variablesSequence().endSafe();
-            ++varIter )
-        ret->add( **varIter );
+    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
+      for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
+             __counter->variablesSequence().beginSafe();
+           varIter != __counter->variablesSequence().endSafe();
+           ++varIter)
+        ret->add(**varIter);
     }
 
 
     /// @}
 
     private:
-    void __incState( const Instantiation&, NodeId, Idx, Size );
+    void __incState(const Instantiation&, NodeId, Idx, Size);
 
-    MultiDimFunctionGraph<Size>* __counter;
+    MultiDimFunctionGraph< Size >* __counter;
 
-    Set<Instantiation*> __visitedStates;
+    Set< Instantiation* > __visitedStates;
   };
 } /* namespace gum */
 

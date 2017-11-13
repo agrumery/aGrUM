@@ -41,28 +41,28 @@ namespace gum_tests {
     public:
     void testAddTarget() {
       auto bn =
-          gum::BayesNet<double>::fastPrototype( "A->B->C->D;A->E->D;F->B;C->H;" );
+        gum::BayesNet< double >::fastPrototype("A->B->C->D;A->E->D;F->B;C->H;");
 
-      gum::LazyPropagation<double> lazy( &bn );
-      TS_ASSERT( lazy.targets() == gum::NodeSet( {0, 1, 2, 3, 4, 5, 6} ) );
-      lazy.addTarget( "A" );
-      TS_ASSERT( lazy.targets() == gum::NodeSet( {0} ) );
-      lazy.addTarget( "B" );
-      TS_ASSERT( lazy.targets() == gum::NodeSet( {0, 1} ) );
+      gum::LazyPropagation< double > lazy(&bn);
+      TS_ASSERT(lazy.targets() == gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
+      lazy.addTarget("A");
+      TS_ASSERT(lazy.targets() == gum::NodeSet({0}));
+      lazy.addTarget("B");
+      TS_ASSERT(lazy.targets() == gum::NodeSet({0, 1}));
 
-      gum::ShaferShenoyInference<double> shafer( &bn );
-      TS_ASSERT( shafer.targets() == gum::NodeSet( {0, 1, 2, 3, 4, 5, 6} ) );
-      shafer.addTarget( "A" );
-      TS_ASSERT( shafer.targets() == gum::NodeSet( {0} ) );
-      shafer.addTarget( "B" );
-      TS_ASSERT( shafer.targets() == gum::NodeSet( {0, 1} ) );
+      gum::ShaferShenoyInference< double > shafer(&bn);
+      TS_ASSERT(shafer.targets() == gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
+      shafer.addTarget("A");
+      TS_ASSERT(shafer.targets() == gum::NodeSet({0}));
+      shafer.addTarget("B");
+      TS_ASSERT(shafer.targets() == gum::NodeSet({0, 1}));
 
-      gum::VariableElimination<double> ve( &bn );
-      TS_ASSERT( ve.targets() == gum::NodeSet( {0, 1, 2, 3, 4, 5, 6} ) );
-      ve.addTarget( "A" );
-      TS_ASSERT( ve.targets() == gum::NodeSet( {0} ) );
-      ve.addTarget( "B" );
-      TS_ASSERT( ve.targets() == gum::NodeSet( {0, 1} ) );
+      gum::VariableElimination< double > ve(&bn);
+      TS_ASSERT(ve.targets() == gum::NodeSet({0, 1, 2, 3, 4, 5, 6}));
+      ve.addTarget("A");
+      TS_ASSERT(ve.targets() == gum::NodeSet({0}));
+      ve.addTarget("B");
+      TS_ASSERT(ve.targets() == gum::NodeSet({0, 1}));
     }
   };
 }

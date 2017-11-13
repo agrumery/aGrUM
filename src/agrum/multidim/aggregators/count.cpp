@@ -26,5 +26,5 @@
 
 #include <agrum/multidim/aggregators/count.h>
 
-template class gum::aggregator::Count<float>;
-template class gum::aggregator::Count<double>;
+template class gum::aggregator::Count< float >;
+template class gum::aggregator::Count< double >;

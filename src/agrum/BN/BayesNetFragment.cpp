@@ -26,5 +26,5 @@
 
 #include <agrum/BN/BayesNetFragment.h>
 
-template class gum::BayesNetFragment<float>;
-template class gum::BayesNetFragment<double>;
+template class gum::BayesNetFragment< float >;
+template class gum::BayesNetFragment< double >;

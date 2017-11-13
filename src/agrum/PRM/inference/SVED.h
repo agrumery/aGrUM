@@ -55,8 +55,8 @@ namespace gum {
      *        algorithm on PRM<GUM_SCALAR>.
      *
      */
-    template <typename GUM_SCALAR>
-    class SVED : public PRMInference<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class SVED : public PRMInference< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Constructors & destructor.
@@ -64,10 +64,10 @@ namespace gum {
       /// @{
 
       /// Default Constructor.
-      SVED( const PRM<GUM_SCALAR>& prm, const PRMSystem<GUM_SCALAR>& model );
+      SVED(const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& model);
 
       /// Default Constructor.
-      SVED( const PRM<GUM_SCALAR>& prm, const std::string& model );
+      SVED(const PRM< GUM_SCALAR >& prm, const std::string& model);
 
       /// Destructor.
       ~SVED();
@@ -89,118 +89,121 @@ namespace gum {
       /// @{
 
       /// Code alias.
-      typedef typename PRMInference<GUM_SCALAR>::Chain Chain;
+      typedef typename PRMInference< GUM_SCALAR >::Chain Chain;
 
       /// See PRMInference::_evidenceAdded().
-      virtual void _evidenceAdded( const Chain& chain );
+      virtual void _evidenceAdded(const Chain& chain);
 
       /// See PRMInference::_evidenceRemoved().
-      virtual void _evidenceRemoved( const Chain& chain );
+      virtual void _evidenceRemoved(const Chain& chain);
 
       /// See PRMInference::_marginal().
-      virtual void _marginal( const Chain& chain, Potential<GUM_SCALAR>& m );
+      virtual void _marginal(const Chain& chain, Potential< GUM_SCALAR >& m);
 
       /// See PRMInference::_joint().
-      virtual void _joint( const std::vector<Chain>& queries,
-                           Potential<GUM_SCALAR>&    j );
+      virtual void _joint(const std::vector< Chain >& queries,
+                          Potential< GUM_SCALAR >&    j);
 
       /// @}
       private:
       /// Code alias
-      typedef Set<Potential<GUM_SCALAR>*> BucketSet;
+      typedef Set< Potential< GUM_SCALAR >* > BucketSet;
       /// Code alias
       typedef
-          typename Set<Potential<GUM_SCALAR>*>::iterator_safe BucketSetIterator;
+        typename Set< Potential< GUM_SCALAR >* >::iterator_safe BucketSetIterator;
 
       /// Code alias
-      typedef
-          typename Set<MultiDimArray<GUM_SCALAR>*>::iterator_safe ArraySetIterator;
+      typedef typename Set< MultiDimArray< GUM_SCALAR >* >::iterator_safe
+        ArraySetIterator;
 
-      HashTable<const PRMClass<GUM_SCALAR>*, std::vector<NodeId>*> __elim_orders;
+      HashTable< const PRMClass< GUM_SCALAR >*, std::vector< NodeId >* >
+        __elim_orders;
 
       /// The Set<NodeId> returned by StructuredBayesBall<GUM_SCALAR> is unique
       /// for
       /// each
       /// family of instances with the same requisite set (thus the same lifted
       /// potentials).
-      HashTable<const Set<NodeId>*, BucketSet*> __lifted_pools;
+      HashTable< const Set< NodeId >*, BucketSet* > __lifted_pools;
 
-      Sequence<std::string>* __class_elim_order;
+      Sequence< std::string >* __class_elim_order;
 
-      StructuredBayesBall<GUM_SCALAR> __bb;
+      StructuredBayesBall< GUM_SCALAR > __bb;
 
       /// First pair  -> requisite Attributes
       /// Second pair -> requisite SlotChains
-      HashTable<const Set<NodeId>*, std::pair<Set<NodeId>*, Set<NodeId>*>>
-          __req_set;
+      HashTable< const Set< NodeId >*,
+                 std::pair< Set< NodeId >*, Set< NodeId >* > >
+        __req_set;
 
       /// @name Inference sub methods.
 
       /// @{
 
-      void __eliminateNodes( const PRMInstance<GUM_SCALAR>* query,
-                             NodeId                         id,
-                             BucketSet&                     pool,
-                             BucketSet&                     trash );
+      void __eliminateNodes(const PRMInstance< GUM_SCALAR >* query,
+                            NodeId                           id,
+                            BucketSet&                       pool,
+                            BucketSet&                       trash);
 
       void
-      __eliminateNodesDownward( const PRMInstance<GUM_SCALAR>*        from,
-                                const PRMInstance<GUM_SCALAR>*        i,
-                                BucketSet&                            pool,
-                                BucketSet&                            trash,
-                                List<const PRMInstance<GUM_SCALAR>*>& elim_list,
-                                Set<const PRMInstance<GUM_SCALAR>*>&  ignore );
+      __eliminateNodesDownward(const PRMInstance< GUM_SCALAR >*          from,
+                               const PRMInstance< GUM_SCALAR >*          i,
+                               BucketSet&                                pool,
+                               BucketSet&                                trash,
+                               List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+                               Set< const PRMInstance< GUM_SCALAR >* >&  ignore);
 
-      void __eliminateNodesUpward( const PRMInstance<GUM_SCALAR>*        i,
-                                   BucketSet&                            pool,
-                                   BucketSet&                            trash,
-                                   List<const PRMInstance<GUM_SCALAR>*>& elim_list,
-                                   Set<const PRMInstance<GUM_SCALAR>*>&  ignore );
+      void
+      __eliminateNodesUpward(const PRMInstance< GUM_SCALAR >*          i,
+                             BucketSet&                                pool,
+                             BucketSet&                                trash,
+                             List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+                             Set< const PRMInstance< GUM_SCALAR >* >&  ignore);
 
-      void __eliminateNodesWithEvidence( const PRMInstance<GUM_SCALAR>* i,
-                                         BucketSet&                     pool,
-                                         BucketSet&                     trash );
+      void __eliminateNodesWithEvidence(const PRMInstance< GUM_SCALAR >* i,
+                                        BucketSet&                       pool,
+                                        BucketSet&                       trash);
 
-      void __insertLiftedNodes( const PRMInstance<GUM_SCALAR>* i,
-                                BucketSet&                     pool,
-                                BucketSet&                     trash );
+      void __insertLiftedNodes(const PRMInstance< GUM_SCALAR >* i,
+                               BucketSet&                       pool,
+                               BucketSet&                       trash);
 
       /// Returns true if second can be eliminated before first.
-      bool __checkElimOrder( const PRMInstance<GUM_SCALAR>* first,
-                             const PRMInstance<GUM_SCALAR>* second );
+      bool __checkElimOrder(const PRMInstance< GUM_SCALAR >* first,
+                            const PRMInstance< GUM_SCALAR >* second);
 
       void __initElimOrder();
 
-      void __insertEvidence( const PRMInstance<GUM_SCALAR>* i, BucketSet& pool );
+      void __insertEvidence(const PRMInstance< GUM_SCALAR >* i, BucketSet& pool);
 
-      std::vector<NodeId>& __getElimOrder( const PRMClass<GUM_SCALAR>& c );
+      std::vector< NodeId >& __getElimOrder(const PRMClass< GUM_SCALAR >& c);
 
-      Potential<GUM_SCALAR>*
-      __getAggPotential( const PRMInstance<GUM_SCALAR>*  i,
-                         const PRMAggregate<GUM_SCALAR>* agg );
+      Potential< GUM_SCALAR >*
+      __getAggPotential(const PRMInstance< GUM_SCALAR >*  i,
+                        const PRMAggregate< GUM_SCALAR >* agg);
 
-      void __initLiftedNodes( const PRMInstance<GUM_SCALAR>* i, BucketSet& trash );
+      void __initLiftedNodes(const PRMInstance< GUM_SCALAR >* i, BucketSet& trash);
 
-      void __initReqSets( const PRMInstance<GUM_SCALAR>* i );
+      void __initReqSets(const PRMInstance< GUM_SCALAR >* i);
 
-      Set<NodeId>& __getAttrSet( const PRMInstance<GUM_SCALAR>* i );
+      Set< NodeId >& __getAttrSet(const PRMInstance< GUM_SCALAR >* i);
 
-      Set<NodeId>& __getSCSet( const PRMInstance<GUM_SCALAR>* i );
+      Set< NodeId >& __getSCSet(const PRMInstance< GUM_SCALAR >* i);
 
-      void __reduceElimList( const PRMInstance<GUM_SCALAR>*        i,
-                             List<const PRMInstance<GUM_SCALAR>*>& elim_list,
-                             List<const PRMInstance<GUM_SCALAR>*>& reduced_list,
-                             Set<const PRMInstance<GUM_SCALAR>*>&  ignore,
-                             BucketSet&                            pool,
-                             BucketSet&                            trash );
+      void __reduceElimList(const PRMInstance< GUM_SCALAR >*          i,
+                            List< const PRMInstance< GUM_SCALAR >* >& elim_list,
+                            List< const PRMInstance< GUM_SCALAR >* >& reduced_list,
+                            Set< const PRMInstance< GUM_SCALAR >* >&  ignore,
+                            BucketSet&                                pool,
+                            BucketSet&                                trash);
 
-      std::string __trim( const std::string& s );
+      std::string __trim(const std::string& s);
       /// @}
     };
 
 
-    extern template class SVED<float>;
-    extern template class SVED<double>;
+    extern template class SVED< float >;
+    extern template class SVED< double >;
 
 
   } /* namespace prm */

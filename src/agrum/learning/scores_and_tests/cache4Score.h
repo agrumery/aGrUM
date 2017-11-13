@@ -67,10 +67,10 @@ namespace gum {
       Cache4Score();
 
       /// copy constructor
-      Cache4Score( const Cache4Score& from );
+      Cache4Score(const Cache4Score& from);
 
       /// move constructor
-      Cache4Score( Cache4Score&& from );
+      Cache4Score(Cache4Score&& from);
 
       /// destructor
       ~Cache4Score();
@@ -83,10 +83,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      Cache4Score& operator=( const Cache4Score& from );
+      Cache4Score& operator=(const Cache4Score& from);
 
       /// move operator
-      Cache4Score& operator=( Cache4Score&& from );
+      Cache4Score& operator=(Cache4Score&& from);
 
       /// @}
 
@@ -99,31 +99,31 @@ namespace gum {
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
       void
-      insert( Idx var, const std::vector<Idx>& conditioning_set, double score );
+      insert(Idx var, const std::vector< Idx >& conditioning_set, double score);
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      template <typename Alloc>
-      void insert( Idx var, IdSet<Alloc>& conditioning_set, double score );
+      template < typename Alloc >
+      void insert(Idx var, IdSet< Alloc >& conditioning_set, double score);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      void erase( Idx var, const std::vector<Idx>& conditioning_set );
+      void erase(Idx var, const std::vector< Idx >& conditioning_set);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      template <typename Alloc>
-      void erase( Idx var, const IdSet<Alloc>& conditioning_set );
+      template < typename Alloc >
+      void erase(Idx var, const IdSet< Alloc >& conditioning_set);
 
       /// indicates whether a given score exists
-      bool exists( Idx var, const std::vector<Idx>& conditioning_set );
+      bool exists(Idx var, const std::vector< Idx >& conditioning_set);
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      double score( Idx var, const std::vector<Idx>& conditioning_set );
+      double score(Idx var, const std::vector< Idx >& conditioning_set);
 
       /// removes all the stored scores
       void clear();
@@ -132,7 +132,7 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable<std::pair<IdSet<>, Idx>, double> __scores;
+      HashTable< std::pair< IdSet<>, Idx >, double > __scores;
     };
 
   } /* namespace learning */

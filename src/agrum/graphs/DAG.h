@@ -109,14 +109,14 @@ namespace gum {
      * @param arcs_size the size of the hash table used to store all the arcs
      * @param arcs_resize_policy the resizing policy of this hash table
      */
-    explicit DAG( Size nodes_size = HashTableConst::default_size,
-                  bool nodes_resize_policy = true,
-                  Size arcs_size = HashTableConst::default_size,
-                  bool arcs_resize_policy = true );
+    explicit DAG(Size nodes_size = HashTableConst::default_size,
+                 bool nodes_resize_policy = true,
+                 Size arcs_size = HashTableConst::default_size,
+                 bool arcs_resize_policy = true);
 
     /// copy constructor
     /** @param g the DAG to copy */
-    DAG( const DAG& g );
+    DAG(const DAG& g);
 
     /// destructor
     virtual ~DAG();
@@ -130,7 +130,7 @@ namespace gum {
 
     /// copy operator
     /** @param g the DAG to copy */
-    DAG& operator=( const DAG& g );
+    DAG& operator=(const DAG& g);
 
     /// @}
 
@@ -151,12 +151,12 @@ namespace gum {
      * @warning Unfortunately, this means that addArc is not in constant
      * time anymore.
      */
-    virtual void addArc( const NodeId tail, const NodeId head );
+    virtual void addArc(const NodeId tail, const NodeId head);
     /// @}
 
     private:
     /// checks whether there exists a directed path from \e from to \e to
-    bool __hasDirectedPath( const NodeId from, const NodeId to );
+    bool __hasDirectedPath(const NodeId from, const NodeId to);
   };
 
 } /* namespace gum */

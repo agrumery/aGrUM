@@ -65,7 +65,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    LeafAggregator( NodeGraphPart* idSource, double similarityThreshold );
+    LeafAggregator(NodeGraphPart* idSource, double similarityThreshold);
 
     // ###################################################################
     /// Default destructor
@@ -82,17 +82,17 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    void addLeaf( AbstractLeaf* );
+    void addLeaf(AbstractLeaf*);
 
     // ###################################################################
     ///
     // ###################################################################
-    bool updateLeaf( AbstractLeaf* );
+    bool updateLeaf(AbstractLeaf*);
 
     // ###################################################################
     ///
     // ###################################################################
-    void removeLeaf( AbstractLeaf* );
+    void removeLeaf(AbstractLeaf*);
 
     /// @}
 
@@ -122,21 +122,21 @@ namespace gum {
 
     bool needsUpdate() { return __needsUpdate; }
 
-    HashTable<NodeId, AbstractLeaf*> leavesMap();
+    HashTable< NodeId, AbstractLeaf* > leavesMap();
 
     std::string toString();
 
     private:
-    void __removeContext( Idx );
-    void __addInitialPair( LeafPair* );
-    void __updateInitialPair( LeafPair* );
-    void __removeInitialPair( LeafPair* );
+    void __removeContext(Idx);
+    void __addInitialPair(LeafPair*);
+    void __updateInitialPair(LeafPair*);
+    void __removeInitialPair(LeafPair*);
 
-    Sequence<FusionContext<false>*> __fusionSeq;
+    Sequence< FusionContext< false >* > __fusionSeq;
 
-    FusionContext<true>* __initialContext;
+    FusionContext< true >* __initialContext;
 
-    HashTable<AbstractLeaf*, Set<LeafPair*>*> __leaf2Pair;
+    HashTable< AbstractLeaf*, Set< LeafPair* >* > __leaf2Pair;
 
     NodeGraphPart* __leavesCpt;
 

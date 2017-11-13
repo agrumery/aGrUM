@@ -32,65 +32,64 @@ namespace gum {
 
     /// default constructor
     DBTransformUnifier::DBTransformUnifier() {
-      GUM_CONSTRUCTOR( DBTransformUnifier );
+      GUM_CONSTRUCTOR(DBTransformUnifier);
     }
 
     /// copy constructor
-    DBTransformUnifier::DBTransformUnifier( const DBTransformUnifier& from )
-        : DBTransform( from ) {
-      GUM_CONS_CPY( DBTransformUnifier );
+    DBTransformUnifier::DBTransformUnifier(const DBTransformUnifier& from)
+        : DBTransform(from) {
+      GUM_CONS_CPY(DBTransformUnifier);
     }
 
     /// move constructor
-    DBTransformUnifier::DBTransformUnifier( DBTransformUnifier&& from )
-        : DBTransform( std::move( from ) ) {
-      GUM_CONS_MOV( DBTransformUnifier );
+    DBTransformUnifier::DBTransformUnifier(DBTransformUnifier&& from)
+        : DBTransform(std::move(from)) {
+      GUM_CONS_MOV(DBTransformUnifier);
     }
 
     /// destructor
     DBTransformUnifier::~DBTransformUnifier() {
-      GUM_DESTRUCTOR( DBTransformUnifier );
+      GUM_DESTRUCTOR(DBTransformUnifier);
     }
 
     /// copy operator
-    DBTransformUnifier& DBTransformUnifier::
-    operator=( const DBTransformUnifier& ) {
+    DBTransformUnifier& DBTransformUnifier::operator=(const DBTransformUnifier&) {
       return *this;
     }
 
     /// move operator
-    DBTransformUnifier& DBTransformUnifier::operator=( DBTransformUnifier&& ) {
+    DBTransformUnifier& DBTransformUnifier::operator=(DBTransformUnifier&&) {
       return *this;
     }
 
     /// indicates whether a BDCell contains a missing value
     bool DBTransformUnifier::isMissing(
-        const DBCell& cell, const std::vector<std::string>& miss ) const noexcept {
-      if ( cell.type() == DBCell::EltType::MISSING ) return true;
-      if ( cell.type() == DBCell::EltType::STRING ) {
-        for ( const auto& str : miss ) {
-          if ( cell.getString() == str ) return true;
+      const DBCell& cell, const std::vector< std::string >& miss) const noexcept {
+      if (cell.type() == DBCell::EltType::MISSING) return true;
+      if (cell.type() == DBCell::EltType::STRING) {
+        for (const auto& str : miss) {
+          if (cell.getString() == str) return true;
         }
       }
       return false;
     }
 
     /// transforms a vector of DBrows to unify the types of its columns
-    bool DBTransformUnifier::transform( std::vector<DBRow>&      db,
-                                        std::vector<std::string> miss ) const {
-      if ( !db.size() ) return true;
+    bool DBTransformUnifier::transform(std::vector< DBRow >&      db,
+                                       std::vector< std::string > miss) const {
+      if (!db.size()) return true;
 
       // transform each column
       bool conversion_ok = true;
       Size cols = db[0].size();
-      for ( Idx i = 0; i < cols; ++i ) {
+      for (Idx i = 0; i < cols; ++i) {
         // count all the observations to determine whether there exists
         // a type which appears much more frequently than the others
-        std::vector<Size> counts( sizeof( DBCell::EltType ), 0 );
+        std::vector< Size > counts(sizeof(DBCell::EltType), 0);
 
         // parse the database and fill counts
-        for ( DBRow& row : db ) {
-          if ( isMissing( row[i], miss ) ) {
+        for (DBRow& row : db) {
+          if (isMissing(row[i], miss)) {
             row[i].setMissingSafe();
           }
           ++counts[row[i].type()];
@@ -98,17 +97,17 @@ namespace gum {
 
         // get the type with the highest number of observations
         Idx pos = 0;
-        for ( Idx j = 1; j < counts.size(); ++j ) {
-          if ( ( j != DBCell::EltType::MISSING ) && ( counts[j] > counts[pos] ) )
+        for (Idx j = 1; j < counts.size(); ++j) {
+          if ((j != DBCell::EltType::MISSING) && (counts[j] > counts[pos]))
             pos = j;
         }
         DBCell::EltType new_type = (DBCell::EltType)pos;
 
         // change the type of the non-missing elements to the new type
-        for ( auto& row : db ) {
+        for (auto& row : db) {
           DBCell::EltType type = row[i].type();
-          if ( ( type != new_type ) && ( type != DBCell::EltType::MISSING ) ) {
-            if ( !row[i].convertType( new_type ) ) {
+          if ((type != new_type) && (type != DBCell::EltType::MISSING)) {
+            if (!row[i].convertType(new_type)) {
               conversion_ok = false;
             }
           }

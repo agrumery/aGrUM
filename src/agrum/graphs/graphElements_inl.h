@@ -47,27 +47,27 @@ namespace gum {
 
   /// basic constructor
 
-  INLINE Edge::Edge( NodeId aN1, NodeId aN2 )
-      : n1( std::min( aN1, aN2 ) )
-      , n2( std::max( aN1, aN2 ) ) {
+  INLINE Edge::Edge(NodeId aN1, NodeId aN2)
+      : n1(std::min(aN1, aN2))
+      , n2(std::max(aN1, aN2)) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Edge );
+    GUM_CONSTRUCTOR(Edge);
   }
 
   /// copy constructor
 
-  INLINE Edge::Edge( const Edge& src )
-      : n1( src.n1 )
-      , n2( src.n2 ) {
+  INLINE Edge::Edge(const Edge& src)
+      : n1(src.n1)
+      , n2(src.n2) {
     // for debugging purposes
-    GUM_CONS_CPY( Edge );
+    GUM_CONS_CPY(Edge);
   }
 
   /// copy operator
 
-  INLINE Edge& Edge::operator=( const Edge& src ) {
+  INLINE Edge& Edge::operator=(const Edge& src) {
     // for debugging purposes
-    GUM_OP_CPY( Edge );
+    GUM_OP_CPY(Edge);
     n1 = src.n1;
     n2 = src.n2;
     return *this;
@@ -77,18 +77,18 @@ namespace gum {
 
   INLINE Edge::~Edge() {
     // for debugging purposes
-    GUM_DESTRUCTOR( Edge );
+    GUM_DESTRUCTOR(Edge);
   }
 
   /// returns an extremal node of an edge given the ID of the other one
 
-  INLINE NodeId Edge::other( NodeId id ) const {
-    if ( id == n1 )
+  INLINE NodeId Edge::other(NodeId id) const {
+    if (id == n1)
       return n2;
-    else if ( id == n2 )
+    else if (id == n2)
       return n1;
     else {
-      GUM_ERROR( IdError, id << " does not belong to this edge" );
+      GUM_ERROR(IdError, id << " does not belong to this edge");
     }
   }
 
@@ -102,14 +102,14 @@ namespace gum {
 
   /// check if two undirected edges are equal
 
-  INLINE bool Edge::operator==( const Edge& src ) const {
-    return ( ( n1 == src.n1 ) && ( n2 == src.n2 ) );
+  INLINE bool Edge::operator==(const Edge& src) const {
+    return ((n1 == src.n1) && (n2 == src.n2));
   }
 
   /// check if two undirected edges are different
 
-  INLINE bool Edge::operator!=( const Edge& src ) const {
-    return ( ( n1 != src.n1 ) || ( n2 != src.n2 ) );
+  INLINE bool Edge::operator!=(const Edge& src) const {
+    return ((n1 != src.n1) || (n2 != src.n2));
   }
 
   /* ===========================================================================
@@ -125,27 +125,27 @@ namespace gum {
 
   /// basic constructor.
 
-  INLINE Arc::Arc( NodeId tail, NodeId head )
-      : n1( tail )
-      , n2( head ) {
+  INLINE Arc::Arc(NodeId tail, NodeId head)
+      : n1(tail)
+      , n2(head) {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Arc );
+    GUM_CONSTRUCTOR(Arc);
   }
 
   /// copy constructor
 
-  INLINE Arc::Arc( const Arc& src )
-      : n1( src.n1 )
-      , n2( src.n2 ) {
+  INLINE Arc::Arc(const Arc& src)
+      : n1(src.n1)
+      , n2(src.n2) {
     // for debugging purposes
-    GUM_CONS_CPY( Arc );
+    GUM_CONS_CPY(Arc);
   }
 
   /// copy operator
 
-  INLINE Arc& Arc::operator=( const Arc& src ) {
+  INLINE Arc& Arc::operator=(const Arc& src) {
     // for debugging purposes
-    GUM_OP_CPY( Arc );
+    GUM_OP_CPY(Arc);
     n1 = src.n1;
     n2 = src.n2;
     return *this;
@@ -155,7 +155,7 @@ namespace gum {
 
   INLINE Arc::~Arc() {
     // for debugging purposes
-    GUM_DESTRUCTOR( Arc );
+    GUM_DESTRUCTOR(Arc);
   }
 
   /// returns the tail of the arc
@@ -164,7 +164,7 @@ namespace gum {
 
   /// modifies the tail of the arc
 
-  INLINE void Arc::__setTail( NodeId id ) { n1 = id; }
+  INLINE void Arc::__setTail(NodeId id) { n1 = id; }
 
   /// returns the head of the arc
 
@@ -172,17 +172,17 @@ namespace gum {
 
   /// modifies the head of the arc
 
-  INLINE void Arc::__setHead( NodeId id ) { n2 = id; }
+  INLINE void Arc::__setHead(NodeId id) { n2 = id; }
 
   /// returns an extremal node of an edge given the ID of the other one
 
-  INLINE NodeId Arc::other( NodeId id ) const {
-    if ( id == n1 )
+  INLINE NodeId Arc::other(NodeId id) const {
+    if (id == n1)
       return n2;
-    else if ( id == n2 )
+    else if (id == n2)
       return n1;
     else {
-      GUM_ERROR( IdError, id << " does not belong to this arc" );
+      GUM_ERROR(IdError, id << " does not belong to this arc");
     }
   }
 
@@ -196,14 +196,14 @@ namespace gum {
 
   /// check if two arcs are equal
 
-  INLINE bool Arc::operator==( const Arc& src ) const {
-    return ( ( n1 == src.n1 ) && ( n2 == src.n2 ) );
+  INLINE bool Arc::operator==(const Arc& src) const {
+    return ((n1 == src.n1) && (n2 == src.n2));
   }
 
   /// check if two arcs are different
 
-  INLINE bool Arc::operator!=( const Arc& src ) const {
-    return ( ( n1 != src.n1 ) || ( n2 != src.n2 ) );
+  INLINE bool Arc::operator!=(const Arc& src) const {
+    return ((n1 != src.n1) || (n2 != src.n2));
   }
 
   /// reverses the direction of the arc

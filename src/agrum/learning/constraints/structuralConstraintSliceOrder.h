@@ -62,8 +62,8 @@ namespace gum {
      * @ingroup learning_group
      */
     class StructuralConstraintSliceOrder
-        : protected virtual StructuralConstraintSetStatic<
-              StructuralConstraintDiGraph> {
+      : protected virtual StructuralConstraintSetStatic<
+          StructuralConstraintDiGraph > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -75,17 +75,17 @@ namespace gum {
 
       /// constructor starting with an empty graph with a given number of nodes
       /** param order the partial order  */
-      StructuralConstraintSliceOrder( const NodeProperty<NodeId>& order );
+      StructuralConstraintSliceOrder(const NodeProperty< NodeId >& order);
 
       /// constructor starting with a given graph
-      StructuralConstraintSliceOrder( const DiGraph&              graph,
-                                      const NodeProperty<NodeId>& order );
+      StructuralConstraintSliceOrder(const DiGraph&                graph,
+                                     const NodeProperty< NodeId >& order);
 
       /// copy constructor
-      StructuralConstraintSliceOrder( const StructuralConstraintSliceOrder& from );
+      StructuralConstraintSliceOrder(const StructuralConstraintSliceOrder& from);
 
       /// move constructor
-      StructuralConstraintSliceOrder( StructuralConstraintSliceOrder&& from );
+      StructuralConstraintSliceOrder(StructuralConstraintSliceOrder&& from);
 
       /// destructor
       virtual ~StructuralConstraintSliceOrder();
@@ -99,11 +99,11 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintSliceOrder&
-      operator=( const StructuralConstraintSliceOrder& from );
+      operator=(const StructuralConstraintSliceOrder& from);
 
       /// move operator
       StructuralConstraintSliceOrder&
-      operator=( StructuralConstraintSliceOrder&& from );
+      operator=(StructuralConstraintSliceOrder&& from);
 
       /// @}
 
@@ -113,20 +113,20 @@ namespace gum {
       /// @{
 
       /// sets the time slices of all the nodes in the property
-      void setSliceOrder( const NodeProperty<NodeId>& slice );
+      void setSliceOrder(const NodeProperty< NodeId >& slice);
 
       /// returns the current slice order
-      const NodeProperty<NodeId>& sliceOrder() const;
+      const NodeProperty< NodeId >& sliceOrder() const;
 
       /// adds a new node in the slice order
-      void addNode( NodeId node, NodeId slice );
+      void addNode(NodeId node, NodeId slice);
 
       /** @brief assign a given slice to all the nodes specified in the
        * partial order */
-      void setDefaultSlice( NodeId slice );
+      void setDefaultSlice(NodeId slice);
 
       /// sets a new graph from which we will perform checkings
-      void setGraphAlone( const DiGraph& graph );
+      void setGraphAlone(const DiGraph& graph);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, nothing is done. In
@@ -135,12 +135,12 @@ namespace gum {
        * or y does not belong to the graph nodes
        * @throws InvalidArc exception is thrown if any time-backward arc
        * is created by the arc addition. */
-      void modifyGraphAlone( const ArcAddition& change );
+      void modifyGraphAlone(const ArcAddition& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If a nonexisting arc is removed, nothing is done. In
        * particular, no exception is raised. */
-      void modifyGraphAlone( const ArcDeletion& change );
+      void modifyGraphAlone(const ArcDeletion& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
@@ -149,7 +149,7 @@ namespace gum {
        * or y does not belong to the graph nodes
        * @throws InvalidArc exception is thrown if any time-backward arc
        * is created by the arc reversal. */
-      void modifyGraphAlone( const ArcReversal& change );
+      void modifyGraphAlone(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
@@ -158,7 +158,7 @@ namespace gum {
        * reversed and x or y does not belong to the graph nodes
        * @throws InvalidArc exception is thrown if any time-backward arc
        * is created by an arc addition or reversal. */
-      void modifyGraphAlone( const GraphChange& change );
+      void modifyGraphAlone(const GraphChange& change);
 
       /// indicates whether a change will always violate the constraint
       /** Some learning algorithms need examine several times whether a given
@@ -174,37 +174,37 @@ namespace gum {
        * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone( const GraphChange& change ) const;
+      bool isAlwaysInvalidAlone(const GraphChange& change) const;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and is not a
        * backward-time arc. */
-      bool checkArcAdditionAlone( NodeId x, NodeId y ) const;
+      bool checkArcAdditionAlone(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
       /** an arc can be removed if and only if the arc exists. */
-      bool checkArcDeletionAlone( NodeId x, NodeId y ) const;
+      bool checkArcDeletionAlone(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkArcReversalAlone( NodeId x, NodeId y ) const;
+      bool checkArcReversalAlone(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist and is not a
        * backward-time arc. */
-      bool checkModificationAlone( const ArcAddition& change ) const;
+      bool checkModificationAlone(const ArcAddition& change) const;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone( const ArcDeletion& change ) const;
+      bool checkModificationAlone(const ArcDeletion& change) const;
 
       /// checks whether the constraints enable to reverse an arc
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkModificationAlone( const ArcReversal& change ) const;
+      bool checkModificationAlone(const ArcReversal& change) const;
 
       /// checks whether the constraints enable to perform a graph change
       /** An arc can be added if and only if its extremal nodes belong to the
@@ -213,7 +213,7 @@ namespace gum {
        * An arc can be removed if and only if the arc exists.
        * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not and is not a backward-time arc. */
-      bool checkModificationAlone( const GraphChange& change ) const;
+      bool checkModificationAlone(const GraphChange& change) const;
 
 /// @}
 
@@ -228,7 +228,7 @@ namespace gum {
 
       protected:
       /// slices to which belong the nodes
-      NodeProperty<NodeId> _SliceOrder__order;
+      NodeProperty< NodeId > _SliceOrder__order;
     };
 
   } /* namespace learning */

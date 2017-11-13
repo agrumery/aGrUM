@@ -27,5 +27,5 @@
 #include <agrum/CN/varMod2BNsMap.h>
 
 
-template class gum::credal::VarMod2BNsMap<float>;
-template class gum::credal::VarMod2BNsMap<double>;
+template class gum::credal::VarMod2BNsMap< float >;
+template class gum::credal::VarMod2BNsMap< double >;

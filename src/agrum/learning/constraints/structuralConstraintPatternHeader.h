@@ -29,27 +29,27 @@
 /// @{
 
 /// sets a new graph from which we will perform checkings
-void setGraph( const DiGraph& graph );
+void setGraph(const DiGraph& graph);
 
 /// notify the constraint of a modification of the graph
 /** @warning If an already existing arc is added nothing is done. In
  * particular, no exception is raised. */
-void modifyGraph( const ArcAddition& change );
+void modifyGraph(const ArcAddition& change);
 
 /// notify the constraint of a modification of the graph
 /** @warning If a nonexisting arc is removed, nothing is done. In
  * particular, no exception is raised. */
-void modifyGraph( const ArcDeletion& change );
+void modifyGraph(const ArcDeletion& change);
 
 /// notify the constraint of a modification of the graph
 /** @warning If an already existing arc is added, or if a nonexisting arc
  * is removed, nothing is done. In particular, no exception is raised. */
-void modifyGraph( const ArcReversal& change );
+void modifyGraph(const ArcReversal& change);
 
 /// notify the constraint of a modification of the graph
 /** @warning If an already existing arc is added, or if a nonexisting arc
  * is removed, nothing is done. In particular, no exception is raised. */
-void modifyGraph( const GraphChange& change );
+void modifyGraph(const GraphChange& change);
 
 /// indicates whether a change will always violate the constraint
 /** Some learning algorithms need examine several times whether a given
@@ -63,28 +63,28 @@ void modifyGraph( const GraphChange& change );
  * in a 2TBN structure, it is always impossible to add a backward-time arc.
  * Such graph changes are always invalid and are therefore tagged as such
  * by the isAlwaysInvalid method. */
-bool isAlwaysInvalid( const GraphChange& change ) const;
+bool isAlwaysInvalid(const GraphChange& change) const;
 
 /// checks whether the constraints enable to add arc (x,y)
-bool checkArcAddition( NodeId x, NodeId y ) const;
+bool checkArcAddition(NodeId x, NodeId y) const;
 
 /// checks whether the constraints enable to remove arc (x,y)
-bool checkArcDeletion( NodeId x, NodeId y ) const;
+bool checkArcDeletion(NodeId x, NodeId y) const;
 
 /// checks whether the constraints enable to reverse arc (x,y)
-bool checkArcReversal( NodeId x, NodeId y ) const;
+bool checkArcReversal(NodeId x, NodeId y) const;
 
 /// checks whether the constraints enable to add an arc
-bool checkModification( const ArcAddition& change ) const;
+bool checkModification(const ArcAddition& change) const;
 
 /// checks whether the constraints enable to remove an arc
-bool checkModification( const ArcDeletion& change ) const;
+bool checkModification(const ArcDeletion& change) const;
 
 /// checks whether the constraints enable to reverse an arc
-bool checkModification( const ArcReversal& change ) const;
+bool checkModification(const ArcReversal& change) const;
 
 /// checks whether the constraints enable to perform a graph change
-bool checkModification( const GraphChange& change ) const;
+bool checkModification(const GraphChange& change) const;
 
 /// @}
 

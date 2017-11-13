@@ -33,11 +33,11 @@
 
 namespace gum {
   IApproximationSchemeConfiguration::IApproximationSchemeConfiguration() {
-    GUM_CONSTRUCTOR( IApproximationSchemeConfiguration );
+    GUM_CONSTRUCTOR(IApproximationSchemeConfiguration);
   }
 
   IApproximationSchemeConfiguration::~IApproximationSchemeConfiguration() {
-    GUM_DESTRUCTOR( IApproximationSchemeConfiguration );
+    GUM_DESTRUCTOR(IApproximationSchemeConfiguration);
   }
 
 }  // namespace gum

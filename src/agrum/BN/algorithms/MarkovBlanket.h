@@ -45,8 +45,8 @@ namespace gum {
    */
   class MarkovBlanket {
     public:
-    MarkovBlanket( const DAGmodel& m, NodeId n );
-    MarkovBlanket( const DAGmodel& m, const std::string& name );
+    MarkovBlanket(const DAGmodel& m, NodeId n);
+    MarkovBlanket(const DAGmodel& m, const std::string& name);
 
     ~MarkovBlanket();
 
@@ -57,13 +57,13 @@ namespace gum {
     // node of interest is in red
     // special arcs (not used during the construction of the Markov Blanket) are in
     // grey
-    std::string toDot( void ) const;
+    std::string toDot(void) const;
 
     /// wrapping @ref DiGraph::parents(id)
-    const NodeSet& parents( const NodeId id ) const;
+    const NodeSet& parents(const NodeId id) const;
 
     /// wrapping @ref DiGraph::parents(id)
-    const NodeSet& children( const NodeId id ) const;
+    const NodeSet& children(const NodeId id) const;
 
     /// wrapping @ref DiGraph::sizeArcs()
     Size sizeArcs() const;
@@ -82,7 +82,7 @@ namespace gum {
 
     /// @return true if all the named node are the same and all the named arcs are
     /// the same
-    bool hasSameStructure( const DAGmodel& other );
+    bool hasSameStructure(const DAGmodel& other);
 
     private:
     void __buildMarkovBlanket();

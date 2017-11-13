@@ -53,38 +53,38 @@ namespace gum {
        *
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
        */
-      template <typename GUM_SCALAR>
+      template < typename GUM_SCALAR >
       class O3InterfaceFactory {
 
         public:
-        O3InterfaceFactory( PRM<GUM_SCALAR>&          prm,
-                            O3PRM&                    o3_prm,
-                            O3NameSolver<GUM_SCALAR>& solver,
-                            ErrorsContainer&          errors );
-        O3InterfaceFactory( const O3InterfaceFactory<GUM_SCALAR>& src );
-        O3InterfaceFactory( O3InterfaceFactory<GUM_SCALAR>&& src );
+        O3InterfaceFactory(PRM< GUM_SCALAR >&          prm,
+                           O3PRM&                      o3_prm,
+                           O3NameSolver< GUM_SCALAR >& solver,
+                           ErrorsContainer&            errors);
+        O3InterfaceFactory(const O3InterfaceFactory< GUM_SCALAR >& src);
+        O3InterfaceFactory(O3InterfaceFactory< GUM_SCALAR >&& src);
         ~O3InterfaceFactory();
-        O3InterfaceFactory<GUM_SCALAR>&
-        operator=( const O3InterfaceFactory<GUM_SCALAR>& src );
-        O3InterfaceFactory<GUM_SCALAR>&
-        operator=( O3InterfaceFactory<GUM_SCALAR>&& src );
+        O3InterfaceFactory< GUM_SCALAR >&
+        operator=(const O3InterfaceFactory< GUM_SCALAR >& src);
+        O3InterfaceFactory< GUM_SCALAR >&
+        operator=(O3InterfaceFactory< GUM_SCALAR >&& src);
 
         void buildInterfaces();
 
         void buildElements();
 
         private:
-        PRM<GUM_SCALAR>*          __prm;
-        O3PRM*                    __o3_prm;
-        O3NameSolver<GUM_SCALAR>* __solver;
-        ErrorsContainer*          __errors;
+        PRM< GUM_SCALAR >*          __prm;
+        O3PRM*                      __o3_prm;
+        O3NameSolver< GUM_SCALAR >* __solver;
+        ErrorsContainer*            __errors;
 
-        HashTable<std::string, std::string>  __eltName;
-        HashTable<std::string, gum::NodeId>  __nameMap;
-        HashTable<std::string, O3Interface*> __interfaceMap;
-        HashTable<NodeId, O3Interface*>      __nodeMap;
-        DAG                       __dag;
-        std::vector<O3Interface*> __o3Interface;
+        HashTable< std::string, std::string >  __eltName;
+        HashTable< std::string, gum::NodeId >  __nameMap;
+        HashTable< std::string, O3Interface* > __interfaceMap;
+        HashTable< NodeId, O3Interface* >      __nodeMap;
+        DAG                         __dag;
+        std::vector< O3Interface* > __o3Interface;
 
         bool __addInterface2Dag();
 
@@ -94,17 +94,17 @@ namespace gum {
 
         bool __checkO3Interfaces();
 
-        bool __checkInterfaceElement( O3Interface& i, O3InterfaceElement& elt );
+        bool __checkInterfaceElement(O3Interface& i, O3InterfaceElement& elt);
 
-        bool __checkOverloadLegality( O3Interface& i, O3InterfaceElement& elt );
+        bool __checkOverloadLegality(O3Interface& i, O3InterfaceElement& elt);
 
-        bool __checkAttributeOverloadLegality( O3Interface&        i,
-                                               O3InterfaceElement& elt );
+        bool __checkAttributeOverloadLegality(O3Interface&        i,
+                                              O3InterfaceElement& elt);
 
-        bool __checkReferenceOverloadLegality( O3Interface&        i,
-                                               O3InterfaceElement& elt );
+        bool __checkReferenceOverloadLegality(O3Interface&        i,
+                                              O3InterfaceElement& elt);
 
-        bool __checkCyclicReference( O3Interface& i, O3InterfaceElement& elt );
+        bool __checkCyclicReference(O3Interface& i, O3InterfaceElement& elt);
       };
 
     }  // o3prm
@@ -115,8 +115,8 @@ namespace gum {
 #include <agrum/PRM/o3prm/O3InterfaceFactory_tpl.h>
 
 
-extern template class gum::prm::o3prm::O3InterfaceFactory<float>;
-extern template class gum::prm::o3prm::O3InterfaceFactory<double>;
+extern template class gum::prm::o3prm::O3InterfaceFactory< float >;
+extern template class gum::prm::o3prm::O3InterfaceFactory< double >;
 
 
 #endif  // GUM_PRM_O3PRM_O3INTERFACE_FACTORY_H

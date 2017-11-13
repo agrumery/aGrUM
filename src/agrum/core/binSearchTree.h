@@ -36,10 +36,10 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   // classes provided/used by this header
-  template <typename Val, class Cmp, class Node>
+  template < typename Val, class Cmp, class Node >
   class BinSearchTree;
 
-  template <typename Val, class Cmp, class Node>
+  template < typename Val, class Cmp, class Node >
   class BinSearchTreeIterator;
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -58,15 +58,15 @@ namespace gum {
    * tree.
    *
    */
-  template <typename Val,
-            class Cmp = std::less<Val>,
-            class Node = BinTreeNode<Val>>
+  template < typename Val,
+             class Cmp = std::less< Val >,
+             class Node = BinTreeNode< Val > >
   class BinSearchTree {
     public:
     /// @brief Alias for gum::BinSearchTree iterators
     /// @{
-    typedef BinSearchTreeIterator<Val, Cmp, Node> iterator;
-    typedef BinSearchTreeIterator<Val, Cmp, Node> const_iterator;
+    typedef BinSearchTreeIterator< Val, Cmp, Node > iterator;
+    typedef BinSearchTreeIterator< Val, Cmp, Node > const_iterator;
     /// @}
 
     // ============================================================================
@@ -82,13 +82,13 @@ namespace gum {
      * It is possible for the binary tree to have multiple instances of the
      * same value within the tree.
      */
-    explicit BinSearchTree( bool uniqueness_policy = false );
+    explicit BinSearchTree(bool uniqueness_policy = false);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::BinSearchTree to copy.
      */
-    BinSearchTree( const BinSearchTree<Val, Cmp, Node>& from );
+    BinSearchTree(const BinSearchTree< Val, Cmp, Node >& from);
 
     /**
      * @brief Class destructor.
@@ -106,8 +106,8 @@ namespace gum {
      * @param from The gum::BinSearchTree to copy.
      * @return Returns this gum::BinSearchTree.
      */
-    BinSearchTree<Val, Cmp, Node>&
-    operator=( const BinSearchTree<Val, Cmp, Node>& from );
+    BinSearchTree< Val, Cmp, Node >&
+    operator=(const BinSearchTree< Val, Cmp, Node >& from);
 
     /// @}
     // ============================================================================
@@ -206,14 +206,14 @@ namespace gum {
      * @throw DuplicateElement Raised if the binary tree already contains the
      * value and the uniqueness property is set to true.
      */
-    const Val& insert( const Val& val );
+    const Val& insert(const Val& val);
 
     /**
      * @brief Erase the leftmost node with the given (key,val) pair.
      * @param val The value to remove.
      * @throws NotFound Raised if we could not find the node.
      */
-    void erase( const Val& val );
+    void erase(const Val& val);
 
     /**
      * @brief Erase the node pointed to by the iterator.
@@ -223,14 +223,14 @@ namespace gum {
      *
      * @param iter The iterator pointing toward the valeu to remove.
      */
-    void erase( const iterator& iter );
+    void erase(const iterator& iter);
 
     /**
      * @brief Returns true if the gum::BinSearchTree contains the value.
      * @param val The value tested for existence.
      * @return Returns true if the gum::BinSearchTree contains the value.
      */
-    bool contains( const Val& val ) const;
+    bool contains(const Val& val) const;
 
     /**
      * @brief Removes all the elements from the gum::BinSearchTree.
@@ -283,7 +283,7 @@ namespace gum {
      *
      * @param new_policy Set the uniqueness policy on or off.
      */
-    void setUniquenessPolicy( const bool new_policy );
+    void setUniquenessPolicy(const bool new_policy);
 
     /// @}
 
@@ -316,7 +316,7 @@ namespace gum {
 
     /// @brief To speed-up accesses.
     /// @{
-    friend class BinSearchTreeIterator<Val, Cmp, Node>;
+    friend class BinSearchTreeIterator< Val, Cmp, Node >;
     /// @}
 
     /**
@@ -330,9 +330,9 @@ namespace gum {
      * @param parent The node that should be the parent of the copy.
      * @param dir The direction of the edge parent->copy.
      */
-    Node* _copy( Node*      root_from,
-                 Node*      parent = 0,
-                 BinTreeDir dir = BinTreeDir::LEFT_CHILD );
+    Node* _copy(Node*      root_from,
+                Node*      parent = 0,
+                BinTreeDir dir = BinTreeDir::LEFT_CHILD);
 
     /**
      * @brief Returns the smallest node w.r.t. order Cmp in the subtree rooted
@@ -340,7 +340,7 @@ namespace gum {
      * @param node The root for looking for the the smallest node.
      * @return Returns the smallest node.
      */
-    Node* _minNode( Node* node ) const;
+    Node* _minNode(Node* node) const;
 
     /**
      * @brief Returns the greatest node w.r.t. order Cmp in the subtree rooted
@@ -348,21 +348,21 @@ namespace gum {
      * @param node The root for looking for the the greatest node.
      * @return Returns the greatest node.
      */
-    Node* _maxNode( Node* node ) const;
+    Node* _maxNode(Node* node) const;
 
     /**
      * @brief Returns the next node according to the weak ordering Cmp.
      * @param node The node for which the sucessor is returned.
      * @return Returns the next node according to the weak ordering Cmp.
      */
-    Node* _succNode( Node* node ) const;
+    Node* _succNode(Node* node) const;
 
     /**
      * @brief Returns the previous node according to weak ordering Cmp.
      * @param node The node for which the previous node is returned.
      * @return Returns the previous node according to the weak ordering Cmp.
      */
-    Node* _prevNode( Node* node ) const;
+    Node* _prevNode(Node* node) const;
 
     /**
      * @brief Returns the node containing a given value.
@@ -370,7 +370,7 @@ namespace gum {
      * @return Returns the node containing a given value (0 if the value cannot
      * be found).
      */
-    Node* _getNode( const Val& val ) const;
+    Node* _getNode(const Val& val) const;
 
     ///
     /**
@@ -382,13 +382,13 @@ namespace gum {
      *
      * @param node The root of the subtree to delete.
      */
-    void _deleteSubTree( Node* node );
+    void _deleteSubTree(Node* node);
 
     /**
      * @brief Erase the node passed in argument.
      * @param node The Node to erase.
      */
-    virtual void _erase( Node* node );
+    virtual void _erase(Node* node);
 
     private:
     /**
@@ -397,7 +397,7 @@ namespace gum {
      * This is used by gum::BinSearchTree::_erase(Node*).
      * @param node The node to erase.
      */
-    void __eraseWithTwoChildren( Node* node );
+    void __eraseWithTwoChildren(Node* node);
 
     protected:
     /**
@@ -416,14 +416,14 @@ namespace gum {
      * @param val The value added by copy.
      * @return Returns the node containing the newly created copy.
      */
-    virtual Node* _insert( const Val& val );
+    virtual Node* _insert(const Val& val);
 
     private:
     /**
      * @brief Update all iterators when a given node is deleted.
      * @param node The node that is erased.
      */
-    void __updateEraseIterators( Node* node );
+    void __updateEraseIterators(Node* node);
   };
 
   // ===========================================================================
@@ -440,7 +440,7 @@ namespace gum {
    * @tparam Node The nodes type used to store values in the binary search
    * tree.
    */
-  template <typename Val, class Cmp, class Node>
+  template < typename Val, class Cmp, class Node >
   class BinSearchTreeIterator {
     public:
     // ============================================================================
@@ -458,7 +458,7 @@ namespace gum {
      * tree.
      * @param from The gum::BinSearchTreeIterator to copy.
      */
-    BinSearchTreeIterator( const BinSearchTreeIterator<Val, Cmp, Node>& from );
+    BinSearchTreeIterator(const BinSearchTreeIterator< Val, Cmp, Node >& from);
 
     /// @brief Class destructor.
     ~BinSearchTreeIterator();
@@ -474,8 +474,8 @@ namespace gum {
      * @param from the gum::BinSearchTreeIterator to copy.
      * @return Returns this gum::BinSearchTreeIterator.
      */
-    BinSearchTreeIterator<Val, Cmp, Node>&
-    operator=( const BinSearchTreeIterator<Val, Cmp, Node>& from );
+    BinSearchTreeIterator< Val, Cmp, Node >&
+    operator=(const BinSearchTreeIterator< Val, Cmp, Node >& from);
 
     /**
      * @brief Returns the value pointed to by the iterator.
@@ -505,7 +505,7 @@ namespace gum {
      *
      * @return Returns this gum::BinSearchTreeIterator.
      */
-    BinSearchTreeIterator<Val, Cmp, Node>& operator++();
+    BinSearchTreeIterator< Val, Cmp, Node >& operator++();
 
     /**
      * @brief Point the iterator to the preceding value in the binary search
@@ -526,7 +526,7 @@ namespace gum {
      * }
      * @endcode
      */
-    BinSearchTreeIterator<Val, Cmp, Node>& operator--();
+    BinSearchTreeIterator< Val, Cmp, Node >& operator--();
 
     /**
      * @brief Checks whether two iterators are pointing toward different
@@ -535,7 +535,7 @@ namespace gum {
      * @return Returns true if the two gum::BinSearchTreeIterator are
      * different.
      */
-    bool operator!=( const BinSearchTreeIterator<Val, Cmp, Node>& from ) const;
+    bool operator!=(const BinSearchTreeIterator< Val, Cmp, Node >& from) const;
 
     /**
      * @brief Checks whether two iterators are pointing toward identical
@@ -544,7 +544,7 @@ namespace gum {
      * @return Returns true if the two gum::BinSearchTreeIterator are
      * equal.
      */
-    bool operator==( const BinSearchTreeIterator<Val, Cmp, Node>& from ) const;
+    bool operator==(const BinSearchTreeIterator< Val, Cmp, Node >& from) const;
 
     ///@}
     // ############################################################################
@@ -556,21 +556,21 @@ namespace gum {
      * @brief Makes the iterator move to its parent node.
      * @return Return this gum::BinSearchTreeIterator.
      */
-    BinSearchTreeIterator<Val, Cmp, Node>& up();
+    BinSearchTreeIterator< Val, Cmp, Node >& up();
 
     /**
      * @brief Makes the iterator move to the left child of the node it points
      * to.
      * @return Return this gum::BinSearchTreeIterator.
      */
-    BinSearchTreeIterator<Val, Cmp, Node>& downLeft();
+    BinSearchTreeIterator< Val, Cmp, Node >& downLeft();
 
     /**
      * @brief Makes the iterator move to the right child of the node it points
      * to.
      * @return Return this gum::BinSearchTreeIterator.
      */
-    BinSearchTreeIterator<Val, Cmp, Node>& downRight();
+    BinSearchTreeIterator< Val, Cmp, Node >& downRight();
 
     /**
      * @brief Detach the iterator from its current tree (if any) and reset it.
@@ -600,15 +600,15 @@ namespace gum {
     Node* _right_child;
 
     /// The binary search tree pointed to by the iterator.
-    BinSearchTree<Val, Cmp, Node>* _tree;
+    BinSearchTree< Val, Cmp, Node >* _tree;
 
     /// The next iterator in the list of iterators of the binSearchTree.
-    BinSearchTreeIterator<Val, Cmp, Node>* _next_iter;
+    BinSearchTreeIterator< Val, Cmp, Node >* _next_iter;
 
     private:
     /// To speed-up accesses.
     /// @{
-    friend class BinSearchTree<Val, Cmp, Node>;
+    friend class BinSearchTree< Val, Cmp, Node >;
     /// @}
 
     /**
@@ -623,9 +623,9 @@ namespace gum {
      * @param current_node The node pointed by this iterator.
      * @param add_to_iterator_list Add this iterator to the iterator list.
      */
-    void _initialize( const BinSearchTree<Val, Cmp, Node>* tree,
-                      const Node* current_node,
-                      bool        add_to_iterator_list );
+    void _initialize(const BinSearchTree< Val, Cmp, Node >* tree,
+                     const Node* current_node,
+                     bool        add_to_iterator_list);
 
     /**
      * @brief a method to detach the current iterator from its tree's
@@ -637,7 +637,7 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::BinSearchTree<int>;
+extern template class gum::BinSearchTree< int >;
 
 
 // always include the template implementations

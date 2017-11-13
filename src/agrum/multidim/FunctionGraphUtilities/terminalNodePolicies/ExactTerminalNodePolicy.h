@@ -43,8 +43,8 @@ namespace gum {
    * to value.
    */
   // clang-format on
-  template <typename GUM_SCALAR>
-  class ExactTerminalNodePolicy : public ITerminalNodePolicy<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class ExactTerminalNodePolicy : public ITerminalNodePolicy< GUM_SCALAR > {
 
     public:
     // ============================================================================
@@ -53,12 +53,12 @@ namespace gum {
     /// @{
 
     /// Insert a new terminal node with given value
-    void addTerminalNode( const NodeId& n, const GUM_SCALAR& v ) {
-      __map.insert( n, v );
+    void addTerminalNode(const NodeId& n, const GUM_SCALAR& v) {
+      __map.insert(n, v);
     }
 
     /// Remove node matching given id
-    void eraseTerminalNode( const NodeId& n ) { __map.eraseFirst( n ); }
+    void eraseTerminalNode(const NodeId& n) { __map.eraseFirst(n); }
 
     /// Erase all terminal nodes
     void clearAllTerminalNodes() { __map.clear(); }
@@ -70,13 +70,13 @@ namespace gum {
     /// @{
 
     /// Returns true if a terminal node matching this id exists
-    bool existsTerminalNodeWithId( const NodeId& n ) const {
-      return __map.existsFirst( n );
+    bool existsTerminalNodeWithId(const NodeId& n) const {
+      return __map.existsFirst(n);
     }
 
     /// Returns true if a terminal node matching this value exists
-    bool existsTerminalNodeWithValue( const GUM_SCALAR& v ) const {
-      return __map.existsSecond( v );
+    bool existsTerminalNodeWithValue(const GUM_SCALAR& v) const {
+      return __map.existsSecond(v);
     }
 
     /// @}
@@ -86,13 +86,13 @@ namespace gum {
     /// @{
 
     /// Returns the value of the terminal node that has the given id
-    const GUM_SCALAR& terminalNodeValue( const NodeId& n ) const {
-      return __map.second( n );
+    const GUM_SCALAR& terminalNodeValue(const NodeId& n) const {
+      return __map.second(n);
     }
 
     /// Returns the id of the terminal node that has the given value
-    const NodeId& terminalNodeId( const GUM_SCALAR& v ) const {
-      return __map.first( v );
+    const NodeId& terminalNodeId(const GUM_SCALAR& v) const {
+      return __map.first(v);
     }
 
     /// @}
@@ -121,8 +121,8 @@ namespace gum {
     /// @}
 
     private:
-    Bijection<NodeId, GUM_SCALAR>                     __map;
-    mutable BijectionIteratorSafe<NodeId, GUM_SCALAR> __mappy;
+    Bijection< NodeId, GUM_SCALAR >                     __map;
+    mutable BijectionIteratorSafe< NodeId, GUM_SCALAR > __mappy;
   };
 
 }  // End of namespace gum

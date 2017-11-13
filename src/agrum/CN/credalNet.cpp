@@ -27,5 +27,5 @@
 #include <agrum/CN/credalNet.h>
 
 
-template class gum::credal::CredalNet<float>;
-template class gum::credal::CredalNet<double>;
+template class gum::credal::CredalNet< float >;
+template class gum::credal::CredalNet< double >;

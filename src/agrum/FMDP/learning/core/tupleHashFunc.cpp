@@ -31,14 +31,15 @@
 namespace gum {
 
   /// the hash function for tuple (unsigned int, unsigned int, unsigned int)
-  Size HashFunc<std::tuple<unsigned int, unsigned int, unsigned int>>::operator()(
-      const std::tuple<unsigned int, unsigned int, unsigned int>& key ) const {
+  Size HashFunc< std::tuple< unsigned int, unsigned int, unsigned int > >::
+  operator()(
+    const std::tuple< unsigned int, unsigned int, unsigned int >& key) const {
     Size h = 0;
-    h += HashFuncConst::pi * std::get<0>( key );
+    h += HashFuncConst::pi * std::get< 0 >(key);
 
-    h *= 2 * std::get<1>( key );
-    h *= 3 * std::get<2>( key );
+    h *= 2 * std::get< 1 >(key);
+    h *= 3 * std::get< 2 >(key);
 
-    return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
+    return ((h * HashFuncConst::gold) & this->_hash_mask);
   }
 }

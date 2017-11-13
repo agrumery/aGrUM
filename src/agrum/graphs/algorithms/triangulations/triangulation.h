@@ -82,18 +82,18 @@ namespace gum {
      * it is compulsory that all the nodes of graph belong to dom_sizes
      * @warning the graph is not copied but only referenced by the elimination
      * sequence algorithm. */
-    virtual void setGraph( const UndiGraph*          graph,
-                           const NodeProperty<Size>* domsizes ) = 0;
+    virtual void setGraph(const UndiGraph*            graph,
+                          const NodeProperty< Size >* domsizes) = 0;
 
     /// returns the fill-ins added by the triangulation algorithm
     virtual const EdgeSet& fillIns() = 0;
 
     /// returns an elimination ordering compatible with the triangulated graph
-    virtual const std::vector<NodeId>& eliminationOrder() = 0;
+    virtual const std::vector< NodeId >& eliminationOrder() = 0;
 
     /** @brief returns the index of a given node in the elimination order
      * (0 = first node eliminated) */
-    virtual Idx eliminationOrder( const NodeId ) = 0;
+    virtual Idx eliminationOrder(const NodeId) = 0;
 
     /// returns the triangulated graph
     virtual const UndiGraph& triangulatedGraph() = 0;
@@ -115,11 +115,11 @@ namespace gum {
 
     /** @brief returns the Id of the clique created by the
      * elimination of a given node during the triangulation process */
-    virtual NodeId createdJunctionTreeClique( const NodeId id ) = 0;
+    virtual NodeId createdJunctionTreeClique(const NodeId id) = 0;
 
     /** @brief returns the Ids of the cliques of the junction tree created by
      * the elimination of the nodes */
-    virtual const NodeProperty<NodeId>& createdJunctionTreeCliques() = 0;
+    virtual const NodeProperty< NodeId >& createdJunctionTreeCliques() = 0;
 
     /// returns a junction tree of maximal prime subgraphs
     /** @warning Actually, the cliques of the junction tree are guarranteed to
@@ -132,21 +132,21 @@ namespace gum {
 
     /** @brief returns the Id of the maximal prime subgraph created by the
      * elimination of a given node during the triangulation process */
-    virtual NodeId createdMaxPrimeSubgraph( const NodeId id ) = 0;
+    virtual NodeId createdMaxPrimeSubgraph(const NodeId id) = 0;
 
     /// reinitialize the graph to be triangulated to an empty graph
     virtual void clear() = 0;
 
     /// returns the domain sizes of the variables of the graph to be
     /// triangulated
-    const NodeProperty<Size>* domainSizes() const;
+    const NodeProperty< Size >* domainSizes() const;
 
     /// @}
 
 
     protected:
     /// the domain sizes of the variables/nodes of the graph
-    const NodeProperty<Size>* _domain_sizes{nullptr};
+    const NodeProperty< Size >* _domain_sizes{nullptr};
 
 
     /// default constructor
@@ -155,18 +155,18 @@ namespace gum {
     /// constructor with a domain size specified
     /** @warning note that, by aGrUM's rule, domsizes is not copied but only
      * referenced by the triangulation algorithm. */
-    Triangulation( const NodeProperty<Size>* domsizes );
+    Triangulation(const NodeProperty< Size >* domsizes);
 
     /// prevent copy constructor except when using newFactory
-    Triangulation( const Triangulation& );
+    Triangulation(const Triangulation&);
 
     /// prevent move constructor except when used by children
-    Triangulation( Triangulation&& );
+    Triangulation(Triangulation&&);
 
 
     private:
     /// prevent copy operator
-    Triangulation& operator=( const Triangulation& );
+    Triangulation& operator=(const Triangulation&);
   };
 
 } /* namespace gum */

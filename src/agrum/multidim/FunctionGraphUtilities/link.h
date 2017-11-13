@@ -43,7 +43,7 @@ namespace gum {
    *
    * @tparam T The type stored by the chain list.
    */
-  template <typename T>
+  template < typename T >
   class Link {
 
     public:
@@ -55,12 +55,12 @@ namespace gum {
     /**
      * @brief Constructor
      */
-    Link( const T& elem );
+    Link(const T& elem);
 
     /**
      * @brief Constructor that insert link before the given link
      */
-    Link( const T& elem, Link<T>* nextLink );
+    Link(const T& elem, Link< T >* nextLink);
 
     /**
      * @brief Destructor
@@ -70,12 +70,12 @@ namespace gum {
     /**
      * @brief Operator new overload to use the SmallObjectAllocator
      */
-    void* operator new( size_t s );
+    void* operator new(size_t s);
 
     /**
      * @brief Operator delete overload to use the SmallObjectAllocator
      */
-    void operator delete( void* p );
+    void operator delete(void* p);
 
     /// @}
     // ============================================================================
@@ -96,17 +96,17 @@ namespace gum {
     /**
      * @brief Returns next link.
      */
-    const Link<T>* nextLink() const;
+    const Link< T >* nextLink() const;
 
     /**
      * @brief Returns next link.
      */
-    Link<T>* nextLink();
+    Link< T >* nextLink();
 
     /**
      * @brief Sets the next link.
      */
-    void setNextLink( Link<T>* newLink );
+    void setNextLink(Link< T >* newLink);
 
     /// @}
 
@@ -115,7 +115,7 @@ namespace gum {
     T __element;
 
     /// The next link in the list
-    Link<T>* __nextLink;
+    Link< T >* __nextLink;
   };
 
   /**
@@ -126,7 +126,7 @@ namespace gum {
    *
    * @tparam T The type stored by the chain list.
    */
-  template <typename T>
+  template < typename T >
   class LinkedList {
 
     public:
@@ -148,12 +148,12 @@ namespace gum {
     // ============================================================================
     /// Operator new overload to use the SmallObjectAllocator
     // ============================================================================
-    void* operator new( size_t s );
+    void* operator new(size_t s);
 
     // ============================================================================
     /// Operator delete overload to use the SmallObjectAllocator
     // ============================================================================
-    void operator delete( void* p );
+    void operator delete(void* p);
 
     /// @}
     // ============================================================================
@@ -164,12 +164,12 @@ namespace gum {
     /**
      * @brief Returns the first link in the chained list.
      */
-    const Link<T>* list() const;
+    const Link< T >* list() const;
 
     /**
      * @brief Returns the first link in the chained list.
      */
-    Link<T>* list();
+    Link< T >* list();
 
     /**
      * @brief Clears the list.
@@ -179,21 +179,21 @@ namespace gum {
     /**
      * @brief Adds a link.
      */
-    void addLink( const T& elem );
+    void addLink(const T& elem);
 
     /**
      * @brief Removes a element from the list.
      */
-    void searchAndRemoveLink( const T& elem );
+    void searchAndRemoveLink(const T& elem);
 
     /// @}
 
     private:
     /// The first link of our list
-    Link<T>* __firstLink;
+    Link< T >* __firstLink;
   };
 
-  extern template class Link<Idx>;
+  extern template class Link< Idx >;
 
 }  // End of namespace gum
 

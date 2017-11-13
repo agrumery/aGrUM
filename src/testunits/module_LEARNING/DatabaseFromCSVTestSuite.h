@@ -29,28 +29,28 @@ namespace gum_tests {
   class DatabaseFromCSVTestSuite : public CxxTest::TestSuite {
     public:
     void test_db1() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-      TS_ASSERT( database.content().size() == 10000 );
-      TS_ASSERT( database.variableNames().size() == 8 );
-      TS_ASSERT( database.variableNames()[0] == "smoking?" );
-      TS_ASSERT( database.variableNames()[7] == "positive_XraY?" );
+      TS_ASSERT(database.content().size() == 10000);
+      TS_ASSERT(database.variableNames().size() == 8);
+      TS_ASSERT(database.variableNames()[0] == "smoking?");
+      TS_ASSERT(database.variableNames()[7] == "positive_XraY?");
 
       auto handler = database.handler();
-      TS_ASSERT( handler.DBSize() == 10000 );
-      TS_ASSERT( handler.size() == 10000 );
+      TS_ASSERT(handler.DBSize() == 10000);
+      TS_ASSERT(handler.size() == 10000);
 
       const gum::learning::DBRow& row = handler.row();
 
-      for ( unsigned int i = 0; i < row.size(); ++i ) {
-        TS_ASSERT( row[i].type() == gum::learning::DBCell::EltType::REAL );
+      for (unsigned int i = 0; i < row.size(); ++i) {
+        TS_ASSERT(row[i].type() == gum::learning::DBCell::EltType::REAL);
       }
 
-      for ( unsigned int i = 0; i < row.size(); ++i ) {
-        if ( ( i != 3 ) && ( i != 4 ) ) {
-          TS_ASSERT( row[i].getReal() == 0 );
+      for (unsigned int i = 0; i < row.size(); ++i) {
+        if ((i != 3) && (i != 4)) {
+          TS_ASSERT(row[i].getReal() == 0);
         } else {
-          TS_ASSERT( row[i].getReal() == 1 );
+          TS_ASSERT(row[i].getReal() == 1);
         }
       }
 
@@ -58,68 +58,68 @@ namespace gum_tests {
 
       unsigned int nb = 0;
 
-      while ( handler.hasRows() ) {
+      while (handler.hasRows()) {
         ++nb;
         handler.nextRow();
       }
 
-      TS_ASSERT( nb == 10000 );
+      TS_ASSERT(nb == 10000);
 
       nb = 0;
       handler.reset();
 
-      while ( handler.hasRows() ) {
+      while (handler.hasRows()) {
         ++nb;
         handler.nextRow();
       }
 
-      TS_ASSERT( nb == 10000 );
+      TS_ASSERT(nb == 10000);
 
       handler.reset();
 
-      while ( handler.hasRows() ) {
+      while (handler.hasRows()) {
         const gum::learning::DBRow& row = handler.row();
 
-        for ( unsigned int i = 0; i < row.size(); ++i ) {
-          TS_ASSERT( row[i].type() == gum::learning::DBCell::EltType::REAL );
-          TS_ASSERT( ( row[i].getReal() == 0 ) || ( row[i].getReal() == 1 ) );
+        for (unsigned int i = 0; i < row.size(); ++i) {
+          TS_ASSERT(row[i].type() == gum::learning::DBCell::EltType::REAL);
+          TS_ASSERT((row[i].getReal() == 0) || (row[i].getReal() == 1));
         }
 
         handler.nextRow();
       }
 
       nb = 0;
-      handler.setRange( 5000, 6000 );
+      handler.setRange(5000, 6000);
 
-      while ( handler.hasRows() ) {
+      while (handler.hasRows()) {
         ++nb;
         handler.nextRow();
       }
 
-      TS_ASSERT( nb == 1000 );
+      TS_ASSERT(nb == 1000);
 
       nb = 0;
       handler.reset();
 
-      while ( handler.hasRows() ) {
+      while (handler.hasRows()) {
         ++nb;
         handler.nextRow();
       }
 
-      TS_ASSERT( nb == 1000 );
+      TS_ASSERT(nb == 1000);
     }
 
     void testOnError() {
       try {
         gum::learning::DatabaseFromCSV database(
-            GET_RESSOURCES_PATH( "notExistingDummyDatabse.csv" ) );
-      } catch ( gum::IOError& ) {
-        TS_ASSERT( true );
+          GET_RESSOURCES_PATH("notExistingDummyDatabse.csv"));
+      } catch (gum::IOError&) {
+        TS_ASSERT(true);
         return;
-      } catch ( ... ) {
+      } catch (...) {
       }
 
-      TS_ASSERT( false );
+      TS_ASSERT(false);
     }
   };
 

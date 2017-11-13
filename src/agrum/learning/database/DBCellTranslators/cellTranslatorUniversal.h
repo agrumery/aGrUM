@@ -41,7 +41,7 @@ namespace gum {
      * @ingroup learning_group
      * @brief A cell translator translating any DBCell
      */
-    class CellTranslatorUniversal : public DBCellTranslator<1, 1> {
+    class CellTranslatorUniversal : public DBCellTranslator< 1, 1 > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -82,8 +82,8 @@ namespace gum {
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorUniversal( Sequence<double> values = Sequence<double>(),
-                               bool             check_database = true );
+      CellTranslatorUniversal(Sequence< double > values = Sequence< double >(),
+                              bool               check_database = true);
 
       /// default constructor
       /** @param values The user can specify the values which the cell
@@ -118,14 +118,14 @@ namespace gum {
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorUniversal( Sequence<std::string> values,
-                               bool                  check_database = true );
+      CellTranslatorUniversal(Sequence< std::string > values,
+                              bool                    check_database = true);
 
       /// copy constructor
-      CellTranslatorUniversal( const CellTranslatorUniversal& from );
+      CellTranslatorUniversal(const CellTranslatorUniversal& from);
 
       /// move constructor
-      CellTranslatorUniversal( CellTranslatorUniversal&& from );
+      CellTranslatorUniversal(CellTranslatorUniversal&& from);
 
       /// virtual copy constructor
       virtual CellTranslatorUniversal* copyFactory() final;
@@ -142,10 +142,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorUniversal& operator=( const CellTranslatorUniversal& from );
+      CellTranslatorUniversal& operator=(const CellTranslatorUniversal& from);
 
       /// move operator
-      CellTranslatorUniversal& operator=( CellTranslatorUniversal&& from );
+      CellTranslatorUniversal& operator=(CellTranslatorUniversal&& from);
 
       /// @}
 
@@ -167,17 +167,17 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities( std::vector<Size>& modal ) const noexcept;
+      void modalities(std::vector< Size >& modal) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack( Idx col, float translated_val ) const;
+      std::string translateBack(Idx col, float translated_val) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames( const std::vector<std::string>& db_var,
-                          std::vector<std::string>&       output_vars ) const;
+      void variableNames(const std::vector< std::string >& db_var,
+                         std::vector< std::string >&       output_vars) const;
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -217,8 +217,8 @@ namespace gum {
        * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues( const Sequence<double>& values,
-                          bool                    check_database = true );
+      void setUserValues(const Sequence< double >& values,
+                         bool                      check_database = true);
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -258,14 +258,14 @@ namespace gum {
        * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues( const Sequence<std::string>& values,
-                          bool                         check_database = true );
+      void setUserValues(const Sequence< std::string >& values,
+                         bool                           check_database = true);
 
       /// returns the set of translations for string values in the database
-      const Bijection<Idx, float>& stringTranslations() const noexcept;
+      const Bijection< Idx, float >& stringTranslations() const noexcept;
 
       /// returns the set of translations for number values in the database
-      const Bijection<double, float>& numberTranslations() const noexcept;
+      const Bijection< double, float >& numberTranslations() const noexcept;
 
       virtual std::string toString() const noexcept;
 
@@ -276,17 +276,17 @@ namespace gum {
       Size __max_value{0};
 
       /// the set of numbers found so far in the database
-      Bijection<double, float> __numbers;
+      Bijection< double, float > __numbers;
 
       /// the set of strings (actually their indices) found so far in the
       /// database
-      Bijection<Idx, float> __strings;
+      Bijection< Idx, float > __strings;
 
       /// the sequence of string values specified by the user
-      Sequence<std::string>* __str_user_values{nullptr};
+      Sequence< std::string >* __str_user_values{nullptr};
 
       /// the sequence of numeric values specified by the user
-      Sequence<double>* __num_user_values{nullptr};
+      Sequence< double >* __num_user_values{nullptr};
 
       /// indicates whether the translator shall be initialized by DB parsing
       bool __check_database{true};

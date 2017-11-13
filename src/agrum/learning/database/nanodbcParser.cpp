@@ -39,28 +39,28 @@ namespace gum {
 
   namespace learning {
 
-    NanodbcParser::NanodbcParser( nanodbc::result& result )
-        : __result( result )
-        , __data( result.columns() ) {
-      GUM_CONSTRUCTOR( NanodbcParser );
+    NanodbcParser::NanodbcParser(nanodbc::result& result)
+        : __result(result)
+        , __data(result.columns()) {
+      GUM_CONSTRUCTOR(NanodbcParser);
     }
 
-    NanodbcParser::~NanodbcParser() { GUM_DESTRUCTOR( NanodbcParser ); }
+    NanodbcParser::~NanodbcParser() { GUM_DESTRUCTOR(NanodbcParser); }
 
     bool NanodbcParser::next() {
       try {
-        if ( __result.next() ) {
-          for ( auto i = 0; i < __result.columns(); ++i ) {
+        if (__result.next()) {
+          for (auto i = 0; i < __result.columns(); ++i) {
             try {
-              __data[i] = __result.get<std::string>( i );
-            } catch ( nanodbc::null_access_error& e ) {
+              __data[i] = __result.get< std::string >(i);
+            } catch (nanodbc::null_access_error& e) {
               __data[i] = "NULL";
             }
           }
           return true;
         }
-      } catch ( std::runtime_error& e ) {
-        GUM_ERROR( DatabaseError, std::string( e.what() ) );
+      } catch (std::runtime_error& e) {
+        GUM_ERROR(DatabaseError, std::string(e.what()));
       }
       __data.clear();
       return false;

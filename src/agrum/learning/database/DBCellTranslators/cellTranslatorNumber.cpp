@@ -35,63 +35,63 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    CellTranslatorNumber::CellTranslatorNumber( Sequence<double> values,
-                                                bool             check_database )
-        : __check_database( check_database ) {
+    CellTranslatorNumber::CellTranslatorNumber(Sequence< double > values,
+                                               bool               check_database)
+        : __check_database(check_database) {
 
-      if ( !check_database ) {
-        if ( values.empty() ) {
+      if (!check_database) {
+        if (values.empty()) {
           __check_database = true;
         } else {
           // if we do not want to parse the database, store all the values
           // directly
-          for ( const auto& val : values ) {
-            __values.insert( val, __max_value );
+          for (const auto& val : values) {
+            __values.insert(val, __max_value);
             ++__max_value;
           }
         }
       } else {
         // if we specified values, store them
-        if ( !values.empty() ) {
-          __user_values = new Sequence<double>( std::move( values ) );
+        if (!values.empty()) {
+          __user_values = new Sequence< double >(std::move(values));
         }
       }
     }
 
     /// perform a post initialization after the database parsing
     void CellTranslatorNumber::postInitialize() {
-      if ( __user_values != nullptr ) {
+      if (__user_values != nullptr) {
         // we probably need to reorder the sequence to be compatible with the
         // order of the values specified by the user
-        std::vector<double> no_user_vals;
-        std::vector<std::pair<double, Idx>> user_vals;
-        for ( Idx i = 0; i < __max_value; ++i ) {
-          const double val = __values.first( i );
-          if ( __user_values->exists( val ) ) {
+        std::vector< double > no_user_vals;
+        std::vector< std::pair< double, Idx > > user_vals;
+        for (Idx i = 0; i < __max_value; ++i) {
+          const double val = __values.first(i);
+          if (__user_values->exists(val)) {
             user_vals.push_back(
-                std::pair<double, Idx>( val, __user_values->pos( val ) ) );
+              std::pair< double, Idx >(val, __user_values->pos(val)));
           } else {
-            no_user_vals.push_back( val );
+            no_user_vals.push_back(val);
           }
         }
 
         // reorder user_vals in increasing order of the second argument
-        std::sort( user_vals.begin(),
-                   user_vals.end(),
-                   []( const std::pair<double, Idx>& elt1,
-                       const std::pair<double, Idx>& elt2 ) -> bool {
-                     return elt1.second < elt2.second;
-                   } );
+        std::sort(user_vals.begin(),
+                  user_vals.end(),
+                  [](const std::pair< double, Idx >& elt1,
+                     const std::pair< double, Idx >& elt2) -> bool {
+                    return elt1.second < elt2.second;
+                  });
 
         // restore in the appropriate order the element of __strings
         __values.clear();
         __max_value = 0;
-        for ( const auto& val : user_vals ) {
-          __values.insert( val.first, __max_value );
+        for (const auto& val : user_vals) {
+          __values.insert(val.first, __max_value);
           ++__max_value;
         }
-        for ( const auto val : no_user_vals ) {
-          __values.insert( val, __max_value );
+        for (const auto val : no_user_vals) {
+          __values.insert(val, __max_value);
           ++__max_value;
         }
 
@@ -103,12 +103,12 @@ namespace gum {
 
     /// specify the set of possible values (to do before creating the row
     /// filter)
-    void CellTranslatorNumber::setUserValues( const Sequence<double>& values,
-                                              bool check_database ) {
+    void CellTranslatorNumber::setUserValues(const Sequence< double >& values,
+                                             bool check_database) {
       // clear all current data
       __values.clear();
       __max_value = 0;
-      if ( __user_values != nullptr ) {
+      if (__user_values != nullptr) {
         delete __user_values;
         __user_values = nullptr;
       }
@@ -116,21 +116,21 @@ namespace gum {
       // set the internal structures according to the method's parameters
       __check_database = check_database;
 
-      if ( !check_database ) {
-        if ( values.empty() ) {
+      if (!check_database) {
+        if (values.empty()) {
           __check_database = true;
         } else {
           // if we do not want to parse the database, store all the values
           // directly
-          for ( const auto& val : values ) {
-            __values.insert( val, __max_value );
+          for (const auto& val : values) {
+            __values.insert(val, __max_value);
             ++__max_value;
           }
         }
       } else {
         // if we specified values, store them
-        if ( !values.empty() ) {
-          __user_values = new Sequence<double>( values );
+        if (!values.empty()) {
+          __user_values = new Sequence< double >(values);
         }
       }
     }

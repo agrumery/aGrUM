@@ -41,110 +41,110 @@ namespace gum_tests {
 
   class UAIWriterTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<double>* bn;
-    gum::NodeId            i1, i2, i3, i4, i5;
+    gum::BayesNet< double >* bn;
+    gum::NodeId              i1, i2, i3, i4, i5;
 
     void setUp() {
-      bn = new gum::BayesNet<double>();
+      bn = new gum::BayesNet< double >();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
-      gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
+      gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
 
-      i1 = bn->add( n1 );
-      i2 = bn->add( n2 );
-      i3 = bn->add( n3 );
-      i4 = bn->add( n4 );
-      i5 = bn->add( n5 );
+      i1 = bn->add(n1);
+      i2 = bn->add(n2);
+      i3 = bn->add(n3);
+      i4 = bn->add(n4);
+      i5 = bn->add(n5);
 
-      bn->addArc( i1, i3 );
-      bn->addArc( i1, i4 );
-      bn->addArc( i3, i5 );
-      bn->addArc( i4, i5 );
-      bn->addArc( i2, i4 );
-      bn->addArc( i2, i5 );
+      bn->addArc(i1, i3);
+      bn->addArc(i1, i4);
+      bn->addArc(i3, i5);
+      bn->addArc(i4, i5);
+      bn->addArc(i2, i4);
+      bn->addArc(i2, i5);
 
-      fill( *bn );
+      fill(*bn);
     }
 
     void tearDown() { delete bn; }
 
     void testConstuctor() {
-      gum::UAIWriter<double>* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::UAIWriter<double>() );
+      gum::UAIWriter< double >* writer = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::UAIWriter< double >());
       delete writer;
     }
 
     void testWriter_ostream() {
-      gum::UAIWriter<double> writer;
+      gum::UAIWriter< double > writer;
       // Uncomment this to check the ouput
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
     void testWriter_string() {
-      gum::UAIWriter<double> writer;
-      std::string            file = GET_RESSOURCES_PATH( "uai/BNUAIIO_file.uai" );
-      TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
+      gum::UAIWriter< double > writer;
+      std::string              file = GET_RESSOURCES_PATH("uai/BNUAIIO_file.uai");
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
-      file = GET_RESSOURCES_PATH( "uai/BNUAIIO_RO_file.uai" );
+      file = GET_RESSOURCES_PATH("uai/BNUAIIO_RO_file.uai");
 
-      TS_ASSERT_EQUALS( chmod( file.c_str(), 0444 ), 0 );
+      TS_ASSERT_EQUALS(chmod(file.c_str(), 0444), 0);
 
       try {
-        writer.write( file, *bn );
-        TS_ASSERT( false );
-      } catch ( gum::IOError& ) {
-        TS_ASSERT( true );
+        writer.write(file, *bn);
+        TS_ASSERT(false);
+      } catch (gum::IOError&) {
+        TS_ASSERT(true);
       }
     }
 
     private:
     // Builds a BN to test the inference
-    void fill( gum::BayesNet<double>& bn ) {
-      const gum::Potential<double>& p1 = bn.cpt( i1 );
+    void fill(gum::BayesNet< double >& bn) {
+      const gum::Potential< double >& p1 = bn.cpt(i1);
       {
         // FILLING PARAMS
-        const double              t[2] = {0.2, 0.8};
-        int                       n = 2;
-        const std::vector<double> v( t, t + n );
-        p1.fillWith( v );
+        const double                t[2] = {0.2, 0.8};
+        int                         n = 2;
+        const std::vector< double > v(t, t + n);
+        p1.fillWith(v);
       }
 
-      const gum::Potential<double>& p2 = bn.cpt( i2 );
+      const gum::Potential< double >& p2 = bn.cpt(i2);
       {
         // FILLING PARAMS
-        const double              t[2] = {0.3, 0.7};
-        int                       n = 2;
-        const std::vector<double> v( t, t + n );
-        p2.fillWith( v );
+        const double                t[2] = {0.3, 0.7};
+        int                         n = 2;
+        const std::vector< double > v(t, t + n);
+        p2.fillWith(v);
       }
 
-      const gum::Potential<double>& p3 = bn.cpt( i3 );
+      const gum::Potential< double >& p3 = bn.cpt(i3);
       {
         // FILLING PARAMS
-        const double              t[4] = {0.1, 0.9, 0.9, 0.1};
-        int                       n = 4;
-        const std::vector<double> v( t, t + n );
-        p3.fillWith( v );
+        const double                t[4] = {0.1, 0.9, 0.9, 0.1};
+        int                         n = 4;
+        const std::vector< double > v(t, t + n);
+        p3.fillWith(v);
       }
 
-      const gum::Potential<double>& p4 = bn.cpt( i4 );
+      const gum::Potential< double >& p4 = bn.cpt(i4);
       {
         // FILLING PARAMS
-        const double              t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
-        int                       n = 8;
-        const std::vector<double> v( t, t + n );
-        p4.fillWith( v );
+        const double t[8] = {0.4, 0.6, 0.5, 0.5, 0.5, 0.5, 1.0, 0.0};
+        int          n = 8;
+        const std::vector< double > v(t, t + n);
+        p4.fillWith(v);
       }
 
-      const gum::Potential<double>& p5 = bn.cpt( i5 );
+      const gum::Potential< double >& p5 = bn.cpt(i5);
       {
         // FILLING PARAMS
         const double t[24] = {0.3, 0.6, 0.1, 0.5, 0.5, 0.0, 0.5, 0.5,
                               0.0, 1.0, 0.0, 0.0, 0.4, 0.6, 0.0, 0.5,
                               0.5, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0};
-        int                       n = 24;
-        const std::vector<double> v( t, t + n );
-        p5.fillWith( v );
+        int                         n = 24;
+        const std::vector< double > v(t, t + n);
+        p5.fillWith(v);
       }
     }
   };

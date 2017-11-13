@@ -34,33 +34,32 @@ namespace gum {
   std::string getUniqueFileName() {
 #ifdef HAVE_MKSTEMP
     char _tmpFileName[] = "fileXXXXXX";
-    int  fd = mkstemp( _tmpFileName );
-    close( fd );
+    int  fd = mkstemp(_tmpFileName);
+    close(fd);
 #else  // mainly Windows
     char _tmpFileName[] = "fileXXXXXX";
-    _mktemp_s( _tmpFileName, strlen( _tmpFileName ) );
+    _mktemp_s(_tmpFileName, strlen(_tmpFileName));
 #endif
 
-    return std::string( _tmpFileName );
+    return std::string(_tmpFileName);
   }
 
-  bool endsWith( std::string const& value, std::string const& ending ) {
-    if ( ending.size() > value.size() ) return false;
-    return std::equal( ending.rbegin(), ending.rend(), value.rbegin() );
+  bool endsWith(std::string const& value, std::string const& ending) {
+    if (ending.size() > value.size()) return false;
+    return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
   }
 
-  std::vector<std::string> split( const std::string& str,
-                                  const std::string& delim ) {
-    std::vector<std::string> tokens;
-    size_t                   prev = 0, pos = 0;
+  std::vector< std::string > split(const std::string& str,
+                                   const std::string& delim) {
+    std::vector< std::string > tokens;
+    size_t                     prev = 0, pos = 0;
     do {
-      pos = str.find( delim, prev );
-      if ( pos == std::string::npos ) pos = str.length();
-      std::string token = str.substr( prev, pos - prev );
-      if ( !token.empty() )
-        tokens.push_back( token );
+      pos = str.find(delim, prev);
+      if (pos == std::string::npos) pos = str.length();
+      std::string token = str.substr(prev, pos - prev);
+      if (!token.empty()) tokens.push_back(token);
       prev = pos + delim.length();
-    } while ( pos < str.length() && prev < str.length() );
+    } while (pos < str.length() && prev < str.length());
     return tokens;
   }
 
@@ -75,12 +74,15 @@ std::vector<std::string> split( const std::string& orig,
   return {first, last};
 } */
 
-  std::string replace(const std::string& s, const std::string& val, const std::string& new_val) {
+  std::string replace(const std::string& s,
+                      const std::string& val,
+                      const std::string& new_val) {
     auto retVal = s;
     auto pos = retVal.find(val);
     while (pos != std::string::npos) {
       std::stringstream sBuff;
-      sBuff << s.substr(0, pos) << new_val << s.substr(pos + val.size(), std::string::npos);
+      sBuff << s.substr(0, pos) << new_val
+            << s.substr(pos + val.size(), std::string::npos);
       retVal = sBuff.str();
       pos = retVal.find(val);
     }

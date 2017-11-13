@@ -52,8 +52,8 @@ namespace gum {
      * @ingroup prm_group
      */
     // ==========================================================================
-    template <typename GUM_SCALAR>
-    class PRMReferenceSlot : public PRMClassElement<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class PRMReferenceSlot : public PRMClassElement< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Protected constructors & destructor.
@@ -67,9 +67,9 @@ namespace gum {
        * @param type The type of this reference slot.
        * @param isArray Determine if this reference slot is multiple or not.
        */
-      PRMReferenceSlot( const std::string&                    name,
-                        PRMClassElementContainer<GUM_SCALAR>& type,
-                        bool                                  isArray = false );
+      PRMReferenceSlot(const std::string&                      name,
+                       PRMClassElementContainer< GUM_SCALAR >& type,
+                       bool                                    isArray = false);
 
       /**
        * Destructor.
@@ -85,20 +85,20 @@ namespace gum {
       /**
        * Implementation of the pure virtual method of PRMObject.
        */
-      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
       elt_type() const;
 
       /**
        * Returns the type of this slot, which is a PRMClassElementContainer
        * (it is not the type of PRMObject).
        */
-      PRMClassElementContainer<GUM_SCALAR>& slotType();
+      PRMClassElementContainer< GUM_SCALAR >& slotType();
 
       /**
        * Returns the type of this slot, which is a PRMClassElementContainer
        * (it is not the type of PRMObject).
        */
-      const PRMClassElementContainer<GUM_SCALAR>& slotType() const;
+      const PRMClassElementContainer< GUM_SCALAR >& slotType() const;
 
       /**
        * Returns true if this reference slot is an array.
@@ -106,10 +106,10 @@ namespace gum {
       bool isArray() const;
 
       /// See gum::PRMClassElement::addParent().
-      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
+      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// See gum::PRMClassElement::addChild().
-      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
+      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// @}
       // ========================================================================
@@ -119,23 +119,23 @@ namespace gum {
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::type().
-      virtual PRMType<GUM_SCALAR>& type();
+      virtual PRMType< GUM_SCALAR >& type();
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::type().
-      virtual const PRMType<GUM_SCALAR>& type() const;
+      virtual const PRMType< GUM_SCALAR >& type() const;
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::cpf().
-      virtual Potential<GUM_SCALAR>& cpf();
+      virtual Potential< GUM_SCALAR >& cpf();
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::cpf().
-      virtual const Potential<GUM_SCALAR>& cpf() const;
+      virtual const Potential< GUM_SCALAR >& cpf() const;
 
       /// @brief Raise an OperationNotAllowed.
       /// See gum::PRMClassElement::getCastDescendant().
-      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
+      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
 
       /// @}
       private:
@@ -145,10 +145,10 @@ namespace gum {
       // @{
 
       /// Copy constructor. Don't use it.
-      PRMReferenceSlot( const PRMReferenceSlot& source );
+      PRMReferenceSlot(const PRMReferenceSlot& source);
 
       /// Copy operator. Don't use it.
-      PRMReferenceSlot& operator=( const PRMReferenceSlot& from );
+      PRMReferenceSlot& operator=(const PRMReferenceSlot& from);
 
       /// @}
       // ========================================================================
@@ -157,7 +157,7 @@ namespace gum {
       // @{
 
       /// The type of this PRMReferenceSlot.
-      PRMClassElementContainer<GUM_SCALAR>& __slotType;
+      PRMClassElementContainer< GUM_SCALAR >& __slotType;
 
       /// Flag indicating if this slot is an array.
       bool __isArray;
@@ -166,8 +166,8 @@ namespace gum {
     };
 
 
-    extern template class PRMReferenceSlot<float>;
-    extern template class PRMReferenceSlot<double>;
+    extern template class PRMReferenceSlot< float >;
+    extern template class PRMReferenceSlot< double >;
 
 
   } /* namespace prm */

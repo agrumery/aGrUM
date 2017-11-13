@@ -39,13 +39,13 @@ namespace gum {
    * @ingroup id_group
    *
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class IInfluenceDiagramInference {
     public:
     /**
      * Default constructor
      */
-    IInfluenceDiagramInference( const InfluenceDiagram<GUM_SCALAR>& infDiag );
+    IInfluenceDiagramInference(const InfluenceDiagram< GUM_SCALAR >& infDiag);
 
     /**
      * Destructor.
@@ -65,12 +65,12 @@ namespace gum {
      * variable.
      */
     virtual void
-    insertEvidence( const List<const Potential<GUM_SCALAR>*>& evidenceList ) = 0;
+    insertEvidence(const List< const Potential< GUM_SCALAR >* >& evidenceList) = 0;
 
     /**
      * Remove a given evidence from the graph.
      */
-    virtual void eraseEvidence( const Potential<GUM_SCALAR>* evidence ) = 0;
+    virtual void eraseEvidence(const Potential< GUM_SCALAR >* evidence) = 0;
 
     /**
      * Remove all evidence from the graph.
@@ -82,7 +82,7 @@ namespace gum {
      * class
      * work.
      */
-    const InfluenceDiagram<GUM_SCALAR>& influenceDiagram() const;
+    const InfluenceDiagram< GUM_SCALAR >& influenceDiagram() const;
 
     /**
      * Returns maximum expected utility obtained from inference
@@ -98,13 +98,13 @@ namespace gum {
      * @throw OperationNotAllowed if no inference have yet been made
      * @throw InvalidNode if node given in parmaeter is not a decision node
      */
-    virtual Idx getBestDecisionChoice( NodeId decisionId ) = 0;
+    virtual Idx getBestDecisionChoice(NodeId decisionId) = 0;
 
     protected:
     /**
      * The Bayes net we wish to perform inference on.
      */
-    const InfluenceDiagram<GUM_SCALAR>& __infDiag;
+    const InfluenceDiagram< GUM_SCALAR >& __infDiag;
   };
 
 } /* namespace gum */

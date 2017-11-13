@@ -32,32 +32,32 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    template <typename RowFilter>
-    INLINE IndependenceTest<IdSetAlloc, CountAlloc>::IndependenceTest(
-        const RowFilter& filter, const std::vector<Size>& var_modalities )
-        : Counter<IdSetAlloc, CountAlloc>( filter, var_modalities ) {
-      GUM_CONSTRUCTOR( IndependenceTest );
+    template < typename IdSetAlloc, typename CountAlloc >
+    template < typename RowFilter >
+    INLINE IndependenceTest< IdSetAlloc, CountAlloc >::IndependenceTest(
+      const RowFilter& filter, const std::vector< Size >& var_modalities)
+        : Counter< IdSetAlloc, CountAlloc >(filter, var_modalities) {
+      GUM_CONSTRUCTOR(IndependenceTest);
     }
 
     /// destructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE IndependenceTest<IdSetAlloc, CountAlloc>::~IndependenceTest() {
-      GUM_DESTRUCTOR( IndependenceTest );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE IndependenceTest< IdSetAlloc, CountAlloc >::~IndependenceTest() {
+      GUM_DESTRUCTOR(IndependenceTest);
     }
 
     /// add a new pair of target unconditioned variables to be counted
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet( Idx var1,
-                                                                     Idx var2 ) {
-      if ( __use_cache ) {
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(Idx var1,
+                                                                      Idx var2) {
+      if (__use_cache) {
         // check whether the score is already in the cache
         try {
-          double score = __cache.score( var1, var2, __empty_conditioning_set );
-          __is_cached_score.push_back( true );
-          __cached_score.push_back( score );
-          return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-        } catch ( const NotFound& ) {
+          double score = __cache.score(var1, var2, __empty_conditioning_set);
+          __is_cached_score.push_back(true);
+          __cached_score.push_back(score);
+          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
+        } catch (const NotFound&) {
         }
       }
 
@@ -65,41 +65,41 @@ namespace gum {
       // size of the database (basically, if there are fewer than an average
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
-      if ( this->_modalities[var1] * this->_modalities[var2] * 5 >
-           this->_record_counter.DBParsedSize() ) {
-        __is_cached_score.push_back( true );
-        __cached_score.push_back( std::numeric_limits<double>::max() );
-        return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
+      if (this->_modalities[var1] * this->_modalities[var2] * 5 >
+          this->_record_counter.DBParsedSize()) {
+        __is_cached_score.push_back(true);
+        __cached_score.push_back(std::numeric_limits< double >::max());
+        return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
       }
 
-      __is_cached_score.push_back( false );
-      __cached_score.push_back( 0 );
-      const Idx index = Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1, var2 );
+      __is_cached_score.push_back(false);
+      __cached_score.push_back(0);
+      const Idx index = Counter< IdSetAlloc, CountAlloc >::addNodeSet(var1, var2);
 
-      __is_cached_score.push_back( false );
-      __cached_score.push_back( 0 );
-      Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1 );
+      __is_cached_score.push_back(false);
+      __cached_score.push_back(0);
+      Counter< IdSetAlloc, CountAlloc >::addNodeSet(var1);
       return index;
     }
 
     /// add a new pair of target unconditioned variables to be counted
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::pair<Idx, Idx>& vars ) {
-      return addNodeSet( vars.first, vars.second );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
+      const std::pair< Idx, Idx >& vars) {
+      return addNodeSet(vars.first, vars.second);
     }
 
     /// add a new pair of target conditioned variables to be counted
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        Idx var1, Idx var2, const std::vector<Idx>& conditioning_ids ) {
-      if ( __use_cache ) {
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
+      Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids) {
+      if (__use_cache) {
         try {
-          double score = __cache.score( var1, var2, conditioning_ids );
-          __is_cached_score.push_back( true );
-          __cached_score.push_back( score );
-          return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-        } catch ( const NotFound& ) {
+          double score = __cache.score(var1, var2, conditioning_ids);
+          __is_cached_score.push_back(true);
+          __cached_score.push_back(score);
+          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
+        } catch (const NotFound&) {
         }
       }
 
@@ -108,45 +108,45 @@ namespace gum {
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
       Size cpt_size = this->_modalities[var1] * this->_modalities[var2] * 5;
-      for ( auto node : conditioning_ids ) {
+      for (auto node : conditioning_ids) {
         cpt_size *= this->_modalities[node];
       }
-      if ( cpt_size > this->_record_counter.DBParsedSize() ) {
-        __is_cached_score.push_back( true );
-        __cached_score.push_back( std::numeric_limits<double>::max() );
-        return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
+      if (cpt_size > this->_record_counter.DBParsedSize()) {
+        __is_cached_score.push_back(true);
+        __cached_score.push_back(std::numeric_limits< double >::max());
+        return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
       }
 
-      __is_cached_score.push_back( false );
-      __cached_score.push_back( 0 );
-      const Idx index = Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-          var1, var2, conditioning_ids );
+      __is_cached_score.push_back(false);
+      __cached_score.push_back(0);
+      const Idx index = Counter< IdSetAlloc, CountAlloc >::addNodeSet(
+        var1, var2, conditioning_ids);
 
-      __is_cached_score.push_back( false );
-      __cached_score.push_back( 0 );
-      Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1, conditioning_ids );
+      __is_cached_score.push_back(false);
+      __cached_score.push_back(0);
+      Counter< IdSetAlloc, CountAlloc >::addNodeSet(var1, conditioning_ids);
       return index;
     }
 
     /// add a new pair of target conditioned variables to be counted
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::pair<Idx, Idx>& vars,
-        const std::vector<Idx>& conditioning_ids ) {
-      return addNodeSet( vars.first, vars.second, conditioning_ids );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
+      const std::pair< Idx, Idx >& vars,
+      const std::vector< Idx >& conditioning_ids) {
+      return addNodeSet(vars.first, vars.second, conditioning_ids);
     }
 
     /// add a new pair of target conditioned variables to be counted
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        Idx var1, Idx var2, std::vector<Idx>&& conditioning_ids ) {
-      if ( __use_cache ) {
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
+      Idx var1, Idx var2, std::vector< Idx >&& conditioning_ids) {
+      if (__use_cache) {
         try {
-          double score = __cache.score( var1, var2, conditioning_ids );
-          __is_cached_score.push_back( true );
-          __cached_score.push_back( score );
-          return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-        } catch ( const NotFound& ) {
+          double score = __cache.score(var1, var2, conditioning_ids);
+          __is_cached_score.push_back(true);
+          __cached_score.push_back(score);
+          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
+        } catch (const NotFound&) {
         }
       }
 
@@ -155,104 +155,104 @@ namespace gum {
       // of 5 observations per parameter in the database, the independence
       // test will be incorrect)
       Size cpt_size = this->_modalities[var1] * this->_modalities[var2] * 5;
-      for ( auto node : conditioning_ids ) {
+      for (auto node : conditioning_ids) {
         cpt_size *= this->_modalities[node];
       }
-      if ( cpt_size > this->_record_counter.DBParsedSize() ) {
-        __is_cached_score.push_back( true );
-        __cached_score.push_back( std::numeric_limits<double>::max() );
-        return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
+      if (cpt_size > this->_record_counter.DBParsedSize()) {
+        __is_cached_score.push_back(true);
+        __cached_score.push_back(std::numeric_limits< double >::max());
+        return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
       }
 
-      __is_cached_score.push_back( false );
-      __cached_score.push_back( 0 );
-      const Idx index = Counter<IdSetAlloc, CountAlloc>::addNodeSet(
-          var1, var2, conditioning_ids );
+      __is_cached_score.push_back(false);
+      __cached_score.push_back(0);
+      const Idx index = Counter< IdSetAlloc, CountAlloc >::addNodeSet(
+        var1, var2, conditioning_ids);
 
-      __is_cached_score.push_back( false );
-      __cached_score.push_back( 0 );
-      Counter<IdSetAlloc, CountAlloc>::addNodeSet( var1,
-                                                   std::move( conditioning_ids ) );
+      __is_cached_score.push_back(false);
+      __cached_score.push_back(0);
+      Counter< IdSetAlloc, CountAlloc >::addNodeSet(var1,
+                                                    std::move(conditioning_ids));
       return index;
     }
 
     /// add a new pair of target conditioned variables to be counted
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE Idx IndependenceTest<IdSetAlloc, CountAlloc>::addNodeSet(
-        const std::pair<Idx, Idx>& vars, std::vector<Idx>&& conditioning_ids ) {
-      return addNodeSet( vars.first, vars.second, std::move( conditioning_ids ) );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx IndependenceTest< IdSetAlloc, CountAlloc >::addNodeSet(
+      const std::pair< Idx, Idx >& vars, std::vector< Idx >&& conditioning_ids) {
+      return addNodeSet(vars.first, vars.second, std::move(conditioning_ids));
     }
 
     /// clears all the data structures from memory
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void IndependenceTest<IdSetAlloc, CountAlloc>::clear() {
-      Counter<IdSetAlloc, CountAlloc>::clear();
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void IndependenceTest< IdSetAlloc, CountAlloc >::clear() {
+      Counter< IdSetAlloc, CountAlloc >::clear();
       __is_cached_score.clear();
       __cached_score.clear();
     }
 
     /// indicates whether a score belongs to the cache
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE bool
-    IndependenceTest<IdSetAlloc, CountAlloc>::_isInCache( Idx nodeset_index ) const
-        noexcept {
-      return ( ( nodeset_index < __is_cached_score.size() ) &&
-               __is_cached_score[nodeset_index] );
+    IndependenceTest< IdSetAlloc, CountAlloc >::_isInCache(Idx nodeset_index) const
+      noexcept {
+      return ((nodeset_index < __is_cached_score.size()) &&
+              __is_cached_score[nodeset_index]);
     }
 
     /// inserts a new score into the cache
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    IndependenceTest<IdSetAlloc, CountAlloc>::_insertIntoCache( Idx nodeset_index,
-                                                                double score ) {
-      const std::vector<Idx, IdSetAlloc>& all_nodes =
-          _getAllNodes( nodeset_index );
-      std::vector<Idx, IdSetAlloc> conditioning_nodes =
-          *( _getConditioningNodes( nodeset_index ) );
+    IndependenceTest< IdSetAlloc, CountAlloc >::_insertIntoCache(Idx nodeset_index,
+                                                                 double score) {
+      const std::vector< Idx, IdSetAlloc >& all_nodes =
+        _getAllNodes(nodeset_index);
+      std::vector< Idx, IdSetAlloc > conditioning_nodes =
+        *(_getConditioningNodes(nodeset_index));
       conditioning_nodes.pop_back();
 
-      if ( !conditioning_nodes.empty() ) {
+      if (!conditioning_nodes.empty()) {
         try {
-          __cache.insert( all_nodes[all_nodes.size() - 1],
-                          all_nodes[all_nodes.size() - 2],
-                          conditioning_nodes,
-                          score );
-        } catch ( const gum::DuplicateElement& ) {
+          __cache.insert(all_nodes[all_nodes.size() - 1],
+                         all_nodes[all_nodes.size() - 2],
+                         conditioning_nodes,
+                         score);
+        } catch (const gum::DuplicateElement&) {
         }
       } else {
         try {
           __cache.insert(
-              all_nodes[0], all_nodes[1], __empty_conditioning_set, score );
-        } catch ( const gum::DuplicateElement& ) {
+            all_nodes[0], all_nodes[1], __empty_conditioning_set, score);
+        } catch (const gum::DuplicateElement&) {
         }
       }
     }
 
     /// returns a cached score
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE double IndependenceTest<IdSetAlloc, CountAlloc>::_cachedScore(
-        Idx nodeset_index ) const noexcept {
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE double IndependenceTest< IdSetAlloc, CountAlloc >::_cachedScore(
+      Idx nodeset_index) const noexcept {
       return __cached_score[nodeset_index];
     }
 
     /// indicates whether we use the cache or not
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE bool IndependenceTest<IdSetAlloc, CountAlloc>::_isUsingCache() const
-        noexcept {
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE bool IndependenceTest< IdSetAlloc, CountAlloc >::_isUsingCache() const
+      noexcept {
       return __use_cache;
     }
 
     /// turn on/off the use of a cache of the previously computed score
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    IndependenceTest<IdSetAlloc, CountAlloc>::useCache( bool on_off ) noexcept {
-      if ( !on_off ) clear();
+    IndependenceTest< IdSetAlloc, CountAlloc >::useCache(bool on_off) noexcept {
+      if (!on_off) clear();
       __use_cache = on_off;
     }
 
     /// clears the current cache (clear nodesets as well)
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE void IndependenceTest<IdSetAlloc, CountAlloc>::clearCache() {
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void IndependenceTest< IdSetAlloc, CountAlloc >::clearCache() {
       clear();
       __cache.clear();
     }

@@ -115,15 +115,15 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const DiscreteVariable* primeVar( const DiscreteVariable* mainVar ) {
-      return __primeMap.second( mainVar );
+    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
+      return __primeMap.second(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe<const DiscreteVariable*> beginVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
       return __taxiVars.beginSafe();
     }
-    SequenceIteratorSafe<const DiscreteVariable*> endVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
       return __taxiVars.endSafe();
     }
 
@@ -134,16 +134,16 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName( Idx actionId ) {
-      return *__actionMap[actionId];
-    }
+    const std::string& actionName(Idx actionId) { return *__actionMap[actionId]; }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe<Idx> beginActions() { return __taxiActions.beginSafe(); }
-    SequenceIteratorSafe<Idx> endActions() { return __taxiActions.endSafe(); }
+    SequenceIteratorSafe< Idx > beginActions() {
+      return __taxiActions.beginSafe();
+    }
+    SequenceIteratorSafe< Idx > endActions() { return __taxiActions.endSafe(); }
 
 
-    void perform( Idx );
+    void perform(Idx);
 
     private:
     void __performGoNorth();
@@ -165,18 +165,18 @@ namespace gum {
 
     private:
     void __evalReward();
-    bool __isAtDestination( TaxiSimulationLandmark  passDest,
-                            TaxiSimulationLandmarkX xCurPos,
-                            TaxiSimulationLandmarkY yCurPos );
-    bool __isAtMeetPoint( TaxiSimulationLandmark  passpos,
-                          TaxiSimulationLandmarkX xCurPos,
-                          TaxiSimulationLandmarkY yCurPos );
+    bool __isAtDestination(TaxiSimulationLandmark  passDest,
+                           TaxiSimulationLandmarkX xCurPos,
+                           TaxiSimulationLandmarkY yCurPos);
+    bool __isAtMeetPoint(TaxiSimulationLandmark  passpos,
+                         TaxiSimulationLandmarkX xCurPos,
+                         TaxiSimulationLandmarkY yCurPos);
 
     /// @}
 
     /// Variables data structures
-    Sequence<const DiscreteVariable*> __taxiVars;
-    Bijection<const DiscreteVariable*, const DiscreteVariable*> __primeMap;
+    Sequence< const DiscreteVariable* > __taxiVars;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* > __primeMap;
     LabelizedVariable* __xPos;
     LabelizedVariable* __yPos;
     LabelizedVariable* __passengerPos;
@@ -184,8 +184,8 @@ namespace gum {
     LabelizedVariable* __fuelLevel;
 
     /// Actions
-    Sequence<Idx> __taxiActions;
-    HashTable<Idx, std::string*> __actionMap;  //__actionMap.insert ( actionId,
+    Sequence< Idx > __taxiActions;
+    HashTable< Idx, std::string* > __actionMap;  //__actionMap.insert ( actionId,
     // new std::string ( action ) );
     TaxiSimulationAction __lastAction;
 

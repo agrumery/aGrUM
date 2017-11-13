@@ -29,17 +29,17 @@
 namespace gum {
 
   INLINE
-  Idx randomValue( const Size max ) { return ( Idx )( rand() % max ); }
+  Idx randomValue(const Size max) { return (Idx)(rand() % max); }
 
   INLINE
-  double randomProba() { return ( (double)rand() ) / ( (double)RAND_MAX ); }
+  double randomProba() { return ((double)rand()) / ((double)RAND_MAX); }
 
   INLINE
-  void initRandom( unsigned int seed ) {
-    if ( seed ) {
-      srand( seed );
+  void initRandom(unsigned int seed) {
+    if (seed) {
+      srand(seed);
     } else {
-      srand( randomGeneratorSeed() );
+      srand(randomGeneratorSeed());
     }
   }
 

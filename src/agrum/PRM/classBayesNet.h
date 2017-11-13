@@ -52,8 +52,8 @@ namespace gum {
      * variables are missing in the DAG but not in the nodes CPT.
      */
     // clang-format on
-    template <typename GUM_SCALAR>
-    class ClassBayesNet : public IBayesNet<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class ClassBayesNet : public IBayesNet< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Constructors & destructor.
@@ -63,17 +63,17 @@ namespace gum {
       /// Default constructor.
       /// @param c The Class<GUM_SCALAR> decorated by this
       /// ClassBayesNet<GUM_SCALAR>.
-      ClassBayesNet<GUM_SCALAR>( const PRMClass<GUM_SCALAR>& c );
+      ClassBayesNet< GUM_SCALAR >(const PRMClass< GUM_SCALAR >& c);
 
       /// Copy constructor.
-      ClassBayesNet<GUM_SCALAR>( const ClassBayesNet<GUM_SCALAR>& from );
+      ClassBayesNet< GUM_SCALAR >(const ClassBayesNet< GUM_SCALAR >& from);
 
       /// Copy operator.
-      ClassBayesNet<GUM_SCALAR>&
-      operator=( const ClassBayesNet<GUM_SCALAR>& from );
+      ClassBayesNet< GUM_SCALAR >&
+      operator=(const ClassBayesNet< GUM_SCALAR >& from);
 
       /// Destructor.
-      virtual ~ClassBayesNet<GUM_SCALAR>();
+      virtual ~ClassBayesNet< GUM_SCALAR >();
 
       /// @}
       // ===========================================================================
@@ -94,26 +94,26 @@ namespace gum {
        *                 IBayesNet.
        * @throw OperationNotAllowed raised if varId is an PRMAggregate.
        */
-      virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
+      virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const;
 
       /// See gum::IBaseBayesNet::variableNodeMap().
       virtual const VariableNodeMap& variableNodeMap() const;
 
       /// See gum::IBaseBayesNet::variable().
-      virtual const DiscreteVariable& variable( NodeId id ) const;
+      virtual const DiscreteVariable& variable(NodeId id) const;
 
       /// See gum::IBaseBayesNet::nodeId().
-      virtual NodeId nodeId( const DiscreteVariable& var ) const;
+      virtual NodeId nodeId(const DiscreteVariable& var) const;
 
       /// See gum::IBaseBayesNet::idFromName().
-      virtual NodeId idFromName( const std::string& name ) const;
+      virtual NodeId idFromName(const std::string& name) const;
 
       /// See gum::IBaseBayesNet::variableFromName().
       virtual const DiscreteVariable&
-      variableFromName( const std::string& name ) const;
+      variableFromName(const std::string& name) const;
 
       /// See gum::IBaseBayesNet::modalities().
-      const NodeProperty<Size>& modalities() const;
+      const NodeProperty< Size >& modalities() const;
 
       /// @}
       // ===========================================================================
@@ -126,30 +126,30 @@ namespace gum {
       /// @}
       private:
       /// Mapping between DiscreteVariable and their NodeId
-      HashTable<const DiscreteVariable*, const PRMClassElement<GUM_SCALAR>*>
-          __varNodeMap;
+      HashTable< const DiscreteVariable*, const PRMClassElement< GUM_SCALAR >* >
+        __varNodeMap;
 
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const PRMClassElement<GUM_SCALAR>& __get( NodeId id ) const;
+      const PRMClassElement< GUM_SCALAR >& __get(NodeId id) const;
 
       /// Private getter with type checking in case the id is not a formal
       /// PRMAttribute.
       /// @throw NotFound Raised if id is not a formal attribute.
-      const PRMClassElement<GUM_SCALAR>& __get( const std::string& name ) const;
+      const PRMClassElement< GUM_SCALAR >& __get(const std::string& name) const;
 
       /// The PRMClassElementContainer decorated by this.
-      const PRMClass<GUM_SCALAR>* __class;
+      const PRMClass< GUM_SCALAR >* __class;
 
-      mutable NodeProperty<Size> __modalities;
+      mutable NodeProperty< Size > __modalities;
 
-      void __init( const PRMClass<GUM_SCALAR>& c );
+      void __init(const PRMClass< GUM_SCALAR >& c);
     };
 
 
-    extern template class ClassBayesNet<float>;
-    extern template class ClassBayesNet<double>;
+    extern template class ClassBayesNet< float >;
+    extern template class ClassBayesNet< double >;
 
 
   } /* namespace prm */

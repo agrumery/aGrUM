@@ -46,10 +46,10 @@ namespace gum {
   class Dirichlet {
     public:
     /// The parameter type.
-    using param_type = std::vector<float>;
+    using param_type = std::vector< float >;
 
     /// The type for the samples generated.
-    using result_type = std::vector<float>;
+    using result_type = std::vector< float >;
 
     // ==========================================================================
     /// @name Constructors / Destructors
@@ -61,19 +61,19 @@ namespace gum {
      * @param params The distribution parameters.
      * @param seed The distribution seed.
      */
-    Dirichlet( const param_type& params, unsigned int seed = GUM_RANDOMSEED );
+    Dirichlet(const param_type& params, unsigned int seed = GUM_RANDOMSEED);
 
     /**
      * @brief Copy constructor.
      * @param from The distribution to copy.
      */
-    Dirichlet( const Dirichlet& from );
+    Dirichlet(const Dirichlet& from);
 
     /**
      * @brief Move constructor.
      * @param from The distribution to move.
      */
-    Dirichlet( Dirichlet&& from );
+    Dirichlet(Dirichlet&& from);
 
     /**
      * @brief Class destructor.
@@ -91,14 +91,14 @@ namespace gum {
      * @param from The distribution to copy.
      * @return Returns this gum::Dirichlet distribution.
      */
-    Dirichlet& operator=( const Dirichlet& from );
+    Dirichlet& operator=(const Dirichlet& from);
 
     /**
      * @brief Move operator.
      * @param from The distribution to move.
      * @return Returns this gum::Dirichlet distribution.
      */
-    Dirichlet& operator=( Dirichlet&& from );
+    Dirichlet& operator=(Dirichlet&& from);
 
     /**
      * @brief Returns a sample from the Dirichlet distribution.
@@ -111,7 +111,7 @@ namespace gum {
      * @param p An object representing the distribution's parameters,
      * obtained by a call to gum::Dirichlet::param(const param_type&).
      */
-    result_type operator()( const param_type& p );
+    result_type operator()(const param_type& p);
 
     /**
      * @brief Returns a sample from the Dirichlet distribution.
@@ -122,8 +122,8 @@ namespace gum {
      * @param p An object representing the distribution's parameters,
      * obtained by a call to gum::Dirichlet::param(const param_type&).
      */
-    template <class URNG>
-    result_type operator()( URNG& generator, const param_type& p );
+    template < class URNG >
+    result_type operator()(URNG& generator, const param_type& p);
 
     /// @}
     // ==========================================================================
@@ -142,7 +142,7 @@ namespace gum {
      * @param p An object representing the distribution's parameters, obtained
      * by a call to member function param.
      */
-    void param( const param_type& p );
+    void param(const param_type& p);
 
     /**
      * @brief Returns the greatest lower bound of the range of values returned
@@ -168,7 +168,7 @@ namespace gum {
 
     /// The gamma distribution used to compute the Dirichlet unnormalized
     /// samples.
-    std::gamma_distribution<float> __gamma;
+    std::gamma_distribution< float > __gamma;
 
     /// The parameters of the distribution.
     param_type __params;

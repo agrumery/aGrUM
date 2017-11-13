@@ -45,8 +45,8 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template <typename GUM_SCALAR>
-  class LeastSquareTestPolicy : public ITestPolicy<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class LeastSquareTestPolicy : public ITestPolicy< GUM_SCALAR > {
 
     public:
     // ############################################################################
@@ -58,21 +58,21 @@ namespace gum {
     /// Constructor
     // ============================================================================
     LeastSquareTestPolicy()
-        : ITestPolicy<GUM_SCALAR>()
-        , __sumO( 0.0 )
-        , __score( 0 ) {
-      GUM_CONSTRUCTOR( LeastSquareTestPolicy )
+        : ITestPolicy< GUM_SCALAR >()
+        , __sumO(0.0)
+        , __score(0) {
+      GUM_CONSTRUCTOR(LeastSquareTestPolicy)
     }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate(
-          p, sizeof( LeastSquareTestPolicy ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p,
+                                                  sizeof(LeastSquareTestPolicy));
     }
 
     // ============================================================================
@@ -88,7 +88,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    void addObservation( Idx attr, GUM_SCALAR value );
+    void addObservation(Idx attr, GUM_SCALAR value);
 
     /// @}
 
@@ -102,7 +102,7 @@ namespace gum {
     /// Returns true if enough observation were made so that the test can be
     /// relevant
     // ============================================================================
-    bool isTestRelevant() const { return ( this->nbObservation() > 20 ); }
+    bool isTestRelevant() const { return (this->nbObservation() > 20); }
 
     /// @}
 
@@ -139,7 +139,7 @@ namespace gum {
     /// Performs the merging of current LeastSquareTestPolicy instance with
     /// given instance
     // ============================================================================
-    void add( const LeastSquareTestPolicy<GUM_SCALAR>& src );
+    void add(const LeastSquareTestPolicy< GUM_SCALAR >& src);
 
 
     // ============================================================================
@@ -150,17 +150,17 @@ namespace gum {
     // ============================================================================
     /// Returns nbobs per modality table (needed for the merging)
     // ============================================================================
-    const HashTable<Idx, Idx>& nbObsTable() const { return __nbObsTable; }
+    const HashTable< Idx, Idx >& nbObsTable() const { return __nbObsTable; }
 
     // ============================================================================
     /// Returns sum per modality table (needed for the merging)
     // ============================================================================
-    const HashTable<Idx, double>& sumAttrTable() const { return __sumAttrTable; }
+    const HashTable< Idx, double >& sumAttrTable() const { return __sumAttrTable; }
 
     // ============================================================================
     /// Returns global sum (needed for the merging)
     // ============================================================================
-    const HashTable<Idx, LinkedList<double>*>& obsTable() const {
+    const HashTable< Idx, LinkedList< double >* >& obsTable() const {
       return __obsTable;
     }
 
@@ -169,13 +169,13 @@ namespace gum {
     double __sumO;
 
     /// Nb Observation for each modality assumed by variable
-    HashTable<Idx, Idx> __nbObsTable;
+    HashTable< Idx, Idx > __nbObsTable;
 
     /// Sum for each modality assumed by variable
-    HashTable<Idx, double> __sumAttrTable;
+    HashTable< Idx, double > __sumAttrTable;
 
     /// Not sure if needed
-    HashTable<Idx, LinkedList<double>*> __obsTable;
+    HashTable< Idx, LinkedList< double >* > __obsTable;
 
     /// Keeping computed score
     double __score;

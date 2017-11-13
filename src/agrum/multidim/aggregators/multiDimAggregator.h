@@ -57,8 +57,8 @@ namespace gum {
      *  However, \f$f(J_1,f(J_2,\cdots,f(J_n,NeutraElement)\cdots))\f$ is
      *  truncated in order to fit in domain(aggregator variable).
      */
-    template <typename GUM_SCALAR>
-    class MultiDimAggregator : public MultiDimReadOnly<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class MultiDimAggregator : public MultiDimReadOnly< GUM_SCALAR > {
       public:
       // =======================================================================
       /// @name Constructors / Destructors
@@ -73,7 +73,7 @@ namespace gum {
       /**
        * Copy constructor.
        */
-      MultiDimAggregator( const MultiDimAggregator<GUM_SCALAR>& from );
+      MultiDimAggregator(const MultiDimAggregator< GUM_SCALAR >& from);
 
       /**
        * Class destructor.
@@ -99,7 +99,7 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const override = 0;
+      virtual MultiDimContainer< GUM_SCALAR >* newFactory() const override = 0;
 
       // =======================================================================
       /// @name Accessors / Modifiers
@@ -107,27 +107,27 @@ namespace gum {
       /// @{
 
       public:
-      virtual GUM_SCALAR get( const Instantiation& i ) const override;
+      virtual GUM_SCALAR get(const Instantiation& i) const override;
 
-      virtual std::string aggregatorName( void ) const = 0;
-      const std::string   toString( void ) const override;
+      virtual std::string aggregatorName(void) const = 0;
+      const std::string   toString(void) const override;
 
-      virtual void changeNotification( gum::Instantiation&,
-                                       const gum::DiscreteVariable* const,
-                                       const gum::Idx&,
-                                       const gum::Idx& ) override{};
+      virtual void changeNotification(gum::Instantiation&,
+                                      const gum::DiscreteVariable* const,
+                                      const gum::Idx&,
+                                      const gum::Idx&) override{};
 
-      virtual void setFirstNotification( gum::Instantiation& ) override{};
+      virtual void setFirstNotification(gum::Instantiation&) override{};
 
-      virtual void setLastNotification( gum::Instantiation& ) override{};
+      virtual void setLastNotification(gum::Instantiation&) override{};
 
-      virtual void setIncNotification( gum::Instantiation& ) override{};
+      virtual void setIncNotification(gum::Instantiation&) override{};
 
-      virtual void setDecNotification( gum::Instantiation& ) override{};
+      virtual void setDecNotification(gum::Instantiation&) override{};
 
-      virtual void setChangeNotification( gum::Instantiation& ) override{};
+      virtual void setChangeNotification(gum::Instantiation&) override{};
 
-      const std::string toString( const gum::Instantiation* i ) const override {
+      const std::string toString(const gum::Instantiation* i) const override {
         return i->toString();
       };
 
@@ -160,7 +160,8 @@ namespace gum {
        * @throw OperationNotAllowed Raised if src does not have the same domain
        * size than this MultiDimContainer.
        **/
-      virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const override;
+      virtual void
+      copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
 
       /// @}
       protected:
@@ -168,29 +169,29 @@ namespace gum {
       /// implement _neutralElt and _fold
       /// but if necessary (as for @ref Median), _buildValue can be
       /// reimplemented.
-      virtual Idx _buildValue( const gum::Instantiation& i ) const;
+      virtual Idx _buildValue(const gum::Instantiation& i) const;
 
 
       /// _neutralElt() is the result value for the first application of _fold
-      virtual Idx _neutralElt( void ) const = 0;
+      virtual Idx _neutralElt(void) const = 0;
 
       /// _fold is applied on value i1 for variable v. the actual result for
       /// precedent applications is i2.
       /// @return the new result for applications up to v.
-      virtual Idx _fold( const DiscreteVariable& v,
-                         Idx                     i1,
-                         Idx                     i2,
-                         bool&                   stop_iteration ) const = 0;
+      virtual Idx _fold(const DiscreteVariable& v,
+                        Idx                     i1,
+                        Idx                     i2,
+                        bool&                   stop_iteration) const = 0;
     };
 
 
-    extern template class MultiDimAggregator<float>;
-    extern template class MultiDimAggregator<double>;
+    extern template class MultiDimAggregator< float >;
+    extern template class MultiDimAggregator< double >;
 
     /// For friendly displaying the content of the array.
-    template <typename GUM_SCALAR>
-    std::ostream& operator<<( std::ostream&                         s,
-                              const MultiDimAggregator<GUM_SCALAR>& ag );
+    template < typename GUM_SCALAR >
+    std::ostream& operator<<(std::ostream&                           s,
+                             const MultiDimAggregator< GUM_SCALAR >& ag);
 
   } /* namespace aggregator */
 } /* namespace gum */
