@@ -28,7 +28,7 @@ from .utils import trace, notif, critic, warn, error, recglob, srcAgrum
 from .configuration import cfg
 
 
-def guideline(current,modif=False):
+def guideline(current,modif=True):
   notif("[aGrUM guideline]")
   notif("  # [*.cpp] file for every [*.h] file ")
   _checkCppFileExists(current,modif)
@@ -56,10 +56,10 @@ def _checkForGPLlicense(current,modif):
            continue
          fragment+=line
          nbr+=1
-        
+
     if "Copyright (C) 20" not in fragment:
       if modif:
-        __addGPLatTop()
+        __addGPLatTop(agrumfile)
         notif("    ["+agrumfile+"] has no copyright in its first lines : [changed]")
       else:
         notif("    ["+agrumfile+"] has no copyright in its first lines")
@@ -92,8 +92,8 @@ def _checkCppFileExists(current,modif):
         error("No cpp file for ["+header+"h]")
 
 _template_license="""
-/***************************************************************************
-*   Copyright (C) 2017 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+/**************************************************************************
+*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN  and Christophe GONZALES *
 *   {prenom.nom}_at_lip6.fr                                               *
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
