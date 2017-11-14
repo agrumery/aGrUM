@@ -23,7 +23,7 @@ nodeName : str
 Returns
 -------
 double
-  Return the computed Shanon's entropy of a node given the observation.
+  the computed Shanon's entropy of a node given the observation
 "
 
 %feature("docstring") gum::classname::I
@@ -38,280 +38,508 @@ Y : int
 Returns
 -------
 double
-  Return the computed Shanon's entropy of a node given the observation.
+  the computed Shanon's entropy of a node given the observation
 "
 
 %feature("docstring") gum::classname::VI
 "
-Warnings
---------
-A faire in GenericInference
+Parameters
+----------
+X : int
+  a node Id
+Y : int
+  another node Id
+
+Returns
+-------
+double
+  variation of information between X and Y
 "
 
 %feature("docstring") gum::classname::addAllTargets
 "
 Warnings
 --------
-A faire in GenericInference
+TBD
 "
 
 %feature("docstring") gum::classname::addEvidence
 "
+Adds a new evidence on a node (might be soft or hard).
+
+Parameters
+----------
+id : int
+  a node Id
+nodeName : int
+  a node name
+val :
+  (int) a node value
+val :
+  (str) the label of the node value
+vals : list
+  a list of values
+
 Warnings
 --------
-A faire in GenericInference
+InvalidArgument raised if the node already has an evidence
+
+Warnings
+--------
+InvalidArgument raised if val is not a value for the node
+
+Warnings
+--------
+InvalidArgument raised if the size of vals is different from the domain side of the node
+
+Warnings
+--------
+FatalError if vals is a vector of 0s
+
+Warnings
+--------
+UndefinedElement raised if the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::addJointTarget
 "
+Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
+
+Parameters
+----------
+list
+  a list of names of nodes
+
 Warnings
 --------
-A faire in GenericInference
+UndefinedElement raised if some node(s) do not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::addTarget
 "
+Add a marginal target to the list of targets.
+
+Parameters
+----------
+target : int
+  a node Id
+nodeName : str
+  a node name
+
 Warnings
 --------
-A faire in GenericInference
+  UndefinedElement raised if target is not a NodeId in the Bayes net 
 "
 
 %feature("docstring") gum::classname::chgEvidence
 "
+Change the value of an already existing evidence on a node (might be soft or hard).
+
+Parameters
+----------
+id : int
+  a node Id
+nodeName : int
+  a node name
+val :
+  (int) a node value
+val :
+  (str) the label of the node value
+vals : list
+  a list of values
+
 Warnings
 --------
-A faire in GenericInference
+InvalidArgument raised if the node does not already have an evidence
+
+Warnings
+--------
+InvalidArgument raised if val is not a value for the node
+
+Warnings
+--------
+InvalidArgument raised if the size of vals is different from the domain side of the node
+
+Warnings
+--------
+FatalError if vals is a vector of 0s
+
+Warnings
+--------
+UndefinedElement raised if the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::eraseAllEvidence
 "
-Warnings
---------
-A faire in GenericInference
+Removes all the evidence entered into the network.
 "
 
 %feature("docstring") gum::classname::eraseAllJointTargets
 "
-Warnings
---------
-A faire in GenericInference
+Clear all previously defined joint targets.
 "
 
 %feature("docstring") gum::classname::eraseAllMarginalTargets
 "
-Warnings
---------
-A faire in GenericInference
+Clear all the previously defined marginal targets.
 "
 
 %feature("docstring") gum::classname::eraseAllTargets
 "
-Warnings
---------
-A faire in GenericInference
+Clear all previously defined targets (marginal and joint targets).
+
+As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
 "
 
 %feature("docstring") gum::classname::eraseEvidence
 "
+Remove the evidence, if any, corresponding to the node Id or name.
+
+Parameters
+----------
+id : int
+  a node Id
+nodeName : int
+  a node name
+
 Warnings
 --------
-A faire in GenericInference
+IndexError raised if the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::eraseJointTarget
 "
+Remove, if existing, the joint target.
+
+Parameters
+----------
+list
+  a list of names or Ids of nodes
+
 Warnings
 --------
-A faire in GenericInference
+IndexError raised if one of the node does not belong to the Bayesian network
+
+Warnings
+--------
+UndefinedElement raised if node Id is not in the Bayesian network
 "
 
 %feature("docstring") gum::classname::eraseTarget
 "
+Remove, if existing, the marginal target.
+
+Parameters
+----------
+target : int
+  a node Id
+nodeName : int
+  a node name
+
 Warnings
 --------
-A faire in GenericInference
+IndexError raised if one of the node does not belong to the Bayesian network
+
+Warnings
+--------
+UndefinedElement raised if node Id is not in the Bayesian network
 "
 
 %feature("docstring") gum::classname::evidenceImpact
 "
+Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+Parameters
+----------
+target : set
+  a set of targets ids or names.
+evs : set
+  a set of nodes ids or names.
+
 Warnings
 --------
-A faire in GenericInference
+if some evs are d-separated, they are not included in the Potential.
+
+Returns
+-------
+pyAgrum.Potential
+  a Potential for P(targets|evs)
 "
 
 %feature("docstring") gum::classname::evidenceJointImpact
 "
+Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs) 
+
+Parameters
+----------
+targets :
+  (int) a node Id
+targets :
+  (str) a node name
+evs : set
+  a set of nodes ids or names.
+
+Returns
+-------
+pyAgrum.Potential
+  a Potential for P(target|evs)
+
 Warnings
 --------
-A faire in GenericInference
+Exception raised if some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 "
 
 %feature("docstring") gum::classname::evidenceProbability
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+double
+  the probability of evidence
 "
 
 %feature("docstring") gum::classname::hardEvidenceNodes
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+set
+  the set of nodes with hard evidence 
 "
 
 %feature("docstring") gum::classname::hasEvidence
 "
+Parameters
+----------
+id : int
+  a node Id
+nodeName : str
+  a node name
+
+Returns
+-------
+bool
+  True if some node(s) (or the one in parameters) have received evidence
+
 Warnings
 --------
-A faire in GenericInference
+IndexError raised if the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::hasHardEvidence
 "
+Parameters
+----------
+id : int
+  a node Id
+nodeName : str
+  a node name
+
+Returns
+-------
+bool
+  True if node has received a hard evidence
+
 Warnings
 --------
-A faire in GenericInference
+IndexError raised if the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::hasSoftEvidence
 "
+Parameters
+----------
+id : int
+  a node Id
+nodeName : str
+  a node name
+
+Returns
+-------
+bool
+  True if node has received a soft evidence
+
 Warnings
 --------
-A faire in GenericInference
+IndexError raised if the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::isJointTarget
 "
+Parameters
+----------
+list
+  a list of nodes ids or names.
+
+Returns
+-------
+bool
+  True if target is a joint target. 
+
 Warnings
 --------
-A faire in GenericInference
+IndexError raised if the node does not belong to the Bayesian network
+
+Warnings
+--------
+UndefinedElement raised if node Id is not in the Bayesian network
 "
 
 %feature("docstring") gum::classname::isTarget
 "
+Parameters
+----------
+variable : int
+ a node Id
+nodeName : str
+  a node name
+
+Returns
+-------
+bool
+  True if variable is a (marginal) target
+
 Warnings
 --------
-A faire in GenericInference
+IndexError raised if the node does not belong to the Bayesian network
+
+Warnings
+--------
+UndefinedElement raised if node Id is not in the Bayesian network
 "
 
 %feature("docstring") gum::classname::joinTree
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+pyAgrum.CliqueGraph
+  the current join tree used
 "
 
 %feature("docstring") gum::classname::jointPosterior
 "
+Compute the joint posterior of a set of nodes.
+
+Parameters
+----------
+list : 
+  the list of nodes whose posterior joint probability is wanted
+
+Returns
+-------
+pyAgrum.Potential
+  a const ref to the posterior joint probability of the set of nodes. 
+
 Warnings
 --------
-A faire in GenericInference
+UndefinedElement if an element of nodes is not in targets
 "
 
 %feature("docstring") gum::classname::jointTargets
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+list
+  the list of target sets 
 "
 
 %feature("docstring") gum::classname::junctionTree
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+pyAgrum.CliqueGraph
+  the current junction tree 
 "
 
 %feature("docstring") gum::classname::makeInference
 "
-Warnings
---------
-A faire in GenericInference
+Perform the heavy computations needed to compute the targets' posteriors
+
+In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
 "
 
 %feature("docstring") gum::classname::nbrEvidence
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+int
+  the number of evidence entered into the Bayesian network
 "
 
 %feature("docstring") gum::classname::nbrHardEvidence
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+int
+  the number of hard evidence entered into the Bayesian network
 "
 
 %feature("docstring") gum::classname::nbrJointTargets
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+int
+  the number of joint targets
 "
 
 %feature("docstring") gum::classname::nbrSoftEvidence
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+int
+  the number of soft evidence entered into the Bayesian network
 "
 
 %feature("docstring") gum::classname::nbrTargets
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+int
+  the number of marginal targets
 "
 
 %feature("docstring") gum::classname::posterior
 "
-Warnings
---------
-A faire in GenericInference
-"
+Computes and returns the posterior of a node.
 
-%feature("docstring") gum::classname::setFindBarrenNodesType
-"
-Warnings
---------
-A faire in GenericInference
-"
+Parameters
+----------
+var : int
+  the node Id of the node for which we need a posterior probability
+nodeName : str
+  the node name of the node for which we need a posterior probability
 
-%feature("docstring") gum::classname::setRelevantPotentialsFinderType
-"
-Warnings
---------
-A faire in GenericInference
-"
+Returns
+-------
+pyAgrum.Potential
+  a const ref to the posterior probability of the node
 
-%feature("docstring") gum::classname::setTriangulation
-"
 Warnings
 --------
-A faire in GenericInference
+UndefinedElement if an element of nodes is not in targets
 "
 
 %feature("docstring") gum::classname::softEvidenceNodes
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+set
+  the set of nodes with soft evidence 
 "
 
 %feature("docstring") gum::classname::targets
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+list
+  the list of marginal targets
 "
 
 %feature("docstring") gum::classname::burnIn
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+int
+  size of burn in on number of iteration
 "
 
 %feature("docstring") gum::classname::isDrawnAtRandom
@@ -330,9 +558,10 @@ A faire in GenericInference
 
 %feature("docstring") gum::classname::setBurnIn
 "
-Warnings
---------
-A faire in GenericInference
+Parameters
+----------
+b : int
+  size of burn in on number of iteration
 "
 
 %feature("docstring") gum::classname::setDrawnAtRandom

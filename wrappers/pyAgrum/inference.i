@@ -2,9 +2,28 @@
 %feature("shadow") gum::classname::setEvidence %{
 def setEvidence(self, evidces):
     """
+    Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+    Parameters
+    ----------
+    evidces : dict
+      a dict of evidences
+
     Warnings
     --------
-    setEvidence in inference.i
+    InvalidArgument raised if one value is not a value for the node
+
+    Warnings
+    --------
+    InvalidArgument raised if the size of a value is different from the domain side of the node
+
+    Warnings
+    --------
+    FatalError raised if one value is a vector of 0s
+
+    Warnings
+    --------
+    UndefinedElement raised if one node does not belong to the Bayesian network
     """
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
@@ -16,9 +35,28 @@ def setEvidence(self, evidces):
 %feature("shadow") gum::classname::updateEvidence %{
 def updateEvidence(self, evidces):
     """
+    Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+    Parameters
+    ----------
+    evidces : dict
+      a dict of evidences
+
     Warnings
     --------
-    updateEvidence in inference.i
+    InvalidArgument raised if one value is not a value for the node
+
+    Warnings
+    --------
+    InvalidArgument raised if the size of a value is different from the domain side of the node
+
+    Warnings
+    --------
+    FatalError raised if one value is a vector of 0s
+
+    Warnings
+    --------
+    UndefinedElement raised if one node does not belong to the Bayesian network
     """
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
@@ -33,9 +71,16 @@ def updateEvidence(self, evidces):
 %feature("shadow") gum::classname::setTargets %{
 def setTargets(self, targets):
     """
+    Remove all the targets and add the ones in parameter.
+
+    Parameters
+    ----------
+    targets : set
+      a set of targets
+
     Warnings
     --------
-    setTargets in inference.i
+    UndefinedElement raised if one target is not in the Bayes net 
     """
     if not isinstance(targets, set):
         raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))

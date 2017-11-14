@@ -20,22 +20,28 @@ Lazy Propagation
 
 .. autoclass:: pyAgrum.LazyPropagation
 			:inherited-members:
+			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 .. autoclass:: pyAgrum.pyAgrum.LazyPropagation_double
+			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 Shafer Shenoy Inference
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.ShaferShenoyInference
+			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 .. autoclass:: pyAgrum.pyAgrum.ShaferShenoyInference_double
+			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 Variable Elimination
 ~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: pyAgrum.VariableElimination
+			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 .. autoclass:: pyAgrum.pyAgrum.VariableElimination_double
+			:exclude-members: setFindBarrenNodesType, setRelevantPotentialsFinderType, setTriangulation
 
 Approximate Inference
 ---------------------

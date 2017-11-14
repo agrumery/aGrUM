@@ -19,3 +19,9 @@ Nouvelles fonctions
 
 - gum::LabelizedVariable::addTicks
 - gum::DiscretizedVariable::addLabels
+
+Fonctions à augmenter
+---------------------
+
+%feature("docstring") gum::classname::hasHardEvidence
+devrait pouvoir prendre un id en param.
