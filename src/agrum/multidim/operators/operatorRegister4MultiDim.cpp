@@ -26,4 +26,3 @@
  */
 
 #include <agrum/multidim/operators/operatorRegister4MultiDim.h>
-

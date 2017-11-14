@@ -83,7 +83,7 @@ def initParams():
   cfg.default['noSaveParams'] = False
   cfg.default['correction'] = False
 
-  cfg.actions = set("lib test install doc clean show uninstall package autoindent guideline wheel".split())
+  cfg.actions = set("lib test install doc clean show uninstall package guideline wheel".split())
   cfg.modes = set("debug release".split())
   cfg.targets = set("aGrUM pyAgrum jAgrum".split())
   cfg.moduleLabels = parseModulesTxt()
@@ -91,7 +91,7 @@ def initParams():
 
   cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage","noSaveParams","correction"]
   cfg.mains = ["action", "targets", "mode"]
-  cfg.specialActions = ["show", "clean", "autoindent", "guideline"]
+  cfg.specialActions = ["show", "clean", "guideline"]
   cfg.swapOptions = {
     "verbose": {
       True : "verbose",

@@ -26,4 +26,3 @@
  */
 
 #include <agrum/core/functors.h>
-

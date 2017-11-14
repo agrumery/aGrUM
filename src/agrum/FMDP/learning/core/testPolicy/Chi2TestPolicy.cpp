@@ -26,4 +26,3 @@
  */
 
 #include <agrum/FMDP/learning/core/testPolicy/Chi2TestPolicy.h>
-

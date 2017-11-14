@@ -26,4 +26,3 @@
  */
 
 #include <agrum/core/approximations/approximationPolicy.h>
-

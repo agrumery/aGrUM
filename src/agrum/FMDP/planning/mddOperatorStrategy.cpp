@@ -26,4 +26,3 @@
  */
 
 #include <agrum/FMDP/planning/mddOperatorStrategy.h>
-

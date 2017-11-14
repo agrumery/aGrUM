@@ -20,7 +20,6 @@
 ***************************************************************************/
 
 
-
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 

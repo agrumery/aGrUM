@@ -26,4 +26,3 @@
  */
 
 #include <agrum/learning/structureUtils/IGraphChangesGenerator4UndiGraph.h>
-

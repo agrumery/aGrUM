@@ -26,4 +26,3 @@
  */
 
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
-

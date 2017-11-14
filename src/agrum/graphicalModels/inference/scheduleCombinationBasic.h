@@ -76,8 +76,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/core/sequence.h>
 #include <agrum/core/priorityQueue.h>
+#include <agrum/core/sequence.h>
 #include <agrum/graphicalModels/inference/scheduleCombination.h>
 #include <agrum/variables/discreteVariable.h>
 

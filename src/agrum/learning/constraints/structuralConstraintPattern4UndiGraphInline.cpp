@@ -26,4 +26,3 @@
  */
 
 #include <agrum/learning/constraints/structuralConstraintPattern4UndiGraphInline.h>
-

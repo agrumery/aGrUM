@@ -26,4 +26,3 @@
  */
 
 #include <agrum/FMDP/SDyna/Strategies/IDecisionStrategy.h>
-

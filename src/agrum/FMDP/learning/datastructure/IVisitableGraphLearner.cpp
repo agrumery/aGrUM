@@ -26,4 +26,3 @@
  */
 
 #include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
-

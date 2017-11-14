@@ -26,4 +26,3 @@
  */
 
 #include <agrum/CN/LpInterface.h>
-

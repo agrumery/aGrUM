@@ -26,4 +26,3 @@
  */
 
 #include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
-
