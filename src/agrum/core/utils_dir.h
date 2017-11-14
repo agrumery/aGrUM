@@ -65,7 +65,7 @@ namespace gum {
      * &return Return true if \a directory is a valid directory, false
      * otherwise.
      */
-    static bool isDir( const std::string& path );
+    static bool isDir(const std::string& path);
 
     /**
      * @brief Contructor.
@@ -76,13 +76,13 @@ namespace gum {
      * @brief Contructor.
      * @param directory The path to the directory.
      */
-    Directory( const std::string& directory );
+    Directory(const std::string& directory);
 
     /**
      * @brief Copy contructor.
      * @param dir The gum::Directory to copy.
      */
-    Directory( const Directory& dir );
+    Directory(const Directory& dir);
 
     /**
      * @brief Destructor.
@@ -99,7 +99,7 @@ namespace gum {
      * @brief Return directory content.
      * @return Return directory content.
      */
-    std::vector<std::string> entries() const;
+    std::vector< std::string > entries() const;
 
     /**
      * @brief Returns directory parent.
@@ -124,7 +124,7 @@ namespace gum {
      * @param d The gum::Directory to copy.
      * @return Returns this gum::Directory.
      */
-    Directory& operator=( const Directory& d );
+    Directory& operator=(const Directory& d);
 
     private:
     /// The directory path.

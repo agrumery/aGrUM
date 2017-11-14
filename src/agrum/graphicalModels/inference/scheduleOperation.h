@@ -35,7 +35,7 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class ScheduleOperation {
     public:
     /// the currently supported types of operations
@@ -58,7 +58,7 @@ namespace gum {
     /// @{
 
     /// virtual copy constructor: creates a clone of the operation
-    virtual ScheduleOperation<GUM_SCALAR>* newFactory() const = 0;
+    virtual ScheduleOperation< GUM_SCALAR >* newFactory() const = 0;
 
     /// destructor
     virtual ~ScheduleOperation();
@@ -73,12 +73,12 @@ namespace gum {
     /// operator ==
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    virtual bool operator==( const ScheduleOperation<GUM_SCALAR>& ) const = 0;
+    virtual bool operator==(const ScheduleOperation< GUM_SCALAR >&) const = 0;
 
     /// operator !=
     /** Two operations are identical if and only if they have the same
      * arguments and their types are identical (combine, project, etc) */
-    virtual bool operator!=( const ScheduleOperation<GUM_SCALAR>& ) const = 0;
+    virtual bool operator!=(const ScheduleOperation< GUM_SCALAR >&) const = 0;
 
     /// @}
 
@@ -94,11 +94,11 @@ namespace gum {
     Idx id() const;
 
     /// returns the set of multidims passed in argument to the operation
-    virtual const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+    virtual const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
     multiDimArgs() const = 0;
 
     /// returns the set of multidims that should be the result of the operation
-    virtual const Sequence<const ScheduleMultiDim<GUM_SCALAR>*>&
+    virtual const Sequence< const ScheduleMultiDim< GUM_SCALAR >* >&
     multiDimResults() const = 0;
 
     /// executes the operation
@@ -117,7 +117,7 @@ namespace gum {
      * amount of memory still used at the end of the function ( the memory used
      * by
      * the resulting table ) */
-    virtual std::pair<long, long> memoryUsage() const = 0;
+    virtual std::pair< long, long > memoryUsage() const = 0;
 
     /// displays the content of the operation
     virtual std::string toString() const = 0;
@@ -126,14 +126,14 @@ namespace gum {
 
     protected:
     /// default constructor
-    ScheduleOperation( Type t );
+    ScheduleOperation(Type t);
 
     /// copy constructor
-    ScheduleOperation( const ScheduleOperation<GUM_SCALAR>& from );
+    ScheduleOperation(const ScheduleOperation< GUM_SCALAR >& from);
 
     /// copy operator
-    ScheduleOperation<GUM_SCALAR>&
-    operator=( const ScheduleOperation<GUM_SCALAR>& );
+    ScheduleOperation< GUM_SCALAR >&
+    operator=(const ScheduleOperation< GUM_SCALAR >&);
 
     private:
     /// the name of the operation to perform

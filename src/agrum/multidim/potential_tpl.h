@@ -452,7 +452,7 @@ namespace gum {
     const Set< const DiscreteVariable* >& vars) const {
     Set< const DiscreteVariable* > cplt;
 
-    for (auto x : this->variablesSequence())
+    for (const auto x : this->variablesSequence())
       if (!vars.contains(x)) cplt.insert(x);
 
     return cplt;
@@ -474,7 +474,7 @@ namespace gum {
 
     Potential< GUM_SCALAR > p;
     p.beginMultipleChanges();
-    for (auto var : vars)
+    for (const auto var : vars)
       p.add(*var);
     p.endMultipleChanges();
     p.copyFrom(*this, nullptr);  // copy *this in p using the same order
@@ -510,8 +510,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Idx Potential< GUM_SCALAR >::draw() const {
     if (this->nbrDim() != 1) {
-      GUM_ERROR(FatalError,
-                "To draw from a potential, the dimension must be 1")
+      GUM_ERROR(FatalError, "To draw from a potential, the dimension must be 1")
     }
 
     GUM_SCALAR    r = static_cast< GUM_SCALAR >(randomProba());

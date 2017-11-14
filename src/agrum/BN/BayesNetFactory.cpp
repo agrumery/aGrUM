@@ -26,5 +26,5 @@
 
 #include <agrum/BN/BayesNetFactory.h>
 
-template class gum::BayesNetFactory<float>;
-template class gum::BayesNetFactory<double>;
+template class gum::BayesNetFactory< float >;
+template class gum::BayesNetFactory< double >;

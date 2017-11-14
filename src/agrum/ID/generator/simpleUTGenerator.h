@@ -63,14 +63,14 @@ namespace gum {
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT( const Idx& varId, const UtilityTable<float>& ut );
+    virtual void generateUT(const Idx& varId, const UtilityTable< float >& ut);
 
     /**
      * Generates a UT using doubles.
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT( const Idx& varId, const UtilityTable<double>& ut );
+    virtual void generateUT(const Idx& varId, const UtilityTable< double >& ut);
     /// @}
   };
 

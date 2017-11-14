@@ -81,16 +81,17 @@ def initParams():
   cfg.default['mvsc32'] = False
   cfg.default['build'] = "all"
   cfg.default['noSaveParams'] = False
+  cfg.default['correction'] = False
 
-  cfg.actions = set("lib test install doc clean show uninstall package autoindent wheel".split())
+  cfg.actions = set("lib test install doc clean show uninstall package autoindent guideline wheel".split())
   cfg.modes = set("debug release".split())
   cfg.targets = set("aGrUM pyAgrum jAgrum".split())
   cfg.moduleLabels = parseModulesTxt()
   cfg.modules = set(cfg.moduleLabels)
 
-  cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage","noSaveParams"]
+  cfg.non_persistent = ["fixed_seed", "stats", "no_fun", "static_lib", "oneByOne", "dry_run", "coverage","noSaveParams","correction"]
   cfg.mains = ["action", "targets", "mode"]
-  cfg.specialActions = ["show", "clean", "autoindent"]
+  cfg.specialActions = ["show", "clean", "autoindent", "guideline"]
   cfg.swapOptions = {
     "verbose": {
       True : "verbose",
@@ -209,6 +210,11 @@ def configureOptions(current):
                         help="act will not save as default the parameters of this invocation.",
                         action="store_true",
                         dest="noSaveParams",
+                        default=False)
+  cfg.parser.add_option("", "--correction",
+                        help="act guideline will change the files instead of only show them",
+                        action="store_true",
+                        dest="correction",
                         default=False)
 
 

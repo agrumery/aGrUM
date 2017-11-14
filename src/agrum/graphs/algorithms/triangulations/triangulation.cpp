@@ -36,31 +36,31 @@ namespace gum {
   // constructor
   Triangulation::Triangulation() {
     // for debugging purposes
-    GUM_CONSTRUCTOR( Triangulation );
+    GUM_CONSTRUCTOR(Triangulation);
   }
 
   // constructor with a domain size specified
-  Triangulation::Triangulation( const NodeProperty<Size>* domsizes )
-      : _domain_sizes( domsizes ) {
-    GUM_CONSTRUCTOR( Triangulation );
+  Triangulation::Triangulation(const NodeProperty< Size >* domsizes)
+      : _domain_sizes(domsizes) {
+    GUM_CONSTRUCTOR(Triangulation);
   }
 
   // destructor
   Triangulation::~Triangulation() {
     // for debugging purposes
-    GUM_DESTRUCTOR( Triangulation );
+    GUM_DESTRUCTOR(Triangulation);
   }
 
   // copy constructor
-  Triangulation::Triangulation( const Triangulation& from )
-      : _domain_sizes( from._domain_sizes ) {
-    GUM_CONS_CPY( Triangulation );
+  Triangulation::Triangulation(const Triangulation& from)
+      : _domain_sizes(from._domain_sizes) {
+    GUM_CONS_CPY(Triangulation);
   }
 
   // move constructor
-  Triangulation::Triangulation( Triangulation&& from )
-      : _domain_sizes( from._domain_sizes ) {
-    GUM_CONS_MOV( Triangulation );
+  Triangulation::Triangulation(Triangulation&& from)
+      : _domain_sizes(from._domain_sizes) {
+    GUM_CONS_MOV(Triangulation);
   }
 
   // returns the max of log10DomainSize of cliques in the junction tree
@@ -70,13 +70,13 @@ namespace gum {
     const JunctionTree& jt = junctionTree();  // here, the fact that we get
     // a junction tree ensures that _domain_sizes is different from nullptr
 
-    for ( const NodeId cl : jt ) {
+    for (const NodeId cl : jt) {
       dSize = 0.0;
 
-      for ( const auto node : jt.clique( cl ) )
-        dSize += std::log10( ( *_domain_sizes )[node] );
+      for (const auto node : jt.clique(cl))
+        dSize += std::log10((*_domain_sizes)[node]);
 
-      if ( res < dSize ) res = dSize;
+      if (res < dSize) res = dSize;
     }
 
     return res;

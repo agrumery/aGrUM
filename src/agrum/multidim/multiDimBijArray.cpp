@@ -29,7 +29,7 @@
 
 namespace gum {
 
-  template class MultiDimBijArray<float>;
-  template class MultiDimBijArray<double>;
+  template class MultiDimBijArray< float >;
+  template class MultiDimBijArray< double >;
 
 }  // namespace gum

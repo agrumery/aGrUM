@@ -40,7 +40,7 @@
 #define GIBBSKL_DEFAULT_BURNIN 2000
 #define GIBBSKL_DEFAULT_TIMEOUT 6000
 
-#define GIBBSKL_POURCENT_DRAWN_SAMPLE 10 // percent drawn
+#define GIBBSKL_POURCENT_DRAWN_SAMPLE 10  // percent drawn
 #define GIBBSKL_DRAWN_AT_RANDOM false
 
 namespace gum {

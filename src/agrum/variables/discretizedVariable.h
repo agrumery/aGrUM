@@ -53,11 +53,11 @@ namespace gum {
    * [T1,T2[ (modality 0) and [T2,T3] (modality 1).
    * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
    */
-  template <typename T_TICKS>
+  template < typename T_TICKS >
   class DiscretizedVariable : public DiscreteVariable {
     private:
-    std::vector<T_TICKS> __ticks;  // Array from 0 to domainSize-2
-    Size                 __ticks_size;
+    std::vector< T_TICKS > __ticks;  // Array from 0 to domainSize-2
+    Size                   __ticks_size;
 
     protected:
     /**
@@ -66,7 +66,7 @@ namespace gum {
      * needed in this method?
      * @param aDRV  the copied object
      */
-    void _copy( const DiscretizedVariable<T_TICKS>& aDRV );
+    void _copy(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      * perform a dichotomy on ticks
@@ -77,14 +77,14 @@ namespace gum {
      of
      target in ticks
     */
-    Idx _dichotomy( const T_TICKS& target, Idx min, Idx max ) const;
+    Idx _dichotomy(const T_TICKS& target, Idx min, Idx max) const;
 
     /**
      * seach the class of target (internally use _dichotomy)
      * @param target
      * @return the class of target
      */
-    Idx _pos( const T_TICKS& target ) const;
+    Idx _pos(const T_TICKS& target) const;
 
     public:
     /** @name constructors & destructors
@@ -96,22 +96,22 @@ namespace gum {
     * @param aName the name
     * @param aDesc the description
     */
-    DiscretizedVariable( const std::string& aName, const std::string& aDesc );
+    DiscretizedVariable(const std::string& aName, const std::string& aDesc);
 
     /**
     * Constructor
     * @param aName the name
     * @param aDesc the description
     */
-    DiscretizedVariable( const std::string&   aName,
-                         const std::string&   aDesc,
-                         const std::vector<T_TICKS>& ticks );
+    DiscretizedVariable(const std::string&            aName,
+                        const std::string&            aDesc,
+                        const std::vector< T_TICKS >& ticks);
 
     /**
      * Copy constructor
      * @param aDRV
      */
-    DiscretizedVariable( const DiscretizedVariable<T_TICKS>& aDRV );
+    DiscretizedVariable(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      * Destructor.
@@ -125,62 +125,62 @@ namespace gum {
 
     /// returns the type of variable
 
-    virtual VarType varType( void ) const;
+    virtual VarType varType(void) const;
 
     /**
      * operator =
      * @param aDRV a labelized discrete random variable
      * @return a reference to *this
      **/
-    const DiscretizedVariable<T_TICKS>&
-    operator=( DiscretizedVariable<T_TICKS>& aDRV );
+    const DiscretizedVariable< T_TICKS >&
+    operator=(DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      *
      * @param aTick
      * @return true if the tick already exists
      */
-    bool isTick( const T_TICKS& aTick ) const;
+    bool isTick(const T_TICKS& aTick) const;
 
     /**
      * add a tick.
      * @param aTick
      * @throw DefaultInLabel
      */
-    DiscretizedVariable& addTick( const T_TICKS& aTick );
+    DiscretizedVariable& addTick(const T_TICKS& aTick);
 
     /**
      * erase all the Ticks
      */
-    void eraseTicks( void );
+    void eraseTicks(void);
 
     /**
      * @param i
      * @return the ith label
      * @throw OutOfBound
      */
-    virtual std::string label( Idx i ) const;
+    virtual std::string label(Idx i) const;
 
     /// get a numerical representation of he indice-the value.
-    virtual double numerical( Idx indice ) const;
+    virtual double numerical(Idx indice) const;
 
     /// from the label to its index in var.
     /// @throws NotFound
-    virtual Idx index( const std::string& label ) const;
+    virtual Idx index(const std::string& label) const;
 
     /**
     *
     * @return the size of the random discrete variable domain
     */
-    virtual Size              domainSize( void ) const;
-    virtual const std::string domain( void ) const;
+    virtual Size              domainSize(void) const;
+    virtual const std::string domain(void) const;
 
     /// from the index to the tick.
     /// @throws NotFound
-    const T_TICKS& tick( Idx i ) const;
+    const T_TICKS& tick(Idx i) const;
 
     /// Return the list of ticks
-    const std::vector<T_TICKS>& ticks() const;
+    const std::vector< T_TICKS >& ticks() const;
   };
 
 } /* namespace gum */

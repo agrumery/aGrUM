@@ -45,8 +45,8 @@ namespace gum {
    * The goal of this class is to provide an interface for the computation
    * of the probability of evidence entered in Bayesian networks
    */
-  template <typename GUM_SCALAR>
-  class EvidenceInference : public virtual BayesNetInference<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class EvidenceInference : public virtual BayesNetInference< GUM_SCALAR > {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -56,7 +56,7 @@ namespace gum {
     /// default constructor
     /** @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    EvidenceInference( const IBayesNet<GUM_SCALAR>* bn );
+    EvidenceInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
     virtual ~EvidenceInference();

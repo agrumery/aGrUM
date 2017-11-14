@@ -56,36 +56,36 @@ namespace gum {
 
     // a temporary structure used to help computing the minimal set of
     // constraints
-    template <typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS>
+    template < typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS >
     struct __ConstraintSet;
 
     // a structure to concatenate __ConstraintSets or simply constraints and
     // produce as a result a new __ConstraintSet
-    template <typename SET1, typename SET2>
+    template < typename SET1, typename SET2 >
     struct __ConcatConstraintSet;
 
     // a helper function to create minimum structural constraint sets and the
     // methods actually used on all these constraints. This is a helper for
     // the class that the user should use, i.e., StructuralConstraintSetStatic
-    template <typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS>
+    template < typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS >
     class __StructuralConstraintSetStatic;
 
     // ============================================================================
     // checks whether a given structural constraint belongs to a given set of
     // structural constraints
-    template <typename CONSTRAINT, typename SET>
+    template < typename CONSTRAINT, typename SET >
     struct __IsInConstraintSet;
 
-    template <typename CONSTRAINT, typename SET>
-    struct __IsInConstraintSet<CONSTRAINT, __ConstraintSet<SET>> {
-      constexpr static bool value = std::is_same<CONSTRAINT, SET>::value;
+    template < typename CONSTRAINT, typename SET >
+    struct __IsInConstraintSet< CONSTRAINT, __ConstraintSet< SET > > {
+      constexpr static bool value = std::is_same< CONSTRAINT, SET >::value;
     };
 
-    template <typename CONSTRAINT, typename SET1, typename... SETS>
-    struct __IsInConstraintSet<CONSTRAINT, __ConstraintSet<SET1, SETS...>> {
+    template < typename CONSTRAINT, typename SET1, typename... SETS >
+    struct __IsInConstraintSet< CONSTRAINT, __ConstraintSet< SET1, SETS... > > {
       constexpr static bool value =
-          std::is_same<CONSTRAINT, SET1>::value ||
-          __IsInConstraintSet<CONSTRAINT, __ConstraintSet<SETS...>>::value;
+        std::is_same< CONSTRAINT, SET1 >::value ||
+        __IsInConstraintSet< CONSTRAINT, __ConstraintSet< SETS... > >::value;
     };
 
     // ============================================================================
@@ -99,98 +99,101 @@ namespace gum {
     // goal
     // of the following class is to transform S' into S'' = <Z,T,Y,X>, i.e., the
     // set S' without any duplicates.
-    template <typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS>
-    struct __ConstraintSet : public __ConstraintSet<OTHER_CONSTRAINTS...> {
+    template < typename FIRST_CONSTRAINT, typename... OTHER_CONSTRAINTS >
+    struct __ConstraintSet : public __ConstraintSet< OTHER_CONSTRAINTS... > {
       using minset = typename std::conditional<
-          __IsInConstraintSet<FIRST_CONSTRAINT,
-                              __ConstraintSet<OTHER_CONSTRAINTS...>>::value,
-          typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset,
-          typename __ConcatConstraintSet<
-              FIRST_CONSTRAINT,
-              typename __ConstraintSet<OTHER_CONSTRAINTS...>::minset>::type>::type;
+        __IsInConstraintSet< FIRST_CONSTRAINT,
+                             __ConstraintSet< OTHER_CONSTRAINTS... > >::value,
+        typename __ConstraintSet< OTHER_CONSTRAINTS... >::minset,
+        typename __ConcatConstraintSet<
+          FIRST_CONSTRAINT,
+          typename __ConstraintSet< OTHER_CONSTRAINTS... >::minset >::type >::type;
       using set =
-          __StructuralConstraintSetStatic<FIRST_CONSTRAINT, OTHER_CONSTRAINTS...>;
+        __StructuralConstraintSetStatic< FIRST_CONSTRAINT, OTHER_CONSTRAINTS... >;
     };
 
-    template <typename CONSTRAINT>
-    struct __ConstraintSet<CONSTRAINT> {
-      using minset = __ConstraintSet<CONSTRAINT>;
-      using set = __StructuralConstraintSetStatic<CONSTRAINT>;
+    template < typename CONSTRAINT >
+    struct __ConstraintSet< CONSTRAINT > {
+      using minset = __ConstraintSet< CONSTRAINT >;
+      using set = __StructuralConstraintSetStatic< CONSTRAINT >;
     };
 
     // ============================================================================
     // a structure to concatenate __ConstraintSets or simply constraints and
     // produce as a result a new __ConstraintSet
-    template <typename SET1, typename SET2>
+    template < typename SET1, typename SET2 >
     struct __ConcatConstraintSet;
 
-    template <typename CONSTRAINT1, typename CONSTRAINT2>
-    struct __ConcatConstraintSet<CONSTRAINT1, __ConstraintSet<CONSTRAINT2>> {
-      using type = __ConstraintSet<CONSTRAINT1, CONSTRAINT2>;
+    template < typename CONSTRAINT1, typename CONSTRAINT2 >
+    struct __ConcatConstraintSet< CONSTRAINT1, __ConstraintSet< CONSTRAINT2 > > {
+      using type = __ConstraintSet< CONSTRAINT1, CONSTRAINT2 >;
     };
 
-    template <typename CONSTRAINT1, typename CONSTRAINT2>
-    struct __ConcatConstraintSet<__ConstraintSet<CONSTRAINT1>,
-                                 __ConstraintSet<CONSTRAINT2>> {
-      using type = __ConstraintSet<CONSTRAINT1, CONSTRAINT2>;
+    template < typename CONSTRAINT1, typename CONSTRAINT2 >
+    struct __ConcatConstraintSet< __ConstraintSet< CONSTRAINT1 >,
+                                  __ConstraintSet< CONSTRAINT2 > > {
+      using type = __ConstraintSet< CONSTRAINT1, CONSTRAINT2 >;
     };
 
-    template <typename CONSTRAINT1,
-              typename CONSTRAINT2,
-              typename... OTHER_CONSTRAINT2>
+    template < typename CONSTRAINT1,
+               typename CONSTRAINT2,
+               typename... OTHER_CONSTRAINT2 >
     struct __ConcatConstraintSet<
-        CONSTRAINT1,
-        __ConstraintSet<CONSTRAINT2, OTHER_CONSTRAINT2...>> {
-      using type = __ConstraintSet<CONSTRAINT1, CONSTRAINT2, OTHER_CONSTRAINT2...>;
+      CONSTRAINT1,
+      __ConstraintSet< CONSTRAINT2, OTHER_CONSTRAINT2... > > {
+      using type =
+        __ConstraintSet< CONSTRAINT1, CONSTRAINT2, OTHER_CONSTRAINT2... >;
     };
 
-    template <typename CONSTRAINT1,
-              typename CONSTRAINT2,
-              typename... OTHER_CONSTRAINT1>
+    template < typename CONSTRAINT1,
+               typename CONSTRAINT2,
+               typename... OTHER_CONSTRAINT1 >
     struct __ConcatConstraintSet<
-        __ConstraintSet<CONSTRAINT1, OTHER_CONSTRAINT1...>,
-        __ConstraintSet<CONSTRAINT2>> {
-      using type = __ConstraintSet<CONSTRAINT1, OTHER_CONSTRAINT1..., CONSTRAINT2>;
+      __ConstraintSet< CONSTRAINT1, OTHER_CONSTRAINT1... >,
+      __ConstraintSet< CONSTRAINT2 > > {
+      using type =
+        __ConstraintSet< CONSTRAINT1, OTHER_CONSTRAINT1..., CONSTRAINT2 >;
     };
 
-    template <typename CONSTRAINT1,
-              typename CONSTRAINT2,
-              typename... OTHER_CONSTR1,
-              typename... OTHER_CONSTR2>
-    struct __ConcatConstraintSet<__ConstraintSet<CONSTRAINT1, OTHER_CONSTR1...>,
-                                 __ConstraintSet<CONSTRAINT2, OTHER_CONSTR2...>> {
-      using type = __ConstraintSet<CONSTRAINT1,
-                                   OTHER_CONSTR1...,
-                                   CONSTRAINT2,
-                                   OTHER_CONSTR2...>;
+    template < typename CONSTRAINT1,
+               typename CONSTRAINT2,
+               typename... OTHER_CONSTR1,
+               typename... OTHER_CONSTR2 >
+    struct __ConcatConstraintSet<
+      __ConstraintSet< CONSTRAINT1, OTHER_CONSTR1... >,
+      __ConstraintSet< CONSTRAINT2, OTHER_CONSTR2... > > {
+      using type = __ConstraintSet< CONSTRAINT1,
+                                    OTHER_CONSTR1...,
+                                    CONSTRAINT2,
+                                    OTHER_CONSTR2... >;
     };
 
     // ============================================================================
     // a helper function to create minimum structural constraint sets and the
     // methods actually used on all these constraints. This is a helper for
     // the class that the user should use, i.e., StructuralConstraintSetStatic
-    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     class __StructuralConstraintSetStatic
-        : public virtual CONSTRAINT1,
-          public virtual __StructuralConstraintSetStatic<OTHER_CONSTRAINTS...> {
+      : public virtual CONSTRAINT1,
+        public virtual __StructuralConstraintSetStatic< OTHER_CONSTRAINTS... > {
       public:
       /// the type of the first constraint
       using first_constraint = CONSTRAINT1;
 
       /// the type of the next constraints
       using next_constraints =
-          __StructuralConstraintSetStatic<OTHER_CONSTRAINTS...>;
+        __StructuralConstraintSetStatic< OTHER_CONSTRAINTS... >;
 
       // determines the set of all constraints in the set (included inherited
       // ones)
       using allConstraints = typename __ConcatConstraintSet<
-          typename std::conditional<
-              std::is_base_of<__StructuralRoot, CONSTRAINT1>::value,
-              typename __ConcatConstraintSet<
-                  CONSTRAINT1,
-                  typename CONSTRAINT1::allConstraints>::type,
-              __ConstraintSet<CONSTRAINT1>>::type,
-          typename next_constraints::allConstraints>::type;
+        typename std::conditional<
+          std::is_base_of< __StructuralRoot, CONSTRAINT1 >::value,
+          typename __ConcatConstraintSet<
+            CONSTRAINT1,
+            typename CONSTRAINT1::allConstraints >::type,
+          __ConstraintSet< CONSTRAINT1 > >::type,
+        typename next_constraints::allConstraints >::type;
 
       /** @brief determines the minimal set of constraints included in the set
        * (removing duplicates)
@@ -212,8 +215,8 @@ namespace gum {
 
       /// copy constructor
       __StructuralConstraintSetStatic(
-          const __StructuralConstraintSetStatic<CONSTRAINT1,
-                                                OTHER_CONSTRAINTS...>& );
+        const __StructuralConstraintSetStatic< CONSTRAINT1,
+                                               OTHER_CONSTRAINTS... >&);
 
       /// destructor
       ~__StructuralConstraintSetStatic();
@@ -226,9 +229,9 @@ namespace gum {
       /// @{
 
       /// copy operator
-      __StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-      operator=( const __StructuralConstraintSetStatic<CONSTRAINT1,
-                                                       OTHER_CONSTRAINTS...>& );
+      __StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&
+      operator=(const __StructuralConstraintSetStatic< CONSTRAINT1,
+                                                       OTHER_CONSTRAINTS... >&);
 
       /// @}
 
@@ -238,50 +241,50 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraph( const DiGraph& graph );
+      void setGraph(const DiGraph& graph);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcAddition& change );
+      void modifyGraph(const ArcAddition& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcDeletion& change );
+      void modifyGraph(const ArcDeletion& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcReversal& change );
+      void modifyGraph(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const GraphChange& change );
+      void modifyGraph(const GraphChange& change);
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid( const GraphChange& change ) const;
+      bool isAlwaysInvalid(const GraphChange& change) const;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition( NodeId x, NodeId y ) const;
+      bool checkArcAddition(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion( NodeId x, NodeId y ) const;
+      bool checkArcDeletion(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal( NodeId x, NodeId y ) const;
+      bool checkArcReversal(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification( const ArcAddition& change ) const;
+      bool checkModification(const ArcAddition& change) const;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification( const ArcDeletion& change ) const;
+      bool checkModification(const ArcDeletion& change) const;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification( const ArcReversal& change ) const;
+      bool checkModification(const ArcReversal& change) const;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification( const GraphChange& change ) const;
+      bool checkModification(const GraphChange& change) const;
 
       /// @}
     };
 
-    template <typename CONSTRAINT>
-    class __StructuralConstraintSetStatic<CONSTRAINT>
-        : public virtual CONSTRAINT, public virtual __StructuralRoot {
+    template < typename CONSTRAINT >
+    class __StructuralConstraintSetStatic< CONSTRAINT >
+      : public virtual CONSTRAINT, public virtual __StructuralRoot {
       public:
       /// the type of the first constraint
       using first_constraint = CONSTRAINT;
@@ -294,11 +297,11 @@ namespace gum {
       /** this produces an __ConstraintSet. This typedef is to be used
        * internally. */
       using allConstraints = typename std::conditional<
-          std::is_base_of<__StructuralRoot, CONSTRAINT>::value,
-          typename __ConcatConstraintSet<
-              CONSTRAINT,
-              typename CONSTRAINT::allConstraints>::type,
-          __ConstraintSet<CONSTRAINT>>::type;
+        std::is_base_of< __StructuralRoot, CONSTRAINT >::value,
+        typename __ConcatConstraintSet<
+          CONSTRAINT,
+          typename CONSTRAINT::allConstraints >::type,
+        __ConstraintSet< CONSTRAINT > >::type;
 
       /** @brief determines the minimal set of constraints included in the set
        * (removing duplicates)
@@ -320,7 +323,7 @@ namespace gum {
 
       /// copy constructor
       __StructuralConstraintSetStatic(
-          const __StructuralConstraintSetStatic<CONSTRAINT>& );
+        const __StructuralConstraintSetStatic< CONSTRAINT >&);
 
       /// destructor
       ~__StructuralConstraintSetStatic();
@@ -333,8 +336,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      __StructuralConstraintSetStatic<CONSTRAINT>&
-      operator=( const __StructuralConstraintSetStatic<CONSTRAINT>& );
+      __StructuralConstraintSetStatic< CONSTRAINT >&
+      operator=(const __StructuralConstraintSetStatic< CONSTRAINT >&);
 
       /// @}
 
@@ -344,43 +347,43 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraph( const DiGraph& graph );
+      void setGraph(const DiGraph& graph);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcAddition& change );
+      void modifyGraph(const ArcAddition& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcDeletion& change );
+      void modifyGraph(const ArcDeletion& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcReversal& change );
+      void modifyGraph(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const GraphChange& change );
+      void modifyGraph(const GraphChange& change);
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid( const GraphChange& change ) const;
+      bool isAlwaysInvalid(const GraphChange& change) const;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition( NodeId x, NodeId y ) const;
+      bool checkArcAddition(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion( NodeId x, NodeId y ) const;
+      bool checkArcDeletion(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal( NodeId x, NodeId y ) const;
+      bool checkArcReversal(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification( const ArcAddition& change ) const;
+      bool checkModification(const ArcAddition& change) const;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification( const ArcDeletion& change ) const;
+      bool checkModification(const ArcDeletion& change) const;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification( const ArcReversal& change ) const;
+      bool checkModification(const ArcReversal& change) const;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification( const GraphChange& change ) const;
+      bool checkModification(const GraphChange& change) const;
 
       /// @}
     };
@@ -414,15 +417,15 @@ namespace gum {
      * Then, each time we wish to apply a method, say a graph modification check
      * to all the constraints, the class will apply the methods once on each
      * distinct constraint, hence avoiding duplicates. */
-    template <typename CONSTRAINT1, typename... OTHER_CONSTRAINTS>
+    template < typename CONSTRAINT1, typename... OTHER_CONSTRAINTS >
     class StructuralConstraintSetStatic
-        : public virtual __StructuralConstraintSetStatic<
-              CONSTRAINT1,
-              OTHER_CONSTRAINTS...>::minConstraints {
+      : public virtual __StructuralConstraintSetStatic<
+          CONSTRAINT1,
+          OTHER_CONSTRAINTS... >::minConstraints {
       public:
       using constraints = typename __StructuralConstraintSetStatic<
-          CONSTRAINT1,
-          OTHER_CONSTRAINTS...>::minConstraints;
+        CONSTRAINT1,
+        OTHER_CONSTRAINTS... >::minConstraints;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -434,8 +437,7 @@ namespace gum {
 
       /// copy constructor
       StructuralConstraintSetStatic(
-          const StructuralConstraintSetStatic<CONSTRAINT1,
-                                              OTHER_CONSTRAINTS...>& );
+        const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
 
       /// destructor
       ~StructuralConstraintSetStatic();
@@ -448,9 +450,9 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintSetStatic<CONSTRAINT1, OTHER_CONSTRAINTS...>&
-      operator=( const StructuralConstraintSetStatic<CONSTRAINT1,
-                                                     OTHER_CONSTRAINTS...>& );
+      StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&
+      operator=(
+        const StructuralConstraintSetStatic< CONSTRAINT1, OTHER_CONSTRAINTS... >&);
 
       /// @}
 
@@ -460,56 +462,56 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraph( const DiGraph& graph );
+      void setGraph(const DiGraph& graph);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcAddition& change );
+      void modifyGraph(const ArcAddition& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcDeletion& change );
+      void modifyGraph(const ArcDeletion& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcReversal& change );
+      void modifyGraph(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const GraphChange& change );
+      void modifyGraph(const GraphChange& change);
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid( const GraphChange& change ) const;
+      bool isAlwaysInvalid(const GraphChange& change) const;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition( NodeId x, NodeId y ) const;
+      bool checkArcAddition(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion( NodeId x, NodeId y ) const;
+      bool checkArcDeletion(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal( NodeId x, NodeId y ) const;
+      bool checkArcReversal(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification( const ArcAddition& change ) const;
+      bool checkModification(const ArcAddition& change) const;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification( const ArcDeletion& change ) const;
+      bool checkModification(const ArcDeletion& change) const;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification( const ArcReversal& change ) const;
+      bool checkModification(const ArcReversal& change) const;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification( const GraphChange& change ) const;
+      bool checkModification(const GraphChange& change) const;
 
       /// @}
     };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    template <typename CONSTRAINT>
-    class StructuralConstraintSetStatic<CONSTRAINT>
-        : public virtual __StructuralConstraintSetStatic<
-              CONSTRAINT>::minConstraints {
+    template < typename CONSTRAINT >
+    class StructuralConstraintSetStatic< CONSTRAINT >
+      : public virtual __StructuralConstraintSetStatic<
+          CONSTRAINT >::minConstraints {
       public:
       using constraints =
-          typename __StructuralConstraintSetStatic<CONSTRAINT>::minConstraints;
+        typename __StructuralConstraintSetStatic< CONSTRAINT >::minConstraints;
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -521,7 +523,7 @@ namespace gum {
 
       /// copy constructor
       StructuralConstraintSetStatic(
-          const StructuralConstraintSetStatic<CONSTRAINT>& );
+        const StructuralConstraintSetStatic< CONSTRAINT >&);
 
       /// destructor
       ~StructuralConstraintSetStatic();
@@ -534,8 +536,8 @@ namespace gum {
       /// @{
 
       /// copy operator
-      StructuralConstraintSetStatic<CONSTRAINT>&
-      operator=( const StructuralConstraintSetStatic<CONSTRAINT>& );
+      StructuralConstraintSetStatic< CONSTRAINT >&
+      operator=(const StructuralConstraintSetStatic< CONSTRAINT >&);
 
       /// @}
 
@@ -545,43 +547,43 @@ namespace gum {
       /// @{
 
       /// sets a new graph from which we will perform checkings
-      void setGraph( const DiGraph& graph );
+      void setGraph(const DiGraph& graph);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcAddition& change );
+      void modifyGraph(const ArcAddition& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcDeletion& change );
+      void modifyGraph(const ArcDeletion& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const ArcReversal& change );
+      void modifyGraph(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
-      void modifyGraph( const GraphChange& change );
+      void modifyGraph(const GraphChange& change);
 
       /// indicates whether a change will always violate the constraint
-      bool isAlwaysInvalid( const GraphChange& change ) const;
+      bool isAlwaysInvalid(const GraphChange& change) const;
 
       /// checks whether the constraints enable to add arc (x,y)
-      bool checkArcAddition( NodeId x, NodeId y ) const;
+      bool checkArcAddition(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
-      bool checkArcDeletion( NodeId x, NodeId y ) const;
+      bool checkArcDeletion(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
-      bool checkArcReversal( NodeId x, NodeId y ) const;
+      bool checkArcReversal(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to add an arc
-      bool checkModification( const ArcAddition& change ) const;
+      bool checkModification(const ArcAddition& change) const;
 
       /// checks whether the constraints enable to remove an arc
-      bool checkModification( const ArcDeletion& change ) const;
+      bool checkModification(const ArcDeletion& change) const;
 
       /// checks whether the constraints enable to reverse an arc
-      bool checkModification( const ArcReversal& change ) const;
+      bool checkModification(const ArcReversal& change) const;
 
       /// checks whether the constraints enable to perform a graph change
-      bool checkModification( const GraphChange& change ) const;
+      bool checkModification(const GraphChange& change) const;
 
       /// @}
     };

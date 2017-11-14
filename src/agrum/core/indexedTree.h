@@ -45,7 +45,7 @@ namespace gum {
    * @tparam Key The tree's keys type.
    * @tparam Data The tree's values type.
    */
-  template <typename Key, typename Data>
+  template < typename Key, typename Data >
   class IndexedTree {
     public:
     // ============================================================================
@@ -61,7 +61,7 @@ namespace gum {
      *
      * @param data Adds data as the root of the tree.
      */
-    IndexedTree( Data* data = nullptr );
+    IndexedTree(Data* data = nullptr);
 
     /**
      * @brief Creates a tree with one node (with or without data).
@@ -76,7 +76,7 @@ namespace gum {
      * @param theKey The data's key.
      * @param data The data added to the tree.
      */
-    IndexedTree( const Key& theKey, Data* data = nullptr );
+    IndexedTree(const Key& theKey, Data* data = nullptr);
 
     /**
      * @brief Creates a tree with one node with data.
@@ -87,20 +87,20 @@ namespace gum {
      * @param theKey The data's key.
      * @param data The data added to the tree.
      */
-    IndexedTree( const Key& theKey, const Data& data );
+    IndexedTree(const Key& theKey, const Data& data);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::IndexedTree to copy.
      */
-    IndexedTree( const IndexedTree<Key, Data>& from );
+    IndexedTree(const IndexedTree< Key, Data >& from);
 
     /**
      * @brief Copy operator.
      * @param from The gum::IndexedTree to copy.
      * @return Returns this gum::IndexedTree.
      */
-    IndexedTree<Key, Data>& operator=( const IndexedTree<Key, Data>& from );
+    IndexedTree< Key, Data >& operator=(const IndexedTree< Key, Data >& from);
 
     /**
      * @brief Class destructor.
@@ -122,7 +122,7 @@ namespace gum {
      * index has already been entered into the tree. If, in this case, you
      * would like the value of the to be updated, use function setNode instead.
      */
-    void insertNode( const std::vector<Key>& index, const Data* data );
+    void insertNode(const std::vector< Key >& index, const Data* data);
 
     /**
      * @brief Adds a new node into the tree.
@@ -133,7 +133,7 @@ namespace gum {
      * index has already been entered into the tree. If, in this case, you
      * would like the value of the to be updated, use function setNode instead.
      */
-    void insertNode( const std::vector<Key>& index, const Data& data );
+    void insertNode(const std::vector< Key >& index, const Data& data);
 
     /**
      * @brief Updates the value of a node (or adds it if it does not already
@@ -142,7 +142,7 @@ namespace gum {
      * @param index The node's index.
      * @param data The node's data.
      */
-    void setNode( const std::vector<Key>& index, Data* data );
+    void setNode(const std::vector< Key >& index, Data* data);
 
     /**
      * @brief Updates the value of a node (or adds it if it does not already
@@ -151,7 +151,7 @@ namespace gum {
      * @param index The node's index.
      * @param data The node's data.
      */
-    void setNode( const std::vector<Key>& index, const Data& data );
+    void setNode(const std::vector< Key >& index, const Data& data);
 
     /**
      * @brief Returns the value of a given node of the tree.
@@ -161,7 +161,7 @@ namespace gum {
      * @throw NotFound exception is thrown if the so-called value
      * cannot be found in the tree.
      */
-    Data& getData( const std::vector<Key>& index ) const;
+    Data& getData(const std::vector< Key >& index) const;
 
     /**
      * @brief Returns a given node of the tree.
@@ -170,7 +170,7 @@ namespace gum {
      * @throw NotFound exception is thrown if the node we look for cannot
      * be found in the tree.
      */
-    IndexedTree<Key, Data>& getNode( const std::vector<Key>& index ) const;
+    IndexedTree< Key, Data >& getNode(const std::vector< Key >& index) const;
 
     /// @}
 
@@ -182,15 +182,15 @@ namespace gum {
     Data* data;
 
     /// The parent of the node.
-    IndexedTree<Key, Data>* parent;
+    IndexedTree< Key, Data >* parent;
 
     /// The list of children nodes of the current node.
-    HashTable<Key, IndexedTree<Key, Data>*> children;
+    HashTable< Key, IndexedTree< Key, Data >* > children;
   };
 
   /// Necessary for the hashtable operator <<
-  template <typename Key, typename Data>
-  std::ostream& operator<<( std::ostream&, const IndexedTree<Key, Data>& );
+  template < typename Key, typename Data >
+  std::ostream& operator<<(std::ostream&, const IndexedTree< Key, Data >&);
 
 } /* namespace gum */
 

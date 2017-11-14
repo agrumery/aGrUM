@@ -151,10 +151,10 @@ namespace gum {
     /// constructs a new edge (aN1,aN2)
     /** @param aN1 the ID of the first extremal node
      * @param aN2 the ID of the second extremal node */
-    Edge( NodeId aN1, NodeId aN2 );
+    Edge(NodeId aN1, NodeId aN2);
 
     /// copy constructor
-    Edge( const Edge& src );
+    Edge(const Edge& src);
 
     /// destructor
     ~Edge();
@@ -167,7 +167,7 @@ namespace gum {
     /// @{
 
     /// returns an extremal node of an edge given the ID of the other one
-    NodeId other( NodeId id ) const;
+    NodeId other(NodeId id) const;
 
     /// returns one extremal node ID (whichever one it is is unspecified)
     NodeId first() const;
@@ -183,17 +183,17 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Edge& operator=( const Edge& src );
+    Edge& operator=(const Edge& src);
 
     /// checks whether two undirected edges are equal
     /** Two Edge are equal if they have the same extremal nodes, whetever their
      * order. For instance (3,4) == (4,3). */
-    bool operator==( const Edge& src ) const;
+    bool operator==(const Edge& src) const;
 
     /// checks whether two undirected edges are different
     /** Two Edge are different if at least one extremal node of an edge is not
      * an extremal node of the other edge. For instance, (4,5) != (5,6). */
-    bool operator!=( const Edge& src ) const;
+    bool operator!=(const Edge& src) const;
 
     /// @}
 
@@ -256,10 +256,10 @@ namespace gum {
 
     /// basic constructor. Creates tail -> head.
     /** @warning the order in which the nodes are passed is important */
-    Arc( NodeId tail, NodeId head );
+    Arc(NodeId tail, NodeId head);
 
     /// copy constructor
-    Arc( const Arc& src );
+    Arc(const Arc& src);
 
     /// destructor
     ~Arc();
@@ -278,7 +278,7 @@ namespace gum {
     NodeId head() const;
 
     /// returns an extremal node of an edge given the ID of the other one
-    NodeId other( NodeId id ) const;
+    NodeId other(NodeId id) const;
 
     /// returns one extremal node ID (whichever one it is is unspecified)
     NodeId first() const;
@@ -294,18 +294,18 @@ namespace gum {
     /// @{
 
     /// copy operator
-    Arc& operator=( const Arc& src );
+    Arc& operator=(const Arc& src);
 
     /// checks whether two arcs are equal
     /** Two arcs are considered equal if they have the same head and tail
      * (by same we mean they have the same ID). */
-    bool operator==( const Arc& src ) const;
+    bool operator==(const Arc& src) const;
 
     /// check if two arcs are different
     /** Two arcs are considered different if they have different head and/or
      * tail
      * (by different we mean they have different ID). */
-    bool operator!=( const Arc& src ) const;
+    bool operator!=(const Arc& src) const;
 
     /// @}
 
@@ -314,10 +314,10 @@ namespace gum {
     NodeId n1, n2;
 
     /// modifies the tail of the arc
-    void __setTail( NodeId id );
+    void __setTail(NodeId id);
 
     /// modifies the head of the arc
-    void __setHead( NodeId id );
+    void __setHead(NodeId id);
 
     /// reverses the direction of the arc
     void operator-();
@@ -329,27 +329,27 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
   template <>
-  class HashFunc<Edge> : public HashFuncSmallKeyPair<NodeId, NodeId> {
+  class HashFunc< Edge > : public HashFuncSmallKeyPair< NodeId, NodeId > {
     public:
     /**
      * @throw SizeError
      */
-    Size operator()( const Edge& key ) const;
+    Size operator()(const Edge& key) const;
 
     private:
-    mutable std::pair<NodeId, NodeId> pair;
+    mutable std::pair< NodeId, NodeId > pair;
   };
 
   template <>
-  class HashFunc<Arc> : public HashFuncSmallKeyPair<NodeId, NodeId> {
+  class HashFunc< Arc > : public HashFuncSmallKeyPair< NodeId, NodeId > {
     public:
     /**
      * @throw SizeError
      */
-    Size operator()( const Arc& key ) const;
+    Size operator()(const Arc& key) const;
 
     private:
-    mutable std::pair<NodeId, NodeId> pair;
+    mutable std::pair< NodeId, NodeId > pair;
   };
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
@@ -358,9 +358,9 @@ namespace gum {
    * @{
    * Some typdefs and define for shortcuts ...
    */
-  typedef Set<NodeId> NodeSet;
-  typedef Set<Edge>   EdgeSet;
-  typedef Set<Arc>    ArcSet;
+  typedef Set< NodeId > NodeSet;
+  typedef Set< Edge >   EdgeSet;
+  typedef Set< Arc >    ArcSet;
 
   typedef ArcSet::const_iterator  ArcSetIterator;
   typedef EdgeSet::const_iterator EdgeSetIterator;
@@ -371,24 +371,24 @@ namespace gum {
    * @{
    * @brief Property on graph elements
    **/
-  template <class VAL>
-  using NodeProperty = HashTable<NodeId, VAL>;
-  template <class VAL>
-  using EdgeProperty = HashTable<Edge, VAL>;
-  template <class VAL>
-  using ArcProperty = HashTable<Arc, VAL>;
+  template < class VAL >
+  using NodeProperty = HashTable< NodeId, VAL >;
+  template < class VAL >
+  using EdgeProperty = HashTable< Edge, VAL >;
+  template < class VAL >
+  using ArcProperty = HashTable< Arc, VAL >;
 
   /// @}
 
   /// to friendly display an edge
-  std::ostream& operator<<( std::ostream& stream, const Edge& edge );
+  std::ostream& operator<<(std::ostream& stream, const Edge& edge);
 
   /// to friendly display an arc
-  std::ostream& operator<<( std::ostream& stream, const Arc& arc );
+  std::ostream& operator<<(std::ostream& stream, const Arc& arc);
 
 } /* namespace gum */
 
-extern template class gum::HashFunc<gum::NodeSet>;
+extern template class gum::HashFunc< gum::NodeSet >;
 
 #ifndef GUM_NO_INLINE
 #include <agrum/graphs/graphElements_inl.h>

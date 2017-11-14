@@ -26,5 +26,5 @@
 
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
 
-template class gum::aggregator::MultiDimAggregator<float>;
-template class gum::aggregator::MultiDimAggregator<double>;
+template class gum::aggregator::MultiDimAggregator< float >;
+template class gum::aggregator::MultiDimAggregator< double >;

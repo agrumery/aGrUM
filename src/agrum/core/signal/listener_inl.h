@@ -30,14 +30,14 @@
 
 namespace gum {
 
-  INLINE void Listener::attachSignal__( __sig__::ISignaler* sender ) {
-    __senders.push_back( sender );
+  INLINE void Listener::attachSignal__(__sig__::ISignaler* sender) {
+    __senders.push_back(sender);
   }
 
-  INLINE void Listener::detachSignal__( __sig__::ISignaler* sender ) {
-    auto del = std::remove( __senders.begin(), __senders.end(), sender );
+  INLINE void Listener::detachSignal__(__sig__::ISignaler* sender) {
+    auto del = std::remove(__senders.begin(), __senders.end(), sender);
 
-    if ( del != __senders.end() ) __senders.erase( del, __senders.end() );
+    if (del != __senders.end()) __senders.erase(del, __senders.end());
   }
 
 }  // namespace gum

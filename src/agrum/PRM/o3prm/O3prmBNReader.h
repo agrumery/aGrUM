@@ -50,20 +50,20 @@ namespace gum {
    * @tparam GUM_SCALAR The scalar type used both for the gum::prm::PRM and the
    * gum::BayesNet.
    */
-  template <typename GUM_SCALAR>
-  class O3prmBNReader : public BNReader<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class O3prmBNReader : public BNReader< GUM_SCALAR > {
     public:
-    O3prmBNReader( BayesNet<GUM_SCALAR>* bn,
-                   const std::string&    filename,
-                   const std::string&    entityName = "",
-                   const std::string&    classPath = "" );
+    O3prmBNReader(BayesNet< GUM_SCALAR >* bn,
+                  const std::string&      filename,
+                  const std::string&      entityName = "",
+                  const std::string&      classPath = "");
 
     ~O3prmBNReader();
 
     /// parse the file
     /// @return the number of detected errors and warnings
     /// @throws IOError if file not exists
-    Size proceed( void );
+    Size proceed(void);
 
     /// @{
     /// publishing Errors API
@@ -73,27 +73,27 @@ namespace gum {
     /// # of errors
     Size warnings() { return __errors.warning_count; }
 
-    Idx errLine( Idx i ) { return __errors.error( i ).line; }
+    Idx errLine(Idx i) { return __errors.error(i).line; }
     /// col of ith error or warning
-    Idx errCol( Idx i ) { return __errors.error( i ).column; }
+    Idx errCol(Idx i) { return __errors.error(i).column; }
     /// type of ith error or warning
-    bool errIsError( Idx i ) { return __errors.error( i ).is_error; }
+    bool errIsError(Idx i) { return __errors.error(i).is_error; }
     /// message of ith error or warning
-    std::string errMsg( Idx i ) { return __errors.error( i ).msg; }
+    std::string errMsg(Idx i) { return __errors.error(i).msg; }
 
     /// send on std::cerr the list of errors
-    void showElegantErrors( std::ostream& o = std::cerr ) {
-      __errors.elegantErrors( o );
+    void showElegantErrors(std::ostream& o = std::cerr) {
+      __errors.elegantErrors(o);
     }
 
     /// send on std::cerr the list of errors or warnings
-    void showElegantErrorsAndWarnings( std::ostream& o = std::cerr ) {
-      __errors.elegantErrorsAndWarnings( o );
+    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr) {
+      __errors.elegantErrorsAndWarnings(o);
     }
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts( std::ostream& o = std::cerr ) {
-      __errors.syntheticResults( o );
+    void showErrorCounts(std::ostream& o = std::cerr) {
+      __errors.syntheticResults(o);
     }
     /// @}
 
@@ -103,16 +103,16 @@ namespace gum {
     std::string __classpath;
     std::string __entityName;
 
-    BayesNet<GUM_SCALAR>* __bn;
-    ErrorsContainer       __errors;
+    BayesNet< GUM_SCALAR >* __bn;
+    ErrorsContainer         __errors;
 
-    void __generateBN( prm::PRMSystem<GUM_SCALAR>& system );
-    static std::string __getVariableName( const std::string& path,
-                                          const std::string& type,
-                                          const std::string& name,
-                                          const std::string& toRemove = "" );
-    static std::string __getEntityName( const std::string& filename );
-    static std::string __getInstanceName( const std::string& classname );
+    void __generateBN(prm::PRMSystem< GUM_SCALAR >& system);
+    static std::string __getVariableName(const std::string& path,
+                                         const std::string& type,
+                                         const std::string& name,
+                                         const std::string& toRemove = "");
+    static std::string __getEntityName(const std::string& filename);
+    static std::string __getInstanceName(const std::string& classname);
   };
 
 }  // gum
@@ -121,8 +121,8 @@ namespace gum {
 #include <agrum/PRM/o3prm/O3prmBNReader_tpl.h>
 
 
-extern template class gum::O3prmBNReader<float>;
-extern template class gum::O3prmBNReader<double>;
+extern template class gum::O3prmBNReader< float >;
+extern template class gum::O3prmBNReader< double >;
 
 
 #endif  // GUM_PRM_O3PRM_BNREADER_H

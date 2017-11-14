@@ -48,16 +48,16 @@ namespace gum {
       RowGeneratorIdentity();
 
       /// copy constructor
-      RowGeneratorIdentity( const RowGeneratorIdentity& );
+      RowGeneratorIdentity(const RowGeneratorIdentity&);
 
       /// move constructor
-      RowGeneratorIdentity( RowGeneratorIdentity&& );
+      RowGeneratorIdentity(RowGeneratorIdentity&&);
 
       /// destructor
       ~RowGeneratorIdentity();
 
       /// virtual copy constructor
-      virtual RowGeneratorIdentity* copyFactory () const;
+      virtual RowGeneratorIdentity* copyFactory() const;
 
       /// @}
 
@@ -68,10 +68,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      RowGeneratorIdentity& operator=( const RowGeneratorIdentity& );
+      RowGeneratorIdentity& operator=(const RowGeneratorIdentity&);
 
       /// move operator
-      RowGeneratorIdentity& operator=( RowGeneratorIdentity&& );
+      RowGeneratorIdentity& operator=(RowGeneratorIdentity&&);
 
       /// @}
 

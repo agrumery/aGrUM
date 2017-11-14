@@ -30,7 +30,7 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      std::ostream& operator<<( std::ostream& out, const LabelData& data ) {
+      std::ostream& operator<<(std::ostream& out, const LabelData& data) {
         out << data.l;
         return out;
       }
@@ -38,35 +38,33 @@ namespace gum {
       // LabelData
 
       LabelData::LabelData()
-          : id( 0 ) {
-        GUM_CONSTRUCTOR( LabelData );
+          : id(0) {
+        GUM_CONSTRUCTOR(LabelData);
       }
 
-      LabelData::LabelData( const LabelData& from )
-          : id( from.id )
-          , l( from.l ) {
-        GUM_CONS_CPY( LabelData );
+      LabelData::LabelData(const LabelData& from)
+          : id(from.id)
+          , l(from.l) {
+        GUM_CONS_CPY(LabelData);
       }
 
-      LabelData::~LabelData() { GUM_DESTRUCTOR( LabelData ); }
+      LabelData::~LabelData() { GUM_DESTRUCTOR(LabelData); }
 
-      bool LabelData::operator==( const LabelData& from ) const {
-        return ( id == from.id ) && ( l == from.l ) &&
-               ( tree_width == from.tree_width );
+      bool LabelData::operator==(const LabelData& from) const {
+        return (id == from.id) && (l == from.l) && (tree_width == from.tree_width);
       }
 
-      bool LabelData::operator!=( const LabelData& from ) const {
-        return ( id != from.id ) && ( l != from.l ) &&
-               ( tree_width != from.tree_width );
+      bool LabelData::operator!=(const LabelData& from) const {
+        return (id != from.id) && (l != from.l) && (tree_width != from.tree_width);
       }
 
-      template class NodeData<float>;
-      template class EdgeData<float>;
-      template class InterfaceGraph<float>;
+      template class NodeData< float >;
+      template class EdgeData< float >;
+      template class InterfaceGraph< float >;
 
-      template class NodeData<double>;
-      template class EdgeData<double>;
-      template class InterfaceGraph<double>;
+      template class NodeData< double >;
+      template class EdgeData< double >;
+      template class InterfaceGraph< double >;
 
     } /* namespace gspan */
   }   /* namespace prm */

@@ -34,34 +34,32 @@ namespace gum {
   namespace learning {
 
     /// copy constructor
-    INLINE DatabaseFromSQL::DatabaseFromSQL( const DatabaseFromSQL& from )
-        : DatabaseVectInRAM( from ) {
+    INLINE DatabaseFromSQL::DatabaseFromSQL(const DatabaseFromSQL& from)
+        : DatabaseVectInRAM(from) {
       // for debugging purposes
-      GUM_CONS_CPY( DatabaseFromSQL );
+      GUM_CONS_CPY(DatabaseFromSQL);
     }
 
     /// move constructor
-    INLINE DatabaseFromSQL::DatabaseFromSQL( DatabaseFromSQL&& from )
-        : DatabaseVectInRAM( std::move( from ) ) {
+    INLINE DatabaseFromSQL::DatabaseFromSQL(DatabaseFromSQL&& from)
+        : DatabaseVectInRAM(std::move(from)) {
       // for debugging purposes
-      GUM_CONS_MOV( DatabaseFromSQL );
+      GUM_CONS_MOV(DatabaseFromSQL);
     }
 
     /// destructor
-    INLINE DatabaseFromSQL::~DatabaseFromSQL() {
-      GUM_DESTRUCTOR( DatabaseFromSQL );
-    }
+    INLINE DatabaseFromSQL::~DatabaseFromSQL() { GUM_DESTRUCTOR(DatabaseFromSQL); }
 
     /// copy operator
     INLINE DatabaseFromSQL& DatabaseFromSQL::
-    operator=( const DatabaseFromSQL& from ) {
-      DatabaseVectInRAM::operator=( from );
+    operator=(const DatabaseFromSQL& from) {
+      DatabaseVectInRAM::operator=(from);
       return *this;
     }
 
     /// move constructor
-    INLINE DatabaseFromSQL& DatabaseFromSQL::operator=( DatabaseFromSQL&& from ) {
-      DatabaseVectInRAM::operator=( std::move( from ) );
+    INLINE DatabaseFromSQL& DatabaseFromSQL::operator=(DatabaseFromSQL&& from) {
+      DatabaseVectInRAM::operator=(std::move(from));
       return *this;
     }
 

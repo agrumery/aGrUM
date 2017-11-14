@@ -26,34 +26,33 @@
 
 namespace gum {
 
-  ALWAYS_INLINE double GammaLog2::gammaLog2( double x ) const {
-    if ( x <= 0 )
-      GUM_ERROR( OutOfBounds,
-                 "log2(gamma()) should be called with a positive argument" );
+  ALWAYS_INLINE double GammaLog2::gammaLog2(double x) const {
+    if (x <= 0)
+      GUM_ERROR(OutOfBounds,
+                "log2(gamma()) should be called with a positive argument");
 
     // if x is small, use precomputed values
-    if ( x < 50 ) {
-      if ( __requires_precision ) {
-        Idx index = int( x * 100 );
+    if (x < 50) {
+      if (__requires_precision) {
+        Idx index = int(x * 100);
         return __small_values[index] +
-               ( __small_values[index + 1] - __small_values[index] ) *
-                   double( x * 100 - index );
+               (__small_values[index + 1] - __small_values[index]) *
+                 double(x * 100 - index);
       } else {
-        Idx index = int( x * 100 + 0.5 );
+        Idx index = int(x * 100 + 0.5);
         return __small_values[index];
       }
     }
 
     // returns the approximation by the stirling formula
-    return ( __log_sqrt_2pi + ( x - 0.5f ) * log( x ) - x +
-             log( 1.0 + 1.0 / ( 12 * x ) ) ) *
+    return (__log_sqrt_2pi + (x - 0.5f) * log(x) - x + log(1.0 + 1.0 / (12 * x))) *
            __1log2;
   }
 
-  ALWAYS_INLINE double GammaLog2::operator()( double x ) const {
-    return gammaLog2( x );
+  ALWAYS_INLINE double GammaLog2::operator()(double x) const {
+    return gammaLog2(x);
   }
 
-  INLINE void GammaLog2::setPrecision( bool prec ) { __requires_precision = prec; }
+  INLINE void GammaLog2::setPrecision(bool prec) { __requires_precision = prec; }
 
 } /* namespace gum */

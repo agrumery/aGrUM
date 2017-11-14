@@ -38,9 +38,9 @@ namespace gum {
      * @brief the no a priori class: corresponds to 0 weight-sample
      * @ingroup learning_group
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
-    class AprioriNoApriori : public Apriori<IdSetAlloc, CountAlloc> {
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
+    class AprioriNoApriori : public Apriori< IdSetAlloc, CountAlloc > {
       public:
       using type = AprioriNoAprioriType;
 
@@ -53,7 +53,7 @@ namespace gum {
       AprioriNoApriori();
 
       /// virtual copy constructor
-      virtual AprioriNoApriori<IdSetAlloc, CountAlloc>* copyFactory() const;
+      virtual AprioriNoApriori< IdSetAlloc, CountAlloc >* copyFactory() const;
 
       /// destructor
       virtual ~AprioriNoApriori();
@@ -69,26 +69,26 @@ namespace gum {
       virtual void compute() final;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType( const std::string& type ) final;
+      virtual bool isOfType(const std::string& type) final;
 
       /// returns the type of the apriori
       virtual const std::string& getType() const noexcept final;
 
       /// sets the weight of the a priori
-      virtual void setWeight( double weight ) final;
+      virtual void setWeight(double weight) final;
 
       /// @}
 
       protected:
       /// copy constructor
-      AprioriNoApriori( const AprioriNoApriori<IdSetAlloc, CountAlloc>& from );
+      AprioriNoApriori(const AprioriNoApriori< IdSetAlloc, CountAlloc >& from);
 
       /// move constructor
-      AprioriNoApriori( AprioriNoApriori<IdSetAlloc, CountAlloc>&& from );
+      AprioriNoApriori(AprioriNoApriori< IdSetAlloc, CountAlloc >&& from);
 
       /// prevent copy operator
-      AprioriNoApriori<IdSetAlloc, CountAlloc>&
-      operator=( const AprioriNoApriori<IdSetAlloc, CountAlloc>& ) = delete;
+      AprioriNoApriori< IdSetAlloc, CountAlloc >&
+      operator=(const AprioriNoApriori< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

@@ -45,63 +45,61 @@ namespace gum {
       virtual ~IConnector0(){};
 
       virtual Listener*    target() const = 0;
-      virtual void         notify( const void* ) = 0;
+      virtual void         notify(const void*) = 0;
       virtual IConnector0* clone() = 0;
-      virtual IConnector0* duplicate( Listener* target ) = 0;
+      virtual IConnector0* duplicate(Listener* target) = 0;
     };
 
     class BasicSignaler0 : public ISignaler {
       protected:
-      typedef std::vector<IConnector0*> ConnectorList;
+      typedef std::vector< IConnector0* > ConnectorList;
 
       BasicSignaler0();
 
-      BasicSignaler0( const BasicSignaler0& s );
+      BasicSignaler0(const BasicSignaler0& s);
 
       public:
       virtual ~BasicSignaler0();
 
-      bool hasListener( void );
+      bool hasListener(void);
 
-      void detach( Listener* target );
+      void detach(Listener* target);
 
       protected:
       friend class Listener;
 
-      void _detachFromTarget( Listener* target );
+      void _detachFromTarget(Listener* target);
 
-      void _duplicateTarget( const Listener* oldtarget, Listener* newtarget );
+      void _duplicateTarget(const Listener* oldtarget, Listener* newtarget);
 
       ConnectorList _connectors;
 
       private:
-      std::function<bool( IConnector0* el )>
-      __find_target( const gum::Listener* l );
+      std::function< bool(IConnector0* el) > __find_target(const gum::Listener* l);
     };
 
-    template <class TargetClass>
+    template < class TargetClass >
     class Connector0 : public IConnector0 {
       public:
       Connector0();
 
-      Connector0( TargetClass* target,
-                  void ( TargetClass::*action )( const void* ) );
+      Connector0(TargetClass* target, void (TargetClass::*action)(const void*));
 
-      Connector0( const Connector0<TargetClass>* src );
+      Connector0(const Connector0< TargetClass >* src);
 
       virtual ~Connector0();
 
       virtual IConnector0* clone();
 
-      virtual IConnector0* duplicate( Listener* target );
+      virtual IConnector0* duplicate(Listener* target);
 
-      virtual void notify( const void* src );
+      virtual void notify(const void* src);
 
       virtual Listener* target() const;
 
       private:
       TargetClass* __target;
-      void ( TargetClass::*__action )( const void* );
+      void (TargetClass::*__action)(const void*);
     };
 
   }  // namespace __sig__
@@ -117,27 +115,26 @@ namespace gum {
    */
   class Signaler0 : public __sig__::BasicSignaler0 {
     public:
-    Signaler0() { GUM_CONSTRUCTOR( Signaler0 ); }
+    Signaler0() { GUM_CONSTRUCTOR(Signaler0); }
 
-    Signaler0( const Signaler0& s )
-        : __sig__::BasicSignaler0( s ) {
-      GUM_CONS_CPY( Signaler0 );
+    Signaler0(const Signaler0& s)
+        : __sig__::BasicSignaler0(s) {
+      GUM_CONS_CPY(Signaler0);
     }
 
-    virtual ~Signaler0() { GUM_DESTRUCTOR( Signaler0 ); }
+    virtual ~Signaler0() { GUM_DESTRUCTOR(Signaler0); }
 
-    template <class TargetClass>
-    void attach( TargetClass* target,
-                 void ( TargetClass::*action )( const void* ) ) {
-      __sig__::Connector0<TargetClass>* conn =
-          new __sig__::Connector0<TargetClass>( target, action );
-      this->_connectors.push_back( conn );
-      target->attachSignal__( this );
+    template < class TargetClass >
+    void attach(TargetClass* target, void (TargetClass::*action)(const void*)) {
+      __sig__::Connector0< TargetClass >* conn =
+        new __sig__::Connector0< TargetClass >(target, action);
+      this->_connectors.push_back(conn);
+      target->attachSignal__(this);
     }
 
-    INLINE void operator()( const void* src ) {
-      for ( const auto el : _connectors ) {
-        el->notify( src );
+    INLINE void operator()(const void* src) {
+      for (const auto el : _connectors) {
+        el->notify(src);
       }
     }
   };
@@ -145,7 +142,7 @@ namespace gum {
 }  // namespace gum
 
 /// this macro is the good way of emitting a signal.
-#define GUM_EMIT0( signal ) this->signal( this )
+#define GUM_EMIT0(signal) this->signal(this)
 
 // Template implementation should always be in headers
 #include <agrum/core/signal/signaler0_tpl.h>

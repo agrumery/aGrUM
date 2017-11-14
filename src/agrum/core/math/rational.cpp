@@ -27,6 +27,6 @@
 #include <agrum/core/math/rational.h>
 
 
-template class gum::Rational<float>;
-template class gum::Rational<double>;
-template class gum::Rational<long double>;
+template class gum::Rational< float >;
+template class gum::Rational< double >;
+template class gum::Rational< long double >;

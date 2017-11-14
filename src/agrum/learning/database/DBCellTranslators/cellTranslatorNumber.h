@@ -41,7 +41,7 @@ namespace gum {
      * @ingroup learning_group
      * @brief A cell translator translating numbers (possibly real or integers)
      */
-    class CellTranslatorNumber : public DBCellTranslator<1, 1> {
+    class CellTranslatorNumber : public DBCellTranslator< 1, 1 > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -82,14 +82,14 @@ namespace gum {
        * useful for learning non-stationary Bayesian networks.
        * @param check_database indicates whether we shall parse the database to
        * initialize the translator. */
-      CellTranslatorNumber( Sequence<double> values = Sequence<double>(),
-                            bool             check_database = true );
+      CellTranslatorNumber(Sequence< double > values = Sequence< double >(),
+                           bool               check_database = true);
 
       /// copy constructor
-      CellTranslatorNumber( const CellTranslatorNumber& from );
+      CellTranslatorNumber(const CellTranslatorNumber& from);
 
       /// move constructor
-      CellTranslatorNumber( CellTranslatorNumber&& from );
+      CellTranslatorNumber(CellTranslatorNumber&& from);
 
       /// virtual copy constructor
       virtual CellTranslatorNumber* copyFactory() final;
@@ -106,10 +106,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      CellTranslatorNumber& operator=( const CellTranslatorNumber& from );
+      CellTranslatorNumber& operator=(const CellTranslatorNumber& from);
 
       /// move operator
-      CellTranslatorNumber& operator=( CellTranslatorNumber&& from );
+      CellTranslatorNumber& operator=(CellTranslatorNumber&& from);
 
       /// @}
 
@@ -131,17 +131,17 @@ namespace gum {
       void postInitialize();
 
       /// add the number of modalities discovered in the database into a vector
-      void modalities( std::vector<Size>& modal ) const noexcept;
+      void modalities(std::vector< Size >& modal) const noexcept;
 
       /// returns whether the translator needs a DB parsing to initialize itself
       bool requiresInitialization() const noexcept;
 
       /// returns a given value as stored within the database
-      std::string translateBack( Idx col, float translated_val ) const;
+      std::string translateBack(Idx col, float translated_val) const;
 
       /// returns the name of the variable(s) the translator has processed
-      void variableNames( const std::vector<std::string>& db_var,
-                          std::vector<std::string>&       output_vars ) const;
+      void variableNames(const std::vector< std::string >& db_var,
+                         std::vector< std::string >&       output_vars) const;
 
       /// specify the set of possible values (to do before creating the row
       /// filter)
@@ -181,8 +181,8 @@ namespace gum {
        * into
        * the DBRowFilter, i.e., before the latter is created (as the creation of
        * the row filter induces the parsing of the database). */
-      void setUserValues( const Sequence<double>& values,
-                          bool                    check_database = true );
+      void setUserValues(const Sequence< double >& values,
+                         bool                      check_database = true);
 
       /// @}
 
@@ -191,10 +191,10 @@ namespace gum {
       Size __max_value{0};
 
       /// the set of values found so far
-      Bijection<double, float> __values;
+      Bijection< double, float > __values;
 
       /// the sequence of values specified by the user
-      Sequence<double>* __user_values{nullptr};
+      Sequence< double >* __user_values{nullptr};
 
       /// indicates whether the translator shall be initialized by DB parsing
       bool __check_database{true};

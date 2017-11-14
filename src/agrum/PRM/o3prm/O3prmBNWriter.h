@@ -36,10 +36,10 @@
 #include <string>
 
 #include <agrum/BN/io/BNWriter.h>
+#include <agrum/agrum.h>
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/variables/rangeVariable.h>
-#include <agrum/agrum.h>
 
 namespace gum {
   /**
@@ -51,8 +51,8 @@ namespace gum {
    * This class export a bayes net into an text file, using O3PRM format
    *
    */
-  template <typename GUM_SCALAR>
-  class O3prmBNWriter : public BNWriter<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class O3prmBNWriter : public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -78,7 +78,7 @@ namespace gum {
      * @param bn The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn );
+    virtual void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -89,32 +89,31 @@ namespace gum {
      * @param bn The bayes net written in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
+    virtual void write(std::string filePath, const IBayesNet< GUM_SCALAR >& bn);
 
     private:
+    std::string __extractAttribute(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractAttribute( const IBayesNet<GUM_SCALAR>& bn, NodeId node );
+    std::string __extractType(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractType(const IBayesNet<GUM_SCALAR>& bn, NodeId node);
-
-    template <typename VARTYPE>
+    template < typename VARTYPE >
     std::string __extractDiscretizedType(const VARTYPE* var);
 
-    std::string __extractName(const IBayesNet<GUM_SCALAR>& bn, NodeId node);
+    std::string __extractName(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractParents(const IBayesNet<GUM_SCALAR>& bn, NodeId node);
+    std::string __extractParents(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractCPT(const IBayesNet<GUM_SCALAR>& bn, NodeId node);
+    std::string __extractCPT(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractRangeType(const IBayesNet<GUM_SCALAR>& bn, NodeId node);
+    std::string __extractRangeType(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
 
-    std::string __extractLabelizedType(const IBayesNet<GUM_SCALAR>& bn, NodeId node);
-
+    std::string __extractLabelizedType(const IBayesNet< GUM_SCALAR >& bn,
+                                       NodeId                         node);
   };
 
 
-  extern template class O3prmBNWriter<float>;
-  extern template class O3prmBNWriter<double>;
+  extern template class O3prmBNWriter< float >;
+  extern template class O3prmBNWriter< double >;
 
 } /* namespace gum */
 

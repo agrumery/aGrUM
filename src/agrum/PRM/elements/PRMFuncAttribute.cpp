@@ -30,8 +30,8 @@
 namespace gum {
   namespace prm {
 
-    template class PRMFuncAttribute<float>;
-    template class PRMFuncAttribute<double>;
+    template class PRMFuncAttribute< float >;
+    template class PRMFuncAttribute< double >;
 
   } /* namespace prm */
 } /* namespace gum */

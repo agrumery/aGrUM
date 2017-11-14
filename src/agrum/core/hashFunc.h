@@ -53,7 +53,7 @@ namespace gum {
    * @return Returns the size in bits - 1 necessary to store the smallest power
    * of 2 greater than or equal to nb.
    */
-  unsigned int __hashTableLog2( const Size& nb );
+  unsigned int __hashTableLog2(const Size& nb);
 
   /**
    * @class HashFuncConst hashFunc.h <agrum/core/hashFunc.h>
@@ -144,7 +144,7 @@ namespace gum {
    *
    * @tparam Key The type hashed by this hash function.
    */
-  template <typename Key>
+  template < typename Key >
   class HashFuncBase {
     public:
     /**
@@ -162,14 +162,14 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    virtual void resize( Size s );
+    virtual void resize(Size s);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    virtual Size operator()( const Key& key ) const = 0;
+    virtual Size operator()(const Key& key) const = 0;
 
     /**
      * @brief Returns the hash table size as known by the hash function.
@@ -202,11 +202,11 @@ namespace gum {
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
-  template <typename Key>
-  class HashFuncSmallKey : private HashFuncBase<Key> {
+  template < typename Key >
+  class HashFuncSmallKey : private HashFuncBase< Key > {
     public:
     /// This class use the HashFuncBase::size.
-    using HashFuncBase<Key>::size;
+    using HashFuncBase< Key >::size;
 
     /**
      * @brief Update the hash function to take into account a resize of the
@@ -223,14 +223,14 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize( Size s );
+    void resize(Size s);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Key& key ) const;
+    Size operator()(const Key& key) const;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -244,8 +244,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
-  template <typename Key>
-  class HashFuncSmallCastKey : private HashFuncBase<Key> {
+  template < typename Key >
+  class HashFuncSmallCastKey : private HashFuncBase< Key > {
     public:
     /**
      * @brief Class constructor.
@@ -267,21 +267,21 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize( Size s );
+    void resize(Size s);
 
     /**
      * @brief Returns the value of a key as an unsigned long.
      * @param key The value to return as an unsigned long.
      * @return Returns the value of a key as an unsigned long.
      */
-    Size castToSize( const Key& key ) const;
+    Size castToSize(const Key& key) const;
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Key& key ) const;
+    Size operator()(const Key& key) const;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -301,11 +301,11 @@ namespace gum {
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
-  template <typename Key>
-  class HashFuncMediumCastKey : private HashFuncBase<Key> {
+  template < typename Key >
+  class HashFuncMediumCastKey : private HashFuncBase< Key > {
     public:
     /// This class use the HashFuncBase::size.
-    using HashFuncBase<Key>::size;
+    using HashFuncBase< Key >::size;
 
     /**
      * @brief Update the hash function to take into account a resize of the
@@ -322,21 +322,21 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize( Size s );
+    void resize(Size s);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Key& key ) const;
+    Size operator()(const Key& key) const;
 
     /**
      * @brief Returns the value of a key as an unsigned long.
      * @param key The value to return as an unsigned long.
      * @return Returns the value of a key as an unsigned long.
      */
-    Size castToSize( const Key& key ) const;
+    Size castToSize(const Key& key) const;
 
 
     protected:
@@ -351,11 +351,11 @@ namespace gum {
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
-  template <typename Key>
-  class HashFuncLargeCastKey : private HashFuncBase<Key> {
+  template < typename Key >
+  class HashFuncLargeCastKey : private HashFuncBase< Key > {
     public:
     /// This class use the HashFuncBase::size.
-    using HashFuncBase<Key>::size;
+    using HashFuncBase< Key >::size;
 
     /**
      * @brief Update the hash function to take into account a resize of the
@@ -372,21 +372,21 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize( Size s );
+    void resize(Size s);
 
     /**
      * @brief Cast key to the exepcted type.
      * @param key The key to cast.
      * @return Returns the cast key to the exepcted type.
      */
-    Size castToSize( const Key& key ) const;
+    Size castToSize(const Key& key) const;
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Key& key ) const;
+    Size operator()(const Key& key) const;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -401,16 +401,16 @@ namespace gum {
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
-  template <typename T>
+  template < typename T >
   struct HashFuncCastKey {
 
     /// The type used by this class.
     using type = typename std::conditional<
-        sizeof( T ) < sizeof( long ),
-        HashFuncSmallCastKey<T>,
-        typename std::conditional<sizeof( T ) == 2 * sizeof( long ),
-                                  HashFuncLargeCastKey<T>,
-                                  HashFuncMediumCastKey<T>>::type>::type;
+      sizeof(T) < sizeof(long),
+      HashFuncSmallCastKey< T >,
+      typename std::conditional< sizeof(T) == 2 * sizeof(long),
+                                 HashFuncLargeCastKey< T >,
+                                 HashFuncMediumCastKey< T > >::type >::type;
   };
 
   /**
@@ -421,8 +421,8 @@ namespace gum {
    * @tparam Key1 The type hashed of the first element in the pair.
    * @tparam Key2 The type hashed of the second element in the pair.
    */
-  template <typename Key1, typename Key2>
-  class HashFuncSmallKeyPair : public HashFuncBase<std::pair<Key1, Key2>> {
+  template < typename Key1, typename Key2 >
+  class HashFuncSmallKeyPair : public HashFuncBase< std::pair< Key1, Key2 > > {
     public:
     /**
      * @brief Update the hash function to take into account a resize of the
@@ -439,14 +439,14 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize( Size s );
+    void resize(Size s);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const std::pair<Key1, Key2>& key ) const;
+    Size operator()(const std::pair< Key1, Key2 >& key) const;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -463,8 +463,8 @@ namespace gum {
    * @tparam Func1 The function to hash Key1.
    * @tparam Func2 The function to hash Key2.
    */
-  template <typename Key1, typename Key2, typename Func1, typename Func2>
-  class HashFuncAllCastKeyPair : public HashFuncBase<std::pair<Key1, Key2>> {
+  template < typename Key1, typename Key2, typename Func1, typename Func2 >
+  class HashFuncAllCastKeyPair : public HashFuncBase< std::pair< Key1, Key2 > > {
     public:
     /**
      * @brief Update the hash function to take into account a resize of the
@@ -481,14 +481,14 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize( Size s );
+    void resize(Size s);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const std::pair<Key1, Key2>& key ) const;
+    Size operator()(const std::pair< Key1, Key2 >& key) const;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -509,16 +509,16 @@ namespace gum {
    * @ingroup hashfunctions_group
    * @tparam Key The type hashed by this hash function.
    */
-  template <typename T1, typename T2>
+  template < typename T1, typename T2 >
   struct HashFuncCastKeyPair {
     /// The casting function for T1.
-    using Func1 = typename HashFuncCastKey<T1>::type;
+    using Func1 = typename HashFuncCastKey< T1 >::type;
 
     /// The casting function for T2.
-    using Func2 = typename HashFuncCastKey<T2>::type;
+    using Func2 = typename HashFuncCastKey< T2 >::type;
 
     /// The expected type of this class.
-    using type = HashFuncAllCastKeyPair<T1, T2, Func1, Func2>;
+    using type = HashFuncAllCastKeyPair< T1, T2, Func1, Func2 >;
   };
 
   // ===========================================================================
@@ -535,7 +535,7 @@ namespace gum {
    *
    * @ingroup hashfunctions_group
    */
-  template <typename key>
+  template < typename key >
   class HashFunc {};
 
   /**
@@ -544,7 +544,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<bool> : public HashFuncSmallKey<bool> {};
+  class HashFunc< bool > : public HashFuncSmallKey< bool > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -552,7 +552,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<int> : public HashFuncSmallKey<int> {};
+  class HashFunc< int > : public HashFuncSmallKey< int > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -560,7 +560,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<unsigned int> : public HashFuncSmallKey<unsigned int> {};
+  class HashFunc< unsigned int > : public HashFuncSmallKey< unsigned int > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -568,7 +568,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<long> : public HashFuncSmallKey<long> {};
+  class HashFunc< long > : public HashFuncSmallKey< long > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -576,7 +576,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<unsigned long> : public HashFuncSmallKey<unsigned long> {};
+  class HashFunc< unsigned long > : public HashFuncSmallKey< unsigned long > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -584,7 +584,7 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<float> : public HashFuncCastKey<float>::type {};
+  class HashFunc< float > : public HashFuncCastKey< float >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -592,15 +592,15 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<double> : public HashFuncCastKey<double>::type {};
+  class HashFunc< double > : public HashFuncCastKey< double >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for pointers.
    * @tparam The type for which the pointer is used to compute a hash.
    */
-  template <typename Type>
-  class HashFunc<Type*> : public HashFuncCastKey<Type*>::type {};
+  template < typename Type >
+  class HashFunc< Type* > : public HashFuncCastKey< Type* >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -608,7 +608,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<int, int>> : public HashFuncSmallKeyPair<int, int> {};
+  class HashFunc< std::pair< int, int > >
+    : public HashFuncSmallKeyPair< int, int > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -616,8 +617,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<unsigned int, unsigned int>>
-      : public HashFuncSmallKeyPair<unsigned int, unsigned int> {};
+  class HashFunc< std::pair< unsigned int, unsigned int > >
+    : public HashFuncSmallKeyPair< unsigned int, unsigned int > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -625,8 +626,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<long, long>> : public HashFuncSmallKeyPair<long, long> {
-  };
+  class HashFunc< std::pair< long, long > >
+    : public HashFuncSmallKeyPair< long, long > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -634,8 +635,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<unsigned long, unsigned long>>
-      : public HashFuncSmallKeyPair<unsigned long, unsigned long> {};
+  class HashFunc< std::pair< unsigned long, unsigned long > >
+    : public HashFuncSmallKeyPair< unsigned long, unsigned long > {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -643,8 +644,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<float, float>>
-      : public HashFuncCastKeyPair<float, float>::type {};
+  class HashFunc< std::pair< float, float > >
+    : public HashFuncCastKeyPair< float, float >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -652,8 +653,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<double, double>>
-      : public HashFuncCastKeyPair<float, float>::type {};
+  class HashFunc< std::pair< double, double > >
+    : public HashFuncCastKeyPair< float, float >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -661,8 +662,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<double, long unsigned int>>
-      : public HashFuncCastKeyPair<double, long unsigned int>::type {};
+  class HashFunc< std::pair< double, long unsigned int > >
+    : public HashFuncCastKeyPair< double, long unsigned int >::type {};
 
   /**
    * @author JCM
@@ -673,8 +674,8 @@ namespace gum {
    * @ingroup HashF
    */
   template <>
-  class HashFunc<std::pair<long unsigned int, double>>
-      : public HashFuncCastKeyPair<long unsigned int, double>::type {};
+  class HashFunc< std::pair< long unsigned int, double > >
+    : public HashFuncCastKeyPair< long unsigned int, double >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -682,8 +683,8 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<double, long int>>
-      : public HashFuncCastKeyPair<double, long int>::type {};
+  class HashFunc< std::pair< double, long int > >
+    : public HashFuncCastKeyPair< double, long int >::type {};
 
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
@@ -691,15 +692,15 @@ namespace gum {
    * @ingroup hashfunctions_group
    * @tparam Type The type of the RefPtr.
    */
-  template <typename Type>
-  class HashFunc<RefPtr<Type>> : public HashFunc<unsigned int*> {
+  template < typename Type >
+  class HashFunc< RefPtr< Type > > : public HashFunc< unsigned int* > {
     public:
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const RefPtr<Type>& key ) const;
+    Size operator()(const RefPtr< Type >& key) const;
   };
 
   /**
@@ -708,14 +709,14 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::string> : public HashFuncBase<std::string> {
+  class HashFunc< std::string > : public HashFuncBase< std::string > {
     public:
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const std::string& key ) const;
+    Size operator()(const std::string& key) const;
   };
 
   /**
@@ -724,15 +725,15 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::pair<std::string, std::string>>
-      : public HashFuncBase<std::pair<std::string, std::string>> {
+  class HashFunc< std::pair< std::string, std::string > >
+    : public HashFuncBase< std::pair< std::string, std::string > > {
     public:
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const std::pair<std::string, std::string>& key ) const;
+    Size operator()(const std::pair< std::string, std::string >& key) const;
   };
 
   /**
@@ -741,14 +742,15 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<std::vector<Idx>> : public HashFuncBase<std::vector<Idx>> {
+  class HashFunc< std::vector< Idx > >
+    : public HashFuncBase< std::vector< Idx > > {
     public:
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const std::vector<Idx>& key ) const;
+    Size operator()(const std::vector< Idx >& key) const;
   };
 
   /**
@@ -757,14 +759,14 @@ namespace gum {
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc<Debug> : public HashFuncBase<Debug> {
+  class HashFunc< Debug > : public HashFuncBase< Debug > {
     public:
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()( const Debug& key ) const;
+    Size operator()(const Debug& key) const;
   };
 
 } /* namespace gum */

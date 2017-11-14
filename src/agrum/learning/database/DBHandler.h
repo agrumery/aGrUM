@@ -87,13 +87,13 @@ namespace gum {
       virtual void reset() = 0;
 
       /// sets the range of rows in the database that the handler will parse
-      virtual void setRange( Size begin, Size end ) = 0;
+      virtual void setRange(Size begin, Size end) = 0;
 
       /// returns the current range of the handler
-      virtual std::pair<Size, Size> range() const noexcept = 0;
+      virtual std::pair< Size, Size > range() const noexcept = 0;
 
       /// returns the names of the variables
-      virtual const std::vector<std::string>& variableNames() const noexcept = 0;
+      virtual const std::vector< std::string >& variableNames() const noexcept = 0;
 
       /// returns the number of variables (columns) of the database
       virtual Size nbVariables() const noexcept = 0;

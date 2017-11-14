@@ -35,325 +35,330 @@ Coco/R itself) does not fall under the GNU General Public License.
 #if !defined(gum_prm_o3prm_COCO_PARSER_H__)
 #define gum_prm_o3prm_COCO_PARSER_H__
 
-#include <string>
-#include <vector>
-#include <utility>
+#include <agrum/PRM/o3prm/O3prm.h>
 #include <agrum/core/debug.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/PRM/o3prm/O3prm.h>
+#include <string>
+#include <utility>
+#include <vector>
 
+#include "Scanner.h"
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <fstream>
-#include "Scanner.h"
 
 namespace gum {
-namespace prm {
-namespace o3prm {
+  namespace prm {
+    namespace o3prm {
 
 
-class Parser {
-  private:
-    	enum {
-		_EOF=0,
-		_integer=1,
-		_float=2,
-		_label=3,
-		_eol=4,
-		_dot=5,
-		_comma=6,
-		_colon=7,
-		_semicolon=8,
-		_import=9,
-		_type=10,
-		_class=11,
-		_interface=12,
-		_extends=13,
-		_system=14,
-		_dependson=15,
-		_default=16,
-		_implements=17,
-		_param=18,
-		_labels=19,
-		_int=20,
-		_real=21,
-		_inc=22,
-		_string=23
-	};
-	int maxT;
+      class Parser {
+        private:
+        enum {
+          _EOF = 0,
+          _integer = 1,
+          _float = 2,
+          _label = 3,
+          _eol = 4,
+          _dot = 5,
+          _comma = 6,
+          _colon = 7,
+          _semicolon = 8,
+          _import = 9,
+          _type = 10,
+          _class = 11,
+          _interface = 12,
+          _extends = 13,
+          _system = 14,
+          _dependson = 15,
+          _default = 16,
+          _implements = 17,
+          _param = 18,
+          _labels = 19,
+          _int = 20,
+          _real = 21,
+          _inc = 22,
+          _string = 23
+        };
+        int maxT;
 
-    Token* dummyToken;
-    int errDist;
-    int minErrDist;
+        Token* dummyToken;
+        int    errDist;
+        int    minErrDist;
 
-    void SynErr( int n );
-    void Get();
-    void Expect( int n );
-    bool StartOf( int s );
-    void ExpectWeak( int n, int follow );
-    bool WeakSeparator( int n, int syFol, int repFol );
+        void SynErr(int n);
+        void Get();
+        void Expect(int n);
+        bool StartOf(int s);
+        void ExpectWeak(int n, int follow);
+        bool WeakSeparator(int n, int syFol, int repFol);
 
-    ErrorsContainer  __errors;
+        ErrorsContainer __errors;
 
-  public:
-    Scanner* scanner;
+        public:
+        Scanner* scanner;
 
-    Token* t;     // last recognized token
-    Token* la;      // lookahead token
+        Token* t;   // last recognized token
+        Token* la;  // lookahead token
 
-    private:
+        private:
+        using O3Position = gum::prm::o3prm::O3Position;
 
-using O3Position = gum::prm::o3prm::O3Position;
+        using O3Integer = gum::prm::o3prm::O3Integer;
+        using O3Float = gum::prm::o3prm::O3Float;
 
-using O3Integer = gum::prm::o3prm::O3Integer;
-using O3Float = gum::prm::o3prm::O3Float;
+        using O3FloatList = std::vector< gum::prm::o3prm::O3Float >;
 
-using O3FloatList = std::vector<gum::prm::o3prm::O3Float>;
+        using O3Label = gum::prm::o3prm::O3Label;
+        using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
+        using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
 
-using O3Label = gum::prm::o3prm::O3Label;
-using O3LabelList = gum::prm::o3prm::O3Class::O3LabelList;
-using LabelMap = gum::prm::o3prm::O3Type::LabelMap;
+        using O3Formula = gum::prm::o3prm::O3Formula;
+        using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
 
-using O3Formula = gum::prm::o3prm::O3Formula;
-using O3FormulaList = gum::prm::o3prm::O3RawCPT::O3FormulaList;
+        using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
+        using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
 
-using O3Rule = gum::prm::o3prm::O3RuleCPT::O3Rule;
-using O3RuleList = gum::prm::o3prm::O3RuleCPT::O3RuleList;
+        using O3Type = gum::prm::o3prm::O3Type;
+        using O3IntType = gum::prm::o3prm::O3IntType;
 
-using O3Type = gum::prm::o3prm::O3Type;
-using O3IntType = gum::prm::o3prm::O3IntType;
+        using O3Interface = gum::prm::o3prm::O3Interface;
+        using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
+        using O3InterfaceElementList =
+          gum::prm::o3prm::O3Interface::O3InterfaceElementList;
 
-using O3Interface = gum::prm::o3prm::O3Interface;
-using O3InterfaceElement = gum::prm::o3prm::O3InterfaceElement;
-using O3InterfaceElementList = gum::prm::o3prm::O3Interface::O3InterfaceElementList;
+        using O3Parameter = gum::prm::o3prm::O3Parameter;
+        using O3ParameterList = gum::prm::o3prm::O3Class::O3ParameterList;
 
-using O3Parameter = gum::prm::o3prm::O3Parameter;
-using O3ParameterList = gum::prm::o3prm::O3Class::O3ParameterList;
+        using O3ReferenceSlot = gum::prm::o3prm::O3ReferenceSlot;
+        using O3ReferenceSlotList = gum::prm::o3prm::O3Class::O3ReferenceSlotList;
 
-using O3ReferenceSlot = gum::prm::o3prm::O3ReferenceSlot;
-using O3ReferenceSlotList = gum::prm::o3prm::O3Class::O3ReferenceSlotList;
+        using O3Attribute = gum::prm::o3prm::O3Attribute;
+        using O3RawCPT = gum::prm::o3prm::O3RawCPT;
+        using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
+        using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
 
-using O3Attribute = gum::prm::o3prm::O3Attribute;
-using O3RawCPT = gum::prm::o3prm::O3RawCPT;
-using O3RuleCPT = gum::prm::o3prm::O3RuleCPT;
-using O3AttributeList = gum::prm::o3prm::O3Class::O3AttributeList;
+        using O3Aggregate = gum::prm::o3prm::O3Aggregate;
+        using O3AggregateList = gum::prm::o3prm::O3Class::O3AggregateList;
 
-using O3Aggregate = gum::prm::o3prm::O3Aggregate;
-using O3AggregateList = gum::prm::o3prm::O3Class::O3AggregateList;
+        using O3Class = gum::prm::o3prm::O3Class;
 
-using O3Class = gum::prm::o3prm::O3Class;
+        using O3System = gum::prm::o3prm::O3System;
+        using O3Instance = gum::prm::o3prm::O3Instance;
+        using O3InstanceParameter = gum::prm::o3prm::O3InstanceParameter;
+        using O3InstanceParameterList =
+          gum::prm::o3prm::O3Instance::O3InstanceParameterList;
+        using O3Assignment = gum::prm::o3prm::O3Assignment;
+        using O3Increment = gum::prm::o3prm::O3Increment;
 
-using O3System = gum::prm::o3prm::O3System;
-using O3Instance = gum::prm::o3prm::O3Instance;
-using O3InstanceParameter = gum::prm::o3prm::O3InstanceParameter;
-using O3InstanceParameterList = gum::prm::o3prm::O3Instance::O3InstanceParameterList;
-using O3Assignment = gum::prm::o3prm::O3Assignment;
-using O3Increment = gum::prm::o3prm::O3Increment;
+        using O3Import = gum::prm::o3prm::O3Import;
+        using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
 
-using O3Import = gum::prm::o3prm::O3Import;
-using O3ImportList = gum::prm::o3prm::O3PRM::O3ImportList;
+        using O3PRM = gum::prm::o3prm::O3PRM;
 
-using O3PRM = gum::prm::o3prm::O3PRM;
+        O3PRM*      __prm;
+        std::string __prefix;
 
-O3PRM* __prm;
-std::string __prefix;
+        bool __ok(Size n) { return errors().error_count == n; }
 
-bool __ok (Size n) { return errors().error_count == n; }
+        void __addO3Type(O3Type t) {
+          get_prm()->types().emplace_back(new O3Type(std::move(t)));
+        }
 
-void __addO3Type( O3Type t ) {
-  get_prm()->types().emplace_back( new O3Type(std::move( t )) );
-}
+        void __addO3IntType(O3IntType t) {
+          get_prm()->int_types().emplace_back(new O3IntType(std::move(t)));
+        }
 
-void __addO3IntType( O3IntType t ) {
-  get_prm()->int_types().emplace_back( new O3IntType(std::move( t )) );
-}
+        void __addO3RealType(O3RealType t) {
+          get_prm()->real_types().emplace_back(new O3RealType(std::move(t)));
+        }
 
-void __addO3RealType( O3RealType t ) {
-  get_prm()->real_types().emplace_back( new O3RealType(std::move( t )) );
-}
+        void __addO3Interface(O3Interface i) {
+          get_prm()->interfaces().emplace_back(new O3Interface(std::move(i)));
+        }
 
-void __addO3Interface( O3Interface i ) {
-  get_prm()->interfaces().emplace_back( new O3Interface( std::move( i ) ) );
-}
+        void __addO3Class(O3Class c) {
+          get_prm()->classes().emplace_back(new O3Class(std::move(c)));
+        }
 
-void __addO3Class( O3Class c ) {
-  get_prm()->classes().emplace_back( new O3Class( std::move( c ) ) );
-}
+        void __addO3System(O3System s) {
+          get_prm()->systems().emplace_back(new O3System(std::move(s)));
+        }
 
-void __addO3System( O3System s ) {
-  get_prm()->systems().emplace_back( new O3System( std::move( s ) ) );
-}
+        void __addO3Import(O3Import i) {
+          get_prm()->imports().emplace_back(new O3Import(std::move(i)));
+        }
 
-void __addO3Import( O3Import i ) {
-  get_prm()->imports().emplace_back( new O3Import( std::move( i ) ) );
-}
+        void __split(const O3Label& value, O3Label& left, O3Label& right) {
+          auto idx = value.label().find_first_of('.');
+          if ((idx == std::string::npos) || (idx == value.label().size() - 1)) {
+            left = O3Label(value.position(), value.label());
+            right = O3Label(value.position(), value.label());
+          } else {
+            left = O3Label(value.position(), value.label().substr(0, idx));
+            auto pos = O3Position(value.position().file(),
+                                  value.position().line(),
+                                  value.position().column() + (int)idx);
+            right = O3Label(pos, value.label().substr(idx + 1));
+          }
+        }
 
-void __split( const O3Label& value, O3Label& left, O3Label& right) {
-  auto idx = value.label().find_first_of('.');
-  if ( ( idx == std::string::npos ) || ( idx == value.label().size() - 1 ) ) {
-    left = O3Label( value.position(), value.label() );
-    right = O3Label( value.position(), value.label() );
-  } else {
-    left = O3Label( value.position(), value.label().substr( 0, idx ) );
-    auto pos = O3Position( value.position().file(),
-                         value.position().line(),
-                         value.position().column() + (int)idx );
-    right = O3Label( pos, value.label().substr( idx + 1 ) );
-  }
-}
+        O3Label
+        __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3Type& t) {
+          std::stringstream ss;
+          ss << "__" << c.name() << "_" << name.label();
+          for (const auto& l : t.labels()) {
+            ss << '_' << l.first.label();
+          }
+          ss << "__";
+          t.name().position() = pos;
+          t.name().label() = ss.str();
+          return t.name();
+        }
 
-O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3Type& t) {
-  std::stringstream ss;
-  ss << "__" << c.name() << "_" << name.label();
-  for (auto& l: t.labels()) {
-    ss << '_' << l.first.label();
-  }
-  ss << "__";
-  t.name().position() = pos;
-  t.name().label() = ss.str();
-  return t.name();
-}
+        O3Label __setAnonTypeName(O3Class&    c,
+                                  O3Label&    name,
+                                  O3Position& pos,
+                                  O3IntType&  t) {
+          std::stringstream ss;
+          ss << "__" << c.name() << "_" << name.label();
+          ss << "_" << t.start().value() << '_' << t.end().value();
+          ss << "__";
+          t.name().position() = pos;
+          t.name().label() = ss.str();
+          return t.name();
+        }
 
-O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3IntType& t) {
-  std::stringstream ss;
-  ss << "__" << c.name() << "_" << name.label();
-  ss << "_" << t.start().value() << '_' << t.end().value();
-  ss << "__";
-  t.name().position() = pos;
-  t.name().label() = ss.str();
-  return t.name();
-}
+        O3Label __setAnonTypeName(O3Class&    c,
+                                  O3Label&    name,
+                                  O3Position& pos,
+                                  O3RealType& t) {
+          std::stringstream ss;
+          ss << "__" << c.name() << "_" << name.label();
+          for (const auto& v : t.values()) {
+            ss << '_' << v.value();
+          }
+          ss << "__";
+          t.name().position() = pos;
+          t.name().label() = ss.str();
+          return t.name();
+        }
 
-O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3RealType& t) {
-  std::stringstream ss;
-  ss << "__" << c.name() << "_" << name.label();
-  for (auto& v: t.values()) {
-    ss << '_' << v.value();
-  }
-  ss << "__";
-  t.name().position() = pos;
-  t.name().label() = ss.str();
-  return t.name();
-}
+        public:
+        // Set the parser factory.
+        void set_prm(O3PRM* prm) { __prm = prm; }
 
-public:
-// Set the parser factory.
-void set_prm(O3PRM* prm) {
-  __prm = prm;
-}
+        O3PRM* get_prm() { return __prm; }
 
-O3PRM* get_prm() {
-  return __prm;
-}
+        // Set the prefix for types, interfaces, classes and systems parsed
+        void set_prefix(const std::string& prefix) {
+          __prefix = prefix;
+          if (__prefix.size() > 0 && __prefix[__prefix.size() - 1] != '.') {
+            __prefix.append(".");
+          }
+        }
 
-// Set the prefix for types, interfaces, classes and systems parsed
-void set_prefix( const std::string& prefix ) {
-  __prefix = prefix;
-  if ( __prefix.size() > 0 && __prefix[__prefix.size() - 1] != '.' ) {
-    __prefix.append( "." );
-  }
-}
+        //##############################################################################
+        //
+        //                              SCANNER RULES
+        //
+        //##############################################################################
 
-//##############################################################################
-//
-//                              SCANNER RULES
-//
-//##############################################################################
+        //________________________
 
-//________________________
+        Parser(Scanner* scanner);
+        ~Parser();
+        void SemErr(const wchar_t* msg);
+        void SynErr(const std::wstring& filename, int line, int col, int n);
+        void Warning(const wchar_t* msg);
+        const ErrorsContainer& errors() const;
+        ErrorsContainer&       errors();
 
-    Parser( Scanner* scanner );
-    ~Parser();
-    void SemErr( const wchar_t* msg );
-    void SynErr( const std::wstring& filename,int line, int col, int n );
-    void Warning( const wchar_t* msg );
-    const ErrorsContainer& errors() const;
-    ErrorsContainer& errors();
+        void O3PRM_UNIT();
+        void IMPORT_UNIT();
+        void UNIT();
+        void TYPE_UNIT();
+        void INTERFACE_UNIT();
+        void CLASS_UNIT();
+        void SYSTEM_UNIT();
+        void CLASS_DECLARATION(O3Class& c);
+        void CLASS(O3Position& pos);
+        void PREFIXED_LABEL(O3Label& l);
+        void CHAIN(O3Label& ident);
+        void IDENTIFIER_LIST(O3LabelList& list);
+        void CLASS_BODY(O3Class& c);
+        void CLASS_PARAMETER(O3ParameterList& params);
+        void CLASS_ANON_TYPE_ATTR(O3Class& c);
+        void CLASS_ELEMENT(O3Class& c);
+        void LABEL(O3Label& l);
+        void INTEGER(O3Integer& i);
+        void FLOAT(O3Float& f);
+        void TYPE_VALUE_LIST(LabelMap& labels);
+        void LABEL_OR_INT(O3Label& l);
+        void INT_TYPE_DECLARATION(O3Integer& start, O3Integer& end);
+        void REAL_TYPE_DECLARATION(O3FloatList& values);
+        void ATTRIBUTE(O3Label& type, O3Label& name, O3Class& c);
+        void ARRAY_REFERENCE_SLOT(O3Label& type, O3ReferenceSlotList& refs);
+        void NAMED_CLASS_ELEMENT(O3Label& type, O3Class& c);
+        void REFERENCE_SLOT(O3Label& type, O3Label& name, O3Class& c);
+        void AGGREGATE(O3Label& type, O3Label& name, O3Class& c);
+        void RAW_CPT(const O3Label&     type,
+                     const O3Label&     name,
+                     const O3LabelList& parents,
+                     O3AttributeList&   elts);
+        void RULE_CPT(const O3Label&     type,
+                      const O3Label&     name,
+                      const O3LabelList& parents,
+                      O3AttributeList&   elts);
+        void AGGREGATE_PARENTS(O3LabelList& parents);
+        void LABEL_LIST(O3LabelList& list);
+        void IDENTIFIER(O3Label& ident);
+        void FORMULA_LIST(O3FormulaList& values);
+        void RULE(O3RuleList& rules);
+        void LABEL_OR_STAR_LIST(O3LabelList& list);
+        void INTERFACE_DECLARATION(O3Position&             pos,
+                                   O3Label&                name,
+                                   O3Label&                superLabel,
+                                   O3InterfaceElementList& elts);
+        void INTERFACE(O3Position& pos);
+        void INTERFACE_BODY(O3InterfaceElementList& elts);
+        void TYPE_DECLARATION();
+        void DEPRECATED_INT_DECLARATION();
+        void DEPRECATED_REAL_DECLARATION();
+        void DISCRETE_TYPE_DECLARATION(bool& deprecated, LabelMap& labels);
+        void EXTENDED_TYPE_DECLARATION(bool&     deprecated,
+                                       O3Label&  super,
+                                       LabelMap& labels);
+        void DEPRECATED_DISCRETE_TYPE_DECLERATION(LabelMap& labels);
+        void MAP(LabelMap& labels);
+        void DEPRECATED_EXTENDED_TYPE_DECLARATION(LabelMap& labels);
+        void FLOAT_LIST(O3FloatList& values);
+        void INT(O3Position& pos);
+        void REAL(O3Position& pos);
+        void FLOAT_OR_INT(O3Float& f);
+        void TYPE_LABEL(O3Label& l);
+        void INTEGER_AS_LABEL(O3Label& l);
+        void FLOAT_AS_LABEL(O3Label& l);
+        void SYSTEM_DECLARATION(O3System& s);
+        void SYSTEM_BODY(O3System& sys);
+        void ARRAY(O3Integer& size);
+        void PARAMETER_LIST(O3InstanceParameterList& params);
+        void PARAMETER(O3InstanceParameterList& params);
+        void INTEGER_AS_FLOAT(O3Float& f);
+        void IMPORT_BODY();
+        void IMPORT_DECLARATION(O3Import& import);
+        void CAST(std::stringstream& s);
+        void LINK(std::stringstream& s);
+        void LABEL_OR_STAR(O3Label& l);
+        void FORMULA(O3Formula& f);
 
-    	void O3PRM_UNIT();
-	void IMPORT_UNIT();
-	void UNIT();
-	void TYPE_UNIT();
-	void INTERFACE_UNIT();
-	void CLASS_UNIT();
-	void SYSTEM_UNIT();
-	void CLASS_DECLARATION(O3Class& c);
-	void CLASS(O3Position& pos);
-	void PREFIXED_LABEL(O3Label& l);
-	void CHAIN(O3Label& ident);
-	void IDENTIFIER_LIST(O3LabelList& list);
-	void CLASS_BODY(O3Class& c);
-	void CLASS_PARAMETER(O3ParameterList& params);
-	void CLASS_ANON_TYPE_ATTR(O3Class& c);
-	void CLASS_ELEMENT(O3Class& c);
-	void LABEL(O3Label& l);
-	void INTEGER(O3Integer& i);
-	void FLOAT(O3Float& f);
-	void TYPE_VALUE_LIST(LabelMap& labels );
-	void LABEL_OR_INT(O3Label& l);
-	void INT_TYPE_DECLARATION(O3Integer& start, O3Integer& end);
-	void REAL_TYPE_DECLARATION(O3FloatList& values);
-	void ATTRIBUTE(O3Label& type, O3Label& name, O3Class& c);
-	void ARRAY_REFERENCE_SLOT(O3Label& type, O3ReferenceSlotList& refs);
-	void NAMED_CLASS_ELEMENT(O3Label& type, O3Class& c);
-	void REFERENCE_SLOT(O3Label& type, O3Label& name, O3Class& c);
-	void AGGREGATE(O3Label& type, O3Label& name, O3Class& c);
-	void RAW_CPT(const O3Label& type,
-const O3Label& name,
-const O3LabelList& parents,
-O3AttributeList& elts);
-	void RULE_CPT(const O3Label& type,
-const O3Label& name,
-const O3LabelList& parents,
-O3AttributeList& elts);
-	void AGGREGATE_PARENTS(O3LabelList& parents);
-	void LABEL_LIST(O3LabelList& list);
-	void IDENTIFIER(O3Label& ident);
-	void FORMULA_LIST(O3FormulaList& values);
-	void RULE(O3RuleList& rules);
-	void LABEL_OR_STAR_LIST(O3LabelList& list);
-	void INTERFACE_DECLARATION(O3Position& pos,
-O3Label& name,
-O3Label& superLabel,
-O3InterfaceElementList& elts);
-	void INTERFACE(O3Position& pos);
-	void INTERFACE_BODY(O3InterfaceElementList& elts);
-	void TYPE_DECLARATION();
-	void DEPRECATED_INT_DECLARATION();
-	void DEPRECATED_REAL_DECLARATION();
-	void DISCRETE_TYPE_DECLARATION(bool& deprecated, LabelMap& labels);
-	void EXTENDED_TYPE_DECLARATION(bool& deprecated, O3Label& super, LabelMap& labels);
-	void DEPRECATED_DISCRETE_TYPE_DECLERATION(LabelMap& labels);
-	void MAP(LabelMap& labels );
-	void DEPRECATED_EXTENDED_TYPE_DECLARATION(LabelMap& labels);
-	void FLOAT_LIST(O3FloatList& values);
-	void INT(O3Position& pos);
-	void REAL(O3Position& pos);
-	void FLOAT_OR_INT(O3Float& f);
-	void TYPE_LABEL(O3Label& l);
-	void INTEGER_AS_LABEL(O3Label& l);
-	void FLOAT_AS_LABEL(O3Label& l);
-	void SYSTEM_DECLARATION(O3System& s);
-	void SYSTEM_BODY(O3System& sys);
-	void ARRAY(O3Integer& size);
-	void PARAMETER_LIST(O3InstanceParameterList& params);
-	void PARAMETER(O3InstanceParameterList& params);
-	void INTEGER_AS_FLOAT(O3Float& f);
-	void IMPORT_BODY();
-	void IMPORT_DECLARATION(O3Import& import);
-	void CAST(std::stringstream& s);
-	void LINK(std::stringstream& s);
-	void LABEL_OR_STAR(O3Label& l);
-	void FORMULA(O3Formula& f);
+        void Parse();
 
-    void Parse();
+      };  // end Parser
 
-}; // end Parser
-
-} // namespace
-} // namespace
-} // namespace
+    }  // namespace
+  }    // namespace
+}  // namespace
 
 
-#endif // !defined(COCO_PARSER_H__)
-
+#endif  // !defined(COCO_PARSER_H__)

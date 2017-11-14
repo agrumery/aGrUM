@@ -29,6 +29,6 @@
 
 namespace gum {
 
-  template class Link<Idx>;
+  template class Link< Idx >;
 
 }  // namespace gum

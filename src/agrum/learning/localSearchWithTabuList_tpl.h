@@ -32,21 +32,21 @@ namespace gum {
   namespace learning {
 
     /// learns the structure of a Bayes net
-    template <typename GRAPH_CHANGES_SELECTOR>
-    DAG LocalSearchWithTabuList::learnStructure( GRAPH_CHANGES_SELECTOR&  selector,
-                                                 const std::vector<Size>& modal,
-                                                 DAG                      dag ) {
-      selector.setGraph( dag, modal );
+    template < typename GRAPH_CHANGES_SELECTOR >
+    DAG LocalSearchWithTabuList::learnStructure(GRAPH_CHANGES_SELECTOR& selector,
+                                                const std::vector< Size >& modal,
+                                                DAG                        dag) {
+      selector.setGraph(dag, modal);
 
-      Size   nb_changes_applied = 0;
-      Idx    applied_change_with_positive_score = 0;
-      Idx    current_N = 0;
+      Size nb_changes_applied = 0;
+      Idx  applied_change_with_positive_score = 0;
+      Idx  current_N = 0;
 
       initApproximationScheme();
 
       // a vector that indicates which queues have valid scores, i.e., scores
       // that were not invalidated by previously applied changes
-      std::vector<bool> impacted_queues( dag.size(), false );
+      std::vector< bool > impacted_queues(dag.size(), false);
 
       // the best dag found so far with its score
       DAG    best_dag = dag;
@@ -58,103 +58,101 @@ namespace gum {
         applied_change_with_positive_score = 0;
         delta_score = 0;
 
-        std::vector<std::pair<NodeId, double>> ordered_queues =
+        std::vector< std::pair< NodeId, double > > ordered_queues =
           selector.nodesSortedByBestScore();
 
-        for ( Idx j = 0; j < dag.size(); ++j ) {
+        for (Idx j = 0; j < dag.size(); ++j) {
           NodeId i = ordered_queues[j].first;
 
-          if ( !selector.empty( i ) &&
-               ( !nb_changes_applied || ( selector.bestScore( i ) > 0 ) ) ) {
+          if (!selector.empty(i) &&
+              (!nb_changes_applied || (selector.bestScore(i) > 0))) {
             // pick up the best change
-            const GraphChange& change = selector.bestChange( i );
+            const GraphChange& change = selector.bestChange(i);
 
             // perform the change
-            switch ( change.type() ) {
-            case GraphChangeType::ARC_ADDITION:
-              if ( !impacted_queues[change.node2()] &&
-                   selector.isChangeValid( change ) ) {
-                if ( selector.bestScore( i ) > 0 ) {
-                  ++applied_change_with_positive_score;
-                }
-                else if ( current_score > best_score ) {
-                  best_score = current_score;
-                  best_dag = dag;
-                }
+            switch (change.type()) {
+              case GraphChangeType::ARC_ADDITION:
+                if (!impacted_queues[change.node2()] &&
+                    selector.isChangeValid(change)) {
+                  if (selector.bestScore(i) > 0) {
+                    ++applied_change_with_positive_score;
+                  } else if (current_score > best_score) {
+                    best_score = current_score;
+                    best_dag = dag;
+                  }
 
-                // std::cout << "apply arc addition " << change.node1()
-                //           << " -> " << change.node2()
-                //           << "  delta = " << selector.bestScore( i )
-                //           << std::endl;
+                  // std::cout << "apply arc addition " << change.node1()
+                  //           << " -> " << change.node2()
+                  //           << "  delta = " << selector.bestScore( i )
+                  //           << std::endl;
 
-                delta_score += selector.bestScore( i );
-                current_score += selector.bestScore( i );
-                dag.addArc( change.node1(), change.node2() );
-                impacted_queues[change.node2()] = true;
-                selector.applyChangeWithoutScoreUpdate( change );
-                ++nb_changes_applied;
-              }
-
-              break;
-
-            case GraphChangeType::ARC_DELETION:
-              if ( !impacted_queues[change.node2()] &&
-                   selector.isChangeValid( change ) ) {
-                if ( selector.bestScore( i ) > 0 ) {
-                  ++applied_change_with_positive_score;
-                }
-                else if ( current_score > best_score ) {
-                  best_score = current_score;
-                  best_dag = dag;
-                }
-                    
-                // std::cout << "apply arc deletion " << change.node1()
-                //           << " -> " << change.node2()
-                //           << "  delta = " << selector.bestScore( i )
-                //           << std::endl;
-
-                delta_score += selector.bestScore( i );
-                current_score += selector.bestScore( i );
-                dag.eraseArc( Arc( change.node1(), change.node2() ) );
-                impacted_queues[change.node2()] = true;
-                selector.applyChangeWithoutScoreUpdate( change );
-                ++nb_changes_applied;
-              }
-
-              break;
-
-            case GraphChangeType::ARC_REVERSAL:
-              if ( ( !impacted_queues[change.node1()] ) &&
-                   ( !impacted_queues[change.node2()] ) &&
-                   selector.isChangeValid( change ) ) {
-                if ( selector.bestScore( i ) > 0 ) {
-                  ++applied_change_with_positive_score;
-                } else if ( current_score > best_score ) {
-                  best_score = current_score;
-                  best_dag = dag;
+                  delta_score += selector.bestScore(i);
+                  current_score += selector.bestScore(i);
+                  dag.addArc(change.node1(), change.node2());
+                  impacted_queues[change.node2()] = true;
+                  selector.applyChangeWithoutScoreUpdate(change);
+                  ++nb_changes_applied;
                 }
 
-                // std::cout << "apply arc reversal " << change.node1()
-                //           << " -> " << change.node2() 
-                //           << "  delta = " << selector.bestScore( i )
-                //           << std::endl;
+                break;
 
-                delta_score += selector.bestScore( i );
-                current_score += selector.bestScore( i );
-                dag.eraseArc( Arc( change.node1(), change.node2() ) );
-                dag.addArc( change.node2(), change.node1() );
-                impacted_queues[change.node1()] = true;
-                impacted_queues[change.node2()] = true;
-                selector.applyChangeWithoutScoreUpdate( change );
-                ++nb_changes_applied;
-              }
+              case GraphChangeType::ARC_DELETION:
+                if (!impacted_queues[change.node2()] &&
+                    selector.isChangeValid(change)) {
+                  if (selector.bestScore(i) > 0) {
+                    ++applied_change_with_positive_score;
+                  } else if (current_score > best_score) {
+                    best_score = current_score;
+                    best_dag = dag;
+                  }
 
-              break;
+                  // std::cout << "apply arc deletion " << change.node1()
+                  //           << " -> " << change.node2()
+                  //           << "  delta = " << selector.bestScore( i )
+                  //           << std::endl;
 
-            default:
-              GUM_ERROR( OperationNotAllowed,
-                         "edge modifications are not "
-                         "supported by local search" );
+                  delta_score += selector.bestScore(i);
+                  current_score += selector.bestScore(i);
+                  dag.eraseArc(Arc(change.node1(), change.node2()));
+                  impacted_queues[change.node2()] = true;
+                  selector.applyChangeWithoutScoreUpdate(change);
+                  ++nb_changes_applied;
+                }
+
+                break;
+
+              case GraphChangeType::ARC_REVERSAL:
+                if ((!impacted_queues[change.node1()]) &&
+                    (!impacted_queues[change.node2()]) &&
+                    selector.isChangeValid(change)) {
+                  if (selector.bestScore(i) > 0) {
+                    ++applied_change_with_positive_score;
+                  } else if (current_score > best_score) {
+                    best_score = current_score;
+                    best_dag = dag;
+                  }
+
+                  // std::cout << "apply arc reversal " << change.node1()
+                  //           << " -> " << change.node2()
+                  //           << "  delta = " << selector.bestScore( i )
+                  //           << std::endl;
+
+                  delta_score += selector.bestScore(i);
+                  current_score += selector.bestScore(i);
+                  dag.eraseArc(Arc(change.node1(), change.node2()));
+                  dag.addArc(change.node2(), change.node1());
+                  impacted_queues[change.node1()] = true;
+                  impacted_queues[change.node2()] = true;
+                  selector.applyChangeWithoutScoreUpdate(change);
+                  ++nb_changes_applied;
+                }
+
+                break;
+
+              default:
+                GUM_ERROR(OperationNotAllowed,
+                          "edge modifications are not "
+                          "supported by local search");
             }
 
             break;
@@ -164,15 +162,15 @@ namespace gum {
         selector.updateScoresAfterAppliedChanges();
 
         // reset the impacted queue and applied changes structures
-        for ( auto iter = impacted_queues.begin(); iter != impacted_queues.end();
-              ++iter ) {
+        for (auto iter = impacted_queues.begin(); iter != impacted_queues.end();
+             ++iter) {
           *iter = false;
         }
 
-        updateApproximationScheme( nb_changes_applied );
-        
+        updateApproximationScheme(nb_changes_applied);
+
         // update current_N
-        if ( applied_change_with_positive_score ) {
+        if (applied_change_with_positive_score) {
           current_N = 0;
           nb_changes_applied = 0;
         } else {
@@ -180,14 +178,14 @@ namespace gum {
         }
 
         // std::cout << "current N = " << current_N << std::endl;
-      } while ( ( current_N <= __MaxNbDecreasing ) &&
-                continueApproximationScheme( delta_score ) );
+      } while ((current_N <= __MaxNbDecreasing) &&
+               continueApproximationScheme(delta_score));
 
       stopApproximationScheme();  // just to be sure of the
                                   // approximationScheme has
                                   // been notified of the end of looop
 
-      if ( current_score > best_score ) {
+      if (current_score > best_score) {
         return dag;
       } else {
         return best_dag;
@@ -195,25 +193,24 @@ namespace gum {
     }
 
     /// learns the structure and the parameters of a BN
-    template <typename GUM_SCALAR,
-              typename GRAPH_CHANGES_SELECTOR,
-              typename PARAM_ESTIMATOR,
-              typename CELL_TRANSLATORS>
-    BayesNet<GUM_SCALAR>
-    LocalSearchWithTabuList::learnBN( GRAPH_CHANGES_SELECTOR&         selector,
-                                      PARAM_ESTIMATOR&                estimator,
-                                      const std::vector<std::string>& names,
-                                      const std::vector<Size>&        modal,
-                                      const CELL_TRANSLATORS&         translator,
-                                      DAG initial_dag ) {
-      return DAG2BNLearner::createBN<GUM_SCALAR,
-                                     PARAM_ESTIMATOR,
-                                     CELL_TRANSLATORS>(
-                                                       estimator,
-                                                       learnStructure( selector, modal, initial_dag ),
-                                                       names,
-                                                       modal,
-                                                       translator );
+    template < typename GUM_SCALAR,
+               typename GRAPH_CHANGES_SELECTOR,
+               typename PARAM_ESTIMATOR,
+               typename CELL_TRANSLATORS >
+    BayesNet< GUM_SCALAR >
+    LocalSearchWithTabuList::learnBN(GRAPH_CHANGES_SELECTOR&           selector,
+                                     PARAM_ESTIMATOR&                  estimator,
+                                     const std::vector< std::string >& names,
+                                     const std::vector< Size >&        modal,
+                                     const CELL_TRANSLATORS&           translator,
+                                     DAG initial_dag) {
+      return DAG2BNLearner::
+        createBN< GUM_SCALAR, PARAM_ESTIMATOR, CELL_TRANSLATORS >(
+          estimator,
+          learnStructure(selector, modal, initial_dag),
+          names,
+          modal,
+          translator);
     }
 
   } /* namespace learning */

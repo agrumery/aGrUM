@@ -29,52 +29,52 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR>
-    PRMClassElement<GUM_SCALAR>::PRMClassElement( const std::string& name )
-        : PRMObject( name ) {
-      GUM_CONSTRUCTOR( PRMClassElement );
+    template < typename GUM_SCALAR >
+    PRMClassElement< GUM_SCALAR >::PRMClassElement(const std::string& name)
+        : PRMObject(name) {
+      GUM_CONSTRUCTOR(PRMClassElement);
     }
 
-    template <typename GUM_SCALAR>
-    PRMClassElement<GUM_SCALAR>::PRMClassElement( const PRMClassElement& source )
-        : PRMObject( source.name() )
-        , __id( source.id() ) {
-      GUM_CONS_CPY( PRMClassElement );
+    template < typename GUM_SCALAR >
+    PRMClassElement< GUM_SCALAR >::PRMClassElement(const PRMClassElement& source)
+        : PRMObject(source.name())
+        , __id(source.id()) {
+      GUM_CONS_CPY(PRMClassElement);
     }
 
-    template <typename GUM_SCALAR>
-    PRMClassElement<GUM_SCALAR>::~PRMClassElement() {
-      GUM_DESTRUCTOR( PRMClassElement );
+    template < typename GUM_SCALAR >
+    PRMClassElement< GUM_SCALAR >::~PRMClassElement() {
+      GUM_DESTRUCTOR(PRMClassElement);
     }
 
-    template <typename GUM_SCALAR>
-    INLINE NodeId PRMClassElement<GUM_SCALAR>::id() const {
+    template < typename GUM_SCALAR >
+    INLINE NodeId PRMClassElement< GUM_SCALAR >::id() const {
       return __id;
     }
 
-    template <typename GUM_SCALAR>
-    INLINE PRMObject::prm_type PRMClassElement<GUM_SCALAR>::obj_type() const {
+    template < typename GUM_SCALAR >
+    INLINE PRMObject::prm_type PRMClassElement< GUM_SCALAR >::obj_type() const {
       return prm_type::CLASS_ELT;
     }
 
-    template <typename GUM_SCALAR>
-    INLINE void PRMClassElement<GUM_SCALAR>::setId( NodeId id ) {
+    template < typename GUM_SCALAR >
+    INLINE void PRMClassElement< GUM_SCALAR >::setId(NodeId id) {
       __id = id;
     }
 
-    template <typename GUM_SCALAR>
-    INLINE const std::string& PRMClassElement<GUM_SCALAR>::safeName() const {
+    template < typename GUM_SCALAR >
+    INLINE const std::string& PRMClassElement< GUM_SCALAR >::safeName() const {
       return _safeName;
     }
 
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     INLINE std::string
-    PRMClassElement<GUM_SCALAR>::cast( const PRMType<GUM_SCALAR>& t ) const {
-      if ( type().isSubTypeOf( t ) ) {
+    PRMClassElement< GUM_SCALAR >::cast(const PRMType< GUM_SCALAR >& t) const {
+      if (type().isSubTypeOf(t)) {
         return PRMObject::LEFT_CAST() + t.name() + PRMObject::RIGHT_CAST() +
                name();
       } else {
-        GUM_ERROR( OperationNotAllowed, "illegal cast" );
+        GUM_ERROR(OperationNotAllowed, "illegal cast");
       }
     }
 

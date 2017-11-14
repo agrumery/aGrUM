@@ -32,7 +32,7 @@ Coco/R itself) does not fall under the GNU General Public License.
 -----------------------------------------------------------------------*/
 
 
-#if !defined( gum_prm_o3prmr_COCO_PARSER_H__ )
+#if !defined(gum_prm_o3prmr_COCO_PARSER_H__)
 #define gum_prm_o3prmr_COCO_PARSER_H__
 
 #include <algorithm>
@@ -85,12 +85,12 @@ namespace gum {
         int    errDist;
         int    minErrDist;
 
-        void SynErr( int n );
+        void SynErr(int n);
         void Get();
-        void Expect( int n );
-        bool StartOf( int s );
-        void ExpectWeak( int n, int follow );
-        bool WeakSeparator( int n, int syFol, int repFol );
+        void Expect(int n);
+        bool StartOf(int s);
+        void ExpectWeak(int n, int follow);
+        bool WeakSeparator(int n, int syFol, int repFol);
 
         ErrorsContainer __errors;
 
@@ -100,27 +100,27 @@ namespace gum {
         Token* t;   // last recognized token
         Token* la;  // lookahead token
 
-        gum::prm::o3prmr::O3prmrContext<double>* __context;
-        gum::prm::o3prmr::O3prmrSession<double>* __currentSession;
+        gum::prm::o3prmr::O3prmrContext< double >* __context;
+        gum::prm::o3prmr::O3prmrSession< double >* __currentSession;
 
-        void SemErr( std::string s ) { SemErr( widen( s ).c_str() ); }
+        void SemErr(std::string s) { SemErr(widen(s).c_str()); }
 
-        void setO3prmrContext( gum::prm::o3prmr::O3prmrContext<double>* c ) {
+        void setO3prmrContext(gum::prm::o3prmr::O3prmrContext< double >* c) {
           __context = c;
         }
 
         //=====================
 
-        Parser( Scanner* scanner );
+        Parser(Scanner* scanner);
         ~Parser();
-        void SemErr( const wchar_t* msg );
-        void SynErr( const std::wstring& filename, int line, int col, int n );
-        void Warning( const wchar_t* msg );
+        void SemErr(const wchar_t* msg);
+        void SynErr(const std::wstring& filename, int line, int col, int n);
+        void Warning(const wchar_t* msg);
         const ErrorsContainer& errors() const;
         ErrorsContainer&       errors();
 
         void o3prmr();
-        void Ident( std::string& s );
+        void Ident(std::string& s);
         void RequestBloc();
         void Command();
         void Observe();
@@ -128,7 +128,7 @@ namespace gum {
         void Query();
         void SetEngine();
         void SetGrdEngine();
-        void IdentArray( std::string& s );
+        void IdentArray(std::string& s);
 
         void Parse();
 

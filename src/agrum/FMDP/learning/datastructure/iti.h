@@ -54,8 +54,8 @@ namespace gum {
    *
    */
 
-  template <TESTNAME AttributeSelection, bool isScalar = false>
-  class ITI : public IncrementalGraphLearner<AttributeSelection, isScalar> {
+  template < TESTNAME AttributeSelection, bool isScalar = false >
+  class ITI : public IncrementalGraphLearner< AttributeSelection, isScalar > {
 
     public:
     // ###################################################################
@@ -76,10 +76,10 @@ namespace gum {
      * behaviour
      */
     // ==========================================================================
-    ITI( MultiDimFunctionGraph<double>* target,
-         double                         attributeSelectionThreshold,
-         Set<const DiscreteVariable*>   attributeListe,
-         const DiscreteVariable*        learnedValue );
+    ITI(MultiDimFunctionGraph< double >* target,
+        double                           attributeSelectionThreshold,
+        Set< const DiscreteVariable* >   attributeListe,
+        const DiscreteVariable*          learnedValue);
 
     // ==========================================================================
     /**
@@ -92,14 +92,14 @@ namespace gum {
      * behaviour of learned function
      */
     // ==========================================================================
-    ITI( MultiDimFunctionGraph<double>* target,
-         double                         attributeSelectionThreshold,
-         Set<const DiscreteVariable*>   attributeListe );
+    ITI(MultiDimFunctionGraph< double >* target,
+        double                           attributeSelectionThreshold,
+        Set< const DiscreteVariable* >   attributeListe);
 
     // ==========================================================================
     /// Default destructor
     // ==========================================================================
-    ~ITI() { GUM_DESTRUCTOR( ITI ); }
+    ~ITI() { GUM_DESTRUCTOR(ITI); }
 
     /// @}
 
@@ -114,7 +114,7 @@ namespace gum {
      * @param obs the new observation to learn
      */
     // ==========================================================================
-    void addObservation( const Observation* obs );
+    void addObservation(const Observation* obs);
 
     protected:
     // ==========================================================================
@@ -125,8 +125,8 @@ namespace gum {
      * @param currentNodeId
      */
     // ==========================================================================
-    void _updateNodeWithObservation( const Observation* newObs,
-                                     NodeId             currentNodeId );
+    void _updateNodeWithObservation(const Observation* newObs,
+                                    NodeId             currentNodeId);
 
     /// @}
 
@@ -149,8 +149,8 @@ namespace gum {
      * @return the newly created node's id
      */
     // ==========================================================================
-    NodeId _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                        const DiscreteVariable* boundVar );
+    NodeId _insertNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                       const DiscreteVariable* boundVar);
 
     // ==========================================================================
     /**
@@ -159,8 +159,7 @@ namespace gum {
      * @param desiredVar : its new associated variable
      */
     // ==========================================================================
-    void _chgNodeBoundVar( NodeId                  chgedNodeId,
-                           const DiscreteVariable* desiredVar );
+    void _chgNodeBoundVar(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
 
     // ==========================================================================
     /**
@@ -168,7 +167,7 @@ namespace gum {
      * @param removedNodeId : the node to remove
      */
     // ==========================================================================
-    void _removeNode( NodeId removedNodeId );
+    void _removeNode(NodeId removedNodeId);
 
     /// @}
 
@@ -191,7 +190,7 @@ namespace gum {
      * @return the mathcing node id in the target
      */
     // ==========================================================================
-    NodeId __insertNodeInFunctionGraph( NodeId src );
+    NodeId __insertNodeInFunctionGraph(NodeId src);
 
     // ==========================================================================
     /**
@@ -203,8 +202,8 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId __insertTerminalNode( NodeId src ) {
-      return __insertTerminalNode( src, Int2Type<isScalar>() );
+    NodeId __insertTerminalNode(NodeId src) {
+      return __insertTerminalNode(src, Int2Type< isScalar >());
     }
 
     // ==========================================================================
@@ -216,7 +215,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId __insertTerminalNode( NodeId src, Int2Type<true> );
+    NodeId __insertTerminalNode(NodeId src, Int2Type< true >);
 
     // ==========================================================================
     /**
@@ -227,7 +226,7 @@ namespace gum {
      * @return the matching node in the target
      */
     // ==========================================================================
-    NodeId __insertTerminalNode( NodeId src, Int2Type<false> );
+    NodeId __insertTerminalNode(NodeId src, Int2Type< false >);
 
     /// @}
 
@@ -239,19 +238,19 @@ namespace gum {
      * @param ret
      */
     // ==========================================================================
-    void _insertSetOfVars( MultiDimFunctionGraph<double>* ret ) {
-      for ( SetIteratorSafe<const DiscreteVariable*> varIter =
-                this->_setOfVars.beginSafe();
-            varIter != this->_setOfVars.endSafe();
-            ++varIter )
-        ret->add( **varIter );
+    void _insertSetOfVars(MultiDimFunctionGraph< double >* ret) {
+      for (SetIteratorSafe< const DiscreteVariable* > varIter =
+             this->_setOfVars.beginSafe();
+           varIter != this->_setOfVars.endSafe();
+           ++varIter)
+        ret->add(**varIter);
     }
 
     private:
     /// Hashtable indicating if given node has been modified (upon receiving new
     /// exemple or through a transpose)
     /// The aim is not if we have revise the installed variable on that node
-    HashTable<NodeId, bool> __staleTable;
+    HashTable< NodeId, bool > __staleTable;
 
     /// The total number of observation added to this tree
     Idx __nbTotalObservation;

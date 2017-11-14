@@ -53,9 +53,9 @@ namespace gum {
      * @see PRM PRMFactory Class PRMSlotChain
      * @ingroup prm_group
      */
-    template <typename GUM_SCALAR>
-    class PRMAggregate : public PRMClassElement<GUM_SCALAR> {
-      friend class PRMClass<GUM_SCALAR>;
+    template < typename GUM_SCALAR >
+    class PRMAggregate : public PRMClassElement< GUM_SCALAR > {
+      friend class PRMClass< GUM_SCALAR >;
 
       public:
       // ========================================================================
@@ -84,29 +84,29 @@ namespace gum {
        *
        * @throw Raise NotFound exception if no matches is found.
        */
-      static AggregateType str2enum( const std::string& str ) {
-        if ( toLower( str ) == "min" ) {
+      static AggregateType str2enum(const std::string& str) {
+        if (toLower(str) == "min") {
           return AggregateType::MIN;
-        } else if ( toLower( str ) == "max" ) {
+        } else if (toLower(str) == "max") {
           return AggregateType::MAX;
-        } else if ( toLower( str ) == "count" ) {
+        } else if (toLower(str) == "count") {
           return AggregateType::COUNT;
-        } else if ( toLower( str ) == "exists" ) {
+        } else if (toLower(str) == "exists") {
           return AggregateType::EXISTS;
-        } else if ( toLower( str ) == "or" ) {
+        } else if (toLower(str) == "or") {
           return AggregateType::OR;
-        } else if ( toLower( str ) == "and" ) {
+        } else if (toLower(str) == "and") {
           return AggregateType::AND;
-        } else if ( toLower( str ) == "forall" ) {
+        } else if (toLower(str) == "forall") {
           return AggregateType::FORALL;
-        } else if ( toLower( str ) == "amplitude" ) {
+        } else if (toLower(str) == "amplitude") {
           return AggregateType::AMPLITUDE;
-        } else if ( toLower( str ) == "median" ) {
+        } else if (toLower(str) == "median") {
           return AggregateType::MEDIAN;
         } else {
           std::string msg = "Unknown aggregate: ";
-          msg.append( str );
-          GUM_ERROR( NotFound, msg );
+          msg.append(str);
+          GUM_ERROR(NotFound, msg);
         }
       }
 
@@ -123,9 +123,9 @@ namespace gum {
        * @param rvType The random variable type of this aggregate, which is
        * copied.
        */
-      PRMAggregate( const std::string&         name,
-                    AggregateType              aggType,
-                    const PRMType<GUM_SCALAR>& rvType );
+      PRMAggregate(const std::string&           name,
+                   AggregateType                aggType,
+                   const PRMType< GUM_SCALAR >& rvType);
 
       /**
        * Default constructor.
@@ -135,10 +135,10 @@ namespace gum {
        * copied.
        * @param label The index of the label on which this aggregate applies.
        */
-      PRMAggregate( const std::string&         name,
-                    AggregateType              aggType,
-                    const PRMType<GUM_SCALAR>& rvType,
-                    Idx                        label );
+      PRMAggregate(const std::string&           name,
+                   AggregateType                aggType,
+                   const PRMType< GUM_SCALAR >& rvType,
+                   Idx                          label);
 
       /// Destructor.
       virtual ~PRMAggregate();
@@ -150,7 +150,7 @@ namespace gum {
       /// @{
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
       elt_type() const;
 
       /// Returns the aggregate of *this.
@@ -169,20 +169,20 @@ namespace gum {
        *
        * This is used for inherited Aggregates to share labels in O3PRM.
        */
-      std::shared_ptr<Idx> sharedLabel() const;
+      std::shared_ptr< Idx > sharedLabel() const;
 
       /**
        * @brief Sets the shared_ptr of this Aggregate.
        *
        * This is used for inherited aggregates to share labels in O3PRM.
        */
-      void sharedLabel( std::shared_ptr<Idx> label );
+      void sharedLabel(std::shared_ptr< Idx > label);
 
       /**
        * @brief Set the aggregator's label.
        */
-      void setLabel( Idx idx );
-      void setLabel( const std::string& label );
+      void setLabel(Idx idx);
+      void setLabel(const std::string& label);
 
       /**
        * @brief Returns true if the label is defined.
@@ -190,30 +190,30 @@ namespace gum {
       bool hasLabel() const;
 
       /// See gum::PRMClassElement::_addParent().
-      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
+      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// See gum::PRMClassElement::_addChild().
-      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
+      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType<GUM_SCALAR>& type();
+      virtual PRMType< GUM_SCALAR >& type();
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType<GUM_SCALAR>& type() const;
+      virtual const PRMType< GUM_SCALAR >& type() const;
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
        * PRMAttribute, so this will raise an OperationNotAllowed exception.
        * See gum::PRMClassElement::cpf().
        */
-      virtual Potential<GUM_SCALAR>& cpf();
+      virtual Potential< GUM_SCALAR >& cpf();
 
       /**
        * @brief Aggregates don't have Potential until they are instantiated as
        * PRMAttribute, so this will raise an OperationNotAllowed exception.
        * See gum::PRMClassElement::cpf().
        */
-      virtual const Potential<GUM_SCALAR>& cpf() const;
+      virtual const Potential< GUM_SCALAR >& cpf() const;
 
       /**
        * Returns a pointer over an empty gum::MultiDimImplementation of the good
@@ -221,9 +221,9 @@ namespace gum {
        *
        * This should be use when manipulating instantiations of aggregates.
        */
-      MultiDimImplementation<GUM_SCALAR>* buildImpl() const;
+      MultiDimImplementation< GUM_SCALAR >* buildImpl() const;
 
-      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
+      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
       /// @}
       private:
       // ========================================================================
@@ -232,10 +232,10 @@ namespace gum {
       /// @{
 
       /// Copy constructor. Don't use it.
-      PRMAggregate( const PRMAggregate& source );
+      PRMAggregate(const PRMAggregate& source);
 
       /// Copy operator. Don't use it.
-      PRMAggregate& operator=( const PRMAggregate& source );
+      PRMAggregate& operator=(const PRMAggregate& source);
 
       /// @}
       // ========================================================================
@@ -248,12 +248,12 @@ namespace gum {
 
       /// The random variable type of this aggregate
       /// It is deleted with the aggregate.
-      PRMType<GUM_SCALAR>* __type;
+      PRMType< GUM_SCALAR >* __type;
 
       /// Some aggregators applies only on a given label. This attribute must
       /// have the concerned Idx. If not initialized the pointer equals 0.
       /// It is deleted with the aggregate.
-      std::shared_ptr<Idx> __label;
+      std::shared_ptr< Idx > __label;
       // Idx* __label;
       std::string __label_value;
 
@@ -261,8 +261,8 @@ namespace gum {
     };
 
 
-    extern template class PRMAggregate<float>;
-    extern template class PRMAggregate<double>;
+    extern template class PRMAggregate< float >;
+    extern template class PRMAggregate< double >;
 
   } /* namespace prm */
 }  // namespace gum

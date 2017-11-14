@@ -64,14 +64,14 @@ typedef unsigned __int64 uint64_t;
 #ifdef SIGNALS
 #include <signal.h>
 #include <unistd.h>
-#define errcheck( s, e )           \
-  if ( ( int64_t )( e ) == -1L ) { \
-    perror( s );                   \
-    exit( 1 );                     \
+#define errcheck(s, e)       \
+  if ((int64_t)(e) == -1L) { \
+    perror(s);               \
+    exit(1);                 \
   }
 #endif
 
-#define CALLOC( n, s ) xcalloc( n, s, __LINE__, __FILE__ )
+#define CALLOC(n, s) xcalloc(n, s, __LINE__, __FILE__)
 
 /*********************/
 /*global constants   */
@@ -231,11 +231,11 @@ typedef struct lrs_dat /* global problem data   */
 /* 	PLRS 	*/
 /****************/
 
-void post_output( const char*, const char* );
-void plrs_read_dat( lrs_dat* Q, std::ifstream& ff );
-void plrs_read_dic( lrs_dic* P, lrs_dat* Q, std::ifstream& ff );
-void plrs_readfacets( lrs_dat* Q, int64_t facet[], string facets );
-void plrs_readlinearity( lrs_dat* Q, string line );
+void post_output(const char*, const char*);
+void plrs_read_dat(lrs_dat* Q, std::ifstream& ff);
+void plrs_read_dic(lrs_dic* P, lrs_dat* Q, std::ifstream& ff);
+void plrs_readfacets(lrs_dat* Q, int64_t facet[], string facets);
+void plrs_readlinearity(lrs_dat* Q, string line);
 #endif
 
 
@@ -243,79 +243,77 @@ void plrs_readlinearity( lrs_dat* Q, string line );
 /* functions  for external use */
 /*******************************/
 extern FILE* lrs_cfp; /* output file for checkpoint information       */
-int64_t      lrs_main(
-    int   argc,
-    char* argv[] ); /* lrs driver, argv[1]=input file, [argc-1]=output file */
-int64_t redund_main(
-    int   argc,
-    char* argv[] ); /* redund driver, argv[1]=input file, [2]=output file */
+int64_t
+lrs_main(int   argc,
+         char* argv[]); /* lrs driver, argv[1]=input file, [argc-1]=output file */
+int64_t
+redund_main(int   argc,
+            char* argv[]); /* redund driver, argv[1]=input file, [2]=output file */
 lrs_dat*
-lrs_alloc_dat( const char* name ); /* allocate for lrs_dat structure "name" */
-lrs_dic*
-lrs_alloc_dic( lrs_dat* Q ); /* allocate for lrs_dic structure corr. to Q   */
-int64_t lrs_estimate( lrs_dic* P,
-                      lrs_dat* Q ); /* get estimates only and returns est number of
-                                       cobases in subtree */
-int64_t lrs_read_dat( lrs_dat* Q,
-                      int      argc,
-                      char*    argv[] ); /* read header and set up lrs_dat */
-int64_t lrs_read_dic( lrs_dic* P,
-                      lrs_dat* Q ); /* read input and set up problem and lrs_dic */
+lrs_alloc_dat(const char* name); /* allocate for lrs_dat structure "name" */
+lrs_dic* lrs_alloc_dic(lrs_dat* Q); /* allocate for lrs_dic structure corr. to Q */
+int64_t lrs_estimate(lrs_dic* P,
+                     lrs_dat* Q); /* get estimates only and returns est number of
+                                     cobases in subtree */
+int64_t lrs_read_dat(lrs_dat* Q,
+                     int      argc,
+                     char*    argv[]); /* read header and set up lrs_dat */
+int64_t lrs_read_dic(lrs_dic* P,
+                     lrs_dat* Q); /* read input and set up problem and lrs_dic */
 int64_t lrs_checkbound(
-    lrs_dic* P,
-    lrs_dat* Q ); /* TRUE if current objective value exceeds specified bound */
+  lrs_dic* P,
+  lrs_dat* Q); /* TRUE if current objective value exceeds specified bound */
 int64_t lrs_getfirstbasis(
-    lrs_dic**      P_p,
-    lrs_dat*       Q,
-    lrs_mp_matrix* Lin,
-    int64_t no_output ); /* gets first basis, FALSE if none,P may get changed if
-                     lin. space Lin found  no_output is TRUE supresses
-                     output headers P may get changed if lin. space Lin
-                     found    */
-void lrs_getinput( lrs_dic* P,
-                   lrs_dat* Q,
-                   int64_t* num,
-                   int64_t* den,
-                   int64_t  m,
-                   int64_t  d ); /* reads input matrix b A in lrs/cdd format */
-int64_t lrs_getnextbasis( lrs_dic** dict_p,
-                          lrs_dat*  Q,
-                          int64_t   prune ); /* gets next lrs tree basis,
-                                         FALSE if none backtrack if
-                                         prune is TRUE */
-int64_t
-lrs_getsolution( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output, int64_t col );
+  lrs_dic**      P_p,
+  lrs_dat*       Q,
+  lrs_mp_matrix* Lin,
+  int64_t no_output); /* gets first basis, FALSE if none,P may get changed if
+                  lin. space Lin found  no_output is TRUE supresses
+                  output headers P may get changed if lin. space Lin
+                  found    */
+void lrs_getinput(lrs_dic* P,
+                  lrs_dat* Q,
+                  int64_t* num,
+                  int64_t* den,
+                  int64_t  m,
+                  int64_t  d); /* reads input matrix b A in lrs/cdd format */
+int64_t lrs_getnextbasis(lrs_dic** dict_p,
+                         lrs_dat*  Q,
+                         int64_t   prune); /* gets next lrs tree basis,
+                                       FALSE if none backtrack if
+                                       prune is TRUE */
+int64_t lrs_getsolution(lrs_dic* P, lrs_dat* Q, lrs_mp_vector output, int64_t col);
 int64_t lrs_getray(
-    lrs_dic* P, lrs_dat* Q, int64_t col, int64_t comment, lrs_mp_vector output );
-int64_t lrs_getvertex( lrs_dic* P, lrs_dat* Q, lrs_mp_vector output );
-void lrs_close( char* name ); /* close lrs lib program "name"                 */
+  lrs_dic* P, lrs_dat* Q, int64_t col, int64_t comment, lrs_mp_vector output);
+int64_t lrs_getvertex(lrs_dic* P, lrs_dat* Q, lrs_mp_vector output);
+void lrs_close(char* name); /* close lrs lib program "name"                 */
 int64_t lrs_init(
-    char* name ); /* initialize lrslib and arithmetic package for prog "name" */
-void lrs_lpoutput( lrs_dic*      P,
-                   lrs_dat*      Q,
-                   lrs_mp_vector output ); /* print LP primal and dual solutions */
+  char* name); /* initialize lrslib and arithmetic package for prog "name" */
+void lrs_lpoutput(lrs_dic*      P,
+                  lrs_dat*      Q,
+                  lrs_mp_vector output); /* print LP primal and dual solutions */
 void lrs_printcobasis(
-    lrs_dic* P,
-    lrs_dat* Q,
-    int64_t  col ); /* print cobasis for column col(verted or ray)  */
-void lrs_printoutput( lrs_dat* Q, lrs_mp_vector output ); /* print output array */
-void lrs_printrow( char          name[],
-                   lrs_dat*      Q,
-                   lrs_mp_vector output,
-                   int64_t rowd ); /*print row of A matrix in output[0..rowd] */
-void lrs_printsol( lrs_dic* P,
-                   lrs_dat* Q,
-                   int64_t  col,
-                   int64_t  comment ); /* print out solution from col, comment=
-                       0=normal,-1=geometric
-                       ray,1..inputd=linearity */
-void lrs_printtotals( lrs_dic* P, lrs_dat* Q ); /* print final totals for lrs */
+  lrs_dic* P,
+  lrs_dat* Q,
+  int64_t  col); /* print cobasis for column col(verted or ray)  */
+void lrs_printoutput(lrs_dat* Q, lrs_mp_vector output); /* print output array */
+void lrs_printrow(char          name[],
+                  lrs_dat*      Q,
+                  lrs_mp_vector output,
+                  int64_t rowd); /*print row of A matrix in output[0..rowd] */
+void lrs_printsol(lrs_dic* P,
+                  lrs_dat* Q,
+                  int64_t  col,
+                  int64_t  comment); /* print out solution from col, comment=
+                     0=normal,-1=geometric
+                     ray,1..inputd=linearity */
+void lrs_printtotals(lrs_dic* P, lrs_dat* Q); /* print final totals for lrs */
 int64_t lrs_set_digits(
-    int64_t dec_digits ); /* set lrsmp digits to equiv. of decimal dec_digits */
+  int64_t dec_digits); /* set lrsmp digits to equiv. of decimal dec_digits */
 int64_t
-lrs_solvelp( lrs_dic* P,
-             lrs_dat* Q,
-             int64_t maximize ); /* solve primal feas LP:TRUE bounded else FALSE */
+lrs_solvelp(lrs_dic* P,
+            lrs_dat* Q,
+            int64_t  maximize); /* solve primal feas LP:TRUE bounded else FALSE */
 
 
 /*******************************/
@@ -326,164 +324,162 @@ lrs_solvelp( lrs_dic* P,
 /*******************************/
 /* basic dictionary functions  */
 /*******************************/
-int64_t getabasis( lrs_dic* P,
+int64_t getabasis(lrs_dic* P,
+                  lrs_dat* Q,
+                  int64_t  order[]); /* Try to find a starting basis  */
+void getnextoutput(lrs_dic* P,
                    lrs_dat* Q,
-                   int64_t  order[] ); /* Try to find a starting basis  */
-void getnextoutput( lrs_dic* P,
-                    lrs_dat* Q,
-                    int64_t  i,
-                    int64_t  col,
-                    lrs_mp   out ); /* get A[B[i][col] and copy to out */
-int64_t ismin( lrs_dic* P,
+                   int64_t  i,
+                   int64_t  col,
+                   lrs_mp   out); /* get A[B[i][col] and copy to out */
+int64_t ismin(lrs_dic* P,
+              lrs_dat* Q,
+              int64_t  r,
+              int64_t  s); /* test if A[r][s] is a min ratio for col s */
+int64_t lexmin(lrs_dic* P,
                lrs_dat* Q,
-               int64_t  r,
-               int64_t  s ); /* test if A[r][s] is a min ratio for col s */
-int64_t lexmin( lrs_dic* P,
+               int64_t  col); /* test A to see if current basis is lexmin */
+void pivot(lrs_dic* P,
+           lrs_dat* Q,
+           int64_t  bas,
+           int64_t  cob); /* Qpivot routine for array A  */
+int64_t primalfeasible(lrs_dic* P,
+                       lrs_dat* Q); /* Do dual pivots to get primal feasibility */
+int64_t lrs_ratio(lrs_dic* P, lrs_dat* Q, int64_t col); /* find lex min. ratio */
+int64_t removecobasicindex(lrs_dic* P,
+                           lrs_dat* Q,
+                           int64_t  k); /* remove C[k] from problem  */
+int64_t restartpivots(lrs_dic* P,
+                      lrs_dat* Q); /* restart problem from given cobasis   */
+int64_t reverse(lrs_dic* P,
                 lrs_dat* Q,
-                int64_t  col ); /* test A to see if current basis is lexmin */
-void pivot( lrs_dic* P,
+                int64_t* r,
+                int64_t  s); /* TRUE if B[*r] C[s] is a reverse lex-pos pivot  */
+int64_t
+selectpivot(lrs_dic* P,
             lrs_dat* Q,
-            int64_t  bas,
-            int64_t  cob ); /* Qpivot routine for array A  */
+            int64_t* r,
+            int64_t* s); /* select pivot indices using lexicographic rule */
 int64_t
-primalfeasible( lrs_dic* P,
-                lrs_dat* Q ); /* Do dual pivots to get primal feasibility */
-int64_t lrs_ratio( lrs_dic* P, lrs_dat* Q, int64_t col ); /* find lex min. ratio */
-int64_t removecobasicindex( lrs_dic* P,
-                            lrs_dat* Q,
-                            int64_t  k ); /* remove C[k] from problem  */
-int64_t restartpivots( lrs_dic* P,
-                       lrs_dat* Q ); /* restart problem from given cobasis   */
-int64_t reverse( lrs_dic* P,
-                 lrs_dat* Q,
-                 int64_t* r,
-                 int64_t  s ); /* TRUE if B[*r] C[s] is a reverse lex-pos pivot  */
-int64_t
-selectpivot( lrs_dic* P,
-             lrs_dat* Q,
-             int64_t* r,
-             int64_t* s ); /* select pivot indices using lexicographic rule */
-int64_t
-dan_selectpivot( lrs_dic* P,
-                 lrs_dat* Q,
-                 int64_t* r,
-                 int64_t* s ); /* select pivot indices using dantzig-lex rule */
-void update( lrs_dic* P,
-             lrs_dat* Q,
-             int64_t* i,
-             int64_t* j ); /* update the B,C, LOC arrays after a pivot       */
-void updatevolume( lrs_dic* P,
-                   lrs_dat* Q ); /* rescale determinant and update the volume */
+dan_selectpivot(lrs_dic* P,
+                lrs_dat* Q,
+                int64_t* r,
+                int64_t* s); /* select pivot indices using dantzig-lex rule */
+void update(lrs_dic* P,
+            lrs_dat* Q,
+            int64_t* i,
+            int64_t* j); /* update the B,C, LOC arrays after a pivot       */
+void updatevolume(lrs_dic* P,
+                  lrs_dat* Q); /* rescale determinant and update the volume */
 
 
 /*******************************/
 /* other functions using P,Q   */
 /*******************************/
 int64_t
-lrs_degenerate( lrs_dic* P,
-                lrs_dat* Q ); /* TRUE if the dictionary is primal degenerate */
-void print_basis( FILE* fp, lrs_dat* Q );
-void printA( lrs_dic* P,
-             lrs_dat* Q ); /* raw print of dictionary, bases for debugging   */
-void pimat( lrs_dic* P,
-            int64_t  r,
-            int64_t  s,
-            lrs_mp   Nt,
-            char     name[] ); /* print the row r col s of A                     */
-int64_t readfacets( lrs_dat* Q, int64_t facet[] ); /* read and check facet list */
-int64_t readlinearity( lrs_dat* Q ); /* read and check linearity list */
-void rescaledet( lrs_dic* P,
-                 lrs_dat* Q,
-                 lrs_mp   Vnum,
-                 lrs_mp   Vden ); /* rescale determinant to get its volume */
-void rescalevolume( lrs_dic* P,
-                    lrs_dat* Q,
-                    lrs_mp   Vnum,
-                    lrs_mp   Vden ); /* adjust volume for dimension          */
-int64_t lrs_leaf( lrs_dic* P, lrs_dat* Q ); /* true if current dictionary is leaf
-                                            of reverse search tree  */
+lrs_degenerate(lrs_dic* P,
+               lrs_dat* Q); /* TRUE if the dictionary is primal degenerate */
+void print_basis(FILE* fp, lrs_dat* Q);
+void printA(lrs_dic* P,
+            lrs_dat* Q); /* raw print of dictionary, bases for debugging   */
+void pimat(lrs_dic* P,
+           int64_t  r,
+           int64_t  s,
+           lrs_mp   Nt,
+           char     name[]); /* print the row r col s of A                     */
+int64_t readfacets(lrs_dat* Q, int64_t facet[]); /* read and check facet list */
+int64_t readlinearity(lrs_dat* Q); /* read and check linearity list */
+void rescaledet(lrs_dic* P,
+                lrs_dat* Q,
+                lrs_mp   Vnum,
+                lrs_mp   Vden); /* rescale determinant to get its volume */
+void rescalevolume(lrs_dic* P,
+                   lrs_dat* Q,
+                   lrs_mp   Vnum,
+                   lrs_mp   Vden); /* adjust volume for dimension          */
+int64_t lrs_leaf(lrs_dic* P, lrs_dat* Q); /* true if current dictionary is leaf
+                                          of reverse search tree  */
 
 
 /***************************************************/
 /* Routines for redundancy checking                */
 /***************************************************/
-int64_t checkredund( lrs_dic* P, lrs_dat* Q ); /* solve primal lp to check redund
-                                               of obj fun. returns TRUE if
-                                               redundant, else FALSE          */
-int64_t checkcobasic( lrs_dic* P,
-                      lrs_dat* Q,
-                      int64_t  index ); /* TRUE if index is cobasic and
-                                    nondegenerate  FALSE if basic, or
-                                    degen. cobasic, where it will get
-                                    pivoted out  */
+int64_t checkredund(lrs_dic* P, lrs_dat* Q); /* solve primal lp to check redund
+                                             of obj fun. returns TRUE if
+                                             redundant, else FALSE          */
+int64_t checkcobasic(lrs_dic* P,
+                     lrs_dat* Q,
+                     int64_t  index); /* TRUE if index is cobasic and
+                                  nondegenerate  FALSE if basic, or
+                                  degen. cobasic, where it will get
+                                  pivoted out  */
 int64_t checkindex(
-    lrs_dic* P,
-    lrs_dat* Q,
-    int64_t  index ); /* index=0 non-red.,1 red., 2 input linearity NOTE: row is
-                  returned all zero if redundant!!  */
+  lrs_dic* P,
+  lrs_dat* Q,
+  int64_t  index); /* index=0 non-red.,1 red., 2 input linearity NOTE: row is
+               returned all zero if redundant!!  */
 
 
 /***************************************************/
 /* Routines for caching and restoring dictionaries */
 /***************************************************/
-void lrs_free_dic( lrs_dic* P, lrs_dat* Q );
-void lrs_free_dic2( lrs_dic* P,
-                    lrs_dat* Q ); /* same as lrs_free_dic but no cache*/
-void lrs_free_dat( lrs_dat* Q );
-void copy_dict( lrs_dat* global, lrs_dic* dest, lrs_dic* src );
-lrs_dic* alloc_memory( lrs_dat* Q );
-lrs_dic* lrs_getdic( lrs_dat* Q );
-lrs_dic* resize( lrs_dic* P, lrs_dat* Q );
+void lrs_free_dic(lrs_dic* P, lrs_dat* Q);
+void lrs_free_dic2(lrs_dic* P, lrs_dat* Q); /* same as lrs_free_dic but no cache*/
+void lrs_free_dat(lrs_dat* Q);
+void copy_dict(lrs_dat* global, lrs_dic* dest, lrs_dic* src);
+lrs_dic* alloc_memory(lrs_dat* Q);
+lrs_dic* lrs_getdic(lrs_dat* Q);
+lrs_dic* resize(lrs_dic* P, lrs_dat* Q);
 
 /*******************************/
 /* utilities                   */
 /*******************************/
-void lprat( const char* name,
-            int64_t     Num,
-            int64_t     Den ); /* Print Num/Den without reducing  */
+void lprat(const char* name,
+           int64_t     Num,
+           int64_t     Den); /* Print Num/Den without reducing  */
 int64_t
-lreadrat( int64_t* Num,
-          int64_t* Den ); /* read a rational string and convert to long integers */
-void reorder( int64_t a[],
-              int64_t range ); /* reorder array in increasing order with one
-                   misplaced element   */
-void reorder1( int64_t a[],
-               int64_t b[],
-               int64_t newone,
-               int64_t range ); /* reorder array a in increasing order with
-                                   misplaced element newone elements of b go along
-                                   for the ride */
+lreadrat(int64_t* Num,
+         int64_t* Den); /* read a rational string and convert to long integers */
+void reorder(int64_t a[],
+             int64_t range); /* reorder array in increasing order with one
+                 misplaced element   */
+void reorder1(int64_t a[],
+              int64_t b[],
+              int64_t newone,
+              int64_t range); /* reorder array a in increasing order with
+                                 misplaced element newone elements of b go along
+                                 for the ride */
 
 /***************************/
 /* lp_solve like functions */
 /***************************/
-int64_t lrs_solve_lp( lrs_dic* P,
-                      lrs_dat* Q ); /* solve lp only for given dictionary */
+int64_t lrs_solve_lp(lrs_dic* P,
+                     lrs_dat* Q); /* solve lp only for given dictionary */
 void lrs_set_row(
-    lrs_dic* P,
-    lrs_dat* Q,
-    int64_t  row,
-    int64_t  num[],
-    int64_t  den[],
-    int64_t  ineq ); /* load row i of dictionary from num[]/den[] ineq=GE */
+  lrs_dic* P,
+  lrs_dat* Q,
+  int64_t  row,
+  int64_t  num[],
+  int64_t  den[],
+  int64_t  ineq); /* load row i of dictionary from num[]/den[] ineq=GE */
 void lrs_set_row_mp(
-    lrs_dic*      P,
-    lrs_dat*      Q,
-    int64_t       row,
-    lrs_mp_vector num,
-    lrs_mp_vector den,
-    int64_t       ineq ); /* same as lrs_set_row except num/den is lrs_mp type */
-void lrs_set_obj( lrs_dic* P,
-                  lrs_dat* Q,
-                  int64_t  num[],
-                  int64_t  den[],
-                  int64_t  max ); /* set up objective function with coeffs
-                  num[]/den[] max=MAXIMIZE or MINIMIZE  */
+  lrs_dic*      P,
+  lrs_dat*      Q,
+  int64_t       row,
+  lrs_mp_vector num,
+  lrs_mp_vector den,
+  int64_t       ineq); /* same as lrs_set_row except num/den is lrs_mp type */
+void lrs_set_obj(lrs_dic* P,
+                 lrs_dat* Q,
+                 int64_t  num[],
+                 int64_t  den[],
+                 int64_t  max); /* set up objective function with coeffs
+                num[]/den[] max=MAXIMIZE or MINIMIZE  */
 void lrs_set_obj_mp(
-    lrs_dic*      P,
-    lrs_dat*      Q,
-    lrs_mp_vector num,
-    lrs_mp_vector den,
-    int64_t       max ); /* same as lrs_set_obj but num/den has lrs_mp type */
+  lrs_dic*      P,
+  lrs_dat*      Q,
+  lrs_mp_vector num,
+  lrs_mp_vector den,
+  int64_t       max); /* same as lrs_set_obj but num/den has lrs_mp type */
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS

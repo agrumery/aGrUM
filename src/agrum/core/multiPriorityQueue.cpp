@@ -28,5 +28,5 @@
 #include <agrum/core/multiPriorityQueue.h>
 
 
-template class gum::MultiPriorityQueue<std::string>;
-template class gum::MultiPriorityQueue<int, int>;
+template class gum::MultiPriorityQueue< std::string >;
+template class gum::MultiPriorityQueue< int, int >;

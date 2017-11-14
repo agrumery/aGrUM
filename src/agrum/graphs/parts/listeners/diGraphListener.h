@@ -55,7 +55,7 @@ namespace gum {
      * @warning Note that, by the aGrUM's constructor parameter's rule, the fact
      * that g is passed as a pointer means that g is not copied, but only
      * referenced by the listener. */
-    DiGraphListener( const DiGraph* g );
+    DiGraphListener(const DiGraph* g);
 
     /// destructor
     ~DiGraphListener();
@@ -70,24 +70,24 @@ namespace gum {
     /// the action to take when a new node is inserted into the graph
     /** @param src the object that sent the signal
      * @param id the id of the new node inserted into the graph */
-    virtual void whenNodeAdded( const void* src, NodeId id ) = 0;
+    virtual void whenNodeAdded(const void* src, NodeId id) = 0;
 
     /// the action to take when a node has just been removed from the graph
     /** @param src the object that sent the signal
      * @param id the id of the node has just been removed from the graph */
-    virtual void whenNodeDeleted( const void* src, NodeId id ) = 0;
+    virtual void whenNodeDeleted(const void* src, NodeId id) = 0;
 
     /// the action to take when a new arc is inserted into the graph
     /** @param src the object that sent the signal
      * @param from the id of tail of the new arc inserted into the graph
      * @param to the id of head of the new arc inserted into the graph */
-    virtual void whenArcAdded( const void* src, NodeId from, NodeId to ) = 0;
+    virtual void whenArcAdded(const void* src, NodeId from, NodeId to) = 0;
 
     /// the action to take when an arc has just been removed from the graph
     /** @param src the object that sent the signal
      * @param from the id of tail of the arc removed from the graph
      * @param to the id of head of the arc removed from the graph */
-    virtual void whenArcDeleted( const void* src, NodeId from, NodeId to ) = 0;
+    virtual void whenArcDeleted(const void* src, NodeId from, NodeId to) = 0;
 
     /// @}
 
@@ -98,11 +98,11 @@ namespace gum {
     private:
     /// copy constructor (for the moment, this operation is forbidden)
     /** @param d the DiGraphListener to copy */
-    DiGraphListener( const DiGraphListener& d );
+    DiGraphListener(const DiGraphListener& d);
 
     /// copy operator (for the moment, this operation is forbidden)
     /** @param d the DiGraphListener to copy */
-    DiGraphListener& operator=( const DiGraphListener& d );
+    DiGraphListener& operator=(const DiGraphListener& d);
   };
 
 }  // namespace gum

@@ -71,7 +71,7 @@ namespace gum {
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
-    virtual void initialize( FMDP<double>* fmdp ) = 0;
+    virtual void initialize(FMDP< double >* fmdp) = 0;
 
     /// @}
 
@@ -90,7 +90,7 @@ namespace gum {
      * (can trigger a new planning)
      */
     // ==========================================================================
-    virtual bool addObservation( Idx actionId, const Observation* obs ) = 0;
+    virtual bool addObservation(Idx actionId, const Observation* obs) = 0;
 
 
     // ==========================================================================
@@ -123,7 +123,7 @@ namespace gum {
      */
     // ==========================================================================
     virtual const IVisitableGraphLearner*
-    varLearner( Idx actionId, const DiscreteVariable* var ) const = 0;
+    varLearner(Idx actionId, const DiscreteVariable* var) const = 0;
 
     virtual double rMax() const = 0;
     virtual double modaMax() const = 0;

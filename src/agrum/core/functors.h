@@ -49,7 +49,7 @@ namespace gum {
    *
    * Returns the maximum of its two arguments
    */
-  template <class GUM_SCALAR>
+  template < class GUM_SCALAR >
   struct Maximizes {
 
     // ###########################################################################
@@ -57,7 +57,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    GUM_SCALAR operator()( const GUM_SCALAR& x, const GUM_SCALAR& y ) const {
+    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
       return x >= y ? x : y;
     }
 
@@ -75,7 +75,7 @@ namespace gum {
    *
    * Returns the minimum of its two arguments
    */
-  template <class GUM_SCALAR>
+  template < class GUM_SCALAR >
   struct Minimizes {
 
     // ###########################################################################
@@ -83,7 +83,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    GUM_SCALAR operator()( const GUM_SCALAR& x, const GUM_SCALAR& y ) const {
+    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
       return x <= y ? x : y;
     }
 
@@ -106,7 +106,7 @@ namespace gum {
    * @return best pair => the argument that is the arg max is ret.second
    */
 
-  template <class GUM_SCALAR>
+  template < class GUM_SCALAR >
   struct ArgumentMaximises {
 
     // ###########################################################################
@@ -114,7 +114,7 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    GUM_SCALAR operator()( const GUM_SCALAR& x, const GUM_SCALAR& y ) const {
+    GUM_SCALAR operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
       return x.first >= y.first ? x : y;
     }
 

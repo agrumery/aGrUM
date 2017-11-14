@@ -41,10 +41,10 @@ namespace gum {
 
   // templates provided by this file
 
-  template <typename Val, typename Cmp, typename Alloc>
+  template < typename Val, typename Cmp, typename Alloc >
   class Heap;
-  template <typename Val, typename Cmp, typename Alloc>
-  std::ostream& operator<<( std::ostream&, const Heap<Val, Cmp, Alloc>& );
+  template < typename Val, typename Cmp, typename Alloc >
+  std::ostream& operator<<(std::ostream&, const Heap< Val, Cmp, Alloc >&);
 
   // ===========================================================================
   // ===                      SIMPLE HEAP DATA STRUCTURE                     ===
@@ -114,9 +114,9 @@ namespace gum {
    * @tparam Cmp The comperator used to sort elements in the gum::Heap.
    * @tparam Alloc The allocator of elements stored in the gum::Heap.
    */
-  template <typename Val,
-            typename Cmp = std::less<Val>,
-            typename Alloc = std::allocator<Val>>
+  template < typename Val,
+             typename Cmp = std::less< Val >,
+             typename Alloc = std::allocator< Val > >
   class Heap {
     public:
     /// Types for STL compliance
@@ -144,34 +144,33 @@ namespace gum {
      * @param capacity the size of the internal data structures containing the
      * elements (could be for instance vectors or hashtables).
      */
-    explicit Heap( Cmp  compare = Cmp(),
-                   Size capacity = GUM_HEAP_DEFAULT_CAPACITY );
+    explicit Heap(Cmp compare = Cmp(), Size capacity = GUM_HEAP_DEFAULT_CAPACITY);
 
     /**
      * @brief Initializer list constructor.
      * @param list The initializer list.
      */
-    explicit Heap( std::initializer_list<Val> list );
+    explicit Heap(std::initializer_list< Val > list);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::Heap to copy.
      */
-    Heap( const Heap<Val, Cmp, Alloc>& from );
+    Heap(const Heap< Val, Cmp, Alloc >& from);
 
     /**
      * @brief Generalized copy constructor.
      * @tparam OtherAlloc The other gum::Heap allocator.
      * @param from The gum::Heap to copy.
      */
-    template <typename OtherAlloc>
-    Heap( const Heap<Val, Cmp, OtherAlloc>& from );
+    template < typename OtherAlloc >
+    Heap(const Heap< Val, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move constructor.
      * @param from The gum::Heap to move.
      */
-    Heap( Heap<Val, Cmp, Alloc>&& from ) noexcept;
+    Heap(Heap< Val, Cmp, Alloc >&& from) noexcept;
 
     /**
      * @brief Class destructor.
@@ -194,7 +193,7 @@ namespace gum {
      *
      * @param from The gum::Heap to copy.
      */
-    Heap<Val, Cmp, Alloc>& operator=( const Heap<Val, Cmp, Alloc>& from );
+    Heap< Val, Cmp, Alloc >& operator=(const Heap< Val, Cmp, Alloc >& from);
 
     /**
      * @brief Generalized copy operator.
@@ -207,8 +206,8 @@ namespace gum {
      * @tparam OtherAlloc The other gum::Heap allocator.
      * @param from The gum::Heap to copy.
      */
-    template <typename OtherAlloc>
-    Heap<Val, Cmp, Alloc>& operator=( const Heap<Val, Cmp, OtherAlloc>& from );
+    template < typename OtherAlloc >
+    Heap< Val, Cmp, Alloc >& operator=(const Heap< Val, Cmp, OtherAlloc >& from);
 
     /**
      * @brief Move operator.
@@ -220,7 +219,7 @@ namespace gum {
      *
      * @param from The gum::Heap to move.
      */
-    Heap<Val, Cmp, Alloc>& operator=( Heap<Val, Cmp, Alloc>&& from ) noexcept;
+    Heap< Val, Cmp, Alloc >& operator=(Heap< Val, Cmp, Alloc >&& from) noexcept;
 
     /**
      * @brief Returns the element at index index_elt from the heap.
@@ -230,7 +229,7 @@ namespace gum {
      * @throw NotFound exception is thrown if there is no element
      * at position "index_elt".
      */
-    const Val& operator[]( Size index_elt ) const;
+    const Val& operator[](Size index_elt) const;
 
     /// @}
     // ============================================================================
@@ -277,7 +276,7 @@ namespace gum {
      *
      * @param index The index of the element to remove
      */
-    void eraseByPos( Size index );
+    void eraseByPos(Size index);
 
     /**
      * @brief Removes a given element from the heap (but does not return it).
@@ -288,7 +287,7 @@ namespace gum {
      * @param val The element we wish to remove. If the heap contains several
      * times this element, then the one with the smallest index is removed.
      */
-    void erase( const Val& val );
+    void erase(const Val& val);
 
     /**
      * @brief inserts a new element (actually a copy) in the heap and returns
@@ -297,7 +296,7 @@ namespace gum {
      * @param val The element to insert.
      * @return The inserted element position in the gum::Heap.
      */
-    Size insert( const Val& val );
+    Size insert(const Val& val);
 
     /**
      * @brief Inserts a new element (by moving it) in the heap and returns its
@@ -306,7 +305,7 @@ namespace gum {
      * @param val The element to insert.
      * @return The inserted element position in the gum::Heap.
      */
-    Size insert( Val&& val );
+    Size insert(Val&& val);
 
     /**
      * @brief Emplace a new element in the heap and returns its index.
@@ -315,8 +314,8 @@ namespace gum {
      * @param args The new element to emplace.
      * @return The emplaced element position in the gum::Heap.
      */
-    template <typename... Args>
-    Size emplace( Args&&... args );
+    template < typename... Args >
+    Size emplace(Args&&... args);
 
     /**
      * @brief Returns the number of elements in the heap.
@@ -334,7 +333,7 @@ namespace gum {
      * @brief Indicates whether the heap contains a given value.
      * @return Indicates whether the heap contains a given value.
      */
-    bool contains( const Val& ) const;
+    bool contains(const Val&) const;
 
     /**
      * @return Displays the content of the heap.
@@ -362,13 +361,13 @@ namespace gum {
      *
      * @param new_size The gum::Heap new size.
      */
-    void resize( Size new_size );
+    void resize(Size new_size);
 
     /// @}
 
     private:
     /// An array storing all the elements of the heap.
-    std::vector<Val, Alloc> __heap;
+    std::vector< Val, Alloc > __heap;
 
     /// The number of elements in the heap.
     Size __nb_elements{0};
@@ -383,10 +382,10 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::Heap<int>;
-extern template class gum::Heap<long>;
-extern template class gum::Heap<float>;
-extern template class gum::Heap<double>;
+extern template class gum::Heap< int >;
+extern template class gum::Heap< long >;
+extern template class gum::Heap< float >;
+extern template class gum::Heap< double >;
 
 
 // always include the implementation of the templates

@@ -52,9 +52,9 @@ namespace gum {
    *     never check if it is the case.
    */
   // clang-format on
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
 
-  class MultiDimNoisyORCompound : public MultiDimICIModel<GUM_SCALAR> {
+  class MultiDimNoisyORCompound : public MultiDimICIModel< GUM_SCALAR > {
     public:
     // ============================================================================
     /// @name Constructors / Destructors
@@ -62,10 +62,10 @@ namespace gum {
     /// @{
 
     /// Default constructor.
-    MultiDimNoisyORCompound( GUM_SCALAR external_weight,
-                             GUM_SCALAR default_weight = (GUM_SCALAR)1.0 );
+    MultiDimNoisyORCompound(GUM_SCALAR external_weight,
+                            GUM_SCALAR default_weight = (GUM_SCALAR)1.0);
 
-    MultiDimNoisyORCompound( const MultiDimNoisyORCompound<GUM_SCALAR>& from );
+    MultiDimNoisyORCompound(const MultiDimNoisyORCompound< GUM_SCALAR >& from);
 
     /**
      * Copy constructor using a bijection to swap variables from source.
@@ -74,8 +74,8 @@ namespace gum {
      * @param from the copied instance
      */
     MultiDimNoisyORCompound(
-        const Bijection<const DiscreteVariable*, const DiscreteVariable*>& bij,
-        const MultiDimNoisyORCompound<GUM_SCALAR>& from );
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
+      const MultiDimNoisyORCompound< GUM_SCALAR >& from);
 
     /// Destructor.
     virtual ~MultiDimNoisyORCompound();
@@ -95,7 +95,7 @@ namespace gum {
      * @warning you must desallocate by yourself the memory
      * @return an empty clone of this object with the same type
      */
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
     // ############################################################################
     /// @name Accessors / Modifiers
@@ -103,9 +103,9 @@ namespace gum {
     /// @{
 
     public:
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
-    const std::string toString( void ) const;
+    const std::string toString(void) const;
 
     /// returns the real name of the multiDimArray
     /** In aGrUM, all the types of multi-dimensional arrays/functionals have a
@@ -123,13 +123,13 @@ namespace gum {
     /// @}
   };
 
-  extern template class MultiDimNoisyORCompound<float>;
-  extern template class MultiDimNoisyORCompound<double>;
+  extern template class MultiDimNoisyORCompound< float >;
+  extern template class MultiDimNoisyORCompound< double >;
 
   /// For friendly displaying the content of the array.
-  template <typename GUM_SCALAR>
-  std::ostream& operator<<( std::ostream&                              s,
-                            const MultiDimNoisyORCompound<GUM_SCALAR>& ag );
+  template < typename GUM_SCALAR >
+  std::ostream& operator<<(std::ostream&                                s,
+                           const MultiDimNoisyORCompound< GUM_SCALAR >& ag);
 
 } /* namespace gum */
 

@@ -47,7 +47,7 @@ namespace gum {
        * @brief Default constructor.
        * @param result An SQL query result.
        */
-      NanodbcParser( nanodbc::result& result );
+      NanodbcParser(nanodbc::result& result);
 
       /**
        * @brief Class destructor.
@@ -64,7 +64,7 @@ namespace gum {
        * @return Returns the current parsed line.
        * @throw Raise gum::NullElement if there is no data.
        */
-      const std::vector<std::string>& current() const;
+      const std::vector< std::string >& current() const;
 
       /**
        * Return the current noLine of parser line.
@@ -72,8 +72,8 @@ namespace gum {
       const Size noLine() const;
 
       private:
-      nanodbc::result&         __result;
-      std::vector<std::string> __data;
+      nanodbc::result&           __result;
+      std::vector< std::string > __data;
     };
 
   }  // namespace learning

@@ -48,7 +48,7 @@ namespace gum {
    * logical processors (x2 is a good all-around value).
    * @param number The number of threads to be used.
    */
-  void setNumberOfThreads( unsigned int number );
+  void setNumberOfThreads(unsigned int number);
 
   /**
    * @brief Returns the maximum number of threads at any time.
@@ -102,7 +102,7 @@ namespace gum {
    * @param value \c True if nested parallelism should be activated, \c False
    * otherwise.
    */
-  void setNestedParallelism( bool value );
+  void setNestedParallelism(bool value);
 
   /**
    * @brief Get nested parallelism status.
@@ -123,7 +123,7 @@ namespace gum {
    * @param value \c True if dynamic thread number should be used, \c False
    * otherwise.
    */
-  void setDynamicThreadsNumber( bool value );
+  void setDynamicThreadsNumber(bool value);
 
   /**
    * @brief Get the dynamic thread number adjustment status.

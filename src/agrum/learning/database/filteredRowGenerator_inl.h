@@ -31,34 +31,34 @@ namespace gum {
 
     /// default constructor
     INLINE FilteredRowGenerator::FilteredRowGenerator() noexcept {
-      GUM_CONSTRUCTOR( FilteredRowGenerator );
+      GUM_CONSTRUCTOR(FilteredRowGenerator);
     }
 
     /// copy constructor
     INLINE FilteredRowGenerator::FilteredRowGenerator(
-        const FilteredRowGenerator &from ) noexcept
-        : _input_row( from._input_row ),
-          _nb_remaining_output_rows{from._nb_remaining_output_rows} {
-      GUM_CONS_CPY( FilteredRowGenerator );
+      const FilteredRowGenerator& from) noexcept
+        : _input_row(from._input_row)
+        , _nb_remaining_output_rows{from._nb_remaining_output_rows} {
+      GUM_CONS_CPY(FilteredRowGenerator);
     }
 
     /// move constructor
     INLINE
     FilteredRowGenerator::FilteredRowGenerator(
-        FilteredRowGenerator&& from ) noexcept
-        : _input_row( from._input_row ),
-          _nb_remaining_output_rows{from._nb_remaining_output_rows} {
-      GUM_CONS_MOV( FilteredRowGenerator );
+      FilteredRowGenerator&& from) noexcept
+        : _input_row(from._input_row)
+        , _nb_remaining_output_rows{from._nb_remaining_output_rows} {
+      GUM_CONS_MOV(FilteredRowGenerator);
     }
 
     /// destructor
     INLINE FilteredRowGenerator::~FilteredRowGenerator() noexcept {
-      GUM_DESTRUCTOR( FilteredRowGenerator );
+      GUM_DESTRUCTOR(FilteredRowGenerator);
     }
 
     /// copy operator
     INLINE FilteredRowGenerator& FilteredRowGenerator::
-    operator=( const FilteredRowGenerator& from ) noexcept {
+    operator=(const FilteredRowGenerator& from) noexcept {
       _input_row = from._input_row;
       _nb_remaining_output_rows = from._nb_remaining_output_rows;
       return *this;
@@ -66,7 +66,7 @@ namespace gum {
 
     /// move operator
     INLINE FilteredRowGenerator& FilteredRowGenerator::
-    operator=( FilteredRowGenerator&& from ) noexcept {
+    operator=(FilteredRowGenerator&& from) noexcept {
       _input_row = from._input_row;
       _nb_remaining_output_rows = from._nb_remaining_output_rows;
       return *this;
@@ -78,7 +78,7 @@ namespace gum {
     }
 
     /// sets the input row from which the generator will create new rows
-    INLINE void FilteredRowGenerator::setInputRow( FilteredRow& row ) noexcept {
+    INLINE void FilteredRowGenerator::setInputRow(FilteredRow& row) noexcept {
       _input_row = &row;
       _nb_remaining_output_rows = _computeRows();
     }

@@ -31,17 +31,17 @@ namespace gum_tests {
   class UtilityTestSuite : public CxxTest::TestSuite {
     public:
     void testCreation() {
-      gum::UtilityTable<double> p( new gum::MultiDimArray<double>() );
-      TS_ASSERT( p.empty() );
+      gum::UtilityTable< double > p(new gum::MultiDimArray< double >());
+      TS_ASSERT(p.empty());
 
-      gum::LabelizedVariable a( "a", "first var", 2 ), b( "b", "second var", 4 ),
-          c( "c", "third var", 5 );
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c );
+      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
+        c("c", "third var", 5);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c);
     }
 
     void testFactory() {
-      gum::UtilityTable<double> p1( new gum::MultiDimArray<double>() );
-      TS_GUM_ASSERT_THROWS_NOTHING( delete p1.newFactory() );
+      gum::UtilityTable< double > p1(new gum::MultiDimArray< double >());
+      TS_GUM_ASSERT_THROWS_NOTHING(delete p1.newFactory());
     }
   };
 }

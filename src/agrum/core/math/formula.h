@@ -91,33 +91,33 @@ namespace gum {
      * @param t The token_type of this gum::FormulaPart.
      * @param n The value of this gum::FormulaPart.
      */
-    FormulaPart( token_type t, double n );
+    FormulaPart(token_type t, double n);
 
     /**
      * @brief Constructor for chars.
      * @param t The token_type of this gum::FormulaPart.
      * @param c The value of this gum::FormulaPart.
      */
-    FormulaPart( token_type t, char c );
+    FormulaPart(token_type t, char c);
 
     /**
      * @brief Constructor for functions.
      * @param t The token_type of this gum::FormulaPart.
      * @param func The value of this gum::FormulaPart.
      */
-    FormulaPart( token_type t, token_function func );
+    FormulaPart(token_type t, token_function func);
 
     /**
      * @brief Copy constructor.
      * @param source The gum::FormulaPart to copy.
      */
-    FormulaPart( const FormulaPart& source );
+    FormulaPart(const FormulaPart& source);
 
     /**
      * @brief Move constructor.
      * @param source The gum::FormulaPart to move.
      */
-    FormulaPart( FormulaPart&& source );
+    FormulaPart(FormulaPart&& source);
 
     /**
      * @brief Class destuctor.
@@ -135,14 +135,14 @@ namespace gum {
      * @name source The gum::FormulaPart to copy.
      * @return Returns this gum::FormulaPart.
      */
-    FormulaPart& operator=( const FormulaPart& source );
+    FormulaPart& operator=(const FormulaPart& source);
 
     /**
      * @brief Move operator.
      * @name source The gum::FormulaPart to copy.
      * @return Returns this gum::FormulaPart.
      */
-    FormulaPart& operator=( FormulaPart&& source );
+    FormulaPart& operator=(FormulaPart&& source);
 
     /// @}
     // ========================================================================
@@ -204,7 +204,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the value stored is neither a
      * function nor an operator.
      */
-    FormulaPart eval( const std::vector<FormulaPart>& args ) const;
+    FormulaPart eval(const std::vector< FormulaPart >& args) const;
 
     /// @}
 
@@ -222,7 +222,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the value stored is not an
      * operator.
      */
-    double __operator_eval( const std::vector<FormulaPart>& args ) const;
+    double __operator_eval(const std::vector< FormulaPart >& args) const;
 
     /**
      * @brief Returns the evaluation of the vector of gum::FormulaPart as
@@ -237,7 +237,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the value stored is not a
      * function.
      */
-    double __function_eval( const std::vector<FormulaPart>& args ) const;
+    double __function_eval(const std::vector< FormulaPart >& args) const;
 
     /**
      * @brief Returns the number of arguments expected by the operator stored
@@ -280,35 +280,35 @@ namespace gum {
      * Constructor
      */
     /// @{
-    Formula( short s );
-    Formula( unsigned short us );
-    Formula( int i );
-    Formula( unsigned int ui );
-    Formula( long l );
-    Formula( unsigned long ul );
-    Formula( long long l );
-    Formula( unsigned long long ul );
-    Formula( float f );
-    Formula( double d );
+    Formula(short s);
+    Formula(unsigned short us);
+    Formula(int i);
+    Formula(unsigned int ui);
+    Formula(long l);
+    Formula(unsigned long ul);
+    Formula(long long l);
+    Formula(unsigned long long ul);
+    Formula(float f);
+    Formula(double d);
     /// @}
 
     /**
      * @brief Class constructor.
      * @param f An algebraic formula.
      */
-    Formula( const std::string& f );
+    Formula(const std::string& f);
 
     /**
      * @brief Copy constructor.
      * @param source The gum::Formula to copy.
      */
-    Formula( const Formula& source );
+    Formula(const Formula& source);
 
     /**
      * @brief Move constructor.
      * @param source The gum::Formula to move.
      */
-    Formula( Formula&& source );
+    Formula(Formula&& source);
 
     /**
      * @brief Class destructor.
@@ -326,14 +326,14 @@ namespace gum {
      * @param source The gum::Formula to copy.
      * @return Returns this gum::Formula.
      */
-    Formula& operator=( const Formula& source );
+    Formula& operator=(const Formula& source);
 
     /**
      * @brief Move operator.
      * @param source The gum::Formula to move.
      * @return Returns this gum::Formula.
      */
-    Formula& operator=( Formula&& source );
+    Formula& operator=(Formula&& source);
 
     /**
      * @brief Allows implicit conversion to doubles.
@@ -350,13 +350,13 @@ namespace gum {
      * @brief Returns the variables used by this gum::Formula.
      * @return Returns the variables used by this gum::Formula.
      */
-    HashTable<std::string, double>& variables();
+    HashTable< std::string, double >& variables();
 
     /**
      * @brief Returns the variables used by this gum::Formula.
      * @return Returns the variables used by this gum::Formula.
      */
-    const HashTable<std::string, double>& variables() const;
+    const HashTable< std::string, double >& variables() const;
 
     /**
      * @brief Returns the result of this gum::Formula.
@@ -388,13 +388,13 @@ namespace gum {
      * @brief Push a number in the formula.
      * @param v The number to push.
      */
-    void __push_number( const double& v );
+    void __push_number(const double& v);
 
     /**
      * @brief Push an operator in the formula.
      * @param o The operator to push.
      */
-    void __push_operator( char o );
+    void __push_operator(char o);
 
     /**
      * @brief Push a left parenthesis in the formula.
@@ -410,17 +410,17 @@ namespace gum {
      * @brief Push a function in the formula.
      * @param func The function to push.
      */
-    void __push_function( const std::string& func );
+    void __push_function(const std::string& func);
 
     /**
      * @brief Push a variable in the formula.
      */
-    void __push_variable( const std::string& var );
+    void __push_variable(const std::string& var);
 
     /**
      * @brief Use this if you don't know if ident is a function or a variable.
      */
-    void __push_identifier( const std::string& ident );
+    void __push_identifier(const std::string& ident);
 
     /**
      * @brief Push a comma in the formula.
@@ -438,22 +438,22 @@ namespace gum {
     std::string __formula;
 
     /// The scanner used by the formula.
-    std::unique_ptr<gum::formula::Scanner> __scanner;
+    std::unique_ptr< gum::formula::Scanner > __scanner;
 
     /// The parser used by the formula.
-    std::unique_ptr<gum::formula::Parser> __parser;
+    std::unique_ptr< gum::formula::Parser > __parser;
 
     /// The last token added to the formula.
     FormulaPart __last_token;
 
     /// The output stack, will contain one value after evaluation.
-    std::vector<FormulaPart> __output;
+    std::vector< FormulaPart > __output;
 
     /// A stack used during evaluation.
-    std::stack<FormulaPart> __stack;
+    std::stack< FormulaPart > __stack;
 
     /// The variables available in this formula.
-    HashTable<std::string, double> __variables;
+    HashTable< std::string, double > __variables;
 
     /**
      * @brief Initialise the formula scanner and parser.
@@ -465,45 +465,45 @@ namespace gum {
      * @param o The operator to pop.
      * @return Returns true if the operator was popped.
      */
-    bool __popOperator( FormulaPart o );
+    bool __popOperator(FormulaPart o);
 
     /**
      * @brief Evaluate an operator or function and push its result.
      * @param item The operator or function to reduce.
      * @param stack The stack to evaluate.
      */
-    void __reduceOperatorOrFunction( FormulaPart              item,
-                                     std::stack<FormulaPart>& stack ) const;
+    void __reduceOperatorOrFunction(FormulaPart                item,
+                                    std::stack< FormulaPart >& stack) const;
 
     /**
      * @brief Push an unary operator.
      * @param o The unary operator to push.
      */
-    void __push_unaryOperator( char o );
+    void __push_unaryOperator(char o);
 
     /**
      * @brief Push an operator.
      * @param t The operator to push.
      */
-    void __push_operator( FormulaPart t );
+    void __push_operator(FormulaPart t);
 
     /**
      * @brief Returns true if o is an unary operator.
      * @return Returns true if o is an unary operator.
      */
-    bool __isUnaryOperator( char o );
+    bool __isUnaryOperator(char o);
 
     /**
      * @brief Push the gum::FormulaPart in the output vector.
      * @param t The gum::FormulaPart to push.
      */
-    void __push_output( FormulaPart t );
+    void __push_output(FormulaPart t);
 
     /**
      * @brief Push the gum::FormulaPart in the stack.
      * @param t The gum::FormulaPart to push.
      */
-    void __push_stack( FormulaPart t );
+    void __push_stack(FormulaPart t);
   };
 
   // // ========================================================================
@@ -511,19 +511,19 @@ namespace gum {
   // // ========================================================================
   // /// @{
 
-  Formula operator-( const Formula& a );
+  Formula operator-(const Formula& a);
 
-  Formula operator+( const Formula& a, const Formula& b );
+  Formula operator+(const Formula& a, const Formula& b);
 
-  Formula operator-( const Formula& a, const Formula& b );
+  Formula operator-(const Formula& a, const Formula& b);
 
-  Formula operator*( const Formula& a, const Formula& b );
+  Formula operator*(const Formula& a, const Formula& b);
 
-  Formula operator/( const Formula& a, const Formula& b );
+  Formula operator/(const Formula& a, const Formula& b);
 
-  std::string to_string( const Formula& f );
+  std::string to_string(const Formula& f);
 
-  std::ostream& operator<<( std::ostream& os, const Formula& f );
+  std::ostream& operator<<(std::ostream& os, const Formula& f);
 
   // /// @}
 

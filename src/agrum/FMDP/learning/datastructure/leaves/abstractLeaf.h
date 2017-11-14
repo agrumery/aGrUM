@@ -58,24 +58,24 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    AbstractLeaf( NodeId leafId )
-        : __leafId( leafId ) {
-      GUM_CONSTRUCTOR( AbstractLeaf )
+    AbstractLeaf(NodeId leafId)
+        : __leafId(leafId) {
+      GUM_CONSTRUCTOR(AbstractLeaf)
     }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    virtual ~AbstractLeaf() { GUM_DESTRUCTOR( AbstractLeaf ) }
+    virtual ~AbstractLeaf() { GUM_DESTRUCTOR(AbstractLeaf) }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( AbstractLeaf ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(AbstractLeaf));
     }
 
     /// @}
@@ -83,13 +83,13 @@ namespace gum {
     // ###################################################################
     /// Gaves the leaf effectif for given modality
     // ###################################################################
-    virtual double effectif( Idx ) const = 0;
+    virtual double effectif(Idx) const = 0;
     virtual double total() const = 0;
 
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    virtual bool contains( NodeId testedId ) const { return __leafId == testedId; }
+    virtual bool contains(NodeId testedId) const { return __leafId == testedId; }
 
     NodeId id() { return __leafId; }
 

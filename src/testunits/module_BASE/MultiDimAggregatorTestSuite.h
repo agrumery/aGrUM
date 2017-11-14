@@ -42,45 +42,45 @@ namespace gum_tests {
 
   class MultiDimAggregratorsTestSuite : public CxxTest::TestSuite {
     private:
-    float __is_min( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+    float __is_min(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp = b;
 
-      if ( tmp > c ) tmp = c;
+      if (tmp > c) tmp = c;
 
-      if ( tmp > d ) tmp = d;
+      if (tmp > d) tmp = d;
 
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_max( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+    float __is_max(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
       tmp = b;
 
-      if ( tmp < c ) tmp = c;
+      if (tmp < c) tmp = c;
 
-      if ( tmp < d ) tmp = d;
+      if (tmp < d) tmp = d;
 
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_median3( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+    float __is_median3(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp = 0;
 
-      if ( b <= c ) {
-        if ( c <= d ) {
+      if (b <= c) {
+        if (c <= d) {
           tmp = c;  // b<=c<=d
         } else {
-          if ( b <= d ) {
+          if (b <= d) {
             tmp = d;  // b<=d<c
           } else {
             tmp = b;  // d<b<c
           }
         }
       } else {  // b>c
-        if ( c >= d ) {
+        if (c >= d) {
           tmp = c;  // b>c>=d
         } else {    // d>b
-          if ( b >= d ) {
+          if (b >= d) {
             tmp = d;  // b>=d>c
           } else {
             tmp = b;  // c<b<d
@@ -88,16 +88,16 @@ namespace gum_tests {
         }
       }
 
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
     float
-    __is_median4( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e ) {
+    __is_median4(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
       gum::Idx tmp = 0;
       gum::Idx l1, h1, l2, h2, m1, m2;
       // gum::Idx hh, ll;
 
-      if ( b < c ) {
+      if (b < c) {
         l1 = b;
         h1 = c;
       } else {
@@ -105,7 +105,7 @@ namespace gum_tests {
         h1 = b;
       }
 
-      if ( d < e ) {
+      if (d < e) {
         l2 = d;
         h2 = e;
       } else {
@@ -113,7 +113,7 @@ namespace gum_tests {
         h2 = d;
       }
 
-      if ( l1 < l2 ) {  // we do not keep ll : lowest value
+      if (l1 < l2) {  // we do not keep ll : lowest value
         // ll = l1;
         m1 = l2;
       } else {
@@ -121,7 +121,7 @@ namespace gum_tests {
         m1 = l1;
       }
 
-      if ( h1 > h2 ) {  // we do not keep hh : highest value
+      if (h1 > h2) {  // we do not keep hh : highest value
         // hh = h1;
         m2 = h2;
       } else {
@@ -129,25 +129,25 @@ namespace gum_tests {
         m2 = h1;
       }
 
-      if ( m1 > m2 ) {  // (ll,m2,m1,hh)
+      if (m1 > m2) {  // (ll,m2,m1,hh)
         tmp = m2;
         m2 = m1;
         m1 = tmp;
       }
 
       // the order is now ll<=m1<=m2<=hh
-      tmp = ( m2 + m1 ) / 2;
-      return ( tmp == a ) ? (float)1 : (float)0;
+      tmp = (m2 + m1) / 2;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
     float
-    __is_amplitude( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e ) {
+    __is_amplitude(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d, gum::Idx e) {
       gum::Idx tmp = 0;
       gum::Idx l1, h1, l2, h2;
       // gum::Idx m1, m2;
       gum::Idx hh, ll;
 
-      if ( b < c ) {
+      if (b < c) {
         l1 = b;
         h1 = c;
       } else {
@@ -155,7 +155,7 @@ namespace gum_tests {
         h1 = b;
       }
 
-      if ( d < e ) {
+      if (d < e) {
         l2 = d;
         h2 = e;
       } else {
@@ -163,7 +163,7 @@ namespace gum_tests {
         h2 = d;
       }
 
-      if ( l1 < l2 ) {  // we do not keep median values
+      if (l1 < l2) {  // we do not keep median values
         ll = l1;
         // m1 = l2;
       } else {
@@ -171,7 +171,7 @@ namespace gum_tests {
         // m1 = l1;
       }
 
-      if ( h1 > h2 ) {  // we do not keep median valeus
+      if (h1 > h2) {  // we do not keep median valeus
         hh = h1;
         // m2 = h2;
       } else {
@@ -181,241 +181,226 @@ namespace gum_tests {
 
       // the order is now ll<=(m1<=m2)<=hh
       tmp = hh - ll;
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
 
-    float __is_count_2( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+    float __is_count_2(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
       tmp = (gum::Idx)0;
 
-      if ( b == (gum::Idx)2 ) tmp++;
+      if (b == (gum::Idx)2) tmp++;
 
-      if ( c == (gum::Idx)2 ) tmp++;
+      if (c == (gum::Idx)2) tmp++;
 
-      if ( d == (gum::Idx)2 ) tmp++;
+      if (d == (gum::Idx)2) tmp++;
 
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_forall_2( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+    float __is_forall_2(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
-      tmp =
-          ( ( b == (gum::Idx)2 ) && ( c == (gum::Idx)2 ) && ( d == (gum::Idx)2 ) )
+      tmp = ((b == (gum::Idx)2) && (c == (gum::Idx)2) && (d == (gum::Idx)2))
               ? (gum::Idx)1
               : (gum::Idx)0;
 
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_exists_2( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+    float __is_exists_2(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
-      tmp =
-          ( ( b == (gum::Idx)2 ) || ( c == (gum::Idx)2 ) || ( d == (gum::Idx)2 ) )
+      tmp = ((b == (gum::Idx)2) || (c == (gum::Idx)2) || (d == (gum::Idx)2))
               ? (gum::Idx)1
               : (gum::Idx)0;
 
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_or( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+    float __is_or(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
-      tmp =
-          ( ( b == (gum::Idx)1 ) || ( c == (gum::Idx)1 ) || ( d == (gum::Idx)1 ) )
+      tmp = ((b == (gum::Idx)1) || (c == (gum::Idx)1) || (d == (gum::Idx)1))
               ? (gum::Idx)1
               : (gum::Idx)0;
 
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
-    float __is_and( gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d ) {
+    float __is_and(gum::Idx a, gum::Idx b, gum::Idx c, gum::Idx d) {
       gum::Idx tmp;
 
-      tmp =
-          ( ( b == (gum::Idx)1 ) && ( c == (gum::Idx)1 ) && ( d == (gum::Idx)1 ) )
+      tmp = ((b == (gum::Idx)1) && (c == (gum::Idx)1) && (d == (gum::Idx)1))
               ? (gum::Idx)1
               : (gum::Idx)0;
 
-      return ( tmp == a ) ? (float)1 : (float)0;
+      return (tmp == a) ? (float)1 : (float)0;
     }
 
     public:
     void testCreationMin() {
-      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ),
-          c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
-      gum::aggregator::Min<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-      TS_ASSERT_EQUALS( p.toString(), "a[0-3]=min(b[0-3],c[0-3],d[0-3])" );
+      gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
+        d("d", "", 0, 3);
+      gum::aggregator::Min< float > p;
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=min(b[0-3],c[0-3],d[0-3])");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            p[i], __is_min( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(p[i], __is_min(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
     void testCreationMax() {
-      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ),
-          c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
-      gum::aggregator::Max<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-      TS_ASSERT_EQUALS( p.toString(), "a[0-3]=max(b[0-3],c[0-3],d[0-3])" );
+      gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
+        d("d", "", 0, 3);
+      gum::aggregator::Max< float > p;
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=max(b[0-3],c[0-3],d[0-3])");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            p[i], __is_max( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(p[i], __is_max(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
     void testCreationCount() {
-      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ),
-          c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
-      gum::aggregator::Count<float> p( (gum::Idx)2 );
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-      TS_ASSERT_EQUALS( p.toString(), "a[0-3]=count[2](b[0-3],c[0-3],d[0-3])" );
+      gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
+        d("d", "", 0, 3);
+      gum::aggregator::Count< float > p((gum::Idx)2);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=count[2](b[0-3],c[0-3],d[0-3])");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            p[i], __is_count_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(p[i],
+                         __is_count_2(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
     void testCreationForall() {
-      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ),
-          c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
-      gum::aggregator::Forall<float> p( (gum::Idx)2 );
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-      TS_ASSERT_EQUALS( p.toString(), "a[0-3]=forall[2](b[0-3],c[0-3],d[0-3])" );
+      gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
+        d("d", "", 0, 3);
+      gum::aggregator::Forall< float > p((gum::Idx)2);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=forall[2](b[0-3],c[0-3],d[0-3])");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            p[i],
-            __is_forall_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(p[i],
+                         __is_forall_2(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
     void testCreationExists() {
-      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ),
-          c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
-      gum::aggregator::Exists<float> p( (gum::Idx)2 );
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-      TS_ASSERT_EQUALS( p.toString(), "a[0-3]=exists[2](b[0-3],c[0-3],d[0-3])" );
+      gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
+        d("d", "", 0, 3);
+      gum::aggregator::Exists< float > p((gum::Idx)2);
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_ASSERT_EQUALS(p.toString(), "a[0-3]=exists[2](b[0-3],c[0-3],d[0-3])");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            p[i],
-            __is_exists_2( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(p[i],
+                         __is_exists_2(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
     void testCreationOR() {
-      gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 4 ), c( "c", "", 2 ),
-          d( "d", "", 2 );
-      gum::aggregator::Or<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-      TS_ASSERT_EQUALS( p.toString(), "a<0,1>=or(b<0,1,2,3>,c<0,1>,d<0,1>)" );
+      gum::LabelizedVariable a("a", "", 2), b("b", "", 4), c("c", "", 2),
+        d("d", "", 2);
+      gum::aggregator::Or< float > p;
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_ASSERT_EQUALS(p.toString(), "a<0,1>=or(b<0,1,2,3>,c<0,1>,d<0,1>)");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            p[i], __is_or( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(p[i], __is_or(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
     void testCreationAND() {
-      gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 4 ), c( "c", "", 2 ),
-          d( "d", "", 2 );
-      gum::aggregator::And<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-      TS_ASSERT_EQUALS( p.toString(), "a<0,1>=and(b<0,1,2,3>,c<0,1>,d<0,1>)" );
+      gum::LabelizedVariable a("a", "", 2), b("b", "", 4), c("c", "", 2),
+        d("d", "", 2);
+      gum::aggregator::And< float > p;
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_ASSERT_EQUALS(p.toString(), "a<0,1>=and(b<0,1,2,3>,c<0,1>,d<0,1>)");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            p[i], __is_and( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(p[i], __is_and(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
     }
 
     void testCreationMedian3() {
-      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 ), c( "c", "", 4 ),
-          d( "d", "", 4 );
-      gum::aggregator::Median<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
-      TS_ASSERT_EQUALS( p.toString(),
-                        "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>)" );
+      gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4),
+        d("d", "", 4);
+      gum::aggregator::Median< float > p;
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
+      TS_ASSERT_EQUALS(p.toString(),
+                       "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>)");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            __is_median3( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ), p[i] );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(__is_median3(i.val(a), i.val(b), i.val(c), i.val(d)),
+                         p[i]);
       }
     }
 
     void testCreationMedian4() {
-      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 ), c( "c", "", 4 ),
-          d( "d", "", 4 ), e( "e", "", 4 );
-      gum::aggregator::Median<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d << e );
+      gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4),
+        d("d", "", 4), e("e", "", 4);
+      gum::aggregator::Median< float > p;
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
       TS_ASSERT_EQUALS(
-          p.toString(),
-          "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>,e<0,1,2,3>)" );
+        p.toString(),
+        "a<0,1,2,3>=median(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>,e<0,1,2,3>)");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
+      for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(
-            __is_median4(
-                i.val( a ), i.val( b ), i.val( c ), i.val( d ), i.val( e ) ),
-            p[i] );
+          __is_median4(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
       }
     }
 
     void testCreationAmplitude() {
-      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 ), c( "c", "", 4 ),
-          d( "d", "", 4 ), e( "e", "", 4 );
-      gum::aggregator::Amplitude<float> p;
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d << e );
+      gum::LabelizedVariable a("a", "", 4), b("b", "", 4), c("c", "", 4),
+        d("d", "", 4), e("e", "", 4);
+      gum::aggregator::Amplitude< float > p;
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d << e);
       TS_ASSERT_EQUALS(
-          p.toString(),
-          "a<0,1,2,3>=amplitude(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>,e<0,1,2,3>)" );
+        p.toString(),
+        "a<0,1,2,3>=amplitude(b<0,1,2,3>,c<0,1,2,3>,d<0,1,2,3>,e<0,1,2,3>)");
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
+      for (i.setFirst(); !i.end(); ++i) {
         TS_ASSERT_EQUALS(
-            __is_amplitude(
-                i.val( a ), i.val( b ), i.val( c ), i.val( d ), i.val( e ) ),
-            p[i] );
+          __is_amplitude(i.val(a), i.val(b), i.val(c), i.val(d), i.val(e)), p[i]);
       }
     }
 
     void testPotentialMin() {
-      gum::RangeVariable a( "a", "", 0, 3 ), b( "b", "", 0, 3 ),
-          c( "c", "", 0, 3 ), d( "d", "", 0, 3 );
+      gum::RangeVariable a("a", "", 0, 3), b("b", "", 0, 3), c("c", "", 0, 3),
+        d("d", "", 0, 3);
 
-      gum::Potential<int> p( new gum::aggregator::Min<int>() );
-      TS_GUM_ASSERT_THROWS_NOTHING( p << a << b << c << d );
+      gum::Potential< int > p(new gum::aggregator::Min< int >());
+      TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c << d);
 
-      gum::Instantiation i( p );
+      gum::Instantiation i(p);
 
-      for ( i.setFirst(); !i.end(); ++i ) {
-        TS_ASSERT_EQUALS(
-            p[i], __is_min( i.val( a ), i.val( b ), i.val( c ), i.val( d ) ) );
+      for (i.setFirst(); !i.end(); ++i) {
+        TS_ASSERT_EQUALS(p[i], __is_min(i.val(a), i.val(b), i.val(c), i.val(d)));
       }
 
       // it is not allowed to change a value but can only be detected at the
@@ -423,24 +408,24 @@ namespace gum_tests {
       // access
       i.setFirst();
 
-      TS_ASSERT_THROWS( p.set( i, 3 ), gum::OperationNotAllowed );
+      TS_ASSERT_THROWS(p.set(i, 3), gum::OperationNotAllowed);
 
-      TS_ASSERT_THROWS( p.fill( 0 ), gum::OperationNotAllowed );
+      TS_ASSERT_THROWS(p.fill(0), gum::OperationNotAllowed);
     }
 
     private:
-    std::string _pot2arr( const gum::aggregator::MultiDimAggregator<float>& p ) {
+    std::string _pot2arr(const gum::aggregator::MultiDimAggregator< float >& p) {
       std::stringstream v;
       bool              first = true;
 
-      gum::Instantiation Ind( p );
-      for ( Ind.setFirst(); !Ind.end(); ++Ind ) {
-        if ( !first )
+      gum::Instantiation Ind(p);
+      for (Ind.setFirst(); !Ind.end(); ++Ind) {
+        if (!first)
           v << "-";
         else
           first = false;
 
-        v << p.get( Ind );
+        v << p.get(Ind);
       }
 
       return v.str();
@@ -448,201 +433,201 @@ namespace gum_tests {
 
     public:
     void testOr_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 2 );
+      gum::LabelizedVariable a("a", "", 2), b("b", "", 2);
 
-      std::string                res0 = "1-0";
-      std::string                res1 = "1-0-0-1";
-      gum::aggregator::Or<float> p;
+      std::string                  res0 = "1-0";
+      std::string                  res1 = "1-0-0-1";
+      gum::aggregator::Or< float > p;
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
 
     void testAnd_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 2 );
+      gum::LabelizedVariable a("a", "", 2), b("b", "", 2);
 
-      std::string                 res0 = "0-1";
-      std::string                 res1 = "1-0-0-1";
-      gum::aggregator::And<float> p;
+      std::string                   res0 = "0-1";
+      std::string                   res1 = "1-0-0-1";
+      gum::aggregator::And< float > p;
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
 
     void testExists_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 4 );
+      gum::LabelizedVariable a("a", "", 2), b("b", "", 4);
 
-      std::string                    res0 = "1-0";
-      std::string                    res1 = "1-0-1-0-0-1-1-0";
-      gum::aggregator::Exists<float> p( 2 );
+      std::string                      res0 = "1-0";
+      std::string                      res1 = "1-0-1-0-0-1-1-0";
+      gum::aggregator::Exists< float > p(2);
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
 
     void testForall_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 2 ), b( "b", "", 4 );
+      gum::LabelizedVariable a("a", "", 2), b("b", "", 4);
 
-      std::string                    res0 = "0-1";
-      std::string                    res1 = "1-0-1-0-0-1-1-0";
-      gum::aggregator::Forall<float> p( 2 );
+      std::string                      res0 = "0-1";
+      std::string                      res1 = "1-0-1-0-0-1-1-0";
+      gum::aggregator::Forall< float > p(2);
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
 
     void testMin_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 );
+      gum::LabelizedVariable a("a", "", 4), b("b", "", 4);
 
       std::string res0 = "0-0-0-1";  // min of zero value is +infinity
       std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
-      gum::aggregator::Min<float> p;
+      gum::aggregator::Min< float > p;
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
 
     void testMax_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 4 );
+      gum::LabelizedVariable a("a", "", 4), b("b", "", 4);
 
       std::string res0 = "1-0-0-0";  // max of zero value is -infinity
       std::string res1 = "1-0-0-0-0-1-0-0-0-0-1-0-0-0-0-1";
-      gum::aggregator::Max<float> p;
+      gum::aggregator::Max< float > p;
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
 
     void testCount_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 2 );
+      gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
-      std::string                   res0 = "1-0-0-0";
-      std::string                   res1 = "1-0-0-0-0-1-0-0";
-      gum::aggregator::Count<float> p( 1 );
+      std::string                     res0 = "1-0-0-0";
+      std::string                     res1 = "1-0-0-0-0-1-0-0";
+      gum::aggregator::Count< float > p(1);
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
 
     void testAmplitude_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 2 );
+      gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
-      std::string                       res0 = "1-0-0-0";
-      std::string                       res1 = "1-0-0-0-1-0-0-0";
-      gum::aggregator::Amplitude<float> p;
+      std::string                         res0 = "1-0-0-0";
+      std::string                         res1 = "1-0-0-0-1-0-0-0";
+      gum::aggregator::Amplitude< float > p;
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
 
     void testMedian_ZeroParent() {
-      gum::LabelizedVariable a( "a", "", 4 ), b( "b", "", 2 );
+      gum::LabelizedVariable a("a", "", 4), b("b", "", 2);
 
-      std::string                    res0 = "1-0-0-0";
-      std::string                    res1 = "1-0-0-0-0-1-0-0";
-      gum::aggregator::Median<float> p;
+      std::string                      res0 = "1-0-0-0";
+      std::string                      res1 = "1-0-0-0-0-1-0-0";
+      gum::aggregator::Median< float > p;
 
-      gum::Instantiation ind( p );
+      gum::Instantiation ind(p);
       std::string        s;
 
-      TS_ASSERT_THROWS( p.get( ind ), gum::NotFound );
+      TS_ASSERT_THROWS(p.get(ind), gum::NotFound);
 
       p << a;
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res0 );
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res0);
 
       p << b;
-      TS_GUM_ASSERT_THROWS_NOTHING( p.toString() );
-      TS_GUM_ASSERT_THROWS_NOTHING( s = _pot2arr( p ) );
-      TS_ASSERT_EQUALS( s, res1 );
+      TS_GUM_ASSERT_THROWS_NOTHING(p.toString());
+      TS_GUM_ASSERT_THROWS_NOTHING(s = _pot2arr(p));
+      TS_ASSERT_EQUALS(s, res1);
     }
   };
 }

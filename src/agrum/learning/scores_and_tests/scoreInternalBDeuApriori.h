@@ -52,10 +52,10 @@ namespace gum {
      * aprioris are taken into account during structure learning and parameter
      * learning.
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
     class ScoreInternalBDeuApriori
-        : public ScoreInternalApriori<IdSetAlloc, CountAlloc> {
+      : public ScoreInternalApriori< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -66,16 +66,16 @@ namespace gum {
       ScoreInternalBDeuApriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>*
+      virtual ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >*
       copyFactory() const final;
 
       /// copy constructor
       ScoreInternalBDeuApriori(
-          const ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>& from );
+        const ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >& from);
 
       /// move constructor
       ScoreInternalBDeuApriori(
-          ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>&& from );
+        ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >&& from);
 
       /// destructor
       virtual ~ScoreInternalBDeuApriori();
@@ -89,15 +89,15 @@ namespace gum {
 
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
-          const std::vector<Size>& modalities,
-          std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              target_nodesets,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              conditioning_nodesets ) final;
+        const std::vector< Size >& modalities,
+        std::vector< std::vector< double, CountAlloc > >& counts,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          target_nodesets,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          conditioning_nodesets) final;
 
       /// sets the effective sample size of the internal apriori
-      void setEffectiveSampleSize( double ess );
+      void setEffectiveSampleSize(double ess);
 
       /// @}
 

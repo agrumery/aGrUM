@@ -93,7 +93,7 @@ namespace gum {
             if (labels.size() < 2) {
               GUM_ERROR(InvalidArgument, "Not enough labels in node " << node);
             }
-            if (! hasUniqueElts(labels)) {
+            if (!hasUniqueElts(labels)) {
               GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node);
             }
             ds = static_cast< Size >(labels.size());
@@ -165,7 +165,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >::~BayesNet() {
     GUM_DESTRUCTOR(BayesNet);
-    for (auto p : __probaMap) {
+    for (const auto p : __probaMap) {
       delete p.second;
     }
   }
@@ -292,7 +292,7 @@ namespace gum {
       // Reduce the variable child's CPT
       const NodeSet& children = dag().children(varId);
 
-      for (auto c : children) {
+      for (const auto c : children) {
         __probaMap[c]->erase(variable(varId));
       }
 
@@ -359,7 +359,7 @@ namespace gum {
     eraseArc(arc);
 
     // add the necessary arcs to the tail
-    for (auto p : new_parents) {
+    for (const auto p : new_parents) {
       if ((p != tail) && !dag().existsArc(p, tail)) {
         addArc(p, tail);
       }
@@ -369,7 +369,7 @@ namespace gum {
     // add the necessary arcs to the head
     new_parents.erase(tail);
 
-    for (auto p : new_parents) {
+    for (const auto p : new_parents) {
       if ((p != head) && !dag().existsArc(p, head)) {
         addArc(p, head);
       }
@@ -554,14 +554,14 @@ namespace gum {
   /// begin Multiple Change for all CPTs
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::beginTopologyTransformation() {
-    for (auto node : nodes())
+    for (const auto node : nodes())
       __probaMap[node]->beginMultipleChanges();
   }
 
   /// end Multiple Change for all CPTs
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::endTopologyTransformation() {
-    for (auto node : nodes())
+    for (const auto node : nodes())
       __probaMap[node]->endMultipleChanges();
   }
 
@@ -569,7 +569,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void BayesNet< GUM_SCALAR >::__clearPotentials() {
     // Removing previous potentials
-    for (auto& elt : __probaMap) {
+    for (const auto& elt : __probaMap) {
       delete elt.second;
     }
 
@@ -583,7 +583,7 @@ namespace gum {
     // Copying potentials
     Potential< GUM_SCALAR >* copy_array = nullptr;
 
-    for (auto src : source.__probaMap) {
+    for (const auto src : source.__probaMap) {
       // First we build the node's CPT
       copy_array = new Potential< GUM_SCALAR >();
       copy_array->beginMultipleChanges();
@@ -600,7 +600,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void BayesNet< GUM_SCALAR >::generateCPTs() const {
-    for (auto node : nodes())
+    for (const auto node : nodes())
       generateCPT(node);
   }
   template < typename GUM_SCALAR >

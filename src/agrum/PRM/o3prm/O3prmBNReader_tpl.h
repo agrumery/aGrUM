@@ -28,131 +28,131 @@
 #include <agrum/PRM/o3prm/O3prmBNReader.h>
 
 namespace gum {
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   INLINE std::string
-  O3prmBNReader<GUM_SCALAR>::__getVariableName( const std::string& path,
-                                                const std::string& type,
-                                                const std::string& name,
-                                                const std::string& toRemove ) {
+  O3prmBNReader< GUM_SCALAR >::__getVariableName(const std::string& path,
+                                                 const std::string& type,
+                                                 const std::string& name,
+                                                 const std::string& toRemove) {
     auto res = path + name;  // path ends up with a "."
-    if ( toRemove != "" ) {
-      if ( res.substr( 0, toRemove.size() ) == toRemove ) {
-        res = res.substr( toRemove.size() );
+    if (toRemove != "") {
+      if (res.substr(0, toRemove.size()) == toRemove) {
+        res = res.substr(toRemove.size());
       }
     }
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   std::string
-  O3prmBNReader<GUM_SCALAR>::__getInstanceName( const std::string& classname ) {
-    auto res = classname.substr( 0, 4 );
-    std::transform( res.begin(), res.end(), res.begin(), ::tolower );
+  O3prmBNReader< GUM_SCALAR >::__getInstanceName(const std::string& classname) {
+    auto res = classname.substr(0, 4);
+    std::transform(res.begin(), res.end(), res.begin(), ::tolower);
     return res;
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   std::string
-  O3prmBNReader<GUM_SCALAR>::__getEntityName( const std::string& filename ) {
-    auto b = filename.find_last_of( "/\\" );
-    auto e = filename.find_last_of( "." ) - 1;
-    GUM_ASSERT( e > b );  // we are waiting ../../basename.o3prm
-    return filename.substr( b + 1, e - b );
+  O3prmBNReader< GUM_SCALAR >::__getEntityName(const std::string& filename) {
+    auto b = filename.find_last_of("/\\");
+    auto e = filename.find_last_of(".") - 1;
+    GUM_ASSERT(e > b);  // we are waiting ../../basename.o3prm
+    return filename.substr(b + 1, e - b);
   }
 
-  template <typename GUM_SCALAR>
-  O3prmBNReader<GUM_SCALAR>::O3prmBNReader( BayesNet<GUM_SCALAR>* bn,
-                                            const std::string&    filename,
-                                            const std::string&    entityName,
-                                            const std::string&    classpath )
-      : BNReader<GUM_SCALAR>( bn, filename ) {
-    GUM_CONSTRUCTOR( O3prmBNReader );
+  template < typename GUM_SCALAR >
+  O3prmBNReader< GUM_SCALAR >::O3prmBNReader(BayesNet< GUM_SCALAR >* bn,
+                                             const std::string&      filename,
+                                             const std::string&      entityName,
+                                             const std::string&      classpath)
+      : BNReader< GUM_SCALAR >(bn, filename) {
+    GUM_CONSTRUCTOR(O3prmBNReader);
     __bn = bn;
     __filename = filename;
-    __entityName = entityName == "" ? __getEntityName( filename ) : entityName;
+    __entityName = entityName == "" ? __getEntityName(filename) : entityName;
     __classpath = classpath;
   }
 
-  template <typename GUM_SCALAR>
-  O3prmBNReader<GUM_SCALAR>::~O3prmBNReader() {
-    GUM_DESTRUCTOR( O3prmBNReader );
+  template < typename GUM_SCALAR >
+  O3prmBNReader< GUM_SCALAR >::~O3prmBNReader() {
+    GUM_DESTRUCTOR(O3prmBNReader);
   }
 
   /// parse.
   /// @return the number of detected errors
   /// @throws IOError if file not exists
-  template <typename GUM_SCALAR>
-  Size O3prmBNReader<GUM_SCALAR>::proceed( void ) {
-    prm::o3prm::O3prmReader<GUM_SCALAR> reader;
-    if ( __classpath != "" ) {
-      reader.addClassPath( __classpath );
+  template < typename GUM_SCALAR >
+  Size O3prmBNReader< GUM_SCALAR >::proceed(void) {
+    prm::o3prm::O3prmReader< GUM_SCALAR > reader;
+    if (__classpath != "") {
+      reader.addClassPath(__classpath);
     }
-    reader.readFile( __filename );
-    gum::prm::PRM<GUM_SCALAR>* prm = reader.prm();
+    reader.readFile(__filename);
+    gum::prm::PRM< GUM_SCALAR >* prm = reader.prm();
     __errors = reader.errorsContainer();
 
 
-    if ( errors() == 0 ) {
+    if (errors() == 0) {
       std::string instanceName = "";
-      if ( prm->isSystem( __entityName ) ) {
-        __generateBN( prm->getSystem( __entityName ) );
+      if (prm->isSystem(__entityName)) {
+        __generateBN(prm->getSystem(__entityName));
       } else {
-        if ( prm->isClass( __entityName ) ) {
+        if (prm->isClass(__entityName)) {
           ParseError warn(
-              false,
-              "No system '" + __entityName +
-                  "' found but class found. Generating unnamed instance.",
-              __filename,
-              0 );
-          __errors.add( warn );
-          gum::prm::PRMSystem<GUM_SCALAR> s( "S_" + __entityName );
-          instanceName = __getInstanceName( __entityName );
-          auto i = new gum::prm::PRMInstance<GUM_SCALAR>(
-              instanceName, prm->getClass( __entityName ) );
-          s.add( i );
-          __generateBN( s );
+            false,
+            "No system '" + __entityName +
+              "' found but class found. Generating unnamed instance.",
+            __filename,
+            0);
+          __errors.add(warn);
+          gum::prm::PRMSystem< GUM_SCALAR > s("S_" + __entityName);
+          instanceName = __getInstanceName(__entityName);
+          auto i = new gum::prm::PRMInstance< GUM_SCALAR >(
+            instanceName, prm->getClass(__entityName));
+          s.add(i);
+          __generateBN(s);
           instanceName += ".";  // to be removed in __getVariableName
         } else {
-          ParseError err( true,
-                          "Neither system nor class '" + __entityName + "'.",
-                          __filename,
-                          0 );
-          __errors.add( err );
+          ParseError err(true,
+                         "Neither system nor class '" + __entityName + "'.",
+                         __filename,
+                         0);
+          __errors.add(err);
         }
       }
 
       // renaming variables in th BN
 
-      gum::Set<std::string> names;
-      for ( auto node : __bn->nodes() ) {
+      gum::Set< std::string > names;
+      for (auto node : __bn->nodes()) {
         // keeping the complete name in description
-        const std::string& nn = __bn->variable( node ).name();
-        __bn->variable( node ).setDescription( nn );
+        const std::string& nn = __bn->variable(node).name();
+        __bn->variable(node).setDescription(nn);
 
         // trying to simplify the
-        auto start = nn.find_first_of( '(' );
-        auto end = nn.find_first_of( ')' );
-        if ( 0 < start && start < end && end < nn.size() ) {
-          auto path = nn.substr( 0, start );
-          auto type = nn.substr( start + 1, end - start - 1 );
-          auto name = nn.substr( end + 1, std::string::npos );
+        auto start = nn.find_first_of('(');
+        auto end = nn.find_first_of(')');
+        if (0 < start && start < end && end < nn.size()) {
+          auto path = nn.substr(0, start);
+          auto type = nn.substr(start + 1, end - start - 1);
+          auto name = nn.substr(end + 1, std::string::npos);
 
           std::string newNameRadical =
-              __getVariableName( path, type, name, instanceName );
+            __getVariableName(path, type, name, instanceName);
 
           std::string newName = newNameRadical;
           // forcing newName to be unique
           int num = 0;
-          while ( names.contains( newName ) ) {
-            newName = newNameRadical + std::to_string( ++num );
+          while (names.contains(newName)) {
+            newName = newNameRadical + std::to_string(++num);
           }
 
-          names.insert( newName );
-          __bn->changeVariableName( node, newName );
+          names.insert(newName);
+          __bn->changeVariableName(node, newName);
         } else {
           ParseError warn(
-              false, "Name " + nn + " cannot be simplified.", __filename, 0 );
-          __errors.add( warn );
+            false, "Name " + nn + " cannot be simplified.", __filename, 0);
+          __errors.add(warn);
         }
       }
     }
@@ -163,11 +163,11 @@ namespace gum {
   }
 
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   void
-  O3prmBNReader<GUM_SCALAR>::__generateBN( prm::PRMSystem<GUM_SCALAR>& system ) {
+  O3prmBNReader< GUM_SCALAR >::__generateBN(prm::PRMSystem< GUM_SCALAR >& system) {
     system.instantiate();
-    BayesNetFactory<GUM_SCALAR> factory( __bn );
-    system.groundedBN( factory );
+    BayesNetFactory< GUM_SCALAR > factory(__bn);
+    system.groundedBN(factory);
   }
 }  // gum

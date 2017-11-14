@@ -29,21 +29,21 @@
 
 namespace gum {
 
-  Listener::Listener() { GUM_CONSTRUCTOR( Listener ); }
+  Listener::Listener() { GUM_CONSTRUCTOR(Listener); }
 
-  Listener::Listener( const Listener& l ) {
-    GUM_CONS_CPY( Listener );
+  Listener::Listener(const Listener& l) {
+    GUM_CONS_CPY(Listener);
 
-    for ( const auto el : __senders ) {
-      el->duplicateTarget( &l, this );
+    for (const auto el : __senders) {
+      el->duplicateTarget(&l, this);
     };
   }
 
   Listener::~Listener() {
-    GUM_DESTRUCTOR( Listener );
+    GUM_DESTRUCTOR(Listener);
 
-    for ( const auto el : __senders ) {
-      el->detachFromTarget( this );
+    for (const auto el : __senders) {
+      el->detachFromTarget(this);
     }
 
     __senders.clear();

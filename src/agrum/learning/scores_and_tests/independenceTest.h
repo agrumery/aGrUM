@@ -65,9 +65,9 @@ namespace gum {
      * to get the observed countings if you are developping a new independence
      * test class, or use method score to get the computed score of the test if
      * you are an end user. */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
-    class IndependenceTest : private Counter<IdSetAlloc, CountAlloc> {
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
+    class IndependenceTest : private Counter< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -78,9 +78,9 @@ namespace gum {
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
        */
-      template <typename RowFilter>
-      IndependenceTest( const RowFilter&         filter,
-                        const std::vector<Size>& var_modalities );
+      template < typename RowFilter >
+      IndependenceTest(const RowFilter&           filter,
+                       const std::vector< Size >& var_modalities);
 
       /// destructor
       virtual ~IndependenceTest();
@@ -106,7 +106,7 @@ namespace gum {
        * argument
        * to methods _getAllCounts and _getConditioningCounts to get the observed
        * countings of (var2,var1) [in this order] and var2 respectively. */
-      Idx addNodeSet( Idx var1, Idx var2 );
+      Idx addNodeSet(Idx var1, Idx var2);
 
       /// add a new target node conditioned by another node to be counted
       /** @param vars contains the index of the target variable (first) in the
@@ -120,7 +120,7 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * observed countings of (vars.second, vars.first) [in this order] and
        * vars.second respectively. */
-      Idx addNodeSet( const std::pair<Idx, Idx>& vars );
+      Idx addNodeSet(const std::pair< Idx, Idx >& vars);
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -141,7 +141,7 @@ namespace gum {
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
       Idx
-      addNodeSet( Idx var1, Idx var2, const std::vector<Idx>& conditioning_ids );
+      addNodeSet(Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param var1 represents the index of the target variable in the
@@ -161,7 +161,7 @@ namespace gum {
        * argument to methods _getAllCounts and _getConditioningCounts to get the
        * countings of (conditioning_ids, var2, var1) [in this order] and
        * (conditioning_ids, var2) [in this order] respectively. */
-      Idx addNodeSet( Idx var1, Idx var2, std::vector<Idx>&& conditioning_ids );
+      Idx addNodeSet(Idx var1, Idx var2, std::vector< Idx >&& conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -179,8 +179,8 @@ namespace gum {
        * observed countings of (conditioning_ids, vars.second, vars.first) [in
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
-      Idx addNodeSet( const std::pair<Idx, Idx>& vars,
-                      const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet(const std::pair< Idx, Idx >& vars,
+                     const std::vector< Idx >& conditioning_ids);
 
       /// add a target conditioned by other variables to be counted
       /** @param vars represents the index of the target variable (first) in the
@@ -198,8 +198,8 @@ namespace gum {
        * observed countings of (conditioning_ids, vars.second, vars.first) [in
        * this order] and (conditioning_ids, vars.second) [in this order]
        * respectively. */
-      Idx addNodeSet( const std::pair<Idx, Idx>& vars,
-                      std::vector<Idx>&& conditioning_ids );
+      Idx addNodeSet(const std::pair< Idx, Idx >& vars,
+                     std::vector< Idx >&& conditioning_ids);
 
       /// clears all the data structures from memory
       void clear();
@@ -208,10 +208,10 @@ namespace gum {
       void clearCache();
 
       /// turn on/off the use of a cache of the previously computed score
-      void useCache( bool on_off ) noexcept;
+      void useCache(bool on_off) noexcept;
 
       /// returns the modalities of the variables
-      using Counter<IdSetAlloc, CountAlloc>::modalities;
+      using Counter< IdSetAlloc, CountAlloc >::modalities;
 
       /// returns the score corresponding to a given nodeset
       /** Scores are computed by counting formulas (for instance, for Chi2,
@@ -223,7 +223,7 @@ namespace gum {
        * alpha, where @#sum corresponds to the summations mentioned above.
        * Therefore, any positive result should reflect a dependence whereas
        * negative results should reflect independences. */
-      virtual double score( Idx nodeset_index ) = 0;
+      virtual double score(Idx nodeset_index) = 0;
 
       /// @}
 
@@ -244,29 +244,29 @@ namespace gum {
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<IdSetAlloc, CountAlloc>::_getAllCounts;
+      using Counter< IdSetAlloc, CountAlloc >::_getAllCounts;
 
       /// returns the counting vector for a conditioning set
       /** @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<IdSetAlloc, CountAlloc>::_getConditioningCounts;
+      using Counter< IdSetAlloc, CountAlloc >::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      using Counter<IdSetAlloc, CountAlloc>::_getAllNodes;
+      using Counter< IdSetAlloc, CountAlloc >::_getAllNodes;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes;
+      using Counter< IdSetAlloc, CountAlloc >::_getConditioningNodes;
 
       /// indicates whether a score belongs to the cache
-      bool _isInCache( Idx nodeset_index ) const noexcept;
+      bool _isInCache(Idx nodeset_index) const noexcept;
 
       /// inserts a new score into the cache
-      void _insertIntoCache( Idx nodeset_index, double score );
+      void _insertIntoCache(Idx nodeset_index, double score);
 
       /// returns a cached score
-      double _cachedScore( Idx nodeset_index ) const noexcept;
+      double _cachedScore(Idx nodeset_index) const noexcept;
 
       /// indicates whether we use the cache or not
       bool _isUsingCache() const noexcept;
@@ -279,23 +279,23 @@ namespace gum {
       bool __use_cache{true};
 
       /// indicates whether the ith nodeset's score is in the cache or not
-      std::vector<bool> __is_cached_score;
+      std::vector< bool > __is_cached_score;
 
       /// the vector of scores for the current nodesets
-      std::vector<double> __cached_score;
+      std::vector< double > __cached_score;
 
       /// an empty conditioning set
-      const std::vector<Idx> __empty_conditioning_set;
+      const std::vector< Idx > __empty_conditioning_set;
 
       // ##########################################################################
       // ##########################################################################
 
       /// prevent copy constructor
-      IndependenceTest( const IndependenceTest<IdSetAlloc, CountAlloc>& ) = delete;
+      IndependenceTest(const IndependenceTest< IdSetAlloc, CountAlloc >&) = delete;
 
       /// prevent copy operator
       IndependenceTest&
-      operator=( const IndependenceTest<IdSetAlloc, CountAlloc>& ) = delete;
+      operator=(const IndependenceTest< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

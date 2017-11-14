@@ -95,16 +95,16 @@ namespace gum {
    * for information about this format.
    *
    */
-  template <typename GUM_SCALAR>
-  class BIFXMLIDReader : IDReader<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class BIFXMLIDReader : IDReader< GUM_SCALAR > {
     public:
     /**
      * Constructor
      * A reader is created to reading a defined file.
      * Note that an ID as to be created before and given in parameter.
      */
-    BIFXMLIDReader( InfluenceDiagram<GUM_SCALAR>* infdiag,
-                    const std::string&            filePath );
+    BIFXMLIDReader(InfluenceDiagram< GUM_SCALAR >* infdiag,
+                   const std::string&              filePath);
 
     /**
      * Default destructor.
@@ -124,25 +124,25 @@ namespace gum {
      * parsed
      * yet
      */
-    typename gum::Signaler2<int, std::string> onProceed;
+    typename gum::Signaler2< int, std::string > onProceed;
 
     private:
     /**
      * Parsing xml element containing data on variables
      */
-    void __parsingVariables( ticpp::Element* parentNetwork );
+    void __parsingVariables(ticpp::Element* parentNetwork);
 
     /**
      * fill the diagram
      */
-    void __fillingDiagram( ticpp::Element* parentNetwork );
+    void __fillingDiagram(ticpp::Element* parentNetwork);
 
     /**
      * An handle to the influence diagram in which will be load the content of
      * the
      * xml filePath
      */
-    InfluenceDiagram<GUM_SCALAR>* __infdiag;
+    InfluenceDiagram< GUM_SCALAR >* __infdiag;
 
     /**
      * the path to the xml filePath

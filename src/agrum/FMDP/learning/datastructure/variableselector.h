@@ -56,7 +56,7 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    VariableSelector( Set<const DiscreteVariable*>& startingSet );
+    VariableSelector(Set< const DiscreteVariable* >& startingSet);
 
     // ###################################################################
     /// Default destructor
@@ -73,12 +73,11 @@ namespace gum {
     // ###################################################################
     ///
     // ###################################################################
-    void updateScore( const DiscreteVariable* var,
-                      double                  score,
-                      double                  secondaryscore );
-    void downdateScore( const DiscreteVariable* var,
-                        double                  score,
-                        double                  secondaryscore );
+    void
+    updateScore(const DiscreteVariable* var, double score, double secondaryscore);
+    void downdateScore(const DiscreteVariable* var,
+                       double                  score,
+                       double                  secondaryscore);
 
 
     // ###################################################################
@@ -94,25 +93,25 @@ namespace gum {
     const DiscreteVariable* current() { return *__rvi; }
 
     private:
-    void __addVar( const DiscreteVariable* var );
-    void __removeVar( const DiscreteVariable* var );
+    void __addVar(const DiscreteVariable* var);
+    void __removeVar(const DiscreteVariable* var);
 
     /// The set of remaining vars to select among
-    Set<const DiscreteVariable*>             __remainingVars;
-    SetIteratorSafe<const DiscreteVariable*> __rvi;
+    Set< const DiscreteVariable* >             __remainingVars;
+    SetIteratorSafe< const DiscreteVariable* > __rvi;
 
     /// Heap keeping best score on top for immediate access
-    MultiPriorityQueue<double, double, std::greater<double>> __remainingScores;
+    MultiPriorityQueue< double, double, std::greater< double > > __remainingScores;
 
     /// HashTable associating to each score the set of variable having that
     /// score
-    HashTable<double, Set<const DiscreteVariable*>*> __remainingVarsByScore;
+    HashTable< double, Set< const DiscreteVariable* >* > __remainingVarsByScore;
 
     /// HashTable associating to each variable its score
-    HashTable<const DiscreteVariable*, double> __remainingVarsScore;
+    HashTable< const DiscreteVariable*, double > __remainingVarsScore;
 
     /// HashTable associating to each variable its 2nd score
-    HashTable<const DiscreteVariable*, double> __remainingVarsOtherScore;
+    HashTable< const DiscreteVariable*, double > __remainingVarsOtherScore;
   };
 
 }  // End of GUM Namespace

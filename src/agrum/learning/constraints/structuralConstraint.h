@@ -37,7 +37,7 @@ namespace gum {
      */
     struct StructuralConstraintEmpty {
 
-      using allConstraints = __ConstraintSet<void>;
+      using allConstraints = __ConstraintSet< void >;
     };
 
   } /* namespace learning */

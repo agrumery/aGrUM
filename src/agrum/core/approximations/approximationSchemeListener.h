@@ -52,7 +52,7 @@ namespace gum {
      * @brief Class constructor.
      * @param sch The scheme configuration.
      */
-    ApproximationSchemeListener( IApproximationSchemeConfiguration& sch );
+    ApproximationSchemeListener(IApproximationSchemeConfiguration& sch);
 
     /**
      * @brief Class destructor.
@@ -66,29 +66,29 @@ namespace gum {
      * @param error The number of errors.
      * @param time The time.
      */
-    virtual void whenProgress( const void*  src,
-                               const Size   step,
-                               const double error,
-                               const double time ) = 0;
+    virtual void whenProgress(const void*  src,
+                              const Size   step,
+                              const double error,
+                              const double time) = 0;
 
     /**
      * @brief When it stops.
      * @param src The signal source.
      * @param message A message.
      */
-    virtual void whenStop( const void* src, const std::string message ) = 0;
+    virtual void whenStop(const void* src, const std::string message) = 0;
 
     protected:
     /**
      * Copy constructor.
      */
-    ApproximationSchemeListener( const ApproximationSchemeListener& other );
+    ApproximationSchemeListener(const ApproximationSchemeListener& other);
 
     /**
      * Copy operator.
      */
     ApproximationSchemeListener&
-    operator=( const ApproximationSchemeListener& other );
+    operator=(const ApproximationSchemeListener& other);
 
     private:
     /// The scheme configuration.

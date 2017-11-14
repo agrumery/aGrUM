@@ -48,16 +48,16 @@ namespace gum {
      * Amplitude may be truncated since the amplitude has not the same type as
      * its parents.
      */
-    template <typename GUM_SCALAR>
-    class Amplitude : public MultiDimAggregator<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class Amplitude : public MultiDimAggregator< GUM_SCALAR > {
       public:
       Amplitude();
 
-      Amplitude( const Amplitude<GUM_SCALAR>& from );
+      Amplitude(const Amplitude< GUM_SCALAR >& from);
 
       virtual ~Amplitude();
 
-      virtual std::string aggregatorName( void ) const;
+      virtual std::string aggregatorName(void) const;
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -76,24 +76,22 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+      virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
       protected:
-      virtual Idx _buildValue( const gum::Instantiation& i ) const;
+      virtual Idx _buildValue(const gum::Instantiation& i) const;
 
       // fold scheme is not used, these methods are neutralized
-      virtual Idx _neutralElt( void ) const { return 0; };
-      virtual Idx _fold( const DiscreteVariable& v,
-                         Idx                     i1,
-                         Idx                     i2,
-                         bool&                   stop_iteration ) const;
+      virtual Idx _neutralElt(void) const { return 0; };
+      virtual Idx
+      _fold(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
 
       private:
       Idx __value;
     };
 
-    extern template class Amplitude<float>;
-    extern template class Amplitude<double>;
+    extern template class Amplitude< float >;
+    extern template class Amplitude< double >;
 
   }  // aggregator
 }  // gum

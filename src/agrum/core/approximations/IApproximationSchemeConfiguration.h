@@ -55,10 +55,10 @@ namespace gum {
   class IApproximationSchemeConfiguration {
     public:
     /// Progression, error and time.
-    Signaler3<Size, double, double> onProgress;
+    Signaler3< Size, double, double > onProgress;
 
     /// Criteria messageApproximationScheme
-    Signaler1<std::string> onStop;
+    Signaler1< std::string > onStop;
 
     /// The different state of an approximation scheme.
     enum class ApproximationSchemeSTATE : char {
@@ -106,13 +106,13 @@ namespace gum {
      * @param eps The new epsilon value.
      * @throw OutOfLowerBound Raised if eps < 0.
      */
-    virtual void setEpsilon( double eps ) = 0;
+    virtual void setEpsilon(double eps) = 0;
 
     /**
      * @brief Returns the value of epsilon.
      * @return Returns the value of epsilon.
      */
-    virtual double epsilon( void ) const = 0;
+    virtual double epsilon(void) const = 0;
 
     /**
      * @brief Disable stopping criterion on epsilon.
@@ -141,13 +141,13 @@ namespace gum {
      * @param rate The minimal epsilon rate.
      * @throw OutOfLowerBound if rate<0
      */
-    virtual void setMinEpsilonRate( double rate ) = 0;
+    virtual void setMinEpsilonRate(double rate) = 0;
 
     /**
      * @brief Returns the value of the minimal epsilon rate.
      * @return Returns the value of the minimal epsilon rate.
      */
-    virtual double minEpsilonRate( void ) const = 0;
+    virtual double minEpsilonRate(void) const = 0;
 
     /**
      * @brief Disable stopping criterion on epsilon rate.
@@ -175,13 +175,13 @@ namespace gum {
      * @param max The maximum number of iterations.
      * @throw OutOfLowerBound Raised if max <= 1.
      */
-    virtual void setMaxIter( Size max ) = 0;
+    virtual void setMaxIter(Size max) = 0;
 
     /**
      * @brief Returns the criterion on number of iterations.
      * @return Returns the criterion on number of iterations.
      */
-    virtual Size maxIter( void ) const = 0;
+    virtual Size maxIter(void) const = 0;
 
     /**
      * @brief Disable stopping criterion on max iterations.
@@ -209,19 +209,19 @@ namespace gum {
      * @param timeout The timeout value in seconds.
      * @throw OutOfLowerBound Raised if timeout <= 0.0.
      */
-    virtual void setMaxTime( double timeout ) = 0;
+    virtual void setMaxTime(double timeout) = 0;
 
     /**
      * @brief Returns the timeout (in seconds).
      * @return Returns the timeout (in seconds).
      */
-    virtual double maxTime( void ) const = 0;
+    virtual double maxTime(void) const = 0;
 
     /**
      * @brief Returns the current running time in second.
      * @return Returns the current running time in second.
      */
-    virtual double currentTime( void ) const = 0;
+    virtual double currentTime(void) const = 0;
 
     /**
      * @brief Disable stopping criterion on timeout.
@@ -247,25 +247,25 @@ namespace gum {
      * @param p The new period value.
      * @throw OutOfLowerBound Raised if p < 1.
      */
-    virtual void setPeriodSize( Size p ) = 0;
+    virtual void setPeriodSize(Size p) = 0;
 
     /**
      * @brief Returns the period size.
      * @return Returns the period size.
      */
-    virtual Size periodSize( void ) const = 0;
+    virtual Size periodSize(void) const = 0;
 
     /**
      * @brief Set the verbosity on (true) or off (false).
      * @param v If true, then verbosity is turned on.
      */
-    virtual void setVerbosity( bool v ) = 0;
+    virtual void setVerbosity(bool v) = 0;
 
     /**
      * @brief Returns true if verbosity is enabled.
      * @return Returns true if verbosity is enabled.
      */
-    virtual bool verbosity( void ) const = 0;
+    virtual bool verbosity(void) const = 0;
 
     /**
      * @brief Returns the approximation scheme state.
@@ -286,8 +286,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if the scheme did not performed or
      * if verbosity is set to false.
      */
-    virtual const std::vector<double>& history() const = 0;
-
+    virtual const std::vector< double >& history() const = 0;
   };
 }  // namespace gum
 

@@ -20,5 +20,5 @@
 
 #include <agrum/BN/io/DSL/DSLWriter.h>
 
-template class gum::DSLWriter<float>;
-template class gum::DSLWriter<double>;
+template class gum::DSLWriter< float >;
+template class gum::DSLWriter< double >;

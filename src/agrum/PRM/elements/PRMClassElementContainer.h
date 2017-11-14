@@ -40,9 +40,9 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMClass;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMInterface;
     class PRMClassElementContainterIterator;
     class PRMClassElementContainterConstIterator;
@@ -60,7 +60,7 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMClassElementContainer : public PRMObject {
       friend class PRMClassElementContainterIterator;
       friend class PRMClassElementContainterConstIterator;
@@ -72,7 +72,7 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      PRMClassElementContainer( const std::string& name );
+      PRMClassElementContainer(const std::string& name);
 
       /// Destructor.
       virtual ~PRMClassElementContainer();
@@ -88,14 +88,14 @@ namespace gum {
        * @param elt A PRMClassElement<GUM_SCALAR>.
        * @return true if elt beglons to this PRMClassElementContainer.
        */
-      virtual bool belongsTo( const PRMClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool belongsTo(const PRMClassElement< GUM_SCALAR >& elt) const;
 
       /**
        * Returns true if a member with the given name exists in this
        * PRMClassElementContainer or
        * in the PRMClassElementContainer hierarchy.
        */
-      virtual bool exists( const std::string& name ) const;
+      virtual bool exists(const std::string& name) const;
 
       /**
        * Getter on a member of this PRMClassElementContainer.
@@ -103,7 +103,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual PRMClassElement<GUM_SCALAR>& get( const std::string& name ) = 0;
+      virtual PRMClassElement< GUM_SCALAR >& get(const std::string& name) = 0;
 
       /**
        * Constant getter on a member of this PRMClassElementContainer.
@@ -111,8 +111,8 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const PRMClassElement<GUM_SCALAR>&
-      get( const std::string& name ) const = 0;
+      virtual const PRMClassElement< GUM_SCALAR >&
+      get(const std::string& name) const = 0;
 
       /**
        * @brief Add a PRMClassElement<GUM_SCALAR> to this
@@ -138,7 +138,7 @@ namespace gum {
        * @throw DuplicateElement Raised if elt's name is already used in this
        *class.
        */
-      virtual NodeId add( PRMClassElement<GUM_SCALAR>* elt ) = 0;
+      virtual NodeId add(PRMClassElement< GUM_SCALAR >* elt) = 0;
 
       /**
        * @brief Add a PRMClassElement<GUM_SCALAR> which overload an inherited
@@ -174,12 +174,12 @@ namespace gum {
        *
        * @throw OperationNotAllowed Raised if  overloading is illegal.
        */
-      virtual NodeId overload( PRMClassElement<GUM_SCALAR>* elt ) = 0;
+      virtual NodeId overload(PRMClassElement< GUM_SCALAR >* elt) = 0;
 
       /**
        * Add an arc between two PRMClassElement<GUM_SCALAR>.
        */
-      virtual void addArc( const std::string& tail, const std::string& head ) = 0;
+      virtual void addArc(const std::string& tail, const std::string& head) = 0;
 
       /**
        * @brief Returns true if the node is an input node.
@@ -192,7 +192,7 @@ namespace gum {
        * @param elt A PRMClassElement<GUM_SCALAR>.
        * @return Returns true if id is an input node.
        */
-      virtual bool isInputNode( const PRMClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool isInputNode(const PRMClassElement< GUM_SCALAR >& elt) const;
 
       /**
        * @brief Set the input flag value of id at b.
@@ -213,7 +213,7 @@ namespace gum {
        *nor
        *                          an PRMAggregate.
        */
-      virtual void setInputNode( const PRMClassElement<GUM_SCALAR>& elt, bool b );
+      virtual void setInputNode(const PRMClassElement< GUM_SCALAR >& elt, bool b);
 
       /**
        * @brief Returns true if the node is an output node.
@@ -227,7 +227,7 @@ namespace gum {
        * @return Returns true if id is an input node.
        */
       virtual bool
-      isOutputNode( const PRMClassElement<GUM_SCALAR>& elt ) const = 0;
+      isOutputNode(const PRMClassElement< GUM_SCALAR >& elt) const = 0;
 
       /**
        * @brief Set the output flag value of id at b.
@@ -248,7 +248,7 @@ namespace gum {
        *nor
        *                          an PRMAggregate.
        */
-      virtual void setOutputNode( const PRMClassElement<GUM_SCALAR>& elt, bool b );
+      virtual void setOutputNode(const PRMClassElement< GUM_SCALAR >& elt, bool b);
 
       /**
        * @brief Returns true if the node is an inner node.
@@ -268,7 +268,7 @@ namespace gum {
        *nor
        *                          an PRMAggregate.
        */
-      virtual bool isInnerNode( const PRMClassElement<GUM_SCALAR>& elt ) const;
+      virtual bool isInnerNode(const PRMClassElement< GUM_SCALAR >& elt) const;
       /// @}
       // ========================================================================
       /// @name Graphical operator
@@ -300,7 +300,7 @@ namespace gum {
        * @param id A NodeId.
        * @return true if id matches a PRMClassElement<GUM_SCALAR>.
        */
-      virtual bool exists( NodeId id ) const;
+      virtual bool exists(NodeId id) const;
 
       /**
        * Getter on a member of this PRMClassElementContainer.
@@ -308,7 +308,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual PRMClassElement<GUM_SCALAR>& get( NodeId id ) = 0;
+      virtual PRMClassElement< GUM_SCALAR >& get(NodeId id) = 0;
 
       /**
        * Constant getter on a member of this PRMClassElementContainer.
@@ -316,7 +316,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const PRMClassElement<GUM_SCALAR>& get( NodeId id ) const = 0;
+      virtual const PRMClassElement< GUM_SCALAR >& get(NodeId id) const = 0;
 
       /// @}
       // ========================================================================
@@ -330,7 +330,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) = 0;
+      virtual PRMClassElement< GUM_SCALAR >& operator[](NodeId id) = 0;
 
       /**
        * Constant getter on a member of this PRMClassElementContainer.
@@ -338,7 +338,7 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const PRMClassElement<GUM_SCALAR>& operator[]( NodeId id ) const = 0;
+      virtual const PRMClassElement< GUM_SCALAR >& operator[](NodeId id) const = 0;
 
       /**
        * Getter on a member of this PRMClassElementContainer.
@@ -346,8 +346,8 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual PRMClassElement<GUM_SCALAR>&
-      operator[]( const std::string& name ) = 0;
+      virtual PRMClassElement< GUM_SCALAR >&
+      operator[](const std::string& name) = 0;
 
       /**
        * Constant getter on a member of this PRMClassElementContainer.
@@ -355,8 +355,8 @@ namespace gum {
        * @return Returns a constant reference on the member.
        * @throw NotFound Raised if no attribute matches name.
        */
-      virtual const PRMClassElement<GUM_SCALAR>&
-      operator[]( const std::string& name ) const = 0;
+      virtual const PRMClassElement< GUM_SCALAR >&
+      operator[](const std::string& name) const = 0;
 
       /// @}
       // ========================================================================
@@ -371,7 +371,7 @@ namespace gum {
        * @return return true if this PRMClassElementContainer is a subtype of
        * cec.
        */
-      virtual bool isSubTypeOf( const PRMClassElementContainer& cec ) const = 0;
+      virtual bool isSubTypeOf(const PRMClassElementContainer& cec) const = 0;
 
       /**
        * @brief Test if this PRMClassElementContainer is a super type of cec.
@@ -382,17 +382,16 @@ namespace gum {
        * @return return true if this PRMClassElementContainer is a super type of
        *cec.
        */
-      virtual bool isSuperTypeOf( const PRMClassElementContainer& cec ) const;
+      virtual bool isSuperTypeOf(const PRMClassElementContainer& cec) const;
 
       /// @}
 
       protected:
       /// Copy operator. Don't use it.
-      PRMClassElementContainer&
-      operator=( const PRMClassElementContainer& source );
+      PRMClassElementContainer& operator=(const PRMClassElementContainer& source);
 
       /// Copy constructor. Don't use it.
-      PRMClassElementContainer( const PRMClassElementContainer& source );
+      PRMClassElementContainer(const PRMClassElementContainer& source);
 
       virtual const DAG& _dag() const = 0;
 
@@ -403,33 +402,33 @@ namespace gum {
       /// Fills set with all the subtypes of this PRMInterface, this includes
       /// extensions
       /// and implementations.
-      virtual void _findAllSubtypes( Set<PRMClassElementContainer*>& set ) = 0;
+      virtual void _findAllSubtypes(Set< PRMClassElementContainer* >& set) = 0;
 
       /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
-      virtual std::pair<bool, bool>&
-      _getIOFlag( const PRMClassElement<GUM_SCALAR>& elt );
+      virtual std::pair< bool, bool >&
+      _getIOFlag(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// Returns the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
-      virtual const std::pair<bool, bool>&
-      _getIOFlag( const PRMClassElement<GUM_SCALAR>& elt ) const;
+      virtual const std::pair< bool, bool >&
+      _getIOFlag(const PRMClassElement< GUM_SCALAR >& elt) const;
 
       /// Defines the IO flags of a PRMClassElement<GUM_SCALAR>.
       /// @param elt The PRMClassElement<GUM_SCALAR>.
       /// @param flags The IO flags of elt. Overwrite any existing flags.
       /// @return elt's IO flags.
       /// @throw NotFound Raised if elt does not have any IO flags.
-      virtual void _setIOFlag( const PRMClassElement<GUM_SCALAR>& elt,
-                               const std::pair<bool, bool>& flags );
+      virtual void _setIOFlag(const PRMClassElement< GUM_SCALAR >& elt,
+                              const std::pair< bool, bool >& flags);
 
       /// Copy the IO Flags of c in this PRMClassElementContainer.
       /// @param c A PRMClassElementContainer.
-      virtual void _copyIOFlags( const PRMClassElementContainer& c );
+      virtual void _copyIOFlags(const PRMClassElementContainer& c);
 
       /// When a PRMClassElement<GUM_SCALAR> becomes an Output node we must
       /// update
@@ -439,31 +438,33 @@ namespace gum {
       ///
       /// @param elt A PRMClassElement<GUM_SCALAR>.
       virtual void
-      _updateDescendants( const PRMClassElement<GUM_SCALAR>& elt ) = 0;
+      _updateDescendants(const PRMClassElement< GUM_SCALAR >& elt) = 0;
 
       private:
       /// input / output flags, useful when inheriting or copying.
-      HashTable<std::string, std::pair<bool, bool>> __IOFlags;
+      HashTable< std::string, std::pair< bool, bool > > __IOFlags;
     };
 
 
-    extern template class PRMClassElementContainer<float>;
-    extern template class PRMClassElementContainer<double>;
+    extern template class PRMClassElementContainer< float >;
+    extern template class PRMClassElementContainer< double >;
 
 
   } /* namespace prm */
-  #ifdef __clang__
-  extern template class HashFuncMediumCastKey<gum::prm::PRMClassElementContainer<float>*>;
-  extern template class HashFuncMediumCastKey<gum::prm::PRMClassElementContainer<double>*>;
-  #endif
+#ifdef __clang__
+  extern template class HashFuncMediumCastKey<
+    gum::prm::PRMClassElementContainer< float >* >;
+  extern template class HashFuncMediumCastKey<
+    gum::prm::PRMClassElementContainer< double >* >;
+#endif
 }  // namespace gum
 
 /// @brief An << operator for PRMClassElementContainer.
 /// Output in the graphviz-dot format.
-template <typename GUM_SCALAR>
+template < typename GUM_SCALAR >
 std::ostream&
-operator<<( std::ostream&                                         output,
-            const gum::prm::PRMClassElementContainer<GUM_SCALAR>& container );
+operator<<(std::ostream&                                           output,
+           const gum::prm::PRMClassElementContainer< GUM_SCALAR >& container);
 
 #include <agrum/PRM/elements/PRMClassElementContainer_tpl.h>
 

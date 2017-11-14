@@ -53,7 +53,7 @@ namespace gum {
    * table.
    * @tparam Table The class of multidimensional table to use.
    */
-  template <typename GUM_SCALAR, template <typename> class TABLE>
+  template < typename GUM_SCALAR, template < typename > class TABLE >
   class MultiDimPartialInstantiation {
     public:
     // =========================================================================
@@ -71,7 +71,7 @@ namespace gum {
      * @param src The MultiDimPartialInstantiation to copy.
      */
     MultiDimPartialInstantiation(
-        const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& src );
+      const MultiDimPartialInstantiation< GUM_SCALAR, TABLE >& src);
 
     /**
      * @brief Class destructor.
@@ -83,8 +83,8 @@ namespace gum {
      * @param src The MultiDimPartialInstantiation to copy.
      * @return Returns this MultiDimPartialInstantiation.
      */
-    MultiDimPartialInstantiation<GUM_SCALAR, TABLE>&
-    operator=( const MultiDimPartialInstantiation<GUM_SCALAR, TABLE>& src );
+    MultiDimPartialInstantiation< GUM_SCALAR, TABLE >&
+    operator=(const MultiDimPartialInstantiation< GUM_SCALAR, TABLE >& src);
 
     /// @}
     // =========================================================================
@@ -92,7 +92,7 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual MultiDimPartialInstantiation<GUM_SCALAR, TABLE>* newFactory() const;
+    virtual MultiDimPartialInstantiation< GUM_SCALAR, TABLE >* newFactory() const;
 
     /// @}
     // =========================================================================
@@ -114,9 +114,9 @@ namespace gum {
      * instantiation of a subset of the variables of the TABLE passed in
      * argument.
      */
-    TABLE<GUM_SCALAR>*
-    instantiate( const TABLE<GUM_SCALAR>& table,
-                 const HashTable<const DiscreteVariable*, Idx>& inst_vars );
+    TABLE< GUM_SCALAR >*
+    instantiate(const TABLE< GUM_SCALAR >& table,
+                const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
     /**
      * @brief Creates and returns the partial instantiation of the table over a
@@ -130,9 +130,9 @@ namespace gum {
      * @param table The table to parially instantiate.
      * @param inst_vars A mapping between variables and their instantiation.
      */
-    void instantiate( TABLE<GUM_SCALAR>&       container,
-                      const TABLE<GUM_SCALAR>& table,
-                      const HashTable<const DiscreteVariable*, Idx>& inst_vars );
+    void instantiate(TABLE< GUM_SCALAR >&       container,
+                     const TABLE< GUM_SCALAR >& table,
+                     const HashTable< const DiscreteVariable*, Idx >& inst_vars);
 
     /// @}
   };

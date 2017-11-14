@@ -28,5 +28,5 @@
 #include <agrum/core/approximations/exactPolicy.h>
 
 
-template class gum::ExactPolicy<float>;
-template class gum::ExactPolicy<double>;
+template class gum::ExactPolicy< float >;
+template class gum::ExactPolicy< double >;

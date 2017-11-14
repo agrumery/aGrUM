@@ -27,7 +27,7 @@
 #include <agrum/CN/CNMonteCarloSampling.h>
 
 
-template class gum::credal::CNMonteCarloSampling<float,
-                                                 gum::LazyPropagation<float>>;
-template class gum::credal::CNMonteCarloSampling<double,
-                                                 gum::LazyPropagation<double>>;
+template class gum::credal::CNMonteCarloSampling< float,
+                                                  gum::LazyPropagation< float > >;
+template class gum::credal::CNMonteCarloSampling< double,
+                                                  gum::LazyPropagation< double > >;

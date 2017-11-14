@@ -74,13 +74,13 @@ namespace gum {
       StructuralConstraintTabuList();
 
       /// constructor starting with a given graph
-      StructuralConstraintTabuList( const DiGraph& graph );
+      StructuralConstraintTabuList(const DiGraph& graph);
 
       /// copy constructor
-      StructuralConstraintTabuList( const StructuralConstraintTabuList& from );
+      StructuralConstraintTabuList(const StructuralConstraintTabuList& from);
 
       /// move constructor
-      StructuralConstraintTabuList( StructuralConstraintTabuList&& from );
+      StructuralConstraintTabuList(StructuralConstraintTabuList&& from);
 
       /// destructor
       virtual ~StructuralConstraintTabuList();
@@ -94,11 +94,10 @@ namespace gum {
 
       /// copy operator
       StructuralConstraintTabuList&
-      operator=( const StructuralConstraintTabuList& from );
+      operator=(const StructuralConstraintTabuList& from);
 
       /// move operator
-      StructuralConstraintTabuList&
-      operator=( StructuralConstraintTabuList&& from );
+      StructuralConstraintTabuList& operator=(StructuralConstraintTabuList&& from);
 
       /// @}
 
@@ -108,36 +107,36 @@ namespace gum {
       /// @{
 
       /// sets the size of the tabu list
-      void setTabuListSize( Size new_size );
+      void setTabuListSize(Size new_size);
 
       /// sets a new graph from which we will perform checkings
-      void setGraphAlone( const DiGraph& graph );
+      void setGraphAlone(const DiGraph& graph);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added nothing is done. In
        * particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes */
-      void modifyGraphAlone( const ArcAddition& change );
+      void modifyGraphAlone(const ArcAddition& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If a nonexisting arc is removed, nothing is done. In
        * particular, no exception is raised. */
-      void modifyGraphAlone( const ArcDeletion& change );
+      void modifyGraphAlone(const ArcDeletion& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if at least one extremity of
        * the arc does not belong to the graph nodes */
-      void modifyGraphAlone( const ArcReversal& change );
+      void modifyGraphAlone(const ArcReversal& change);
 
       /// notify the constraint of a modification of the graph
       /** @warning If an already existing arc is added, or if a nonexisting arc
        * is removed, nothing is done. In particular, no exception is raised.
        * @throws InvalidNode exception is thrown if an arc (x,y) is added and x
        * or y does not belong to the graph nodes */
-      void modifyGraphAlone( const GraphChange& change );
+      void modifyGraphAlone(const GraphChange& change);
 
       /// indicates whether a change will always violate the constraint
       /** Some learning algorithms need examine several times whether a given
@@ -153,21 +152,21 @@ namespace gum {
        * arc.
        * Such graph changes are always invalid and are therefore tagged as such
        * by the isAlwaysInvalid method. */
-      bool isAlwaysInvalidAlone( const GraphChange& change ) const;
+      bool isAlwaysInvalidAlone(const GraphChange& change) const;
 
       /// checks whether the constraints enable to add arc (x,y)
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkArcAdditionAlone( NodeId x, NodeId y ) const;
+      bool checkArcAdditionAlone(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to remove arc (x,y)
       /** an arc can be removed if and only if the arc exists. */
-      bool checkArcDeletionAlone( NodeId x, NodeId y ) const;
+      bool checkArcDeletionAlone(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to reverse arc (x,y)
       /** an arc can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkArcReversalAlone( NodeId x, NodeId y ) const;
+      bool checkArcReversalAlone(NodeId x, NodeId y) const;
 
       /// checks whether the constraints enable to perform a graph change
       /** An arc can be added if and only if its extremal nodes belong to the
@@ -175,21 +174,21 @@ namespace gum {
        * An arc can be removed if and only if the arc exists.
        * An arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkModificationAlone( const GraphChange& change ) const;
+      bool checkModificationAlone(const GraphChange& change) const;
 
       /// checks whether the constraints enable to add an arc
       /** an arc can be added if and only if its extremal nodes belong to the
        * graph and the arc does not already exist. */
-      bool checkModificationAlone( const ArcAddition& change ) const;
+      bool checkModificationAlone(const ArcAddition& change) const;
 
       /// checks whether the constraints enable to remove an arc
       /** an arc can be removed if and only if the arc exists. */
-      bool checkModificationAlone( const ArcDeletion& change ) const;
+      bool checkModificationAlone(const ArcDeletion& change) const;
 
       /// checks whether the constraints enable to reverse an arc
       /** an arc (x,y) can be reversed if and only if it exists and arc (y,x)
        * does not. */
-      bool checkModificationAlone( const ArcReversal& change ) const;
+      bool checkModificationAlone(const ArcReversal& change) const;
 
 /// @}
 
@@ -204,7 +203,7 @@ namespace gum {
 
       protected:
       /// the tabu list
-      Bijection<GraphChange, NodeId> _TabuList__changes;
+      Bijection< GraphChange, NodeId > _TabuList__changes;
 
       /// the index of the oldest element
       NodeId _TabuList__offset{0};

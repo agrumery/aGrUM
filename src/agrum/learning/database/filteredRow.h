@@ -60,10 +60,10 @@ namespace gum {
       /// @{
 
       /// returns the filtered row as a vector of integers
-      const std::vector<float>& row() const noexcept { return __row; }
+      const std::vector< float >& row() const noexcept { return __row; }
 
       /// returns the filtered row as a vector of integers
-      std::vector<float>& row() noexcept { return __row; }
+      std::vector< float >& row() noexcept { return __row; }
 
       /// returns the weight of the row
       const double& weight() const noexcept { return __weight; }
@@ -72,7 +72,7 @@ namespace gum {
       double& weight() noexcept { return __weight; }
 
       /// sets the weight of the row
-      void setWeight ( double new_weight ) { __weight = new_weight; };
+      void setWeight(double new_weight) { __weight = new_weight; };
 
       /// returns a reference on the number of unobserved values
       Size& unobserved() noexcept { return __nb_unobserved; }
@@ -83,7 +83,7 @@ namespace gum {
       /// returns the value at the ith column
       /** by convention, unobserved columns should have value
        * std::numeric_limits<Idx>::max () */
-      float operator[]( Idx i ) const noexcept { return __row[i]; }
+      float operator[](Idx i) const noexcept { return __row[i]; }
 
       /// @}
 
@@ -94,20 +94,20 @@ namespace gum {
       /// @{
 
       /// tests whether two rows are identical
-      bool operator==( const FilteredRow& from ) {
-        return ( ( __weight == from.__weight ) &&
-                 ( __nb_unobserved == from.__nb_unobserved ) &&
-                 ( __row == from.__row ) );
+      bool operator==(const FilteredRow& from) {
+        return ((__weight == from.__weight) &&
+                (__nb_unobserved == from.__nb_unobserved) &&
+                (__row == from.__row));
       }
 
       /// tests whether two rows are different
-      bool operator!=( const FilteredRow& from ) { return !operator==( from ); }
+      bool operator!=(const FilteredRow& from) { return !operator==(from); }
 
       /// @}
 
       private:
       /// the integer-encoded filtered row
-      std::vector<float> __row;
+      std::vector< float > __row;
 
       /// the weight of the row
       double __weight{1};

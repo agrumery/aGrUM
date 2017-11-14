@@ -21,21 +21,21 @@
 namespace gum {
 
   /// returns the set of barren potentials in messages sent in a junction tree
-  template <typename GUM_SCALAR>
-  ArcProperty<Set<const Potential<GUM_SCALAR>*>>
-  BarrenNodesFinder::barrenPotentials( const CliqueGraph&           junction_tree,
-                                       const IBayesNet<GUM_SCALAR>& bn ) {
+  template < typename GUM_SCALAR >
+  ArcProperty< Set< const Potential< GUM_SCALAR >* > >
+  BarrenNodesFinder::barrenPotentials(const CliqueGraph&             junction_tree,
+                                      const IBayesNet< GUM_SCALAR >& bn) {
     // get the barren nodes
-    ArcProperty<NodeSet> barren_nodes = this->barrenNodes( junction_tree );
+    ArcProperty< NodeSet > barren_nodes = this->barrenNodes(junction_tree);
 
     // transform the nodesets into sets of potentials
-    ArcProperty<Set<const Potential<GUM_SCALAR>*>> result;
-    for ( const auto& barren : barren_nodes ) {
-      Set<const Potential<GUM_SCALAR>*> potentials;
-      for ( const auto node : barren.second ) {
-        potentials.insert( &( bn.cpt( node ) ) );
+    ArcProperty< Set< const Potential< GUM_SCALAR >* > > result;
+    for (const auto& barren : barren_nodes) {
+      Set< const Potential< GUM_SCALAR >* > potentials;
+      for (const auto node : barren.second) {
+        potentials.insert(&(bn.cpt(node)));
       }
-      result.insert( Arc( barren.first ), std::move( potentials ) );
+      result.insert(Arc(barren.first), std::move(potentials));
     }
 
     return result;

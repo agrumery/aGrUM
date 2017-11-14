@@ -50,8 +50,8 @@ namespace gum {
    * cf. http://www.cs.huji.ac.il/project/PASCAL/fileFormat.php
    *
    */
-  template <typename GUM_SCALAR>
-  class UAIWriter : public BNWriter<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class UAIWriter : public BNWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -77,7 +77,7 @@ namespace gum {
      * @param bn The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::ostream& output, const IBayesNet<GUM_SCALAR>& bn );
+    virtual void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -88,20 +88,20 @@ namespace gum {
      * @param bn The bayes net writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::string filePath, const IBayesNet<GUM_SCALAR>& bn );
+    virtual void write(std::string filePath, const IBayesNet< GUM_SCALAR >& bn);
 
     private:
     /**
      * Returns the header of the BIF file.
      */
-    std::string __preambule( const IBayesNet<GUM_SCALAR>& bn );
+    std::string __preambule(const IBayesNet< GUM_SCALAR >& bn);
 
-    std::string __cptBloc( const IBayesNet<GUM_SCALAR>& bn, NodeId node );
+    std::string __cptBloc(const IBayesNet< GUM_SCALAR >& bn, NodeId node);
   };
 
 
-  extern template class UAIWriter<float>;
-  extern template class UAIWriter<double>;
+  extern template class UAIWriter< float >;
+  extern template class UAIWriter< double >;
 
 } /* namespace gum */
 

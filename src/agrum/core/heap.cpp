@@ -27,7 +27,7 @@
 #include <agrum/core/heap.h>
 
 
-template class gum::Heap<int>;
-template class gum::Heap<long>;
-template class gum::Heap<float>;
-template class gum::Heap<double>;
+template class gum::Heap< int >;
+template class gum::Heap< long >;
+template class gum::Heap< float >;
+template class gum::Heap< double >;

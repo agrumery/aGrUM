@@ -50,7 +50,7 @@ namespace gum {
     /// @name Constructors / Destructors
     // ############################################################################
     /// @{
-  private:
+    private:
     /// Default constructor.
     BayesBall();
 
@@ -58,8 +58,7 @@ namespace gum {
     ~BayesBall();
 
     /// @}
-  public:
-
+    public:
     // ############################################################################
     /// @name Accessors / Modifiers
     // ############################################################################
@@ -71,20 +70,20 @@ namespace gum {
      * Requisite nodes are those that are d-connected to at least one of the
      * query nodes given a set of hard and soft evidence
      */
-    static void requisiteNodes( const DAG&     dag,
-                         const NodeSet& query,
-                         const NodeSet& hardEvidence,
-                         const NodeSet& softEvidence,
-                         NodeSet&       requisite );
+    static void requisiteNodes(const DAG&     dag,
+                               const NodeSet& query,
+                               const NodeSet& hardEvidence,
+                               const NodeSet& softEvidence,
+                               NodeSet&       requisite);
 
     /** @brief update a set of potentials, keeping only those d-connected with
      * query variables given evidence */
-    template <typename GUM_SCALAR, template <typename> class TABLE>
-    static void relevantPotentials( const IBayesNet<GUM_SCALAR>&   bn,
-                             const NodeSet&                 query,
-                             const NodeSet&                 hardEvidence,
-                             const NodeSet&                 softEvidence,
-                             Set<const TABLE<GUM_SCALAR>*>& potentials );
+    template < typename GUM_SCALAR, template < typename > class TABLE >
+    static void relevantPotentials(const IBayesNet< GUM_SCALAR >&     bn,
+                                   const NodeSet&                     query,
+                                   const NodeSet&                     hardEvidence,
+                                   const NodeSet&                     softEvidence,
+                                   Set< const TABLE< GUM_SCALAR >* >& potentials);
 
     /// @}
   };

@@ -52,10 +52,10 @@ namespace gum {
     class ISignaler {
       public:
       virtual ~ISignaler(){};
-      virtual void detachFromTarget( Listener* target ) = 0;
-      virtual void duplicateTarget( const Listener* oldtarget,
-                                    Listener*       newtarget ) = 0;
-      virtual bool hasListener( void ) = 0;
+      virtual void detachFromTarget(Listener* target) = 0;
+      virtual void duplicateTarget(const Listener* oldtarget,
+                                   Listener*       newtarget) = 0;
+      virtual bool hasListener(void) = 0;
     };
   }  // namespace __sig__
 
@@ -70,7 +70,7 @@ namespace gum {
   class Listener {
     private:
     /// Alias for the list of signal senders.
-    typedef std::vector<__sig__::ISignaler*> Senders_list;
+    typedef std::vector< __sig__::ISignaler* > Senders_list;
 
     public:
     /**
@@ -78,21 +78,21 @@ namespace gum {
      */
     Listener();
 
-    Listener( const Listener& l );
+    Listener(const Listener& l);
 
     virtual ~Listener();
 
-    void attachSignal__( __sig__::ISignaler* sender );
+    void attachSignal__(__sig__::ISignaler* sender);
 
-    void detachSignal__( __sig__::ISignaler* sender );
+    void detachSignal__(__sig__::ISignaler* sender);
 
     private:
     Senders_list __senders;
   };
 }  // namespace gum
 
-#define GUM_CONNECT( sender, signal, receiver, target ) \
-  ( sender ).signal.attach( &( receiver ), &target )
+#define GUM_CONNECT(sender, signal, receiver, target) \
+  (sender).signal.attach(&(receiver), &target)
 
 #ifndef GUM_NO_INLINE
 #include <agrum/core/signal/listener_inl.h>

@@ -38,51 +38,51 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    DatabaseFromSQL::DatabaseFromSQL( const std::string&             dataSource,
-                                      const std::string&             login,
-                                      const std::string&             password,
-                                      const std::string&             query,
-                                      long                           timeout,
-                                      const DBTransform&             transform,
-                                      const std::vector<std::string> missingVal ) {
+    DatabaseFromSQL::DatabaseFromSQL(const std::string&               dataSource,
+                                     const std::string&               login,
+                                     const std::string&               password,
+                                     const std::string&               query,
+                                     long                             timeout,
+                                     const DBTransform&               transform,
+                                     const std::vector< std::string > missingVal) {
       try {
-        nanodbc::connection cn( dataSource, login, password, timeout );
-        nanodbc::result     res = nanodbc::execute( cn, query );
+        nanodbc::connection cn(dataSource, login, password, timeout);
+        nanodbc::result     res = nanodbc::execute(cn, query);
 
-        NanodbcParser parser( res );
+        NanodbcParser parser(res);
 
         // Get names from result's columns
         auto& names = _variableNames();
-        for ( short i = 0; i < res.columns(); ++i ) {
-          names.push_back( res.column_name( i ) );
+        for (short i = 0; i < res.columns(); ++i) {
+          names.push_back(res.column_name(i));
         }
 
         // use the NanodbcParser to fill the vector of DBRows
         auto& vect = _content();
 
-        while ( parser.next() ) {
+        while (parser.next()) {
           // read a new line in the input file and convert it into a DBRow
           const auto& row = parser.current();
 
-          DBRow new_row( row.size() );
+          DBRow new_row(row.size());
 
-          for ( Idx i = 0; i < row.size(); ++i ) {
-            new_row[i].setBestTypeSafe( row[i] );
+          for (Idx i = 0; i < row.size(); ++i) {
+            new_row[i].setBestTypeSafe(row[i]);
           }
 
           // add the result into
-          vect.push_back( new_row );
+          vect.push_back(new_row);
         }
 
         // if we wish to apply a DBTransform to preprocess the database
-        transform.transform( vect, missingVal );
+        transform.transform(vect, missingVal);
 
-      } catch ( nanodbc::database_error& e ) {
-        GUM_ERROR( DatabaseError, e.what() );
+      } catch (nanodbc::database_error& e) {
+        GUM_ERROR(DatabaseError, e.what());
       }
 
       // for debugging purposes
-      GUM_CONSTRUCTOR( DatabaseFromSQL );
+      GUM_CONSTRUCTOR(DatabaseFromSQL);
     }
 
   } /* namespace learning */

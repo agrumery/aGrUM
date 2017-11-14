@@ -55,18 +55,18 @@ namespace gum {
    * @param learnedValue : the variable from which we try to learn the behaviour
    */
   // ###################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  ITI<AttributeSelection, isScalar>::ITI(
-      MultiDimFunctionGraph<double>* target,
-      double                         attributeSelectionThreshold,
-      Set<const DiscreteVariable*>   attributeListe,
-      const DiscreteVariable*        learnedValue )
-      : IncrementalGraphLearner<AttributeSelection, isScalar>(
-            target, attributeListe, learnedValue )
-      , __nbTotalObservation( 0 )
-      , __attributeSelectionThreshold( attributeSelectionThreshold ) {
-    GUM_CONSTRUCTOR( ITI );
-    __staleTable.insert( this->_root, false );
+  template < TESTNAME AttributeSelection, bool isScalar >
+  ITI< AttributeSelection, isScalar >::ITI(
+    MultiDimFunctionGraph< double >* target,
+    double                           attributeSelectionThreshold,
+    Set< const DiscreteVariable* >   attributeListe,
+    const DiscreteVariable*          learnedValue)
+      : IncrementalGraphLearner< AttributeSelection, isScalar >(
+          target, attributeListe, learnedValue)
+      , __nbTotalObservation(0)
+      , __attributeSelectionThreshold(attributeSelectionThreshold) {
+    GUM_CONSTRUCTOR(ITI);
+    __staleTable.insert(this->_root, false);
   }
 
   // ###################################################################
@@ -81,17 +81,17 @@ namespace gum {
    * behaviour of learned function
    */
   // ###################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  ITI<AttributeSelection, isScalar>::ITI(
-      MultiDimFunctionGraph<double>* target,
-      double                         attributeSelectionThreshold,
-      Set<const DiscreteVariable*>   attributeListe )
-      : IncrementalGraphLearner<AttributeSelection, isScalar>(
-            target, attributeListe, new LabelizedVariable( "Reward", "", 2 ) )
-      , __nbTotalObservation( 0 )
-      , __attributeSelectionThreshold( attributeSelectionThreshold ) {
-    GUM_CONSTRUCTOR( ITI );
-    __staleTable.insert( this->_root, false );
+  template < TESTNAME AttributeSelection, bool isScalar >
+  ITI< AttributeSelection, isScalar >::ITI(
+    MultiDimFunctionGraph< double >* target,
+    double                           attributeSelectionThreshold,
+    Set< const DiscreteVariable* >   attributeListe)
+      : IncrementalGraphLearner< AttributeSelection, isScalar >(
+          target, attributeListe, new LabelizedVariable("Reward", "", 2))
+      , __nbTotalObservation(0)
+      , __attributeSelectionThreshold(attributeSelectionThreshold) {
+    GUM_CONSTRUCTOR(ITI);
+    __staleTable.insert(this->_root, false);
   }
 
 
@@ -105,11 +105,11 @@ namespace gum {
    * @param the new observation to learn
    */
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
+  template < TESTNAME AttributeSelection, bool isScalar >
   void
-  ITI<AttributeSelection, isScalar>::addObservation( const Observation* obs ) {
+  ITI< AttributeSelection, isScalar >::addObservation(const Observation* obs) {
     __nbTotalObservation++;
-    IncrementalGraphLearner<AttributeSelection, isScalar>::addObservation( obs );
+    IncrementalGraphLearner< AttributeSelection, isScalar >::addObservation(obs);
   }
 
   // ############################################################################
@@ -120,12 +120,12 @@ namespace gum {
    * @param currentNodeId
    */
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  void ITI<AttributeSelection, isScalar>::_updateNodeWithObservation(
-      const Observation* newObs, NodeId currentNodeId ) {
-    IncrementalGraphLearner<AttributeSelection,
-                            isScalar>::_updateNodeWithObservation( newObs,
-                                                                   currentNodeId );
+  template < TESTNAME AttributeSelection, bool isScalar >
+  void ITI< AttributeSelection, isScalar >::_updateNodeWithObservation(
+    const Observation* newObs, NodeId currentNodeId) {
+    IncrementalGraphLearner< AttributeSelection,
+                             isScalar >::_updateNodeWithObservation(newObs,
+                                                                    currentNodeId);
     __staleTable[currentNodeId] = true;
   }
 
@@ -137,63 +137,63 @@ namespace gum {
   // ############################################################################
   /// Updates the internal graph after a new observation has been added
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  void ITI<AttributeSelection, isScalar>::updateGraph() {
+  template < TESTNAME AttributeSelection, bool isScalar >
+  void ITI< AttributeSelection, isScalar >::updateGraph() {
 
-    std::vector<NodeId> filo;
-    filo.push_back( this->_root );
-    HashTable<NodeId, Set<const DiscreteVariable*>*> potentialVars;
-    potentialVars.insert( this->_root,
-                          new Set<const DiscreteVariable*>( this->_setOfVars ) );
+    std::vector< NodeId > filo;
+    filo.push_back(this->_root);
+    HashTable< NodeId, Set< const DiscreteVariable* >* > potentialVars;
+    potentialVars.insert(this->_root,
+                         new Set< const DiscreteVariable* >(this->_setOfVars));
 
 
-    while ( !filo.empty() ) {
+    while (!filo.empty()) {
 
       NodeId currentNodeId = filo.back();
       filo.pop_back();
 
       // First we look for the best var to install on the node
-      double                       bestValue = __attributeSelectionThreshold;
-      Set<const DiscreteVariable*> bestVars;
+      double                         bestValue = __attributeSelectionThreshold;
+      Set< const DiscreteVariable* > bestVars;
 
-      for ( auto varIter = potentialVars[currentNodeId]->cbeginSafe();
-            varIter != potentialVars[currentNodeId]->cendSafe();
-            ++varIter )
-        if ( this->_nodeId2Database[currentNodeId]->isTestRelevant( *varIter ) ) {
+      for (auto varIter = potentialVars[currentNodeId]->cbeginSafe();
+           varIter != potentialVars[currentNodeId]->cendSafe();
+           ++varIter)
+        if (this->_nodeId2Database[currentNodeId]->isTestRelevant(*varIter)) {
           double varValue =
-              this->_nodeId2Database[currentNodeId]->testValue( *varIter );
-          if ( varValue >= bestValue ) {
-            if ( varValue > bestValue ) {
+            this->_nodeId2Database[currentNodeId]->testValue(*varIter);
+          if (varValue >= bestValue) {
+            if (varValue > bestValue) {
               bestValue = varValue;
               bestVars.clear();
             }
-            bestVars.insert( *varIter );
+            bestVars.insert(*varIter);
           }
         }
 
       // Then We installed Variable a test on that node
-      this->_updateNode( currentNodeId, bestVars );
+      this->_updateNode(currentNodeId, bestVars);
 
       // The we move on the children if needed
-      if ( this->_nodeVarMap[currentNodeId] != this->_value ) {
-        for ( Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize();
-              moda++ ) {
-          Set<const DiscreteVariable*>* itsPotentialVars =
-              new Set<const DiscreteVariable*>( *potentialVars[currentNodeId] );
-          itsPotentialVars->erase( this->_nodeVarMap[currentNodeId] );
+      if (this->_nodeVarMap[currentNodeId] != this->_value) {
+        for (Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize();
+             moda++) {
+          Set< const DiscreteVariable* >* itsPotentialVars =
+            new Set< const DiscreteVariable* >(*potentialVars[currentNodeId]);
+          itsPotentialVars->erase(this->_nodeVarMap[currentNodeId]);
           NodeId sonId = this->_nodeSonsMap[currentNodeId][moda];
-          if ( __staleTable[sonId] ) {
-            filo.push_back( sonId );
-            potentialVars.insert( sonId, itsPotentialVars );
+          if (__staleTable[sonId]) {
+            filo.push_back(sonId);
+            potentialVars.insert(sonId, itsPotentialVars);
           }
         }
       }
     }
 
-    for ( HashTableIteratorSafe<NodeId, Set<const DiscreteVariable*>*> nodeIter =
-              potentialVars.beginSafe();
-          nodeIter != potentialVars.endSafe();
-          ++nodeIter )
+    for (HashTableIteratorSafe< NodeId, Set< const DiscreteVariable* >* >
+           nodeIter = potentialVars.beginSafe();
+         nodeIter != potentialVars.endSafe();
+         ++nodeIter)
       delete nodeIter.val();
   }
 
@@ -206,13 +206,14 @@ namespace gum {
    * @return the newly created node's id
    */
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  NodeId ITI<AttributeSelection, isScalar>::_insertNode(
-      NodeDatabase<AttributeSelection, isScalar>* nDB,
-      const DiscreteVariable* boundVar ) {
-    NodeId n = IncrementalGraphLearner<AttributeSelection, isScalar>::_insertNode(
-        nDB, boundVar );
-    __staleTable.insert( n, true );
+  template < TESTNAME AttributeSelection, bool isScalar >
+  NodeId ITI< AttributeSelection, isScalar >::_insertNode(
+    NodeDatabase< AttributeSelection, isScalar >* nDB,
+    const DiscreteVariable* boundVar) {
+    NodeId n =
+      IncrementalGraphLearner< AttributeSelection, isScalar >::_insertNode(
+        nDB, boundVar);
+    __staleTable.insert(n, true);
     return n;
   }
 
@@ -224,13 +225,13 @@ namespace gum {
    * @param desiredVar : its new associated variable
    */
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  void ITI<AttributeSelection, isScalar>::_chgNodeBoundVar(
-      NodeId currentNodeId, const DiscreteVariable* desiredVar ) {
-    if ( this->_nodeVarMap[currentNodeId] != desiredVar ) {
+  template < TESTNAME AttributeSelection, bool isScalar >
+  void ITI< AttributeSelection, isScalar >::_chgNodeBoundVar(
+    NodeId currentNodeId, const DiscreteVariable* desiredVar) {
+    if (this->_nodeVarMap[currentNodeId] != desiredVar) {
       __staleTable[currentNodeId] = true;
-      IncrementalGraphLearner<AttributeSelection, isScalar>::_chgNodeBoundVar(
-          currentNodeId, desiredVar );
+      IncrementalGraphLearner< AttributeSelection, isScalar >::_chgNodeBoundVar(
+        currentNodeId, desiredVar);
     }
   }
 
@@ -241,11 +242,11 @@ namespace gum {
    * @param removedNodeId : the node to remove
    */
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  void ITI<AttributeSelection, isScalar>::_removeNode( NodeId currentNodeId ) {
-    IncrementalGraphLearner<AttributeSelection, isScalar>::_removeNode(
-        currentNodeId );
-    __staleTable.erase( currentNodeId );
+  template < TESTNAME AttributeSelection, bool isScalar >
+  void ITI< AttributeSelection, isScalar >::_removeNode(NodeId currentNodeId) {
+    IncrementalGraphLearner< AttributeSelection, isScalar >::_removeNode(
+      currentNodeId);
+    __staleTable.erase(currentNodeId);
   }
 
 
@@ -256,12 +257,12 @@ namespace gum {
   // ############################################################################
   /// Updates target to currently learned graph structure
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  void ITI<AttributeSelection, isScalar>::updateFunctionGraph() {
+  template < TESTNAME AttributeSelection, bool isScalar >
+  void ITI< AttributeSelection, isScalar >::updateFunctionGraph() {
 
     this->_target->clear();
     this->_target->manager()->setRootNode(
-        this->__insertNodeInFunctionGraph( this->_root ) );
+      this->__insertNodeInFunctionGraph(this->_root));
   }
 
 
@@ -272,27 +273,27 @@ namespace gum {
    * @return the mathcing node id in the target
    */
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
-  NodeId ITI<AttributeSelection, isScalar>::__insertNodeInFunctionGraph(
-      NodeId currentNodeId ) {
+  template < TESTNAME AttributeSelection, bool isScalar >
+  NodeId ITI< AttributeSelection, isScalar >::__insertNodeInFunctionGraph(
+    NodeId currentNodeId) {
 
-    if ( this->_nodeVarMap[currentNodeId] == this->_value ) {
-      NodeId nody = __insertTerminalNode( currentNodeId );
+    if (this->_nodeVarMap[currentNodeId] == this->_value) {
+      NodeId nody = __insertTerminalNode(currentNodeId);
       return nody;
     }
 
-    if ( !this->_target->variablesSequence().exists(
-             this->_nodeVarMap[currentNodeId] ) ) {
-      this->_target->add( *( this->_nodeVarMap[currentNodeId] ) );
+    if (!this->_target->variablesSequence().exists(
+          this->_nodeVarMap[currentNodeId])) {
+      this->_target->add(*(this->_nodeVarMap[currentNodeId]));
     }
 
-    NodeId nody = this->_target->manager()->addInternalNode(
-        this->_nodeVarMap[currentNodeId] );
-    for ( Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize();
-          ++moda ) {
-      NodeId son = this->__insertNodeInFunctionGraph(
-          this->_nodeSonsMap[currentNodeId][moda] );
-      this->_target->manager()->setSon( nody, moda, son );
+    NodeId nody =
+      this->_target->manager()->addInternalNode(this->_nodeVarMap[currentNodeId]);
+    for (Idx moda = 0; moda < this->_nodeVarMap[currentNodeId]->domainSize();
+         ++moda) {
+      NodeId son =
+        this->__insertNodeInFunctionGraph(this->_nodeSonsMap[currentNodeId][moda]);
+      this->_target->manager()->setSon(nody, moda, son);
     }
 
     return nody;
@@ -308,29 +309,27 @@ namespace gum {
    * @return the matching node in the target
    */
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
+  template < TESTNAME AttributeSelection, bool isScalar >
   NodeId
-  ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId,
-                                                           Int2Type<false> ) {
+  ITI< AttributeSelection, isScalar >::__insertTerminalNode(NodeId currentNodeId,
+                                                            Int2Type< false >) {
 
 
-    if ( !this->_target->variablesSequence().exists( this->_value ) )
-      this->_target->add( *( this->_value ) );
+    if (!this->_target->variablesSequence().exists(this->_value))
+      this->_target->add(*(this->_value));
 
     double tot = this->_nodeId2Database[currentNodeId]->nbObservation();
-    if ( !tot ) return this->_target->manager()->addTerminalNode( 0.0 );
+    if (!tot) return this->_target->manager()->addTerminalNode(0.0);
 
-    NodeId* sonsMap = static_cast<NodeId*>(
-        SOA_ALLOCATE( sizeof( NodeId ) * this->_value->domainSize() ) );
-    for ( Idx modality = 0; modality < this->_value->domainSize(); ++modality ) {
+    NodeId* sonsMap = static_cast< NodeId* >(
+      SOA_ALLOCATE(sizeof(NodeId) * this->_value->domainSize()));
+    for (Idx modality = 0; modality < this->_value->domainSize(); ++modality) {
       double newVal = 0.0;
-      newVal =
-          (double)this->_nodeId2Database[currentNodeId]->effectif( modality ) /
-          (double)tot;
-      sonsMap[modality] = this->_target->manager()->addTerminalNode( newVal );
+      newVal = (double)this->_nodeId2Database[currentNodeId]->effectif(modality) /
+               (double)tot;
+      sonsMap[modality] = this->_target->manager()->addTerminalNode(newVal);
     }
-    NodeId nody =
-        this->_target->manager()->addInternalNode( this->_value, sonsMap );
+    NodeId nody = this->_target->manager()->addInternalNode(this->_value, sonsMap);
     return nody;
   }
 
@@ -344,19 +343,19 @@ namespace gum {
    * @return the matching node in the target
    */
   // ############################################################################
-  template <TESTNAME AttributeSelection, bool isScalar>
+  template < TESTNAME AttributeSelection, bool isScalar >
   NodeId
-  ITI<AttributeSelection, isScalar>::__insertTerminalNode( NodeId currentNodeId,
-                                                           Int2Type<true> ) {
+  ITI< AttributeSelection, isScalar >::__insertTerminalNode(NodeId currentNodeId,
+                                                            Int2Type< true >) {
     double value = 0.0;
-    for ( auto valIter = this->_nodeId2Database[currentNodeId]->cbeginValues();
-          valIter != this->_nodeId2Database[currentNodeId]->cendValues();
-          ++valIter ) {
+    for (auto valIter = this->_nodeId2Database[currentNodeId]->cbeginValues();
+         valIter != this->_nodeId2Database[currentNodeId]->cendValues();
+         ++valIter) {
       value += (double)valIter.key() * valIter.val();
     }
-    if ( this->_nodeId2Database[currentNodeId]->nbObservation() )
+    if (this->_nodeId2Database[currentNodeId]->nbObservation())
       value /= (double)this->_nodeId2Database[currentNodeId]->nbObservation();
-    NodeId nody = this->_target->manager()->addTerminalNode( value );
+    NodeId nody = this->_target->manager()->addTerminalNode(value);
     return nody;
   }
 }  // end gum namespace

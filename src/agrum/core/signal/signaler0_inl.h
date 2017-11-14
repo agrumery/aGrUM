@@ -35,55 +35,53 @@ namespace gum {
   namespace __sig__ {
 
     INLINE
-    bool BasicSignaler0::hasListener( void ) {
-      return ( !( _connectors.empty() ) );
-    }
+    bool BasicSignaler0::hasListener(void) { return (!(_connectors.empty())); }
 
     INLINE
-    void BasicSignaler0::detach( Listener* target ) {
+    void BasicSignaler0::detach(Listener* target) {
       auto it = std::find_if(
-          _connectors.begin(), _connectors.end(), __find_target( target ) );
+        _connectors.begin(), _connectors.end(), __find_target(target));
 
-      while ( it != _connectors.end() ) {
+      while (it != _connectors.end()) {
         delete *it;
-        target->detachSignal__( this );
+        target->detachSignal__(this);
 
-        it = _connectors.erase( it );  // it is the next one
-        it = std::find_if( it, _connectors.end(), __find_target( target ) );
+        it = _connectors.erase(it);  // it is the next one
+        it = std::find_if(it, _connectors.end(), __find_target(target));
       }
     }
 
     INLINE
-    void BasicSignaler0::_detachFromTarget( Listener* target ) {
+    void BasicSignaler0::_detachFromTarget(Listener* target) {
       auto it = std::find_if(
-          _connectors.begin(), _connectors.end(), __find_target( target ) );
+        _connectors.begin(), _connectors.end(), __find_target(target));
 
-      while ( it != _connectors.end() ) {
+      while (it != _connectors.end()) {
         delete *it;
 
-        it = _connectors.erase( it );  // it is the next one
-        it = std::find_if( it, _connectors.end(), __find_target( target ) );
+        it = _connectors.erase(it);  // it is the next one
+        it = std::find_if(it, _connectors.end(), __find_target(target));
       }
     }
 
     INLINE
-    void BasicSignaler0::_duplicateTarget( const Listener* oldtarget,
-                                           Listener*       newtarget ) {
+    void BasicSignaler0::_duplicateTarget(const Listener* oldtarget,
+                                          Listener*       newtarget) {
       auto it = std::find_if(
-          _connectors.begin(), _connectors.end(), __find_target( oldtarget ) );
+        _connectors.begin(), _connectors.end(), __find_target(oldtarget));
 
-      while ( it != _connectors.end() ) {
-        _connectors.push_back( ( *it )->duplicate( newtarget ) );
+      while (it != _connectors.end()) {
+        _connectors.push_back((*it)->duplicate(newtarget));
 
         it++;
-        it = std::find_if( it, _connectors.end(), __find_target( oldtarget ) );
+        it = std::find_if(it, _connectors.end(), __find_target(oldtarget));
       }
     }
 
     INLINE
-    std::function<bool( IConnector0* el )>
-    BasicSignaler0::__find_target( const gum::Listener* l ) {
-      return [=]( IConnector0* el ) -> bool { return el->target() == l; };
+    std::function< bool(IConnector0* el) >
+    BasicSignaler0::__find_target(const gum::Listener* l) {
+      return [=](IConnector0* el) -> bool { return el->target() == l; };
     }
 
   }  // namespace __sig__

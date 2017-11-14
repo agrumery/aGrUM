@@ -49,18 +49,18 @@ namespace gum {
      * @author Matthieu HOURBRACQ and Pierre-Henri WUILLEMIN
      */
 
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class VarMod2BNsMap {
       private:
-      typedef std::vector<bool> dBN;
+      typedef std::vector< bool > dBN;
 
-      typedef typename std::vector<Size> varKey;
+      typedef typename std::vector< Size > varKey;
 
-      typedef typename gum::HashTable<Size, dBN> hashNet;
+      typedef typename gum::HashTable< Size, dBN > hashNet;
 
-      typedef typename gum::HashTable<varKey, std::list<Size>> varHashs;
+      typedef typename gum::HashTable< varKey, std::list< Size > > varHashs;
 
-      typedef typename gum::HashTable<Size, std::list<varKey>> hashVars;
+      typedef typename gum::HashTable< Size, std::list< varKey > > hashVars;
 
       protected:
       /** Map id - dBN : get a net from it's id. */
@@ -76,17 +76,17 @@ namespace gum {
       /** Since all samples have the same structure, this will be used as
        * default
        * initialization (copy constructor) for any sample. */
-      std::vector<std::vector<std::vector<bool>>> _sampleDef;
+      std::vector< std::vector< std::vector< bool > > > _sampleDef;
 
       /** The current sampled IBayesNet. */
       dBN _currentSample;
       /** The current sampled IBayesNet hash. */
       Size _currentHash;
       /** The hash fuction. Requires c++11/0x. */
-      std::hash<std::vector<bool>> _vectHash;
+      std::hash< std::vector< bool > > _vectHash;
 
       /** A pointer to the CredalNet to be used. */
-      const CredalNet<GUM_SCALAR>* cnet;
+      const CredalNet< GUM_SCALAR >* cnet;
 
       public:
       /// @name Constructors / Destructors
@@ -98,7 +98,7 @@ namespace gum {
        *
        * @param cn The CredalNet to be used.
        */
-      VarMod2BNsMap( const CredalNet<GUM_SCALAR>& cn );
+      VarMod2BNsMap(const CredalNet< GUM_SCALAR >& cn);
 
       /** Default constructor that should be used only by InferenceEngine since
        * it
@@ -119,7 +119,7 @@ namespace gum {
        * the
        * net.
        */
-      bool insert( const std::vector<bool>& bn, const std::vector<Size>& key );
+      bool insert(const std::vector< bool >& bn, const std::vector< Size >& key);
 
       /**
        * Thread insert.
@@ -128,7 +128,7 @@ namespace gum {
        * marginals.
        * @return \c True if the net was inserted, \c false otherwise.
        */
-      bool insert( const std::vector<Size>& key, const bool isBetter );
+      bool insert(const std::vector< Size >& key, const bool isBetter);
 
       /// @name Getters and setters
       /// @{
@@ -140,14 +140,14 @@ namespace gum {
        *variable.
        * @param cn The CredalNet to be used.
        */
-      void setCNet( const CredalNet<GUM_SCALAR>& cn );
+      void setCNet(const CredalNet< GUM_SCALAR >& cn);
 
       /**
        * %Set the current thread sample and it's hash.
        * @param sample The constant reference to the sample with structure.
        */
       void setCurrentSample(
-          const std::vector<std::vector<std::vector<bool>>>& sample );
+        const std::vector< std::vector< std::vector< bool > > >& sample);
 
       /**
        * Get the current sample as a vector of bits without structure.
@@ -160,7 +160,7 @@ namespace gum {
        * Get the sample structure.
        * @return The constant reference to the sample structure.
        */
-      const std::vector<std::vector<std::vector<bool>>>& getSampleDef();
+      const std::vector< std::vector< std::vector< bool > > >& getSampleDef();
 
       /**
        * Get optimum IBayesNet (s) without structure of the given variable,
@@ -170,7 +170,7 @@ namespace gum {
        * max.
        * @return The constant vector of not yet constant pointers to the nets.
        */
-      const std::vector<dBN*> getBNOptsFromKey( const std::vector<Size>& key );
+      const std::vector< dBN* > getBNOptsFromKey(const std::vector< Size >& key);
 
       /**
       * Get optimum IBayesNet (s) with structure of the given variable, modality
@@ -179,8 +179,8 @@ namespace gum {
       * @param key The constant reference to the variable, modality, min or max.
       * @return The vector of not yet constant pointers to the nets.
       */
-      std::vector<std::vector<std::vector<std::vector<bool>>>>
-      getFullBNOptsFromKey( const std::vector<Size>& key );
+      std::vector< std::vector< std::vector< std::vector< bool > > > >
+      getFullBNOptsFromKey(const std::vector< Size >& key);
 
       /** Get the number of IBayesNet stored. */
       Size getEntrySize() const;
@@ -190,8 +190,8 @@ namespace gum {
     };  // end of OptBN
 
 
-    extern template class VarMod2BNsMap<float>;
-    extern template class VarMod2BNsMap<double>;
+    extern template class VarMod2BNsMap< float >;
+    extern template class VarMod2BNsMap< double >;
 
   }  // credal namespace
 }  // gum namespace

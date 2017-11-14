@@ -66,10 +66,10 @@ namespace gum {
       LocalSearchWithTabuList();
 
       /// copy constructor
-      LocalSearchWithTabuList( const LocalSearchWithTabuList& from );
+      LocalSearchWithTabuList(const LocalSearchWithTabuList& from);
 
       /// move constructor
-      LocalSearchWithTabuList( LocalSearchWithTabuList&& from );
+      LocalSearchWithTabuList(LocalSearchWithTabuList&& from);
 
       /// destructor
       virtual ~LocalSearchWithTabuList();
@@ -82,10 +82,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      LocalSearchWithTabuList& operator=( const LocalSearchWithTabuList& from );
+      LocalSearchWithTabuList& operator=(const LocalSearchWithTabuList& from);
 
       /// move operator
-      LocalSearchWithTabuList& operator=( LocalSearchWithTabuList&& from );
+      LocalSearchWithTabuList& operator=(LocalSearchWithTabuList&& from);
 
       /// @}
 
@@ -99,7 +99,7 @@ namespace gum {
 
       /// set the max number of changes decreasing the score that we allow to
       /// apply
-      void setMaxNbDecreasingChanges( Size nb );
+      void setMaxNbDecreasingChanges(Size nb);
 
       /// learns the structure of a Bayes net
       /** @param selector A selector class that computes the best changes that
@@ -109,22 +109,22 @@ namespace gum {
        * @param modal the domain sizes of the random variables observed in the
        * database
        * @param initial_dag the DAG we start from for our learning */
-      template <typename GRAPH_CHANGES_SELECTOR>
-      DAG learnStructure( GRAPH_CHANGES_SELECTOR&  selector,
-                          const std::vector<Size>& modal,
-                          DAG                      initial_dag = DAG() );
+      template < typename GRAPH_CHANGES_SELECTOR >
+      DAG learnStructure(GRAPH_CHANGES_SELECTOR&    selector,
+                         const std::vector< Size >& modal,
+                         DAG                        initial_dag = DAG());
 
       /// learns the structure and the parameters of a BN
-      template <typename GUM_SCALAR = double,
-                typename GRAPH_CHANGES_SELECTOR,
-                typename PARAM_ESTIMATOR,
-                typename CELL_TRANSLATORS>
-      BayesNet<GUM_SCALAR> learnBN( GRAPH_CHANGES_SELECTOR&         selector,
-                                    PARAM_ESTIMATOR&                estimator,
-                                    const std::vector<std::string>& names,
-                                    const std::vector<Size>&        modal,
-                                    const CELL_TRANSLATORS&         translator,
-                                    DAG initial_dag = DAG() );
+      template < typename GUM_SCALAR = double,
+                 typename GRAPH_CHANGES_SELECTOR,
+                 typename PARAM_ESTIMATOR,
+                 typename CELL_TRANSLATORS >
+      BayesNet< GUM_SCALAR > learnBN(GRAPH_CHANGES_SELECTOR&           selector,
+                                     PARAM_ESTIMATOR&                  estimator,
+                                     const std::vector< std::string >& names,
+                                     const std::vector< Size >&        modal,
+                                     const CELL_TRANSLATORS&           translator,
+                                     DAG initial_dag = DAG());
 
       /// @}
 

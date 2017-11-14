@@ -33,10 +33,10 @@
 
 #include <agrum/core/exceptions.h>
 
+#include <agrum/external/nanodbc/nanodbc.h>
 #include <agrum/learning/database/DBTransform.h>
 #include <agrum/learning/database/DBTransformIdentity.h>
 #include <agrum/learning/database/databaseVectInRAM.h>
-#include <agrum/external/nanodbc/nanodbc.h>
 #include <agrum/learning/database/nanodbcParser.h>
 
 namespace gum {
@@ -77,19 +77,19 @@ namespace gum {
        * @param missingVal How missing values (NULL in SQL) will be
        * represented.
        */
-      DatabaseFromSQL( const std::string& dataSource,
-                       const std::string& login,
-                       const std::string& password,
-                       const std::string& query,
-                       long               timeout = 0,
-                       const DBTransform& transform = DBTransformIdentity(),
-                       const std::vector<std::string> missingVal = {"NULL"} );
+      DatabaseFromSQL(const std::string& dataSource,
+                      const std::string& login,
+                      const std::string& password,
+                      const std::string& query,
+                      long               timeout = 0,
+                      const DBTransform& transform = DBTransformIdentity(),
+                      const std::vector< std::string > missingVal = {"NULL"});
 
       /// Copy constructor
-      DatabaseFromSQL( const DatabaseFromSQL& from );
+      DatabaseFromSQL(const DatabaseFromSQL& from);
 
       /// Move constructor
-      DatabaseFromSQL( DatabaseFromSQL&& from );
+      DatabaseFromSQL(DatabaseFromSQL&& from);
 
       /// Destructor
       virtual ~DatabaseFromSQL();
@@ -102,10 +102,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DatabaseFromSQL& operator=( const DatabaseFromSQL& from );
+      DatabaseFromSQL& operator=(const DatabaseFromSQL& from);
 
       /// move constructor
-      DatabaseFromSQL& operator=( DatabaseFromSQL&& from );
+      DatabaseFromSQL& operator=(DatabaseFromSQL&& from);
 
       /// @}
     };

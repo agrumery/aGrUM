@@ -123,7 +123,7 @@ void __split( const O3Label& value, O3Label& left, O3Label& right) {
 O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3Type& t) {
   std::stringstream ss;
   ss << "__" << c.name() << "_" << name.label();
-  for (auto& l: t.labels()) {
+  for (const auto& l: t.labels()) {
     ss << '_' << l.first.label();
   }
   ss << "__";
@@ -145,7 +145,7 @@ O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3IntType&
 O3Label __setAnonTypeName(O3Class& c, O3Label& name, O3Position& pos, O3RealType& t) {
   std::stringstream ss;
   ss << "__" << c.name() << "_" << name.label();
-  for (auto& v: t.values()) {
+  for (const auto& v: t.values()) {
     ss << '_' << v.value();
   }
   ss << "__";
@@ -334,7 +334,7 @@ CLASS_ANON_TYPE_ATTR<O3Class& c> =
       (. type = __setAnonTypeName(c, name, pos, t); .)
       (. if ( __ok( n ) ) { __addO3RealType( std::move(t) ); } .)
   )
-  
+
   ATTRIBUTE<type, name, c>
   .
 
@@ -515,7 +515,7 @@ TYPE_UNIT =
     TYPE_DECLARATION
   |
     DEPRECATED_INT_DECLARATION
-  | 
+  |
     DEPRECATED_REAL_DECLARATION
   )
   .
@@ -523,7 +523,7 @@ TYPE_UNIT =
 //________________________
 TYPE_DECLARATION =
   (. auto n = errors().error_count; .)
-  type 
+  type
   (. auto pos = O3Position(); .)
   (. pos.file() = narrow( scanner->filename() ); .)
   (. pos.line() = t->line; .)
@@ -556,7 +556,7 @@ TYPE_DECLARATION =
 //________________________
 DISCRETE_TYPE_DECLARATION<bool& deprecated, LabelMap& labels> =
   (
-    labels 
+    labels
     '(' TYPE_VALUE_LIST<labels> ')'
   |
     DEPRECATED_DISCRETE_TYPE_DECLERATION<labels>
@@ -589,9 +589,9 @@ DEPRECATED_EXTENDED_TYPE_DECLARATION<LabelMap& labels> =
 INT_TYPE_DECLARATION<O3Integer& start, O3Integer& end> =
   int '(' INTEGER<start> ',' INTEGER<end> ')'
   .
-  
+
 //________________________
-REAL_TYPE_DECLARATION<O3FloatList& values> = 
+REAL_TYPE_DECLARATION<O3FloatList& values> =
   real '(' FLOAT_LIST<values> ')'
   .
 
@@ -613,7 +613,7 @@ INT<O3Position& pos> =
   .
 
 //________________________
-DEPRECATED_REAL_DECLARATION = 
+DEPRECATED_REAL_DECLARATION =
   (. auto n = errors().error_count; .)
   (. auto t= O3RealType(); .)
   (. t.deprecated() = true; .)

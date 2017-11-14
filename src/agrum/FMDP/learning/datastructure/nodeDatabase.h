@@ -51,17 +51,17 @@ namespace gum {
    */
 
 
-  template <TESTNAME AttributeSelection, bool isScalar>
+  template < TESTNAME AttributeSelection, bool isScalar >
   class NodeDatabase {
 
-    typedef typename ValueSelect<isScalar, double, Idx>::type ValueType;
+    typedef typename ValueSelect< isScalar, double, Idx >::type ValueType;
 
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     using TestPolicy =
-        typename TestSelect<AttributeSelection,
-                            GTestPolicy<GUM_SCALAR>,
-                            Chi2TestPolicy<GUM_SCALAR>,
-                            LeastSquareTestPolicy<GUM_SCALAR>>::type;
+      typename TestSelect< AttributeSelection,
+                           GTestPolicy< GUM_SCALAR >,
+                           Chi2TestPolicy< GUM_SCALAR >,
+                           LeastSquareTestPolicy< GUM_SCALAR > >::type;
 
     public:
     // ==========================================================================
@@ -72,8 +72,8 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    NodeDatabase( const Set<const DiscreteVariable*>*,
-                  const DiscreteVariable* = nullptr );
+    NodeDatabase(const Set< const DiscreteVariable* >*,
+                 const DiscreteVariable* = nullptr);
 
     // ###################################################################
     /// Default destructor
@@ -83,11 +83,11 @@ namespace gum {
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( NodeDatabase ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(NodeDatabase));
     }
 
     /// @}
@@ -105,11 +105,11 @@ namespace gum {
      * depending on if we're learning reward function or transition probability
      **/
     // ###################################################################
-    void addObservation( const Observation* );
+    void addObservation(const Observation*);
 
     private:
-    void __addObservation( const Observation*, Int2Type<true> );
-    void __addObservation( const Observation*, Int2Type<false> );
+    void __addObservation(const Observation*, Int2Type< true >);
+    void __addObservation(const Observation*, Int2Type< false >);
 
     public:
     // ###################################################################
@@ -128,7 +128,7 @@ namespace gum {
     /// Indicates wether or not, node has sufficient observation so that
     /// any statistic is relevant
     // ###################################################################
-    INLINE bool isTestRelevant( const DiscreteVariable* var ) const {
+    INLINE bool isTestRelevant(const DiscreteVariable* var) const {
       return __attrTable[var]->isTestRelevant();
     }
 
@@ -136,7 +136,7 @@ namespace gum {
     /// Returns the performance of given variables according to selection
     /// criterion
     // ###################################################################
-    INLINE double testValue( const DiscreteVariable* var ) const {
+    INLINE double testValue(const DiscreteVariable* var) const {
       return __attrTable[var]->score();
     }
 
@@ -144,7 +144,7 @@ namespace gum {
     /// Returns the performance of given variables according to selection
     /// secondary criterion (to break ties)
     // ###################################################################
-    INLINE double testOtherCriterion( const DiscreteVariable* var ) const {
+    INLINE double testOtherCriterion(const DiscreteVariable* var) const {
       return __attrTable[var]->secondaryscore();
     }
 
@@ -158,24 +158,24 @@ namespace gum {
     // ###################################################################
     /// Merges given NodeDatabase informations into current nDB.
     // ###################################################################
-    NodeDatabase<AttributeSelection, isScalar>&
-    operator+=( const NodeDatabase<AttributeSelection, isScalar>& src );
+    NodeDatabase< AttributeSelection, isScalar >&
+    operator+=(const NodeDatabase< AttributeSelection, isScalar >& src);
 
     // ###################################################################
     /// Returns a reference to nDB test policy for given variable
     /// (so that test policy information can be merged too)
     // ###################################################################
-    const TestPolicy<ValueType>* testPolicy( const DiscreteVariable* var ) const {
+    const TestPolicy< ValueType >* testPolicy(const DiscreteVariable* var) const {
       return __attrTable[var];
     }
 
     // ###################################################################
     /// Iterators on value count to recopy correctly its content
     // ###################################################################
-    const HashTableConstIteratorSafe<ValueType, Idx> cbeginValues() const {
+    const HashTableConstIteratorSafe< ValueType, Idx > cbeginValues() const {
       return __valueCount.cbeginSafe();
     }
-    const HashTableConstIteratorSafe<ValueType, Idx> cendValues() const {
+    const HashTableConstIteratorSafe< ValueType, Idx > cendValues() const {
       return __valueCount.cendSafe();
     }
 
@@ -185,21 +185,21 @@ namespace gum {
     ///
     // ###################################################################
 
-    Idx effectif( Idx moda ) const {
-      return __valueCount.exists( moda ) ? __valueCount[moda] : 0;
+    Idx effectif(Idx moda) const {
+      return __valueCount.exists(moda) ? __valueCount[moda] : 0;
     }
 
-    Idx valueDomain() const { return __valueDomain( Int2Type<isScalar>() ); }
+    Idx valueDomain() const { return __valueDomain(Int2Type< isScalar >()); }
 
     private:
-    Idx __valueDomain( Int2Type<true> ) const { return __valueCount.size(); }
-    Idx __valueDomain( Int2Type<false> ) const { return __value->domainSize(); }
+    Idx __valueDomain(Int2Type< true >) const { return __valueCount.size(); }
+    Idx __valueDomain(Int2Type< false >) const { return __value->domainSize(); }
 
     std::string toString() const;
 
     private:
     /// Table giving for every variables its instantiation
-    HashTable<const DiscreteVariable*, TestPolicy<ValueType>*> __attrTable;
+    HashTable< const DiscreteVariable*, TestPolicy< ValueType >* > __attrTable;
 
     /// So does this reference on the value observed
     const DiscreteVariable* __value;
@@ -208,7 +208,7 @@ namespace gum {
     Idx __nbObservation;
 
     ///
-    HashTable<ValueType, Idx> __valueCount;
+    HashTable< ValueType, Idx > __valueCount;
   };
 
 

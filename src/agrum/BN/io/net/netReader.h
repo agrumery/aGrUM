@@ -45,8 +45,8 @@ namespace gum {
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of NetReader.
    */
-  template <typename GUM_SCALAR>
-  class NetReader : public BNReader<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class NetReader : public BNReader< GUM_SCALAR > {
 
     public:
     /**
@@ -58,7 +58,7 @@ namespace gum {
     * create/destroy
     * the BN from inside the reader.
      */
-    NetReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
+    NetReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
 
     /**
      * Default destructor.
@@ -73,13 +73,13 @@ namespace gum {
     const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
-    bool trace( void ) const;
-    void trace( bool b );
+    bool trace(void) const;
+    void trace(bool b);
 
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed( void );
+    Size proceed(void);
 
     /// @{
     /// publishing Errors API
@@ -90,32 +90,32 @@ namespace gum {
     Size warnings();
 
     /// line of ith error or warning
-    Idx errLine( Idx i );
+    Idx errLine(Idx i);
     /// col of ith error or warning
-    Idx errCol( Idx i );
+    Idx errCol(Idx i);
     /// type of ith error or warning
-    bool errIsError( Idx i );
+    bool errIsError(Idx i);
     /// message of ith error or warning
-    std::string errMsg( Idx i );
+    std::string errMsg(Idx i);
 
     /// send on std::cerr the list of errorswith contents
-    void showElegantErrors( std::ostream& o = std::cerr );
+    void showElegantErrors(std::ostream& o = std::cerr);
 
     /// send on std::cerr the list of errors or warnings with contents
-    void showElegantErrorsAndWarnings( std::ostream& o = std::cerr );
+    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr);
 
     /// send on std::cerr the list of errors or warnings
-    void showErrorsAndWarnings( std::ostream& o = std::cerr );
+    void showErrorsAndWarnings(std::ostream& o = std::cerr);
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts( std::ostream& o = std::cerr );
+    void showErrorCounts(std::ostream& o = std::cerr);
     /// @}
 
     protected:
-    BayesNet<GUM_SCALAR>*        __bn;
-    BayesNetFactory<GUM_SCALAR>* __factory;
-    net::Scanner*                __scanner;
-    net::Parser*                 __parser;
+    BayesNet< GUM_SCALAR >*        __bn;
+    BayesNetFactory< GUM_SCALAR >* __factory;
+    net::Scanner*                  __scanner;
+    net::Parser*                   __parser;
 
     std::string __streamName;
     bool        __traceScanning;
@@ -127,8 +127,8 @@ namespace gum {
   };
 
 
-  extern template class NetReader<float>;
-  extern template class NetReader<double>;
+  extern template class NetReader< float >;
+  extern template class NetReader< double >;
 
 } /* namespace gum */
 

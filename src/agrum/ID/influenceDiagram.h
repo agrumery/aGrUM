@@ -48,7 +48,7 @@ namespace gum {
    * @ingroup InfluenceDiagram_group
    *
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class InfluenceDiagram : public DAGmodel {
 
     // friend class InfluenceDiagramFactory<GUM_SCALAR>;
@@ -72,21 +72,21 @@ namespace gum {
     /**
      * Copy Constructor
      */
-    InfluenceDiagram( const InfluenceDiagram<GUM_SCALAR>& source );
+    InfluenceDiagram(const InfluenceDiagram< GUM_SCALAR >& source);
 
     /**
      * Copy Operator
      */
-    InfluenceDiagram<GUM_SCALAR>&
-    operator=( const InfluenceDiagram<GUM_SCALAR>& source );
+    InfluenceDiagram< GUM_SCALAR >&
+    operator=(const InfluenceDiagram< GUM_SCALAR >& source);
 
     /// @}
 
     /// @return Returns a dot representation of this Influence Diagram.
-    std::string toDot( void ) const;
+    std::string toDot(void) const;
 
     /// @return Returns a string representation of this Influence Diagram.
-    std::string toString( void ) const;
+    std::string toString(void) const;
 
     // ===========================================================================
     /// @name Variable manipulation methods.
@@ -97,13 +97,13 @@ namespace gum {
      * Returns the CPT of a potential variable.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const Potential<GUM_SCALAR>& cpt( NodeId varId ) const;
+    virtual const Potential< GUM_SCALAR >& cpt(NodeId varId) const;
 
     /**
      * Returns the utility table of a utility node.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const UtilityTable<GUM_SCALAR>& utility( NodeId varId ) const;
+    virtual const UtilityTable< GUM_SCALAR >& utility(NodeId varId) const;
 
     /**
      * Returns a constant reference to the VariableNodeMap of this Influence
@@ -114,17 +114,17 @@ namespace gum {
     /**
      * Returns true if node is a utility one
      */
-    bool isUtilityNode( NodeId varId ) const;
+    bool isUtilityNode(NodeId varId) const;
 
     /**
      * Returns true if node is a decision one
      */
-    bool isDecisionNode( NodeId varId ) const;
+    bool isDecisionNode(NodeId varId) const;
 
     /**
      * Returns true if node is a chance one
      */
-    bool isChanceNode( NodeId varId ) const;
+    bool isChanceNode(NodeId varId) const;
 
     /**
      * Returns the number of utility nodes
@@ -145,22 +145,22 @@ namespace gum {
     * Returns a constant reference over a variabe given it's node id.
     * @throw NotFound If no variable's id matches varId.
     */
-    virtual const DiscreteVariable& variable( NodeId id ) const;
+    virtual const DiscreteVariable& variable(NodeId id) const;
 
     /**
     * Return id node from discrete var pointer.
     * @throw NotFound If no variable matches var.
     */
-    virtual NodeId nodeId( const DiscreteVariable& var ) const;
+    virtual NodeId nodeId(const DiscreteVariable& var) const;
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
-    virtual NodeId idFromName( const std::string& name ) const;
+    virtual NodeId idFromName(const std::string& name) const;
 
     /// Getter by name
     /// @throw NotFound if no such name exists in the graph.
     virtual const DiscreteVariable&
-    variableFromName( const std::string& name ) const;
+    variableFromName(const std::string& name) const;
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -176,7 +176,7 @@ namespace gum {
      * @return the id of the added variable.
      * @throws DuplicateElement if id(<>0) is already used
      */
-    NodeId add( const DiscreteVariable& variable, NodeId id = 0 );
+    NodeId add(const DiscreteVariable& variable, NodeId id = 0);
 
     /**
     * Add a chance variable, it's associate node and it's CPT. The id of the new
@@ -192,7 +192,7 @@ namespace gum {
     * @return the id of the added variable.
     * @throws DuplicateElement if id(<>0) is already used
     */
-    NodeId addChanceNode( const DiscreteVariable& variable, NodeId id = 0 );
+    NodeId addChanceNode(const DiscreteVariable& variable, NodeId id = 0);
 
     /**
      * Add a utility variable, it's associate node and it's UT. The id of the
@@ -209,7 +209,7 @@ namespace gum {
      * @throw InvalidAgrument If variable has more than one label
      * @throws DuplicateElement if id(<>0) is already used
      */
-    NodeId addUtilityNode( const DiscreteVariable& variable, NodeId id = 0 );
+    NodeId addUtilityNode(const DiscreteVariable& variable, NodeId id = 0);
 
     /**
      * Add a decision variable. The id of the new
@@ -222,7 +222,7 @@ namespace gum {
      * @return the id of the added variable.
      * @throws DuplicateElement if id(<>0) is already used
      */
-    NodeId addDecisionNode( const DiscreteVariable& variable, NodeId id = 0 );
+    NodeId addDecisionNode(const DiscreteVariable& variable, NodeId id = 0);
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -237,9 +237,9 @@ namespace gum {
      * @return the id of the added variable.
      * @throws DuplicateElement if id(<>0) is already used
      */
-    NodeId addChanceNode( const DiscreteVariable&             variable,
-                          MultiDimImplementation<GUM_SCALAR>* aContent,
-                          NodeId                              id = 0 );
+    NodeId addChanceNode(const DiscreteVariable&               variable,
+                         MultiDimImplementation< GUM_SCALAR >* aContent,
+                         NodeId                                id = 0);
 
     /**
      * Add a chance variable, it's associate node and it's CPT. The id of the
@@ -254,9 +254,9 @@ namespace gum {
      * @throw InvalidAgrument If variable has more than one label
      * @throws DuplicateElement if id(<>0) is already used
      */
-    NodeId addUtilityNode( const DiscreteVariable&             variable,
-                           MultiDimImplementation<GUM_SCALAR>* aContent,
-                           NodeId                              id = 0 );
+    NodeId addUtilityNode(const DiscreteVariable&               variable,
+                          MultiDimImplementation< GUM_SCALAR >* aContent,
+                          NodeId                                id = 0);
 
     /**
      * Erase a Variable from the network and remove the variable from
@@ -265,7 +265,7 @@ namespace gum {
      *
      * @param id The id of the variable to erase.
      */
-    void erase( NodeId id );
+    void erase(NodeId id);
 
     /**
      * Erase a Variable from the network and remove the variable from
@@ -274,13 +274,13 @@ namespace gum {
      *
      * @param var The reference on the variable to remove.
      */
-    void erase( const DiscreteVariable& var );
+    void erase(const DiscreteVariable& var);
 
     /** we allow the user to change the name of a variable
     * @throws DuplicateLabel if this name already exists
     * @throws NotFound Raised if no nodes matches id.
     */
-    void changeVariableName( NodeId id, const std::string& new_name );
+    void changeVariableName(NodeId id, const std::string& new_name);
 
     /// @}
     // ===========================================================================
@@ -297,7 +297,7 @@ namespace gum {
      * @throw InvalidEdge If arc.tail and/or arc.head are not in the ID.
      * @throw InvalidEdge if tail is a utility node
      */
-    void addArc( NodeId tail, NodeId head );
+    void addArc(NodeId tail, NodeId head);
 
     /**
      * Removes an arc in the ID, and update diagram's potential nodes cpt if
@@ -306,7 +306,7 @@ namespace gum {
      * If (tail, head) doesn't exist, the nothing happens.
      * @param arc The arc removed.
      */
-    void eraseArc( const Arc& arc );
+    void eraseArc(const Arc& arc);
 
     /**
     * RRemoves an arc in the ID, and update diagram's potential nodes cpt if
@@ -316,7 +316,7 @@ namespace gum {
     * @param head and
     * @param tail as NodeId
     */
-    void eraseArc( NodeId tail, NodeId head );
+    void eraseArc(NodeId tail, NodeId head);
 
     /// @}
 
@@ -339,24 +339,24 @@ namespace gum {
      * Returns the sequence of decision nodes in the directed path
      * @throw NotFound if such a path does not exist
      */
-    std::vector<NodeId>* getDecisionOrder() const;
+    std::vector< NodeId >* getDecisionOrder() const;
 
     /**
      * Returns true if a path exists between two nodes
      */
-    bool existsPathBetween( NodeId src, NodeId dest ) const;
+    bool existsPathBetween(NodeId src, NodeId dest) const;
 
     /**
      * Returns partial temporal ordering
      * @throw NotFound if such a sequence does not exist
      */
-    const List<NodeSet>& getPartialTemporalOrder( bool clear = true ) const;
+    const List< NodeSet >& getPartialTemporalOrder(bool clear = true) const;
 
     /// @}
 
     protected:
     /// Returns the moral graph of this InfluenceDiagram.
-    virtual void _moralGraph( UndiGraph& graph ) const;
+    virtual void _moralGraph(UndiGraph& graph) const;
 
     /**
      * Removing ancient table
@@ -366,29 +366,29 @@ namespace gum {
     /**
      * Copying tables from another influence diagram
      */
-    void _copyTables( const InfluenceDiagram<GUM_SCALAR>& IDsource );
+    void _copyTables(const InfluenceDiagram< GUM_SCALAR >& IDsource);
 
     /**
      * Add a node
      */
-    NodeId _addNode( const DiscreteVariable& variableType, NodeId DesiredId );
+    NodeId _addNode(const DiscreteVariable& variableType, NodeId DesiredId);
 
     /**
      * Returns the list of children decision for a given nodeId
      */
-    Sequence<NodeId> _getChildrenDecision( NodeId parentDecision ) const;
+    Sequence< NodeId > _getChildrenDecision(NodeId parentDecision) const;
 
     private:
     /// Mapping between id and variable
     VariableNodeMap __variableMap;
 
     /// Mapping between potential variable's id and their CPT
-    NodeProperty<Potential<GUM_SCALAR>*> __potentialMap;
+    NodeProperty< Potential< GUM_SCALAR >* > __potentialMap;
     /// Mapping between utility variable's id and their utility table
-    NodeProperty<UtilityTable<GUM_SCALAR>*> __utilityMap;
+    NodeProperty< UtilityTable< GUM_SCALAR >* > __utilityMap;
 
     /// The temporal order
-    mutable List<NodeSet> __temporalOrder;
+    mutable List< NodeSet > __temporalOrder;
   };
 
 } /* namespace gum */

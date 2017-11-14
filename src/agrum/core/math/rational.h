@@ -52,7 +52,7 @@ namespace gum {
    * @tparam GUM_SCALAR The floating type ( float, double, long double ... ) of
    * the number.
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class Rational {
     public:
     // ========================================================================
@@ -77,11 +77,11 @@ namespace gum {
      * @param zero The positive value below which a number is considered zero.
      * 1e-6 by default.
      */
-    static void farey( int64_t&          numerator,
-                       int64_t&          denominator,
-                       const GUM_SCALAR& number,
-                       const int64_t&    den_max = 1000000L,
-                       const GUM_SCALAR& zero = 1e-6 );
+    static void farey(int64_t&          numerator,
+                      int64_t&          denominator,
+                      const GUM_SCALAR& number,
+                      const int64_t&    den_max = 1000000L,
+                      const GUM_SCALAR& zero = 1e-6);
 
     /**
      * @brief Find the first best rational approximation.
@@ -104,10 +104,10 @@ namespace gum {
      * @param zero The positive value below which a number is considered zero.
      * 1e-6 by default.
      */
-    static void continuedFracFirst( int64_t&          numerator,
-                                    int64_t&          denominator,
-                                    const GUM_SCALAR& number,
-                                    const double&     zero = 1e-6 );
+    static void continuedFracFirst(int64_t&          numerator,
+                                   int64_t&          denominator,
+                                   const GUM_SCALAR& number,
+                                   const double&     zero = 1e-6);
 
     /**
      * @brief Find the best rational approximation.
@@ -125,10 +125,10 @@ namespace gum {
      * @param den_max The constant highest authorized denominator. 1000000 by
      * default.
      */
-    static void continuedFracBest( int64_t&          numerator,
-                                   int64_t&          denominator,
-                                   const GUM_SCALAR& number,
-                                   const int64_t&    den_max = 1000000 );
+    static void continuedFracBest(int64_t&          numerator,
+                                  int64_t&          denominator,
+                                  const GUM_SCALAR& number,
+                                  const int64_t&    den_max = 1000000);
 
     /// @}
   };
@@ -136,9 +136,9 @@ namespace gum {
 }  // end of gum namespace
 
 
-extern template class gum::Rational<float>;
-extern template class gum::Rational<double>;
-extern template class gum::Rational<long double>;
+extern template class gum::Rational< float >;
+extern template class gum::Rational< double >;
+extern template class gum::Rational< long double >;
 
 
 // Always include template implementation in header file

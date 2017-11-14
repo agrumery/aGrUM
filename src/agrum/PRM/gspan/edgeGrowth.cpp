@@ -30,8 +30,8 @@ namespace gum {
   namespace prm {
     namespace gspan {
 
-      template class EdgeGrowth<float>;
-      template class EdgeGrowth<double>;
+      template class EdgeGrowth< float >;
+      template class EdgeGrowth< double >;
 
     } /* namespace gspan */
   }   /* namespace prm */

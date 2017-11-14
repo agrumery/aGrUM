@@ -51,7 +51,7 @@ int
 Returns
 -------
 double
-	get the current running time in second (double) 
+	get the current running time in second (double)
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::epsilon
@@ -117,12 +117,12 @@ int
 
 Warnings
 --------
-MissingVariableInDatabase raised if a variable of the BN is not found in the database. 
+MissingVariableInDatabase raised if a variable of the BN is not found in the database.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::learnDAG
 "
-learn a structure from a file (must have read the db before) 
+learn a structure from a file (must have read the db before)
 
 Returns
 -------
@@ -232,7 +232,7 @@ weight : double
 Parameters
 ----------
 b : int
-	size of burn in on number of iteration 
+	size of burn in on number of iteration
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setEpsilon
@@ -325,7 +325,7 @@ filename : str
 
 Warnings
 --------
-à compléter
+TBD
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useAprioriSmoothing
@@ -335,7 +335,7 @@ Use the apriori smoothing.
 Parameters
 ----------
 weight : double
-	pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used. 
+	pass in argument a weight if you wish to assign a weight to the smoothing, else the current weight of the learner will be used.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useGreedyHillClimbing
@@ -359,10 +359,10 @@ indicate that we wish to use a local search with tabu list
 
 Parameters
 ----------
-tabu_size : int 
+tabu_size : int
 	The size of the tabu list
-nb_decrease : int 
-	The max number of changes decreasing the score consecutively that we allow to apply 
+nb_decrease : int
+	The max number of changes decreasing the score consecutively that we allow to apply
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useNoApriori

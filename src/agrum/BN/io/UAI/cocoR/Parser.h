@@ -41,81 +41,74 @@ Coco/R itself) does not fall under the GNU General Public License.
 #include <agrum/core/cast_unicode.h>
 
 #undef TRY
-#define  TRY(inst) try { inst; } catch (gum::Exception& e) { SemErr(e.errorType());}
+#define TRY(inst)                \
+  try {                          \
+    inst;                        \
+  } catch (gum::Exception & e) { \
+    SemErr(e.errorType());       \
+  }
 
+#include "Scanner.h"
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <fstream>
-#include "Scanner.h"
 
 namespace gum {
-namespace UAI {
+  namespace UAI {
 
 
-class Parser {
-  private:
-    	enum {
-		_EOF=0,
-		_eol=1,
-		_integer=2,
-		_float=3
-	};
-	int maxT;
+    class Parser {
+      private:
+      enum { _EOF = 0, _eol = 1, _integer = 2, _float = 3 };
+      int maxT;
 
-    Token* dummyToken;
-    int errDist;
-    int minErrDist;
+      Token* dummyToken;
+      int    errDist;
+      int    minErrDist;
 
-    void SynErr( int n );
-    void Get();
-    void Expect( int n );
-    bool StartOf( int s );
-    void ExpectWeak( int n, int follow );
-    bool WeakSeparator( int n, int syFol, int repFol );
+      void SynErr(int n);
+      void Get();
+      void Expect(int n);
+      bool StartOf(int s);
+      void ExpectWeak(int n, int follow);
+      bool WeakSeparator(int n, int syFol, int repFol);
 
-    ErrorsContainer  __errors;
+      ErrorsContainer __errors;
 
-  public:
-    Scanner* scanner;
+      public:
+      Scanner* scanner;
 
-    Token* t;     // last recognized token
-    Token* la;      // lookahead token
+      Token* t;   // last recognized token
+      Token* la;  // lookahead token
 
-    void SemErr(std::string s) {
-  SemErr(widen(s).c_str());
-}
+      void SemErr(std::string s) { SemErr(widen(s).c_str()); }
 
-void Warning(std::string s) {
-  Warning(widen("Warning : "+s).c_str());
-}
+      void Warning(std::string s) { Warning(widen("Warning : " + s).c_str()); }
 
-std::vector<std::tuple<float,int,int,int>> quartets;
+      std::vector< std::tuple< float, int, int, int > > quartets;
 
-decltype(quartets) getQuartets() {
-  return quartets;
-}
+      decltype(quartets) getQuartets() { return quartets; }
 
-//=====================
+      //=====================
 
-    Parser( Scanner* scanner );
-    ~Parser();
-    void SemErr( const wchar_t* msg );
-    void SynErr( const std::wstring& filename,int line, int col, int n );
-    void Warning( const wchar_t* msg );
-    const ErrorsContainer& errors() const;
-    ErrorsContainer& errors();
+      Parser(Scanner* scanner);
+      ~Parser();
+      void SemErr(const wchar_t* msg);
+      void SynErr(const std::wstring& filename, int line, int col, int n);
+      void Warning(const wchar_t* msg);
+      const ErrorsContainer& errors() const;
+      ErrorsContainer&       errors();
 
-    	void NUMBER();
-	void LISTE();
-	void UAI();
+      void NUMBER();
+      void LISTE();
+      void UAI();
 
-    void Parse();
+      void Parse();
 
-}; // end Parser
+    };  // end Parser
 
-} // namespace
-} // namespace
+  }  // namespace
+}  // namespace
 
 
-#endif // !defined(COCO_PARSER_H__)
-
+#endif  // !defined(COCO_PARSER_H__)

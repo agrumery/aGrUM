@@ -58,8 +58,8 @@ namespace gum {
    * the density of the Bayesian Network to be too high resulting in the
    * failure of most of the inference Methods.
    */
-  template <typename GUM_SCALAR, template <typename> class ICPTGenerator>
-  class IBayesNetGenerator : public ICPTGenerator<GUM_SCALAR> {
+  template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
+  class IBayesNetGenerator : public ICPTGenerator< GUM_SCALAR > {
 
     public:
     // ############################################################################
@@ -79,7 +79,7 @@ namespace gum {
      * nbrNodes *(nbrNodes -1) /2 and if the maximum of modality is lower than
      * 2.
      */
-    IBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality );
+    IBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality);
 
     /**
      * Destructor.
@@ -99,7 +99,7 @@ namespace gum {
     * @return null but modify inputed empty Bayesian Network
     */
 
-    virtual void generateBN( BayesNet<GUM_SCALAR>& bayesNet ) = 0;
+    virtual void generateBN(BayesNet< GUM_SCALAR >& bayesNet) = 0;
 
     /**
      * function that insert random values in the CPT of each nodes according to
@@ -145,26 +145,26 @@ namespace gum {
     /**
     * Modifies the value of the number of nodes imposed on the BayesGenerator
     */
-    void setNbrNodes( Size nbrNodes );
+    void setNbrNodes(Size nbrNodes);
 
     /**
     * Modifies the value of the number of nodes imposed on the BayesGenerator
     */
-    void setMaxArcs( Size maxArcs );
+    void setMaxArcs(Size maxArcs);
 
     /**
     * Modifies the value of the number of nodes imposed on the BayesGenerator
     */
-    void setMaxModality( Size maxModality );
+    void setMaxModality(Size maxModality);
 
     /// @}
     protected:
     // The Conditional Probability Table generator
     //  CPTGenerator * _cptGenerator;
-    Size                 _nbrNodes;
-    Size                 _maxArcs;
-    Size                 _maxModality;
-    BayesNet<GUM_SCALAR> _bayesNet;
+    Size                   _nbrNodes;
+    Size                   _maxArcs;
+    Size                   _maxModality;
+    BayesNet< GUM_SCALAR > _bayesNet;
   };
 
 } /* namespace gum */

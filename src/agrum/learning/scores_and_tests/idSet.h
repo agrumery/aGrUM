@@ -53,7 +53,7 @@ namespace gum {
      * variables and they subsequently deduce from these counts those for the
      * included sets.
      */
-    template <typename Alloc = std::allocator<Idx>>
+    template < typename Alloc = std::allocator< Idx > >
     class IdSet {
       public:
       // ##########################################################################
@@ -65,21 +65,21 @@ namespace gum {
       IdSet();
 
       /// initializer list constructor
-      IdSet( const std::initializer_list<Idx> list );
+      IdSet(const std::initializer_list< Idx > list);
 
       /// default constructor
-      template <typename OtherAlloc>
-      IdSet( const std::vector<Idx, OtherAlloc>& ids, Size sz );
+      template < typename OtherAlloc >
+      IdSet(const std::vector< Idx, OtherAlloc >& ids, Size sz);
 
       /// copy constructor
-      IdSet( const IdSet<Alloc>& from );
+      IdSet(const IdSet< Alloc >& from);
 
       /// generalized copy constructor
-      template <typename OtherAlloc>
-      IdSet( const IdSet<OtherAlloc>& from );
+      template < typename OtherAlloc >
+      IdSet(const IdSet< OtherAlloc >& from);
 
       /// move constructor
-      IdSet( IdSet<Alloc>&& from );
+      IdSet(IdSet< Alloc >&& from);
 
       /// destructor
       ~IdSet();
@@ -92,28 +92,28 @@ namespace gum {
       /// @{
 
       /// copy operator
-      IdSet<Alloc>& operator=( const IdSet<Alloc>& from );
+      IdSet< Alloc >& operator=(const IdSet< Alloc >& from);
 
       /// generalized copy operator
-      template <typename OtherAlloc>
-      IdSet<Alloc>& operator=( const IdSet<OtherAlloc>& from );
+      template < typename OtherAlloc >
+      IdSet< Alloc >& operator=(const IdSet< OtherAlloc >& from);
 
       /// move operator
-      IdSet<Alloc>& operator=( IdSet<Alloc>&& from );
+      IdSet< Alloc >& operator=(IdSet< Alloc >&& from);
 
       /// returns the id stored at a given index
-      Idx operator[]( Idx index ) const noexcept;
+      Idx operator[](Idx index) const noexcept;
 
       /// inserts a new element into the set (assuming it is a Boolean)
-      IdSet<Alloc>& operator<<( Idx id );
+      IdSet< Alloc >& operator<<(Idx id);
 
       /// returns true if both sets are equal
-      template <typename OtherAlloc>
-      bool operator==( const IdSet<OtherAlloc>& from ) const noexcept;
+      template < typename OtherAlloc >
+      bool operator==(const IdSet< OtherAlloc >& from) const noexcept;
 
       /// returns true if the sets differ
-      template <typename OtherAlloc>
-      bool operator!=( const IdSet<OtherAlloc>& from ) const noexcept;
+      template < typename OtherAlloc >
+      bool operator!=(const IdSet< OtherAlloc >& from) const noexcept;
 
       /// @}
 
@@ -123,75 +123,76 @@ namespace gum {
       /// @{
 
       /// returns the set of ids contained in the object
-      const std::vector<Idx, Alloc>& ids() const noexcept;
+      const std::vector< Idx, Alloc >& ids() const noexcept;
 
       /// returns the domain size of the id set
       Size size() const noexcept;
 
       /// sets the domain size of the set
-      void setSize( Idx ) noexcept;
+      void setSize(Idx) noexcept;
 
       /// returns the content of the set as a string
       std::string toString() const noexcept;
 
       /// indicates wether the current object is a subset of 'otherset'
-      template <typename OtherAlloc>
-      bool isSubset( const IdSet<OtherAlloc>& otherset ) const noexcept;
+      template < typename OtherAlloc >
+      bool isSubset(const IdSet< OtherAlloc >& otherset) const noexcept;
 
       /// @}
 
       private:
       /// the ordered set of ids
-      std::vector<Idx, Alloc> __ids;
+      std::vector< Idx, Alloc > __ids;
 
       /// the domain size of the set
       Size __size{0};
     };
 
     /// the display operator
-    template <typename Alloc>
-    std::ostream& operator<<( std::ostream& stream, const IdSet<Alloc>& idset );
+    template < typename Alloc >
+    std::ostream& operator<<(std::ostream& stream, const IdSet< Alloc >& idset);
 
   } /* namespace learning */
 
   /// the hash function for idSets
-  template <typename Alloc>
-  class HashFunc<learning::IdSet<Alloc>>
-      : public HashFuncBase<learning::IdSet<Alloc>> {
+  template < typename Alloc >
+  class HashFunc< learning::IdSet< Alloc > >
+    : public HashFuncBase< learning::IdSet< Alloc > > {
     public:
     /// computes the hashed value of a key
-    Size operator()( const learning::IdSet<Alloc>& key ) const;
+    Size operator()(const learning::IdSet< Alloc >& key) const;
   };
 
   /// the hash function for pairs (idSet,Idx)
-  template <typename Alloc>
-  class HashFunc<std::pair<learning::IdSet<Alloc>, Idx>>
-      : public HashFuncBase<std::pair<learning::IdSet<Alloc>, Idx>> {
+  template < typename Alloc >
+  class HashFunc< std::pair< learning::IdSet< Alloc >, Idx > >
+    : public HashFuncBase< std::pair< learning::IdSet< Alloc >, Idx > > {
     public:
     /// computes the hashed value of a key
-    Size operator()( const std::pair<learning::IdSet<Alloc>, Idx>& key ) const;
+    Size operator()(const std::pair< learning::IdSet< Alloc >, Idx >& key) const;
   };
 
   /// the hash function for pairs (idSet,pair<Idx,Idx>)
-  template <typename Alloc>
-  class HashFunc<std::tuple<learning::IdSet<Alloc>, Idx, Idx>>
-      : public HashFuncBase<std::tuple<learning::IdSet<Alloc>, Idx, Idx>> {
+  template < typename Alloc >
+  class HashFunc< std::tuple< learning::IdSet< Alloc >, Idx, Idx > >
+    : public HashFuncBase< std::tuple< learning::IdSet< Alloc >, Idx, Idx > > {
     public:
     /// computes the hashed value of a key
     Size
-    operator()( const std::tuple<learning::IdSet<Alloc>, Idx, Idx>& key ) const;
+    operator()(const std::tuple< learning::IdSet< Alloc >, Idx, Idx >& key) const;
   };
 
 } /* namespace gum */
 
 
 extern template class gum::HashFunc<
-    std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>>>;
+  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > > > >;
 extern template class gum::HashFunc<
-    std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx>>;
+  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >, gum::Idx > >;
 extern template class gum::HashFunc<
-    std::
-        tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx>>;
+  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >,
+              gum::Idx,
+              gum::Idx > >;
 
 
 // always include the template implementation

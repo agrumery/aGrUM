@@ -39,7 +39,7 @@
 
 namespace gum {
   // needed for content()
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class MultiDimImplementation;
 
   // ==========================================================================
@@ -86,7 +86,7 @@ namespace gum {
    * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
    * matrix.
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class MultiDimContainer : public MultiDimAdressable {
     public:
     // =========================================================================
@@ -103,16 +103,16 @@ namespace gum {
      * @brief Copy constructor.
      * @param src The MultiDimContainer to copy.
      */
-    MultiDimContainer( const MultiDimContainer<GUM_SCALAR>& src );
+    MultiDimContainer(const MultiDimContainer< GUM_SCALAR >& src);
 
-    MultiDimContainer& operator=( const MultiDimContainer<GUM_SCALAR>& src );
+    MultiDimContainer& operator=(const MultiDimContainer< GUM_SCALAR >& src);
 
     /**
      * @brief Class move constructor.
      */
-    MultiDimContainer( MultiDimContainer<GUM_SCALAR>&& );
+    MultiDimContainer(MultiDimContainer< GUM_SCALAR >&&);
 
-    MultiDimContainer& operator=( MultiDimContainer<GUM_SCALAR>&& src );
+    MultiDimContainer& operator=(MultiDimContainer< GUM_SCALAR >&& src);
 
     /**
      * @brief Destructor.
@@ -134,7 +134,7 @@ namespace gum {
      * @param i An Instantiation of this MultiDimContainer.
      * @param value The new value.
      */
-    virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
+    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
 
     /**
      * @brief Returns the value pointed by i.
@@ -146,7 +146,7 @@ namespace gum {
      * @param i An Instantiation of this MultiDimContainer.
      * @return Returns the value pointe by i.
      */
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
     /**
      * @brief An [] operator using a Instantiation as argument.
@@ -158,13 +158,13 @@ namespace gum {
      * @param i An Instantiation.
      * @return Returns the adressed (GUM_SCALAR) value.
      */
-    GUM_SCALAR operator[]( const Instantiation& i ) const;
+    GUM_SCALAR operator[](const Instantiation& i) const;
 
     /**
      * @brief Fill the table with d.
      * @param d The value used to fill this MultiDimContainer.
      */
-    virtual void fill( const GUM_SCALAR& d ) const = 0;
+    virtual void fill(const GUM_SCALAR& d) const = 0;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the values in
@@ -184,7 +184,7 @@ namespace gum {
      * @throw SizeError Raised if v size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void populate( const std::vector<GUM_SCALAR>& v ) const;
+    virtual void populate(const std::vector< GUM_SCALAR >& v) const;
 
     /**
      * @brief Automatically fills this MultiDimContainer with the values in
@@ -204,7 +204,7 @@ namespace gum {
      * @throw SizeError Raised if l size's does not matches this
      * MultiDimContainer domain size.
      */
-    virtual void populate( std::initializer_list<GUM_SCALAR> l ) const;
+    virtual void populate(std::initializer_list< GUM_SCALAR > l) const;
 
     /// @}
     // =========================================================================
@@ -224,7 +224,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      */
-    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src ) const;
+    virtual void copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const;
 
     /**
      * @brief Basic copy of a MultiDimContainer.
@@ -240,8 +240,8 @@ namespace gum {
      * @throw OperationNotAllowed Raised if src does not have the same domain
      * size than this MultiDimContainer.
      */
-    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                           Instantiation*                       p_i ) const;
+    virtual void copyFrom(const MultiDimContainer< GUM_SCALAR >& src,
+                          Instantiation*                         p_i) const;
 
     /**
      * @brief Basic extraction of a MultiDimContainer.
@@ -254,32 +254,32 @@ namespace gum {
      * extraction will concern every variable not in the instantiation and the
      * copy of data will use the values in this instantiation.
      */
-    virtual void extractFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                              const Instantiation&                 mask );
+    virtual void extractFrom(const MultiDimContainer< GUM_SCALAR >& src,
+                             const Instantiation&                   mask);
 
     /**
     * @brief Returns the implementation for this object (may be *this).
     */
-    virtual const MultiDimImplementation<GUM_SCALAR>* content() const = 0;
+    virtual const MultiDimImplementation< GUM_SCALAR >* content() const = 0;
 
     /**
      * @brief Returns the implementation for this object (may be *this).
      */
-    virtual MultiDimImplementation<GUM_SCALAR>* content() = 0;
+    virtual MultiDimImplementation< GUM_SCALAR >* content() = 0;
 
     /**
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the ref to content as MultiDimAdressable&
     */
-    virtual MultiDimAdressable& getMasterRef( void );
+    virtual MultiDimAdressable& getMasterRef(void);
 
     /**
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the master of this MultiDimAdressable.
     */
-    virtual const MultiDimAdressable& getMasterRef( void ) const;
+    virtual const MultiDimAdressable& getMasterRef(void) const;
 
 
     /**
@@ -288,7 +288,7 @@ namespace gum {
      *
      * @param src The MultiDimContainer to copy.
      */
-    virtual void copy( const MultiDimContainer<GUM_SCALAR>& src );
+    virtual void copy(const MultiDimContainer< GUM_SCALAR >& src);
 
     /**
      * @brief Creates an empty clone of this MultiDimContainer.
@@ -308,7 +308,7 @@ namespace gum {
      *
      * @return Returns an empty clone of this object with the same type.
      */
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0;
 
     /// @}
     // =========================================================================
@@ -326,27 +326,27 @@ namespace gum {
      * @brief Display the internal representation of i.
      * @return Returns an internal representation of i.
      */
-    virtual const std::string toString( const Instantiation* i ) const = 0;
+    virtual const std::string toString(const Instantiation* i) const = 0;
 
     /**
      * @brief Test if this MultiDimContainer is equal to p.
      * @param p The MultiDimContainer to test for equality.
      * @return Returns true if this MultiDimContainer is equal to p.
      */
-    bool operator==( const MultiDimContainer<GUM_SCALAR>& p ) const;
+    bool operator==(const MultiDimContainer< GUM_SCALAR >& p) const;
 
     /**
      * @brief Test if this MultiDimContainer is different of p.
      * @param p The MultiDimContainer to test for inequality.
      * @return Returns true if this MultiDimContainer is different of p.
      */
-    bool operator!=( const MultiDimContainer<GUM_SCALAR>& p ) const;
+    bool operator!=(const MultiDimContainer< GUM_SCALAR >& p) const;
 
     /**
      * @brief Apply a function on every element of the container
      * @param f the function to apply
      */
-    virtual void apply( std::function<GUM_SCALAR( GUM_SCALAR )> f ) const;
+    virtual void apply(std::function< GUM_SCALAR(GUM_SCALAR) > f) const;
 
     /**
      * @brief compute lfold for this container
@@ -354,8 +354,8 @@ namespace gum {
      * @param base the initial value
      */
     virtual GUM_SCALAR
-    reduce( std::function<GUM_SCALAR( GUM_SCALAR, GUM_SCALAR )> f,
-            GUM_SCALAR base ) const;
+    reduce(std::function< GUM_SCALAR(GUM_SCALAR, GUM_SCALAR) > f,
+           GUM_SCALAR base) const;
 
 
     /// @}
@@ -371,19 +371,19 @@ namespace gum {
      * @warning Remember to call endMultipleChanges() when you finish your
      * changes.
      */
-    virtual void beginMultipleChanges( void ) = 0;
+    virtual void beginMultipleChanges(void) = 0;
 
     /**
      * @brief Call this method after doing important changes in this
      * MultiDimContainer.
      */
-    virtual void endMultipleChanges( void ) = 0;
+    virtual void endMultipleChanges(void) = 0;
 
     /**
      * @brief Call this method after doing important changes in this
      * MultiDimContainer.
      */
-    virtual void endMultipleChanges( const GUM_SCALAR& v ) = 0;
+    virtual void endMultipleChanges(const GUM_SCALAR& v) = 0;
 
     /// @}
 
@@ -401,7 +401,7 @@ namespace gum {
      *
      * @param i The instantiation used to find the data.
      */
-    virtual GUM_SCALAR& _get( const Instantiation& i ) const = 0;
+    virtual GUM_SCALAR& _get(const Instantiation& i) const = 0;
   };
 } /* namespace gum */
 

@@ -46,7 +46,7 @@ namespace gum {
   class ChiSquare {
 
     public:
-    static double probaChi2( double x, Size df );
+    static double probaChi2(double x, Size df);
 
     private:
     /// Required constant to compute the cdf
@@ -76,11 +76,9 @@ namespace gum {
     /// Required constant to compute the cdf
     /// @{
 
-    static double __exp( double x ) {
-      return ( ( ( x ) < -__BIGX ) ? 0.0 : exp( x ) );
-    }
+    static double __exp(double x) { return (((x) < -__BIGX) ? 0.0 : exp(x)); }
 
-    static double __probaZValue( double z );
+    static double __probaZValue(double z);
     /// @}
   };
 

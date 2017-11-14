@@ -31,9 +31,10 @@ from subprocess import call
 from .configuration import cfg
 from .oneByOne import checkAgrumMemoryLeaks
 from .stats import profileAgrum
-from .utils import trace, notif, critic
+from .utils import trace, notif, critic, srcAgrum
 from .callSphinx import callSphinx
 from .wheel_builder import wheel
+from .guideline import guideline
 
 
 def isSpecialAction(current):
@@ -68,16 +69,27 @@ def specialActions(current):
     print("")
     return True
 
+  if current["action"] == "guideline":
+    # trace(current,"Special action [guideline]")
+    nbrError=guideline(current,current['correction'])
+    if nbrError>0:
+      critic("Guideline error(s) found.",None,nbrError)
+    else:
+      notif("No guideline error found.")
+
+    print("")
+    return True
+
   if current["action"] == "wheel":
     wheel(current)
     return True
 
-  if current["oneByOne"] == True:
+  if current["oneByOne"]:
     trace(current, "Special action [oneByOne]")
     checkAgrumMemoryLeaks(current)
     return True
 
-  if current["stats"] == True:
+  if current["stats"]:
     profileAgrum(current)
     return True
 
@@ -114,30 +126,6 @@ def showAct2Config(current):
 
   for k in cfg.non_persistent:
     aff(k)
-
-
-from os.path import isdir
-
-
-def recglob(path, mask):
-  for item in glob.glob(path + "/*"):
-    if isdir(item):
-      for item in recglob(item, mask):
-        yield item
-
-  for item in glob.glob(path + "/" + mask):
-    if not isdir(item):
-      yield item
-
-
-def srcAgrum():
-  for i in recglob("src/agrum", "*.cpp"):
-    yield i
-  for i in recglob("src/agrum", "*.h"):
-    yield i
-  for i in recglob("src/testunits", "*TestSuite.h"):
-    yield i
-
 
 def autoindent(current):
   if cfg.clangformat == None:

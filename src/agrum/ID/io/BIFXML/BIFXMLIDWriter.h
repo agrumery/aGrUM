@@ -52,9 +52,9 @@ namespace gum {
    * for information about this format.
    *
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
 
-  class BIFXMLIDWriter : public IDWriter<GUM_SCALAR> {
+  class BIFXMLIDWriter : public IDWriter< GUM_SCALAR > {
     public:
     // ==========================================================================
     /// @name Constructor & destructor
@@ -80,8 +80,8 @@ namespace gum {
      * @param infdiag The influence diagram writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::ostream&                       output,
-                        const InfluenceDiagram<GUM_SCALAR>& infdiag );
+    virtual void write(std::ostream&                         output,
+                       const InfluenceDiagram< GUM_SCALAR >& infdiag);
 
     /**
      * Writes an Influence Diagram in the file referenced by filePath.
@@ -92,8 +92,8 @@ namespace gum {
      * @param infdiag The Influence Diagram writen in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write( std::string                         filePath,
-                        const InfluenceDiagram<GUM_SCALAR>& infdiag );
+    virtual void write(std::string                           filePath,
+                       const InfluenceDiagram< GUM_SCALAR >& infdiag);
 
     private:
     /**
@@ -109,15 +109,15 @@ namespace gum {
     /**
      * Returns a bloc defining a variable in the BIF format.
      */
-    std::string __variableBloc( const DiscreteVariable& var, int nodeType );
+    std::string __variableBloc(const DiscreteVariable& var, int nodeType);
 
     /**
      * Returns a bloc defining a variable's table (if she has) in the BIF
      * format.
      */
     std::string
-    __variableDefinition( const NodeId&                       varNodeId,
-                          const InfluenceDiagram<GUM_SCALAR>& infdiag );
+    __variableDefinition(const NodeId&                         varNodeId,
+                         const InfluenceDiagram< GUM_SCALAR >& infdiag);
   };
 } /* namespace gum */
 

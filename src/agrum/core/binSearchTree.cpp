@@ -27,4 +27,4 @@
 #include <agrum/core/binSearchTree.h>
 
 
-template class gum::BinSearchTree<int>;
+template class gum::BinSearchTree< int >;

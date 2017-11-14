@@ -55,7 +55,7 @@ namespace gum {
    *
    */
   class UnconstrainedEliminationSequenceStrategy
-      : public EliminationSequenceStrategy {
+    : public EliminationSequenceStrategy {
     public:
     // ############################################################################
     /// @name Constructors / Destructors
@@ -97,15 +97,15 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the graph and the domain sizes are
      * not copied but only referenced by the elimination sequence algorithm. */
     UnconstrainedEliminationSequenceStrategy(
-        UndiGraph* graph, const NodeProperty<Size>* dom_sizes );
+      UndiGraph* graph, const NodeProperty< Size >* dom_sizes);
 
     /// copy constructor
     UnconstrainedEliminationSequenceStrategy(
-        const UnconstrainedEliminationSequenceStrategy& );
+      const UnconstrainedEliminationSequenceStrategy&);
 
     /// move constructor
     UnconstrainedEliminationSequenceStrategy(
-        UnconstrainedEliminationSequenceStrategy&& );
+      UnconstrainedEliminationSequenceStrategy&&);
 
     /// @}
   };

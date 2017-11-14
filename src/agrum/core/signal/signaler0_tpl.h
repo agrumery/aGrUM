@@ -32,49 +32,49 @@
 namespace gum {
   namespace __sig__ {
 
-    template <class TargetClass>
-    Connector0<TargetClass>::Connector0() {
-      GUM_CONSTRUCTOR( Connector0 );
+    template < class TargetClass >
+    Connector0< TargetClass >::Connector0() {
+      GUM_CONSTRUCTOR(Connector0);
       __target = nullptr;
       __action = nullptr;
     }
 
-    template <class TargetClass>
-    Connector0<TargetClass>::Connector0(
-        TargetClass* target, void ( TargetClass::*action )( const void* ) ) {
-      GUM_CONSTRUCTOR( Connector0 );
+    template < class TargetClass >
+    Connector0< TargetClass >::Connector0(
+      TargetClass* target, void (TargetClass::*action)(const void*)) {
+      GUM_CONSTRUCTOR(Connector0);
       __target = target;
       __action = action;
     }
 
-    template <class TargetClass>
-    Connector0<TargetClass>::Connector0( const Connector0<TargetClass>* src )
-        : IConnector0( src ) {
-      GUM_CONS_CPY( Connector0 );
+    template < class TargetClass >
+    Connector0< TargetClass >::Connector0(const Connector0< TargetClass >* src)
+        : IConnector0(src) {
+      GUM_CONS_CPY(Connector0);
     }
 
-    template <class TargetClass>
-    Connector0<TargetClass>::~Connector0() {
-      GUM_DESTRUCTOR( Connector0 );
+    template < class TargetClass >
+    Connector0< TargetClass >::~Connector0() {
+      GUM_DESTRUCTOR(Connector0);
     }
 
-    template <class TargetClass>
-    IConnector0* Connector0<TargetClass>::clone() {
-      return new Connector0<TargetClass>( *this );
+    template < class TargetClass >
+    IConnector0* Connector0< TargetClass >::clone() {
+      return new Connector0< TargetClass >(*this);
     }
 
-    template <class TargetClass>
-    IConnector0* Connector0<TargetClass>::duplicate( Listener* target ) {
-      return new Connector0<TargetClass>( (TargetClass*)target, __action );
+    template < class TargetClass >
+    IConnector0* Connector0< TargetClass >::duplicate(Listener* target) {
+      return new Connector0< TargetClass >((TargetClass*)target, __action);
     }
 
-    template <class TargetClass>
-    void Connector0<TargetClass>::notify( const void* src ) {
-      ( __target->*__action )( src );
+    template < class TargetClass >
+    void Connector0< TargetClass >::notify(const void* src) {
+      (__target->*__action)(src);
     }
 
-    template <class TargetClass>
-    Listener* Connector0<TargetClass>::target() const {
+    template < class TargetClass >
+    Listener* Connector0< TargetClass >::target() const {
       return __target;
     }
 

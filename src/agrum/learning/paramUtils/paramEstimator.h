@@ -64,9 +64,9 @@ namespace gum {
      *retrieve
      * the parameters of interest.
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
-    class ParamEstimator : private Counter<IdSetAlloc, CountAlloc> {
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
+    class ParamEstimator : private Counter< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -80,15 +80,15 @@ namespace gum {
        * score/countings
        * @param score_internal_apriori The score internal apriori.
        * */
-      template <typename RowFilter>
-      ParamEstimator( const RowFilter&         filter,
-                      const std::vector<Size>& var_modalities,
-                      Apriori<IdSetAlloc, CountAlloc>& apriori,
-                      const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
-                          score_internal_apriori );
+      template < typename RowFilter >
+      ParamEstimator(const RowFilter&           filter,
+                     const std::vector< Size >& var_modalities,
+                     Apriori< IdSetAlloc, CountAlloc >& apriori,
+                     const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
+                       score_internal_apriori);
 
       /// virtual copy factory
-      virtual ParamEstimator<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
+      virtual ParamEstimator< IdSetAlloc, CountAlloc >* copyFactory() const = 0;
 
       /// destructor
       virtual ~ParamEstimator();
@@ -114,7 +114,7 @@ namespace gum {
        * index as argument to methods _getAllCounts and _getConditioningCounts
        * to
        * get the corresponding counting vectors. */
-      Idx addNodeSet( Idx var );
+      Idx addNodeSet(Idx var);
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
@@ -132,16 +132,16 @@ namespace gum {
        * index as argument to methods _getAllCounts and _getConditioningCounts
        * to
        * get the corresponding counting vectors. */
-      Idx addNodeSet( Idx var, const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet(Idx var, const std::vector< Idx >& conditioning_ids);
 
       /// clears all the data structures from memory
       void clear();
 
       /// returns the modalities of the variables
-      using Counter<IdSetAlloc, CountAlloc>::modalities;
+      using Counter< IdSetAlloc, CountAlloc >::modalities;
 
       /// sets the maximum number of threads used to compute the scores
-      using Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads;
+      using Counter< IdSetAlloc, CountAlloc >::setMaxNbThreads;
 
       /// returns the CPT's parameters corresponding to a given nodeset
       /** The vector contains the parameters of an n-dimensional CPT. The
@@ -149,38 +149,38 @@ namespace gum {
        * follows:
        * first, there are the conditioning nodes (in the order in which they
        * were specified) and, then, the target node. */
-      virtual const std::vector<double, CountAlloc>&
-      parameters( Idx nodeset_index ) = 0;
+      virtual const std::vector< double, CountAlloc >&
+      parameters(Idx nodeset_index) = 0;
 
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
        * are assumed to be identical */
-      void setParameters( Idx nodeset_index, Potential<double>& pot );
+      void setParameters(Idx nodeset_index, Potential< double >& pot);
 
       /// sets the CPT's parameters corresponding to a given nodeset
       /** The order of the variables in the potential and in the nodeset
        * are assumed to be identical */
-      template <typename GUM_SCALAR>
-      void setParameters( Idx nodeset_index, Potential<GUM_SCALAR>& pot );
+      template < typename GUM_SCALAR >
+      void setParameters(Idx nodeset_index, Potential< GUM_SCALAR >& pot);
 
       /// sets the range of records taken into account by the counter
       /** @param min_range he number of the first record to be taken into
        * account during learning
        * @param max_range the number of the record after the last one taken
        * into account*/
-      void setRange( Size min_range, Size max_range );
+      void setRange(Size min_range, Size max_range);
 
       /// @}
 
       protected:
       /// the a priori used by the score
-      Apriori<IdSetAlloc, CountAlloc>* _apriori;
+      Apriori< IdSetAlloc, CountAlloc >* _apriori;
 
       /// the score that was use for structure learning (used for its apriori)
-      ScoreInternalApriori<IdSetAlloc, CountAlloc>* _score_internal_apriori;
+      ScoreInternalApriori< IdSetAlloc, CountAlloc >* _score_internal_apriori;
 
       /// indicate whether we have already normalized the parameters
-      std::vector<bool> _is_normalized;
+      std::vector< bool > _is_normalized;
 
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observtion countings for the set of variables
@@ -195,20 +195,20 @@ namespace gum {
        * when callind addNodeset, and then the target nodes.
        * @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<IdSetAlloc, CountAlloc>::_getAllCounts;
+      using Counter< IdSetAlloc, CountAlloc >::_getAllCounts;
 
       /// returns the counting vector for a conditioning set
       /** @warning it is assumed that, after using addNodeSet, you have executed
        * method count() before calling method countTarget. */
-      using Counter<IdSetAlloc, CountAlloc>::_getConditioningCounts;
+      using Counter< IdSetAlloc, CountAlloc >::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      using Counter<IdSetAlloc, CountAlloc>::_getAllNodes;
+      using Counter< IdSetAlloc, CountAlloc >::_getAllNodes;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes;
+      using Counter< IdSetAlloc, CountAlloc >::_getConditioningNodes;
 
       /// returns the apriori vector for a given (conditioned) target set
       /** This method returns the observation countings for the set of variables
@@ -222,19 +222,19 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<double, CountAlloc>& _getAllApriori( Idx index );
+      const std::vector< double, CountAlloc >& _getAllApriori(Idx index);
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<double, CountAlloc>& _getConditioningApriori( Idx index );
+      const std::vector< double, CountAlloc >& _getConditioningApriori(Idx index);
 
       /// if needed insert the score apriori into the countings
       void _insertScoreApriori();
 
       /// copy constructor
-      ParamEstimator( const ParamEstimator<IdSetAlloc, CountAlloc>& );
+      ParamEstimator(const ParamEstimator< IdSetAlloc, CountAlloc >&);
 
       /// move constructor
-      ParamEstimator( ParamEstimator<IdSetAlloc, CountAlloc>&& );
+      ParamEstimator(ParamEstimator< IdSetAlloc, CountAlloc >&&);
 
       private:
       /// has the a priori been computed
@@ -247,8 +247,8 @@ namespace gum {
       // ##########################################################################
 
       /// prevent copy operator
-      ParamEstimator<IdSetAlloc, CountAlloc>&
-      operator=( const ParamEstimator<IdSetAlloc, CountAlloc>& ) = delete;
+      ParamEstimator< IdSetAlloc, CountAlloc >&
+      operator=(const ParamEstimator< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

@@ -28,5 +28,5 @@
 
 #include <agrum/PRM/o3prm/O3TypeFactory.h>
 
-template class gum::prm::o3prm::O3TypeFactory<float>;
-template class gum::prm::o3prm::O3TypeFactory<double>;
+template class gum::prm::o3prm::O3TypeFactory< float >;
+template class gum::prm::o3prm::O3TypeFactory< double >;

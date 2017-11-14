@@ -67,7 +67,7 @@ namespace gum {
     // ###################################################################
     /// @{
     public:
-    void checkState( const Instantiation& newState, Idx actionId ) {}
+    void checkState(const Instantiation& newState, Idx actionId) {}
   };
 }
 #endif  // GUM_LAZY_DECIDER_H

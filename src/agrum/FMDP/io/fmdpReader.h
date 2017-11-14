@@ -53,7 +53,7 @@ namespace gum {
    * from a stream,
    * or a file must be a subclass of FMDPReader.
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class FMDPReader {
     public:
     /**
@@ -64,7 +64,7 @@ namespace gum {
      * delegation to create/destroy
      * the FMDP from inside the reader.
      */
-    FMDPReader( FMDP<GUM_SCALAR>* fmdp, const std::string& filename );
+    FMDPReader(FMDP< GUM_SCALAR >* fmdp, const std::string& filename);
 
     /**
      * Default destructor.
@@ -81,8 +81,8 @@ namespace gum {
   };
 
 
-  extern template class FMDPReader<float>;
-  extern template class FMDPReader<double>;
+  extern template class FMDPReader< float >;
+  extern template class FMDPReader< double >;
 
 
 } /* namespace gum */

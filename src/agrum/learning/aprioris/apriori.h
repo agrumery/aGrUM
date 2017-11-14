@@ -40,8 +40,8 @@ namespace gum {
      * @brief the base class for all apriori
      * @ingroup learning_group
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
     class Apriori {
       public:
       // ##########################################################################
@@ -53,7 +53,7 @@ namespace gum {
       Apriori();
 
       /// virtual copy constructor
-      virtual Apriori<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
+      virtual Apriori< IdSetAlloc, CountAlloc >* copyFactory() const = 0;
 
       /// destructor
       virtual ~Apriori();
@@ -66,34 +66,34 @@ namespace gum {
       /// @{
 
       /// sets the weight of the a priori (kind of effective sample size)
-      virtual void setWeight( double weight );
+      virtual void setWeight(double weight);
 
       /// returns the weight assigned to the apriori
       double weight() const noexcept;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType( const std::string& type ) = 0;
+      virtual bool isOfType(const std::string& type) = 0;
 
       /// returns the type of the apriori
       virtual const std::string& getType() const noexcept = 0;
 
       /// sets the parameters for the apriori
       void setParameters(
-          const std::vector<Size>& modalities,
-          std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              target_nodesets,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              conditioning_nodesets );
+        const std::vector< Size >& modalities,
+        std::vector< std::vector< double, CountAlloc > >& counts,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          target_nodesets,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          conditioning_nodesets);
 
       /// compute the apriori into a given set of counts
       virtual void compute() = 0;
 
       /// returns the apriori vector for a given (conditioned) target set
-      const std::vector<double, CountAlloc>& getAllApriori( Idx index );
+      const std::vector< double, CountAlloc >& getAllApriori(Idx index);
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<double, CountAlloc>& getConditioningApriori( Idx index );
+      const std::vector< double, CountAlloc >& getConditioningApriori(Idx index);
 
       /// @}
 
@@ -102,14 +102,14 @@ namespace gum {
       double _weight{1.0f};
 
       /// the modalities of the nodes
-      const std::vector<Size>* _modalities{nullptr};
+      const std::vector< Size >* _modalities{nullptr};
 
       /// the counts that were performed by the class on which we add an apriori
       /** Say that a score needs an apriori, then _unapriori_counts corresponds
        * to the countings performed by the score. Those are given to the apriori
        * so that the latter can add what is needed to _unapriori_counts to take
        * into account the so-called apriori. */
-      std::vector<std::vector<double, CountAlloc>>* _unapriori_counts{nullptr};
+      std::vector< std::vector< double, CountAlloc > >* _unapriori_counts{nullptr};
 
       /// the set of target + cond nodes, and their counting indices
       /** The first element of the pairs correspond to a nodeset and the
@@ -118,30 +118,30 @@ namespace gum {
        * the countings have already been processed and have been put into a
        * cache.
        * So, for these pointers, no a priori operation needs be performed. */
-      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>*
-          _target_nodesets{nullptr};
+      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >*
+        _target_nodesets{nullptr};
 
       /// the set of conditioning nodesets
       /** for details, see _target_nodesets */
-      const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>*
-          _conditioning_nodesets{nullptr};
+      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >*
+        _conditioning_nodesets{nullptr};
 
       /// the a priori
-      std::vector<std::vector<double, CountAlloc>> _apriori_counts;
+      std::vector< std::vector< double, CountAlloc > > _apriori_counts;
 
       /// copy constructor
-      Apriori( const Apriori<IdSetAlloc, CountAlloc>& from );
+      Apriori(const Apriori< IdSetAlloc, CountAlloc >& from);
 
       /// move constructor
-      Apriori( Apriori<IdSetAlloc, CountAlloc>&& from );
+      Apriori(Apriori< IdSetAlloc, CountAlloc >&& from);
 
       private:
       // ##########################################################################
       // ##########################################################################
 
       /// prevent copy operator
-      Apriori<IdSetAlloc, CountAlloc>&
-      operator=( const Apriori<IdSetAlloc, CountAlloc>& ) = delete;
+      Apriori< IdSetAlloc, CountAlloc >&
+      operator=(const Apriori< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

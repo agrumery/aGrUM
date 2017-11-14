@@ -34,8 +34,8 @@
 #ifndef GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
 #define GUM_LEARNING_DB_ROW_TRANSLATOR_SET_H
 
-#include <vector>
 #include <limits>
+#include <vector>
 
 #include <agrum/agrum.h>
 #include <agrum/learning/database/DBCellTranslator.h>
@@ -60,7 +60,7 @@ namespace gum {
      * the columns of the database easier, all the DBCellTranslators used are
      * gathered into a DBRowTranslatorSet.
      */
-    template <typename Translator>
+    template < typename Translator >
     class DBRowTranslatorSet {
       public:
       // ##########################################################################
@@ -73,10 +73,10 @@ namespace gum {
       DBRowTranslatorSet();
 
       /// copy constructor
-      DBRowTranslatorSet( const DBRowTranslatorSet<Translator>& from );
+      DBRowTranslatorSet(const DBRowTranslatorSet< Translator >& from);
 
       /// move constructor
-      DBRowTranslatorSet( DBRowTranslatorSet<Translator>&& from );
+      DBRowTranslatorSet(DBRowTranslatorSet< Translator >&& from);
 
       /// destructor
       ~DBRowTranslatorSet() noexcept;
@@ -90,22 +90,22 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBRowTranslatorSet<Translator>&
-      operator=( const DBRowTranslatorSet<Translator>& );
+      DBRowTranslatorSet< Translator >&
+      operator=(const DBRowTranslatorSet< Translator >&);
 
       /// move operator
-      DBRowTranslatorSet<Translator>&
-      operator=( DBRowTranslatorSet<Translator>&& );
+      DBRowTranslatorSet< Translator >&
+      operator=(DBRowTranslatorSet< Translator >&&);
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
        * the translator set */
-      Translator& operator[]( Idx i );
+      Translator& operator[](Idx i);
 
       /// returns the ith translator
       /** @throws NotFound is raised if there are fewer than i translators in
        * the translator set */
-      const Translator& operator[]( Idx i ) const;
+      const Translator& operator[](Idx i) const;
 
       /// @}
 
@@ -121,9 +121,9 @@ namespace gum {
        * nb_times different from 1. In this case, the other translators will
        * read columns of the database deduced from deb_cols by applying
        * increment incr. */
-      void insertTranslator( Idx  deb_cols,
-                             Size nb_times = 1,
-                             Idx  incr = std::numeric_limits<Idx>::max () );
+      void insertTranslator(Idx  deb_cols,
+                            Size nb_times = 1,
+                            Idx  incr = std::numeric_limits< Idx >::max());
 
       /// inserts new translators at the end of the set
       /** insert a new translator that will read consecutive columns starting
@@ -131,16 +131,17 @@ namespace gum {
        * nb_times different from 1. In this case, the other translators will
        * read columns of the database deduced from deb_cols by applying
        * increment incr. */
-      template <class NewTranslator>
+      template < class NewTranslator >
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-      typename std::enable_if<isDBCellTranslator<NewTranslator>::value, void>::type
-#else // for the doxygen documentation:
+      typename std::enable_if< isDBCellTranslator< NewTranslator >::value,
+                               void >::type
+#else   // for the doxygen documentation:
       void
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-      insertTranslator( const NewTranslator& translator,
-          Idx  deb_cols,
-          Size nb_times = 1,
-          Idx  incr = std::numeric_limits<Idx>::max () );
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
+      insertTranslator(const NewTranslator& translator,
+                       Idx                  deb_cols,
+                       Size                 nb_times = 1,
+                       Idx incr = std::numeric_limits< Idx >::max());
 
       /// execute all the translations on the current database row
       void translate();
@@ -160,10 +161,10 @@ namespace gum {
 
       /// push back the number of modalities of the variables of the output
       /// columns
-      void modalities( std::vector<Size>& modals ) const;
+      void modalities(std::vector< Size >& modals) const;
 
       /// sets the input row that shall be read by all the cell translators
-      void setInputRow( const DBRow& row ) noexcept;
+      void setInputRow(const DBRow& row) noexcept;
 
       /// returns the current input DBRow
       const DBRow& inputRow() const;
@@ -175,7 +176,7 @@ namespace gum {
       void clear() noexcept;
 
       /// returns the name of the jth value of the ith column
-      std::string translateBack( Idx col, Idx translated_val ) const;
+      std::string translateBack(Idx col, Idx translated_val) const;
 
       /// returns the size of the input as used by the cell translators
       Size inputSize() const noexcept;
@@ -190,7 +191,7 @@ namespace gum {
 
       private:
       /// the vector of the cell filters
-      std::vector<Translator*> __translators;
+      std::vector< Translator* > __translators;
 
       /// the size of the output
       Size __output_size{0};

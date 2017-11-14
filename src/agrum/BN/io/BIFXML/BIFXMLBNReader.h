@@ -95,15 +95,15 @@ namespace gum {
    * for information about this format.
    *
    */
-  template <typename GUM_SCALAR>
-  class BIFXMLBNReader : BNReader<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class BIFXMLBNReader : BNReader< GUM_SCALAR > {
     public:
     /**
      * Constructor
      * A reader is created to reading a defined file.
      * Note that an BN as to be created before and given in parameter.
      */
-    BIFXMLBNReader( BayesNet<GUM_SCALAR>* bn, const std::string& filePath );
+    BIFXMLBNReader(BayesNet< GUM_SCALAR >* bn, const std::string& filePath);
 
     /**
      * Default destructor.
@@ -123,24 +123,24 @@ namespace gum {
      * parsed
      * yet
      */
-    typename gum::Signaler2<int, std::string> onProceed;
+    typename gum::Signaler2< int, std::string > onProceed;
 
     private:
     /**
      * Parsing xml element containing data on variables
      */
-    void __parsingVariables( ticpp::Element* parentNetwork );
+    void __parsingVariables(ticpp::Element* parentNetwork);
 
     /**
      * fill the diagram
      */
-    void __fillingBN( ticpp::Element* parentNetwork );
+    void __fillingBN(ticpp::Element* parentNetwork);
 
     /**
      * An handle to the bayes net in which will be load the content of the xml
      * filePath
      */
-    BayesNet<GUM_SCALAR>* __bn;
+    BayesNet< GUM_SCALAR >* __bn;
 
     /**
      * the path to the xml filePath
@@ -149,8 +149,8 @@ namespace gum {
   };
 
 
-  extern template class BIFXMLBNReader<float>;
-  extern template class BIFXMLBNReader<double>;
+  extern template class BIFXMLBNReader< float >;
+  extern template class BIFXMLBNReader< double >;
 
 } /* namespace gum */
 

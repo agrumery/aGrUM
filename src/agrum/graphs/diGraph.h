@@ -117,14 +117,14 @@ namespace gum {
      * @param nodes_resize_policy the resizing policy of this hash table
      * @param arcs_size the size of the hash table used to store all the arcs
      * @param arcs_resize_policy the resizing policy of this hash table */
-    explicit DiGraph( Size nodes_size = HashTableConst::default_size,
-                      bool nodes_resize_policy = true,
-                      Size arcs_size = HashTableConst::default_size,
-                      bool arcs_resize_policy = true );
+    explicit DiGraph(Size nodes_size = HashTableConst::default_size,
+                     bool nodes_resize_policy = true,
+                     Size arcs_size = HashTableConst::default_size,
+                     bool arcs_resize_policy = true);
 
     /// copy constructor
     /** @param g the DiGraph to copy */
-    DiGraph( const DiGraph& g );
+    DiGraph(const DiGraph& g);
 
     /// destructor
     virtual ~DiGraph();
@@ -138,17 +138,17 @@ namespace gum {
 
     /// copy operator
     /** @param g the DiGraph to copy */
-    DiGraph& operator=( const DiGraph& g );
+    DiGraph& operator=(const DiGraph& g);
 
     /// tests whether two DiGraphs are identical (same nodes, same arcs)
     /** @param g the DiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator==( const DiGraph& g ) const;
+    bool operator==(const DiGraph& g) const;
 
     /// tests whether two DiGraphs are different
     /** @param g the DiGraph with which "this" is compared */
     // not virtual : it is a feature !!! :)
-    bool operator!=( const DiGraph& g ) const;
+    bool operator!=(const DiGraph& g) const;
 
     /// @}
 
@@ -163,13 +163,13 @@ namespace gum {
      * @warning if the arc already exists, nothing is done. In particular, no
      * exception is raised.
      * @throw InvalidNode if head or tail does not belong to the graph nodes */
-    virtual void addArc( const NodeId tail, const NodeId head );
+    virtual void addArc(const NodeId tail, const NodeId head);
 
     /// remove a node and its adjacent arcs from the graph
     /** @param id the id of the node to be removed
      * @warning if the node does not exist, nothing is done. In particular, no
      * exception is raised.*/
-    virtual void eraseNode( const NodeId id );
+    virtual void eraseNode(const NodeId id);
 
     /// removes all the nodes and arcs from the graph
     virtual void clear();
@@ -188,12 +188,12 @@ namespace gum {
      * @param clear If false returns the previously created topology.
      * @throw InvalidDirectedCycle Raised if this DiGraph contains cycles.
      */
-    const Sequence<NodeId>& topologicalOrder( bool clear = true ) const;
+    const Sequence< NodeId >& topologicalOrder(bool clear = true) const;
     /// @}
 
     private:
     /// The topology sequence of this Directed Graphical Model.
-    mutable Sequence<NodeId>* __mutableTopologicalOrder;
+    mutable Sequence< NodeId >* __mutableTopologicalOrder;
 
     /// Returns a topological order of this DAGModel.
     /// @warning __mutableTopologicalOrder is assumed to be valid and empty
@@ -201,7 +201,7 @@ namespace gum {
   };
 
   /// for friendly displaying the content of directed graphs
-  std::ostream& operator<<( std::ostream&, const DiGraph& );
+  std::ostream& operator<<(std::ostream&, const DiGraph&);
 
 } /* namespace gum */
 

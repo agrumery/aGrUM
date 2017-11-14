@@ -77,7 +77,7 @@ namespace gum {
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
-    void initialize( const FMDP<double>* fmdp );
+    void initialize(const FMDP< double >* fmdp);
 
     /// @}
 
@@ -87,9 +87,9 @@ namespace gum {
     // ###################################################################
     /// @{
     public:
-    void checkState( const Instantiation& newState, Idx actionId );
+    void checkState(const Instantiation& newState, Idx actionId);
 
-    ActionSet stateOptimalPolicy( const Instantiation& curState );
+    ActionSet stateOptimalPolicy(const Instantiation& curState);
 
     /// @}
 

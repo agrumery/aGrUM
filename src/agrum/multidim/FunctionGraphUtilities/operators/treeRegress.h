@@ -41,10 +41,11 @@ namespace gum {
    *
    * @brief Class used to perform Decision Tree Regression in the FMDP Framework
    */
-  template <typename GUM_SCALAR,
-            template <typename> class COMBINEOPERATOR,
-            template <typename> class PROJECTOPERATOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
+  template < typename GUM_SCALAR,
+             template < typename > class COMBINEOPERATOR,
+             template < typename > class PROJECTOPERATOR,
+             template < typename > class TerminalNodePolicy =
+               ExactTerminalNodePolicy >
   class TreeRegress {
     public:
     // ============================================================================
@@ -54,10 +55,10 @@ namespace gum {
 
     /// Default constructor.
     TreeRegress(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* qAction,
-        const Bijection<
-            const DiscreteVariable*,
-            const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*> pxi );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* qAction,
+      const Bijection<
+        const DiscreteVariable*,
+        const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* > pxi);
 
     /// Default destructor.
     ~TreeRegress();
@@ -70,24 +71,25 @@ namespace gum {
 
     /// Computes and builds the Function Graph that is the result of the
     /// operation
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* compute();
 
     /// @}
 
     private:
     /// The whatever 1
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
-    __xPloreVFunc( NodeId currentNodeId );
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
+    __xPloreVFunc(NodeId currentNodeId);
 
     /// The function graphs used for the operation
-    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __vFunc;
-    const Bijection<const DiscreteVariable*,
-                    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*>
-        __pxi;
-    HashTable<const DiscreteVariable*, Idx> __context;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __vFunc;
+    const Bijection<
+      const DiscreteVariable*,
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* >
+      __pxi;
+    HashTable< const DiscreteVariable*, Idx > __context;
   };
 
-  extern template class TreeRegress<double, std::multiplies, std::plus>;
+  extern template class TreeRegress< double, std::multiplies, std::plus >;
 
 }  // namespace gum
 

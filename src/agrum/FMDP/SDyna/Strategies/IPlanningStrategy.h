@@ -45,7 +45,7 @@ namespace gum {
    * @ingroup fmdp_group
    *
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class IPlanningStrategy {
 
     // ###################################################################
@@ -68,7 +68,7 @@ namespace gum {
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
-    virtual void initialize( const FMDP<GUM_SCALAR>* fmdp ) = 0;
+    virtual void initialize(const FMDP< GUM_SCALAR >* fmdp) = 0;
 
     /// @}
 
@@ -85,12 +85,12 @@ namespace gum {
      * planning
      */
     // ==========================================================================
-    virtual void makePlanning( Idx nbIte ) = 0;
+    virtual void makePlanning(Idx nbIte) = 0;
 
     // ==========================================================================
     /// Returns optimalPolicy computed so far current size
     // ==========================================================================
-    virtual const MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>*
+    virtual const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >*
     optimalPolicy() = 0;
 
     /// @}

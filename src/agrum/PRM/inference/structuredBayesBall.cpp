@@ -29,8 +29,8 @@
 namespace gum {
   namespace prm {
 
-    template class StructuredBayesBall<float>;
-    template class StructuredBayesBall<double>;
+    template class StructuredBayesBall< float >;
+    template class StructuredBayesBall< double >;
 
   } /* namespace prm */
 } /* namespace gum */

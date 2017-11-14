@@ -68,9 +68,9 @@ namespace gum {
      * performed, use method _getAllCounts and _getConditioningCounts to get the
      * observed countings if you are developping a new score class, or use
      * method score to get the computed score if you are an end user. */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
-    class Score : private Counter<IdSetAlloc, CountAlloc> {
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
+    class Score : private Counter< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -86,15 +86,15 @@ namespace gum {
        * @param min_range The minimal range.
        * @param max_range The maximal range.
        */
-      template <typename RowFilter>
-      Score( const RowFilter&         filter,
-             const std::vector<Size>& var_modalities,
-             Apriori<IdSetAlloc, CountAlloc>& apriori,
-             Size min_range = 0,
-             Size max_range = std::numeric_limits<Size>::max() );
+      template < typename RowFilter >
+      Score(const RowFilter&           filter,
+            const std::vector< Size >& var_modalities,
+            Apriori< IdSetAlloc, CountAlloc >& apriori,
+            Size min_range = 0,
+            Size max_range = std::numeric_limits< Size >::max());
 
       /// virtual copy factory
-      virtual Score<IdSetAlloc, CountAlloc>* copyFactory() const = 0;
+      virtual Score< IdSetAlloc, CountAlloc >* copyFactory() const = 0;
 
       /// destructor
       virtual ~Score();
@@ -120,7 +120,7 @@ namespace gum {
        * this
        * index as argument to methods _getAllCounts to get the corresponding
        * counting vector. */
-      Idx addNodeSet( Idx var );
+      Idx addNodeSet(Idx var);
 
       /// add a new target variable plus some conditioning vars
       /** @param var represents the index of the target variable in the filtered
@@ -137,7 +137,7 @@ namespace gum {
        * _getConditioningCounts to get the counting vectors of
        * (conditioning_ids,vars) [in this order] and conditioning_ids
        * respectively. */
-      Idx addNodeSet( Idx var, const std::vector<Idx>& conditioning_ids );
+      Idx addNodeSet(Idx var, const std::vector< Idx >& conditioning_ids);
 
       /// clears all the data structures from memory
       void clear();
@@ -146,16 +146,16 @@ namespace gum {
       void clearCache();
 
       /// turn on/off the use of a cache of the previously computed score
-      void useCache( bool on_off ) noexcept;
+      void useCache(bool on_off) noexcept;
 
       /// returns the modalities of the variables
-      using Counter<IdSetAlloc, CountAlloc>::modalities;
+      using Counter< IdSetAlloc, CountAlloc >::modalities;
 
       /// sets the maximum number of threads used to compute the scores
-      using Counter<IdSetAlloc, CountAlloc>::setMaxNbThreads;
+      using Counter< IdSetAlloc, CountAlloc >::setMaxNbThreads;
 
       /// returns the score corresponding to a given nodeset
-      virtual double score( Idx nodeset_index ) = 0;
+      virtual double score(Idx nodeset_index) = 0;
 
       /// indicates whether the apriori is compatible (meaningful) with the
       /// score
@@ -184,7 +184,7 @@ namespace gum {
        * same
        * aprioris are taken into account during structure learning and parameter
        * learning. */
-      virtual const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
+      virtual const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
       internalApriori() const noexcept = 0;
 
       /// sets the range of records taken into account by the counter
@@ -192,7 +192,7 @@ namespace gum {
        * account during learning
        * @param max_range the number of the record after the last one taken
        * into account*/
-      void setRange( Size min_range, Size max_range );
+      void setRange(Size min_range, Size max_range);
 
       /// @}
 
@@ -201,7 +201,7 @@ namespace gum {
       const double _1log2{M_LOG2E};
 
       /// the a priori used by the score
-      Apriori<IdSetAlloc, CountAlloc>* _apriori;
+      Apriori< IdSetAlloc, CountAlloc >* _apriori;
 
       /// returns the counting vector for a given (conditioned) target set
       /** This method returns the observation countings for the set of variables
@@ -215,19 +215,19 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      using Counter<IdSetAlloc, CountAlloc>::_getAllCounts;
+      using Counter< IdSetAlloc, CountAlloc >::_getAllCounts;
 
       /// returns the counting vector for a conditioning set
       /** see method _getAllCounts for details */
-      using Counter<IdSetAlloc, CountAlloc>::_getConditioningCounts;
+      using Counter< IdSetAlloc, CountAlloc >::_getConditioningCounts;
 
       /// returns the set of target + conditioning nodes
       /** conditioning nodes are always the first ones in the vector and targets
        * are the last ones */
-      using Counter<IdSetAlloc, CountAlloc>::_getAllNodes;
+      using Counter< IdSetAlloc, CountAlloc >::_getAllNodes;
 
       /// returns the conditioning nodes (nullptr if there are no such nodes)
-      using Counter<IdSetAlloc, CountAlloc>::_getConditioningNodes;
+      using Counter< IdSetAlloc, CountAlloc >::_getConditioningNodes;
 
       /// returns the apriori vector for a given (conditioned) target set
       /** This method returns the observation countings for the set of variables
@@ -241,28 +241,28 @@ namespace gum {
        * nodes of the conditioning set (in the order in which they were
        * specified
        * when callind addNodeset, and then the target nodes. */
-      const std::vector<double, CountAlloc>& _getAllApriori( Idx index );
+      const std::vector< double, CountAlloc >& _getAllApriori(Idx index);
 
       /// returns the apriori vector for a conditioning set
-      const std::vector<double, CountAlloc>& _getConditioningApriori( Idx index );
+      const std::vector< double, CountAlloc >& _getConditioningApriori(Idx index);
 
       /// indicates whether a score belongs to the cache
-      bool _isInCache( Idx nodeset_index ) const noexcept;
+      bool _isInCache(Idx nodeset_index) const noexcept;
 
       /// inserts a new score into the cache
-      void _insertIntoCache( Idx nodeset_index, double score );
+      void _insertIntoCache(Idx nodeset_index, double score);
 
       /// returns a cached score
-      double _cachedScore( Idx nodeset_index ) const noexcept;
+      double _cachedScore(Idx nodeset_index) const noexcept;
 
       /// indicates whether we use the cache or not
       bool _isUsingCache() const noexcept;
 
       /// copy constructor: to be used by the virtual copy constructor
-      Score( const Score<IdSetAlloc, CountAlloc>& );
+      Score(const Score< IdSetAlloc, CountAlloc >&);
 
       /// move constructor: to be used by the descendants in the hierarchy
-      Score( Score<IdSetAlloc, CountAlloc>&& );
+      Score(Score< IdSetAlloc, CountAlloc >&&);
 
       private:
       /// a cache for the previously computed scores
@@ -272,23 +272,23 @@ namespace gum {
       bool __use_cache{true};
 
       /// indicates whether the ith nodeset's score is in the cache or not
-      std::vector<bool> __is_cached_score;
+      std::vector< bool > __is_cached_score;
 
       /// the vector of scores for the current nodesets
-      std::vector<double> __cached_score;
+      std::vector< double > __cached_score;
 
       /// has the a priori been computed
       bool __apriori_computed{false};
 
       /// an empty conditioning set
-      const std::vector<Idx> __empty_conditioning_set;
+      const std::vector< Idx > __empty_conditioning_set;
 
       // ##########################################################################
       // ##########################################################################
 
       /// prevent copy operator
-      Score<IdSetAlloc, CountAlloc>&
-      operator=( const Score<IdSetAlloc, CountAlloc>& ) = delete;
+      Score< IdSetAlloc, CountAlloc >&
+      operator=(const Score< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

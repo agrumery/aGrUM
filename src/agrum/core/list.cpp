@@ -30,46 +30,46 @@
 
 namespace gum {
 
-#define GCC_STR( s ) #s
-#define GCC_JOINSTR( x, y ) GCC_STR( x##y )
+#define GCC_STR(s) #s
+#define GCC_JOINSTR(x, y) GCC_STR(x##y)
 
-#if ( ( __GNUC__ * 100 ) + __GNUC_MINOR__ ) >= 405
-#define GCC_DIAG_DO_PRAGMA( x ) _Pragma( #x )
-#define GCC_DIAG_PRAGMA( x ) GCC_DIAG_DO_PRAGMA( GCC diagnostic x )
-#if ( ( __GNUC__ * 100 ) + __GNUC_MINOR__ ) >= 406
-#define GCC_DIAG_OFF( x ) \
-  GCC_DIAG_PRAGMA( push ) GCC_DIAG_PRAGMA( ignored GCC_JOINSTR( -W, x ) )
-#define GCC_DIAG_ON( x ) GCC_DIAG_PRAGMA( pop )
+#if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 405
+#define GCC_DIAG_DO_PRAGMA(x) _Pragma(#x)
+#define GCC_DIAG_PRAGMA(x) GCC_DIAG_DO_PRAGMA(GCC diagnostic x)
+#if ((__GNUC__ * 100) + __GNUC_MINOR__) >= 406
+#define GCC_DIAG_OFF(x) \
+  GCC_DIAG_PRAGMA(push) GCC_DIAG_PRAGMA(ignored GCC_JOINSTR(-W, x))
+#define GCC_DIAG_ON(x) GCC_DIAG_PRAGMA(pop)
 #else
-#define GCC_DIAG_OFF( x ) GCC_DIAG_PRAGMA( ignored GCC_JOINSTR( -W, x ) )
-#define GCC_DIAG_ON( x ) GCC_DIAG_PRAGMA( warning GCC_JOINSTR( -W, x ) )
+#define GCC_DIAG_OFF(x) GCC_DIAG_PRAGMA(ignored GCC_JOINSTR(-W, x))
+#define GCC_DIAG_ON(x) GCC_DIAG_PRAGMA(warning GCC_JOINSTR(-W, x))
 #endif
 #else
-#define GCC_DIAG_OFF( x )
-#define GCC_DIAG_ON( x )
+#define GCC_DIAG_OFF(x)
+#define GCC_DIAG_ON(x)
 #endif
 
   // Destructor for end/rend
   template <>
-  ListConstIteratorSafe<Debug>::~ListConstIteratorSafe() {}
+  ListConstIteratorSafe< Debug >::~ListConstIteratorSafe() {}
 
   // constructor for end/rend
   template <>
-  ListConstIteratorSafe<Debug>::ListConstIteratorSafe() noexcept {}
+  ListConstIteratorSafe< Debug >::ListConstIteratorSafe() noexcept {}
 
   // Destructor for end/rend
   template <>
-  ListConstIterator<Debug>::~ListConstIterator() noexcept {}
+  ListConstIterator< Debug >::~ListConstIterator() noexcept {}
 
   // constructor for end/rend
   template <>
-  ListConstIterator<Debug>::ListConstIterator() noexcept {}
+  ListConstIterator< Debug >::ListConstIterator() noexcept {}
 
   // an iterator that represents both end and rend for all the Lists
   // (whatever their type). This is mainly what stroustrup suggests
   // in his C++ programming language, third edition, page 854
-  static const ListConstIteratorSafe<Debug> __static_list_end_safe;
-  static const ListConstIterator<Debug>     __static_list_end;
+  static const ListConstIteratorSafe< Debug > __static_list_end_safe;
+  static const ListConstIterator< Debug >     __static_list_end;
 
   static constexpr const void* __get_list_end_safe() {
     return &__static_list_end_safe;
@@ -82,9 +82,9 @@ namespace gum {
 } /* namespace gum */
 
 
-template class gum::List<bool>;
-template class gum::List<int>;
-template class gum::List<unsigned int>;
+template class gum::List< bool >;
+template class gum::List< int >;
+template class gum::List< unsigned int >;
 
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS

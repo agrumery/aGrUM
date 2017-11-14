@@ -49,10 +49,10 @@ namespace gum {
     DefaultJunctionTreeStrategy();
 
     /// copy constructor
-    DefaultJunctionTreeStrategy( const DefaultJunctionTreeStrategy& from );
+    DefaultJunctionTreeStrategy(const DefaultJunctionTreeStrategy& from);
 
     /// move constructor
-    DefaultJunctionTreeStrategy( DefaultJunctionTreeStrategy&& from );
+    DefaultJunctionTreeStrategy(DefaultJunctionTreeStrategy&& from);
 
     /// destructor
     virtual ~DefaultJunctionTreeStrategy();
@@ -65,7 +65,7 @@ namespace gum {
      * becomes the new triangulation algorithm associated with the junction tree
      * strategy */
     virtual DefaultJunctionTreeStrategy*
-    copyFactory( StaticTriangulation* triangulation = nullptr ) const final;
+    copyFactory(StaticTriangulation* triangulation = nullptr) const final;
 
     /// @}
 
@@ -101,13 +101,13 @@ namespace gum {
      * construct the junction tree
      * @warning note that, by aGrUM's rule, the graph and the domain sizes
      * are not copied but only referenced by the junction tree strategy. */
-    virtual void setTriangulation( StaticTriangulation* triangulation ) final;
+    virtual void setTriangulation(StaticTriangulation* triangulation) final;
 
     /** @brief returns, for each node, the clique of the junction tree which was
      * created by its deletion
      * @throws UndefinedElement is raised if no triangulation has been assigned
      * to the DefaultJunctionTreeStrategy */
-    virtual const NodeProperty<NodeId>& createdCliques() final;
+    virtual const NodeProperty< NodeId >& createdCliques() final;
 
     /** @brief returns the Id of the clique of the junction tree created by the
      * elimination of a given node during the triangulation process
@@ -115,7 +115,7 @@ namespace gum {
      * created clique's id is looked for
      * @throws UndefinedElement is raised if no triangulation has been assigned
      * to the DefaultJunctionTreeStrategy */
-    virtual NodeId createdClique( const NodeId id ) final;
+    virtual NodeId createdClique(const NodeId id) final;
 
     /// resets the current junction tree strategy data structures
     virtual void clear() final;
@@ -131,7 +131,7 @@ namespace gum {
 
     /** @brief indicates which clique of the junction tree was created
      * by the elimination of a given node (the key of the table) */
-    NodeProperty<NodeId> __node_2_junction_clique;
+    NodeProperty< NodeId > __node_2_junction_clique;
 
     /// computes a junction tree from an elimination tree
     void __computeJunctionTree();

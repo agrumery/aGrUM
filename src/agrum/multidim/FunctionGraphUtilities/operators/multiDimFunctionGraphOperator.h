@@ -45,9 +45,10 @@ namespace gum {
    * @brief Class used to perform Function Graph Operations
    */
   // clang-format on
-  template <typename GUM_SCALAR,
-            template <typename> class FUNCTOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
+  template < typename GUM_SCALAR,
+             template < typename > class FUNCTOR,
+             template < typename > class TerminalNodePolicy =
+               ExactTerminalNodePolicy >
   class MultiDimFunctionGraphOperator {
     public:
     // ============================================================================
@@ -59,8 +60,8 @@ namespace gum {
      * @brief Default constructor.
      */
     MultiDimFunctionGraphOperator(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG1,
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* DG2 );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG1,
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* DG2);
 
     /**
      * @brief Default destructor.
@@ -77,7 +78,7 @@ namespace gum {
      * @brief Computes and builds the Function Graph that is the result of the
      * operation.
      */
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* compute();
 
     /// @}
 
@@ -96,51 +97,51 @@ namespace gum {
 
     /// Heuristic methods to decide which of two retrograde variables should
     /// come first
-    Idx __distance( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*,
-                    const DiscreteVariable*,
-                    const DiscreteVariable* );
+    Idx __distance(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*,
+                   const DiscreteVariable*,
+                   const DiscreteVariable*);
 
     /// Establish for each node in both function graph if it has retrograde
     /// variables beneath it
     void __findRetrogradeVariables(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
-        HashTable<NodeId, short int*>&                               dgInstNeed );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+      HashTable< NodeId, short int* >&                               dgInstNeed);
 
     /// The main recursion function
-    NodeId __compute( O4DGContext& currentSituation, Idx lastInstVarPos );
+    NodeId __compute(O4DGContext& currentSituation, Idx lastInstVarPos);
 
     /// One of the two function graphs used for the operation
-    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __DG1;
 
     /// The other one
-    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __DG2;
 
     /// The resulting function graph
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __rd;
 
     /// The total number of variable implied in the operation
     Idx __nbVar;
 
     /// The function to be performed on the leaves
-    const FUNCTOR<GUM_SCALAR> __function;
+    const FUNCTOR< GUM_SCALAR > __function;
 
     /// The hashtable used to know if two pair of nodes have already been
     /// visited
-    HashTable<double, NodeId> __explorationTable;
+    HashTable< double, NodeId > __explorationTable;
 
     /// Table uses to know if a given node of first function graph has
     /// retrograde vrariables
-    HashTable<NodeId, short int*> __DG1InstantiationNeeded;
+    HashTable< NodeId, short int* > __DG1InstantiationNeeded;
 
     /// Table uses to know if a given node of second function graph has
     /// retrograde vrariables
-    HashTable<NodeId, short int*> __DG2InstantiationNeeded;
+    HashTable< NodeId, short int* > __DG2InstantiationNeeded;
 
     /// Just a comptuationnal trick
     short int* __default;
   };
 
-  extern template class MultiDimFunctionGraphOperator<double, std::plus>;
+  extern template class MultiDimFunctionGraphOperator< double, std::plus >;
 
 }  // namespace gum
 

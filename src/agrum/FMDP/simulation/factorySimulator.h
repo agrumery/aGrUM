@@ -109,7 +109,7 @@ namespace gum {
     bool hasReachEnd();
     ///
     double reward();
-    void   perform( Idx );
+    void   perform(Idx);
 
     /// @}
 
@@ -118,15 +118,15 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const DiscreteVariable* primeVar( const DiscreteVariable* mainVar ) {
-      return __primeMap.second( mainVar );
+    const DiscreteVariable* primeVar(const DiscreteVariable* mainVar) {
+      return __primeMap.second(mainVar);
     }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe<const DiscreteVariable*> beginVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > beginVariables() {
       return __FactoryVars.beginSafe();
     }
-    SequenceIteratorSafe<const DiscreteVariable*> endVariables() {
+    SequenceIteratorSafe< const DiscreteVariable* > endVariables() {
       return __FactoryVars.endSafe();
     }
 
@@ -137,15 +137,13 @@ namespace gum {
     // ===========================================================================
     /// @{
 
-    const std::string& actionName( Idx actionId ) {
-      return *__actionMap[actionId];
-    }
+    const std::string& actionName(Idx actionId) { return *__actionMap[actionId]; }
 
     /// Iteration over the variables of the simulated probleme
-    SequenceIteratorSafe<Idx> beginActions() {
+    SequenceIteratorSafe< Idx > beginActions() {
       return __FactoryActions.beginSafe();
     }
-    SequenceIteratorSafe<Idx> endActions() { return __FactoryActions.endSafe(); }
+    SequenceIteratorSafe< Idx > endActions() { return __FactoryActions.endSafe(); }
 
 
     /// @}
@@ -161,8 +159,8 @@ namespace gum {
     void __fillUp();
 
     /// Variables data structures
-    Sequence<const DiscreteVariable*> __FactoryVars;
-    Bijection<const DiscreteVariable*, const DiscreteVariable*> __primeMap;
+    Sequence< const DiscreteVariable* > __FactoryVars;
+    Bijection< const DiscreteVariable*, const DiscreteVariable* > __primeMap;
     DiscreteVariable* __xPos;
     DiscreteVariable* __yPos;
     DiscreteVariable* __passengerPos;
@@ -170,8 +168,8 @@ namespace gum {
     DiscreteVariable* __fuelLevel;
 
     /// Actions
-    Sequence<Idx> __FactoryActions;
-    HashTable<Idx, std::string*> __actionMap;  //__actionMap.insert ( actionId,
+    Sequence< Idx > __FactoryActions;
+    HashTable< Idx, std::string* > __actionMap;  //__actionMap.insert ( actionId,
     // new std::string ( action ) );
     FactorySimulationAction __lastAction;
   };

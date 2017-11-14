@@ -67,12 +67,12 @@ namespace gum {
     // ==========================================================================
     /// Initializes the learner
     // ==========================================================================
-    virtual void initialize( const FMDP<double>* fmdp ) {
+    virtual void initialize(const FMDP< double >* fmdp) {
       _optPol = nullptr;
-      if ( _allActions.size() == 0 )
-        for ( auto actionIter = fmdp->beginActions();
-              actionIter != fmdp->endActions();
-              ++actionIter )
+      if (_allActions.size() == 0)
+        for (auto actionIter = fmdp->beginActions();
+             actionIter != fmdp->endActions();
+             ++actionIter)
           _allActions += *actionIter;
     }
     /// @}
@@ -83,23 +83,23 @@ namespace gum {
     // ###################################################################
     /// @{
     public:
-    virtual void checkState( const Instantiation& newState, Idx actionId ) = 0;
+    virtual void checkState(const Instantiation& newState, Idx actionId) = 0;
 
     void setOptimalStrategy(
-        const MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>* optPol ) {
+      const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* optPol) {
       _optPol =
-          const_cast<MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>*>(
-              optPol );
+        const_cast< MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* >(
+          optPol);
     }
 
-    virtual ActionSet stateOptimalPolicy( const Instantiation& curState ) {
-      return ( _optPol && _optPol->realSize() != 0 ) ? _optPol->get( curState )
-                                                     : _allActions;
+    virtual ActionSet stateOptimalPolicy(const Instantiation& curState) {
+      return (_optPol && _optPol->realSize() != 0) ? _optPol->get(curState)
+                                                   : _allActions;
     }
 
     protected:
     ///
-    const MultiDimFunctionGraph<ActionSet, SetTerminalNodePolicy>* _optPol;
+    const MultiDimFunctionGraph< ActionSet, SetTerminalNodePolicy >* _optPol;
 
     ///
     ActionSet _allActions;

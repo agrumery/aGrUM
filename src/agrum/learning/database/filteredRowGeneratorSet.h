@@ -80,7 +80,7 @@ namespace gum {
      * are packed into a FilteredRowGeneratorSet which, when called, will call
      * iteratively all the FilteredRowGenerators.
      */
-    template <typename Generator>
+    template < typename Generator >
     class FilteredRowGeneratorSet {
       public:
       // ##########################################################################
@@ -90,16 +90,16 @@ namespace gum {
       /// @{
 
       /// default constructor
-      FilteredRowGeneratorSet ();
+      FilteredRowGeneratorSet();
 
       /// copy constructor
-      FilteredRowGeneratorSet ( const FilteredRowGeneratorSet<Generator>& from );
+      FilteredRowGeneratorSet(const FilteredRowGeneratorSet< Generator >& from);
 
       /// move constructor
-      FilteredRowGeneratorSet( FilteredRowGeneratorSet<Generator>&& from );
+      FilteredRowGeneratorSet(FilteredRowGeneratorSet< Generator >&& from);
 
       /// destructor
-      ~FilteredRowGeneratorSet ();
+      ~FilteredRowGeneratorSet();
 
       /// @}
 
@@ -111,22 +111,22 @@ namespace gum {
       /// @{
 
       /// copy operator
-      FilteredRowGeneratorSet<Generator>&
-      operator=( const FilteredRowGeneratorSet<Generator>& );
+      FilteredRowGeneratorSet< Generator >&
+      operator=(const FilteredRowGeneratorSet< Generator >&);
 
       /// move operator
-      FilteredRowGeneratorSet<Generator>&
-      operator=( FilteredRowGeneratorSet<Generator>&& );
+      FilteredRowGeneratorSet< Generator >&
+      operator=(FilteredRowGeneratorSet< Generator >&&);
 
       /// returns the ith generator
       /** @throws NotFound is raised if there are fewer than i generators in
        * the generator set */
-      Generator& operator[] ( Idx i );
+      Generator& operator[](Idx i);
 
       /// returns the ith generator
       /** @throws NotFound is raised if there are fewer than i generators in
        * the generator set */
-      const Generator& operator[]( Idx i ) const;
+      const Generator& operator[](Idx i) const;
 
       /// @}
 
@@ -137,15 +137,15 @@ namespace gum {
       /// @{
 
       /// inserts a new generator of type Generator at the end of the set
-      void insertGenerator ();
+      void insertGenerator();
 
       /// inserts a new generator of type Generator at the end of the set
-      template <typename... Args>
-      void emplaceGenerator ( Args&&... args );
+      template < typename... Args >
+      void emplaceGenerator(Args&&... args);
 
       /// inserts a new generator at the end of the set
-      template <class NewGenerator>
-      void insertGenerator( const NewGenerator& generator );
+      template < class NewGenerator >
+      void insertGenerator(const NewGenerator& generator);
 
       /// returns the number of generators
       Size nbGenerators() const noexcept;
@@ -155,10 +155,10 @@ namespace gum {
       bool hasRows();
 
       /// sets the input row from which the generators will create new rows
-      bool setInputRow( FilteredRow& row );
+      bool setInputRow(FilteredRow& row);
 
       /// generate new rows from the input row
-      FilteredRow& generate ();
+      FilteredRow& generate();
 
       /// resets the filter
       void reset();
@@ -167,26 +167,24 @@ namespace gum {
 
       private:
       /// the vector of all the generators
-      std::vector<Generator*> __generators;
+      std::vector< Generator* > __generators;
 
       /// the number of generators
-      Generator* __last_generator { nullptr };
+      Generator* __last_generator{nullptr};
 
       /// the final row outputed by the set of generators
-      FilteredRow* __output_row { nullptr };
-
+      FilteredRow* __output_row{nullptr};
 
 
       /** @brief returns true if there are still rows that can be output
        * by the set of generators */
-      bool __hasRows( std::size_t i );
+      bool __hasRows(std::size_t i);
 
       /// sets the input row from which the generators will create new rows
-      bool __setInputRow( std::size_t i,
-                          FilteredRow& row );
+      bool __setInputRow(std::size_t i, FilteredRow& row);
 
       /// generate new rows from the input row
-      FilteredRow& __generate ( std::size_t i );
+      FilteredRow& __generate(std::size_t i);
     };
 
   } /* namespace learning */

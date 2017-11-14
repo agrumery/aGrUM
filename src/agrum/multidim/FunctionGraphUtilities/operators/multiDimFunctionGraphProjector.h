@@ -44,9 +44,10 @@ namespace gum {
    * @brief Class used to perform Function Graph projections
    */
   // clang-format on
-  template <typename GUM_SCALAR,
-            template <typename> class FUNCTOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
+  template < typename GUM_SCALAR,
+             template < typename > class FUNCTOR,
+             template < typename > class TerminalNodePolicy =
+               ExactTerminalNodePolicy >
   class MultiDimFunctionGraphProjector {
     public:
     // ============================================================================
@@ -58,9 +59,9 @@ namespace gum {
      * @brief Default constructor.
      */
     MultiDimFunctionGraphProjector(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* src,
-        const Set<const DiscreteVariable*>& delVars,
-        const GUM_SCALAR                    neutral );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* src,
+      const Set< const DiscreteVariable* >& delVars,
+      const GUM_SCALAR                      neutral);
 
     /**
      * @brief Default destructor.
@@ -77,28 +78,28 @@ namespace gum {
      * @brief Computes and builds the Function Graph that is the result of the
      * Projection.
      */
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* project();
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* project();
 
     /// @}
 
     private:
     /// One of the two function graphs used for the Projection
-    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __src;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __src;
 
     /// The list of variables on which the projection is performed
-    const Set<const DiscreteVariable*>& __delVars;
+    const Set< const DiscreteVariable* >& __delVars;
 
     /// The resulting function graph
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __rd;
 
     /// The function to be performed on the leaves
-    const FUNCTOR<GUM_SCALAR> __function;
+    const FUNCTOR< GUM_SCALAR > __function;
 
     /// The function to be performed on the leaves
     const GUM_SCALAR __neutral;
   };
 
-  extern template class MultiDimFunctionGraphProjector<double, std::plus>;
+  extern template class MultiDimFunctionGraphProjector< double, std::plus >;
 
 }  // namespace gum
 

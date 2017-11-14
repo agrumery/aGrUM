@@ -55,16 +55,16 @@ namespace gum {
       DBCell();
 
       /// constructor for a number
-      DBCell( double nb );
+      DBCell(double nb);
 
       /// constructor for a string
-      DBCell( const std::string& str );
+      DBCell(const std::string& str);
 
       /// copy constructor
-      DBCell( const DBCell& from );
+      DBCell(const DBCell& from);
 
       /// move constructor
-      DBCell( DBCell&& from );
+      DBCell(DBCell&& from);
 
       /// destructor
       ~DBCell();
@@ -78,18 +78,18 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBCell& operator=( const DBCell& from );
+      DBCell& operator=(const DBCell& from);
 
       /// move operator
-      DBCell& operator=( DBCell&& from );
+      DBCell& operator=(DBCell&& from);
 
       /// unsafe set operator (assumes that the preceding type is of the same
       /// type)
-      DBCell& operator=( double x ) noexcept;
+      DBCell& operator=(double x) noexcept;
 
       /// unsafe set operator (assumes that the preceding type is of the same
       /// type)
-      DBCell& operator=( const std::string& x ) noexcept;
+      DBCell& operator=(const std::string& x) noexcept;
 
       /// @}
 
@@ -109,10 +109,10 @@ namespace gum {
       double getRealSafe() const;
 
       /// unsafe set (assumes that the preceding type is of the same type)
-      void setReal( double x );
+      void setReal(double x);
 
       /// sets the content of the DBCell (safe type checking)
-      void setRealSafe( double elt );
+      void setRealSafe(double elt);
 
       /// returns the DBcell as a string (without checking its type)
       /** @warning this method is unsafe: it assumes that you know the
@@ -135,13 +135,13 @@ namespace gum {
       int getStringIndexSafe() const;
 
       /// strings are stored into a static bijection. Get its ith string
-      static const std::string& getString( Idx index );
+      static const std::string& getString(Idx index);
 
       /// unsafe set (assumes that the preceding type is of the same type)
-      void setString( const std::string& x );
+      void setString(const std::string& x);
 
       /// sets the content of the DBCell (safe type checking)
-      void setStringSafe( const std::string& elt );
+      void setStringSafe(const std::string& elt);
 
       /// sets the DBCell as a missing element
       void setMissingSafe();
@@ -150,18 +150,18 @@ namespace gum {
       /** This method is used to parse the string passed in argument and
        * estimate which internal type is the most appropriate for the DBCell.
        * Then it fills the DBCell with this type. */
-      void setBestTypeSafe( const std::string& elt );
+      void setBestTypeSafe(const std::string& elt);
 
       /** @brief safely sets the content of the DBCell with the preceding type
        * or,
        * if this is not possible, with the best possible type */
-      void setAgainTypeSafe( const std::string& elt );
+      void setAgainTypeSafe(const std::string& elt);
 
       /// returns the current type of the DBCell
       EltType type() const noexcept;
 
       /// try to convert the content of the DBCell into another type
-      bool convertType( EltType );
+      bool convertType(EltType);
 
       /// @}
 
@@ -180,14 +180,14 @@ namespace gum {
       };
 
       /// a bijection assigning to each string index its corresponding string
-      static Bijection<std::string, int>& __strings();
+      static Bijection< std::string, int >& __strings();
 
       /// the last index used so far
       static int __string_max_index;
 
       /// sets the content of the DBCell from a string
       /** @throws std::invalid_argument if the string cannot be converted */
-      void __setRealFromStringSafe( const std::string& str );
+      void __setRealFromStringSafe(const std::string& str);
     };
 
   } /* namespace learning */

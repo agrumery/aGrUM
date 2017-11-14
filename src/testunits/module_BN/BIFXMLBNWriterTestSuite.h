@@ -41,74 +41,74 @@ namespace gum_tests {
 
   class BIFXMLBNWriterTestSuite : public CxxTest::TestSuite {
     public:
-    gum::BayesNet<double>* bn;
-    gum::NodeId            i1, i2, i3, i4, i5;
+    gum::BayesNet< double >* bn;
+    gum::NodeId              i1, i2, i3, i4, i5;
 
     void setUp() {
-      bn = new gum::BayesNet<double>();
+      bn = new gum::BayesNet< double >();
 
-      gum::LabelizedVariable n1( "1", "", 2 ), n2( "2", "", 2 ), n3( "3", "", 2 );
-      gum::LabelizedVariable n4( "4", "", 2 ), n5( "5", "", 3 );
+      gum::LabelizedVariable n1("1", "", 2), n2("2", "", 2), n3("3", "", 2);
+      gum::LabelizedVariable n4("4", "", 2), n5("5", "", 3);
 
-      i1 = bn->add( n1 );
-      i2 = bn->add( n2 );
-      i3 = bn->add( n3 );
-      i4 = bn->add( n4 );
-      i5 = bn->add( n5 );
+      i1 = bn->add(n1);
+      i2 = bn->add(n2);
+      i3 = bn->add(n3);
+      i4 = bn->add(n4);
+      i5 = bn->add(n5);
 
-      bn->addArc( i1, i3 );
-      bn->addArc( i1, i4 );
-      bn->addArc( i3, i5 );
-      bn->addArc( i4, i5 );
-      bn->addArc( i2, i4 );
-      bn->addArc( i2, i5 );
+      bn->addArc(i1, i3);
+      bn->addArc(i1, i4);
+      bn->addArc(i3, i5);
+      bn->addArc(i4, i5);
+      bn->addArc(i2, i4);
+      bn->addArc(i2, i5);
 
-      fill( *bn );
+      fill(*bn);
     }
 
     void tearDown() { delete bn; }
 
     void testConstuctor() {
-      gum::BIFXMLBNWriter<double>* writer = nullptr;
-      TS_GUM_ASSERT_THROWS_NOTHING( writer = new gum::BIFXMLBNWriter<double>() );
+      gum::BIFXMLBNWriter< double >* writer = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(writer = new gum::BIFXMLBNWriter< double >());
       delete writer;
     }
 
     void testWriter_ostream() {
-      gum::BIFXMLBNWriter<double> writer;
+      gum::BIFXMLBNWriter< double > writer;
       // Uncomment this to check the ouput
       // TS_GUM_ASSERT_THROWS_NOTHING(writer.write(std::cerr, *bn));
     }
 
     void testWriter_string() {
-      gum::BIFXMLBNWriter<double> writer;
-      std::string file = GET_RESSOURCES_PATH( "BNBIFXMLIO_file.txt" );
-      TS_GUM_ASSERT_THROWS_NOTHING( writer.write( file, *bn ) );
+      gum::BIFXMLBNWriter< double > writer;
+      std::string file = GET_RESSOURCES_PATH("BNBIFXMLIO_file.txt");
+      TS_GUM_ASSERT_THROWS_NOTHING(writer.write(file, *bn));
 
-      file = GET_RESSOURCES_PATH( "BNBIFXMLIO_RO_file.txt" );
+      file = GET_RESSOURCES_PATH("BNBIFXMLIO_RO_file.txt");
 
-      TS_ASSERT_EQUALS( chmod( file.c_str(), 0444 ), 0 );
+      TS_ASSERT_EQUALS(chmod(file.c_str(), 0444), 0);
 
       try {
-        writer.write( file, *bn );
-        TS_ASSERT( false );
-      } catch ( gum::IOError& ) {
-        TS_ASSERT( true );
+        writer.write(file, *bn);
+        TS_ASSERT(false);
+      } catch (gum::IOError&) {
+        TS_ASSERT(true);
       }
     }
 
     private:
     // Builds a BN to test the inference
-    void fill( gum::BayesNet<double>& bn ) {
-      bn.cpt( i1 ).fillWith( {0.2, 0.8} );
-      bn.cpt( i2 ).fillWith( {0.3, 0.7} );
-      bn.cpt( i3 ).fillWith( {0.1, 0.9, 0.9, 0.1} );
-      bn.cpt( i4 ).fillWith(  // clang-format off
+    void fill(gum::BayesNet< double >& bn) {
+      bn.cpt(i1).fillWith({0.2, 0.8});
+      bn.cpt(i2).fillWith({0.3, 0.7});
+      bn.cpt(i3).fillWith({0.1, 0.9, 0.9, 0.1});
+      bn.cpt(i4).fillWith(  // clang-format off
               {0.4, 0.6,
                0.5, 0.5,
                0.5, 0.5,
                1.0, 0.0} );  // clang-format on
-      bn.cpt( i5 ).fillWith(                           // clang-format off
+      bn.cpt(i5).fillWith(                          // clang-format off
               {0.3, 0.6, 0.1,
                0.5, 0.5, 0.0,
                0.5, 0.5, 0.0,

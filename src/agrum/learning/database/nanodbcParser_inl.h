@@ -36,18 +36,18 @@ namespace gum {
     const Size NanodbcParser::noLine() const {
       try {
         return __result.position();
-      } catch ( std::runtime_error& e ) {
+      } catch (std::runtime_error& e) {
         return 0;
       }
     }
 
     INLINE
-    const std::vector<std::string>& NanodbcParser::current() const {
-      if ( __data.size() ) {
+    const std::vector< std::string >& NanodbcParser::current() const {
+      if (__data.size()) {
         return __data;
       }
 
-      GUM_ERROR( NullElement, "No parsed data" );
+      GUM_ERROR(NullElement, "No parsed data");
     }
 
   }  // namespace learning

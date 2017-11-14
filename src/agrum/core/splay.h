@@ -36,22 +36,22 @@
 
 namespace gum {
 
-  template <class Element>
+  template < class Element >
   class SplayBinaryNode;
-  template <class Element>
+  template < class Element >
   class SplayTree;
 
   /// Display the node
 
-  template <typename Element>
-  INLINE std::ostream& operator<<( std::ostream&                   out,
-                                   const SplayBinaryNode<Element>& e );
+  template < typename Element >
+  INLINE std::ostream& operator<<(std::ostream&                     out,
+                                  const SplayBinaryNode< Element >& e);
 
   /// Display the tree
 
-  template <typename Element>
-  INLINE std::ostream& operator<<( std::ostream&             out,
-                                   const SplayTree<Element>& s );
+  template < typename Element >
+  INLINE std::ostream& operator<<(std::ostream&               out,
+                                  const SplayTree< Element >& s);
 
   // =========================================================================
   // ===                                   NODE                            ===
@@ -66,7 +66,7 @@ namespace gum {
    * These file implements a data structure. A splay tree is a self-balancing
    * binary search tree.
    */
-  template <class Element>
+  template < class Element >
   class SplayBinaryNode {
     public:
     // ============================================================================
@@ -91,14 +91,14 @@ namespace gum {
      * @return Returns the left child.
      * @warning The returned value can be null.
      */
-    const SplayBinaryNode<Element>* getFg() const;
+    const SplayBinaryNode< Element >* getFg() const;
 
     /**
      * @brief Returns the right child.
      * @return Returns the right child.
      * @warning The returned value can be null.
      */
-    const SplayBinaryNode<Element>* getFd() const;
+    const SplayBinaryNode< Element >* getFd() const;
 
     /// @}
 
@@ -117,27 +117,27 @@ namespace gum {
      * @param p The father of the node, can be nullptr if the node
      * is the root of the tree.
      */
-    SplayBinaryNode( const Element& e,
-                     HashTable<Element, SplayBinaryNode<Element>*>& addr,
-                     SplayBinaryNode* g = 0,
-                     SplayBinaryNode* d = 0,
-                     SplayBinaryNode* p = 0 );
+    SplayBinaryNode(const Element& e,
+                    HashTable< Element, SplayBinaryNode< Element >* >& addr,
+                    SplayBinaryNode* g = 0,
+                    SplayBinaryNode* d = 0,
+                    SplayBinaryNode* p = 0);
 
     /**
      * @brief Copy constructor.
      * @param from the src SplayBinaryNode
      * @param addr TODO don't know what to do here.
      */
-    SplayBinaryNode( const SplayBinaryNode<Element>& from,
-                     HashTable<Element, SplayBinaryNode<Element>*>& addr );
+    SplayBinaryNode(const SplayBinaryNode< Element >& from,
+                    HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /**
      * @brief A function used to perform copies.
      * @param from the src SplayBinaryNode
      * @param addr TODO don't know what to do here ..
      */
-    void _copy( const SplayBinaryNode<Element>& from,
-                HashTable<Element, SplayBinaryNode<Element>*>& addr );
+    void _copy(const SplayBinaryNode< Element >& from,
+               HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /**
      * @brief Class destructor.
@@ -154,19 +154,19 @@ namespace gum {
      * @brief A right rotation, the node must have a father.
      * @return Returns a pointer to the root of the sub-tree after rotation.
      */
-    SplayBinaryNode<Element>* zig();
+    SplayBinaryNode< Element >* zig();
 
     /**
      * @brief A left rotation, the node must hava a father.
      * @return Returns a pointer to the root of the sub-tree after rotation.
      */
-    SplayBinaryNode<Element>* zag();
+    SplayBinaryNode< Element >* zag();
 
     /**
      * @brief A splay rotation, the node will be the root of the tree.
      * @return Returns a pointer to the root of the sub-tree after rotation.
      */
-    SplayBinaryNode<Element>* splay();
+    SplayBinaryNode< Element >* splay();
 
     /**
      * @brief Concatenation of two trees.
@@ -174,9 +174,9 @@ namespace gum {
      * @param addr TODO Don't know what to do here.
      * @return Returns the root of the created tree.
      */
-    SplayBinaryNode<Element>*
-    join( const SplayBinaryNode<Element>* e,
-          HashTable<Element, SplayBinaryNode<Element>*>& addr );
+    SplayBinaryNode< Element >*
+    join(const SplayBinaryNode< Element >* e,
+         HashTable< Element, SplayBinaryNode< Element >* >& addr);
 
     /// @}
     // ============================================================================
@@ -202,11 +202,11 @@ namespace gum {
     /// @}
 
     /// Friendly with SplayTree
-    friend class SplayTree<Element>;
+    friend class SplayTree< Element >;
 
     /// Friendly to display
-    friend std::ostream& operator<<<>( std::ostream& out,
-                                       const SplayBinaryNode<Element>& );
+    friend std::ostream& operator<<<>(std::ostream& out,
+                                      const SplayBinaryNode< Element >&);
   };
 
   // ============================================================================
@@ -254,7 +254,7 @@ namespace gum {
    *
    * @tparam Element The elements type.
    */
-  template <class Element>
+  template < class Element >
   class SplayTree {
     public:
     // ============================================================================
@@ -271,13 +271,13 @@ namespace gum {
      * @brief Basic constructor, make a splay tree with one element.
      * @param e The element of the tree.
      */
-    SplayTree( const Element& e );
+    SplayTree(const Element& e);
 
     /**
      * @brief Copy constructor.
      * @param from The gum::SplayTree to copy.
      */
-    SplayTree( const SplayTree& from );
+    SplayTree(const SplayTree& from);
 
     /**
      * @brief Class destructor.
@@ -295,7 +295,7 @@ namespace gum {
      * @param from The gum::SplayTree to copy.
      * @return This gum::SplayTree.
      */
-    SplayTree<Element>& operator=( const SplayTree<Element>& from );
+    SplayTree< Element >& operator=(const SplayTree< Element >& from);
 
     /// @}
     // ============================================================================
@@ -309,7 +309,7 @@ namespace gum {
      * @throw NotFound Raised if no element was found.
      * @return Returns the element at the position n.
      */
-    Element& operator[]( const unsigned int i );
+    Element& operator[](const unsigned int i);
 
     /**
      * @brief Get the element at the position n.
@@ -317,7 +317,7 @@ namespace gum {
      * @throw NotFound Raised if no element was found.
      * @return Returns the element at the position n.
      */
-    const Element& operator[]( const unsigned int i ) const;
+    const Element& operator[](const unsigned int i) const;
 
 
     /**
@@ -346,25 +346,25 @@ namespace gum {
      * @brief Add an element in the first position.
      * @param e The element to push.
      */
-    void pushFront( const Element& e );
+    void pushFront(const Element& e);
 
     /**
      * @brief Add an element in the last position.
      * @param e The element to push.
      */
-    void pushBack( const Element& e );
+    void pushBack(const Element& e);
 
     /**
      * @brief Add an element to the tree.
      * @param e The element to add.
      */
-    void insert( const Element& e );
+    void insert(const Element& e);
 
     /**
      * @brief Concatenation of two trees.
      * @param s The tree to add.
      */
-    void join( const SplayTree<Element>& s );
+    void join(const SplayTree< Element >& s);
 
 
     /**
@@ -376,7 +376,7 @@ namespace gum {
      * @param i The position of the element (e) for split.
      * @return Returns a tree with all the elements greater than i.
      */
-    SplayTree<Element> split( const int i );
+    SplayTree< Element > split(const int i);
 
 
     /**
@@ -387,7 +387,7 @@ namespace gum {
      * @warning The element e is neither in the trees.
      * @return Returns the tree with all value greather than e.
      */
-    SplayTree<Element> split_by_val( const Element& e );
+    SplayTree< Element > split_by_val(const Element& e);
 
     /**
      * @brief The number of elements in the tree.
@@ -400,7 +400,7 @@ namespace gum {
      * @param e The element to test if it is in the splay tree.
      * @return Returns true if e is in this splay tree.
      */
-    bool contains( const Element& e ) const;
+    bool contains(const Element& e) const;
 
     /// @}
 
@@ -411,19 +411,19 @@ namespace gum {
     /// @{
 
     /// Root of the tree
-    SplayBinaryNode<Element>* root;
+    SplayBinaryNode< Element >* root;
 
     /// The hash table to find quickly the position of a node
-    HashTable<Element, SplayBinaryNode<Element>*> addr;
+    HashTable< Element, SplayBinaryNode< Element >* > addr;
 
     /// @}
 
     /// a function used to perform copies
-    void _copy( const SplayTree<Element>& );
+    void _copy(const SplayTree< Element >&);
 
     /// Friendly to display
-    friend std::ostream& operator<<<>( std::ostream& out,
-                                       const SplayTree<Element>& );
+    friend std::ostream& operator<<<>(std::ostream& out,
+                                      const SplayTree< Element >&);
   };
 
 } /* namespace gum */

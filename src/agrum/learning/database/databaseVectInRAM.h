@@ -152,13 +152,13 @@ namespace gum {
         /// @{
 
         /// default constructor
-        Handler( const DatabaseVectInRAM& db );
+        Handler(const DatabaseVectInRAM& db);
 
         /// copy constructor
-        Handler( const Handler& h );
+        Handler(const Handler& h);
 
         /// move constructor
-        Handler( Handler&& h );
+        Handler(Handler&& h);
 
         /// destructor
         virtual ~Handler();
@@ -171,10 +171,10 @@ namespace gum {
         /// @{
 
         /// copy operator
-        Handler& operator=( const Handler& );
+        Handler& operator=(const Handler&);
 
         /// move operator
-        Handler& operator=( Handler&& );
+        Handler& operator=(Handler&&);
 
         /// @}
 
@@ -236,13 +236,13 @@ namespace gum {
          * @end the handler handles rows in interval [begin,end). Thus, the
          * endth
          * row is not included in the set of rows handled. g*/
-        void setRange( Size begin, Size end );
+        void setRange(Size begin, Size end);
 
         /// returns the current range of the handler [begin,end)
-        std::pair<Size, Size> range() const noexcept;
+        std::pair< Size, Size > range() const noexcept;
 
         /// returns the names of the variables
-        const std::vector<std::string>& variableNames() const noexcept;
+        const std::vector< std::string >& variableNames() const noexcept;
 
         /// returns the number of variables (columns) of the database
         Size nbVariables() const noexcept;
@@ -254,7 +254,7 @@ namespace gum {
         const DatabaseVectInRAM* __db;
 
         /// a reference on the database
-        const std::vector<DBRow>* __row;
+        const std::vector< DBRow >* __row;
 
         /// the index of the row currently pointed to by the handler
         Size __index{0};
@@ -285,10 +285,10 @@ namespace gum {
       DatabaseVectInRAM();
 
       /// copy constructor
-      DatabaseVectInRAM( const DatabaseVectInRAM& );
+      DatabaseVectInRAM(const DatabaseVectInRAM&);
 
       /// move constructor
-      DatabaseVectInRAM( DatabaseVectInRAM&& );
+      DatabaseVectInRAM(DatabaseVectInRAM&&);
 
       /// destructor
       virtual ~DatabaseVectInRAM();
@@ -301,10 +301,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DatabaseVectInRAM& operator=( const DatabaseVectInRAM& from );
+      DatabaseVectInRAM& operator=(const DatabaseVectInRAM& from);
 
       /// move constructor
-      DatabaseVectInRAM& operator=( DatabaseVectInRAM&& from );
+      DatabaseVectInRAM& operator=(DatabaseVectInRAM&& from);
 
       /// @}
 
@@ -314,36 +314,36 @@ namespace gum {
       /// @{
 
       /// returns the content of the database
-      const std::vector<DBRow>& content() const noexcept;
+      const std::vector< DBRow >& content() const noexcept;
 
       /// returns a new handler on the database
       Handler handler() const;
 
       /// returns the variable names for all the columns
-      const std::vector<std::string>& variableNames() const noexcept;
+      const std::vector< std::string >& variableNames() const noexcept;
 
       /// sets the names of the variables
-      void setVariableNames( const std::vector<std::string>& names );
+      void setVariableNames(const std::vector< std::string >& names);
 
       /// returns the number of variables (columns) of the database
       Size nbVariables() const noexcept;
 
       /// insert a new DBRow at the end of the database
-      void insertDBRow( const DBRow& new_row );
+      void insertDBRow(const DBRow& new_row);
 
       /// insert a new DBRow at the end of the database
-      void insertDBRow( DBRow&& new_row );
+      void insertDBRow(DBRow&& new_row);
 
       /// insert a set of new DBRow at the end of the database
-      void insertDBRows( const std::vector<DBRow>& new_rows );
+      void insertDBRows(const std::vector< DBRow >& new_rows);
 
       /// insert a set of new DBRows at the end of the database
-      void insertDBRows( std::vector<DBRow>&& new_rows );
+      void insertDBRows(std::vector< DBRow >&& new_rows);
 
       /// erase a given row
       /** if the row does not exist, nothing is done. In particular, no
        * exception is raised. */
-      void eraseDBRow( Idx index );
+      void eraseDBRow(Idx index);
 
       /// erase the first row
       /** if the row does not exist, nothing is done. In particular, no
@@ -358,15 +358,15 @@ namespace gum {
       /// erase the k first rows
       /** if there are fewer than k rows in the database, the database is
        * completely emptied */
-      void eraseFirstDBRows( Size nb_rows );
+      void eraseFirstDBRows(Size nb_rows);
 
       /// erase the k last rows
       /** if there are fewer than k rows in the database, the database is
        * completely emptied */
-      void eraseLastDBRows( Size nb_rows );
+      void eraseLastDBRows(Size nb_rows);
 
       /// erase the rows from the debth to the endth (not included)
-      void eraseDBRows( Idx deb, Idx end );
+      void eraseDBRows(Idx deb, Idx end);
 
       /// erase all the rows
       void eraseAllDBRows();
@@ -379,24 +379,24 @@ namespace gum {
 
       protected:
       /// returns the content of the database
-      std::vector<DBRow>& _content() noexcept;
+      std::vector< DBRow >& _content() noexcept;
 
       /// returns the variable names for all the columns
-      std::vector<std::string>& _variableNames() noexcept;
+      std::vector< std::string >& _variableNames() noexcept;
 
       private:
       /// the vector of DBRows
-      std::vector<DBRow> __data;
+      std::vector< DBRow > __data;
 
       /// the names of the variables for each column
-      std::vector<std::string> __variable_names;
+      std::vector< std::string > __variable_names;
 
       /// the list of handlers currently attached to the database
       /** this is useful when the database is resized */
-      mutable std::vector<Handler*> __list_of_handlers;
+      mutable std::vector< Handler* > __list_of_handlers;
 
       /// update the handlers when the size of the database changes
-      void __updateHandlers( Size new_size );
+      void __updateHandlers(Size new_size);
 
       /// allow the handlers to access the database directly
       friend class Handler;

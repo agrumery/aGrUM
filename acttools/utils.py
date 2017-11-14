@@ -22,6 +22,8 @@
 # ***************************************************************************
 import os
 import sys
+from os.path import isdir
+import glob
 
 from .configuration import cfg
 
@@ -92,3 +94,24 @@ def critic(s, pref=None, rc=1):
 
 def CrossPlatformRelPath(x, y):
   return os.path.relpath(x, "src/testunits").replace("\\", "/")
+
+
+def recglob(path, mask):
+  for item in glob.glob(path + "/*"):
+    if isdir(item):
+      for item in recglob(item, mask):
+        yield item
+
+  for item in glob.glob(path + "/" + mask):
+    if not isdir(item):
+      yield item
+
+
+def srcAgrum():
+  for i in recglob("src/agrum", "*.cpp"):
+    yield i
+  for i in recglob("src/agrum", "*.h"):
+    yield i
+  for i in recglob("src/testunits", "*TestSuite.h"):
+    yield i
+

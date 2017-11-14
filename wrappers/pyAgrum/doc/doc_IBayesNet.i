@@ -2,12 +2,9 @@
 "
 Returns the dimension (the number of free parameters) in this BayesNet.
 
-dim(G)=∑i∈nodes((ri−1)⋅qi) where ri is the number of instantiations of node i and qi is the number of instantiations of its parents. 
-in IBayesNet
-
 Returns
 -------
-int 
+int
 	the dimension of the BayesNet
 "
 
@@ -90,5 +87,5 @@ double
 Returns
 -------
 str
-    a friendly display of the graph in DOT format 
+    a friendly display of the graph in DOT format
 "

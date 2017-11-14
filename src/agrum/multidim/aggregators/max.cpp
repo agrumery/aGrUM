@@ -26,5 +26,5 @@
 
 #include <agrum/multidim/aggregators/max.h>
 
-template class gum::aggregator::Max<float>;
-template class gum::aggregator::Max<double>;
+template class gum::aggregator::Max< float >;
+template class gum::aggregator::Max< double >;

@@ -100,7 +100,7 @@ namespace gum {
     _setTargetedMode();  // does nothing if already in targeted mode
 
     this->__setState(
-            BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure);
+      BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
   }
 
 
@@ -123,7 +123,7 @@ namespace gum {
       __targets.insert(target);
       _onMarginalTargetAdded(target);
       this->__setState(
-              BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure);
+        BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
     }
   }
 
@@ -139,12 +139,12 @@ namespace gum {
 
 
     _setTargetedMode();  // does nothing if already in targeted mode
-    for (auto target : this->__bn->dag()) {
+    for (const auto target : this->__bn->dag()) {
       if (!__targets.contains(target)) {
         __targets.insert(target);
         _onMarginalTargetAdded(target);
         this->__setState(
-                BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure);
+          BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
       }
     }
   }
@@ -184,7 +184,7 @@ namespace gum {
       _onMarginalTargetErased(target);
       __targets.erase(target);
       this->__setState(
-              BayesNetInference<GUM_SCALAR>::StateOfInference::OutdatedBNStructure);
+        BayesNetInference< GUM_SCALAR >::StateOfInference::OutdatedBNStructure);
     }
   }
 

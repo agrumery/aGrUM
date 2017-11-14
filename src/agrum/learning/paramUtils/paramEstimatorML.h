@@ -60,9 +60,9 @@ namespace gum {
      * nodes assume that this set is empty. Once the computations have been
      * performed, use method parameters to retrieve the parameters of interest.
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
-    class ParamEstimatorML : public ParamEstimator<IdSetAlloc, CountAlloc> {
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
+    class ParamEstimatorML : public ParamEstimator< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -76,22 +76,22 @@ namespace gum {
        * @param apriori The parameter apriori.
        * @param score_internal_apriori The score internal apriori.
        */
-      template <typename RowFilter>
-      ParamEstimatorML( const RowFilter&         filter,
-                        const std::vector<Size>& var_modalities,
-                        Apriori<IdSetAlloc, CountAlloc>& apriori,
-                        const ScoreInternalApriori<IdSetAlloc, CountAlloc>&
-                            score_internal_apriori =
-                                ScoreInternalNoApriori<IdSetAlloc, CountAlloc>() );
+      template < typename RowFilter >
+      ParamEstimatorML(const RowFilter&           filter,
+                       const std::vector< Size >& var_modalities,
+                       Apriori< IdSetAlloc, CountAlloc >& apriori,
+                       const ScoreInternalApriori< IdSetAlloc, CountAlloc >&
+                         score_internal_apriori =
+                           ScoreInternalNoApriori< IdSetAlloc, CountAlloc >());
 
       /// copy constructor
-      ParamEstimatorML( const ParamEstimatorML<IdSetAlloc, CountAlloc>& );
+      ParamEstimatorML(const ParamEstimatorML< IdSetAlloc, CountAlloc >&);
 
       /// move constructor
-      ParamEstimatorML( ParamEstimatorML<IdSetAlloc, CountAlloc>&& );
+      ParamEstimatorML(ParamEstimatorML< IdSetAlloc, CountAlloc >&&);
 
       /// virtual copy factory
-      virtual ParamEstimatorML<IdSetAlloc, CountAlloc>* copyFactory() const;
+      virtual ParamEstimatorML< IdSetAlloc, CountAlloc >* copyFactory() const;
 
       /// destructor
       virtual ~ParamEstimatorML();
@@ -111,7 +111,7 @@ namespace gum {
        * were specified) and, then, the target node.
        * @throw CPTError is raised if some values of the conditioning sets were
        * not observed in the database. */
-      const std::vector<double, CountAlloc>& parameters( Idx nodeset_index );
+      const std::vector< double, CountAlloc >& parameters(Idx nodeset_index);
 
       /// @}
     };

@@ -51,10 +51,10 @@ namespace gum {
    *density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    */
-  template <typename GUM_SCALAR,
-            template <typename> class ICPTGenerator = SimpleCPTGenerator>
+  template < typename GUM_SCALAR,
+             template < typename > class ICPTGenerator = SimpleCPTGenerator >
   class SimpleBayesNetGenerator
-      : public IBayesNetGenerator<GUM_SCALAR, ICPTGenerator> {
+    : public IBayesNetGenerator< GUM_SCALAR, ICPTGenerator > {
     public:
     // ############################################################################
     /// @name Constructors / Destructor
@@ -68,7 +68,7 @@ namespace gum {
     * @param maxArcs The number of maximum arcs imposed on the generator.
     * @param maxModality Each DRV has from 2 to maxModality modalities
     */
-    SimpleBayesNetGenerator( Size nbrNodes, Size maxArcs, Size maxModality = 2 );
+    SimpleBayesNetGenerator(Size nbrNodes, Size maxArcs, Size maxModality = 2);
 
     /**
      * Destructor.
@@ -85,14 +85,14 @@ namespace gum {
      * @param bayesNet Bayesian Network to be completed after initialisation
      * @return null but modify inputed Bayesian Network
      */
-    void generateBN( BayesNet<GUM_SCALAR>& bayesNet );
+    void generateBN(BayesNet< GUM_SCALAR >& bayesNet);
 
     /// @}
   }; /* class SimpleBayesNetGenerator */
 
 
-  extern template class SimpleBayesNetGenerator<float>;
-  extern template class SimpleBayesNetGenerator<double>;
+  extern template class SimpleBayesNetGenerator< float >;
+  extern template class SimpleBayesNetGenerator< double >;
 
 
 } /* namespace gum */

@@ -64,9 +64,9 @@ namespace gum {
      * component,
      * then for those with unspecified roots, an arbitrary root will be computed
      * and used for the binarization. */
-    virtual CliqueGraph convert( const CliqueGraph&        JT,
-                                 const NodeProperty<Size>& domain_sizes,
-                                 const NodeSet&            roots ) = 0;
+    virtual CliqueGraph convert(const CliqueGraph&          JT,
+                                const NodeProperty< Size >& domain_sizes,
+                                const NodeSet&              roots) = 0;
 
     /// returns all the roots considered for all the connected components
     virtual const NodeSet& roots() const = 0;
@@ -75,10 +75,10 @@ namespace gum {
 
     private:
     /// forbid copy constructor
-    BinaryJoinTreeConverter( const BinaryJoinTreeConverter& );
+    BinaryJoinTreeConverter(const BinaryJoinTreeConverter&);
 
     /// forbid copy operator
-    BinaryJoinTreeConverter& operator=( const BinaryJoinTreeConverter& );
+    BinaryJoinTreeConverter& operator=(const BinaryJoinTreeConverter&);
   };
 
 } /* namespace gum */

@@ -51,40 +51,41 @@ namespace gum {
        *
        * @tparam GUM_SCALAR The scalar type used by the gum::prm::PRM.
        */
-      template <typename GUM_SCALAR>
+      template < typename GUM_SCALAR >
       class O3NameSolver {
 
         public:
-        O3NameSolver( PRM<GUM_SCALAR>& prm,
-                      O3PRM&           o3_prm,
-                      ErrorsContainer& errors );
+        O3NameSolver(PRM< GUM_SCALAR >& prm,
+                     O3PRM&             o3_prm,
+                     ErrorsContainer&   errors);
 
-        O3NameSolver( const O3NameSolver<GUM_SCALAR>& src );
+        O3NameSolver(const O3NameSolver< GUM_SCALAR >& src);
 
-        O3NameSolver( O3NameSolver<GUM_SCALAR>&& src );
+        O3NameSolver(O3NameSolver< GUM_SCALAR >&& src);
 
         ~O3NameSolver();
 
-        O3NameSolver<GUM_SCALAR>& operator=( const O3NameSolver<GUM_SCALAR>& src );
+        O3NameSolver< GUM_SCALAR >&
+        operator=(const O3NameSolver< GUM_SCALAR >& src);
 
-        O3NameSolver<GUM_SCALAR>& operator=( O3NameSolver<GUM_SCALAR>&& src );
+        O3NameSolver< GUM_SCALAR >& operator=(O3NameSolver< GUM_SCALAR >&& src);
 
-        bool resolveClassElement( O3Label& name );
+        bool resolveClassElement(O3Label& name);
 
-        bool resolveType( O3Label& name );
+        bool resolveType(O3Label& name);
 
-        bool resolveInterface( O3Label& name );
+        bool resolveInterface(O3Label& name);
 
-        bool resolveClass( O3Label& name );
+        bool resolveClass(O3Label& name);
 
-        bool resolveSlotType( O3Label& name );
+        bool resolveSlotType(O3Label& name);
 
         private:
-        PRM<GUM_SCALAR>* __prm;
-        O3PRM*           __o3_prm;
-        ErrorsContainer* __errors;
+        PRM< GUM_SCALAR >* __prm;
+        O3PRM*             __o3_prm;
+        ErrorsContainer*   __errors;
 
-        using NameMap = HashTable<std::string, std::string>;
+        using NameMap = HashTable< std::string, std::string >;
 
         NameMap __typeName;
         NameMap __eltName;
@@ -98,8 +99,8 @@ namespace gum {
 }  // gum
 
 
-extern template class gum::prm::o3prm::O3NameSolver<float>;
-extern template class gum::prm::o3prm::O3NameSolver<double>;
+extern template class gum::prm::o3prm::O3NameSolver< float >;
+extern template class gum::prm::o3prm::O3NameSolver< double >;
 
 
 // always include the implementation of the templates

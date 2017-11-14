@@ -40,10 +40,11 @@ namespace gum {
    * Framework
    * @ingroup multidim_group
    */
-  template <typename GUM_SCALAR,
-            template <typename> class COMBINEOPERATOR,
-            template <typename> class PROJECTOPERATOR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
+  template < typename GUM_SCALAR,
+             template < typename > class COMBINEOPERATOR,
+             template < typename > class PROJECTOPERATOR,
+             template < typename > class TerminalNodePolicy =
+               ExactTerminalNodePolicy >
   class Regress {
     public:
     // ============================================================================
@@ -53,11 +54,11 @@ namespace gum {
 
     /// Default constructor.
     Regress(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* vfunction,
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* probDist,
-        const Set<const DiscreteVariable*>* primedVars,
-        const DiscreteVariable*             targetVar,
-        const GUM_SCALAR                    neutral );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* vfunction,
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* probDist,
+      const Set< const DiscreteVariable* >* primedVars,
+      const DiscreteVariable*               targetVar,
+      const GUM_SCALAR                      neutral);
 
     /// Default destructor.
     ~Regress();
@@ -71,7 +72,7 @@ namespace gum {
 
     /// Computes and builds the Function Graph that is the result of the
     /// operation
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* compute();
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* compute();
 
     /// @}
 
@@ -85,23 +86,23 @@ namespace gum {
     /// variables
     /// beneath it
     void __findRetrogradeVariables(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* dg,
-        HashTable<NodeId, short int*>&                               dgInstNeed );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* dg,
+      HashTable< NodeId, short int* >&                               dgInstNeed);
 
     /// The main recursion function
-    NodeId __compute( O4DGContext& currentSituation, Idx lastInstVarPos );
+    NodeId __compute(O4DGContext& currentSituation, Idx lastInstVarPos);
 
     /// One of the two function graphs used for the operation
-    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG1;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __DG1;
 
     /// The other one
-    const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __DG2;
+    const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __DG2;
 
     /// The resulting function graph
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __rd;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __rd;
 
     /// The set of variables we want to keep at the end
-    const Set<const DiscreteVariable*>* __primedVars;
+    const Set< const DiscreteVariable* >* __primedVars;
 
     /// The variable we work on to eleminate
     const DiscreteVariable* __targetVar;
@@ -113,23 +114,23 @@ namespace gum {
     Idx __nbVar;
 
     /// The functions to be performed on the leaves
-    const COMBINEOPERATOR<GUM_SCALAR> __combine;
-    const PROJECTOPERATOR<GUM_SCALAR> __project;
+    const COMBINEOPERATOR< GUM_SCALAR > __combine;
+    const PROJECTOPERATOR< GUM_SCALAR > __project;
 
     /// The hashtable used to know if two pair of nodes have already been
     /// visited
-    HashTable<double, NodeId> __explorationTable;
+    HashTable< double, NodeId > __explorationTable;
 
     /// Table uses to know if a given node of given function graph has
     /// retrograde variables
-    HashTable<NodeId, short int*> __DG1InstantiationNeeded;
-    HashTable<NodeId, short int*> __DG2InstantiationNeeded;
+    HashTable< NodeId, short int* > __DG1InstantiationNeeded;
+    HashTable< NodeId, short int* > __DG2InstantiationNeeded;
 
     /// Just a computationnal trick
     short int* __default;
   };
 
-  extern template class Regress<double, std::multiplies, std::plus>;
+  extern template class Regress< double, std::multiplies, std::plus >;
 
 }  // namespace gum
 

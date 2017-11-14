@@ -60,7 +60,7 @@ namespace gum {
      * @brief Copy constructor.
      * @param timer The gum::Timer to copy.
      */
-    Timer( const Timer& timer );
+    Timer(const Timer& timer);
 
     /**
      * Destructor
@@ -77,7 +77,7 @@ namespace gum {
      * @brief Copy operator.
      * @param timer The gum::Timer to copy.
      */
-    Timer& operator=( const Timer& timer );
+    Timer& operator=(const Timer& timer);
 
     /// @}
     // ============================================================================

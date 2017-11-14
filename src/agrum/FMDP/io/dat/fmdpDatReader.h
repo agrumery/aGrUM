@@ -87,10 +87,10 @@ namespace gum {
    * Markov Decision Processes.
    * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
    */
-  template <typename GUM_SCALAR>
-  class FMDPDatReader : public FMDPReader<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class FMDPDatReader : public FMDPReader< GUM_SCALAR > {
     public:
-    FMDPDatReader( FMDP<GUM_SCALAR>* fmdp, const std::string& filename );
+    FMDPDatReader(FMDP< GUM_SCALAR >* fmdp, const std::string& filename);
     ~FMDPDatReader();
 
     /// Direct access to FMDPDat scanner (mandatory for listener connection)
@@ -101,13 +101,13 @@ namespace gum {
     const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
-    bool trace( void ) const;
-    void trace( bool b );
+    bool trace(void) const;
+    void trace(bool b);
 
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed( void );
+    Size proceed(void);
 
     /// @{
     /// publishing Errors API
@@ -118,29 +118,29 @@ namespace gum {
     Size warnings();
 
     /// line of ith error or warning
-    Idx errLine( Idx i );
+    Idx errLine(Idx i);
     /// col of ith error or warning
-    Idx errCol( Idx i );
+    Idx errCol(Idx i);
     /// type of ith error or warning
-    bool errIsError( Idx i );
+    bool errIsError(Idx i);
     /// message of ith error or warning
-    std::string errMsg( Idx i );
+    std::string errMsg(Idx i);
 
     /// send on std::cerr the list of errors
-    void showElegantErrors( std::ostream& o = std::cerr );
+    void showElegantErrors(std::ostream& o = std::cerr);
 
     /// send on std::cerr the list of errors or warnings
-    void showElegantErrorsAndWarnings( std::ostream& o = std::cerr );
+    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr);
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts( std::ostream& o = std::cerr );
+    void showErrorCounts(std::ostream& o = std::cerr);
     /// @}
 
     protected:
-    FMDP<GUM_SCALAR>*        __fmdp;
-    FMDPFactory<GUM_SCALAR>* __factory;
-    MDPDAT::Scanner*         __scanner;
-    MDPDAT::Parser*          __parser;
+    FMDP< GUM_SCALAR >*        __fmdp;
+    FMDPFactory< GUM_SCALAR >* __factory;
+    MDPDAT::Scanner*           __scanner;
+    MDPDAT::Parser*            __parser;
 
     std::string __streamName;
     bool        __traceScanning;
@@ -152,8 +152,8 @@ namespace gum {
   };
 
 
-  extern template class FMDPDatReader<float>;
-  extern template class FMDPDatReader<double>;
+  extern template class FMDPDatReader< float >;
+  extern template class FMDPDatReader< double >;
 
 }  // namespace gum
 

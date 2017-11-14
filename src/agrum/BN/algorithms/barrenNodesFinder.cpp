@@ -34,30 +34,30 @@
 namespace gum {
 
   /// returns the set of barren nodes in the messages sent in a junction tree
-  ArcProperty<NodeSet>
-  BarrenNodesFinder::barrenNodes( const CliqueGraph& junction_tree ) {
+  ArcProperty< NodeSet >
+  BarrenNodesFinder::barrenNodes(const CliqueGraph& junction_tree) {
     // assign a mark to all the nodes
     // and mark all the observed nodes and their ancestors as non-barren
-    NodeProperty<Size> mark( __dag->size() );
+    NodeProperty< Size > mark(__dag->size());
     {
-      for ( const auto node : *__dag )
-        mark.insert( node, 0 );  // for the moment, 0 = possibly barren
+      for (const auto node : *__dag)
+        mark.insert(node, 0);  // for the moment, 0 = possibly barren
 
       // mark all the observed nodes and their ancestors as non barren
       // std::numeric_limits<unsigned int>::max () will be necessarily non
       // barren
       // later on
-      Sequence<NodeId> observed_anc( __dag->size() );
-      const Size       non_barren = std::numeric_limits<Size>::max();
-      for ( const auto node : *__observed_nodes )
-        observed_anc.insert( node );
-      for ( Idx i = 0; i < observed_anc.size(); ++i ) {
+      Sequence< NodeId > observed_anc(__dag->size());
+      const Size         non_barren = std::numeric_limits< Size >::max();
+      for (const auto node : *__observed_nodes)
+        observed_anc.insert(node);
+      for (Idx i = 0; i < observed_anc.size(); ++i) {
         const NodeId node = observed_anc[i];
-        if ( !mark[node] ) {
+        if (!mark[node]) {
           mark[node] = non_barren;
-          for ( const auto par : __dag->parents( node ) ) {
-            if ( !mark[par] && !observed_anc.exists( par ) ) {
-              observed_anc.insert( par );
+          for (const auto par : __dag->parents(node)) {
+            if (!mark[par] && !observed_anc.exists(par)) {
+              observed_anc.insert(par);
             }
           }
         }
@@ -71,45 +71,43 @@ namespace gum {
     // by sweeping the dag, we will remove the nodes that were determined
     // above as non-barren. Structure result will assign to each (ordered) pair
     // of adjacent cliques its set of barren nodes.
-    ArcProperty<NodeSet> result;
-    for ( const auto& edge : junction_tree.edges() ) {
-      NodeSet separator = junction_tree.separator( edge );
+    ArcProperty< NodeSet > result;
+    for (const auto& edge : junction_tree.edges()) {
+      NodeSet separator = junction_tree.separator(edge);
 
-      NodeSet non_barren1 = junction_tree.clique( edge.first() );
-      for ( auto iter = non_barren1.beginSafe(); iter != non_barren1.endSafe();
-            ++iter ) {
-        if ( mark[*iter] || separator.exists( *iter ) ) {
-          non_barren1.erase( iter );
+      NodeSet non_barren1 = junction_tree.clique(edge.first());
+      for (auto iter = non_barren1.beginSafe(); iter != non_barren1.endSafe();
+           ++iter) {
+        if (mark[*iter] || separator.exists(*iter)) {
+          non_barren1.erase(iter);
         }
       }
-      result.insert( Arc( edge.first(), edge.second() ),
-                     std::move( non_barren1 ) );
+      result.insert(Arc(edge.first(), edge.second()), std::move(non_barren1));
 
-      NodeSet non_barren2 = junction_tree.clique( edge.second() );
-      for ( auto iter = non_barren2.beginSafe(); iter != non_barren2.endSafe();
-            ++iter ) {
-        if ( mark[*iter] || separator.exists( *iter ) ) {
-          non_barren2.erase( iter );
+      NodeSet non_barren2 = junction_tree.clique(edge.second());
+      for (auto iter = non_barren2.beginSafe(); iter != non_barren2.endSafe();
+           ++iter) {
+        if (mark[*iter] || separator.exists(*iter)) {
+          non_barren2.erase(iter);
         }
       }
-      result.insert( Arc( edge.second(), edge.first() ),
-                     std::move( non_barren2 ) );
+      result.insert(Arc(edge.second(), edge.first()), std::move(non_barren2));
     }
 
     // for each node in the DAG, indicate which are the arcs in the result
     // structure whose separator contain it: the separators are actually the
     // targets of the queries.
-    NodeProperty<ArcSet> node2arc;
-    for ( const auto node : *__dag )
-      node2arc.insert( node, ArcSet() );
-    for ( const auto& elt : result ) {
+    NodeProperty< ArcSet > node2arc;
+    for (const auto node : *__dag)
+      node2arc.insert(node, ArcSet());
+    for (const auto& elt : result) {
       const Arc& arc = elt.first;
-      if ( !result[arc].empty() ) {  // no need to further process cliques
-        const NodeSet& separator =   // with no barren nodes
-            junction_tree.separator( Edge( arc.tail(), arc.head() ) );
+      if (!result[arc].empty()) {   // no need to further process cliques
+        const NodeSet& separator =  // with no barren nodes
+          junction_tree.separator(Edge(arc.tail(), arc.head()));
 
-        for ( const auto node : separator ) {
-          node2arc[node].insert( arc );
+        for (const auto node : separator) {
+          node2arc[node].insert(arc);
         }
       }
     }
@@ -151,31 +149,31 @@ namespace gum {
     // perform step 1/
     NodeSet path_roots;
     {
-      List<NodeId> nodes_to_mark;
-      for ( const auto& elt : node2arc ) {
-        if ( !elt.second.empty() ) {  // only process nodes with assigned arcs
-          nodes_to_mark.insert( elt.first );
+      List< NodeId > nodes_to_mark;
+      for (const auto& elt : node2arc) {
+        if (!elt.second.empty()) {  // only process nodes with assigned arcs
+          nodes_to_mark.insert(elt.first);
         }
       }
-      while ( !nodes_to_mark.empty() ) {
+      while (!nodes_to_mark.empty()) {
         NodeId node = nodes_to_mark.front();
         nodes_to_mark.popFront();
 
-        if ( !mark[node] ) {  // mark the node and all its ancestors
+        if (!mark[node]) {  // mark the node and all its ancestors
           mark[node] = 1;
           Size nb_par = 0;
-          for ( auto par : __dag->parents( node ) ) {
+          for (auto par : __dag->parents(node)) {
             Size parent_mark = mark[par];
-            if ( parent_mark != std::numeric_limits<Size>::max() ) {
+            if (parent_mark != std::numeric_limits< Size >::max()) {
               ++nb_par;
-              if ( parent_mark == 0 ) {
-                nodes_to_mark.insert( par );
+              if (parent_mark == 0) {
+                nodes_to_mark.insert(par);
               }
             }
           }
 
-          if ( nb_par == 0 ) {
-            path_roots.insert( node );
+          if (nb_par == 0) {
+            path_roots.insert(node);
           }
         }
       }
@@ -183,32 +181,32 @@ namespace gum {
 
     // perform step 2/
     DAG sweep_dag = *__dag;
-    for ( const auto node : *__dag ) {  // keep only nodes marked with 1
-      if ( mark[node] != 1 ) {
-        sweep_dag.eraseNode( node );
+    for (const auto node : *__dag) {  // keep only nodes marked with 1
+      if (mark[node] != 1) {
+        sweep_dag.eraseNode(node);
       }
     }
-    for ( const auto node : sweep_dag ) {
-      const Size nb_parents = sweep_dag.parents( node ).size();
-      const Size nb_children = sweep_dag.children( node ).size();
-      if ( ( nb_parents > 1 ) || ( nb_children > 1 ) ) {
+    for (const auto node : sweep_dag) {
+      const Size nb_parents = sweep_dag.parents(node).size();
+      const Size nb_children = sweep_dag.children(node).size();
+      if ((nb_parents > 1) || (nb_children > 1)) {
         // perform the matching
-        const auto& parents = sweep_dag.parents( node );
+        const auto& parents = sweep_dag.parents(node);
 
         // if there is no child, remove all the parents except the first one
-        if ( nb_children == 0 ) {
+        if (nb_children == 0) {
           auto iter_par = parents.beginSafe();
-          for ( ++iter_par; iter_par != parents.endSafe(); ++iter_par ) {
-            sweep_dag.eraseArc( Arc( *iter_par, node ) );
+          for (++iter_par; iter_par != parents.endSafe(); ++iter_par) {
+            sweep_dag.eraseArc(Arc(*iter_par, node));
           }
         } else {
           // find the child with the smallest number of parents
-          const auto& children = sweep_dag.children( node );
+          const auto& children = sweep_dag.children(node);
           NodeId      smallest_child = 0;
-          Size        smallest_nb_par = std::numeric_limits<Size>::max();
-          for ( const auto child : children ) {
-            const auto new_nb = sweep_dag.parents( child ).size();
-            if ( new_nb < smallest_nb_par ) {
+          Size        smallest_nb_par = std::numeric_limits< Size >::max();
+          for (const auto child : children) {
+            const auto new_nb = sweep_dag.parents(child).size();
+            if (new_nb < smallest_nb_par) {
               smallest_nb_par = new_nb;
               smallest_child = child;
             }
@@ -216,39 +214,39 @@ namespace gum {
 
           // if there is no parent, just keep the link with the smallest child
           // and remove all the other arcs
-          if ( nb_parents == 0 ) {
-            for ( auto iter = children.beginSafe(); iter != children.endSafe();
-                  ++iter ) {
-              if ( *iter != smallest_child ) {
-                if ( sweep_dag.parents( *iter ).size() == 1 ) {
-                  path_roots.insert( *iter );
+          if (nb_parents == 0) {
+            for (auto iter = children.beginSafe(); iter != children.endSafe();
+                 ++iter) {
+              if (*iter != smallest_child) {
+                if (sweep_dag.parents(*iter).size() == 1) {
+                  path_roots.insert(*iter);
                 }
-                sweep_dag.eraseArc( Arc( node, *iter ) );
+                sweep_dag.eraseArc(Arc(node, *iter));
               }
             }
           } else {
-            const Size nb_match = Size( std::min( nb_parents, nb_children ) - 1 );
+            const Size nb_match = Size(std::min(nb_parents, nb_children) - 1);
             auto       iter_par = parents.beginSafe();
             ++iter_par;  // skip the first parent, whose arc with node will
                          // remain
             auto iter_child = children.beginSafe();
-            for ( Idx i = 0; i < nb_match; ++i, ++iter_par, ++iter_child ) {
-              if ( *iter_child == smallest_child ) {
+            for (Idx i = 0; i < nb_match; ++i, ++iter_par, ++iter_child) {
+              if (*iter_child == smallest_child) {
                 ++iter_child;
               }
-              sweep_dag.addArc( *iter_par, *iter_child );
-              sweep_dag.eraseArc( Arc( *iter_par, node ) );
-              sweep_dag.eraseArc( Arc( node, *iter_child ) );
+              sweep_dag.addArc(*iter_par, *iter_child);
+              sweep_dag.eraseArc(Arc(*iter_par, node));
+              sweep_dag.eraseArc(Arc(node, *iter_child));
             }
-            for ( ; iter_par != parents.endSafe(); ++iter_par ) {
-              sweep_dag.eraseArc( Arc( *iter_par, node ) );
+            for (; iter_par != parents.endSafe(); ++iter_par) {
+              sweep_dag.eraseArc(Arc(*iter_par, node));
             }
-            for ( ; iter_child != children.endSafe(); ++iter_child ) {
-              if ( *iter_child != smallest_child ) {
-                if ( sweep_dag.parents( *iter_child ).size() == 1 ) {
-                  path_roots.insert( *iter_child );
+            for (; iter_child != children.endSafe(); ++iter_child) {
+              if (*iter_child != smallest_child) {
+                if (sweep_dag.parents(*iter_child).size() == 1) {
+                  path_roots.insert(*iter_child);
                 }
-                sweep_dag.eraseArc( Arc( node, *iter_child ) );
+                sweep_dag.eraseArc(Arc(node, *iter_child));
               }
             }
           }
@@ -262,19 +260,19 @@ namespace gum {
     // to path. Hence, for a given path, all the nodes that are marked with a
     // number at least as high as N are non-barren, the others being barren.
     Idx mark_id = 2;
-    for ( NodeId path : path_roots ) {
+    for (NodeId path : path_roots) {
       // perform the sweeping from the path
-      while ( true ) {
+      while (true) {
         // mark all the ancestors of the node
-        List<NodeId> to_mark{path};
-        while ( !to_mark.empty() ) {
+        List< NodeId > to_mark{path};
+        while (!to_mark.empty()) {
           NodeId node = to_mark.front();
           to_mark.popFront();
-          if ( mark[node] < mark_id ) {
+          if (mark[node] < mark_id) {
             mark[node] = mark_id;
-            for ( const auto par : __dag->parents( node ) ) {
-              if ( mark[par] < mark_id ) {
-                to_mark.insert( par );
+            for (const auto par : __dag->parents(node)) {
+              if (mark[par] < mark_id) {
+                to_mark.insert(par);
               }
             }
           }
@@ -284,21 +282,20 @@ namespace gum {
         // this node acts as a query target and, therefore, its ancestors
         // shall be non-barren.
         const ArcSet& arcs = node2arc[path];
-        for ( const auto& arc : arcs ) {
+        for (const auto& arc : arcs) {
           NodeSet& barren = result[arc];
-          for ( auto iter = barren.beginSafe(); iter != barren.endSafe();
-                ++iter ) {
-            if ( mark[*iter] >= mark_id ) {
+          for (auto iter = barren.beginSafe(); iter != barren.endSafe(); ++iter) {
+            if (mark[*iter] >= mark_id) {
               // this indicates a non-barren node
-              barren.erase( iter );
+              barren.erase(iter);
             }
           }
         }
 
         // go to the next sweeping node
-        const NodeSet& sweep_children = sweep_dag.children( path );
-        if ( sweep_children.size() ) {
-          path = *( sweep_children.begin() );
+        const NodeSet& sweep_children = sweep_dag.children(path);
+        if (sweep_children.size()) {
+          path = *(sweep_children.begin());
         } else {
           // here, the path has ended, so we shall go to the next path
           ++mark_id;
@@ -313,31 +310,31 @@ namespace gum {
   /// returns the set of barren nodes
   NodeSet BarrenNodesFinder::barrenNodes() {
     // mark all the nodes in the dag as barren (true)
-    NodeProperty<bool> barren_mark = __dag->nodesProperty( true );
+    NodeProperty< bool > barren_mark = __dag->nodesProperty(true);
 
     // mark all the ancestors of the evidence and targets as non-barren
-    List<NodeId> nodes_to_examine;
-    int          nb_non_barren = 0;
-    for ( const auto node : *__observed_nodes )
-      nodes_to_examine.insert( node );
-    for ( const auto node : *__target_nodes )
-      nodes_to_examine.insert( node );
+    List< NodeId > nodes_to_examine;
+    int            nb_non_barren = 0;
+    for (const auto node : *__observed_nodes)
+      nodes_to_examine.insert(node);
+    for (const auto node : *__target_nodes)
+      nodes_to_examine.insert(node);
 
-    while ( !nodes_to_examine.empty() ) {
+    while (!nodes_to_examine.empty()) {
       const NodeId node = nodes_to_examine.front();
       nodes_to_examine.popFront();
-      if ( barren_mark[node] ) {
+      if (barren_mark[node]) {
         barren_mark[node] = false;
         ++nb_non_barren;
-        for ( const auto par : __dag->parents( node ) )
-          nodes_to_examine.insert( par );
+        for (const auto par : __dag->parents(node))
+          nodes_to_examine.insert(par);
       }
     }
 
     // here, all the nodes marked true are barren
-    NodeSet barren_nodes( __dag->sizeNodes() - nb_non_barren );
-    for ( const auto& marked_pair : barren_mark )
-      if ( marked_pair.second ) barren_nodes.insert( marked_pair.first );
+    NodeSet barren_nodes(__dag->sizeNodes() - nb_non_barren);
+    for (const auto& marked_pair : barren_mark)
+      if (marked_pair.second) barren_nodes.insert(marked_pair.first);
 
     return barren_nodes;
   }

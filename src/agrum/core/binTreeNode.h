@@ -92,7 +92,7 @@ namespace gum {
    * node2.eraseLink(gum::GUM_BIN_TREE_RIGHT_CHILD); // erase (node2;node5)
    * @endcode
    */
-  template <typename Val>
+  template < typename Val >
   class BinTreeNode {
     public:
     // ============================================================================
@@ -104,7 +104,7 @@ namespace gum {
      * @brief Basic constructor: a node without parent nor children.
      * @param v The value stored in the node.
      */
-    BinTreeNode( const Val& v );
+    BinTreeNode(const Val& v);
 
     /**
      * @brief copy constructor: creates a new disconnected node with the same
@@ -115,7 +115,7 @@ namespace gum {
      *
      * @param from The node to copy.
      */
-    BinTreeNode( const BinTreeNode<Val>& from );
+    BinTreeNode(const BinTreeNode< Val >& from);
 
     /**
      * @brief Class destructor.
@@ -140,7 +140,7 @@ namespace gum {
      * @param from The node to copy.
      * @return Returns this gum::BinTreeNode.
      */
-    BinTreeNode<Val>& operator=( const BinTreeNode<Val>& from );
+    BinTreeNode< Val >& operator=(const BinTreeNode< Val >& from);
 
     /**
      * @brief Alias for method value.
@@ -166,28 +166,28 @@ namespace gum {
      * @param dir The direction where we loog for a child.
      * @return Returns the child of a node.
      */
-    BinTreeNode<Val>* child( BinTreeDir dir ) const;
+    BinTreeNode< Val >* child(BinTreeDir dir) const;
 
     /**
      * @brief Returns the given child of a node.
      * @warning If the child does not exists, the method returns a 0 pointer.
      * @return Retuns the left child of this node.
      */
-    BinTreeNode<Val>* leftChild() const;
+    BinTreeNode< Val >* leftChild() const;
 
     /**
      * @brief Returns the given child of a node.
      * @warning If the child does not exists, the method returns a 0 pointer.
      * @return Retuns the right child of this node.
      */
-    BinTreeNode<Val>* rightChild() const;
+    BinTreeNode< Val >* rightChild() const;
 
     /**
      * @brief Returns the parent of a node.
      * @warning If the parent does not exists, the method returns a 0 pointer.
      * @return Returns the parent of this node.
      */
-    BinTreeNode<Val>* parent() const;
+    BinTreeNode< Val >* parent() const;
 
     /**
      * @brief Returns the direction of the edge parent->current node, if any.
@@ -203,7 +203,7 @@ namespace gum {
      * @return a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child
      */
-    BinTreeNode<Val>* insertLeftChild( const Val& val );
+    BinTreeNode< Val >* insertLeftChild(const Val& val);
 
     /**
      * @brief Adds a new left child to the current node.
@@ -211,7 +211,7 @@ namespace gum {
      * @throw DuplicateElement Raised if the current node had already a left
      * child or if new_child already has a parent.
      */
-    void insertLeftChild( BinTreeNode<Val>& new_child );
+    void insertLeftChild(BinTreeNode< Val >& new_child);
 
     /**
      * @brief Adds a new left child to the current node.
@@ -221,7 +221,7 @@ namespace gum {
      * @return a pointer on the new created child
      * @throw DuplicateElement if the current node had already a left child
      */
-    BinTreeNode<Val>* insertRightChild( const Val& val );
+    BinTreeNode< Val >* insertRightChild(const Val& val);
 
     /**
      * @brief Adds a new right child to the current node.
@@ -229,7 +229,7 @@ namespace gum {
      * @throw DuplicateElement Raised if the current node had already a right
      * child or if new_child already has a parent.
      */
-    void insertRightChild( BinTreeNode<Val>& new_child );
+    void insertRightChild(BinTreeNode< Val >& new_child);
 
     /**
      * @brief Adds a new child to the current node.
@@ -239,7 +239,7 @@ namespace gum {
      * @throw DuplicateElement Raised if the current node had already a child
      * in the child_dir subtree.
      */
-    BinTreeNode<Val>* insertChild( const Val& val, BinTreeDir child_dir );
+    BinTreeNode< Val >* insertChild(const Val& val, BinTreeDir child_dir);
 
     /**
      * @brief Adds a new child to the current node.
@@ -248,7 +248,7 @@ namespace gum {
      * @throw DuplicateElement Raised if the current node had already a child
      * in the child_dir direction or if new_child already has a parent .
      */
-    void insertChild( BinTreeNode<Val>& new_child, BinTreeDir child_dir );
+    void insertChild(BinTreeNode< Val >& new_child, BinTreeDir child_dir);
 
     /**
      * @brief Remove the link between the current node and its left child.
@@ -279,7 +279,7 @@ namespace gum {
      *
      * @param tree_dir The direction where to remove the link.
      */
-    void eraseLink( BinTreeDir tree_dir );
+    void eraseLink(BinTreeDir tree_dir);
 
     /**
      * @brief Returns the leftmost node of the current tree.
@@ -288,7 +288,7 @@ namespace gum {
      *
      * @return The left most node in the current tree.
      */
-    BinTreeNode<Val>* leftmostNode() const;
+    BinTreeNode< Val >* leftmostNode() const;
 
     /**
      * @brief Returns the rightmost node of the current tree.
@@ -297,7 +297,7 @@ namespace gum {
      *
      * @return The right most node in the current tree.
      */
-    BinTreeNode<Val>* rightmostNode() const;
+    BinTreeNode< Val >* rightmostNode() const;
 
     /**
      * @brief Returns the top ancestor of the current tree.
@@ -306,7 +306,7 @@ namespace gum {
      *
      * @return Returns the top ancestor of the current tree.
      */
-    BinTreeNode<Val>* root() const;
+    BinTreeNode< Val >* root() const;
 
     /// @}
 
@@ -315,19 +315,19 @@ namespace gum {
     Val _val;
 
     /// The parent of the node.
-    BinTreeNode<Val>* _parent;
+    BinTreeNode< Val >* _parent;
 
     /// the direction to follow from the parent to reach the current node.
     BinTreeDir _parent_dir;
 
     /// The children of the current node.
-    BinTreeNode<Val>* _children[2];
+    BinTreeNode< Val >* _children[2];
   };
 
 } /* namespace gum */
 
 
-extern template class gum::BinTreeNode<int>;
+extern template class gum::BinTreeNode< int >;
 
 
 // always include the implementation of the templates

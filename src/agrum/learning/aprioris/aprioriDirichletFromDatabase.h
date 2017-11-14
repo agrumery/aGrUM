@@ -41,10 +41,11 @@ namespace gum {
      * @brief A dirichlet priori: computes its N'_ijk from a database
      * @ingroup learning_group
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
-    class AprioriDirichletFromDatabase : public Apriori<IdSetAlloc, CountAlloc>,
-                                         private Counter<IdSetAlloc, CountAlloc> {
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
+    class AprioriDirichletFromDatabase
+      : public Apriori< IdSetAlloc, CountAlloc >,
+        private Counter< IdSetAlloc, CountAlloc > {
       public:
       using type = AprioriDirichletType;
 
@@ -54,12 +55,12 @@ namespace gum {
       /// @{
 
       /// default constructor
-      template <typename RowFilter>
-      AprioriDirichletFromDatabase( const RowFilter&         filter,
-                                    const std::vector<Size>& var_modalities );
+      template < typename RowFilter >
+      AprioriDirichletFromDatabase(const RowFilter&           filter,
+                                   const std::vector< Size >& var_modalities);
 
       /// virtual copy constructor
-      virtual AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>*
+      virtual AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >*
       copyFactory() const;
 
       /// destructor
@@ -76,7 +77,7 @@ namespace gum {
       virtual void compute() final;
 
       /// indicates whether an apriori is of a certain type
-      virtual bool isOfType( const std::string& type ) final;
+      virtual bool isOfType(const std::string& type) final;
 
       /// returns the type of the apriori
       virtual const std::string& getType() const noexcept final;
@@ -86,15 +87,15 @@ namespace gum {
       protected:
       /// copy constructor
       AprioriDirichletFromDatabase(
-          const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& from );
+        const AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >& from);
 
       /// move constructor
       AprioriDirichletFromDatabase(
-          AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>&& from );
+        AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >&& from);
 
       /// prevent copy operator
-      AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& operator=(
-          const AprioriDirichletFromDatabase<IdSetAlloc, CountAlloc>& ) = delete;
+      AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >& operator=(
+        const AprioriDirichletFromDatabase< IdSetAlloc, CountAlloc >&) = delete;
     };
 
   } /* namespace learning */

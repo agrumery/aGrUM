@@ -81,11 +81,11 @@ namespace gum {
    *density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods. \n
    * */
-  template <typename GUM_SCALAR,
-            template <typename> class ICPTGenerator = SimpleCPTGenerator,
-            template <typename> class ICPTDisturber = SimpleCPTDisturber>
+  template < typename GUM_SCALAR,
+             template < typename > class ICPTGenerator = SimpleCPTGenerator,
+             template < typename > class ICPTDisturber = SimpleCPTDisturber >
   class MaxParentsMCBayesNetGenerator
-      : public MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> {
+    : public MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber > {
 
     public:
     // ############################################################################
@@ -113,13 +113,13 @@ namespace gum {
     * "use
     * of p and q" )
     */
-    MaxParentsMCBayesNetGenerator( Size nbrNodes,
-                                   Size maxArcs,
-                                   Size maxModality = 2,
-                                   Size maxParents = 1,
-                                   Idx  iteration = 5000,
-                                   Idx  p = 30,
-                                   Idx  q = 40 );
+    MaxParentsMCBayesNetGenerator(Size nbrNodes,
+                                  Size maxArcs,
+                                  Size maxModality = 2,
+                                  Size maxParents = 1,
+                                  Idx  iteration = 5000,
+                                  Idx  p = 30,
+                                  Idx  q = 40);
 
     /**
     * Constructor.
@@ -140,11 +140,11 @@ namespace gum {
     * "use
     * of p and q" )
     */
-    MaxParentsMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet,
-                                   Size                 maxParents = 2,
-                                   Idx                  iteration = 5000,
-                                   Idx                  p = 30,
-                                   Idx                  q = 40 );
+    MaxParentsMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
+                                  Size                   maxParents = 2,
+                                  Idx                    iteration = 5000,
+                                  Idx                    p = 30,
+                                  Idx                    q = 40);
 
     /**
      * Destructor.
@@ -171,7 +171,7 @@ namespace gum {
     * Modifies the value of the number of maximum parents imposed on the
     * BayesNetGenerator
     */
-    void setMaxParents( Size maxParents );
+    void setMaxParents(Size maxParents);
     /// @}
 
     protected:
@@ -187,8 +187,8 @@ namespace gum {
   };
 
 
-  extern template class MaxParentsMCBayesNetGenerator<float>;
-  extern template class MaxParentsMCBayesNetGenerator<double>;
+  extern template class MaxParentsMCBayesNetGenerator< float >;
+  extern template class MaxParentsMCBayesNetGenerator< double >;
 
 } /*namespace gum*/
 

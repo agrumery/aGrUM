@@ -129,7 +129,7 @@ namespace gum {
 
     // creating BN fragment
     __samplingBN = new BayesNetFragment< GUM_SCALAR >(this->BN());
-    for (auto elmt : this->BN().dag().asNodeSet() - barren)
+    for (const auto elmt : this->BN().dag().asNodeSet() - barren)
       __samplingBN->installNode(elmt);
 
     // D-separated nodes
@@ -146,9 +146,9 @@ namespace gum {
 
     auto nonRequisite = this->BN().dag().asNodeSet() - requisite;
 
-    for (auto elmt : nonRequisite)
+    for (const auto elmt : nonRequisite)
       __samplingBN->uninstallNode(elmt);
-    for (auto hard : this->hardEvidenceNodes()) {
+    for (const auto hard : this->hardEvidenceNodes()) {
       gum::Instantiation I;
       I.add(this->BN().variable(hard));
       I.chgVal(this->BN().variable(hard), this->hardEvidence()[hard]);

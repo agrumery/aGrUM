@@ -46,8 +46,8 @@ namespace gum {
    * Every class used to read the content of a Bayesian Network from a stream,
    * or a file must be a subclass of UAIReader.
    */
-  template <typename GUM_SCALAR>
-  class UAIReader : public BNReader<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class UAIReader : public BNReader< GUM_SCALAR > {
 
     public:
     /**
@@ -59,7 +59,7 @@ namespace gum {
     * create/destroy
     * the BN from inside the reader.
      */
-    UAIReader( BayesNet<GUM_SCALAR>* bn, const std::string& filename );
+    UAIReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
 
     /**
      * Default destructor.
@@ -74,16 +74,16 @@ namespace gum {
     const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
-    bool trace( void ) const;
-    void trace( bool b );
+    bool trace(void) const;
+    void trace(bool b);
 
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed( void );
+    Size proceed(void);
 
     void
-    buildFromQuartets( std::vector<std::tuple<float, int, int, int>> quartets );
+    buildFromQuartets(std::vector< std::tuple< float, int, int, int > > quartets);
 
     /// @{
     /// publishing Errors API
@@ -94,32 +94,32 @@ namespace gum {
     Size warnings();
 
     /// line of ith error or warning
-    Idx errLine( Idx i );
+    Idx errLine(Idx i);
     /// col of ith error or warning
-    Idx errCol( Idx i );
+    Idx errCol(Idx i);
     /// type of ith error or warning
-    bool errIsError( Idx i );
+    bool errIsError(Idx i);
     /// message of ith error or warning
-    std::string errMsg( Idx i );
+    std::string errMsg(Idx i);
 
     /// send on std::cerr the list of errorswith contents
-    void showElegantErrors( std::ostream& o = std::cerr );
+    void showElegantErrors(std::ostream& o = std::cerr);
 
     /// send on std::cerr the list of errors or warnings with contents
-    void showElegantErrorsAndWarnings( std::ostream& o = std::cerr );
+    void showElegantErrorsAndWarnings(std::ostream& o = std::cerr);
 
     /// send on std::cerr the list of errors or warnings
-    void showErrorsAndWarnings( std::ostream& o = std::cerr );
+    void showErrorsAndWarnings(std::ostream& o = std::cerr);
 
     /// send on std::cerr the number of errors and the number of warnings
-    void showErrorCounts( std::ostream& o = std::cerr );
+    void showErrorCounts(std::ostream& o = std::cerr);
     /// @}
 
     protected:
-    BayesNet<GUM_SCALAR>*        __bn;
-    BayesNetFactory<GUM_SCALAR>* __factory;
-    UAI::Scanner*                __scanner;
-    UAI::Parser*                 __parser;
+    BayesNet< GUM_SCALAR >*        __bn;
+    BayesNetFactory< GUM_SCALAR >* __factory;
+    UAI::Scanner*                  __scanner;
+    UAI::Parser*                   __parser;
 
     std::string __streamName;
     bool        __traceScanning;
@@ -129,16 +129,16 @@ namespace gum {
     // proceed()
     bool __ioerror;
 
-    void __addFatalError( int                lig,
-                          int                col,
-                          const std::string& s );  // throw an exception
-    void __addError( int lig, int col, const std::string& s );
-    void __addWarning( int lig, int col, const std::string& s );
+    void __addFatalError(int                lig,
+                         int                col,
+                         const std::string& s);  // throw an exception
+    void __addError(int lig, int col, const std::string& s);
+    void __addWarning(int lig, int col, const std::string& s);
   };
 
 
-  extern template class UAIReader<float>;
-  extern template class UAIReader<double>;
+  extern template class UAIReader< float >;
+  extern template class UAIReader< double >;
 
 } /* namespace gum */
 

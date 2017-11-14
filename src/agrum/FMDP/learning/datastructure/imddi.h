@@ -50,8 +50,8 @@ namespace gum {
    *
    */
 
-  template <TESTNAME AttributeSelection, bool isScalar = false>
-  class IMDDI : public IncrementalGraphLearner<AttributeSelection, isScalar> {
+  template < TESTNAME AttributeSelection, bool isScalar = false >
+  class IMDDI : public IncrementalGraphLearner< AttributeSelection, isScalar > {
 
     public:
     // ###################################################################
@@ -62,19 +62,19 @@ namespace gum {
     // ==========================================================================
     /// Variable Learner constructor
     // ==========================================================================
-    IMDDI( MultiDimFunctionGraph<double>* target,
-           double                         attributeSelectionThreshold,
-           double                         pairSelectionThreshold,
-           Set<const DiscreteVariable*>   attributeListe,
-           const DiscreteVariable*        learnedValue );
+    IMDDI(MultiDimFunctionGraph< double >* target,
+          double                           attributeSelectionThreshold,
+          double                           pairSelectionThreshold,
+          Set< const DiscreteVariable* >   attributeListe,
+          const DiscreteVariable*          learnedValue);
 
     // ==========================================================================
     /// Reward Learner constructor
     // ==========================================================================
-    IMDDI( MultiDimFunctionGraph<double>* target,
-           double                         attributeSelectionThreshold,
-           double                         pairSelectionThreshold,
-           Set<const DiscreteVariable*>   attributeListe );
+    IMDDI(MultiDimFunctionGraph< double >* target,
+          double                           attributeSelectionThreshold,
+          double                           pairSelectionThreshold,
+          Set< const DiscreteVariable* >   attributeListe);
 
     // ==========================================================================
     /// Default destructor
@@ -91,11 +91,11 @@ namespace gum {
     // ==========================================================================
     /// Adds a new observation to the structure
     // ==========================================================================
-    void addObservation( const Observation* );
+    void addObservation(const Observation*);
 
     protected:
-    void _updateNodeWithObservation( const Observation* newObs,
-                                     NodeId             currentNodeId );
+    void _updateNodeWithObservation(const Observation* newObs,
+                                    NodeId             currentNodeId);
 
     public:
     // ==========================================================================
@@ -104,18 +104,17 @@ namespace gum {
     void updateGraph();
 
     protected:
-    NodeId _insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                            const DiscreteVariable*  boundVar,
-                            Set<const Observation*>* sonsMap );
+    NodeId _insertLeafNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                           const DiscreteVariable*    boundVar,
+                           Set< const Observation* >* sonsMap);
 
-    void _chgNodeBoundVar( NodeId                  chgedNodeId,
-                           const DiscreteVariable* desiredVar );
+    void _chgNodeBoundVar(NodeId chgedNodeId, const DiscreteVariable* desiredVar);
 
-    void _removeNode( NodeId removedNodeId );
+    void _removeNode(NodeId removedNodeId);
 
     private:
-    void __addLeaf( NodeId );
-    void __removeLeaf( NodeId );
+    void __addLeaf(NodeId);
+    void __removeLeaf(NodeId);
 
     /// @}
 
@@ -128,8 +127,8 @@ namespace gum {
     // ==========================================================================
     /// Computes the score of the given variables for the given node
     // ==========================================================================
-    void __updateScore( const DiscreteVariable*, NodeId, VariableSelector& vs );
-    void __downdateScore( const DiscreteVariable*, NodeId, VariableSelector& vs );
+    void __updateScore(const DiscreteVariable*, NodeId, VariableSelector& vs);
+    void __downdateScore(const DiscreteVariable*, NodeId, VariableSelector& vs);
 
     // ==========================================================================
     /// For each node in the given set, this methods checks whether or not
@@ -137,7 +136,7 @@ namespace gum {
     /// If so, the node is updated
     // ==========================================================================
     void
-    __updateNodeSet( Set<NodeId>&, const DiscreteVariable*, VariableSelector& );
+    __updateNodeSet(Set< NodeId >&, const DiscreteVariable*, VariableSelector&);
 
 
     public:
@@ -148,26 +147,26 @@ namespace gum {
 
     private:
     void   __rebuildFunctionGraph();
-    NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<true> );
-    NodeId __insertLeafInFunctionGraph( AbstractLeaf*, Int2Type<false> );
+    NodeId __insertLeafInFunctionGraph(AbstractLeaf*, Int2Type< true >);
+    NodeId __insertLeafInFunctionGraph(AbstractLeaf*, Int2Type< false >);
 
     /// @}
     ///
     public:
-    void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
-      for ( SequenceIteratorSafe<const DiscreteVariable*> varIter =
-                __varOrder.beginSafe();
-            varIter != __varOrder.endSafe();
-            ++varIter )
-        ret->add( **varIter );
+    void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
+      for (SequenceIteratorSafe< const DiscreteVariable* > varIter =
+             __varOrder.beginSafe();
+           varIter != __varOrder.endSafe();
+           ++varIter)
+        ret->add(**varIter);
     }
 
     private:
-    Sequence<const DiscreteVariable*> __varOrder;
+    Sequence< const DiscreteVariable* > __varOrder;
 
     LeafAggregator __lg;
 
-    HashTable<NodeId, AbstractLeaf*> __leafMap;
+    HashTable< NodeId, AbstractLeaf* > __leafMap;
 
     /// The total number of observation added to this tree
     Idx __nbTotalObservation;

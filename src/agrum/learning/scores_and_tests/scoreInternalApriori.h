@@ -61,8 +61,8 @@ namespace gum {
      * aprioris are taken into account during structure learning and parameter
      * learning.
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
     class ScoreInternalApriori {
       public:
       // ##########################################################################
@@ -74,7 +74,7 @@ namespace gum {
       ScoreInternalApriori();
 
       /// virtual copy constructor
-      virtual ScoreInternalApriori<IdSetAlloc, CountAlloc>*
+      virtual ScoreInternalApriori< IdSetAlloc, CountAlloc >*
       copyFactory() const = 0;
 
       /// destructor
@@ -89,12 +89,12 @@ namespace gum {
 
       /// insert the internal score apriori into a set of countings
       virtual void insertScoreApriori(
-          const std::vector<Size>& modalities,
-          std::vector<std::vector<double, CountAlloc>>& counts,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              target_nodesets,
-          const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-              conditioning_nodesets ) = 0;
+        const std::vector< Size >& modalities,
+        std::vector< std::vector< double, CountAlloc > >& counts,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          target_nodesets,
+        const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+          conditioning_nodesets) = 0;
 
       /// indicates whether the apriori is potentially informative
       /** Basically, only the NoApriori is uninformative. However, it may happen
@@ -112,10 +112,10 @@ namespace gum {
       protected:
       /// copy constructor
       ScoreInternalApriori(
-          const ScoreInternalApriori<IdSetAlloc, CountAlloc>& from );
+        const ScoreInternalApriori< IdSetAlloc, CountAlloc >& from);
 
       /// move constructor
-      ScoreInternalApriori( ScoreInternalApriori<IdSetAlloc, CountAlloc>&& from );
+      ScoreInternalApriori(ScoreInternalApriori< IdSetAlloc, CountAlloc >&& from);
     };
 
   } /* namespace learning */

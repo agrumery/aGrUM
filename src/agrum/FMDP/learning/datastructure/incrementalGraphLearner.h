@@ -59,10 +59,10 @@ namespace gum {
    * which is updated on demand and is usable by the outside.
    *
    */
-  template <TESTNAME AttributeSelection, bool isScalar = false>
+  template < TESTNAME AttributeSelection, bool isScalar = false >
   class IncrementalGraphLearner : public IVisitableGraphLearner {
 
-    typedef typename ValueSelect<isScalar, double, Idx>::type ValueType;
+    typedef typename ValueSelect< isScalar, double, Idx >::type ValueType;
 
     public:
     // ###################################################################
@@ -82,9 +82,9 @@ namespace gum {
      * (and is to be deprecated)
      */
     // ==========================================================================
-    IncrementalGraphLearner( MultiDimFunctionGraph<double>* target,
-                             Set<const DiscreteVariable*>   attributesSet,
-                             const DiscreteVariable*        learnVariable );
+    IncrementalGraphLearner(MultiDimFunctionGraph< double >* target,
+                            Set< const DiscreteVariable* >   attributesSet,
+                            const DiscreteVariable*          learnVariable);
 
     // ==========================================================================
     /// Default destructor
@@ -95,19 +95,19 @@ namespace gum {
     // ==========================================================================
     /// Template function dispatcher
     // ==========================================================================
-    void __clearValue() { __clearValue( Int2Type<isScalar>() ); }
+    void __clearValue() { __clearValue(Int2Type< isScalar >()); }
 
     // ==========================================================================
     /// In the case where we're learning a function of real values
     /// this has to be wiped out upon destruction (to be deprecated)
     // ==========================================================================
-    void __clearValue( Int2Type<true> ) { delete _value; }
+    void __clearValue(Int2Type< true >) { delete _value; }
 
     // ==========================================================================
     /// In case where we're learning function of variable behaviour,
     /// this should do nothing
     // ==========================================================================
-    void __clearValue( Int2Type<false> ) {}
+    void __clearValue(Int2Type< false >) {}
 
     /// @}
 
@@ -122,7 +122,7 @@ namespace gum {
      * Inserts a new observation
      */
     // ==========================================================================
-    virtual void addObservation( const Observation* obs );
+    virtual void addObservation(const Observation* obs);
 
     private:
     // ==========================================================================
@@ -130,15 +130,15 @@ namespace gum {
      * Get value assumed by studied variable for current observation
      */
     // ==========================================================================
-    void __assumeValue( const Observation* obs ) {
-      __assumeValue( obs, Int2Type<isScalar>() );
+    void __assumeValue(const Observation* obs) {
+      __assumeValue(obs, Int2Type< isScalar >());
     }
-    void __assumeValue( const Observation* obs, Int2Type<true> ) {
-      if ( !_valueAssumed.exists( obs->reward() ) ) _valueAssumed << obs->reward();
+    void __assumeValue(const Observation* obs, Int2Type< true >) {
+      if (!_valueAssumed.exists(obs->reward())) _valueAssumed << obs->reward();
     }
-    void __assumeValue( const Observation* obs, Int2Type<false> ) {
-      if ( !_valueAssumed.exists( obs->modality( _value ) ) )
-        _valueAssumed << obs->modality( _value );
+    void __assumeValue(const Observation* obs, Int2Type< false >) {
+      if (!_valueAssumed.exists(obs->modality(_value)))
+        _valueAssumed << obs->modality(_value);
     }
 
 
@@ -147,18 +147,18 @@ namespace gum {
      * Seek modality assumed in obs for given var
      */
     // ==========================================================================
-    Idx __branchObs( const Observation* obs, const DiscreteVariable* var ) {
-      return __branchObs( obs, var, Int2Type<isScalar>() );
+    Idx __branchObs(const Observation* obs, const DiscreteVariable* var) {
+      return __branchObs(obs, var, Int2Type< isScalar >());
     }
-    Idx __branchObs( const Observation*      obs,
-                     const DiscreteVariable* var,
-                     Int2Type<true> ) {
-      return obs->rModality( var );
+    Idx __branchObs(const Observation*      obs,
+                    const DiscreteVariable* var,
+                    Int2Type< true >) {
+      return obs->rModality(var);
     }
-    Idx __branchObs( const Observation*      obs,
-                     const DiscreteVariable* var,
-                     Int2Type<false> ) {
-      return obs->modality( var );
+    Idx __branchObs(const Observation*      obs,
+                    const DiscreteVariable* var,
+                    Int2Type< false >) {
+      return obs->modality(var);
     }
 
     protected:
@@ -170,9 +170,9 @@ namespace gum {
      * @param currentNodeId
      */
     // ==========================================================================
-    virtual void _updateNodeWithObservation( const Observation* newObs,
-                                             NodeId             currentNodeId ) {
-      _nodeId2Database[currentNodeId]->addObservation( newObs );
+    virtual void _updateNodeWithObservation(const Observation* newObs,
+                                            NodeId             currentNodeId) {
+      _nodeId2Database[currentNodeId]->addObservation(newObs);
     }
 
     /// @}
@@ -189,7 +189,7 @@ namespace gum {
     /// leaf.
     /// Graph has then indeed to be revised
     // ==========================================================================
-    virtual void updateVar( const DiscreteVariable* );
+    virtual void updateVar(const DiscreteVariable*);
 
     // ==========================================================================
     /// Updates the tree after a new observation has been added
@@ -207,18 +207,18 @@ namespace gum {
      * @param bestVars : the set of interessting vars to be installed here
      */
     // ==========================================================================
-    void _updateNode( NodeId nody, Set<const DiscreteVariable*>& bestVars );
+    void _updateNode(NodeId nody, Set< const DiscreteVariable* >& bestVars);
 
     // ==========================================================================
     /// Turns the given node into a leaf if not already so
     // ==========================================================================
-    virtual void _convertNode2Leaf( NodeId );
+    virtual void _convertNode2Leaf(NodeId);
 
     // ==========================================================================
     /// Installs given variable to the given node, ensuring that the variable
     /// is not present in its subtree
     // ==========================================================================
-    virtual void _transpose( NodeId, const DiscreteVariable* );
+    virtual void _transpose(NodeId, const DiscreteVariable*);
 
     // ==========================================================================
     /**
@@ -228,8 +228,8 @@ namespace gum {
      * @return the newly created node's id
      */
     // ==========================================================================
-    virtual NodeId _insertNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                                const DiscreteVariable* boundVar );
+    virtual NodeId _insertNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                               const DiscreteVariable* boundVar);
 
     // ==========================================================================
     /**
@@ -241,9 +241,9 @@ namespace gum {
      */
     // ==========================================================================
     virtual NodeId
-    _insertInternalNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                         const DiscreteVariable* boundVar,
-                         NodeId*                 sonsMap );
+    _insertInternalNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                        const DiscreteVariable* boundVar,
+                        NodeId*                 sonsMap);
 
     // ==========================================================================
     /**
@@ -255,9 +255,9 @@ namespace gum {
      */
     // ==========================================================================
     virtual NodeId
-    _insertLeafNode( NodeDatabase<AttributeSelection, isScalar>* nDB,
-                     const DiscreteVariable*  boundVar,
-                     Set<const Observation*>* obsSet );
+    _insertLeafNode(NodeDatabase< AttributeSelection, isScalar >* nDB,
+                    const DiscreteVariable*    boundVar,
+                    Set< const Observation* >* obsSet);
 
     // ==========================================================================
     /**
@@ -266,8 +266,8 @@ namespace gum {
      * @param desiredVar : its new associated variable
      */
     // ==========================================================================
-    virtual void _chgNodeBoundVar( NodeId                  chgedNodeId,
-                                   const DiscreteVariable* desiredVar );
+    virtual void _chgNodeBoundVar(NodeId                  chgedNodeId,
+                                  const DiscreteVariable* desiredVar);
 
     // ==========================================================================
     /**
@@ -275,7 +275,7 @@ namespace gum {
      * @param removedNodeId : the node to remove
      */
     // ==========================================================================
-    virtual void _removeNode( NodeId removedNodeId );
+    virtual void _removeNode(NodeId removedNodeId);
 
     /// @}
 
@@ -313,38 +313,38 @@ namespace gum {
     // ==========================================================================
     ///
     // ==========================================================================
-    bool isTerminal( NodeId ni ) const { return !this->_nodeSonsMap.exists( ni ); }
+    bool isTerminal(NodeId ni) const { return !this->_nodeSonsMap.exists(ni); }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    const DiscreteVariable* nodeVar( NodeId ni ) const {
+    const DiscreteVariable* nodeVar(NodeId ni) const {
       return this->_nodeVarMap[ni];
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    NodeId nodeSon( NodeId ni, Idx modality ) const {
+    NodeId nodeSon(NodeId ni, Idx modality) const {
       return this->_nodeSonsMap[ni][modality];
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    Idx nodeNbObservation( NodeId ni ) const {
+    Idx nodeNbObservation(NodeId ni) const {
       return this->_nodeId2Database[ni]->nbObservation();
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    virtual void insertSetOfVars( MultiDimFunctionGraph<double>* ret ) const {
-      for ( SetIteratorSafe<const DiscreteVariable*> varIter =
-                _setOfVars.beginSafe();
-            varIter != _setOfVars.endSafe();
-            ++varIter )
-        ret->add( **varIter );
+    virtual void insertSetOfVars(MultiDimFunctionGraph< double >* ret) const {
+      for (SetIteratorSafe< const DiscreteVariable* > varIter =
+             _setOfVars.beginSafe();
+           varIter != _setOfVars.endSafe();
+           ++varIter)
+        ret->add(**varIter);
     }
     /// @}
 
@@ -369,43 +369,43 @@ namespace gum {
     // ==========================================================================
     /// Gives for any node its associated variable
     // ==========================================================================
-    HashTable<NodeId, const DiscreteVariable*> _nodeVarMap;
+    HashTable< NodeId, const DiscreteVariable* > _nodeVarMap;
 
     // ==========================================================================
     /// A table giving for any node a table mapping to its son
     /// idx is the modality of associated variable
     // ==========================================================================
-    HashTable<NodeId, NodeId*> _nodeSonsMap;
+    HashTable< NodeId, NodeId* > _nodeSonsMap;
 
     // ==========================================================================
     /// Associates to any variable the list of all nodes associated to
     /// this variable
     // ==========================================================================
-    HashTable<const DiscreteVariable*, LinkedList<NodeId>*> _var2Node;
+    HashTable< const DiscreteVariable*, LinkedList< NodeId >* > _var2Node;
 
     // ==========================================================================
     /// This hashtable binds every node to an associated NodeDatabase
     /// which handles every observation that concerns that node
     // ==========================================================================
-    HashTable<NodeId, NodeDatabase<AttributeSelection, isScalar>*>
-        _nodeId2Database;
+    HashTable< NodeId, NodeDatabase< AttributeSelection, isScalar >* >
+      _nodeId2Database;
 
     // ==========================================================================
     /// This hashtable binds to every leaf an associated set of all
     /// hte observations compatible with it
     // ==========================================================================
-    HashTable<NodeId, Set<const Observation*>*> _leafDatabase;
+    HashTable< NodeId, Set< const Observation* >* > _leafDatabase;
 
     /// @}
 
 
     /// The final diagram we're building
-    MultiDimFunctionGraph<double>* _target;
+    MultiDimFunctionGraph< double >* _target;
 
-    Set<const DiscreteVariable*> _setOfVars;
+    Set< const DiscreteVariable* > _setOfVars;
 
     const DiscreteVariable* _value;
-    Sequence<ValueType>     _valueAssumed;
+    Sequence< ValueType >   _valueAssumed;
 
     bool _needUpdate;
   };

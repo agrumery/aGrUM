@@ -40,12 +40,12 @@ namespace gum {
   /*
    * Default constructor.
    */
-  AbstractSimulator::AbstractSimulator() { GUM_CONSTRUCTOR( AbstractSimulator ) }
+  AbstractSimulator::AbstractSimulator() { GUM_CONSTRUCTOR(AbstractSimulator) }
 
   /*
    * Default destructor.
    */
-  AbstractSimulator::~AbstractSimulator() { GUM_DESTRUCTOR( AbstractSimulator ) }
+  AbstractSimulator::~AbstractSimulator() { GUM_DESTRUCTOR(AbstractSimulator) }
 
 
   // ===========================================================================
@@ -54,7 +54,7 @@ namespace gum {
 
   void AbstractSimulator::setInitialStateRandomly() {
     bool hre = true;
-    while ( hre ) {
+    while (hre) {
       _currentState = _randomState();
       hre = hasReachEnd();
     }
@@ -62,12 +62,12 @@ namespace gum {
 
   Instantiation AbstractSimulator::_randomState() {
     Instantiation retState;
-    for ( auto varIter = this->beginVariables(); varIter != this->endVariables();
-          ++varIter ) {
-      retState.add( **varIter );
-      retState.chgVal( *varIter,
-                       ( Idx )( ( (double)std::rand() / (double)RAND_MAX ) *
-                                (double)( *varIter )->domainSize() ) );
+    for (auto varIter = this->beginVariables(); varIter != this->endVariables();
+         ++varIter) {
+      retState.add(**varIter);
+      retState.chgVal(*varIter,
+                      (Idx)(((double)std::rand() / (double)RAND_MAX) *
+                            (double)(*varIter)->domainSize()));
     }
     return retState;
   }
@@ -75,13 +75,12 @@ namespace gum {
   ///
   bool AbstractSimulator::hasReachEnd() {
 
-    if ( _endState.empty() ) return false;
+    if (_endState.empty()) return false;
 
-    for ( auto varIter = _endState.variablesSequence().beginSafe();
-          varIter != _endState.variablesSequence().endSafe();
-          ++varIter )
-      if ( _endState.val( **varIter ) != _currentState.val( **varIter ) )
-        return false;
+    for (auto varIter = _endState.variablesSequence().beginSafe();
+         varIter != _endState.variablesSequence().endSafe();
+         ++varIter)
+      if (_endState.val(**varIter) != _currentState.val(**varIter)) return false;
     return true;
   }
 

@@ -28,78 +28,81 @@
 
 namespace gum_tests {
   class OMPCounterTestSuite : public CxxTest::TestSuite {
-  public:
+    public:
     void testOMP() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-	       
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
-      
-      
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
+
+
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
 
-      auto filter = gum::learning::make_DB_row_filter( database, translators, generators );
+      auto filter =
+        gum::learning::make_DB_row_filter(database, translators, generators);
 
-      std::vector<gum::Size> modalities( 8, 2 );
+      std::vector< gum::Size > modalities(8, 2);
 
-      gum::learning::RecordCounter<> counter( filter, modalities );
+      gum::learning::RecordCounter<> counter(filter, modalities);
 
-      std::vector<gum::Idx> set1{ 0 };
-      std::vector<gum::Idx> set2{ 1 };
-      std::vector<gum::Idx> set3{ 1, 0 };
+      std::vector< gum::Idx > set1{0};
+      std::vector< gum::Idx > set2{1};
+      std::vector< gum::Idx > set3{1, 0};
 
-      counter.setMaxNbThreads( 1 );
+      counter.setMaxNbThreads(1);
       {
-        gum::Idx id1 = counter.addNodeSet( set1 );
-        gum::Idx id2 = counter.addNodeSet( set2 );
-        gum::Idx id3 = counter.addNodeSet( set3 );
+        gum::Idx id1 = counter.addNodeSet(set1);
+        gum::Idx id2 = counter.addNodeSet(set2);
+        gum::Idx id3 = counter.addNodeSet(set3);
 
         counter.count();
 
-        const std::vector<double>& vect1 = counter.getCounts( id1 );
-        const std::vector<double>& vect2 = counter.getCounts( id2 );
-        const std::vector<double>& vect3 = counter.getCounts( id3 );
+        const std::vector< double >& vect1 = counter.getCounts(id1);
+        const std::vector< double >& vect2 = counter.getCounts(id2);
+        const std::vector< double >& vect3 = counter.getCounts(id3);
 
-        TS_ASSERT( vect1[0] == 5028 );
-        TS_ASSERT( vect1[1] == 4972 );
-        TS_ASSERT( vect2[0] == 538 );
-        TS_ASSERT( vect2[1] == 9462 );
+        TS_ASSERT(vect1[0] == 5028);
+        TS_ASSERT(vect1[1] == 4972);
+        TS_ASSERT(vect2[0] == 538);
+        TS_ASSERT(vect2[1] == 9462);
 
-        TS_ASSERT( vect3[0] == 498 );
-        TS_ASSERT( vect3[1] == 4530 );
-        TS_ASSERT( vect3[2] == 40 );
-        TS_ASSERT( vect3[3] == 4932 );
+        TS_ASSERT(vect3[0] == 498);
+        TS_ASSERT(vect3[1] == 4530);
+        TS_ASSERT(vect3[2] == 40);
+        TS_ASSERT(vect3[3] == 4932);
       }
 
       counter.clearNodeSets();
 
-      counter.setMaxNbThreads( 2 );
+      counter.setMaxNbThreads(2);
       {
-        gum::Idx id1 = counter.addNodeSet( set1 );
-        gum::Idx id2 = counter.addNodeSet( set2 );
-        gum::Idx id3 = counter.addNodeSet( set3 );
+        gum::Idx id1 = counter.addNodeSet(set1);
+        gum::Idx id2 = counter.addNodeSet(set2);
+        gum::Idx id3 = counter.addNodeSet(set3);
 
         counter.count();
 
-        const std::vector<double>& vect1 = counter.getCounts( id1 );
-        const std::vector<double>& vect2 = counter.getCounts( id2 );
-        const std::vector<double>& vect3 = counter.getCounts( id3 );
+        const std::vector< double >& vect1 = counter.getCounts(id1);
+        const std::vector< double >& vect2 = counter.getCounts(id2);
+        const std::vector< double >& vect3 = counter.getCounts(id3);
 
-        TS_ASSERT( vect1[0] == 5028 );
-        TS_ASSERT( vect1[1] == 4972 );
-        TS_ASSERT( vect2[0] == 538 );
-        TS_ASSERT( vect2[1] == 9462 );
+        TS_ASSERT(vect1[0] == 5028);
+        TS_ASSERT(vect1[1] == 4972);
+        TS_ASSERT(vect2[0] == 538);
+        TS_ASSERT(vect2[1] == 9462);
 
-        TS_ASSERT( vect3[0] == 498 );
-        TS_ASSERT( vect3[1] == 4530 );
-        TS_ASSERT( vect3[2] == 40 );
-        TS_ASSERT( vect3[3] == 4932 );
+        TS_ASSERT(vect3[0] == 498);
+        TS_ASSERT(vect3[1] == 4530);
+        TS_ASSERT(vect3[2] == 40);
+        TS_ASSERT(vect3[3] == 4932);
       }
-    } // end testOMP()
+    }  // end testOMP()
 
-  }; // end class OMPCounterTestSuite
+  };  // end class OMPCounterTestSuite
 
 } /* namespace gum_tests */

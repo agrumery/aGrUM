@@ -48,11 +48,11 @@
 namespace gum {
   namespace prm {
 
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class GSpan;
 
     namespace gspan {
-      template <typename GUM_SCALAR>
+      template < typename GUM_SCALAR >
       class DFSTree;
 
       // clang_format off
@@ -65,7 +65,7 @@ namespace gum {
        * growths.
        */
       // clang_format on
-      template <typename GUM_SCALAR>
+      template < typename GUM_SCALAR >
       class SearchStrategy {
 
         public:
@@ -75,17 +75,17 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        SearchStrategy<GUM_SCALAR>();
+        SearchStrategy< GUM_SCALAR >();
 
         /// Copy constructor.
-        SearchStrategy<GUM_SCALAR>( const SearchStrategy<GUM_SCALAR>& from );
+        SearchStrategy< GUM_SCALAR >(const SearchStrategy< GUM_SCALAR >& from);
 
         /// Destructor.
-        virtual ~SearchStrategy<GUM_SCALAR>();
+        virtual ~SearchStrategy< GUM_SCALAR >();
 
         /// Copy operator.
-        SearchStrategy<GUM_SCALAR>&
-        operator=( const SearchStrategy<GUM_SCALAR>& from );
+        SearchStrategy< GUM_SCALAR >&
+        operator=(const SearchStrategy< GUM_SCALAR >& from);
 
         /// @}
         // =========================================================================
@@ -93,21 +93,21 @@ namespace gum {
         // ==========================================================================
         /// @{
 
-        void setTree( DFSTree<GUM_SCALAR>* tree );
+        void setTree(DFSTree< GUM_SCALAR >* tree);
 
-        virtual bool accept_root( const Pattern* r ) = 0;
+        virtual bool accept_root(const Pattern* r) = 0;
 
-        virtual bool accept_growth( const Pattern*                parent,
-                                    const Pattern*                child,
-                                    const EdgeGrowth<GUM_SCALAR>& growth ) = 0;
+        virtual bool accept_growth(const Pattern*                  parent,
+                                   const Pattern*                  child,
+                                   const EdgeGrowth< GUM_SCALAR >& growth) = 0;
 
-        virtual bool operator()( LabelData* i, LabelData* j ) = 0;
-        virtual bool operator()( Pattern* i, Pattern* j ) = 0;
+        virtual bool operator()(LabelData* i, LabelData* j) = 0;
+        virtual bool operator()(Pattern* i, Pattern* j) = 0;
         /// @}
 
         protected:
-        DFSTree<GUM_SCALAR>* _tree;
-        double _computeCost( const Pattern& p );
+        DFSTree< GUM_SCALAR >* _tree;
+        double _computeCost(const Pattern& p);
       };
 
       /**
@@ -118,8 +118,8 @@ namespace gum {
        * algorithm: it accept a growth if its frequency is above a user defined
        *value.
        */
-      template <typename GUM_SCALAR>
-      class FrequenceSearch : public SearchStrategy<GUM_SCALAR> {
+      template < typename GUM_SCALAR >
+      class FrequenceSearch : public SearchStrategy< GUM_SCALAR > {
 
         public:
         // =========================================================================
@@ -128,16 +128,16 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        FrequenceSearch( Size freq );
+        FrequenceSearch(Size freq);
 
         /// Copy constructor.
-        FrequenceSearch( const FrequenceSearch& from );
+        FrequenceSearch(const FrequenceSearch& from);
 
         /// Destructor.
         virtual ~FrequenceSearch();
 
         /// Copy operator.
-        FrequenceSearch& operator=( const FrequenceSearch& from );
+        FrequenceSearch& operator=(const FrequenceSearch& from);
 
         /// @}
         // =========================================================================
@@ -145,14 +145,14 @@ namespace gum {
         // ==========================================================================
         /// @{
 
-        virtual bool accept_root( const Pattern* r );
+        virtual bool accept_root(const Pattern* r);
 
-        virtual bool accept_growth( const Pattern*                parent,
-                                    const Pattern*                child,
-                                    const EdgeGrowth<GUM_SCALAR>& growth );
+        virtual bool accept_growth(const Pattern*                  parent,
+                                   const Pattern*                  child,
+                                   const EdgeGrowth< GUM_SCALAR >& growth);
 
-        virtual bool operator()( LabelData* i, LabelData* j );
-        virtual bool operator()( Pattern* i, Pattern* j );
+        virtual bool operator()(LabelData* i, LabelData* j);
+        virtual bool operator()(Pattern* i, Pattern* j);
         /// @}
 
         private:
@@ -168,8 +168,8 @@ namespace gum {
        *
        * A new growth is accepted if it is at least better than its predecessor.
        */
-      template <typename GUM_SCALAR>
-      class StrictSearch : public SearchStrategy<GUM_SCALAR> {
+      template < typename GUM_SCALAR >
+      class StrictSearch : public SearchStrategy< GUM_SCALAR > {
         public:
         // =========================================================================
         /// @name Constructor and destructor.
@@ -177,16 +177,16 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        StrictSearch( Size freq = 2 );
+        StrictSearch(Size freq = 2);
 
         /// Copy constructor.
-        StrictSearch( const StrictSearch& from );
+        StrictSearch(const StrictSearch& from);
 
         /// Destructor.
         virtual ~StrictSearch();
 
         /// Copy operator.
-        StrictSearch& operator=( const StrictSearch& from );
+        StrictSearch& operator=(const StrictSearch& from);
 
         /// @}
         // =========================================================================
@@ -194,56 +194,56 @@ namespace gum {
         // ==========================================================================
         /// @{
 
-        virtual bool accept_root( const Pattern* r );
+        virtual bool accept_root(const Pattern* r);
 
-        virtual bool accept_growth( const Pattern*                parent,
-                                    const Pattern*                child,
-                                    const EdgeGrowth<GUM_SCALAR>& growth );
+        virtual bool accept_growth(const Pattern*                  parent,
+                                   const Pattern*                  child,
+                                   const EdgeGrowth< GUM_SCALAR >& growth);
 
-        virtual bool operator()( LabelData* i, LabelData* j );
-        virtual bool operator()( Pattern* i, Pattern* j );
+        virtual bool operator()(LabelData* i, LabelData* j);
+        virtual bool operator()(Pattern* i, Pattern* j);
         /// @}
 
         private:
         Size   __freq;
-        double __inner_cost( const Pattern* p );
-        double __outer_cost( const Pattern* p );
-        void __compute_costs( const Pattern* p );
-        HashTable<const Pattern*, std::pair<double, double>> __map;
+        double __inner_cost(const Pattern* p);
+        double __outer_cost(const Pattern* p);
+        void __compute_costs(const Pattern* p);
+        HashTable< const Pattern*, std::pair< double, double > > __map;
         /// Private structure to represent data about a pattern.
         struct PData {
           /// A yet to be triangulated undigraph
           UndiGraph graph;
           /// The pattern's variables modalities
-          NodeProperty<Size> mod;
+          NodeProperty< Size > mod;
           /// A bijection to easily keep track  between graph and attributes,
           /// its of
           /// the
           /// form instance_name DOT attr_name
-          Bijection<NodeId, std::string> node2attr;
+          Bijection< NodeId, std::string > node2attr;
           /// Bijection between graph's nodes and their corresponding
           /// DiscreteVariable, for
           /// inference purpose
-          Bijection<NodeId, const DiscreteVariable*> vars;
+          Bijection< NodeId, const DiscreteVariable* > vars;
           /// Returns the set of inner nodes
           NodeSet inners;
           /// Returns the set of outputs nodes given all the matches of pattern
           NodeSet outputs;
         };
         std::string __dot;
-        std::string __str( const PRMInstance<GUM_SCALAR>*  i,
-                           const PRMAttribute<GUM_SCALAR>* a ) const;
-        std::string __str( const PRMInstance<GUM_SCALAR>*  i,
-                           const PRMAttribute<GUM_SCALAR>& a ) const;
-        std::string __str( const PRMInstance<GUM_SCALAR>*  i,
-                           const PRMSlotChain<GUM_SCALAR>& a ) const;
+        std::string __str(const PRMInstance< GUM_SCALAR >*  i,
+                          const PRMAttribute< GUM_SCALAR >* a) const;
+        std::string __str(const PRMInstance< GUM_SCALAR >*  i,
+                          const PRMAttribute< GUM_SCALAR >& a) const;
+        std::string __str(const PRMInstance< GUM_SCALAR >*  i,
+                          const PRMSlotChain< GUM_SCALAR >& a) const;
         void
-        __buildPatternGraph( typename StrictSearch<GUM_SCALAR>::PData& data,
-                             Set<Potential<GUM_SCALAR>*>&              pool,
-                             const Sequence<PRMInstance<GUM_SCALAR>*>& match );
-        std::pair<Size, Size>
-        __elimination_cost( typename StrictSearch<GUM_SCALAR>::PData& data,
-                            Set<Potential<GUM_SCALAR>*>&              pool );
+        __buildPatternGraph(typename StrictSearch< GUM_SCALAR >::PData&   data,
+                            Set< Potential< GUM_SCALAR >* >&              pool,
+                            const Sequence< PRMInstance< GUM_SCALAR >* >& match);
+        std::pair< Size, Size >
+        __elimination_cost(typename StrictSearch< GUM_SCALAR >::PData& data,
+                           Set< Potential< GUM_SCALAR >* >&            pool);
       };
 
       /**
@@ -254,8 +254,8 @@ namespace gum {
        *large
        * or equal than its father.
        */
-      template <typename GUM_SCALAR>
-      class TreeWidthSearch : public SearchStrategy<GUM_SCALAR> {
+      template < typename GUM_SCALAR >
+      class TreeWidthSearch : public SearchStrategy< GUM_SCALAR > {
         public:
         // =========================================================================
         /// @name Constructor and destructor.
@@ -266,13 +266,13 @@ namespace gum {
         TreeWidthSearch();
 
         /// Copy constructor.
-        TreeWidthSearch( const TreeWidthSearch& from );
+        TreeWidthSearch(const TreeWidthSearch& from);
 
         /// Destructor.
         virtual ~TreeWidthSearch();
 
         /// Copy operator.
-        TreeWidthSearch& operator=( const TreeWidthSearch& from );
+        TreeWidthSearch& operator=(const TreeWidthSearch& from);
 
         /// @}
         // =========================================================================
@@ -280,31 +280,31 @@ namespace gum {
         // ==========================================================================
         /// @{
 
-        double cost( const Pattern& p );
+        double cost(const Pattern& p);
 
-        virtual bool accept_root( const Pattern* r );
+        virtual bool accept_root(const Pattern* r);
 
-        virtual bool accept_growth( const Pattern*                parent,
-                                    const Pattern*                child,
-                                    const EdgeGrowth<GUM_SCALAR>& growth );
+        virtual bool accept_growth(const Pattern*                  parent,
+                                   const Pattern*                  child,
+                                   const EdgeGrowth< GUM_SCALAR >& growth);
 
-        virtual bool operator()( LabelData* i, LabelData* j );
-        virtual bool operator()( Pattern* i, Pattern* j );
+        virtual bool operator()(LabelData* i, LabelData* j);
+        virtual bool operator()(Pattern* i, Pattern* j);
         /// @}
 
         private:
-        HashTable<const Pattern*, double> __map;
+        HashTable< const Pattern*, double > __map;
       };
 
 
-      extern template class SearchStrategy<float>;
-      extern template class FrequenceSearch<float>;
-      extern template class StrictSearch<float>;
-      extern template class TreeWidthSearch<float>;
-      extern template class SearchStrategy<double>;
-      extern template class FrequenceSearch<double>;
-      extern template class StrictSearch<double>;
-      extern template class TreeWidthSearch<double>;
+      extern template class SearchStrategy< float >;
+      extern template class FrequenceSearch< float >;
+      extern template class StrictSearch< float >;
+      extern template class TreeWidthSearch< float >;
+      extern template class SearchStrategy< double >;
+      extern template class FrequenceSearch< double >;
+      extern template class StrictSearch< double >;
+      extern template class TreeWidthSearch< double >;
 
 
     } /* namespace gspan */

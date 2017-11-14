@@ -40,8 +40,8 @@ namespace gum {
    * @tparam GUM_SCALAR The type of scalars stored in the multidimensional
    * table.
    */
-  template <typename GUM_SCALAR>
-  class MultiDimReadOnly : public MultiDimImplementation<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class MultiDimReadOnly : public MultiDimImplementation< GUM_SCALAR > {
     public:
     // =========================================================================
     /// @name Constructors / Destructors
@@ -57,14 +57,14 @@ namespace gum {
      * @brief Copy constructor.
      * @param from The MultiDimReadOnly to copy.
      */
-    MultiDimReadOnly( const MultiDimReadOnly<GUM_SCALAR>& from );
+    MultiDimReadOnly(const MultiDimReadOnly< GUM_SCALAR >& from);
 
     /**
      * @brief Class destructor.
      */
     virtual ~MultiDimReadOnly();
 
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const = 0;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0;
 
     /// @}
     // =========================================================================
@@ -76,13 +76,13 @@ namespace gum {
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
+    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
 
     /**
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual void fill( const GUM_SCALAR& ) const;
+    virtual void fill(const GUM_SCALAR&) const;
 
     /// @}
 
@@ -91,7 +91,7 @@ namespace gum {
      * @warning An OperationNotAllowed will be raised because this is a read
      * only table.
      */
-    virtual GUM_SCALAR& _get( const Instantiation& i ) const;
+    virtual GUM_SCALAR& _get(const Instantiation& i) const;
   };
 } /* namespace gum */
 

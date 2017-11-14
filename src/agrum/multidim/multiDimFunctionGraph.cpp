@@ -33,8 +33,8 @@ namespace gum {
   // template class MultiDimFunctionGraph<double>;
 
   template <>
-  const float MultiDimFunctionGraph<float>::defaultValue = 0.0f;
+  const float MultiDimFunctionGraph< float >::defaultValue = 0.0f;
 
   template <>
-  const double MultiDimFunctionGraph<double>::defaultValue = 0.0;
+  const double MultiDimFunctionGraph< double >::defaultValue = 0.0;
 }  // namespace gum

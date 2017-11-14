@@ -31,32 +31,32 @@ namespace gum {
   // ==========================================================================
 
   // Helper function for debuging
-  void print_stack( std::stack<FormulaPart> s ) {
+  void print_stack(std::stack< FormulaPart > s) {
     std::cout << std::endl;
-    std::list<FormulaPart> l;
-    while ( !s.empty() ) {
-      l.push_front( s.top() );
+    std::list< FormulaPart > l;
+    while (!s.empty()) {
+      l.push_front(s.top());
       s.pop();
     }
 
     std::cout << "Stack: ";
-    for ( const auto& elt : l ) {
+    for (const auto& elt : l) {
       std::cout << elt.str() << " ";
     }
     std::cout << std::endl;
   }
 
   // Helper function for debuging
-  void print_output( std::vector<FormulaPart> v ) {
+  void print_output(std::vector< FormulaPart > v) {
     std::cout << "Output: ";
-    for ( const auto& elt : v ) {
+    for (const auto& elt : v) {
       std::cout << elt.str() << " ";
     }
     std::cout << std::endl;
   }
 
-  std::string func2str( FormulaPart::token_function func ) {
-    switch ( func ) {
+  std::string func2str(FormulaPart::token_function func) {
+    switch (func) {
       case FormulaPart::token_function::exp: {
         return "exp";
       }
@@ -75,62 +75,62 @@ namespace gum {
       case FormulaPart::token_function::nil: {
         return "nil";
       }
-      default: { GUM_ERROR( OperationNotAllowed, "unknown function" ); }
+      default: { GUM_ERROR(OperationNotAllowed, "unknown function"); }
     }
   }
 
   FormulaPart::FormulaPart()
-      : type( token_type::NIL )
-      , number( NAN )
-      , character( '\0' )
-      , function( nil ) {
-    GUM_CONSTRUCTOR( FormulaPart );
+      : type(token_type::NIL)
+      , number(NAN)
+      , character('\0')
+      , function(nil) {
+    GUM_CONSTRUCTOR(FormulaPart);
   }
 
-  FormulaPart::FormulaPart( token_type t, double n )
-      : type( t )
-      , number( n )
-      , character( '\0' )
-      , function( nil ) {
-    GUM_CONSTRUCTOR( FormulaPart );
+  FormulaPart::FormulaPart(token_type t, double n)
+      : type(t)
+      , number(n)
+      , character('\0')
+      , function(nil) {
+    GUM_CONSTRUCTOR(FormulaPart);
   }
 
-  FormulaPart::FormulaPart( token_type t, char c )
-      : type( t )
-      , number( NAN )
-      , character( c )
-      , function( nil ) {
-    GUM_CONSTRUCTOR( FormulaPart );
+  FormulaPart::FormulaPart(token_type t, char c)
+      : type(t)
+      , number(NAN)
+      , character(c)
+      , function(nil) {
+    GUM_CONSTRUCTOR(FormulaPart);
   }
 
-  FormulaPart::FormulaPart( token_type t, token_function func )
-      : type( t )
-      , number( NAN )
-      , character( '\0' )
-      , function( func ) {
-    GUM_CONSTRUCTOR( FormulaPart );
+  FormulaPart::FormulaPart(token_type t, token_function func)
+      : type(t)
+      , number(NAN)
+      , character('\0')
+      , function(func) {
+    GUM_CONSTRUCTOR(FormulaPart);
   }
 
-  FormulaPart::FormulaPart( const FormulaPart& source )
-      : type( source.type )
-      , number( source.number )
-      , character( source.character )
-      , function( source.function ) {
-    GUM_CONS_CPY( FormulaPart );
+  FormulaPart::FormulaPart(const FormulaPart& source)
+      : type(source.type)
+      , number(source.number)
+      , character(source.character)
+      , function(source.function) {
+    GUM_CONS_CPY(FormulaPart);
   }
 
-  FormulaPart::FormulaPart( FormulaPart&& source )
-      : type( std::move( source.type ) )
-      , number( std::move( source.number ) )
-      , character( std::move( source.character ) )
-      , function( std::move( source.function ) ) {
-    GUM_CONS_MOV( FormulaPart );
+  FormulaPart::FormulaPart(FormulaPart&& source)
+      : type(std::move(source.type))
+      , number(std::move(source.number))
+      , character(std::move(source.character))
+      , function(std::move(source.function)) {
+    GUM_CONS_MOV(FormulaPart);
   }
 
-  FormulaPart::~FormulaPart() { GUM_DESTRUCTOR( FormulaPart ); }
+  FormulaPart::~FormulaPart() { GUM_DESTRUCTOR(FormulaPart); }
 
-  FormulaPart& FormulaPart::operator=( const FormulaPart& source ) {
-    if ( this == &source ) {
+  FormulaPart& FormulaPart::operator=(const FormulaPart& source) {
+    if (this == &source) {
       return *this;
     }
 
@@ -142,22 +142,22 @@ namespace gum {
     return *this;
   }
 
-  FormulaPart& FormulaPart::operator=( FormulaPart&& source ) {
-    if ( this == &source ) {
+  FormulaPart& FormulaPart::operator=(FormulaPart&& source) {
+    if (this == &source) {
       return *this;
     }
 
-    type = std::move( source.type );
-    number = std::move( source.number );
-    character = std::move( source.character );
-    function = std::move( source.function );
+    type = std::move(source.type);
+    number = std::move(source.number);
+    character = std::move(source.character);
+    function = std::move(source.function);
 
     return *this;
   }
 
   std::string FormulaPart::str() const {
     std::ostringstream s;
-    switch ( type ) {
+    switch (type) {
       case token_type::NUMBER: {
         s << number;
         break;
@@ -165,7 +165,7 @@ namespace gum {
 
       case token_type::PARENTHESIS:
       case token_type::OPERATOR: {
-        if ( character == '\0' ) {
+        if (character == '\0') {
           s << "\\0";
         } else {
           s << character;
@@ -174,11 +174,11 @@ namespace gum {
       }
 
       case token_type::FUNCTION: {
-        s << func2str( function );
+        s << func2str(function);
         break;
       }
 
-      default: { GUM_ERROR( OperationNotAllowed, "unknown type" ); }
+      default: { GUM_ERROR(OperationNotAllowed, "unknown type"); }
     }
     return s.str();
   }
@@ -189,118 +189,118 @@ namespace gum {
 
   void Formula::__initialise() {
     auto c_str = (unsigned char*)__formula.c_str();
-    auto scanner = new gum::formula::Scanner( c_str, (int)__formula.size() );
-    __scanner = std::unique_ptr<gum::formula::Scanner>( scanner );
+    auto scanner = new gum::formula::Scanner(c_str, (int)__formula.size());
+    __scanner = std::unique_ptr< gum::formula::Scanner >(scanner);
 
-    auto parser = new gum::formula::Parser( scanner );
-    __parser = std::unique_ptr<gum::formula::Parser>( parser );
-    __parser->formula( this );
+    auto parser = new gum::formula::Parser(scanner);
+    __parser = std::unique_ptr< gum::formula::Parser >(parser);
+    __parser->formula(this);
   }
 
-  Formula::Formula( short s )
-      : __formula( std::to_string( s ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(short s)
+      : __formula(std::to_string(s))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( unsigned short us )
-      : __formula( std::to_string( us ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(unsigned short us)
+      : __formula(std::to_string(us))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( int i )
-      : __formula( std::to_string( i ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(int i)
+      : __formula(std::to_string(i))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( unsigned int ui )
-      : __formula( std::to_string( ui ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(unsigned int ui)
+      : __formula(std::to_string(ui))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( long l )
-      : __formula( std::to_string( l ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(long l)
+      : __formula(std::to_string(l))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( unsigned long ul )
-      : __formula( std::to_string( ul ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(unsigned long ul)
+      : __formula(std::to_string(ul))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( long long l )
-      : __formula( std::to_string( l ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(long long l)
+      : __formula(std::to_string(l))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( unsigned long long ul )
-      : __formula( std::to_string( ul ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(unsigned long long ul)
+      : __formula(std::to_string(ul))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( float f )
-      : __formula( std::to_string( f ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(float f)
+      : __formula(std::to_string(f))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( double d )
-      : __formula( std::to_string( d ) )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
+  Formula::Formula(double d)
+      : __formula(std::to_string(d))
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
     __initialise();
   }
 
-  Formula::Formula( const std::string& f )
-      : __formula( f )
-      , __last_token( FormulaPart() ) {
-    GUM_CONSTRUCTOR( Formula );
-
-    __initialise();
-  }
-
-  Formula::Formula( const Formula& source )
-      : __formula( source.__formula )
-      , __last_token( source.__last_token )
-      , __output( source.__output )
-      , __stack( source.__stack ) {
-    GUM_CONS_CPY( Formula );
+  Formula::Formula(const std::string& f)
+      : __formula(f)
+      , __last_token(FormulaPart()) {
+    GUM_CONSTRUCTOR(Formula);
 
     __initialise();
   }
 
-  Formula::Formula( Formula&& source )
-      : __formula( std::move( source.__formula ) )
-      , __scanner( std::move( source.__scanner ) )
-      , __parser( std::move( source.__parser ) )
-      , __last_token( std::move( source.__last_token ) )
-      , __output( std::move( source.__output ) )
-      , __stack( std::move( source.__stack ) ) {
-    GUM_CONS_CPY( Formula );
+  Formula::Formula(const Formula& source)
+      : __formula(source.__formula)
+      , __last_token(source.__last_token)
+      , __output(source.__output)
+      , __stack(source.__stack) {
+    GUM_CONS_CPY(Formula);
 
-    __parser->formula( this );
+    __initialise();
   }
 
-  Formula::~Formula() { GUM_DESTRUCTOR( Formula ); }
+  Formula::Formula(Formula&& source)
+      : __formula(std::move(source.__formula))
+      , __scanner(std::move(source.__scanner))
+      , __parser(std::move(source.__parser))
+      , __last_token(std::move(source.__last_token))
+      , __output(std::move(source.__output))
+      , __stack(std::move(source.__stack)) {
+    GUM_CONS_CPY(Formula);
 
-  Formula& Formula::operator=( const Formula& source ) {
-    if ( this == &source ) {
+    __parser->formula(this);
+  }
+
+  Formula::~Formula() { GUM_DESTRUCTOR(Formula); }
+
+  Formula& Formula::operator=(const Formula& source) {
+    if (this == &source) {
       return *this;
     }
 
@@ -314,18 +314,18 @@ namespace gum {
     return *this;
   }
 
-  Formula& Formula::operator=( Formula&& source ) {
-    if ( this == &source ) {
+  Formula& Formula::operator=(Formula&& source) {
+    if (this == &source) {
       return *this;
     }
 
-    __formula = std::move( source.__formula );
-    __scanner = std::move( source.__scanner );
-    __parser = std::move( source.__parser );
-    __parser->formula( this );
-    __last_token = std::move( source.__last_token );
-    __output = std::move( source.__output );
-    __stack = std::move( source.__stack );
+    __formula = std::move(source.__formula);
+    __scanner = std::move(source.__scanner);
+    __parser = std::move(source.__parser);
+    __parser->formula(this);
+    __last_token = std::move(source.__last_token);
+    __output = std::move(source.__output);
+    __stack = std::move(source.__stack);
 
     return *this;
   }
@@ -334,40 +334,40 @@ namespace gum {
 
     __parser->Parse();
 
-    std::stack<FormulaPart> stack;
-    if ( __output.empty() ) {
-      GUM_ERROR( OperationNotAllowed, "no output found" );
+    std::stack< FormulaPart > stack;
+    if (__output.empty()) {
+      GUM_ERROR(OperationNotAllowed, "no output found");
     }
 
-    for ( auto item : __output ) {
+    for (auto item : __output) {
 
 
-      switch ( item.type ) {
+      switch (item.type) {
         case FormulaPart::token_type::NUMBER: {
-          stack.push( item );
+          stack.push(item);
           break;
         }
 
         case FormulaPart::token_type::OPERATOR:
         case FormulaPart::token_type::FUNCTION: {
-          __reduceOperatorOrFunction( item, stack );
+          __reduceOperatorOrFunction(item, stack);
           break;
         }
 
         default: {
-          GUM_ERROR( OperationNotAllowed,
-                     "expecting numbers, operators or functions" );
+          GUM_ERROR(OperationNotAllowed,
+                    "expecting numbers, operators or functions");
         }
       }
     }
 
-    if ( stack.size() != 1 ) {
+    if (stack.size() != 1) {
 
-      GUM_ERROR( OperationNotAllowed, "too many inputs" );
+      GUM_ERROR(OperationNotAllowed, "too many inputs");
 
-    } else if ( stack.top().type != FormulaPart::token_type::NUMBER ) {
+    } else if (stack.top().type != FormulaPart::token_type::NUMBER) {
 
-      GUM_ERROR( OperationNotAllowed, "too many inputs" );
+      GUM_ERROR(OperationNotAllowed, "too many inputs");
     }
     return stack.top().number;
   }

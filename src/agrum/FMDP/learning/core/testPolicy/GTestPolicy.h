@@ -46,8 +46,8 @@ namespace gum {
    *
    * @ingroup fmdp_group
    */
-  template <typename GUM_SCALAR>
-  class GTestPolicy : public ITestPolicy<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class GTestPolicy : public ITestPolicy< GUM_SCALAR > {
 
     public:
     // ############################################################################
@@ -59,26 +59,26 @@ namespace gum {
     /// Constructor
     // ============================================================================
     GTestPolicy()
-        : ITestPolicy<GUM_SCALAR>()
+        : ITestPolicy< GUM_SCALAR >()
         , __conTab()
-        , __GStat( 0 ) {
-      GUM_CONSTRUCTOR( GTestPolicy )
+        , __GStat(0) {
+      GUM_CONSTRUCTOR(GTestPolicy)
     }
 
     // ============================================================================
     /// Destructor
     // ============================================================================
-    virtual ~GTestPolicy() { GUM_DESTRUCTOR( GTestPolicy ) }
+    virtual ~GTestPolicy() { GUM_DESTRUCTOR(GTestPolicy) }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
 
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( GTestPolicy ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(GTestPolicy));
     }
 
     /// @}
@@ -91,7 +91,7 @@ namespace gum {
     // ============================================================================
     /// Comptabilizes the new observation
     // ============================================================================
-    void addObservation( Idx iattr, GUM_SCALAR ivalue );
+    void addObservation(Idx iattr, GUM_SCALAR ivalue);
 
     /// @}
 
@@ -106,8 +106,8 @@ namespace gum {
     /// relevant
     // ============================================================================
     bool isTestRelevant() const {
-      return ( this->nbObservation() > 20 &&
-               this->nbObservation() > __conTab.attrASize() * 5 );
+      return (this->nbObservation() > 20 &&
+              this->nbObservation() > __conTab.attrASize() * 5);
     }
 
     // ============================================================================
@@ -137,13 +137,13 @@ namespace gum {
     // ============================================================================
     /// Performs the merging of current GTestPolicy instance with given instance
     // ============================================================================
-    void add( const GTestPolicy<GUM_SCALAR>& src );
+    void add(const GTestPolicy< GUM_SCALAR >& src);
 
     // ============================================================================
     /// Returns contingency table (needed for the merging of GTestPolicy
     /// instances)
     // ============================================================================
-    const ContingencyTable<Idx, GUM_SCALAR>& ct() const { return __conTab; }
+    const ContingencyTable< Idx, GUM_SCALAR >& ct() const { return __conTab; }
 
 
     /// @}
@@ -156,7 +156,7 @@ namespace gum {
 
     std::string toString() const {
       std::stringstream ss;
-      ss << ITestPolicy<GUM_SCALAR>::toString()
+      ss << ITestPolicy< GUM_SCALAR >::toString()
          << "\t\t\tContingency Table : " << std::endl
          << __conTab.toString() << std::endl
          << "\t\t\tGStat : " << __GStat << std::endl
@@ -168,7 +168,7 @@ namespace gum {
 
     private:
     /// The contingency table used to keeps records of all observation
-    ContingencyTable<Idx, GUM_SCALAR> __conTab;
+    ContingencyTable< Idx, GUM_SCALAR > __conTab;
     mutable double __GStat;
   };
 

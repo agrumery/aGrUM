@@ -43,8 +43,8 @@ namespace gum {
    * @tparam GUM_SCALAR The type of scalars stored in this multidimensional
    * table.
    */
-  template <typename GUM_SCALAR>
-  class UtilityTable : public MultiDimDecorator<GUM_SCALAR> {
+  template < typename GUM_SCALAR >
+  class UtilityTable : public MultiDimDecorator< GUM_SCALAR > {
     public:
     /**
      * @brief Default constructor.
@@ -57,7 +57,7 @@ namespace gum {
      * @brief Constructor.
      * @param aContent The implementation of this utility table.
      */
-    UtilityTable( MultiDimImplementation<GUM_SCALAR>* aContent );
+    UtilityTable(MultiDimImplementation< GUM_SCALAR >* aContent);
 
     /**
      * @brief Class destructor.
@@ -69,7 +69,7 @@ namespace gum {
      *
      * @param toCopy The UtilityTable to copy.
      */
-    UtilityTable( const UtilityTable<GUM_SCALAR>& toCopy );
+    UtilityTable(const UtilityTable< GUM_SCALAR >& toCopy);
 
     /**
      * @brief Copy operator.
@@ -77,17 +77,18 @@ namespace gum {
      * @param toCopy The UtilityTable to copy.
      * @return This UtilityTable.
      */
-    UtilityTable<GUM_SCALAR>& operator=( const UtilityTable<GUM_SCALAR>& toCopy );
+    UtilityTable< GUM_SCALAR >&
+    operator=(const UtilityTable< GUM_SCALAR >& toCopy);
 
-    virtual UtilityTable<GUM_SCALAR>* newFactory() const;
+    virtual UtilityTable< GUM_SCALAR >* newFactory() const;
 
     protected:
-    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
 
-  extern template class UtilityTable<float>;
-  extern template class UtilityTable<double>;
+  extern template class UtilityTable< float >;
+  extern template class UtilityTable< double >;
 
 
 } /* namespace gum */

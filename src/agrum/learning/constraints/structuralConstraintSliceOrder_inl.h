@@ -42,66 +42,62 @@ namespace gum {
 
     /// sets a new graph from which we will perform checkings
     INLINE void
-    StructuralConstraintSliceOrder::setGraphAlone( const DiGraph& graph ) {}
+    StructuralConstraintSliceOrder::setGraphAlone(const DiGraph& graph) {}
 
     /// checks whether the constraints enable to add arc (x,y)
     INLINE bool
-    StructuralConstraintSliceOrder::checkArcAdditionAlone( NodeId x,
-                                                           NodeId y ) const {
+    StructuralConstraintSliceOrder::checkArcAdditionAlone(NodeId x,
+                                                          NodeId y) const {
       try {
         return _SliceOrder__order[x] <= _SliceOrder__order[y];
-      } catch ( const Exception& ) {
+      } catch (const Exception&) {
         return true;
       }
     }
 
     /// checks whether the constraints enable to remove arc (x,y)
     INLINE bool
-    StructuralConstraintSliceOrder::checkArcDeletionAlone( NodeId x,
-                                                           NodeId y ) const {
+    StructuralConstraintSliceOrder::checkArcDeletionAlone(NodeId x,
+                                                          NodeId y) const {
       return true;
     }
 
     /// checks whether the constraints enable to reverse arc (x,y)
     INLINE bool
-    StructuralConstraintSliceOrder::checkArcReversalAlone( NodeId x,
-                                                           NodeId y ) const {
+    StructuralConstraintSliceOrder::checkArcReversalAlone(NodeId x,
+                                                          NodeId y) const {
       try {
         return _SliceOrder__order[x] == _SliceOrder__order[y];
-      } catch ( const Exception& ) {
+      } catch (const Exception&) {
         return true;
       }
     }
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintSliceOrder::modifyGraphAlone( const ArcAddition& change ) {
-    }
+    StructuralConstraintSliceOrder::modifyGraphAlone(const ArcAddition& change) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintSliceOrder::modifyGraphAlone( const ArcDeletion& change ) {
-    }
+    StructuralConstraintSliceOrder::modifyGraphAlone(const ArcDeletion& change) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintSliceOrder::modifyGraphAlone( const ArcReversal& change ) {
-    }
+    StructuralConstraintSliceOrder::modifyGraphAlone(const ArcReversal& change) {}
 
     /// notify the constraint of a modification of the graph
     INLINE void
-    StructuralConstraintSliceOrder::modifyGraphAlone( const GraphChange& change ) {
-    }
+    StructuralConstraintSliceOrder::modifyGraphAlone(const GraphChange& change) {}
 
     /// indicates whether a change will always violate the constraint
     INLINE bool StructuralConstraintSliceOrder::isAlwaysInvalidAlone(
-        const GraphChange& change ) const {
-      switch ( change.type() ) {
+      const GraphChange& change) const {
+      switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
           try {
-            return ( _SliceOrder__order[change.node1()] >
-                     _SliceOrder__order[change.node2()] );
-          } catch ( const Exception& ) {
+            return (_SliceOrder__order[change.node1()] >
+                    _SliceOrder__order[change.node2()]);
+          } catch (const Exception&) {
             return false;
           }
 
@@ -110,78 +106,78 @@ namespace gum {
 
         case GraphChangeType::ARC_REVERSAL:
           try {
-            return ( _SliceOrder__order[change.node1()] !=
-                     _SliceOrder__order[change.node2()] );
-          } catch ( const Exception& ) {
+            return (_SliceOrder__order[change.node1()] !=
+                    _SliceOrder__order[change.node2()]);
+          } catch (const Exception&) {
             return false;
           }
 
         default:
-          GUM_ERROR( OperationNotAllowed,
-                     "edge modifications are not "
-                     "supported by SliceOrder constraints" );
+          GUM_ERROR(OperationNotAllowed,
+                    "edge modifications are not "
+                    "supported by SliceOrder constraints");
       }
     }
 
     /// checks whether the constraints enable to add an arc
     INLINE bool StructuralConstraintSliceOrder::checkModificationAlone(
-        const ArcAddition& change ) const {
-      return checkArcAdditionAlone( change.node1(), change.node2() );
+      const ArcAddition& change) const {
+      return checkArcAdditionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to remove an arc
     INLINE bool StructuralConstraintSliceOrder::checkModificationAlone(
-        const ArcDeletion& change ) const {
-      return checkArcDeletionAlone( change.node1(), change.node2() );
+      const ArcDeletion& change) const {
+      return checkArcDeletionAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to reverse an arc
     INLINE bool StructuralConstraintSliceOrder::checkModificationAlone(
-        const ArcReversal& change ) const {
-      return checkArcReversalAlone( change.node1(), change.node2() );
+      const ArcReversal& change) const {
+      return checkArcReversalAlone(change.node1(), change.node2());
     }
 
     /// checks whether the constraints enable to perform a graph change
     INLINE bool StructuralConstraintSliceOrder::checkModificationAlone(
-        const GraphChange& change ) const {
-      switch ( change.type() ) {
+      const GraphChange& change) const {
+      switch (change.type()) {
         case GraphChangeType::ARC_ADDITION:
-          return checkArcAdditionAlone( change.node1(), change.node2() );
+          return checkArcAdditionAlone(change.node1(), change.node2());
 
         case GraphChangeType::ARC_DELETION:
-          return checkArcDeletionAlone( change.node1(), change.node2() );
+          return checkArcDeletionAlone(change.node1(), change.node2());
 
         case GraphChangeType::ARC_REVERSAL:
-          return checkArcReversalAlone( change.node1(), change.node2() );
+          return checkArcReversalAlone(change.node1(), change.node2());
 
         default:
-          GUM_ERROR( OperationNotAllowed,
-                     "edge modifications are not "
-                     "supported by StructuralConstraintSliceOrder" );
+          GUM_ERROR(OperationNotAllowed,
+                    "edge modifications are not "
+                    "supported by StructuralConstraintSliceOrder");
       }
     }
 
     /// sets the time slices of all the nodes in the property
     INLINE void StructuralConstraintSliceOrder::setSliceOrder(
-        const NodeProperty<NodeId>& order ) {
+      const NodeProperty< NodeId >& order) {
       _SliceOrder__order = order;
     }
 
     /// sets the default time slice
-    INLINE void StructuralConstraintSliceOrder::setDefaultSlice( NodeId slice ) {
-      for ( auto& node : _SliceOrder__order ) {
+    INLINE void StructuralConstraintSliceOrder::setDefaultSlice(NodeId slice) {
+      for (auto& node : _SliceOrder__order) {
         node.second = slice;
       }
     }
 
     /// adds a new node in the slice order
-    INLINE void StructuralConstraintSliceOrder::addNode( NodeId node,
-                                                         NodeId slice ) {
-      _SliceOrder__order.set( node, slice );
+    INLINE void StructuralConstraintSliceOrder::addNode(NodeId node,
+                                                        NodeId slice) {
+      _SliceOrder__order.set(node, slice);
     }
 
     /// returns the current slice order
-    INLINE const NodeProperty<NodeId>&
+    INLINE const NodeProperty< NodeId >&
                  StructuralConstraintSliceOrder::sliceOrder() const {
       return _SliceOrder__order;
     }

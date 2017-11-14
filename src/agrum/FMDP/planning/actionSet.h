@@ -51,7 +51,7 @@ namespace gum {
    *
    * Returns the set that has the maximal value between its two arguments sets
    */
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   struct ArgumentMaximisesAction {
 
     // ###########################################################################
@@ -59,13 +59,12 @@ namespace gum {
     // ###########################################################################
     /// @{
 
-    const GUM_SCALAR& operator()( const GUM_SCALAR& x,
-                                  const GUM_SCALAR& y ) const {
+    const GUM_SCALAR& operator()(const GUM_SCALAR& x, const GUM_SCALAR& y) const {
 
-      if ( x > y ) {
+      if (x > y) {
         return x;
       }
-      if ( x < y ) {
+      if (x < y) {
         return y;
       }
 
@@ -100,21 +99,21 @@ namespace gum {
     /// Constructor
     // ============================================================================
     ActionSet() {
-      GUM_CONSTRUCTOR( ActionSet )
-      __actionSeq = new Sequence<Idx>();
+      GUM_CONSTRUCTOR(ActionSet)
+      __actionSeq = new Sequence< Idx >();
     }
 
-    ActionSet( const ActionSet& src ) {
-      GUM_CONSTRUCTOR( ActionSet )
-      __actionSeq = new Sequence<Idx>();
-      for ( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
-        __actionSeq->insert( *idi );
+    ActionSet(const ActionSet& src) {
+      GUM_CONSTRUCTOR(ActionSet)
+      __actionSeq = new Sequence< Idx >();
+      for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)
+        __actionSeq->insert(*idi);
     }
 
-    ActionSet& operator=( const ActionSet& src ) {
-      __actionSeq = new Sequence<Idx>();
-      for ( auto idi = src.beginSafe(); idi != src.endSafe(); ++idi )
-        __actionSeq->insert( *idi );
+    ActionSet& operator=(const ActionSet& src) {
+      __actionSeq = new Sequence< Idx >();
+      for (auto idi = src.beginSafe(); idi != src.endSafe(); ++idi)
+        __actionSeq->insert(*idi);
       return *this;
     }
 
@@ -122,18 +121,18 @@ namespace gum {
     /// Destructor
     // ============================================================================
     ~ActionSet() {
-      GUM_DESTRUCTOR( ActionSet )
+      GUM_DESTRUCTOR(ActionSet)
       delete __actionSeq;
     }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( ActionSet ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(ActionSet));
     }
 
     /// @}
@@ -146,14 +145,14 @@ namespace gum {
     // ============================================================================
     /// Iterator beginning
     // ============================================================================
-    SequenceIteratorSafe<Idx> beginSafe() const {
+    SequenceIteratorSafe< Idx > beginSafe() const {
       return __actionSeq->beginSafe();
     }
 
     // ============================================================================
     /// Iterator end
     // ============================================================================
-    SequenceIteratorSafe<Idx> endSafe() const { return __actionSeq->endSafe(); }
+    SequenceIteratorSafe< Idx > endSafe() const { return __actionSeq->endSafe(); }
 
     /// @}
 
@@ -165,46 +164,46 @@ namespace gum {
     // ============================================================================
     /// Ajout d'un élément
     // ============================================================================
-    ActionSet& operator+=( const Idx& elem ) {
-      __actionSeq->insert( elem );
+    ActionSet& operator+=(const Idx& elem) {
+      __actionSeq->insert(elem);
       return *this;
     }
 
     // ============================================================================
     /// Use to insert the content of another set inside this one
     // ============================================================================
-    ActionSet& operator+=( const ActionSet& src ) {
-      for ( auto iter = src.beginSafe(); iter != src.endSafe(); ++iter )
-        if ( !__actionSeq->exists( *iter ) ) __actionSeq->insert( *iter );
+    ActionSet& operator+=(const ActionSet& src) {
+      for (auto iter = src.beginSafe(); iter != src.endSafe(); ++iter)
+        if (!__actionSeq->exists(*iter)) __actionSeq->insert(*iter);
       return *this;
     }
 
     // ============================================================================
     /// Use to insert the content of another set inside this one
     // ============================================================================
-    ActionSet& operator-=( const ActionSet& src ) {
-      for ( auto iter = src.beginSafe(); iter != src.endSafe(); ++iter )
-        if ( __actionSeq->exists( *iter ) ) __actionSeq->erase( *iter );
+    ActionSet& operator-=(const ActionSet& src) {
+      for (auto iter = src.beginSafe(); iter != src.endSafe(); ++iter)
+        if (__actionSeq->exists(*iter)) __actionSeq->erase(*iter);
       return *this;
     }
 
     // ============================================================================
     /// Gives the ith element
     // ============================================================================
-    const Idx& operator[]( const Idx i ) const { return __actionSeq->atPos( i ); }
+    const Idx& operator[](const Idx i) const { return __actionSeq->atPos(i); }
 
     // ============================================================================
     /// Compares two ActionSet to check if they are equals
     // ============================================================================
-    bool operator==( const ActionSet& compared ) const {
-      for ( auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter )
-        if ( !__actionSeq->exists( *iter ) ) return false;
-      for ( auto iter = this->beginSafe(); iter != this->endSafe(); ++iter )
-        if ( !compared.exists( *iter ) ) return false;
+    bool operator==(const ActionSet& compared) const {
+      for (auto iter = compared.beginSafe(); iter != compared.endSafe(); ++iter)
+        if (!__actionSeq->exists(*iter)) return false;
+      for (auto iter = this->beginSafe(); iter != this->endSafe(); ++iter)
+        if (!compared.exists(*iter)) return false;
       return true;
     }
-    bool operator!=( const ActionSet& compared ) const {
-      return !( *this == compared );
+    bool operator!=(const ActionSet& compared) const {
+      return !(*this == compared);
     }
 
     /// @}
@@ -214,14 +213,13 @@ namespace gum {
     // ============================================================================
     Size size() const { return __actionSeq->size(); }
 
-    bool exists( const Idx& elem ) const { return __actionSeq->exists( elem ); }
+    bool exists(const Idx& elem) const { return __actionSeq->exists(elem); }
 
     private:
     /// The very bone of the ActionSet
-    Sequence<Idx>* __actionSeq;
+    Sequence< Idx >* __actionSeq;
 
-    friend std::ostream& operator<<( std::ostream&    streamy,
-                                     const ActionSet& objy ) {
+    friend std::ostream& operator<<(std::ostream& streamy, const ActionSet& objy) {
       streamy << objy.__actionSeq->toString();
       return streamy;
     }

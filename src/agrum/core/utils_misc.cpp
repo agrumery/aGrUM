@@ -28,18 +28,17 @@
 
 namespace gum {
 
-  bool
-  Memcmp( const void* const _in, const void* const _out, unsigned long size ) {
+  bool Memcmp(const void* const _in, const void* const _out, unsigned long size) {
     unsigned char* in = (unsigned char*)_in;
     unsigned char* out = (unsigned char*)_out;
 
-    for ( unsigned long i = 0; i < size; ++i )
-      if ( *( in++ ) != *( out++ ) ) return false;
+    for (unsigned long i = 0; i < size; ++i)
+      if (*(in++) != *(out++)) return false;
 
     return true;
   }
 
-  void __atexit( void ) {
+  void __atexit(void) {
 #ifndef NDEBUG
     gum::__debug__::__atexit();
 #endif

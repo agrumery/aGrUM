@@ -43,78 +43,77 @@ namespace gum_tests {
 
     void run() {
 
-      gum::FMDP<float>          fmdp( true );
-      gum::FMDPDatReader<float> reader( &fmdp, file );
+      gum::FMDP< float >          fmdp(true);
+      gum::FMDPDatReader< float > reader(&fmdp, file);
 
-      reader.trace( false );
+      reader.trace(false);
       int nbrErr = 0;
-      TS_GUM_ASSERT_THROWS_NOTHING( nbrErr = reader.proceed() );
+      TS_GUM_ASSERT_THROWS_NOTHING(nbrErr = reader.proceed());
 
-      TS_ASSERT( nbrErr == 0 );
-      TS_ASSERT_EQUALS( reader.warnings(), (gum::Size)0 );
-      TS_ASSERT_EQUALS( reader.errors(), (gum::Size)0 );
+      TS_ASSERT(nbrErr == 0);
+      TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)0);
+      TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
       reader.showElegantErrorsAndWarnings();
 
 
       std::ofstream __traceAlgoSaveFile;
-      __traceAlgoSaveFile.open( GET_RESSOURCES_PATH( "FMDP/FMDPDatRead.dot" ),
-                                std::ios::out | std::ios::trunc );
-      if ( !__traceAlgoSaveFile ) return;
-      TS_GUM_ASSERT_THROWS_NOTHING( __traceAlgoSaveFile << fmdp.toString() );
+      __traceAlgoSaveFile.open(GET_RESSOURCES_PATH("FMDP/FMDPDatRead.dot"),
+                               std::ios::out | std::ios::trunc);
+      if (!__traceAlgoSaveFile) return;
+      TS_GUM_ASSERT_THROWS_NOTHING(__traceAlgoSaveFile << fmdp.toString());
       __traceAlgoSaveFile.close();
 
-      int deletedFile =
-          std::remove( GET_RESSOURCES_PATH( "FMDP/FMDPDatRead.dot" ) );
-      if ( deletedFile != 0 )
+      int deletedFile = std::remove(GET_RESSOURCES_PATH("FMDP/FMDPDatRead.dot"));
+      if (deletedFile != 0)
         std::cout << "Couldn't delete output file." << std::endl;
 
 
       // Only way to ensure diagrams are read correctly
-      for ( gum::SequenceIteratorSafe<gum::Idx> actIter = fmdp.beginActions();
-            actIter != fmdp.endActions();
-            ++actIter )
-        for ( gum::SequenceIteratorSafe<const gum::DiscreteVariable*> varIter =
-                  fmdp.beginVariables();
-              varIter != fmdp.endVariables();
-              ++varIter ) {
-          gum::MultiDimFunctionGraph<float>* hey =
-              new gum::MultiDimFunctionGraph<float>(
-                  *static_cast<const gum::MultiDimFunctionGraph<float>*>(
-                      fmdp.transition( *actIter, *varIter ) ) );
+      for (gum::SequenceIteratorSafe< gum::Idx > actIter = fmdp.beginActions();
+           actIter != fmdp.endActions();
+           ++actIter)
+        for (gum::SequenceIteratorSafe< const gum::DiscreteVariable* > varIter =
+               fmdp.beginVariables();
+             varIter != fmdp.endVariables();
+             ++varIter) {
+          gum::MultiDimFunctionGraph< float >* hey =
+            new gum::MultiDimFunctionGraph< float >(
+              *static_cast< const gum::MultiDimFunctionGraph< float >* >(
+                fmdp.transition(*actIter, *varIter)));
           delete hey;
         }
     }
 
     public:
     void testConstuctor() {
-      std::string file = GET_RESSOURCES_PATH( "" );
+      std::string file = GET_RESSOURCES_PATH("");
 
-      gum::FMDP<float>           fmdp( true );
-      gum::FMDPDatReader<float>* reader;
+      gum::FMDP< float >           fmdp(true);
+      gum::FMDPDatReader< float >* reader;
 
-      TS_GUM_ASSERT_THROWS_NOTHING(
-          reader = new gum::FMDPDatReader<float>( &fmdp, file ) );
+      TS_GUM_ASSERT_THROWS_NOTHING(reader =
+                                     new gum::FMDPDatReader< float >(&fmdp, file));
 
-      TS_GUM_ASSERT_THROWS_NOTHING( delete reader );
+      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
     }
 
     void testReadFileCoffeeRobot() {
-      file = GET_RESSOURCES_PATH( "FMDP/coffee/coffee.dat" );
+      file = GET_RESSOURCES_PATH("FMDP/coffee/coffee.dat");
       run();
     }
 
     void testReadFileTinyFactory() {
-      file = GET_RESSOURCES_PATH( "FMDP/factory/tiny-factory.dat" );
+      file = GET_RESSOURCES_PATH("FMDP/factory/tiny-factory.dat");
       run();
     }
 
     void testReadFileFactory() {
-      file = GET_RESSOURCES_PATH( "FMDP/factory/factory.dat" );
+      file = GET_RESSOURCES_PATH("FMDP/factory/factory.dat");
       run();
     }
 
     void testReadFileTaxi() {
-      file = GET_RESSOURCES_PATH( "FMDP/taxi/taxi.dat" );
+      file = GET_RESSOURCES_PATH("FMDP/taxi/taxi.dat");
       run();
     }
   };

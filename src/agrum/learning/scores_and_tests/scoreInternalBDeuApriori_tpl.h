@@ -29,101 +29,100 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE
-    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori() {
-      GUM_CONSTRUCTOR( ScoreInternalBDeuApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE ScoreInternalBDeuApriori< IdSetAlloc,
+                                     CountAlloc >::ScoreInternalBDeuApriori() {
+      GUM_CONSTRUCTOR(ScoreInternalBDeuApriori);
     }
 
     /// copy constructor
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori(
-        const ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>& from )
-        : ScoreInternalApriori<IdSetAlloc, CountAlloc>( from )
-        , __ess( from.__ess ) {
-      GUM_CONS_CPY( ScoreInternalBDeuApriori );
+    ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::ScoreInternalBDeuApriori(
+      const ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >& from)
+        : ScoreInternalApriori< IdSetAlloc, CountAlloc >(from)
+        , __ess(from.__ess) {
+      GUM_CONS_CPY(ScoreInternalBDeuApriori);
     }
 
     /// move constructor
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE
-    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::ScoreInternalBDeuApriori(
-        ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>&& from )
-        : ScoreInternalApriori<IdSetAlloc, CountAlloc>( std::move( from ) )
-        , __ess( std::move( from.__ess ) ) {
-      GUM_CONS_MOV( ScoreInternalBDeuApriori );
+    ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::ScoreInternalBDeuApriori(
+      ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >&& from)
+        : ScoreInternalApriori< IdSetAlloc, CountAlloc >(std::move(from))
+        , __ess(std::move(from.__ess)) {
+      GUM_CONS_MOV(ScoreInternalBDeuApriori);
     }
 
     /// virtual copy constructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>*
-           ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::copyFactory() const {
-      return new ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>( *this );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >*
+           ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::copyFactory() const {
+      return new ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >(*this);
     }
 
     /// destructor
-    template <typename IdSetAlloc, typename CountAlloc>
-    INLINE ScoreInternalBDeuApriori<IdSetAlloc,
-                                    CountAlloc>::~ScoreInternalBDeuApriori() {
-      GUM_DESTRUCTOR( ScoreInternalBDeuApriori );
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE ScoreInternalBDeuApriori< IdSetAlloc,
+                                     CountAlloc >::~ScoreInternalBDeuApriori() {
+      GUM_DESTRUCTOR(ScoreInternalBDeuApriori);
     }
 
     /// sets the effective sample size of the internal apriori
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::setEffectiveSampleSize(
-        double ess ) {
-      if ( ess < 0 ) {
-        GUM_ERROR( OutOfBounds,
-                   "The effective sample size of the BDeu's "
-                   "internal apriori shall be positive" );
+    ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::setEffectiveSampleSize(
+      double ess) {
+      if (ess < 0) {
+        GUM_ERROR(OutOfBounds,
+                  "The effective sample size of the BDeu's "
+                  "internal apriori shall be positive");
       } else {
         __ess = ess;
       }
     }
 
     /// insert the internal score apriori into a set of countings
-    template <typename IdSetAlloc, typename CountAlloc>
+    template < typename IdSetAlloc, typename CountAlloc >
     INLINE void
-    ScoreInternalBDeuApriori<IdSetAlloc, CountAlloc>::insertScoreApriori(
-        const std::vector<Size>& modalities,
-        std::vector<std::vector<double, CountAlloc>>& counts,
-        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-            target_nodesets,
-        const std::vector<std::pair<std::vector<Idx, IdSetAlloc>, Idx>*>&
-            conditioning_nodesets ) {
-      if ( __ess == 0 ) return;
+    ScoreInternalBDeuApriori< IdSetAlloc, CountAlloc >::insertScoreApriori(
+      const std::vector< Size >& modalities,
+      std::vector< std::vector< double, CountAlloc > >& counts,
+      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+        target_nodesets,
+      const std::vector< std::pair< std::vector< Idx, IdSetAlloc >, Idx >* >&
+        conditioning_nodesets) {
+      if (__ess == 0) return;
 
-      const Size size = Size( target_nodesets.size() );
-      for ( Idx i = 0; i < size; ++i ) {
-        if ( target_nodesets[i] != nullptr ) {
+      const Size size = Size(target_nodesets.size());
+      for (Idx i = 0; i < size; ++i) {
+        if (target_nodesets[i] != nullptr) {
           // compute the r_i's and q_i's
-          const double r_i =
-              double( modalities[target_nodesets[i]->first.back()] );
-          double q_i = 1;
-          if ( conditioning_nodesets[i] != nullptr ) {
-            const std::vector<Idx, IdSetAlloc>& cond =
-                conditioning_nodesets[i]->first;
-            for ( auto parent : cond ) {
+          const double r_i = double(modalities[target_nodesets[i]->first.back()]);
+          double       q_i = 1;
+          if (conditioning_nodesets[i] != nullptr) {
+            const std::vector< Idx, IdSetAlloc >& cond =
+              conditioning_nodesets[i]->first;
+            for (auto parent : cond) {
               q_i *= modalities[parent];
             }
           }
 
           // put ess / (r_i * q_i)  into the countings for the targets
-          const double target_weight = __ess / ( r_i * q_i );
-          std::vector<double, CountAlloc>& countings =
-              counts[target_nodesets[i]->second];
-          for ( auto& count : countings ) {
+          const double target_weight = __ess / (r_i * q_i);
+          std::vector< double, CountAlloc >& countings =
+            counts[target_nodesets[i]->second];
+          for (auto& count : countings) {
             count += target_weight;
           }
 
           // put ess / q_i into the countings for the conditioning nodes
-          if ( conditioning_nodesets[i] != nullptr ) {
+          if (conditioning_nodesets[i] != nullptr) {
             const double cond_weight = __ess / q_i;
-            std::vector<double, CountAlloc>& countings =
-                counts[conditioning_nodesets[i]->second];
-            for ( auto& count : countings ) {
+            std::vector< double, CountAlloc >& countings =
+              counts[conditioning_nodesets[i]->second];
+            for (auto& count : countings) {
               count += cond_weight;
             }
           }

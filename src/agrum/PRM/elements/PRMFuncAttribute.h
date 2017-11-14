@@ -48,8 +48,8 @@ namespace gum {
      *
      * See gum::prm::PRMFactory::addAttribute(PRMAttribute*) for more details.
      */
-    template <typename GUM_SCALAR>
-    class PRMFuncAttribute : public PRMScalarAttribute<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class PRMFuncAttribute : public PRMScalarAttribute< GUM_SCALAR > {
       public:
       /**
        * @brief Constructor used by gum::Class.
@@ -64,33 +64,33 @@ namespace gum {
        *of this PRMFuncAttribute.
        *             it will be deleted after the call of ~PRMFuncAttribute.
        */
-      PRMFuncAttribute( const std::string&                  name,
-                        const PRMType<GUM_SCALAR>&          type,
-                        MultiDimImplementation<GUM_SCALAR>* impl =
-                            new MultiDimArray<GUM_SCALAR>() );
+      PRMFuncAttribute(const std::string&                    name,
+                       const PRMType< GUM_SCALAR >&          type,
+                       MultiDimImplementation< GUM_SCALAR >* impl =
+                         new MultiDimArray< GUM_SCALAR >());
 
       /// Destructor.
       virtual ~PRMFuncAttribute();
 
       /// See gum::PRMClassElement::_addParent().
-      virtual void addParent( const PRMClassElement<GUM_SCALAR>& elt );
+      virtual void addParent(const PRMClassElement< GUM_SCALAR >& elt);
 
       /// See gum::PRMClassElement::_addChild().
-      virtual void addChild( const PRMClassElement<GUM_SCALAR>& elt );
+      virtual void addChild(const PRMClassElement< GUM_SCALAR >& elt);
 
       protected:
       /// Copy constructor. Don't use it.
-      PRMFuncAttribute( const PRMFuncAttribute& source );
+      PRMFuncAttribute(const PRMFuncAttribute& source);
 
       /// Copy operator. Don't use it.
-      PRMFuncAttribute& operator=( const PRMFuncAttribute& from );
+      PRMFuncAttribute& operator=(const PRMFuncAttribute& from);
 
-      virtual void _setCpf( Potential<GUM_SCALAR>* cpf );
+      virtual void _setCpf(Potential< GUM_SCALAR >* cpf);
     };
 
 
-    extern template class PRMFuncAttribute<float>;
-    extern template class PRMFuncAttribute<double>;
+    extern template class PRMFuncAttribute< float >;
+    extern template class PRMFuncAttribute< double >;
 
 
   } /* namespace prm */

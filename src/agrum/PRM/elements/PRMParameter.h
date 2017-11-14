@@ -39,8 +39,8 @@ namespace gum {
      * @see PRM PRMFactory Class PRMClassElement
      * @ingroup prm_group
      */
-    template <typename GUM_SCALAR>
-    class PRMParameter : public PRMClassElement<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class PRMParameter : public PRMClassElement< GUM_SCALAR > {
       public:
       enum ParameterType { INT, REAL };
 
@@ -56,9 +56,7 @@ namespace gum {
        * @param type
        * @param value
        */
-      PRMParameter( const std::string& name,
-                    ParameterType      type,
-                    GUM_SCALAR         value );
+      PRMParameter(const std::string& name, ParameterType type, GUM_SCALAR value);
 
       /// Destructor.
       virtual ~PRMParameter();
@@ -70,44 +68,44 @@ namespace gum {
       /// @{
 
       /// See gum::PRMClassElement::elt_type().
-      virtual typename PRMClassElement<GUM_SCALAR>::ClassElementType
+      virtual typename PRMClassElement< GUM_SCALAR >::ClassElementType
       elt_type() const;
 
       GUM_SCALAR value() const;
 
-      void value( GUM_SCALAR value );
+      void value(GUM_SCALAR value);
 
       ParameterType valueType() const;
 
       /// See gum::PRMClassElement::type().
-      virtual PRMType<GUM_SCALAR>& type();
+      virtual PRMType< GUM_SCALAR >& type();
 
       /// See gum::PRMClassElement::type().
-      virtual const PRMType<GUM_SCALAR>& type() const;
+      virtual const PRMType< GUM_SCALAR >& type() const;
 
       /// See gum::PRMClassElement::cpf().
-      virtual Potential<GUM_SCALAR>& cpf();
+      virtual Potential< GUM_SCALAR >& cpf();
 
       /// See gum::PRMClassElement::cpf().
-      virtual const Potential<GUM_SCALAR>& cpf() const;
+      virtual const Potential< GUM_SCALAR >& cpf() const;
 
       /// See gum::PRMClassElement::addParent().
-      void addParent( const gum::prm::PRMClassElement<GUM_SCALAR>& );
+      void addParent(const gum::prm::PRMClassElement< GUM_SCALAR >&);
 
       /// See gum::PRMClassElement::addChild().
-      void addChild( const gum::prm::PRMClassElement<GUM_SCALAR>& );
+      void addChild(const gum::prm::PRMClassElement< GUM_SCALAR >&);
 
       /// @brief Raise a gum::OperationNotAllowed
       /// See gum::PRMClassElement::getCastDescendant()
-      virtual PRMAttribute<GUM_SCALAR>* getCastDescendant() const;
+      virtual PRMAttribute< GUM_SCALAR >* getCastDescendant() const;
 
       /// @}
       protected:
       /// Copy constructor. Don't use it.
-      PRMParameter( const PRMParameter<GUM_SCALAR>& source );
+      PRMParameter(const PRMParameter< GUM_SCALAR >& source);
 
       /// Copy operator. Don't use it.
-      PRMParameter& operator=( const PRMParameter<GUM_SCALAR>& from );
+      PRMParameter& operator=(const PRMParameter< GUM_SCALAR >& from);
 
       private:
       // ========================================================================
@@ -123,8 +121,8 @@ namespace gum {
     };
 
 
-    extern template class PRMParameter<float>;
-    extern template class PRMParameter<double>;
+    extern template class PRMParameter< float >;
+    extern template class PRMParameter< double >;
 
 
   } /* namespace prm */

@@ -31,11 +31,11 @@ namespace gum {
    * A reader is created to reading a defined file.
    * Note that an ID as to be created before and given in parameter.
    */
-  template <typename GUM_SCALAR>
-  INLINE BIFXMLIDReader<GUM_SCALAR>::BIFXMLIDReader(
-      InfluenceDiagram<GUM_SCALAR>* infdiag, const std::string& filePath )
-      : IDReader<GUM_SCALAR>( infdiag, filePath ) {
-    GUM_CONSTRUCTOR( BIFXMLIDReader );
+  template < typename GUM_SCALAR >
+  INLINE BIFXMLIDReader< GUM_SCALAR >::BIFXMLIDReader(
+    InfluenceDiagram< GUM_SCALAR >* infdiag, const std::string& filePath)
+      : IDReader< GUM_SCALAR >(infdiag, filePath) {
+    GUM_CONSTRUCTOR(BIFXMLIDReader);
     __infdiag = infdiag;
     __filePath = filePath;
   }
@@ -43,9 +43,9 @@ namespace gum {
   /*
    * Default destructor.
    */
-  template <typename GUM_SCALAR>
-  INLINE BIFXMLIDReader<GUM_SCALAR>::~BIFXMLIDReader() {
-    GUM_DESTRUCTOR( BIFXMLIDReader );
+  template < typename GUM_SCALAR >
+  INLINE BIFXMLIDReader< GUM_SCALAR >::~BIFXMLIDReader() {
+    GUM_DESTRUCTOR(BIFXMLIDReader);
   }
 
   /*
@@ -54,182 +54,179 @@ namespace gum {
    * creation of class
    * @return Returns the number of error during the parsing (0 if none).
    */
-  template <typename GUM_SCALAR>
-  void BIFXMLIDReader<GUM_SCALAR>::proceed() {
+  template < typename GUM_SCALAR >
+  void BIFXMLIDReader< GUM_SCALAR >::proceed() {
     try {
       // Loading file
       std::string status = "Loading File ...";
-      GUM_EMIT2( onProceed, 0, status );
+      GUM_EMIT2(onProceed, 0, status);
 
-      ticpp::Document xmlDoc( __filePath );
+      ticpp::Document xmlDoc(__filePath);
       xmlDoc.LoadFile();
 
-      if ( xmlDoc.NoChildren() ) {
-        GUM_ERROR( IOError,
-                   ": Loading fail, please check the file for any syntax error." );
+      if (xmlDoc.NoChildren()) {
+        GUM_ERROR(IOError,
+                  ": Loading fail, please check the file for any syntax error.");
       }
 
       // Finding BIF element
       status = "File loaded. Now looking for BIF element ...";
-      GUM_EMIT2( onProceed, 4, status );
+      GUM_EMIT2(onProceed, 4, status);
 
-      ticpp::Element* bifElement = xmlDoc.FirstChildElement( "BIF" );
+      ticpp::Element* bifElement = xmlDoc.FirstChildElement("BIF");
 
       // Finding network element
       status = "BIF Element reached. Now searching network ...";
-      GUM_EMIT2( onProceed, 7, status );
+      GUM_EMIT2(onProceed, 7, status);
 
-      ticpp::Element* networkElement = bifElement->FirstChildElement( "NETWORK" );
+      ticpp::Element* networkElement = bifElement->FirstChildElement("NETWORK");
 
       // Finding id variables
       status = "Network found. Now proceeding variables instanciation...";
-      GUM_EMIT2( onProceed, 10, status );
+      GUM_EMIT2(onProceed, 10, status);
 
-      __parsingVariables( networkElement );
+      __parsingVariables(networkElement);
 
       // Filling diagram
       status = "All variables have been instancied. Now filling up diagram...";
-      GUM_EMIT2( onProceed, 55, status );
+      GUM_EMIT2(onProceed, 55, status);
 
-      __fillingDiagram( networkElement );
+      __fillingDiagram(networkElement);
 
       status = "Instanciation of network completed";
-      GUM_EMIT2( onProceed, 100, status );
+      GUM_EMIT2(onProceed, 100, status);
 
-    } catch ( ticpp::Exception tinyexception ) {
-      GUM_ERROR( IOError, tinyexception.what() );
+    } catch (ticpp::Exception tinyexception) {
+      GUM_ERROR(IOError, tinyexception.what());
     }
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   void
-  BIFXMLIDReader<GUM_SCALAR>::__parsingVariables( ticpp::Element* parentNetwork ) {
+  BIFXMLIDReader< GUM_SCALAR >::__parsingVariables(ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
-    int                             nbVar = 0;
-    ticpp::Iterator<ticpp::Element> varIte( "VARIABLE" );
+    int                               nbVar = 0;
+    ticpp::Iterator< ticpp::Element > varIte("VARIABLE");
 
-    for ( varIte = varIte.begin( parentNetwork ); varIte != varIte.end();
-          ++varIte )
+    for (varIte = varIte.begin(parentNetwork); varIte != varIte.end(); ++varIte)
       nbVar++;
 
     // Iterating on variable element
     int nbIte = 0;
 
-    for ( varIte = varIte.begin( parentNetwork ); varIte != varIte.end();
-          ++varIte ) {
+    for (varIte = varIte.begin(parentNetwork); varIte != varIte.end(); ++varIte) {
       ticpp::Element* currentVar = varIte.Get();
 
       // Getting variable name
-      ticpp::Element* varNameElement = currentVar->FirstChildElement( "NAME" );
-      std::string     varName = varNameElement->GetTextOrDefault( "" );
+      ticpp::Element* varNameElement = currentVar->FirstChildElement("NAME");
+      std::string     varName = varNameElement->GetTextOrDefault("");
 
       // Getting variable description
-      ticpp::Element* varDescrElement =
-          currentVar->FirstChildElement( "PROPERTY" );
-      std::string varDescription = varDescrElement->GetTextOrDefault( "" );
+      ticpp::Element* varDescrElement = currentVar->FirstChildElement("PROPERTY");
+      std::string     varDescription = varDescrElement->GetTextOrDefault("");
 
       // Instanciation de la variable
-      LabelizedVariable newVar( varName, varDescription, 0 );
+      LabelizedVariable newVar(varName, varDescription, 0);
 
       // Getting variable outcomes
-      ticpp::Iterator<ticpp::Element> varOutComesIte( "OUTCOME" );
+      ticpp::Iterator< ticpp::Element > varOutComesIte("OUTCOME");
 
-      for ( varOutComesIte = varOutComesIte.begin( currentVar );
-            varOutComesIte != varOutComesIte.end();
-            ++varOutComesIte )
-        newVar.addLabel( varOutComesIte->GetTextOrDefault( "" ) );
+      for (varOutComesIte = varOutComesIte.begin(currentVar);
+           varOutComesIte != varOutComesIte.end();
+           ++varOutComesIte)
+        newVar.addLabel(varOutComesIte->GetTextOrDefault(""));
 
       // Getting variable type
-      std::string nodeType = currentVar->GetAttribute<std::string>( "TYPE" );
+      std::string nodeType = currentVar->GetAttribute< std::string >("TYPE");
 
       // Add the variable to the id
-      if ( nodeType.compare( "decision" ) == 0 )
-        __infdiag->addDecisionNode( newVar );
-      else if ( nodeType.compare( "utility" ) == 0 )
-        __infdiag->addUtilityNode( newVar );
+      if (nodeType.compare("decision") == 0)
+        __infdiag->addDecisionNode(newVar);
+      else if (nodeType.compare("utility") == 0)
+        __infdiag->addUtilityNode(newVar);
       else
-        __infdiag->addChanceNode( newVar );
+        __infdiag->addChanceNode(newVar);
 
       // Emitting progress.
       std::string status =
-          "Network found. Now proceedind variables instanciation...";
-      int progress = (int)( (float)nbIte / (float)nbVar * 45 ) + 10;
-      GUM_EMIT2( onProceed, progress, status );
+        "Network found. Now proceedind variables instanciation...";
+      int progress = (int)((float)nbIte / (float)nbVar * 45) + 10;
+      GUM_EMIT2(onProceed, progress, status);
       nbIte++;
     }
   }
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   void
-  BIFXMLIDReader<GUM_SCALAR>::__fillingDiagram( ticpp::Element* parentNetwork ) {
+  BIFXMLIDReader< GUM_SCALAR >::__fillingDiagram(ticpp::Element* parentNetwork) {
     // Counting the number of variable for the signal
-    int                             nbDef = 0;
-    ticpp::Iterator<ticpp::Element> definitionIte( "DEFINITION" );
+    int                               nbDef = 0;
+    ticpp::Iterator< ticpp::Element > definitionIte("DEFINITION");
 
-    for ( definitionIte = definitionIte.begin( parentNetwork );
-          definitionIte != definitionIte.end();
-          ++definitionIte )
+    for (definitionIte = definitionIte.begin(parentNetwork);
+         definitionIte != definitionIte.end();
+         ++definitionIte)
       nbDef++;
 
     // Iterating on definition nodes
     int nbIte = 0;
 
-    for ( definitionIte = definitionIte.begin( parentNetwork );
-          definitionIte != definitionIte.end();
-          ++definitionIte ) {
+    for (definitionIte = definitionIte.begin(parentNetwork);
+         definitionIte != definitionIte.end();
+         ++definitionIte) {
       ticpp::Element* currentVar = definitionIte.Get();
 
       // Considered Node
       std::string currentVarName =
-          currentVar->FirstChildElement( "FOR" )->GetTextOrDefault( "" );
-      NodeId currentVarId = __infdiag->idFromName( currentVarName );
+        currentVar->FirstChildElement("FOR")->GetTextOrDefault("");
+      NodeId currentVarId = __infdiag->idFromName(currentVarName);
 
       // Get Node's parents
-      ticpp::Iterator<ticpp::Element> givenIte( "GIVEN" );
-      List<NodeId>                    parentList;
+      ticpp::Iterator< ticpp::Element > givenIte("GIVEN");
+      List< NodeId >                    parentList;
 
-      for ( givenIte = givenIte.begin( currentVar ); givenIte != givenIte.end();
-            ++givenIte ) {
-        std::string parentNode = givenIte->GetTextOrDefault( "" );
-        NodeId      parentId = __infdiag->idFromName( parentNode );
-        parentList.pushBack( parentId );
+      for (givenIte = givenIte.begin(currentVar); givenIte != givenIte.end();
+           ++givenIte) {
+        std::string parentNode = givenIte->GetTextOrDefault("");
+        NodeId      parentId = __infdiag->idFromName(parentNode);
+        parentList.pushBack(parentId);
       }
 
-      for ( List<NodeId>::iterator_safe parentListIte = parentList.rbeginSafe();
-            parentListIte != parentList.rendSafe();
-            --parentListIte )
-        __infdiag->addArc( *parentListIte, currentVarId );
+      for (List< NodeId >::iterator_safe parentListIte = parentList.rbeginSafe();
+           parentListIte != parentList.rendSafe();
+           --parentListIte)
+        __infdiag->addArc(*parentListIte, currentVarId);
 
       // Recuperating tables values
-      if ( !__infdiag->isDecisionNode( currentVarId ) ) {
-        ticpp::Element*    tableElement = currentVar->FirstChildElement( "TABLE" );
-        std::istringstream issTableString( tableElement->GetTextOrDefault( "" ) );
-        std::list<GUM_SCALAR> tablelist;
-        GUM_SCALAR            value;
+      if (!__infdiag->isDecisionNode(currentVarId)) {
+        ticpp::Element*    tableElement = currentVar->FirstChildElement("TABLE");
+        std::istringstream issTableString(tableElement->GetTextOrDefault(""));
+        std::list< GUM_SCALAR > tablelist;
+        GUM_SCALAR              value;
 
-        while ( !issTableString.eof() ) {
+        while (!issTableString.eof()) {
           issTableString >> value;
-          tablelist.push_back( value );
+          tablelist.push_back(value);
         }
 
-        std::vector<GUM_SCALAR> tablevector( tablelist.begin(), tablelist.end() );
+        std::vector< GUM_SCALAR > tablevector(tablelist.begin(), tablelist.end());
 
         // Filling tables
-        if ( __infdiag->isChanceNode( currentVarId ) ) {
-          const Potential<GUM_SCALAR>* table = &__infdiag->cpt( currentVarId );
-          table->populate( tablevector );
-        } else if ( __infdiag->isUtilityNode( currentVarId ) ) {
-          const UtilityTable<GUM_SCALAR>* table =
-              &__infdiag->utility( currentVarId );
-          table->populate( tablevector );
+        if (__infdiag->isChanceNode(currentVarId)) {
+          const Potential< GUM_SCALAR >* table = &__infdiag->cpt(currentVarId);
+          table->populate(tablevector);
+        } else if (__infdiag->isUtilityNode(currentVarId)) {
+          const UtilityTable< GUM_SCALAR >* table =
+            &__infdiag->utility(currentVarId);
+          table->populate(tablevector);
         }
       }
 
       // Emitting progress.
       std::string status =
-          "All variables have been instancied. Now filling up diagram...";
-      int progress = (int)( (float)nbIte / (float)nbDef * 45 ) + 55;
-      GUM_EMIT2( onProceed, progress, status );
+        "All variables have been instancied. Now filling up diagram...";
+      int progress = (int)((float)nbIte / (float)nbDef * 45) + 55;
+      GUM_EMIT2(onProceed, progress, status);
       nbIte++;
     }
   }

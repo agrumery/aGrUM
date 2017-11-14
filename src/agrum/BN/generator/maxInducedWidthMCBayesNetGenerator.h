@@ -67,11 +67,11 @@ namespace gum {
    *density of the Bayesian Network to be too high
    * resulting in the failure of most of the inference Methods.
    * */
-  template <typename GUM_SCALAR,
-            template <typename> class ICPTGenerator = SimpleCPTGenerator,
-            template <typename> class ICPTDisturber = SimpleCPTDisturber>
+  template < typename GUM_SCALAR,
+             template < typename > class ICPTGenerator = SimpleCPTGenerator,
+             template < typename > class ICPTDisturber = SimpleCPTDisturber >
   class MaxInducedWidthMCBayesNetGenerator
-      : public MCBayesNetGenerator<GUM_SCALAR, ICPTGenerator, ICPTDisturber> {
+    : public MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber > {
 
     public:
     // ############################################################################
@@ -99,13 +99,13 @@ namespace gum {
     * "use
     * of p and q" )
     */
-    MaxInducedWidthMCBayesNetGenerator( Size nbrNodes,
-                                        Size maxArcs,
-                                        Size maxModality = 2,
-                                        Size maxInducedWidth = 3,
-                                        Idx  iteration = 5000,
-                                        Idx  p = 30,
-                                        Idx  q = 40 );
+    MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
+                                       Size maxArcs,
+                                       Size maxModality = 2,
+                                       Size maxInducedWidth = 3,
+                                       Idx  iteration = 5000,
+                                       Idx  p = 30,
+                                       Idx  q = 40);
 
     /**
     * Constructor.
@@ -126,11 +126,11 @@ namespace gum {
     * "use
     * of p and q" )
     */
-    MaxInducedWidthMCBayesNetGenerator( BayesNet<GUM_SCALAR> bayesNet,
-                                        Size                 maxInducedWidth = 3,
-                                        Idx                  iteration = 5000,
-                                        Idx                  p = 30,
-                                        Idx                  q = 40 );
+    MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
+                                       Size                   maxInducedWidth = 3,
+                                       Idx                    iteration = 5000,
+                                       Idx                    p = 30,
+                                       Idx                    q = 40);
 
     /**
      * Destructor.
@@ -157,7 +157,7 @@ namespace gum {
     * Modifies the value of the number of maximum parents imposed on the
     * BayesNetGenerator
     */
-    void setMaxlog10InducedWidth( Size maxlog10InducedWidth );
+    void setMaxlog10InducedWidth(Size maxlog10InducedWidth);
     /// @}
 
     protected:
@@ -173,8 +173,8 @@ namespace gum {
   };
 
 
-  extern template class MaxInducedWidthMCBayesNetGenerator<float>;
-  extern template class MaxInducedWidthMCBayesNetGenerator<double>;
+  extern template class MaxInducedWidthMCBayesNetGenerator< float >;
+  extern template class MaxInducedWidthMCBayesNetGenerator< double >;
 
 } /*namespace gum*/
 

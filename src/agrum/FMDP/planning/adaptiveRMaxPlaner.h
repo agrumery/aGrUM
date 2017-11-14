@@ -47,7 +47,7 @@ namespace gum {
    * process
    *
    */
-  class AdaptiveRMaxPlaner : public StructuredPlaner<double>,
+  class AdaptiveRMaxPlaner : public StructuredPlaner< double >,
                              public IDecisionStrategy {
 
 
@@ -60,29 +60,29 @@ namespace gum {
     ///
     // ==========================================================================
     static AdaptiveRMaxPlaner*
-    ReducedAndOrderedInstance( const ILearningStrategy* learner,
-                               double                   discountFactor = 0.9,
-                               double                   epsilon = 0.00001,
-                               bool                     verbose = true ) {
-      return new AdaptiveRMaxPlaner( new MDDOperatorStrategy<double>(),
-                                     discountFactor,
-                                     epsilon,
-                                     learner,
-                                     verbose );
+    ReducedAndOrderedInstance(const ILearningStrategy* learner,
+                              double                   discountFactor = 0.9,
+                              double                   epsilon = 0.00001,
+                              bool                     verbose = true) {
+      return new AdaptiveRMaxPlaner(new MDDOperatorStrategy< double >(),
+                                    discountFactor,
+                                    epsilon,
+                                    learner,
+                                    verbose);
     }
 
     // ==========================================================================
     ///
     // ==========================================================================
-    static AdaptiveRMaxPlaner* TreeInstance( const ILearningStrategy* learner,
-                                             double discountFactor = 0.9,
-                                             double epsilon = 0.00001,
-                                             bool   verbose = true ) {
-      return new AdaptiveRMaxPlaner( new TreeOperatorStrategy<double>(),
-                                     discountFactor,
-                                     epsilon,
-                                     learner,
-                                     verbose );
+    static AdaptiveRMaxPlaner* TreeInstance(const ILearningStrategy* learner,
+                                            double discountFactor = 0.9,
+                                            double epsilon = 0.00001,
+                                            bool   verbose = true) {
+      return new AdaptiveRMaxPlaner(new TreeOperatorStrategy< double >(),
+                                    discountFactor,
+                                    epsilon,
+                                    learner,
+                                    verbose);
     }
 
     /// @}
@@ -95,11 +95,11 @@ namespace gum {
     // ==========================================================================
     /// Default constructor
     // ==========================================================================
-    AdaptiveRMaxPlaner( IOperatorStrategy<double>* opi,
-                        double                     discountFactor,
-                        double                     epsilon,
-                        const ILearningStrategy*   learner,
-                        bool                       verbose );
+    AdaptiveRMaxPlaner(IOperatorStrategy< double >* opi,
+                       double                       discountFactor,
+                       double                       epsilon,
+                       const ILearningStrategy*     learner,
+                       bool                         verbose);
 
     // ==========================================================================
     /// Default destructor
@@ -123,7 +123,7 @@ namespace gum {
      * will surely and definitely result in a crash
      */
     // ==========================================================================
-    void initialize( const FMDP<double>* fmdp );
+    void initialize(const FMDP< double >* fmdp);
 
 
     // ==========================================================================
@@ -136,7 +136,7 @@ namespace gum {
      * or when nbStep have been performed
      */
     // ==========================================================================
-    void makePlanning( Idx nbStep = 1000000 );
+    void makePlanning(Idx nbStep = 1000000);
 
     /// @}
 
@@ -155,7 +155,7 @@ namespace gum {
     // ==========================================================================
     /// Performs a single step of value iteration
     // ==========================================================================
-    virtual MultiDimFunctionGraph<double>* _valueIteration();
+    virtual MultiDimFunctionGraph< double >* _valueIteration();
 
     /// @}
 
@@ -176,15 +176,15 @@ namespace gum {
     private:
     void __makeRMaxFunctionGraphs();
 
-    std::pair<NodeId, NodeId> __visitLearner( const IVisitableGraphLearner*,
-                                              NodeId currentNodeId,
-                                              MultiDimFunctionGraph<double>*,
-                                              MultiDimFunctionGraph<double>* );
+    std::pair< NodeId, NodeId > __visitLearner(const IVisitableGraphLearner*,
+                                               NodeId currentNodeId,
+                                               MultiDimFunctionGraph< double >*,
+                                               MultiDimFunctionGraph< double >*);
     void __clearTables();
 
     private:
-    HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsRMaxTable;
-    HashTable<Idx, MultiDimFunctionGraph<double>*> __actionsBoolTable;
+    HashTable< Idx, MultiDimFunctionGraph< double >* > __actionsRMaxTable;
+    HashTable< Idx, MultiDimFunctionGraph< double >* > __actionsBoolTable;
     const ILearningStrategy* __fmdpLearner;
 
     double __rThreshold;
@@ -196,17 +196,17 @@ namespace gum {
     // ###################################################################
     /// @{
     public:
-    void checkState( const Instantiation& newState, Idx actionId ) {
-      if ( !__initializedTable[actionId] ) {
-        __counterTable[actionId]->reset( newState );
+    void checkState(const Instantiation& newState, Idx actionId) {
+      if (!__initializedTable[actionId]) {
+        __counterTable[actionId]->reset(newState);
         __initializedTable[actionId] = true;
       } else
-        __counterTable[actionId]->incState( newState );
+        __counterTable[actionId]->incState(newState);
     }
 
     private:
-    HashTable<Idx, StatesCounter*> __counterTable;
-    HashTable<Idx, bool>           __initializedTable;
+    HashTable< Idx, StatesCounter* > __counterTable;
+    HashTable< Idx, bool >           __initializedTable;
 
     bool __initialized;
     /// @}

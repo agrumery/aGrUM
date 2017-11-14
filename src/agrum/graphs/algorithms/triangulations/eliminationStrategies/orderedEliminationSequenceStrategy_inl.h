@@ -28,7 +28,7 @@ namespace gum {
 
 
   // returns the current complete ordering
-  INLINE const std::vector<NodeId>*
+  INLINE const std::vector< NodeId >*
                OrderedEliminationSequenceStrategy::order() const noexcept {
     return __order;
   }

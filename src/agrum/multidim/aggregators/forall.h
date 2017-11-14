@@ -48,11 +48,11 @@ namespace gum {
      * Note that a <tt>Forall(i)</tt> aggregator should have a binary aggregator
      * variable since only 0 and 1 indexes are adressed...
      */
-    template <typename GUM_SCALAR>
-    class Forall : public MultiDimAggregator<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class Forall : public MultiDimAggregator< GUM_SCALAR > {
       public:
-      Forall( Idx value );
-      Forall( const Forall<GUM_SCALAR>& from );
+      Forall(Idx value);
+      Forall(const Forall< GUM_SCALAR >& from);
       virtual ~Forall();
 
       /**
@@ -72,24 +72,22 @@ namespace gum {
        * @warning you must desallocate by yourself the memory
        * @return an empty clone of this object with the same type
        */
-      virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+      virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
-      virtual std::string aggregatorName( void ) const;
+      virtual std::string aggregatorName(void) const;
 
       protected:
-      virtual Idx _neutralElt( void ) const;
-      virtual Idx _fold( const DiscreteVariable& v,
-                         Idx                     i1,
-                         Idx                     i2,
-                         bool&                   stop_iteration ) const;
+      virtual Idx _neutralElt(void) const;
+      virtual Idx
+      _fold(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
 
       private:
       Idx __value;
     };
 
 
-    extern template class Forall<float>;
-    extern template class Forall<double>;
+    extern template class Forall< float >;
+    extern template class Forall< double >;
 
 
   }  // aggregator

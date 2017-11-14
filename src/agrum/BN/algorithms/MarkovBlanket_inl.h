@@ -31,12 +31,12 @@ namespace gum {
 
   INLINE DiGraph MarkovBlanket::mb() { return __mb; }
 
-  INLINE const NodeSet& MarkovBlanket::parents( const NodeId id ) const {
-    return __mb.parents( id );
+  INLINE const NodeSet& MarkovBlanket::parents(const NodeId id) const {
+    return __mb.parents(id);
   }
 
-  INLINE const NodeSet& MarkovBlanket::children( const NodeId id ) const {
-    return __mb.children( id );
+  INLINE const NodeSet& MarkovBlanket::children(const NodeId id) const {
+    return __mb.children(id);
   }
 
   INLINE Size MarkovBlanket::sizeArcs() const { return __mb.sizeArcs(); }

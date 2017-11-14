@@ -47,7 +47,7 @@
 namespace gum {
   namespace prm {
     namespace gspan {
-      template <typename GUM_SCALAR>
+      template < typename GUM_SCALAR >
       class DFSTree;
 
       /**
@@ -55,17 +55,17 @@ namespace gum {
        * This class is used to define an edge growth of a pattern
        * in this DFSTree.
        */
-      template <typename GUM_SCALAR>
+      template < typename GUM_SCALAR >
       class EdgeGrowth {
         public:
-        friend class DFSTree<GUM_SCALAR>;
+        friend class DFSTree< GUM_SCALAR >;
         /// Constructor.
-        EdgeGrowth( NodeId     a_u,
-                    LabelData* an_edge,
-                    LabelData* a_l_v,
-                    NodeId     a_v = 0 );
+        EdgeGrowth(NodeId     a_u,
+                   LabelData* an_edge,
+                   LabelData* a_l_v,
+                   NodeId     a_v = 0);
         /// Copy constructor.
-        EdgeGrowth( const EdgeGrowth& from );
+        EdgeGrowth(const EdgeGrowth& from);
         /// Destructor.
         ~EdgeGrowth();
         /// The id of the node from which we grow an edge.
@@ -78,11 +78,12 @@ namespace gum {
         /// otherwise 0 is assigned (recall that subscripts start from 1)
         NodeId v;
         /// Add the pair (u,v) as a match for the current growth.
-        void insert( PRMInstance<GUM_SCALAR>* u, PRMInstance<GUM_SCALAR>* v );
+        void insert(PRMInstance< GUM_SCALAR >* u, PRMInstance< GUM_SCALAR >* v);
         /// The mapping between the u and v for each match in the interface
         /// graph.
-        NodeProperty<std::pair<PRMInstance<GUM_SCALAR>*, PRMInstance<GUM_SCALAR>*>>
-            matches;
+        NodeProperty<
+          std::pair< PRMInstance< GUM_SCALAR >*, PRMInstance< GUM_SCALAR >* > >
+          matches;
         /// Return a string representation of this
         std::string toString();
 
@@ -90,18 +91,18 @@ namespace gum {
         /// The iso graph for computing the maximum independent set of matches.
         UndiGraph iso_graph;
         /// Vector used for computation
-        std::vector<NodeId>* degree_list;
+        std::vector< NodeId >* degree_list;
         /// The max indep set of matches
-        Set<NodeId> max_indep_set;
+        Set< NodeId > max_indep_set;
       };
 
-      template <typename GUM_SCALAR>
-      std::ostream& operator<<( std::ostream&                 out,
-                                const EdgeGrowth<GUM_SCALAR>& edge );
+      template < typename GUM_SCALAR >
+      std::ostream& operator<<(std::ostream&                   out,
+                               const EdgeGrowth< GUM_SCALAR >& edge);
 
 
-      extern template class EdgeGrowth<float>;
-      extern template class EdgeGrowth<double>;
+      extern template class EdgeGrowth< float >;
+      extern template class EdgeGrowth< double >;
 
 
     } /* namespace gspan */

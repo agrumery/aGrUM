@@ -53,26 +53,26 @@ namespace gum {
     // ###################################################################
     /// Default constructor
     // ###################################################################
-    ComposedLeaf( NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2 )
-        : AbstractLeaf( leafId )
-        , __l1( l1 )
-        , __l2( l2 ) {
-      GUM_CONSTRUCTOR( ComposedLeaf )
+    ComposedLeaf(NodeId leafId, AbstractLeaf* l1, AbstractLeaf* l2)
+        : AbstractLeaf(leafId)
+        , __l1(l1)
+        , __l2(l2) {
+      GUM_CONSTRUCTOR(ComposedLeaf)
     }
 
     // ###################################################################
     /// Default destructor
     // ###################################################################
-    ~ComposedLeaf() { GUM_DESTRUCTOR( ComposedLeaf ) }
+    ~ComposedLeaf() { GUM_DESTRUCTOR(ComposedLeaf) }
 
     // ============================================================================
     /// Allocators and Deallocators redefinition
     // ============================================================================
-    void* operator new( size_t s ) {
-      return SmallObjectAllocator::instance().allocate( s );
+    void* operator new(size_t s) {
+      return SmallObjectAllocator::instance().allocate(s);
     }
-    void operator delete( void* p ) {
-      SmallObjectAllocator::instance().deallocate( p, sizeof( ComposedLeaf ) );
+    void operator delete(void* p) {
+      SmallObjectAllocator::instance().deallocate(p, sizeof(ComposedLeaf));
     }
 
     /// @}
@@ -80,17 +80,17 @@ namespace gum {
     // ###################################################################
     /// Gaves the leaf effectif for given modality
     // ###################################################################
-    double effectif( Idx moda ) const {
-      return __l1->effectif( moda ) + __l2->effectif( moda );
+    double effectif(Idx moda) const {
+      return __l1->effectif(moda) + __l2->effectif(moda);
     }
     double total() const { return __l1->total() + __l2->total(); }
 
     // ###################################################################
     /// Returns true if abstractleaf has leaf in it
     // ###################################################################
-    bool contains( NodeId testedId ) const {
-      return AbstractLeaf::contains( testedId ) || __l1->contains( testedId ) ||
-             __l2->contains( testedId );
+    bool contains(NodeId testedId) const {
+      return AbstractLeaf::contains(testedId) || __l1->contains(testedId) ||
+             __l2->contains(testedId);
     }
 
     Idx nbModa() const { return __l1->nbModa(); }

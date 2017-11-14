@@ -63,7 +63,7 @@ namespace gum {
    *
    */
 
-  template <typename GUM_SCALAR>
+  template < typename GUM_SCALAR >
   class FMDPFactory : public AbstractFMDPFactory {
 
     public:
@@ -77,7 +77,7 @@ namespace gum {
      * markov decision process.
      * @param fmdp A pointer over the @ref FMDP filled by this factory.
      */
-    FMDPFactory( FMDP<GUM_SCALAR>* fmdp );
+    FMDPFactory(FMDP< GUM_SCALAR >* fmdp);
 
     /**
      * @brief Destructor.
@@ -101,14 +101,14 @@ namespace gum {
      * @throw OperationNotAllowed Raise if the state of the factory is different
      *                            than NONE.
      */
-    FMDP<GUM_SCALAR>* fmdp() const;
+    FMDP< GUM_SCALAR >* fmdp() const;
 
     /// Returns the current state of the factory.
     FMDPfactory_state state() const;
 
     /// Returns a constant reference on a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    const DiscreteVariable* variable( const std::string& name ) const;
+    const DiscreteVariable* variable(const std::string& name) const;
 
     /// @}
     // ==========================================================================
@@ -122,13 +122,13 @@ namespace gum {
     /// Tells the factory the current variable's name.
     /// @throw DuplicateElement Raised if a variable with the same name already
     ///                         exist.
-    void variableName( const std::string& name );
+    void variableName(const std::string& name);
 
     /// Tells the factory the current variable's description.
-    void variableDescription( const std::string& desc );
+    void variableDescription(const std::string& desc);
 
     /// Adds a modality to the current variable.
-    void addModality( const std::string& name );
+    void addModality(const std::string& name);
 
     /// Tells the factory that we're out of a variable declaration.
     /// @throw UndefinedElement Raised if the variable isn't defined (or not
@@ -145,7 +145,7 @@ namespace gum {
     void startActionDeclaration();
 
     /// Tells the factory to add an action to the current fmdp.
-    void addAction( const std::string& action );
+    void addAction(const std::string& action);
 
     /// Tells the factory that we're out of an action declaration.
     void endActionDeclaration();
@@ -160,13 +160,13 @@ namespace gum {
     void startTransitionDeclaration();
 
     /// Tells the factory to add a transition table to the current fmdp.
-    void addTransition( const std::string&        var,
-                        const MultiDimAdressable* transition );
+    void addTransition(const std::string&        var,
+                       const MultiDimAdressable* transition);
 
     /// Tells the factory to add a transition table to the current fmdp.
     /// This transition table will be extracted from incorporated
     /// multiDimFunctionGraph.
-    void addTransition( const std::string& var );
+    void addTransition(const std::string& var);
 
     /// Tells the factory that we're out of a transition declaration.
     void endTransitionDeclaration();
@@ -181,7 +181,7 @@ namespace gum {
     void startCostDeclaration();
 
     /// Tells the factory to add a cost table to the current fmdp.
-    void addCost( const MultiDimAdressable* cost );
+    void addCost(const MultiDimAdressable* cost);
 
     /// Tells the factory to add a cost table to the current fmdp.
     /// This cost table will be extracted from incorporated
@@ -203,10 +203,10 @@ namespace gum {
     /// Tells the factory that we're in a reward declaration mode where the
     /// global reward diagram is an operation between
     /// simplier decision diagram..
-    void setOperationModeOn( std::string operationType );
+    void setOperationModeOn(std::string operationType);
 
     /// Tells the factory to add a reward table to the current fmdp.
-    void addReward( const MultiDimAdressable* reward );
+    void addReward(const MultiDimAdressable* reward);
 
     /// Tells the factory to add a reward table to the current fmdp.
     /// This reward table will be extracted from incorporated
@@ -226,7 +226,7 @@ namespace gum {
     void startDiscountDeclaration();
 
     /// Tells the factory to add a cost table to the current fmdp.
-    void addDiscount( float discount );
+    void addDiscount(float discount);
 
     /// Tells the factory that we're out of a cost declaration.
     void endDiscountDeclaration();
@@ -240,16 +240,16 @@ namespace gum {
     /// @{
 
     /// Insert in diagram a non terminal node
-    NodeId addInternalNode( std::string name_of_var );
+    NodeId addInternalNode(std::string name_of_var);
 
     /// Insert in diagram a terminal node
-    NodeId addTerminalNode( float value );
+    NodeId addTerminalNode(float value);
 
     ///
-    void addArc( NodeId from, NodeId to, Idx modality );
+    void addArc(NodeId from, NodeId to, Idx modality);
 
     /// add an arc in diagram
-    void setRoot( NodeId rootId );
+    void setRoot(NodeId rootId);
 
     /// @}
 
@@ -268,14 +268,14 @@ namespace gum {
     bool __bar_flag;
 
     /// Just to keep track of strings between two start/end calls.
-    std::vector<std::string> __stringBag;
+    std::vector< std::string > __stringBag;
 
     /// Just to keep track of multidim between two start/end calls.
-    std::vector<const MultiDimImplementation<GUM_SCALAR>*> __ddBag;
+    std::vector< const MultiDimImplementation< GUM_SCALAR >* > __ddBag;
 
     /// Used in VARIABLE mode
     /// Checks if in __stringBag there is no other modality with the same name.
-    void __checkModalityInBag( const std::string& mod );
+    void __checkModalityInBag(const std::string& mod);
 
     /// Reset the different parts used to constructed the FMDP.
     void __resetParts();
@@ -289,30 +289,30 @@ namespace gum {
     /// @}
 
     /// State stack.
-    std::vector<FMDPfactory_state> __states;
+    std::vector< FMDPfactory_state > __states;
 
     /// The constructed FMDP
-    FMDP<GUM_SCALAR>* __fmdp;
+    FMDP< GUM_SCALAR >* __fmdp;
 
     /// The FunctionGraph we're building at a given time
-    MultiDimFunctionGraph<GUM_SCALAR>* __FunctionGraph;
+    MultiDimFunctionGraph< GUM_SCALAR >* __FunctionGraph;
 
     /// Mapping between a declared variable's name and itself.
-    HashTable<std::string, const DiscreteVariable*> __varNameMap;
+    HashTable< std::string, const DiscreteVariable* > __varNameMap;
 
     /// Action Id counter
     Idx __actionIdcpt;
 
     /// Copy operator is illegal, use only copy constructor.
-    FMDPFactory<GUM_SCALAR>& operator=( const FMDPFactory<GUM_SCALAR>& source );
+    FMDPFactory< GUM_SCALAR >& operator=(const FMDPFactory< GUM_SCALAR >& source);
 
     /// Raise an OperationNotAllowed with the message "Illegal state."
-    void __illegalStateError( const std::string& s );
+    void __illegalStateError(const std::string& s);
   };
 
 
-  extern template class FMDPFactory<float>;
-  extern template class FMDPFactory<double>;
+  extern template class FMDPFactory< float >;
+  extern template class FMDPFactory< double >;
 
 } /* namespace gum */
 

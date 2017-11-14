@@ -36,10 +36,10 @@ namespace gum {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-  template <typename Val>
+  template < typename Val >
   class RefPtr;
 
-  template <typename Val>
+  template < typename Val >
   class HashFunc;
 #endif
 
@@ -54,8 +54,8 @@ namespace gum {
    */
   /// @brief Swap the contents of two RefPtr.
   /// @ingroup refptr_group
-  template <typename Val>
-  void swap( RefPtr<Val>& ptr1, RefPtr<Val>& ptr2 );
+  template < typename Val >
+  void swap(RefPtr< Val >& ptr1, RefPtr< Val >& ptr2);
 
   // ===========================================================================
   // ===                           SMART POINTERS                            ===
@@ -109,11 +109,11 @@ namespace gum {
    *
    * @tparam Val The type referenced by the gum::RefPtr.
    */
-  template <typename Val>
+  template < typename Val >
   class RefPtr {
     public:
     /// The swap function must access to gum::RefPtr private parts.
-    friend void swap<>( RefPtr<Val>&, RefPtr<Val>& );
+    friend void swap<>(RefPtr< Val >&, RefPtr< Val >&);
 
     // ============================================================================
     /// @name Constructors / Destructors
@@ -143,21 +143,21 @@ namespace gum {
      * @throws std::bad_alloc Raised if the complete RefPtr structure cannot be
      * set properly.
      */
-    explicit RefPtr( Val* val = 0 );
+    explicit RefPtr(Val* val = 0);
 
     /**
      * @brief Copy constructor.
      * @param from the smart pointer we wish to make a copy.
      */
-    RefPtr( const RefPtr<Val>& from );
+    RefPtr(const RefPtr< Val >& from);
 
     /**
      * @brief Copy constructor for downcastable pointers.
      * @param from the smart pointer we wish to make a copy.
      * @tparam DownVal The downcastable type.
      */
-    template <typename DownVal>
-    RefPtr( const RefPtr<DownVal>& from );
+    template < typename DownVal >
+    RefPtr(const RefPtr< DownVal >& from);
 
     /**
      * @brief Class destructor.
@@ -215,7 +215,7 @@ namespace gum {
      * @param from The smart pointer we wish to make a copy.
      * @return Returns this gum::RefPtr.
      */
-    RefPtr<Val>& operator=( const RefPtr<Val>& from );
+    RefPtr< Val >& operator=(const RefPtr< Val >& from);
 
     /**
      * @brief Copy operator.
@@ -232,7 +232,7 @@ namespace gum {
      * @return Returns this gum::RefPtr.
      */
 
-    RefPtr<Val>& operator=( Val* from );
+    RefPtr< Val >& operator=(Val* from);
 
     /**
      * @brief Copy operator for downcastable pointers.
@@ -248,8 +248,8 @@ namespace gum {
      * @param from the smart pointer we wish to make a copy.
      * @return Returns this gum::RefPtr.
      */
-    template <typename DownVal>
-    RefPtr<Val>& operator=( const RefPtr<DownVal>& from );
+    template < typename DownVal >
+    RefPtr< Val >& operator=(const RefPtr< DownVal >& from);
 
     /**
      * @brief Checks whether two RefPtr<Val> are smart pointers for the same
@@ -267,7 +267,7 @@ namespace gum {
      * @param from The gum::RefPtr to test for equality.
      * @return Returns true if this and from are equal.
      */
-    bool operator==( const RefPtr<Val>& from ) const;
+    bool operator==(const RefPtr< Val >& from) const;
 
     /**
      * @brief Checks whether two RefPtr<Val> are smart pointers for different
@@ -280,7 +280,7 @@ namespace gum {
      * @param from The gum::RefPtr to test for inequality.
      * @return Returns true if this and from differ.
      */
-    bool operator!=( const RefPtr<Val>& from ) const;
+    bool operator!=(const RefPtr< Val >& from) const;
 
     /**
      * @brief Dereferencing operator.
@@ -323,11 +323,11 @@ namespace gum {
     // ============================================================================
     private:
     /// A friend to allow downcastings.
-    template <typename T>
+    template < typename T >
     friend class RefPtr;
 
     /// A friend for hashing quickly ref pointers.
-    template <typename T>
+    template < typename T >
     friend class HashFunc;
 
     /// The dumb pointer encapsulated into the "smart" pointer.
@@ -337,7 +337,7 @@ namespace gum {
     unsigned int* __refcount;
 
     /// A function to remove the content of the smart pointer, if any.
-    void __destroy( unsigned int*, Val* );
+    void __destroy(unsigned int*, Val*);
 
     /// A function to return the refcount pointer.
     unsigned int* __refCountPtr() const;
@@ -346,10 +346,10 @@ namespace gum {
 } /* namespace gum */
 
 
-extern template class gum::RefPtr<int>;
-extern template class gum::RefPtr<long>;
-extern template class gum::RefPtr<float>;
-extern template class gum::RefPtr<double>;
+extern template class gum::RefPtr< int >;
+extern template class gum::RefPtr< long >;
+extern template class gum::RefPtr< float >;
+extern template class gum::RefPtr< double >;
 
 
 // always include the _tpl.h as it contains only templates

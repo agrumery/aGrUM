@@ -49,8 +49,8 @@ namespace gum {
      *
      * @ingroup prm_group
      */
-    template <typename GUM_SCALAR>
-    class LayerGenerator : public PRMGenerator<GUM_SCALAR> {
+    template < typename GUM_SCALAR >
+    class LayerGenerator : public PRMGenerator< GUM_SCALAR > {
       public:
       // ========================================================================
       /// @name Constructors and destructor.
@@ -60,9 +60,9 @@ namespace gum {
       /// Default constructor.
       LayerGenerator();
       /// Copy constructor.
-      LayerGenerator( const LayerGenerator& source );
+      LayerGenerator(const LayerGenerator& source);
       /// Copy operator.
-      LayerGenerator& operator=( const LayerGenerator& source );
+      LayerGenerator& operator=(const LayerGenerator& source);
       /// Destructor.
       virtual ~LayerGenerator();
 
@@ -94,7 +94,7 @@ namespace gum {
       Size getDomainSize() const;
 
       /// Set the domain size of generated types.
-      void setDomainSize( Size s );
+      void setDomainSize(Size s);
 
       /// Returns the max number of parents allowed for any attribute or
       /// aggregator
@@ -102,7 +102,7 @@ namespace gum {
 
       /// Returns the max number of parents allowed for any attribute or
       /// aggregator
-      void setMaxParents( Size s );
+      void setMaxParents(Size s);
 
       /**
        * @brief Defines the structure of each layers.
@@ -111,46 +111,46 @@ namespace gum {
        * instances in the i-th layer.
        * @param v A vector describing each layer.
        */
-      void setLayers( const std::vector<LayerData>& v );
+      void setLayers(const std::vector< LayerData >& v);
 
-      std::vector<LayerData>&       getLayer();
-      const std::vector<LayerData>& getLayer() const;
+      std::vector< LayerData >&       getLayer();
+      const std::vector< LayerData >& getLayer() const;
 
       /// Proceeds with the generation of the PRM<GUM_SCALAR>.
-      virtual PRM<GUM_SCALAR>* generate();
+      virtual PRM< GUM_SCALAR >* generate();
 
       /// @}
       private:
-      std::vector<LayerData> __layers;
-      Size                   __domain_size;
-      Size                   __max_parents;
+      std::vector< LayerData > __layers;
+      Size                     __domain_size;
+      Size                     __max_parents;
 
       struct MyData {
         // interface name
-        std::string              i;
-        std::vector<std::string> a;
-        std::vector<std::string> g;
-        std::string              r;
-        std::vector<std::string> c;
+        std::string                i;
+        std::vector< std::string > a;
+        std::vector< std::string > g;
+        std::string                r;
+        std::vector< std::string > c;
       };
 
-      std::string __generateType( PRMFactory<GUM_SCALAR>& f );
+      std::string __generateType(PRMFactory< GUM_SCALAR >& f);
 
-      void __generateInterfaces( PRMFactory<GUM_SCALAR>& f,
-                                 const std::string&      type,
-                                 std::vector<MyData>&    l );
+      void __generateInterfaces(PRMFactory< GUM_SCALAR >& f,
+                                const std::string&        type,
+                                std::vector< MyData >&    l);
 
-      void __generateClasses( PRMFactory<GUM_SCALAR>&                       f,
-                              const std::string&                            type,
-                              std::vector<typename LayerGenerator::MyData>& l );
+      void __generateClasses(PRMFactory< GUM_SCALAR >&                       f,
+                             const std::string&                              type,
+                             std::vector< typename LayerGenerator::MyData >& l);
 
-      void __generateClassDag( Size lvl,
-                               DAG& dag,
-                               Bijection<std::string, NodeId>& names,
-                               std::vector<typename LayerGenerator::MyData>& l );
+      void __generateClassDag(Size lvl,
+                              DAG& dag,
+                              Bijection< std::string, NodeId >& names,
+                              std::vector< typename LayerGenerator::MyData >& l);
 
-      void __generateSystem( PRMFactory<GUM_SCALAR>&                       factory,
-                             std::vector<typename LayerGenerator::MyData>& l );
+      void __generateSystem(PRMFactory< GUM_SCALAR >& factory,
+                            std::vector< typename LayerGenerator::MyData >& l);
     };
 
   } /* namespace prm */

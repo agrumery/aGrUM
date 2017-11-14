@@ -74,10 +74,10 @@ namespace gum {
       DBTransformCompactInt();
 
       /// copy constructor
-      DBTransformCompactInt( const DBTransformCompactInt& );
+      DBTransformCompactInt(const DBTransformCompactInt&);
 
       /// move constructor
-      DBTransformCompactInt( DBTransformCompactInt&& );
+      DBTransformCompactInt(DBTransformCompactInt&&);
 
       /// destructor
       virtual ~DBTransformCompactInt();
@@ -91,10 +91,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBTransformCompactInt& operator=( const DBTransformCompactInt& );
+      DBTransformCompactInt& operator=(const DBTransformCompactInt&);
 
       /// move operator
-      DBTransformCompactInt& operator=( DBTransformCompactInt&& );
+      DBTransformCompactInt& operator=(DBTransformCompactInt&&);
 
       /// @}
 
@@ -105,9 +105,11 @@ namespace gum {
       /// @{
 
       /// transforms a vector of DBrows into a vector of compact int DBRows */
-      template <typename DBHandler, typename TranslatorSet, typename GeneratorSet>
+      template < typename DBHandler,
+                 typename TranslatorSet,
+                 typename GeneratorSet >
       bool transform(
-          DBRowFilter<DBHandler, TranslatorSet, GeneratorSet>& filter ) const;
+        DBRowFilter< DBHandler, TranslatorSet, GeneratorSet >& filter) const;
 
       /// @}
     };

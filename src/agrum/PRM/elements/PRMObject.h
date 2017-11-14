@@ -77,8 +77,8 @@ namespace gum {
       static std::string RIGHT_CAST() { return ")"; }
 
       /// Returns the string representation of a PRMObject.
-      static std::string enum2str( prm_type type ) {
-        switch ( type ) {
+      static std::string enum2str(prm_type type) {
+        switch (type) {
           case prm_type::CLASS:
             return "PRMType::CLASS";
 
@@ -103,17 +103,17 @@ namespace gum {
       }
 
       /// Returns true if obj_ptr is of type Class.
-      static INLINE bool isClass( const PRMObject& obj ) {
+      static INLINE bool isClass(const PRMObject& obj) {
         return obj.obj_type() == prm_type::CLASS;
       }
 
       /// Returns true if obj_ptr is of type PRMInterface.
-      static INLINE bool isInterface( const PRMObject& obj ) {
+      static INLINE bool isInterface(const PRMObject& obj) {
         return obj.obj_type() == prm_type::PRM_INTERFACE;
       }
 
       /// Returns true if obj_ptr is of type PRMInstance.
-      static INLINE bool isInstance( const PRMObject& obj ) {
+      static INLINE bool isInstance(const PRMObject& obj) {
         return obj.obj_type() == prm_type::INSTANCE;
       }
 
@@ -127,12 +127,12 @@ namespace gum {
        * Constructor.
        * @param name The name of this object.
        */
-      PRMObject( const std::string& name );
+      PRMObject(const std::string& name);
 
       /**
        * Copy constructor.
        */
-      PRMObject( const PRMObject& source );
+      PRMObject(const PRMObject& source);
 
       /**
        * Destructor.
@@ -154,7 +154,7 @@ namespace gum {
        * @brief Change the name of the PRM Object.
        * @warning Don't do this unless you know wath you are doing !
        */
-      void name( const std::string& name );
+      void name(const std::string& name);
 
       /**
        * Returns the type of this object.
@@ -170,17 +170,17 @@ namespace gum {
       /**
        * To PRMObject are equal if they have the same name (which is unique).
        */
-      bool operator==( const PRMObject& obj ) const;
+      bool operator==(const PRMObject& obj) const;
 
       /**
        * To PRMObject are equal if they have the same name (which is unique).
        */
-      bool operator!=( const PRMObject& obj ) const;
+      bool operator!=(const PRMObject& obj) const;
 
       /**
        * Copy operator.
        */
-      PRMObject& operator=( const PRMObject& source );
+      PRMObject& operator=(const PRMObject& source);
 
       /// @}
       private:
@@ -197,30 +197,30 @@ namespace gum {
     };
 
     /// For printing PRMType easily.
-    std::ostream& operator<<( std::ostream& out, PRMObject::prm_type obj_type );
+    std::ostream& operator<<(std::ostream& out, PRMObject::prm_type obj_type);
 
     // list of declarations of PRMObjects
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMType;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMClassElement;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMClassElementContainer;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMAggregate;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMInterface;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMAttribute;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMSlotChain;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMReferenceSlot;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMClass;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMInstance;
-    template <typename GUM_SCALAR>
+    template < typename GUM_SCALAR >
     class PRMSystem;
 
   } /* namespace prm */

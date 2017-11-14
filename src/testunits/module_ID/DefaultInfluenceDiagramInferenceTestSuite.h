@@ -1,3 +1,25 @@
+
+/***************************************************************************
+*   Copyright (C) 2017 by Pierre-Henri WUILLEMIN and Christophe GONZALES   *
+*   {prenom.nom}_at_lip6.fr                                               *
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+*   This program is distributed in the hope that it will be useful,       *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+*   GNU General Public License for more details.                          *
+*                                                                         *
+*   You should have received a copy of the GNU General Public License     *
+*   along with this program; if not, write to the                         *
+*   Free Software Foundation, Inc.,                                       *
+*   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+***************************************************************************/
+
+
 /***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -51,38 +73,37 @@ namespace gum_tests {
   class InfluenceDiagramInferenceTestSuite : public CxxTest::TestSuite {
 
     private:
-    void fillTopoOilWildcater( gum::InfluenceDiagram<float>& id,
-                               gum::List<gum::NodeId>&       idList ) {
+    void fillTopoOilWildcater(gum::InfluenceDiagram< float >& id,
+                              gum::List< gum::NodeId >&       idList) {
       try {
-        idList.insert( id.addDecisionNode( *TestVar ) );            // 0
-        idList.insert( id.addDecisionNode( *DrillVar ) );           // 1
-        idList.insert( id.addChanceNode( *ResultTestVar ) );        // 2
-        idList.insert( id.addChanceNode( *OilAmountVar ) );         // 3
-        idList.insert( id.addUtilityNode( *TestUtilityVar ) );      // 4
-        idList.insert( id.addUtilityNode( *DrillingUtilityVar ) );  // 5
+        idList.insert(id.addDecisionNode(*TestVar));            // 0
+        idList.insert(id.addDecisionNode(*DrillVar));           // 1
+        idList.insert(id.addChanceNode(*ResultTestVar));        // 2
+        idList.insert(id.addChanceNode(*OilAmountVar));         // 3
+        idList.insert(id.addUtilityNode(*TestUtilityVar));      // 4
+        idList.insert(id.addUtilityNode(*DrillingUtilityVar));  // 5
 
-        id.addArc( idList[0], idList[4] );
-        id.addArc( idList[0], idList[2] );
-        id.addArc( idList[0], idList[1] );
-        id.addArc( idList[1], idList[5] );
-        id.addArc( idList[2], idList[1] );
-        id.addArc( idList[3], idList[2] );
-        id.addArc( idList[3], idList[5] );
+        id.addArc(idList[0], idList[4]);
+        id.addArc(idList[0], idList[2]);
+        id.addArc(idList[0], idList[1]);
+        id.addArc(idList[1], idList[5]);
+        id.addArc(idList[2], idList[1]);
+        id.addArc(idList[3], idList[2]);
+        id.addArc(idList[3], idList[5]);
 
-      } catch ( gum::Exception& e ) {
+      } catch (gum::Exception& e) {
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
       }
     }
 
-    void populateOilWildcater( gum::InfluenceDiagram<float>& id,
-                               gum::List<gum::NodeId>&       idList ) {
-      fillTopoOilWildcater( id, idList );
+    void populateOilWildcater(gum::InfluenceDiagram< float >& id,
+                              gum::List< gum::NodeId >&       idList) {
+      fillTopoOilWildcater(id, idList);
 
       try {
-        id.cpt( idList[3] ).populate( {0.5f, 0.3f, 0.2f} );
-        id.cpt( idList[2] )
-            .populate(  // clang-format off
+        id.cpt(idList[3]).populate({0.5f, 0.3f, 0.2f});
+        id.cpt(idList[2]).populate(  // clang-format off
                               {0.6f, 0.3f, 0.1f, 0,
                                0  , 0  , 0  , 1,
                                0.3f, 0.4f, 0.3f, 0,

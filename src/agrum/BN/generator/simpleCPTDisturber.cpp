@@ -26,5 +26,5 @@
  */
 #include <agrum/BN/generator/simpleCPTDisturber.h>
 
-template class gum::SimpleCPTDisturber<float>;
-template class gum::SimpleCPTDisturber<double>;
+template class gum::SimpleCPTDisturber< float >;
+template class gum::SimpleCPTDisturber< double >;

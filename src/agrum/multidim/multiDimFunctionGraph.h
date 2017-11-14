@@ -45,17 +45,17 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphManager;
 
-  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphROManager;
 
-  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphTreeManager;
 
   /**
-   * @class MultiDimFunctionGraph 
+   * @class MultiDimFunctionGraph
    * @ingroup multidim_group
    *
    * @warning Doxygen does not like spanning command on multiple line, so we
@@ -72,10 +72,11 @@ namespace gum {
    * @tparam TerminalNodePolicy The terminal node policy to use in this
    * MultiDimFunctionGraph.
    */
-  template <typename GUM_SCALAR,
-            template <typename> class TerminalNodePolicy = ExactTerminalNodePolicy>
-  class MultiDimFunctionGraph : public MultiDimImplementation<GUM_SCALAR>,
-                                public TerminalNodePolicy<GUM_SCALAR> {
+  template < typename GUM_SCALAR,
+             template < typename > class TerminalNodePolicy =
+               ExactTerminalNodePolicy >
+  class MultiDimFunctionGraph : public MultiDimImplementation< GUM_SCALAR >,
+                                public TerminalNodePolicy< GUM_SCALAR > {
 
     public:
     /// Only for proper initialization of a certain returned value
@@ -92,7 +93,7 @@ namespace gum {
      * @brief Default constructor.
      * @param isReduced If true, then this MultiDimFunctionGraph is reduced.
      */
-    MultiDimFunctionGraph( bool isReduced = true );
+    MultiDimFunctionGraph(bool isReduced = true);
 
     public:
     /**
@@ -100,15 +101,15 @@ namespace gum {
      * @param from The MultiDimFunctionGraph to copy.
      */
     MultiDimFunctionGraph(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
 
     /**
      * @brief Copy Operator.
      * @param from The MultiDimFunctionGraph to copy.
      * @return Returns this MultiDimFunctionGraph.
      */
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>&
-    operator=( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& from );
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >&
+    operator=(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& from);
 
     /**
      * @brief Class destructor.
@@ -125,37 +126,37 @@ namespace gum {
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void set( const Instantiation& i, const GUM_SCALAR& value ) const;
+    virtual void set(const Instantiation& i, const GUM_SCALAR& value) const;
 
     /**
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void fill( const GUM_SCALAR& d ) const;
+    virtual void fill(const GUM_SCALAR& d) const;
 
     /**
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void populate( const std::vector<GUM_SCALAR>& v ) const;
+    virtual void populate(const std::vector< GUM_SCALAR >& v) const;
     /**
      * @warning This will raise an OperationNotAllowed exceptions. Use the
      * MultiDimFunctionGraphManager class to edit a MultiDimFunctionGraph.
      */
-    virtual void populate( std::initializer_list<GUM_SCALAR> v ) const;
+    virtual void populate(std::initializer_list< GUM_SCALAR > v) const;
 
     /**
      * @warning This will raise an OperationNotAllowed as MultiDimFunctionGraph
      * can't copy other multiDim.
      */
-    virtual void copyFrom( const MultiDimContainer<GUM_SCALAR>& src,
-                           Instantiation* p_i = (Instantiation*)0 ) const;
+    virtual void copyFrom(const MultiDimContainer< GUM_SCALAR >& src,
+                          Instantiation* p_i = (Instantiation*)0) const;
 
     /**
      * @warning This will raise an OperationNotAllowed as MultiDimFunctionGraph
      * can't copy other multiDim.
      */
-    virtual void copy( const MultiDimContainer<GUM_SCALAR>& src );
+    virtual void copy(const MultiDimContainer< GUM_SCALAR >& src);
 
     /// @}
     // =========================================================================
@@ -163,34 +164,34 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual MultiDimContainer<GUM_SCALAR>* newFactory() const;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
-    virtual GUM_SCALAR get( const Instantiation& i ) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const;
 
     virtual const std::string& name() const;
 
-    virtual void add( const DiscreteVariable& v );
+    virtual void add(const DiscreteVariable& v);
 
-    virtual void erase( const DiscreteVariable& v );
+    virtual void erase(const DiscreteVariable& v);
 
     virtual Size realSize() const;
 
-    virtual void changeNotification( Instantiation&                i,
-                                     const DiscreteVariable* const var,
-                                     const Idx&                    oldval,
-                                     const Idx&                    newval );
+    virtual void changeNotification(Instantiation&                i,
+                                    const DiscreteVariable* const var,
+                                    const Idx&                    oldval,
+                                    const Idx&                    newval);
 
-    virtual void setFirstNotification( Instantiation& i );
+    virtual void setFirstNotification(Instantiation& i);
 
-    virtual void setLastNotification( Instantiation& i );
+    virtual void setLastNotification(Instantiation& i);
 
-    virtual void setIncNotification( Instantiation& i );
+    virtual void setIncNotification(Instantiation& i);
 
-    virtual void setDecNotification( Instantiation& i );
+    virtual void setDecNotification(Instantiation& i);
 
-    virtual void setChangeNotification( Instantiation& i );
+    virtual void setChangeNotification(Instantiation& i);
 
-    virtual const std::string toString( const Instantiation* i ) const;
+    virtual const std::string toString(const Instantiation* i) const;
 
     /// @}
     // =========================================================================
@@ -204,7 +205,7 @@ namespace gum {
      *
      * @param src The MultiDimFunctionGraph to copy.
      */
-    void copy( const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src );
+    void copy(const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src);
 
     /**
      * @brief Copies src diagrams structure into this diagrams.
@@ -220,9 +221,9 @@ namespace gum {
      * @param reassign A Bijection form variables in src to variables in this.
      */
     void copyAndReassign(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
-        const Bijection<const DiscreteVariable*, const DiscreteVariable*>&
-            reassign );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
+      const Bijection< const DiscreteVariable*, const DiscreteVariable* >&
+        reassign);
 
     /**
      * @brief Copies src diagrams and multiply every value by the given scalar.
@@ -231,8 +232,8 @@ namespace gum {
      * @param gamma The scalar used to multiply every value with.
      */
     void copyAndMultiplyByScalar(
-        const MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>& src,
-        GUM_SCALAR gamma );
+      const MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >& src,
+      GUM_SCALAR gamma);
 
     /**
      * @brief Clears the function graph
@@ -251,7 +252,7 @@ namespace gum {
      * @param withBackArcs If true, back arcs will be added.
      * @return Returns a const reference to the manager of this diagram
      */
-    std::string toDot( bool withBackArcs = false ) const;
+    std::string toDot(bool withBackArcs = false) const;
 
     /**
      * @brief Returns a const reference to the manager of this diagram
@@ -263,7 +264,7 @@ namespace gum {
      * @brief Returns a const reference to the manager of this diagram
      * @return Returns a const reference to the manager of this diagram
      */
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* manager();
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >* manager();
 
     /**
      * @brief Returns the id of the root node from the diagram
@@ -276,14 +277,14 @@ namespace gum {
      * @param node The node to test for terminality.
      * @return Returns true if node is terminal.
      */
-    bool isTerminalNode( const NodeId& node ) const;
+    bool isTerminalNode(const NodeId& node) const;
 
     /**
      * @brief Indicates if given node is terminal or not
      * @param node The node to test for being itnernal.
      * @return Returns true if node is internal.
      */
-    bool isInternalNode( const NodeId& node ) const;
+    bool isInternalNode(const NodeId& node) const;
 
     /**
      * @brief Returns value associated to given node.
@@ -291,7 +292,7 @@ namespace gum {
      * @return Returns value associated to given node.
      * @throw InvalidNode Raised if node isn't terminal.
      */
-    const GUM_SCALAR& nodeValue( NodeId n ) const;
+    const GUM_SCALAR& nodeValue(NodeId n) const;
 
     /**
      * @brief Returns internalNode structure associated to that nodeId
@@ -299,7 +300,7 @@ namespace gum {
      * @return Returns internalNode structure associated to that nodeId
      * @throw InvalidNode Raised if node is terminal
      */
-    const InternalNode* node( NodeId n ) const;
+    const InternalNode* node(NodeId n) const;
 
     /**
      * @brief Returns the list of node associated to given variable
@@ -307,7 +308,7 @@ namespace gum {
      * returned.
      * @return Returns the list of node associated to given variable
      */
-    const LinkedList<NodeId>* varNodeListe( const DiscreteVariable* var ) const;
+    const LinkedList< NodeId >* varNodeListe(const DiscreteVariable* var) const;
 
     /**
      * @brief Returns the name of the table represented by this structure.
@@ -319,7 +320,7 @@ namespace gum {
      * @brief Sets the name of the table represented by this structure.
      * @param name the new name of this structure.
      */
-    void setTableName( const std::string& name );
+    void setTableName(const std::string& name);
 
     /**
      * @brief Returns true if this MultiDimFunctionGraph is reduced and
@@ -339,14 +340,14 @@ namespace gum {
      *
      * @return Returns a reduced and ordered instance.
      */
-    static MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
+    static MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
     getReducedAndOrderedInstance();
 
     /**
      * @brief Returns an arborescent instance
      * @return Returns an arborescent instance
      */
-    static MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>*
+    static MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >*
     getTreeInstance();
 
     /// @}
@@ -356,14 +357,14 @@ namespace gum {
      * @warning This will raise an OperationNotAllowed as this method has not
      * yet been implemented.
      */
-    virtual void _swap( const DiscreteVariable* x, const DiscreteVariable* y );
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 
     /**
      * @warning This will raise an OperationNotAllowed as you should not use
      * this method as MultiDimFunctionGraph use its own internal structure for
      * storing data.
      */
-    GUM_SCALAR& _get( const Instantiation& inst ) const;
+    GUM_SCALAR& _get(const Instantiation& inst) const;
 
     private:
     /// The name of the data structure
@@ -376,21 +377,21 @@ namespace gum {
     NodeGraphPart __model;
 
     /// A reference to the manager that edits this function graph
-    MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>* __manager;
+    MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >* __manager;
 
     /// The root node of the function graph
     NodeId __root;
 
     /// Associates each non-terminal node to a variable
-    HashTable<NodeId, InternalNode*> __internalNodeMap;
+    HashTable< NodeId, InternalNode* > __internalNodeMap;
 
     /// Mapping between var and node
-    HashTable<const DiscreteVariable*, LinkedList<NodeId>*> __var2NodeIdMap;
+    HashTable< const DiscreteVariable*, LinkedList< NodeId >* > __var2NodeIdMap;
 
     /// Wheter the MultiDimFunctionGraphManager is reduced or not
     bool __isReduced;
 
-    friend class MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>;
+    friend class MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >;
   };
 
 

@@ -35,7 +35,7 @@
 
 namespace gum {
 
-  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraph;
 
   /**
@@ -70,7 +70,7 @@ namespace gum {
    * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphManager {
     // =========================================================================
     /// @name Constructors / Destructors
@@ -83,8 +83,8 @@ namespace gum {
      *
      * See class description for more info.
      */
-    friend MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>*
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::manager();
+    friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     /**
      * @brief Default constructor.
@@ -94,7 +94,7 @@ namespace gum {
      */
     protected:
     MultiDimFunctionGraphManager(
-        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master );
+      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
 
     public:
     /**
@@ -112,7 +112,7 @@ namespace gum {
      * @brief Sets root node of decision diagram.
      * @param root The node to set as root.
      */
-    void setRootNode( const NodeId& root );
+    void setRootNode(const NodeId& root);
 
     /**
      * @brief Inserts a new non terminal node in graph.
@@ -122,7 +122,7 @@ namespace gum {
      * @param var Associated variable
      * @return The id of the added non terminal node.
      */
-    NodeId addInternalNode( const DiscreteVariable* var );
+    NodeId addInternalNode(const DiscreteVariable* var);
 
     /**
      * @brief Inserts a new non terminal node in graph.
@@ -137,8 +137,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if MultiDimFunctionGraph has no
      * variable yet.
      */
-    virtual NodeId addInternalNode( const DiscreteVariable* var,
-                                    NodeId*                 sons ) = 0;
+    virtual NodeId addInternalNode(const DiscreteVariable* var, NodeId* sons) = 0;
 
     protected:
     /**
@@ -147,7 +146,7 @@ namespace gum {
      * @param sons The node sons.
      * @return Returns the added node id.
      */
-    NodeId _addInternalNode( const DiscreteVariable* var, NodeId* sons );
+    NodeId _addInternalNode(const DiscreteVariable* var, NodeId* sons);
 
     public:
     /**
@@ -162,7 +161,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if MultiDimFunctionGraph has no
      * variable yet.
      */
-    NodeId addInternalNode( const DiscreteVariable* var, NodeId nid );
+    NodeId addInternalNode(const DiscreteVariable* var, NodeId nid);
 
     /**
      * @brief Adds a value to the MultiDimFunctionGraph.
@@ -174,7 +173,7 @@ namespace gum {
      * @param value The value added by copy.
      * @return Returns he id of the terminal node hence created.
      */
-    NodeId addTerminalNode( const GUM_SCALAR& value );
+    NodeId addTerminalNode(const GUM_SCALAR& value);
 
     /**
      * @brief Erases a node from the diagram.
@@ -186,7 +185,7 @@ namespace gum {
      *
      * @throw NotFound Raised if node isn't in diagram.
      */
-    void eraseNode( NodeId id, NodeId replacingId = 0, bool updateParents = true );
+    void eraseNode(NodeId id, NodeId replacingId = 0, bool updateParents = true);
 
     /// @}
     // =========================================================================
@@ -200,7 +199,7 @@ namespace gum {
      * @param modality The modality for which sonNode is added to node.
      * @param sonNode The node to add as a son to node.
      */
-    void setSon( const NodeId& node, const Idx& modality, const NodeId& sonNode );
+    void setSon(const NodeId& node, const Idx& modality, const NodeId& sonNode);
 
 
     /**
@@ -213,7 +212,7 @@ namespace gum {
      * @param x The varaible to change.
      * @param desiredPos The new posiition.
      */
-    void moveTo( const DiscreteVariable* x, Idx desiredPos );
+    void moveTo(const DiscreteVariable* x, Idx desiredPos);
 
     private:
     /**
@@ -226,7 +225,7 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    void __adjacentSwap( const DiscreteVariable* x, const DiscreteVariable* y );
+    void __adjacentSwap(const DiscreteVariable* x, const DiscreteVariable* y);
 
     protected:
     /**
@@ -236,7 +235,7 @@ namespace gum {
      * @param x The variable from which all arcs are removed.
      * @param y The variable for which all of x arcs are added.
      */
-    void _migrateNode( const NodeId& x, const NodeId& y );
+    void _migrateNode(const NodeId& x, const NodeId& y);
 
     /// @}
     // =========================================================================
@@ -258,7 +257,7 @@ namespace gum {
      * @param sonsMap The node sons.
      * @return Returns the nodes id in the graph.
      */
-    NodeId _nodeRedundancyCheck( const DiscreteVariable* var, NodeId* sonsMap );
+    NodeId _nodeRedundancyCheck(const DiscreteVariable* var, NodeId* sonsMap);
 
     private:
     /**
@@ -273,7 +272,7 @@ namespace gum {
      * @param sons The node sons.
      * @return Returns the node id if found, 0 otherwhise.
      */
-    NodeId __checkIsomorphism( const DiscreteVariable* var, NodeId* sons );
+    NodeId __checkIsomorphism(const DiscreteVariable* var, NodeId* sons);
 
     /**
      * @brief Checks if node has the same child for every variable value.
@@ -284,7 +283,7 @@ namespace gum {
      * @param sons The node sons.
      * @return Returns true if the node is redundant.
      */
-    bool __isRedundant( const DiscreteVariable* var, NodeId* sons );
+    bool __isRedundant(const DiscreteVariable* var, NodeId* sons);
 
     public:
     /**
@@ -308,7 +307,7 @@ namespace gum {
 
     private:
     /// The multidimdecisiongraph supposed to be edited.
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* __functionGraph;
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* __functionGraph;
   };
 
   // ===========================================================================
@@ -330,14 +329,14 @@ namespace gum {
    * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphTreeManager
-      : public MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy> {
+    : public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
 
     /// This friend methods from is the only way to get an instance of a
     /// manager.
-    friend MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>*
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::manager();
+    friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     // ========================================================================
     /// @name Constructor and destructor
@@ -347,7 +346,7 @@ namespace gum {
      * @brief Class constructor.
      */
     MultiDimFunctionGraphTreeManager(
-        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master );
+      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
 
     public:
     /**
@@ -360,7 +359,7 @@ namespace gum {
     /// @name Inherited methods
     // ========================================================================
     /// @{
-    virtual NodeId addInternalNode( const DiscreteVariable* var, NodeId* sons );
+    virtual NodeId addInternalNode(const DiscreteVariable* var, NodeId* sons);
 
     virtual void reduce();
     /// @}
@@ -385,21 +384,21 @@ namespace gum {
    * table.
    * @tparam TerminalNodePolicy The terminal node policy to use.
    */
-  template <typename GUM_SCALAR, template <typename> class TerminalNodePolicy>
+  template < typename GUM_SCALAR, template < typename > class TerminalNodePolicy >
   class MultiDimFunctionGraphROManager
-      : public MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy> {
+    : public MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy > {
 
     /// This friend methods from is the only way to get an instance of a
     /// manager.
-    friend MultiDimFunctionGraphManager<GUM_SCALAR, TerminalNodePolicy>*
-    MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>::manager();
+    friend MultiDimFunctionGraphManager< GUM_SCALAR, TerminalNodePolicy >*
+    MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::manager();
 
     // ========================================================================
     /// @name Constructor and destructor
     // ========================================================================
     /// @{
     MultiDimFunctionGraphROManager(
-        MultiDimFunctionGraph<GUM_SCALAR, TerminalNodePolicy>* master );
+      MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
 
     public:
     ~MultiDimFunctionGraphROManager();
@@ -410,7 +409,7 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual NodeId addInternalNode( const DiscreteVariable* var, NodeId* sons );
+    virtual NodeId addInternalNode(const DiscreteVariable* var, NodeId* sons);
 
     virtual void reduce();
 

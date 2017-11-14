@@ -34,51 +34,51 @@
 #include <agrum/core/types.h>
 
 #ifdef NDEBUG
-#define GUM_ERROR_IN_EXPR( type, msg ) throw( type( msg ) )
-#define GUM_ERROR( type, msg )                                  \
+#define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
+#define GUM_ERROR(type, msg)                                    \
   {                                                             \
     std::ostringstream __error__str;                            \
     __error__str << __FILE__ << ":" << __LINE__ << ": " << msg; \
-    throw( type( __error__str.str() ) );                        \
+    throw(type(__error__str.str()));                            \
   }
-#define GUM_SHOWERROR( e )                                               \
-  {                                                                      \
-    std::cout << std::endl                                               \
-              << __FILE__ << ":" << __LINE__ << " " << ( e ).errorType() \
-              << " from " << std::endl                                   \
-              << ( e ).errorContent() << std::endl;                      \
+#define GUM_SHOWERROR(e)                                               \
+  {                                                                    \
+    std::cout << std::endl                                             \
+              << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
+              << " from " << std::endl                                 \
+              << (e).errorContent() << std::endl;                      \
   }
 #else
-#define GUM_ERROR_IN_EXPR( type, msg ) throw( type( msg ) )
-#define GUM_ERROR( type, msg )                                      \
-  {                                                                 \
-    std::ostringstream __error__str;                                \
-    __error__str << msg;                                            \
-    throw( type( gum::__createMsg(                                  \
-        __FILE__, __FUNCTION__, __LINE__, __error__str.str() ) ) ); \
+#define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
+#define GUM_ERROR(type, msg)                                                    \
+  {                                                                             \
+    std::ostringstream __error__str;                                            \
+    __error__str << msg;                                                        \
+    throw(type(                                                                 \
+      gum::__createMsg(__FILE__, __FUNCTION__, __LINE__, __error__str.str()))); \
   }
-#define GUM_SHOWERROR( e )                                               \
-  {                                                                      \
-    std::cout << std::endl                                               \
-              << __FILE__ << ":" << __LINE__ << " " << ( e ).errorType() \
-              << " from " << std::endl                                   \
-              << ( e ).errorContent() << std::endl;                      \
-    std::cout << ( e ).errorCallStack() << std::endl;                    \
+#define GUM_SHOWERROR(e)                                               \
+  {                                                                    \
+    std::cout << std::endl                                             \
+              << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
+              << " from " << std::endl                                 \
+              << (e).errorContent() << std::endl;                      \
+    std::cout << (e).errorCallStack() << std::endl;                    \
   }
 #endif  // NDEBUG
 
-#define GUM_MAKE_ERROR( TYPE, SUPERCLASS, MSG )       \
-  class TYPE : public SUPERCLASS {                    \
-    public:                                           \
-    TYPE( std::string aMsg, std::string aType = MSG ) \
-        : SUPERCLASS( aMsg, aType ){};                \
+#define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)       \
+  class TYPE : public SUPERCLASS {                  \
+    public:                                         \
+    TYPE(std::string aMsg, std::string aType = MSG) \
+        : SUPERCLASS(aMsg, aType){};                \
   };
 
-#define GUM_SYNTAX_ERROR( msg, line, column )                      \
-  {                                                                \
-    std::ostringstream __error__str;                               \
-    __error__str << msg;                                           \
-    throw( gum::SyntaxError( __error__str.str(), line, column ) ); \
+#define GUM_SYNTAX_ERROR(msg, line, column)                    \
+  {                                                            \
+    std::ostringstream __error__str;                           \
+    __error__str << msg;                                       \
+    throw(gum::SyntaxError(__error__str.str(), line, column)); \
   }
 
 namespace gum {
@@ -98,10 +98,10 @@ namespace gum {
     /// @name Class constructors & destructors
     // ====================================================================
     /// @{
-    Exception( const std::string aMsg = "",
-               const std::string aType = "Generic error" );
+    Exception(const std::string aMsg = "",
+              const std::string aType = "Generic error");
 
-    Exception( const Exception& e );
+    Exception(const Exception& e);
 
     ~Exception() {}
 
@@ -452,64 +452,64 @@ namespace gum {
   class SyntaxError;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  const std::string __createMsg( const std::string& filename,
-                                 const std::string& function,
-                                 const int          line,
-                                 const std::string& msg );
-  GUM_MAKE_ERROR( IdError, Exception, "ID error" )
-  GUM_MAKE_ERROR( FatalError, Exception, "Fatal error" )
-  GUM_MAKE_ERROR( UndefinedIteratorValue, Exception, "Undefined iterator" )
-  GUM_MAKE_ERROR( UndefinedIteratorKey, Exception, "Undefined iterator's key" )
-  GUM_MAKE_ERROR( NullElement, Exception, "Null element" )
-  GUM_MAKE_ERROR( UndefinedElement, Exception, "Undefined element" )
-  GUM_MAKE_ERROR( SizeError, Exception, "incorrect size" )
-  GUM_MAKE_ERROR( EmptySet, Exception, "Empty set" )
-  GUM_MAKE_ERROR( InvalidArgumentsNumber, Exception, "Invalid argument number" )
-  GUM_MAKE_ERROR( InvalidArgument, Exception, "Invalid argument" )
-  GUM_MAKE_ERROR( IOError, Exception, "I/O Error" )
-  GUM_MAKE_ERROR( FormatNotFound, IOError, "Format not found" )
-  GUM_MAKE_ERROR( OperationNotAllowed, Exception, "Operation not allowed" )
-  GUM_MAKE_ERROR( NotFound, Exception, "Object not found" )
-  GUM_MAKE_ERROR( ReferenceError, Exception, "Reference error" )
-  GUM_MAKE_ERROR( OutOfBounds, ReferenceError, "Out of bound error" )
-  GUM_MAKE_ERROR( OutOfLowerBound, OutOfBounds, "Out of lower bound error" )
-  GUM_MAKE_ERROR( OutOfUpperBound, OutOfBounds, "Out of upper bound error" )
-  GUM_MAKE_ERROR( DuplicateElement, ReferenceError, "Duplicate element" )
-  GUM_MAKE_ERROR( DuplicateLabel, ReferenceError, "Duplicate label" )
-  GUM_MAKE_ERROR( GraphError, Exception, "Graph error" )
-  GUM_MAKE_ERROR( NoNeighbour, GraphError, "No neighbour found" )
-  GUM_MAKE_ERROR( NoParent, GraphError, "No parent found" )
-  GUM_MAKE_ERROR( NoChild, GraphError, "No child found" )
-  GUM_MAKE_ERROR( InvalidEdge, GraphError, "Edge invalid" )
-  GUM_MAKE_ERROR( InvalidArc, GraphError, "Arc invalid" )
-  GUM_MAKE_ERROR( InvalidNode, GraphError, "Node invalid" )
-  GUM_MAKE_ERROR( EmptyBSTree, GraphError, "Empty binary search tree" )
-  GUM_MAKE_ERROR( DefaultInLabel, GraphError, "Error on label" )
-  GUM_MAKE_ERROR( InvalidDirectedCycle, GraphError, "Directed cycle detected" )
-  GUM_MAKE_ERROR( CPTError, Exception, "CPT error" )
-  GUM_MAKE_ERROR( CPTNoSumTo1, CPTError, "CPT does not sum to 1" )
-  GUM_MAKE_ERROR( IncompatibleEvidence,
-                  Exception,
-                  "several evidence/CPT are incompatible together (proba=0)" )
-  GUM_MAKE_ERROR( FactoryError, Exception, "factory error" )
-  GUM_MAKE_ERROR( FactoryInvalidState, FactoryError, "invalid state error" )
-  GUM_MAKE_ERROR( WrongType, FactoryError, "wrong type for this operation" )
-  GUM_MAKE_ERROR( WrongClassElement, FactoryError, "Wrong ClassElement" )
-  GUM_MAKE_ERROR( TypeError, FactoryError, "Wrong subtype or subclass" )
-  GUM_MAKE_ERROR( LearningError, Exception, "Factory error" )
-  GUM_MAKE_ERROR( IncompatibleScoreApriori,
-                  LearningError,
-                  "Incompatbile (maybe implicit) priors" )
-  GUM_MAKE_ERROR( PossiblyIncompatibleScoreApriori,
-                  LearningError,
-                  "Possible incompatibilty between score and prior" )
-  GUM_MAKE_ERROR( DatabaseError, LearningError, "Database error" )
-  GUM_MAKE_ERROR( MissingVariableInDatabase,
-                  LearningError,
-                  "Missing variable name in database" )
-  GUM_MAKE_ERROR( UnknownLabelInDatabase,
-                  LearningError,
-                  "Unknown label found in database" )
+  const std::string __createMsg(const std::string& filename,
+                                const std::string& function,
+                                const int          line,
+                                const std::string& msg);
+  GUM_MAKE_ERROR(IdError, Exception, "ID error")
+  GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
+  GUM_MAKE_ERROR(UndefinedIteratorValue, Exception, "Undefined iterator")
+  GUM_MAKE_ERROR(UndefinedIteratorKey, Exception, "Undefined iterator's key")
+  GUM_MAKE_ERROR(NullElement, Exception, "Null element")
+  GUM_MAKE_ERROR(UndefinedElement, Exception, "Undefined element")
+  GUM_MAKE_ERROR(SizeError, Exception, "incorrect size")
+  GUM_MAKE_ERROR(EmptySet, Exception, "Empty set")
+  GUM_MAKE_ERROR(InvalidArgumentsNumber, Exception, "Invalid argument number")
+  GUM_MAKE_ERROR(InvalidArgument, Exception, "Invalid argument")
+  GUM_MAKE_ERROR(IOError, Exception, "I/O Error")
+  GUM_MAKE_ERROR(FormatNotFound, IOError, "Format not found")
+  GUM_MAKE_ERROR(OperationNotAllowed, Exception, "Operation not allowed")
+  GUM_MAKE_ERROR(NotFound, Exception, "Object not found")
+  GUM_MAKE_ERROR(ReferenceError, Exception, "Reference error")
+  GUM_MAKE_ERROR(OutOfBounds, ReferenceError, "Out of bound error")
+  GUM_MAKE_ERROR(OutOfLowerBound, OutOfBounds, "Out of lower bound error")
+  GUM_MAKE_ERROR(OutOfUpperBound, OutOfBounds, "Out of upper bound error")
+  GUM_MAKE_ERROR(DuplicateElement, ReferenceError, "Duplicate element")
+  GUM_MAKE_ERROR(DuplicateLabel, ReferenceError, "Duplicate label")
+  GUM_MAKE_ERROR(GraphError, Exception, "Graph error")
+  GUM_MAKE_ERROR(NoNeighbour, GraphError, "No neighbour found")
+  GUM_MAKE_ERROR(NoParent, GraphError, "No parent found")
+  GUM_MAKE_ERROR(NoChild, GraphError, "No child found")
+  GUM_MAKE_ERROR(InvalidEdge, GraphError, "Edge invalid")
+  GUM_MAKE_ERROR(InvalidArc, GraphError, "Arc invalid")
+  GUM_MAKE_ERROR(InvalidNode, GraphError, "Node invalid")
+  GUM_MAKE_ERROR(EmptyBSTree, GraphError, "Empty binary search tree")
+  GUM_MAKE_ERROR(DefaultInLabel, GraphError, "Error on label")
+  GUM_MAKE_ERROR(InvalidDirectedCycle, GraphError, "Directed cycle detected")
+  GUM_MAKE_ERROR(CPTError, Exception, "CPT error")
+  GUM_MAKE_ERROR(CPTNoSumTo1, CPTError, "CPT does not sum to 1")
+  GUM_MAKE_ERROR(IncompatibleEvidence,
+                 Exception,
+                 "several evidence/CPT are incompatible together (proba=0)")
+  GUM_MAKE_ERROR(FactoryError, Exception, "factory error")
+  GUM_MAKE_ERROR(FactoryInvalidState, FactoryError, "invalid state error")
+  GUM_MAKE_ERROR(WrongType, FactoryError, "wrong type for this operation")
+  GUM_MAKE_ERROR(WrongClassElement, FactoryError, "Wrong ClassElement")
+  GUM_MAKE_ERROR(TypeError, FactoryError, "Wrong subtype or subclass")
+  GUM_MAKE_ERROR(LearningError, Exception, "Factory error")
+  GUM_MAKE_ERROR(IncompatibleScoreApriori,
+                 LearningError,
+                 "Incompatbile (maybe implicit) priors")
+  GUM_MAKE_ERROR(PossiblyIncompatibleScoreApriori,
+                 LearningError,
+                 "Possible incompatibilty between score and prior")
+  GUM_MAKE_ERROR(DatabaseError, LearningError, "Database error")
+  GUM_MAKE_ERROR(MissingVariableInDatabase,
+                 LearningError,
+                 "Missing variable name in database")
+  GUM_MAKE_ERROR(UnknownLabelInDatabase,
+                 LearningError,
+                 "Unknown label found in database")
 
   class SyntaxError : public IOError {
     protected:
@@ -517,13 +517,13 @@ namespace gum {
     Size _noCol;
 
     public:
-    SyntaxError( const std::string& aMsg,
-                 Size               nol,
-                 Size               noc,
-                 std::string        aType = "Syntax Error" )
-        : IOError( aMsg, aType )
-        , _noLine( nol )
-        , _noCol( noc ){
+    SyntaxError(const std::string& aMsg,
+                Size               nol,
+                Size               noc,
+                std::string        aType = "Syntax Error")
+        : IOError(aMsg, aType)
+        , _noLine(nol)
+        , _noCol(noc){
 
           };
 
