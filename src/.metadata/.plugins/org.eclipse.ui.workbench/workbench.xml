@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench progressCount="20" version="2.0">
+<workbenchAdvisor/>
+<window height="776" maximized="true" width="1018" x="97" y="27">
+<fastViewData fastViewLocation="1024"/>
+<perspectiveBar>
+<itemSize x="160"/>
+</perspectiveBar>
+<coolbarLayout>
+<coolItem id="group.file" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="286" y="36"/>
+<coolItem id="additions" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.cdt.ui.CElementCreationActionSet" itemType="typeToolBarContribution" x="210" y="36"/>
+<coolItem id="org.eclipse.debug.ui.launch.toolbar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="162" y="36"/>
+<coolItem id="org.eclipse.debug.ui.main.toolbar" itemType="typeToolBarContribution" x="46" y="36"/>
+<coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="94" y="36"/>
+<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="102" y="36"/>
+<coolItem id="group.nav" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="238" y="36"/>
+<coolItem id="group.editor" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.cdt.ui.editor.CEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="group.help" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
+</coolbarLayout>
+<page aggregateWorkingSetId="Aggregate for window 1507556722329" focus="true" label="Workspace - C/C++">
+<editors>
+<editorArea activeWorkbook="DefaultEditorWorkbook">
+<info part="DefaultEditorWorkbook">
+<folder appearance="1" expanded="2">
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="2"/>
+<part id="0"/>
+<part id="1"/>
+<part id="3"/>
+<part id="4"/>
+<part id="5"/>
+<part id="6"/>
+<part id="7"/>
+<part id="8"/>
+<part id="9"/>
+</presentation>
+</folder>
+</info>
+</editorArea>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="mutualInformation.h" partName="mutualInformation.h" title="mutualInformation.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/mutualInformation.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/mutualInformation.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="414" selectionOffset="4960" selectionTopPixel="1064"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="mutualInformation_tpl.h" partName="mutualInformation_tpl.h" title="mutualInformation_tpl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/mutualInformation_tpl.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/mutualInformation_tpl.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="2085" selectionOffset="11067" selectionTopPixel="4268"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="MutualInformationTestSuite.h" partName="MutualInformationTestSuite.h" title="MutualInformationTestSuite.h" tooltip="/home/falcand/aGrUM/src/testunits/module_LEARNING/MutualInformationTestSuite.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/testunits/module_LEARNING/MutualInformationTestSuite.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4307" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="threeOffTwo.cpp" partName="threeOffTwo.cpp" title="threeOffTwo.cpp" tooltip="/home/falcand/aGrUM/src/agrum/learning/threeOffTwo.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/agrum/learning/threeOffTwo.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2042" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="threeOffTwo.h" partName="threeOffTwo.h" title="threeOffTwo.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/threeOffTwo.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/agrum/learning/threeOffTwo.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="7442" selectionTopPixel="1770"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="threeOffTwo_tpl.h" partName="threeOffTwo_tpl.h" title="threeOffTwo_tpl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/threeOffTwo_tpl.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/agrum/learning/threeOffTwo_tpl.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5707" selectionTopPixel="3441"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="ThreeOffTwoTestSuite.h" partName="ThreeOffTwoTestSuite.h" title="ThreeOffTwoTestSuite.h" tooltip="/home/falcand/aGrUM/src/testunits/module_LEARNING/ThreeOffTwoTestSuite.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/testunits/module_LEARNING/ThreeOffTwoTestSuite.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="8" selectionOffset="2724" selectionTopPixel="374"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="correctedMutualInformation.h" partName="correctedMutualInformation.h" title="correctedMutualInformation.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="26" selectionOffset="5581" selectionTopPixel="41"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="correctedMutualInformation_tpl.h" partName="correctedMutualInformation_tpl.h" title="correctedMutualInformation_tpl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation_tpl.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation_tpl.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="26" selectionOffset="7321" selectionTopPixel="2399"/>
+</editor>
+<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="CorrectedMutualInformationTestSuite.h" partName="CorrectedMutualInformationTestSuite.h" title="CorrectedMutualInformationTestSuite.h" tooltip="/home/falcand/aGrUM/src/testunits/module_LEARNING/CorrectedMutualInformationTestSuite.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/home/falcand/aGrUM/src/testunits/module_LEARNING/CorrectedMutualInformationTestSuite.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2378" selectionTopPixel="0"/>
+</editor>
+</editors>
+<views>
+<view id="org.eclipse.ui.views.PropertySheet" partName="Properties"/>
+<view id="org.eclipse.ui.views.ProblemView" partName="Problems">
+<viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
+<columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="1026" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="300"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.pathField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.locationField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.markerType"/>
+</viewState>
+</view>
+<view id="org.eclipse.ui.console.ConsoleView" partName="Console"/>
+<view id="org.eclipse.ui.views.ContentOutline" partName="Outline">
+<viewState/>
+</view>
+<view id="org.eclipse.ui.views.TaskList" partName="Tasks">
+<viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.completionField" categoryGroup="none" markerContentGenerator="org.eclipse.ui.ide.tasksGenerator" partName="Tasks">
+<columnWidths org.eclipse.ui.ide.completionField="40" org.eclipse.ui.ide.descriptionField="300" org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.priorityField="30" org.eclipse.ui.ide.resourceField="90"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.completionField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.priorityField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.descriptionField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.pathField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.locationField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.markerType"/>
+</viewState>
+</view>
+<view id="org.eclipse.cdt.make.ui.views.MakeView" partName="Make Target">
+<viewState/>
+</view>
+<view id="org.eclipse.ui.navigator.ProjectExplorer" partName="Project Explorer">
+<viewState CommonNavigator.LINKING_ENABLED="0" org.eclipse.cdt.ui.cview.groupincludes="false" org.eclipse.cdt.ui.cview.groupmacros="false" org.eclipse.cdt.ui.editor.CUChildren="true" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0"/>
+</view>
+</views>
+<perspectives activePart="org.eclipse.cdt.ui.editor.CEditor" activePerspective="org.eclipse.cdt.ui.CPerspective">
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="org.eclipse.ui.internal.ide.application.ResourcePerspective" id="org.eclipse.ui.resourcePerspective" label="Resource"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.externaltools.ExternalToolsSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.ui.NavigateActionSet"/>
+<show_view_action id="org.eclipse.ui.navigator.ProjectExplorer"/>
+<show_view_action id="org.eclipse.ui.views.BookmarkView"/>
+<show_view_action id="org.eclipse.ui.views.ContentOutline"/>
+<show_view_action id="org.eclipse.ui.views.PropertySheet"/>
+<show_view_action id="org.eclipse.ui.views.ProblemView"/>
+<show_view_action id="org.eclipse.ui.views.ProgressView"/>
+<show_view_action id="org.eclipse.ui.views.TaskList"/>
+<show_view_action id="org.eclipse.ant.ui.views.AntView"/>
+<show_view_action id="org.eclipse.pde.runtime.LogView"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.folder"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.file"/>
+<new_wizard_action id="org.eclipse.ui.editors.wizards.UntitledTextFileWizard"/>
+<perspective_action id="org.eclipse.cdt.ui.CPerspective"/>
+<perspective_action id="org.eclipse.jdt.ui.JavaPerspective"/>
+<perspective_action id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
+<perspective_action id="org.eclipse.team.cvs.ui.cvsPerspective"/>
+<perspective_action id="org.eclipse.team.ui.TeamSynchronizingPerspective"/>
+<hide_toolbar_item_id id="org.eclipse.debug.ui.commands.RunToLine"/>
+<hide_toolbar_item_id id="org.eclipse.jdt.ui.actions.OpenProjectWizard"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<view id="org.eclipse.ui.navigator.ProjectExplorer"/>
+<view id="org.eclipse.ui.views.ContentOutline"/>
+<view id="org.eclipse.ui.views.TaskList"/>
+<fastViewBars/>
+<layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="topLeft">&#x0A;<folder activePageID="org.eclipse.ui.navigator.ProjectExplorer" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.navigator.ProjectExplorer" label="Project Explorer"/>
+<page content="org.eclipse.ui.views.BookmarkView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.ResourceNavigator" label="LabelNotFound"/>
+<page content="org.eclipse.team.ccvs.ui.RepositoriesView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.7495049" ratioLeft="757" ratioRight="253" relationship="2" relative="topLeft">&#x0A;<folder appearance="2" expanded="2">&#x0A;<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.25940594" ratioLeft="262" ratioRight="748" relationship="2" relative="topLeft"/>
+<info folder="true" part="bottomRight" ratio="0.65865386" ratioLeft="411" ratioRight="213" relationship="4" relative="org.eclipse.ui.editorss">&#x0A;<folder activePageID="org.eclipse.ui.views.TaskList" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.views.TaskList" label="Tasks"/>
+<page content="org.eclipse.team.ui.GenericHistoryView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="bottomLeft" ratio="0.5" ratioLeft="312" ratioRight="312" relationship="4" relative="topLeft">&#x0A;<folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.views.ContentOutline" label="Outline"/>
+<page content="org.eclipse.ant.ui.views.AntView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="org.eclipse.cdt.internal.ui.CPerspectiveFactory" id="org.eclipse.cdt.ui.CPerspective" label="C/C++"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.externaltools.ExternalToolsSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.SearchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.CElementCreationActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.NavigateActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.make.ui.makeTargetActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.launchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.buildConfigActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.NavigationActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.OpenActionSet"/>
+<alwaysOnActionSet id="org.eclipse.cdt.ui.CodingActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.presentation"/>
+<show_view_action id="org.eclipse.ui.console.ConsoleView"/>
+<show_view_action id="org.eclipse.search.ui.views.SearchView"/>
+<show_view_action id="org.eclipse.ui.views.ContentOutline"/>
+<show_view_action id="org.eclipse.ui.views.ProblemView"/>
+<show_view_action id="org.eclipse.cdt.ui.CView"/>
+<show_view_action id="org.eclipse.ui.views.ResourceNavigator"/>
+<show_view_action id="org.eclipse.ui.views.PropertySheet"/>
+<show_view_action id="org.eclipse.ui.views.TaskList"/>
+<show_view_action id="org.eclipse.cdt.codan.internal.ui.views.ProblemDetails"/>
+<show_view_action id="org.eclipse.cdt.make.ui.views.MakeView"/>
+<show_view_action id="org.eclipse.ui.navigator.ProjectExplorer"/>
+<show_view_action id="org.eclipse.cdt.ui.includeBrowser"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewCWizard1"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewCWizard2"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.ConvertToMakeWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewMakeFromExisting"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewSourceFolderCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewFolderCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewSourceFileCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewHeaderFileCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewFileCreationWizard"/>
+<new_wizard_action id="org.eclipse.cdt.ui.wizards.NewClassCreationWizard"/>
+<perspective_action id="org.eclipse.debug.ui.DebugPerspective"/>
+<perspective_action id="org.eclipse.team.ui.TeamSynchronizingPerspective"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<hide_toolbar_item_id id="org.eclipse.debug.ui.commands.RunToLine"/>
+<hide_toolbar_item_id id="org.eclipse.jdt.ui.actions.OpenProjectWizard"/>
+<fastViewBars>
+<fastViewBar fastViewLocation="1024" id="bottom" orientation="256" selectedTabId="org.eclipse.ui.views.ProblemView" style="0">
+<fastViews>
+<view id="org.eclipse.ui.views.ProblemView" ratio="0.3"/>
+<view id="org.eclipse.ui.views.TaskList" ratio="0.3"/>
+<view id="org.eclipse.ui.console.ConsoleView" ratio="0.3"/>
+<view id="org.eclipse.ui.views.PropertySheet" ratio="0.3"/>
+</fastViews>
+</fastViewBar>
+<fastViewBar fastViewLocation="131072" id="topRight" orientation="512" selectedTabId="org.eclipse.ui.views.ContentOutline" style="0">
+<fastViews>
+<view id="org.eclipse.ui.views.ContentOutline" ratio="0.3"/>
+<view id="org.eclipse.cdt.make.ui.views.MakeView" ratio="0.3"/>
+</fastViews>
+</fastViewBar>
+</fastViewBars>
+<layout>
+<mainWindow>
+<info folder="true" part="topLeft">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.ui.navigator.ProjectExplorer" label="LabelNotFound"/>
+<page content="org.eclipse.cdt.ui.CView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.ResourceNavigator" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.BookmarkView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.7495049" ratioLeft="757" ratioRight="253" relationship="2" relative="topLeft">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.24950495" ratioLeft="252" ratioRight="758" relationship="2" relative="topLeft"/>
+<info folder="true" part="bottom" ratio="0.75" ratioLeft="468" ratioRight="156" relationship="4" relative="org.eclipse.ui.editorss">
+<folder appearance="2" expanded="0">
+<page content="org.eclipse.ui.views.ProblemView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.TaskList" label="LabelNotFound"/>
+<page content="org.eclipse.ui.console.ConsoleView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.PropertySheet" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="topRight" ratio="0.74934036" ratioLeft="568" ratioRight="190" relationship="2" relative="org.eclipse.ui.editorss">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
+<page content="org.eclipse.cdt.make.ui.views.MakeView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+</perspectives>
+<workingSets/>
+<navigationHistory>
+<editors>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/mutualInformation.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/mutualInformation_tpl.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/partialEntropy.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation_tpl.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/counter.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/agrum/learning/BNLearnUtils/genericBNLearner_inl.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/score_tpl.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/testunits/module_LEARNING/CorrectedMutualInformationTestSuite.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/testunits/module_LEARNING/ThreeOffTwoTestSuite.h"/>
+<editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" uri="file:/home/falcand/aGrUM/src/testunits/module_LEARNING/MutualInformationTestSuite.h"/>
+</editors>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position/>
+</item>
+<item historyLabel="genericBNLearner_inl.h" index="6">
+<position info="not_deleted" x="10639" y="505"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="11329" y="0"/>
+</item>
+<item historyLabel="mutualInformation.h" index="0">
+<position info="not_deleted" x="5489" y="124"/>
+</item>
+<item historyLabel="partialEntropy.h" index="3">
+<position info="not_deleted" x="78" y="0"/>
+</item>
+<item historyLabel="mutualInformation.h" index="0">
+<position info="not_deleted" x="5489" y="124"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5892" y="0"/>
+</item>
+<item historyLabel="counter.h" index="5">
+<position info="not_deleted" x="77" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5892" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation.h" index="2">
+<position info="not_deleted" x="4535" y="92"/>
+</item>
+<item historyLabel="mutualInformation_tpl.h" index="1">
+<position info="not_deleted" x="9700" y="0"/>
+</item>
+<item historyLabel="mutualInformation.h" index="0">
+<position info="not_deleted" x="5473" y="16"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="7107" y="0"/>
+</item>
+<item historyLabel="mutualInformation.h" index="0">
+<position info="not_deleted" x="4960" y="414"/>
+</item>
+<item historyLabel="correctedMutualInformation.h" index="2">
+<position info="not_deleted" x="4903" y="0"/>
+</item>
+<item historyLabel="mutualInformation_tpl.h" index="1">
+<position info="not_deleted" x="11067" y="2085"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position/>
+</item>
+<item historyLabel="score_tpl.h" index="7">
+<position info="not_deleted" x="77" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="8919" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="4969" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="4770" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation.h" index="2">
+<position info="not_deleted" x="5343" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="1961" y="0"/>
+</item>
+<item historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="1961" y="0"/>
+</item>
+<item historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position info="not_deleted" x="4625" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="1961" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5829" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5842" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5865" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5794" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5781" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation.h" index="2">
+<position info="not_deleted" x="5343" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5867" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation.h" index="2">
+<position info="not_deleted" x="5343" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation.h" index="2">
+<position info="not_deleted" x="5283" y="0"/>
+</item>
+<item historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="5867" y="0"/>
+</item>
+<item historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position info="not_deleted" x="3007" y="0"/>
+</item>
+<item historyLabel="ThreeOffTwoTestSuite.h" index="9">
+<position info="not_deleted" x="2724" y="8"/>
+</item>
+<item historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position info="not_deleted" x="1816" y="26"/>
+</item>
+<item historyLabel="correctedMutualInformation.h" index="2">
+<position info="not_deleted" x="5581" y="26"/>
+</item>
+<item historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position info="not_deleted" x="1842" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation_tpl.h" index="4">
+<position info="not_deleted" x="7321" y="26"/>
+</item>
+<item historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position info="not_deleted" x="2605" y="0"/>
+</item>
+<item historyLabel="MutualInformationTestSuite.h" index="10">
+<position info="not_deleted" x="4307" y="0"/>
+</item>
+<item historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position info="not_deleted" x="2460" y="0"/>
+</item>
+<item historyLabel="correctedMutualInformation.h" index="2">
+<position info="not_deleted" x="5581" y="26"/>
+</item>
+<item active="true" historyLabel="CorrectedMutualInformationTestSuite.h" index="8">
+<position info="not_deleted" x="2460" y="0"/>
+</item>
+</navigationHistory>
+<input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
+</page>
+<workbenchWindowAdvisor/>
+<actionBarAdvisor/>
+<trimLayout>
+<trimArea IMemento.internal.id="131072">
+<trimItem IMemento.internal.id="topRight"/>
+<trimItem IMemento.internal.id="org.eclipse.ui.editorss"/>
+</trimArea>
+<trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
+</trimArea>
+<trimArea IMemento.internal.id="1024">
+<trimItem IMemento.internal.id="org.eclise.ui.internal.FastViewBar"/>
+<trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.progress.ProgressRegion"/>
+<trimItem IMemento.internal.id="bottom"/>
+</trimArea>
+</trimLayout>
+</window>
+<mruList>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="CorrectedMutualInformationTestSuite.h" tooltip="/home/falcand/aGrUM/src/testunits/module_LEARNING/CorrectedMutualInformationTestSuite.h">
+<persistable uri="file:/home/falcand/aGrUM/src/testunits/module_LEARNING/CorrectedMutualInformationTestSuite.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="score_tpl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/score_tpl.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/score_tpl.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="counter.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/counter.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/counter.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="partialEntropy.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/partialEntropy.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/partialEntropy.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="genericBNLearner_inl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/BNLearnUtils/genericBNLearner_inl.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/BNLearnUtils/genericBNLearner_inl.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="BNLearner_tpl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/BNLearner_tpl.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/BNLearner_tpl.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="BNLearner.cpp" tooltip="/home/falcand/aGrUM/src/agrum/learning/BNLearner.cpp">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/BNLearner.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="score.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/score.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/score.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="partialEntropy_tpl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/partialEntropy_tpl.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/partialEntropy_tpl.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="correctedMutualInformation_tpl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation_tpl.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation_tpl.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="correctedMutualInformation.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="correctedMutualInformation.cpp" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation.cpp">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/correctedMutualInformation.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ThreeOffTwoTestSuite.h" tooltip="/home/falcand/aGrUM/src/testunits/module_LEARNING/ThreeOffTwoTestSuite.h">
+<persistable uri="file:/home/falcand/aGrUM/src/testunits/module_LEARNING/ThreeOffTwoTestSuite.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="cache4PartEntropy_inl.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/cache4PartEntropy_inl.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/cache4PartEntropy_inl.h"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="cache4PartEntropy.h" tooltip="/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/cache4PartEntropy.h">
+<persistable uri="file:/home/falcand/aGrUM/src/agrum/learning/scores_and_tests/cache4PartEntropy.h"/>
+</file>
+</mruList>
+</workbench>

@@ -324,6 +324,24 @@ namespace gum {
     return ((h * HashFuncConst::gold) & this->_hash_mask);
   }
 
+  /// the hash function for tuples (idSet,Idx,Idx,Idx)
+  template <typename Alloc>
+  Size HashFunc<std::tuple<learning::IdSet<Alloc>, Idx, Idx, Idx>>::
+  operator()( const std::tuple<learning::IdSet<Alloc>, Idx, Idx, Idx>& key ) const {
+    Size h = 0;
+    Size i;
+    const std::vector<Idx, Alloc>& vect = std::get<0>( key ).ids();
+
+    for ( i = 0; i < vect.size(); ++i )
+      h += i * vect[i];
+
+    h *= i * std::get<1>( key );
+    h *= ++i * std::get<2>( key );
+    h *= ++i * std::get<3>( key );
+
+    return ( ( h * HashFuncConst::gold ) & this->_hash_mask );
+  }
+
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

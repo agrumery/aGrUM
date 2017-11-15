@@ -19,16 +19,11 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of idSets
+ * @brief Implementation of gum::learning::IndepTestChi2.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/scores_and_tests/idSet.h>
+#include <agrum/learning/scores_and_tests/kNML.h>
 
-template class gum::HashFunc<
-  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > > > >;
-template class gum::HashFunc<
-  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >, gum::Idx > >;
-template class gum::HashFunc<std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx>>;
-template class gum::HashFunc<std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx, gum::Idx>>;
+template class gum::learning::KNML<>;

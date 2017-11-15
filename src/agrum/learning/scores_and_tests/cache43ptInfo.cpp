@@ -17,18 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/**
- * @file
- * @brief Implementation of idSets
+/** @file
+ * @brief a cache for caching scores in Indep Test classes (chi2, G2, etc.)
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
-#include <agrum/learning/scores_and_tests/idSet.h>
+#include <agrum/learning/scores_and_tests/cache43ptInfo.h>
 
-template class gum::HashFunc<
-  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > > > >;
-template class gum::HashFunc<
-  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >, gum::Idx > >;
-template class gum::HashFunc<std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx>>;
-template class gum::HashFunc<std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx, gum::Idx>>;
+/// include the inlined functions if necessary
+#ifdef GUM_NO_INLINE
+#include <agrum/learning/scores_and_tests/cache43ptInfo_inl.h>
+#endif /* GUM_NO_INLINE */

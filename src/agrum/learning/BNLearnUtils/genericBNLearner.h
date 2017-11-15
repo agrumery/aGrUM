@@ -79,6 +79,7 @@
 #include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
+#include <agrum/learning/threeOffTwo.h>
 
 #include <agrum/core/signal/signaler.h>
 
@@ -115,7 +116,8 @@ namespace gum {
       enum class AlgoType {
         K2,
         GREEDY_HILL_CLIMBING,
-        LOCAL_SEARCH_WITH_TABU_LIST
+        LOCAL_SEARCH_WITH_TABU_LIST,
+		THREE_OFF_TWO
       };
 
       /// a helper to easily read databases
@@ -428,6 +430,9 @@ namespace gum {
       /// indicate that we wish to use K2
       void useK2(const std::vector< NodeId >& order) noexcept;
 
+      /// indicate that we wish to use 3off2
+      void use3off2() noexcept;
+
       /// @}
 
       // ##########################################################################
@@ -519,6 +524,9 @@ namespace gum {
 
       /// the K2 algorithm
       K2 __K2;
+
+      /// the 3off2 algorithm
+      ThreeOffTwo __3off2;
 
       /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;

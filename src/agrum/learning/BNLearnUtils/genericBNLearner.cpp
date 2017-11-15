@@ -774,6 +774,33 @@ namespace gum {
 
       switch (__selected_algo) {
         // ========================================================================
+        case AlgoType::THREE_OFF_TWO: {
+          //BNLearnerListener listener( this, __greedy_hill_climbing );
+          //create the mixedGraph_constraint_MandatoryArcs.arcs();
+          MixedGraph mgraph;
+          mgraph.populateNodes(init_graph);
+		  for ( gum::Size i = 0; i < mgraph.size(); ++i ){
+			for ( gum::Size j = 0; j < i; ++j){
+			  mgraph.addEdge( j, i );
+			}
+		  }
+          for ( const auto& arc : init_graph.arcs() ) {
+            mgraph.addArc( arc.tail(), arc.head() );
+            mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
+          }
+
+          for ( const auto& arc : forbidden_arcs ) {
+            mgraph.eraseArc( arc );
+            mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
+          }
+          //create the mutual entropy object
+          gum::learning::CorrectedMutualInformation<> cI( __score_database.rowFilter(),
+                  __score_database.modalities() );
+          cI.useNML();
+
+          return __3off2.learnStructure(  cI, mgraph );
+        }
+        // ========================================================================
         case AlgoType::GREEDY_HILL_CLIMBING: {
           BNLearnerListener listener(this, __greedy_hill_climbing);
           StructuralConstraintSetStatic< StructuralConstraintMandatoryArcs,
