@@ -98,9 +98,14 @@ tail :
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::history
 "
+Returns
+-------
+tuple
+	the scheme history
+
 Warnings
 --------
-A Faire
+OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::idFromName
@@ -201,10 +206,6 @@ Returns
 -------
 int
 	the number of iterations
-
-Warnings
---------
-a completer
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::periodSize

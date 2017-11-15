@@ -58,9 +58,7 @@ double
 
 %feature("docstring") gum::classname::addAllTargets
 "
-Warnings
---------
-TBD
+Add all the nodes as targets.
 "
 
 %feature("docstring") gum::classname::addEvidence
@@ -544,16 +542,18 @@ int
 
 %feature("docstring") gum::classname::isDrawnAtRandom
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+bool
+  True if variables are drawn at random
 "
 
 %feature("docstring") gum::classname::nbrDrawnVar
 "
-Warnings
---------
-A faire in GenericInference
+Returns
+-------
+int
+  the number of variable drawn at each iteration
 "
 
 %feature("docstring") gum::classname::setBurnIn
@@ -566,23 +566,39 @@ b : int
 
 %feature("docstring") gum::classname::setDrawnAtRandom
 "
-Warnings
---------
-A faire in GenericInference
+Parameters
+----------
+_atRandom : bool
+  indicates if variables should be drawn at random
 "
 
 %feature("docstring") gum::classname::setNbrDrawnVar
 "
-Warnings
---------
-A faire in GenericInference
+Parameters
+----------
+_nbr : int
+  the number of variables to be drawn at each iteration
 "
 
 %feature("docstring") gum::classname::currentPosterior
 "
+Computes and returns the current posterior of a node.
+
+Parameters
+----------
+var : int
+  the node Id of the node for which we need a posterior probability
+nodeName : str
+  the node name of the node for which we need a posterior probability
+
+Returns
+-------
+pyAgrum.Potential
+  a const ref to the current posterior probability of the node
+
 Warnings
 --------
-A faire in GenericInference
+UndefinedElement if an element of nodes is not in targets
 "
 
 %feature("docstring") gum::classname::setVirtualLBPSize

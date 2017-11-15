@@ -21,6 +21,23 @@
 
 %include "doc_GenericInference.i"
 
+%include "doc_LazyPropagation.i"
+%include "doc_ShaferShenoyInference.i"
+%include "doc_VariableElimination.i"
+
+%include "doc_LoopyBeliefPropagation.i"
+%include "doc_GibbsSampling.i"
+%include "doc_MonteCarloSampling.i"
+%include "doc_WeightedSampling.i"
+%include "doc_ImportanceSampling.i"
+
+%include "doc_LoopyGibbsSampling.i"
+%include "doc_LoopyMonteCarloSampling.i"
+%include "doc_LoopyWeightedSampling.i"
+%include "doc_LoopyImportanceSampling.i"
+
 %include "doc_IApproximationSchemeConfiguration.i"
 
 %include "doc_BNLearner.i"
+
+%include "doc_PRMexplorer.i"

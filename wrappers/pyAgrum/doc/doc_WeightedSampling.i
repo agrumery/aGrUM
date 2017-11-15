@@ -1,7 +1,7 @@
-%feature("docstring") gum::LazyPropagation
+%feature("docstring") gum::WeightedSampling
 "
 Available constructors:
-	``LazyPropagation(bn) -> LazyPropagation``
+	``WeightedSampling(bn) -> WeightedSampling``
 
 Parameters
 ----------
