@@ -25,3 +25,8 @@ Fonctions à augmenter
 
 %feature("docstring") gum::classname::hasHardEvidence
 devrait pouvoir prendre un id en param.
+
+Problème de swig ?
+------------------
+
+gum::PRMexplorer::aggType 

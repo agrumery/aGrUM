@@ -12,7 +12,7 @@ list
 
 Warnings
 --------
-IndexError if the class is not in the PRM
+IndexError raised if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classAttributes
@@ -29,7 +29,7 @@ list
 
 Warnings
 --------
-IndexError if the class is not in the PRM
+IndexError raised if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classDag
@@ -46,7 +46,7 @@ tuple
 
 Warnings
 --------
-IndexError if the class is not in the PRM
+IndexError raised if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classImplements
@@ -76,7 +76,7 @@ list
 
 Warnings
 --------
-IndexError if the class is not in the PRM
+IndexError raised if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classReferences
@@ -93,7 +93,7 @@ list
 
 Warnings
 --------
-IndexError if the class is not in the PRM
+IndexError raised if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classSlotChains
@@ -110,7 +110,7 @@ list
 
 Warnings
 --------
-TBD
+IndexError raised if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classes
@@ -142,11 +142,11 @@ OperationNotAllowed	Raised if the class element doesn't have any gum::Potential 
 
 Warnings
 --------
-IndexError if the class is not in the PRM
+IndexError raised if the class is not in the PRM
 
 Warnings
 --------
-IndexError if the attribute in parameters does not exist 
+IndexError raised if the attribute in parameters does not exist 
 "
 
 %feature("docstring") PRMexplorer::getDirectSubClass
@@ -163,7 +163,7 @@ list
 
 Warnings
 --------
-TBD
+IndexError raised if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getDirectSubInterfaces
@@ -180,7 +180,7 @@ list
 
 Warnings
 --------
-IndexError if the interface is not in the PRM
+IndexError raised if the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getDirectSubTypes
@@ -197,7 +197,7 @@ list
 
 Warnings
 --------
-IndexError if the type is not in the PRM
+IndexError raised if the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getImplementations
@@ -214,7 +214,7 @@ str
 
 Warnings
 --------
-IndexError if the interface is not in the PRM
+IndexError raised if the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getLabelMap
@@ -231,7 +231,7 @@ dict
 
 Warnings
 --------
-IndexError if the type is not in the PRM
+IndexError raised if the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getLabels
@@ -248,7 +248,7 @@ list
 
 Warnings
 --------
-IndexError if the type is not in the PRM
+IndexError raised if the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperClass
@@ -265,7 +265,7 @@ str
 
 Warnings
 --------
-IndexError if the class is not in the PRM
+IndexError raised if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperInterface
@@ -282,7 +282,7 @@ str
 
 Warnings
 --------
-IndexError if the interface is not in the PRM
+IndexError raised if the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperType
@@ -299,7 +299,7 @@ str
 
 Warnings
 --------
-IndexError if the type is not in the PRM
+IndexError raised if the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getalltheSystems
@@ -314,39 +314,45 @@ list
 "
 Parameters
 ----------
+interface_name : str
+	an interface
+
+allAttributes : bool
+	True if supertypes of a custom type should be indicated
 
 Returns
 -------
+list
+	the list of (<type>,<attribute_name>) for the given interface
 
 Warnings
 --------
-TBD
+IndexError raised if the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::interReferences
 "
 Parameters
 ----------
+interface_name : str
+	an interface
 
 Returns
 -------
+list
+	the list of (<reference_type>,<reference_name>,<True if the reference is an array>) for the given interface
 
 Warnings
 --------
-TBD
+IndexError raised if the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::interfaces
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-TBD
+list
+	the list of interfaces in the PRM 
 "
 
 %feature("docstring") PRMexplorer::isAttribute

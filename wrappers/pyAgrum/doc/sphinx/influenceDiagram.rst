@@ -2,15 +2,18 @@ Influence Diagram
 =================
 
 Model
-_____
+-----
+
 .. autoclass:: pyAgrum.InfluenceDiagram
+			:members:
 
 .. autoclass:: pyAgrum.pyAgrum.InfluenceDiagram_double
-  :members:
-
+			:members:
+			:exclude-members: setProperty, property, propertyWithDefault
 
 Inference
-_________
+---------
+
 .. autoclass:: pyAgrum.InfluenceDiagramInference
 
 .. autoclass:: pyAgrum.pyAgrum.InfluenceDiagramInference_double

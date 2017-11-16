@@ -1,22 +1,24 @@
 Credal Networks
-=================
+===============
 
 Model
-_____
+-----
+
 .. autoclass:: pyAgrum.CredalNet
+			:members:
 
-.. autoclass:: pyAgrum.pyAgrum.InfluenceDiagram_double
-  :members:
-
+.. autoclass:: pyAgrum.pyAgrum.CredalNet_double
+			:members:
 
 Inference
-_________
+---------
+
 .. autoclass:: pyAgrum.CNMonteCarloSampling
 
 .. autoclass:: pyAgrum.pyAgrum.CNMonteCarloSampling_double
-  :members:
+			:members:
 
 .. autoclass:: pyAgrum.CNLoopyPropagation
 
 .. autoclass:: pyAgrum.pyAgrum.CNLoopyPropagation_double
-  :members:
+ 			:members:
