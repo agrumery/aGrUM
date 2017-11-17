@@ -175,6 +175,21 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void setInitialDAG( const gum::DAG& g) {
     self->gum::learning::genericBNLearner::setInitialDAG(g);
   }
+  void use3off2() {
+    self->gum::learning::genericBNLearner::use3off2();
+  }
+  void useNML(){
+    self->gum::learning::genericBNLearner::useNML();
+  }
+  void useMDL(){
+    self->gum::learning::genericBNLearner::useMDL();
+  }
+  void useNoCorr(){
+    self->gum::learning::genericBNLearner::useNoCorr();
+  }
+  const std::vector<Arc> getLatent() {
+    return self->gum::learning::genericBNLearner::getLatent();
+  }
 }
 
 

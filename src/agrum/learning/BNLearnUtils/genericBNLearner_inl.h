@@ -170,7 +170,7 @@ namespace gum {
     	if ( __selected_algo != AlgoType::THREE_OFF_TWO){
     		GUM_ERROR( OperationNotAllowed, "Must be using the 3off2 algorithm" );
     	}
-    	__3off2.getLatent();
+    	return __3off2.getLatent();
     }
 
     // indicate that we wish to use a K2 algorithm
