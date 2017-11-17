@@ -42,6 +42,7 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/core/heap.h>
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
+#include <agrum/core/approximations/approximationScheme.h>
 
 namespace gum {
 
@@ -68,7 +69,7 @@ namespace gum {
      * independence between the nodes.
      * @ingroup learning_group
      */
-    class ThreeOffTwo : IApproximationSchemeConfiguration{
+    class ThreeOffTwo : public ApproximationScheme {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -159,6 +160,19 @@ namespace gum {
       const std::vector<Arc> getLatent() const;
 
       /// @}
+      // ##########################################################################
+      /// @name Signalers and Listeners
+      // ##########################################################################
+      /// @{
+
+      /**
+       * @brief Returns the approximation scheme message.
+       * @return Returns the approximation scheme message.
+       */
+      //std::string messageApproximationScheme() const;
+
+      /// @}
+
       protected:
       /*
       MixedGraph initiation( MixedGraph graph );
@@ -193,6 +207,7 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
        *@todo : avoid exception driven programmation in circle detection
        */
       void _propagatesHead( MixedGraph& graph, NodeId node );
+
       ///Fixes the maximum log that we accept in exponential computations
       int __maxLog = 100;
 
@@ -209,6 +224,7 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
       std::vector<std::pair<std::tuple<Idx, Idx, Idx>, double>> __triples2;
       ///size of the database
       Size __N;
+
     };
 
   } /* namespace learning */

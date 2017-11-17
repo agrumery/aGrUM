@@ -475,7 +475,9 @@ namespace gum {
 
       if (__apriori_database) delete __apriori_database;
 
-      GUM_DESTRUCTOR(genericBNLearner);
+      if ( __mutual_info ) delete __mutual_info;
+
+      GUM_DESTRUCTOR( genericBNLearner );
     }
 
     genericBNLearner& genericBNLearner::operator=(const genericBNLearner& from) {
@@ -498,6 +500,11 @@ namespace gum {
         if (__apriori_database) {
           delete __apriori_database;
           __apriori_database = nullptr;
+        }
+
+        if ( __mutual_info ) {
+          delete __mutual_info;
+          __mutual_info = nullptr;
         }
 
         __score_type = from.__score_type;
@@ -544,6 +551,11 @@ namespace gum {
         if (__apriori_database) {
           delete __apriori_database;
           __apriori_database = nullptr;
+        }
+
+        if ( __mutual_info ) {
+          delete __mutual_info;
+          __mutual_info = nullptr;
         }
 
         __score_type = from.__score_type;
@@ -775,7 +787,7 @@ namespace gum {
       switch (__selected_algo) {
         // ========================================================================
         case AlgoType::THREE_OFF_TWO: {
-          //BNLearnerListener listener( this, __greedy_hill_climbing );
+          BNLearnerListener listener( this, __3off2 );
           //create the mixedGraph_constraint_MandatoryArcs.arcs();
           MixedGraph mgraph;
           std::cout << "init graph " << mgraph << std::endl;
@@ -806,11 +818,12 @@ namespace gum {
             mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
           }
           //create the mutual entropy object
-          gum::learning::CorrectedMutualInformation<> cI( __score_database.rowFilter(),
-                  __score_database.modalities() );
-          cI.useNML();
+          if (__mutual_info == nullptr){
+          	__mutual_info = new CorrectedMutualInformation<>( __score_database.rowFilter(),
+                        	  	  	  	  	  	  	  	  	  	  __score_database.modalities() );
+          }
           std::cout << "init graph " << mgraph << std::endl;
-          return __3off2.learnStructure(  cI, mgraph );
+          return __3off2.learnStructure(  *__mutual_info, mgraph );
         }
         // ========================================================================
         case AlgoType::GREEDY_HILL_CLIMBING: {

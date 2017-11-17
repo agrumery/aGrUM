@@ -436,6 +436,21 @@ namespace gum {
       /// @}
 
       // ##########################################################################
+      /// @name 3off2 parameterization and specific results
+      // ##########################################################################
+      /// @{
+      /// indicate that we wish to use the NML correction for 3off2
+      void useNML();
+      /// indicate that we wish to use the MDL correction for 3off2
+      void useMDL();
+      /// indicate that we wish to use the NoCorr correction for 3off2
+      void useNoCorr();
+
+      ///get the list of arcs hiding latent variables
+      const std::vector<Arc> getLatent() const;
+
+      /// @}
+      // ##########################################################################
       /// @name Accessors / Modifiers for adding constraints on learning
       // ##########################################################################
       /// @{
@@ -494,6 +509,9 @@ namespace gum {
 
       /// the parameter estimator to use
       ParamEstimator<>* __param_estimator{nullptr};
+
+      /// the selected correction for 3off2
+      CorrectedMutualInformation<>* __mutual_info{nullptr};
 
       /// the a priori selected for the score and parameters
       AprioriType __apriori_type{AprioriType::NO_APRIORI};

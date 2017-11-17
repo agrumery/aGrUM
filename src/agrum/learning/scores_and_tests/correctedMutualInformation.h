@@ -106,6 +106,14 @@
        void useNML();
        void useNoCorr();
 
+
+       ///the description type for the complexity correction
+       enum class  KModeTypes {
+    	 MDL,
+		 NML,
+		 NoCorr
+       };
+
        protected:
        /// returns the 2-point mutual information corresponding to a given nodeset
        virtual double _I_score( Idx var1, Idx var2,
@@ -176,12 +184,6 @@
        ///the object computing the NML k score
        KNML<IdSetAlloc, CountAlloc> __k_NML;
 
-       ///the description type for the complexity correction
-       enum class  KModeTypes {
-    	 MDL,
-		 NML,
-		 NoCorr
-       };
 
        ///the mode used for the correction
        KModeTypes __kmode{KModeTypes::MDL};

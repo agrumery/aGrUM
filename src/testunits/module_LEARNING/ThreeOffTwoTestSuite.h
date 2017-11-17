@@ -121,7 +121,7 @@ namespace gum_tests {
       TS_ASSERT( graph.edges().size() == 7 );
     }
 
-    void /*test*/_3off2_asia_NMLcorr_noCycles() {
+    void test_3off2_asia_NMLcorr() {
       gum::learning::DatabaseFromCSV database( MY_ASIA );
 
       gum::learning::DBRowTranslatorSet<
@@ -239,7 +239,7 @@ namespace gum_tests {
       TS_ASSERT( latents.size() == 2 );
     }
 
-    void test_alarm_mixed() {
+    void /*test*/_alarm_mixed() {
       gum::learning::DatabaseFromCSV database( MY_ALARM );
 
       gum::learning::DBRowTranslatorSet<

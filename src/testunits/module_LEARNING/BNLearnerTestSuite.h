@@ -102,7 +102,13 @@ namespace gum_tests {
       gum::learning::BNLearner<double> learner(
           GET_RESSOURCES_PATH( "asia.csv" ) );
 
+      aSimpleBNLeanerListener listen( learner );
+
+      learner.useGreedyHillClimbing();
+      TS_ASSERT_THROWS( learner.useNML(), gum::OperationNotAllowed );
+
       learner.use3off2();
+      learner.useNML();
       learner.addForbiddenArc ( gum::Arc (4,1) );
       // learner.addForbiddenArc ( gum::Arc (5,1) );
       // learner.addForbiddenArc ( gum::Arc (5,7) );
@@ -123,6 +129,7 @@ namespace gum_tests {
         gum::BayesNet<double> bn = learner.learnBN();
         std::cout << "final graph " << bn.dag() << std::endl;
         TS_ASSERT_EQUALS( bn.dag().arcs().size(), 8 );
+        TS_ASSERT_EQUALS( listen.getNbr(), 49 );
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
       }

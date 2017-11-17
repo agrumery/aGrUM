@@ -104,10 +104,12 @@ namespace gum {
     /// learns the structure of a MixedGraph
     MixedGraph ThreeOffTwo::learnMixedStructure( CorrectedMutualInformation<>&  I,
 											MixedGraph          graph ) {
-    	Timer time;
-        double tps;
+      _timer.reset();
+      _current_step = 0;
+
       //clear the vector of latent arcs to be sure
       __latent_couples.clear();
+
       ///the heap of ranks, with the score, and the Idxs of x, y and z.
       Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
   	       GreaterPairOn2nd> _rank;
@@ -122,13 +124,13 @@ namespace gum {
        * the edge is deleted. If not, the best contributor is found.
        */
       std::cout << "INITIATION" << std::endl;
-      time.reset();
-      /*std::cout << graph.toString() << std::endl;*/
-	  //initiation( graph );
+      /*std::cout << graph << std::endl;*/
       Idx x, y, z;
       std::vector<Idx> ui;
+      EdgeSet edges = graph.edges();
+      Size steps_init = edges.size();
 
-      for ( const Edge &edge : graph.edges() ){
+      for ( const Edge &edge : edges ){
     	  x = edge.first();
     	  y = edge.second();
     	  /*std::cout << "Edge " << x << '-' << y << std::endl;*/
@@ -148,9 +150,17 @@ namespace gum {
             //tps = time.step()-tps;
             //std::cout << "      best contrib:" << tps << "s" << std::endl;
     	  }
+
+    	  ++_current_step;
+          if ( onProgress.hasListener() ) {
+            GUM_EMIT3( onProgress,
+                       ( _current_step * 33 ) / steps_init,
+                       0.,
+                       _timer.step() );
+          }
       }
-      tps = time.step();
-      std::cout << "  " << tps << "s" << std::endl;
+      //tps = time.step();
+      ///std::cout << "  " << tps << "s" << std::endl;
       /*std::cout << graph.toString() << std::endl;*/
   	  /*
        * PHASE 2 : ITERATION
@@ -159,7 +169,6 @@ namespace gum {
        * we can assess the independence of the variables.
        */
       std::cout << "ITERATION" << std::endl;
-      time.reset();
       //if no triples to further examine pass
   	 std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double> best;
       if ( !_rank.empty() ){
@@ -167,6 +176,7 @@ namespace gum {
       } else {
 		best = {{0, 0, 0, {}}, 0};
       }
+      Size steps_iter = _rank.size();
       while ( best.second > 0.5 ) {
     	  x = std::get<0>( best.first );
     	  y = std::get<1>( best.first );
@@ -187,20 +197,35 @@ namespace gum {
     	  }
 
     	  best = _rank.pop();
+
+    	  ++_current_step;
+          if ( onProgress.hasListener() ) {
+            GUM_EMIT3( onProgress,
+                       ( _current_step * 66 ) / ( steps_init + steps_iter ),
+                       0.,
+                       _timer.step() );
+          }
       }
-      tps = time.step();
-      std::cout << "  " << tps << "s" << std::endl;
+      _current_step = steps_init + steps_iter;
+      if ( onProgress.hasListener() ) {
+        GUM_EMIT3( onProgress,
+                   66,
+                   0.,
+                   _timer.step() );
+      }
+      //tps = time.step();
+      //std::cout << "  " << tps << "s" << std::endl;
       /*std::cout << graph.toString() << std::endl;*/
   	  /*
        * PHASE 3 : ORIENTATION
        */
       std::cout << "ORIENTATION" << std::endl;
-      time.reset();
 
       Heap<std::pair<std::tuple<Idx, Idx, Idx>, double>, GreaterAbsPairOn2nd>
       	  	  	  	  	  	  triples = _getUnshieldedTriples( graph, I, sep_set );
 	  /*std::cout << "Triples found" << std::endl;*/
       //First version
+      Size steps_orient = triples.size();
       while ( __orient_first && !triples.empty() ) {
     	std::pair<std::tuple<Idx, Idx, Idx>, double> triple = triples.pop();
 	    x = std::get<0>( triple.first );
@@ -286,11 +311,20 @@ namespace gum {
               graph.addArc( z, x );
             }
     	  }
-    	}
-      }
+    	}//if rule 0 or rule 1
+
+  	    ++_current_step;
+        if ( onProgress.hasListener() ) {
+          GUM_EMIT3( onProgress,
+                     ( _current_step * 100 ) / ( steps_init + steps_iter + steps_orient ),
+                     0.,
+                     _timer.step() );
+        }
+      }//while
       /*std::cout << graph.toString() << std::endl;*/
 
       //second version
+      _current_step = steps_init + steps_iter;
       Idx i=0;
       //list of elements that we shouldnt read again, ie elements that are eligible to
       //rule 0 after the first time they are tested, and elements on which rule 1 has been applied
@@ -394,10 +428,17 @@ namespace gum {
       	  }
     	} else{
     	  ++i;
-    	}
-      }
-      tps = time.step();
-      std::cout << "  " << tps << "s" << std::endl;
+    	}//if rule 0 or rule 1
+
+        if ( onProgress.hasListener() ) {
+          GUM_EMIT3( onProgress,
+                     ( ( _current_step + i ) * 100 ) / ( steps_init + steps_iter + steps_orient ),
+                     0.,
+                     _timer.step() );
+        }
+      }//while
+      //tps = time.step();
+      //std::cout << "  " << tps << "s" << std::endl;
       /*std::cout << do_not_reread << std::endl;*/
       return graph;
     }
