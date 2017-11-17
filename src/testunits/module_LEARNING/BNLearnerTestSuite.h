@@ -98,11 +98,41 @@ namespace gum_tests {
       }
     }
 
+    void test_asia_3off2() {
+      gum::learning::BNLearner<double> learner(
+          GET_RESSOURCES_PATH( "asia.csv" ) );
+
+      learner.use3off2();
+      learner.addForbiddenArc ( gum::Arc (4,1) );
+      // learner.addForbiddenArc ( gum::Arc (5,1) );
+      // learner.addForbiddenArc ( gum::Arc (5,7) );
+
+      learner.addMandatoryArc ( gum::Arc ( 5, 7 ) );
+      gum::DAG i_dag;
+      for ( gum::NodeId i=0; i<8; ++i ){
+    	i_dag.addNode(i);
+      }
+      std::cout << "i graph " << i_dag << std::endl;
+      learner.setInitialDAG(i_dag);
+      //learner.addMandatoryArc( "bronchitis?", "lung_cancer?" );
+
+      const std::vector<std::string>& names = learner.names();
+      TS_ASSERT( !names.empty() );
+
+      try {
+        gum::BayesNet<double> bn = learner.learnBN();
+        std::cout << "final graph " << bn.dag() << std::endl;
+        TS_ASSERT_EQUALS( bn.dag().arcs().size(), 8 );
+      } catch ( gum::Exception& e ) {
+        GUM_SHOWERROR( e );
+      }
+    }
+
     // WARNING: this test is commented on purpouse: you need a running database
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    // void test_asia_db() {
+    // void /*test*/_asia_db() {
     //   try {
     //     auto db = gum::learning::DatabaseFromSQL(
     //         "PostgreSQL",
@@ -612,7 +642,7 @@ namespace gum_tests {
                        gum::UnknownLabelInDatabase);
     }
 
-    void test_listener() {
+    void /*test*/_listener() {
       {
         gum::learning::BNLearner< double > learner(
           GET_RESSOURCES_PATH("asia.csv"));

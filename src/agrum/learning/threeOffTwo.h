@@ -41,6 +41,7 @@
 #include <agrum/graphs/mixedGraph.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/core/heap.h>
+#include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 
 namespace gum {
 
@@ -67,7 +68,7 @@ namespace gum {
      * independence between the nodes.
      * @ingroup learning_group
      */
-    class ThreeOffTwo {
+    class ThreeOffTwo : IApproximationSchemeConfiguration{
       public:
       // ##########################################################################
       /// @name Constructors / Destructors

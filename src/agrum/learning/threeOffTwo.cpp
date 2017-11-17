@@ -160,9 +160,13 @@ namespace gum {
        */
       std::cout << "ITERATION" << std::endl;
       time.reset();
-  	  //iteration( graph );
-      std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>
-      	  	  	  	  	  best = _rank.pop();
+      //if no triples to further examine pass
+  	 std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double> best;
+      if ( !_rank.empty() ){
+        best = _rank.pop();
+      } else {
+		best = {{0, 0, 0, {}}, 0};
+      }
       while ( best.second > 0.5 ) {
     	  x = std::get<0>( best.first );
     	  y = std::get<1>( best.first );
@@ -192,7 +196,6 @@ namespace gum {
        */
       std::cout << "ORIENTATION" << std::endl;
       time.reset();
-  	  //orientation( graph );
 
       Heap<std::pair<std::tuple<Idx, Idx, Idx>, double>, GreaterAbsPairOn2nd>
       	  	  	  	  	  	  triples = _getUnshieldedTriples( graph, I, sep_set );
@@ -205,10 +208,12 @@ namespace gum {
 	    z = std::get<2>( triple.first );
 
   	    std::vector<Idx> ui;
-  	    try {
-    	  ui = sep_set[std::make_pair( x, y )];
-        } catch ( gum::NotFound ) {
-    	  ui = sep_set[std::make_pair( y, x )];
+  	    std::pair<Idx, Idx> key={x, y};
+  	    std::pair<Idx, Idx> rev_key={y, x};
+  	    if ( sep_set.exists( key ) ) {
+    	    ui = sep_set[key];
+        } else if ( sep_set.exists( rev_key ) ) {
+    	    ui = sep_set[rev_key];
         }
 	    double Ixyz_ui = triple.second;
 	    /*std::cout << "Triple " << x << y << z << std::endl;*/
@@ -299,10 +304,12 @@ namespace gum {
   	      z = std::get<2>( triple.first );
 
     	  std::vector<Idx> ui;
-    	  try {
-      	    ui = sep_set[std::make_pair( x, y )];
-          } catch ( gum::NotFound ) {
-      	    ui = sep_set[std::make_pair( y, x )];
+    	  std::pair<Idx, Idx> key={x, y};
+    	  std::pair<Idx, Idx> rev_key={y, x};
+    	  if ( sep_set.exists( key ) ) {
+      	    ui = sep_set[key];
+          } else if ( sep_set.exists( rev_key ) ) {
+      	    ui = sep_set[rev_key];
           }
   	      double Ixyz_ui = triple.second;
   	      /*std::cout << "Triple " << x << y << z << std::endl;*/
@@ -493,10 +500,12 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
         	  /*std::cout << "    Triple found !" << std::endl;*/
 
         	  std::vector<Idx> ui;
-        	  try {
-          	    ui = sep_set[std::make_pair( x, y )];
-              } catch ( gum::NotFound ) {
-          	    ui = sep_set[std::make_pair( y, x )];
+        	  std::pair<Idx, Idx> key={x, y};
+        	  std::pair<Idx, Idx> rev_key={y, x};
+        	  if ( sep_set.exists( key ) ) {
+          	    ui = sep_set[key];
+              } else if ( sep_set.exists( rev_key ) ) {
+          	    ui = sep_set[rev_key];
               }
         	  /*std::cout << "    separation set : " << ui << std::endl;*/
           	  //remove z from ui if it's present
@@ -511,12 +520,12 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
               triple.first = {x, y, z};
               triple.second = Ixyz_ui;
         	  triples.insert( triple );
-        	  //__triples2.push_back( triple );
+        	  __triples2.push_back( triple );
         	}
           }
     	}
       }
-      //std::sort( __triples2.begin(), __triples2.end(), GreaterAbsPairOn2nd() );
+      std::sort( __triples2.begin(), __triples2.end(), GreaterAbsPairOn2nd() );
       return triples;
     }
 

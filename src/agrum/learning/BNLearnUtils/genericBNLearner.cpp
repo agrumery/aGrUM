@@ -778,16 +778,28 @@ namespace gum {
           //BNLearnerListener listener( this, __greedy_hill_climbing );
           //create the mixedGraph_constraint_MandatoryArcs.arcs();
           MixedGraph mgraph;
-          mgraph.populateNodes(init_graph);
-		  for ( gum::Size i = 0; i < mgraph.size(); ++i ){
-			for ( gum::Size j = 0; j < i; ++j){
-			  mgraph.addEdge( j, i );
+          std::cout << "init graph " << mgraph << std::endl;
+          if ( !init_graph.empty() ){
+              mgraph.populateNodes(init_graph);
+          } else {
+        	  for ( Size i=0; i<__score_database.modalities().size(); ++i){
+        		  mgraph.addNode(i);
+        	  }
+          }
+          std::cout << "init graph " << mgraph << std::endl;
+		  for ( NodeId i : mgraph ){
+			for ( NodeId j : mgraph ){
+				if ( j < i ){
+					mgraph.addEdge( j, i );
+				}
 			}
 		  }
+          std::cout << "init graph " << mgraph << std::endl;
           for ( const auto& arc : init_graph.arcs() ) {
             mgraph.addArc( arc.tail(), arc.head() );
             mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
           }
+          std::cout << "init graph " << mgraph << std::endl;
 
           for ( const auto& arc : forbidden_arcs ) {
             mgraph.eraseArc( arc );
@@ -797,7 +809,7 @@ namespace gum {
           gum::learning::CorrectedMutualInformation<> cI( __score_database.rowFilter(),
                   __score_database.modalities() );
           cI.useNML();
-
+          std::cout << "init graph " << mgraph << std::endl;
           return __3off2.learnStructure(  cI, mgraph );
         }
         // ========================================================================
