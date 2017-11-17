@@ -43,7 +43,8 @@
 %include "doc_PRMexplorer.i"
 
 %include "doc_CredalNet.i"
-
 %include "doc_CNInference.i"
+%include "doc_CNMonteCarloSampling.i"
+%include "doc_CNLoopyPropagation.i"
 
 %include "doc_InfluenceDiagram.i"

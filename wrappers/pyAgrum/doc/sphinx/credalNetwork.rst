@@ -5,10 +5,8 @@ Model
 -----
 
 .. autoclass:: pyAgrum.CredalNet
-			:members:
 
 .. autoclass:: pyAgrum.pyAgrum.CredalNet_double
-			:members:
 
 Inference
 ---------
@@ -16,9 +14,9 @@ Inference
 .. autoclass:: pyAgrum.CNMonteCarloSampling
 
 .. autoclass:: pyAgrum.pyAgrum.CNMonteCarloSampling_double
-			:members:
 
 .. autoclass:: pyAgrum.CNLoopyPropagation
+			:exclude-members: asIApproximationSchemeConfiguration
 
 .. autoclass:: pyAgrum.pyAgrum.CNLoopyPropagation_double
- 			:members:
+ 			:exclude-members: asIApproximationSchemeConfiguration

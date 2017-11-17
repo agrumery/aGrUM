@@ -1,6 +1,24 @@
 %feature("docstring") gum::credal::CredalNet
 "
-TBD
+Constructor used to create a CredalNet (step by step or with two BayesNet)
+
+Available constructors:
+    ``CredalNet() -> CredalNet``
+
+    ``CredalNet(src_min_num,src_max_den) -> CredalNet``
+
+    ``CredalNet(src_min_num,src_max_den) -> CredalNet``
+
+Parameters
+----------
+src_min_num
+	(str) the path to a BayesNet which contains lower probabilities.
+src_max_den
+	(str) the (optional) path to a BayesNet which contains upper probabilities.
+src_min_num
+	(pyAgrum.BayesNet) the BayesNet which contains lower probabilities.
+src_max_den
+	(pyAgrum.BayesNet) the (optional) BayesNet which contains upper probabilities. 
 "
 
 %feature("docstring") gum::credal::CredalNet::addArc
@@ -56,7 +74,7 @@ Each bit has a lower and upper probability which is the lowest - resp. highest -
 
 Warnings
 --------
-    Enlarge the orignal credal sets and therefor induce huge imprecision by propagation. Not recommanded, use MCSampling or something else instead. 
+Enlarge the orignal credal sets and therefor induce huge imprecision by propagation. Not recommended, use MCSampling or something else instead. 
 "
 
 %feature("docstring") gum::credal::CredalNet::bnToCredal
@@ -77,29 +95,31 @@ keepZeroes : bool
 "
 Used with binary networks to speed-up L2U inference.
 
-Store the lower and upper probabilities of each node X over the 'true' modality.
+Store the lower and upper probabilities of each node X over the 'True' modality.
 "
 
 %feature("docstring") gum::credal::CredalNet::credalNet_currentCpt
 "
-Returns
--------
-    a constant reference to the ( up-to-date ) CredalNet CPTs.
-
 Warnings
 --------
-Type de retour ?
+Experimental function - Return type to be wrapped
+
+Returns
+-------
+tbw
+    a constant reference to the (up-to-date) CredalNet CPTs.
 "
 
 %feature("docstring") gum::credal::CredalNet::credalNet_srcCpt
 "
-Returns
--------
-    a constant reference to the ( up-to-date ) CredalNet CPTs.
-
 Warnings
 --------
-Type de retour ?
+Experimental function - Return type to be wrapped
+
+Returns
+-------
+tbw
+    a constant reference to the (up-to-date) CredalNet CPTs.
 "
 
 %feature("docstring") gum::credal::CredalNet::currentNodeType
@@ -112,7 +132,7 @@ id : int
 Returns
 -------
 pyAgrum.CredalNet
-    the type of the choosen node in the ( up-to-date ) CredalNet __current_bn if any, __src_bn otherwise. 
+    the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise. 
 "
 
 %feature("docstring") gum::credal::CredalNet::current_bn
@@ -162,14 +182,14 @@ double
 
 %feature("docstring") gum::credal::CredalNet::fillConstraint
 "
-Set the interval constraints of a credal set of a given node ( from an instantiation index )
+Set the interval constraints of a credal set of a given node (from an instantiation index)
 
 Parameters
 ----------
 id : int 
 	The id of the node
 entry : int
-	The index of the instantiation excluding the given node ( only the parents are used to compute the index of the credal set )
+	The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
 ins : pyAgrum.Instantiation
 	The Instantiation
 lower : list
@@ -188,7 +208,7 @@ DOES change the BayesNet (s) associated to this credal net !
 
 %feature("docstring") gum::credal::CredalNet::fillConstraints
 "
-Set the interval constraints of the credal sets of a given node ( all instantiations ) 
+Set the interval constraints of the credal sets of a given node (all instantiations) 
 
 Parameters
 ----------
@@ -210,26 +230,27 @@ DOES change the BayesNet (s) associated to this credal net !
 
 %feature("docstring") gum::credal::CredalNet::get_CPT_max
 "
-Returns
--------
-Returns a constant reference to the upper probabilities of each node X over the 'true' modality
-
 Warnings
 --------
-Type de retour ?
+Experimental function - Return type to be wrapped
+
+Returns
+-------
+tbw
+	a constant reference to the upper probabilities of each node X over the 'True' modality
 "
 
 %feature("docstring") gum::credal::CredalNet::get_CPT_min
 "
-Returns
--------
-Returns a constant reference to the lower probabilities of each node X over the 'true' modality
-
 Warnings
 --------
-Type de retour ?
-"
+Experimental function - Return type to be wrapped
 
+Returns
+-------
+tbw
+	a constant reference to the lower probabilities of each node X over the 'True' modality
+"
 
 %feature("docstring") gum::credal::CredalNet::hasComputedCPTMinMax
 "
@@ -241,143 +262,148 @@ bool
 
 %feature("docstring") gum::credal::CredalNet::idmLearning
 "
+Learns parameters from a BayesNet storing counts of events.
+
+Use this method when using a single BayesNet storing counts of events. IDM model if s > 0, standard point probability if s = 0 (default value if none precised).
+
 Parameters
 ----------
-
-Returns
--------
-
-Warnings
---------
-A faire
+s : int
+	the IDM parameter.
+keepZeroes : bool
+	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept. 
 "
 
 %feature("docstring") gum::credal::CredalNet::instantiation
 "
+Get an Instantiation from a node id, usefull to fill the constraints of the network.
+
+bnet accessors / shortcuts.
+
 Parameters
 ----------
+id : int
+	the id of the node we want an instantiation from
 
 Returns
 -------
-
-Warnings
---------
-A faire
+pyAgrum.Instantiation
+    the instantiation 
 "
 
 %feature("docstring") gum::credal::CredalNet::intervalToCredal
 "
-Parameters
-----------
+Computes the vertices of each credal set according to their interval definition (uses lrs).
 
-Returns
--------
-
-Warnings
---------
-A faire
+Use this method when using two BayesNet, one with lower probabilities and one with upper probabilities.
 "
 
 %feature("docstring") gum::credal::CredalNet::intervalToCredalWithFiles
 "
-Parameters
-----------
-
-Returns
--------
-
 Warnings
 --------
-A faire
+Deprecated : use intervalToCredal (lrsWrapper with no input / output files needed).
+
+
+Computes the vertices of each credal set according to their interval definition (uses lrs).
+
+Use this method when using a single BayesNet storing counts of events. 
 "
 
 %feature("docstring") gum::credal::CredalNet::isSeparatelySpecified
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+bool
+	True if this CredalNet is separately and interval specified, False otherwise. 
 "
 
 %feature("docstring") gum::credal::CredalNet::lagrangeNormalization
 "
-Parameters
-----------
+Normalize counts of a BayesNet storing counts of each events such that no probability is 0.
 
-Returns
--------
+Use this method when using a single BayesNet storing counts of events. Lagrange normalization. This call is irreversible and modify counts stored by __src_bn.
 
-Warnings
---------
-A faire
+Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value). 
 "
 
 %feature("docstring") gum::credal::CredalNet::nodeType
 "
 Parameters
 ----------
+id : int
+	the constant reference to the choosen NodeId
 
 Returns
 -------
-
-Warnings
---------
-A faire
+pyAgrum.CredalNet
+	the type of the choosen node in the (up-to-date) CredalNet in __src_bn. 
 "
 
 %feature("docstring") gum::credal::CredalNet::saveBNsMinMax
 "
+If this CredalNet was built over a perturbed BayesNet, one can save the intervals as two BayesNet.
+
+to call after bnToCredal(GUM_SCALAR beta) save a BN with lower probabilities and a BN with upper ones
+
 Parameters
 ----------
-
-Returns
--------
-
-Warnings
---------
-A faire
+min_path : str
+	the path to save the BayesNet which contains the lower probabilities of each node X.
+max_path : str
+	the path to save the BayesNet which contains the upper probabilities of each node X.
 "
 
 %feature("docstring") gum::credal::CredalNet::setCPT
 "
+Warnings
+--------
+(experimental function) - Parameters to be wrapped
+
+
+Set the vertices of one credal set of a given node (any instantiation index)
+
 Parameters
 ----------
-
-Returns
--------
+id : int
+	the Id of the node
+entry : int
+	the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
+ins : pyAgrum.Instantiation
+	the Instantiation (only the parents matter to find the credal set index) 
+cpt	: tbw
+	the vertices of every credal set (for each instantiation of the parents)
 
 Warnings
 --------
-A faire
+DOES not change the BayesNet(s) associated to this credal net !
 "
 
 %feature("docstring") gum::credal::CredalNet::setCPTs
 "
-Parameters
-----------
-
-Returns
--------
-
 Warnings
 --------
-A faire
+(experimental function) - Parameters to be wrapped
+
+
+Set the vertices of the credal sets (all of the conditionals) of a given node
+
+Parameters
+----------
+id : int
+	the NodeId of the node
+cpt	: tbw 
+	the vertices of every credal set (for each instantiation of the parents)
+
+Warning
+-------
+DOES not change the BayesNet (s) associated to this credal net !
 "
 
 %feature("docstring") gum::credal::CredalNet::src_bn
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+pyAgrum.BayesNet
+    Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter). 
 "

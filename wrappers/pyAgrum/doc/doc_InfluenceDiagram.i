@@ -1,428 +1,499 @@
-%feature("docstring") gum::InfluenceDiagram::add
+%feature("docstring") gum::InfluenceDiagram
 "
+InfluenceDiagram represents an Influence Diagram.
+
+Available constructors:
+    ``InfluenceDiagram() -> InfluenceDiagram``
+
+    ``InfluenceDiagram(source) -> InfluenceDiagram``
+
 Parameters
 ----------
+source : pyAgrum.InfluenceDiagram
+  the InfluenceDiagram to copy
+"
 
-Returns
--------
+%feature("docstring") gum::InfluenceDiagram::add
+"
+Add a chance variable, it's associate node and it's CPT.
+
+The id of the new variable is automatically generated.
+
+Parameters
+----------
+variable : pyAgrum.DiscreteVariable
+	The variable added by copy.
+id : int
+	The chosen id. If 0, the NodeGraphPart will choose.
 
 Warnings
 --------
-A faire
+give an id (not 0) should be reserved for rare and specific situations !!! 
+
+Returns
+-------
+int
+    the id of the added variable. 
+
+Warnings
+--------
+DuplicateElement raised if id(<>0) is already used 
 "
 
 %feature("docstring") gum::InfluenceDiagram::addArc
 "
+Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
+
 Parameters
 ----------
-
-Returns
--------
+tail : int
+  the id of the tail node
+head : int
+  the id of the head node
 
 Warnings
 --------
-A faire
+InvalidEdge raised if arc.tail and/or arc.head are not in the ID.
+
+Warnings
+--------
+InvalidEdge raised if tail is a utility node 
 "
 
 %feature("docstring") gum::InfluenceDiagram::addChanceNode
 "
+Add a chance variable, it's associate node and it's CPT.
+
+The id of the new variable is automatically generated.
+
 Parameters
 ----------
-
-Returns
--------
+variable : pyAgrum.DiscreteVariable
+	the variable added by copy.
+aContent : tbd
+	The content used for the variable potential. 
+id : int
+	the chosen id. If 0, the NodeGraphPart will choose.
 
 Warnings
 --------
-A faire
+give an id (not 0) should be reserved for rare and specific situations !!! 
+
+Returns
+-------
+int
+    the id of the added variable. 
+
+Warnings
+--------
+DuplicateElement raised if id(<>0) is already used 
 "
 
 %feature("docstring") gum::InfluenceDiagram::addDecisionNode
 "
+Add a decision variable.
+
+The id of the new variable is automatically generated.
+
 Parameters
 ----------
-
-Returns
--------
+variable : pyAgrum.DiscreteVariable
+	the variable added by copy.
+id : int
+	the chosen id. If 0, the NodeGraphPart will choose.
 
 Warnings
 --------
-A faire
+give an id (not 0) should be reserved for rare and specific situations !!! 
+
+Returns
+-------
+int
+    the id of the added variable. 
+
+Warnings
+--------
+DuplicateElement raised if id(<>0) is already used 
 "
 
 %feature("docstring") gum::InfluenceDiagram::addUtilityNode
 "
+Add a utility variable, it's associate node and it's UT. 
+
+The id of the new variable is automatically generated.
+
 Parameters
 ----------
-
-Returns
--------
+variable : pyAgrum.DiscreteVariable
+	the variable added by copy
+aContent : tbd
+	The content used for the variable utility
+id : int
+	the chosen id. If 0, the NodeGraphPart will choose
 
 Warnings
 --------
-A faire
+give an id (not 0) should be reserved for rare and specific situations !!! 
+
+Returns
+-------
+int
+    the id of the added variable. 
+
+Warnings
+--------
+InvalidArgument raised if variable has more than one label
+
+Warnings
+--------
+DuplicateElement raised if id(<>0) is already used 
 "
 
 %feature("docstring") gum::InfluenceDiagram::arcs
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+list:
+	the list of all the arcs in the Influence Diagram.
 "
 
 %feature("docstring") gum::InfluenceDiagram::chanceNodeSize
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+int
+	the number of chance nodes. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::changeVariableName
 "
 Parameters
 ----------
-
-Returns
--------
+id : int
+	the node Id
+new_name : str
+	the name of the variable 
 
 Warnings
 --------
-A faire
+DuplicateLabel raised if this name already exists
+
+Warnings
+--------
+NotFound raised if no nodes matches id. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::children
 "
 Parameters
 ----------
+id : int
+  the id of the parent
 
 Returns
 -------
-
-Warnings
---------
-A faire
+Set
+	the set of all the children
 "
 
 %feature("docstring") gum::InfluenceDiagram::cpt
 "
+Returns the CPT of a variable.
+
 Parameters
 ----------
+VarId : int
+	A variable's id in the pyAgrum.BayesNet.
 
 Returns
 -------
+pyAgrum.Potential
+	The variable's CPT. 
 
 Warnings
 --------
-A faire
+NotFound raised if no variable's id matches varId. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::decisionNodeSize
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+int
+	the number of decision nodes
 "
 
 %feature("docstring") gum::InfluenceDiagram::decisionOrderExists
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+bool
+	True if a directed path exist with all decision node
 "
 
 %feature("docstring") gum::InfluenceDiagram::erase
 "
+Erase a Variable from the network and remove the variable from all his childs.
+
+If no variable matches the id, then nothing is done.
+
 Parameters
 ----------
-
-Returns
--------
-
-Warnings
---------
-A faire
+id : int
+	The id of the variable to erase.
+var : pyAgrum.DiscreteVariable
+	The reference on the variable to remove. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::eraseArc
 "
+Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
+
+If (tail, head) doesn't exist, the nothing happens.
+
 Parameters
 ----------
-
-Returns
--------
-
-Warnings
---------
-A faire
+arc : pyAgrum.Arc
+	The arc to be removed.
+tail : int
+  the id of the tail node
+head : int
+  the id of the head node
 "
 
 %feature("docstring") gum::InfluenceDiagram::existsPathBetween
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+bool
+	true if a path exists between two nodes. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::getDecisionGraph
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+pyAgrum.DAG
+	the temporal Graph. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::getDecisionOrder
 "
-Parameters
-----------
-
 Returns
 -------
+list
+	the sequence of decision nodes in the directed path.
 
 Warnings
 --------
-A faire
+NotFound raised if such a path does not exist 
 "
 
 %feature("docstring") gum::InfluenceDiagram::idFromName
 "
+Returns a variable's id given its name.
+
 Parameters
 ----------
+name : str
+	the variable's name from which the id is returned.
 
 Returns
 -------
+int
+	the variable's node id. 
 
 Warnings
 --------
-A faire
+NotFound raised if no such name exists in the graph. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::ids
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+list
+	The list variables ids.
 "
 
 %feature("docstring") gum::InfluenceDiagram::isChanceNode
 "
 Parameters
 ----------
+varId : int 
+	the tested node id.
 
 Returns
 -------
-
-Warnings
---------
-A faire
+bool
+	true if node is a chance node
 "
 
 %feature("docstring") gum::InfluenceDiagram::isDecisionNode
 "
 Parameters
 ----------
+varId : int 
+	the tested node id.
 
 Returns
 -------
-
-Warnings
---------
-A faire
+bool
+	true if node is a decision node
 "
 
 %feature("docstring") gum::InfluenceDiagram::isUtilityNode
 "
 Parameters
 ----------
+varId : int 
+	the tested node id.
 
 Returns
 -------
-
-Warnings
---------
-A faire
+bool
+	true if node is an utility node
 "
 
 %feature("docstring") gum::InfluenceDiagram::loadBIFXML
 "
+Load a BIFXML file.
+
 Parameters
 ----------
-
-Returns
--------
+name : str
+	the name's file
 
 Warnings
 --------
-A faire
+IOError raised if file not found
+
+Warnings
+--------
+FatalError raised if file is not valid
 "
 
 %feature("docstring") gum::InfluenceDiagram::names
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+list
+	The names of the InfluenceDiagram variables
 "
+
 
 %feature("docstring") gum::InfluenceDiagram::nodeId
 "
 Parameters
 ----------
+var : pyAgrum.DiscreteVariable
+	a variable
 
 Returns
 -------
+int
+	the id of the variable
 
 Warnings
 --------
-A faire
+IndexError raised if the InfluenceDiagram does not contain the variable
 "
 
 %feature("docstring") gum::InfluenceDiagram::parents
 "
 Parameters
 ----------
+id :
+	The id of the child node
 
 Returns
 -------
-
-Warnings
---------
-A faire
+set
+    the set of the parents ids.
 "
 
 %feature("docstring") gum::InfluenceDiagram::saveBIFXML
 "
+Save the BayesNet in a BIFXML file.
+
 Parameters
 ----------
-
-Returns
--------
-
-Warnings
---------
-A faire
+name : str
+	the file's name
 "
 
 %feature("docstring") gum::InfluenceDiagram::toDot
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+str
+    a friendly display of the graph in DOT format
 "
 
 %feature("docstring") gum::InfluenceDiagram::utility
 "
+Warnings
+--------
+Return type to be wrapped
+
 Parameters
 ----------
+varId : int 
+	the tested node id.
 
 Returns
 -------
+tbw
+	the utility table of the node
 
 Warnings
 --------
-A faire
+IndexError raised if the InfluenceDiagram does not contain the variable
 "
 
 %feature("docstring") gum::InfluenceDiagram::utilityNodeSize
 "
-Parameters
-----------
-
 Returns
 -------
-
-Warnings
---------
-A faire
+int
+	the number of utility nodes
 "
 
 %feature("docstring") gum::InfluenceDiagram::variable
 "
 Parameters
 ----------
+id : int
+ 	the node id
 
 Returns
--------
+------
+pyAgrum.DiscreteVariable
+	a constant reference over a variabe given it's node id
 
 Warnings
 --------
-A faire
+NotFound raised if no variable's id matches the parameter 
 "
 
 %feature("docstring") gum::InfluenceDiagram::variableFromName
 "
 Parameters
 ----------
+name : str
+	a variable's name
 
 Returns
 -------
+pyAgrum.DiscreteVariable
+	the variable
 
 Warnings
 --------
-A faire
+IndexError if the InfluenceDiagram does not contain the variable
 "
 
 %feature("docstring") gum::InfluenceDiagram::variableNodeMap
 "
-Parameters
-----------
-
-Returns
--------
-
-Warnings
---------
-A faire
+TBD
 "

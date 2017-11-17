@@ -566,7 +566,7 @@ Warnings
 Returns
 -------
 list :
-	The lisf variables ids.
+	The list variables ids.
 "
 
 %feature("docstring") gum::BayesNet::loadBIF
