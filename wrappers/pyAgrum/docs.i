@@ -48,3 +48,6 @@
 %include "doc_CNLoopyPropagation.i"
 
 %include "doc_InfluenceDiagram.i"
+%include "doc_InfluenceDiagramInference.i"
+
+%include "doc_miscellaneous.i"

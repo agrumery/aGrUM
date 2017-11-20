@@ -15,6 +15,8 @@ Inference
 ---------
 
 .. autoclass:: pyAgrum.InfluenceDiagramInference
+			:members:
+
 
 .. autoclass:: pyAgrum.pyAgrum.InfluenceDiagramInference_double
-    :members:
+    		:members:

@@ -74,7 +74,7 @@ Each bit has a lower and upper probability which is the lowest - resp. highest -
 
 Warnings
 --------
-Enlarge the orignal credal sets and therefor induce huge imprecision by propagation. Not recommended, use MCSampling or something else instead. 
+Enlarge the orignal credal sets and therefor induce huge imprecision by propagation. Not recommended, use MCSampling or something else instead
 "
 
 %feature("docstring") gum::credal::CredalNet::bnToCredal
@@ -84,11 +84,11 @@ Perturbates the BayesNet provided as input for this CredalNet by generating inte
 Parameters
 ----------
 beta : double
-	The beta used to perturbate the network. 0≤β∗≤1∗.
+	The beta used to perturbate the network
 oneNet : bool
-	used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net).
+	used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net)
 keepZeroes : bool
-	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
+	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
 "
 
 %feature("docstring") gum::credal::CredalNet::computeCPTMinMax

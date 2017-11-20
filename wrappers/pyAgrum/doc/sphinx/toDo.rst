@@ -14,6 +14,8 @@ CredalNet.get_CPT_min (pb de type de retour)
 CredalNet.setCPT (pb de type de param)
 CredalNet.setCPTs (pb de type de param)
 InfluenceDiagram.utility (pb de type de retour)
+InfluenceDiagramInference.insertEvidence (pb type de param ?)
+InfluenceDiagramInference.displayStrongJunctionTree (pb type de param ?)
 
 Problèmes d'exceptions
 ----------------------
@@ -34,10 +36,11 @@ Fonctions à surcharger
 %feature("docstring") gum::classname::hasHardEvidence
 devrait pouvoir prendre un id en param.
 
-Problème de swig ?
-------------------
+Autres problèmes
+----------------
 
 gum::PRMexplorer::aggType 
 
 
-gum.CredalNet.dynamicExceptations nécessaire pour faire fonctionner dynamicExpMax/Min
+gum.CredalNet.dynamicExceptations nécessaire pour faire fonctionner dynamicExpMax/Min$
+
