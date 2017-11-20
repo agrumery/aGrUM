@@ -174,7 +174,7 @@ namespace gum {
       if ( !_rank.empty() ){
         best = _rank.pop();
       } else {
-		best = {{0, 0, 0, {}}, 0};
+    	std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double> best = {{0, 0, 0, {}}, 0};
       }
       Size steps_iter = _rank.size();
       while ( best.second > 0.5 ) {
@@ -514,9 +514,7 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
     	}//if z not in (x, y)
       }//for z in graph.nodes
       //storing best z in _rank
-      std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double> final;
-      final.first = {x, y, maxZ, ui};
-      final.second = maxP;
+      std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double> final = {{x, y, maxZ, ui}, maxP};
       _rank.insert( final );
     }
 
@@ -557,9 +555,7 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
         	  }
 
         	  double Ixyz_ui = I.score( x, y , z, ui );
-              std::pair<std::tuple<Idx, Idx, Idx>, double> triple;
-              triple.first = {x, y, z};
-              triple.second = Ixyz_ui;
+              std::pair<std::tuple<Idx, Idx, Idx>, double> triple = {{x, y, z}, Ixyz_ui};
         	  triples.insert( triple );
         	  __triples2.push_back( triple );
         	}
