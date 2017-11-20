@@ -50,14 +50,14 @@ namespace gum {
 
     class GreaterPairOn2nd{
       public:
-      bool operator()( const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>& e1,
-    		  const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>& e2 ) const;
+      bool operator()( const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>& e1,
+    		  const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>& e2 ) const;
     };
 
     class GreaterAbsPairOn2nd{
       public:
-      bool operator()( const std::pair<std::tuple<Idx, Idx, Idx>, double>& e1,
-    		  const std::pair<std::tuple<Idx, Idx, Idx>, double>& e2 ) const;
+      bool operator()( const std::pair<std::tuple<Idx, Idx, Idx> *, double>& e1,
+    		  const std::pair<std::tuple<Idx, Idx, Idx> *, double>& e2 ) const;
     };
 
     /**
@@ -187,7 +187,7 @@ namespace gum {
       void _findBestContributor( Idx x, Idx y, const std::vector<Idx>& ui,
 										const MixedGraph&             graphe,
 										CorrectedMutualInformation<>&          I,
-Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
+Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>,
 												   GreaterPairOn2nd>&  _rank );
 
       ///gets the list of unshielded triples in the graph in decreasing value of
@@ -196,7 +196,7 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
        *@param I mutual information object to compute the scores
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
-      Heap<std::pair<std::tuple<Idx, Idx, Idx>, double>, GreaterAbsPairOn2nd>
+      Heap<std::pair<std::tuple<Idx, Idx, Idx> *, double>, GreaterAbsPairOn2nd>
       	  	  	  	  	  	 _getUnshieldedTriples( const MixedGraph& graph,
       	  	  	  	  	  			 	CorrectedMutualInformation<>& I,
 		      const HashTable<std::pair<Idx, Idx>, std::vector<Idx>>& sep_set  );
@@ -221,7 +221,7 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
       ///whether to use the first or second form of the orientation algorithm
       bool __orient_first{true};
       ///vector of triples to sort
-      std::vector<std::pair<std::tuple<Idx, Idx, Idx>, double>> __triples2;
+      std::vector<std::pair<std::tuple<Idx, Idx, Idx> *, double>> __triples2;
       ///size of the database
       Size __N;
 

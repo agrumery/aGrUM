@@ -90,14 +90,14 @@ namespace gum {
 */
 
 	bool GreaterPairOn2nd::operator()
-		( const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>& e1,
-		  const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>& e2 ) const {
+		( const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>& e1,
+		  const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>& e2 ) const {
 	  return e1.second > e2.second;
 	}
 
 	bool GreaterAbsPairOn2nd::operator()
-		( const std::pair<std::tuple<Idx, Idx, Idx>, double>& e1,
-		  const std::pair<std::tuple<Idx, Idx, Idx>, double>& e2 ) const {
+		( const std::pair<std::tuple<Idx, Idx, Idx> *, double>& e1,
+		  const std::pair<std::tuple<Idx, Idx, Idx> *, double>& e2 ) const {
 	  return std::abs(e1.second) > std::abs(e2.second);
 	}
 
@@ -111,7 +111,7 @@ namespace gum {
       __latent_couples.clear();
 
       ///the heap of ranks, with the score, and the Idxs of x, y and z.
-      Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
+      Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>,
   	       GreaterPairOn2nd> _rank;
 
       ///the variables separation sets
@@ -170,18 +170,20 @@ namespace gum {
        */
       std::cout << "ITERATION" << std::endl;
       //if no triples to further examine pass
-  	 std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double> best;
+  	 std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double> best;
       if ( !_rank.empty() ){
         best = _rank.pop();
       } else {
-    	std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double> best = {{0, 0, 0, {}}, 0};
+    	auto tup = new std::tuple<Idx, Idx, Idx, std::vector<Idx>>{0, 0, 0, {}};
+    	best.first = tup;
+    	best.second = 0;
       }
       Size steps_iter = _rank.size();
       while ( best.second > 0.5 ) {
-    	  x = std::get<0>( best.first );
-    	  y = std::get<1>( best.first );
-    	  z = std::get<2>( best.first );
-    	  ui = std::get<3>( best.first );
+    	  x = std::get<0>( *best.first );
+    	  y = std::get<1>( *best.first );
+    	  z = std::get<2>( *best.first );
+    	  ui = std::get<3>( *best.first );
 
     	  ui.push_back( z );
     	  /*std::cout << "Edge " << x << "-" << y << " with ui "<< ui << std::endl;*/
@@ -196,6 +198,7 @@ namespace gum {
     		_findBestContributor( x, y, ui, graph, I, _rank );
     	  }
 
+    	  delete best.first;
     	  best = _rank.pop();
 
     	  ++_current_step;
@@ -221,16 +224,16 @@ namespace gum {
        */
       std::cout << "ORIENTATION" << std::endl;
 
-      Heap<std::pair<std::tuple<Idx, Idx, Idx>, double>, GreaterAbsPairOn2nd>
+      Heap<std::pair<std::tuple<Idx, Idx, Idx> *, double>, GreaterAbsPairOn2nd>
       	  	  	  	  	  	  triples = _getUnshieldedTriples( graph, I, sep_set );
 	  /*std::cout << "Triples found" << std::endl;*/
       //First version
       Size steps_orient = triples.size();
       while ( __orient_first && !triples.empty() ) {
-    	std::pair<std::tuple<Idx, Idx, Idx>, double> triple = triples.pop();
-	    x = std::get<0>( triple.first );
-  	    y = std::get<1>( triple.first );
-	    z = std::get<2>( triple.first );
+    	std::pair<std::tuple<Idx, Idx, Idx> *, double> triple = triples.pop();
+	    x = std::get<0>( *triple.first );
+  	    y = std::get<1>( *triple.first );
+	    z = std::get<2>( *triple.first );
 
   	    std::vector<Idx> ui;
   	    std::pair<Idx, Idx> key={x, y};
@@ -332,10 +335,10 @@ namespace gum {
       while ( !__orient_first && i < __triples2.size() ){
     	//if i not in do_not_reread
     	if ( std::find( do_not_reread.begin(), do_not_reread.end(), i ) == do_not_reread.end() ){
-          std::pair<std::tuple<Idx, Idx, Idx>, double> triple = __triples2[i];
-    	  x = std::get<0>( triple.first );
-      	  y = std::get<1>( triple.first );
-  	      z = std::get<2>( triple.first );
+          std::pair<std::tuple<Idx, Idx, Idx> *, double> triple = __triples2[i];
+    	  x = std::get<0>( *triple.first );
+      	  y = std::get<1>( *triple.first );
+  	      z = std::get<2>( *triple.first );
 
     	  std::vector<Idx> ui;
     	  std::pair<Idx, Idx> key={x, y};
@@ -447,7 +450,7 @@ namespace gum {
     void ThreeOffTwo::_findBestContributor( Idx x, Idx y, const std::vector<Idx>& ui,
 												const MixedGraph&     graph,
 												CorrectedMutualInformation<>&  I,
-Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
+Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>,
 											    GreaterPairOn2nd>& 	  _rank ){
       double maxP = -1.0;
       Idx maxZ;
@@ -514,7 +517,10 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
     	}//if z not in (x, y)
       }//for z in graph.nodes
       //storing best z in _rank
-      std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double> final = {{x, y, maxZ, ui}, maxP};
+      std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double> final;
+      auto tup = new std::tuple<Idx, Idx, Idx, std::vector<Idx>>{x, y, maxZ, ui};
+      final.first = tup;
+      final.second = maxP;
       _rank.insert( final );
     }
 
@@ -524,12 +530,12 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
     /*@param graph graph in which to find the triples
      *
      */
-    Heap<std::pair<std::tuple<Idx, Idx, Idx>, double>, GreaterAbsPairOn2nd>
+    Heap<std::pair<std::tuple<Idx, Idx, Idx> *, double>, GreaterAbsPairOn2nd>
     			 ThreeOffTwo::_getUnshieldedTriples( const MixedGraph&     graph,
 													CorrectedMutualInformation<>&  I,
 				 const HashTable<std::pair<Idx, Idx>, std::vector<Idx>>&  sep_set ){
       __triples2.clear();
-      Heap<std::pair<std::tuple<Idx, Idx, Idx>, double>, GreaterAbsPairOn2nd> triples;
+      Heap<std::pair<std::tuple<Idx, Idx, Idx> *, double>, GreaterAbsPairOn2nd> triples;
       for (Idx z : graph ){
       	/*std::cout << "node " << z << std::endl;*/
     	for ( Idx x : graph.neighbours( z ) ){
@@ -555,7 +561,11 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>>, double>,
         	  }
 
         	  double Ixyz_ui = I.score( x, y , z, ui );
-              std::pair<std::tuple<Idx, Idx, Idx>, double> triple = {{x, y, z}, Ixyz_ui};
+              std::pair<std::tuple<Idx, Idx, Idx> *, double> triple;
+              auto tup = new std::tuple<Idx, Idx, Idx>{x, y, z};
+              //std::tuple<Idx, Idx, Idx> tup = {x, y, z};
+              triple.first = tup;
+              triple.second = Ixyz_ui;
         	  triples.insert( triple );
         	  __triples2.push_back( triple );
         	}

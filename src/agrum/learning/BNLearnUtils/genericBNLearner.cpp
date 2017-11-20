@@ -755,6 +755,47 @@ namespace gum {
       if (old_estimator != nullptr) delete old_estimator;
     }
 
+    MixedGraph genericBNLearner::learnMixedStructure() {
+    	if ( __selected_algo != AlgoType::THREE_OFF_TWO){
+    		GUM_ERROR( OperationNotAllowed, "Must be using the 3off2 algorithm" );
+    	}
+		BNLearnerListener listener( this, __3off2 );
+		//create the mixedGraph_constraint_MandatoryArcs.arcs();
+		MixedGraph mgraph;
+		if ( !__initial_dag.empty() ){
+			mgraph.populateNodes(__initial_dag);
+		} else {
+		  for ( Size i=0; i<__score_database.modalities().size(); ++i){
+			  mgraph.addNode(i);
+		  }
+		}
+		for ( NodeId i : mgraph ){
+			for ( NodeId j : mgraph ){
+				if ( j < i ){
+					mgraph.addEdge( j, i );
+				}
+			}
+		}
+	      const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
+	    for ( const auto& arc : mandatory_arcs ) {
+		  mgraph.addArc( arc.tail(), arc.head() );
+		  mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
+		}
+
+	      const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs();
+		for ( const auto& arc : forbidden_arcs ) {
+		  mgraph.eraseArc( arc );
+		  mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
+		}
+		//create the mutual entropy object
+		if (__mutual_info == nullptr){
+			__mutual_info = new CorrectedMutualInformation<>( __score_database.rowFilter(),
+															  __score_database.modalities() );
+		}
+		std::cout << "init graph " << mgraph << std::endl;
+		return __3off2.learnMixedStructure(  *__mutual_info, mgraph );
+    }
+
     DAG genericBNLearner::learnDAG() {
       // create the score and the apriori
       __createApriori();
@@ -788,7 +829,7 @@ namespace gum {
         // ========================================================================
         case AlgoType::THREE_OFF_TWO: {
           BNLearnerListener listener( this, __3off2 );
-          //create the mixedGraph_constraint_MandatoryArcs.arcs();
+          //create the mixedGraph
           MixedGraph mgraph;
           std::cout << "init graph " << mgraph << std::endl;
           if ( !init_graph.empty() ){

@@ -130,6 +130,12 @@ namespace gum_tests {
         std::cout << "final graph " << bn.dag() << std::endl;
         TS_ASSERT_EQUALS( bn.dag().arcs().size(), 8 );
         TS_ASSERT_EQUALS( listen.getNbr(), 49 );
+        gum::MixedGraph mg = learner.learnMixedStructure();
+        std::cout << "final mixed graph " << mg << std::endl;
+        TS_ASSERT_EQUALS( mg.arcs().size(), 6 );
+        TS_ASSERT_EQUALS( mg.edges().size(), 2 );
+        std::vector<gum::Arc> latents = learner.getLatent();
+        TS_ASSERT( latents.size() == 2 );
       } catch ( gum::Exception& e ) {
         GUM_SHOWERROR( e );
       }

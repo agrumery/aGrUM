@@ -341,6 +341,9 @@ namespace gum {
       /// learn a structure from a file (must have read the db before)
       DAG learnDAG();
 
+      /// learn a partial structure from a file (must have read the db before and must have selected 3off2)
+      MixedGraph learnMixedStructure();
+
       /// sets an initial DAG structure
       void setInitialDAG(const DAG&);
 
