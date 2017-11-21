@@ -29,7 +29,7 @@
 
 namespace gum_tests {
 
-  class IndepTestChi2TestSuite : public CxxTest::TestSuite {
+  class KNMLChi2TestSuite : public CxxTest::TestSuite {
     public:
     void test_chi2() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
