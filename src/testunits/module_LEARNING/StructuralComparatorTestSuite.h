@@ -22,7 +22,7 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/learning/3off2utils/graphComparator.h>
+#include <agrum/learning/3off2utils/structuralComparator.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/diGraph.h>
 #include <agrum/graphs/undiGraph.h>
@@ -31,11 +31,11 @@
 
 namespace gum_tests {
 
-  class GraphComparatorTestSuite : public CxxTest::TestSuite {
+  class StructuralComparatorTestSuite : public CxxTest::TestSuite {
     public:
     void test_graph() {
 
-      gum::learning::GraphComparator comp;
+      gum::learning::StructuralComparator comp;
 
       gum::DiGraph dig1, dig2;
       gum::UndiGraph undig1, undig2;
@@ -131,7 +131,7 @@ namespace gum_tests {
     }
 
     void test_bn(){
-      gum::learning::GraphComparator comp;
+      gum::learning::StructuralComparator comp;
 
       gum::BayesNet<double> bn1, bn2;
       bn1 = bn1.fastPrototype("0->1;0->2");

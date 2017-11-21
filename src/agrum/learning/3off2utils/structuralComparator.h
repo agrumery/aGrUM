@@ -25,8 +25,8 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef GUM_LEARNING_GRAPH_COMPARATOR_H
-#define GUM_LEARNING_GRAPH_COMPARATOR_H
+#ifndef GUM_LEARNING_STRUCTURAL_COMPARATOR_H
+#define GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 
 #include <agrum/graphs/diGraph.h>
 #include <agrum/graphs/undiGraph.h>
@@ -38,12 +38,12 @@ namespace gum {
 
   namespace learning {
 
-    /** @class GraphComparator
+    /** @class StructuralComparator
      * @brief A class to compare the structure of graphs
      *
      * @ingroup learning_group
      */
-    class GraphComparator{
+    class StructuralComparator{
 
       public:
       // ##########################################################################
@@ -52,10 +52,10 @@ namespace gum {
       /// @{
 
       /// default constructor
-      GraphComparator();
+      StructuralComparator();
 
       /// destructor
-      ~GraphComparator();
+      ~StructuralComparator();
 
       /// @}
 
@@ -113,6 +113,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include templated methods
-#include <agrum/learning/3off2utils/graphComparator_tpl.h>
+#include <agrum/learning/3off2utils/structuralComparator_tpl.h>
 
-#endif /* GUM_LEARNING_GRAPH_COMPARATOR_H */
+#endif /* GUM_LEARNING_STRUCTURAL_COMPARATOR_H */

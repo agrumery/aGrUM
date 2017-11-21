@@ -28,7 +28,7 @@ namespace gum {
   namespace learning {
 
     template <typename GS1, typename GS2>
-    void GraphComparator::compare( const BayesNet<GS1>& ref,
+    void StructuralComparator::compare( const BayesNet<GS1>& ref,
     							const BayesNet<GS2>& test ){
       if ( ref.size() != test.size() ){
     	GUM_ERROR( OperationNotAllowed, "Graphs of different sizes" );
@@ -46,14 +46,14 @@ namespace gum {
     }
 
     template <typename GUM_SCALAR>
-    void GraphComparator::compare( const BayesNet<GUM_SCALAR>& ref, const MixedGraph& test ){
+    void StructuralComparator::compare( const BayesNet<GUM_SCALAR>& ref, const MixedGraph& test ){
       MixedGraph ref_eg = EssentialGraph( ref ).mixedGraph();
       std::cout << ref_eg.toString() << std::endl;
       this->compare( ref_eg, test );
     }
 
     template <typename GUM_SCALAR>
-    void GraphComparator::compare( const MixedGraph& ref, const BayesNet<GUM_SCALAR>& test ){
+    void StructuralComparator::compare( const MixedGraph& ref, const BayesNet<GUM_SCALAR>& test ){
       MixedGraph test_eg = EssentialGraph( test ).mixedGraph();
 
       this->compare( ref, test_eg );

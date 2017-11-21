@@ -166,9 +166,9 @@ namespace gum {
             } catch ( const NotFound& ) {
             }
           }
-    	  const double val = std::sqrt( n * M_PIl / 2) *
-    	  				   std::exp( std::sqrt( 8 / (9 * n * M_PIl) )
-    					     + ( 3 * M_PIl - 16 ) / ( 36 * n * M_PIl ) );
+    	  const double val = std::sqrt( n * M_PI / 2) *
+    	  				   std::exp( std::sqrt( 8 / (9 * n * M_PI) )
+    					     + ( 3 * M_PI - 16 ) / ( 36 * n * M_PI ) );
       	  //std::cout << val << std::endl;
           if ( __use_cache_C ){
           	_insertIntoCCache(r, n, val);

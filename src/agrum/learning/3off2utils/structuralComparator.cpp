@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/learning/3off2utils/graphComparator.h>
+#include <agrum/learning/3off2utils/structuralComparator.h>
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -26,16 +26,16 @@
 namespace gum {
 
   namespace learning {
-    GraphComparator::GraphComparator(){
-      GUM_CONSTRUCTOR( GraphComparator );
+    StructuralComparator::StructuralComparator(){
+      GUM_CONSTRUCTOR( StructuralComparator );
     }
 
     /// destructor
-    GraphComparator::~GraphComparator() {
-      GUM_DESTRUCTOR( GraphComparator );
+    StructuralComparator::~StructuralComparator() {
+      GUM_DESTRUCTOR( StructuralComparator );
     }
 
-    void GraphComparator::compare( const DiGraph& ref, const DiGraph& test ){
+    void StructuralComparator::compare( const DiGraph& ref, const DiGraph& test ){
       if ( ref.size() != test.size() ){
     	GUM_ERROR( OperationNotAllowed, "Graphs of different sizes" );
       }
@@ -77,7 +77,7 @@ namespace gum {
     		        - __wrong_arc_none - __wrong_none_arc;
     }
 
-    void GraphComparator::compare( const UndiGraph& ref, const UndiGraph& test ){
+    void StructuralComparator::compare( const UndiGraph& ref, const UndiGraph& test ){
       if ( ref.size() != test.size() ){
     	GUM_ERROR( OperationNotAllowed, "Graphs of different sizes" );
       }
@@ -117,7 +117,7 @@ namespace gum {
     		        - __wrong_edge_none - __wrong_none_edge;
     }
 
-    void GraphComparator::compare( const MixedGraph& ref, const MixedGraph& test ){
+    void StructuralComparator::compare( const MixedGraph& ref, const MixedGraph& test ){
       if ( ref.size() != test.size() ){
     	GUM_ERROR( OperationNotAllowed, "Graphs of different sizes" );
       }
@@ -179,7 +179,7 @@ namespace gum {
 
     }
 
-    double GraphComparator::precision_skeleton() const{
+    double StructuralComparator::precision_skeleton() const{
       double tp, fp, precision;
       tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc
     		  + __wrong_arc_edge;
@@ -188,7 +188,7 @@ namespace gum {
       return precision;
     }
 
-    double GraphComparator::recall_skeleton() const{
+    double StructuralComparator::recall_skeleton() const{
       double tp, fn, recall;
       tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc
     		  + __wrong_arc_edge;
@@ -197,7 +197,7 @@ namespace gum {
       return recall;
     }
 
-    double GraphComparator::f_score_skeleton() const{
+    double StructuralComparator::f_score_skeleton() const{
       double tp, fp, fn, precision, recall, f_score;
       tp = __true_arc + __misoriented_arc + __true_edge + __wrong_edge_arc
     		  + __wrong_arc_edge;
@@ -211,7 +211,7 @@ namespace gum {
       return f_score;
     }
 
-    double GraphComparator::precision() const{
+    double StructuralComparator::precision() const{
       double tp, fp, precision;
       tp = __true_arc + __true_edge;
       fp =  __wrong_edge_arc + __wrong_arc_edge + __wrong_arc_none
@@ -220,7 +220,7 @@ namespace gum {
       return precision;
     }
 
-    double GraphComparator::recall() const{
+    double StructuralComparator::recall() const{
       double tp, fn, recall;
       tp = __true_arc + __true_edge;
       fn = __wrong_none_arc + __wrong_none_edge;
@@ -228,7 +228,7 @@ namespace gum {
       return recall;
     }
 
-    double GraphComparator::f_score() const{
+    double StructuralComparator::f_score() const{
       double tp, fp, fn, precision, recall, f_score;
       tp = __true_arc + __true_edge;
       fp =  __wrong_edge_arc + __wrong_arc_edge + __wrong_arc_none
