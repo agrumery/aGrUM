@@ -17710,6 +17710,31 @@ class BNLearner_double(_object):
         """
         return _pyAgrum.BNLearner_double_setInitialDAG(self, g)
 
+
+    def use3off2(self) -> "void":
+        """use3off2(self)"""
+        return _pyAgrum.BNLearner_double_use3off2(self)
+
+
+    def useNML(self) -> "void":
+        """useNML(self)"""
+        return _pyAgrum.BNLearner_double_useNML(self)
+
+
+    def useMDL(self) -> "void":
+        """useMDL(self)"""
+        return _pyAgrum.BNLearner_double_useMDL(self)
+
+
+    def useNoCorr(self) -> "void":
+        """useNoCorr(self)"""
+        return _pyAgrum.BNLearner_double_useNoCorr(self)
+
+
+    def getLatent(self) -> "std::vector< gum::Arc,std::allocator< gum::Arc > > const":
+        """getLatent(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const"""
+        return _pyAgrum.BNLearner_double_getLatent(self)
+
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)
 
