@@ -25,8 +25,6 @@
 
 namespace gum {
 
-  namespace learning {
-
     template <typename GS1, typename GS2>
     void StructuralComparator::compare( const BayesNet<GS1>& ref,
     							const BayesNet<GS2>& test ){
@@ -58,8 +56,6 @@ namespace gum {
 
       this->compare( ref, test_eg );
     }
-  } /* namespace learning */
-
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

@@ -18,14 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/learning/BN/algorithms/structuralComparator.h>
+#include <agrum/BN/algorithms/structuralComparator.h>
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
-
-  namespace learning {
     StructuralComparator::StructuralComparator(){
       GUM_CONSTRUCTOR( StructuralComparator );
     }
@@ -242,9 +240,6 @@ namespace gum {
       f_score = 2 * precision * recall / ( precision + recall );
       return f_score;
     }
-
-
-  } /* namespace learning */
 
 } /* namespace gum */
 

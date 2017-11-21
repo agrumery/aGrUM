@@ -36,8 +36,6 @@
 
 namespace gum {
 
-  namespace learning {
-
     /** @class StructuralComparator
      * @brief A class to compare the structure of graphs
      *
@@ -108,11 +106,9 @@ namespace gum {
       //double __precision, __recall, __f_score;
     };
 
-  } /* namespace learning */
-
 } /* namespace gum */
 
 /// always include templated methods
-#include <agrum/learning/BN/algorithms/structuralComparator_tpl.h>
+#include <agrum/BN/algorithms/structuralComparator_tpl.h>
 
 #endif /* GUM_LEARNING_STRUCTURAL_COMPARATOR_H */
