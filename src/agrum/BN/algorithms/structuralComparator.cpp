@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/learning/3off2utils/structuralComparator.h>
+#include <agrum/learning/BN/algorithms/structuralComparator.h>
 
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

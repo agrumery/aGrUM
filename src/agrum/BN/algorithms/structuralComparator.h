@@ -113,6 +113,6 @@ namespace gum {
 } /* namespace gum */
 
 /// always include templated methods
-#include <agrum/learning/3off2utils/structuralComparator_tpl.h>
+#include <agrum/learning/BN/algorithms/structuralComparator_tpl.h>
 
 #endif /* GUM_LEARNING_STRUCTURAL_COMPARATOR_H */

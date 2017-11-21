@@ -22,7 +22,7 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/learning/3off2utils/structuralComparator.h>
+#include <agrum/learning/BN/algorithms/structuralComparator.h>
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/diGraph.h>
 #include <agrum/graphs/undiGraph.h>
