@@ -40,15 +40,12 @@
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
-#define MY_ALARM GET_RESSOURCES_PATH( "alarm.csv" )
-#define MY_ASIA GET_RESSOURCES_PATH( "asia.csv" )
-
 namespace gum_tests {
 
   class ThreeOffTwoTestSuite : public CxxTest::TestSuite {
     public:
     void /*test*/_3off2_asia_nocorr() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -85,7 +82,7 @@ namespace gum_tests {
     }
 
     void /*test*/_3off2_asia_MDLcorr() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -122,7 +119,7 @@ namespace gum_tests {
     }
 
     void /*test*/_3off2_asia_NMLcorr() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -163,7 +160,7 @@ namespace gum_tests {
     }
 /*
     void est_3off2_asia_NMLcorr_Cycles() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -200,7 +197,7 @@ namespace gum_tests {
     }
 */
     void /*test*/_3off2_asia_dag_noCycles() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -240,7 +237,7 @@ namespace gum_tests {
     }
 
     void test_alarm_mixed() {
-      gum::learning::DatabaseFromCSV database( MY_ALARM );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "alarm.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -282,7 +279,7 @@ namespace gum_tests {
     }
 
     void /*test*/_alarm_dag() {
-      gum::learning::DatabaseFromCSV database( MY_ALARM );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "alarm.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>

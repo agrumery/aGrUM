@@ -197,7 +197,7 @@ namespace gum {
   // returns the current value of a given variable
   INLINE Idx Instantiation::val(Idx i) const {
     if (i >= __vals.size()) {
-      GUM_ERROR(NotFound, "");
+      GUM_ERROR(NotFound, i<<" is out of bound index for the instantiation.");
     }
 
     return __vals[i];
@@ -217,6 +217,14 @@ namespace gum {
   INLINE const DiscreteVariable& Instantiation::variable(Idx i) const {
     return *(__vars.atPos(i));
   }
+    // returns the variable with name in the tuple
+    INLINE const DiscreteVariable& Instantiation::variable(const std::string& name) const {
+      for(const auto& v:__vars) {
+        if (v->name()==name) return *v;
+      }
+
+      GUM_ERROR(NotFound, "'"<<name<<"' can not be found in the instantiation.")
+    }
 
   // indicates whether the current value of the tuple is correct or not
   INLINE bool Instantiation::inOverflow() const { return __overflow; }

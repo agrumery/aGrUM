@@ -5420,9 +5420,10 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_val(self, *args)
 
 
-    def variable(self, i):
+    def variable(self, *args):
         """
         variable(self, i) -> DiscreteVariable
+        variable(self, name) -> DiscreteVariable
 
 
         Parameters
@@ -5440,7 +5441,7 @@ class Instantiation(_object):
             NotFound raised if the element cannot be found.
 
         """
-        return _pyAgrum.Instantiation_variable(self, i)
+        return _pyAgrum.Instantiation_variable(self, *args)
 
 
     def chgVal(self, *args):
@@ -8135,9 +8136,10 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_nbrDim(self)
 
 
-    def variable(self, i):
+    def variable(self, *args):
         """
         variable(self, i) -> DiscreteVariable
+        variable(self, name) -> DiscreteVariable
 
 
         Parameters
@@ -8154,7 +8156,7 @@ class Potential_double(_object):
           NotFound raised if i does not reference a variable in this multidimensional matrix. 
 
         """
-        return _pyAgrum.Potential_double_variable(self, i)
+        return _pyAgrum.Potential_double_variable(self, *args)
 
 
     def populate(self, v):
@@ -8450,9 +8452,12 @@ class UtilityTable_double(_object):
         return _pyAgrum.UtilityTable_double_nbrDim(self)
 
 
-    def variable(self, i):
-        """variable(self, i) -> DiscreteVariable"""
-        return _pyAgrum.UtilityTable_double_variable(self, i)
+    def variable(self, *args):
+        """
+        variable(self, i) -> DiscreteVariable
+        variable(self, name) -> DiscreteVariable
+        """
+        return _pyAgrum.UtilityTable_double_variable(self, *args)
 
 
     def populate(self, v):
@@ -17734,6 +17739,11 @@ class BNLearner_double(_object):
     def getLatent(self):
         """getLatent(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const"""
         return _pyAgrum.BNLearner_double_getLatent(self)
+
+
+    def learnMixedStructure(self):
+        """learnMixedStructure(self) -> MixedGraph"""
+        return _pyAgrum.BNLearner_double_learnMixedStructure(self)
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)

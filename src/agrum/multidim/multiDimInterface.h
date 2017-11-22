@@ -129,6 +129,16 @@ namespace gum {
     virtual const DiscreteVariable& variable(Idx i) const = 0;
 
     /**
+   * @brief Returns the variable with the name
+   *
+   * @param name The index of the variable
+   * @return Returns the variable qith the name in the tuple.
+   * @warging This function is not O(1)
+   * @throw NotFound Raised if the element cannot be found.
+   */
+    virtual const DiscreteVariable& variable(const std::string& name) const = 0;
+
+    /**
      * @brief Returns the index of a variable.
      * @param v The variable for which the index is returned.
      * @return Returns the index of a variable.

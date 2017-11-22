@@ -930,5 +930,19 @@ namespace gum_tests {
         GUM_SHOWERROR(e);
       }
     }
+
+    void testVariableAccessor() {
+      gum::LabelizedVariable  v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< float > p;
+      p.add(v);
+      p.add(w);
+
+      TS_ASSERT(p.variable(0) == p.variable("v"));
+      TS_ASSERT(p.variable(1) == p.variable("w"));
+      TS_ASSERT(p.variable(1) != p.variable("v"));
+      TS_ASSERT(p.variable(0) != p.variable("w"));
+
+      TS_ASSERT_THROWS(p.variable("ZZ"), gum::NotFound);
+    }
   };
 }

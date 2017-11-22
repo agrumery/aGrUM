@@ -156,6 +156,7 @@ namespace gum {
     variablesSequence(void) const;
 
     virtual const DiscreteVariable& variable(Idx i) const;
+    virtual const DiscreteVariable& variable(const std::string& name) const;
 
     virtual Idx pos(const DiscreteVariable& v) const;
 
