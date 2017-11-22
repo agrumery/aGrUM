@@ -236,7 +236,64 @@ namespace gum_tests {
 
     }
 
+    void test_perf_learning() {
+      gum::Size n_bn = 100;
+      for (gum::Idx i=0; i<n_bn; ++i){
+        gum::learning::DatabaseFromCSV database( "/home/falcand/Documents/c3off2/bn" + std::to_string( i ) + ".csv" );
 
+        gum::learning::DBRowTranslatorSet<
+            gum::learning::CellTranslatorCompactIntId>
+            translators;
+        translators.insertTranslator( 0, database.nbVariables() );
+
+        gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+          generators;
+        generators.insertGenerator ();
+
+        auto filter =
+            gum::learning::make_DB_row_filter( database, translators, generators );
+
+        std::vector<gum::Idx> modalities = filter.modalities();
+
+        gum::learning::CorrectedMutualInformation<> cI( filter, modalities );
+        cI.useNML();
+
+        gum::learning::ThreeOffTwo search;
+
+        //creating complete graph
+        gum::MixedGraph graph, g_out;
+        for ( gum::Size i = 0; i < filter.nbVariables(); ++i ){
+      	  graph.addNode( i );
+      	  g_out.addNode( i );
+      	  for ( gum::Size j = 0; j < i; ++j){
+      	    graph.addEdge( j, i );
+      	  }
+        }
+
+        const std::vector<std::string> vars = filter.variableNames();
+
+  	    gum::MixedGraph g = search.learnMixedStructure( cI, graph );
+  	    //reconstructing the graph with th right nodes
+  	    for ( const auto& edge : g.edges() ){
+  	      gum::NodeId n_out_first = std::stoi(vars[edge.first()]);
+          //if ( !g_out.exists( n_out_first ) ) g_out.addNode( n_out_first );
+          gum::NodeId n_out_second = std::stoi(vars[edge.second()]);
+          //if ( !g_out.exists( n_out_second ) ) g_out.addNode( n_out_second );
+
+          g_out.addEdge( n_out_first, n_out_second);
+  	    }
+  	    for ( const auto& arc : g.arcs() ){
+  	      gum::NodeId n_out_tail = std::stoi(vars[arc.tail()]);
+          //if ( !g_out.exists( n_out_tail ) ) g_out.addNode( n_out_tail );
+          gum::NodeId n_out_head = std::stoi(vars[arc.head()]);
+          //if ( !g_out.exists( n_out_head ) ) g_out.addNode( n_out_head );
+
+          g_out.addArc( n_out_tail, n_out_head);
+  	    }
+  	    std::cout << g_out.toString() << std::endl;
+        std::vector<gum::Arc> latents = search.latentVariables();
+        std::cout << latents << std::endl;
+        TS_ASSERT( latents.size() == 2 );
   };
 
 } /* namespace gum_tests */

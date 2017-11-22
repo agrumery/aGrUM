@@ -32,8 +32,6 @@
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 
-#include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
-
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>

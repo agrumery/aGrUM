@@ -129,8 +129,8 @@ namespace gum {
         /// @{
 
         /// default constructor
-        Database(const std::string& file);
-        Database(const DatabaseVectInRAM& db);
+        explicit Database(const std::string& file);
+        explicit Database(const DatabaseVectInRAM& db);
 
         /// default constructor with defined modalities for some variables
         /**
@@ -450,7 +450,7 @@ namespace gum {
       void useNoCorr();
 
       ///get the list of arcs hiding latent variables
-      const std::vector<Arc> getLatent() const;
+      const std::vector<Arc> latentVariables() const;
 
       /// @}
       // ##########################################################################

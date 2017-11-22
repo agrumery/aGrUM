@@ -166,7 +166,7 @@ namespace gum {
     }
 
     ///get the list of arcs hiding latent variables
-    INLINE const std::vector<Arc> genericBNLearner::getLatent() const {
+    INLINE const std::vector<Arc> genericBNLearner::latentVariables() const {
     	if ( __selected_algo != AlgoType::THREE_OFF_TWO){
     		GUM_ERROR( OperationNotAllowed, "Must be using the 3off2 algorithm" );
     	}

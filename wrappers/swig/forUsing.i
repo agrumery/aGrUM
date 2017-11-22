@@ -193,7 +193,7 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
     self->gum::learning::genericBNLearner::useNoCorr();
   }
   const std::vector<Arc> getLatent() {
-    return self->gum::learning::genericBNLearner::getLatent();
+    return self->gum::learning::genericBNLearner::latentVariables();
   }
   gum::MixedGraph learnMixedStructure() {
     return self->gum::learning::genericBNLearner::learnMixedStructure();
