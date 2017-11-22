@@ -19,8 +19,6 @@ bn2csv
     :show-inheritance:
     :noindex:
 
-
-
 bn2scores
 ----------------------------
 

@@ -52,11 +52,20 @@ class CSVGenerator:
     self._probas = {}
 
   @staticmethod
-  def draw(tab):
+  def _draw(tab):
     """
-    Draw a value using tab as probability table.
+    _draw a value using tab as probability table.
 
-    return the couple (i,proba)
+    Parameters
+    ----------
+    tab : list
+      a probability table
+    
+    Returns
+    -------
+    tuple
+      the couple (i,proba)
+
     """
     res = len(tab) - 1
 
@@ -70,22 +79,76 @@ class CSVGenerator:
     return (res, tab[res])
 
   @staticmethod
-  def nameAndParents(bn, n):
+  def _nameAndParents(bn, n):
     """
-    Compute a list of parents for node n in BN bn
-    return name of n,list of parents names
+    Compute a list of parents for node n in BN bn.
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+      a Bayesian network
+    n : 
+      (int) a node id
+    n :
+      (str) a node name
+
+    Returns
+    -------
+    tuple
+      a couple of name of n and list of parents names
+
+    Warnings
+    --------
+    IndexError raised if the node is not in the Bayesian network
+
     """
     l = bn.cpt(n).var_names
     node = l.pop()
     # l is the list of var names
     return node, l  # map(bn.idFromName,l)
 
-  def caching_nameAndParents(self, bn, n):
+  def _caching_nameAndParents(self, bn, n):
+    """
+    Compute a list of parents for node n in BN bn.
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+      a Bayesian network
+    n : 
+      (int) a node id
+    n :
+      (str) a node name
+      
+    Returns
+    -------
+    tuple
+      a couple of name of n and list of parents names
+
+    """
     if not n in self._parents:
-      self._parents[n] = CSVGenerator.nameAndParents(bn, n)
+      self._parents[n] = CSVGenerator._nameAndParents(bn, n)
     return self._parents[n]
 
-  def caching_probas(self, bn, node_id, n, par):
+  def _caching_probas(self, bn, node_id, n, par):
+    """
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+      a Bayesian network
+    node_id : int 
+      a node id
+    n : int
+      a node id
+    par : list
+      the node's parents
+      
+    Returns
+    -------
+    list
+      the node's probabilities
+
+    """
     if not n in self._probas:
       self._probas[n] = {}
     current = self._probas[n]
@@ -101,27 +164,54 @@ class CSVGenerator:
 
     return current['p']
 
-  def newSample(self, bn, seq):
+  def _newSample(self, bn, seq):
     """
-    Generate a sample w.r.t to the bn using the variable sequence seq
-    (topological order)
+    Generate a sample w.r.t to the bn using the variable sequence seq (topological order)
 
-    return the coule (sample,log2-likelihood)
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+      a Bayesian network
+    seq : list
+      a variable sequence
+
+    Returns
+    -------
+    tuple
+      the coule (sample,log2-likelihood)
+
     """
     self._sample = {}
     LL = 0
     for node_id in seq:
-      (nod, par) = self.caching_nameAndParents(bn, node_id)
-      (self._sample[nod], p) = CSVGenerator.draw(self.caching_probas(bn, node_id, nod, par))
+      (nod, par) = self._caching_nameAndParents(bn, node_id)
+      (self._sample[nod], p) = CSVGenerator._draw(self._caching_probas(bn, node_id, nod, par))
       LL += math.log(p, 2)
 
     return (self._sample, LL)
 
-  def proceed(self, name_in, name_out, n, visible, with_labels):
+  def _proceed(self, name_in, name_out, n, visible, with_labels):
     """
     From the file name_in (BN file), generate n samples and save them in name_out
 
-    return the log2-likelihood of the n samples database
+    Parameters
+    ----------
+    name_in : str
+      a file name
+    name_out : str
+      the output file
+    n : int
+      the number of samples
+    visible : bool
+      indicate if a progress bar should be displayed
+    with_labels : bool
+      indicate if values should be labelled or not
+
+    Returns
+    -------
+    double
+      the log2-likelihood of the n samples database
+
     """
 
     if isinstance(name_in, str):
@@ -166,12 +256,36 @@ class CSVGenerator:
     return LL
 
 def generateCSV(name_in, name_out, n, visible=False, with_labels=True):
+  """
+  From the file name_in (BN file), generate n samples and save them in name_out
+
+  Parameters
+  ----------
+  name_in : str
+    a file name
+  name_out : str
+    the output file
+  n : int
+    the number of samples
+  visible : bool
+    indicate if a progress bar should be displayed
+  with_labels : bool
+    indicate if values should be labelled or not
+
+  Returns
+  -------
+  double
+    the log2-likelihood of the n samples database
+
+  """
   g = CSVGenerator()
-  return g.proceed(name_in, name_out, n, visible, with_labels)
+  return g._proceed(name_in, name_out, n, visible, with_labels)
+
 
 def module_help(exit_value=1):
   """
   defines help viewed if args are not OK on command line, and exit with exit_value
+
   """
   print(os.path.basename(sys.argv[0]), "src.{" + gum.availableBNExts() + "} nbr [dst.csv]")
   sys.exit(exit_value)

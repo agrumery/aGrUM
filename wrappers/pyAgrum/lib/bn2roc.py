@@ -34,8 +34,17 @@ from ._utils.progress_bar import ProgressBar
 from ._utils.pyAgrum_header import pyAgrum_header
 
 
-def lines_count(filename):
-  """ count lines in a file
+def _lines_count(filename):
+  """
+  Parameters
+  ----------
+  filename : str
+    a filename
+
+  Returns
+  -------
+  int
+    the number of lines in the file
   """
   numlines = 0
   for line in open(filename): numlines += 1
@@ -43,11 +52,23 @@ def lines_count(filename):
   return numlines
 
 
-def checkCompatibility(bn, fields, csv_name):
-  """check if variables of the bn are in the fields
+def _checkCompatibility(bn, fields, csv_name):
+  """
+  check if variables of the bn are in the fields
 
-  if not : return None
-  if compatibilty : return a list of position for variables in fields
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a bayesian network
+  fields : list
+    a list of fields
+  csv_name : str
+    the name of the csv file
+
+  Returns
+  -------
+  list
+    a list of position for variables in fiels, None otherwise.
   """
   res = {}
   isOK = True
@@ -64,9 +85,20 @@ def checkCompatibility(bn, fields, csv_name):
   return res
 
 
-def computeAUC(points):
+def _computeAUC(points):
   """
   Given a set of points drawing a ROC curve, compute the AUC value
+
+  Parameters
+  ----------
+  points : set
+    a set of points drawing a ROC curve
+
+  Returns
+  -------
+  double
+    the AUC value
+
   """
   # computes the integral from 0 to 1
   somme = 0
@@ -76,7 +108,29 @@ def computeAUC(points):
   return -somme
 
 
-def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True):
+def __computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True):
+  """
+  Compute the ROC curve points.
+
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a bayesian network
+  csv_name : str
+    a csv filename
+  target : str
+    the target
+  label : str
+    the target's label
+  visible : bool
+    indicates if the resulting curve must be printed
+
+  Returns
+  -------
+  tuple
+    (res, totalP, totalN, idLabel)
+
+  """
   idTarget = bn.idFromName(target)
   label=str(label)
 
@@ -90,7 +144,7 @@ def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True
 
   engine = gum.LazyPropagation(bn)
 
-  nbr_lines = lines_count(csv_name) - 1
+  nbr_lines = _lines_count(csv_name) - 1
 
   if (sys.version_info >= (3, 0)):  # python 3
     csvfile = open(csv_name, "r")
@@ -108,7 +162,7 @@ def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True
   for i, nom in enumerate(titre):
     fields[nom] = i
 
-  positions = checkCompatibility(bn, fields, csv_name)
+  positions = _checkCompatibility(bn, fields, csv_name)
 
   if positions is None:
     sys.exit(1)
@@ -167,7 +221,29 @@ def computeROCpoints(bn, csv_name, target, label, visible=False,with_labels=True
     return (res, totalP, totalN, idLabel)
 
 
-def computeROC(bn, values, totalP, totalN, idLabel, modalite):
+def _computeROC(bn, values, totalP, totalN, idLabel, modalite):
+  """
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a bayesian network
+  values :
+    the ROC curve values
+  totalP : int
+    the number of positive values
+  totalN : int
+    the number of negative values
+  idLabel : int
+    the id of the target
+  modalite :
+    the label of the target
+
+  Returns
+  -------
+  tuple
+    (points, opt, seuil)
+  """
+
   res = sorted(values, key=lambda x: x[0])
 
   vp = 0.0
@@ -214,9 +290,33 @@ def module_help(exit_value=1, message=""):
   sys.exit(exit_value)
 
 
-def drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
+def _drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
             special_point=None, special_value=None, special_label=None):
-  AUC = computeAUC(points)
+  """
+  Draw the ROC curve and save (or not) the curve into zeFilename as a png
+
+  Parameters
+  ----------
+  points :
+    a set of points drawing a ROC curve
+  zeTitle : str
+    the title of the curve
+  zeFilename : str
+    the name of the file
+  visible : bool
+    unnecessary ?
+  show_fig : bool
+    indicates if the resulting curve must be printed
+  save_fig : bool
+    indicates if the resulting curve must be saved
+  special_point :
+    a special point to be highlighted
+  special_value :
+    a special value to be highlighted
+  special_label :
+    a special label to be highlighted
+  """
+  AUC = _computeAUC(points)
   import pylab
 
   pylab.clf()
@@ -277,8 +377,25 @@ def drawROC(points, zeTitle, zeFilename, visible, show_fig, save_fig=True,
 
 
 def showROC(bn, csv_name, variable, label, visible=True, show_fig=False,with_labels=True):
-  (res, totalP, totalN, idTarget) = computeROCpoints(bn, csv_name, variable, label, visible,with_labels)
-  points, opt, seuil = computeROC(bn, res, totalP, totalN, idTarget, label)
+  """
+  Compute the ROC curve and save the result in the folder of the csv file.
+
+  Parameters
+  ----------
+  bn : pyAgrum.BayesNet
+    a bayesian network
+  csv_name : str
+    a csv filename
+  target : str
+    the target
+  label : str
+    the target label
+  visible : bool
+    indicates if the resulting curve must be printed
+
+  """
+  (res, totalP, totalN, idTarget) = __computeROCpoints(bn, csv_name, variable, label, visible,with_labels)
+  points, opt, seuil = _computeROC(bn, res, totalP, totalN, idTarget, label)
 
   try:
     shortname = os.path.basename(bn.property("name"))
@@ -289,10 +406,10 @@ def showROC(bn, csv_name, variable, label, visible=True, show_fig=False,with_lab
 
   figname = csv_name + "-" +'ROC_' + shortname + "-" +  variable + "-" + str(label) + '.png'
 
-  drawROC(points, title, figname, not visible, show_fig, special_point=opt, special_value=seuil)
+  _drawROC(points, title, figname, not visible, show_fig, special_point=opt, special_value=seuil)
 
 
-def checkROCargs():
+def _checkROCargs():
   pyAgrum_header("2011-13")
 
   bn_name = sys.argv[1] if len(sys.argv) > 1 else ""
@@ -328,5 +445,5 @@ def checkROCargs():
 if __name__ == "__main__":
   pyAgrum_header("2011-17")
 
-  (bn, csv_name, variable, label) = checkROCargs()
+  (bn, csv_name, variable, label) = _checkROCargs()
   showROC(bn, csv_name, variable, label, True, False)
