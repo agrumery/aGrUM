@@ -49,8 +49,6 @@
 #include <agrum/learning/localSearchWithTabuList.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
 
-#define MY_ALARM GET_RESSOURCES_PATH("alarm.csv")
-
 namespace gum_tests {
 
   class LocalSearchWithTabuListTestSuite : public CxxTest::TestSuite {
@@ -140,7 +138,7 @@ namespace gum_tests {
 
 
     void xtest_alarm1() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -198,7 +196,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm2() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -257,7 +255,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm3() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;

@@ -40,16 +40,12 @@
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 
-#define MY_ALARM GET_RESSOURCES_PATH( "alarm.csv" )
-#define MY_ASIA GET_RESSOURCES_PATH( "asia.csv" )
-#define MY_TONDA GET_RESSOURCES_PATH( "DBN_Tonda.csv" )
-
 namespace gum_tests {
 
   class ThreeOffTwoTestSuite : public CxxTest::TestSuite {
     public:
     void test_3off2_asia_nocorr() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -84,7 +80,7 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_MDLcorr() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -121,7 +117,7 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_NMLcorr() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -160,7 +156,7 @@ namespace gum_tests {
     }
 
     void test_3off2_asia_dag() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -198,7 +194,7 @@ namespace gum_tests {
     }
 
     void test_tonda() {
-      gum::learning::DatabaseFromCSV database( MY_TONDA );
+      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "DBN_Tonda.csv" ) );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>

@@ -114,6 +114,11 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
     return self->gum::MultiDimDecorator<double>::variable(i);
   }
 
+  const gum::DiscreteVariable& variable ( const std::string& name) const {
+    return self->gum::MultiDimDecorator<double>::variable(name);
+  }
+
+
   void populate ( const std::vector< double >& v ) const {
     self->gum::MultiDimDecorator<double>::populate(v);
   }

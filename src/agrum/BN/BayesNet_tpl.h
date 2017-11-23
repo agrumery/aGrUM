@@ -53,6 +53,62 @@
 #include <agrum/core/utils_string.h>
 
 namespace gum {
+  template < typename GUM_SCALAR >
+  NodeId build_node(gum::BayesNet< GUM_SCALAR >& bn,
+                    std::string                  node,
+                    gum::Size                    domainSize) {
+    std::string                name = node;
+    auto                       ds = domainSize;
+    std::vector< std::string > labels;
+
+    // node like "n[5]"
+    auto posBrack = node.find('[');
+    if (posBrack != std::string::npos) {
+      if (*(node.rbegin()) != ']')
+        name = node;  // a name with  '[' inside but no ']' at the end
+      else {
+        name = node.substr(0, posBrack);
+        ds = static_cast< Size >(
+          std::stoi(node.substr(posBrack + 1, node.size() - posBrack - 2)));
+      }
+    }
+
+    // node like "n{one|two|three}"
+    posBrack = node.find('{');
+    if (posBrack != std::string::npos) {
+      if (*(node.rbegin()) != '}')
+        name = node;  // a name with  '{' inside but no '}' at the end
+      else {
+        name = node.substr(0, posBrack);
+        labels = split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
+        if (labels.size() < 2) {
+          GUM_ERROR(InvalidArgument, "Not enough labels in node " << node);
+        }
+        if (!hasUniqueElts(labels)) {
+          GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node);
+        }
+        ds = static_cast< Size >(labels.size());
+      }
+    }
+
+    // now we add the node in the BN
+    NodeId idVar;
+    try {
+      idVar = bn.idFromName(name);
+    } catch (gum::NotFound) {
+      if (labels.size() == 0) {
+        idVar = bn.add(LabelizedVariable(name, name, ds));
+      } else {
+        auto l = LabelizedVariable(name, name, 0);
+        for (const auto& label : labels) {
+          l.addLabel(label);
+        }
+        idVar = bn.add(l);
+      }
+    }
+
+    return idVar;
+  }
 
   template < typename GUM_SCALAR >
   BayesNet< GUM_SCALAR >
@@ -64,63 +120,23 @@ namespace gum {
     for (const auto& chaine : split(dotlike, ";")) {
       NodeId lastId = 0;
       bool   notfirst = false;
-      for (const auto& node : split(chaine, "->")) {
-        std::string                name = node;
-        auto                       ds = domainSize;
-        std::vector< std::string > labels;
-
-        // node like "n[5]"
-        auto posBrack = node.find('[');
-        if (posBrack != std::string::npos) {
-          if (*(node.rbegin()) != ']')
-            name = node;  // a name with  '[' inside but no ']' at the end
-          else {
-            name = node.substr(0, posBrack);
-            ds = static_cast< Size >(
-              std::stoi(node.substr(posBrack + 1, node.size() - posBrack - 2)));
-          }
-        }
-
-        // node like "n{one|two|three}"
-        posBrack = node.find('{');
-        if (posBrack != std::string::npos) {
-          if (*(node.rbegin()) != '}')
-            name = node;  // a name with  '{' inside but no '}' at the end
-          else {
-            name = node.substr(0, posBrack);
-            labels =
-              split(node.substr(posBrack + 1, node.size() - posBrack - 2), "|");
-            if (labels.size() < 2) {
-              GUM_ERROR(InvalidArgument, "Not enough labels in node " << node);
+      for (const auto& souschaine : split(chaine, "->")) {
+        bool forward = true;
+        for (const auto& node : split(souschaine, "<-")) {
+          auto idVar = build_node(bn, node, domainSize);
+          if (notfirst) {
+            if (forward) {
+              bn.addArc(lastId, idVar);
+              forward = false;
+            } else {
+              bn.addArc(idVar, lastId);
             }
-            if (!hasUniqueElts(labels)) {
-              GUM_ERROR(InvalidArgument, "Duplicate labels in node " << node);
-            }
-            ds = static_cast< Size >(labels.size());
-          }
-        }
-
-        // now we add the node in the BN
-        NodeId idVar;
-        try {
-          idVar = bn.idFromName(name);
-        } catch (gum::NotFound) {
-          if (labels.size() == 0) {
-            idVar = bn.add(LabelizedVariable(name, name, ds));
           } else {
-            auto l = LabelizedVariable(name, name, 0);
-            for (const auto& label : labels) {
-              l.addLabel(label);
-            }
-            idVar = bn.add(l);
+            notfirst = true;
+            forward = false;
           }
+          lastId = idVar;
         }
-        if (notfirst) {
-          bn.addArc(lastId, idVar);
-        } else {
-          notfirst = true;
-        }
-        lastId = idVar;
       }
     }
     bn.generateCPTs();
