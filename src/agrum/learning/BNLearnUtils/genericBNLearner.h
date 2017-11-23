@@ -117,7 +117,7 @@ namespace gum {
         K2,
         GREEDY_HILL_CLIMBING,
         LOCAL_SEARCH_WITH_TABU_LIST,
-		THREE_OFF_TWO
+        THREE_OFF_TWO
       };
 
       /// a helper to easily read databases
@@ -341,7 +341,8 @@ namespace gum {
       /// learn a structure from a file (must have read the db before)
       DAG learnDAG();
 
-      /// learn a partial structure from a file (must have read the db before and must have selected 3off2)
+      /// learn a partial structure from a file (must have read the db before and
+      /// must have selected 3off2)
       MixedGraph learnMixedStructure();
 
       /// sets an initial DAG structure
@@ -449,8 +450,8 @@ namespace gum {
       /// indicate that we wish to use the NoCorr correction for 3off2
       void useNoCorr();
 
-      ///get the list of arcs hiding latent variables
-      const std::vector<Arc> latentVariables() const;
+      /// get the list of arcs hiding latent variables
+      const std::vector< Arc > latentVariables() const;
 
       /// @}
       // ##########################################################################

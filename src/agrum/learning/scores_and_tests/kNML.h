@@ -34,9 +34,9 @@
 
 #include <vector>
 
-#include <agrum/learning/scores_and_tests/independenceTest.h>
-#include <agrum/learning/scores_and_tests/cache4PartEntropy.h>
 #include <agrum/core/math/math.h>
+#include <agrum/learning/scores_and_tests/cache4PartEntropy.h>
+#include <agrum/learning/scores_and_tests/independenceTest.h>
 
 namespace gum {
 
@@ -61,9 +61,9 @@ namespace gum {
      *for
      * details.
      */
-    template <typename IdSetAlloc = std::allocator<Idx>,
-              typename CountAlloc = std::allocator<double>>
-    class KNML : public IndependenceTest<IdSetAlloc, CountAlloc> {
+    template < typename IdSetAlloc = std::allocator< Idx >,
+               typename CountAlloc = std::allocator< double > >
+    class KNML : public IndependenceTest< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -74,9 +74,8 @@ namespace gum {
       /** @param filter the row filter that will be used to read the database
        * @param var_modalities the domain sizes of the variables in the database
        */
-      template <typename RowFilter>
-      KNML( const RowFilter&         filter,
-                     const std::vector<Size>& var_modalities );
+      template < typename RowFilter >
+      KNML(const RowFilter& filter, const std::vector< Size >& var_modalities);
 
       /// destructor
       ~KNML();
@@ -97,26 +96,26 @@ namespace gum {
        * @#sum corresponds to the summations mentioned above. Therefore, any
        * positive result should reflect a dependence whereas negative results
        * should reflect independences. */
-      double score( Idx nodeset_index );
+      double score(Idx nodeset_index);
 
       /// @}
 
       protected:
-      ///Computing the universal normalization constant
-	  double _C( Size r, Size n );
+      /// Computing the universal normalization constant
+      double _C(Size r, Size n);
 
       /// inserts a new score into the cache for C
-	  /// @todo remove exception driven programation
-      void _insertIntoCCache( Size r, Size n, double c );
+      /// @todo remove exception driven programation
+      void _insertIntoCCache(Size r, Size n, double c);
 
       private:
       /// an empty vector of ids
-      const std::vector<Idx, IdSetAlloc> __empty_set;
+      const std::vector< Idx, IdSetAlloc > __empty_set;
 
-      ///pre-computed values of C for r=2 and 0<n<=1000
-      static const std::vector<double> __Cvec;
+      /// pre-computed values of C for r=2 and 0<n<=1000
+      static const std::vector< double > __Cvec;
 
-      ///cache for the values of C
+      /// cache for the values of C
       Cache4PartEntropy __cache_C;
 
       /// a Boolean indicating whether we wish to use the Kcache

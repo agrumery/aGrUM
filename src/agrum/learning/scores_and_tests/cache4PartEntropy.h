@@ -67,10 +67,10 @@ namespace gum {
       Cache4PartEntropy();
 
       /// copy constructor
-      Cache4PartEntropy( const Cache4PartEntropy& from );
+      Cache4PartEntropy(const Cache4PartEntropy& from);
 
       /// move constructor
-      Cache4PartEntropy( Cache4PartEntropy&& from );
+      Cache4PartEntropy(Cache4PartEntropy&& from);
 
       /// destructor
       ~Cache4PartEntropy();
@@ -83,10 +83,10 @@ namespace gum {
       /// @{
 
       /// copy operator
-      Cache4PartEntropy& operator=( const Cache4PartEntropy& from );
+      Cache4PartEntropy& operator=(const Cache4PartEntropy& from);
 
       /// move operator
-      Cache4PartEntropy& operator=( Cache4PartEntropy&& from );
+      Cache4PartEntropy& operator=(Cache4PartEntropy&& from);
 
       /// @}
 
@@ -98,32 +98,31 @@ namespace gum {
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      void
-      insert( const std::vector<Idx>& var_set, double score );
+      void insert(const std::vector< Idx >& var_set, double score);
 
       /// insert a new score into the cache
       /** @throws DuplicateElement exception is raised if a score for the same
        * variables already exists */
-      template <typename Alloc>
-      void insert( const std::vector<Idx>& var_set, double score );
+      template < typename Alloc >
+      void insert(const std::vector< Idx >& var_set, double score);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      void erase( const std::vector<Idx>& var_set );
+      void erase(const std::vector< Idx >& var_set);
 
       /// removes a score (if it exists)
       /** If the score does not exist, nothing is done. In particular, no
        * exception is raised */
-      template <typename Alloc>
-      void erase( const std::vector<Idx>& var_set );
+      template < typename Alloc >
+      void erase(const std::vector< Idx >& var_set);
 
       /// indicates whether a given score exists
-      bool exists( const std::vector<Idx>& var_set );
+      bool exists(const std::vector< Idx >& var_set);
 
       /// returns a given score
       /** @throws NotFound is raised if the score is not cached */
-      double score( const std::vector<Idx>& var_set );
+      double score(const std::vector< Idx >& var_set);
 
       /// removes all the stored scores
       void clear();
@@ -132,7 +131,7 @@ namespace gum {
 
       private:
       /// the scores stored into the cache
-      HashTable<std::vector<Idx>, double> __scores;
+      HashTable< std::vector< Idx >, double > __scores;
     };
 
   } /* namespace learning */

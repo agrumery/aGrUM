@@ -37,27 +37,31 @@
 #include <agrum/BN/BayesNet.h>
 #include <agrum/config.h>
 //#include <agrum/core/approximations/approximationScheme.h>
-#include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
-#include <agrum/graphs/mixedGraph.h>
-#include <agrum/graphs/DAG.h>
-#include <agrum/core/heap.h>
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/approximations/approximationScheme.h>
+#include <agrum/core/heap.h>
+#include <agrum/graphs/DAG.h>
+#include <agrum/graphs/mixedGraph.h>
+#include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
 
 namespace gum {
 
   namespace learning {
 
-    class GreaterPairOn2nd{
+    class GreaterPairOn2nd {
       public:
-      bool operator()( const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>& e1,
-    		  const std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>& e2 ) const;
+      bool
+      operator()(const std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*,
+                                  double >& e1,
+                 const std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*,
+                                  double >& e2) const;
     };
 
-    class GreaterAbsPairOn2nd{
+    class GreaterAbsPairOn2nd {
       public:
-      bool operator()( const std::pair<std::tuple<Idx, Idx, Idx> *, double>& e1,
-    		  const std::pair<std::tuple<Idx, Idx, Idx> *, double>& e2 ) const;
+      bool operator()(
+        const std::pair< std::tuple< Idx, Idx, Idx >*, double >& e1,
+        const std::pair< std::tuple< Idx, Idx, Idx >*, double >& e2) const;
     };
 
     /**
@@ -76,18 +80,18 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-        /// default constructor
-        ThreeOffTwo();
+      /// default constructor
+      ThreeOffTwo();
 
-        /// default constructor with maxLog
-        ThreeOffTwo( int maxLog );
-/*
-      /// copy constructor
-      ThreeOffTwo( const ThreeOffTwo& from );
+      /// default constructor with maxLog
+      ThreeOffTwo(int maxLog);
+      /*
+            /// copy constructor
+            ThreeOffTwo( const ThreeOffTwo& from );
 
-      /// move constructor
-      ThreeOffTwo( ThreeOffTwo&& from );
-*/
+            /// move constructor
+            ThreeOffTwo( ThreeOffTwo&& from );
+      */
       /// destructor
       ~ThreeOffTwo();
 
@@ -97,13 +101,13 @@ namespace gum {
       /// @name Operators
       // ##########################################################################
       /// @{
-/*
-      /// copy operator
-      ThreeOffTwo& operator=( const ThreeOffTwo& from );
+      /*
+            /// copy operator
+            ThreeOffTwo& operator=( const ThreeOffTwo& from );
 
-      /// move operator
-      ThreeOffTwo& operator=( ThreeOffTwo&& from );
-*/
+            /// move operator
+            ThreeOffTwo& operator=( ThreeOffTwo&& from );
+      */
       /// @}
 
       // ##########################################################################
@@ -120,8 +124,8 @@ namespace gum {
        * @param detectLatent wether or not to detect latent variables
        * @param graph the MixedGraph we start from for our learning
        * */
-      MixedGraph learnMixedStructure( CorrectedMutualInformation<>&  I,
-                          MixedGraph          graph);//= MixedGraph() ?
+      MixedGraph learnMixedStructure(CorrectedMutualInformation<>& I,
+                                     MixedGraph graph);  //= MixedGraph() ?
 
       /// learns the structure of an Bayesian network, ie a DAG, from an Essential
       /// graph.
@@ -131,8 +135,7 @@ namespace gum {
        * @param graph the MixedGraph we start from for our learning
        * @param topologicalOrder a topological order of the variables to sort out
        * oritation problems*/
-      DAG learnStructure( CorrectedMutualInformation<>&  I,
-				 	 	  MixedGraph            graph );
+      DAG learnStructure(CorrectedMutualInformation<>& I, MixedGraph graph);
 
       /// learns the structure and the parameters of a BN
       /** @param selector A selector class that computes the best changes that
@@ -145,19 +148,19 @@ namespace gum {
        * database
        * @param translator The cell translator to use.
        * @param initial_dag the DAG we start from for our learning */
-      template <typename GUM_SCALAR = double,
-                typename GRAPH_CHANGES_SELECTOR,
-                typename PARAM_ESTIMATOR,
-                typename CELL_TRANSLATORS>
-      BayesNet<GUM_SCALAR> learnBN( GRAPH_CHANGES_SELECTOR&         selector,
-                                    PARAM_ESTIMATOR&                estimator,
-                                    const std::vector<std::string>& names,
-                                    const std::vector<Size>&        modal,
-                                    const CELL_TRANSLATORS&         translator,
-                                    DAG initial_dag = DAG() );
+      template < typename GUM_SCALAR = double,
+                 typename GRAPH_CHANGES_SELECTOR,
+                 typename PARAM_ESTIMATOR,
+                 typename CELL_TRANSLATORS >
+      BayesNet< GUM_SCALAR > learnBN(GRAPH_CHANGES_SELECTOR&           selector,
+                                     PARAM_ESTIMATOR&                  estimator,
+                                     const std::vector< std::string >& names,
+                                     const std::vector< Size >&        modal,
+                                     const CELL_TRANSLATORS&           translator,
+                                     DAG initial_dag = DAG());
 
-      ///get the list of arcs hiding latent variables
-      const std::vector<Arc> getLatent() const;
+      /// get the list of arcs hiding latent variables
+      const std::vector< Arc > getLatent() const;
 
       /// @}
       // ##########################################################################
@@ -169,7 +172,7 @@ namespace gum {
        * @brief Returns the approximation scheme message.
        * @return Returns the approximation scheme message.
        */
-      //std::string messageApproximationScheme() const;
+      // std::string messageApproximationScheme() const;
 
       /// @}
 
@@ -179,47 +182,52 @@ namespace gum {
       MixedGraph iteration( MixedGraph graph);
       MixedGraph orientation( MixedGraph graph );
       */
-      ///finds the best contributor node for a pair given a conditioning set
+      /// finds the best contributor node for a pair given a conditioning set
       /**@param x first node
        * @param y second node
        * @param ui conditioning set
        */
-      void _findBestContributor( Idx x, Idx y, const std::vector<Idx>& ui,
-										const MixedGraph&             graphe,
-										CorrectedMutualInformation<>&          I,
-Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>,
-												   GreaterPairOn2nd>&  _rank );
+      void _findBestContributor(
+        Idx                           x,
+        Idx                           y,
+        const std::vector< Idx >&     ui,
+        const MixedGraph&             graphe,
+        CorrectedMutualInformation<>& I,
+        Heap<
+          std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
+          GreaterPairOn2nd >& _rank);
 
-      ///gets the list of unshielded triples in the graph in decreasing value of
+      /// gets the list of unshielded triples in the graph in decreasing value of
       ///|I'(x, y, z|{ui})|
       /*@param graph graph in which to find the triples
        *@param I mutual information object to compute the scores
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
       std::vector<std::pair<std::tuple<Idx, Idx, Idx> *, double>>
-      	  	  	  	  	  	 _getUnshieldedTriples( const MixedGraph& graph,
-      	  	  	  	  	  			 	CorrectedMutualInformation<>& I,
-		      const HashTable<std::pair<Idx, Idx>, std::vector<Idx>>& sep_set  );
+            GreaterAbsPairOn2nd >
+      _getUnshieldedTriples(
+        const MixedGraph&             graph,
+        CorrectedMutualInformation<>& I,
+        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
 
-      ///Propagates the orientation from a node to its neighbours
+      /// Propagates the orientation from a node to its neighbours
       /*@param dag graph in which to which to propagate arcs
        *@param node node on which neighbours to propagate th orientation
        *@todo : avoid exception driven programmation in circle detection
        */
-      void _propagatesHead( MixedGraph& graph, NodeId node );
+      void _propagatesHead(MixedGraph& graph, NodeId node);
 
-      ///Fixes the maximum log that we accept in exponential computations
+      /// Fixes the maximum log that we accept in exponential computations
       int __maxLog = 100;
 
       private:
       /// an empty conditioning set
-      const std::vector<Idx> __empty_set;
+      const std::vector< Idx > __empty_set;
       /// an empty vector of arcs
-      std::vector<Arc> __latent_couples;
+      std::vector< Arc > __latent_couples;
 
-      ///size of the database
+      /// size of the database
       Size __N;
-
     };
 
   } /* namespace learning */

@@ -30,5 +30,12 @@ template class gum::HashFunc<
   std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > > > >;
 template class gum::HashFunc<
   std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >, gum::Idx > >;
-template class gum::HashFunc<std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx>>;
-template class gum::HashFunc<std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx, gum::Idx>>;
+template class gum::HashFunc<
+  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >,
+              gum::Idx,
+              gum::Idx > >;
+template class gum::HashFunc<
+  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >,
+              gum::Idx,
+              gum::Idx,
+              gum::Idx > >;

@@ -32,81 +32,83 @@ namespace gum_tests {
   class PartialEntropyTestSuite : public CxxTest::TestSuite {
     public:
     void test_entropy() {
-      gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
-      gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
-      translators.insertTranslator ( 0, 8 );
-      
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, 8);
+
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
         generators;
-      generators.insertGenerator ();
+      generators.insertGenerator();
 
- 
+
       auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
+        gum::learning::make_DB_row_filter(database, translators, generators);
 
-      std::vector<gum::Size> modalities = filter.modalities();
+      std::vector< gum::Size > modalities = filter.modalities();
 
-      gum::learning::PartialEntropy<> score( filter, modalities );
+      gum::learning::PartialEntropy<> score(filter, modalities);
       /*
        * H de [3, 4] vaut 0.1941536767067103
-	   * H de [4, 0] vaut 1.0961635890107093
-	   * H de [1, 2, 5, 6] vaut 1.9712290949273594
-	   * H1 de [3] vaut 0.0988305218931441
-	   * H de [0, 1, 4, 6] vaut 2.2968805077576997
-	   * H de [0, 1, 4, 6, 7] vaut 2.575690824789043
+           * H de [4, 0] vaut 1.0961635890107093
+           * H de [1, 2, 5, 6] vaut 1.9712290949273594
+           * H1 de [3] vaut 0.0988305218931441
+           * H de [0, 1, 4, 6] vaut 2.2968805077576997
+           * H de [0, 1, 4, 6, 7] vaut 2.575690824789043
        */
-      gum::Idx id1 = score.addNodeSet( 3 );
-      gum::Idx id2 = score.addNodeSet( std::vector<gum::Idx>{1, 2, 5, 6} );
-      gum::Idx id3 = score.addNodeSet( std::vector<gum::Idx>{3, 4} );
-      gum::Idx id4 = score.addNodeSet( 3, 4 );
-      gum::Idx id5 = score.addNodeSet( std::vector<gum::Idx>{3} );
-      
-      TS_ASSERT( fabs( score.score( id1 ) - 0.098 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) - 1.971 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id3 ) - 0.194 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id4 ) - 0.194 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id5 ) - 0.098 ) <= 0.01 );
+      gum::Idx id1 = score.addNodeSet(3);
+      gum::Idx id2 = score.addNodeSet(std::vector< gum::Idx >{1, 2, 5, 6});
+      gum::Idx id3 = score.addNodeSet(std::vector< gum::Idx >{3, 4});
+      gum::Idx id4 = score.addNodeSet(3, 4);
+      gum::Idx id5 = score.addNodeSet(std::vector< gum::Idx >{3});
+
+      TS_ASSERT(fabs(score.score(id1) - 0.098) <= 0.01);
+      TS_ASSERT(fabs(score.score(id2) - 1.971) <= 0.01);
+      TS_ASSERT(fabs(score.score(id3) - 0.194) <= 0.01);
+      TS_ASSERT(fabs(score.score(id4) - 0.194) <= 0.01);
+      TS_ASSERT(fabs(score.score(id5) - 0.098) <= 0.01);
 
       score.clear();
-      id1 = score.addNodeSet( 3, 4 );
-      id2 = score.addNodeSet( 4, 3 );
-      TS_ASSERT( fabs( score.score( id1 ) - 0.194 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) - 0.194 ) <= 0.01 );
+      id1 = score.addNodeSet(3, 4);
+      id2 = score.addNodeSet(4, 3);
+      TS_ASSERT(fabs(score.score(id1) - 0.194) <= 0.01);
+      TS_ASSERT(fabs(score.score(id2) - 0.194) <= 0.01);
 
       score.clear();
-      id1 = score.addNodeSet( std::vector<gum::Idx>{1, 4, 0, 6} );
-      id2 = score.addNodeSet( std::vector<gum::Idx>{1, 4, 6, 0} );
-      id3 = score.addNodeSet( std::vector<gum::Idx>{0, 1, 4, 6} );
-      id4 = score.addNodeSet( std::vector<gum::Idx>{4, 6, 0, 1} );
-      id5 = score.addNodeSet( std::vector<gum::Idx>{6, 0, 4, 1} );
-      TS_ASSERT( fabs( score.score( id1 ) - 2.2968 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) - 2.2968 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id3 ) - 2.2968 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id4 ) - 2.2968 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id5 ) - 2.2968 ) <= 0.01 );
+      id1 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 0, 6});
+      id2 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 6, 0});
+      id3 = score.addNodeSet(std::vector< gum::Idx >{0, 1, 4, 6});
+      id4 = score.addNodeSet(std::vector< gum::Idx >{4, 6, 0, 1});
+      id5 = score.addNodeSet(std::vector< gum::Idx >{6, 0, 4, 1});
+      TS_ASSERT(fabs(score.score(id1) - 2.2968) <= 0.01);
+      TS_ASSERT(fabs(score.score(id2) - 2.2968) <= 0.01);
+      TS_ASSERT(fabs(score.score(id3) - 2.2968) <= 0.01);
+      TS_ASSERT(fabs(score.score(id4) - 2.2968) <= 0.01);
+      TS_ASSERT(fabs(score.score(id5) - 2.2968) <= 0.01);
 
       score.clear();
-      id1 = score.addNodeSet( std::vector<gum::Idx>{1, 4, 0, 6, 5} );
-      id2 = score.addNodeSet( std::vector<gum::Idx>{1, 4, 6, 0, 5} );
-      id3 = score.addNodeSet( std::vector<gum::Idx>{1, 4, 0, 5, 6} );
-      id4 = score.addNodeSet( std::vector<gum::Idx>{1, 4, 6, 5, 0} );
-      TS_ASSERT( fabs( score.score( id1 ) - 2.2968 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) - 2.2968 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id3 ) - 2.2968 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id4 ) - 2.2968 ) <= 0.01 );
+      id1 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 0, 6, 5});
+      id2 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 6, 0, 5});
+      id3 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 0, 5, 6});
+      id4 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 6, 5, 0});
+      TS_ASSERT(fabs(score.score(id1) - 2.2968) <= 0.01);
+      TS_ASSERT(fabs(score.score(id2) - 2.2968) <= 0.01);
+      TS_ASSERT(fabs(score.score(id3) - 2.2968) <= 0.01);
+      TS_ASSERT(fabs(score.score(id4) - 2.2968) <= 0.01);
 
       score.clear();
-      id1 = score.addNodeSet( std::vector<gum::Idx>{1, 4, 0, 6, 7} );
-      id2 = score.addNodeSet( std::vector<gum::Idx>{1, 4, 6, 0, 7} );
-      id3 = score.addNodeSet( std::vector<gum::Idx>{7, 0, 1, 4, 6} );
-      id4 = score.addNodeSet( std::vector<gum::Idx>{4, 6, 7, 0, 1} );
-      id5 = score.addNodeSet( std::vector<gum::Idx>{6, 7, 0, 4, 1} );
-      TS_ASSERT( fabs( score.score( id1 ) - 2.575 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) - 2.575 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id3 ) - 2.575 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id4 ) - 2.575 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id5 ) - 2.575 ) <= 0.01 );
+      id1 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 0, 6, 7});
+      id2 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 6, 0, 7});
+      id3 = score.addNodeSet(std::vector< gum::Idx >{7, 0, 1, 4, 6});
+      id4 = score.addNodeSet(std::vector< gum::Idx >{4, 6, 7, 0, 1});
+      id5 = score.addNodeSet(std::vector< gum::Idx >{6, 7, 0, 4, 1});
+      TS_ASSERT(fabs(score.score(id1) - 2.575) <= 0.01);
+      TS_ASSERT(fabs(score.score(id2) - 2.575) <= 0.01);
+      TS_ASSERT(fabs(score.score(id3) - 2.575) <= 0.01);
+      TS_ASSERT(fabs(score.score(id4) - 2.575) <= 0.01);
+      TS_ASSERT(fabs(score.score(id5) - 2.575) <= 0.01);
 
       /*
       score.clear();
@@ -137,7 +139,6 @@ namespace gum_tests {
       TS_ASSERT( fabs( score.score( id7 ) + 0.648 ) <= 0.01 );
       */
     }
-
   };
 
 } /* namespace gum_tests */
