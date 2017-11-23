@@ -204,7 +204,6 @@ namespace gum {
 
       precision = tp / ( tp + fp );
       recall = tp / ( tp + fn );
-      std::cout << " " << tp << " " << fp << " " << fn << std::endl;
       f_score = 2 * precision * recall / ( precision + recall );
       return f_score;
     }
@@ -236,7 +235,6 @@ namespace gum {
       precision = tp / ( tp + fp );
       recall = tp / ( tp + fn );
 
-      std::cout << " " << tp << " " << fp << " " << fn << std::endl;
       f_score = 2 * precision * recall / ( precision + recall );
       return f_score;
     }

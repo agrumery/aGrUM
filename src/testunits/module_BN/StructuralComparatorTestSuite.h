@@ -65,7 +65,6 @@ namespace gum_tests {
       dig2.addArc(1, 2);
 
       comp.compare( dig1, dig2 );
-      std::cout << "P=" << comp.precision_skeleton() << " R=" << comp.recall_skeleton() << " F=" << comp.f_score_skeleton() << std::endl;
       TS_ASSERT_DELTA( comp.precision_skeleton(), 0.666, 1e-3 );
       TS_ASSERT_DELTA( comp.recall_skeleton(), 1, 1e-3 );
       TS_ASSERT_DELTA( comp.f_score_skeleton(), 0.8, 1e-3 );
@@ -81,7 +80,6 @@ namespace gum_tests {
       undig2.addEdge(2, 1);
 
       comp.compare( undig1, undig2 );
-      std::cout << "P=" << comp.precision_skeleton() << " R=" << comp.recall_skeleton() << " F=" << comp.f_score_skeleton() << std::endl;
       TS_ASSERT_DELTA( comp.precision_skeleton(), 0.666, 1e-3 );
       TS_ASSERT_DELTA( comp.recall_skeleton(), 1, 1e-3 );
       TS_ASSERT_DELTA( comp.f_score_skeleton(), 0.8, 1e-3 );
@@ -94,7 +92,6 @@ namespace gum_tests {
     	  graph.addEdge( j, i );
     	}
       }
-      std::cout << "    " << graph.edges().size() << std::endl;
       //creating Asia
       gum::MixedGraph asia;
       for ( gum::Size i = 0; i < 8; ++i ){
@@ -121,12 +118,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING( comp.compare( asia, graph ) );
 
       comp.compare( asia, graph );
-      std::cout << "P=" << comp.precision_skeleton() << " R=" << comp.recall_skeleton() << " F=" << comp.f_score_skeleton() << std::endl;
       TS_ASSERT_DELTA( comp.precision_skeleton(), 0.2857, 1e-3 );
       TS_ASSERT_DELTA( comp.recall_skeleton(), 1, 1e-3 );
       TS_ASSERT_DELTA( comp.f_score_skeleton(), 0.4444, 1e-3 );
 
-      std::cout << "P=" << comp.precision() << " R=" << comp.recall() << " F=" << comp.f_score() << std::endl;
       TS_ASSERT_DELTA( comp.precision(), 0, 1e-3 );
     }
 
@@ -139,12 +134,10 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING( comp.compare( bn1, bn2 ) );
 
-      std::cout << "P=" << comp.precision_skeleton() << " R=" << comp.recall_skeleton() << " F=" << comp.f_score_skeleton() << std::endl;
       TS_ASSERT_DELTA( comp.precision_skeleton(), 0.666, 1e-3 );
       TS_ASSERT_DELTA( comp.recall_skeleton(), 1, 1e-3 );
       TS_ASSERT_DELTA( comp.f_score_skeleton(), 0.8, 1e-3 );
 
-      std::cout << "P=" << comp.precision() << " R=" << comp.recall() << " F=" << comp.f_score() << std::endl;
       TS_ASSERT_DELTA( comp.precision(), 0.666, 1e-3 );
       TS_ASSERT_DELTA( comp.recall(), 1, 1e-3 );
       TS_ASSERT_DELTA( comp.f_score(), 0.8, 1e-3 );
@@ -153,7 +146,6 @@ namespace gum_tests {
       gum::BayesNet<double> asia;
       asia = asia.fastPrototype("3->4->5->7;0->1->5->6;0->2->6");
       //asia = asia.fastPrototype("0->1;0->2;3->4->5->6;1->5->6;2->6");
-      std::cout << asia.dag().toString() << std::endl;
       //bn1 = bn1.fastPrototype("3->4;7->5->6;5->4->1->0->2->6;5->1");
 
       gum::MixedGraph mg;
@@ -169,17 +161,14 @@ namespace gum_tests {
       mg.addEdge( 4, 7 );
       mg.addEdge( 5, 2 );
       mg.addEdge( 2, 3 );
-      std::cout << mg.toString() << std::endl;
 
       TS_GUM_ASSERT_THROWS_NOTHING( comp.compare( mg, asia ) );
 
       comp.compare( asia, mg );
-      std::cout << "P=" << comp.precision() << " R=" << comp.recall() << " F=" << comp.f_score() << std::endl;
       TS_ASSERT_DELTA( comp.precision(), 0.4444, 1e-3 );
       TS_ASSERT_DELTA( comp.recall(), 1, 1e-3 );
       TS_ASSERT_DELTA( comp.f_score(), 0.615385, 1e-3 );
 
-      std::cout << "P=" << comp.precision_skeleton() << " R=" << comp.recall_skeleton() << " F=" << comp.f_score_skeleton() << std::endl;
       TS_ASSERT_DELTA( comp.precision_skeleton(), 0.8888, 1e-3 );
       TS_ASSERT_DELTA( comp.recall_skeleton(), 1, 1e-3 );
       TS_ASSERT_DELTA( comp.f_score_skeleton(), 0.9412, 1e-3 );

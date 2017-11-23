@@ -792,7 +792,6 @@ namespace gum {
 			__mutual_info = new CorrectedMutualInformation<>( __score_database.rowFilter(),
 															  __score_database.modalities() );
 		}
-		std::cout << "init graph " << mgraph << std::endl;
 		return __3off2.learnMixedStructure(  *__mutual_info, mgraph );
     }
 
@@ -831,7 +830,6 @@ namespace gum {
           BNLearnerListener listener( this, __3off2 );
           //create the mixedGraph
           MixedGraph mgraph;
-          std::cout << "init graph " << mgraph << std::endl;
           if ( !init_graph.empty() ){
               mgraph.populateNodes(init_graph);
           } else {
@@ -839,7 +837,6 @@ namespace gum {
         		  mgraph.addNode(i);
         	  }
           }
-          std::cout << "init graph " << mgraph << std::endl;
 		  for ( NodeId i : mgraph ){
 			for ( NodeId j : mgraph ){
 				if ( j < i ){
@@ -847,12 +844,10 @@ namespace gum {
 				}
 			}
 		  }
-          std::cout << "init graph " << mgraph << std::endl;
           for ( const auto& arc : init_graph.arcs() ) {
             mgraph.addArc( arc.tail(), arc.head() );
             mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
           }
-          std::cout << "init graph " << mgraph << std::endl;
 
           for ( const auto& arc : forbidden_arcs ) {
             mgraph.eraseArc( arc );
@@ -863,7 +858,6 @@ namespace gum {
           	__mutual_info = new CorrectedMutualInformation<>( __score_database.rowFilter(),
                         	  	  	  	  	  	  	  	  	  	  __score_database.modalities() );
           }
-          std::cout << "init graph " << mgraph << std::endl;
           return __3off2.learnStructure(  *__mutual_info, mgraph );
         }
         // ========================================================================

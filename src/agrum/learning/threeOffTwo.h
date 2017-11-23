@@ -196,7 +196,7 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>,
        *@param I mutual information object to compute the scores
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
-      Heap<std::pair<std::tuple<Idx, Idx, Idx> *, double>, GreaterAbsPairOn2nd>
+      std::vector<std::pair<std::tuple<Idx, Idx, Idx> *, double>>
       	  	  	  	  	  	 _getUnshieldedTriples( const MixedGraph& graph,
       	  	  	  	  	  			 	CorrectedMutualInformation<>& I,
 		      const HashTable<std::pair<Idx, Idx>, std::vector<Idx>>& sep_set  );
@@ -217,11 +217,6 @@ Heap<std::pair<std::tuple<Idx, Idx, Idx, std::vector<Idx>> *, double>,
       /// an empty vector of arcs
       std::vector<Arc> __latent_couples;
 
-      ///members for the second implementation of the orientation phase
-      ///whether to use the first or second form of the orientation algorithm
-      bool __orient_first{true};
-      ///vector of triples to sort
-      std::vector<std::pair<std::tuple<Idx, Idx, Idx> *, double>> __triples2;
       ///size of the database
       Size __N;
 

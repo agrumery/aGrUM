@@ -29,9 +29,9 @@
 
 namespace gum_tests {
 
-  class KNMLChi2TestSuite : public CxxTest::TestSuite {
+  class KNMLTestSuite : public CxxTest::TestSuite {
     public:
-    void test_chi2() {
+    void test() {
       gum::learning::DatabaseFromCSV database( GET_RESSOURCES_PATH( "asia.csv" ) );
 
       gum::learning::DBRowTranslatorSet<gum::learning::CellTranslatorCompactIntId> translators;
