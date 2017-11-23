@@ -210,4 +210,12 @@ namespace PyAgrumHelper {
 
     return q;
   }
+
+  PyObject* PySetFromArcSet( const gum::ArcSet& arcset ) {
+    PyObject* q=PyList_New(0);
+    for ( auto arc : arcset ) {
+      PyList_Append(q,Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+    }
+    return q;
+  }
 } //namespace PyAgrumHelper
