@@ -32,8 +32,6 @@
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
 #include <agrum/learning/BNLearnUtils/genericBNLearner.h>
 
-#include <agrum/learning/scores_and_tests/scoreInternalNoApriori.h>
-
 // include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
 #include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>
@@ -475,9 +473,9 @@ namespace gum {
 
       if (__apriori_database) delete __apriori_database;
 
-      if ( __mutual_info ) delete __mutual_info;
+      if (__mutual_info) delete __mutual_info;
 
-      GUM_DESTRUCTOR( genericBNLearner );
+      GUM_DESTRUCTOR(genericBNLearner);
     }
 
     genericBNLearner& genericBNLearner::operator=(const genericBNLearner& from) {
@@ -502,7 +500,7 @@ namespace gum {
           __apriori_database = nullptr;
         }
 
-        if ( __mutual_info ) {
+        if (__mutual_info) {
           delete __mutual_info;
           __mutual_info = nullptr;
         }
@@ -553,7 +551,7 @@ namespace gum {
           __apriori_database = nullptr;
         }
 
-        if ( __mutual_info ) {
+        if (__mutual_info) {
           delete __mutual_info;
           __mutual_info = nullptr;
         }
@@ -756,43 +754,43 @@ namespace gum {
     }
 
     MixedGraph genericBNLearner::learnMixedStructure() {
-    	if ( __selected_algo != AlgoType::THREE_OFF_TWO){
-    		GUM_ERROR( OperationNotAllowed, "Must be using the 3off2 algorithm" );
-    	}
-		BNLearnerListener listener( this, __3off2 );
-		//create the mixedGraph_constraint_MandatoryArcs.arcs();
-		MixedGraph mgraph;
-		if ( !__initial_dag.empty() ){
-			mgraph.populateNodes(__initial_dag);
-		} else {
-		  for ( Size i=0; i<__score_database.modalities().size(); ++i){
-			  mgraph.addNode(i);
-		  }
-		}
-		for ( NodeId i : mgraph ){
-			for ( NodeId j : mgraph ){
-				if ( j < i ){
-					mgraph.addEdge( j, i );
-				}
-			}
-		}
-	      const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
-	    for ( const auto& arc : mandatory_arcs ) {
-		  mgraph.addArc( arc.tail(), arc.head() );
-		  mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
-		}
+      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
+      }
+      BNLearnerListener listener(this, __3off2);
+      // create the mixedGraph_constraint_MandatoryArcs.arcs();
+      MixedGraph mgraph;
+      if (!__initial_dag.empty()) {
+        mgraph.populateNodes(__initial_dag);
+      } else {
+        for (Size i = 0; i < __score_database.modalities().size(); ++i) {
+          mgraph.addNode(i);
+        }
+      }
+      for (NodeId i : mgraph) {
+        for (NodeId j : mgraph) {
+          if (j < i) {
+            mgraph.addEdge(j, i);
+          }
+        }
+      }
+      const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
+      for (const auto& arc : mandatory_arcs) {
+        mgraph.addArc(arc.tail(), arc.head());
+        mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
+      }
 
-	      const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs();
-		for ( const auto& arc : forbidden_arcs ) {
-		  mgraph.eraseArc( arc );
-		  mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
-		}
-		//create the mutual entropy object
-		if (__mutual_info == nullptr){
-			__mutual_info = new CorrectedMutualInformation<>( __score_database.rowFilter(),
-															  __score_database.modalities() );
-		}
-		return __3off2.learnMixedStructure(  *__mutual_info, mgraph );
+      const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs();
+      for (const auto& arc : forbidden_arcs) {
+        mgraph.eraseArc(arc);
+        mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
+      }
+      // create the mutual entropy object
+      if (__mutual_info == nullptr) {
+        __mutual_info = new CorrectedMutualInformation<>(
+          __score_database.rowFilter(), __score_database.modalities());
+      }
+      return __3off2.learnMixedStructure(*__mutual_info, mgraph);
     }
 
     DAG genericBNLearner::learnDAG() {
@@ -827,38 +825,38 @@ namespace gum {
       switch (__selected_algo) {
         // ========================================================================
         case AlgoType::THREE_OFF_TWO: {
-          BNLearnerListener listener( this, __3off2 );
-          //create the mixedGraph
+          BNLearnerListener listener(this, __3off2);
+          // create the mixedGraph
           MixedGraph mgraph;
-          if ( !init_graph.empty() ){
-              mgraph.populateNodes(init_graph);
+          if (!init_graph.empty()) {
+            mgraph.populateNodes(init_graph);
           } else {
-        	  for ( Size i=0; i<__score_database.modalities().size(); ++i){
-        		  mgraph.addNode(i);
-        	  }
+            for (Size i = 0; i < __score_database.modalities().size(); ++i) {
+              mgraph.addNode(i);
+            }
           }
-		  for ( NodeId i : mgraph ){
-			for ( NodeId j : mgraph ){
-				if ( j < i ){
-					mgraph.addEdge( j, i );
-				}
-			}
-		  }
-          for ( const auto& arc : init_graph.arcs() ) {
-            mgraph.addArc( arc.tail(), arc.head() );
-            mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
+          for (NodeId i : mgraph) {
+            for (NodeId j : mgraph) {
+              if (j < i) {
+                mgraph.addEdge(j, i);
+              }
+            }
+          }
+          for (const auto& arc : init_graph.arcs()) {
+            mgraph.addArc(arc.tail(), arc.head());
+            mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
           }
 
-          for ( const auto& arc : forbidden_arcs ) {
-            mgraph.eraseArc( arc );
-            mgraph.eraseEdge( Edge( arc.tail(), arc.head() ) );
+          for (const auto& arc : forbidden_arcs) {
+            mgraph.eraseArc(arc);
+            mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
           }
-          //create the mutual entropy object
-          if (__mutual_info == nullptr){
-          	__mutual_info = new CorrectedMutualInformation<>( __score_database.rowFilter(),
-                        	  	  	  	  	  	  	  	  	  	  __score_database.modalities() );
+          // create the mutual entropy object
+          if (__mutual_info == nullptr) {
+            __mutual_info = new CorrectedMutualInformation<>(
+              __score_database.rowFilter(), __score_database.modalities());
           }
-          return __3off2.learnStructure(  *__mutual_info, mgraph );
+          return __3off2.learnStructure(*__mutual_info, mgraph);
         }
         // ========================================================================
         case AlgoType::GREEDY_HILL_CLIMBING: {

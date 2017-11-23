@@ -1,258 +1,261 @@
- /***************************************************************************
-  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
-  *   {prenom.nom}_at_lip6.fr                                               *
-  *                                                                         *
-  *   This program is free software; you can redistribute it and/or modify  *
-  *   it under the terms of the GNU General Public License as published by  *
-  *   the Free Software Foundation; either version 2 of the License, or     *
-  *   (at your option) any later version.                                   *
-  *                                                                         *
-  *   This program is distributed in the hope that it will be useful,       *
-  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-  *   GNU General Public License for more details.                          *
-  *                                                                         *
-  *   You should have received a copy of the GNU General Public License     *
-  *   along with this program; if not, write to the                         *
-  *   Free Software Foundation, Inc.,                                       *
-  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
-  ***************************************************************************/
- #ifndef DOXYGEN_SHOULD_SKIP_THIS
+/***************************************************************************
+ *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
+ *   {prenom.nom}_at_lip6.fr                                               *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
- namespace gum {
+namespace gum {
 
-   namespace learning {
+  namespace learning {
 
-	/// default constructor
-	template <typename IdSetAlloc, typename CountAlloc>
-	template <typename RowFilter>
-	INLINE
-	PartialEntropy<IdSetAlloc, CountAlloc>::PartialEntropy( const RowFilter& filter,
-										 const std::vector<Size>& var_modalities,
-										 Size min_range,
-										 Size max_range )
-	   : Counter<IdSetAlloc, CountAlloc>(
-			 filter, var_modalities, min_range, max_range ) {
-	 GUM_CONSTRUCTOR( PartialEntropy );
-	}
-	/*
-     template <typename IdSetAlloc, typename CountAlloc>
-     template <typename RowFilter>
-     INLINE PartialEntropy<IdSetAlloc, CountAlloc>::PartialEntropy(
-         const RowFilter& filter, const std::vector<Size>& var_modalities )
-         : Score<IdSetAlloc, CountAlloc>( filter, var_modalities,
-        		 AprioriNoApriori<IdSetAlloc, CountAlloc>() ) {
-       // for debugging purposes
-       GUM_CONSTRUCTOR( PartialEntropy );
-     }
-	*/
+    /// default constructor
+    template < typename IdSetAlloc, typename CountAlloc >
+    template < typename RowFilter >
+    INLINE PartialEntropy< IdSetAlloc, CountAlloc >::PartialEntropy(
+      const RowFilter&           filter,
+      const std::vector< Size >& var_modalities,
+      Size                       min_range,
+      Size                       max_range)
+        : Counter< IdSetAlloc, CountAlloc >(
+            filter, var_modalities, min_range, max_range) {
+      GUM_CONSTRUCTOR(PartialEntropy);
+    }
+    /*
+ template <typename IdSetAlloc, typename CountAlloc>
+ template <typename RowFilter>
+ INLINE PartialEntropy<IdSetAlloc, CountAlloc>::PartialEntropy(
+     const RowFilter& filter, const std::vector<Size>& var_modalities )
+     : Score<IdSetAlloc, CountAlloc>( filter, var_modalities,
+                     AprioriNoApriori<IdSetAlloc, CountAlloc>() ) {
+   // for debugging purposes
+   GUM_CONSTRUCTOR( PartialEntropy );
+ }
+    */
 
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE PartialEntropy<IdSetAlloc, CountAlloc>::~PartialEntropy() {
-       // for debugging purposes
-       GUM_DESTRUCTOR( PartialEntropy );
-     }
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE PartialEntropy< IdSetAlloc, CountAlloc >::~PartialEntropy() {
+      // for debugging purposes
+      GUM_DESTRUCTOR(PartialEntropy);
+    }
 
-     /// add a new target variable plus some conditioning vars
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE Idx PartialEntropy<IdSetAlloc, CountAlloc>::addNodeSet(
-    		 const std::vector<Idx>& var_set ) {
-       // if the conditioning set is empty, perform the unconditional addNodeSet
-       //if ( !conditioning_ids.size() ) {
-       //  return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var );
-       //}
+    /// add a new target variable plus some conditioning vars
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx PartialEntropy< IdSetAlloc, CountAlloc >::addNodeSet(
+      const std::vector< Idx >& var_set) {
+      // if the conditioning set is empty, perform the unconditional addNodeSet
+      // if ( !conditioning_ids.size() ) {
+      //  return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var );
+      //}
 
-    	 //If using cache, verify if the set isn't already known
-         if ( __use_cache ) {
-           try {
-             double score = __cache.score( var_set );
-             __is_cached_score.push_back( true );
-             __cached_score.push_back( score );
-             return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-           } catch ( const NotFound& ) {
-           }
-         }
-         
-         //else, add the set
-         __is_cached_score.push_back( false );
-         __cached_score.push_back( 0 );
-         
-         if ( var_set.size() == 1 ){
-        	 
-      	     return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var_set[0] );
-      	     
-         } else if ( var_set.size() > 1 ) {
-           Idx var = var_set[0];
-           std::vector<Idx> var_set_bis = var_set;
-           var_set_bis.erase(var_set_bis.begin()); 
+      // If using cache, verify if the set isn't already known
+      if (__use_cache) {
+        try {
+          double score = __cache.score(var_set);
+          __is_cached_score.push_back(true);
+          __cached_score.push_back(score);
+          return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
+        } catch (const NotFound&) {
+        }
+      }
 
-      	   return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var, var_set_bis );
-      	   
-         } else {
-        	 return Counter<IdSetAlloc, CountAlloc>::addEmptyNodeSet();
-         }
-       
-     }
-     
+      // else, add the set
+      __is_cached_score.push_back(false);
+      __cached_score.push_back(0);
 
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE Idx PartialEntropy<IdSetAlloc, CountAlloc>::addNodeSet(
-    		 Idx var1, Idx var2 ){
-    	 
-    	 std::vector<Idx> vars = {var1, var2};
-    	 
-    	 return PartialEntropy<IdSetAlloc, CountAlloc>::addNodeSet( vars );
-     }
-     
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE Idx PartialEntropy<IdSetAlloc, CountAlloc>::addNodeSet( Idx var ){
-    	 
-    	 std::vector<Idx> vars = {var};
-    	 
-    	 return PartialEntropy<IdSetAlloc, CountAlloc>::addNodeSet( vars );
-     }
-     
-     template <typename IdSetAlloc, typename CountAlloc>
-     double PartialEntropy<IdSetAlloc, CountAlloc>::score( Idx nodeset_index ) {
-       // if the score has already been computed, get its value
-       if ( this->_isInCache( nodeset_index ) ) {
-         return this->_cachedScore( nodeset_index );
-       }
-       
-/*
-       // get the nodes involved in the score as well as their modalities
-       const std::vector<Idx, IdSetAlloc>& all_nodes =
-           this->_getAllNodes( nodeset_index );
-       const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
-           this->_getConditioningNodes( nodeset_index + 1 );
-       const std::vector<Idx>& modals = this->modalities();
-*/
-       	 // sum_X sum_Y sum_Z - ( #ZYX / N * log2( #ZYX / N ))
-         // now, perform sum_X sum_Y sum_Z ( #ZYX - #ZX * #ZY / #Z )^2 /
-         // (#ZX * #ZY / #Z )
-         // get the counts for all the targets and for the conditioning nodes
-         const std::vector<double, CountAlloc>& Nzyx =
-             this->_getAllCounts( nodeset_index );
+      if (var_set.size() == 1) {
 
-         const auto ZXY_size = Size( Nzyx.size() );
-         double score = 0.0;
-         // count N
-         if ( this->__N == 0.0 ) {
-           for ( Idx i = 0; i < ZXY_size; ++i ) {
-             this->__N += Nzyx[i];
-           }
-         }
+        return Counter< IdSetAlloc, CountAlloc >::addNodeSet(var_set[0]);
 
-         for ( Idx zyx = 0; zyx < ZXY_size; ++zyx ) {
-		   if ( Nzyx[zyx] ) {
-		     score -= Nzyx[zyx] / this->__N  * log2( Nzyx[zyx] / this->__N );
-		   }
-         }
+      } else if (var_set.size() > 1) {
+        Idx                var = var_set[0];
+        std::vector< Idx > var_set_bis = var_set;
+        var_set_bis.erase(var_set_bis.begin());
 
-         // shall we put the score into the cache?
-         if ( this->_isUsingCache() ) {
-           this->_insertIntoCache( nodeset_index, score );
-         }
+        return Counter< IdSetAlloc, CountAlloc >::addNodeSet(var, var_set_bis);
 
-         return score;
-     }
+      } else {
+        return Counter< IdSetAlloc, CountAlloc >::addEmptyNodeSet();
+      }
+    }
 
-     /// clears all the data structures from memory
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE void PartialEntropy<IdSetAlloc, CountAlloc>::clear() {
-       Counter<IdSetAlloc, CountAlloc>::clear();
-       __is_cached_score.clear();
-       __cached_score.clear();
-     }
 
-     /// indicates whether a score belongs to the cache
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE bool
-     PartialEntropy<IdSetAlloc, CountAlloc>::_isInCache( Idx nodeset_index ) const noexcept {
-       return ( ( nodeset_index < __is_cached_score.size() ) &&
-                __is_cached_score[nodeset_index] );
-     }
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx PartialEntropy< IdSetAlloc, CountAlloc >::addNodeSet(Idx var1,
+                                                                    Idx var2) {
 
-     /// inserts a new score into the cache
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE void PartialEntropy<IdSetAlloc, CountAlloc>::_insertIntoCache( Idx nodeset_index,
-                                                                  double score ) {
-       const std::vector<Idx, IdSetAlloc>& all_nodes =
-           _getAllNodes( nodeset_index );
-       /*const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
-           _getConditioningNodes( nodeset_index );
-        
-       if ( conditioning_nodes != nullptr ) {
-         try {
-           __cache.insert(
-               all_nodes[all_nodes.size() - 1], *conditioning_nodes, score );
-         } catch ( const gum::DuplicateElement& ) {
-         }
-       } else {
-         try {
-           __cache.insert( all_nodes[0], __empty_conditioning_set, score );
-         } catch ( const gum::DuplicateElement& ) {
-         }
-       }*/
-       try {
-         __cache.insert( all_nodes, score );
-       } catch ( const gum::DuplicateElement& ) {
-       }
-     }
+      std::vector< Idx > vars = {var1, var2};
 
-     /// returns a cached score
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE double
-     PartialEntropy<IdSetAlloc, CountAlloc>::_cachedScore( Idx nodeset_index ) const
-         noexcept {
-       return __cached_score[nodeset_index];
-     }
+      return PartialEntropy< IdSetAlloc, CountAlloc >::addNodeSet(vars);
+    }
 
-     /// indicates whether we use the cache or not
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE bool PartialEntropy<IdSetAlloc, CountAlloc>::_isUsingCache() const noexcept {
-       return __use_cache;
-     }
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE Idx PartialEntropy< IdSetAlloc, CountAlloc >::addNodeSet(Idx var) {
 
-     /// turn on/off the use of a cache of the previously computed score
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE void PartialEntropy<IdSetAlloc, CountAlloc>::useCache( bool on_off ) noexcept {
-       if ( !on_off ) clear();
-       __use_cache = on_off;
-     }
+      std::vector< Idx > vars = {var};
 
-     /// clears the current cache (clear nodesets as well)
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE void PartialEntropy<IdSetAlloc, CountAlloc>::clearCache() {
-       clear();
-       __cache.clear();
-     }
+      return PartialEntropy< IdSetAlloc, CountAlloc >::addNodeSet(vars);
+    }
 
-     /// sets the range of records taken into account by the counter
-     template <typename IdSetAlloc, typename CountAlloc>
-     INLINE void PartialEntropy<IdSetAlloc, CountAlloc>::setRange( Size min_range,
-                                                          Size max_range ) {
-       Counter<IdSetAlloc, CountAlloc>::setRange( min_range, max_range );
-     }
+    template < typename IdSetAlloc, typename CountAlloc >
+    double PartialEntropy< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
+      // if the score has already been computed, get its value
+      if (this->_isInCache(nodeset_index)) {
+        return this->_cachedScore(nodeset_index);
+      }
 
-     ///returns the size of the database
-     template <typename IdSetAlloc, typename CountAlloc>
-     const Size PartialEntropy<IdSetAlloc, CountAlloc>::_N() {
-       if ( this->__N != 0 ){
-    	 return this->__N;
-       }
+      /*
+             // get the nodes involved in the score as well as their modalities
+             const std::vector<Idx, IdSetAlloc>& all_nodes =
+                 this->_getAllNodes( nodeset_index );
+             const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
+                 this->_getConditioningNodes( nodeset_index + 1 );
+             const std::vector<Idx>& modals = this->modalities();
+      */
+      // sum_X sum_Y sum_Z - ( #ZYX / N * log2( #ZYX / N ))
+      // now, perform sum_X sum_Y sum_Z ( #ZYX - #ZX * #ZY / #Z )^2 /
+      // (#ZX * #ZY / #Z )
+      // get the counts for all the targets and for the conditioning nodes
+      const std::vector< double, CountAlloc >& Nzyx =
+        this->_getAllCounts(nodeset_index);
 
-       Idx idN = this->addNodeSet( 0 );
-       const std::vector<double, CountAlloc>& Nzyx =
-           this->_getAllCounts( idN );
-       for ( Idx i = 0; i < Nzyx.size(); ++i ) {
-         this->__N += Nzyx[i];
-       }
-       return this->__N;
-     }
-     
-   } /* namespace learning */
+      const auto ZXY_size = Size(Nzyx.size());
+      double     score = 0.0;
+      // count N
+      if (this->__N == 0.0) {
+        for (Idx i = 0; i < ZXY_size; ++i) {
+          this->__N += Nzyx[i];
+        }
+      }
 
- } /* namespace gum */
+      for (Idx zyx = 0; zyx < ZXY_size; ++zyx) {
+        if (Nzyx[zyx]) {
+          score -= Nzyx[zyx] / this->__N * log2(Nzyx[zyx] / this->__N);
+        }
+      }
 
- #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+      // shall we put the score into the cache?
+      if (this->_isUsingCache()) {
+        this->_insertIntoCache(nodeset_index, score);
+      }
+
+      return score;
+    }
+
+    /// clears all the data structures from memory
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void PartialEntropy< IdSetAlloc, CountAlloc >::clear() {
+      Counter< IdSetAlloc, CountAlloc >::clear();
+      __is_cached_score.clear();
+      __cached_score.clear();
+    }
+
+    /// indicates whether a score belongs to the cache
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE bool
+    PartialEntropy< IdSetAlloc, CountAlloc >::_isInCache(Idx nodeset_index) const
+      noexcept {
+      return ((nodeset_index < __is_cached_score.size()) &&
+              __is_cached_score[nodeset_index]);
+    }
+
+    /// inserts a new score into the cache
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void
+    PartialEntropy< IdSetAlloc, CountAlloc >::_insertIntoCache(Idx nodeset_index,
+                                                               double score) {
+      const std::vector< Idx, IdSetAlloc >& all_nodes =
+        _getAllNodes(nodeset_index);
+      /*const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
+          _getConditioningNodes( nodeset_index );
+
+      if ( conditioning_nodes != nullptr ) {
+        try {
+          __cache.insert(
+              all_nodes[all_nodes.size() - 1], *conditioning_nodes, score );
+        } catch ( const gum::DuplicateElement& ) {
+        }
+      } else {
+        try {
+          __cache.insert( all_nodes[0], __empty_conditioning_set, score );
+        } catch ( const gum::DuplicateElement& ) {
+        }
+      }*/
+      try {
+        __cache.insert(all_nodes, score);
+      } catch (const gum::DuplicateElement&) {
+      }
+    }
+
+    /// returns a cached score
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE double
+    PartialEntropy< IdSetAlloc, CountAlloc >::_cachedScore(Idx nodeset_index) const
+      noexcept {
+      return __cached_score[nodeset_index];
+    }
+
+    /// indicates whether we use the cache or not
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE bool PartialEntropy< IdSetAlloc, CountAlloc >::_isUsingCache() const
+      noexcept {
+      return __use_cache;
+    }
+
+    /// turn on/off the use of a cache of the previously computed score
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void
+    PartialEntropy< IdSetAlloc, CountAlloc >::useCache(bool on_off) noexcept {
+      if (!on_off) clear();
+      __use_cache = on_off;
+    }
+
+    /// clears the current cache (clear nodesets as well)
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void PartialEntropy< IdSetAlloc, CountAlloc >::clearCache() {
+      clear();
+      __cache.clear();
+    }
+
+    /// sets the range of records taken into account by the counter
+    template < typename IdSetAlloc, typename CountAlloc >
+    INLINE void
+    PartialEntropy< IdSetAlloc, CountAlloc >::setRange(Size min_range,
+                                                       Size max_range) {
+      Counter< IdSetAlloc, CountAlloc >::setRange(min_range, max_range);
+    }
+
+    /// returns the size of the database
+    template < typename IdSetAlloc, typename CountAlloc >
+    const Size PartialEntropy< IdSetAlloc, CountAlloc >::_N() {
+      if (this->__N != 0) {
+        return this->__N;
+      }
+
+      Idx idN = this->addNodeSet(0);
+      const std::vector< double, CountAlloc >& Nzyx = this->_getAllCounts(idN);
+      for (Idx i = 0; i < Nzyx.size(); ++i) {
+        this->__N += Nzyx[i];
+      }
+      return this->__N;
+    }
+
+  } /* namespace learning */
+
+} /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

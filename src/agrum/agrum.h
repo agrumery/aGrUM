@@ -24,23 +24,23 @@
 /// gum is the global namespace for all aGrUM entities
 namespace gum {
 
-/// Internal namespace for aGrUM signaler/listener components
-namespace __sig__ {}
+  /// Internal namespace for aGrUM signaler/listener components
+  namespace __sig__ {}
 
-/// Internal namespace for aGrUM debugging tools
-namespace __debug__ {}
+  /// Internal namespace for aGrUM debugging tools
+  namespace __debug__ {}
 
-/// Aggregators are functional description of CPTs
-namespace aggregator {}
+  /// Aggregators are functional description of CPTs
+  namespace aggregator {}
 
-/// Internal namespace for complexity tools (quite empty for now)
-namespace complexity {}
+  /// Internal namespace for complexity tools (quite empty for now)
+  namespace complexity {}
 
-/// namespace for all credal networks entities
-namespace credal {
+  /// namespace for all credal networks entities
+  namespace credal {
 
-/// namespace for constraint-based description of credal sets
-namespace lp {}
+    /// namespace for constraint-based description of credal sets
+    namespace lp {}
   }
 
   /// namespace for all probabilistic relational models entities

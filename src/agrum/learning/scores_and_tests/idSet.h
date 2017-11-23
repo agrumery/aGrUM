@@ -183,13 +183,14 @@ namespace gum {
   };
 
   /// the hash function for pairs (idSet,tuple<Idx,Idx,Idx>)
-  template <typename Alloc>
-  class HashFunc<std::tuple<learning::IdSet<Alloc>, Idx, Idx, Idx>>
-      : public HashFuncBase<std::tuple<learning::IdSet<Alloc>, Idx, Idx, Idx>> {
+  template < typename Alloc >
+  class HashFunc< std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx > >
+    : public HashFuncBase<
+        std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx > > {
     public:
     /// computes the hashed value of a key
-    Size
-    operator()( const std::tuple<learning::IdSet<Alloc>, Idx, Idx, Idx>& key ) const;
+    Size operator()(
+      const std::tuple< learning::IdSet< Alloc >, Idx, Idx, Idx >& key) const;
   };
 
 } /* namespace gum */
@@ -199,8 +200,15 @@ extern template class gum::HashFunc<
   std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > > > >;
 extern template class gum::HashFunc<
   std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >, gum::Idx > >;
-extern template class gum::HashFunc<std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx>>;
-extern template class gum::HashFunc<std::tuple<gum::learning::IdSet<std::allocator<gum::Idx>>, gum::Idx, gum::Idx, gum::Idx>>;
+extern template class gum::HashFunc<
+  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >,
+              gum::Idx,
+              gum::Idx > >;
+extern template class gum::HashFunc<
+  std::tuple< gum::learning::IdSet< std::allocator< gum::Idx > >,
+              gum::Idx,
+              gum::Idx,
+              gum::Idx > >;
 
 
 // always include the template implementation

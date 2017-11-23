@@ -28,83 +28,82 @@
 #ifndef GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 #define GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 
-#include <agrum/graphs/diGraph.h>
-#include <agrum/graphs/undiGraph.h>
-#include <agrum/graphs/mixedGraph.h>
 #include <agrum/BN/BayesNet.h>
+#include <agrum/graphs/diGraph.h>
+#include <agrum/graphs/mixedGraph.h>
+#include <agrum/graphs/undiGraph.h>
 
 
 namespace gum {
 
-    /** @class StructuralComparator
-     * @brief A class to compare the structure of graphs
+  /** @class StructuralComparator
+   * @brief A class to compare the structure of graphs
+   *
+   * @ingroup learning_group
+   */
+  class StructuralComparator {
+
+    public:
+    // ##########################################################################
+    /// @name Constructors / Destructors
+    // ##########################################################################
+    /// @{
+
+    /// default constructor
+    StructuralComparator();
+
+    /// destructor
+    ~StructuralComparator();
+
+    /// @}
+
+    // ##########################################################################
+    /// @name Accessors
+    // ##########################################################################
+    /// @{
+    void compare(const DiGraph& ref, const DiGraph& test);
+    void compare(const UndiGraph& ref, const UndiGraph& test);
+    void compare(const MixedGraph& ref, const MixedGraph& test);
+    template < typename GS1, typename GS2 >
+    void compare(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test);
+    template < typename GUM_SCALAR >
+    void compare(const BayesNet< GUM_SCALAR >& ref, const MixedGraph& test);
+    template < typename GUM_SCALAR >
+    void compare(const MixedGraph& ref, const BayesNet< GUM_SCALAR >& test);
+
+    double precision_skeleton() const;
+    double recall_skeleton() const;
+    double f_score_skeleton() const;
+
+    double precision() const;
+    double recall() const;
+    double f_score() const;
+    /// @}
+
+    protected:
+    private:
+    /// Confusion matrix
+    /*   __________________________________________________
+     *  |   \predicted |           |           |           |
+     *  |true\         |    -->    |    ---    |     X     |
+     *  |--------------|-----------|-----------|-----------|
+     *  |      -->     | true arc  |wrong edge |wrong none |
+     *  |      		 | mis. arc  |      arc  |      arc  |
+     *  |--------------|-----------|-----------|-----------|
+     *  |      ---     |wrong arc  | true edge |wrong none |
+     *  |      		 |      edge |           |      edge |
+     *  |--------------|-----------|-----------|-----------|
+     *  |       X      |wrong arc  |wrong edge | true none |
+     *  |      		 |      none |      none |           |
+     *  |______________|___________|___________|___________|
      *
-     * @ingroup learning_group
      */
-    class StructuralComparator{
-
-      public:
-      // ##########################################################################
-      /// @name Constructors / Destructors
-      // ##########################################################################
-      /// @{
-
-      /// default constructor
-      StructuralComparator();
-
-      /// destructor
-      ~StructuralComparator();
-
-      /// @}
-
-      // ##########################################################################
-      /// @name Accessors
-      // ##########################################################################
-      /// @{
-      void compare( const DiGraph& ref, const DiGraph& test );
-      void compare( const UndiGraph& ref, const UndiGraph& test );
-      void compare( const MixedGraph& ref, const MixedGraph& test );
-      template <typename GS1, typename GS2>
-      void compare( const BayesNet<GS1>& ref, const BayesNet<GS2>& test );
-      template <typename GUM_SCALAR>
-      void compare( const BayesNet<GUM_SCALAR>& ref, const MixedGraph& test );
-      template <typename GUM_SCALAR>
-      void compare( const MixedGraph& ref, const BayesNet<GUM_SCALAR>& test );
-
-      double precision_skeleton() const;
-      double recall_skeleton() const;
-      double f_score_skeleton() const;
-
-      double precision() const;
-      double recall() const;
-      double f_score() const;
-      /// @}
-
-      protected:
-
-      private:
-      ///Confusion matrix
-      /*   __________________________________________________
-       *  |   \predicted |           |           |           |
-       *  |true\         |    -->    |    ---    |     X     |
-       *  |--------------|-----------|-----------|-----------|
-       *  |      -->     | true arc  |wrong edge |wrong none |
-       *  |      		 | mis. arc  |      arc  |      arc  |
-       *  |--------------|-----------|-----------|-----------|
-       *  |      ---     |wrong arc  | true edge |wrong none |
-       *  |      		 |      edge |           |      edge |
-       *  |--------------|-----------|-----------|-----------|
-       *  |       X      |wrong arc  |wrong edge | true none |
-       *  |      		 |      none |      none |           |
-       *  |______________|___________|___________|___________|
-       *
-       */
-      double __true_edge, __true_arc, __true_none;
-      double __wrong_edge_arc, __wrong_edge_none;
-      double __wrong_arc_edge, __wrong_arc_none, __misoriented_arc;
-      double __wrong_none_edge, __wrong_none_arc;
-      //double __precision, __recall, __f_score;
-    };
+    double __true_edge, __true_arc, __true_none;
+    double __wrong_edge_arc, __wrong_edge_none;
+    double __wrong_arc_edge, __wrong_arc_none, __misoriented_arc;
+    double __wrong_none_edge, __wrong_none_arc;
+    // double __precision, __recall, __f_score;
+  };
 
 } /* namespace gum */
 

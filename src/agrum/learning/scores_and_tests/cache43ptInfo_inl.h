@@ -31,102 +31,101 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    INLINE Cache43ptInfo::Cache43ptInfo() {
-      GUM_CONSTRUCTOR( Cache43ptInfo );
-    }
+    INLINE Cache43ptInfo::Cache43ptInfo() { GUM_CONSTRUCTOR(Cache43ptInfo); }
 
     /// copy constructor
-    INLINE Cache43ptInfo::Cache43ptInfo( const Cache43ptInfo& from )
-        : __scores( from.__scores ) {
-      GUM_CONS_CPY( Cache43ptInfo );
+    INLINE Cache43ptInfo::Cache43ptInfo(const Cache43ptInfo& from)
+        : __scores(from.__scores) {
+      GUM_CONS_CPY(Cache43ptInfo);
     }
 
     /// move constructor
-    INLINE Cache43ptInfo::Cache43ptInfo( Cache43ptInfo&& from )
-        : __scores( std::move( from.__scores ) ) {
-      GUM_CONS_MOV( Cache43ptInfo );
+    INLINE Cache43ptInfo::Cache43ptInfo(Cache43ptInfo&& from)
+        : __scores(std::move(from.__scores)) {
+      GUM_CONS_MOV(Cache43ptInfo);
     }
 
     /// destructor
-    INLINE Cache43ptInfo::~Cache43ptInfo() {
-      GUM_DESTRUCTOR( Cache43ptInfo );
-    }
+    INLINE Cache43ptInfo::~Cache43ptInfo() { GUM_DESTRUCTOR(Cache43ptInfo); }
 
     /// copy operator
-    INLINE Cache43ptInfo& Cache43ptInfo::
-    operator=( const Cache43ptInfo& from ) {
-      if ( &from != this ) {
+    INLINE Cache43ptInfo& Cache43ptInfo::operator=(const Cache43ptInfo& from) {
+      if (&from != this) {
         __scores = from.__scores;
       }
       return *this;
     }
 
     /// move operator
-    INLINE Cache43ptInfo& Cache43ptInfo::operator=( Cache43ptInfo&& from ) {
-      if ( &from != this ) {
-        __scores = std::move( from.__scores );
+    INLINE Cache43ptInfo& Cache43ptInfo::operator=(Cache43ptInfo&& from) {
+      if (&from != this) {
+        __scores = std::move(from.__scores);
       }
       return *this;
     }
 
     /// insert a new score into the cache
-    INLINE void Cache43ptInfo::insert( Idx                     var1,
-                                         Idx                     var2,
-                                         Idx                     var3,
-                                         const std::vector<Idx>& conditioning_set,
-                                         double                  score ) {
-      //if ( var1 > var2 ) std::swap( var1, var2 );
-      __scores.insert( std::tuple<IdSet<>, Idx, Idx, Idx>(
-                           IdSet<>( conditioning_set, 0 ), var1, var2, var3 ),
-                       std::move( score ) );
+    INLINE void Cache43ptInfo::insert(Idx                       var1,
+                                      Idx                       var2,
+                                      Idx                       var3,
+                                      const std::vector< Idx >& conditioning_set,
+                                      double                    score) {
+      // if ( var1 > var2 ) std::swap( var1, var2 );
+      __scores.insert(std::tuple< IdSet<>, Idx, Idx, Idx >(
+                        IdSet<>(conditioning_set, 0), var1, var2, var3),
+                      std::move(score));
     }
 
     /// insert a new score into the cache
-    template <typename Alloc>
-    INLINE void Cache43ptInfo::insert( Idx           var1,
-                                         Idx           var2,
-                                         Idx           var3,
-                                         IdSet<Alloc>& conditioning_set,
-                                         double        score ) {
-      //if ( var1 > var2 ) std::swap( var1, var2 );
-      __scores.insert( std::tuple<IdSet<>, Idx, Idx, Idx>(
-    		  	  	  	  conditioning_set , var1, var2, var3 ),
-					   std::move( score ) );
+    template < typename Alloc >
+    INLINE void Cache43ptInfo::insert(Idx             var1,
+                                      Idx             var2,
+                                      Idx             var3,
+                                      IdSet< Alloc >& conditioning_set,
+                                      double          score) {
+      // if ( var1 > var2 ) std::swap( var1, var2 );
+      __scores.insert(
+        std::tuple< IdSet<>, Idx, Idx, Idx >(conditioning_set, var1, var2, var3),
+        std::move(score));
     }
 
     /// removes a score (if it exists)
-    INLINE void Cache43ptInfo::erase(
-        Idx var1, Idx var2, Idx var3, const std::vector<Idx>& conditioning_set ) {
-      //if ( var1 > var2 ) std::swap( var1, var2 );
-      __scores.erase( std::tuple<IdSet<>, Idx, Idx, Idx>(
-          IdSet<>( conditioning_set, 0 ), var1, var2, var3 ) );
+    INLINE void Cache43ptInfo::erase(Idx                       var1,
+                                     Idx                       var2,
+                                     Idx                       var3,
+                                     const std::vector< Idx >& conditioning_set) {
+      // if ( var1 > var2 ) std::swap( var1, var2 );
+      __scores.erase(std::tuple< IdSet<>, Idx, Idx, Idx >(
+        IdSet<>(conditioning_set, 0), var1, var2, var3));
     }
 
     /// removes a score (if it exists)
-    template <typename Alloc>
-    INLINE void Cache43ptInfo::erase( Idx                 var1,
-                                        Idx                 var2,
-                                        Idx                 var3,
-                                        const IdSet<Alloc>& conditioning_set ) {
-      //if ( var1 > var2 ) std::swap( var1, var2 );
+    template < typename Alloc >
+    INLINE void Cache43ptInfo::erase(Idx                   var1,
+                                     Idx                   var2,
+                                     Idx                   var3,
+                                     const IdSet< Alloc >& conditioning_set) {
+      // if ( var1 > var2 ) std::swap( var1, var2 );
       __scores.erase(
-          std::tuple<IdSet<>, Idx, Idx, Idx>( conditioning_set, var1, var2, var3 ) );
+        std::tuple< IdSet<>, Idx, Idx, Idx >(conditioning_set, var1, var2, var3));
     }
 
     /// indicates whether a given score exists
-    INLINE bool Cache43ptInfo::exists(
-        Idx var1, Idx var2, Idx var3, const std::vector<Idx>& conditioning_set ) {
-      //if ( var1 > var2 ) std::swap( var1, var2 );
-      return __scores.exists( std::tuple<IdSet<>, Idx, Idx, Idx>(
-          IdSet<>( conditioning_set, 0 ), var1, var2, var3 ) );
+    INLINE bool Cache43ptInfo::exists(Idx                       var1,
+                                      Idx                       var2,
+                                      Idx                       var3,
+                                      const std::vector< Idx >& conditioning_set) {
+      // if ( var1 > var2 ) std::swap( var1, var2 );
+      return __scores.exists(std::tuple< IdSet<>, Idx, Idx, Idx >(
+        IdSet<>(conditioning_set, 0), var1, var2, var3));
     }
 
     /// returns a given score
     INLINE double Cache43ptInfo::score(
-        Idx var1, Idx var2, Idx var3, const std::vector<Idx>& conditioning_set ) {
-      //if ( var1 > var2 ) std::swap( var1, var2 );
-      return __scores[std::tuple<IdSet<>, Idx, Idx, Idx>(
-          IdSet<>( conditioning_set, 0 ), var1, var2, var3 )];
+      Idx var1, Idx var2, Idx var3, const std::vector< Idx >& conditioning_set) {
+      // if ( var1 > var2 ) std::swap( var1, var2 );
+      return __scores[std::tuple< IdSet<>, Idx, Idx, Idx >(
+        IdSet<>(conditioning_set, 0), var1, var2, var3)];
     }
 
     /// removes all the stored scores

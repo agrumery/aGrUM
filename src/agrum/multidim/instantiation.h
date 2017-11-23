@@ -325,15 +325,15 @@ namespace gum {
      */
     const DiscreteVariable& variable(Idx i) const;
 
-      /**
-     * @brief Returns the variable with the name
-     *
-     * @param name The index of the variable
-     * @return Returns the variable qith the name in the tuple.
-     * @warging This function is not O(1)
-     * @throw NotFound Raised if the element cannot be found.
-     */
-      const DiscreteVariable& variable(const std::string& name) const;
+    /**
+   * @brief Returns the variable with the name
+   *
+   * @param name The index of the variable
+   * @return Returns the variable qith the name in the tuple.
+   * @warging This function is not O(1)
+   * @throw NotFound Raised if the element cannot be found.
+   */
+    const DiscreteVariable& variable(const std::string& name) const;
 
     /**
      * @brief Assign newval to variable v in the Instantiation.

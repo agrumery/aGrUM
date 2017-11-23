@@ -31,39 +31,39 @@ namespace gum_tests {
     void test1() {
       gum::learning::Cache4PartEntropy cache;
 
-      std::vector<gum::Idx> v1{1, 6, 2};
-      std::vector<gum::Idx> v2{1, 2, 6};
-      std::vector<gum::Idx> v3;
-      std::vector<gum::Idx> v4{1};
+      std::vector< gum::Idx > v1{1, 6, 2};
+      std::vector< gum::Idx > v2{1, 2, 6};
+      std::vector< gum::Idx > v3;
+      std::vector< gum::Idx > v4{1};
 
-      cache.insert( v1, 1.5 );
-      TS_ASSERT_THROWS( cache.insert( v1, 2.5 ), gum::DuplicateElement );
-      TS_ASSERT_THROWS( cache.insert( v2, 3.5 ), gum::DuplicateElement );
-      TS_GUM_ASSERT_THROWS_NOTHING( cache.insert( v3, 4.5 ) );
-      //cache.insert( v3, 5 );
-      //cache.insert( v4, 7 );
+      cache.insert(v1, 1.5);
+      TS_ASSERT_THROWS(cache.insert(v1, 2.5), gum::DuplicateElement);
+      TS_ASSERT_THROWS(cache.insert(v2, 3.5), gum::DuplicateElement);
+      TS_GUM_ASSERT_THROWS_NOTHING(cache.insert(v3, 4.5));
+      // cache.insert( v3, 5 );
+      // cache.insert( v4, 7 );
 
       TS_ASSERT_EQUALS( cache.score( v1 ), 1.5 );
-      //TS_ASSERT( cache.score( v1 ) == 4.5 );
-      TS_ASSERT_THROWS( cache.score( v4 ), gum::NotFound );
+      // TS_ASSERT( cache.score( v1 ) == 4.5 );
+      TS_ASSERT_THROWS(cache.score(v4), gum::NotFound);
       TS_ASSERT_EQUALS( cache.score( v3 ), 4.5 );
-      //TS_ASSERT( cache.score( v4 ) == 7 );
+      // TS_ASSERT( cache.score( v4 ) == 7 );
 
       cache.clear();
-      TS_ASSERT_THROWS( cache.score( v2 ), gum::NotFound );
-      TS_ASSERT_THROWS( cache.score( v3 ), gum::NotFound );
+      TS_ASSERT_THROWS(cache.score(v2), gum::NotFound);
+      TS_ASSERT_THROWS(cache.score(v3), gum::NotFound);
 
-      cache.insert( v1, 1.5 );
-      TS_ASSERT_THROWS( cache.insert( v1, 2.5 ), gum::DuplicateElement );
-      TS_ASSERT_THROWS( cache.insert( v2, 3.5 ), gum::DuplicateElement );
-      TS_GUM_ASSERT_THROWS_NOTHING( cache.insert( v3, 4.5 ) );
-      //cache.insert( v4, 7 );
+      cache.insert(v1, 1.5);
+      TS_ASSERT_THROWS(cache.insert(v1, 2.5), gum::DuplicateElement);
+      TS_ASSERT_THROWS(cache.insert(v2, 3.5), gum::DuplicateElement);
+      TS_GUM_ASSERT_THROWS_NOTHING(cache.insert(v3, 4.5));
+      // cache.insert( v4, 7 );
 
       TS_ASSERT_EQUALS( cache.score( v2 ), 1.5 );
       TS_ASSERT_EQUALS( cache.score( v1 ), 1.5 );
-      TS_ASSERT_THROWS( cache.score( v4 ), gum::NotFound );
+      TS_ASSERT_THROWS(cache.score(v4), gum::NotFound);
       TS_ASSERT_EQUALS( cache.score( v3 ), 4.5 );
-      //TS_ASSERT( cache.score( v4 ) == 7 );
+      // TS_ASSERT( cache.score( v4 ) == 7 );
     }
   };
 

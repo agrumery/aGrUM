@@ -187,7 +187,8 @@ namespace gum {
       if (v->name() == name) return *v;
     }
 
-    GUM_ERROR(NotFound, "'" << name << "' can not be found in the multidim structure.")
+    GUM_ERROR(NotFound,
+              "'" << name << "' can not be found in the multidim structure.")
   }
 
   template < typename GUM_SCALAR >

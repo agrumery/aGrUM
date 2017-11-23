@@ -29,80 +29,86 @@ namespace gum {
   namespace learning {
 
     /// default constructor
-    INLINE Cache4PartEntropy::Cache4PartEntropy() { GUM_CONSTRUCTOR( Cache4PartEntropy ); }
+    INLINE Cache4PartEntropy::Cache4PartEntropy() {
+      GUM_CONSTRUCTOR(Cache4PartEntropy);
+    }
 
     /// copy constructor
-    INLINE Cache4PartEntropy::Cache4PartEntropy( const Cache4PartEntropy& from )
-        : __scores( from.__scores ) {
-      GUM_CONS_CPY( Cache4PartEntropy );
+    INLINE Cache4PartEntropy::Cache4PartEntropy(const Cache4PartEntropy& from)
+        : __scores(from.__scores) {
+      GUM_CONS_CPY(Cache4PartEntropy);
     }
 
     /// move constructor
-    INLINE Cache4PartEntropy::Cache4PartEntropy( Cache4PartEntropy&& from )
-        : __scores( std::move( from.__scores ) ) {
-      GUM_CONS_MOV( Cache4PartEntropy );
+    INLINE Cache4PartEntropy::Cache4PartEntropy(Cache4PartEntropy&& from)
+        : __scores(std::move(from.__scores)) {
+      GUM_CONS_MOV(Cache4PartEntropy);
     }
 
     /// destructor
-    INLINE Cache4PartEntropy::~Cache4PartEntropy() { GUM_DESTRUCTOR( Cache4PartEntropy ); }
+    INLINE Cache4PartEntropy::~Cache4PartEntropy() {
+      GUM_DESTRUCTOR(Cache4PartEntropy);
+    }
 
     /// copy operator
-    INLINE Cache4PartEntropy& Cache4PartEntropy::operator=( const Cache4PartEntropy& from ) {
-      if ( &from != this ) {
+    INLINE Cache4PartEntropy& Cache4PartEntropy::
+    operator=(const Cache4PartEntropy& from) {
+      if (&from != this) {
         __scores = from.__scores;
       }
       return *this;
     }
 
     /// move operator
-    INLINE Cache4PartEntropy& Cache4PartEntropy::operator=( Cache4PartEntropy&& from ) {
-      if ( &from != this ) {
-        __scores = std::move( from.__scores );
+    INLINE Cache4PartEntropy& Cache4PartEntropy::
+    operator=(Cache4PartEntropy&& from) {
+      if (&from != this) {
+        __scores = std::move(from.__scores);
       }
       return *this;
     }
 
     /// insert a new score into the cache
-    INLINE void Cache4PartEntropy::insert( const std::vector<Idx>& var_set,
-                                     double                  score ) {
+    INLINE void Cache4PartEntropy::insert(const std::vector< Idx >& var_set,
+                                          double                    score) {
       std::vector<Idx> var_set2 = var_set;
       std::sort( var_set2.begin(), var_set2.end() );
       __scores.insert( var_set2, std::move( score ) );
     }
 
     /// insert a new score into the cache
-    template <typename Alloc>
-    INLINE void
-    Cache4PartEntropy::insert( const std::vector<Idx>& var_set, double score ) {
+    template < typename Alloc >
+    INLINE void Cache4PartEntropy::insert(const std::vector< Idx >& var_set,
+                                          double                    score) {
         std::vector<Idx> var_set2 = var_set;
         std::sort( var_set2.begin(), var_set2.end() );
       __scores.insert( var_set2, std::move( score ) );
     }
 
     /// removes a score (if it exists)
-    INLINE void Cache4PartEntropy::erase( const std::vector<Idx>& var_set ) {
+    INLINE void Cache4PartEntropy::erase(const std::vector< Idx >& var_set) {
         std::vector<Idx> var_set2 = var_set;
         std::sort( var_set2.begin(), var_set2.end() );
       __scores.erase( var_set2 );
     }
 
     /// removes a score (if it exists)
-    template <typename Alloc>
-    INLINE void Cache4PartEntropy::erase( const std::vector<Idx>& var_set ) {
+    template < typename Alloc >
+    INLINE void Cache4PartEntropy::erase(const std::vector< Idx >& var_set) {
         std::vector<Idx> var_set2 = var_set;
         std::sort( var_set2.begin(), var_set2.end() );
       __scores.erase( var_set2 );
     }
 
     /// indicates whether a given score exists
-    INLINE bool Cache4PartEntropy::exists( const std::vector<Idx>& var_set ) {
+    INLINE bool Cache4PartEntropy::exists(const std::vector< Idx >& var_set) {
         std::vector<Idx> var_set2 = var_set;
         std::sort( var_set2.begin(), var_set2.end() );
       return __scores.exists( var_set2 );
     }
 
     /// returns a given score
-    INLINE double Cache4PartEntropy::score( const std::vector<Idx>& var_set ) {
+    INLINE double Cache4PartEntropy::score(const std::vector< Idx >& var_set) {
         std::vector<Idx> var_set2 = var_set;
         std::sort( var_set2.begin(), var_set2.end() );
       return __scores[var_set2];

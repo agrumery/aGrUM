@@ -131,7 +131,7 @@ namespace gum_tests {
         gum::MixedGraph mg = learner.learnMixedStructure();
         TS_ASSERT_EQUALS(mg.arcs().size(), gum::Size(6));
         TS_ASSERT_EQUALS(mg.edges().size(), gum::Size(2));
-        std::vector< gum::Arc > latents = learner.getLatent();
+        std::vector< gum::Arc > latents = learner.latentVariables();
         TS_ASSERT(latents.size() == gum::Size(2));
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
@@ -652,7 +652,7 @@ namespace gum_tests {
                        gum::UnknownLabelInDatabase);
     }
 
-    void /*test*/ _listener() {
+    void test_listener() {
       {
         gum::learning::BNLearner< double > learner(
           GET_RESSOURCES_PATH("asia.csv"));
@@ -665,7 +665,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_EQUALS(listen.getNbr(), 2);
+        TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(2));
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -682,7 +682,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_EQUALS(listen.getNbr(), 3);
+        TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(3));
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -698,7 +698,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_DELTA(listen.getNbr(), 13, 1);  // 75 ?
+        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(13), 1);  // 75 ?
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -714,7 +714,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_DELTA(listen.getNbr(), 3, 1);  // 2?
+        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(3), 1);  // 2?
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
