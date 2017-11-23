@@ -42,12 +42,13 @@
 
 #define MY_ALARM GET_RESSOURCES_PATH( "alarm.csv" )
 #define MY_ASIA GET_RESSOURCES_PATH( "asia.csv" )
+#define MY_TONDA GET_RESSOURCES_PATH( "DBN_Tonda.csv" )
 
 namespace gum_tests {
 
   class ThreeOffTwoTestSuite : public CxxTest::TestSuite {
     public:
-    void /*test*/_3off2_asia_nocorr() {
+    void test_3off2_asia_nocorr() {
       gum::learning::DatabaseFromCSV database( MY_ASIA );
 
       gum::learning::DBRowTranslatorSet<
@@ -66,7 +67,6 @@ namespace gum_tests {
 
       gum::learning::CorrectedMutualInformation<> I( filter, modalities );
       I.useNoCorr();
-      std::cout << I.N() << std::endl;
 
 
       gum::learning::ThreeOffTwo search;
@@ -79,12 +79,11 @@ namespace gum_tests {
     	  graph.addEdge( j, i );
     	}
       }
-      std::cout << graph.toString() << std::endl;
 	  graph = search.learnMixedStructure( I, graph );
-      TS_ASSERT( graph.arcs().size() == 6 );
+	  TS_ASSERT_EQUALS( graph.arcs().size(), 6 );
     }
 
-    void /*test*/_3off2_asia_MDLcorr() {
+    void test_3off2_asia_MDLcorr() {
       gum::learning::DatabaseFromCSV database( MY_ASIA );
 
       gum::learning::DBRowTranslatorSet<
@@ -117,11 +116,11 @@ namespace gum_tests {
       }
 
 	  graph = search.learnMixedStructure( cI, graph );
-      TS_ASSERT( graph.arcs().size() == 2 );
-      TS_ASSERT( graph.edges().size() == 7 );
+	  TS_ASSERT_EQUALS( graph.arcs().size(), 2 );
+	  TS_ASSERT_EQUALS( graph.edges().size(), 7 );
     }
 
-    void /*test*/_3off2_asia_NMLcorr() {
+    void test_3off2_asia_NMLcorr() {
       gum::learning::DatabaseFromCSV database( MY_ASIA );
 
       gum::learning::DBRowTranslatorSet<
@@ -154,52 +153,13 @@ namespace gum_tests {
       }
 
 	  graph = search.learnMixedStructure( cI, graph );
-	  std::cout << graph.toString() << std::endl;
-      TS_ASSERT( graph.arcs().size() == 5 );
-      TS_ASSERT( graph.edges().size() == 4 );
+	  TS_ASSERT_EQUALS( graph.arcs().size(), 8 );
+      TS_ASSERT_EQUALS( graph.edges().size(), 1 );
       std::vector<gum::Arc> latents = search.getLatent();
-      std::cout << latents << std::endl;
-      TS_ASSERT( latents.size() == 2 );
+      TS_ASSERT_EQUALS( latents.size(), 2 );
     }
-/*
-    void est_3off2_asia_NMLcorr_Cycles() {
-      gum::learning::DatabaseFromCSV database( MY_ASIA );
 
-      gum::learning::DBRowTranslatorSet<
-          gum::learning::CellTranslatorCompactIntId>
-          translators;
-      translators.insertTranslator( 0, database.nbVariables() );
-
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
-        generators;
-      generators.insertGenerator ();
-
-      auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
-
-      std::vector<gum::Idx> modalities = filter.modalities();
-
-      gum::learning::CorrectedMutualInformation<> cI( filter, modalities );
-      cI.useNML();
-      //cI.useCache( false );
-
-      gum::learning::ThreeOffTwo search;
-
-      //creating complete graph
-      gum::MixedGraph graph;
-      for ( gum::Size i = 0; i < modalities.size(); ++i ){
-    	graph.addNode( i );
-    	for ( gum::Size j = 0; j < i; ++j){
-    	  graph.addEdge( j, i );
-    	}
-      }
-
-	  graph = search.learnMixedStructure( cI, graph );
-      TS_ASSERT( graph.arcs().size() == 8 );
-      TS_ASSERT( graph.edges().size() == 3 );
-    }
-*/
-    void /*test*/_3off2_asia_dag_noCycles() {
+    void test_3off2_asia_dag() {
       gum::learning::DatabaseFromCSV database( MY_ASIA );
 
       gum::learning::DBRowTranslatorSet<
@@ -232,15 +192,13 @@ namespace gum_tests {
 
 
 	  gum::DAG dag = search.learnStructure( cI, graph );
-	  std::cout << dag.toString() << std::endl;
       std::vector<gum::Arc> latents = search.getLatent();
-      TS_ASSERT( dag.arcs().size() == 9 );
-      std::cout << latents << std::endl;
-      TS_ASSERT( latents.size() == 2 );
+      TS_ASSERT_EQUALS( dag.arcs().size(), 9 );
+      TS_ASSERT_EQUALS( latents.size(), 2 );
     }
 
-    void test_alarm_mixed() {
-      gum::learning::DatabaseFromCSV database( MY_ALARM );
+    void test_tonda() {
+      gum::learning::DatabaseFromCSV database( MY_TONDA );
 
       gum::learning::DBRowTranslatorSet<
           gum::learning::CellTranslatorCompactIntId>
@@ -272,132 +230,17 @@ namespace gum_tests {
     	}
       }
 	  gum::MixedGraph g = search.learnMixedStructure( cI, graph );
-	  std::cout << g.toString() << std::endl;
-	  TS_ASSERT_EQUALS( g.arcs().size(), 39 );
-	  TS_ASSERT_EQUALS( g.edges().size(), 12 );
-      std::vector<gum::Arc> latents = search.getLatent();
-      std::cout << latents << std::endl;
-      //TS_ASSERT( latents.size() == 2 );
+	  TS_ASSERT_EQUALS( g.arcs().size(), 0 );
+	  TS_ASSERT_EQUALS( g.edges().size(), 9 );
 
-    }
-
-    void /*test*/_alarm_dag() {
-      gum::learning::DatabaseFromCSV database( MY_ALARM );
-
-      gum::learning::DBRowTranslatorSet<
-          gum::learning::CellTranslatorCompactIntId>
-          translators;
-      translators.insertTranslator( 0, database.nbVariables() );
-
-      gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
-        generators;
-      generators.insertGenerator ();
-
-      auto filter =
-          gum::learning::make_DB_row_filter( database, translators, generators );
-
-      std::vector<gum::Idx> modalities = filter.modalities();
-
-      gum::learning::CorrectedMutualInformation<> cI( filter, modalities );
-      cI.useNML();
-
-      gum::learning::ThreeOffTwo search;
-
-      //creating complete graph
-      gum::MixedGraph graph;
-      for ( gum::Size i = 0; i < modalities.size(); ++i ){
-    	graph.addNode( i );
-    	for ( gum::Size j = 0; j < i; ++j){
-    	  graph.addEdge( j, i );
-    	}
-      }
 	  gum::DAG dag = search.learnStructure( cI, graph );
-	  std::cout << dag.toString() << std::endl;
       std::vector<gum::Arc> latents = search.getLatent();
-      TS_ASSERT( dag.arcs().size() == 51 );
-      std::cout << latents << std::endl;
-      TS_ASSERT( latents.size() == 4 );
+      TS_ASSERT_EQUALS( dag.arcs().size(), 9 );
+      TS_ASSERT_EQUALS( latents.size(), 0 );
 
     }
 
-    void /*test*/_perf_generator() {
-      gum::Size n_nodes = 8;
-      gum::Size n_arcs = 8;
-      gum::Size n_bn = 100;
 
-      gum::SimpleBayesNetGenerator<double, gum::SimpleCPTGenerator> generator(n_nodes, n_arcs);
-      std::cout << std::endl;
-      for ( gum::Idx i=0; i<n_bn; ++i ){
-    	gum::BayesNet<double> bn;
-		generator.generateBN(bn);
-		std::cout << bn.dag().toString() << std::endl;
-      }
-
-    }
-
-    void /*test*/_perf_learning() {
-      gum::Size n_bn = 100;
-      for (gum::Idx i=0; i<n_bn; ++i){
-        gum::learning::DatabaseFromCSV database( "/home/falcand/Documents/c3off2/bn" + std::to_string( i ) + ".csv" );
-
-        gum::learning::DBRowTranslatorSet<
-            gum::learning::CellTranslatorCompactIntId>
-            translators;
-        translators.insertTranslator( 0, database.nbVariables() );
-
-        gum::learning::FilteredRowGeneratorSet<gum::learning::RowGeneratorIdentity>
-          generators;
-        generators.insertGenerator ();
-
-        auto filter =
-            gum::learning::make_DB_row_filter( database, translators, generators );
-
-        std::vector<gum::Idx> modalities = filter.modalities();
-
-        gum::learning::CorrectedMutualInformation<> cI( filter, modalities );
-        cI.useNML();
-
-        gum::learning::ThreeOffTwo search;
-
-        //creating complete graph
-        gum::MixedGraph graph, g_out;
-        for ( gum::Size i = 0; i < filter.nbVariables(); ++i ){
-      	  graph.addNode( i );
-      	  g_out.addNode( i );
-      	  for ( gum::Size j = 0; j < i; ++j){
-      	    graph.addEdge( j, i );
-      	  }
-        }
-
-        const std::vector<std::string> vars = filter.variableNames();
-
-  	    gum::MixedGraph g = search.learnMixedStructure( cI, graph );
-  	    //reconstructing the graph with th right nodes
-  	    for ( const auto& edge : g.edges() ){
-  	      gum::NodeId n_out_first = std::stoi(vars[edge.first()]);
-          //if ( !g_out.exists( n_out_first ) ) g_out.addNode( n_out_first );
-          gum::NodeId n_out_second = std::stoi(vars[edge.second()]);
-          //if ( !g_out.exists( n_out_second ) ) g_out.addNode( n_out_second );
-
-          g_out.addEdge( n_out_first, n_out_second);
-  	    }
-  	    for ( const auto& arc : g.arcs() ){
-  	      gum::NodeId n_out_tail = std::stoi(vars[arc.tail()]);
-          //if ( !g_out.exists( n_out_tail ) ) g_out.addNode( n_out_tail );
-          gum::NodeId n_out_head = std::stoi(vars[arc.head()]);
-          //if ( !g_out.exists( n_out_head ) ) g_out.addNode( n_out_head );
-
-          g_out.addArc( n_out_tail, n_out_head);
-  	    }
-  	    std::cout << g_out.toString() << std::endl;
-        //TS_ASSERT( g.arcs().size() == 41 );
-        //TS_ASSERT( g.edges().size() == 11 );
-        //std::vector<gum::Arc> latents = search.getLatent();
-        //std::cout << latents << std::endl;
-        //TS_ASSERT( latents.size() == 2 );
-
-      }
-    }
   };
 
 } /* namespace gum_tests */

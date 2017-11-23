@@ -118,7 +118,6 @@ namespace gum_tests {
       for ( gum::NodeId i=0; i<8; ++i ){
     	i_dag.addNode(i);
       }
-      std::cout << "i graph " << i_dag << std::endl;
       learner.setInitialDAG(i_dag);
       //learner.addMandatoryArc( "bronchitis?", "lung_cancer?" );
 
@@ -127,11 +126,9 @@ namespace gum_tests {
 
       try {
         gum::BayesNet<double> bn = learner.learnBN();
-        std::cout << "final graph " << bn.dag() << std::endl;
         TS_ASSERT_EQUALS( bn.dag().arcs().size(), 8 );
-        TS_ASSERT_EQUALS( listen.getNbr(), 49 );
+        TS_ASSERT_EQUALS( listen.getNbr(), 74 );
         gum::MixedGraph mg = learner.learnMixedStructure();
-        std::cout << "final mixed graph " << mg << std::endl;
         TS_ASSERT_EQUALS( mg.arcs().size(), 6 );
         TS_ASSERT_EQUALS( mg.edges().size(), 2 );
         std::vector<gum::Arc> latents = learner.getLatent();
