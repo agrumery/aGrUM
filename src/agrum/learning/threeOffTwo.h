@@ -203,8 +203,7 @@ namespace gum {
        *@param I mutual information object to compute the scores
        *@param sep_set hashtable storing the separation sets for pairs of variables
        */
-      std::vector<std::pair<std::tuple<Idx, Idx, Idx> *, double>>
-            GreaterAbsPairOn2nd >
+      std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > >
       _getUnshieldedTriples(
         const MixedGraph&             graph,
         CorrectedMutualInformation<>& I,

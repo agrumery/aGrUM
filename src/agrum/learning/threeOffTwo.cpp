@@ -126,7 +126,7 @@ namespace gum {
        * are,
        * the edge is deleted. If not, the best contributor is found.
        */
-      //std::cout << "INITIATION" << std::endl;
+      // std::cout << "INITIATION" << std::endl;
       /*std::cout << graph << std::endl;*/
       Idx                x, y, z;
       std::vector< Idx > ui;
@@ -142,7 +142,7 @@ namespace gum {
         /*std::cout << "  Ixy " << Ixy << std::endl;*/
 
         if (Ixy <= 0) {  //< K
-                         /*std::cout << "  Erase edge " << std::endl;*/
+          /*std::cout << "  Erase edge " << std::endl;*/
           graph.eraseEdge(edge);
           // attention, move ça fait des trucs étranges avec l'objet de départ
           // sep_set.insert( std::make_pair(x, y), std::move( __empty_set ) );
@@ -164,12 +164,12 @@ namespace gum {
       /// std::cout << "  " << tps << "s" << std::endl;
       /*std::cout << graph.toString() << std::endl;*/
       /*
-   * PHASE 2 : ITERATION
-   *
-   * As long as we find important nodes for edges, we go over them to see if
-   * we can assess the independence of the variables.
-   */
-      //std::cout << "ITERATION" << std::endl;
+     * PHASE 2 : ITERATION
+     *
+     * As long as we find important nodes for edges, we go over them to see if
+     * we can assess the independence of the variables.
+     */
+      // std::cout << "ITERATION" << std::endl;
       // if no triples to further examine pass
       std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double > best;
       if (!_rank.empty()) {
@@ -219,17 +219,15 @@ namespace gum {
       // std::cout << "  " << tps << "s" << std::endl;
       /*std::cout << graph.toString() << std::endl;*/
       /*
-   * PHASE 3 : ORIENTATION
-   */
-      //std::cout << "ORIENTATION" << std::endl;
+     * PHASE 3 : ORIENTATION
+     */
+      // std::cout << "ORIENTATION" << std::endl;
 
-      std::vector<std::pair<std::tuple<Idx, Idx, Idx> *, double>>
-            GreaterAbsPairOn2nd >
-        triples = _getUnshieldedTriples(graph, I, sep_set);
+      std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > > triples =
+        _getUnshieldedTriples(graph, I, sep_set);
       /*std::cout << "Triples found" << std::endl;*/
       Size steps_orient = triples.size();
 
-                      (steps_init + steps_iter + steps_orient),
       _current_step = steps_init + steps_iter;
       Idx i = 0;
       // list of elements that we shouldnt read again, ie elements that are
@@ -237,10 +235,11 @@ namespace gum {
       // rule 0 after the first time they are tested, and elements on which rule 1
       // has been applied
       std::vector< Idx > do_not_reread;
-      while (  i < triples.size() ){
+      while (i < triples.size()) {
         // if i not in do_not_reread
         if (std::find(do_not_reread.begin(), do_not_reread.end(), i) ==
-          std::pair<std::tuple<Idx, Idx, Idx> *, double> triple = triples[i];
+            do_not_reread.end()) {
+          std::pair< std::tuple< Idx, Idx, Idx >*, double > triple = triples[i];
           x = std::get< 0 >(*triple.first);
           y = std::get< 1 >(*triple.first);
           z = std::get< 2 >(*triple.first);
@@ -440,18 +439,15 @@ namespace gum {
     /*@param graph graph in which to find the triples
      *
      */
-    std::vector<std::pair<std::tuple<Idx, Idx, Idx> *, double>>
+    std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > >
     ThreeOffTwo::_getUnshieldedTriples(
       const MixedGraph&             graph,
       CorrectedMutualInformation<>& I,
       const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set) {
-      std::vector<std::pair<std::tuple<Idx, Idx, Idx> *, double>> triples;
-            GreaterAbsPairOn2nd >
-        triples;
+      std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > > triples;
       for (Idx z : graph) {
         for (Idx x : graph.neighbours(z)) {
           for (Idx y : graph.neighbours(z)) {
-             * x, y ) << std::endl;*/
             if (y < x && !graph.existsEdge(x, y)) {
               /*std::cout << "    Triple found !" << std::endl;*/
 
@@ -477,12 +473,12 @@ namespace gum {
               // std::tuple<Idx, Idx, Idx> tup = {x, y, z};
               triple.first = tup;
               triple.second = Ixyz_ui;
-        	  triples.push_back( triple );
+              triples.push_back(triple);
             }
           }
         }
       }
-      std::sort( triples.begin(), triples.end(), GreaterAbsPairOn2nd() );
+      std::sort(triples.begin(), triples.end(), GreaterAbsPairOn2nd());
       return triples;
     }
 

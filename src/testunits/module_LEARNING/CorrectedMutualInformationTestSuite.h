@@ -166,7 +166,6 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(7, 4, 5), 0.0371, 0.001);
 
       score.clear();
-      std::cout << "Ixyz|ui(6;5;0|1;4)" << std::endl;
       TS_ASSERT_DELTA(
         score.score(0, 6, 5, std::vector< gum::Idx >{1, 4}), 0.0, 1e-4);
       TS_ASSERT_DELTA(
