@@ -546,7 +546,7 @@ namespace gum {
     }
 
     /// get the list of arcs hiding latent variables
-    const std::vector< Arc > ThreeOffTwo::getLatent() const {
+    const std::vector< Arc > ThreeOffTwo::latentVariables() const {
       return __latent_couples;
     }
 

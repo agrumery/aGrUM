@@ -160,7 +160,7 @@ namespace gum {
                                      DAG initial_dag = DAG());
 
       /// get the list of arcs hiding latent variables
-      const std::vector< Arc > getLatent() const;
+      const std::vector< Arc > latentVariables() const;
 
       /// @}
       // ##########################################################################
