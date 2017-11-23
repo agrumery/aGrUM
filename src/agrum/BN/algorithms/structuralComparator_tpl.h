@@ -46,7 +46,6 @@ namespace gum {
     template <typename GUM_SCALAR>
     void StructuralComparator::compare( const BayesNet<GUM_SCALAR>& ref, const MixedGraph& test ){
       MixedGraph ref_eg = EssentialGraph( ref ).mixedGraph();
-      std::cout << ref_eg.toString() << std::endl;
       this->compare( ref_eg, test );
     }
 
