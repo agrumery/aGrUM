@@ -15,8 +15,6 @@ Introduction to pyAgrum
 pyAgrum is a Python wrapper for the C++ `aGrUM <http://agrum.org>`_ library.
 It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
 
-.. warning:: For now, this documentation is mainly automatically generated.
-
 .. image::  _static/fastBNwithPyAgrum.png
 
 The module is generated using the `SWIG <https://www.swig.org>`_ interface generator. Custom-written code was added to make
