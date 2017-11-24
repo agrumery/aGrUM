@@ -286,7 +286,7 @@ namespace gum {
                       graph.eraseEdge( Edge( z, y ) );
                    	  graph.addArc( z, y );
                       /*std::cout << "Rule 1 " << std::endl;*/
-                  	  if ( graph.existsArc( y, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, y )) == .end()
+                  	  if ( graph.existsArc( y, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, y )) == __latent_couples.end()
                   								   && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( y, z )) == __latent_couples.end() ){
                   	    __latent_couples.push_back( Arc( y, z ) );
                   	  }
@@ -297,8 +297,8 @@ namespace gum {
                       graph.eraseEdge( Edge( z, x ) );
                    	  graph.addArc( z, x );
                       /*std::cout << "Rule 1 " << std::endl;*/
-                  	  if ( graph.existsArc( x, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, y )) == __latent_couples.end()
-                  								   && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( y, z )) == __latent_couples.end() ){
+                  	  if ( graph.existsArc( x, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, x )) == __latent_couples.end()
+                  								   && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( x, z )) == __latent_couples.end() ){
                   	    __latent_couples.push_back( Arc( x, z ) );
                   	  }
               	    }
@@ -465,7 +465,7 @@ namespace gum {
       // Second, orientate remaining edges
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
       /*std::cout << order << std::endl;*/
-      std::cout << essentialGraph << std::endl;
+      /*std::cout << essentialGraph << std::endl;*/
       // first, propagate existing orientations
       for (NodeId x : order) {
         ///*std::cout << "  " << x << std::endl;*/

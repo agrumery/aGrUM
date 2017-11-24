@@ -149,8 +149,8 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(8));
-      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(1));
+      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(9));
+      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(0));
       std::vector< gum::Arc > latents = search.latentVariables();
       TS_ASSERT_EQUALS(latents.size(), gum::Size(2));
     }
@@ -189,8 +189,8 @@ namespace gum_tests {
 
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(dag.arcs().size(), 9);
-      TS_ASSERT_EQUALS(latents.size(), 2);
+      TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size( 9 ) );
+      TS_ASSERT_EQUALS(latents.size(), gum::Size( 2 ) );
     }
 
     void test_tonda() {
@@ -227,14 +227,15 @@ namespace gum_tests {
         }
       }
       gum::MixedGraph g = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(g.arcs().size(), 0);
-      TS_ASSERT_EQUALS(g.edges().size(), 9);
+      TS_ASSERT_EQUALS(g.arcs().size(), gum::Size( 0 ) );
+      TS_ASSERT_EQUALS(g.edges().size(), gum::Size( 9 ) );
 
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(dag.arcs().size(), 9);
-      TS_ASSERT_EQUALS(latents.size(), 0);
+      TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size( 9 ) );
+      TS_ASSERT_EQUALS(latents.size(), gum::Size( 0 ) );
     }
+
   };
 
 } /* namespace gum_tests */
