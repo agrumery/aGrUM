@@ -234,11 +234,8 @@ namespace gum {
       // eligible to
       // rule 0 after the first time they are tested, and elements on which rule 1
       // has been applied
-      std::vector< Idx > do_not_reread;
       while (i < triples.size()) {
         // if i not in do_not_reread
-        if (std::find(do_not_reread.begin(), do_not_reread.end(), i) ==
-            do_not_reread.end()) {
           std::pair< std::tuple< Idx, Idx, Idx >*, double > triple = triples[i];
           x = std::get< 0 >(*triple.first);
           y = std::get< 1 >(*triple.first);
@@ -256,86 +253,59 @@ namespace gum {
           /*std::cout << "Triple " << x << y << z << std::endl;*/
           /*std::cout << "Ixyz " << Ixyz_ui << std::endl;*/
 
-          // try Rule 0
-          if (Ixyz_ui < 0) {
-            do_not_reread.push_back(i);
-            // if ( z not in Sep[x,y])
-            if (std::find(ui.begin(), ui.end(), z) == ui.end()) {
-              i = 0;
+      	  //try Rule 0
+      	  if ( Ixyz_ui < 0 ){
+      	    //if ( z not in Sep[x,y])
+            if ( std::find(ui.begin(), ui.end(), z) == ui.end() ){
+              //if what we want to add already exists : pass
               /*std::cout << "Rule 0 " << std::endl;*/
-              if (!graph.existsArc(z, x)) {
-                try {
-                  // if we find a potential cycle, we force the competing edge
-                  std::vector< NodeId > test = graph.directedPath(z, x);
-                  // if the edge exists, then it's the first time we find ourselves
-                  // in the situation
-                  if (graph.existsEdge(x, z)) {
-                    graph.eraseEdge(Edge(x, z));
-                    graph.addArc(z, x);
-                    __latent_couples.push_back(Arc(z, x));
-                  }
-                } catch (gum::NotFound) {
-                  graph.eraseEdge(Edge(x, z));
-                  graph.addArc(x, z);
-                }
-              } else {
-                __latent_couples.push_back(Arc(z, x));
-              }
-              if (!graph.existsArc(z, y)) {
-                try {
-                  std::vector< NodeId > test = graph.directedPath(z, y);
-                  // if we find a potential cycle, we force the competing edge
-                  // if the edge exists, then it's the first time we find ourselves
-                  // in the situation
-                  if (graph.existsEdge(y, z)) {
-                    graph.eraseEdge(Edge(y, z));
-                    graph.addArc(z, y);
-                    __latent_couples.push_back(Arc(z, y));
-                  }
-                } catch (gum::NotFound) {
-                  graph.eraseEdge(Edge(y, z));
-                  graph.addArc(y, z);
-                }
-              } else {
-                __latent_couples.push_back(Arc(z, y));
+              if ( graph.existsArc( x, z ) && graph.existsArc( y, z ) ){
+            	++i;
+              } else{
+              	i=0;
+                graph.eraseEdge( Edge( x, z ) );
+             	graph.addArc( x, z );
+                graph.eraseEdge( Edge( y, z ) );
+             	graph.addArc( y, z );
+            	if ( graph.existsArc( z, x ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, x )) == __latent_couples.end()
+            								 && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( x, z )) == __latent_couples.end() ){
+            	  __latent_couples.push_back( Arc( z, x ) );
+            	}
+            	if ( graph.existsArc( z, y ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, y )) == __latent_couples.end()
+            								 && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( y, z )) == __latent_couples.end() ){
+            	  __latent_couples.push_back( Arc( z, y ) );
+            	}
               }
             } else {
               ++i;
             }
-          } else {  // try Rule 1
-            if (graph.existsArc(x, z) && !graph.existsArc(z, y)) {
-              do_not_reread.push_back(i);
-              i = 0;
-              /*std::cout << "Rule 1 " << std::endl;*/
-              try {
-                std::vector< NodeId > test = graph.directedPath(y, z);
-                if (graph.existsArc(y, z)) {
-                  __latent_couples.push_back(Arc(y, z));
-                }
-              } catch (gum::NotFound) {
-                graph.eraseEdge(Edge(z, y));
-                graph.addArc(z, y);
+      	  }else {//try Rule 1
+        	    if ( ( graph.existsArc( x, z ) && !graph.existsArc( z, y ) ) || ( graph.existsArc( y, z ) && !graph.existsArc( z, x ) ) ){
+              	    if ( graph.existsArc( x, z ) && !graph.existsArc( z, y ) ){
+                	  i=0;
+                      graph.eraseEdge( Edge( z, y ) );
+                   	  graph.addArc( z, y );
+                      /*std::cout << "Rule 1 " << std::endl;*/
+                  	  if ( graph.existsArc( y, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, y )) == .end()
+                  								   && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( y, z )) == __latent_couples.end() ){
+                  	    __latent_couples.push_back( Arc( y, z ) );
+                  	  }
+              	    }
+              	    if ( graph.existsArc( y, z ) && !graph.existsArc( z, x )  ){
+                	  i=0;
+                   	  /*std::cout << "Rule 1 " << std::endl;*/
+                      graph.eraseEdge( Edge( z, x ) );
+                   	  graph.addArc( z, x );
+                      /*std::cout << "Rule 1 " << std::endl;*/
+                  	  if ( graph.existsArc( x, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, y )) == __latent_couples.end()
+                  								   && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( y, z )) == __latent_couples.end() ){
+                  	    __latent_couples.push_back( Arc( x, z ) );
+                  	  }
+              	    }
+        	    } else {
+                ++i;
               }
-            } else if (graph.existsArc(y, z) && !graph.existsArc(z, x)) {
-              do_not_reread.push_back(i);
-              i = 0;
-              /*std::cout << "Rule 1 " << std::endl;*/
-              try {
-                std::vector< NodeId > test = graph.directedPath(x, z);
-                if (graph.existsArc(x, z)) {
-                  __latent_couples.push_back(Arc(x, z));
-                }
-              } catch (gum::NotFound) {
-                graph.eraseEdge(Edge(z, x));
-                graph.addArc(z, x);
-              }
-            } else {
-              ++i;
-            }
-          }
-        } else {
-          ++i;
-        }  // if rule 0 or rule 1
+      	  }//if rule 0 or rule 1
 
         if (onProgress.hasListener()) {
           GUM_EMIT3(onProgress,
@@ -345,9 +315,11 @@ namespace gum {
                     _timer.step());
         }
       }  // while
-      // tps = time.step();
-      // std::cout << "  " << tps << "s" << std::endl;
-      /*std::cout << do_not_reread << std::endl;*/
+
+      //erasing the the double headed arcs
+      for ( const Arc& arc : __latent_couples ){
+    	graph.eraseArc( Arc( arc.head(), arc.tail() ) );
+      }
       return graph;
     }
 
@@ -493,7 +465,7 @@ namespace gum {
       // Second, orientate remaining edges
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
       /*std::cout << order << std::endl;*/
-      /*std::cout << essentialGraph.toString() << std::endl;*/
+      std::cout << essentialGraph << std::endl;
       // first, propagate existing orientations
       for (NodeId x : order) {
         ///*std::cout << "  " << x << std::endl;*/
