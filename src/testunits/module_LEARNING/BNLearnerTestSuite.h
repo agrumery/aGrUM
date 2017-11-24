@@ -126,13 +126,13 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.dag().arcs().size(), gum::Size(8));
-        TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(74));
+        TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(87));
 
         gum::MixedGraph mg = learner.learnMixedStructure();
-        TS_ASSERT_EQUALS(mg.arcs().size(), gum::Size(6));
-        TS_ASSERT_EQUALS(mg.edges().size(), gum::Size(2));
+        TS_ASSERT_EQUALS(mg.arcs().size(), gum::Size(8));
+        TS_ASSERT_EQUALS(mg.edges().size(), gum::Size(0));
         std::vector< gum::Arc > latents = learner.latentVariables();
-        TS_ASSERT(latents.size() == gum::Size(2));
+        TS_ASSERT_EQUALS(latents.size(), gum::Size(3));
       } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
