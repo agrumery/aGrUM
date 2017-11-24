@@ -1,5 +1,24 @@
 # aGrUM Changelog
 
+## Changelog for 0.13.0 (in progress)
+* Documentations
+  * agrum : doxygen help's structure and howtos
+  * pyAgrum : documentation of a large parts of the pyAgrum"s API, export to pyagrum.readthedocs.io
+  * o3prm : still in progress (see o3prm.lip6.fr, o3prm.readthedocs.io)
+* O3PRM
+  * new syntax for types (see ?)
+  * read and write Bayesian Network with O3PRM syntax (see ?)
+* aGrUM
+  * new learning algorithm (see ?)
+  * new approximated inference : MonteCarlo/Importance/Weighted Sampling + the same using LBP as a Dirichlet prior.
+* pyAgrum
+  * wheels for python 3.3 and 3.4
+  * access to the new learning algorithm using BNLearner
+  * access to the new inference algorithms
+* many bug fixes
+* act
+  * new command guideline for a few easy checks
+
 ## Changelog for 0.12.0
 * API
   * new class EssentialGraph
