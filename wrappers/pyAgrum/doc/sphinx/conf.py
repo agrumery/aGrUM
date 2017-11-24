@@ -88,7 +88,7 @@ author = 'Pierre-henri Wuillemin'
 #print("GUM VERSION =" + gum.__version__)
 # The short X.Y version.
 #ma, mi, pa, *_ = gum.__version__.split(".")
-version = 0.12.0.3 # ma + "." + mi + "." + pa
+version = 0 # ma + "." + mi + "." + pa
 # The full version, including alpha/beta/rc tags.
 release = 0.12.0.3 #gum.__version__
 
