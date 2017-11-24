@@ -155,17 +155,17 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     try:
       bn=learner.learnBN()
-      self.assertEquals(len(bn.arcs()) ,8)
     except:
       self.fail("Exception has been raised and should not")
+    self.assertEquals(len(bn.arcs()) ,8)
 
     try:
       mg=learner.learnMixedStructure()
-      self.assertEquals(len(mg.arcs()),6)
-      self.assertEquals(len(mg.edges()),2)
-      self.assertEquals(len(learner.latentVariables()),2)
     except:
       self.fail("Exception has been raised and should not")
+    self.assertEquals(len(mg.arcs()),8)
+    self.assertEquals(len(mg.edges()),0)
+    self.assertEquals(len(learner.latentVariables()),2)
 
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)
