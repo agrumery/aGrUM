@@ -20,7 +20,6 @@
 ***************************************************************************/
 
 
-
 #include <sstream>
 
 #include <cxxtest/AgrumTestSuite.h>

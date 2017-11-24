@@ -250,7 +250,7 @@ int64_t
 redund_main(int   argc,
             char* argv[]); /* redund driver, argv[1]=input file, [2]=output file */
 lrs_dat*
-lrs_alloc_dat(const char* name); /* allocate for lrs_dat structure "name" */
+lrs_alloc_dat(const char* name);    /* allocate for lrs_dat structure "name" */
 lrs_dic* lrs_alloc_dic(lrs_dat* Q); /* allocate for lrs_dic structure corr. to Q */
 int64_t lrs_estimate(lrs_dic* P,
                      lrs_dat* Q); /* get estimates only and returns est number of

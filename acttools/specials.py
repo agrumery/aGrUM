@@ -45,7 +45,7 @@ def isSpecialAction(current):
   if current["action"] == 'doc' and current["target"] == 'pyAgrum':
     return True
 
-  return current["action"] in set(["clean", "show", "autoindent"])
+  return current["action"] in set(cfg.specialActions)
 
 
 def specialActions(current):
@@ -63,17 +63,13 @@ def specialActions(current):
     print("")
     return True
 
-  if current["action"] == "autoindent":
-    # trace(current,"Special action [autoindent]")
-    autoindent(current)
-    print("")
-    return True
-
   if current["action"] == "guideline":
     # trace(current,"Special action [guideline]")
     nbrError=guideline(current,current['correction'])
     if nbrError>0:
-      critic("Guideline error(s) found.",None,nbrError)
+      critic(("{} Guideline error(s) found.\n"+
+             "Please consider using [act guideline --correction] in order to correct those errors.").format(nbrError),
+             None,nbrError)
     else:
       notif("No guideline error found.")
 
@@ -126,14 +122,3 @@ def showAct2Config(current):
 
   for k in cfg.non_persistent:
     aff(k)
-
-def autoindent(current):
-  if cfg.clangformat == None:
-    critic("No clang-format tool has been found.")
-
-  for src in srcAgrum():
-    line = cfg.clangformat + " -i " + src
-    notif("autoindent [{0}]".format(src))
-    trace(current, line)
-    if not current["dry_run"]:
-      call(line, shell=True)

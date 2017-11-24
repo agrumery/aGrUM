@@ -26,4 +26,3 @@
  */
 
 #include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
-

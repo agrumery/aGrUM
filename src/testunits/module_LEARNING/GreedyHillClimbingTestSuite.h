@@ -54,9 +54,6 @@
 #include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/core/approximations/approximationSchemeListener.h>
 
-#define MY_ALARM GET_RESSOURCES_PATH("alarm.csv")
-#define MY_ASIA GET_RESSOURCES_PATH("asia.csv")
-
 namespace gum_tests {
 
   class simpleListenerForGHC : public gum::ApproximationSchemeListener {
@@ -88,7 +85,7 @@ namespace gum_tests {
   class GreedyHillClimbingTestSuite : public CxxTest::TestSuite {
     public:
     void test_k2_asia() {
-      gum::learning::DatabaseFromCSV database(MY_ASIA);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -160,7 +157,7 @@ namespace gum_tests {
     }
 
     void test_asia_with_ordered_values() {
-      gum::learning::DatabaseFromCSV database(MY_ASIA);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::CellTranslatorUniversal >
                                              translators;
@@ -245,7 +242,7 @@ namespace gum_tests {
     }
 
     void test_alarm_with_ordered_values() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::CellTranslatorUniversal >
                                              translators;
@@ -331,7 +328,7 @@ namespace gum_tests {
     }
 
     void test_alarm_with_ordered_values2() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::CellTranslatorUniversal >
         translators;
@@ -417,7 +414,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm1() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -464,7 +461,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm1bis() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -511,7 +508,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm1ter() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -558,7 +555,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm2() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -606,7 +603,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm3() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;
@@ -654,7 +651,7 @@ namespace gum_tests {
     }
 
     void xtest_alarm4() {
-      gum::learning::DatabaseFromCSV database(MY_ALARM);
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("alarm.csv"));
 
       gum::learning::DBRowTranslatorSet< gum::learning::DBCellTranslator< 1, 1 > >
         translators;

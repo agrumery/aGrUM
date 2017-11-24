@@ -26,4 +26,3 @@
  */
 
 #include <agrum/graphicalModels/inference/scheduleCombinationBasic.h>
-

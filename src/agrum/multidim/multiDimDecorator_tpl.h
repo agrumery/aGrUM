@@ -253,6 +253,13 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE const DiscreteVariable&
+  MultiDimDecorator< GUM_SCALAR >::variable(const std::string& name) const {
+    return static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->variable(
+      name);
+  }
+
+  template < typename GUM_SCALAR >
   INLINE Idx
   MultiDimDecorator< GUM_SCALAR >::pos(const DiscreteVariable& d) const {
     return static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->pos(d);

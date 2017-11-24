@@ -27,9 +27,9 @@
 
 #include <utility>
 
+#include <agrum/core/sequence.h>
 #include <agrum/core/set.h>
 #include <agrum/variables/discreteVariable.h>
-#include <agrum/core/sequence.h>
 
 namespace gum {
 

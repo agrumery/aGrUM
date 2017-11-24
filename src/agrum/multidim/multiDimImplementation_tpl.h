@@ -181,6 +181,17 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE const DiscreteVariable&
+  MultiDimImplementation< GUM_SCALAR >::variable(const std::string& name) const {
+    for (const auto& v : __vars) {
+      if (v->name() == name) return *v;
+    }
+
+    GUM_ERROR(NotFound,
+              "'" << name << "' can not be found in the multidim structure.")
+  }
+
+  template < typename GUM_SCALAR >
   INLINE Idx
   MultiDimImplementation< GUM_SCALAR >::pos(const DiscreteVariable& v) const {
     return __vars.pos(&v);

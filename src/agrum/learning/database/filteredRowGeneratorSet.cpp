@@ -26,4 +26,3 @@
  */
 
 #include <agrum/learning/database/filteredRowGeneratorSet.h>
-

@@ -132,6 +132,47 @@ namespace gum {
       __constraint_Indegree.setMaxIndegree(max_indegree);
     }
 
+    // indicate that we wish to use 3off2
+    INLINE void genericBNLearner::use3off2() noexcept {
+      __selected_algo = AlgoType::THREE_OFF_TWO;
+    }
+
+    /// indicate that we wish to use the NML correction for 3off2
+    INLINE void genericBNLearner::useNML() {
+      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
+      }
+      __mutual_info = new CorrectedMutualInformation<>(
+        __score_database.rowFilter(), __score_database.modalities());
+      __mutual_info->useNML();
+    }
+    /// indicate that we wish to use the MDL correction for 3off2
+    INLINE void genericBNLearner::useMDL() {
+      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
+      }
+      __mutual_info = new CorrectedMutualInformation<>(
+        __score_database.rowFilter(), __score_database.modalities());
+      __mutual_info->useMDL();
+    }
+    /// indicate that we wish to use the NoCorr correction for 3off2
+    INLINE void genericBNLearner::useNoCorr() {
+      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
+      }
+      __mutual_info = new CorrectedMutualInformation<>(
+        __score_database.rowFilter(), __score_database.modalities());
+      __mutual_info->useNoCorr();
+    }
+
+    /// get the list of arcs hiding latent variables
+    INLINE const std::vector< Arc > genericBNLearner::latentVariables() const {
+      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
+      }
+      return __3off2.latentVariables();
+    }
+
     // indicate that we wish to use a K2 algorithm
     INLINE void genericBNLearner::useK2(const Sequence< NodeId >& order) noexcept {
       __selected_algo = AlgoType::K2;

@@ -26,4 +26,3 @@
  */
 
 #include <agrum/multidim/operators/completeProjections4MultiDim.h>
-

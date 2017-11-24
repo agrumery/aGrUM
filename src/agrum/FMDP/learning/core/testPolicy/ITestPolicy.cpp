@@ -26,4 +26,3 @@
  */
 
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
-
