@@ -35,8 +35,8 @@ import os
 # ones.
 import sys
 
-import matplotlib
-matplotlib.use('agg') # work around for tkinter.file_dialog not found
+#import matplotlib
+#matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
 sys.path.insert(0, os.path.abspath('../../../../build/release/wrappers/'))
 
