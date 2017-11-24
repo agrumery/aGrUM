@@ -3124,13 +3124,13 @@ class LabelizedVariable(DiscreteVariable):
     >>> vb=gum.LabelizedVariable('b','b',0).addLabel('A').addLabel('B').addLabel('C')
     >>> print(vb)
     >>> ## b<A,B,C>
-    >>>
+    >>> 
     >>> vb.labels()
     >>> ## ('A', 'B', 'C')
-    >>>
+    >>> 
     >>> vb.isLabel('E')
     >>> ## False
-    >>>
+    >>> 
     >>> vb.label(2)
     >>> ## 'B'
 
@@ -3399,17 +3399,17 @@ class RangeVariable(DiscreteVariable):
     >>> vI=gum.gum.RangeVariable('I','I in [4,10]',4,10)
     >>> print(vI)
     >>> ## I[4-10]
-    >>>
+    >>> 
     >>> vX.maxVal()
     >>> ## 10
-    >>>
+    >>> 
     >>> vX.belongs(1)
     >>> ## False
-    >>>
+    >>> 
     >>> # where is the value 5 ?
     >>> vX.index('5')
     >>> ## 1
-    >>>
+    >>> 
     >>> vi.labels()
     >>> ## ('4', '5', '6', '7', '8', '9', '10')
 
@@ -3973,7 +3973,7 @@ class DiGraph(_object):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format
+            a friendly display of the graph in DOT format 
 
         """
         return _pyAgrum.DiGraph_toDot(self)
@@ -4443,7 +4443,7 @@ class UndiGraph(_object):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format
+            a friendly display of the graph in DOT format 
 
         """
         return _pyAgrum.UndiGraph_toDot(self)
@@ -4478,7 +4478,7 @@ class UndiGraph(_object):
         Returns
         -------
         pyAgrum.UndiGraph
-            The partial graph formed by the nodes given in parameter
+            The partial graph formed by the nodes given in parameter 
 
         """
         return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
@@ -4525,7 +4525,7 @@ class UndiGraph(_object):
         Returns
         -------
         Set
-            The set of edges adjacent to the given node
+            The set of edges adjacent to the given node 
 
         """
         return _pyAgrum.UndiGraph_neighbours(self, id)
@@ -4826,7 +4826,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs)
+        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs) 
 
         Warnings
         --------
@@ -4844,14 +4844,14 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         node1 : int
-        	the id from which the path begins
+        	the id from which the path begins 
         node2 : int
         	the id to which the path ends
 
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs)
+        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs) 
 
         Warnings
         --------
@@ -4869,7 +4869,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format
+            a friendly display of the graph in DOT format 
 
         """
         return _pyAgrum.MixedGraph_toDot(self)
@@ -4972,7 +4972,7 @@ class CliqueGraph(UndiGraph):
         clearEdges(self)
 
 
-        Remove all edges and their separators
+        Remove all edges and their separators 
 
         """
         return _pyAgrum.CliqueGraph_clearEdges(self)
@@ -5022,7 +5022,7 @@ class CliqueGraph(UndiGraph):
 
         Warnings
         --------
-        NotFound raised if no clique contains idNode
+        NotFound raised if no clique contains idNode	
 
         """
         return _pyAgrum.CliqueGraph_container(self, idNode)
@@ -5055,7 +5055,7 @@ class CliqueGraph(UndiGraph):
         addToClique(self, clique_id, node_id)
 
 
-        Change the set of nodes included into a given clique and returns the new set
+        Change the set of nodes included into a given clique and returns the new set 
 
         Parameters
         ----------
@@ -5108,9 +5108,9 @@ class CliqueGraph(UndiGraph):
         ----------
         edge : pyAgrum.Edge
         	the edge to be checked
-        clique1 : int
+        clique1 : int 
         	one extremity of the edge
-        clique : int
+        clique : int 
         	the other extremity of the edge
 
         Returns
@@ -5159,7 +5159,7 @@ class CliqueGraph(UndiGraph):
         Returns
         -------
         bool
-        	True if the running intersection property holds
+        	True if the running intersection property holds 
 
         """
         return _pyAgrum.CliqueGraph_hasRunningIntersection(self)
@@ -5173,7 +5173,7 @@ class CliqueGraph(UndiGraph):
         Returns
         -------
         bool
-        	True if the graph is a join tree
+        	True if the graph is a join tree 
 
         """
         return _pyAgrum.CliqueGraph_isJoinTree(self)
@@ -5192,7 +5192,7 @@ class CliqueGraph(UndiGraph):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format
+            a friendly display of the graph in DOT format 
 
         """
         return _pyAgrum.CliqueGraph_toDot(self)
@@ -6192,7 +6192,7 @@ class DAGmodel(_object):
         Returns
         -------
         bool
-            True if all the named node are the same and all the named arcs are the same
+            True if all the named node are the same and all the named arcs are the same 
 
         """
         return _pyAgrum.DAGmodel_hasSameStructure(self, other)
@@ -6915,7 +6915,7 @@ class DiscretizedVariable_double(DiscreteVariable):
         eraseTicks(self)
 
 
-        erase all the Ticks
+        erase all the Ticks 
 
         """
         return _pyAgrum.DiscretizedVariable_double_eraseTicks(self)
@@ -7381,7 +7381,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-            SizeError Raised if v size's does not matches the domain size.
+            SizeError Raised if v size's does not matches the domain size. 
 
         """
         val = _pyAgrum.Potential_double_fillWith(self, *args)
@@ -7477,7 +7477,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-          FatalError raised if a zero is found in p or the potential and not in the other.
+          FatalError raised if a zero is found in p or the potential and not in the other. 
 
         """
         return _pyAgrum.Potential_double_KL(self, p)
@@ -7502,7 +7502,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-        FatalError raised if a zero is found in p or this and not in the other.
+        FatalError raised if a zero is found in p or this and not in the other. 
 
         """
         return _pyAgrum.Potential_double_fastKL(self, p)
@@ -7695,7 +7695,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-        InvalidArgument raised if the var is not in the potential
+        InvalidArgument raised if the var is not in the potential 
 
         """
         return _pyAgrum.Potential_double_putFirst(self, varname)
@@ -8000,7 +8000,7 @@ class Potential_double(_object):
         if self.empty():
             self.fill(value)
             self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
-            return
+            return 
 
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
@@ -8075,7 +8075,7 @@ class Potential_double(_object):
         Returns
         -------
         bool
-            Returns true if no variable is in the potential.
+            Returns true if no variable is in the potential. 
 
         """
         return _pyAgrum.Potential_double_empty(self)
@@ -8093,11 +8093,11 @@ class Potential_double(_object):
 
         Returns
         -------
-            Returns the index of a variable.
+            Returns the index of a variable. 
 
         Warnigs
         -------
-            NotFound raised if v is not in this multidimensional matrix.
+            NotFound raised if v is not in this multidimensional matrix. 
 
         """
         return _pyAgrum.Potential_double_pos(self, v)
@@ -8130,7 +8130,7 @@ class Potential_double(_object):
         Returns
         -------
         int
-          the number of vars in the multidimensional container.
+          the number of vars in the multidimensional container. 
 
         """
         return _pyAgrum.Potential_double_nbrDim(self)
@@ -8144,16 +8144,16 @@ class Potential_double(_object):
 
         Parameters
         ----------
-        i : int
+        i : int 
           An index of this multidimensional matrix.
 
         Returns
         -------
-          the varible at the ith index
+          the varible at the ith index 
 
         Warnings
         --------
-          NotFound raised if i does not reference a variable in this multidimensional matrix.
+          NotFound raised if i does not reference a variable in this multidimensional matrix. 
 
         """
         return _pyAgrum.Potential_double_variable(self, *args)
@@ -8210,7 +8210,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-        IndexError raised if the var is not in the potential
+        IndexError raised if the var is not in the potential 
 
         """
         val = _pyAgrum.Potential_double_remove(self, var)
@@ -8790,7 +8790,7 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         pyAgrum.BayesNet
-        	the resulting bayesian network
+        	the resulting bayesian network 
 
         """
         return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
@@ -8830,11 +8830,11 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         pyAgrum.Potential
-        	The variable's CPT.
+        	The variable's CPT. 
 
         Warnings
         --------
-        	NotFound raised if no variable's id matches varId.
+        	NotFound raised if no variable's id matches varId. 
 
         """
         val = _pyAgrum.BayesNet_double_cpt(self, *args)
@@ -8867,13 +8867,13 @@ class BayesNet_double(IBayesNet_double):
         add(self, variable, aContent, id) -> gum::NodeId
 
 
-        Add a variable to the pyAgrum.BayesNet.
+        Add a variable to the pyAgrum.BayesNet. 
 
         Parameters
         ----------
         variable : pyAgrum.DiscreteVariable
         	the variable added
-        name : str
+        name : str 
         	the variable name
         nbrmod : int
         	the numbre of modalities for the new variable
@@ -8882,12 +8882,12 @@ class BayesNet_double(IBayesNet_double):
 
         Returns
         -------
-        int
+        int 
         	the id of the new node
 
         Warnings
         --------
-        DuplicateLabel raised if variable.name() is already used in this pyAgrum.BayesNet.
+        DuplicateLabel raised if variable.name() is already used in this pyAgrum.BayesNet. 
 
         Warnings
         --------
@@ -8895,7 +8895,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        DuplicateElement raised if id is already used.
+        DuplicateElement raised if id is already used. 
 
         """
         return _pyAgrum.BayesNet_double_add(self, *args)
@@ -8917,11 +8917,11 @@ class BayesNet_double(IBayesNet_double):
         Parameters
         ----------
         id : int
-        	The variable's id to remove.
+        	The variable's id to remove. 
         name : str
         	The variable's name to remove.
         var : pyAgrum.DiscreteVariable
-        	A reference on the variable to remove.
+        	A reference on the variable to remove. 
 
         """
         return _pyAgrum.BayesNet_double_erase(self, *args)
@@ -8975,7 +8975,7 @@ class BayesNet_double(IBayesNet_double):
         Warnings
         --------
         	DuplicateLabel raised if new_name is already used in this BayesNet.
-        	NotFound raised if no variable matches id.
+        	NotFound raised if no variable matches id. 
 
         """
         return _pyAgrum.BayesNet_double_changeVariableName(self, *args)
@@ -9019,7 +9019,7 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         int :
-        	The variable's node id.
+        	The variable's node id. 
 
         Warnings
         --------
@@ -9073,7 +9073,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        	InvalidEdge raised if arc.tail and/or arc.head are not in the BN.
+        	InvalidEdge raised if arc.tail and/or arc.head are not in the BN. 
 
         """
         return _pyAgrum.BayesNet_double_addArc(self, *args)
@@ -9092,7 +9092,7 @@ class BayesNet_double(IBayesNet_double):
 
         Parameters
         ----------
-        arc : pyAgrum.Arc
+        arc : pyAgrum.Arc 
         	The arc to be removed.
         head :
         	a variable's id (int)
@@ -9143,7 +9143,7 @@ class BayesNet_double(IBayesNet_double):
         reverseArc(self, arc)
 
 
-        Reverses an arc while preserving the same joint distribution.
+        Reverses an arc while preserving the same joint distribution. 
 
         Parameters
         ----------
@@ -9156,7 +9156,7 @@ class BayesNet_double(IBayesNet_double):
         head
         	(str) the name of the head variable
         arc : pyAgrum.Arc
-        	an arc
+        	an arc 
 
         Warnings
         --------
@@ -9190,11 +9190,11 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         int
-        	the id of the added variable.
+        	the id of the added variable. 
 
         Warnings
         --------
-        	DuplicateElement raised if id is already used
+        	DuplicateElement raised if id is already used 
 
         """
         return _pyAgrum.BayesNet_double_addNoisyOR(self, *args)
@@ -9258,7 +9258,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        	DuplicateElement raised if id is already used
+        	DuplicateElement raised if id is already used 
 
         """
         return _pyAgrum.BayesNet_double_addNoisyORCompound(self, *args)
@@ -9290,7 +9290,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        	DuplicateElement raised if id is already used
+        	DuplicateElement raised if id is already used  
 
         """
         return _pyAgrum.BayesNet_double_addNoisyAND(self, *args)
@@ -9321,7 +9321,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        	DuplicateElement raised if id is already used
+        	DuplicateElement raised if id is already used 
 
         """
         return _pyAgrum.BayesNet_double_addLogit(self, *args)
@@ -9352,7 +9352,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        	SizeError raised if variable.domainSize()>2
+        	SizeError raised if variable.domainSize()>2 
 
         """
         return _pyAgrum.BayesNet_double_addOR(self, variable)
@@ -9375,11 +9375,11 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         int
-        	the id of the added variable.
+        	the id of the added variable. 
 
         Warnings
         --------
-        	SizeError if variable.domainSize()>2
+        	SizeError if variable.domainSize()>2 
 
         """
         return _pyAgrum.BayesNet_double_addAND(self, variable)
@@ -9559,7 +9559,7 @@ class BayesNet_double(IBayesNet_double):
         Warnings
         --------
             InvalidArc raised if arc.tail and/or arc.head are not in the BN.
-            InvalidArc raised if variable in arc.head is not a NoisyOR variable.
+            InvalidArc raised if variable in arc.head is not a NoisyOR variable. 
 
         """
         return _pyAgrum.BayesNet_double_addWeightedArc(self, *args)
@@ -9588,7 +9588,7 @@ class BayesNet_double(IBayesNet_double):
         ----------
         node : int
         	The variable's id.
-        name : str
+        name : str 
         	The variable's name.
 
         """
@@ -9614,7 +9614,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        	NotAllowed raised if newPot has not the same signature as __probaMap[NodeId]
+        	NotAllowed raised if newPot has not the same signature as __probaMap[NodeId] 
 
         """
         return _pyAgrum.BayesNet_double_changePotential(self, *args)
@@ -10052,7 +10052,7 @@ def BayesNet_double_fastPrototype(dotlike: 'std::string const &', domainSize: 'g
     Returns
     -------
     pyAgrum.BayesNet
-    	the resulting bayesian network
+    	the resulting bayesian network 
 
     """
     return _pyAgrum.BayesNet_double_fastPrototype(dotlike, domainSize)
@@ -16959,7 +16959,7 @@ class BNLearner_double(_object):
     src : pyAgrum.BayesNet
     	the Bayesian network used to find thoes modalities
     parse_database : bool
-    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables.
+    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables. 
     learner : pyAgrum.BNLearner
     	the BNLearner to copy
 
@@ -16996,7 +16996,7 @@ class BNLearner_double(_object):
         learnBN(self) -> BayesNet_double
 
 
-        learn a BayesNet from a file (must have read the db before)
+        learn a BayesNet from a file (must have read the db before) 
 
         Returns
         -------
@@ -17022,7 +17022,7 @@ class BNLearner_double(_object):
         dag : pyAgrum.DAG
         bn : pyAgrum.BayesNet
         take_into_account_score : bool
-        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX ()
+        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX () 
 
         Returns
         -------
@@ -17736,9 +17736,12 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_useNoCorr(self)
 
 
-    def getLatent(self) -> "std::vector< gum::Arc,std::allocator< gum::Arc > > const":
-        """latentVariables(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const"""
-        return _pyAgrum.BNLearner_double_getLatent(self)
+    def latentVariables(self, *args) -> "std::vector< gum::Arc,std::allocator< gum::Arc > > const":
+        """
+        latentVariables(self) -> PyObject
+        latentVariables(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const
+        """
+        return _pyAgrum.BNLearner_double_latentVariables(self, *args)
 
 
     def learnMixedStructure(self) -> "gum::MixedGraph":

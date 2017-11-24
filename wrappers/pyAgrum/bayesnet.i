@@ -47,7 +47,7 @@
   };
 
   PyObject *arcs() {
-    return PySetFromArcSet(self->dag().arcs());
+    return PyAgrumHelper::PySetFromArcSet(self->dag().arcs());
   };
 
   PyObject *nodes() {

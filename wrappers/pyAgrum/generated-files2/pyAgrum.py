@@ -17736,9 +17736,12 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_useNoCorr(self)
 
 
-    def getLatent(self):
-        """getLatent(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const"""
-        return _pyAgrum.BNLearner_double_getLatent(self)
+    def latentVariables(self, *args):
+        """
+        latentVariables(self) -> PyObject
+        latentVariables(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const
+        """
+        return _pyAgrum.BNLearner_double_latentVariables(self, *args)
 
 
     def learnMixedStructure(self):

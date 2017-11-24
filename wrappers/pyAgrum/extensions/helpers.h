@@ -31,191 +31,199 @@
 
 namespace PyAgrumHelper {
 
-  std::string stringFromPyObject( PyObject* o ) {
+  std::string stringFromPyObject(PyObject* o) {
     std::string name = "";
-    if ( PyUnicode_Check( o ) ) {  // python3 string
-      PyObject* asbytes = PyUnicode_AsASCIIString( o );
-      name = PyBytes_AsString( asbytes );
-      Py_DECREF( asbytes );
-    } else if ( PyString_Check( o ) ) {  // python2 string
-      name = PyString_AsString( o );
-    } else if ( PyBytes_Check( o ) ) {  // other python3 string
-      name = PyBytes_AsString( o );
+    if (PyUnicode_Check(o)) {  // python3 string
+      PyObject* asbytes = PyUnicode_AsASCIIString(o);
+      name = PyBytes_AsString(asbytes);
+      Py_DECREF(asbytes);
+    } else if (PyString_Check(o)) {  // python2 string
+      name = PyString_AsString(o);
+    } else if (PyBytes_Check(o)) {  // other python3 string
+      name = PyBytes_AsString(o);
     }
     return name;
   }
 
   // filling a Set of DiscreteVariable* from a list of string, in the context of a
   // potential.
-  void fillDVSetFromPyObject( const gum::Potential<double>*           pot,
-                              gum::Set<const gum::DiscreteVariable*>& s,
-                              PyObject*                               varnames ) {
-    if ( PyList_Check( varnames ) ) {
-      gum::Set<std::string> names;
-      auto                  siz = PyList_Size( varnames );
-      for ( int i = 0; i < siz; i++ ) {
-        std::string name = stringFromPyObject( PyList_GetItem( varnames, i ) );
+  void fillDVSetFromPyObject(const gum::Potential< double >*           pot,
+                             gum::Set< const gum::DiscreteVariable* >& s,
+                             PyObject*                                 varnames) {
+    if (PyList_Check(varnames)) {
+      gum::Set< std::string > names;
+      auto                    siz = PyList_Size(varnames);
+      for (int i = 0; i < siz; i++) {
+        std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
 
-        if ( name == "" )
-          GUM_ERROR( gum::InvalidArgument, "Argument is not a list of string" );
+        if (name == "")
+          GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string");
 
         names << name;
       }
 
-      for ( const auto v : pot->variablesSequence() )
-        if ( names.contains( v->name() ) ) s << v;
+      for (const auto v : pot->variablesSequence())
+        if (names.contains(v->name())) s << v;
 
-      if ( s.size() == 0 )
-        GUM_ERROR( gum::InvalidArgument, "No relevant dimension in the argument" );
+      if (s.size() == 0)
+        GUM_ERROR(gum::InvalidArgument, "No relevant dimension in the argument");
     } else {
-      GUM_ERROR( gum::InvalidArgument, "Argument is not a list" );
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a list");
     }
   }
 
   // filling a vector of DiscreteVariable* from a list of string, in the context of
   // a potential.
-  void fillDVVectorFromPyObject( const gum::Potential<double>*              pot,
-                                 std::vector<const gum::DiscreteVariable*>& s,
-                                 PyObject* varnames ) {
-    if ( PyList_Check( varnames ) ) {
-      gum::HashTable<std::string, const gum::DiscreteVariable*> namesToVars;
-      for ( gum::Idx i = 0; i < pot->nbrDim(); i++ )
-        namesToVars.insert( pot->variable( i ).name(), &( pot->variable( i ) ) );
+  void fillDVVectorFromPyObject(const gum::Potential< double >*              pot,
+                                std::vector< const gum::DiscreteVariable* >& s,
+                                PyObject* varnames) {
+    if (PyList_Check(varnames)) {
+      gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
+      for (gum::Idx i = 0; i < pot->nbrDim(); i++)
+        namesToVars.insert(pot->variable(i).name(), &(pot->variable(i)));
 
-      auto siz = PyList_Size( varnames );
+      auto siz = PyList_Size(varnames);
       s.clear();
 
-      for ( int i = 0; i < siz; i++ ) {
-        std::string name = stringFromPyObject( PyList_GetItem( varnames, i ) );
-        if ( name == "" ) {
-          GUM_ERROR( gum::InvalidArgument, "Argument is not a list of string" );
+      for (int i = 0; i < siz; i++) {
+        std::string name = stringFromPyObject(PyList_GetItem(varnames, i));
+        if (name == "") {
+          GUM_ERROR(gum::InvalidArgument, "Argument is not a list of string");
         }
-        if ( !namesToVars.exists( name ) ) {
-          GUM_ERROR( gum::InvalidArgument,
-                     "Argument is a not a name of a variable in this potential" );
+        if (!namesToVars.exists(name)) {
+          GUM_ERROR(gum::InvalidArgument,
+                    "Argument is a not a name of a variable in this potential");
         }
-        s.push_back( namesToVars[name] );
+        s.push_back(namesToVars[name]);
       }
     } else {
-      GUM_ERROR( gum::InvalidArgument, "Argument is not a list" );
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a list");
     }
   }
 
   // filling a DiscreteVariable* from a string, in the context of a potential.
-  void fillDVFromPyObject( const gum::Potential<double>* pot,
-                           const gum::DiscreteVariable*& pvar,
-                           PyObject*                     varname ) {
-    std::string name = stringFromPyObject( varname );
-    if ( name == "" ) {
-      GUM_ERROR( gum::InvalidArgument, "Argument is not a string" );
+  void fillDVFromPyObject(const gum::Potential< double >* pot,
+                          const gum::DiscreteVariable*&   pvar,
+                          PyObject*                       varname) {
+    std::string name = stringFromPyObject(varname);
+    if (name == "") {
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a string");
     }
 
     bool isOK = false;
-    for ( gum::Idx i = 0; i < pot->nbrDim(); i++ ) {
-      if ( pot->variable( i ).name() == name ) {
-        pvar = &( pot->variable( i ) );
+    for (gum::Idx i = 0; i < pot->nbrDim(); i++) {
+      if (pot->variable(i).name() == name) {
+        pvar = &(pot->variable(i));
         isOK = true;
         break;
       }
     }
-    if ( !isOK ) {
-      GUM_ERROR( gum::InvalidArgument,
-                 "Argument is a not a name of a variable in this potential" );
+    if (!isOK) {
+      GUM_ERROR(gum::InvalidArgument,
+                "Argument is a not a name of a variable in this potential");
     }
   }
 
   // filling a Instantiation from a dictionnary<string,int>
-  void fillInstantiationFromPyObject( const gum::Potential<double>* pot,
-                                      gum::Instantiation&           inst,
-                                      PyObject*                     dict ) {
-    gum::HashTable<std::string, const gum::DiscreteVariable*> namesToVars;
-    for ( gum::Idx i = 0; i < pot->nbrDim(); i++ )
-      namesToVars.insert( pot->variable( i ).name(), &( pot->variable( i ) ) );
+  void fillInstantiationFromPyObject(const gum::Potential< double >* pot,
+                                     gum::Instantiation&             inst,
+                                     PyObject*                       dict) {
+    gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
+    for (gum::Idx i = 0; i < pot->nbrDim(); i++)
+      namesToVars.insert(pot->variable(i).name(), &(pot->variable(i)));
 
-    if ( !PyDict_Check( dict ) ) {
-      GUM_ERROR( gum::InvalidArgument, "Argument is not a dictionnary" );
+    if (!PyDict_Check(dict)) {
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionnary");
     }
 
     PyObject * key, *value;
     Py_ssize_t pos = 0;
     inst.clear();
-    while ( PyDict_Next( dict, &pos, &key, &value ) ) {
-      std::string name = stringFromPyObject( key );
-      if ( name == "" ) {
-        GUM_ERROR( gum::InvalidArgument, "A key is not a string" );
+    while (PyDict_Next(dict, &pos, &key, &value)) {
+      std::string name = stringFromPyObject(key);
+      if (name == "") {
+        GUM_ERROR(gum::InvalidArgument, "A key is not a string");
       }
-      if ( !namesToVars.exists( name ) ) {
-        GUM_ERROR( gum::InvalidArgument,
-                   "The key "
-                       << name
-                       << " is a not a name of a variable in this potential" );
+      if (!namesToVars.exists(name)) {
+        GUM_ERROR(gum::InvalidArgument,
+                  "The key "
+                    << name
+                    << " is a not a name of a variable in this potential");
       }
-      if ( !PyInt_Check( value ) ) {
-        GUM_ERROR( gum::InvalidArgument, "A value is not an int" );
+      if (!PyInt_Check(value)) {
+        GUM_ERROR(gum::InvalidArgument, "A value is not an int");
       }
-      gum::Idx v = gum::Idx( PyInt_AsLong( value ) );
-      if ( v >= namesToVars[name]->domainSize() ) {
-        GUM_ERROR( gum::InvalidArgument,
-                   "The value " << v << " is not in the domain of " << name );
+      gum::Idx v = gum::Idx(PyInt_AsLong(value));
+      if (v >= namesToVars[name]->domainSize()) {
+        GUM_ERROR(gum::InvalidArgument,
+                  "The value " << v << " is not in the domain of " << name);
       }
-      inst.add( *( namesToVars[name] ) );
-      inst.chgVal( namesToVars[name], v );
+      inst.add(*(namesToVars[name]));
+      inst.chgVal(namesToVars[name], v);
     }
   }
 
-  gum::NodeId nodeIdFromNameOrIndex( PyObject*                     n,
-                                     const gum::IBayesNet<double>& bn ) {
-    std::string name = PyAgrumHelper::stringFromPyObject( n );
-    if ( name != "" ) {
-      return bn.idFromName( name );
+  gum::NodeId nodeIdFromNameOrIndex(PyObject*                       n,
+                                    const gum::IBayesNet< double >& bn) {
+    std::string name = PyAgrumHelper::stringFromPyObject(n);
+    if (name != "") {
+      return bn.idFromName(name);
     } else {
-      if ( !PyInt_Check( n ) ) {
-        GUM_ERROR( gum::InvalidArgument,
-                   "A value is neither a node name nor an node id" );
+      if (!PyInt_Check(n)) {
+        GUM_ERROR(gum::InvalidArgument,
+                  "A value is neither a node name nor an node id");
       } else {
-        return gum::NodeId( PyInt_AsLong( n ) );
+        return gum::NodeId(PyInt_AsLong(n));
       }
     }
   }
 
   void populateNodeSetFromPySequenceOfIntOrString(
-      gum::NodeSet& nodeset, PyObject* seq, const gum::IBayesNet<double>& bn ) {
-    PyObject* iter = PyObject_GetIter( seq );
-    if ( iter != NULL ) {
+    gum::NodeSet& nodeset, PyObject* seq, const gum::IBayesNet< double >& bn) {
+    PyObject* iter = PyObject_GetIter(seq);
+    if (iter != NULL) {
       PyObject* item;
-      while ( ( item = PyIter_Next( iter ) ) ) {
-        nodeset.insert( nodeIdFromNameOrIndex( item, bn ) );
+      while ((item = PyIter_Next(iter))) {
+        nodeset.insert(nodeIdFromNameOrIndex(item, bn));
       }
     } else {
-      GUM_ERROR( gum::InvalidArgument,
-                 "Argument <list> is not a sequence nor a set" );
+      GUM_ERROR(gum::InvalidArgument,
+                "Argument <list> is not a sequence nor a set");
     }
   }
 
-  PyObject* PyListFromNodeSet( const gum::NodeSet& nodeset ) {
-    PyObject* q = PyList_New( 0 );
+  PyObject* PyListFromNodeSet(const gum::NodeSet& nodeset) {
+    PyObject* q = PyList_New(0);
 
-    for ( auto node : nodeset ) {
-      PyList_Append( q, PyLong_FromUnsignedLong( (unsigned long)node ) );
-    }
-
-    return q;
-  }
-  PyObject* PySetFromNodeSet( const gum::NodeSet& nodeset ) {
-    PyObject* q = PySet_New( 0 );
-
-    for ( auto node : nodeset ) {
-      PySet_Add( q, PyLong_FromUnsignedLong( (unsigned long)node ) );
+    for (auto node : nodeset) {
+      PyList_Append(q, PyLong_FromUnsignedLong((unsigned long)node));
     }
 
     return q;
   }
+  PyObject* PySetFromNodeSet(const gum::NodeSet& nodeset) {
+    PyObject* q = PySet_New(0);
 
-  PyObject* PySetFromArcSet( const gum::ArcSet& arcset ) {
-    PyObject* q=PyList_New(0);
-    for ( auto arc : arcset ) {
-      PyList_Append(q,Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+    for (auto node : nodeset) {
+      PySet_Add(q, PyLong_FromUnsignedLong((unsigned long)node));
+    }
+
+    return q;
+  }
+
+  PyObject* PyListFromArcVect(const std::vector< gum::Arc >& arcseq) {
+    PyObject* q = PyList_New(0);
+    for (auto arc : arcseq) {
+      PyList_Append(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
     }
     return q;
   }
-} //namespace PyAgrumHelper
+
+  PyObject* PySetFromArcSet(const gum::ArcSet& arcset) {
+    PyObject* q = PySet_New(0);
+    for (auto arc : arcset) {
+      PySet_Add(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+    }
+    return q;
+  }
+}  // namespace PyAgrumHelper
