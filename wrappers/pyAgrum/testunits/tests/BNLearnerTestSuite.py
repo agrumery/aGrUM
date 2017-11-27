@@ -135,6 +135,37 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       I1.inc()
       I2.inc()
 
+  def test3off2(self):
+    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
+    learner.useGreedyHillClimbing()
+    with self.assertRaises(gum.OperationNotAllowed):
+      learner.useNML()
+
+    learner.use3off2()
+    learner.useNML()
+    learner.addForbiddenArc(4,1)
+    learner.addMandatoryArc(5,7)
+
+    d=gum.DAG()
+    for i in range(8):
+      d.addNodeWithId(i)
+    learner.setInitialDAG(d)
+
+    self.assertNotEqual(len(learner.names()),0)
+
+    try:
+      bn=learner.learnBN()
+    except:
+      self.fail("Exception has been raised and should not")
+    self.assertEquals(len(bn.arcs()) ,8)
+
+    try:
+      mg=learner.learnMixedStructure()
+    except:
+      self.fail("Exception has been raised and should not")
+    self.assertEquals(len(mg.arcs()),8)
+    self.assertEquals(len(mg.edges()),0)
+    self.assertEquals(len(learner.latentVariables()),3)
 
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

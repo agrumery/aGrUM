@@ -79,6 +79,7 @@
 #include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
+#include <agrum/learning/threeOffTwo.h>
 
 #include <agrum/core/signal/signaler.h>
 
@@ -115,7 +116,8 @@ namespace gum {
       enum class AlgoType {
         K2,
         GREEDY_HILL_CLIMBING,
-        LOCAL_SEARCH_WITH_TABU_LIST
+        LOCAL_SEARCH_WITH_TABU_LIST,
+        THREE_OFF_TWO
       };
 
       /// a helper to easily read databases
@@ -127,8 +129,8 @@ namespace gum {
         /// @{
 
         /// default constructor
-        Database(const std::string& file);
-        Database(const DatabaseVectInRAM& db);
+        explicit Database(const std::string& file);
+        explicit Database(const DatabaseVectInRAM& db);
 
         /// default constructor with defined modalities for some variables
         /**
@@ -339,6 +341,10 @@ namespace gum {
       /// learn a structure from a file (must have read the db before)
       DAG learnDAG();
 
+      /// learn a partial structure from a file (must have read the db before and
+      /// must have selected 3off2)
+      MixedGraph learnMixedStructure();
+
       /// sets an initial DAG structure
       void setInitialDAG(const DAG&);
 
@@ -428,8 +434,26 @@ namespace gum {
       /// indicate that we wish to use K2
       void useK2(const std::vector< NodeId >& order) noexcept;
 
+      /// indicate that we wish to use 3off2
+      void use3off2() noexcept;
+
       /// @}
 
+      // ##########################################################################
+      /// @name 3off2 parameterization and specific results
+      // ##########################################################################
+      /// @{
+      /// indicate that we wish to use the NML correction for 3off2
+      void useNML();
+      /// indicate that we wish to use the MDL correction for 3off2
+      void useMDL();
+      /// indicate that we wish to use the NoCorr correction for 3off2
+      void useNoCorr();
+
+      /// get the list of arcs hiding latent variables
+      const std::vector< Arc > latentVariables() const;
+
+      /// @}
       // ##########################################################################
       /// @name Accessors / Modifiers for adding constraints on learning
       // ##########################################################################
@@ -490,6 +514,9 @@ namespace gum {
       /// the parameter estimator to use
       ParamEstimator<>* __param_estimator{nullptr};
 
+      /// the selected correction for 3off2
+      CorrectedMutualInformation<>* __mutual_info{nullptr};
+
       /// the a priori selected for the score and parameters
       AprioriType __apriori_type{AprioriType::NO_APRIORI};
 
@@ -519,6 +546,9 @@ namespace gum {
 
       /// the K2 algorithm
       K2 __K2;
+
+      /// the 3off2 algorithm
+      ThreeOffTwo __3off2;
 
       /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;

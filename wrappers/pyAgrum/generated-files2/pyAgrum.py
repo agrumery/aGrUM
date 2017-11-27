@@ -5420,9 +5420,10 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_val(self, *args)
 
 
-    def variable(self, i):
+    def variable(self, *args):
         """
         variable(self, i) -> DiscreteVariable
+        variable(self, name) -> DiscreteVariable
 
 
         Parameters
@@ -5440,7 +5441,7 @@ class Instantiation(_object):
             NotFound raised if the element cannot be found.
 
         """
-        return _pyAgrum.Instantiation_variable(self, i)
+        return _pyAgrum.Instantiation_variable(self, *args)
 
 
     def chgVal(self, *args):
@@ -6348,6 +6349,67 @@ class MarkovBlanket(_object):
 
 MarkovBlanket_swigregister = _pyAgrum.MarkovBlanket_swigregister
 MarkovBlanket_swigregister(MarkovBlanket)
+
+class StructuralComparator(_object):
+    """Proxy of C++ gum::StructuralComparator class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, StructuralComparator, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, StructuralComparator, name)
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        """__init__(self) -> StructuralComparator"""
+        this = _pyAgrum.new_StructuralComparator()
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_StructuralComparator
+    def __del__(self):
+        return None
+
+    def compare(self, *args):
+        """
+        compare(self, ref, test)
+        compare(self, ref, test)
+        compare(self, ref, test)
+        """
+        return _pyAgrum.StructuralComparator_compare(self, *args)
+
+
+    def precision_skeleton(self):
+        """precision_skeleton(self) -> double"""
+        return _pyAgrum.StructuralComparator_precision_skeleton(self)
+
+
+    def recall_skeleton(self):
+        """recall_skeleton(self) -> double"""
+        return _pyAgrum.StructuralComparator_recall_skeleton(self)
+
+
+    def f_score_skeleton(self):
+        """f_score_skeleton(self) -> double"""
+        return _pyAgrum.StructuralComparator_f_score_skeleton(self)
+
+
+    def precision(self):
+        """precision(self) -> double"""
+        return _pyAgrum.StructuralComparator_precision(self)
+
+
+    def recall(self):
+        """recall(self) -> double"""
+        return _pyAgrum.StructuralComparator_recall(self)
+
+
+    def f_score(self):
+        """f_score(self) -> double"""
+        return _pyAgrum.StructuralComparator_f_score(self)
+
+StructuralComparator_swigregister = _pyAgrum.StructuralComparator_swigregister
+StructuralComparator_swigregister(StructuralComparator)
 
 class ApproximationScheme(_object):
     """Proxy of C++ gum::ApproximationScheme class."""
@@ -8074,9 +8136,10 @@ class Potential_double(_object):
         return _pyAgrum.Potential_double_nbrDim(self)
 
 
-    def variable(self, i):
+    def variable(self, *args):
         """
         variable(self, i) -> DiscreteVariable
+        variable(self, name) -> DiscreteVariable
 
 
         Parameters
@@ -8093,7 +8156,7 @@ class Potential_double(_object):
           NotFound raised if i does not reference a variable in this multidimensional matrix. 
 
         """
-        return _pyAgrum.Potential_double_variable(self, i)
+        return _pyAgrum.Potential_double_variable(self, *args)
 
 
     def populate(self, v):
@@ -8389,9 +8452,12 @@ class UtilityTable_double(_object):
         return _pyAgrum.UtilityTable_double_nbrDim(self)
 
 
-    def variable(self, i):
-        """variable(self, i) -> DiscreteVariable"""
-        return _pyAgrum.UtilityTable_double_variable(self, i)
+    def variable(self, *args):
+        """
+        variable(self, i) -> DiscreteVariable
+        variable(self, name) -> DiscreteVariable
+        """
+        return _pyAgrum.UtilityTable_double_variable(self, *args)
 
 
     def populate(self, v):
@@ -17648,6 +17714,39 @@ class BNLearner_double(_object):
 
         """
         return _pyAgrum.BNLearner_double_setInitialDAG(self, g)
+
+
+    def use3off2(self):
+        """use3off2(self)"""
+        return _pyAgrum.BNLearner_double_use3off2(self)
+
+
+    def useNML(self):
+        """useNML(self)"""
+        return _pyAgrum.BNLearner_double_useNML(self)
+
+
+    def useMDL(self):
+        """useMDL(self)"""
+        return _pyAgrum.BNLearner_double_useMDL(self)
+
+
+    def useNoCorr(self):
+        """useNoCorr(self)"""
+        return _pyAgrum.BNLearner_double_useNoCorr(self)
+
+
+    def latentVariables(self, *args):
+        """
+        latentVariables(self) -> PyObject
+        latentVariables(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const
+        """
+        return _pyAgrum.BNLearner_double_latentVariables(self, *args)
+
+
+    def learnMixedStructure(self):
+        """learnMixedStructure(self) -> MixedGraph"""
+        return _pyAgrum.BNLearner_double_learnMixedStructure(self)
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)

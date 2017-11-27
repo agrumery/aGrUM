@@ -951,6 +951,41 @@ namespace gum_tests {
       TS_ASSERT_THROWS(
         gum::BayesNet< int >::fastPrototype("a{yes|no|yes}->b->c;a->c"),
         gum::InvalidArgument);
+
+      bn = gum::BayesNet< int >::fastPrototype("a->b->c->d->e->f");
+      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+      TS_ASSERT_EQUALS(bn.dim(), gum::Size(1 + 5 * 2));
+
+      bn = gum::BayesNet< int >::fastPrototype("a<-b<-c<-d<-e<-f");
+      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+      TS_ASSERT_EQUALS(bn.dim(), gum::Size(1 + 5 * 2));
+
+      bn = gum::BayesNet< int >::fastPrototype("a<-b->c<-d->e<-f");
+      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+
+      bn = gum::BayesNet< int >::fastPrototype("a->b<-c->d<-e->f");
+      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+
+      bn = gum::BayesNet< int >::fastPrototype("a->b<-c;c->d<-e->f");
+      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+
+      bn = gum::BayesNet< int >::fastPrototype("a->b<-c->d;d<-e->f");
+      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
+
+      bn = gum::BayesNet< int >::fastPrototype("a->b;b<-c;c->d;d<-e;e->f");
+      TS_ASSERT_EQUALS(bn.size(), gum::Size(6));
+      TS_ASSERT_EQUALS(bn.sizeArcs(), gum::Size(5));
+      TS_ASSERT_EQUALS(bn.dim(), gum::Size(3 * 1 + 2 + 2 * 4));
     }
   };
 

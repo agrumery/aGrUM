@@ -246,6 +246,61 @@ class TestFeatures(BayesNetTestCase):
     with self.assertRaises(gum.InvalidDirectedCycle):
       bn = gum.fastBN("a->b->c->a")
 
+
+    bn = gum.fastBN("a{yes|maybe|no}->b->c;a->c");
+    self.assertEquals(bn.size(), 3);
+    self.assertEquals(bn.sizeArcs(), 3);
+    self.assertEquals(bn.dim(),
+                      (3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1)));
+
+    with self.assertRaises(gum.InvalidArgument):
+      bn=gum.fastBN("a{yes}->b->c;a->c")
+
+    with self.assertRaises(gum.InvalidArgument):
+      bn=gum.fastBN("a{yes|no|yes}->b->c;a->c")
+
+    bn = gum.fastBN("a->b->c->d->e->f");
+    self.assertEquals(bn.size(), 6);
+    self.assertEquals(bn.sizeArcs(), 5);
+    self.assertEquals(bn.dim(),
+                      1+5*2);
+
+    bn = gum.fastBN("a<-b<-c<-d<-e<-f");
+    self.assertEquals(bn.size(), 6);
+    self.assertEquals(bn.sizeArcs(), 5);
+    self.assertEquals(bn.dim(),
+                      1+5*2);
+
+    bn = gum.fastBN("a<-b->c<-d->e<-f");
+    self.assertEquals(bn.size(), 6);
+    self.assertEquals(bn.sizeArcs(), 5);
+    self.assertEquals(bn.dim(),
+                      3*1+2+2*4);
+
+    bn = gum.fastBN("a->b<-c->d<-e->f");
+    self.assertEquals(bn.size(), 6);
+    self.assertEquals(bn.sizeArcs(), 5);
+    self.assertEquals(bn.dim(),
+                      3*1+2+2*4);
+
+    bn = gum.fastBN("a->b<-c;c->d<-e->f");
+    self.assertEquals(bn.size(), 6);
+    self.assertEquals(bn.sizeArcs(), 5);
+    self.assertEquals(bn.dim(),
+                      3*1+2+2*4);
+
+    bn = gum.fastBN("a->b<-c->d;d<-e->f");
+    self.assertEquals(bn.size(), 6);
+    self.assertEquals(bn.sizeArcs(), 5);
+    self.assertEquals(bn.dim(),
+                      3*1+2+2*4);
+
+    bn = gum.fastBN("a->b;b<-c;c->d;d<-e;e->f");
+    self.assertEquals(bn.size(), 6);
+    self.assertEquals(bn.sizeArcs(), 5);
+    self.assertEquals(bn.dim(),
+                      3*1+2+2*4);
+
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
     iA, iB, iC, iD, iE, iF, iG, iH = [bn.idFromName(s) for s in

@@ -209,7 +209,7 @@ namespace gum {
      * @brief Returns the number of variables in the Instantiation.
      * @return Returns the number of variables in the Instantiation.
      */
-    Idx nbrDim() const;
+    Idx nbrDim() const override;
 
     /**
      * @brief Adds a new variable in the Instantiation.
@@ -231,7 +231,7 @@ namespace gum {
      * @throw DuplicateElement Raised if v is already in this Instantiation.
      * @throw OperationNotAllowed Raised if this is a slave Instantiation.
      */
-    void add(const DiscreteVariable& v);
+    void add(const DiscreteVariable& v) override;
 
     /**
      * @brief Removes a variable from the Instantiation.
@@ -246,7 +246,7 @@ namespace gum {
      * @throw NotFound Raised if v does not belong to this Instantiation.
      * @throw OperationNotAllowed Raised if the instantiation is a slave.
      */
-    void erase(const DiscreteVariable& v);
+    void erase(const DiscreteVariable& v) override;
 
     /**
      * @brief Erase all variables from an Instantiation
@@ -260,7 +260,7 @@ namespace gum {
      * @return Returns the product of the variable's domain size in the
      * Instantiation.
      */
-    Size domainSize() const;
+    Size domainSize() const override;
 
     /**
      * @brief Returns the position of the variable v.
@@ -324,6 +324,16 @@ namespace gum {
      * @throw NotFound Raised if the element cannot be found.
      */
     const DiscreteVariable& variable(Idx i) const;
+
+    /**
+   * @brief Returns the variable with the name
+   *
+   * @param name The index of the variable
+   * @return Returns the variable qith the name in the tuple.
+   * @warging This function is not O(1)
+   * @throw NotFound Raised if the element cannot be found.
+   */
+    const DiscreteVariable& variable(const std::string& name) const;
 
     /**
      * @brief Assign newval to variable v in the Instantiation.

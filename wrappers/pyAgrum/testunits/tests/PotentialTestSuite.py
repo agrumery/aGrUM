@@ -637,6 +637,18 @@ class TestOperators(pyAgrumTestCase):
     self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7,2) + 0.5 * math.log(0.5 / 0.3,2), 1e-5)
     self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5,2) + 0.3 * math.log(0.3 / 0.5,2), 1e-5)
 
+  def testVariableAccessor(self):
+    v = gum.LabelizedVariable("v", "v", 2)
+    w = gum.LabelizedVariable("w", "w", 2)
+    p=gum.Potential().add(v).add(w)
+    self.assertEquals(p.variable(0),p.variable('v'))
+    self.assertEquals(p.variable(1),p.variable('w'))
+    self.assertNotEqual(p.variable(1),p.variable('v'))
+    self.assertNotEqual(p.variable(0),p.variable('w'))
+
+    with self.assertRaises(IndexError):
+      x=p.variable("zz")
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestInsertions)

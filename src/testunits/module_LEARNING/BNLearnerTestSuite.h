@@ -33,7 +33,7 @@ namespace gum_tests {
 
   class aSimpleBNLeanerListener : public gum::ApproximationSchemeListener {
     private:
-    int         __nbr;
+    gum::Size   __nbr;
     std::string __mess;
 
     public:
@@ -49,7 +49,7 @@ namespace gum_tests {
     }
     void whenStop(const void* buffer, const std::string s) { __mess = s; }
 
-    int         getNbr() { return __nbr; }
+    gum::Size   getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
   };
 
@@ -98,11 +98,51 @@ namespace gum_tests {
       }
     }
 
+    void test_asia_3off2() {
+      gum::learning::BNLearner< double > learner(GET_RESSOURCES_PATH("asia.csv"));
+
+      aSimpleBNLeanerListener listen(learner);
+
+      learner.useGreedyHillClimbing();
+      TS_ASSERT_THROWS(learner.useNML(), gum::OperationNotAllowed);
+
+      learner.use3off2();
+      learner.useNML();
+      learner.addForbiddenArc(gum::Arc(4, 1));
+      // learner.addForbiddenArc ( gum::Arc (5,1) );
+      // learner.addForbiddenArc ( gum::Arc (5,7) );
+
+      learner.addMandatoryArc(gum::Arc(5, 7));
+      gum::DAG i_dag;
+      for (gum::NodeId i = 0; i < 8; ++i) {
+        i_dag.addNode(i);
+      }
+      learner.setInitialDAG(i_dag);
+      // learner.addMandatoryArc( "bronchitis?", "lung_cancer?" );
+
+      const std::vector< std::string >& names = learner.names();
+      TS_ASSERT(!names.empty());
+
+      try {
+        gum::BayesNet< double > bn = learner.learnBN();
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), gum::Size(8));
+        TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(87));
+
+        gum::MixedGraph mg = learner.learnMixedStructure();
+        TS_ASSERT_EQUALS(mg.arcs().size(), gum::Size(8));
+        TS_ASSERT_EQUALS(mg.edges().size(), gum::Size(0));
+        std::vector< gum::Arc > latents = learner.latentVariables();
+        TS_ASSERT_EQUALS(latents.size(), gum::Size(3));
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
+    }
+
     // WARNING: this test is commented on purpouse: you need a running database
     // with a table filled with the content of the asia.csv file. You will also
     // need a proper odbc configuration (under linux and macos you'll need
     // unixodbc and specific database odbc drivers).
-    // void test_asia_db() {
+    // void /*test*/_asia_db() {
     //   try {
     //     auto db = gum::learning::DatabaseFromSQL(
     //         "PostgreSQL",
@@ -625,7 +665,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_EQUALS(listen.getNbr(), 2);
+        TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(2));
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -642,7 +682,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_EQUALS(listen.getNbr(), 3);
+        TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(3));
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -658,7 +698,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_DELTA(listen.getNbr(), 13, 1);  // 75 ?
+        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(13), 1);  // 75 ?
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");
@@ -674,7 +714,7 @@ namespace gum_tests {
 
         gum::BayesNet< double > bn = learner.learnBN();
 
-        TS_ASSERT_DELTA(listen.getNbr(), 3, 1);  // 2?
+        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(3), 1);  // 2?
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");

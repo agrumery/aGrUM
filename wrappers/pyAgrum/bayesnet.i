@@ -47,14 +47,7 @@
   };
 
   PyObject *arcs() {
-    PyObject* q=PyList_New(0);
-
-    const gum::DAG& dag=self->dag();
-    for ( auto arc_iter = dag.arcs().begin();arc_iter != dag.arcs().end(); ++arc_iter ) {
-      PyList_Append(q,Py_BuildValue("(i,i)", arc_iter->tail(), arc_iter->head()));
-    }
-
-    return q;
+    return PyAgrumHelper::PySetFromArcSet(self->dag().arcs());
   };
 
   PyObject *nodes() {

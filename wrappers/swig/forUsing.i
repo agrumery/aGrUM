@@ -114,6 +114,11 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
     return self->gum::MultiDimDecorator<double>::variable(i);
   }
 
+  const gum::DiscreteVariable& variable ( const std::string& name) const {
+    return self->gum::MultiDimDecorator<double>::variable(name);
+  }
+
+
   void populate ( const std::vector< double >& v ) const {
     self->gum::MultiDimDecorator<double>::populate(v);
   }
@@ -174,6 +179,24 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
 %extend gum::learning::BNLearner<double> {
   void setInitialDAG( const gum::DAG& g) {
     self->gum::learning::genericBNLearner::setInitialDAG(g);
+  }
+  void use3off2() {
+    self->gum::learning::genericBNLearner::use3off2();
+  }
+  void useNML(){
+    self->gum::learning::genericBNLearner::useNML();
+  }
+  void useMDL(){
+    self->gum::learning::genericBNLearner::useMDL();
+  }
+  void useNoCorr(){
+    self->gum::learning::genericBNLearner::useNoCorr();
+  }
+  const std::vector<Arc> latentVariables() {
+    return self->gum::learning::genericBNLearner::latentVariables();
+  }
+  gum::MixedGraph learnMixedStructure() {
+    return self->gum::learning::genericBNLearner::learnMixedStructure();
   }
 }
 
