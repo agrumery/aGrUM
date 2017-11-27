@@ -607,6 +607,13 @@ Warnings
 --------
 A faire in GenericInference
 "
+
+%feature("docstring") gum::classname::asIApproximationSchemeConfiguration
+"
+Returns
+-------
+asIApproximationSchemeConfiguration
+"
 %enddef
 
 ADD_DOC(LazyPropagation<double>)

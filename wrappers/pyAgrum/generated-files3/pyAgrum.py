@@ -6685,12 +6685,40 @@ class EssentialGraph(_object):
 
 
     def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """parents(self, id) -> gum::NodeSet const &"""
+        """
+        parents(self, id) -> gum::NodeSet const &
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
         return _pyAgrum.EssentialGraph_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """children(self, id) -> gum::NodeSet const &"""
+        """
+        children(self, id) -> gum::NodeSet const &
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
         return _pyAgrum.EssentialGraph_children(self, id)
 
 
@@ -6705,7 +6733,16 @@ class EssentialGraph(_object):
 
 
     def arcs(self) -> "gum::ArcSet const &":
-        """arcs(self) -> gum::ArcSet const &"""
+        """
+        arcs(self) -> gum::ArcSet const &
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the BayesNet
+
+        """
         return _pyAgrum.EssentialGraph_arcs(self)
 
 
@@ -9272,26 +9309,6 @@ class BayesNet_double(IBayesNet_double):
         """
         cpt(self, varId) -> Potential_double
         cpt(self, name) -> Potential_double
-
-
-        Returns the CPT of a variable.
-
-        Parameters
-        ----------
-        VarId : int
-        	A variable's id in the pyAgrum.BayesNet.
-        name : str
-        	A variable's name in the pyAgrum.BayesNet.
-
-        Returns
-        -------
-        pyAgrum.Potential
-        	The variable's CPT. 
-
-        Warnings
-        --------
-        	NotFound raised if no variable's id matches varId. 
-
         """
         val = _pyAgrum.BayesNet_double_cpt(self, *args)
 
@@ -10147,54 +10164,17 @@ class BayesNet_double(IBayesNet_double):
 
 
     def arcs(self) -> "PyObject *":
-        """
-        arcs(self) -> PyObject *
-
-
-        Returns
-        -------
-        list
-        	The lisf of arcs in the BayesNet
-
-        """
+        """arcs(self) -> PyObject *"""
         return _pyAgrum.BayesNet_double_arcs(self)
 
 
     def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        parents(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
+        """parents(self, id) -> PyObject *"""
         return _pyAgrum.BayesNet_double_parents(self, id)
 
 
     def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        children(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
+        """children(self, id) -> PyObject *"""
         return _pyAgrum.BayesNet_double_children(self, id)
 
 
@@ -13788,7 +13768,15 @@ class GibbsSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.GibbsSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -14773,7 +14761,15 @@ class ImportanceSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.ImportanceSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -15702,7 +15698,15 @@ class WeightedSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.WeightedSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -16631,7 +16635,15 @@ class MonteCarloSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.MonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -17568,7 +17580,15 @@ class LoopyImportanceSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -18505,7 +18525,15 @@ class LoopyWeightedSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -19442,7 +19470,15 @@ class LoopyGibbsSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -20463,7 +20499,15 @@ class LoopyMonteCarloSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyMonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -21392,7 +21436,15 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -23170,7 +23222,15 @@ class CNMonteCarloSampling_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -23342,6 +23402,13 @@ class CNLoopyPropagation_double(_object):
         """
         inferenceType(self, inft)
         inferenceType(self) -> gum::credal::CNLoopyPropagation< double >::InferenceType
+
+
+        Returns
+        -------
+        int
+        	the inference type
+
         """
         return _pyAgrum.CNLoopyPropagation_double_inferenceType(self, *args)
 
@@ -23650,7 +23717,15 @@ class CNLoopyPropagation_double(_object):
 
 
     def asIApproximationSchemeConfiguration(self) -> "gum::IApproximationSchemeConfiguration const &":
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_asIApproximationSchemeConfiguration(self)
 
 
@@ -25147,9 +25222,9 @@ class BNLearner_double(_object):
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
 
 
-        Warnings
-        --------
-        A Faire
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
 
         """
         return _pyAgrum.BNLearner_double_asIApproximationSchemeConfiguration(self)
@@ -25391,7 +25466,7 @@ class BNLearner_double(_object):
         useLocalSearchWithTabuList(self)
 
 
-        indicate that we wish to use a local search with tabu list
+        Indicate that we wish to use a local search with tabu list
 
         Parameters
         ----------
@@ -25571,22 +25646,46 @@ class BNLearner_double(_object):
 
 
     def use3off2(self) -> "void":
-        """use3off2(self)"""
+        """
+        use3off2(self)
+
+
+        Indicate that we wish to use 3off2.
+
+        """
         return _pyAgrum.BNLearner_double_use3off2(self)
 
 
     def useNML(self) -> "void":
-        """useNML(self)"""
+        """
+        useNML(self)
+
+
+        Indicate that we wish to use the NML correction for 3off2
+
+        """
         return _pyAgrum.BNLearner_double_useNML(self)
 
 
     def useMDL(self) -> "void":
-        """useMDL(self)"""
+        """
+        useMDL(self)
+
+
+        Indicate that we wish to use the MDL correction for 3off2
+
+        """
         return _pyAgrum.BNLearner_double_useMDL(self)
 
 
     def useNoCorr(self) -> "void":
-        """useNoCorr(self)"""
+        """
+        useNoCorr(self)
+
+
+        Indicate that we wish to use the NoCorr correction for 3off2
+
+        """
         return _pyAgrum.BNLearner_double_useNoCorr(self)
 
 

@@ -356,7 +356,7 @@ order : list
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useLocalSearchWithTabuList
 "
-indicate that we wish to use a local search with tabu list
+Indicate that we wish to use a local search with tabu list
 
 Parameters
 ----------

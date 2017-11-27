@@ -21,9 +21,9 @@ learner : pyAgrum.BNLearner
 
 %feature("docstring") gum::learning::BNLearner::asIApproximationSchemeConfiguration
 "
-Warnings
---------
-A Faire
+Returns
+-------
+asIApproximationSchemeConfiguration
 "
 
 %feature("docstring") gum::learning::BNLearner::learnBN
@@ -67,4 +67,24 @@ Parameters
 ----------
 dag : pyAgrum.DAG
 	an initial DAG structure
+"
+
+%feature("docstring") gum::learning::BNLearner::use3off2
+"
+Indicate that we wish to use 3off2.
+"
+
+%feature("docstring") gum::learning::BNLearner::useNML
+"
+Indicate that we wish to use the NML correction for 3off2
+"
+
+%feature("docstring") gum::learning::BNLearner::useMDL
+"
+Indicate that we wish to use the MDL correction for 3off2
+"
+
+%feature("docstring") gum::learning::BNLearner::useNoCorr
+"
+Indicate that we wish to use the NoCorr correction for 3off2
 "

@@ -103,3 +103,99 @@ Warnings
 --------
 Unreferenced function
 "
+
+%feature("docstring") gum::DAGmodel::arcs
+"
+Returns
+-------
+list
+	The lisf of arcs in the graph
+"
+
+%feature("docstring") gum::DAGmodel::toDot
+"
+Returns
+-------
+str
+    a friendly display of the graph in DOT format 
+"
+
+%feature("docstring") gum::DAGmodel::idFromName
+"
+Returns a variable's id given its name in the graph.
+
+Parameters
+----------
+name : str
+	The variable's name from which the id is returned.
+
+Returns
+-------
+int :
+	The variable's node id. 
+
+Warnings
+--------
+	NotFound raised if name does not match a variable in the graph
+"
+
+%feature("docstring") gum::DAGmodel::variableFromName
+"
+Parameters
+----------
+name : str
+	a variable's name
+
+Returns
+-------
+pyAgrum.DiscreteVariable
+	the variable
+
+Warnings
+--------
+IndexError if the graph does not contain the variable
+"
+
+
+%feature("docstring") gum::DAGmodel::nodeId
+"
+Parameters
+----------
+var : pyAgrum.DiscreteVariable
+	a variable
+
+Returns
+-------
+int
+	the id of the variable
+
+Warnings
+--------
+IndexError raised if the graph does not contain the variable
+"
+
+%feature("docstring") gum::DAGmodel::variable
+"
+Parameters
+----------
+id : int
+	a variable's id
+name : str
+	a variable's name
+
+Returns
+-------
+pyAgrum.DiscreteVariable
+	the variable
+
+Warnings
+--------
+IndexError if the graph does not contain the variable
+"
+
+%feature("docstring") gum::DAGmodel::variableNodeMap
+"
+Warnings
+--------
+A Faire
+"

@@ -368,14 +368,6 @@ Warnings
     InvalidArc raised if variable in arc.head is not a NoisyOR variable. 
 "
 
-%feature("docstring") gum::BayesNet::arcs
-"
-Returns
--------
-list
-	The lisf of arcs in the BayesNet
-"
-
 %feature("docstring") gum::BayesNet::beginTopologyTransformation
 "
 When inserting/removing arcs, node CPTs change their dimension with a cost in time.
@@ -420,40 +412,6 @@ Warnings
 --------
 	DuplicateLabel raised if new_name is already used in this BayesNet.
 	NotFound raised if no variable matches id. 
-"
-
-%feature("docstring") gum::BayesNet::children
-"
-Parameters
-----------
-id : int
-  the id of the parent
-
-Returns
--------
-Set
-	the set of all the children
-"
-
-%feature("docstring") gum::BayesNet::cpt
-"
-Returns the CPT of a variable.
-
-Parameters
-----------
-VarId : int
-	A variable's id in the pyAgrum.BayesNet.
-name : str
-	A variable's name in the pyAgrum.BayesNet.
-
-Returns
--------
-pyAgrum.Potential
-	The variable's CPT. 
-
-Warnings
---------
-	NotFound raised if no variable's id matches varId. 
 "
 
 %feature("docstring") gum::BayesNet::endTopologyTransformation
@@ -540,33 +498,6 @@ name : str
 %feature("docstring") gum::BayesNet::generateCPTs
 "
 Randomly generates CPTs for a given structure.
-"
-
-%feature("docstring") gum::BayesNet::idFromName
-"
-Returns a variable's id given its name in the BayesNet.
-
-Parameters
-----------
-name : str
-	The variable's name from which the id is returned.
-
-Returns
--------
-int :
-	The variable's node id. 
-
-Warnings
---------
-	NotFound raised if name does not match a variable in the BayesNet
-"
-
-%feature("docstring") gum::BayesNet::ids
-"
-Returns
--------
-list :
-	The list variables ids.
 "
 
 %feature("docstring") gum::BayesNet::loadBIF
@@ -704,44 +635,6 @@ Set
 	The minimal set of variables
 "
 
-%feature("docstring") gum::BayesNet::names
-"
-Returns
--------
-list
-	The names of the BayesNet variables
-"
-
-%feature("docstring") gum::BayesNet::nodeId
-"
-Parameters
-----------
-var : pyAgrum.DiscreteVariable
-	a variable
-
-Returns
--------
-int
-	the id of the variable
-
-Warnings
---------
-IndexError raised if the BayesNet does not contain the variable
-"
-
-%feature("docstring") gum::BayesNet::parents
-"
-Parameters
-----------
-id :
-	The id of the child node
-
-Returns
--------
-Set
-    the set of the parents ids.
-"
-
 %feature("docstring") gum::BayesNet::reverseArc
 "
 Reverses an arc while preserving the same joint distribution. 
@@ -828,45 +721,23 @@ name : str
 	the file's name
 "
 
-%feature("docstring") gum::BayesNet::variable
+%feature("docstring") gum::BayesNet::cpt
 "
+Returns the CPT of a variable.
+
 Parameters
 ----------
-id : int
-	a variable's id
+VarId : int
+	A variable's id in the pyAgrum.BayesNet.
 name : str
-	a variable's name
+	A variable's name in the pyAgrum.BayesNet.
 
 Returns
 -------
-pyAgrum.DiscreteVariable
-	the variable
+pyAgrum.Potential
+	The variable's CPT. 
 
 Warnings
 --------
-IndexError if the BayesNet does not contain the variable
-"
-
-%feature("docstring") gum::BayesNet::variableFromName
-"
-Parameters
-----------
-name : str
-	a variable's name
-
-Returns
--------
-pyAgrum.DiscreteVariable
-	the variable
-
-Warnings
---------
-IndexError if the BayesNet does not contain the variable
-"
-
-%feature("docstring") gum::BayesNet::variableNodeMap
-"
-Warnings
---------
-A Faire
+	NotFound raised if no variable's id matches varId. 
 "

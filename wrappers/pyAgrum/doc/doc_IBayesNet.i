@@ -71,7 +71,7 @@ int
 Returns
 -------
 double
-    the smallest value (not equal to 0) in the CPTs of the BayesNet
+    the smallest value (not equal to 0) in the CPTs of the IBayesNet
 "
 
 %feature("docstring") gum::IBayesNet::minParam
@@ -79,7 +79,7 @@ double
 Returns
 -------
 double
-    the smallest value in the CPTs of the BayesNet
+    the smallest value in the CPTs of the IBayesNet
 "
 
 %feature("docstring") gum::IBayesNet::toDot
@@ -88,4 +88,75 @@ Returns
 -------
 str
     a friendly display of the graph in DOT format
+"
+
+%feature("docstring") gum::IBayesNet::arcs
+"
+Returns
+-------
+list
+	The lisf of arcs in the IBayesNet
+"
+
+%feature("docstring") gum::IBayesNet::children
+"
+Parameters
+----------
+id : int
+  the id of the parent
+
+Returns
+-------
+Set
+	the set of all the children
+"
+
+%feature("docstring") gum::IBayesNet::cpt
+"
+Returns the CPT of a variable.
+
+Parameters
+----------
+VarId : int
+	A variable's id in the pyAgrum.IBayesNet.
+name : str
+	A variable's name in the pyAgrum.IBayesNet.
+
+Returns
+-------
+pyAgrum.Potential
+	The variable's CPT. 
+
+Warnings
+--------
+	NotFound raised if no variable's id matches varId. 
+"
+
+%feature("docstring") gum::IBayesNet::parents
+"
+Parameters
+----------
+id :
+	The id of the child node
+
+Returns
+-------
+Set
+    the set of the parents ids.
+"
+
+%feature("docstring") gum::IBayesNet::ids
+"
+Returns
+-------
+list :
+	The list variables ids.
+"
+
+%feature("docstring") gum::IBayesNet::names
+"
+Returns
+-------
+list
+	The names of the graph variables
 "
