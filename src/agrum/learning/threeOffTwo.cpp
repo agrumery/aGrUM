@@ -119,19 +119,35 @@ namespace gum {
       /// the variables separation sets
       HashTable< std::pair< Idx, Idx >, std::vector< Idx > > sep_set;
 
-      /*
-       * PHASE 1 : INITIATION
-       *
-       * We go over all edges and test if the variables are independent. If they
-       * are,
-       * the edge is deleted. If not, the best contributor is found.
-       */
       // std::cout << "INITIATION" << std::endl;
+      _initiation(I, graph, sep_set, _rank);
       /*std::cout << graph << std::endl;*/
-      Idx                x, y, z;
-      std::vector< Idx > ui;
-      EdgeSet            edges = graph.edges();
-      Size               steps_init = edges.size();
+              
+      // std::cout << "ITERATION" << std::endl;
+      _iteration(I, graph, sep_set, _rank);
+      /*std::cout << graph << std::endl;*/
+              
+      _orientation(I, graph, sep_set, _rank);
+      /*std::cout << graph << std::endl;*/
+      return graph;
+    }
+
+    /*
+     * PHASE 1 : INITIATION
+     *
+     * We go over all edges and test if the variables are independent. If they
+     * are,
+     * the edge is deleted. If not, the best contributor is found.
+     */
+    void ThreeOffTwo::_initiation(
+      CorrectedMutualInformation<>& I, 
+      MixedGraph& graph, 
+      HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set, 
+      Heap< std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
+            GreaterPairOn2nd >& _rank){
+      Idx     x, y;
+      EdgeSet edges = graph.edges();
+      Size    steps_init = edges.size();
 
       for (const Edge& edge : edges) {
         x = edge.first();
@@ -160,16 +176,21 @@ namespace gum {
             onProgress, (_current_step * 33) / steps_init, 0., _timer.step());
         }
       }
-      // tps = time.step();
-      /// std::cout << "  " << tps << "s" << std::endl;
-      /*std::cout << graph.toString() << std::endl;*/
-      /*
+    }
+      
+    /*
      * PHASE 2 : ITERATION
      *
      * As long as we find important nodes for edges, we go over them to see if
      * we can assess the independence of the variables.
-     */
-      // std::cout << "ITERATION" << std::endl;
+    */
+    void ThreeOffTwo::_iteration(
+      CorrectedMutualInformation<>& I, 
+      MixedGraph& graph, 
+      HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set, 
+      Heap< std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
+            GreaterPairOn2nd >& _rank){
+          
       // if no triples to further examine pass
       std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double > best;
       if (!_rank.empty()) {
@@ -180,8 +201,13 @@ namespace gum {
         best.first = tup;
         best.second = 0;
       }
+      
+      Size    steps_init = _current_step;
       Size steps_iter = _rank.size();
+      
       while (best.second > 0.5) {
+        Idx                x, y, z;
+        std::vector< Idx > ui;
         x = std::get< 0 >(*best.first);
         y = std::get< 1 >(*best.first);
         z = std::get< 2 >(*best.first);
@@ -215,20 +241,29 @@ namespace gum {
       if (onProgress.hasListener()) {
         GUM_EMIT3(onProgress, 66, 0., _timer.step());
       }
-      // tps = time.step();
-      // std::cout << "  " << tps << "s" << std::endl;
-      /*std::cout << graph.toString() << std::endl;*/
-      /*
-     * PHASE 3 : ORIENTATION
-     */
+      _current_step = steps_init + steps_iter;
+      
+    }
+      
+    /// Orientation phase
+    /*
+    * PHASE 3 : ORIENTATION
+    */
+    void ThreeOffTwo::_orientation(
+      CorrectedMutualInformation<>& I, 
+      MixedGraph& graph, 
+      const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set, 
+      Heap< std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
+            GreaterPairOn2nd >& _rank){
+          
       // std::cout << "ORIENTATION" << std::endl;
 
       std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > > triples =
         _getUnshieldedTriples(graph, I, sep_set);
       /*std::cout << "Triples found" << std::endl;*/
       Size steps_orient = triples.size();
+      Size past_steps = _current_step;
 
-      _current_step = steps_init + steps_iter;
       Idx i = 0;
       // list of elements that we shouldnt read again, ie elements that are
       // eligible to
@@ -237,6 +272,7 @@ namespace gum {
       while (i < triples.size()) {
         // if i not in do_not_reread
           std::pair< std::tuple< Idx, Idx, Idx >*, double > triple = triples[i];
+          Idx x, y, z;
           x = std::get< 0 >(*triple.first);
           y = std::get< 1 >(*triple.first);
           z = std::get< 2 >(*triple.first);
@@ -310,7 +346,7 @@ namespace gum {
         if (onProgress.hasListener()) {
           GUM_EMIT3(onProgress,
                     ((_current_step + i) * 100) /
-                      (steps_init + steps_iter + steps_orient),
+                      (past_steps + steps_orient),
                     0.,
                     _timer.step());
         }
@@ -320,7 +356,7 @@ namespace gum {
       for ( const Arc& arc : __latent_couples ){
     	graph.eraseArc( Arc( arc.head(), arc.tail() ) );
       }
-      return graph;
+      
     }
 
     /// finds the best contributor node for a pair given a conditioning set
@@ -405,7 +441,6 @@ namespace gum {
       _rank.insert(final);
     }
 
-
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|
     /*@param graph graph in which to find the triples
@@ -453,7 +488,6 @@ namespace gum {
       std::sort(triples.begin(), triples.end(), GreaterAbsPairOn2nd());
       return triples;
     }
-
 
     /// learns the structure of an Bayesian network, ie a DAG, from an Essential
     /// graph.
