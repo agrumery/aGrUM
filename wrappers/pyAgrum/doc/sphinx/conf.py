@@ -38,7 +38,7 @@ import sys
 import matplotlib
 matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
-sys.path.insert(0, os.path.abspath('../../../../build/release/wrappers/'))
+sys.path.insert(0, os.path.abspath('../../../../build/release/wrappers/pyAgrum/'))
 
 extensions = [
   'sphinx.ext.autodoc',
@@ -83,6 +83,7 @@ author = 'Pierre-henri Wuillemin'
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
+
 import pyAgrum as gum
 
 print("GUM VERSION =" + gum.__version__)
