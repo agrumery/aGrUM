@@ -322,6 +322,16 @@ windows_64_pyagrum_cp36_wheels:
 ################################################################################
 # pyAgrum Documentation
 ################################################################################
+readthedocs:
+  only:
+    - tags
+    - triggers
+  tags:
+    - linux
+  stage: documentation
+  script:
+    - curl -X POST -d "branches=documentation/pyAgrum" -d "token=a7aa4a811896ec391e43cd8bceb31071e877854e" readthedocs.org/api/v2/webhook/pyagrum/19099/
+
 pyAgrum_documentation:
   only:
     - branches@agrumery/aGrUM
