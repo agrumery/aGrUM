@@ -20,6 +20,8 @@
 %include "doc_IBayesNet.i"
 %include "doc_EssentialGraph.i"
 
+%include "doc_MarkovBlanket.i"
+
 %include "doc_GenericInference.i"
 
 %include "doc_LazyPropagation.i"

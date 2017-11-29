@@ -82,7 +82,9 @@ author = 'Pierre-henri Wuillemin'
 # built documents.
 #
 
-sys.path.insert(0,'../../../../build/release/wrappers/pyAgrum')
+sys.path.insert(0,os.path.abspath('../../../../build/release/wrappers/'))
+
+#sys.path.append('../../../../build/release/wrappers/pyAgrum')
 
 import pyAgrum as gum
 

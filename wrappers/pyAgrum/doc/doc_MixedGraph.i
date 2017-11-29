@@ -28,7 +28,7 @@ Available constructors:
 
 Parameters
 ----------
-src : :class: MixedGraph
+src : pyAgrum.MixedGraph
   the MixedGraph to copy
 "
 

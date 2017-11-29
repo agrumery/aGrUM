@@ -9,7 +9,7 @@ Available constructors:
 
 Parameters
 ----------
-src : :class: DiGraph
+src : pyAgrum.DiGraph
   the digraph to copy
 
 "
