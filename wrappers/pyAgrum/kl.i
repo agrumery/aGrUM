@@ -16,6 +16,9 @@ PyObject* compute(void) {
 
 %extend gum::GibbsKL {
 PyObject* compute(void) {
+  """
+  test
+  """
   PyObject* q=PyDict_New();
 
   PyDict_SetItemString(q,"klPQ",PyFloat_FromDouble(self->klPQ()));

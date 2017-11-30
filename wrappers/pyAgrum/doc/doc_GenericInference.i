@@ -614,6 +614,47 @@ Returns
 -------
 asIApproximationSchemeConfiguration
 "
+
+%feature("docstring") gum::classname::setRelevantPotentialsFinderType
+"
+sets how we determine the relevant potentials to combine
+
+When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
+
+0 = FIND_ALL
+1 = DSEP_BAYESBALL_NODES
+2 = DSEP_BAYESBALL_POTENTIALS
+3 = DSEP_KOLLER_FRIEDMAN_2009
+
+Parameters
+----------
+type : int
+  the finder type
+
+Warnings
+--------
+InvalidArgument raised if type is not implemented
+"
+
+%feature("docstring") gum::classname::setFindBarrenNodesType
+"
+sets how we determine barren nodes
+
+Barren nodes are unnecessary for probability inference, so they can be safely discarded in this case (type = FIND_BARREN_NODES). This speeds-up inference. However, there are some cases in which we do not want to remove barren nodes, typically when we want to answer queries such as Most Probable Explanations (MPE).
+
+0 = FIND_NO_BARREN_NODES
+1 = FIND_BARREN_NODES
+
+Parameters
+----------
+type : int
+  the finder type
+
+Warnings
+--------
+InvalidArgument raised if type is not implemented
+"
+
 %enddef
 
 ADD_DOC(LazyPropagation<double>)

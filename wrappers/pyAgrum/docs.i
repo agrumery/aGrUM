@@ -22,6 +22,10 @@
 
 %include "doc_MarkovBlanket.i"
 
+%include "doc_KL.i"
+%include "doc_GibbsKL.i"
+%include "doc_BruteForceKL.i"
+
 %include "doc_GenericInference.i"
 
 %include "doc_LazyPropagation.i"
@@ -54,3 +58,4 @@
 %include "doc_InfluenceDiagramInference.i"
 
 %include "doc_miscellaneous.i"
+%include "doc_JTGenerator.i"

@@ -27,6 +27,8 @@ InfluenceDiagramInference.insertEvidence (pb type de param ?)
 
 InfluenceDiagramInference.displayStrongJunctionTree (pb type de param ?)
 
+LazyPropagation.setTriangulation prend en paramètre un objet Triangulation
+
 Problèmes d'exceptions
 ----------------------
 
@@ -53,4 +55,3 @@ gum::PRMexplorer::aggType ?
 
 
 gum.CredalNet.dynamicExceptations nécessaire pour faire fonctionner dynamicExpMax/Min$
-

@@ -95,3 +95,11 @@ Returns
 bool
     True if all the named node are the same and all the named arcs are the same 
 "
+
+%feature("docstring") gum::MarkovBlanket::mb 
+"
+Returns
+-------
+pyAgrum.DiGraph
+  a copy of the directed graph
+"

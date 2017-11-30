@@ -553,3 +553,14 @@ Warnings
 --------
   NotFound raised if i does not reference a variable in this multidimensional matrix. 
 "
+
+
+%feature("docstring") gum::Potential::draw
+"
+draw a value using the potential as a probability table.
+
+Returns
+-------
+int
+  the index of the drawn value
+"

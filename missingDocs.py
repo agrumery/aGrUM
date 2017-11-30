@@ -6,7 +6,7 @@ import sys
 classesToSkip = ['Vector_int','Vector_double','SwigPyIterator','Vector_string','GumException','SyntaxError'
            ,'MultiDimContainer_double','UtilityTable_double','BayesNetInference_double','ApproximationScheme']
 
-methodsToSkip = ['swig_import_helper']
+methodsToSkip = ['swig_import_helper','setTriangulation']
 
 def noDocstring2(lines,dic):
     for i, line in enumerate(lines):

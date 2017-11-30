@@ -145,6 +145,12 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
   %pythoncode {
 
     def variablesSequence(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the sequence of variables
+        """
         varlist = []
         for i in range(0, self.nbrDim()):
             varlist.append(self.variable(i))
@@ -213,12 +219,24 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 
 %feature("shadow") gum::Potential::tolist %{
     def tolist(self):
+        """
+        Returns
+        -------
+        list
+            the potential as a list
+        """
         self.__fill_distrib__()
         return self.__distrib__.tolist()
 %}
 
 %feature("shadow") gum::Potential::toarray %{
     def toarray(self):
+        """
+        Returns
+        -------
+        array
+            the potential as an array
+        """
         return numpy.array(self.tolist())
 %}
 
@@ -257,6 +275,12 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 %feature("shadow") gum::Potential::var_names %{
     @property
     def var_names(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the name of each variables in the potential
+        """
         self.__fill_distrib__()
         return self._var_names
 %}
@@ -265,6 +289,12 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 %feature("shadow") gum::Potential::var_dims %{
     @property
     def var_dims(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the dimensions of each variables in the potential
+        """
         self.__fill_distrib__()
         return self._var_dims
 %}
