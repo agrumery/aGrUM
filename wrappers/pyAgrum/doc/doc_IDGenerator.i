@@ -1,11 +1,11 @@
-%feature("docstring") gum::IDGenerator
+%feature("docstring") IDGenerator
 "
 Available constructors:
 
     ``IDGenerator() -> IDGenerator``
 "
 
-%feature("docstring") gum::IDGenerator::generate
+%feature("docstring") IDGenerator::generate
 "
 Generate a new influence diagram given the parameters.
 

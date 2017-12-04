@@ -61,3 +61,75 @@ Returns
 int
   the max number of threads
 "
+
+%feature("docstring") gum::randomGeneratorSeed
+"
+Returns
+-------
+int
+  a randomly generated seed
+"
+
+%feature("docstring") gum::getNumberOfRunningThreads
+"
+Returns
+-------
+int
+  the number of running threads
+"
+
+%feature("docstring") gum::getNestedParallelism
+"
+Returns
+-------
+bool
+  True if nested parallelism is enabled
+"
+
+%feature("docstring") gum::setNestedParallelism
+"
+Parameters
+----------
+value : bool
+  True if nested parallelism should be activated
+"
+
+%feature("docstring") gum::getDynamicThreadsNumber
+"
+Returns
+-------
+bool
+  True if dynamic threads number is enabled
+"
+
+%feature("docstring") gum::setDynamicThreadsNumber
+"
+Parameters
+----------
+value : bool
+  True if the number of threads should be dynamic
+"
+
+%feature("docstring") gum::getRandomGenerator
+"
+Returns
+-------
+tbw
+  the random generator
+"
+
+%feature("docstring") gum::getThreadNumber
+"
+Returns
+-------
+int
+  the number of thread
+"
+
+%feature("docstring") gum::randomValue
+"
+Returns
+-------
+int
+  a value randomly drawn (0 or 1)
+"

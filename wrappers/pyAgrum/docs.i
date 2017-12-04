@@ -44,6 +44,7 @@
 %include "doc_LoopyImportanceSampling.i"
 
 %include "doc_IApproximationSchemeConfiguration.i"
+%include "doc_ApproximationScheme.i"
 
 %include "doc_BNLearner.i"
 
@@ -59,3 +60,7 @@
 
 %include "doc_miscellaneous.i"
 %include "doc_JTGenerator.i"
+%include "doc_IDGenerator.i"
+%include "doc_BNGenerator.i"
+
+%include "doc_StructuralComparator.i"

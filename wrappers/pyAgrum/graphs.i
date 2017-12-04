@@ -80,13 +80,24 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 
   %pythoncode {
   def toDotWithNames(self,bn):
-    def nameFromId(m):
-      return " ".join([bn.variable(int(n)).name()
-                       for n in m.group().split("-")])
-    import re
-    m = re.compile('(?<=label=\")\d+[\-\d+]*')
-    return m.sub(nameFromId,self.toDot())
-  }
+      """
+      Parameters
+      ----------
+      bn : pyAgrum.BayesNet
+      a Bayesian network
+  
+      Returns
+      -------
+      str
+        a friendly display of the graph in DOT format where ids have been changed according to their correspondance in the BN
+      """
+      def nameFromId(m):
+        return " ".join([bn.variable(int(n)).name()
+                         for n in m.group().split("-")])
+      import re
+      m = re.compile('(?<=label=\")\d+[\-\d+]*')
+      return m.sub(nameFromId,self.toDot())
+    }
 };
 
 %ignore gum::CliqueGraph::clique;

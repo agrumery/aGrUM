@@ -55,8 +55,11 @@ Loopy Belief Propagation
 .. autoclass:: pyAgrum.pyAgrum.LoopyBeliefPropagation_double
 			:exclude-members: asIApproximationSchemeConfiguration
 
+Sampling
+~~~~~~~~
+
 Gibbs Sampling
-~~~~~~~~~~~~~~
+++++++++++++++
 
 .. autoclass:: pyAgrum.GibbsSampling
 			:exclude-members: asIApproximationSchemeConfiguration
@@ -65,7 +68,7 @@ Gibbs Sampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Monte Carlo Sampling
-~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++
 
 .. autoclass:: pyAgrum.MonteCarloSampling
 			:exclude-members: asIApproximationSchemeConfiguration
@@ -74,7 +77,7 @@ Monte Carlo Sampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Weighted Sampling
-~~~~~~~~~~~~~~~~~
++++++++++++++++++
 
 .. autoclass:: pyAgrum.WeightedSampling
 			:exclude-members: asIApproximationSchemeConfiguration
@@ -83,7 +86,7 @@ Weighted Sampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Importance Sampling
-~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++
 
 .. autoclass:: pyAgrum.ImportanceSampling
 			:exclude-members: asIApproximationSchemeConfiguration
@@ -91,11 +94,11 @@ Importance Sampling
 .. autoclass:: pyAgrum.pyAgrum.ImportanceSampling_double
 			:exclude-members: asIApproximationSchemeConfiguration
 
-Loopy version
--------------
+Loopy sampling
+~~~~~~~~~~~~~~
 
 Loopy Gibbs Sampling
-~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++
 
 .. autoclass:: pyAgrum.LoopyGibbsSampling
 			:exclude-members: asIApproximationSchemeConfiguration
@@ -104,7 +107,7 @@ Loopy Gibbs Sampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy Monte Carlo Sampling
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+++++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.LoopyMonteCarloSampling
 			:exclude-members: asIApproximationSchemeConfiguration
@@ -113,7 +116,7 @@ Loopy Monte Carlo Sampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy Weighted Sampling
-~~~~~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.LoopyWeightedSampling
 			:exclude-members: asIApproximationSchemeConfiguration
@@ -122,7 +125,7 @@ Loopy Weighted Sampling
 			:exclude-members: asIApproximationSchemeConfiguration
 
 Loopy Importance Sampling
-~~~~~~~~~~~~~~~~~~~~~~~~~~
++++++++++++++++++++++++++
 
 .. autoclass:: pyAgrum.LoopyImportanceSampling
 			:exclude-members: asIApproximationSchemeConfiguration

@@ -53,8 +53,12 @@ from .pyAgrum import InfluenceDiagram, InfluenceDiagramInference
 from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 from .pyAgrum import PRMexplorer
 
-from .pyAgrum import initRandom, randomProba, randomDistribution
-from .pyAgrum import isOMP, setNumberOfThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads
+from .pyAgrum import ApproximationScheme
+
+from .pyAgrum import initRandom, randomProba, randomDistribution, randomGeneratorSeed, getRandomGenerator, randomValue
+from .pyAgrum import isOMP, setNumberOfThreads, getThreadNumber, getNumberOfRunningThreads, getNumberOfLogicalProcessors, getMaxNumberOfThreads, getDynamicThreadsNumber, setDynamicThreadsNumber
+
+from .pyAgrum import getNestedParallelism, setNestedParallelism
 
 from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTree, EmptySet, GumException, FatalError, FormatNotFound, GraphError, IOError, IdError, InvalidArc, InvalidArgument, InvalidArgumentsNumber, InvalidDirectedCycle, InvalidEdge, InvalidNode, NoChild, NoNeighbour, NoParent, NotFound, NullElement, OperationNotAllowed, OutOfBounds, OutOfLowerBound, OutOfUpperBound, ReferenceError, SizeError, SyntaxError, UndefinedElement, UndefinedIteratorKey, UndefinedIteratorValue, UnknownLabelInDatabase
 
@@ -62,6 +66,8 @@ from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTr
 __all__=[
   '__version__','__license__','__project_url__',        # here
   'about','availableBNExts','loadBN','saveBN','loadID','getPosterior', # in fuctions.py
+
+  'statsObj',
 
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
   'BayesNet','EssentialGraph'
@@ -75,13 +81,15 @@ __all__=[
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',
   'InfluenceDiagram','InfluenceDiagramInference',
-
-  'initRandom','randomProba','randomDistribution',
-  'isOMP','setNumberOfThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads',
-
   'CredalNet','CNMonteCarloSampling','CNLoopyPropagation',
-
   'PRMexplorer',
+
+  'ApproximationScheme',
+
+  'initRandom','randomProba','randomDistribution','randomGeneratorSeed','getRandomGenerator','randomValue',
+  'isOMP','setNumberOfThreads','getThreadNumber','getNumberOfRunningThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads','getDynamicThreadsNumber','setDynamicThreadsNumber',
+
+  'getNestedParallelism', 'setNestedParallelism',
 
   'DefaultInLabel','DuplicateElement','DuplicateLabel','EmptyBSTree','EmptySet','GumException','FatalError','FormatNotFound','GraphError','IOError','IdError','InvalidArc','InvalidArgument','InvalidArgumentsNumber','InvalidDirectedCycle','InvalidEdge','InvalidNode','NoChild','NoNeighbour','NoParent','NotFound','NullElement','OperationNotAllowed','OutOfBounds','OutOfLowerBound','OutOfUpperBound','ReferenceError','SizeError','SyntaxError','UndefinedElement','UndefinedIteratorKey','UndefinedIteratorValue','UnknownLabelInDatabase'
   ]
