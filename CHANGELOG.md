@@ -1,6 +1,27 @@
 # aGrUM Changelog
 
+## Changelog for 0.13.0 (in progress)
+
+* Documentations
+  * agrum : doxygen help's structure and howtos
+  * pyAgrum : documentation of a large parts of the pyAgrum's API, export to https://pyagrum.readthedocs.io
+  * o3prm : still in progress (see https://o3prm.lip6.fr, https://o3prm.readthedocs.io)
+* O3PRM
+  * new syntax for types (see ?)
+  * read and write Bayesian Network with O3PRM syntax (see ?)
+* aGrUM
+  * new learning algorithm (see ?)
+  * new approximated inference : MonteCarlo/Importance/Weighted Sampling + the same using LBP as a Dirichlet prior.
+* pyAgrum
+  * wheels for python 3.3 and 3.4
+  * access to the new learning algorithm using BNLearner
+  * access to the new inference algorithms
+* many bug fixes
+* act
+  * new command guideline for a few easy checks
+
 ## Changelog for 0.12.0
+
 * API
   * new class EssentialGraph
   * new class MarkovBlanket
@@ -17,6 +38,7 @@
   * improving act
 
 ## Changelog for 0.11.2
+
 * aGrUM
   * a lot of internal changes for CI in gitlab (especially for future automatic generation of wheels)
   * learning: correct identification of string labels beginning with digits
@@ -31,9 +53,11 @@
   * pyagrum.lib.bn2roc: use a csv with labels by default (parameter with_labels:boolean)
 
 ## Changelog for 0.11.1
+
 * 2 typos found in pyAgrum.lib.notebook
 
 ## Changelog for 0.11.0
+
 * internal
   * working on continuous integration with gitlab
   * aGrUM/pyAgrum to be compilable with g++-4.8
@@ -58,6 +82,7 @@
   * API change : adding LazyInference.evidenceJointImpact(set of targets,set of evs)
 
 ## Changelog for 0.10.4
+
 * Add new approximated inference : LBP (aGrUM and pyAgrum)
 * Fix bugs in LazyPropagation and Shafer-Shenoy inference
 * Refresh some codes in Learning module
@@ -67,9 +92,11 @@
 
 
 ## Changelog for 0.10.3
+
 * Only bug fixes in tests
 
 ## Changelog for 0.10.2
+
 * New method for BayesNet : minimalCondSet
 * New method for all inference : evidenceImpact
 * Potential has a (single) value even if no dimension.
@@ -78,6 +105,7 @@
 * Many internal changes
 
 ## Changelog for 0.10.1
+
 * aGrUM
   * Fix GCC compilation
   * ParamEstimator::setMaxThread new method
@@ -90,6 +118,7 @@
   * pyAgrum.so (linux) size significantly reduced
 
 ## Changelog for 0.10.0
+
 * aGrUM
   * Improvements in inference : New target/evidence-driven incremental inference scheme using relevant reasoning used by Lazy/Shafer-Shenoy/Variable Elimination algorithms. Relevant reasoning leads to a major improvement of the inference (see http://www-desir.lip6.fr/~phw/aGrUM/officiel/notebooks/RelevanceReasoning.html).
 * pyAgrum
@@ -97,6 +126,7 @@
 * Installers using pip or anaconda.
 
 ## Changelog for 0.9.3
+
 Tag 0.9.3 has not been properly announced. Still, many changes in this release :
 
 * Many bug fixes and API glitch/improvement
@@ -118,6 +148,7 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
   * aGrUM/pyAgrum compilation on windows using Visual Studio 2015
 
 ## Changelog for 0.9.2
+
 * aGrUM
   * Improvements in Inference
     * old LazyPropagation renamed JunctionTreeInference,
@@ -139,6 +170,7 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
   * small bugs fixed and reorganisation
 
 ##Changelog for 0.9.1
+
 * aGrUM
   * Improvement in learning algorithms
   * learning from databases with fewer rows than there are processors
@@ -153,6 +185,7 @@ Tag 0.9.3 has not been properly announced. Still, many changes in this release :
   * bug fixes and other improvements
 
 ## Changelog for 0.9.0
+
 Aside from many bug fixes and general improvements such as performance optimizations in various areas, some changes are especially noteworthy:
 
 * Functionality : Structural and parameter learning for Bayesian networks

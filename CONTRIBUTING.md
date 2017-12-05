@@ -35,7 +35,7 @@ You can also write aGrUM's example or tutorials, both are direly needed.
 
 ### Contributing to aGrUM's Packaging and Distribution
 
-Packaging and distributing aGrUM or pyAgrum helps a lot by leting aGrUM users easily access updates. We currently have [conda](https://anaconda.org/conda-forge/pyagrum) and [pip](https://pypi.python.org/pypi/pyagrum/0.10.4.3) packaging for pyAgrum and packaging for [ArchLinux](https://aur.archlinux.org/packages/mingw-w64-agrum/). Please contact us if you plan to package aGrUM or pyAgrum. We will be happy to help/
+Packaging and distributing aGrUM or pyAgrum helps a lot by leting aGrUM users easily access updates. We currently have [conda](https://anaconda.org/conda-forge/pyagrum) and [pip](https://pypi.python.org/pypi/pyagrum/0.10.4.3) packaging for pyAgrum and packaging for [ArchLinux](https://aur.archlinux.org/packages/agrum/). Please contact us if you plan to package aGrUM or pyAgrum. We will be happy to help/
 
 ## How to contribute
 

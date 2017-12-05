@@ -144,7 +144,8 @@ namespace gum {
 
       for (Idx zyx = 0; zyx < ZXY_size; ++zyx) {
         if (Nzyx[zyx]) {
-          score -= Nzyx[zyx] / this->__N * log2(Nzyx[zyx] / this->__N);
+          //score -= Nzyx[zyx] / this->__N * log2(Nzyx[zyx] / this->__N);
+          score -= Nzyx[zyx] / this->__N * log(Nzyx[zyx] / this->__N);
         }
       }
 

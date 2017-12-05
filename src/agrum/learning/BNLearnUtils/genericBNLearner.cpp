@@ -789,6 +789,7 @@ namespace gum {
       if (__mutual_info == nullptr) {
         __mutual_info = new CorrectedMutualInformation<>(
           __score_database.rowFilter(), __score_database.modalities());
+        __mutual_info->useNML();
       }
       return __3off2.learnMixedStructure(*__mutual_info, mgraph);
     }

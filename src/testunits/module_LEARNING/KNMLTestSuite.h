@@ -31,7 +31,7 @@ namespace gum_tests {
 
   class KNMLTestSuite : public CxxTest::TestSuite {
     public:
-    void test() {
+    void test1() {
       gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
       gum::learning::DBRowTranslatorSet<
@@ -50,55 +50,21 @@ namespace gum_tests {
       std::vector< gum::Size > modalities = filter.modalities();
 
       gum::learning::KNML<> score(filter, modalities);
-      /* 3-4 K 2.6142422616165197
+      /* 3-4 K 2.6844818514806183
        * 2-6 K 4.1414644088786756
-       * 4-7|5 K 3.6019012803288695
+       * 4-7|5 K 3.763846399915938
        */
       gum::Idx id1 = score.addNodeSet(3, 4);
       gum::Idx id2 = score.addNodeSet(2, 6);
       gum::Idx id3 = score.addNodeSet(4, 7, std::vector< gum::Idx >{5});
-      TS_ASSERT_DELTA(score.score(id1), 2.6142, 1e-2);
+      TS_ASSERT_DELTA(score.score(id1), 2.68448, 1e-2);
       TS_ASSERT_DELTA(score.score(id2), 4.1414, 1e-2);
-      TS_ASSERT_DELTA(score.score(id3), 3.6019, 1e-2);
+      TS_ASSERT_DELTA(score.score(id3), 3.76384, 1e-2);
 
       score.clear();
       id1 = score.addNodeSet(6, 7, std::vector< gum::Idx >{5, 1, 4});
       id2 = score.addNodeSet(6, 7, std::vector< gum::Idx >{1, 4});
       TS_ASSERT_DELTA(score.score(id1) - score.score(id2), 0.0, 1e-2);
-      /*
-            score.clear();
-            id1 = score.addNodeSet( 0, 2 );
-            id2 = score.addNodeSet( 2, 0 );
-            TS_ASSERT( fabs( score.score( id1 ) - 227.09 ) <= 0.01 );
-            TS_ASSERT( fabs( score.score( id2 ) - 227.09 ) <= 0.01 );
-
-            score.clear();
-            id1 = score.addNodeSet( 1, 3, std::vector<gum::Idx>{4} );
-            id2 = score.addNodeSet( 0, 2, std::vector<gum::Idx>{4} );
-            TS_ASSERT( fabs( score.score( id1 ) + 0.648 ) <= 0.01 );
-            TS_ASSERT( fabs( score.score( id2 ) - 145.376 ) <= 0.01 );
-
-            score.clear();
-            id1 = score.addNodeSet( 3, 6, std::vector<gum::Idx>{1, 2} );
-            TS_ASSERT( fabs( score.score( id1 ) + 0.692 ) <= 0.01 );
-
-            gum::Idx id3, id4, id5, id6, id7;
-            score.clear();
-            id1 = score.addNodeSet( 0, 1 );
-            id2 = score.addNodeSet( 1, 3 );
-            id3 = score.addNodeSet( 3, 6, std::vector<gum::Idx>{1, 2} );
-            id4 = score.addNodeSet( 2, 0 );
-            id5 = score.addNodeSet( 3, 1, std::vector<gum::Idx>{4} );
-            id6 = score.addNodeSet( 2, 0 );
-            id7 = score.addNodeSet( 1, 3, std::vector<gum::Idx>{4} );
-            TS_ASSERT( fabs( score.score( id1 ) - 104.865 ) <= 0.01 );
-            TS_ASSERT( fabs( score.score( id2 ) + 0.389 ) <= 0.01 );
-            TS_ASSERT( fabs( score.score( id3 ) + 0.692 ) <= 0.01 );
-            TS_ASSERT( fabs( score.score( id4 ) - 227.09 ) <= 0.01 );
-            TS_ASSERT( fabs( score.score( id5 ) + 0.648 ) <= 0.01 );
-            TS_ASSERT( fabs( score.score( id6 ) - 227.09 ) <= 0.01 );
-            TS_ASSERT( fabs( score.score( id7 ) + 0.648 ) <= 0.01 );
-            */
     }
   };
 

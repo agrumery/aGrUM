@@ -125,7 +125,7 @@ namespace gum {
        * @param graph the MixedGraph we start from for our learning
        * */
       MixedGraph learnMixedStructure(CorrectedMutualInformation<>& I,
-                                     MixedGraph graph);  //= MixedGraph() ?
+                                     MixedGraph graph);
 
       /// learns the structure of an Bayesian network, ie a DAG, from an Essential
       /// graph.
@@ -177,11 +177,48 @@ namespace gum {
       /// @}
 
       protected:
-      /*
-      MixedGraph initiation( MixedGraph graph );
-      MixedGraph iteration( MixedGraph graph);
-      MixedGraph orientation( MixedGraph graph );
-      */
+      // ##########################################################################
+      /// @name Main phases 
+      // ##########################################################################
+      /// @{
+      
+      /// Initiation phase
+      /**
+       * We go over all edges and test if the variables are independent. If they
+       * are,
+       * the edge is deleted. If not, the best contributor is found.
+       */
+      void _initiation(
+        CorrectedMutualInformation<>&                           I, 
+        MixedGraph&                                             graph, 
+        HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
+        Heap< 
+          std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
+          GreaterPairOn2nd >& _rank);
+      
+      /// Iteration phase
+      /**
+       * As long as we find important nodes for edges, we go over them to see if
+       * we can assess the independence of the variables.
+       */
+      void _iteration(
+        CorrectedMutualInformation<>&                           I, 
+        MixedGraph&                                             graph, 
+        HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
+        Heap< 
+          std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
+          GreaterPairOn2nd >& _rank);
+      
+      /// Orientation phase
+      void _orientation(
+        CorrectedMutualInformation<>&                                 I, 
+        MixedGraph&                                                   graph, 
+        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
+        Heap< 
+          std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
+          GreaterPairOn2nd >& _rank);
+      /// @}
+      
       /// finds the best contributor node for a pair given a conditioning set
       /**@param x first node
        * @param y second node
@@ -216,10 +253,10 @@ namespace gum {
        */
       void _propagatesHead(MixedGraph& graph, NodeId node);
 
-      /// Fixes the maximum log that we accept in exponential computations
-      int __maxLog = 100;
 
       private:
+      /// Fixes the maximum log that we accept in exponential computations
+      int __maxLog = 100;
       /// an empty conditioning set
       const std::vector< Idx > __empty_set;
       /// an empty vector of arcs

@@ -76,7 +76,7 @@ namespace gum_tests {
         }
       }
       graph = search.learnMixedStructure(I, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(6));
+      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(0));
     }
 
     void test_3off2_asia_MDLcorr() {
@@ -112,8 +112,8 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(2));
-      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(7));
+      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(5));
+      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(3));
     }
 
     void test_3off2_asia_NMLcorr() {

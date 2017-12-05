@@ -15,7 +15,7 @@
  *   You should have received a copy of the GNU General Public License     *
  *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   59 Temple Place, Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -51,12 +51,12 @@ namespace gum_tests {
 
       gum::learning::PartialEntropy<> score(filter, modalities);
       /*
-       * H de [3, 4] vaut 0.1941536767067103
-           * H de [4, 0] vaut 1.0961635890107093
-           * H de [1, 2, 5, 6] vaut 1.9712290949273594
-           * H1 de [3] vaut 0.0988305218931441
-           * H de [0, 1, 4, 6] vaut 2.2968805077576997
-           * H de [0, 1, 4, 6, 7] vaut 2.575690824789043
+       * H de [3, 4] vaut 0.13457707360460336
+           * H de [4, 0] vaut 0.759802701155244
+           * H de [1, 2, 5, 6] vaut 1.366351889386632
+           * H1 de [3] vaut 0.06850409760350079
+           * H de [0, 1, 4, 6] vaut 1.5920762480353452
+           * H de [0, 1, 4, 6, 7] vaut 1.785332833196645
        */
       gum::Idx id1 = score.addNodeSet(3);
       gum::Idx id2 = score.addNodeSet(std::vector< gum::Idx >{1, 2, 5, 6});
@@ -64,17 +64,17 @@ namespace gum_tests {
       gum::Idx id4 = score.addNodeSet(3, 4);
       gum::Idx id5 = score.addNodeSet(std::vector< gum::Idx >{3});
 
-      TS_ASSERT(fabs(score.score(id1) - 0.098) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) - 1.971) <= 0.01);
-      TS_ASSERT(fabs(score.score(id3) - 0.194) <= 0.01);
-      TS_ASSERT(fabs(score.score(id4) - 0.194) <= 0.01);
-      TS_ASSERT(fabs(score.score(id5) - 0.098) <= 0.01);
+      TS_ASSERT_DELTA(score.score(id1), 0.0685, 0.01);
+      TS_ASSERT_DELTA(score.score(id2), 1.366, 0.01);
+      TS_ASSERT_DELTA(score.score(id3), 0.134, 0.01);
+      TS_ASSERT_DELTA(score.score(id4), 0.134, 0.01);
+      TS_ASSERT_DELTA(score.score(id5), 0.0685, 0.01);
 
       score.clear();
       id1 = score.addNodeSet(3, 4);
       id2 = score.addNodeSet(4, 3);
-      TS_ASSERT(fabs(score.score(id1) - 0.194) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) - 0.194) <= 0.01);
+      TS_ASSERT_DELTA(score.score(id1), 0.134, 0.01);
+      TS_ASSERT_DELTA(score.score(id2), 0.134, 0.01);
 
       score.clear();
       id1 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 0, 6});
@@ -82,21 +82,21 @@ namespace gum_tests {
       id3 = score.addNodeSet(std::vector< gum::Idx >{0, 1, 4, 6});
       id4 = score.addNodeSet(std::vector< gum::Idx >{4, 6, 0, 1});
       id5 = score.addNodeSet(std::vector< gum::Idx >{6, 0, 4, 1});
-      TS_ASSERT(fabs(score.score(id1) - 2.2968) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) - 2.2968) <= 0.01);
-      TS_ASSERT(fabs(score.score(id3) - 2.2968) <= 0.01);
-      TS_ASSERT(fabs(score.score(id4) - 2.2968) <= 0.01);
-      TS_ASSERT(fabs(score.score(id5) - 2.2968) <= 0.01);
+      TS_ASSERT_DELTA(score.score(id1), 1.592, 0.01);
+      TS_ASSERT_DELTA(score.score(id2), 1.592, 0.01);
+      TS_ASSERT_DELTA(score.score(id3), 1.592, 0.01);
+      TS_ASSERT_DELTA(score.score(id4), 1.592, 0.01);
+      TS_ASSERT_DELTA(score.score(id5), 1.592, 0.01);
 
       score.clear();
       id1 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 0, 6, 5});
       id2 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 6, 0, 5});
       id3 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 0, 5, 6});
       id4 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 6, 5, 0});
-      TS_ASSERT(fabs(score.score(id1) - 2.2968) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) - 2.2968) <= 0.01);
-      TS_ASSERT(fabs(score.score(id3) - 2.2968) <= 0.01);
-      TS_ASSERT(fabs(score.score(id4) - 2.2968) <= 0.01);
+      TS_ASSERT_DELTA(score.score(id1), 1.592, 0.01);
+      TS_ASSERT_DELTA(score.score(id2), 1.592, 0.01);
+      TS_ASSERT_DELTA(score.score(id3), 1.592, 0.01);
+      TS_ASSERT_DELTA(score.score(id4), 1.592, 0.01);
 
       score.clear();
       id1 = score.addNodeSet(std::vector< gum::Idx >{1, 4, 0, 6, 7});
@@ -104,40 +104,12 @@ namespace gum_tests {
       id3 = score.addNodeSet(std::vector< gum::Idx >{7, 0, 1, 4, 6});
       id4 = score.addNodeSet(std::vector< gum::Idx >{4, 6, 7, 0, 1});
       id5 = score.addNodeSet(std::vector< gum::Idx >{6, 7, 0, 4, 1});
-      TS_ASSERT(fabs(score.score(id1) - 2.575) <= 0.01);
-      TS_ASSERT(fabs(score.score(id2) - 2.575) <= 0.01);
-      TS_ASSERT(fabs(score.score(id3) - 2.575) <= 0.01);
-      TS_ASSERT(fabs(score.score(id4) - 2.575) <= 0.01);
-      TS_ASSERT(fabs(score.score(id5) - 2.575) <= 0.01);
+      TS_ASSERT_DELTA(score.score(id1), 1.785, 0.01);
+      TS_ASSERT_DELTA(score.score(id2), 1.785, 0.01);
+      TS_ASSERT_DELTA(score.score(id3), 1.785, 0.01);
+      TS_ASSERT_DELTA(score.score(id4), 1.785, 0.01);
+      TS_ASSERT_DELTA(score.score(id5), 1.785, 0.01);
 
-      /*
-      score.clear();
-      id1 = score.addNodeSet( 1, 3, std::vector<gum::Idx>{4} );
-      id2 = score.addNodeSet( 0, 2, std::vector<gum::Idx>{4} );
-      TS_ASSERT( fabs( score.score( id1 ) + 0.648 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) - 145.376 ) <= 0.01 );
-
-      score.clear();
-      id1 = score.addNodeSet( 3, 6, std::vector<gum::Idx>{1, 2} );
-      TS_ASSERT( fabs( score.score( id1 ) + 0.692 ) <= 0.01 );
-
-      gum::Idx id3, id4, id5, id6, id7;
-      score.clear();
-      id1 = score.addNodeSet( 0, 1 );
-      id2 = score.addNodeSet( 1, 3 );
-      id3 = score.addNodeSet( 3, 6, std::vector<gum::Idx>{1, 2} );
-      id4 = score.addNodeSet( 2, 0 );
-      id5 = score.addNodeSet( 3, 1, std::vector<gum::Idx>{4} );
-      id6 = score.addNodeSet( 2, 0 );
-      id7 = score.addNodeSet( 1, 3, std::vector<gum::Idx>{4} );
-      TS_ASSERT( fabs( score.score( id1 ) - 104.865 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id2 ) + 0.389 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id3 ) + 0.692 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id4 ) - 227.09 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id5 ) + 0.648 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id6 ) - 227.09 ) <= 0.01 );
-      TS_ASSERT( fabs( score.score( id7 ) + 0.648 ) <= 0.01 );
-      */
     }
   };
 
