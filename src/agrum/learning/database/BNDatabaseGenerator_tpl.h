@@ -58,7 +58,7 @@ namespace gum {
 
     /// draw instances from __bn
     template < typename GUM_SCALAR >
-    void BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size nbSamples) {
+    double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size nbSamples) {
 
       __database.clear();
       __database.resize(nbSamples);
@@ -102,6 +102,11 @@ namespace gum {
       }
 
       __drawnSamples = true;
+      __log2likelihood = 0;
+      for (const auto& inst : instantiations) {
+        __log2likelihood += __bn.log2JointProbability(inst);
+      }
+      return __log2likelihood;
     }
 
     /// generates database, and writes csv file
@@ -325,6 +330,15 @@ namespace gum {
       }
 
       return varNames;
+    }
+
+    /// returns log2Likelihood of generated samples
+    template < typename GUM_SCALAR >
+    double BNDatabaseGenerator< GUM_SCALAR >::log2likelihood() const {
+      if (!__drawnSamples) {
+        GUM_ERROR(OperationNotAllowed, "drawSamples() must be called first.");
+      }
+      return __log2likelihood;
     }
 
     /// returns varOrder from a csv file

@@ -88,8 +88,8 @@ namespace gum {
       /// @{
 
 
-      /// generate and stock database
-      void drawSamples(Size nbSamples);  // drawSamples
+      /// generate and stock database, returns log2likelihood
+      double drawSamples(Size nbSamples);  // drawSamples
 
       /// generates csv database according to bn
       void toCSV(const std::string& csvFileURL,
@@ -130,6 +130,9 @@ namespace gum {
       /// returns variable order.
       std::vector< std::string > varOrderNames() const;
 
+      /// returns log2Likelihood of generated samples
+      double log2likelihood() const;
+
       /// @}
 
       private:
@@ -150,6 +153,9 @@ namespace gum {
 
       /// whether drawSamples has been already called.
       bool __drawnSamples = false;
+
+      /// log2Likelihood of generated samples
+      double __log2likelihood = 0;
 
       /// returns varOrder from a csv file
       std::vector< Idx >
