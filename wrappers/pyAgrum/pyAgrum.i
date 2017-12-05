@@ -42,6 +42,7 @@ interface generator."
 //////////////////////////////////////////////////////////////////
 %include "core.i"
 %include "variables.i"
+%include "instantiation.i"
 
 %include "potential.i"
 %include "utility.i"
