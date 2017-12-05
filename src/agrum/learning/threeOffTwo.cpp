@@ -258,6 +258,7 @@ namespace gum {
           
       // std::cout << "ORIENTATION" << std::endl;
 
+      std::vector< Arc > arc_list;
       std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > > triples =
         _getUnshieldedTriples(graph, I, sep_set);
       /*std::cout << "Triples found" << std::endl;*/
@@ -300,9 +301,16 @@ namespace gum {
               } else{
               	i=0;
                 graph.eraseEdge( Edge( x, z ) );
-             	graph.addArc( x, z );
                 graph.eraseEdge( Edge( y, z ) );
-             	graph.addArc( y, z );
+                //checking for cycles
+                if (!graph.existsArc( x, z ) ){
+                  arc_list.push_back( Arc( x, z ) );
+             	  graph.addArc( x, z );
+                }
+                if (!graph.existsArc( y, z ) ){
+                  arc_list.push_back( Arc( y, z ) );
+             	  graph.addArc( y, z );
+                }
             	if ( graph.existsArc( z, x ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, x )) == __latent_couples.end()
             								 && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( x, z )) == __latent_couples.end() ){
             	  __latent_couples.push_back( Arc( z, x ) );
@@ -320,23 +328,29 @@ namespace gum {
               	    if ( graph.existsArc( x, z ) && !graph.existsArc( z, y ) ){
                 	  i=0;
                       graph.eraseEdge( Edge( z, y ) );
-                   	  graph.addArc( z, y );
+                      if (!graph.existsArc( z, y ) ){
+                        arc_list.push_back( Arc( z, y ) );
+                        graph.addArc( z, y );
+                      }
                       /*std::cout << "Rule 1 " << std::endl;*/
-                  	  if ( graph.existsArc( y, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, y )) == __latent_couples.end()
+                      if ( graph.existsArc( y, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, y )) == __latent_couples.end()
                   								   && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( y, z )) == __latent_couples.end() ){
-                  	    __latent_couples.push_back( Arc( y, z ) );
-                  	  }
+                        __latent_couples.push_back( Arc( y, z ) );
+                      }
               	    }
               	    if ( graph.existsArc( y, z ) && !graph.existsArc( z, x )  ){
                 	  i=0;
                    	  /*std::cout << "Rule 1 " << std::endl;*/
                       graph.eraseEdge( Edge( z, x ) );
-                   	  graph.addArc( z, x );
+                      if (!graph.existsArc( z, x ) ){
+                        arc_list.push_back( Arc( z, x ) );
+                        graph.addArc( z, x );
+                      }
                       /*std::cout << "Rule 1 " << std::endl;*/
-                  	  if ( graph.existsArc( x, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, x )) == __latent_couples.end()
+                      if ( graph.existsArc( x, z ) && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( z, x )) == __latent_couples.end()
                   								   && std::find(__latent_couples.begin(), __latent_couples.end(), Arc( x, z )) == __latent_couples.end() ){
-                  	    __latent_couples.push_back( Arc( x, z ) );
-                  	  }
+                        __latent_couples.push_back( Arc( x, z ) );
+                      }
               	    }
         	    } else {
                 ++i;
@@ -357,6 +371,25 @@ namespace gum {
     	graph.eraseArc( Arc( arc.head(), arc.tail() ) );
       }
       
+      //checking for cycles
+      for ( auto iter = arc_list.rbegin(); iter != arc_list.rend(); ++iter ){
+        Arc arc = *iter;
+        try{
+            std::vector<NodeId> path = graph.directedPath( arc.head(), 
+                                                           arc.tail() );
+            //if we find a cycle, and there is no bigger cycle, 
+            //we force the competing edge
+            try{
+                std::vector<NodeId> path = graph.directedPath( arc.head(), 
+                                                               arc.tail() );
+            } catch ( gum::NotFound ){
+                graph.eraseArc( arc );
+                graph.addArc( arc.head(), arc.tail() );
+            }
+        } catch ( gum::NotFound ){
+        }
+
+      }
     }
 
     /// finds the best contributor node for a pair given a conditioning set
