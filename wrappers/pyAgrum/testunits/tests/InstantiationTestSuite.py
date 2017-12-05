@@ -16,14 +16,11 @@ class TestInstantiation(pyAgrumTestCase):
     i['e']=i["c"]
     self.assertEqual(str(i),"<a:0|b:0|c:1|d:0|e:1>")
 
-    with self.assertRaises(gum.OutOfBound):
+    with self.assertRaises(gum.OutOfBounds):
       i['e']=1000
 
     with self.assertRaises(IndexError):
       i['z']=0
-
-    with self.assertRaises(gum.OutOfBound):
-      i['e']=1
 
 ts = unittest.TestSuite()
 addTests(ts, TestInstantiation)

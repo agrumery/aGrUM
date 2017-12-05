@@ -6711,7 +6711,7 @@ class Instantiation(_object):
 
 
     def __setitem__(self,key,item): self.chgVal(self.variable(key),item)
-    def __getitem__(self,key): self.val(self.variable(key))
+    def __getitem__(self,key): return self.val(self.variable(key))
 
 Instantiation_swigregister = _pyAgrum.Instantiation_swigregister
 Instantiation_swigregister(Instantiation)
