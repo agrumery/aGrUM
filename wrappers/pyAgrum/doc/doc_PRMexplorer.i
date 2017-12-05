@@ -1,3 +1,11 @@
+%feature("docstring") PRMexplorer
+"
+PRMexplorer helps navigate through probabilistic relational models.
+
+Available constructors:
+	``JTGenerator() -> JTGenerator``
+"
+
 %feature("docstring") PRMexplorer::classAggregates
 "
 Parameters

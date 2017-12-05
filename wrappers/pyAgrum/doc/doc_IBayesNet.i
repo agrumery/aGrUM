@@ -160,3 +160,22 @@ Returns
 list
 	The names of the graph variables
 "
+
+%feature("docstring") gum::IBayesNet::minimalCondSet
+"
+Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
+
+Parameters
+----------
+target : int
+	The id of the target
+targets : list
+	The ids of the targets
+list : list
+	The list of available variables
+
+Returns
+-------
+Set
+	The minimal set of variables
+"

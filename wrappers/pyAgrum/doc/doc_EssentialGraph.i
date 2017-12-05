@@ -9,7 +9,6 @@ Parameters
 ----------
 src : pyAgrum.DAGmodel
   a DAGmodel
-
 "
 
 %feature("docstring") gum::EssentialGraph::arcs

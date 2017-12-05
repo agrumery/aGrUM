@@ -89,10 +89,26 @@ Indicate that we wish to use the MDL correction for 3off2
 Indicate that we wish to use the NoCorr correction for 3off2
 "
 
-%feature("docstring") gum::learning::learnMixedStructure
+%feature("docstring") gum::learning::BNLearner::learnMixedStructure
 "
+Warnings
+--------
+learner must be using 3off2 algorithm
+
 Returns
 -------
 pyAgrum.MixedGraph
-  the learned mixed structure
+	the learned mixed structure
+"
+
+%feature("docstring") gum::learning::BNLearner::latentVariables
+"
+Warnings
+--------
+learner must be using 3off2 algorithm
+
+Returns
+-------
+list
+	the list of latent variables
 "

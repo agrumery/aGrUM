@@ -1,3 +1,8 @@
+%feature("docstring") gum::Variable
+"
+Abstract class used by DiscreteVariable.
+"
+
 %feature("docstring") gum::Variable::description
 "
 Returns

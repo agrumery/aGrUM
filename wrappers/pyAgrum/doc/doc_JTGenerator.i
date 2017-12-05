@@ -1,3 +1,11 @@
+%feature("docstring") JTGenerator
+"
+JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+
+Available constructors:
+	``JTGenerator() -> JTGenerator``
+"
+
 %feature("docstring") JTGenerator::junctionTree
 "
 Parameters

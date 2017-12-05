@@ -1,5 +1,7 @@
 %feature("docstring") BNGenerator
 "
+BNGenerator is used to easily generate Bayesian networks.
+
 Available constructors:
 
     ``BNGenerator() -> BNGenerator``

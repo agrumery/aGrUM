@@ -29,6 +29,15 @@ Returns
 pyAgrum.Instantiation
 	An empty tuple or a copy of the one in parameters
 
+Instantiation is subscriptable therefore values can be easily accessed/modified.
+
+Examples
+--------
+>>> ## Access the value of A in an instantiation i 
+>>> valueOfA = i['A']
+>>> ## Modify the value
+>>> i['A'] = newValueOfA
+
 "
 
 %feature("docstring") gum::Instantiation::add
@@ -54,10 +63,10 @@ Parameters
 ----------
 v : pyAgrum.DiscreteVariable
   The variable whose value is assigned
-newval : pyAgrum.DiscreteVariable
-  The index of the value assigned
 varPos : int
   The index of the variable whose value is assigned in the tuple of variables of the Instantiation
+newval : pyAgrum.DiscreteVariable
+  The index of the value assigned
 
 Returns
 -------
@@ -115,7 +124,7 @@ Operator -- for vars which are not v.
 Parameters
 ----------
 v : pyAgrum.DiscreteVariable
-  The varaible not to decrement in this Instantiation.
+  The variable not to decrement in this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::decOut

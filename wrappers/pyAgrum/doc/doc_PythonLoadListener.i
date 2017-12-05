@@ -1,0 +1,4 @@
+%feature("docstring") PythonLoadListener::setPythonListener
+"
+
+"

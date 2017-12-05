@@ -1,5 +1,7 @@
 %feature("docstring") IDGenerator
 "
+IDGenerator is used to easily generate influence diagrams.
+
 Available constructors:
 
     ``IDGenerator() -> IDGenerator``

@@ -1,3 +1,8 @@
+%feature("docstring") gum::DAGmodel
+"
+Abstract class used by IBayesNet and InfluenceDiagram.
+"
+
 %feature("docstring") gum::DAGmodel::log10DomainSize
 "
 Returns

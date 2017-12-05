@@ -52,9 +52,9 @@ class CSVGenerator:
     self._probas = {}
 
   @staticmethod
-  def _draw(tab):
+  def draw(tab):
     """
-    _draw a value using tab as probability table.
+    draw a value using tab as probability table.
 
     Parameters
     ----------
@@ -79,7 +79,7 @@ class CSVGenerator:
     return (res, tab[res])
 
   @staticmethod
-  def _nameAndParents(bn, n):
+  def nameAndParents(bn, n):
     """
     Compute a list of parents for node n in BN bn.
 
@@ -107,7 +107,7 @@ class CSVGenerator:
     # l is the list of var names
     return node, l  # map(bn.idFromName,l)
 
-  def _caching_nameAndParents(self, bn, n):
+  def cachingnameAndParents(self, bn, n):
     """
     Compute a list of parents for node n in BN bn.
 
@@ -127,10 +127,10 @@ class CSVGenerator:
 
     """
     if not n in self._parents:
-      self._parents[n] = CSVGenerator._nameAndParents(bn, n)
+      self._parents[n] = CSVGenerator.nameAndParents(bn, n)
     return self._parents[n]
 
-  def _caching_probas(self, bn, node_id, n, par):
+  def caching_probas(self, bn, node_id, n, par):
     """
     Parameters
     ----------
@@ -164,7 +164,7 @@ class CSVGenerator:
 
     return current['p']
 
-  def _newSample(self, bn, seq):
+  def newSample(self, bn, seq):
     """
     Generate a sample w.r.t to the bn using the variable sequence seq (topological order)
 
@@ -184,13 +184,13 @@ class CSVGenerator:
     self._sample = {}
     LL = 0
     for node_id in seq:
-      (nod, par) = self._caching_nameAndParents(bn, node_id)
-      (self._sample[nod], p) = CSVGenerator._draw(self._caching_probas(bn, node_id, nod, par))
+      (nod, par) = self.cachingnameAndParents(bn, node_id)
+      (self._sample[nod], p) = CSVGenerator.draw(self.caching_probas(bn, node_id, nod, par))
       LL += math.log(p, 2)
 
     return (self._sample, LL)
 
-  def _proceed(self, name_in, name_out, n, visible, with_labels):
+  def proceed(self, name_in, name_out, n, visible, with_labels):
     """
     From the file name_in (BN file), generate n samples and save them in name_out
 
@@ -279,7 +279,7 @@ def generateCSV(name_in, name_out, n, visible=False, with_labels=True):
 
   """
   g = CSVGenerator()
-  return g._proceed(name_in, name_out, n, visible, with_labels)
+  return g.proceed(name_in, name_out, n, visible, with_labels)
 
 
 def module_help(exit_value=1):
