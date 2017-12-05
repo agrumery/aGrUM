@@ -200,7 +200,8 @@ IndexError if the graph does not contain the variable
 
 %feature("docstring") gum::DAGmodel::variableNodeMap
 "
-Warnings
---------
-A Faire
+Returns
+-------
+pyAgrum.variableNodeMap
+	the variable node map
 "

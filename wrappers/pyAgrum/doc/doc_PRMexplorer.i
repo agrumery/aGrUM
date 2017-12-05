@@ -448,3 +448,8 @@ Returns
 list
 	the list of the custom types in the PRM 
 "
+
+%feature("docstring") PRMexplorer::aggType
+"
+min/max/count/exists/forall/or/and/amplitude/median
+"

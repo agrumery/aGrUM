@@ -33,11 +33,10 @@ Instantiation is subscriptable therefore values can be easily accessed/modified.
 
 Examples
 --------
->>> ## Access the value of A in an instantiation i 
->>> valueOfA = i['A']
+>>> ## Access the value of A in an instantiation aI 
+>>> valueOfA = aI['A']
 >>> ## Modify the value
->>> i['A'] = newValueOfA
-
+>>> aI['A'] = newValueOfA
 "
 
 %feature("docstring") gum::Instantiation::add

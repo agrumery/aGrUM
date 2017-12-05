@@ -432,10 +432,6 @@ str
 
 %feature("docstring") gum::InfluenceDiagram::utility
 "
-Warnings
---------
-Return type to be wrapped
-
 Parameters
 ----------
 varId : int 
@@ -443,7 +439,7 @@ varId : int
 
 Returns
 -------
-tbw
+pyAgrum.UtilityTable
 	the utility table of the node
 
 Warnings

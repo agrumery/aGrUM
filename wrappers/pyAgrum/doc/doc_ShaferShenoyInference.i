@@ -1,5 +1,7 @@
 %feature("docstring") gum::ShaferShenoyInference
 "
+Class used for Shafer-Shenoy inferences.
+
 Available constructors:
 	``ShaferShenoyInference(bn) -> ShaferShenoyInference``
 

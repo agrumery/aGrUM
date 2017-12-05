@@ -7,24 +7,10 @@ Available constructors:
 
     ``CliqueGraph(src) -> CliqueGraph``
 
-    ``CliqueGraph(nodes_size) -> CliqueGraph``
-
-    ``CliqueGraph(nodes_size, nodes_resize_policy) -> CliqueGraph``
-
-    ``CliqueGraph(nodes_size, nodes_resize_policy, edges_size) -> CliqueGraph``
-
-    ``CliqueGraph(nodes_size, nodes_resize_policy, edges_size, edges_size_policy) -> CliqueGraph``
-
 Parameters
 ----------
 src : pyAgrum.CliqueGraph
   the CliqueGraph to copy
-nodes_size : int
-  the number of nodes
-nodes_resize_policy : bool
-edges_size : int
-  the number of edges
-edges_size_policy : bool
 "
 
 %feature("docstring") gum::CliqueGraph::addToClique

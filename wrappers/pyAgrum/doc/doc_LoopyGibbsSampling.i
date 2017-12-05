@@ -1,5 +1,7 @@
-%feature("docstring") gum::LoopyGibbsSampling
+%feature("docstring") gum::LoopySamplingInference<double,gum::GibbsSampling>
 "
+Class used for inferences using a loopy version of Gibbs sampling.
+
 Available constructors:
 	``LoopyGibbsSampling(bn) -> LoopyGibbsSampling``
 

@@ -1,5 +1,7 @@
 %feature("docstring") gum::VariableElimination
 "
+Class used for Variable Elimination inference algorithm.
+
 Available constructors:
 	``VariableElimination(bn) -> VariableElimination``
 

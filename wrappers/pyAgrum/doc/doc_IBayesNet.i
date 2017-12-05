@@ -1,3 +1,8 @@
+%feature("docstring") gum::IBayesNet
+"
+Abstract class used by BayesNet.
+"
+
 %feature("docstring") gum::IBayesNet::dim
 "
 Returns the dimension (the number of free parameters) in this BayesNet.

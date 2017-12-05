@@ -1,5 +1,7 @@
-%feature("docstring") gum::LoopyImportanceSampling
+%feature("docstring") gum::LoopySamplingInference<double,gum::ImportanceSampling>
 "
+Class used for inferences using a loopy version of importance sampling.
+
 Available constructors:
 	``LoopyImportanceSampling(bn) -> LoopyImportanceSampling``
 

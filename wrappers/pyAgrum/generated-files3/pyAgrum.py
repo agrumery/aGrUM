@@ -5625,24 +5625,10 @@ class CliqueGraph(UndiGraph):
 
         ``CliqueGraph(src) -> CliqueGraph``
 
-        ``CliqueGraph(nodes_size) -> CliqueGraph``
-
-        ``CliqueGraph(nodes_size, nodes_resize_policy) -> CliqueGraph``
-
-        ``CliqueGraph(nodes_size, nodes_resize_policy, edges_size) -> CliqueGraph``
-
-        ``CliqueGraph(nodes_size, nodes_resize_policy, edges_size, edges_size_policy) -> CliqueGraph``
-
     Parameters
     ----------
     src : pyAgrum.CliqueGraph
       the CliqueGraph to copy
-    nodes_size : int
-      the number of nodes
-    nodes_resize_policy : bool
-    edges_size : int
-      the number of edges
-    edges_size_policy : bool
 
     """
 
@@ -6026,11 +6012,10 @@ class Instantiation(_object):
 
     Examples
     --------
-    >>> ## Access the value of A in an instantiation i 
-    >>> valueOfA = i['A']
+    >>> ## Access the value of A in an instantiation aI 
+    >>> valueOfA = aI['A']
     >>> ## Modify the value
-    >>> i['A'] = newValueOfA
-
+    >>> aI['A'] = newValueOfA
 
     """
 
@@ -6821,9 +6806,10 @@ class DAGmodel(_object):
         variableNodeMap(self) -> VariableNodeMap
 
 
-        Warnings
-        --------
-        A Faire
+        Returns
+        -------
+        pyAgrum.variableNodeMap
+        	the variable node map
 
         """
         return _pyAgrum.DAGmodel_variableNodeMap(self)
@@ -7539,7 +7525,20 @@ StructuralComparator_swigregister = _pyAgrum.StructuralComparator_swigregister
 StructuralComparator_swigregister(StructuralComparator)
 
 class ApproximationScheme(_object):
-    """Proxy of C++ gum::ApproximationScheme class."""
+    """
+
+    Used to parametrize stopping criteria in approximate inference or learning algorithm.
+
+    Available constructors:
+    	``ApproximationScheme() -> ApproximationScheme``
+
+    	``ApproximationScheme(v) -> ApproximationScheme``
+
+    Parameters
+    ----------
+    v : bool
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, ApproximationScheme, name, value)
@@ -9807,7 +9806,11 @@ UtilityTable_double_swigregister = _pyAgrum.UtilityTable_double_swigregister
 UtilityTable_double_swigregister(UtilityTable_double)
 
 class IBayesNet_double(DAGmodel):
-    """Proxy of C++ gum::IBayesNet<(double)> class."""
+    """
+
+    Abstract class used by BayesNet.
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [DAGmodel]:
@@ -9856,9 +9859,10 @@ class IBayesNet_double(DAGmodel):
         variableNodeMap(self) -> VariableNodeMap
 
 
-        Warnings
-        --------
-        A Faire
+        Returns
+        -------
+        pyAgrum.variableNodeMap
+        	the variable node map
 
         """
         return _pyAgrum.IBayesNet_double_variableNodeMap(self)
@@ -10341,9 +10345,10 @@ class BayesNet_double(IBayesNet_double):
         variableNodeMap(self) -> VariableNodeMap
 
 
-        Warnings
-        --------
-        A Faire
+        Returns
+        -------
+        pyAgrum.variableNodeMap
+        	the variable node map
 
         """
         return _pyAgrum.BayesNet_double_variableNodeMap(self)
@@ -11741,6 +11746,8 @@ BayesNetInference_double_swigregister(BayesNetInference_double)
 class LazyPropagation_double(_object):
     """
 
+    Class used for Lazy Propagation
+
     Available constructors:
     	``LazyPropagation(bn) -> LazyPropagation``
 
@@ -12711,6 +12718,8 @@ LazyPropagation_double_swigregister(LazyPropagation_double)
 class ShaferShenoyInference_double(_object):
     """
 
+    Class used for Shafer-Shenoy inferences.
+
     Available constructors:
     	``ShaferShenoyInference(bn) -> ShaferShenoyInference``
 
@@ -13653,6 +13662,8 @@ ShaferShenoyInference_double_swigregister(ShaferShenoyInference_double)
 class VariableElimination_double(_object):
     """
 
+    Class used for Variable Elimination inference algorithm.
+
     Available constructors:
     	``VariableElimination(bn) -> VariableElimination``
 
@@ -14485,6 +14496,8 @@ VariableElimination_double_swigregister(VariableElimination_double)
 
 class GibbsSampling_double(_object):
     """
+
+    Class used for Gibbs sampling inference algorithm.
 
     Available constructors:
     	``GibbsSampling(bn) -> GibbsSampling``
@@ -15507,6 +15520,8 @@ GibbsSampling_double_swigregister(GibbsSampling_double)
 class ImportanceSampling_double(_object):
     """
 
+    Class used for inferences using the Importance Sampling algorithm.
+
     Available constructors:
     	``ImportanceSampling(bn) -> ImportanceSampling``
 
@@ -16443,6 +16458,8 @@ ImportanceSampling_double_swigregister(ImportanceSampling_double)
 
 class WeightedSampling_double(_object):
     """
+
+    Class used for Weighted sampling inference algorithm.
 
     Available constructors:
     	``WeightedSampling(bn) -> WeightedSampling``
@@ -17381,6 +17398,8 @@ WeightedSampling_double_swigregister(WeightedSampling_double)
 class MonteCarloSampling_double(_object):
     """
 
+    Class used for Monte Carlo sampling inference algorithm.
+
     Available constructors:
     	``MonteCarloSampling(bn) -> MonteCarloSampling``
 
@@ -18316,7 +18335,19 @@ MonteCarloSampling_double_swigregister = _pyAgrum.MonteCarloSampling_double_swig
 MonteCarloSampling_double_swigregister(MonteCarloSampling_double)
 
 class LoopyImportanceSampling_double(_object):
-    """Proxy of C++ gum::LoopySamplingInference<(double,gum::ImportanceSampling)> class."""
+    """
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    Available constructors:
+    	``LoopyImportanceSampling(bn) -> LoopyImportanceSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyImportanceSampling_double, name, value)
@@ -19261,7 +19292,19 @@ LoopyImportanceSampling_double_swigregister = _pyAgrum.LoopyImportanceSampling_d
 LoopyImportanceSampling_double_swigregister(LoopyImportanceSampling_double)
 
 class LoopyWeightedSampling_double(_object):
-    """Proxy of C++ gum::LoopySamplingInference<(double,gum::WeightedSampling)> class."""
+    """
+
+    Class used for inferences using a loopy version of weighted sampling.
+
+    Available constructors:
+    	``LoopyWeightedSampling(bn) -> LoopyWeightedSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyWeightedSampling_double, name, value)
@@ -20206,7 +20249,19 @@ LoopyWeightedSampling_double_swigregister = _pyAgrum.LoopyWeightedSampling_doubl
 LoopyWeightedSampling_double_swigregister(LoopyWeightedSampling_double)
 
 class LoopyGibbsSampling_double(_object):
-    """Proxy of C++ gum::LoopySamplingInference<(double,gum::GibbsSampling)> class."""
+    """
+
+    Class used for inferences using a loopy version of Gibbs sampling.
+
+    Available constructors:
+    	``LoopyGibbsSampling(bn) -> LoopyGibbsSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyGibbsSampling_double, name, value)
@@ -22181,6 +22236,8 @@ LoopyMonteCarloSampling_double_swigregister(LoopyMonteCarloSampling_double)
 
 class LoopyBeliefPropagation_double(_object):
     """
+
+    Class used for inferences using loopy belief propagation algorithm.
 
     Available constructors:
     	``LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation``
@@ -24186,6 +24243,8 @@ CredalNet_double_swigregister(CredalNet_double)
 class CNMonteCarloSampling_double(_object):
     """
 
+    Class used for inferences in credal networks with Monte Carlo sampling algorithm.
+
     Available constructors:
 
         ``CNMonteCarloSampling(cn) -> CNMonteCarloSampling``
@@ -24508,7 +24567,7 @@ class CNMonteCarloSampling_double(_object):
 
         Parameters
         ----------
-        repetitive : bool
+        flag : bool
         	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks. 
 
         """
@@ -24633,6 +24692,8 @@ CNMonteCarloSampling_double_swigregister(CNMonteCarloSampling_double)
 
 class CNLoopyPropagation_double(_object):
     """
+
+    Class used for inferences in credal networks with Loopy Propagation algorithm.
 
     Available constructors:
 
@@ -25003,7 +25064,7 @@ class CNLoopyPropagation_double(_object):
 
         Parameters
         ----------
-        repetitive : bool
+        flag : bool
         	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks. 
 
         """
@@ -25220,10 +25281,6 @@ class InfluenceDiagram_double(DAGmodel):
         utility(self, varId) -> UtilityTable_double
 
 
-        Warnings
-        --------
-        Return type to be wrapped
-
         Parameters
         ----------
         varId : int 
@@ -25231,7 +25288,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Returns
         -------
-        tbw
+        pyAgrum.UtilityTable
         	the utility table of the node
 
         Warnings

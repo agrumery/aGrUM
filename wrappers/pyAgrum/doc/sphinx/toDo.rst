@@ -1,14 +1,6 @@
 Problèmes de type
 -----------------
 
-gum::Idx -> int
-
-gum::Size -> int
-
-gum::NodeSet -> set
-
-Inférence.BN devrait retourner un BayesNet ?
-
 CredalNet.credalNet_currentCpt (pb de type de retour)
 
 CredalNet.credalNet_srcCPt (pb de type de retour)
@@ -21,13 +13,13 @@ CredalNet.setCPT (pb de type de param)
 
 CredalNet.setCPTs (pb de type de param)
 
-InfluenceDiagram.utility (pb de type de retour)
-
 InfluenceDiagramInference.insertEvidence (pb type de param ?)
 
 InfluenceDiagramInference.displayStrongJunctionTree (pb type de param ?)
 
 LazyPropagation.setTriangulation prend en paramètre un objet Triangulation
+
+BayesNet.variableNodeMap renvoie un objet non wrappé de type gum::VariableNodeMap
 
 Problèmes d'exceptions
 ----------------------

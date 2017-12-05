@@ -1,3 +1,17 @@
+%feature("docstring") gum::ApproximationScheme
+"
+Used to parametrize stopping criteria in approximate inference or learning algorithm.
+
+Available constructors:
+	``ApproximationScheme() -> ApproximationScheme``
+
+	``ApproximationScheme(v) -> ApproximationScheme``
+
+Parameters
+----------
+v : bool
+"
+
 %feature("docstring") gum::ApproximationScheme::disableEpsilon
 "
 Disable epsilon as a stopping criterion.
