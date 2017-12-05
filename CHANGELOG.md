@@ -3,18 +3,18 @@
 ## Changelog for 0.13.0 (in progress)
 
 * Documentations
-  * agrum : doxygen help's structure and howtos
-  * pyAgrum : documentation of a large parts of the pyAgrum's API, export to https://pyagrum.readthedocs.io
-  * o3prm : still in progress (see https://o3prm.lip6.fr, https://o3prm.readthedocs.io)
+  * agrum : doxygen helps structure and howtos
+  * pyAgrum : documentation of a large parts of the pyAgrum's API, export to <https://pyagrum.readthedocs.io>
+  * o3prm : still in progress (see <https://o3prm.lip6.fr>, <https://o3prm.readthedocs.io>)
 * O3PRM
   * new syntax for types (see ?)
   * read and write Bayesian Network with O3PRM syntax (see ?)
 * aGrUM
   * new learning algorithm (see ?)
-  * new approximated inference : MonteCarlo/Importance/Weighted Sampling + the same using LBP as a Dirichlet prior.
+  * new approximated inference : Monte-Carlo/Importance/Weighted Sampling + the same using LBP as a Dirichlet prior.
 * pyAgrum
   * wheels for python 3.3 and 3.4
-  * access to the new learning algorithm using BNLearner
+  * access to the new learning algorithm using `BNLearner`
   * access to the new inference algorithms
 * many bug fixes
 * act
@@ -23,9 +23,9 @@
 ## Changelog for 0.12.0
 
 * API
-  * new class EssentialGraph
-  * new class MarkovBlanket
-  * improved targets in MarginalTargettedInference
+  * new class `EssentialGraph`
+  * new class `MarkovBlanket`
+  * improved targets in `MarginalTargettedInference`
 * pyAgrum
   * update notebooks
   * new swig-based documentation framework
@@ -48,7 +48,7 @@
   * notebooks as tests (now in wrappers/pyAgrum/notebooks)
   * updating requirements
   * some improvements in doc
-  * pyagrum.lib.ipython: emulation of 'pyagrum.lin.notebook' for ipython graphical console (within spyder for instance)
+  * pyagrum.lib.ipython: emulation of 'pyagrum.lib.notebook' for ipython graphical console (within spyder for instance)
   * pyagrum.lib.bn2csv: csv file with labels of variables instead of index (parameter with_labels:boolean)
   * pyagrum.lib.bn2roc: use a csv with labels by default (parameter with_labels:boolean)
 
@@ -64,27 +64,27 @@
   * aGrUM/pyAgrum to be compilable with win32
   * pyAgrum wheels generation using act for 'pip' tool
 * aGrUM
-  * removing some unused datastructure (AVLTree)
-  * fixing bug in localSearchWithTabuList learning class
+  * removing some unused data structure (`AVLTree`)
+  * fixing bug in `localSearchWithTabuList` learning class
   * Remove wrong parallel estimations for learning (now correct but sequential)
   * working on docs
-  * API change : add BayesNet::minimalCondSet(NodeSet&,NodeSet&) (migration from pyAgrum to aGrUM)
+  * API change : add `BayesNet::minimalCondSet(NodeSet&,NodeSet&)` (migration from pyAgrum to aGrUM)
   * API change : add JointTargettedInference::evidenceJointImpact()
 * pyAgrum
-  * API changes : pyAgrum.lib.bn2graph (BN2dot, BNinference2dot, proba2histo)
-  * API changes : pyAgrum.lib.pretty_print (bn2txt, cpt2txt)
-  * API changes : pyAgrum.lib.notebook : uniformizing parameters evs (first) and targets (second) order.
-  * API changes : pyAgrum.lib.notebook : showEntropy->showInformation
+  * API changes : pyAgrum.lib.bn2graph (`BN2dot`, `BNinference2dot`, `proba2histo`)
+  * API changes : pyAgrum.lib.pretty_print (`bn2txt`, `cpt2txt`)
+  * API changes : pyAgrum.lib.notebook : uniforming parameters evs (first) and targets (second) order.
+  * API changes : pyAgrum.lib.notebook : `showEntropy->showInformation`
   * updating sphinx help generation
-  * fix CNMonteCarloSampling not recognized as ApproximationScheme
-  * enhancing showInformation with Mutual Information on arcs
-  * API change : adding BayesNet.minimalCondSet(set of targets,set of evs) (as wrapper)
-  * API change : adding LazyInference.evidenceJointImpact(set of targets,set of evs)
+  * fix `CNMonteCarloSampling` not recognized as `ApproximationScheme`
+  * enhancing `showInformation` with Mutual Information on arcs
+  * API change : adding `BayesNet.minimalCondSet(set_of_targets,set_of_evs)` (as wrapper)
+  * API change : adding `LazyInference.evidenceJointImpact(set_of_targets,set_of_evs)`
 
 ## Changelog for 0.10.4
 
-* Add new approximated inference : LBP (aGrUM and pyAgrum)
-* Fix bugs in LazyPropagation and Shafer-Shenoy inference
+* Add new approximated inference : `LBP` (aGrUM and pyAgrum)
+* Fix bugs in `LazyPropagation` and `ShaferShenoy` inference
 * Refresh some codes in Learning module
 * Update (and simplify) CMakeLists.txt for new swig 3.0.11
 * Add some project files (including this CHANGELOG.md)
@@ -97,10 +97,10 @@
 
 ## Changelog for 0.10.2
 
-* New method for BayesNet : minimalCondSet
-* New method for all inference : evidenceImpact
+* New method for `BayesNet` : `minimalCondSet`
+* New method for all inference : `evidenceImpact`
 * Potential has a (single) value even if no dimension.
-* Bug fix for lazyPropagation
+* Bug fix for `LazyPropagation`
 * Typos for Visual C++ compiler
 * Many internal changes
 
@@ -108,11 +108,11 @@
 
 * aGrUM
   * Fix GCC compilation
-  * ParamEstimator::setMaxThread new method
+  * `ParamEstimator::setMaxThread` new method
 * pyAgrum
-  * VariableElimination and ShaferShenoy inference
-  * new addJointTarget and jointPosterior methods for exact inference
-  * pyAgrum.getPosterior now uses VariableElimination
+  * `VariableElimination` and `ShaferShenoy` inference
+  * new `addJointTarget` and `jointPosterior` methods for exact inference
+  * `pyAgrum.getPosterior` now uses `VariableElimination`
   * Fix pyAgrum.lib.notebook error for python2
   * pyAgrum now linked with static library aGrUM
   * pyAgrum.so (linux) size significantly reduced
