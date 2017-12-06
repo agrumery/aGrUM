@@ -173,10 +173,6 @@ Returns
 -------
 vector<pos,size>
 	the number of modalities of the database's variables.
-
-Warnings
---------
-A Faire
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::nameFromId
@@ -323,10 +319,6 @@ Parameters
 ----------
 filename : str
 	the Dirichlet related database
-
-Warnings
---------
-TBD
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::useAprioriSmoothing

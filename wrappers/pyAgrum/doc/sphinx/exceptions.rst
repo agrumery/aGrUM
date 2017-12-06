@@ -1,9 +1,7 @@
 Exceptions from aGrUM
 =====================
 
-A faire 
-
-Toutes les exceptions héritent de 4 (?) fonctions
+All the classes inherit GumException's functions errorType, errorCallStack and errorContent.
 
 .. autoexception:: pyAgrum.DefaultInLabel
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
@@ -16,7 +14,7 @@ Toutes les exceptions héritent de 4 (?) fonctions
 .. autoexception:: pyAgrum.EmptySet
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.GumException
-	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
+	:exclude-members: with_traceback
 .. autoexception:: pyAgrum.FatalError
 	:exclude-members: errorCallStack, errorContent, errorType, with_traceback
 .. autoexception:: pyAgrum.FormatNotFound

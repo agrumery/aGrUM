@@ -603,9 +603,10 @@ UndefinedElement if an element of nodes is not in targets
 
 %feature("docstring") gum::classname::setVirtualLBPSize
 "
-Warnings
---------
-A faire in GenericInference
+Parameters
+----------
+vlbpsize : double
+  the size of the virtual LBP
 "
 
 %feature("docstring") gum::classname::asIApproximationSchemeConfiguration

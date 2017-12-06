@@ -68,3 +68,6 @@
 %include "doc_PythonLoadListener.i"
 %include "doc_PythonBNListener.i"
 %include "doc_PythonApproximationListener.i"
+
+%include "doc_GumException.i"
+%include "doc_SyntaxError.i"
