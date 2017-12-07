@@ -298,9 +298,12 @@ OutOfLowerBound raised if p<1
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setSliceOrder
 "
-Warnings
---------
-A Faire
+Set a partial order on the nodes.
+
+Parameters
+----------
+l : list
+	a list of sequences (composed of ids)
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setVerbosity

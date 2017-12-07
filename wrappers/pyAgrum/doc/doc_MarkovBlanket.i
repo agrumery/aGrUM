@@ -1,6 +1,6 @@
 %feature("dosctring") gum::MarkovBlanket
 "
-MarkovBlanket represents the Markov blanket of a node in a graph.
+Class building the Markov blanket of a node in a graph.
 
 Available constructors:
     ``MarkovBlanket(m,n) -> MarkovBlanket``

@@ -45,5 +45,8 @@ Autres problèmes
 
 gum::PRMexplorer::aggType ?
 
-
 gum.CredalNet.dynamicExceptations nécessaire pour faire fonctionner dynamicExpMax/Min$
+
+On n'arrive pas à documenter MarkovBlanket et EssentialGraph (alors qu'autodoc le fait)
+
+Il faudrait elever les versions de addChanceNode et addUtilityNode qui prennent en paramètres des MultiDimImplementation

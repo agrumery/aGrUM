@@ -70,8 +70,6 @@ Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	the variable added by copy.
-aContent : tbd
-	The content used for the variable potential. 
 id : int
 	the chosen id. If 0, the NodeGraphPart will choose.
 
@@ -126,8 +124,6 @@ Parameters
 ----------
 variable : pyAgrum.DiscreteVariable
 	the variable added by copy
-aContent : tbd
-	The content used for the variable utility
 id : int
 	the chosen id. If 0, the NodeGraphPart will choose
 

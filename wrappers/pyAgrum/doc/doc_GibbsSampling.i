@@ -1,6 +1,6 @@
 %feature("docstring") gum::GibbsSampling
 "
-Class used for Gibbs sampling inference algorithm.
+Class for making Gibbs sampling inference in bayesian networks.
 
 Available constructors:
 	``GibbsSampling(bn) -> GibbsSampling``
