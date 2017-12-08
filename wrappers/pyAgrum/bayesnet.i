@@ -85,6 +85,29 @@ IMPROVE_BAYESNET_API(gum::IBayesNet);
 IMPROVE_BAYESNET_API(gum::BayesNet);
 
 %extend gum::BayesNet {
+%pythoncode {
+def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
+  if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
+    return
+
+  if not hasattr(self,"_listeners"):
+    self._listeners=[]
+
+  nl = PythonBNListener(self.dag(), self.variableNodeMap())
+  if whenNodeAdded is not None:
+    nl.setWhenNodeAdded(whenNodeAdded)
+  if whenNodeDeleted is not None:
+    nl.setWhenNodeDeleted(whenNodeDeleted)
+  if whenArcAdded is not None:
+    nl.setWhenArcAdded(whenArcAdded)
+  if whenArcDeleted is not None:
+    nl.setWhenArcDeleted(whenArcDeleted)
+
+  self._listeners.append(nl)
+}
+}
+
+%extend gum::BayesNet {
   std::string loadBIF(std::string name, PyObject *l=(PyObject*)0)
   {
       std::stringstream stream;

@@ -21,7 +21,7 @@ from tests import MarkovBlanketTestSuite
 from tests import EssentialGraphTestSuite
 from tests import VariablesTestSuite
 from tests import BayesNetTestSuite
-from tests import PythonBNListenerTestSuite
+from tests import BNListenerTestSuite
 from tests import PotentialTestSuite
 from tests import JTInferenceTestSuite
 from tests import JunctionTreeTestSuite
@@ -43,7 +43,7 @@ tests.append(MarkovBlanketTestSuite.ts)
 tests.append(EssentialGraphTestSuite.ts)
 tests.append(VariablesTestSuite.ts)
 tests.append(BayesNetTestSuite.ts)
-tests.append(PythonBNListenerTestSuite.ts)
+tests.append(BNListenerTestSuite.ts)
 tests.append(PotentialTestSuite.ts)
 tests.append(JTInferenceTestSuite.ts)
 tests.append(AllIncrementalInferenceTestSuite.ts)
