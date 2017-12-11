@@ -222,7 +222,14 @@ SwigPyIterator_swigregister(SwigPyIterator)
 import numpy
 
 class JTGenerator(_object):
-    """Proxy of C++ JTGenerator class."""
+    """
+
+    JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+
+    Available constructors:
+    	``JTGenerator() -> JTGenerator``
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, JTGenerator, name, value)
@@ -234,6 +241,20 @@ class JTGenerator(_object):
         """
         junctionTree(self, g) -> CliqueGraph
         junctionTree(self, bn) -> CliqueGraph
+
+
+        Parameters
+        ----------
+        g : pyAgrum.UndiGraph
+        	an Undirected graph
+        bn : pyAgrum.BayesNet
+        	a Bayesian network
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+        	the current junction tree
+
         """
         return _pyAgrum.JTGenerator_junctionTree(self, *args)
 
@@ -242,12 +263,35 @@ class JTGenerator(_object):
         """
         binaryJoinTree(self, g) -> CliqueGraph
         binaryJoinTree(self, bn) -> CliqueGraph
+
+
+        Parameters
+        ----------
+        g : pyAgrum.UndiGraph
+        	an Undirected graph
+        bn : pyAgrum.BayesNet
+        	a Bayesian network
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+        	the binary join tree
+
         """
         return _pyAgrum.JTGenerator_binaryJoinTree(self, *args)
 
 
     def __init__(self):
-        """__init__(self) -> JTGenerator"""
+        """
+        __init__(self) -> JTGenerator
+
+
+        JTGenerator is use to generate junction tree or binary junction tree from bayesian networks.
+
+        Available constructors:
+        	``JTGenerator() -> JTGenerator``
+
+        """
         this = _pyAgrum.new_JTGenerator()
         try:
             self.this.append(this)
@@ -300,22 +344,46 @@ class PythonBNListener(_object):
 
 
     def setWhenArcAdded(self, pyfunc):
-        """setWhenArcAdded(self, pyfunc)"""
+        """
+        setWhenArcAdded(self, pyfunc)
+
+
+
+
+        """
         return _pyAgrum.PythonBNListener_setWhenArcAdded(self, pyfunc)
 
 
     def setWhenArcDeleted(self, pyfunc):
-        """setWhenArcDeleted(self, pyfunc)"""
+        """
+        setWhenArcDeleted(self, pyfunc)
+
+
+
+
+        """
         return _pyAgrum.PythonBNListener_setWhenArcDeleted(self, pyfunc)
 
 
     def setWhenNodeAdded(self, pyfunc):
-        """setWhenNodeAdded(self, pyfunc)"""
+        """
+        setWhenNodeAdded(self, pyfunc)
+
+
+
+
+        """
         return _pyAgrum.PythonBNListener_setWhenNodeAdded(self, pyfunc)
 
 
     def setWhenNodeDeleted(self, pyfunc):
-        """setWhenNodeDeleted(self, pyfunc)"""
+        """
+        setWhenNodeDeleted(self, pyfunc)
+
+
+
+
+        """
         return _pyAgrum.PythonBNListener_setWhenNodeDeleted(self, pyfunc)
 
 PythonBNListener_swigregister = _pyAgrum.PythonBNListener_swigregister
@@ -336,7 +404,13 @@ class PythonLoadListener(_object):
 
 
     def setPythonListener(self, l):
-        """setPythonListener(self, l) -> bool"""
+        """
+        setPythonListener(self, l) -> bool
+
+
+
+
+        """
         return _pyAgrum.PythonLoadListener_setPythonListener(self, l)
 
 
@@ -358,7 +432,14 @@ def __fillLoadListeners(py_listener, l):
     """__fillLoadListeners(py_listener, l) -> int"""
     return _pyAgrum.__fillLoadListeners(py_listener, l)
 class PythonApproximationListener(_object):
-    """Proxy of C++ PythonApproximationListener class."""
+    """
+
+    Parameters
+    ----------
+    algo : IApproximationSchemeConfiguration
+    	an approxmation scheme
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, PythonApproximationListener, name, value)
@@ -367,7 +448,16 @@ class PythonApproximationListener(_object):
     __repr__ = _swig_repr
 
     def __init__(self, algo):
-        """__init__(self, algo) -> PythonApproximationListener"""
+        """
+        __init__(self, algo) -> PythonApproximationListener
+
+
+        Parameters
+        ----------
+        algo : IApproximationSchemeConfiguration
+        	an approxmation scheme
+
+        """
         this = _pyAgrum.new_PythonApproximationListener(algo)
         try:
             self.this.append(this)
@@ -388,19 +478,45 @@ class PythonApproximationListener(_object):
 
 
     def setWhenProgress(self, pyfunc):
-        """setWhenProgress(self, pyfunc)"""
+        """
+        setWhenProgress(self, pyfunc)
+
+
+        Parameters
+        ----------
+        pyfunc
+        	the function to execute
+
+        """
         return _pyAgrum.PythonApproximationListener_setWhenProgress(self, pyfunc)
 
 
     def setWhenStop(self, pyfunc):
-        """setWhenStop(self, pyfunc)"""
+        """
+        setWhenStop(self, pyfunc)
+
+
+        Parameters
+        ----------
+        pyfunc
+        	the function to execute
+
+        """
         return _pyAgrum.PythonApproximationListener_setWhenStop(self, pyfunc)
 
 PythonApproximationListener_swigregister = _pyAgrum.PythonApproximationListener_swigregister
 PythonApproximationListener_swigregister(PythonApproximationListener)
 
 class BNGenerator(_object):
-    """Proxy of C++ BNGenerator class."""
+    """
+
+    BNGenerator is used to easily generate Bayesian networks.
+
+    Available constructors:
+
+        ``BNGenerator() -> BNGenerator``
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BNGenerator, name, value)
@@ -414,12 +530,48 @@ class BNGenerator(_object):
         generate(self, n_nodes=10, n_arcs=15) -> BayesNet_double
         generate(self, n_nodes=10) -> BayesNet_double
         generate(self) -> BayesNet_double
+
+
+        Generate a new Bayesian network 
+
+        Parameters
+        ----------
+        n_nodes : int
+        	the number of nodes (default=10)
+        n_arcs : int
+        	the number of arcs (default=15)
+        n_nodmax : int
+        	the max number of modalities for a node (default=4)
+
+        Returns
+        -------
+        pyAgrum.BayesNet
+        	the generated Bayesian network
+
+        Warnings
+        --------
+        OperationNotAllowed raised if n_modmax < 2
+
+        Warnings
+        --------
+        OperationNotAllowed raised if n_arcs is incompatible with n_nodes (not enough arcs)
+
         """
         return _pyAgrum.BNGenerator_generate(self, n_nodes, n_arcs, n_modmax)
 
 
     def __init__(self):
-        """__init__(self) -> BNGenerator"""
+        """
+        __init__(self) -> BNGenerator
+
+
+        BNGenerator is used to easily generate Bayesian networks.
+
+        Available constructors:
+
+            ``BNGenerator() -> BNGenerator``
+
+        """
         this = _pyAgrum.new_BNGenerator()
         try:
             self.this.append(this)
@@ -432,7 +584,15 @@ BNGenerator_swigregister = _pyAgrum.BNGenerator_swigregister
 BNGenerator_swigregister(BNGenerator)
 
 class IDGenerator(_object):
-    """Proxy of C++ IDGenerator class."""
+    """
+
+    IDGenerator is used to easily generate influence diagrams.
+
+    Available constructors:
+
+        ``IDGenerator() -> IDGenerator``
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, IDGenerator, name, value)
@@ -448,12 +608,44 @@ class IDGenerator(_object):
         generate(self, nbrNodes=10, arcDensity=0.2) -> InfluenceDiagram_double
         generate(self, nbrNodes=10) -> InfluenceDiagram_double
         generate(self) -> InfluenceDiagram_double
+
+
+        Generate a new influence diagram given the parameters.
+
+        Parameters
+        ----------
+        nbrNodes : int
+        	the number of node
+        arcDensity : double
+        	the density of arc (1 for a complete graph)
+        chanceNodeDensity : double
+        	the density of chance node
+        utilityNodeDensity : double
+        	the density of utility node
+        max_modality : int
+        	the maximum value for modalities
+
+        Returns
+        -------
+        pyAgrum.InfluenceDiagram
+        	the generated influence diagram
+
         """
         return _pyAgrum.IDGenerator_generate(self, nbrNodes, arcDensity, chanceNodeDensity, utilityNodeDensity, max_modality)
 
 
     def __init__(self):
-        """__init__(self) -> IDGenerator"""
+        """
+        __init__(self) -> IDGenerator
+
+
+        IDGenerator is used to easily generate influence diagrams.
+
+        Available constructors:
+
+            ``IDGenerator() -> IDGenerator``
+
+        """
         this = _pyAgrum.new_IDGenerator()
         try:
             self.this.append(this)
@@ -466,7 +658,14 @@ IDGenerator_swigregister = _pyAgrum.IDGenerator_swigregister
 IDGenerator_swigregister(IDGenerator)
 
 class PRMexplorer(_object):
-    """Proxy of C++ PRMexplorer class."""
+    """
+
+    PRMexplorer helps navigate through probabilistic relational models.
+
+    Available constructors:
+    	``JTGenerator() -> JTGenerator``
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, PRMexplorer, name, value)
@@ -475,7 +674,16 @@ class PRMexplorer(_object):
     __repr__ = _swig_repr
 
     def __init__(self):
-        """__init__(self) -> PRMexplorer"""
+        """
+        __init__(self) -> PRMexplorer
+
+
+        PRMexplorer helps navigate through probabilistic relational models.
+
+        Available constructors:
+        	``JTGenerator() -> JTGenerator``
+
+        """
         this = _pyAgrum.new_PRMexplorer()
         try:
             self.this.append(this)
@@ -490,52 +698,210 @@ class PRMexplorer(_object):
         load(self, filename, classpath, verbose=False)
         load(self, filename, classpath)
         load(self, filename)
+
+
+        Load a PRM into the explorer.
+
+        Parameters
+        ----------
+        filename : str
+        	the name of the o3prm file
+        classpath : str
+        	the classpath of the PRM
+
+        Warnings
+        --------
+        FatalError raised if file not found
+
         """
         return _pyAgrum.PRMexplorer_load(self, *args)
 
 
     def isType(self, name):
-        """isType(self, name) -> PyObject *"""
+        """
+        isType(self, name) -> PyObject *
+
+
+        Parameters
+        ----------
+        name : str
+        	an element name
+
+        Returns
+        -------
+        bool
+        	True if the parameter correspond to a type in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_isType(self, name)
 
 
     def isClass(self, name):
-        """isClass(self, name) -> PyObject *"""
+        """
+        isClass(self, name) -> PyObject *
+
+
+        Parameters
+        ----------
+        name : str
+        	an element name
+
+        Returns
+        -------
+        bool
+        	True if the parameter correspond to a class in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_isClass(self, name)
 
 
     def isInterface(self, name):
-        """isInterface(self, name) -> PyObject *"""
+        """
+        isInterface(self, name) -> PyObject *
+
+
+        Parameters
+        ----------
+        name : str
+        	an element name
+
+        Returns
+        -------
+        bool
+        	True if the parameter correspond to an interface in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_isInterface(self, name)
 
 
     def classes(self):
-        """classes(self) -> PyObject *"""
+        """
+        classes(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	the list of classes
+
+        """
         return _pyAgrum.PRMexplorer_classes(self)
 
 
     def classAttributes(self, class_name):
-        """classAttributes(self, class_name) -> PyObject *"""
+        """
+        classAttributes(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        list
+        	the list of attributes
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_classAttributes(self, class_name)
 
 
     def isAttribute(self, class_name, att_name):
-        """isAttribute(self, class_name, att_name) -> PyObject *"""
+        """
+        isAttribute(self, class_name, att_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+        att_name : str
+        	the name of the attribute to be tested
+
+        Returns
+        -------
+        bool
+        	True if att_name is an attribute of class_name
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        Warnings
+        --------
+        IndexError raised att_name is not an element of class_name
+
+        """
         return _pyAgrum.PRMexplorer_isAttribute(self, class_name, att_name)
 
 
     def classReferences(self, class_name):
-        """classReferences(self, class_name) -> PyObject *"""
+        """
+        classReferences(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        list
+        	the list of references
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_classReferences(self, class_name)
 
 
     def classParameters(self, class_name):
-        """classParameters(self, class_name) -> PyObject *"""
+        """
+        classParameters(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        list
+        	the list of parameters
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_classParameters(self, class_name)
 
 
     def classImplements(self, class_name):
-        """classImplements(self, class_name) -> PyObject *"""
+        """
+        classImplements(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        list
+        	the list of interfaces implemented by the class
+
+        """
         return _pyAgrum.PRMexplorer_classImplements(self, class_name)
 
     __swig_setmethods__["aggType"] = _pyAgrum.PRMexplorer_aggType_set
@@ -544,67 +910,285 @@ class PRMexplorer(_object):
         aggType = _swig_property(_pyAgrum.PRMexplorer_aggType_get, _pyAgrum.PRMexplorer_aggType_set)
 
     def classAggregates(self, class_name):
-        """classAggregates(self, class_name) -> PyObject *"""
+        """
+        classAggregates(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        list
+        	the list of aggregates in the class
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_classAggregates(self, class_name)
 
 
     def classSlotChains(self, class_name):
-        """classSlotChains(self, class_name) -> PyObject *"""
+        """
+        classSlotChains(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        list
+        	the list of class slot chains
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_classSlotChains(self, class_name)
 
 
     def classDag(self, class_name):
-        """classDag(self, class_name) -> PyObject *"""
+        """
+        classDag(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        tuple
+        	a description of the DAG
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_classDag(self, class_name)
 
 
     def getalltheSystems(self):
-        """getalltheSystems(self) -> PyObject *"""
+        """
+        getalltheSystems(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	the list of all the systems and their components
+
+        """
         return _pyAgrum.PRMexplorer_getalltheSystems(self)
 
 
     def getSuperClass(self, class_name):
-        """getSuperClass(self, class_name) -> PyObject *"""
+        """
+        getSuperClass(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        str
+        	the class extended by class_name
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getSuperClass(self, class_name)
 
 
     def getDirectSubClass(self, class_name):
-        """getDirectSubClass(self, class_name) -> PyObject *"""
+        """
+        getDirectSubClass(self, class_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        Returns
+        -------
+        list
+        	the list of direct subclasses
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getDirectSubClass(self, class_name)
 
 
     def cpf(self, class_name, attribute):
-        """cpf(self, class_name, attribute) -> Potential_double"""
+        """
+        cpf(self, class_name, attribute) -> Potential_double
+
+
+        Parameters
+        ----------
+        class_name : str
+        	a class name
+
+        attribute : str
+        	an attribute
+
+        Returns
+        -------
+        pyAgrum.Potential
+        	the potential of the attribute
+
+        Warnings
+        --------
+        OperationNotAllowed	Raised if the class element doesn't have any gum::Potential (like a gum::PRMReferenceSlot). 
+
+        Warnings
+        --------
+        IndexError raised if the class is not in the PRM
+
+        Warnings
+        --------
+        IndexError raised if the attribute in parameters does not exist 
+
+        """
         return _pyAgrum.PRMexplorer_cpf(self, class_name, attribute)
 
 
     def types(self):
-        """types(self) -> PyObject *"""
+        """
+        types(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	the list of the custom types in the PRM 
+
+        """
         return _pyAgrum.PRMexplorer_types(self)
 
 
     def getSuperType(self, type_name):
-        """getSuperType(self, type_name) -> PyObject *"""
+        """
+        getSuperType(self, type_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        type_name : str
+        	a type name
+
+        Returns
+        -------
+        str
+        	the type extended by type_name
+
+        Warnings
+        --------
+        IndexError raised if the type is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getSuperType(self, type_name)
 
 
     def getDirectSubTypes(self, type_name):
-        """getDirectSubTypes(self, type_name) -> PyObject *"""
+        """
+        getDirectSubTypes(self, type_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        type_name : str
+        	a type name
+
+        Returns
+        -------
+        list
+        	the list of direct subtypes
+
+        Warnings
+        --------
+        IndexError raised if the type is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getDirectSubTypes(self, type_name)
 
 
     def getLabels(self, type_name):
-        """getLabels(self, type_name) -> PyObject *"""
+        """
+        getLabels(self, type_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        type_name : str
+        	a type name
+
+        Returns
+        -------
+        list
+        	the list of type labels
+
+        Warnings
+        --------
+        IndexError raised if the type is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getLabels(self, type_name)
 
 
     def getLabelMap(self, type_name):
-        """getLabelMap(self, type_name) -> PyObject *"""
+        """
+        getLabelMap(self, type_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        type_name : str
+        	a type name
+
+        Returns
+        -------
+        dict
+        	a dict containing pairs of label and their values 
+
+        Warnings
+        --------
+        IndexError raised if the type is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getLabelMap(self, type_name)
 
 
     def interfaces(self):
-        """interfaces(self) -> PyObject *"""
+        """
+        interfaces(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	the list of interfaces in the PRM 
+
+        """
         return _pyAgrum.PRMexplorer_interfaces(self)
 
 
@@ -612,27 +1196,118 @@ class PRMexplorer(_object):
         """
         interAttributes(self, interface_name, allAttributes=False) -> PyObject
         interAttributes(self, interface_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        interface_name : str
+        	an interface
+
+        allAttributes : bool
+        	True if supertypes of a custom type should be indicated
+
+        Returns
+        -------
+        list
+        	the list of (<type>,<attribute_name>) for the given interface
+
+        Warnings
+        --------
+        IndexError raised if the type is not in the PRM
+
         """
         return _pyAgrum.PRMexplorer_interAttributes(self, interface_name, allAttributes)
 
 
     def interReferences(self, interface_name):
-        """interReferences(self, interface_name) -> PyObject *"""
+        """
+        interReferences(self, interface_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        interface_name : str
+        	an interface
+
+        Returns
+        -------
+        list
+        	the list of (<reference_type>,<reference_name>,<True if the reference is an array>) for the given interface
+
+        Warnings
+        --------
+        IndexError raised if the type is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_interReferences(self, interface_name)
 
 
     def getSuperInterface(self, interface_name):
-        """getSuperInterface(self, interface_name) -> PyObject *"""
+        """
+        getSuperInterface(self, interface_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        interface_name : str
+        	an interface name
+
+        Returns
+        -------
+        str
+        	the interace extended by interface_name
+
+        Warnings
+        --------
+        IndexError raised if the interface is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getSuperInterface(self, interface_name)
 
 
     def getDirectSubInterfaces(self, interface_name):
-        """getDirectSubInterfaces(self, interface_name) -> PyObject *"""
+        """
+        getDirectSubInterfaces(self, interface_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        interface_name : str
+        	an interface name
+
+        Returns
+        -------
+        list
+        	the list of direct subinterfaces
+
+        Warnings
+        --------
+        IndexError raised if the interface is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getDirectSubInterfaces(self, interface_name)
 
 
     def getImplementations(self, interface_name):
-        """getImplementations(self, interface_name) -> PyObject *"""
+        """
+        getImplementations(self, interface_name) -> PyObject *
+
+
+        Parameters
+        ----------
+        interface_name : str
+        	an interface name
+
+        Returns
+        -------
+        str
+        	the list of classes implementing the interface 
+
+        Warnings
+        --------
+        IndexError raised if the interface is not in the PRM
+
+        """
         return _pyAgrum.PRMexplorer_getImplementations(self, interface_name)
 
 PRMexplorer_swigregister = _pyAgrum.PRMexplorer_swigregister
@@ -1309,17 +1984,44 @@ class GumException(Exception):
 
 
     def errorContent(self):
-        """errorContent(self) -> std::string const"""
+        """
+        errorContent(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the error content
+
+        """
         return _pyAgrum.GumException_errorContent(self)
 
 
     def errorType(self):
-        """errorType(self) -> std::string const"""
+        """
+        errorType(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the error type
+
+        """
         return _pyAgrum.GumException_errorType(self)
 
 
     def errorCallStack(self):
-        """errorCallStack(self) -> std::string const"""
+        """
+        errorCallStack(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the error call stack
+
+        """
         return _pyAgrum.GumException_errorCallStack(self)
 
 GumException_swigregister = _pyAgrum.GumException_swigregister
@@ -2630,12 +3332,30 @@ class SyntaxError(IOError):
             self.this = this
 
     def col(self):
-        """col(self) -> gum::Size"""
+        """
+        col(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the indice of the colonne of the error
+
+        """
         return _pyAgrum.SyntaxError_col(self)
 
 
     def line(self):
-        """line(self) -> gum::Size"""
+        """
+        line(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the indice of the line of the error
+
+        """
         return _pyAgrum.SyntaxError_line(self)
 
     __swig_destroy__ = _pyAgrum.delete_SyntaxError
@@ -2649,21 +3369,55 @@ def randomValue(max=2):
     """
     randomValue(max=2) -> gum::Idx
     randomValue() -> gum::Idx
+
+
+    Returns
+    -------
+    int
+      a value randomly drawn (0 or 1)
+
     """
     return _pyAgrum.randomValue(max)
 
 def randomProba():
-    """randomProba() -> double"""
+    """
+    randomProba() -> double
+
+
+    Returns
+    -------
+    double
+        a random number between 0 and 1 included (i.e. a proba). 
+
+    """
     return _pyAgrum.randomProba()
 
 def randomGeneratorSeed():
-    """randomGeneratorSeed() -> unsigned int"""
+    """
+    randomGeneratorSeed() -> unsigned int
+
+
+    Returns
+    -------
+    int
+      a randomly generated seed
+
+    """
     return _pyAgrum.randomGeneratorSeed()
 
 def initRandom(seed=0):
     """
     initRandom(seed=0)
     initRandom()
+
+
+    Initialize random generator seed.
+
+    Parameters
+    ----------
+    seed : int
+      the seed used to initialize the random generator
+
     """
     return _pyAgrum.initRandom(seed)
 
@@ -2671,50 +3425,153 @@ def getRandomGenerator(seed=0):
     """
     getRandomGenerator(seed=0) -> std::default_random_engine
     getRandomGenerator() -> std::default_random_engine
+
+
+    Returns
+    -------
+    tbw
+      the random generator
+
     """
     return _pyAgrum.getRandomGenerator(seed)
 
 def isOMP():
-    """isOMP() -> bool"""
+    """
+    isOMP() -> bool
+
+
+    Returns
+    -------
+    bool
+      True if OMP has been set at compilation, False otherwise
+
+    """
     return _pyAgrum.isOMP()
 
 def setNumberOfThreads(number):
-    """setNumberOfThreads(number)"""
+    """
+    setNumberOfThreads(number)
+
+
+    To avoid spare cycles (less then 100% CPU occupied), use more threads than logical processors (x2 is a good all-around value). 
+
+    Returns
+    -------
+    number : int
+      the number of threads to be used
+
+    """
     return _pyAgrum.setNumberOfThreads(number)
 
 def getMaxNumberOfThreads():
-    """getMaxNumberOfThreads() -> unsigned int"""
+    """
+    getMaxNumberOfThreads() -> unsigned int
+
+
+    Returns
+    -------
+    int
+      the max number of threads
+
+    """
     return _pyAgrum.getMaxNumberOfThreads()
 
 def getThreadNumber():
-    """getThreadNumber() -> unsigned int"""
+    """
+    getThreadNumber() -> unsigned int
+
+
+    Returns
+    -------
+    int
+      the number of thread
+
+    """
     return _pyAgrum.getThreadNumber()
 
 def getNumberOfRunningThreads():
-    """getNumberOfRunningThreads() -> unsigned int"""
+    """
+    getNumberOfRunningThreads() -> unsigned int
+
+
+    Returns
+    -------
+    int
+      the number of running threads
+
+    """
     return _pyAgrum.getNumberOfRunningThreads()
 
 def getNumberOfLogicalProcessors():
-    """getNumberOfLogicalProcessors() -> unsigned int"""
+    """
+    getNumberOfLogicalProcessors() -> unsigned int
+
+
+    Returns
+    -------
+    int
+      the number of logical processors
+
+    """
     return _pyAgrum.getNumberOfLogicalProcessors()
 
 def setNestedParallelism(value):
-    """setNestedParallelism(value)"""
+    """
+    setNestedParallelism(value)
+
+
+    Parameters
+    ----------
+    value : bool
+      True if nested parallelism should be activated
+
+    """
     return _pyAgrum.setNestedParallelism(value)
 
 def getNestedParallelism():
-    """getNestedParallelism() -> bool"""
+    """
+    getNestedParallelism() -> bool
+
+
+    Returns
+    -------
+    bool
+      True if nested parallelism is enabled
+
+    """
     return _pyAgrum.getNestedParallelism()
 
 def setDynamicThreadsNumber(value):
-    """setDynamicThreadsNumber(value)"""
+    """
+    setDynamicThreadsNumber(value)
+
+
+    Parameters
+    ----------
+    value : bool
+      True if the number of threads should be dynamic
+
+    """
     return _pyAgrum.setDynamicThreadsNumber(value)
 
 def getDynamicThreadsNumber():
-    """getDynamicThreadsNumber() -> bool"""
+    """
+    getDynamicThreadsNumber() -> bool
+
+
+    Returns
+    -------
+    bool
+      True if dynamic threads number is enabled
+
+    """
     return _pyAgrum.getDynamicThreadsNumber()
 class Variable(_object):
-    """Proxy of C++ gum::Variable class."""
+    """
+
+    Abstract class used by DiscreteVariable.
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Variable, name, value)
@@ -2729,7 +3586,18 @@ class Variable(_object):
         return None
 
     def clone(self):
-        """clone(self) -> Variable"""
+        """
+        clone(self) -> Variable
+
+
+        Copy factory
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	a pointer on a new copy of this
+
+        """
         return _pyAgrum.Variable_clone(self)
 
 
@@ -3217,25 +4085,25 @@ class LabelizedVariable(DiscreteVariable):
 
 
     def addLabel(self,*args):
-      """
-      Add a label with a new index (we assume that we will NEVER remove a label).
+        """
+        Add a label with a new index (we assume that we will NEVER remove a label).
 
-      Parameters
-      ----------
-      aLabel : str
-      	the label to be added to the labelized variable
+        Parameters
+        ----------
+        aLabel : str
+            the label to be added to the labelized variable
 
-      Returns
-      -------
-      pyAgrum.LabelizedVariable
-      	the labelized variable
+        Returns
+        -------
+        pyAgrum.LabelizedVariable
+            the labelized variable
 
-      Warnings
-      --------
-      DuplicateElement raised is raised if the variable already contains the label
-      """
-      _pyAgrum.LabelizedVariable_addLabel(self,*args)
-      return self
+        Warnings
+        --------
+        DuplicateElement raised is raised if the variable already contains the label
+        """
+        _pyAgrum.LabelizedVariable_addLabel(self,*args)
+        return self
 
 
 
@@ -3893,7 +4761,7 @@ class DiGraph(_object):
 
     Parameters
     ----------
-    src : :class: DiGraph
+    src : pyAgrum.DiGraph
       the digraph to copy
 
 
@@ -4739,7 +5607,7 @@ class MixedGraph(UndiGraph, DiGraph):
 
     Parameters
     ----------
-    src : :class: MixedGraph
+    src : pyAgrum.MixedGraph
       the MixedGraph to copy
 
     """
@@ -4894,7 +5762,7 @@ class CliqueGraph(UndiGraph):
 
     Parameters
     ----------
-    src : :class: CliqueGraph
+    src : pyAgrum.CliqueGraph
       the CliqueGraph to copy
 
     """
@@ -5013,16 +5881,16 @@ class CliqueGraph(UndiGraph):
         Parameters
         ----------
         idNode : int
-        	the id of the node
+          the id of the node
 
         Returns
         -------
         int
-        	the id of a clique containing the node
+          the id of a clique containing the node
 
         Warnings
         --------
-        NotFound raised if no clique contains idNode	
+        NotFound raised if no clique contains idNode  
 
         """
         return _pyAgrum.CliqueGraph_container(self, idNode)
@@ -5038,9 +5906,9 @@ class CliqueGraph(UndiGraph):
         Parameters
         ----------
         idClique : int
-        	the id of the clique
+          the id of the clique
         new_clique : Set
-        	the new set of nodes to be included in the clique
+          the new set of nodes to be included in the clique
 
         Warnings
         --------
@@ -5060,9 +5928,9 @@ class CliqueGraph(UndiGraph):
         Parameters
         ----------
         clique_id : int
-        	the id of the clique
+          the id of the clique
         node_id : int
-        	the id of the node
+          the id of the node
 
         Warnings
         --------
@@ -5086,9 +5954,9 @@ class CliqueGraph(UndiGraph):
         Parameters
         ----------
         clique_id : int
-        	the id of the clique
+          the id of the clique
         node_id : int
-        	the id of the node
+          the id of the node
 
         Warnings
         --------
@@ -5107,16 +5975,16 @@ class CliqueGraph(UndiGraph):
         Parameters
         ----------
         edge : pyAgrum.Edge
-        	the edge to be checked
+          the edge to be checked
         clique1 : int 
-        	one extremity of the edge
+          one extremity of the edge
         clique : int 
-        	the other extremity of the edge
+          the other extremity of the edge
 
         Returns
         -------
         Set
-        	the separator included in a given edge
+          the separator included in a given edge
 
         Warnings
         --------
@@ -5134,14 +6002,14 @@ class CliqueGraph(UndiGraph):
         Parameters
         ----------
         node1 : int
-        	the id of one node
+          the id of one node
         node2 : int
-        	the id of the other node
+          the id of the other node
 
         Returns
         -------
         List
-        	a path from a clique containing node1 to a clique containing node2
+          a path from a clique containing node1 to a clique containing node2
 
         Warnings
         --------
@@ -5159,7 +6027,7 @@ class CliqueGraph(UndiGraph):
         Returns
         -------
         bool
-        	True if the running intersection property holds 
+          True if the running intersection property holds 
 
         """
         return _pyAgrum.CliqueGraph_hasRunningIntersection(self)
@@ -5173,7 +6041,7 @@ class CliqueGraph(UndiGraph):
         Returns
         -------
         bool
-        	True if the graph is a join tree 
+          True if the graph is a join tree 
 
         """
         return _pyAgrum.CliqueGraph_isJoinTree(self)
@@ -5216,12 +6084,12 @@ class CliqueGraph(UndiGraph):
         Parameters
         ----------
         idClique : int
-        	the id of the clique
+          the id of the clique
 
         Returns
         -------
         Set
-        	The set of nodes included in the clique
+          The set of nodes included in the clique
 
         Warnings
         --------
@@ -5232,12 +6100,23 @@ class CliqueGraph(UndiGraph):
 
 
     def toDotWithNames(self,bn):
-      def nameFromId(m):
-        return " ".join([bn.variable(int(n)).name()
-                         for n in m.group().split("-")])
-      import re
-      m = re.compile('(?<=label=\")\d+[\-\d+]*')
-      return m.sub(nameFromId,self.toDot())
+        """
+        Parameters
+        ----------
+        bn : pyAgrum.BayesNet
+        a Bayesian network
+
+        Returns
+        -------
+        str
+          a friendly display of the graph in DOT format where ids have been changed according to their correspondance in the BN
+        """
+        def nameFromId(m):
+          return " ".join([bn.variable(int(n)).name()
+                           for n in m.group().split("-")])
+        import re
+        m = re.compile('(?<=label=\")\d+[\-\d+]*')
+        return m.sub(nameFromId,self.toDot())
 
 CliqueGraph_swigregister = _pyAgrum.CliqueGraph_swigregister
 CliqueGraph_swigregister(CliqueGraph)
@@ -5265,6 +6144,14 @@ class Instantiation(_object):
     pyAgrum.Instantiation
     	An empty tuple or a copy of the one in parameters
 
+    Instantiation is subscriptable therefore values can be easily accessed/modified.
+
+    Examples
+    --------
+    >>> ## Access the value of A in an instantiation aI 
+    >>> valueOfA = aI['A']
+    >>> ## Modify the value
+    >>> aI['A'] = newValueOfA
 
     """
 
@@ -5457,10 +6344,10 @@ class Instantiation(_object):
         ----------
         v : pyAgrum.DiscreteVariable
           The variable whose value is assigned
-        newval : pyAgrum.DiscreteVariable
-          The index of the value assigned
         varPos : int
           The index of the variable whose value is assigned in the tuple of variables of the Instantiation
+        newval : pyAgrum.DiscreteVariable
+          The index of the value assigned
 
         Returns
         -------
@@ -5726,7 +6613,7 @@ class Instantiation(_object):
         Parameters
         ----------
         v : pyAgrum.DiscreteVariable
-          The varaible not to decrement in this Instantiation.
+          The variable not to decrement in this Instantiation.
 
         """
         return _pyAgrum.Instantiation_decNotVar(self, v)
@@ -5969,12 +6856,23 @@ class Instantiation(_object):
         """
         return _pyAgrum.Instantiation_reorder(self, *args)
 
+
+    def __setitem__(self,key,item):
+      self.chgVal(self.variable(key),item)
+
+    def __getitem__(self,key):
+      return self.val(self.variable(key))
+
 Instantiation_swigregister = _pyAgrum.Instantiation_swigregister
 Instantiation_swigregister(Instantiation)
 
 GUM_DEFAULT_ITERATOR_NUMBER = _pyAgrum.GUM_DEFAULT_ITERATOR_NUMBER
 class DAGmodel(_object):
-    """Proxy of C++ gum::DAGmodel class."""
+    """
+
+    Abstract class used by IBayesNet and InfluenceDiagram.
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, DAGmodel, name, value)
@@ -6042,7 +6940,16 @@ class DAGmodel(_object):
 
 
     def variableNodeMap(self):
-        """variableNodeMap(self) -> VariableNodeMap"""
+        """
+        variableNodeMap(self) -> VariableNodeMap
+
+
+        Returns
+        -------
+        pyAgrum.variableNodeMap
+        	the variable node map
+
+        """
         return _pyAgrum.DAGmodel_variableNodeMap(self)
 
 
@@ -6089,22 +6996,98 @@ class DAGmodel(_object):
 
 
     def variable(self, id):
-        """variable(self, id) -> DiscreteVariable"""
+        """
+        variable(self, id) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        id : int
+        	a variable's id
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Warnings
+        --------
+        IndexError if the graph does not contain the variable
+
+        """
         return _pyAgrum.DAGmodel_variable(self, id)
 
 
     def nodeId(self, var):
-        """nodeId(self, var) -> gum::NodeId"""
+        """
+        nodeId(self, var) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        var : pyAgrum.DiscreteVariable
+        	a variable
+
+        Returns
+        -------
+        int
+        	the id of the variable
+
+        Warnings
+        --------
+        IndexError raised if the graph does not contain the variable
+
+        """
         return _pyAgrum.DAGmodel_nodeId(self, var)
 
 
     def idFromName(self, name):
-        """idFromName(self, name) -> gum::NodeId"""
+        """
+        idFromName(self, name) -> gum::NodeId
+
+
+        Returns a variable's id given its name in the graph.
+
+        Parameters
+        ----------
+        name : str
+        	The variable's name from which the id is returned.
+
+        Returns
+        -------
+        int :
+        	The variable's node id. 
+
+        Warnings
+        --------
+        	NotFound raised if name does not match a variable in the graph
+
+        """
         return _pyAgrum.DAGmodel_idFromName(self, name)
 
 
     def variableFromName(self, name):
-        """variableFromName(self, name) -> DiscreteVariable"""
+        """
+        variableFromName(self, name) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Warnings
+        --------
+        IndexError if the graph does not contain the variable
+
+        """
         return _pyAgrum.DAGmodel_variableFromName(self, name)
 
 
@@ -6125,7 +7108,16 @@ class DAGmodel(_object):
 
 
     def arcs(self):
-        """arcs(self) -> gum::ArcSet const &"""
+        """
+        arcs(self) -> gum::ArcSet const &
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the graph
+
+        """
         return _pyAgrum.DAGmodel_arcs(self)
 
 
@@ -6224,57 +7216,171 @@ class EssentialGraph(_object):
         return None
 
     def mixedGraph(self):
-        """mixedGraph(self) -> MixedGraph"""
+        """
+        mixedGraph(self) -> MixedGraph
+
+
+        Returns
+        -------
+        pyAgrum.MixedGraph
+        	the mixed graph
+
+        """
         return _pyAgrum.EssentialGraph_mixedGraph(self)
 
 
     def toDot(self):
-        """toDot(self) -> std::string"""
+        """
+        toDot(self) -> std::string
+
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format 
+
+        """
         return _pyAgrum.EssentialGraph_toDot(self)
 
 
     def parents(self, id):
-        """parents(self, id) -> gum::NodeSet const &"""
+        """
+        parents(self, id) -> gum::NodeSet const &
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
         return _pyAgrum.EssentialGraph_parents(self, id)
 
 
     def children(self, id):
-        """children(self, id) -> gum::NodeSet const &"""
+        """
+        children(self, id) -> gum::NodeSet const &
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
         return _pyAgrum.EssentialGraph_children(self, id)
 
 
     def neighbours(self, id):
-        """neighbours(self, id) -> gum::NodeSet const &"""
+        """
+        neighbours(self, id) -> gum::NodeSet const &
+
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        Set
+            The set of edges adjacent to the given node 
+
+        """
         return _pyAgrum.EssentialGraph_neighbours(self, id)
 
 
     def sizeArcs(self):
-        """sizeArcs(self) -> gum::Size"""
+        """
+        sizeArcs(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyAgrum.EssentialGraph_sizeArcs(self)
 
 
     def arcs(self):
-        """arcs(self) -> gum::ArcSet const &"""
+        """
+        arcs(self) -> gum::ArcSet const &
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the EssentialGraph
+
+        """
         return _pyAgrum.EssentialGraph_arcs(self)
 
 
     def sizeEdges(self):
-        """sizeEdges(self) -> gum::Size"""
+        """
+        sizeEdges(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of edges in the graph
+
+        """
         return _pyAgrum.EssentialGraph_sizeEdges(self)
 
 
     def edges(self):
-        """edges(self) -> gum::EdgeSet const &"""
+        """
+        edges(self) -> gum::EdgeSet const &
+
+
+        Returns
+        -------
+        List
+          the list of the edges
+
+        """
         return _pyAgrum.EssentialGraph_edges(self)
 
 
     def sizeNodes(self):
-        """sizeNodes(self) -> gum::Size"""
+        """
+        sizeNodes(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of nodes in the graph
+
+        """
         return _pyAgrum.EssentialGraph_sizeNodes(self)
 
 
     def size(self):
-        """size(self) -> gum::Size"""
+        """
+        size(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of nodes in the graph
+
+        """
         return _pyAgrum.EssentialGraph_size(self)
 
 EssentialGraph_swigregister = _pyAgrum.EssentialGraph_swigregister
@@ -6304,47 +7410,143 @@ class MarkovBlanket(_object):
         return None
 
     def mb(self):
-        """mb(self) -> DiGraph"""
+        """
+        mb(self) -> DiGraph
+
+
+        Returns
+        -------
+        pyAgrum.DiGraph
+          a copy of the directed graph
+
+        """
         return _pyAgrum.MarkovBlanket_mb(self)
 
 
     def toDot(self):
-        """toDot(self) -> std::string"""
+        """
+        toDot(self) -> std::string
+
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format 
+
+        """
         return _pyAgrum.MarkovBlanket_toDot(self)
 
 
     def parents(self, id):
-        """parents(self, id) -> gum::NodeSet const &"""
+        """
+        parents(self, id) -> gum::NodeSet const &
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
         return _pyAgrum.MarkovBlanket_parents(self, id)
 
 
     def children(self, id):
-        """children(self, id) -> gum::NodeSet const &"""
+        """
+        children(self, id) -> gum::NodeSet const &
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
         return _pyAgrum.MarkovBlanket_children(self, id)
 
 
     def sizeArcs(self):
-        """sizeArcs(self) -> gum::Size"""
+        """
+        sizeArcs(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of arcs in the graph
+
+        """
         return _pyAgrum.MarkovBlanket_sizeArcs(self)
 
 
     def arcs(self):
-        """arcs(self) -> gum::ArcSet const &"""
+        """
+        arcs(self) -> gum::ArcSet const &
+
+
+        Returns
+        -------
+        List
+        	the list of the arcs
+
+        """
         return _pyAgrum.MarkovBlanket_arcs(self)
 
 
     def sizeNodes(self):
-        """sizeNodes(self) -> gum::Size"""
+        """
+        sizeNodes(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of nodes in the graph
+
+        """
         return _pyAgrum.MarkovBlanket_sizeNodes(self)
 
 
     def size(self):
-        """size(self) -> gum::Size"""
+        """
+        size(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+            the number of nodes in the graph
+
+        """
         return _pyAgrum.MarkovBlanket_size(self)
 
 
     def hasSameStructure(self, other):
-        """hasSameStructure(self, other) -> bool"""
+        """
+        hasSameStructure(self, other) -> bool
+
+
+        Parameters
+        ----------
+        pyAgrum.DAGmodel
+        	a direct acyclic model
+
+        Returns
+        -------
+        bool
+            True if all the named node are the same and all the named arcs are the same 
+
+        """
         return _pyAgrum.MarkovBlanket_hasSameStructure(self, other)
 
 MarkovBlanket_swigregister = _pyAgrum.MarkovBlanket_swigregister
@@ -6375,44 +7577,136 @@ class StructuralComparator(_object):
         compare(self, ref, test)
         compare(self, ref, test)
         compare(self, ref, test)
+
+
+        Use to compare the edges/arcs of two structure of the same type and same sizes (either DiGraph, UndiGraph or MixedGraph).
+
+        Could be use to compare a BN and its learned version.
+
+        Parameters
+        ----------
+        ref :
+        	the structure of reference
+        test :
+        	the structure we want to test
+
         """
         return _pyAgrum.StructuralComparator_compare(self, *args)
 
 
     def precision_skeleton(self):
-        """precision_skeleton(self) -> double"""
+        """
+        precision_skeleton(self) -> double
+
+
+        Rate of true postive over labelized edges.
+
+        Returns
+        -------
+        double
+        	the precision of the tested graph skeleton
+
+        """
         return _pyAgrum.StructuralComparator_precision_skeleton(self)
 
 
     def recall_skeleton(self):
-        """recall_skeleton(self) -> double"""
+        """
+        recall_skeleton(self) -> double
+
+
+        Rate of true postive over labelized edges.
+
+        Returns
+        -------
+        double
+        	the recall of the tested graph skeleton
+
+        """
         return _pyAgrum.StructuralComparator_recall_skeleton(self)
 
 
     def f_score_skeleton(self):
-        """f_score_skeleton(self) -> double"""
+        """
+        f_score_skeleton(self) -> double
+
+
+        Harmonic mean between recall and precision.
+
+        Returns
+        -------
+        double
+        	the tarmonic mean of the tested graph skeleton
+
+        """
         return _pyAgrum.StructuralComparator_f_score_skeleton(self)
 
 
     def precision(self):
-        """precision(self) -> double"""
+        """
+        precision(self) -> double
+
+
+        Rate of true postive over postively labelized arcs/edges.
+
+        Returns
+        -------
+        double
+        	the precision of the tested graph
+
+        """
         return _pyAgrum.StructuralComparator_precision(self)
 
 
     def recall(self):
-        """recall(self) -> double"""
+        """
+        recall(self) -> double
+
+
+        Rate of true postive over labelized arcs/edges.
+
+        Returns
+        -------
+        double
+        	the recall of the tested graph
+
+        """
         return _pyAgrum.StructuralComparator_recall(self)
 
 
     def f_score(self):
-        """f_score(self) -> double"""
+        """
+        f_score(self) -> double
+
+
+        Harmonic mean between recall and precision.
+
+        Returns
+        -------
+        double
+        	the harmonic mean of the tested graph
+
+        """
         return _pyAgrum.StructuralComparator_f_score(self)
 
 StructuralComparator_swigregister = _pyAgrum.StructuralComparator_swigregister
 StructuralComparator_swigregister(StructuralComparator)
 
 class ApproximationScheme(_object):
-    """Proxy of C++ gum::ApproximationScheme class."""
+    """
+
+    Used to parametrize stopping criteria in approximate inference or learning algorithm.
+
+    Available constructors:
+    	``ApproximationScheme() -> ApproximationScheme``
+
+    	``ApproximationScheme(v) -> ApproximationScheme``
+
+    Parameters
+    ----------
+    v : bool
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, ApproximationScheme, name, value)
@@ -6467,17 +7761,38 @@ class ApproximationScheme(_object):
 
 
     def disableEpsilon(self):
-        """disableEpsilon(self)"""
+        """
+        disableEpsilon(self)
+
+
+        Disable epsilon as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_disableEpsilon(self)
 
 
     def enableEpsilon(self):
-        """enableEpsilon(self)"""
+        """
+        enableEpsilon(self)
+
+
+        Enable epsilon as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_enableEpsilon(self)
 
 
     def isEnabledEpsilon(self):
-        """isEnabledEpsilon(self) -> bool"""
+        """
+        isEnabledEpsilon(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if epsilon is used as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_isEnabledEpsilon(self)
 
 
@@ -6510,17 +7825,38 @@ class ApproximationScheme(_object):
 
 
     def disableMinEpsilonRate(self):
-        """disableMinEpsilonRate(self)"""
+        """
+        disableMinEpsilonRate(self)
+
+
+        Disable a min epsilon rate as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_disableMinEpsilonRate(self)
 
 
     def enableMinEpsilonRate(self):
-        """enableMinEpsilonRate(self)"""
+        """
+        enableMinEpsilonRate(self)
+
+
+        Enable a min epsilon rate as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_enableMinEpsilonRate(self)
 
 
     def isEnabledMinEpsilonRate(self):
-        """isEnabledMinEpsilonRate(self) -> bool"""
+        """
+        isEnabledMinEpsilonRate(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if epsilon rate is used as a stopping criterion
+
+        """
         return _pyAgrum.ApproximationScheme_isEnabledMinEpsilonRate(self)
 
 
@@ -6557,17 +7893,38 @@ class ApproximationScheme(_object):
 
 
     def disableMaxIter(self):
-        """disableMaxIter(self)"""
+        """
+        disableMaxIter(self)
+
+
+        Disable max iterations as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_disableMaxIter(self)
 
 
     def enableMaxIter(self):
-        """enableMaxIter(self)"""
+        """
+        enableMaxIter(self)
+
+
+        Enable max iterations as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_enableMaxIter(self)
 
 
     def isEnabledMaxIter(self):
-        """isEnabledMaxIter(self) -> bool"""
+        """
+        isEnabledMaxIter(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if max iterations is used as a stopping criterion
+
+        """
         return _pyAgrum.ApproximationScheme_isEnabledMaxIter(self)
 
 
@@ -6618,17 +7975,38 @@ class ApproximationScheme(_object):
 
 
     def disableMaxTime(self):
-        """disableMaxTime(self)"""
+        """
+        disableMaxTime(self)
+
+
+        Disable max time as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_disableMaxTime(self)
 
 
     def enableMaxTime(self):
-        """enableMaxTime(self)"""
+        """
+        enableMaxTime(self)
+
+
+        Enable max time as a stopping criterion.
+
+        """
         return _pyAgrum.ApproximationScheme_enableMaxTime(self)
 
 
     def isEnabledMaxTime(self):
-        """isEnabledMaxTime(self) -> bool"""
+        """
+        isEnabledMaxTime(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if max time is used as a stopping criterion
+
+        """
         return _pyAgrum.ApproximationScheme_isEnabledMaxTime(self)
 
 
@@ -6697,7 +8075,16 @@ class ApproximationScheme(_object):
 
 
     def stateApproximationScheme(self):
-        """stateApproximationScheme(self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE"""
+        """
+        stateApproximationScheme(self) -> gum::IApproximationSchemeConfiguration::ApproximationSchemeSTATE
+
+
+        Returns
+        -------
+        int
+          the state of the approximation scheme
+
+        """
         return _pyAgrum.ApproximationScheme_stateApproximationScheme(self)
 
 
@@ -6711,10 +8098,6 @@ class ApproximationScheme(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.ApproximationScheme_nbrIterations(self)
 
@@ -6724,21 +8107,41 @@ class ApproximationScheme(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.ApproximationScheme_history(self)
 
 
     def initApproximationScheme(self):
-        """initApproximationScheme(self)"""
+        """
+        initApproximationScheme(self)
+
+
+        Initiate the approximation scheme.
+
+        """
         return _pyAgrum.ApproximationScheme_initApproximationScheme(self)
 
 
     def startOfPeriod(self):
-        """startOfPeriod(self) -> bool"""
+        """
+        startOfPeriod(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if it is a start of a period
+
+        """
         return _pyAgrum.ApproximationScheme_startOfPeriod(self)
 
 
@@ -6746,22 +8149,51 @@ class ApproximationScheme(_object):
         """
         updateApproximationScheme(self, incr=1)
         updateApproximationScheme(self)
+
+
+        Update the approximation scheme.
+
         """
         return _pyAgrum.ApproximationScheme_updateApproximationScheme(self, incr)
 
 
     def remainingBurnIn(self):
-        """remainingBurnIn(self) -> gum::Size"""
+        """
+        remainingBurnIn(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of remaining burn in
+
+        """
         return _pyAgrum.ApproximationScheme_remainingBurnIn(self)
 
 
     def stopApproximationScheme(self):
-        """stopApproximationScheme(self)"""
+        """
+        stopApproximationScheme(self)
+
+
+        Stop the approximation scheme.
+
+        """
         return _pyAgrum.ApproximationScheme_stopApproximationScheme(self)
 
 
     def continueApproximationScheme(self, error):
-        """continueApproximationScheme(self, error) -> bool"""
+        """
+        continueApproximationScheme(self, error) -> bool
+
+
+        Continue the approximation scheme.
+
+        Parameters
+        ----------
+        error : double
+
+        """
         return _pyAgrum.ApproximationScheme_continueApproximationScheme(self, error)
 
 ApproximationScheme_swigregister = _pyAgrum.ApproximationScheme_swigregister
@@ -6771,7 +8203,20 @@ FindBarrenNodesType_FIND_NO_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_NO_
 FindBarrenNodesType_FIND_BARREN_NODES = _pyAgrum.FindBarrenNodesType_FIND_BARREN_NODES
 
 def randomDistribution_double(n):
-    """randomDistribution_double(n) -> Vector_double"""
+    """
+    randomDistribution_double(n) -> Vector_double
+
+
+    Parameters
+    ----------
+    n : int
+      The number of modalities for the ditribution.
+
+    Returns
+    -------
+    a random discrete distribution. 
+
+    """
     return _pyAgrum.randomDistribution_double(n)
 class DiscretizedVariable_double(DiscreteVariable):
     """
@@ -6890,23 +8335,23 @@ class DiscretizedVariable_double(DiscreteVariable):
 
 
     def addTick(self,*args):
-      """
-      Parameters
-      ----------
-      aTick : double
-    	the Tick to be added
+        """
+        Parameters
+        ----------
+        aTick : double
+            the Tick to be added
 
-      Returns
-      -------
-      pyAgrum.DiscretizedVariable
-      	the discretized variable
+        Returns
+        -------
+        pyAgrum.DiscretizedVariable
+            the discretized variable
 
-      Warnings
-      --------
-      DefaultInLabel raised if the Tick is already defined
-      """
-      _pyAgrum.DiscretizedVariable_double_addTick(self,*args)
-      return self
+        Warnings
+        --------
+        DefaultInLabel raised if the Tick is already defined
+        """
+        _pyAgrum.DiscretizedVariable_double_addTick(self,*args)
+        return self
 
 
 
@@ -7587,7 +9032,18 @@ class Potential_double(_object):
 
 
     def draw(self):
-        """draw(self) -> gum::Idx"""
+        """
+        draw(self) -> gum::Idx
+
+
+        draw a value using the potential as a probability table.
+
+        Returns
+        -------
+        int
+          the index of the drawn value
+
+        """
         return _pyAgrum.Potential_double_draw(self)
 
 
@@ -7916,6 +9372,12 @@ class Potential_double(_object):
 
 
     def variablesSequence(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the sequence of variables
+        """
         varlist = []
         for i in range(0, self.nbrDim()):
             varlist.append(self.variable(i))
@@ -7972,12 +9434,24 @@ class Potential_double(_object):
 
 
     def tolist(self):
+        """
+        Returns
+        -------
+        list
+            the potential as a list
+        """
         self.__fill_distrib__()
         return self.__distrib__.tolist()
 
 
 
     def toarray(self):
+        """
+        Returns
+        -------
+        array
+            the potential as an array
+        """
         return numpy.array(self.tolist())
 
 
@@ -8013,6 +9487,12 @@ class Potential_double(_object):
 
     @property
     def var_names(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the name of each variables in the potential
+        """
         self.__fill_distrib__()
         return self._var_names
 
@@ -8020,6 +9500,12 @@ class Potential_double(_object):
 
     @property
     def var_dims(self):
+        """
+        Returns
+        -------
+        list
+            a list containing the dimensions of each variables in the potential
+        """
         self.__fill_distrib__()
         return self._var_dims
 
@@ -8493,7 +9979,11 @@ UtilityTable_double_swigregister = _pyAgrum.UtilityTable_double_swigregister
 UtilityTable_double_swigregister(UtilityTable_double)
 
 class IBayesNet_double(DAGmodel):
-    """Proxy of C++ gum::IBayesNet< double > class."""
+    """
+
+    Abstract class used by BayesNet.
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [DAGmodel]:
@@ -8512,32 +10002,139 @@ class IBayesNet_double(DAGmodel):
         return None
 
     def cpt(self, varId):
-        """cpt(self, varId) -> Potential_double"""
+        """
+        cpt(self, varId) -> Potential_double
+
+
+        Returns the CPT of a variable.
+
+        Parameters
+        ----------
+        VarId : int
+        	A variable's id in the pyAgrum.IBayesNet.
+        name : str
+        	A variable's name in the pyAgrum.IBayesNet.
+
+        Returns
+        -------
+        pyAgrum.Potential
+        	The variable's CPT. 
+
+        Warnings
+        --------
+        	NotFound raised if no variable's id matches varId. 
+
+        """
         return _pyAgrum.IBayesNet_double_cpt(self, varId)
 
 
     def variableNodeMap(self):
-        """variableNodeMap(self) -> VariableNodeMap"""
+        """
+        variableNodeMap(self) -> VariableNodeMap
+
+
+        Returns
+        -------
+        pyAgrum.variableNodeMap
+        	the variable node map
+
+        """
         return _pyAgrum.IBayesNet_double_variableNodeMap(self)
 
 
     def variable(self, id):
-        """variable(self, id) -> DiscreteVariable"""
+        """
+        variable(self, id) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        id : int
+        	a variable's id
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Warnings
+        --------
+        IndexError if the graph does not contain the variable
+
+        """
         return _pyAgrum.IBayesNet_double_variable(self, id)
 
 
     def nodeId(self, var):
-        """nodeId(self, var) -> gum::NodeId"""
+        """
+        nodeId(self, var) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        var : pyAgrum.DiscreteVariable
+        	a variable
+
+        Returns
+        -------
+        int
+        	the id of the variable
+
+        Warnings
+        --------
+        IndexError raised if the graph does not contain the variable
+
+        """
         return _pyAgrum.IBayesNet_double_nodeId(self, var)
 
 
     def idFromName(self, name):
-        """idFromName(self, name) -> gum::NodeId"""
+        """
+        idFromName(self, name) -> gum::NodeId
+
+
+        Returns a variable's id given its name in the graph.
+
+        Parameters
+        ----------
+        name : str
+        	The variable's name from which the id is returned.
+
+        Returns
+        -------
+        int :
+        	The variable's node id. 
+
+        Warnings
+        --------
+        	NotFound raised if name does not match a variable in the graph
+
+        """
         return _pyAgrum.IBayesNet_double_idFromName(self, name)
 
 
     def variableFromName(self, name):
-        """variableFromName(self, name) -> DiscreteVariable"""
+        """
+        variableFromName(self, name) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Warnings
+        --------
+        IndexError if the graph does not contain the variable
+
+        """
         return _pyAgrum.IBayesNet_double_variableFromName(self, name)
 
 
@@ -8635,7 +10232,7 @@ class IBayesNet_double(DAGmodel):
         Returns
         -------
         double
-            the smallest value in the CPTs of the BayesNet
+            the smallest value in the CPTs of the IBayesNet
 
         """
         return _pyAgrum.IBayesNet_double_minParam(self)
@@ -8663,7 +10260,7 @@ class IBayesNet_double(DAGmodel):
         Returns
         -------
         double
-            the smallest value (not equal to 0) in the CPTs of the BayesNet
+            the smallest value (not equal to 0) in the CPTs of the IBayesNet
 
         """
         return _pyAgrum.IBayesNet_double_minNonZeroParam(self)
@@ -8703,27 +10300,82 @@ class IBayesNet_double(DAGmodel):
 
 
     def ids(self):
-        """ids(self) -> PyObject *"""
+        """
+        ids(self) -> PyObject *
+
+
+        Returns
+        -------
+        list :
+        	The list variables ids.
+
+        """
         return _pyAgrum.IBayesNet_double_ids(self)
 
 
     def names(self):
-        """names(self) -> PyObject *"""
+        """
+        names(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The names of the graph variables
+
+        """
         return _pyAgrum.IBayesNet_double_names(self)
 
 
     def arcs(self):
-        """arcs(self) -> PyObject *"""
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the IBayesNet
+
+        """
         return _pyAgrum.IBayesNet_double_arcs(self)
 
 
     def parents(self, id):
-        """parents(self, id) -> PyObject *"""
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
         return _pyAgrum.IBayesNet_double_parents(self, id)
 
 
     def children(self, id):
-        """children(self, id) -> PyObject *"""
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
         return _pyAgrum.IBayesNet_double_children(self, id)
 
 
@@ -8733,6 +10385,24 @@ class IBayesNet_double(DAGmodel):
         minimalCondSet(self, target, soids) -> gum::NodeSet
         minimalCondSet(self, target, list) -> PyObject
         minimalCondSet(self, targets, list) -> PyObject *
+
+
+        Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
+
+        Parameters
+        ----------
+        target : int
+        	The id of the target
+        targets : list
+        	The ids of the targets
+        list : list
+        	The list of available variables
+
+        Returns
+        -------
+        Set
+        	The minimal set of variables
+
         """
         return _pyAgrum.IBayesNet_double_minimalCondSet(self, *args)
 
@@ -8850,9 +10520,10 @@ class BayesNet_double(IBayesNet_double):
         variableNodeMap(self) -> VariableNodeMap
 
 
-        Warnings
-        --------
-        A Faire
+        Returns
+        -------
+        pyAgrum.variableNodeMap
+        	the variable node map
 
         """
         return _pyAgrum.BayesNet_double_variableNodeMap(self)
@@ -8947,7 +10618,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        IndexError if the BayesNet does not contain the variable
+        IndexError if the graph does not contain the variable
 
         """
         return _pyAgrum.BayesNet_double_variable(self, *args)
@@ -8998,7 +10669,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        IndexError raised if the BayesNet does not contain the variable
+        IndexError raised if the graph does not contain the variable
 
         """
         return _pyAgrum.BayesNet_double_nodeId(self, var)
@@ -9009,7 +10680,7 @@ class BayesNet_double(IBayesNet_double):
         idFromName(self, name) -> gum::NodeId
 
 
-        Returns a variable's id given its name in the BayesNet.
+        Returns a variable's id given its name in the graph.
 
         Parameters
         ----------
@@ -9023,7 +10694,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        	NotFound raised if name does not match a variable in the BayesNet
+        	NotFound raised if name does not match a variable in the graph
 
         """
         return _pyAgrum.BayesNet_double_idFromName(self, name)
@@ -9046,7 +10717,7 @@ class BayesNet_double(IBayesNet_double):
 
         Warnings
         --------
-        IndexError if the BayesNet does not contain the variable
+        IndexError if the graph does not contain the variable
 
         """
         return _pyAgrum.BayesNet_double_variableFromName(self, name)
@@ -9670,7 +11341,7 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         list :
-        	The lisf variables ids.
+        	The list variables ids.
 
         """
         return _pyAgrum.BayesNet_double_ids(self)
@@ -9684,7 +11355,7 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         list
-        	The names of the BayesNet variables
+        	The names of the graph variables
 
         """
         return _pyAgrum.BayesNet_double_names(self)
@@ -9698,7 +11369,7 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         list
-        	The lisf of arcs in the BayesNet
+        	The lisf of arcs in the IBayesNet
 
         """
         return _pyAgrum.BayesNet_double_arcs(self)
@@ -9766,6 +11437,26 @@ class BayesNet_double(IBayesNet_double):
 
         """
         return _pyAgrum.BayesNet_double_minimalCondSet(self, *args)
+
+
+    def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
+      if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
+        return
+
+      if not hasattr(self,"_listeners"):
+        self._listeners=[]
+
+      nl = PythonBNListener(self.dag(), self.variableNodeMap())
+      if whenNodeAdded is not None:
+        nl.setWhenNodeAdded(whenNodeAdded)
+      if whenNodeDeleted is not None:
+        nl.setWhenNodeDeleted(whenNodeDeleted)
+      if whenArcAdded is not None:
+        nl.setWhenArcAdded(whenArcAdded)
+      if whenArcDeleted is not None:
+        nl.setWhenArcDeleted(whenArcDeleted)
+
+      self._listeners.append(nl)
 
 
     def loadBIF(self, *args):
@@ -10249,7 +11940,19 @@ BayesNetInference_double_swigregister = _pyAgrum.BayesNetInference_double_swigre
 BayesNetInference_double_swigregister(BayesNetInference_double)
 
 class LazyPropagation_double(_object):
-    """Proxy of C++ gum::LazyPropagation< double > class."""
+    """
+
+    Class used for Lazy Propagation
+
+    Available constructors:
+    	``LazyPropagation(bn) -> LazyPropagation``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LazyPropagation_double, name, value)
@@ -10279,15 +11982,7 @@ class LazyPropagation_double(_object):
         return None
 
     def setTriangulation(self, new_triangulation):
-        """
-        setTriangulation(self, new_triangulation)
-
-
-        Warnings
-        --------
-        A faire
-
-        """
+        """setTriangulation(self, new_triangulation)"""
         return _pyAgrum.LazyPropagation_double_setTriangulation(self, new_triangulation)
 
 
@@ -10296,9 +11991,23 @@ class LazyPropagation_double(_object):
         setRelevantPotentialsFinderType(self, type)
 
 
+        sets how we determine the relevant potentials to combine
+
+        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
+
+        0 = FIND_ALL
+        1 = DSEP_BAYESBALL_NODES
+        2 = DSEP_BAYESBALL_POTENTIALS
+        3 = DSEP_KOLLER_FRIEDMAN_2009
+
+        Parameters
+        ----------
+        type : int
+          the finder type
+
         Warnings
         --------
-        A faire
+        InvalidArgument raised if type is not implemented
 
         """
         return _pyAgrum.LazyPropagation_double_setRelevantPotentialsFinderType(self, type)
@@ -10309,9 +12018,21 @@ class LazyPropagation_double(_object):
         setFindBarrenNodesType(self, type)
 
 
+        sets how we determine barren nodes
+
+        Barren nodes are unnecessary for probability inference, so they can be safely discarded in this case (type = FIND_BARREN_NODES). This speeds-up inference. However, there are some cases in which we do not want to remove barren nodes, typically when we want to answer queries such as Most Probable Explanations (MPE).
+
+        0 = FIND_NO_BARREN_NODES
+        1 = FIND_BARREN_NODES
+
+        Parameters
+        ----------
+        type : int
+          the finder type
+
         Warnings
         --------
-        A faire
+        InvalidArgument raised if type is not implemented
 
         """
         return _pyAgrum.LazyPropagation_double_setFindBarrenNodesType(self, type)
@@ -10322,9 +12043,10 @@ class LazyPropagation_double(_object):
         joinTree(self) -> CliqueGraph
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+          the current join tree used
 
         """
         return _pyAgrum.LazyPropagation_double_joinTree(self)
@@ -10335,9 +12057,10 @@ class LazyPropagation_double(_object):
         junctionTree(self) -> CliqueGraph
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+          the current junction tree 
 
         """
         return _pyAgrum.LazyPropagation_double_junctionTree(self)
@@ -10348,15 +12071,40 @@ class LazyPropagation_double(_object):
         evidenceProbability(self) -> double
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        double
+          the probability of evidence
 
         """
         return _pyAgrum.LazyPropagation_double_evidenceProbability(self)
 
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -10366,6 +12114,30 @@ class LazyPropagation_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -10378,6 +12150,18 @@ class LazyPropagation_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -10392,9 +12176,10 @@ class LazyPropagation_double(_object):
         hardEvidenceNodes(self) -> PyObject *
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
 
         """
         return _pyAgrum.LazyPropagation_double_hardEvidenceNodes(self)
@@ -10405,9 +12190,10 @@ class LazyPropagation_double(_object):
         softEvidenceNodes(self) -> PyObject *
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
 
         """
         return _pyAgrum.LazyPropagation_double_softEvidenceNodes(self)
@@ -10418,9 +12204,10 @@ class LazyPropagation_double(_object):
         targets(self) -> PyObject *
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        list
+          the list of marginal targets
 
         """
         return _pyAgrum.LazyPropagation_double_targets(self)
@@ -10431,9 +12218,21 @@ class LazyPropagation_double(_object):
         jointPosterior(self, list) -> Potential_double
 
 
+        Compute the joint posterior of a set of nodes.
+
+        Parameters
+        ----------
+        list : 
+          the list of nodes whose posterior joint probability is wanted
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior joint probability of the set of nodes. 
+
         Warnings
         --------
-        A faire
+        UndefinedElement if an element of nodes is not in targets
 
         """
         return _pyAgrum.LazyPropagation_double_jointPosterior(self, list)
@@ -10444,9 +12243,16 @@ class LazyPropagation_double(_object):
         addJointTarget(self, list)
 
 
+        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
+
+        Parameters
+        ----------
+        list
+          a list of names of nodes
+
         Warnings
         --------
-        A faire
+        UndefinedElement raised if some node(s) do not belong to the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_addJointTarget(self, list)
@@ -10457,9 +12263,20 @@ class LazyPropagation_double(_object):
         eraseJointTarget(self, list)
 
 
+        Remove, if existing, the joint target.
+
+        Parameters
+        ----------
+        list
+          a list of names or Ids of nodes
+
         Warnings
         --------
-        A faire
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_eraseJointTarget(self, list)
@@ -10470,9 +12287,23 @@ class LazyPropagation_double(_object):
         isJointTarget(self, list) -> bool
 
 
+        Parameters
+        ----------
+        list
+          a list of nodes ids or names.
+
+        Returns
+        -------
+        bool
+          True if target is a joint target. 
+
         Warnings
         --------
-        A faire
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_isJointTarget(self, list)
@@ -10483,9 +12314,10 @@ class LazyPropagation_double(_object):
         jointTargets(self) -> PyObject *
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        list
+          the list of target sets 
 
         """
         return _pyAgrum.LazyPropagation_double_jointTargets(self)
@@ -10496,9 +12328,10 @@ class LazyPropagation_double(_object):
         makeInference(self)
 
 
-        Warnings
-        --------
-        A faire
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
 
         """
         return _pyAgrum.LazyPropagation_double_makeInference(self)
@@ -10510,9 +12343,23 @@ class LazyPropagation_double(_object):
         posterior(self, nodeName) -> Potential_double
 
 
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
         Warnings
         --------
-        A faire
+        UndefinedElement if an element of nodes is not in targets
 
         """
         return _pyAgrum.LazyPropagation_double_posterior(self, *args)
@@ -10523,9 +12370,14 @@ class LazyPropagation_double(_object):
         BN(self) -> IBayesNet_double
 
 
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
         Warnings
         --------
-        A faire
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
 
         """
         return _pyAgrum.LazyPropagation_double_BN(self)
@@ -10541,9 +12393,40 @@ class LazyPropagation_double(_object):
         addEvidence(self, nodeName, vals)
 
 
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
         Warnings
         --------
-        A faire
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_addEvidence(self, *args)
@@ -10559,9 +12442,40 @@ class LazyPropagation_double(_object):
         chgEvidence(self, nodeName, vals)
 
 
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
         Warnings
         --------
-        A faire
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_chgEvidence(self, *args)
@@ -10573,9 +12487,21 @@ class LazyPropagation_double(_object):
         hasEvidence(self, nodeName) -> bool
 
 
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
         Warnings
         --------
-        A faire
+        IndexError raised if the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_hasEvidence(self, *args)
@@ -10586,9 +12512,7 @@ class LazyPropagation_double(_object):
         eraseAllEvidence(self)
 
 
-        Warnings
-        --------
-        A faire
+        Removes all the evidence entered into the network.
 
         """
         return _pyAgrum.LazyPropagation_double_eraseAllEvidence(self)
@@ -10600,9 +12524,18 @@ class LazyPropagation_double(_object):
         eraseEvidence(self, nodeName)
 
 
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
         Warnings
         --------
-        A faire
+        IndexError raised if the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_eraseEvidence(self, *args)
@@ -10613,9 +12546,21 @@ class LazyPropagation_double(_object):
         hasHardEvidence(self, nodeName) -> bool
 
 
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
         Warnings
         --------
-        A faire
+        IndexError raised if the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_hasHardEvidence(self, nodeName)
@@ -10627,9 +12572,21 @@ class LazyPropagation_double(_object):
         hasSoftEvidence(self, nodeName) -> bool
 
 
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
         Warnings
         --------
-        A faire
+        IndexError raised if the node does not belong to the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_hasSoftEvidence(self, *args)
@@ -10640,9 +12597,10 @@ class LazyPropagation_double(_object):
         nbrEvidence(self) -> gum::Size
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_nbrEvidence(self)
@@ -10653,9 +12611,10 @@ class LazyPropagation_double(_object):
         nbrHardEvidence(self) -> gum::Size
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_nbrHardEvidence(self)
@@ -10666,9 +12625,10 @@ class LazyPropagation_double(_object):
         nbrSoftEvidence(self) -> gum::Size
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_nbrSoftEvidence(self)
@@ -10679,9 +12639,9 @@ class LazyPropagation_double(_object):
         eraseAllTargets(self)
 
 
-        Warnings
-        --------
-        A faire
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
 
         """
         return _pyAgrum.LazyPropagation_double_eraseAllTargets(self)
@@ -10692,9 +12652,7 @@ class LazyPropagation_double(_object):
         addAllTargets(self)
 
 
-        Warnings
-        --------
-        A faire
+        Add all the nodes as targets.
 
         """
         return _pyAgrum.LazyPropagation_double_addAllTargets(self)
@@ -10706,9 +12664,18 @@ class LazyPropagation_double(_object):
         addTarget(self, nodeName)
 
 
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
         Warnings
         --------
-        A faire
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
 
         """
         return _pyAgrum.LazyPropagation_double_addTarget(self, *args)
@@ -10720,9 +12687,22 @@ class LazyPropagation_double(_object):
         eraseTarget(self, nodeName)
 
 
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
         Warnings
         --------
-        A faire
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_eraseTarget(self, *args)
@@ -10734,9 +12714,25 @@ class LazyPropagation_double(_object):
         isTarget(self, nodeName) -> bool
 
 
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
         Warnings
         --------
-        A faire
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
 
         """
         return _pyAgrum.LazyPropagation_double_isTarget(self, *args)
@@ -10747,9 +12743,10 @@ class LazyPropagation_double(_object):
         nbrTargets(self) -> gum::Size
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        int
+          the number of marginal targets
 
         """
         return _pyAgrum.LazyPropagation_double_nbrTargets(self)
@@ -10761,9 +12758,17 @@ class LazyPropagation_double(_object):
         H(self, nodeName) -> double
 
 
-        Warnings
-        --------
-        A faire
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
 
         """
         return _pyAgrum.LazyPropagation_double_H(self, *args)
@@ -10775,9 +12780,23 @@ class LazyPropagation_double(_object):
         evidenceImpact(self, target, evs) -> Potential_double
 
 
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
         Warnings
         --------
-        A faire
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
 
         """
         return _pyAgrum.LazyPropagation_double_evidenceImpact(self, *args)
@@ -10788,9 +12807,7 @@ class LazyPropagation_double(_object):
         eraseAllJointTargets(self)
 
 
-        Warnings
-        --------
-        A faire
+        Clear all previously defined joint targets.
 
         """
         return _pyAgrum.LazyPropagation_double_eraseAllJointTargets(self)
@@ -10801,9 +12818,7 @@ class LazyPropagation_double(_object):
         eraseAllMarginalTargets(self)
 
 
-        Warnings
-        --------
-        A faire
+        Clear all the previously defined marginal targets.
 
         """
         return _pyAgrum.LazyPropagation_double_eraseAllMarginalTargets(self)
@@ -10814,9 +12829,10 @@ class LazyPropagation_double(_object):
         nbrJointTargets(self) -> gum::Size
 
 
-        Warnings
-        --------
-        A faire
+        Returns
+        -------
+        int
+          the number of joint targets
 
         """
         return _pyAgrum.LazyPropagation_double_nbrJointTargets(self)
@@ -10827,9 +12843,17 @@ class LazyPropagation_double(_object):
         I(self, X, Y) -> double
 
 
-        Warnings
-        --------
-        A faire
+        Parameters
+        ----------
+        X : int
+          a node Id
+        Y : int
+          another node Id
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
 
         """
         return _pyAgrum.LazyPropagation_double_I(self, X, Y)
@@ -10840,9 +12864,17 @@ class LazyPropagation_double(_object):
         VI(self, X, Y) -> double
 
 
-        Warnings
-        --------
-        A faire
+        Parameters
+        ----------
+        X : int
+          a node Id
+        Y : int
+          another node Id
+
+        Returns
+        -------
+        double
+          variation of information between X and Y
 
         """
         return _pyAgrum.LazyPropagation_double_VI(self, X, Y)
@@ -10854,9 +12886,25 @@ class LazyPropagation_double(_object):
         evidenceJointImpact(self, targets, evs) -> Potential_double
 
 
+        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs) 
+
+        Parameters
+        ----------
+        targets :
+          (int) a node Id
+        targets :
+          (str) a node name
+        evs : set
+          a set of nodes ids or names.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(target|evs)
+
         Warnings
         --------
-        A faire
+        Exception raised if some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 
         """
         return _pyAgrum.LazyPropagation_double_evidenceJointImpact(self, *args)
@@ -10865,7 +12913,19 @@ LazyPropagation_double_swigregister = _pyAgrum.LazyPropagation_double_swigregist
 LazyPropagation_double_swigregister(LazyPropagation_double)
 
 class ShaferShenoyInference_double(_object):
-    """Proxy of C++ gum::ShaferShenoyInference< double > class."""
+    """
+
+    Class used for Shafer-Shenoy inferences.
+
+    Available constructors:
+    	``ShaferShenoyInference(bn) -> ShaferShenoyInference``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, ShaferShenoyInference_double, name, value)
@@ -10899,26 +12959,97 @@ class ShaferShenoyInference_double(_object):
 
 
     def setFindBarrenNodesType(self, type):
-        """setFindBarrenNodesType(self, type)"""
+        """
+        setFindBarrenNodesType(self, type)
+
+
+        sets how we determine barren nodes
+
+        Barren nodes are unnecessary for probability inference, so they can be safely discarded in this case (type = FIND_BARREN_NODES). This speeds-up inference. However, there are some cases in which we do not want to remove barren nodes, typically when we want to answer queries such as Most Probable Explanations (MPE).
+
+        0 = FIND_NO_BARREN_NODES
+        1 = FIND_BARREN_NODES
+
+        Parameters
+        ----------
+        type : int
+          the finder type
+
+        Warnings
+        --------
+        InvalidArgument raised if type is not implemented
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_setFindBarrenNodesType(self, type)
 
 
     def joinTree(self):
-        """joinTree(self) -> CliqueGraph"""
+        """
+        joinTree(self) -> CliqueGraph
+
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+          the current join tree used
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_joinTree(self)
 
 
     def junctionTree(self):
-        """junctionTree(self) -> CliqueGraph"""
+        """
+        junctionTree(self) -> CliqueGraph
+
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+          the current junction tree 
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_junctionTree(self)
 
 
     def evidenceProbability(self):
-        """evidenceProbability(self) -> double"""
+        """
+        evidenceProbability(self) -> double
+
+
+        Returns
+        -------
+        double
+          the probability of evidence
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_evidenceProbability(self)
 
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -10928,6 +13059,30 @@ class ShaferShenoyInference_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -10940,6 +13095,18 @@ class ShaferShenoyInference_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -10950,47 +13117,168 @@ class ShaferShenoyInference_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_targets(self)
 
 
     def jointPosterior(self, list):
-        """jointPosterior(self, list) -> Potential_double"""
+        """
+        jointPosterior(self, list) -> Potential_double
+
+
+        Compute the joint posterior of a set of nodes.
+
+        Parameters
+        ----------
+        list : 
+          the list of nodes whose posterior joint probability is wanted
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior joint probability of the set of nodes. 
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_jointPosterior(self, list)
 
 
     def addJointTarget(self, list):
-        """addJointTarget(self, list)"""
+        """
+        addJointTarget(self, list)
+
+
+        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
+
+        Parameters
+        ----------
+        list
+          a list of names of nodes
+
+        Warnings
+        --------
+        UndefinedElement raised if some node(s) do not belong to the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_addJointTarget(self, list)
 
 
     def eraseJointTarget(self, list):
-        """eraseJointTarget(self, list)"""
+        """
+        eraseJointTarget(self, list)
+
+
+        Remove, if existing, the joint target.
+
+        Parameters
+        ----------
+        list
+          a list of names or Ids of nodes
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_eraseJointTarget(self, list)
 
 
     def isJointTarget(self, list):
-        """isJointTarget(self, list) -> bool"""
+        """
+        isJointTarget(self, list) -> bool
+
+
+        Parameters
+        ----------
+        list
+          a list of nodes ids or names.
+
+        Returns
+        -------
+        bool
+          True if target is a joint target. 
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_isJointTarget(self, list)
 
 
     def jointTargets(self):
-        """jointTargets(self) -> PyObject *"""
+        """
+        jointTargets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of target sets 
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_jointTargets(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_makeInference(self)
 
 
@@ -10998,12 +13286,45 @@ class ShaferShenoyInference_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.ShaferShenoyInference_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_BN(self)
 
 
@@ -11015,6 +13336,43 @@ class ShaferShenoyInference_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ShaferShenoyInference_double_addEvidence(self, *args)
 
@@ -11027,6 +13385,43 @@ class ShaferShenoyInference_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ShaferShenoyInference_double_chgEvidence(self, *args)
 
@@ -11035,12 +13430,36 @@ class ShaferShenoyInference_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ShaferShenoyInference_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_eraseAllEvidence(self)
 
 
@@ -11048,12 +13467,47 @@ class ShaferShenoyInference_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ShaferShenoyInference_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_hasHardEvidence(self, nodeName)
 
 
@@ -11061,32 +13515,91 @@ class ShaferShenoyInference_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ShaferShenoyInference_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_addAllTargets(self)
 
 
@@ -11094,6 +13607,21 @@ class ShaferShenoyInference_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.ShaferShenoyInference_double_addTarget(self, *args)
 
@@ -11102,6 +13630,25 @@ class ShaferShenoyInference_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.ShaferShenoyInference_double_eraseTarget(self, *args)
 
@@ -11110,12 +13657,43 @@ class ShaferShenoyInference_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.ShaferShenoyInference_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_nbrTargets(self)
 
 
@@ -11123,6 +13701,20 @@ class ShaferShenoyInference_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.ShaferShenoyInference_double_H(self, *args)
 
@@ -11131,32 +13723,105 @@ class ShaferShenoyInference_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.ShaferShenoyInference_double_evidenceImpact(self, *args)
 
 
     def eraseAllJointTargets(self):
-        """eraseAllJointTargets(self)"""
+        """
+        eraseAllJointTargets(self)
+
+
+        Clear all previously defined joint targets.
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_eraseAllJointTargets(self)
 
 
     def eraseAllMarginalTargets(self):
-        """eraseAllMarginalTargets(self)"""
+        """
+        eraseAllMarginalTargets(self)
+
+
+        Clear all the previously defined marginal targets.
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_eraseAllMarginalTargets(self)
 
 
     def nbrJointTargets(self):
-        """nbrJointTargets(self) -> gum::Size"""
+        """
+        nbrJointTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of joint targets
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_nbrJointTargets(self)
 
 
     def I(self, X, Y):
-        """I(self, X, Y) -> double"""
+        """
+        I(self, X, Y) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        Y : int
+          another node Id
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_I(self, X, Y)
 
 
     def VI(self, X, Y):
-        """VI(self, X, Y) -> double"""
+        """
+        VI(self, X, Y) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        Y : int
+          another node Id
+
+        Returns
+        -------
+        double
+          variation of information between X and Y
+
+        """
         return _pyAgrum.ShaferShenoyInference_double_VI(self, X, Y)
 
 
@@ -11164,6 +13829,28 @@ class ShaferShenoyInference_double(_object):
         """
         evidenceJointImpact(self, targets, evs) -> Potential_double
         evidenceJointImpact(self, targets, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(joint targets|evs) (for all instanciation of targets and evs) 
+
+        Parameters
+        ----------
+        targets :
+          (int) a node Id
+        targets :
+          (str) a node name
+        evs : set
+          a set of nodes ids or names.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(target|evs)
+
+        Warnings
+        --------
+        Exception raised if some evidene entered into the Bayes net are incompatible (their joint proba = 0)
+
         """
         return _pyAgrum.ShaferShenoyInference_double_evidenceJointImpact(self, *args)
 
@@ -11171,7 +13858,19 @@ ShaferShenoyInference_double_swigregister = _pyAgrum.ShaferShenoyInference_doubl
 ShaferShenoyInference_double_swigregister(ShaferShenoyInference_double)
 
 class VariableElimination_double(_object):
-    """Proxy of C++ gum::VariableElimination< double > class."""
+    """
+
+    Class used for Variable Elimination inference algorithm.
+
+    Available constructors:
+    	``VariableElimination(bn) -> VariableElimination``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, VariableElimination_double, name, value)
@@ -11205,21 +13904,96 @@ class VariableElimination_double(_object):
 
 
     def setRelevantPotentialsFinderType(self, type):
-        """setRelevantPotentialsFinderType(self, type)"""
+        """
+        setRelevantPotentialsFinderType(self, type)
+
+
+        sets how we determine the relevant potentials to combine
+
+        When a clique sends a message to a separator, it first constitute the set of the potentials it contains and of the potentials contained in the messages it received. If RelevantPotentialsFinderType = FIND_ALL, all these potentials are combined and projected to produce the message sent to the separator. If RelevantPotentialsFinderType = DSEP_BAYESBALL_NODES, then only the set of potentials d-connected to the variables of the separator are kept for combination and projection.
+
+        0 = FIND_ALL
+        1 = DSEP_BAYESBALL_NODES
+        2 = DSEP_BAYESBALL_POTENTIALS
+        3 = DSEP_KOLLER_FRIEDMAN_2009
+
+        Parameters
+        ----------
+        type : int
+          the finder type
+
+        Warnings
+        --------
+        InvalidArgument raised if type is not implemented
+
+        """
         return _pyAgrum.VariableElimination_double_setRelevantPotentialsFinderType(self, type)
 
 
     def setFindBarrenNodesType(self, type):
-        """setFindBarrenNodesType(self, type)"""
+        """
+        setFindBarrenNodesType(self, type)
+
+
+        sets how we determine barren nodes
+
+        Barren nodes are unnecessary for probability inference, so they can be safely discarded in this case (type = FIND_BARREN_NODES). This speeds-up inference. However, there are some cases in which we do not want to remove barren nodes, typically when we want to answer queries such as Most Probable Explanations (MPE).
+
+        0 = FIND_NO_BARREN_NODES
+        1 = FIND_BARREN_NODES
+
+        Parameters
+        ----------
+        type : int
+          the finder type
+
+        Warnings
+        --------
+        InvalidArgument raised if type is not implemented
+
+        """
         return _pyAgrum.VariableElimination_double_setFindBarrenNodesType(self, type)
 
 
     def junctionTree(self, id):
-        """junctionTree(self, id) -> CliqueGraph"""
+        """
+        junctionTree(self, id) -> CliqueGraph
+
+
+        Returns
+        -------
+        pyAgrum.CliqueGraph
+          the current junction tree 
+
+        """
         return _pyAgrum.VariableElimination_double_junctionTree(self, id)
 
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -11229,6 +14003,30 @@ class VariableElimination_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -11241,6 +14039,18 @@ class VariableElimination_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -11251,47 +14061,168 @@ class VariableElimination_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.VariableElimination_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.VariableElimination_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.VariableElimination_double_targets(self)
 
 
     def jointPosterior(self, list):
-        """jointPosterior(self, list) -> Potential_double"""
+        """
+        jointPosterior(self, list) -> Potential_double
+
+
+        Compute the joint posterior of a set of nodes.
+
+        Parameters
+        ----------
+        list : 
+          the list of nodes whose posterior joint probability is wanted
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior joint probability of the set of nodes. 
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
+        """
         return _pyAgrum.VariableElimination_double_jointPosterior(self, list)
 
 
     def addJointTarget(self, list):
-        """addJointTarget(self, list)"""
+        """
+        addJointTarget(self, list)
+
+
+        Add a list of nodes as a new joint target. As a collateral effect, every node is added as a marginal target.
+
+        Parameters
+        ----------
+        list
+          a list of names of nodes
+
+        Warnings
+        --------
+        UndefinedElement raised if some node(s) do not belong to the Bayesian network
+
+        """
         return _pyAgrum.VariableElimination_double_addJointTarget(self, list)
 
 
     def eraseJointTarget(self, list):
-        """eraseJointTarget(self, list)"""
+        """
+        eraseJointTarget(self, list)
+
+
+        Remove, if existing, the joint target.
+
+        Parameters
+        ----------
+        list
+          a list of names or Ids of nodes
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
+        """
         return _pyAgrum.VariableElimination_double_eraseJointTarget(self, list)
 
 
     def isJointTarget(self, list):
-        """isJointTarget(self, list) -> bool"""
+        """
+        isJointTarget(self, list) -> bool
+
+
+        Parameters
+        ----------
+        list
+          a list of nodes ids or names.
+
+        Returns
+        -------
+        bool
+          True if target is a joint target. 
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
+        """
         return _pyAgrum.VariableElimination_double_isJointTarget(self, list)
 
 
     def jointTargets(self):
-        """jointTargets(self) -> PyObject *"""
+        """
+        jointTargets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of target sets 
+
+        """
         return _pyAgrum.VariableElimination_double_jointTargets(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.VariableElimination_double_makeInference(self)
 
 
@@ -11299,12 +14230,45 @@ class VariableElimination_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.VariableElimination_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.VariableElimination_double_BN(self)
 
 
@@ -11316,6 +14280,43 @@ class VariableElimination_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.VariableElimination_double_addEvidence(self, *args)
 
@@ -11328,6 +14329,43 @@ class VariableElimination_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.VariableElimination_double_chgEvidence(self, *args)
 
@@ -11336,12 +14374,36 @@ class VariableElimination_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.VariableElimination_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.VariableElimination_double_eraseAllEvidence(self)
 
 
@@ -11349,12 +14411,47 @@ class VariableElimination_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.VariableElimination_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.VariableElimination_double_hasHardEvidence(self, nodeName)
 
 
@@ -11362,32 +14459,91 @@ class VariableElimination_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.VariableElimination_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.VariableElimination_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.VariableElimination_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.VariableElimination_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.VariableElimination_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.VariableElimination_double_addAllTargets(self)
 
 
@@ -11395,6 +14551,21 @@ class VariableElimination_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.VariableElimination_double_addTarget(self, *args)
 
@@ -11403,6 +14574,25 @@ class VariableElimination_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.VariableElimination_double_eraseTarget(self, *args)
 
@@ -11411,12 +14601,43 @@ class VariableElimination_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.VariableElimination_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.VariableElimination_double_nbrTargets(self)
 
 
@@ -11424,6 +14645,20 @@ class VariableElimination_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.VariableElimination_double_H(self, *args)
 
@@ -11432,6 +14667,26 @@ class VariableElimination_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.VariableElimination_double_evidenceImpact(self, *args)
 
@@ -11439,7 +14694,19 @@ VariableElimination_double_swigregister = _pyAgrum.VariableElimination_double_sw
 VariableElimination_double_swigregister(VariableElimination_double)
 
 class GibbsSampling_double(_object):
-    """Proxy of C++ gum::GibbsSampling< double > class."""
+    """
+
+    Class for making Gibbs sampling inference in bayesian networks.
+
+    Available constructors:
+    	``GibbsSampling(bn) -> GibbsSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, GibbsSampling_double, name, value)
@@ -11464,16 +14731,58 @@ class GibbsSampling_double(_object):
         return None
 
     def setBurnIn(self, b):
-        """setBurnIn(self, b)"""
+        """
+        setBurnIn(self, b)
+
+
+        Parameters
+        ----------
+        b : int
+          size of burn in on number of iteration
+
+        """
         return _pyAgrum.GibbsSampling_double_setBurnIn(self, b)
 
 
     def burnIn(self):
-        """burnIn(self) -> gum::Size"""
+        """
+        burnIn(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          size of burn in on number of iteration
+
+        """
         return _pyAgrum.GibbsSampling_double_burnIn(self)
 
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -11483,6 +14792,30 @@ class GibbsSampling_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -11495,6 +14828,18 @@ class GibbsSampling_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -11505,17 +14850,44 @@ class GibbsSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.GibbsSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.GibbsSampling_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.GibbsSampling_double_targets(self)
 
 
@@ -11717,10 +15089,6 @@ class GibbsSampling_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.GibbsSampling_double_nbrIterations(self)
 
@@ -11758,21 +15126,43 @@ class GibbsSampling_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.GibbsSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.GibbsSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.GibbsSampling_double_makeInference(self)
 
 
@@ -11780,12 +15170,45 @@ class GibbsSampling_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.GibbsSampling_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.GibbsSampling_double_BN(self)
 
 
@@ -11797,6 +15220,43 @@ class GibbsSampling_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.GibbsSampling_double_addEvidence(self, *args)
 
@@ -11809,6 +15269,43 @@ class GibbsSampling_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.GibbsSampling_double_chgEvidence(self, *args)
 
@@ -11817,12 +15314,36 @@ class GibbsSampling_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.GibbsSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.GibbsSampling_double_eraseAllEvidence(self)
 
 
@@ -11830,12 +15351,47 @@ class GibbsSampling_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.GibbsSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.GibbsSampling_double_hasHardEvidence(self, nodeName)
 
 
@@ -11843,32 +15399,91 @@ class GibbsSampling_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.GibbsSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.GibbsSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.GibbsSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.GibbsSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.GibbsSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.GibbsSampling_double_addAllTargets(self)
 
 
@@ -11876,6 +15491,21 @@ class GibbsSampling_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.GibbsSampling_double_addTarget(self, *args)
 
@@ -11884,6 +15514,25 @@ class GibbsSampling_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.GibbsSampling_double_eraseTarget(self, *args)
 
@@ -11892,12 +15541,43 @@ class GibbsSampling_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.GibbsSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.GibbsSampling_double_nbrTargets(self)
 
 
@@ -11905,6 +15585,20 @@ class GibbsSampling_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.GibbsSampling_double_H(self, *args)
 
@@ -11913,6 +15607,26 @@ class GibbsSampling_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.GibbsSampling_double_evidenceImpact(self, *args)
 
@@ -11921,34 +15635,102 @@ class GibbsSampling_double(_object):
         """
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
+
+
+        Computes and returns the current posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the current posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.GibbsSampling_double_currentPosterior(self, *args)
 
 
     def nbrDrawnVar(self):
-        """nbrDrawnVar(self) -> gum::Size"""
+        """
+        nbrDrawnVar(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of variable drawn at each iteration
+
+        """
         return _pyAgrum.GibbsSampling_double_nbrDrawnVar(self)
 
 
     def setNbrDrawnVar(self, _nbr):
-        """setNbrDrawnVar(self, _nbr)"""
+        """
+        setNbrDrawnVar(self, _nbr)
+
+
+        Parameters
+        ----------
+        _nbr : int
+          the number of variables to be drawn at each iteration
+
+        """
         return _pyAgrum.GibbsSampling_double_setNbrDrawnVar(self, _nbr)
 
 
     def isDrawnAtRandom(self):
-        """isDrawnAtRandom(self) -> bool"""
+        """
+        isDrawnAtRandom(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if variables are drawn at random
+
+        """
         return _pyAgrum.GibbsSampling_double_isDrawnAtRandom(self)
 
 
     def setDrawnAtRandom(self, _atRandom):
-        """setDrawnAtRandom(self, _atRandom)"""
+        """
+        setDrawnAtRandom(self, _atRandom)
+
+
+        Parameters
+        ----------
+        _atRandom : bool
+          indicates if variables should be drawn at random
+
+        """
         return _pyAgrum.GibbsSampling_double_setDrawnAtRandom(self, _atRandom)
 
 GibbsSampling_double_swigregister = _pyAgrum.GibbsSampling_double_swigregister
 GibbsSampling_double_swigregister(GibbsSampling_double)
 
 class ImportanceSampling_double(_object):
-    """Proxy of C++ gum::ImportanceSampling< double > class."""
+    """
+
+    Class used for inferences using the Importance Sampling algorithm.
+
+    Available constructors:
+    	``ImportanceSampling(bn) -> ImportanceSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, ImportanceSampling_double, name, value)
@@ -11973,6 +15755,30 @@ class ImportanceSampling_double(_object):
         return None
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -11982,6 +15788,30 @@ class ImportanceSampling_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -11994,6 +15824,18 @@ class ImportanceSampling_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -12004,17 +15846,44 @@ class ImportanceSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.ImportanceSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.ImportanceSampling_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.ImportanceSampling_double_targets(self)
 
 
@@ -12216,10 +16085,6 @@ class ImportanceSampling_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.ImportanceSampling_double_nbrIterations(self)
 
@@ -12257,21 +16122,43 @@ class ImportanceSampling_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.ImportanceSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.ImportanceSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.ImportanceSampling_double_makeInference(self)
 
 
@@ -12279,12 +16166,45 @@ class ImportanceSampling_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.ImportanceSampling_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.ImportanceSampling_double_BN(self)
 
 
@@ -12296,6 +16216,43 @@ class ImportanceSampling_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ImportanceSampling_double_addEvidence(self, *args)
 
@@ -12308,6 +16265,43 @@ class ImportanceSampling_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ImportanceSampling_double_chgEvidence(self, *args)
 
@@ -12316,12 +16310,36 @@ class ImportanceSampling_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ImportanceSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.ImportanceSampling_double_eraseAllEvidence(self)
 
 
@@ -12329,12 +16347,47 @@ class ImportanceSampling_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ImportanceSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.ImportanceSampling_double_hasHardEvidence(self, nodeName)
 
 
@@ -12342,32 +16395,91 @@ class ImportanceSampling_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.ImportanceSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ImportanceSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ImportanceSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.ImportanceSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.ImportanceSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.ImportanceSampling_double_addAllTargets(self)
 
 
@@ -12375,6 +16487,21 @@ class ImportanceSampling_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.ImportanceSampling_double_addTarget(self, *args)
 
@@ -12383,6 +16510,25 @@ class ImportanceSampling_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.ImportanceSampling_double_eraseTarget(self, *args)
 
@@ -12391,12 +16537,43 @@ class ImportanceSampling_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.ImportanceSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.ImportanceSampling_double_nbrTargets(self)
 
 
@@ -12404,6 +16581,20 @@ class ImportanceSampling_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.ImportanceSampling_double_H(self, *args)
 
@@ -12412,6 +16603,26 @@ class ImportanceSampling_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.ImportanceSampling_double_evidenceImpact(self, *args)
 
@@ -12420,6 +16631,26 @@ class ImportanceSampling_double(_object):
         """
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
+
+
+        Computes and returns the current posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the current posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.ImportanceSampling_double_currentPosterior(self, *args)
 
@@ -12427,7 +16658,19 @@ ImportanceSampling_double_swigregister = _pyAgrum.ImportanceSampling_double_swig
 ImportanceSampling_double_swigregister(ImportanceSampling_double)
 
 class WeightedSampling_double(_object):
-    """Proxy of C++ gum::WeightedSampling< double > class."""
+    """
+
+    Class used for Weighted sampling inference algorithm.
+
+    Available constructors:
+    	``WeightedSampling(bn) -> WeightedSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, WeightedSampling_double, name, value)
@@ -12452,6 +16695,30 @@ class WeightedSampling_double(_object):
         return None
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -12461,6 +16728,30 @@ class WeightedSampling_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -12473,6 +16764,18 @@ class WeightedSampling_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -12483,17 +16786,44 @@ class WeightedSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.WeightedSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.WeightedSampling_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.WeightedSampling_double_targets(self)
 
 
@@ -12695,10 +17025,6 @@ class WeightedSampling_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.WeightedSampling_double_nbrIterations(self)
 
@@ -12736,21 +17062,43 @@ class WeightedSampling_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.WeightedSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.WeightedSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.WeightedSampling_double_makeInference(self)
 
 
@@ -12758,12 +17106,45 @@ class WeightedSampling_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.WeightedSampling_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.WeightedSampling_double_BN(self)
 
 
@@ -12775,6 +17156,43 @@ class WeightedSampling_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.WeightedSampling_double_addEvidence(self, *args)
 
@@ -12787,6 +17205,43 @@ class WeightedSampling_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.WeightedSampling_double_chgEvidence(self, *args)
 
@@ -12795,12 +17250,36 @@ class WeightedSampling_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.WeightedSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.WeightedSampling_double_eraseAllEvidence(self)
 
 
@@ -12808,12 +17287,47 @@ class WeightedSampling_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.WeightedSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.WeightedSampling_double_hasHardEvidence(self, nodeName)
 
 
@@ -12821,32 +17335,91 @@ class WeightedSampling_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.WeightedSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.WeightedSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.WeightedSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.WeightedSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.WeightedSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.WeightedSampling_double_addAllTargets(self)
 
 
@@ -12854,6 +17427,21 @@ class WeightedSampling_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.WeightedSampling_double_addTarget(self, *args)
 
@@ -12862,6 +17450,25 @@ class WeightedSampling_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.WeightedSampling_double_eraseTarget(self, *args)
 
@@ -12870,12 +17477,43 @@ class WeightedSampling_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.WeightedSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.WeightedSampling_double_nbrTargets(self)
 
 
@@ -12883,6 +17521,20 @@ class WeightedSampling_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.WeightedSampling_double_H(self, *args)
 
@@ -12891,6 +17543,26 @@ class WeightedSampling_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.WeightedSampling_double_evidenceImpact(self, *args)
 
@@ -12899,6 +17571,26 @@ class WeightedSampling_double(_object):
         """
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
+
+
+        Computes and returns the current posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the current posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.WeightedSampling_double_currentPosterior(self, *args)
 
@@ -12906,7 +17598,19 @@ WeightedSampling_double_swigregister = _pyAgrum.WeightedSampling_double_swigregi
 WeightedSampling_double_swigregister(WeightedSampling_double)
 
 class MonteCarloSampling_double(_object):
-    """Proxy of C++ gum::MonteCarloSampling< double > class."""
+    """
+
+    Class used for Monte Carlo sampling inference algorithm.
+
+    Available constructors:
+    	``MonteCarloSampling(bn) -> MonteCarloSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, MonteCarloSampling_double, name, value)
@@ -12931,6 +17635,30 @@ class MonteCarloSampling_double(_object):
         return None
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -12940,6 +17668,30 @@ class MonteCarloSampling_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -12952,6 +17704,18 @@ class MonteCarloSampling_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -12962,17 +17726,44 @@ class MonteCarloSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.MonteCarloSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.MonteCarloSampling_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.MonteCarloSampling_double_targets(self)
 
 
@@ -13174,10 +17965,6 @@ class MonteCarloSampling_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.MonteCarloSampling_double_nbrIterations(self)
 
@@ -13215,21 +18002,43 @@ class MonteCarloSampling_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.MonteCarloSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.MonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.MonteCarloSampling_double_makeInference(self)
 
 
@@ -13237,12 +18046,45 @@ class MonteCarloSampling_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.MonteCarloSampling_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.MonteCarloSampling_double_BN(self)
 
 
@@ -13254,6 +18096,43 @@ class MonteCarloSampling_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.MonteCarloSampling_double_addEvidence(self, *args)
 
@@ -13266,6 +18145,43 @@ class MonteCarloSampling_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.MonteCarloSampling_double_chgEvidence(self, *args)
 
@@ -13274,12 +18190,36 @@ class MonteCarloSampling_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.MonteCarloSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.MonteCarloSampling_double_eraseAllEvidence(self)
 
 
@@ -13287,12 +18227,47 @@ class MonteCarloSampling_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.MonteCarloSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.MonteCarloSampling_double_hasHardEvidence(self, nodeName)
 
 
@@ -13300,32 +18275,91 @@ class MonteCarloSampling_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.MonteCarloSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.MonteCarloSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.MonteCarloSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.MonteCarloSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.MonteCarloSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.MonteCarloSampling_double_addAllTargets(self)
 
 
@@ -13333,6 +18367,21 @@ class MonteCarloSampling_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.MonteCarloSampling_double_addTarget(self, *args)
 
@@ -13341,6 +18390,25 @@ class MonteCarloSampling_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.MonteCarloSampling_double_eraseTarget(self, *args)
 
@@ -13349,12 +18417,43 @@ class MonteCarloSampling_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.MonteCarloSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.MonteCarloSampling_double_nbrTargets(self)
 
 
@@ -13362,6 +18461,20 @@ class MonteCarloSampling_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.MonteCarloSampling_double_H(self, *args)
 
@@ -13370,6 +18483,26 @@ class MonteCarloSampling_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.MonteCarloSampling_double_evidenceImpact(self, *args)
 
@@ -13378,6 +18511,26 @@ class MonteCarloSampling_double(_object):
         """
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
+
+
+        Computes and returns the current posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the current posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.MonteCarloSampling_double_currentPosterior(self, *args)
 
@@ -13385,7 +18538,19 @@ MonteCarloSampling_double_swigregister = _pyAgrum.MonteCarloSampling_double_swig
 MonteCarloSampling_double_swigregister(MonteCarloSampling_double)
 
 class LoopyImportanceSampling_double(_object):
-    """Proxy of C++ gum::LoopySamplingInference< double,gum::ImportanceSampling > class."""
+    """
+
+    Class used for inferences using a loopy version of importance sampling.
+
+    Available constructors:
+    	``LoopyImportanceSampling(bn) -> LoopyImportanceSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyImportanceSampling_double, name, value)
@@ -13415,11 +18580,44 @@ class LoopyImportanceSampling_double(_object):
 
 
     def setVirtualLBPSize(self, vlbpsize):
-        """setVirtualLBPSize(self, vlbpsize)"""
+        """
+        setVirtualLBPSize(self, vlbpsize)
+
+
+        Parameters
+        ----------
+        vlbpsize : double
+          the size of the virtual LBP
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_setVirtualLBPSize(self, vlbpsize)
 
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -13429,6 +18627,30 @@ class LoopyImportanceSampling_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -13441,6 +18663,18 @@ class LoopyImportanceSampling_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -13451,17 +18685,44 @@ class LoopyImportanceSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_targets(self)
 
 
@@ -13663,10 +18924,6 @@ class LoopyImportanceSampling_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.LoopyImportanceSampling_double_nbrIterations(self)
 
@@ -13704,21 +18961,43 @@ class LoopyImportanceSampling_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.LoopyImportanceSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_makeInference(self)
 
 
@@ -13726,12 +19005,45 @@ class LoopyImportanceSampling_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_BN(self)
 
 
@@ -13743,6 +19055,43 @@ class LoopyImportanceSampling_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_addEvidence(self, *args)
 
@@ -13755,6 +19104,43 @@ class LoopyImportanceSampling_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_chgEvidence(self, *args)
 
@@ -13763,12 +19149,36 @@ class LoopyImportanceSampling_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_eraseAllEvidence(self)
 
 
@@ -13776,12 +19186,47 @@ class LoopyImportanceSampling_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_hasHardEvidence(self, nodeName)
 
 
@@ -13789,32 +19234,91 @@ class LoopyImportanceSampling_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_addAllTargets(self)
 
 
@@ -13822,6 +19326,21 @@ class LoopyImportanceSampling_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_addTarget(self, *args)
 
@@ -13830,6 +19349,25 @@ class LoopyImportanceSampling_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_eraseTarget(self, *args)
 
@@ -13838,12 +19376,43 @@ class LoopyImportanceSampling_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.LoopyImportanceSampling_double_nbrTargets(self)
 
 
@@ -13851,6 +19420,20 @@ class LoopyImportanceSampling_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_H(self, *args)
 
@@ -13859,6 +19442,26 @@ class LoopyImportanceSampling_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_evidenceImpact(self, *args)
 
@@ -13867,6 +19470,26 @@ class LoopyImportanceSampling_double(_object):
         """
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
+
+
+        Computes and returns the current posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the current posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.LoopyImportanceSampling_double_currentPosterior(self, *args)
 
@@ -13874,7 +19497,19 @@ LoopyImportanceSampling_double_swigregister = _pyAgrum.LoopyImportanceSampling_d
 LoopyImportanceSampling_double_swigregister(LoopyImportanceSampling_double)
 
 class LoopyWeightedSampling_double(_object):
-    """Proxy of C++ gum::LoopySamplingInference< double,gum::WeightedSampling > class."""
+    """
+
+    Class used for inferences using a loopy version of weighted sampling.
+
+    Available constructors:
+    	``LoopyWeightedSampling(bn) -> LoopyWeightedSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyWeightedSampling_double, name, value)
@@ -13904,11 +19539,44 @@ class LoopyWeightedSampling_double(_object):
 
 
     def setVirtualLBPSize(self, vlbpsize):
-        """setVirtualLBPSize(self, vlbpsize)"""
+        """
+        setVirtualLBPSize(self, vlbpsize)
+
+
+        Parameters
+        ----------
+        vlbpsize : double
+          the size of the virtual LBP
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_setVirtualLBPSize(self, vlbpsize)
 
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -13918,6 +19586,30 @@ class LoopyWeightedSampling_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -13930,6 +19622,18 @@ class LoopyWeightedSampling_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -13940,17 +19644,44 @@ class LoopyWeightedSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_targets(self)
 
 
@@ -14152,10 +19883,6 @@ class LoopyWeightedSampling_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.LoopyWeightedSampling_double_nbrIterations(self)
 
@@ -14193,21 +19920,43 @@ class LoopyWeightedSampling_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.LoopyWeightedSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_makeInference(self)
 
 
@@ -14215,12 +19964,45 @@ class LoopyWeightedSampling_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_BN(self)
 
 
@@ -14232,6 +20014,43 @@ class LoopyWeightedSampling_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_addEvidence(self, *args)
 
@@ -14244,6 +20063,43 @@ class LoopyWeightedSampling_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_chgEvidence(self, *args)
 
@@ -14252,12 +20108,36 @@ class LoopyWeightedSampling_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_eraseAllEvidence(self)
 
 
@@ -14265,12 +20145,47 @@ class LoopyWeightedSampling_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_hasHardEvidence(self, nodeName)
 
 
@@ -14278,32 +20193,91 @@ class LoopyWeightedSampling_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_addAllTargets(self)
 
 
@@ -14311,6 +20285,21 @@ class LoopyWeightedSampling_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_addTarget(self, *args)
 
@@ -14319,6 +20308,25 @@ class LoopyWeightedSampling_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_eraseTarget(self, *args)
 
@@ -14327,12 +20335,43 @@ class LoopyWeightedSampling_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.LoopyWeightedSampling_double_nbrTargets(self)
 
 
@@ -14340,6 +20379,20 @@ class LoopyWeightedSampling_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_H(self, *args)
 
@@ -14348,6 +20401,26 @@ class LoopyWeightedSampling_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_evidenceImpact(self, *args)
 
@@ -14356,6 +20429,26 @@ class LoopyWeightedSampling_double(_object):
         """
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
+
+
+        Computes and returns the current posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the current posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.LoopyWeightedSampling_double_currentPosterior(self, *args)
 
@@ -14363,7 +20456,19 @@ LoopyWeightedSampling_double_swigregister = _pyAgrum.LoopyWeightedSampling_doubl
 LoopyWeightedSampling_double_swigregister(LoopyWeightedSampling_double)
 
 class LoopyGibbsSampling_double(_object):
-    """Proxy of C++ gum::LoopySamplingInference< double,gum::GibbsSampling > class."""
+    """
+
+    Class used for inferences using a loopy version of Gibbs sampling.
+
+    Available constructors:
+    	``LoopyGibbsSampling(bn) -> LoopyGibbsSampling``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyGibbsSampling_double, name, value)
@@ -14393,11 +20498,44 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setVirtualLBPSize(self, vlbpsize):
-        """setVirtualLBPSize(self, vlbpsize)"""
+        """
+        setVirtualLBPSize(self, vlbpsize)
+
+
+        Parameters
+        ----------
+        vlbpsize : double
+          the size of the virtual LBP
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setVirtualLBPSize(self, vlbpsize)
 
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -14407,6 +20545,30 @@ class LoopyGibbsSampling_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -14419,6 +20581,18 @@ class LoopyGibbsSampling_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -14429,17 +20603,44 @@ class LoopyGibbsSampling_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_targets(self)
 
 
@@ -14641,10 +20842,6 @@ class LoopyGibbsSampling_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.LoopyGibbsSampling_double_nbrIterations(self)
 
@@ -14682,21 +20879,43 @@ class LoopyGibbsSampling_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.LoopyGibbsSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_makeInference(self)
 
 
@@ -14704,12 +20923,45 @@ class LoopyGibbsSampling_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_BN(self)
 
 
@@ -14721,6 +20973,43 @@ class LoopyGibbsSampling_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_addEvidence(self, *args)
 
@@ -14733,6 +21022,43 @@ class LoopyGibbsSampling_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_chgEvidence(self, *args)
 
@@ -14741,12 +21067,36 @@ class LoopyGibbsSampling_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_eraseAllEvidence(self)
 
 
@@ -14754,12 +21104,47 @@ class LoopyGibbsSampling_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_hasHardEvidence(self, nodeName)
 
 
@@ -14767,32 +21152,91 @@ class LoopyGibbsSampling_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_addAllTargets(self)
 
 
@@ -14800,6 +21244,21 @@ class LoopyGibbsSampling_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_addTarget(self, *args)
 
@@ -14808,6 +21267,25 @@ class LoopyGibbsSampling_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_eraseTarget(self, *args)
 
@@ -14816,12 +21294,43 @@ class LoopyGibbsSampling_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_nbrTargets(self)
 
 
@@ -14829,6 +21338,20 @@ class LoopyGibbsSampling_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_H(self, *args)
 
@@ -14837,6 +21360,26 @@ class LoopyGibbsSampling_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_evidenceImpact(self, *args)
 
@@ -14845,44 +21388,1077 @@ class LoopyGibbsSampling_double(_object):
         """
         currentPosterior(self, id) -> Potential_double
         currentPosterior(self, name) -> Potential_double
+
+
+        Computes and returns the current posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the current posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.LoopyGibbsSampling_double_currentPosterior(self, *args)
 
 
     def nbrDrawnVar(self):
-        """nbrDrawnVar(self) -> gum::Size"""
+        """
+        nbrDrawnVar(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of variable drawn at each iteration
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_nbrDrawnVar(self)
 
 
     def setNbrDrawnVar(self, _nbr):
-        """setNbrDrawnVar(self, _nbr)"""
+        """
+        setNbrDrawnVar(self, _nbr)
+
+
+        Parameters
+        ----------
+        _nbr : int
+          the number of variables to be drawn at each iteration
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setNbrDrawnVar(self, _nbr)
 
 
     def isDrawnAtRandom(self):
-        """isDrawnAtRandom(self) -> bool"""
+        """
+        isDrawnAtRandom(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if variables are drawn at random
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_isDrawnAtRandom(self)
 
 
     def setDrawnAtRandom(self, _atRandom):
-        """setDrawnAtRandom(self, _atRandom)"""
+        """
+        setDrawnAtRandom(self, _atRandom)
+
+
+        Parameters
+        ----------
+        _atRandom : bool
+          indicates if variables should be drawn at random
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setDrawnAtRandom(self, _atRandom)
 
 
     def burnIn(self):
-        """burnIn(self) -> gum::Size"""
+        """
+        burnIn(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          size of burn in on number of iteration
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_burnIn(self)
 
 
     def setBurnIn(self, b):
-        """setBurnIn(self, b)"""
+        """
+        setBurnIn(self, b)
+
+
+        Parameters
+        ----------
+        b : int
+          size of burn in on number of iteration
+
+        """
         return _pyAgrum.LoopyGibbsSampling_double_setBurnIn(self, b)
 
 LoopyGibbsSampling_double_swigregister = _pyAgrum.LoopyGibbsSampling_double_swigregister
 LoopyGibbsSampling_double_swigregister(LoopyGibbsSampling_double)
 
+class LoopyMonteCarloSampling_double(_object):
+    """Proxy of C++ gum::LoopySamplingInference< double,gum::MonteCarloSampling > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyMonteCarloSampling_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, LoopyMonteCarloSampling_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bn):
+        """__init__(self, bn) -> LoopyMonteCarloSampling_double"""
+        this = _pyAgrum.new_LoopyMonteCarloSampling_double(bn)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+        self._bn=bn#BN
+
+
+
+    __swig_destroy__ = _pyAgrum.delete_LoopyMonteCarloSampling_double
+    def __del__(self):
+        return None
+
+    def _makeInference(self):
+        """_makeInference(self)"""
+        return _pyAgrum.LoopyMonteCarloSampling_double__makeInference(self)
+
+
+    def setVirtualLBPSize(self, vlbpsize):
+        """
+        setVirtualLBPSize(self, vlbpsize)
+
+
+        Parameters
+        ----------
+        vlbpsize : double
+          the size of the virtual LBP
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_setVirtualLBPSize(self, vlbpsize)
+
+
+    def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+        self.eraseAllEvidence()
+        for k,v in evidces.items():
+            self.addEvidence(k,v)
+
+
+
+    def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
+        if not isinstance(evidces, dict):
+            raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
+
+        for k,v in evidces.items():
+            if self.hasEvidence(k):
+                self.chgEvidence(k,v)
+            else:
+                self.addEvidence(k,v)
+
+
+
+    def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
+        if not isinstance(targets, set):
+            raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
+
+        self.eraseAllTargets()
+        for k in targets:
+            self.addTarget(k)
+
+
+
+    def hardEvidenceNodes(self):
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_hardEvidenceNodes(self)
+
+
+    def softEvidenceNodes(self):
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_softEvidenceNodes(self)
+
+
+    def targets(self):
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_targets(self)
+
+
+    def setVerbosity(self, v):
+        """
+        setVerbosity(self, v)
+
+
+        Parameters
+        ----------
+        v : bool
+        	verbosity
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_setVerbosity(self, v)
+
+
+    def setEpsilon(self, eps):
+        """
+        setEpsilon(self, eps)
+
+
+        Parameters
+        ----------
+        eps : double
+        	the epsilon we want to use
+
+        Warnings
+        --------
+        OutOfLowerBound if eps<0
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_setEpsilon(self, eps)
+
+
+    def setMinEpsilonRate(self, rate):
+        """
+        setMinEpsilonRate(self, rate)
+
+
+        Parameters
+        ----------
+        rate : double
+        	the minimal epsilon rate
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_setMinEpsilonRate(self, rate)
+
+
+    def setMaxIter(self, max):
+        """
+        setMaxIter(self, max)
+
+
+        Parameters
+        ----------
+        max : int
+        	the maximum number of iteration
+
+        Warnings
+        --------
+        OutOfLowerBound raised if max <= 1
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_setMaxIter(self, max)
+
+
+    def setMaxTime(self, timeout):
+        """
+        setMaxTime(self, timeout)
+
+
+        Parameters
+        ----------
+        tiemout : double
+        	stopping criterion on timeout (in seconds)
+
+        Warnings
+        --------
+        OutOfLowerBound raised if timeout<=0.0
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_setMaxTime(self, timeout)
+
+
+    def setPeriodSize(self, p):
+        """
+        setPeriodSize(self, p)
+
+
+        Parameters
+        ----------
+        p : int
+        	number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_setPeriodSize(self, p)
+
+
+    def verbosity(self):
+        """
+        verbosity(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if the verbosity is enabled
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_verbosity(self)
+
+
+    def epsilon(self):
+        """
+        epsilon(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of epsilon
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_epsilon(self)
+
+
+    def minEpsilonRate(self):
+        """
+        minEpsilonRate(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the value of the minimal epsilon rate
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_minEpsilonRate(self)
+
+
+    def maxIter(self):
+        """
+        maxIter(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the criterion on number of iterations
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_maxIter(self)
+
+
+    def maxTime(self):
+        """
+        maxTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	the timeout(in seconds)
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_maxTime(self)
+
+
+    def periodSize(self):
+        """
+        periodSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of samples between 2 stopping
+
+        Warnings
+        --------
+        OutOfLowerBound raised if p<1
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_periodSize(self)
+
+
+    def nbrIterations(self):
+        """
+        nbrIterations(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of iterations
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_nbrIterations(self)
+
+
+    def currentTime(self):
+        """
+        currentTime(self) -> double
+
+
+        Returns
+        -------
+        double
+        	get the current running time in second (double)
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_currentTime(self)
+
+
+    def messageApproximationScheme(self):
+        """
+        messageApproximationScheme(self) -> std::string
+
+
+        Returns
+        -------
+        str
+        	the approximation scheme message
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_messageApproximationScheme(self)
+
+
+    def history(self):
+        """
+        history(self) -> Vector_double
+
+
+        Returns
+        -------
+        tuple
+        	the scheme history
+
+        Warnings
+        --------
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_history(self)
+
+
+    def asIApproximationSchemeConfiguration(self):
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
+
+
+    def makeInference(self):
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_makeInference(self)
+
+
+    def posterior(self, *args):
+        """
+        posterior(self, var) -> Potential_double
+        posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_posterior(self, *args)
+
+
+    def BN(self):
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_BN(self)
+
+
+    def addEvidence(self, *args):
+        """
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, val)
+        addEvidence(self, nodeName, val)
+        addEvidence(self, id, vals)
+        addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_addEvidence(self, *args)
+
+
+    def chgEvidence(self, *args):
+        """
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, val)
+        chgEvidence(self, nodeName, val)
+        chgEvidence(self, id, vals)
+        chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_chgEvidence(self, *args)
+
+
+    def hasEvidence(self, *args):
+        """
+        hasEvidence(self, id) -> bool
+        hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_hasEvidence(self, *args)
+
+
+    def eraseAllEvidence(self):
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_eraseAllEvidence(self)
+
+
+    def eraseEvidence(self, *args):
+        """
+        eraseEvidence(self, id)
+        eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_eraseEvidence(self, *args)
+
+
+    def hasHardEvidence(self, nodeName):
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_hasHardEvidence(self, nodeName)
+
+
+    def hasSoftEvidence(self, *args):
+        """
+        hasSoftEvidence(self, id) -> bool
+        hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_hasSoftEvidence(self, *args)
+
+
+    def nbrEvidence(self):
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_nbrEvidence(self)
+
+
+    def nbrHardEvidence(self):
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_nbrHardEvidence(self)
+
+
+    def nbrSoftEvidence(self):
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_nbrSoftEvidence(self)
+
+
+    def eraseAllTargets(self):
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_eraseAllTargets(self)
+
+
+    def addAllTargets(self):
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_addAllTargets(self)
+
+
+    def addTarget(self, *args):
+        """
+        addTarget(self, target)
+        addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_addTarget(self, *args)
+
+
+    def eraseTarget(self, *args):
+        """
+        eraseTarget(self, target)
+        eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_eraseTarget(self, *args)
+
+
+    def isTarget(self, *args):
+        """
+        isTarget(self, variable) -> bool
+        isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_isTarget(self, *args)
+
+
+    def nbrTargets(self):
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_nbrTargets(self)
+
+
+    def H(self, *args):
+        """
+        H(self, X) -> double
+        H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_H(self, *args)
+
+
+    def evidenceImpact(self, *args):
+        """
+        evidenceImpact(self, target, evs) -> Potential_double
+        evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_evidenceImpact(self, *args)
+
+
+    def currentPosterior(self, *args):
+        """
+        currentPosterior(self, id) -> Potential_double
+        currentPosterior(self, name) -> Potential_double
+
+
+        Computes and returns the current posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the current posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
+        """
+        return _pyAgrum.LoopyMonteCarloSampling_double_currentPosterior(self, *args)
+
+LoopyMonteCarloSampling_double_swigregister = _pyAgrum.LoopyMonteCarloSampling_double_swigregister
+LoopyMonteCarloSampling_double_swigregister(LoopyMonteCarloSampling_double)
+
 class LoopyBeliefPropagation_double(_object):
-    """Proxy of C++ gum::LoopyBeliefPropagation< double > class."""
+    """
+
+    Class used for inferences using loopy belief propagation algorithm.
+
+    Available constructors:
+    	``LoopyBeliefPropagation(bn) -> LoopyBeliefPropagation``
+
+    Parameters
+    ----------
+    bn : pyAgrum.BayesNet
+    	a Bayesian network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, LoopyBeliefPropagation_double, name, value)
@@ -14907,6 +22483,30 @@ class LoopyBeliefPropagation_double(_object):
         return None
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
         self.eraseAllEvidence()
@@ -14916,6 +22516,30 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def updateEvidence(self, evidces):
+        """
+        Apply chgEvidence(key,value) for every pairs in evidces (or addEvidence).
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
 
@@ -14928,6 +22552,18 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def setTargets(self, targets):
+        """
+        Remove all the targets and add the ones in parameter.
+
+        Parameters
+        ----------
+        targets : set
+          a set of targets
+
+        Warnings
+        --------
+        UndefinedElement raised if one target is not in the Bayes net 
+        """
         if not isinstance(targets, set):
             raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))
 
@@ -14938,17 +22574,44 @@ class LoopyBeliefPropagation_double(_object):
 
 
     def hardEvidenceNodes(self):
-        """hardEvidenceNodes(self) -> PyObject *"""
+        """
+        hardEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with hard evidence 
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_hardEvidenceNodes(self)
 
 
     def softEvidenceNodes(self):
-        """softEvidenceNodes(self) -> PyObject *"""
+        """
+        softEvidenceNodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+          the set of nodes with soft evidence 
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_softEvidenceNodes(self)
 
 
     def targets(self):
-        """targets(self) -> PyObject *"""
+        """
+        targets(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+          the list of marginal targets
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_targets(self)
 
 
@@ -15150,10 +22813,6 @@ class LoopyBeliefPropagation_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.LoopyBeliefPropagation_double_nbrIterations(self)
 
@@ -15191,21 +22850,43 @@ class LoopyBeliefPropagation_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.LoopyBeliefPropagation_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_asIApproximationSchemeConfiguration(self)
 
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Perform the heavy computations needed to compute the targets' posteriors
+
+        In a Junction tree propagation scheme, for instance, the heavy computations are those of the messages sent in the JT.
+        This is precisely what makeInference should compute. Later, the computations of the posteriors can be done 'lightly' by multiplying and projecting those messages. 
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_makeInference(self)
 
 
@@ -15213,12 +22894,45 @@ class LoopyBeliefPropagation_double(_object):
         """
         posterior(self, var) -> Potential_double
         posterior(self, nodeName) -> Potential_double
+
+
+        Computes and returns the posterior of a node.
+
+        Parameters
+        ----------
+        var : int
+          the node Id of the node for which we need a posterior probability
+        nodeName : str
+          the node name of the node for which we need a posterior probability
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a const ref to the posterior probability of the node
+
+        Warnings
+        --------
+        UndefinedElement if an element of nodes is not in targets
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_posterior(self, *args)
 
 
     def BN(self):
-        """BN(self) -> IBayesNet_double"""
+        """
+        BN(self) -> IBayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.IBayesNet
+          A constant reference over the IBayesNet referenced by this class.
+
+        Warnings
+        --------
+        UndefinedElement raised if no Bayes net has been assigned to the inference.
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_BN(self)
 
 
@@ -15230,6 +22944,43 @@ class LoopyBeliefPropagation_double(_object):
         addEvidence(self, nodeName, val)
         addEvidence(self, id, vals)
         addEvidence(self, nodeName, vals)
+
+
+        Adds a new evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node already has an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_addEvidence(self, *args)
 
@@ -15242,6 +22993,43 @@ class LoopyBeliefPropagation_double(_object):
         chgEvidence(self, nodeName, val)
         chgEvidence(self, id, vals)
         chgEvidence(self, nodeName, vals)
+
+
+        Change the value of an already existing evidence on a node (might be soft or hard).
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+        val :
+          (int) a node value
+        val :
+          (str) the label of the node value
+        vals : list
+          a list of values
+
+        Warnings
+        --------
+        InvalidArgument raised if the node does not already have an evidence
+
+        Warnings
+        --------
+        InvalidArgument raised if val is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of vals is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError if vals is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_chgEvidence(self, *args)
 
@@ -15250,12 +23038,36 @@ class LoopyBeliefPropagation_double(_object):
         """
         hasEvidence(self, id) -> bool
         hasEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if some node(s) (or the one in parameters) have received evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_hasEvidence(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the network.
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_eraseAllEvidence(self)
 
 
@@ -15263,12 +23075,47 @@ class LoopyBeliefPropagation_double(_object):
         """
         eraseEvidence(self, id)
         eraseEvidence(self, nodeName)
+
+
+        Remove the evidence, if any, corresponding to the node Id or name.
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_eraseEvidence(self, *args)
 
 
     def hasHardEvidence(self, nodeName):
-        """hasHardEvidence(self, nodeName) -> bool"""
+        """
+        hasHardEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a hard evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_hasHardEvidence(self, nodeName)
 
 
@@ -15276,32 +23123,91 @@ class LoopyBeliefPropagation_double(_object):
         """
         hasSoftEvidence(self, id) -> bool
         hasSoftEvidence(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        id : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if node has received a soft evidence
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_hasSoftEvidence(self, *args)
 
 
     def nbrEvidence(self):
-        """nbrEvidence(self) -> gum::Size"""
+        """
+        nbrEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_nbrEvidence(self)
 
 
     def nbrHardEvidence(self):
-        """nbrHardEvidence(self) -> gum::Size"""
+        """
+        nbrHardEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of hard evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_nbrHardEvidence(self)
 
 
     def nbrSoftEvidence(self):
-        """nbrSoftEvidence(self) -> gum::Size"""
+        """
+        nbrSoftEvidence(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of soft evidence entered into the Bayesian network
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_nbrSoftEvidence(self)
 
 
     def eraseAllTargets(self):
-        """eraseAllTargets(self)"""
+        """
+        eraseAllTargets(self)
+
+
+        Clear all previously defined targets (marginal and joint targets).
+
+        As a result, no posterior can be computed (since we can only compute the posteriors of the marginal or joint targets that have been added by the user). 
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_eraseAllTargets(self)
 
 
     def addAllTargets(self):
-        """addAllTargets(self)"""
+        """
+        addAllTargets(self)
+
+
+        Add all the nodes as targets.
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_addAllTargets(self)
 
 
@@ -15309,6 +23215,21 @@ class LoopyBeliefPropagation_double(_object):
         """
         addTarget(self, target)
         addTarget(self, nodeName)
+
+
+        Add a marginal target to the list of targets.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Warnings
+        --------
+          UndefinedElement raised if target is not a NodeId in the Bayes net 
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_addTarget(self, *args)
 
@@ -15317,6 +23238,25 @@ class LoopyBeliefPropagation_double(_object):
         """
         eraseTarget(self, target)
         eraseTarget(self, nodeName)
+
+
+        Remove, if existing, the marginal target.
+
+        Parameters
+        ----------
+        target : int
+          a node Id
+        nodeName : int
+          a node name
+
+        Warnings
+        --------
+        IndexError raised if one of the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_eraseTarget(self, *args)
 
@@ -15325,12 +23265,43 @@ class LoopyBeliefPropagation_double(_object):
         """
         isTarget(self, variable) -> bool
         isTarget(self, nodeName) -> bool
+
+
+        Parameters
+        ----------
+        variable : int
+         a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        bool
+          True if variable is a (marginal) target
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Bayesian network
+
+        Warnings
+        --------
+        UndefinedElement raised if node Id is not in the Bayesian network
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_isTarget(self, *args)
 
 
     def nbrTargets(self):
-        """nbrTargets(self) -> gum::Size"""
+        """
+        nbrTargets(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of marginal targets
+
+        """
         return _pyAgrum.LoopyBeliefPropagation_double_nbrTargets(self)
 
 
@@ -15338,6 +23309,20 @@ class LoopyBeliefPropagation_double(_object):
         """
         H(self, X) -> double
         H(self, nodeName) -> double
+
+
+        Parameters
+        ----------
+        X : int
+          a node Id
+        nodeName : str
+          a node name
+
+        Returns
+        -------
+        double
+          the computed Shanon's entropy of a node given the observation
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_H(self, *args)
 
@@ -15346,6 +23331,26 @@ class LoopyBeliefPropagation_double(_object):
         """
         evidenceImpact(self, target, evs) -> Potential_double
         evidenceImpact(self, target, evs) -> Potential_double
+
+
+        Create a pyAgrum.Potential for P(target|evs) (for all instanciation of target and evs) 
+
+        Parameters
+        ----------
+        target : set
+          a set of targets ids or names.
+        evs : set
+          a set of nodes ids or names.
+
+        Warnings
+        --------
+        if some evs are d-separated, they are not included in the Potential.
+
+        Returns
+        -------
+        pyAgrum.Potential
+          a Potential for P(targets|evs)
+
         """
         return _pyAgrum.LoopyBeliefPropagation_double_evidenceImpact(self, *args)
 
@@ -15353,7 +23358,30 @@ LoopyBeliefPropagation_double_swigregister = _pyAgrum.LoopyBeliefPropagation_dou
 LoopyBeliefPropagation_double_swigregister(LoopyBeliefPropagation_double)
 
 class BruteForceKL_double(_object):
-    """Proxy of C++ gum::BruteForceKL< double > class."""
+    """
+
+    Class representing an exact KL-divergence
+
+    Available constructors :
+
+    	``BruteForceKL(P,Q) -> BruteForceKL``
+
+    	``BruteForceKL(kl) -> BruteForceKL``
+
+    Parameters
+    ----------
+    P : pyAgrum.IBayesNet
+    	a Bayesian network
+    Q : pyAgrum.IBayesNet
+    	anotre Bayesian network
+    kl : pyAgrum.KL
+    	the KL to copy
+
+    Warnings
+    --------
+    OperationNotAllowed raised if the 2BNs have not the same domain size of compatible node sets
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, BruteForceKL_double, name, value)
@@ -15376,14 +23404,46 @@ class BruteForceKL_double(_object):
         return None
 
     def compute(self):
-        """compute(self) -> PyObject *"""
+        """
+        compute(self) -> PyObject *
+
+
+        Returns
+        -------
+        dict
+        	a dictionnary containing the different values after the computation.
+
+        """
         return _pyAgrum.BruteForceKL_double_compute(self)
 
 BruteForceKL_double_swigregister = _pyAgrum.BruteForceKL_double_swigregister
 BruteForceKL_double_swigregister(BruteForceKL_double)
 
 class GibbsKL_double(ApproximationScheme):
-    """Proxy of C++ gum::GibbsKL< double > class."""
+    """
+
+    Class representing a Gibbs-Approximated KL-divergence 
+
+    Available constructors :
+
+    	``GibbsKL(P,Q) -> GibbsKL``
+
+    	``GibbsKL(kl) -> GibbsKL``
+
+    Parameters
+    ----------
+    P : pyAgrum.IBayesNet
+    	a Bayesian network
+    Q : pyAgrum.IBayesNet
+    	anotre Bayesian network
+    kl : pyAgrum.KL
+    	the KL to copy
+
+    Warnings
+    --------
+    OperationNotAllowed raised if the 2BNs have not the same domain size of compatible node sets
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [ApproximationScheme]:
@@ -15438,7 +23498,16 @@ class GibbsKL_double(ApproximationScheme):
 
 
     def compute(self):
-        """compute(self) -> PyObject *"""
+        """
+        compute(self) -> PyObject *
+
+
+        Returns
+        -------
+        dict
+        	a dictionnary containing the different values after the computation.
+
+        """
         return _pyAgrum.GibbsKL_double_compute(self)
 
 
@@ -15640,10 +23709,6 @@ class GibbsKL_double(ApproximationScheme):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.GibbsKL_double_nbrIterations(self)
 
@@ -15681,43 +23746,114 @@ class GibbsKL_double(ApproximationScheme):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.GibbsKL_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.GibbsKL_double_asIApproximationSchemeConfiguration(self)
 
 
     def nbrDrawnVar(self):
-        """nbrDrawnVar(self) -> gum::Size"""
+        """
+        nbrDrawnVar(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+          the number of variable drawn at each iteration
+
+        """
         return _pyAgrum.GibbsKL_double_nbrDrawnVar(self)
 
 
     def setNbrDrawnVar(self, _nbr):
-        """setNbrDrawnVar(self, _nbr)"""
+        """
+        setNbrDrawnVar(self, _nbr)
+
+
+        Parameters
+        ----------
+        _nbr : int
+          the number of variables to be drawn at each iteration
+
+        """
         return _pyAgrum.GibbsKL_double_setNbrDrawnVar(self, _nbr)
 
 
     def isDrawnAtRandom(self):
-        """isDrawnAtRandom(self) -> bool"""
+        """
+        isDrawnAtRandom(self) -> bool
+
+
+        Returns
+        -------
+        bool
+          True if variables are drawn at random
+
+        """
         return _pyAgrum.GibbsKL_double_isDrawnAtRandom(self)
 
 
     def setDrawnAtRandom(self, _atRandom):
-        """setDrawnAtRandom(self, _atRandom)"""
+        """
+        setDrawnAtRandom(self, _atRandom)
+
+
+        Parameters
+        ----------
+        _atRandom : bool
+          indicates if variables should be drawn at random
+
+        """
         return _pyAgrum.GibbsKL_double_setDrawnAtRandom(self, _atRandom)
 
 GibbsKL_double_swigregister = _pyAgrum.GibbsKL_double_swigregister
 GibbsKL_double_swigregister(GibbsKL_double)
 
 class CredalNet_double(_object):
-    """Proxy of C++ gum::credal::CredalNet< double > class."""
+    """
+
+    Constructor used to create a CredalNet (step by step or with two BayesNet)
+
+    Available constructors:
+        ``CredalNet() -> CredalNet``
+
+        ``CredalNet(src_min_num,src_max_den) -> CredalNet``
+
+        ``CredalNet(src_min_num,src_max_den) -> CredalNet``
+
+    Parameters
+    ----------
+    src_min_num
+    	(str) the path to a BayesNet which contains lower probabilities.
+    src_max_den
+    	(str) the (optional) path to a BayesNet which contains upper probabilities.
+    src_min_num
+    	(pyAgrum.BayesNet) the BayesNet which contains lower probabilities.
+    src_max_den
+    	(pyAgrum.BayesNet) the (optional) BayesNet which contains upper probabilities. 
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CredalNet_double, name, value)
@@ -15747,17 +23883,86 @@ class CredalNet_double(_object):
         return None
 
     def addNode(self, name, card):
-        """addNode(self, name, card) -> gum::NodeId"""
+        """
+        addNode(self, name, card) -> gum::NodeId
+
+
+        Adds a discrete node into the network.
+
+        Parameters
+        ----------
+        name : str
+        	The name of the discrete variable to be added
+        card : int
+        	The cardinality of the variable
+
+        Returns
+        -------
+        int
+            The NodeId of the variable in the network
+
+        Warnings
+        --------
+        DuplicateLabel raised if a node with the label already exists.
+
+        """
         return _pyAgrum.CredalNet_double_addNode(self, name, card)
 
 
     def addArc(self, tail, head):
-        """addArc(self, tail, head)"""
+        """
+        addArc(self, tail, head)
+
+
+        Adds an arc between two nodes
+
+        Parameters
+        ----------
+        tail :
+        	the id of the tail node
+        head : int 
+        	the id of the head node
+
+        Warnings
+        --------
+        	InvalidDirectedCircle raised if any (directed) cycle is created by this arc
+
+        Warnings
+        --------
+        	InvalidNode raised if head or tail does not belong to the graph nodes
+
+        Warnings
+        --------
+        	DuplicateElement raised if one of the arc already exists
+
+        """
         return _pyAgrum.CredalNet_double_addArc(self, tail, head)
 
 
     def setCPTs(self, id, cpt):
-        """setCPTs(self, id, cpt)"""
+        """
+        setCPTs(self, id, cpt)
+
+
+        Warnings
+        --------
+        (experimental function) - Parameters to be wrapped
+
+
+        Set the vertices of the credal sets (all of the conditionals) of a given node
+
+        Parameters
+        ----------
+        id : int
+        	the NodeId of the node
+        cpt	: tbw 
+        	the vertices of every credal set (for each instantiation of the parents)
+
+        Warning
+        -------
+        DOES not change the BayesNet (s) associated to this credal net !
+
+        """
         return _pyAgrum.CredalNet_double_setCPTs(self, id, cpt)
 
 
@@ -15765,12 +23970,59 @@ class CredalNet_double(_object):
         """
         setCPT(self, id, entry, cpt)
         setCPT(self, id, ins, cpt)
+
+
+        Warnings
+        --------
+        (experimental function) - Parameters to be wrapped
+
+
+        Set the vertices of one credal set of a given node (any instantiation index)
+
+        Parameters
+        ----------
+        id : int
+        	the Id of the node
+        entry : int
+        	the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
+        ins : pyAgrum.Instantiation
+        	the Instantiation (only the parents matter to find the credal set index) 
+        cpt	: tbw
+        	the vertices of every credal set (for each instantiation of the parents)
+
+        Warnings
+        --------
+        DOES not change the BayesNet(s) associated to this credal net !
+
         """
         return _pyAgrum.CredalNet_double_setCPT(self, *args)
 
 
     def fillConstraints(self, id, lower, upper):
-        """fillConstraints(self, id, lower, upper)"""
+        """
+        fillConstraints(self, id, lower, upper)
+
+
+        Set the interval constraints of the credal sets of a given node (all instantiations) 
+
+        Parameters
+        ----------
+        id : int 
+        	The id of the node
+        lower : list
+        	The lower value for each probability in correct order
+        upper : list
+        	The upper value for each probability in correct order
+
+        Warnings
+        --------
+        You need to call intervalToCredal when done filling all constraints.
+
+        Warning
+        -------
+        DOES change the BayesNet (s) associated to this credal net !
+
+        """
         return _pyAgrum.CredalNet_double_fillConstraints(self, id, lower, upper)
 
 
@@ -15778,17 +24030,74 @@ class CredalNet_double(_object):
         """
         fillConstraint(self, id, entry, lower, upper)
         fillConstraint(self, id, ins, lower, upper)
+
+
+        Set the interval constraints of a credal set of a given node (from an instantiation index)
+
+        Parameters
+        ----------
+        id : int 
+        	The id of the node
+        entry : int
+        	The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
+        ins : pyAgrum.Instantiation
+        	The Instantiation
+        lower : list
+        	The lower value for each probability in correct order
+        upper : list
+        	The upper value for each probability in correct order
+
+        Warnings
+        --------
+        You need to call intervalToCredal when done filling all constraints.
+
+        Warning
+        -------
+        DOES change the BayesNet (s) associated to this credal net ! 
+
         """
         return _pyAgrum.CredalNet_double_fillConstraint(self, *args)
 
 
     def instantiation(self, id):
-        """instantiation(self, id) -> Instantiation"""
+        """
+        instantiation(self, id) -> Instantiation
+
+
+        Get an Instantiation from a node id, usefull to fill the constraints of the network.
+
+        bnet accessors / shortcuts.
+
+        Parameters
+        ----------
+        id : int
+        	the id of the node we want an instantiation from
+
+        Returns
+        -------
+        pyAgrum.Instantiation
+            the instantiation 
+
+        """
         return _pyAgrum.CredalNet_double_instantiation(self, id)
 
 
     def domainSize(self, id):
-        """domainSize(self, id) -> gum::Size"""
+        """
+        domainSize(self, id) -> gum::Size
+
+
+        Parameters
+        ----------
+        id : int
+        	The id of the node
+
+        Returns
+        -------
+        int
+            The cardinality of the node 
+
+        """
         return _pyAgrum.CredalNet_double_domainSize(self, id)
 
 
@@ -15796,22 +24105,66 @@ class CredalNet_double(_object):
         """
         bnToCredal(self, beta, oneNet, keepZeroes=False)
         bnToCredal(self, beta, oneNet)
+
+
+        Perturbates the BayesNet provided as input for this CredalNet by generating intervals instead of point probabilities and then computes each vertex of each credal set.
+
+        Parameters
+        ----------
+        beta : double
+        	The beta used to perturbate the network
+        oneNet : bool
+        	used as a flag. Set to True if one BayesNet if provided with counts, to False if two BayesNet are provided; one with probabilities (the lower net) and one with denominators over the first modalities (the upper net)
+        keepZeroes : bool
+        	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept
+
         """
         return _pyAgrum.CredalNet_double_bnToCredal(self, beta, oneNet, keepZeroes)
 
 
     def intervalToCredalWithFiles(self):
-        """intervalToCredalWithFiles(self)"""
+        """
+        intervalToCredalWithFiles(self)
+
+
+        Warnings
+        --------
+        Deprecated : use intervalToCredal (lrsWrapper with no input / output files needed).
+
+
+        Computes the vertices of each credal set according to their interval definition (uses lrs).
+
+        Use this method when using a single BayesNet storing counts of events. 
+
+        """
         return _pyAgrum.CredalNet_double_intervalToCredalWithFiles(self)
 
 
     def intervalToCredal(self):
-        """intervalToCredal(self)"""
+        """
+        intervalToCredal(self)
+
+
+        Computes the vertices of each credal set according to their interval definition (uses lrs).
+
+        Use this method when using two BayesNet, one with lower probabilities and one with upper probabilities.
+
+        """
         return _pyAgrum.CredalNet_double_intervalToCredal(self)
 
 
     def lagrangeNormalization(self):
-        """lagrangeNormalization(self)"""
+        """
+        lagrangeNormalization(self)
+
+
+        Normalize counts of a BayesNet storing counts of each events such that no probability is 0.
+
+        Use this method when using a single BayesNet storing counts of events. Lagrange normalization. This call is irreversible and modify counts stored by __src_bn.
+
+        Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value). 
+
+        """
         return _pyAgrum.CredalNet_double_lagrangeNormalization(self)
 
 
@@ -15820,17 +24173,57 @@ class CredalNet_double(_object):
         idmLearning(self, s=0, keepZeroes=False)
         idmLearning(self, s=0)
         idmLearning(self)
+
+
+        Learns parameters from a BayesNet storing counts of events.
+
+        Use this method when using a single BayesNet storing counts of events. IDM model if s > 0, standard point probability if s = 0 (default value if none precised).
+
+        Parameters
+        ----------
+        s : int
+        	the IDM parameter.
+        keepZeroes : bool
+        	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept. 
+
         """
         return _pyAgrum.CredalNet_double_idmLearning(self, s, keepZeroes)
 
 
     def approximatedBinarization(self):
-        """approximatedBinarization(self)"""
+        """
+        approximatedBinarization(self)
+
+
+        Approximate binarization.
+
+        Each bit has a lower and upper probability which is the lowest - resp. highest - over all vertices of the credal set. Enlarge the orignal credal sets and may induce huge imprecision.
+
+        Warnings
+        --------
+        Enlarge the orignal credal sets and therefor induce huge imprecision by propagation. Not recommended, use MCSampling or something else instead
+
+        """
         return _pyAgrum.CredalNet_double_approximatedBinarization(self)
 
 
     def saveBNsMinMax(self, min_path, max_path):
-        """saveBNsMinMax(self, min_path, max_path)"""
+        """
+        saveBNsMinMax(self, min_path, max_path)
+
+
+        If this CredalNet was built over a perturbed BayesNet, one can save the intervals as two BayesNet.
+
+        to call after bnToCredal(GUM_SCALAR beta) save a BN with lower probabilities and a BN with upper ones
+
+        Parameters
+        ----------
+        min_path : str
+        	the path to save the BayesNet which contains the lower probabilities of each node X.
+        max_path : str
+        	the path to save the BayesNet which contains the upper probabilities of each node X.
+
+        """
         return _pyAgrum.CredalNet_double_saveBNsMinMax(self, min_path, max_path)
 
 
@@ -15840,79 +24233,243 @@ class CredalNet_double(_object):
 
 
     def computeCPTMinMax(self):
-        """computeCPTMinMax(self)"""
+        """
+        computeCPTMinMax(self)
+
+
+        Used with binary networks to speed-up L2U inference.
+
+        Store the lower and upper probabilities of each node X over the 'True' modality.
+
+        """
         return _pyAgrum.CredalNet_double_computeCPTMinMax(self)
 
 
     def src_bn(self):
-        """src_bn(self) -> BayesNet_double"""
+        """
+        src_bn(self) -> BayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.BayesNet
+            Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter). 
+
+        """
         return _pyAgrum.CredalNet_double_src_bn(self)
 
 
     def current_bn(self):
-        """current_bn(self) -> BayesNet_double"""
+        """
+        current_bn(self) -> BayesNet_double
+
+
+        Returns
+        -------
+        pyAgrum.BayesNet
+            Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter). 
+
+        """
         return _pyAgrum.CredalNet_double_current_bn(self)
 
 
     def credalNet_currentCpt(self):
-        """credalNet_currentCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &"""
+        """
+        credalNet_currentCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
+
+
+        Warnings
+        --------
+        Experimental function - Return type to be wrapped
+
+        Returns
+        -------
+        tbw
+            a constant reference to the (up-to-date) CredalNet CPTs.
+
+        """
         return _pyAgrum.CredalNet_double_credalNet_currentCpt(self)
 
 
     def credalNet_srcCpt(self):
-        """credalNet_srcCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &"""
+        """
+        credalNet_srcCpt(self) -> gum::NodeProperty< std::vector< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::allocator< std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > > > > const &
+
+
+        Warnings
+        --------
+        Experimental function - Return type to be wrapped
+
+        Returns
+        -------
+        tbw
+            a constant reference to the (up-to-date) CredalNet CPTs.
+
+        """
         return _pyAgrum.CredalNet_double_credalNet_srcCpt(self)
 
 
     def currentNodeType(self, id):
-        """currentNodeType(self, id) -> gum::credal::CredalNet< double >::NodeType"""
+        """
+        currentNodeType(self, id) -> gum::credal::CredalNet< double >::NodeType
+
+
+        Parameters
+        ----------
+        id : int 
+        	The constant reference to the choosen NodeId
+
+        Returns
+        -------
+        pyAgrum.CredalNet
+            the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise. 
+
+        """
         return _pyAgrum.CredalNet_double_currentNodeType(self, id)
 
 
     def nodeType(self, id):
-        """nodeType(self, id) -> gum::credal::CredalNet< double >::NodeType"""
+        """
+        nodeType(self, id) -> gum::credal::CredalNet< double >::NodeType
+
+
+        Parameters
+        ----------
+        id : int
+        	the constant reference to the choosen NodeId
+
+        Returns
+        -------
+        pyAgrum.CredalNet
+        	the type of the choosen node in the (up-to-date) CredalNet in __src_bn. 
+
+        """
         return _pyAgrum.CredalNet_double_nodeType(self, id)
 
 
     def epsilonMin(self):
-        """epsilonMin(self) -> double const &"""
+        """
+        epsilonMin(self) -> double const &
+
+
+        Returns
+        -------
+        double
+            a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet. 
+
+        """
         return _pyAgrum.CredalNet_double_epsilonMin(self)
 
 
     def epsilonMax(self):
-        """epsilonMax(self) -> double const &"""
+        """
+        epsilonMax(self) -> double const &
+
+
+        Returns
+        -------
+        double
+            a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet. 
+
+        """
         return _pyAgrum.CredalNet_double_epsilonMax(self)
 
 
     def epsilonMean(self):
-        """epsilonMean(self) -> double const &"""
+        """
+        epsilonMean(self) -> double const &
+
+
+        Returns
+        -------
+        double
+            a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet. 
+
+        """
         return _pyAgrum.CredalNet_double_epsilonMean(self)
 
 
     def isSeparatelySpecified(self):
-        """isSeparatelySpecified(self) -> bool const"""
+        """
+        isSeparatelySpecified(self) -> bool const
+
+
+        Returns
+        -------
+        bool
+        	True if this CredalNet is separately and interval specified, False otherwise. 
+
+        """
         return _pyAgrum.CredalNet_double_isSeparatelySpecified(self)
 
 
     def hasComputedCPTMinMax(self):
-        """hasComputedCPTMinMax(self) -> bool const"""
+        """
+        hasComputedCPTMinMax(self) -> bool const
+
+
+        Returns
+        -------
+        bool
+            True this CredalNet has called computeCPTMinMax() to speed-up inference with binary networks and L2U.
+
+        """
         return _pyAgrum.CredalNet_double_hasComputedCPTMinMax(self)
 
 
     def get_CPT_min(self):
-        """get_CPT_min(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
+        """
+        get_CPT_min(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
+
+
+        Warnings
+        --------
+        Experimental function - Return type to be wrapped
+
+        Returns
+        -------
+        tbw
+        	a constant reference to the lower probabilities of each node X over the 'True' modality
+
+        """
         return _pyAgrum.CredalNet_double_get_CPT_min(self)
 
 
     def get_CPT_max(self):
-        """get_CPT_max(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &"""
+        """
+        get_CPT_max(self) -> std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &
+
+
+        Warnings
+        --------
+        Experimental function - Return type to be wrapped
+
+        Returns
+        -------
+        tbw
+        	a constant reference to the upper probabilities of each node X over the 'True' modality
+
+        """
         return _pyAgrum.CredalNet_double_get_CPT_max(self)
 
 CredalNet_double_swigregister = _pyAgrum.CredalNet_double_swigregister
 CredalNet_double_swigregister(CredalNet_double)
 
 class CNMonteCarloSampling_double(_object):
-    """Proxy of C++ gum::credal::CNMonteCarloSampling< double > class."""
+    """
+
+    Class used for inferences in credal networks with Monte Carlo sampling algorithm.
+
+    Available constructors:
+
+        ``CNMonteCarloSampling(cn) -> CNMonteCarloSampling``
+
+    Parameters
+    ----------
+    cn: pyAgrum.CredalNet
+      a Credal network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CNMonteCarloSampling_double, name, value)
@@ -15932,12 +24489,29 @@ class CNMonteCarloSampling_double(_object):
         return None
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Starts the inference.
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_makeInference(self)
 
 
     def insertEvidenceFile(self, path):
-        """insertEvidenceFile(self, path)"""
+        """
+        insertEvidenceFile(self, path)
+
+
+        Insert evidence from file.
+
+        Parameters
+        ----------
+        path : str
+        	the path to the evidence file. 
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_insertEvidenceFile(self, path)
 
 
@@ -16139,10 +24713,6 @@ class CNMonteCarloSampling_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.CNMonteCarloSampling_double_nbrIterations(self)
 
@@ -16180,21 +24750,43 @@ class CNMonteCarloSampling_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.CNMonteCarloSampling_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_asIApproximationSchemeConfiguration(self)
 
 
     def setRepetitiveInd(self, flag):
-        """setRepetitiveInd(self, flag)"""
+        """
+        setRepetitiveInd(self, flag)
+
+
+        Parameters
+        ----------
+        flag : bool
+        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks. 
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_setRepetitiveInd(self, flag)
 
 
@@ -16202,6 +24794,26 @@ class CNMonteCarloSampling_double(_object):
         """
         marginalMax(self, id) -> Vector_double
         marginalMax(self, name) -> Vector_double
+
+
+        Get the upper marginals of a given node id.
+
+        Parameters
+        ----------
+        id : int
+        	the node id which upper marginals we want.
+        varName : str
+        	the variable name which upper marginals we want. 
+
+        Returns
+        -------
+        list
+            a constant reference to this node upper marginals.
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Credal network
+
         """
         return _pyAgrum.CNMonteCarloSampling_double_marginalMax(self, *args)
 
@@ -16210,29 +24822,105 @@ class CNMonteCarloSampling_double(_object):
         """
         marginalMin(self, id) -> Vector_double
         marginalMin(self, name) -> Vector_double
+
+
+        Get the lower marginals of a given node id.
+
+        Parameters
+        ----------
+        id : int
+        	the node id which lower marginals we want.
+        varName : str
+        	the variable name which lower marginals we want. 
+
+        Returns
+        -------
+        list
+            a constant reference to this node lower marginals.
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Credal network
+
         """
         return _pyAgrum.CNMonteCarloSampling_double_marginalMin(self, *args)
 
 
     def insertModalsFile(self, path):
-        """insertModalsFile(self, path)"""
+        """
+        insertModalsFile(self, path)
+
+
+        Insert variables modalities from file to compute expectations.
+
+        Parameters
+        ----------
+        path : str
+        	The path to the modalities file. 
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_insertModalsFile(self, path)
 
 
     def dynamicExpMax(self, varName):
-        """dynamicExpMax(self, varName) -> Vector_double"""
+        """
+        dynamicExpMax(self, varName) -> Vector_double
+
+
+        Get the upper dynamic expectation of a given variable prefix.
+
+        Parameters
+        ----------
+        varName : str
+        	the variable name prefix which upper expectation we want.
+
+        Returns
+        -------
+        double
+            a constant reference to the variable upper expectation over all time steps. 
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_dynamicExpMax(self, varName)
 
 
     def dynamicExpMin(self, varName):
-        """dynamicExpMin(self, varName) -> Vector_double"""
+        """
+        dynamicExpMin(self, varName) -> Vector_double
+
+
+        Get the lower dynamic expectation of a given variable prefix.
+
+        Parameters
+        ----------
+        varName : str
+        	the variable name prefix which lower expectation we want.
+
+        Returns
+        -------
+        double
+            a constant reference to the variable lower expectation over all time steps. 
+
+        """
         return _pyAgrum.CNMonteCarloSampling_double_dynamicExpMin(self, varName)
 
 CNMonteCarloSampling_double_swigregister = _pyAgrum.CNMonteCarloSampling_double_swigregister
 CNMonteCarloSampling_double_swigregister(CNMonteCarloSampling_double)
 
 class CNLoopyPropagation_double(_object):
-    """Proxy of C++ gum::credal::CNLoopyPropagation< double > class."""
+    """
+
+    Class used for inferences in credal networks with Loopy Propagation algorithm.
+
+    Available constructors:
+
+        ``CNLoopyPropagation(cn) -> CNLoopyPropagation``
+
+    Parameters
+    ----------
+    cn: pyAgrum.CredalNet
+      a Credal network
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, CNLoopyPropagation_double, name, value)
@@ -16244,7 +24932,13 @@ class CNLoopyPropagation_double(_object):
     InferenceType_randomOrder = _pyAgrum.CNLoopyPropagation_double_InferenceType_randomOrder
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Starts the inference.
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_makeInference(self)
 
 
@@ -16252,17 +24946,43 @@ class CNLoopyPropagation_double(_object):
         """
         inferenceType(self, inft)
         inferenceType(self) -> gum::credal::CNLoopyPropagation< double >::InferenceType
+
+
+        Returns
+        -------
+        int
+        	the inference type
+
         """
         return _pyAgrum.CNLoopyPropagation_double_inferenceType(self, *args)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Erase all inference related data to perform another one.
+
+        You need to insert evidence again if needed but modalities are kept. You can insert new ones by using the appropriate method which will delete the old ones.
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_eraseAllEvidence(self)
 
 
     def saveInference(self, path):
-        """saveInference(self, path)"""
+        """
+        saveInference(self, path)
+
+
+        Saves marginals.
+
+        Parameters
+        ----------
+        path : str
+        	The path to the file to save marginals. 
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_saveInference(self, path)
 
 
@@ -16278,7 +24998,18 @@ class CNLoopyPropagation_double(_object):
         return None
 
     def insertEvidenceFile(self, path):
-        """insertEvidenceFile(self, path)"""
+        """
+        insertEvidenceFile(self, path)
+
+
+        Insert evidence from file.
+
+        Parameters
+        ----------
+        path : str
+        	the path to the evidence file. 
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_insertEvidenceFile(self, path)
 
 
@@ -16480,10 +25211,6 @@ class CNLoopyPropagation_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.CNLoopyPropagation_double_nbrIterations(self)
 
@@ -16521,21 +25248,43 @@ class CNLoopyPropagation_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.CNLoopyPropagation_double_history(self)
 
 
     def asIApproximationSchemeConfiguration(self):
-        """asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration"""
+        """
+        asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
+
+
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_asIApproximationSchemeConfiguration(self)
 
 
     def setRepetitiveInd(self, flag):
-        """setRepetitiveInd(self, flag)"""
+        """
+        setRepetitiveInd(self, flag)
+
+
+        Parameters
+        ----------
+        flag : bool
+        	True if repetitive independence is to be used, false otherwise. Only usefull with dynamic networks. 
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_setRepetitiveInd(self, flag)
 
 
@@ -16543,6 +25292,26 @@ class CNLoopyPropagation_double(_object):
         """
         marginalMax(self, id) -> Vector_double
         marginalMax(self, name) -> Vector_double
+
+
+        Get the upper marginals of a given node id.
+
+        Parameters
+        ----------
+        id : int
+        	the node id which upper marginals we want.
+        varName : str
+        	the variable name which upper marginals we want. 
+
+        Returns
+        -------
+        list
+            a constant reference to this node upper marginals.
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Credal network
+
         """
         return _pyAgrum.CNLoopyPropagation_double_marginalMax(self, *args)
 
@@ -16551,29 +25320,106 @@ class CNLoopyPropagation_double(_object):
         """
         marginalMin(self, id) -> Vector_double
         marginalMin(self, name) -> Vector_double
+
+
+        Get the lower marginals of a given node id.
+
+        Parameters
+        ----------
+        id : int
+        	the node id which lower marginals we want.
+        varName : str
+        	the variable name which lower marginals we want. 
+
+        Returns
+        -------
+        list
+            a constant reference to this node lower marginals.
+
+        Warnings
+        --------
+        IndexError raised if the node does not belong to the Credal network
+
         """
         return _pyAgrum.CNLoopyPropagation_double_marginalMin(self, *args)
 
 
     def insertModalsFile(self, path):
-        """insertModalsFile(self, path)"""
+        """
+        insertModalsFile(self, path)
+
+
+        Insert variables modalities from file to compute expectations.
+
+        Parameters
+        ----------
+        path : str
+        	The path to the modalities file. 
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_insertModalsFile(self, path)
 
 
     def dynamicExpMax(self, varName):
-        """dynamicExpMax(self, varName) -> Vector_double"""
+        """
+        dynamicExpMax(self, varName) -> Vector_double
+
+
+        Get the upper dynamic expectation of a given variable prefix.
+
+        Parameters
+        ----------
+        varName : str
+        	the variable name prefix which upper expectation we want.
+
+        Returns
+        -------
+        double
+            a constant reference to the variable upper expectation over all time steps. 
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_dynamicExpMax(self, varName)
 
 
     def dynamicExpMin(self, varName):
-        """dynamicExpMin(self, varName) -> Vector_double"""
+        """
+        dynamicExpMin(self, varName) -> Vector_double
+
+
+        Get the lower dynamic expectation of a given variable prefix.
+
+        Parameters
+        ----------
+        varName : str
+        	the variable name prefix which lower expectation we want.
+
+        Returns
+        -------
+        double
+            a constant reference to the variable lower expectation over all time steps. 
+
+        """
         return _pyAgrum.CNLoopyPropagation_double_dynamicExpMin(self, varName)
 
 CNLoopyPropagation_double_swigregister = _pyAgrum.CNLoopyPropagation_double_swigregister
 CNLoopyPropagation_double_swigregister(CNLoopyPropagation_double)
 
 class InfluenceDiagram_double(DAGmodel):
-    """Proxy of C++ gum::InfluenceDiagram< double > class."""
+    """
+
+    InfluenceDiagram represents an Influence Diagram.
+
+    Available constructors:
+        ``InfluenceDiagram() -> InfluenceDiagram``
+
+        ``InfluenceDiagram(source) -> InfluenceDiagram``
+
+    Parameters
+    ----------
+    source : pyAgrum.InfluenceDiagram
+      the InfluenceDiagram to copy
+
+    """
 
     __swig_setmethods__ = {}
     for _s in [DAGmodel]:
@@ -16600,7 +25446,16 @@ class InfluenceDiagram_double(DAGmodel):
             self.this = this
 
     def toDot(self):
-        """toDot(self) -> std::string"""
+        """
+        toDot(self) -> std::string
+
+
+        Returns
+        -------
+        str
+            a friendly display of the graph in DOT format
+
+        """
         return _pyAgrum.InfluenceDiagram_double_toDot(self)
 
 
@@ -16610,7 +25465,27 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def cpt(self, varId):
-        """cpt(self, varId) -> Potential_double"""
+        """
+        cpt(self, varId) -> Potential_double
+
+
+        Returns the CPT of a variable.
+
+        Parameters
+        ----------
+        VarId : int
+        	A variable's id in the pyAgrum.BayesNet.
+
+        Returns
+        -------
+        pyAgrum.Potential
+        	The variable's CPT. 
+
+        Warnings
+        --------
+        NotFound raised if no variable's id matches varId. 
+
+        """
         val = _pyAgrum.InfluenceDiagram_double_cpt(self, varId)
 
         val.__fill_distrib__()
@@ -16620,7 +25495,25 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def utility(self, varId):
-        """utility(self, varId) -> UtilityTable_double"""
+        """
+        utility(self, varId) -> UtilityTable_double
+
+
+        Parameters
+        ----------
+        varId : int 
+        	the tested node id.
+
+        Returns
+        -------
+        pyAgrum.UtilityTable
+        	the utility table of the node
+
+        Warnings
+        --------
+        IndexError raised if the InfluenceDiagram does not contain the variable
+
+        """
         val = _pyAgrum.InfluenceDiagram_double_utility(self, varId)
 
         val.__fill_distrib__()
@@ -16630,52 +25523,195 @@ class InfluenceDiagram_double(DAGmodel):
 
 
     def isUtilityNode(self, varId):
-        """isUtilityNode(self, varId) -> bool"""
+        """
+        isUtilityNode(self, varId) -> bool
+
+
+        Parameters
+        ----------
+        varId : int 
+        	the tested node id.
+
+        Returns
+        -------
+        bool
+        	true if node is an utility node
+
+        """
         return _pyAgrum.InfluenceDiagram_double_isUtilityNode(self, varId)
 
 
     def isDecisionNode(self, varId):
-        """isDecisionNode(self, varId) -> bool"""
+        """
+        isDecisionNode(self, varId) -> bool
+
+
+        Parameters
+        ----------
+        varId : int 
+        	the tested node id.
+
+        Returns
+        -------
+        bool
+        	true if node is a decision node
+
+        """
         return _pyAgrum.InfluenceDiagram_double_isDecisionNode(self, varId)
 
 
     def isChanceNode(self, varId):
-        """isChanceNode(self, varId) -> bool"""
+        """
+        isChanceNode(self, varId) -> bool
+
+
+        Parameters
+        ----------
+        varId : int 
+        	the tested node id.
+
+        Returns
+        -------
+        bool
+        	true if node is a chance node
+
+        """
         return _pyAgrum.InfluenceDiagram_double_isChanceNode(self, varId)
 
 
     def utilityNodeSize(self):
-        """utilityNodeSize(self) -> gum::Size"""
+        """
+        utilityNodeSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of utility nodes
+
+        """
         return _pyAgrum.InfluenceDiagram_double_utilityNodeSize(self)
 
 
     def chanceNodeSize(self):
-        """chanceNodeSize(self) -> gum::Size"""
+        """
+        chanceNodeSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of chance nodes. 
+
+        """
         return _pyAgrum.InfluenceDiagram_double_chanceNodeSize(self)
 
 
     def decisionNodeSize(self):
-        """decisionNodeSize(self) -> gum::Size"""
+        """
+        decisionNodeSize(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the number of decision nodes
+
+        """
         return _pyAgrum.InfluenceDiagram_double_decisionNodeSize(self)
 
 
     def variable(self, id):
-        """variable(self, id) -> DiscreteVariable"""
+        """
+        variable(self, id) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        id : int
+         	the node id
+
+        Returns
+        ------
+        pyAgrum.DiscreteVariable
+        	a constant reference over a variabe given it's node id
+
+        Warnings
+        --------
+        NotFound raised if no variable's id matches the parameter 
+
+        """
         return _pyAgrum.InfluenceDiagram_double_variable(self, id)
 
 
     def nodeId(self, var):
-        """nodeId(self, var) -> gum::NodeId"""
+        """
+        nodeId(self, var) -> gum::NodeId
+
+
+        Parameters
+        ----------
+        var : pyAgrum.DiscreteVariable
+        	a variable
+
+        Returns
+        -------
+        int
+        	the id of the variable
+
+        Warnings
+        --------
+        IndexError raised if the InfluenceDiagram does not contain the variable
+
+        """
         return _pyAgrum.InfluenceDiagram_double_nodeId(self, var)
 
 
     def idFromName(self, name):
-        """idFromName(self, name) -> gum::NodeId"""
+        """
+        idFromName(self, name) -> gum::NodeId
+
+
+        Returns a variable's id given its name.
+
+        Parameters
+        ----------
+        name : str
+        	the variable's name from which the id is returned.
+
+        Returns
+        -------
+        int
+        	the variable's node id. 
+
+        Warnings
+        --------
+        NotFound raised if no such name exists in the graph. 
+
+        """
         return _pyAgrum.InfluenceDiagram_double_idFromName(self, name)
 
 
     def variableFromName(self, name):
-        """variableFromName(self, name) -> DiscreteVariable"""
+        """
+        variableFromName(self, name) -> DiscreteVariable
+
+
+        Parameters
+        ----------
+        name : str
+        	a variable's name
+
+        Returns
+        -------
+        pyAgrum.DiscreteVariable
+        	the variable
+
+        Warnings
+        --------
+        IndexError if the InfluenceDiagram does not contain the variable
+
+        """
         return _pyAgrum.InfluenceDiagram_double_variableFromName(self, name)
 
 
@@ -16683,6 +25719,32 @@ class InfluenceDiagram_double(DAGmodel):
         """
         add(self, variable, id=0) -> gum::NodeId
         add(self, variable) -> gum::NodeId
+
+
+        Add a chance variable, it's associate node and it's CPT.
+
+        The id of the new variable is automatically generated.
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	The variable added by copy.
+        id : int
+        	The chosen id. If 0, the NodeGraphPart will choose.
+
+        Warnings
+        --------
+        give an id (not 0) should be reserved for rare and specific situations !!! 
+
+        Returns
+        -------
+        int
+            the id of the added variable. 
+
+        Warnings
+        --------
+        DuplicateElement raised if id(<>0) is already used 
+
         """
         return _pyAgrum.InfluenceDiagram_double_add(self, variable, id)
 
@@ -16691,6 +25753,32 @@ class InfluenceDiagram_double(DAGmodel):
         """
         addDecisionNode(self, variable, id=0) -> gum::NodeId
         addDecisionNode(self, variable) -> gum::NodeId
+
+
+        Add a decision variable.
+
+        The id of the new variable is automatically generated.
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable added by copy.
+        id : int
+        	the chosen id. If 0, the NodeGraphPart will choose.
+
+        Warnings
+        --------
+        give an id (not 0) should be reserved for rare and specific situations !!! 
+
+        Returns
+        -------
+        int
+            the id of the added variable. 
+
+        Warnings
+        --------
+        DuplicateElement raised if id(<>0) is already used 
+
         """
         return _pyAgrum.InfluenceDiagram_double_addDecisionNode(self, variable, id)
 
@@ -16701,6 +25789,32 @@ class InfluenceDiagram_double(DAGmodel):
         addChanceNode(self, variable) -> gum::NodeId
         addChanceNode(self, variable, aContent, id=0) -> gum::NodeId
         addChanceNode(self, variable, aContent) -> gum::NodeId
+
+
+        Add a chance variable, it's associate node and it's CPT.
+
+        The id of the new variable is automatically generated.
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable added by copy.
+        id : int
+        	the chosen id. If 0, the NodeGraphPart will choose.
+
+        Warnings
+        --------
+        give an id (not 0) should be reserved for rare and specific situations !!! 
+
+        Returns
+        -------
+        int
+            the id of the added variable. 
+
+        Warnings
+        --------
+        DuplicateElement raised if id(<>0) is already used 
+
         """
         return _pyAgrum.InfluenceDiagram_double_addChanceNode(self, *args)
 
@@ -16711,6 +25825,36 @@ class InfluenceDiagram_double(DAGmodel):
         addUtilityNode(self, variable) -> gum::NodeId
         addUtilityNode(self, variable, aContent, id=0) -> gum::NodeId
         addUtilityNode(self, variable, aContent) -> gum::NodeId
+
+
+        Add a utility variable, it's associate node and it's UT. 
+
+        The id of the new variable is automatically generated.
+
+        Parameters
+        ----------
+        variable : pyAgrum.DiscreteVariable
+        	the variable added by copy
+        id : int
+        	the chosen id. If 0, the NodeGraphPart will choose
+
+        Warnings
+        --------
+        give an id (not 0) should be reserved for rare and specific situations !!! 
+
+        Returns
+        -------
+        int
+            the id of the added variable. 
+
+        Warnings
+        --------
+        InvalidArgument raised if variable has more than one label
+
+        Warnings
+        --------
+        DuplicateElement raised if id(<>0) is already used 
+
         """
         return _pyAgrum.InfluenceDiagram_double_addUtilityNode(self, *args)
 
@@ -16719,17 +25863,70 @@ class InfluenceDiagram_double(DAGmodel):
         """
         erase(self, id)
         erase(self, var)
+
+
+        Erase a Variable from the network and remove the variable from all his childs.
+
+        If no variable matches the id, then nothing is done.
+
+        Parameters
+        ----------
+        id : int
+        	The id of the variable to erase.
+        var : pyAgrum.DiscreteVariable
+        	The reference on the variable to remove. 
+
         """
         return _pyAgrum.InfluenceDiagram_double_erase(self, *args)
 
 
     def changeVariableName(self, id, new_name):
-        """changeVariableName(self, id, new_name)"""
+        """
+        changeVariableName(self, id, new_name)
+
+
+        Parameters
+        ----------
+        id : int
+        	the node Id
+        new_name : str
+        	the name of the variable 
+
+        Warnings
+        --------
+        DuplicateLabel raised if this name already exists
+
+        Warnings
+        --------
+        NotFound raised if no nodes matches id. 
+
+        """
         return _pyAgrum.InfluenceDiagram_double_changeVariableName(self, id, new_name)
 
 
     def addArc(self, tail, head):
-        """addArc(self, tail, head)"""
+        """
+        addArc(self, tail, head)
+
+
+        Add an arc in the ID, and update diagram's potential nodes cpt if necessary.
+
+        Parameters
+        ----------
+        tail : int
+          the id of the tail node
+        head : int
+          the id of the head node
+
+        Warnings
+        --------
+        InvalidEdge raised if arc.tail and/or arc.head are not in the ID.
+
+        Warnings
+        --------
+        InvalidEdge raised if tail is a utility node 
+
+        """
         return _pyAgrum.InfluenceDiagram_double_addArc(self, tail, head)
 
 
@@ -16737,52 +25934,162 @@ class InfluenceDiagram_double(DAGmodel):
         """
         eraseArc(self, arc)
         eraseArc(self, tail, head)
+
+
+        Removes an arc in the ID, and update diagram's potential nodes cpt if necessary.
+
+        If (tail, head) doesn't exist, the nothing happens.
+
+        Parameters
+        ----------
+        arc : pyAgrum.Arc
+        	The arc to be removed.
+        tail : int
+          the id of the tail node
+        head : int
+          the id of the head node
+
         """
         return _pyAgrum.InfluenceDiagram_double_eraseArc(self, *args)
 
 
     def decisionOrderExists(self):
-        """decisionOrderExists(self) -> bool"""
+        """
+        decisionOrderExists(self) -> bool
+
+
+        Returns
+        -------
+        bool
+        	True if a directed path exist with all decision node
+
+        """
         return _pyAgrum.InfluenceDiagram_double_decisionOrderExists(self)
 
 
     def getDecisionGraph(self):
-        """getDecisionGraph(self) -> DAG"""
+        """
+        getDecisionGraph(self) -> DAG
+
+
+        Returns
+        -------
+        pyAgrum.DAG
+        	the temporal Graph. 
+
+        """
         return _pyAgrum.InfluenceDiagram_double_getDecisionGraph(self)
 
 
     def getDecisionOrder(self):
-        """getDecisionOrder(self) -> Vector_int"""
+        """
+        getDecisionOrder(self) -> Vector_int
+
+
+        Returns
+        -------
+        list
+        	the sequence of decision nodes in the directed path.
+
+        Warnings
+        --------
+        NotFound raised if such a path does not exist 
+
+        """
         return _pyAgrum.InfluenceDiagram_double_getDecisionOrder(self)
 
 
     def existsPathBetween(self, src, dest):
-        """existsPathBetween(self, src, dest) -> bool"""
+        """
+        existsPathBetween(self, src, dest) -> bool
+
+
+        Returns
+        -------
+        bool
+        	true if a path exists between two nodes. 
+
+        """
         return _pyAgrum.InfluenceDiagram_double_existsPathBetween(self, src, dest)
 
 
     def names(self):
-        """names(self) -> PyObject *"""
+        """
+        names(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The names of the InfluenceDiagram variables
+
+        """
         return _pyAgrum.InfluenceDiagram_double_names(self)
 
 
     def ids(self):
-        """ids(self) -> PyObject *"""
+        """
+        ids(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The list variables ids.
+
+        """
         return _pyAgrum.InfluenceDiagram_double_ids(self)
 
 
     def arcs(self):
-        """arcs(self) -> PyObject *"""
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        list:
+        	the list of all the arcs in the Influence Diagram.
+
+        """
         return _pyAgrum.InfluenceDiagram_double_arcs(self)
 
 
     def parents(self, id):
-        """parents(self, id) -> PyObject *"""
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        set
+            the set of the parents ids.
+
+        """
         return _pyAgrum.InfluenceDiagram_double_parents(self, id)
 
 
     def children(self, id):
-        """children(self, id) -> PyObject *"""
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
         return _pyAgrum.InfluenceDiagram_double_children(self, id)
 
 
@@ -16790,12 +26097,40 @@ class InfluenceDiagram_double(DAGmodel):
         """
         loadBIFXML(self, name, l) -> bool
         loadBIFXML(self, name) -> bool
+
+
+        Load a BIFXML file.
+
+        Parameters
+        ----------
+        name : str
+        	the name's file
+
+        Warnings
+        --------
+        IOError raised if file not found
+
+        Warnings
+        --------
+        FatalError raised if file is not valid
+
         """
         return _pyAgrum.InfluenceDiagram_double_loadBIFXML(self, *args)
 
 
     def saveBIFXML(self, name):
-        """saveBIFXML(self, name)"""
+        """
+        saveBIFXML(self, name)
+
+
+        Save the BayesNet in a BIFXML file.
+
+        Parameters
+        ----------
+        name : str
+        	the file's name
+
+        """
         return _pyAgrum.InfluenceDiagram_double_saveBIFXML(self, name)
 
 InfluenceDiagram_double_swigregister = _pyAgrum.InfluenceDiagram_double_swigregister
@@ -16822,51 +26157,175 @@ class InfluenceDiagramInference_double(_object):
         return None
 
     def makeInference(self):
-        """makeInference(self)"""
+        """
+        makeInference(self)
+
+
+        Makes the inference. 
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_makeInference(self)
 
 
     def getMEU(self):
-        """getMEU(self) -> double"""
+        """
+        getMEU(self) -> double
+
+
+        Returns maximum expected utility obtained from inference.
+
+        Warnings
+        --------
+        OperationNotAllowed raised if no inference have yet been made 
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_getMEU(self)
 
 
     def getBestDecisionChoice(self, decisionId):
-        """getBestDecisionChoice(self, decisionId) -> gum::Idx"""
+        """
+        getBestDecisionChoice(self, decisionId) -> gum::Idx
+
+
+        Returns best choice for decision variable given in parameter ( based upon MEU criteria )
+
+        Parameters
+        ----------
+        decisionId : int
+        	the id of the decision variable
+
+        Warnings
+        --------
+        OperationNotAllowed raised if no inference have yet been made
+
+        Warnings
+        --------
+        InvalidNode raised if node given in parmaeter is not a decision node 
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_getBestDecisionChoice(self, decisionId)
 
 
     def displayResult(self):
-        """displayResult(self) -> std::string"""
+        """
+        displayResult(self) -> std::string
+
+
+        Displays the result of an inference.
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_displayResult(self)
 
 
     def insertEvidence(self, evidenceList):
-        """insertEvidence(self, evidenceList)"""
+        """
+        insertEvidence(self, evidenceList)
+
+
+        Insert new evidence in the graph.
+
+        Parameters
+        ----------
+        evidenceList : list
+        	a list of potentials as evidences
+
+        Warnings
+        --------
+        If an evidence already w.r.t. a given node and a new evidence w.r.t. this node is onserted, the old evidence is removed
+
+        Warnings
+        --------
+        OperationNotAllowed raised if an evidence is over more than one variable
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_insertEvidence(self, evidenceList)
 
 
     def eraseEvidence(self, evidence):
-        """eraseEvidence(self, evidence)"""
+        """
+        eraseEvidence(self, evidence)
+
+
+        Parameters
+        ----------
+        evidence : pyAgrum.Potential
+        	the evidence to remove
+
+        Warnings
+        --------
+        IndexError raised if the evidence does not belong to the influence diagram
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_eraseEvidence(self, evidence)
 
 
     def eraseAllEvidence(self):
-        """eraseAllEvidence(self)"""
+        """
+        eraseAllEvidence(self)
+
+
+        Removes all the evidence entered into the diagram.
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_eraseAllEvidence(self)
 
 
     def displayStrongJunctionTree(self, *args):
-        """displayStrongJunctionTree(self, stream)"""
+        """
+        displayStrongJunctionTree(self, stream)
+
+
+        Displays on terminal the result of strong junction tree computation for test purpose only.
+
+        Parameters
+        ----------
+        args : TBW
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_displayStrongJunctionTree(self, *args)
 
 
     def influenceDiagram(self):
-        """influenceDiagram(self) -> InfluenceDiagram_double"""
+        """
+        influenceDiagram(self) -> InfluenceDiagram_double
+
+
+        Returns a constant reference over the InfluenceDiagram on which this class work.
+
+        Returns
+        -------
+        pyAgrum.InfluenceDiagram
+        	the InfluenceDiagram on which this class work
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_influenceDiagram(self)
 
 
     def setEvidence(self, evidces):
+        """
+        Erase all the evidences and apply addEvidence(key,value) for every pairs in evidces.
+
+        Parameters
+        ----------
+        evidces : dict
+          a dict of evidences
+
+        Warnings
+        --------
+        InvalidArgument raised if one value is not a value for the node
+
+        Warnings
+        --------
+        InvalidArgument raised if the size of a value is different from the domain side of the node
+
+        Warnings
+        --------
+        FatalError raised if one value is a vector of 0s
+
+        Warnings
+        --------
+        UndefinedElement raised if one node does not belong to the Bayesian network
+        """
         if not isinstance(evidces, dict):
             raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))
         bn = self.influenceDiagram()
@@ -16936,7 +26395,16 @@ class InfluenceDiagramInference_double(_object):
 
 
     def junctionTreeToDot(self):
-        """junctionTreeToDot(self) -> std::string const"""
+        """
+        junctionTreeToDot(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the result of strong junction tree computation for test purpose only.
+
+        """
         return _pyAgrum.InfluenceDiagramInference_double_junctionTreeToDot(self)
 
 InfluenceDiagramInference_double_swigregister = _pyAgrum.InfluenceDiagramInference_double_swigregister
@@ -17239,10 +26707,6 @@ class BNLearner_double(_object):
         int
         	the number of iterations
 
-        Warnings
-        --------
-        a completer
-
         """
         return _pyAgrum.BNLearner_double_nbrIterations(self)
 
@@ -17280,9 +26744,14 @@ class BNLearner_double(_object):
         history(self) -> Vector_double
 
 
+        Returns
+        -------
+        tuple
+        	the scheme history
+
         Warnings
         --------
-        A Faire
+        OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
 
         """
         return _pyAgrum.BNLearner_double_history(self)
@@ -17293,9 +26762,9 @@ class BNLearner_double(_object):
         asIApproximationSchemeConfiguration(self) -> IApproximationSchemeConfiguration
 
 
-        Warnings
-        --------
-        A Faire
+        Returns
+        -------
+        asIApproximationSchemeConfiguration
 
         """
         return _pyAgrum.BNLearner_double_asIApproximationSchemeConfiguration(self)
@@ -17340,10 +26809,6 @@ class BNLearner_double(_object):
         -------
         vector<pos,size>
         	the number of modalities of the database's variables.
-
-        Warnings
-        --------
-        A Faire
 
         """
         return _pyAgrum.BNLearner_double_modalities(self)
@@ -17511,10 +26976,6 @@ class BNLearner_double(_object):
         filename : str
         	the Dirichlet related database
 
-        Warnings
-        --------
-        TBD
-
         """
         return _pyAgrum.BNLearner_double_useAprioriDirichlet(self, filename)
 
@@ -17537,7 +26998,7 @@ class BNLearner_double(_object):
         useLocalSearchWithTabuList(self)
 
 
-        indicate that we wish to use a local search with tabu list
+        Indicate that we wish to use a local search with tabu list
 
         Parameters
         ----------
@@ -17588,9 +27049,12 @@ class BNLearner_double(_object):
         setSliceOrder(self, slice_order)
 
 
-        Warnings
-        --------
-        A Faire
+        Set a partial order on the nodes.
+
+        Parameters
+        ----------
+        l : list
+        	a list of sequences (composed of ids)
 
         """
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)
@@ -17717,22 +27181,46 @@ class BNLearner_double(_object):
 
 
     def use3off2(self):
-        """use3off2(self)"""
+        """
+        use3off2(self)
+
+
+        Indicate that we wish to use 3off2.
+
+        """
         return _pyAgrum.BNLearner_double_use3off2(self)
 
 
     def useNML(self):
-        """useNML(self)"""
+        """
+        useNML(self)
+
+
+        Indicate that we wish to use the NML correction for 3off2
+
+        """
         return _pyAgrum.BNLearner_double_useNML(self)
 
 
     def useMDL(self):
-        """useMDL(self)"""
+        """
+        useMDL(self)
+
+
+        Indicate that we wish to use the MDL correction for 3off2
+
+        """
         return _pyAgrum.BNLearner_double_useMDL(self)
 
 
     def useNoCorr(self):
-        """useNoCorr(self)"""
+        """
+        useNoCorr(self)
+
+
+        Indicate that we wish to use the NoCorr correction for 3off2
+
+        """
         return _pyAgrum.BNLearner_double_useNoCorr(self)
 
 
@@ -17740,12 +27228,36 @@ class BNLearner_double(_object):
         """
         latentVariables(self) -> PyObject
         latentVariables(self) -> std::vector< gum::Arc,std::allocator< gum::Arc > > const
+
+
+        Warnings
+        --------
+        learner must be using 3off2 algorithm
+
+        Returns
+        -------
+        list
+        	the list of latent variables
+
         """
         return _pyAgrum.BNLearner_double_latentVariables(self, *args)
 
 
     def learnMixedStructure(self):
-        """learnMixedStructure(self) -> MixedGraph"""
+        """
+        learnMixedStructure(self) -> MixedGraph
+
+
+        Warnings
+        --------
+        learner must be using 3off2 algorithm
+
+        Returns
+        -------
+        pyAgrum.MixedGraph
+        	the learned mixed structure
+
+        """
         return _pyAgrum.BNLearner_double_learnMixedStructure(self)
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
@@ -17775,6 +27287,7 @@ MonteCarloSampling=MonteCarloSampling_double
 LoopyImportanceSampling=LoopyImportanceSampling_double
 LoopyGibbsSampling=LoopyGibbsSampling_double
 LoopyWeightedSampling=LoopyWeightedSampling_double
+LoopyMonteCarloSampling=LoopyMonteCarloSampling_double
 
 LoopyBeliefPropagation = LoopyBeliefPropagation_double
 

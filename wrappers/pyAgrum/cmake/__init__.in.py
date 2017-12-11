@@ -46,7 +46,7 @@ from .pyAgrum import BruteForceKL, GibbsKL, StructuralComparator
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
 from .pyAgrum import LoopyImportanceSampling,LoopyGibbsSampling,LoopyWeightedSampling,LoopyMonteCarloSampling
-from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener
+from .pyAgrum import PythonApproximationListener #, PythonBNListener, PythonLoadListener
 from .pyAgrum import BNGenerator, IDGenerator, JTGenerator
 from .pyAgrum import BNLearner
 from .pyAgrum import InfluenceDiagram, InfluenceDiagramInference
@@ -77,7 +77,7 @@ __all__=[
   'LoopyBeliefPropagation','GibbsSampling','MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
   'LoopyImportanceSampling','LoopyGibbsSampling','LoopyWeightedSampling','LoopyMonteCarloSampling'
   'LazyPropagation','ShaferShenoyInference','VariableElimination',
-  'PythonApproximationListener','PythonBNListener','PythonLoadListener',
+  'PythonApproximationListener', #'PythonBNListener','PythonLoadListener',
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',
   'InfluenceDiagram','InfluenceDiagramInference',
