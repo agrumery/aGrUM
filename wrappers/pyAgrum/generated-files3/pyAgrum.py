@@ -428,7 +428,14 @@ def __fillLoadListeners(py_listener: 'std::vector< PythonLoadListener,std::alloc
     """__fillLoadListeners(py_listener, l) -> int"""
     return _pyAgrum.__fillLoadListeners(py_listener, l)
 class PythonApproximationListener(_object):
-    """Proxy of C++ PythonApproximationListener class."""
+    """
+
+    Parameters
+    ----------
+    algo : IApproximationSchemeConfiguration
+    	an approxmation scheme
+
+    """
 
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, PythonApproximationListener, name, value)
@@ -437,7 +444,16 @@ class PythonApproximationListener(_object):
     __repr__ = _swig_repr
 
     def __init__(self, algo: 'IApproximationSchemeConfiguration'):
-        """__init__(self, algo) -> PythonApproximationListener"""
+        """
+        __init__(self, algo) -> PythonApproximationListener
+
+
+        Parameters
+        ----------
+        algo : IApproximationSchemeConfiguration
+        	an approxmation scheme
+
+        """
         this = _pyAgrum.new_PythonApproximationListener(algo)
         try:
             self.this.append(this)
@@ -461,7 +477,10 @@ class PythonApproximationListener(_object):
         setWhenProgress(self, pyfunc)
 
 
-
+        Parameters
+        ----------
+        pyfunc
+        	the function to execute
 
         """
         return _pyAgrum.PythonApproximationListener_setWhenProgress(self, pyfunc)
@@ -472,7 +491,10 @@ class PythonApproximationListener(_object):
         setWhenStop(self, pyfunc)
 
 
-
+        Parameters
+        ----------
+        pyfunc
+        	the function to execute
 
         """
         return _pyAgrum.PythonApproximationListener_setWhenStop(self, pyfunc)
@@ -1949,17 +1971,44 @@ class GumException(Exception):
 
 
     def errorContent(self) -> "std::string const":
-        """errorContent(self) -> std::string const"""
+        """
+        errorContent(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the error content
+
+        """
         return _pyAgrum.GumException_errorContent(self)
 
 
     def errorType(self) -> "std::string const":
-        """errorType(self) -> std::string const"""
+        """
+        errorType(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the error type
+
+        """
         return _pyAgrum.GumException_errorType(self)
 
 
     def errorCallStack(self) -> "std::string const":
-        """errorCallStack(self) -> std::string const"""
+        """
+        errorCallStack(self) -> std::string const
+
+
+        Returns
+        -------
+        str
+        	the error call stack
+
+        """
         return _pyAgrum.GumException_errorCallStack(self)
 
 GumException_swigregister = _pyAgrum.GumException_swigregister
@@ -3226,12 +3275,30 @@ class SyntaxError(IOError):
             self.this = this
 
     def col(self) -> "gum::Size":
-        """col(self) -> gum::Size"""
+        """
+        col(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the indice of the colonne of the error
+
+        """
         return _pyAgrum.SyntaxError_col(self)
 
 
     def line(self) -> "gum::Size":
-        """line(self) -> gum::Size"""
+        """
+        line(self) -> gum::Size
+
+
+        Returns
+        -------
+        int
+        	the indice of the line of the error
+
+        """
         return _pyAgrum.SyntaxError_line(self)
 
     __swig_destroy__ = _pyAgrum.delete_SyntaxError
@@ -3845,8 +3912,8 @@ class LabelizedVariable(DiscreteVariable):
     aLDRV: pyAgrum.LabelizedVariable
       Another `LabelizedVariable` that will be copied
 
-    Examples
-    --------
+    Loading Listeners
+    -----------------
     >>> import pyAgrum as gum
     >>>
     >>> # creating a variable with 3 labels : '0', '1' and '2'
@@ -7438,7 +7505,16 @@ class StructuralComparator(_object):
         compare(self, ref, test)
 
 
+        Use to compare the edges/arcs of two structure of the same type and same sizes (either DiGraph, UndiGraph or MixedGraph).
 
+        Could be use to compare a BN and its learned version.
+
+        Parameters
+        ----------
+        ref :
+        	the structure of reference
+        test :
+        	the structure we want to test
 
         """
         return _pyAgrum.StructuralComparator_compare(self, *args)
@@ -7449,9 +7525,12 @@ class StructuralComparator(_object):
         precision_skeleton(self) -> double
 
 
+        Rate of true postive over labelized edges.
+
         Returns
         -------
         double
+        	the precision of the tested graph skeleton
 
         """
         return _pyAgrum.StructuralComparator_precision_skeleton(self)
@@ -7462,9 +7541,12 @@ class StructuralComparator(_object):
         recall_skeleton(self) -> double
 
 
+        Rate of true postive over labelized edges.
+
         Returns
         -------
         double
+        	the recall of the tested graph skeleton
 
         """
         return _pyAgrum.StructuralComparator_recall_skeleton(self)
@@ -7475,9 +7557,12 @@ class StructuralComparator(_object):
         f_score_skeleton(self) -> double
 
 
+        Harmonic mean between recall and precision.
+
         Returns
         -------
         double
+        	the tarmonic mean of the tested graph skeleton
 
         """
         return _pyAgrum.StructuralComparator_f_score_skeleton(self)
@@ -7488,9 +7573,12 @@ class StructuralComparator(_object):
         precision(self) -> double
 
 
+        Rate of true postive over postively labelized arcs/edges.
+
         Returns
         -------
         double
+        	the precision of the tested graph
 
         """
         return _pyAgrum.StructuralComparator_precision(self)
@@ -7501,9 +7589,12 @@ class StructuralComparator(_object):
         recall(self) -> double
 
 
+        Rate of true postive over labelized arcs/edges.
+
         Returns
         -------
         double
+        	the recall of the tested graph
 
         """
         return _pyAgrum.StructuralComparator_recall(self)
@@ -7514,9 +7605,12 @@ class StructuralComparator(_object):
         f_score(self) -> double
 
 
+        Harmonic mean between recall and precision.
+
         Returns
         -------
         double
+        	the harmonic mean of the tested graph
 
         """
         return _pyAgrum.StructuralComparator_f_score(self)
@@ -10245,6 +10339,52 @@ class BayesNet_double(IBayesNet_double):
 
     	``BayesNet(source) -> BayesNet``
 
+    Listeners could be added in order to monitor its loading.
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>>
+    >>> # creating a new liseners
+    >>> def foo(progress):
+    >>>    if progress==200:
+    >>>        print(' BN loaded ')
+    >>>        return
+    >>>    elif progress==100:
+    >>>        car='%'
+    >>>    elif progress%10==0:
+    >>>        car='#'
+    >>>    else:
+    >>>        car='.'
+    >>>    print(car,end='',flush=True)
+    >>>    
+    >>> def bar(progress):
+    >>>    if progress==50:
+    >>>        print('50%')
+    >>>
+    >>> 
+    >>> gum.loadBN('./bn.bif',listeners=[foo,bar])
+    >>> # .........#.........#.........#.........#..50%
+    >>> # .......#.........#.........#.........#.........#.........% | bn loaded
+
+    Listeners could also be added when structural modification are made
+
+    Examples
+    --------
+    >>> import pyAgrum as gum
+    >>>
+    >>> bn=gum.BayesNet()
+    >>>
+    >>> bn.addStructureListener(whenNodeAdded=lambda n,s:print('adding {}:{}'.format(n,s)),
+    >>>                         whenArcAdded=lambda i,j: print('adding {}->{}'.format(i,j)),
+    >>>                         whenNodeDeleted=lambda n:print('deleting {}'.format(n)),
+    >>>                         whenArcDeleted=lambda i,j: print('deleting {}->{}'.format(i,j)))
+    >>>
+    >>> bn.addStructureListener(whenNodeDeleted=lambda n: print('yes, really deleting '+str(n)))
+    >>>
+    >>> l=[bn.add(item,3) for item in 'ABCDE']
+    >>> 
+
     Parameters
     ----------
     name: str
@@ -11276,6 +11416,8 @@ class BayesNet_double(IBayesNet_double):
         ----------
         name : str
         	the file's name
+        l : list
+        	list of functions to execute
 
         Warnings
         --------
@@ -11317,6 +11459,8 @@ class BayesNet_double(IBayesNet_double):
         ----------
         name : str
         	the file's name
+        l : list
+        	list of functions to execute
 
         Warnings
         --------
@@ -11358,6 +11502,8 @@ class BayesNet_double(IBayesNet_double):
         ----------
         name : str
         	the name's file
+        l : list
+        	list of functions to execute
 
         Warnings
         --------
@@ -11409,6 +11555,8 @@ class BayesNet_double(IBayesNet_double):
         	the system's name
         classpath : str
         	the classpath
+        l : list
+        	list of functions to execute
 
         Warnings
         --------
@@ -11454,6 +11602,8 @@ class BayesNet_double(IBayesNet_double):
         ----------
         name : str
         	the name's file
+        l : list
+        	list of functions to execute
 
         Warnings
         --------
@@ -11495,6 +11645,8 @@ class BayesNet_double(IBayesNet_double):
         ----------
         name : str
         	the name's file
+        l : list
+        	list of functions to execute
 
         Warnings
         --------
@@ -14497,7 +14649,7 @@ VariableElimination_double_swigregister(VariableElimination_double)
 class GibbsSampling_double(_object):
     """
 
-    Class used for Gibbs sampling inference algorithm.
+    Class for making Gibbs sampling inference in bayesian networks.
 
     Available constructors:
     	``GibbsSampling(bn) -> GibbsSampling``
@@ -18380,9 +18532,10 @@ class LoopyImportanceSampling_double(_object):
         setVirtualLBPSize(self, vlbpsize)
 
 
-        Warnings
-        --------
-        A faire in GenericInference
+        Parameters
+        ----------
+        vlbpsize : double
+          the size of the virtual LBP
 
         """
         return _pyAgrum.LoopyImportanceSampling_double_setVirtualLBPSize(self, vlbpsize)
@@ -19337,9 +19490,10 @@ class LoopyWeightedSampling_double(_object):
         setVirtualLBPSize(self, vlbpsize)
 
 
-        Warnings
-        --------
-        A faire in GenericInference
+        Parameters
+        ----------
+        vlbpsize : double
+          the size of the virtual LBP
 
         """
         return _pyAgrum.LoopyWeightedSampling_double_setVirtualLBPSize(self, vlbpsize)
@@ -20294,9 +20448,10 @@ class LoopyGibbsSampling_double(_object):
         setVirtualLBPSize(self, vlbpsize)
 
 
-        Warnings
-        --------
-        A faire in GenericInference
+        Parameters
+        ----------
+        vlbpsize : double
+          the size of the virtual LBP
 
         """
         return _pyAgrum.LoopyGibbsSampling_double_setVirtualLBPSize(self, vlbpsize)
@@ -21323,9 +21478,10 @@ class LoopyMonteCarloSampling_double(_object):
         setVirtualLBPSize(self, vlbpsize)
 
 
-        Warnings
-        --------
-        A faire in GenericInference
+        Parameters
+        ----------
+        vlbpsize : double
+          the size of the virtual LBP
 
         """
         return _pyAgrum.LoopyMonteCarloSampling_double_setVirtualLBPSize(self, vlbpsize)
@@ -25581,8 +25737,6 @@ class InfluenceDiagram_double(DAGmodel):
         ----------
         variable : pyAgrum.DiscreteVariable
         	the variable added by copy.
-        aContent : tbd
-        	The content used for the variable potential. 
         id : int
         	the chosen id. If 0, the NodeGraphPart will choose.
 
@@ -25619,8 +25773,6 @@ class InfluenceDiagram_double(DAGmodel):
         ----------
         variable : pyAgrum.DiscreteVariable
         	the variable added by copy
-        aContent : tbd
-        	The content used for the variable utility
         id : int
         	the chosen id. If 0, the NodeGraphPart will choose
 
@@ -26594,10 +26746,6 @@ class BNLearner_double(_object):
         vector<pos,size>
         	the number of modalities of the database's variables.
 
-        Warnings
-        --------
-        A Faire
-
         """
         return _pyAgrum.BNLearner_double_modalities(self)
 
@@ -26764,10 +26912,6 @@ class BNLearner_double(_object):
         filename : str
         	the Dirichlet related database
 
-        Warnings
-        --------
-        TBD
-
         """
         return _pyAgrum.BNLearner_double_useAprioriDirichlet(self, filename)
 
@@ -26841,9 +26985,12 @@ class BNLearner_double(_object):
         setSliceOrder(self, slice_order)
 
 
-        Warnings
-        --------
-        A Faire
+        Set a partial order on the nodes.
+
+        Parameters
+        ----------
+        l : list
+        	a list of sequences (composed of ids)
 
         """
         return _pyAgrum.BNLearner_double_setSliceOrder(self, *args)

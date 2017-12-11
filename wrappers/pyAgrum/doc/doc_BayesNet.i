@@ -7,6 +7,52 @@ Available constructors:
 
 	``BayesNet(source) -> BayesNet``
 
+Listeners could be added in order to monitor its loading.
+
+Examples
+--------
+>>> import pyAgrum as gum
+>>>
+>>> # creating a new liseners
+>>> def foo(progress):
+>>>    if progress==200:
+>>>        print(' BN loaded ')
+>>>        return
+>>>    elif progress==100:
+>>>        car='%'
+>>>    elif progress%10==0:
+>>>        car='#'
+>>>    else:
+>>>        car='.'
+>>>    print(car,end='',flush=True)
+>>>    
+>>> def bar(progress):
+>>>    if progress==50:
+>>>        print('50%')
+>>>
+>>> 
+>>> gum.loadBN('./bn.bif',listeners=[foo,bar])
+>>> # .........#.........#.........#.........#..50%
+>>> # .......#.........#.........#.........#.........#.........% | bn loaded
+
+Listeners could also be added when structural modification are made
+
+Examples
+--------
+>>> import pyAgrum as gum
+>>>
+>>> bn=gum.BayesNet()
+>>>
+>>> bn.addStructureListener(whenNodeAdded=lambda n,s:print('adding {}:{}'.format(n,s)),
+>>>                         whenArcAdded=lambda i,j: print('adding {}->{}'.format(i,j)),
+>>>                         whenNodeDeleted=lambda n:print('deleting {}'.format(n)),
+>>>                         whenArcDeleted=lambda i,j: print('deleting {}->{}'.format(i,j)))
+>>>
+>>> bn.addStructureListener(whenNodeDeleted=lambda n: print('yes, really deleting '+str(n)))
+>>>
+>>> l=[bn.add(item,3) for item in 'ABCDE']
+>>> 
+
 Parameters
 ----------
 name: str
@@ -508,6 +554,8 @@ Parameters
 ----------
 name : str
 	the file's name
+l : list
+	list of functions to execute
 
 Warnings
 --------
@@ -526,6 +574,8 @@ Parameters
 ----------
 name : str
 	the name's file
+l : list
+	list of functions to execute
 
 Warnings
 --------
@@ -544,6 +594,8 @@ Parameters
 ----------
 name : str
 	the file's name
+l : list
+	list of functions to execute
 
 Warnings
 --------
@@ -562,6 +614,8 @@ Parameters
 ----------
 name : str
 	the name's file
+l : list
+	list of functions to execute
 
 Warnings
 --------
@@ -588,6 +642,8 @@ system : str
 	the system's name
 classpath : str
 	the classpath
+l : list
+	list of functions to execute
 
 Warnings
 --------
@@ -606,6 +662,8 @@ Parameters
 ----------
 name : str
 	the name's file
+l : list
+	list of functions to execute
 
 Warnings
 --------
