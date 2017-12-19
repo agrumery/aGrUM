@@ -87,23 +87,37 @@ IMPROVE_BAYESNET_API(gum::BayesNet);
 %extend gum::BayesNet {
 %pythoncode {
 def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
-  if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
-    return
+    """
+    Add the listeners in parameters to the list of existing ones.
 
-  if not hasattr(self,"_listeners"):
-    self._listeners=[]
+    Parameters
+    ----------
+    whenNodeAdded : lambda expression
+      a function for when a node is added
+    whenNodeDeleted : lambda expression
+      a function for when a node is removed
+    whenArcAdded : lambda expression
+      a function for when an arc is added
+    whenArcDeleted : lambda expression
+      a function for when an arc is removed
+    """
+    if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
+      return
+  
+    if not hasattr(self,"_listeners"):
+      self._listeners=[]
 
-  nl = PythonBNListener(self.dag(), self.variableNodeMap())
-  if whenNodeAdded is not None:
-    nl.setWhenNodeAdded(whenNodeAdded)
-  if whenNodeDeleted is not None:
-    nl.setWhenNodeDeleted(whenNodeDeleted)
-  if whenArcAdded is not None:
-    nl.setWhenArcAdded(whenArcAdded)
-  if whenArcDeleted is not None:
-    nl.setWhenArcDeleted(whenArcDeleted)
+    nl = PythonBNListener(self.dag(), self.variableNodeMap())
+    if whenNodeAdded is not None:
+      nl.setWhenNodeAdded(whenNodeAdded)
+    if whenNodeDeleted is not None:
+      nl.setWhenNodeDeleted(whenNodeDeleted)
+    if whenArcAdded is not None:
+      nl.setWhenArcAdded(whenArcAdded)
+    if whenArcDeleted is not None:
+      nl.setWhenArcDeleted(whenArcDeleted)
 
-  self._listeners.append(nl)
+    self._listeners.append(nl)
 }
 }
 

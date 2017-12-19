@@ -27,7 +27,6 @@ pyAgrum contains
   * `examples as jupyter notebooks <http://www-desir.lip6.fr/~phw/aGrUM/docs/last/notebooks/01-tutorial.ipynb.html>`_,
   * and a `website <http://agrum.org>`_.
 
-
 pyAgrum library
 ===============
 
@@ -66,6 +65,14 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Documentation tools
+===================
+
+.. toctree::
+  :maxdepth: 1
+  
+  readme
 
 .. Exhaustif but not usable
 .. =====================
