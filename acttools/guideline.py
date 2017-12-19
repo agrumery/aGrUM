@@ -43,8 +43,8 @@ def guideline(current, modif=False):
   nbrError += _checkCppFileExists(current, modif)
   notif("  (2) check for GPL license")
   nbrError += _checkForGPLlicense(current, modif)
-  #notif("  (3) check for format")
-  #nbrError += _checkForFormat(current, modif)
+  notif("  (3) check for format")
+  nbrError += _checkForFormat(current, modif)
   notif("  (4) check for missing documentation in pyAgrum")
   nbrError += _checkForMissingDocs(modif)
 
