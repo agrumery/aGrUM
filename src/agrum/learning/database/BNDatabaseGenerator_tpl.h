@@ -241,14 +241,15 @@ namespace gum {
     void BNDatabaseGenerator< GUM_SCALAR >::setVarOrder(
       const std::vector< Idx >& varOrder) {
 
+      if (varOrder.size() != __nbVars) {
+        GUM_ERROR(FatalError,
+                  "varOrder's size must be equal to the number of variables");
+      }
       std::vector< bool > usedVars(__nbVars, false);
       for (const auto& i : __varOrder) {
         if (usedVars.at(i))
           GUM_ERROR(FatalError, "varOrder must not have repeated values");
         usedVars.at(i) = true;
-      }
-      if (std::find(usedVars.begin(), usedVars.end(), false) != usedVars.end()) {
-        GUM_ERROR(FatalError, "varOrder must contain all variables");
       }
 
       __varOrder = varOrder;
