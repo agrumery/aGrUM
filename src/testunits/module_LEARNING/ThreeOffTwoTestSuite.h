@@ -236,6 +236,50 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(latents.size(), gum::Size( 0 ) );
     }
 
+    void test_MIIC_asia_NMLcorr() {
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("HematoData.csv"));
+
+      gum::learning::DBRowTranslatorSet<
+        gum::learning::CellTranslatorCompactIntId >
+        translators;
+      translators.insertTranslator(0, database.nbVariables());
+
+      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
+        generators;
+      generators.insertGenerator();
+
+      auto filter =
+        gum::learning::make_DB_row_filter(database, translators, generators);
+
+      std::vector< gum::Idx > modalities = filter.modalities();
+
+      gum::learning::CorrectedMutualInformation<> cI(filter, modalities);
+      cI.useMDL();
+      // cI.useCache( false );
+
+      gum::learning::ThreeOffTwo search;
+      search.orientMIIC();
+      search.orient3off2();
+      search.orientMIIC();
+      // creating complete graph
+      gum::MixedGraph graph, g;
+      for (gum::Size i = 0; i < modalities.size(); ++i) {
+        graph.addNode(i);
+        for (gum::Size j = 0; j < i; ++j) {
+          graph.addEdge(j, i);
+        }
+      }
+
+      graph = search.learnMixedStructure(cI, graph);
+      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(5));
+      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(3));
+      std::vector< gum::Arc > latents = search.latentVariables();
+      std::cout << latents << std::endl;
+      TS_ASSERT_EQUALS(latents.size(), gum::Size(0) );
+      gum::DAG dag = search.learnStructure(cI, graph);
+      
+    }
+    
   };
 
 } /* namespace gum_tests */

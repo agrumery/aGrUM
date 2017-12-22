@@ -37,7 +37,6 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/config.h>
-//#include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/core/approximations/IApproximationSchemeConfiguration.h>
 #include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/core/heap.h>
@@ -65,6 +64,13 @@ namespace gum {
         const std::pair< std::tuple< Idx, Idx, Idx >*, double >& e2) const;
     };
 
+    class GreaterTupleOnLast {
+      public:
+      bool operator()(
+        const std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double >& e1,
+        const std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double >& e2) const;
+    };
+    
     /**
      * @class ThreeOffTwo
      * @brief The 3off2 learning algorithm
@@ -163,6 +169,11 @@ namespace gum {
       /// get the list of arcs hiding latent variables
       const std::vector< Arc > latentVariables() const;
 
+      /// Sets the orientation phase to follow the one of the MIIC algorithm
+      void orientMIIC();
+      /// Sets the orientation phase to follow the one of the 3off2 algorithm
+      void orient3off2();
+      
       /// @}
       // ##########################################################################
       /// @name Signalers and Listeners
@@ -214,17 +225,17 @@ namespace gum {
       void _orientation(
         CorrectedMutualInformation<>&                                 I, 
         MixedGraph&                                                   graph, 
-        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
-        Heap< 
-          std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
-          GreaterPairOn2nd >& _rank);
+        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
+      
       void _orientation_latents(
         CorrectedMutualInformation<>&                                 I, 
         MixedGraph&                                                   graph, 
-        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
-        Heap< 
-          std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
-          GreaterPairOn2nd >& _rank);
+        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
+      
+      void _orientation_miic(
+        CorrectedMutualInformation<>&                                 I, 
+        MixedGraph&                                                   graph, 
+        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
       /// @}
       
       /// finds the best contributor node for a pair given a conditioning set
@@ -254,6 +265,19 @@ namespace gum {
         CorrectedMutualInformation<>& I,
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
 
+      std::vector< std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
+      _getUnshieldedTriplesMIIC(
+        const MixedGraph&             graph,
+        CorrectedMutualInformation<>& I,
+        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
+        HashTable< std::pair< Idx, Idx >,  char >& marks);
+
+      /// Gets the orientation probabilities like MIIC for the orientation phase
+      std::vector< std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > > 
+      _updateProbaTriples( 
+        const MixedGraph&             graph,
+        std::vector< std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > > proba_triples );
+      
       /// Propagates the orientation from a node to its neighbours
       /*@param dag graph in which to which to propagate arcs
        *@param node node on which neighbours to propagate th orientation
@@ -272,6 +296,15 @@ namespace gum {
 
       /// size of the database
       Size __N;
+      
+      ///wether to use the miic algorithm or not
+      bool __usemiic{false};
+      
+    public:
+      ///checks for directed paths in a graph, consider double arcs like edges
+      const bool __existsDirectedPath( const MixedGraph& graph, 
+                                 const NodeId      n1,
+                                 const NodeId      n2 ) const;
     };
 
   } /* namespace learning */
