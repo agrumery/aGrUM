@@ -149,8 +149,8 @@ namespace gum_tests {
       }
 
       graph = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(9));
-      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(0));
+      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(8));
+      TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(1));
       std::vector< gum::Arc > latents = search.latentVariables();
       TS_ASSERT_EQUALS(latents.size(), gum::Size(2));
     }

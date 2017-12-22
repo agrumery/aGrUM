@@ -19,14 +19,15 @@
  ***************************************************************************/
 /**
  * @file
- * @brief The greedy hill learning algorithm (for directed graphs)
+ * @brief The 3off12 algorithm
  *
- * The ThreeOffTwo class implements a greedy search in which the only
- * the graph changes that increase the global score are applied. Those that
- * increase it the more are applied first. The algorithm stops when no single
- * change can increase the score anymore.
+ * The ThreeOffTwo class implements the 3off2 algorithm as proposed by Affeldt and 
+ * al. in https://doi.org/10.1186/s12859-015-0856-x. 
+ * It starts by eliminating edges that correspond to independent vaiables to build 
+ * the skeleton of the graph, and then directs the remaining edges to get an 
+ * essential graph. Latent variables can be detected using bi-directed arcs.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Quentin FALCAND
  */
 #ifndef GUM_LEARNING_3_OFF_2_H
 #define GUM_LEARNING_3_OFF_2_H
@@ -211,6 +212,13 @@ namespace gum {
       
       /// Orientation phase
       void _orientation(
+        CorrectedMutualInformation<>&                                 I, 
+        MixedGraph&                                                   graph, 
+        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
+        Heap< 
+          std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
+          GreaterPairOn2nd >& _rank);
+      void _orientation_latents(
         CorrectedMutualInformation<>&                                 I, 
         MixedGraph&                                                   graph, 
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
