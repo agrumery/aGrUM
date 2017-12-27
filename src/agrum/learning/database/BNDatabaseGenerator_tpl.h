@@ -246,11 +246,19 @@ namespace gum {
                   "varOrder's size must be equal to the number of variables");
       }
       std::vector< bool > usedVars(__nbVars, false);
-      for (const auto& i : __varOrder) {
+      for (const auto& i : varOrder) {
+
+        if( i >= __nbVars ){
+          GUM_ERROR(FatalError, "varOrder contains invalid variables");
+        }
         if (usedVars.at(i))
-          GUM_ERROR(FatalError, "varOrder must not have repeated values");
+          GUM_ERROR(FatalError, "varOrder must not have repeated variables");
         usedVars.at(i) = true;
       }
+
+     if (std::find(usedVars.begin(), usedVars.end(), false) != usedVars.end()) {
+       GUM_ERROR(FatalError, "varOrder must contain all variables");
+     }
 
       __varOrder = varOrder;
     }

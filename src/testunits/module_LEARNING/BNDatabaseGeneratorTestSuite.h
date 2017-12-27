@@ -20,8 +20,6 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <stdio.h>
-#include <string.h>
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -45,7 +43,7 @@ namespace gum_tests {
     void setUp() {
       try {
         bn = new gum::BayesNet< double >("Asia");
-        std::string file = GET_RESSOURCES_PATH("asia4.bif");
+        std::string file = GET_RESSOURCES_PATH("survey.bif");
         auto        reader = gum::BIFReader< double >(bn, file);
         try {
           reader.proceed();
@@ -65,26 +63,21 @@ namespace gum_tests {
         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
       auto varOrder = dbgen->varOrder();
-      TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)8);
+      TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)6);
       TS_ASSERT_EQUALS(varOrder.at(0), (gum::Idx)0);
       TS_ASSERT_EQUALS(varOrder.at(1), (gum::Idx)1);
       TS_ASSERT_EQUALS(varOrder.at(2), (gum::Idx)2);
       TS_ASSERT_EQUALS(varOrder.at(3), (gum::Idx)3);
       TS_ASSERT_EQUALS(varOrder.at(4), (gum::Idx)4);
-      TS_ASSERT_EQUALS(varOrder.at(5), (gum::Idx)5);
-      TS_ASSERT_EQUALS(varOrder.at(6), (gum::Idx)6);
-      TS_ASSERT_EQUALS(varOrder.at(7), (gum::Idx)7);
 
       auto varOrderNames = dbgen->varOrderNames();
-      TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)8);
-      TS_ASSERT_EQUALS(varOrderNames.at(0), "asia");
-      TS_ASSERT_EQUALS(varOrderNames.at(1), "tub");
-      TS_ASSERT_EQUALS(varOrderNames.at(2), "smoke");
-      TS_ASSERT_EQUALS(varOrderNames.at(3), "lung");
-      TS_ASSERT_EQUALS(varOrderNames.at(4), "bronc");
-      TS_ASSERT_EQUALS(varOrderNames.at(5), "either");
-      TS_ASSERT_EQUALS(varOrderNames.at(6), "xray");
-      TS_ASSERT_EQUALS(varOrderNames.at(7), "dysp");
+      TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)6);
+      TS_ASSERT_EQUALS(varOrderNames.at(0), "A");
+      TS_ASSERT_EQUALS(varOrderNames.at(1), "S");
+      TS_ASSERT_EQUALS(varOrderNames.at(2), "E");
+      TS_ASSERT_EQUALS(varOrderNames.at(3), "O");
+      TS_ASSERT_EQUALS(varOrderNames.at(4), "R");
+      TS_ASSERT_EQUALS(varOrderNames.at(5), "T");
 
       delete dbgen;
     }
@@ -95,43 +88,36 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
 
-      std::vector< gum::Idx >    goodOrder1 = {1, 0, 3, 2, 7, 6, 5, 4};
-      std::vector< std::string > goodOrder2 = {
-        "xray", "dysp", "either", "bronc", "smoke", "lung", "tub", "asia"};
-
-
-      std::vector< gum::Idx >    badOrder1 = {5, 1, 0, 3, 2, 7, 6, 5, 4};
-      std::vector< std::string > badOrder2 = {
-        "xray", "lung", "dysp", "either", "bronc", "smoke", "lung", "tub", "asia"};
-
-      std::vector< gum::Idx >    badOrder3 = {1, 0, 3, 7, 6, 5, 4};
-      std::vector< std::string > badOrder4 = {
-        "xray", "dysp", "either", "bronc", "lung", "tub", "asia"};
+      std::vector< gum::Idx >    goodOrder1 = {1, 0, 3, 2, 5, 4};
+      std::vector< std::string > goodOrder2 = {"A", "E", "O", "R", "S", "T"};
+      std::vector< gum::Idx >    badOrder1 = {5, 1, 0, 3, 2, 5, 4};
+      std::vector< std::string > badOrder2 = {"A", "E", "O", "R", "A", "S", "T"};
+      std::vector< gum::Idx >    badOrder3 = {1, 0, 3, 5, 4};
+      std::vector< std::string > badOrder4 = {"A", "O", "R", "S", "T"};
+      std::vector< gum::Idx >    badOrder5 = {1, 0, 3, 6, 5, 4};
+      std::vector< std::string > badOrder6 = {"A", "O", "R", "S", "T", "X"};
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder1));
       auto varOrderNames = dbgen->varOrderNames();
-      TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)8);
-      TS_ASSERT_EQUALS(varOrderNames.at(1), "asia");
-      TS_ASSERT_EQUALS(varOrderNames.at(0), "tub");
-      TS_ASSERT_EQUALS(varOrderNames.at(3), "smoke");
-      TS_ASSERT_EQUALS(varOrderNames.at(2), "lung");
-      TS_ASSERT_EQUALS(varOrderNames.at(7), "bronc");
-      TS_ASSERT_EQUALS(varOrderNames.at(6), "either");
-      TS_ASSERT_EQUALS(varOrderNames.at(5), "xray");
-      TS_ASSERT_EQUALS(varOrderNames.at(4), "dysp");
+      TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)6);
+      TS_ASSERT_EQUALS(varOrderNames.at(1), "A");
+      TS_ASSERT_EQUALS(varOrderNames.at(0), "S");
+      TS_ASSERT_EQUALS(varOrderNames.at(3), "E");
+      TS_ASSERT_EQUALS(varOrderNames.at(2), "O");
+      TS_ASSERT_EQUALS(varOrderNames.at(5), "R");
+      TS_ASSERT_EQUALS(varOrderNames.at(4), "T");
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder2));
       auto varOrder = dbgen->varOrder();
-      TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)8);
-      TS_ASSERT_EQUALS(varOrder.at(0), (gum::Idx)6);
-      TS_ASSERT_EQUALS(varOrder.at(1), (gum::Idx)7);
-      TS_ASSERT_EQUALS(varOrder.at(2), (gum::Idx)5);
+      TS_ASSERT_EQUALS(varOrder.size(), (gum::Size)6);
+      TS_ASSERT_EQUALS(varOrder.at(0), (gum::Idx)0);
+      TS_ASSERT_EQUALS(varOrder.at(1), (gum::Idx)2);
+      TS_ASSERT_EQUALS(varOrder.at(2), (gum::Idx)3);
       TS_ASSERT_EQUALS(varOrder.at(3), (gum::Idx)4);
-      TS_ASSERT_EQUALS(varOrder.at(4), (gum::Idx)2);
-      TS_ASSERT_EQUALS(varOrder.at(5), (gum::Idx)3);
-      TS_ASSERT_EQUALS(varOrder.at(6), (gum::Idx)1);
-      TS_ASSERT_EQUALS(varOrder.at(7), (gum::Idx)0);
+      TS_ASSERT_EQUALS(varOrder.at(4), (gum::Idx)1);
+      TS_ASSERT_EQUALS(varOrder.at(5), (gum::Idx)5);
 
+      //TODO setVarOrderFromCSV
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setTopologicalVarOrder());
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setAntiTopologicalVarOrder());
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setRandomVarOrder());
@@ -141,6 +127,59 @@ namespace gum_tests {
       TS_ASSERT_THROWS(dbgen->setVarOrder(badOrder4), gum::FatalError);
 
       delete dbgen;
+    }
+    void testDrawSamples() {
+
+      gum::Size domSizeA = 3;
+      gum::Size domSizeS = 2;
+      gum::Size domSizeE = 2;
+      gum::Size domSizeO = 2;
+      gum::Size domSizeR = 2;
+      gum::Size domSizeT = 3;
+      gum::Size nbSamples = 100;
+
+      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+      std::vector< std::vector< gum::Idx > > database;
+      TS_GUM_ASSERT_THROWS_NOTHING(database = dbgen->database());
+
+      for (const auto& row : database) {
+        TS_ASSERT_LESS_THAN(row.at(0), domSizeA);
+        TS_ASSERT_LESS_THAN(row.at(1), domSizeS);
+        TS_ASSERT_LESS_THAN(row.at(2), domSizeE);
+        TS_ASSERT_LESS_THAN(row.at(3), domSizeO);
+        TS_ASSERT_LESS_THAN(row.at(4), domSizeR);
+        TS_ASSERT_LESS_THAN(row.at(5), domSizeT);
+      }
+
+      std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
+      TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
+      TS_GUM_ASSERT_THROWS_NOTHING(database = dbgen->database());
+      for (const auto& row : database) {
+        TS_ASSERT_LESS_THAN(row.at(0), domSizeS);
+        TS_ASSERT_LESS_THAN(row.at(1), domSizeE);
+        TS_ASSERT_LESS_THAN(row.at(2), domSizeT);
+        TS_ASSERT_LESS_THAN(row.at(3), domSizeR);
+        TS_ASSERT_LESS_THAN(row.at(4), domSizeA);
+        TS_ASSERT_LESS_THAN(row.at(5), domSizeO);
+      }
+
+      std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
+      TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+      TS_GUM_ASSERT_THROWS_NOTHING(database = dbgen->database());
+      for (const auto& row : database) {
+        TS_ASSERT_LESS_THAN(row.at(0), domSizeS);
+        TS_ASSERT_LESS_THAN(row.at(1), domSizeT);
+        TS_ASSERT_LESS_THAN(row.at(2), domSizeE);
+        TS_ASSERT_LESS_THAN(row.at(3), domSizeR);
+        TS_ASSERT_LESS_THAN(row.at(4), domSizeO);
+        TS_ASSERT_LESS_THAN(row.at(5), domSizeA);
+      }
+
     }
 
     void testToCSV(){}
