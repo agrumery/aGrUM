@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <string>
 
@@ -30,8 +31,6 @@
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/learning/database/BNDatabaseGenerator.h>
-
-
 
 namespace gum_tests {
 
@@ -117,7 +116,17 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(varOrder.at(4), (gum::Idx)1);
       TS_ASSERT_EQUALS(varOrder.at(5), (gum::Idx)5);
 
-      //TODO setVarOrderFromCSV
+      std::string csvFile = GET_RESSOURCES_PATH("survey1.csv");
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrderFromCSV(csvFile));
+      varOrderNames = dbgen->varOrderNames();
+      TS_ASSERT_EQUALS(varOrderNames.size(), (gum::Size)6);
+      TS_ASSERT_EQUALS(varOrderNames.at(0), "E");
+      TS_ASSERT_EQUALS(varOrderNames.at(1), "A");
+      TS_ASSERT_EQUALS(varOrderNames.at(2), "O");
+      TS_ASSERT_EQUALS(varOrderNames.at(3), "T");
+      TS_ASSERT_EQUALS(varOrderNames.at(4), "R");
+      TS_ASSERT_EQUALS(varOrderNames.at(5), "S");
+
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setTopologicalVarOrder());
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setAntiTopologicalVarOrder());
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setRandomVarOrder());
@@ -182,7 +191,156 @@ namespace gum_tests {
 
     }
 
-    void testToCSV() {}
+    void testToCSV_1() {
+
+      gum::Size nbSamples = 5;
+
+      std::vector< std::string > domA = {"young", "adult", "old"};
+      std::vector< std::string > domS = {"M", "F"};
+      std::vector< std::string > domE = {"high", "uni"};
+      std::vector< std::string > domO = {"emp", "self"};
+      std::vector< std::string > domR = {"small", "big"};
+      std::vector< std::string > domT = {"car", "train", "other"};
+
+      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+
+      std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
+      TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
+      std::string csvFileURL = GET_RESSOURCES_PATH("survey_tmp1.csv");
+      bool        useLabels = true;
+      bool        append = false;
+      std::string csvSeparator = " ";
+      bool        checkOnAppend = true;
+
+      TS_ASSERT_THROWS(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+        gum::OperationNotAllowed);
+
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+
+      std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
+      TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+      append = true;
+      TS_ASSERT_THROWS(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+        gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+
+      std::ifstream csvFile(csvFileURL);
+      std::string line;
+      std::vector<std::string> header;
+      std::getline(csvFile, line);
+      TS_ASSERT_EQUALS(line, "S E T R A O");
+
+      while (std::getline(csvFile, line)) {
+
+        std::istringstream iss(line);
+        std::string        valS;
+        std::string        valE;
+        std::string        valT;
+        std::string        valR;
+        std::string        valA;
+        std::string        valO;
+        iss >> valS;
+        iss >> valE;
+        iss >> valT;
+        iss >> valR;
+        iss >> valA;
+        iss >> valO;
+
+        TS_ASSERT_DIFFERS(std::find(domA.begin(), domA.end(), valA), domA.end());
+        TS_ASSERT_DIFFERS(std::find(domS.begin(), domS.end(), valS), domS.end());
+        TS_ASSERT_DIFFERS(std::find(domE.begin(), domE.end(), valE), domE.end());
+        TS_ASSERT_DIFFERS(std::find(domO.begin(), domO.end(), valO), domO.end());
+        TS_ASSERT_DIFFERS(std::find(domR.begin(), domR.end(), valR), domR.end());
+        TS_ASSERT_DIFFERS(std::find(domT.begin(), domT.end(), valT), domT.end());
+      }
+      csvFile.close();
+    }
+
+    void testToCSV_2() {
+
+      gum::Size nbSamples = 5;
+
+      gum::Size domSizeA = 3;
+      gum::Size domSizeS = 2;
+      gum::Size domSizeE = 2;
+      gum::Size domSizeO = 2;
+      gum::Size domSizeR = 2;
+      gum::Size domSizeT = 3;
+
+      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+
+      std::vector< std::string > vOrder1 = {"S", "E", "T", "R", "A", "O"};
+      TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
+      std::string csvFileURL = GET_RESSOURCES_PATH("survey_tmp2.csv");
+      bool        useLabels = false;
+      bool        append = false;
+      std::string csvSeparator = " ";
+      bool        checkOnAppend = true;
+
+      TS_ASSERT_THROWS(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+        gum::OperationNotAllowed);
+
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+
+      std::vector< std::string > vOrder2 = {"S", "T", "E", "R", "O", "A"};
+      TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder2));
+      TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
+      append = true;
+      TS_ASSERT_THROWS(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend),
+        gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen->setVarOrderFromCSV(csvFileURL, csvSeparator));
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
+
+      std::ifstream csvFile(csvFileURL);
+      std::string line;
+      std::vector<std::string> header;
+      std::getline(csvFile, line);
+      TS_ASSERT_EQUALS(line, "S E T R A O");
+
+      while(std::getline(csvFile, line)){
+
+        std::istringstream iss(line);
+        gum::Idx           valS;
+        gum::Idx           valE;
+        gum::Idx           valT;
+        gum::Idx           valR;
+        gum::Idx           valA;
+        gum::Idx           valO;
+        iss >> valS;
+        iss >> valE;
+        iss >> valT;
+        iss >> valR;
+        iss >> valA;
+        iss >> valO;
+
+        TS_ASSERT_LESS_THAN(valS, domSizeS);
+        TS_ASSERT_LESS_THAN(valE, domSizeE);
+        TS_ASSERT_LESS_THAN(valT, domSizeT);
+        TS_ASSERT_LESS_THAN(valR, domSizeR);
+        TS_ASSERT_LESS_THAN(valA, domSizeA);
+        TS_ASSERT_LESS_THAN(valO, domSizeO);
+        break;
+      }
+      csvFile.close();
+    }
 
     void testToDatabaseVectInRam(){
 

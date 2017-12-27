@@ -113,7 +113,7 @@ namespace gum {
 
       /// change columns order according to a csv file
       void setVarOrderFromCSV(const std::string& csvFileURL,
-                              const std::string& csvSeparator);
+                              const std::string& csvSeparator = ",");
 
       /// set columns in topoligical order
       void setTopologicalVarOrder();
