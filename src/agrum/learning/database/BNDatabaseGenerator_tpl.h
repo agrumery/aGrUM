@@ -25,6 +25,8 @@
 
 #include <agrum/learning/database/BNDatabaseGenerator.h>
 
+#include <agrum/core/timer.h>
+
 
 namespace gum {
   namespace learning {
@@ -59,7 +61,14 @@ namespace gum {
     /// draw instances from __bn
     template < typename GUM_SCALAR >
     double BNDatabaseGenerator< GUM_SCALAR >::drawSamples(Size nbSamples) {
+      Timer timer;
+      int   progress = 0;
 
+      timer.reset();
+
+      if (onProgress.hasListener()) {
+        GUM_EMIT2(onProgress, progress, timer.step());
+      }
       __database.clear();
       __database.resize(nbSamples);
       for (auto& row : __database) {
@@ -79,6 +88,13 @@ namespace gum {
       // perform the sampling for the discrete nodes
       const gum::DAG& dag = __bn.dag();
       for (Idx i = 0; i < nbSamples; ++i) {
+        if (onProgress.hasListener()) {
+          int p = (i * 100) / nbSamples;
+          if (p != progress) {
+            progress = p;
+            GUM_EMIT2(onProgress, progress, timer.step());
+          }
+        }
         std::vector< Idx >& sample = __database.at(i);
         for (Idx j = 0; j < __nbVars; ++j) {
           const gum::NodeId node = topOrder[j];
@@ -106,6 +122,14 @@ namespace gum {
       for (const auto& inst : instantiations) {
         __log2likelihood += __bn.log2JointProbability(inst);
       }
+
+      if (onProgress.hasListener()) {
+        std::stringstream ss;
+        ss << "Database of size " << nbSamples << "(with log2likelihood "
+           << __log2likelihood << ") generated in " << timer.step() << " seconds.";
+        GUM_EMIT1(onStop, ss.str());
+      }
+
       return __log2likelihood;
     }
 
@@ -248,7 +272,7 @@ namespace gum {
       std::vector< bool > usedVars(__nbVars, false);
       for (const auto& i : varOrder) {
 
-        if( i >= __nbVars ){
+        if (i >= __nbVars) {
           GUM_ERROR(FatalError, "varOrder contains invalid variables");
         }
         if (usedVars.at(i))
@@ -256,9 +280,9 @@ namespace gum {
         usedVars.at(i) = true;
       }
 
-     if (std::find(usedVars.begin(), usedVars.end(), false) != usedVars.end()) {
-       GUM_ERROR(FatalError, "varOrder must contain all variables");
-     }
+      if (std::find(usedVars.begin(), usedVars.end(), false) != usedVars.end()) {
+        GUM_ERROR(FatalError, "varOrder must contain all variables");
+      }
 
       __varOrder = varOrder;
     }

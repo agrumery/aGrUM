@@ -19,8 +19,8 @@
  ***************************************************************************/
 #include <algorithm>
 #include <fstream>
-#include <sstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include <cxxtest/AgrumTestSuite.h>
@@ -33,6 +33,30 @@
 #include <agrum/learning/database/BNDatabaseGenerator.h>
 
 namespace gum_tests {
+
+  class aSimpleDBGeneratorListener : public gum::ProgressListener {
+    private:
+    int         __nbr;
+    std::string __mess;
+
+    public:
+    explicit aSimpleDBGeneratorListener(gum::ProgressNotifier& notif)
+        : gum::ProgressListener(notif)
+        , __nbr(0)
+        , __mess(""){};
+
+    void whenProgress(const void*     buffer,
+                      const gum::Size a,
+                      const double    b,
+                      const double    c) {
+      __nbr++;
+    }
+    void whenStop(const void* buffer, const std::string& s) { __mess = s; }
+
+    int         getNbr() { return __nbr; }
+    std::string getMess() { return __mess; }
+  };
+
 
   class BNDatabaseGeneratorTestSuite : public CxxTest::TestSuite {
 
@@ -81,7 +105,7 @@ namespace gum_tests {
       delete dbgen;
     }
 
-    void testSetVarOrder(){
+    void testSetVarOrder() {
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -188,7 +212,6 @@ namespace gum_tests {
         TS_ASSERT_LESS_THAN(row.at(4), domSizeO);
         TS_ASSERT_LESS_THAN(row.at(5), domSizeA);
       }
-
     }
 
     void testToCSV_1() {
@@ -234,9 +257,9 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
-      std::ifstream csvFile(csvFileURL);
-      std::string line;
-      std::vector<std::string> header;
+      std::ifstream              csvFile(csvFileURL);
+      std::string                line;
+      std::vector< std::string > header;
       std::getline(csvFile, line);
       TS_ASSERT_EQUALS(line, "S E T R A O");
 
@@ -309,13 +332,13 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(
         dbgen->toCSV(csvFileURL, useLabels, append, csvSeparator, checkOnAppend));
 
-      std::ifstream csvFile(csvFileURL);
-      std::string line;
-      std::vector<std::string> header;
+      std::ifstream              csvFile(csvFileURL);
+      std::string                line;
+      std::vector< std::string > header;
       std::getline(csvFile, line);
       TS_ASSERT_EQUALS(line, "S E T R A O");
 
-      while(std::getline(csvFile, line)){
+      while (std::getline(csvFile, line)) {
 
         std::istringstream iss(line);
         gum::Idx           valS;
@@ -342,7 +365,7 @@ namespace gum_tests {
       csvFile.close();
     }
 
-    void testToDatabaseVectInRam(){
+    void testToDatabaseVectInRam() {
 
       gum::Size domSizeA = 3;
       gum::Size domSizeS = 2;

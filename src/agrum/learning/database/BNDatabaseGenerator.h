@@ -23,10 +23,13 @@
  * @author Santiago CORTIJO
  *
  * Constructor
+ * @code
  *  gum::learning::BNDatabaseGenerator< float > dbgen(bn);
+ * @endcode
  *    (being "bn" a BayesNet<GUM_SCALAR>)
  *
  * CSV Generation:
+ * @code
  *  std::string                        csvFileName="foo.csv"
  *  gum::Size                          nbSamples = 100;
  *  bool                               useLabels = false;
@@ -36,8 +39,10 @@
  *  dbgen.drawSamples(nbSamples);
  *  dbgen.setRandomVarOrder();
  *  dbgen.toCSV(csvFileName, useLabels, append, csvSeparator);
+ * @endcode
  *
  * CSV append:
+ * @code
  *  std::string                        csvFileName="foo.csv"
  *  gum::Size                          nbSamples = 100;
  *  bool                               useLabels = false;
@@ -47,10 +52,13 @@
  *  dbgen.drawSamples(nbSamples);
  *  dbgen.setVarOrderFromCSV(csv_file, csvSeparator);
  *  dbgen.toCSV(csv_file, useLabels, append, csvSeparator, checkOnAppend);
+ * @endcode
  *
  * DatabaseVectInRam mdoe:
+ * @code
  *  gum::learning::DatabaseVectInRAM database =
  *      dbgen.toDatabaseVectInRAM(useLabels);
+ * @endcode
  *
  */
 
@@ -58,15 +66,15 @@
 #define GUM_BN_DATABASE_GENERATOR
 
 #include <agrum/BN/BayesNet.h>
+#include <agrum/core/progressNotification.h>
 #include <agrum/learning/database/databaseVectInRAM.h>
 #include <fstream>
 
 namespace gum {
 
   namespace learning {
-
     template < typename GUM_SCALAR >
-    class BNDatabaseGenerator {
+    class BNDatabaseGenerator : public ProgressNotifier {
 
       public:
       // #######################################################################
@@ -89,6 +97,7 @@ namespace gum {
 
 
       /// generate and stock database, returns log2likelihood
+      /// using ProgressNotifier as notification
       double drawSamples(Size nbSamples);  // drawSamples
 
       /// generates csv database according to bn
