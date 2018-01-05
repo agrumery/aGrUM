@@ -46,9 +46,10 @@ from .pyAgrum import BruteForceKL, GibbsKL
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
 from .pyAgrum import LoopyImportanceSampling,LoopyGibbsSampling,LoopyWeightedSampling
-from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener
+from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
 from .pyAgrum import BNGenerator, IDGenerator, JTGenerator
 from .pyAgrum import BNLearner
+from .pyAgrum import BNDatabaseGenerator
 from .pyAgrum import InfluenceDiagram, InfluenceDiagramInference
 from .pyAgrum import CredalNet, CNMonteCarloSampling, CNLoopyPropagation
 from .pyAgrum import PRMexplorer
@@ -71,9 +72,10 @@ __all__=[
   'LoopyBeliefPropagation','GibbsSampling','MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
   'LoopyImportanceSampling','LoopyGibbsSampling','LoopyWeightedSampling',
   'LazyPropagation','ShaferShenoyInference','VariableElimination',
-  'PythonApproximationListener','PythonBNListener','PythonLoadListener',
+  'PythonApproximationListener','PythonBNListener','PythonLoadListener','PythonDatabaseGeneratorListener',
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',
+  'BNDatabaseGenerator',
   'InfluenceDiagram','InfluenceDiagramInference',
 
   'initRandom','randomProba','randomDistribution',

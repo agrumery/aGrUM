@@ -45,7 +45,7 @@ namespace gum {
     Signaler2< Size, double > onProgress;
 
     /// with a possible explanation for stopping
-    Signaler1< std::string > onStop;
+    Signaler1< const std::string& > onStop;
   };
 
   /**

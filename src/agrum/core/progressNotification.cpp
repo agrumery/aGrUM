@@ -24,7 +24,7 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 
-#include <agrum/core/progressNotification.hs>
+#include <agrum/core/progressNotification.h>
 
 namespace gum {
 

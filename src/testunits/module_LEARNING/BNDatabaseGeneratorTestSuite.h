@@ -34,26 +34,23 @@
 
 namespace gum_tests {
 
-  class aSimpleDBGeneratorListener : public gum::ProgressListener {
+  class ASimpleDBGeneratorListener : public gum::ProgressListener {
     private:
-    int         __nbr;
+    gum::Size   __nbr;
     std::string __mess;
 
     public:
-    explicit aSimpleDBGeneratorListener(gum::ProgressNotifier& notif)
+    explicit ASimpleDBGeneratorListener(gum::ProgressNotifier& notif)
         : gum::ProgressListener(notif)
         , __nbr(0)
         , __mess(""){};
 
-    void whenProgress(const void*     buffer,
-                      const gum::Size a,
-                      const double    b,
-                      const double    c) {
-      __nbr++;
+    void whenProgress(const void* buffer, const gum::Size a, const double c) {
+      __nbr += a;
     }
     void whenStop(const void* buffer, const std::string& s) { __mess = s; }
 
-    int         getNbr() { return __nbr; }
+    gum::Size   getNbr() { return __nbr; }
     std::string getMess() { return __mess; }
   };
 
@@ -459,6 +456,24 @@ namespace gum_tests {
         TS_ASSERT_LESS_THAN(row[5].getReal(), domSizeO);
         handler.nextRow();
       }
+    }
+
+    void testListenToDrawSamples() {
+      gum::learning::BNDatabaseGenerator< double > dbgen(*bn);
+
+      ASimpleDBGeneratorListener gener(dbgen);
+      TS_ASSERT_EQUALS(gener.getNbr(), gum::Size(0));
+      TS_ASSERT_EQUALS(gener.getMess(), "");
+      dbgen.drawSamples(100);
+      TS_ASSERT_EQUALS(gener.getNbr(), gum::Size(4950));
+      TS_ASSERT_DIFFERS(gener.getMess(), "");
+
+      ASimpleDBGeneratorListener gener2(dbgen);
+      TS_ASSERT_EQUALS(gener2.getNbr(), gum::Size(0));
+      TS_ASSERT_EQUALS(gener2.getMess(), "");
+      dbgen.drawSamples(1000);
+      TS_ASSERT_EQUALS(gener2.getNbr(), gum::Size(4950));
+      TS_ASSERT_DIFFERS(gener2.getMess(), "");
     }
   };
 }

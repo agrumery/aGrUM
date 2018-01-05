@@ -125,8 +125,8 @@ namespace gum {
 
       if (onProgress.hasListener()) {
         std::stringstream ss;
-        ss << "Database of size " << nbSamples << "(with log2likelihood "
-           << __log2likelihood << ") generated in " << timer.step() << " seconds.";
+        ss << "Database of size " << nbSamples << " generated in " << timer.step()
+           << " seconds. Log2likelihood : " << __log2likelihood;
         GUM_EMIT1(onStop, ss.str());
       }
 

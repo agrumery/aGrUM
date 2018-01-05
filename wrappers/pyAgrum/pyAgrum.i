@@ -104,6 +104,7 @@ InfluenceDiagram = InfluenceDiagram_double
 InfluenceDiagramInference = InfluenceDiagramInference_double
 
 BNLearner =  BNLearner_double
+BNDatabaseGenerator = BNDatabaseGenerator_double
 %}
 
  // Explicit template instantiation ignored.
