@@ -77,6 +77,8 @@ namespace gum {
       // get the order in which the nodes will be sampled
       const gum::Sequence< gum::NodeId >& topOrder = __bn.topologicalOrder();
       std::vector< gum::Instantiation >   instantiations;
+
+      // create instantiations in advance
       for (Idx node = 0; node < __nbVars; ++node)
         instantiations.push_back(gum::Instantiation(__bn.cpt(node)));
 
@@ -115,12 +117,10 @@ namespace gum {
 
           if (inst.end()) inst.chgVal(var, var.domainSize() - 1);
           sample.at(node) = inst.val(var);
+
+          __log2likelihood += std::log2(__bn.cpt(node)[inst]);
         }
 
-        // adding current sample's log2likelihood
-        for (const auto& inst : instantiations) {
-          __log2likelihood += __bn.log2JointProbability(inst);
-        }
       }
 
       __drawnSamples = true;

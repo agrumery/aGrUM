@@ -218,7 +218,7 @@ namespace gum_tests {
       gum::Size nbSamples3 = nbSamples1 * 1000;
 
       double ll_1, ll_2, ll_3;
-      double tolerance = 0.05;
+      double tolerance = 0.1;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
@@ -228,12 +228,21 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(ll_2 = dbgen->drawSamples(nbSamples2));
       TS_GUM_ASSERT_THROWS_NOTHING(ll_3 = dbgen->drawSamples(nbSamples3));
 
+      // log2likehood must proportional to number of samples
       TS_ASSERT_LESS_THAN(
         std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2),
         tolerance);
       TS_ASSERT_LESS_THAN(
         std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3),
         tolerance);
+
+      // log2likelihood must be aprox nbSamples * entropy (theorical result)
+      double entropy = (bn->cpt(0) * bn->cpt(1) * bn->cpt(2) * bn->cpt(3) *
+                        bn->cpt(4) * bn->cpt(5))
+                         .entropy();
+      TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance);
+      TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance);
+      TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance);
     }
 
     void testToCSV_1() {
