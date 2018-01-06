@@ -399,6 +399,48 @@ class PythonApproximationListener(_object):
 PythonApproximationListener_swigregister = _pyAgrum.PythonApproximationListener_swigregister
 PythonApproximationListener_swigregister(PythonApproximationListener)
 
+class PythonDatabaseGeneratorListener(_object):
+    """Proxy of C++ PythonDatabaseGeneratorListener class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, PythonDatabaseGeneratorListener, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, PythonDatabaseGeneratorListener, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, notif):
+        """__init__(self, notif) -> PythonDatabaseGeneratorListener"""
+        this = _pyAgrum.new_PythonDatabaseGeneratorListener(notif)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_PythonDatabaseGeneratorListener
+    def __del__(self):
+        return None
+
+    def whenProgress(self, src, step, duration):
+        """whenProgress(self, src, step, duration)"""
+        return _pyAgrum.PythonDatabaseGeneratorListener_whenProgress(self, src, step, duration)
+
+
+    def whenStop(self, src, message):
+        """whenStop(self, src, message)"""
+        return _pyAgrum.PythonDatabaseGeneratorListener_whenStop(self, src, message)
+
+
+    def setWhenProgress(self, pyfunc):
+        """setWhenProgress(self, pyfunc)"""
+        return _pyAgrum.PythonDatabaseGeneratorListener_setWhenProgress(self, pyfunc)
+
+
+    def setWhenStop(self, pyfunc):
+        """setWhenStop(self, pyfunc)"""
+        return _pyAgrum.PythonDatabaseGeneratorListener_setWhenStop(self, pyfunc)
+
+PythonDatabaseGeneratorListener_swigregister = _pyAgrum.PythonDatabaseGeneratorListener_swigregister
+PythonDatabaseGeneratorListener_swigregister(PythonDatabaseGeneratorListener)
+
 class BNGenerator(_object):
     """Proxy of C++ BNGenerator class."""
 
@@ -17652,6 +17694,103 @@ class BNLearner_double(_object):
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)
 
+class BNDatabaseGenerator_double(_object):
+    """Proxy of C++ gum::learning::BNDatabaseGenerator< double > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, BNDatabaseGenerator_double, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, BNDatabaseGenerator_double, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bn):
+        """__init__(self, bn) -> BNDatabaseGenerator_double"""
+        this = _pyAgrum.new_BNDatabaseGenerator_double(bn)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_BNDatabaseGenerator_double
+    def __del__(self):
+        return None
+
+    def drawSamples(self, nbSamples):
+        """drawSamples(self, nbSamples) -> double"""
+        return _pyAgrum.BNDatabaseGenerator_double_drawSamples(self, nbSamples)
+
+
+    def toCSV(self, *args):
+        """
+        toCSV(self, csvFileURL, useLabels=True, append=False, csvSeparator, checkOnAppend=False)
+        toCSV(self, csvFileURL, useLabels=True, append=False, csvSeparator)
+        toCSV(self, csvFileURL, useLabels=True, append=False)
+        toCSV(self, csvFileURL, useLabels=True)
+        toCSV(self, csvFileURL)
+        """
+        return _pyAgrum.BNDatabaseGenerator_double_toCSV(self, *args)
+
+
+    def toDatabaseVectInRAM(self, useLabels=True):
+        """
+        toDatabaseVectInRAM(self, useLabels=True) -> DatabaseVectInRAM
+        toDatabaseVectInRAM(self) -> DatabaseVectInRAM
+        """
+        return _pyAgrum.BNDatabaseGenerator_double_toDatabaseVectInRAM(self, useLabels)
+
+
+    def database(self):
+        """database(self) -> std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >"""
+        return _pyAgrum.BNDatabaseGenerator_double_database(self)
+
+
+    def setVarOrder(self, *args):
+        """
+        setVarOrder(self, varOrder)
+        setVarOrder(self, varOrder)
+        """
+        return _pyAgrum.BNDatabaseGenerator_double_setVarOrder(self, *args)
+
+
+    def setVarOrderFromCSV(self, *args):
+        """
+        setVarOrderFromCSV(self, csvFileURL, csvSeparator)
+        setVarOrderFromCSV(self, csvFileURL)
+        """
+        return _pyAgrum.BNDatabaseGenerator_double_setVarOrderFromCSV(self, *args)
+
+
+    def setTopologicalVarOrder(self):
+        """setTopologicalVarOrder(self)"""
+        return _pyAgrum.BNDatabaseGenerator_double_setTopologicalVarOrder(self)
+
+
+    def setAntiTopologicalVarOrder(self):
+        """setAntiTopologicalVarOrder(self)"""
+        return _pyAgrum.BNDatabaseGenerator_double_setAntiTopologicalVarOrder(self)
+
+
+    def setRandomVarOrder(self):
+        """setRandomVarOrder(self)"""
+        return _pyAgrum.BNDatabaseGenerator_double_setRandomVarOrder(self)
+
+
+    def varOrder(self):
+        """varOrder(self) -> std::vector< gum::Idx,std::allocator< gum::Idx > >"""
+        return _pyAgrum.BNDatabaseGenerator_double_varOrder(self)
+
+
+    def varOrderNames(self):
+        """varOrderNames(self) -> Vector_string"""
+        return _pyAgrum.BNDatabaseGenerator_double_varOrderNames(self)
+
+
+    def log2likelihood(self):
+        """log2likelihood(self) -> double"""
+        return _pyAgrum.BNDatabaseGenerator_double_log2likelihood(self)
+
+BNDatabaseGenerator_double_swigregister = _pyAgrum.BNDatabaseGenerator_double_swigregister
+BNDatabaseGenerator_double_swigregister(BNDatabaseGenerator_double)
+
 
 def statsObj():
     """statsObj()"""
@@ -17692,6 +17831,7 @@ InfluenceDiagram = InfluenceDiagram_double
 InfluenceDiagramInference = InfluenceDiagramInference_double
 
 BNLearner =  BNLearner_double
+BNDatabaseGenerator = BNDatabaseGenerator_double
 
 # This file is compatible with both classic and new-style classes.
 
