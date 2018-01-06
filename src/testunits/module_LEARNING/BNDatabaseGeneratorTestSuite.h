@@ -158,6 +158,7 @@ namespace gum_tests {
 
       delete dbgen;
     }
+
     void testDrawSamples() {
 
       gum::Size domSizeA = 3;
@@ -209,6 +210,30 @@ namespace gum_tests {
         TS_ASSERT_LESS_THAN(row.at(4), domSizeO);
         TS_ASSERT_LESS_THAN(row.at(5), domSizeA);
       }
+    }
+
+    void testDrawSamplesLog2likelihood() {
+      gum::Size nbSamples1 = 100;
+      gum::Size nbSamples2 = nbSamples1 * 100;
+      gum::Size nbSamples3 = nbSamples1 * 1000;
+
+      double ll_1, ll_2, ll_3;
+      double tolerance = 0.05;
+
+      gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
+      TS_GUM_ASSERT_THROWS_NOTHING(
+        dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+      TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed);
+      TS_GUM_ASSERT_THROWS_NOTHING(ll_1 = dbgen->drawSamples(nbSamples1));
+      TS_GUM_ASSERT_THROWS_NOTHING(ll_2 = dbgen->drawSamples(nbSamples2));
+      TS_GUM_ASSERT_THROWS_NOTHING(ll_3 = dbgen->drawSamples(nbSamples3));
+
+      TS_ASSERT_LESS_THAN(
+        std::abs(1 - (double)nbSamples2 / (double)nbSamples1 * ll_1 / ll_2),
+        tolerance);
+      TS_ASSERT_LESS_THAN(
+        std::abs(1 - (double)nbSamples3 / (double)nbSamples1 * ll_1 / ll_3),
+        tolerance);
     }
 
     void testToCSV_1() {

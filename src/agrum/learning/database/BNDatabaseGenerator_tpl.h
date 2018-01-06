@@ -85,7 +85,8 @@ namespace gum {
       std::mt19937                     gen(rd());
       std::uniform_real_distribution<> distro(0.0, 1.0);
 
-      // perform the sampling for the discrete nodes
+      // perform the sampling
+      __log2likelihood = 0;
       const gum::DAG& dag = __bn.dag();
       for (Idx i = 0; i < nbSamples; ++i) {
         if (onProgress.hasListener()) {
@@ -115,13 +116,14 @@ namespace gum {
           if (inst.end()) inst.chgVal(var, var.domainSize() - 1);
           sample.at(node) = inst.val(var);
         }
+
+        // adding current sample's log2likelihood
+        for (const auto& inst : instantiations) {
+          __log2likelihood += __bn.log2JointProbability(inst);
+        }
       }
 
       __drawnSamples = true;
-      __log2likelihood = 0;
-      for (const auto& inst : instantiations) {
-        __log2likelihood += __bn.log2JointProbability(inst);
-      }
 
       if (onProgress.hasListener()) {
         std::stringstream ss;
