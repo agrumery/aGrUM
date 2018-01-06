@@ -33,26 +33,28 @@ from tests import AllIncrementalInferenceTestSuite
 from tests import LazyPropagationTestSuite
 from tests import SamplingTestSuite
 from tests import LoopyBeliefPropagationTestSuite
+from tests import BNDatabaseGeneratorTestSuite
 
 import time
 
 tests = list()
-tests.append(MarkovBlanket.ts)
-tests.append(EssentialGraphTestSuite.ts)
-tests.append(VariablesTestSuite.ts)
-tests.append(BayesNetTestSuite.ts)
-tests.append(PythonBNListenerTestSuite.ts)
-tests.append(PotentialTestSuite.ts)
-tests.append(JTInferenceTestSuite.ts)
-tests.append(AllIncrementalInferenceTestSuite.ts)
-tests.append(JunctionTreeTestSuite.ts)
-tests.append(LazyPropagationTestSuite.ts)
-tests.append(ICIModelsForBNTestSuite.ts)
-tests.append(BNLearnerTestSuite.ts)
-tests.append(AggregatorsForBNTestSuite.ts)
-tests.append(PRMexplorerTestSuite.ts)
-tests.append(SamplingTestSuite.ts)
-tests.append(LoopyBeliefPropagationTestSuite.ts)
+#tests.append(MarkovBlanket.ts)
+#tests.append(EssentialGraphTestSuite.ts)
+#tests.append(VariablesTestSuite.ts)
+#tests.append(BayesNetTestSuite.ts)
+#tests.append(PythonBNListenerTestSuite.ts)
+#tests.append(PotentialTestSuite.ts)
+#tests.append(JTInferenceTestSuite.ts)
+#tests.append(AllIncrementalInferenceTestSuite.ts)
+#tests.append(JunctionTreeTestSuite.ts)
+#tests.append(LazyPropagationTestSuite.ts)
+#tests.append(ICIModelsForBNTestSuite.ts)
+#tests.append(BNLearnerTestSuite.ts)
+#tests.append(AggregatorsForBNTestSuite.ts)
+#tests.append(PRMexplorerTestSuite.ts)
+#tests.append(SamplingTestSuite.ts)
+#tests.append(LoopyBeliefPropagationTestSuite.ts)
+tests.append(BNDatabaseGeneratorTestSuite.ts)
 
 tests = unittest.TestSuite(tests)
 
