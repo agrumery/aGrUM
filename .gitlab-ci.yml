@@ -13,8 +13,6 @@ cache:
 .linux_template: &linux_template
   only:
     - branches@agrumery/aGrUM
-  except:
-    - /^documentation.*$/
   tags:
     - linux
     - python3
@@ -62,8 +60,6 @@ linux_pyAgrum_test:
 .macos_template: &macos_template
   only:
     - branches@agrumery/aGrUM
-  except:
-    - /^documentation.*$/
   tags:
     - macos
     - python3
@@ -109,8 +105,6 @@ macos_pyAgrum_test:
 .windows_template: &windows_template
   only:
     - branches@agrumery/aGrUM
-  except:
-    - /^documentation.*$/
   tags:
     - windows
     - conda
