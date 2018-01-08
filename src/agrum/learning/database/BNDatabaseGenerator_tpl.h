@@ -120,7 +120,6 @@ namespace gum {
 
           __log2likelihood += std::log2(__bn.cpt(node)[inst]);
         }
-
       }
 
       __drawnSamples = true;

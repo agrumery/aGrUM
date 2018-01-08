@@ -21,10 +21,10 @@
  * @file
  * @brief The 3off12 algorithm
  *
- * The ThreeOffTwo class implements the 3off2 algorithm as proposed by Affeldt and 
- * al. in https://doi.org/10.1186/s12859-015-0856-x. 
- * It starts by eliminating edges that correspond to independent vaiables to build 
- * the skeleton of the graph, and then directs the remaining edges to get an 
+ * The ThreeOffTwo class implements the 3off2 algorithm as proposed by Affeldt and
+ * al. in https://doi.org/10.1186/s12859-015-0856-x.
+ * It starts by eliminating edges that correspond to independent vaiables to build
+ * the skeleton of the graph, and then directs the remaining edges to get an
  * essential graph. Latent variables can be detected using bi-directed arcs.
  *
  * @author Quentin FALCAND
@@ -126,7 +126,7 @@ namespace gum {
        * @param graph the MixedGraph we start from for our learning
        * */
       MixedGraph learnMixedStructure(CorrectedMutualInformation<>& I,
-                                     MixedGraph graph);
+                                     MixedGraph                    graph);
 
       /// learns the structure of an Bayesian network, ie a DAG, from an Essential
       /// graph.
@@ -179,10 +179,10 @@ namespace gum {
 
       protected:
       // ##########################################################################
-      /// @name Main phases 
+      /// @name Main phases
       // ##########################################################################
       /// @{
-      
+
       /// Initiation phase
       /**
        * We go over all edges and test if the variables are independent. If they
@@ -190,43 +190,43 @@ namespace gum {
        * the edge is deleted. If not, the best contributor is found.
        */
       void _initiation(
-        CorrectedMutualInformation<>&                           I, 
-        MixedGraph&                                             graph, 
+        CorrectedMutualInformation<>& I,
+        MixedGraph&                   graph,
         HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
-        Heap< 
+        Heap<
           std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
           GreaterPairOn2nd >& _rank);
-      
+
       /// Iteration phase
       /**
        * As long as we find important nodes for edges, we go over them to see if
        * we can assess the independence of the variables.
        */
       void _iteration(
-        CorrectedMutualInformation<>&                           I, 
-        MixedGraph&                                             graph, 
+        CorrectedMutualInformation<>& I,
+        MixedGraph&                   graph,
         HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
-        Heap< 
+        Heap<
           std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
           GreaterPairOn2nd >& _rank);
-      
+
       /// Orientation phase
       void _orientation(
-        CorrectedMutualInformation<>&                                 I, 
-        MixedGraph&                                                   graph, 
+        CorrectedMutualInformation<>& I,
+        MixedGraph&                   graph,
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
-        Heap< 
+        Heap<
           std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
           GreaterPairOn2nd >& _rank);
       void _orientation_latents(
-        CorrectedMutualInformation<>&                                 I, 
-        MixedGraph&                                                   graph, 
+        CorrectedMutualInformation<>& I,
+        MixedGraph&                   graph,
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set,
-        Heap< 
+        Heap<
           std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
           GreaterPairOn2nd >& _rank);
       /// @}
-      
+
       /// finds the best contributor node for a pair given a conditioning set
       /**@param x first node
        * @param y second node
