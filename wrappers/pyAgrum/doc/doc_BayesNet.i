@@ -99,17 +99,16 @@ Returns
 int 
 	the id of the new node
 
-Warnings
---------
-DuplicateLabel raised if variable.name() is already used in this pyAgrum.BayesNet. 
+Raises
+------
+DuplicateLabel
+    If variable.name() is already used in this pyAgrum.BayesNet.
 
-Warnings
---------
-NotAllowed if nbrmod<2
+NotAllowed
+    If nbrmod<2
 
-Warnings
---------
-DuplicateElement raised if id is already used. 
+DuplicateElement
+    If id is already used.
 "
 
 %feature("docstring") gum::BayesNet::addAMPLITUDE
@@ -143,9 +142,10 @@ Returns
 int
 	the id of the added variable. 
 
-Warnings
+Raises
 --------
-	SizeError if variable.domainSize()>2 
+SizeError
+    if variable.domainSize()>2
 "
 
 %feature("docstring") gum::BayesNet::addArc
@@ -163,9 +163,10 @@ head :
 tail :
 	a variable's name (str)
 
-Warnings
+Raises
 --------
-	InvalidEdge raised if arc.tail and/or arc.head are not in the BN. 
+InvalidEdge
+    if arc.tail and/or arc.head are not in the BN.
 "
 
 %feature("docstring") gum::BayesNet::addCOUNT
@@ -232,9 +233,10 @@ Returns
 int
 	the id of the added variable.
 
-Warnings
+Raises
 --------
-	DuplicateElement raised if id is already used 
+DuplicateElement
+    If id is already used
 "
 
 %feature("docstring") gum::BayesNet::addMAX
@@ -302,9 +304,10 @@ Returns
 int
 	the id of the added variable.
 
-Warnings
+Raises
 --------
-	DuplicateElement raised if id is already used  
+DuplicateElement
+    If id is already used
 "
 
 %feature("docstring") gum::BayesNet::addNoisyOR
@@ -329,9 +332,10 @@ Returns
 int
 	the id of the added variable. 
 
-Warnings
+Raises
 --------
-	DuplicateElement raised if id is already used 
+DuplicateElement
+    If id is already used
 "
 
 %feature("docstring") gum::BayesNet::addNoisyORCompound
@@ -356,9 +360,10 @@ Returns
 int
 	the id of the added variable.
 
-Warnings
+Raises
 --------
-	DuplicateElement raised if id is already used 
+DuplicateElement
+    If id is already used
 "
 
 %feature("docstring") gum::BayesNet::addNoisyORNet
@@ -404,9 +409,10 @@ Returns
 int
 	the id of the added variable.
 
-Warnings
+Raises
 --------
-	SizeError raised if variable.domainSize()>2 
+SizeError
+    If variable.domainSize()>2
 "
 
 %feature("docstring") gum::BayesNet::addWeightedArc
@@ -426,10 +432,14 @@ tail :
 causalWeight : double
 	the added causal weight
 
-Warnings
+Raises
 --------
-    InvalidArc raised if arc.tail and/or arc.head are not in the BN.
-    InvalidArc raised if variable in arc.head is not a NoisyOR variable. 
+InvalidArc
+    If arc.tail and/or arc.head are not in the BN.
+
+InvalidArc
+    If variable in arc.head is not a NoisyOR variable.
+
 "
 
 %feature("docstring") gum::BayesNet::beginTopologyTransformation
@@ -452,9 +462,10 @@ NodeId : int
 name : str
 	the name of the variable
 
-Warnings
+Raises
 --------
-	NotAllowed raised if newPot has not the same signature as __probaMap[NodeId] 
+NotAllowed
+    If newPot has not the same signature as __probaMap[NodeId]
 "
 
 %feature("docstring") gum::BayesNet::changeVariableName
@@ -472,10 +483,13 @@ NodeId : int
 name : str
 	the name of the variable
 
-Warnings
+Raises
 --------
-	DuplicateLabel raised if new_name is already used in this BayesNet.
-	NotFound raised if no variable matches id. 
+DuplicateLabel
+    If new_name is already used in this BayesNet.
+
+NotFound
+    If no variable matches id.
 "
 
 %feature("docstring") gum::BayesNet::endTopologyTransformation
@@ -575,13 +589,15 @@ name : str
 l : list
 	list of functions to execute
 
-Warnings
+Raises
 --------
-IOError raised if file not found
+IOError
+    If file not found
 
-Warnings
+Raises
 --------
-FatalError raised if file is not valid
+FatalError
+    If file is not valid
 "
 
 %feature("docstring") gum::BayesNet::loadBIFXML
@@ -595,13 +611,13 @@ name : str
 l : list
 	list of functions to execute
 
-Warnings
+Raises
 --------
-IOError raised if file not found
+IOError
+    If file not found
 
-Warnings
---------
-FatalError raised if file is not valid
+FatalError
+    If file is not valid
 "
 
 %feature("docstring") gum::BayesNet::loadDSL
@@ -615,13 +631,13 @@ name : str
 l : list
 	list of functions to execute
 
-Warnings
+Raises
 --------
-IOError raised if file not found
+IOError
+    If file not found
 
-Warnings
---------
-FatalError raised if file is not valid
+FatalError
+    If file is not valid
 "
 
 %feature("docstring") gum::BayesNet::loadNET
@@ -635,13 +651,13 @@ name : str
 l : list
 	list of functions to execute
 
-Warnings
+Raises
 --------
-IOError raised if file not found
+IOError
+    If file not found
 
-Warnings
---------
-FatalError raised if file is not valid
+FatalError
+    If file is not valid
 "
 
 %feature("docstring") gum::BayesNet::loadO3PRM
@@ -663,13 +679,13 @@ classpath : str
 l : list
 	list of functions to execute
 
-Warnings
+Raises
 --------
-IOError raised if file not found
+IOError
+    If file not found
 
-Warnings
---------
-FatalError raised if file is not valid
+FatalError
+    If file is not valid
 "
 
 %feature("docstring") gum::BayesNet::loadUAI
@@ -683,13 +699,13 @@ name : str
 l : list
 	list of functions to execute
 
-Warnings
+Raises
 --------
-IOError raised if file not found
+IOError
+    If file not found
 
-Warnings
---------
-FatalError raised if file is not valid
+FatalError
+    If file is not valid
 "
 
 %feature("docstring") gum::BayesNet::reverseArc
@@ -709,9 +725,10 @@ head
 arc : pyAgrum.Arc
 	an arc 
 
-Warnings
+Raises
 --------
-InvalidArc raised if the arc does not exsit or if its reversal would induce a directed cycle.
+InvalidArc
+    If the arc does not exsit or if its reversal would induce a directed cycle.
 "
 
 %feature("docstring") gum::BayesNet::saveBIF
@@ -794,7 +811,8 @@ Returns
 pyAgrum.Potential
 	The variable's CPT. 
 
-Warnings
+Raises
 --------
-	NotFound raised if no variable's id matches varId. 
+NotFound
+    If no variable's id matches varId.
 "

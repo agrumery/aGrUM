@@ -10662,8 +10662,8 @@ class BayesNet_double(IBayesNet_double):
         int 
         	the id of the new node
 
-        Warnings
-        --------
+        Raises
+        ------
         DuplicateLabel raised if variable.name() is already used in this pyAgrum.BayesNet. 
 
         Warnings

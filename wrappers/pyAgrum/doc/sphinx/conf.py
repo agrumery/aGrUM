@@ -40,6 +40,7 @@ matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
 extensions = [
   'sphinx.ext.autodoc',
+  'sphinx.ext.mathjax',
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage',
