@@ -111,6 +111,7 @@
 
 #include <agrum/learning/database/databaseVectInRAM.h>
 #include <agrum/learning/BNLearner.h>
+#include <agrum/learning/database/BNDatabaseGenerator.h>
 
 #include <agrum/ID/influenceDiagram.h>
 #include <agrum/ID/inference/IInfluenceDiagramInference.h>
@@ -336,6 +337,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %import <agrum/learning/database/databaseVectInRAM.h>
 %import <agrum/learning/BNLearnUtils/genericBNLearner.h>
 %include <agrum/learning/BNLearner.h>
+%include <agrum/learning/database/BNDatabaseGenerator.h>
 
 %include <agrum/CN/credalNet.h>
 %include <agrum/CN/varMod2BNsMap.h>
@@ -393,6 +395,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( InfluenceDiagramInference_double) gum::InfluenceDiagramInference<double>;
 
 %template ( BNLearner_double) gum::learning::BNLearner<double>;
+%template ( BNDatabaseGenerator_double) gum::learning::BNDatabaseGenerator<double>;
 
 /* for debug */
 namespace gum {

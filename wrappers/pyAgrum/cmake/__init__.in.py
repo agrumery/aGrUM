@@ -46,7 +46,7 @@ from .pyAgrum import BruteForceKL, GibbsKL, StructuralComparator
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
 from .pyAgrum import LoopyImportanceSampling,LoopyGibbsSampling,LoopyWeightedSampling,LoopyMonteCarloSampling
-from .pyAgrum import PythonApproximationListener #, PythonBNListener, PythonLoadListener
+from .pyAgrum import PythonApproximationListener, PythonBNListener, PythonLoadListener, PythonDatabaseGeneratorListener
 from .pyAgrum import BNGenerator, IDGenerator, JTGenerator
 from .pyAgrum import BNLearner
 from .pyAgrum import InfluenceDiagram, InfluenceDiagramInference
@@ -66,7 +66,6 @@ from .pyAgrum import DefaultInLabel, DuplicateElement, DuplicateLabel, EmptyBSTr
 __all__=[
   '__version__','__license__','__project_url__',        # here
   'about','availableBNExts','loadBN','saveBN','loadID','getPosterior', # in fuctions.py
-
   'statsObj',
 
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
@@ -77,14 +76,18 @@ __all__=[
   'LoopyBeliefPropagation','GibbsSampling','MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
   'LoopyImportanceSampling','LoopyGibbsSampling','LoopyWeightedSampling','LoopyMonteCarloSampling'
   'LazyPropagation','ShaferShenoyInference','VariableElimination',
-  'PythonApproximationListener', #'PythonBNListener','PythonLoadListener',
+  'PythonApproximationListener','PythonBNListener','PythonLoadListener','PythonDatabaseGeneratorListener',
   'BNGenerator','IDGenerator','JTGenerator',
   'BNLearner',
+  'BNDatabaseGenerator',
   'InfluenceDiagram','InfluenceDiagramInference',
   'CredalNet','CNMonteCarloSampling','CNLoopyPropagation',
   'PRMexplorer',
 
   'ApproximationScheme',
+
+  'initRandom','randomProba','randomDistribution',
+  'isOMP','setNumberOfThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads',
 
   'initRandom','randomProba','randomDistribution','randomGeneratorSeed','getRandomGenerator','randomValue',
   'isOMP','setNumberOfThreads','getThreadNumber','getNumberOfRunningThreads','getNumberOfLogicalProcessors','getMaxNumberOfThreads','getDynamicThreadsNumber','setDynamicThreadsNumber',
