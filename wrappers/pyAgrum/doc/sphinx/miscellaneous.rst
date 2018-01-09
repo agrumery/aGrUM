@@ -1,6 +1,12 @@
 Other functions from aGrUM
 ==========================
 
+.. toctree::
+  :maxdepth: 2
+  :titlesonly:
+
+  listeners
+
 Random functions
 ----------------
 
