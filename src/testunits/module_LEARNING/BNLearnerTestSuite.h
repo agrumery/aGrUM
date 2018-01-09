@@ -126,7 +126,7 @@ namespace gum_tests {
       try {
         gum::BayesNet< double > bn = learner.learnBN();
         TS_ASSERT_EQUALS(bn.dag().arcs().size(), gum::Size(8));
-        //TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(86));
+        // TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(86));
 
         gum::MixedGraph mg = learner.learnMixedStructure();
         TS_ASSERT_EQUALS(mg.arcs().size(), gum::Size(6));

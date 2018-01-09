@@ -43,10 +43,10 @@ namespace gum_tests {
       // cache.insert( v3, 5 );
       // cache.insert( v4, 7 );
 
-      TS_ASSERT_EQUALS( cache.score( v1 ), 1.5 );
+      TS_ASSERT_EQUALS(cache.score(v1), 1.5);
       // TS_ASSERT( cache.score( v1 ) == 4.5 );
       TS_ASSERT_THROWS(cache.score(v4), gum::NotFound);
-      TS_ASSERT_EQUALS( cache.score( v3 ), 4.5 );
+      TS_ASSERT_EQUALS(cache.score(v3), 4.5);
       // TS_ASSERT( cache.score( v4 ) == 7 );
 
       cache.clear();
@@ -59,10 +59,10 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(cache.insert(v3, 4.5));
       // cache.insert( v4, 7 );
 
-      TS_ASSERT_EQUALS( cache.score( v2 ), 1.5 );
-      TS_ASSERT_EQUALS( cache.score( v1 ), 1.5 );
+      TS_ASSERT_EQUALS(cache.score(v2), 1.5);
+      TS_ASSERT_EQUALS(cache.score(v1), 1.5);
       TS_ASSERT_THROWS(cache.score(v4), gum::NotFound);
-      TS_ASSERT_EQUALS( cache.score( v3 ), 4.5 );
+      TS_ASSERT_EQUALS(cache.score(v3), 4.5);
       // TS_ASSERT( cache.score( v4 ) == 7 );
     }
   };

@@ -109,7 +109,6 @@ namespace gum_tests {
       TS_ASSERT_DELTA(score.score(id3), 1.785, 0.01);
       TS_ASSERT_DELTA(score.score(id4), 1.785, 0.01);
       TS_ASSERT_DELTA(score.score(id5), 1.785, 0.01);
-
     }
   };
 
