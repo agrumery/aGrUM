@@ -64,6 +64,8 @@ src/testunits/ressources/IDBeforeMoralisation.dot
 src/testunits/ressources/IDToDotReader.dot
 src/testunits/ressources/IDToDotWriter.dot
 src/testunits/ressources/test.dot
+src/testunits/ressources/survey_tmp1.csv
+src/testunits/ressources/survey_tmp2.csv
 src/testunits/testList.cmake
 
 #other resources
@@ -77,6 +79,8 @@ wrappers/pyAgrum/notebooks/out/*.png
 wrappers/pyAgrum/notebooks/out/WaterSprinkler.*
 wrappers/pyAgrum/notebooks/out/*.csv
 wrappers/pyAgrum/notebooks/out/*.html
+wrappers/pyAgrum/testunits/resources/genere.csv
+wrappers/pyAgrum/testunits/resources/o3prm/BNO3PRMIO_file.o3prm
 apps/pyAgrum/notebooks/*.png
 apps/pyAgrum/notebooks/WaterSprinkler.*
 apps/pyAgrum/notebooks/*.csv

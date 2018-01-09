@@ -3,12 +3,12 @@
 Helping functions and consts for pyAgrum
 """
 
-#aGrum Licence( GPL )
+#aGrum Licence(GPL)
 #-- -- -- -- -- -- -- -- -- -
 #* This program is free software; you can redistribute it and / or modify *
 #* it under the terms of the GNU General Public License as published by *
 #* the Free Software Foundation; either version 2 of the License, or *
-#*( at your option ) any later version.*
+#*(at your option) any later version.*
 #* *
 #* This program is distributed in the hope that it will be useful, *
 #* but WITHOUT ANY WARRANTY; without even the implied warranty of *
@@ -24,6 +24,8 @@ from .pyAgrum import BayesNet
 from .pyAgrum import Potential
 from .pyAgrum import InfluenceDiagram
 from .pyAgrum import VariableElimination
+from .pyAgrum import BNDatabaseGenerator
+from .pyAgrum import PythonDatabaseGeneratorListener
 
 def about():
   """
@@ -161,5 +163,52 @@ def getPosterior(bn, evs, target):
   inf.setEvidence(evs)
   inf.addTarget(target)
   inf.makeInference()
+#creating a new Potential from posterior(will disappear with ie)
   return Potential(inf.posterior(target))
-#creating a new Potential from posterior( will disappear with ie )
+
+
+def generateCSV(bn, name_out, n, visible=False, with_labels=False):
+  """
+  generate a CSV file of samples from a bn.
+
+  :param bn:
+  :type bn: pyAgrum.BayesNet
+  :param name_out: the name for the filename
+  :type name_out: string
+  :param n: the number of samples
+  :type n: int
+  :param visible: if True, show a progress bar
+  :type visible: boolean
+  :param with_labels: if True, use the labels of the modalities of variables in the csv. If False, use their ids.
+  :type with_labels: boolean
+  :return: the log2-likelihood of the generated base
+  """
+
+  genere = BNDatabaseGenerator(bn)
+  if visible:
+    from pyAgrum.lib._utils.progress_bar import ProgressBar
+    prog = ProgressBar(name_out + ' : ', 0, 100, 77, mode='static', char='#')
+    prog.display()
+    listen = PythonDatabaseGeneratorListener(genere)
+
+    def whenStep(x, y):
+      prog.increment_amount()
+      prog.display()
+
+    def whenStop(msg):
+      prog.update_amount(100)
+      prog.display()
+      print()
+
+    listen.setWhenProgress(whenStep)
+    listen.setWhenStop(whenStop)
+
+  genere.setRandomVarOrder()
+  ll=genere.drawSamples(n)
+
+  genere.toCSV(name_out,with_labels)
+
+  if visible:
+    print("Log2-Likelihood : {}".format(ll))
+
+  return ll

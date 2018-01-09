@@ -34,6 +34,7 @@ from tests import LazyPropagationTestSuite
 from tests import SamplingTestSuite
 from tests import LoopyBeliefPropagationTestSuite
 from tests import InstantiationTestSuite
+from tests import BNDatabaseGeneratorTestSuite
 
 import time
 
@@ -55,6 +56,7 @@ tests.append(AggregatorsForBNTestSuite.ts)
 tests.append(PRMexplorerTestSuite.ts)
 tests.append(SamplingTestSuite.ts)
 tests.append(LoopyBeliefPropagationTestSuite.ts)
+tests.append(BNDatabaseGeneratorTestSuite.ts)
 
 tests = unittest.TestSuite(tests)
 

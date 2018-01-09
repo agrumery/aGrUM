@@ -10,7 +10,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     pass
 
   def testHillClimbing(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia.csv'))
     learner.useGreedyHillClimbing()
     bn = learner.learnBN()
     self.assertEqual(bn.size(), 8)
@@ -27,7 +28,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       self.assertTrue(False)
 
   def testHillClimbingAccurate(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia.csv'))
 
     witness = ['smoking?',
                'lung_cancer?',
@@ -45,7 +47,8 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.useGreedyHillClimbing()
     bn = learner.learnBN()
 
-    ref = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'), verbose=False)
+    ref = gum.loadBN(self.agrumSrcDir(
+        'src/testunits/ressources/asia2.bif'), verbose=False)
 
     f = gum.BruteForceKL(bn, ref)
     res = f.compute()
@@ -64,47 +67,54 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       self.assertTrue(False)
 
   def testLocalSearchWithTabuAccurate(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia.csv'))
     learner.useLocalSearchWithTabuList()
 
     bn = learner.learnBN()
 
-    ref = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia2.bif'), verbose=False)
+    ref = gum.loadBN(self.agrumSrcDir(
+        'src/testunits/ressources/asia2.bif'), verbose=False)
 
     f = gum.BruteForceKL(bn, ref)
     res = f.compute()
     self.assertDelta(res['klPQ'], 0, 1)
 
   def testParameterLearning(self):
-    bn = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'), verbose=False)
+    bn = gum.loadBN(self.agrumSrcDir(
+        'src/testunits/ressources/asia_bool.bif'), verbose=False)
 
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3.csv'), bn)
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia3.csv'), bn)
     learner.useScoreLog2Likelihood()
     learner.useAprioriSmoothing(1.0)
 
     bn2 = learner.learnParameters(bn)
     for i in range(bn.size()):
       #self.assertEquals(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
-      self.assertEquals(set(bn2.variable(i).labels()),set(bn.variable(bn.idFromName(bn2.variable(i).name())).labels()))
+      self.assertEquals(set(bn2.variable(i).labels()), set(
+          bn.variable(bn.idFromName(bn2.variable(i).name())).labels()))
 
-    bn = gum.loadBN(self.agrumSrcDir('src/testunits/ressources/asia_bool.bif'), verbose=False)
+    bn = gum.loadBN(self.agrumSrcDir(
+        'src/testunits/ressources/asia_bool.bif'), verbose=False)
     # there is a beurk modality in asia3-faulty.csv
     with self.assertRaises(gum.UnknownLabelInDatabase):
-      learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia3-faulty.csv'), bn)
+      learner = gum.BNLearner(self.agrumSrcDir(
+          'src/testunits/ressources/asia3-faulty.csv'), bn)
 
   def testDBNTonda(self):
     dbn = gum.BayesNet()
     l = [dbn.add(gum.LabelizedVariable(name, name, nbr)) for (name, nbr) in [
-      ("bf_0", 4),
-      ("bf_t", 4),
-      ("c_0", 5),
-      ("c_t", 5),
-      ("h_0", 5),
-      ("h_t", 5),
-      ("tf_0", 5),
-      ("tf_t", 5),
-      ("wl_0", 4),
-      ("wl_t", 4)
+        ("bf_0", 4),
+        ("bf_t", 4),
+        ("c_0", 5),
+        ("c_t", 5),
+        ("h_0", 5),
+        ("h_t", 5),
+        ("tf_0", 5),
+        ("tf_t", 5),
+        ("wl_0", 4),
+        ("wl_t", 4)
     ]]
     for node in ["c_t", "h_t", "wl_t"]:
       dbn.addArc(dbn.idFromName("tf_0"), dbn.idFromName(node))
@@ -136,36 +146,38 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       I2.inc()
 
   def test3off2(self):
-    learner = gum.BNLearner(self.agrumSrcDir('src/testunits/ressources/asia.csv'))
+    learner = gum.BNLearner(self.agrumSrcDir(
+        'src/testunits/ressources/asia.csv'))
     learner.useGreedyHillClimbing()
     with self.assertRaises(gum.OperationNotAllowed):
       learner.useNML()
 
     learner.use3off2()
     learner.useNML()
-    learner.addForbiddenArc(4,1)
-    learner.addMandatoryArc(5,7)
+    learner.addForbiddenArc(4, 1)
+    learner.addMandatoryArc(5, 7)
 
-    d=gum.DAG()
+    d = gum.DAG()
     for i in range(8):
       d.addNodeWithId(i)
     learner.setInitialDAG(d)
 
-    self.assertNotEqual(len(learner.names()),0)
+    self.assertNotEqual(len(learner.names()), 0)
 
     try:
-      bn=learner.learnBN()
+      bn = learner.learnBN()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEquals(len(bn.arcs()) ,8)
+    self.assertEquals(len(bn.arcs()), 8)
 
     try:
-      mg=learner.learnMixedStructure()
+      mg = learner.learnMixedStructure()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEquals(len(mg.arcs()),6)
-    self.assertEquals(len(mg.edges()),2)
-    self.assertEquals(len(learner.latentVariables()),2)
+    self.assertEquals(len(mg.arcs()), 6)
+    self.assertEquals(len(mg.edges()), 2)
+    self.assertEquals(len(learner.latentVariables()), 2)
+
 
 ts = unittest.TestSuite()
 addTests(ts, BNLearnerCSVTestCase)

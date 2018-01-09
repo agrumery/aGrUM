@@ -48,6 +48,7 @@ class CSVGenerator:
   """
 
   def __init__(self):
+    print("** Class 'CSVGenerator' is is deprecated in pyAgrum>0.12.0. Please use gum.genereCSV instead.")
     self._parents = {}
     self._probas = {}
 
@@ -65,7 +66,6 @@ class CSVGenerator:
     -------
     tuple
       the couple (i,proba)
-
     """
     res = len(tab) - 1
 
@@ -100,7 +100,6 @@ class CSVGenerator:
     Warnings
     --------
     IndexError raised if the node is not in the Bayesian network
-
     """
     l = bn.cpt(n).var_names
     node = l.pop()
@@ -179,7 +178,6 @@ class CSVGenerator:
     -------
     tuple
       the coule (sample,log2-likelihood)
-
     """
     self._sample = {}
     LL = 0
@@ -211,7 +209,6 @@ class CSVGenerator:
     -------
     double
       the log2-likelihood of the n samples database
-
     """
 
     if isinstance(name_in, str):
@@ -278,17 +275,17 @@ def generateCSV(name_in, name_out, n, visible=False, with_labels=True):
     the log2-likelihood of the n samples database
 
   """
+  print("** The function 'gum.lib.bn2csv.generateCSV' is deprecated in pyAgrum>0.12.0. Please use gum.genereCSV instead.")
   g = CSVGenerator()
   return g.proceed(name_in, name_out, n, visible, with_labels)
-
 
 def module_help(exit_value=1):
   """
   defines help viewed if args are not OK on command line, and exit with exit_value
-
   """
   print(os.path.basename(sys.argv[0]), "src.{" + gum.availableBNExts() + "} nbr [dst.csv]")
   sys.exit(exit_value)
+print("** The library 'gum.lib.bn2csv' is deprecated in pyAgrum>0.12.0. Please use gum.genereCSV instead.")
 
 if __name__ == "__main__":
   pyAgrum_header("2011-2017")
