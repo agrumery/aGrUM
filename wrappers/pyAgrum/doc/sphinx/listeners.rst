@@ -5,7 +5,7 @@ aGrUM includes a mechanism for listening to actions (close to QT signal/slot). S
 
 LoadListener
 ------------
-Listeners could be added in order to monitor the progress when loading gum.BayesNet 
+Listeners could be added in order to monitor the progress when loading a pyAgrum.BayesNet 
 
 >>> import pyAgrum as gum
 >>>
@@ -35,7 +35,7 @@ Listeners could be added in order to monitor the progress when loading gum.Bayes
 StructuralListener
 ------------------
 
-Listeners could also be added when structural modification are made in a gum.BayesNet:
+Listeners could also be added when structural modification are made in a pyAgrum.BayesNet:
 
 >>> import pyAgrum as gum
 >>>
