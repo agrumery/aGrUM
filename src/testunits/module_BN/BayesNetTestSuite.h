@@ -754,8 +754,12 @@ namespace gum_tests {
       TS_ASSERT_DELTA(a, 0.00072, 1e-4);
 
       gum::Instantiation j;
-      float              b = 0.0;
-      TS_ASSERT_THROWS_NOTHING(b = bn.jointProbability(j));
+      for (auto n : bn.nodes()) {
+        TS_ASSERT_THROWS(bn.jointProbability(j), gum::InvalidArgument);
+        j.add(bn.variable(n));
+      }
+      float b;
+      TS_GUM_ASSERT_THROWS_NOTHING(b = bn.jointProbability(j));
 
       TS_ASSERT_EQUALS(a, b);
     }

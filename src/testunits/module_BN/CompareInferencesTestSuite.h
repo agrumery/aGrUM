@@ -185,17 +185,17 @@ namespace gum_tests {
       test_waiting();
       inf_VarElim.makeInference();
 
-      gum::HybridImportanceSampling< double > inf_gibbs(bn);
+      gum::HybridImportanceSampling< double > inf_his(bn);
       for (auto pot : list_pot)
-        inf_gibbs.addEvidence(*pot);
-      inf_gibbs.setVerbosity(false);
-      inf_gibbs.setEpsilon(1e-3);
-      inf_gibbs.setMinEpsilonRate(1e-3);
+        inf_his.addEvidence(*pot);
+      inf_his.setVerbosity(false);
+      inf_his.setEpsilon(1e-3);
+      inf_his.setMinEpsilonRate(1e-3);
       test_waiting();
-      TS_GUM_ASSERT_THROWS_NOTHING(inf_gibbs.makeInference());
+      TS_GUM_ASSERT_THROWS_NOTHING(inf_his.makeInference());
 
       for (const auto i : bn->nodes()) {
-        const gum::Potential< double >& marginal_gibbs = inf_gibbs.posterior(i);
+        const gum::Potential< double >& marginal_gibbs = inf_his.posterior(i);
         const gum::Potential< double >& marginal_ShaShe = inf_ShaShe.posterior(i);
         const gum::Potential< double >& marginal_LazyProp =
           inf_LazyProp.posterior(i);

@@ -66,34 +66,50 @@ namespace gum_tests {
       bn->addArc(idMap[node4], idMap[node5]);
 
       evidence = new gum::List< gum::Potential< float >* >();
-
       gum::Potential< float >* e1 =
         new gum::Potential< float >(new gum::MultiDimArray< float >());
-      (*e1) << bn->variable(idMap[node1]);
-      e1->fill((float)0);
-      gum::Instantiation inst1(*e1);
-      inst1.chgVal(bn->variable(idMap[node1]), 4);
-      e1->set(inst1, (float)1);
-
       gum::Potential< float >* e2 =
         new gum::Potential< float >(new gum::MultiDimArray< float >());
-      (*e2) << bn->variable(idMap[node2]);
-      e2->fill((float)0);
-      gum::Instantiation inst2(*e2);
-      inst2.chgVal(bn->variable(idMap[node2]), 4);
-      e2->set(inst1, (float)1);
-
       gum::Potential< float >* e3 =
         new gum::Potential< float >(new gum::MultiDimArray< float >());
-      (*e3) << bn->variable(idMap[node3]);
-      e3->fill((float)0);
-      gum::Instantiation inst3(*e3);
-      inst3.chgVal(bn->variable(idMap[node3]), 4);
-      e3->set(inst1, (float)1);
 
-      evidence->insert(e1);
-      evidence->insert(e2);
-      evidence->insert(e3);
+      try {
+        (*e1) << bn->variable(idMap[node1]);
+        e1->fill((float)0);
+        gum::Instantiation inst1(*e1);
+        inst1.chgVal(bn->variable(idMap[node1]), 4);
+        e1->set(inst1, (float)1);
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
+
+      try {
+        (*e2) << bn->variable(idMap[node2]);
+        e2->fill((float)0);
+        gum::Instantiation inst2(*e2);
+        inst2.chgVal(bn->variable(idMap[node2]), 4);
+        e2->set(inst2, (float)1);
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
+
+      try {
+        (*e3) << bn->variable(idMap[node3]);
+        e3->fill((float)0);
+        gum::Instantiation inst3(*e3);
+        inst3.chgVal(bn->variable(idMap[node3]), 4);
+        e3->set(inst3, (float)1);
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
+
+      try {
+        evidence->insert(e1);
+        evidence->insert(e2);
+        evidence->insert(e3);
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
     }
 
     void tearDown() {
