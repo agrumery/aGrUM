@@ -6,9 +6,10 @@ Returns
 pyAgrum.IBayesNet
   A constant reference over the IBayesNet referenced by this class.
 
-Warnings
---------
-UndefinedElement raised if no Bayes net has been assigned to the inference.
+Raises
+------
+gum.UndefinedElement
+  If no Bayes net has been assigned to the inference.
 "
 
 %feature("docstring") gum::classname::H
@@ -78,25 +79,18 @@ val :
 vals : list
   a list of values
 
-Warnings
---------
-InvalidArgument raised if the node already has an evidence
-
-Warnings
---------
-InvalidArgument raised if val is not a value for the node
-
-Warnings
---------
-InvalidArgument raised if the size of vals is different from the domain side of the node
-
-Warnings
---------
-FatalError if vals is a vector of 0s
-
-Warnings
---------
-UndefinedElement raised if the node does not belong to the Bayesian network
+Raises
+------
+gum.InvalidArgument
+  If the node already has an evidence
+gum.InvalidArgument
+  If val is not a value for the node
+gum.InvalidArgument
+  If the size of vals is different from the domain side of the node
+gum.FatalError
+  If vals is a vector of 0s
+gum.UndefinedElement
+  If the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::addJointTarget
@@ -108,9 +102,10 @@ Parameters
 list
   a list of names of nodes
 
-Warnings
---------
-UndefinedElement raised if some node(s) do not belong to the Bayesian network
+Raises
+------
+gum.UndefinedElement
+  If some node(s) do not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::addTarget
@@ -124,9 +119,10 @@ target : int
 nodeName : str
   a node name
 
-Warnings
---------
-  UndefinedElement raised if target is not a NodeId in the Bayes net 
+Raises
+------
+gum.UndefinedElement
+  If target is not a NodeId in the Bayes net 
 "
 
 %feature("docstring") gum::classname::chgEvidence
@@ -146,25 +142,18 @@ val :
 vals : list
   a list of values
 
-Warnings
---------
-InvalidArgument raised if the node does not already have an evidence
-
-Warnings
---------
-InvalidArgument raised if val is not a value for the node
-
-Warnings
---------
-InvalidArgument raised if the size of vals is different from the domain side of the node
-
-Warnings
---------
-FatalError if vals is a vector of 0s
-
-Warnings
---------
-UndefinedElement raised if the node does not belong to the Bayesian network
+Raises
+------
+gum.InvalidArgument
+  If the node does not already have an evidence
+gum.InvalidArgument
+  If val is not a value for the node
+gum.InvalidArgument
+  If the size of vals is different from the domain side of the node
+gum.FatalError
+  If vals is a vector of 0s
+gum.UndefinedElement
+  If the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::eraseAllEvidence
@@ -200,9 +189,10 @@ id : int
 nodeName : int
   a node name
 
-Warnings
---------
-IndexError raised if the node does not belong to the Bayesian network
+Raises
+------
+gum.IndexError
+  If the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::eraseJointTarget
@@ -214,13 +204,12 @@ Parameters
 list
   a list of names or Ids of nodes
 
-Warnings
---------
-IndexError raised if one of the node does not belong to the Bayesian network
-
-Warnings
---------
-UndefinedElement raised if node Id is not in the Bayesian network
+Raises
+------
+gum.IndexError
+  If one of the node does not belong to the Bayesian network
+gum.UndefinedElement
+  If node Id is not in the Bayesian network
 "
 
 %feature("docstring") gum::classname::eraseTarget
@@ -234,13 +223,12 @@ target : int
 nodeName : int
   a node name
 
-Warnings
---------
-IndexError raised if one of the node does not belong to the Bayesian network
-
-Warnings
---------
-UndefinedElement raised if node Id is not in the Bayesian network
+Raises
+------
+gum.IndexError
+  If one of the node does not belong to the Bayesian network
+gum.UndefinedElement
+  If node Id is not in the Bayesian network
 "
 
 %feature("docstring") gum::classname::evidenceImpact
@@ -282,9 +270,10 @@ Returns
 pyAgrum.Potential
   a Potential for P(target|evs)
 
-Warnings
---------
-Exception raised if some evidene entered into the Bayes net are incompatible (their joint proba = 0)
+Raises
+------
+gum.Exception
+  If some evidene entered into the Bayes net are incompatible (their joint proba = 0)
 "
 
 %feature("docstring") gum::classname::evidenceProbability
@@ -317,9 +306,10 @@ Returns
 bool
   True if some node(s) (or the one in parameters) have received evidence
 
-Warnings
---------
-IndexError raised if the node does not belong to the Bayesian network
+Raises
+------
+gum.IndexError
+  If the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::hasHardEvidence
@@ -336,9 +326,10 @@ Returns
 bool
   True if node has received a hard evidence
 
-Warnings
---------
-IndexError raised if the node does not belong to the Bayesian network
+Raises
+------
+gum.IndexError
+  If the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::hasSoftEvidence
@@ -355,9 +346,10 @@ Returns
 bool
   True if node has received a soft evidence
 
-Warnings
---------
-IndexError raised if the node does not belong to the Bayesian network
+Raises
+------
+gum.IndexError
+  If the node does not belong to the Bayesian network
 "
 
 %feature("docstring") gum::classname::isJointTarget
@@ -372,13 +364,12 @@ Returns
 bool
   True if target is a joint target. 
 
-Warnings
---------
-IndexError raised if the node does not belong to the Bayesian network
-
-Warnings
---------
-UndefinedElement raised if node Id is not in the Bayesian network
+Raises
+------
+gum.IndexError
+  If the node does not belong to the Bayesian network
+gum.UndefinedElement
+  If node Id is not in the Bayesian network
 "
 
 %feature("docstring") gum::classname::isTarget
@@ -395,13 +386,12 @@ Returns
 bool
   True if variable is a (marginal) target
 
-Warnings
---------
-IndexError raised if the node does not belong to the Bayesian network
-
-Warnings
---------
-UndefinedElement raised if node Id is not in the Bayesian network
+Raises
+------
+gum.IndexError
+  If the node does not belong to the Bayesian network
+gum.UndefinedElement
+  If node Id is not in the Bayesian network
 "
 
 %feature("docstring") gum::classname::joinTree
@@ -426,9 +416,10 @@ Returns
 pyAgrum.Potential
   a const ref to the posterior joint probability of the set of nodes. 
 
-Warnings
---------
-UndefinedElement if an element of nodes is not in targets
+Raises
+------
+gum.UndefinedElement 
+  If an element of nodes is not in targets
 "
 
 %feature("docstring") gum::classname::jointTargets
@@ -511,9 +502,10 @@ Returns
 pyAgrum.Potential
   a const ref to the posterior probability of the node
 
-Warnings
---------
-UndefinedElement if an element of nodes is not in targets
+Raises
+------
+gum.UndefinedElement
+  If an element of nodes is not in targets
 "
 
 %feature("docstring") gum::classname::softEvidenceNodes
@@ -596,9 +588,10 @@ Returns
 pyAgrum.Potential
   a const ref to the current posterior probability of the node
 
-Warnings
---------
-UndefinedElement if an element of nodes is not in targets
+Raises
+------
+UndefinedElement
+  If an element of nodes is not in targets
 "
 
 %feature("docstring") gum::classname::setVirtualLBPSize
@@ -632,9 +625,10 @@ Parameters
 type : int
   the finder type
 
-Warnings
---------
-InvalidArgument raised if type is not implemented
+Raises
+------
+gum.InvalidArgument
+  If type is not implemented
 "
 
 %feature("docstring") gum::classname::setFindBarrenNodesType
@@ -651,9 +645,10 @@ Parameters
 type : int
   the finder type
 
-Warnings
---------
-InvalidArgument raised if type is not implemented
+Raises
+------
+gum.InvalidArgument
+  If type is not implemented
 "
 
 %enddef

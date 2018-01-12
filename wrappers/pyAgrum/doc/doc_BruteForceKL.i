@@ -17,7 +17,8 @@ Q : pyAgrum.IBayesNet
 kl : pyAgrum.KL
 	the KL to copy
 
-Warnings
---------
-OperationNotAllowed raised if the 2BNs have not the same domain size of compatible node sets
+Raises
+------
+gum.OperationNotAllowed
+	If the 2BNs have not the same domain size of compatible node sets
 "

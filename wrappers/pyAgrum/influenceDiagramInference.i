@@ -13,21 +13,16 @@ def setEvidence(self, evidces):
     evidces : dict
       a dict of evidences
 
-    Warnings
-    --------
-    InvalidArgument raised if one value is not a value for the node
-
-    Warnings
-    --------
-    InvalidArgument raised if the size of a value is different from the domain side of the node
-
-    Warnings
-    --------
-    FatalError raised if one value is a vector of 0s
-
-    Warnings
-    --------
-    UndefinedElement raised if one node does not belong to the Bayesian network
+    Raises
+    ------
+    gum.InvalidArgument
+        If one value is not a value for the node
+    gum.InvalidArgument
+        If the size of a value is different from the domain side of the node
+    gum.FatalError
+        If one value is a vector of 0s
+    gum.UndefinedElement
+        If one node does not belong to the Bayesian network
     """
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be dict, not %s"%(type(evidces)))

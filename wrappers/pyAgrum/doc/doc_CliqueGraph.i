@@ -24,13 +24,12 @@ clique_id : int
 node_id : int
   the id of the node
 
-Warnings
---------
-NotFound raised if clique_id does not exist
-
-Warnings
---------
-DuplicateElement raised if clique_id set already contains the ndoe
+Raises
+------
+gum.NotFound
+  If clique_id does not exist
+gum.DuplicateElement
+  If clique_id set already contains the ndoe
 "
 
 %feature("docstring") gum::CliqueGraph::clearEdges
@@ -50,9 +49,10 @@ Returns
 Set
   The set of nodes included in the clique
 
-Warnings
---------
-NotFound raised if the clique does not belong to the clique graph
+Raises
+------
+gum.NotFound
+  If the clique does not belong to the clique graph
 "
 
 %feature("docstring") gum::CliqueGraph::container
@@ -67,9 +67,10 @@ Returns
 int
   the id of a clique containing the node
 
-Warnings
---------
-NotFound raised if no clique contains idNode  
+Raises
+------
+gum.NotFound
+  If no clique contains idNode  
 "
 
 %feature("docstring") gum::CliqueGraph::containerPath
@@ -86,9 +87,10 @@ Returns
 List
   a path from a clique containing node1 to a clique containing node2
 
-Warnings
---------
-NotFound raised if such path cannot be found
+Raises
+------
+gum.NotFound 
+  If such path cannot be found
 "
 
 %feature("docstring") gum::CliqueGraph::eraseFromClique
@@ -102,9 +104,10 @@ clique_id : int
 node_id : int
   the id of the node
 
-Warnings
---------
-NotFound raised if clique_id does not exist
+Raises
+------
+gum.NotFound
+  If clique_id does not exist
 "
 
 %feature("docstring") gum::CliqueGraph::hasRunningIntersection
@@ -139,9 +142,10 @@ Returns
 Set
   the separator included in a given edge
 
-Warnings
---------
-NotFound raised if the edge does not belong to the clique graph
+Raises
+------
+gum.NotFound
+  If the edge does not belong to the clique graph
 "
 
 %feature("docstring") gum::CliqueGraph::setClique
@@ -155,7 +159,8 @@ idClique : int
 new_clique : Set
   the new set of nodes to be included in the clique
 
-Warnings
---------
-NotFound exception if idClique is not a clique of the graph
+Raises
+------
+gum.NotFound
+  If idClique is not a clique of the graph
 "

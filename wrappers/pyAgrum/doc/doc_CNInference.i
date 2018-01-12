@@ -77,9 +77,10 @@ Returns
 list
     a constant reference to this node upper marginals.
 
-Warnings
---------
-IndexError raised if the node does not belong to the Credal network
+Raises
+------
+gum.IndexError
+	If the node does not belong to the Credal network
 "
 
 %feature("docstring") gum::credal::classname::marginalMin
@@ -98,9 +99,10 @@ Returns
 list
     a constant reference to this node lower marginals.
 
-Warnings
---------
-IndexError raised if the node does not belong to the Credal network
+Raises
+------
+gum.IndexError
+	If the node does not belong to the Credal network
 "
 
 %feature("docstring") gum::credal::classname::saveInference

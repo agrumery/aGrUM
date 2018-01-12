@@ -132,9 +132,10 @@ Returns
 pyAgrum.Potential
 	The variable's CPT. 
 
-Warnings
---------
-	NotFound raised if no variable's id matches varId. 
+Raises
+------
+gum.NotFound 
+	If no variable's id matches varId. 
 "
 
 %feature("docstring") gum::IBayesNet::parents

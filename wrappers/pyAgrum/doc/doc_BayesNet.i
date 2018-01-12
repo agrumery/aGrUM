@@ -37,13 +37,11 @@ int
 
 Raises
 ------
-DuplicateLabel
+gum.DuplicateLabel
     If variable.name() is already used in this pyAgrum.BayesNet.
-
-NotAllowed
+gum.NotAllowed
     If nbrmod<2
-
-DuplicateElement
+gum.DuplicateElement
     If id is already used.
 "
 
@@ -79,9 +77,9 @@ int
 	the id of the added variable. 
 
 Raises
---------
-SizeError
-    if variable.domainSize()>2
+------
+gum.SizeError
+    If variable.domainSize()>2
 "
 
 %feature("docstring") gum::BayesNet::addArc
@@ -100,9 +98,9 @@ tail :
 	a variable's name (str)
 
 Raises
---------
-InvalidEdge
-    if arc.tail and/or arc.head are not in the BN.
+------
+gum.InvalidEdge
+    If arc.tail and/or arc.head are not in the BN.
 "
 
 %feature("docstring") gum::BayesNet::addCOUNT
@@ -164,14 +162,15 @@ externalWeight : double
 	the added external weight
 id : int
 	The proposed id for the variable.
+
 Returns
 -------
 int
 	the id of the added variable.
 
 Raises
---------
-DuplicateElement
+------
+gum.DuplicateElement
     If id is already used
 "
 
@@ -241,8 +240,8 @@ int
 	the id of the added variable.
 
 Raises
---------
-DuplicateElement
+------
+gum.DuplicateElement
     If id is already used
 "
 
@@ -270,7 +269,7 @@ int
 
 Raises
 --------
-DuplicateElement
+gum.DuplicateElement
     If id is already used
 "
 
@@ -298,7 +297,7 @@ int
 
 Raises
 --------
-DuplicateElement
+gum.DuplicateElement
     If id is already used
 "
 
@@ -346,8 +345,8 @@ int
 	the id of the added variable.
 
 Raises
---------
-SizeError
+------
+gum.SizeError
     If variable.domainSize()>2
 "
 
@@ -369,11 +368,10 @@ causalWeight : double
 	the added causal weight
 
 Raises
---------
-InvalidArc
+------
+gum.InvalidArc
     If arc.tail and/or arc.head are not in the BN.
-
-InvalidArc
+gum.InvalidArc
     If variable in arc.head is not a NoisyOR variable.
 
 "
@@ -399,8 +397,8 @@ name : str
 	the name of the variable
 
 Raises
---------
-NotAllowed
+------
+gum.NotAllowed
     If newPot has not the same signature as __probaMap[NodeId]
 "
 
@@ -420,11 +418,10 @@ name : str
 	the name of the variable
 
 Raises
---------
-DuplicateLabel
+------
+gum.DuplicateLabel
     If new_name is already used in this BayesNet.
-
-NotFound
+gum.NotFound
     If no variable matches id.
 "
 
@@ -527,12 +524,9 @@ l : list
 
 Raises
 --------
-IOError
+gum.IOError
     If file not found
-
-Raises
---------
-FatalError
+gum.FatalError
     If file is not valid
 "
 
@@ -548,11 +542,10 @@ l : list
 	list of functions to execute
 
 Raises
---------
-IOError
+------
+gum.IOError
     If file not found
-
-FatalError
+gum.FatalError
     If file is not valid
 "
 
@@ -568,11 +561,10 @@ l : list
 	list of functions to execute
 
 Raises
---------
-IOError
+------
+gum.IOError
     If file not found
-
-FatalError
+gum.FatalError
     If file is not valid
 "
 
@@ -588,11 +580,10 @@ l : list
 	list of functions to execute
 
 Raises
---------
-IOError
+------
+gum.IOError
     If file not found
-
-FatalError
+gum.FatalError
     If file is not valid
 "
 
@@ -616,11 +607,10 @@ l : list
 	list of functions to execute
 
 Raises
---------
-IOError
+------
+gum.IOError
     If file not found
-
-FatalError
+gum.FatalError
     If file is not valid
 "
 
@@ -636,11 +626,10 @@ l : list
 	list of functions to execute
 
 Raises
---------
-IOError
+------
+gum.IOError
     If file not found
-
-FatalError
+gum.FatalError
     If file is not valid
 "
 
@@ -662,8 +651,8 @@ arc : pyAgrum.Arc
 	an arc 
 
 Raises
---------
-InvalidArc
+------
+gum.InvalidArc
     If the arc does not exsit or if its reversal would induce a directed cycle.
 "
 
@@ -748,7 +737,7 @@ pyAgrum.Potential
 	The variable's CPT. 
 
 Raises
---------
-NotFound
+------
+gum.NotFound
     If no variable's id matches varId.
 "

@@ -67,13 +67,12 @@ pos : int
 aLabel : str
 	the label to be added to the labelized variable
 
-Warnings
---------
-DuplicatedElement raised if the variable already contains the new label
-
-Warnings
---------
-OutOfBounds raised if the index is greater than the size of the variable
+Raises
+------
+gum.DuplicatedElement
+  If the variable already contains the new label
+gum.OutOfBounds
+  If the index is greater than the size of the variable
 "
 
 %feature("docstring") gum::LabelizedVariable::eraseLabels

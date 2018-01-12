@@ -9,21 +9,16 @@ def setEvidence(self, evidces):
     evidces : dict
       a dict of evidences
 
-    Warnings
-    --------
-    InvalidArgument raised if one value is not a value for the node
-
-    Warnings
-    --------
-    InvalidArgument raised if the size of a value is different from the domain side of the node
-
-    Warnings
-    --------
-    FatalError raised if one value is a vector of 0s
-
-    Warnings
-    --------
-    UndefinedElement raised if one node does not belong to the Bayesian network
+    Raises
+    ------
+    gum.InvalidArgument
+        If one value is not a value for the node
+    gum.InvalidArgument
+        If the size of a value is different from the domain side of the node
+    gum.FatalError
+        If one value is a vector of 0s
+    gum.UndefinedElement
+        If one node does not belong to the Bayesian network
     """
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
@@ -42,21 +37,16 @@ def updateEvidence(self, evidces):
     evidces : dict
       a dict of evidences
 
-    Warnings
-    --------
-    InvalidArgument raised if one value is not a value for the node
-
-    Warnings
-    --------
-    InvalidArgument raised if the size of a value is different from the domain side of the node
-
-    Warnings
-    --------
-    FatalError raised if one value is a vector of 0s
-
-    Warnings
-    --------
-    UndefinedElement raised if one node does not belong to the Bayesian network
+    Raises
+    ------
+    gum.InvalidArgument
+        If one value is not a value for the node
+    gum.InvalidArgument
+        If the size of a value is different from the domain side of the node
+    gum.FatalError
+        If one value is a vector of 0s
+    gum.UndefinedElement
+        If one node does not belong to the Bayesian network
     """
     if not isinstance(evidces, dict):
         raise TypeError("setEvidence parameter must be a dict, not %s"%(type(evidces)))
@@ -78,9 +68,10 @@ def setTargets(self, targets):
     targets : set
       a set of targets
 
-    Warnings
-    --------
-    UndefinedElement raised if one target is not in the Bayes net 
+    Raises
+    ------
+    gum.UndefinedElement
+        If one target is not in the Bayes net 
     """
     if not isinstance(targets, set):
         raise TypeError("setTargets parameter must be a set, not %s"%(type(targets)))

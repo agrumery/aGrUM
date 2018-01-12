@@ -33,11 +33,12 @@ give an id (not 0) should be reserved for rare and specific situations !!!
 Returns
 -------
 int
-    the id of the added variable. 
+    the id of the added variable.
 
-Warnings
---------
-DuplicateElement raised if id(<>0) is already used 
+Raises
+------
+gum.DuplicateElement
+	If id(<>0) is already used 
 "
 
 %feature("docstring") gum::InfluenceDiagram::addArc
@@ -51,13 +52,12 @@ tail : int
 head : int
   the id of the head node
 
-Warnings
---------
-InvalidEdge raised if arc.tail and/or arc.head are not in the ID.
-
-Warnings
---------
-InvalidEdge raised if tail is a utility node 
+Raises
+------
+gum.InvalidEdge
+	If arc.tail and/or arc.head are not in the ID.
+gum.InvalidEdge
+	If tail is a utility node 
 "
 
 %feature("docstring") gum::InfluenceDiagram::addChanceNode
@@ -82,9 +82,10 @@ Returns
 int
     the id of the added variable. 
 
-Warnings
---------
-DuplicateElement raised if id(<>0) is already used 
+Raises
+------
+gum.DuplicateElement
+	If id(<>0) is already used 
 "
 
 %feature("docstring") gum::InfluenceDiagram::addDecisionNode
@@ -109,9 +110,10 @@ Returns
 int
     the id of the added variable. 
 
-Warnings
---------
-DuplicateElement raised if id(<>0) is already used 
+Raises
+------
+gum.DuplicateElement
+	If id(<>0) is already used 
 "
 
 %feature("docstring") gum::InfluenceDiagram::addUtilityNode
@@ -136,13 +138,12 @@ Returns
 int
     the id of the added variable. 
 
-Warnings
---------
-InvalidArgument raised if variable has more than one label
-
-Warnings
---------
-DuplicateElement raised if id(<>0) is already used 
+Raises
+------
+gum.InvalidArgument
+	If variable has more than one label
+gum.DuplicateElement
+	If id(<>0) is already used 
 "
 
 %feature("docstring") gum::InfluenceDiagram::arcs
@@ -170,13 +171,12 @@ id : int
 new_name : str
 	the name of the variable 
 
-Warnings
---------
-DuplicateLabel raised if this name already exists
-
-Warnings
---------
-NotFound raised if no nodes matches id. 
+Raises
+------
+gum.DuplicateLabel
+	If this name already exists
+gum.NotFound
+	If no nodes matches id. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::children
@@ -206,9 +206,10 @@ Returns
 pyAgrum.Potential
 	The variable's CPT. 
 
-Warnings
---------
-NotFound raised if no variable's id matches varId. 
+Raises
+------
+gum.NotFound
+	If no variable's id matches varId. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::decisionNodeSize
@@ -280,9 +281,10 @@ Returns
 list
 	the sequence of decision nodes in the directed path.
 
-Warnings
---------
-NotFound raised if such a path does not exist 
+Raises
+------
+NotFound
+	If such a path does not exist 
 "
 
 %feature("docstring") gum::InfluenceDiagram::idFromName
@@ -299,9 +301,10 @@ Returns
 int
 	the variable's node id. 
 
-Warnings
---------
-NotFound raised if no such name exists in the graph. 
+Raises
+------
+gum.NotFound
+	If no such name exists in the graph. 
 "
 
 %feature("docstring") gum::InfluenceDiagram::ids
@@ -360,13 +363,12 @@ Parameters
 name : str
 	the name's file
 
-Warnings
---------
-IOError raised if file not found
-
-Warnings
---------
-FatalError raised if file is not valid
+Raises
+------
+gum.IOError
+	If file not found
+gum.FatalError
+	If file is not valid
 "
 
 %feature("docstring") gum::InfluenceDiagram::names
@@ -390,9 +392,10 @@ Returns
 int
 	the id of the variable
 
-Warnings
---------
-IndexError raised if the InfluenceDiagram does not contain the variable
+Raises
+------
+gum.IndexError
+	If the InfluenceDiagram does not contain the variable
 "
 
 %feature("docstring") gum::InfluenceDiagram::parents
@@ -438,9 +441,10 @@ Returns
 pyAgrum.UtilityTable
 	the utility table of the node
 
-Warnings
---------
-IndexError raised if the InfluenceDiagram does not contain the variable
+Raises
+------
+gum.IndexError
+	If the InfluenceDiagram does not contain the variable
 "
 
 %feature("docstring") gum::InfluenceDiagram::utilityNodeSize
@@ -463,9 +467,10 @@ Returns
 pyAgrum.DiscreteVariable
 	a constant reference over a variabe given it's node id
 
-Warnings
---------
-NotFound raised if no variable's id matches the parameter 
+Raises
+------
+gum.NotFound
+	If no variable's id matches the parameter 
 "
 
 %feature("docstring") gum::InfluenceDiagram::variableFromName
@@ -480,9 +485,10 @@ Returns
 pyAgrum.DiscreteVariable
 	the variable
 
-Warnings
---------
-IndexError if the InfluenceDiagram does not contain the variable
+Raises
+------
+gum.IndexError
+	If the InfluenceDiagram does not contain the variable
 "
 
 %feature("docstring") gum::InfluenceDiagram::variableNodeMap

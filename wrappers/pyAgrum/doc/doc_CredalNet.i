@@ -32,17 +32,14 @@ tail :
 head : int 
 	the id of the head node
 
-Warnings
---------
-	InvalidDirectedCircle raised if any (directed) cycle is created by this arc
-	
-Warnings
---------
-	InvalidNode raised if head or tail does not belong to the graph nodes
-
-Warnings
---------
-	DuplicateElement raised if one of the arc already exists
+Raises
+------
+gum.InvalidDirectedCircle
+	If any (directed) cycle is created by this arc
+gum.InvalidNode
+	If head or tail does not belong to the graph nodes
+gum.DuplicateElement
+	If one of the arc already exists
 "
 
 %feature("docstring") gum::credal::CredalNet::addNode
@@ -61,9 +58,10 @@ Returns
 int
     The NodeId of the variable in the network
 
-Warnings
---------
-DuplicateLabel raised if a node with the label already exists.
+Raises
+------
+gum.DuplicateLabel
+	If a node with the label already exists.
 "
 
 %feature("docstring") gum::credal::CredalNet::approximatedBinarization

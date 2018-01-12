@@ -32,11 +32,10 @@ tail : int
 head : int
   the id of the head node
 
-Warnings
---------
-	InvalidDirectedCircle raised if any (directed) cycle is created by this arc
-	
-Warnings
---------
-	InvalidNode raised if head or tail does not belong to the graph nodes
+Raises
+------
+gum.InvalidDirectedCircle
+	If any (directed) cycle is created by this arc
+gum.InvalidNode
+	If head or tail does not belong to the graph nodes
 "

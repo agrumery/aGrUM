@@ -25,11 +25,10 @@ Returns
 pyAgrum.BayesNet
 	the generated Bayesian network
 
-Warnings
---------
-OperationNotAllowed raised if n_modmax < 2
-
-Warnings
---------
-OperationNotAllowed raised if n_arcs is incompatible with n_nodes (not enough arcs)
+Raises
+------
+gum.OperationNotAllowed
+	If n_modmax < 2
+gum.OperationNotAllowed
+	If n_arcs is incompatible with n_nodes (not enough arcs)
 "

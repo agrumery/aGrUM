@@ -25,9 +25,10 @@ tail : int
 head : int
   the id of the head node
 
-Warnings
---------
-InvalidNode raised if head or tail does not belong to the graph nodes.
+Raises
+------
+gum.InvalidNode
+  If head or tail does not belong to the graph nodes.
 "
 
 %feature("docstring") gum::DiGraph::addNode
@@ -47,9 +48,10 @@ Parameters
 id : int
   The id of the new node
 
-Warnings
---------
-DuplicateElement raised if the given id is already used
+Raises
+------
+gum.DuplicateElement
+  If the given id is already used
 "
 
 %feature("docstring") gum::DiGraph::arcs
@@ -223,7 +225,8 @@ Returns
 List
     the list of the nodes Ids in a topological order
 
-Warnings
---------
-InvalidDirectedCycle raised if this graph contains cycles
+Raises
+------
+gum.InvalidDirectedCycle
+  If this graph contains cycles
 "

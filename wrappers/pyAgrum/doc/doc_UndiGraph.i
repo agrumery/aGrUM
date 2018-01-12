@@ -25,9 +25,10 @@ n1 : int
 n2 : int
   the id of the other node of the new inserted edge
 
-Warnings
---------
-InvalidNode raised if n1 or n2 does not belong to the graph nodes.
+Raises
+------
+gum.InvalidNode
+  If n1 or n2 does not belong to the graph nodes.
 "
 
 %feature("docstring") gum::UndiGraph::addNode
@@ -47,9 +48,10 @@ Parameters
 id : int
   The id of the new node
 
-Warnings
---------
-DuplicateElement raised if the given id is already used
+Raises
+------
+gum.DuplicateElement
+  If the given id is already used
 "
 
 %feature("docstring") gum::UndiGraph::clear
