@@ -20,7 +20,7 @@
 /** @file
  * @brief A pack of learning algorithms that can easily be used
  *
- * The pack currently contains K2, GreedyHillClimbing and
+ * The pack currently contains K2, GreedyHillClimbing, 3off2 and
  *LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -836,6 +836,7 @@ namespace gum {
               mgraph.addNode(i);
             }
           }
+          //creating complete graph
           for (NodeId i : mgraph) {
             for (NodeId j : mgraph) {
               if (j < i) {
@@ -843,19 +844,20 @@ namespace gum {
               }
             }
           }
+          //mandatory arcs are added to th initial graph
           for (const auto& arc : init_graph.arcs()) {
             mgraph.addArc(arc.tail(), arc.head());
             mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
           }
 
+          // forbidden arcs are treated as forbidden edges
           for (const auto& arc : forbidden_arcs) {
             mgraph.eraseArc(arc);
             mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
           }
           // create the mutual entropy object
           if (__mutual_info == nullptr) {
-            __mutual_info = new CorrectedMutualInformation<>(
-              __score_database.rowFilter(), __score_database.modalities());
+              this->useNML();
           }
           return __3off2.learnStructure(*__mutual_info, mgraph);
         }

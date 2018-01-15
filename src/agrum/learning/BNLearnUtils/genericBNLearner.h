@@ -22,7 +22,7 @@
  * @brief A class for generic framework of learning algorithms that can easily
  * be used.
  *
- * The pack currently contains K2, GreedyHillClimbing and
+ * The pack currently contains K2, GreedyHillClimbing, 3off2 and
  * LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -444,13 +444,17 @@ namespace gum {
       // ##########################################################################
       /// @{
       /// indicate that we wish to use the NML correction for 3off2
+      /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
       void useNML();
       /// indicate that we wish to use the MDL correction for 3off2
+      /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
       void useMDL();
       /// indicate that we wish to use the NoCorr correction for 3off2
+      /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
       void useNoCorr();
 
       /// get the list of arcs hiding latent variables
+      /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
       const std::vector< Arc > latentVariables() const;
 
       /// @}

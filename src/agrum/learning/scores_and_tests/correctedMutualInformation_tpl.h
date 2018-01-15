@@ -167,7 +167,7 @@ namespace gum {
 
     template < typename IdSetAlloc, typename CountAlloc >
     const Size CorrectedMutualInformation< IdSetAlloc, CountAlloc >::N() {
-      return _H._N();
+      return _H.N();
     }
 
     // ##########################################################################
@@ -177,33 +177,22 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_score(
       Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids) {
-      /*std::cout << "    Recherche I de " << var1 << var2 << conditioning_ids <<
-       * std::endl;*/
+      
       double I = this->_I_score(var1, var2, conditioning_ids);
-      /*std::cout << "    I " << I << std::endl;*/
       double K = _K(var1, var2, conditioning_ids);
-
       Size N = this->N();
-      /*std::cout << "    I " << I << " K " << K << " N " << N << std::endl;*/
-
+      
       double score = I - K / N;
-      /*std::cout << "    " << score << std::endl;*/
+      
       return score;
     }
 
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_score(
       Idx var1, Idx var2, Idx var3, const std::vector< Idx >& conditioning_ids) {
-      // Timer time;
-      // double tps;
+        
       double I = this->_I_score(var1, var2, var3, conditioning_ids);
-      // tps = time.step();
-      // std::cout << "          I3pt I: " << tps << "s" << std::endl;
-      // time.reset();
       double K = _K(var1, var2, var3, conditioning_ids);
-      // tps = time.step();
-      // std::cout << "          I3pt K: " << tps << "s" << std::endl;
-
       Size N = this->N();
 
       double score = I + K / N;
@@ -306,6 +295,7 @@ namespace gum {
         return score;
       }
     }
+    
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_K(
       Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids) {
@@ -350,8 +340,6 @@ namespace gum {
       if (this->__use_Kcache) {
         this->_insertIntoKCache(var1, var2, conditioning_ids, score);
       }
-      /*std::cout << "K de " << var1 << var2 << conditioning_ids << " vaut " <<
-       * score << std::endl;*/
       return score;
     }
 
@@ -369,9 +357,6 @@ namespace gum {
       if (!conditioning_ids.empty()) {
 
         // if the score has already been computed, get its value
-
-        // If using cache, verify if the set isn't already known
-
         if (__use_cache) {
           try {
             double score = __cache_3pt.score(var1, var2, var3, conditioning_ids);
@@ -435,9 +420,6 @@ namespace gum {
 
       } else {
         // if the score has already been computed, get its value
-
-        // If using cache, verify if the set isn't already known
-
         if (__use_cache) {
           try {
             double score =
@@ -516,12 +498,6 @@ namespace gum {
       Idx                       var2,
       const std::vector< Idx >& conditioning_ids,
       double                    score) {
-      /*
-    const std::vector<Idx, IdSetAlloc>& all_nodes =
-        _getAllNodes( nodeset_index );
-    std::vector<Idx, IdSetAlloc> conditioning_nodes =
-        *( _getConditioningNodes( nodeset_index ) );
-    conditioning_nodes.pop_back();*/
 
       if (!conditioning_ids.empty()) {
         try {
@@ -545,12 +521,6 @@ namespace gum {
       Idx                       var3,
       const std::vector< Idx >& conditioning_ids,
       double                    score) {
-      /*
-    const std::vector<Idx, IdSetAlloc>& all_nodes =
-        _getAllNodes( nodeset_index );
-    std::vector<Idx, IdSetAlloc> conditioning_nodes =
-        *( _getConditioningNodes( nodeset_index ) );
-    conditioning_nodes.pop_back();*/
 
       if (!conditioning_ids.empty()) {
         try {

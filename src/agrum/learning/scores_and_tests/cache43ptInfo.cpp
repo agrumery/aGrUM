@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a cache for caching scores in Indep Test classes (chi2, G2, etc.)
+ * @brief a cache for caching 3 points mutual information in 3off2
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Quentin FALCAND
  */
 
 #include <agrum/learning/scores_and_tests/cache43ptInfo.h>

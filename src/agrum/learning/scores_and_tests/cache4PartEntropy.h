@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a cache for caching scores in Score classes (BIC, BDeu, K2, etc.)
+ * @brief a cache for caching partial entropy in 3off2
  *
  * Caching previously computed scores is very important for learning algorithms
  * because computing a score requires parsing the database and this is the most

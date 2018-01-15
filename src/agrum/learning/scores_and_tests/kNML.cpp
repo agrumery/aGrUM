@@ -19,9 +19,9 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of gum::learning::IndepTestChi2.
+ * @brief Implementation of gum::learning::kNML.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Quentin FALCAND
  */
 
 #include <agrum/learning/scores_and_tests/kNML.h>

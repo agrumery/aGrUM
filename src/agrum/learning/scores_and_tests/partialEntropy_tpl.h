@@ -17,6 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Implementation of gum::learning::Entropy.
+ *
+ * @author Quentin FALCAND.
+ */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 namespace gum {
@@ -35,17 +41,6 @@ namespace gum {
             filter, var_modalities, min_range, max_range) {
       GUM_CONSTRUCTOR(PartialEntropy);
     }
-    /*
- template <typename IdSetAlloc, typename CountAlloc>
- template <typename RowFilter>
- INLINE PartialEntropy<IdSetAlloc, CountAlloc>::PartialEntropy(
-     const RowFilter& filter, const std::vector<Size>& var_modalities )
-     : Score<IdSetAlloc, CountAlloc>( filter, var_modalities,
-                     AprioriNoApriori<IdSetAlloc, CountAlloc>() ) {
-   // for debugging purposes
-   GUM_CONSTRUCTOR( PartialEntropy );
- }
-    */
 
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE PartialEntropy< IdSetAlloc, CountAlloc >::~PartialEntropy() {
@@ -57,11 +52,6 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     INLINE Idx PartialEntropy< IdSetAlloc, CountAlloc >::addNodeSet(
       const std::vector< Idx >& var_set) {
-      // if the conditioning set is empty, perform the unconditional addNodeSet
-      // if ( !conditioning_ids.size() ) {
-      //  return Counter<IdSetAlloc, CountAlloc>::addNodeSet( var );
-      //}
-
       // If using cache, verify if the set isn't already known
       if (__use_cache) {
         try {
@@ -118,17 +108,6 @@ namespace gum {
         return this->_cachedScore(nodeset_index);
       }
 
-      /*
-             // get the nodes involved in the score as well as their modalities
-             const std::vector<Idx, IdSetAlloc>& all_nodes =
-                 this->_getAllNodes( nodeset_index );
-             const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
-                 this->_getConditioningNodes( nodeset_index + 1 );
-             const std::vector<Idx>& modals = this->modalities();
-      */
-      // sum_X sum_Y sum_Z - ( #ZYX / N * log2( #ZYX / N ))
-      // now, perform sum_X sum_Y sum_Z ( #ZYX - #ZX * #ZY / #Z )^2 /
-      // (#ZX * #ZY / #Z )
       // get the counts for all the targets and for the conditioning nodes
       const std::vector< double, CountAlloc >& Nzyx =
         this->_getAllCounts(nodeset_index);
@@ -181,21 +160,6 @@ namespace gum {
                                                                double score) {
       const std::vector< Idx, IdSetAlloc >& all_nodes =
         _getAllNodes(nodeset_index);
-      /*const std::vector<Idx, IdSetAlloc>* conditioning_nodes =
-          _getConditioningNodes( nodeset_index );
-
-      if ( conditioning_nodes != nullptr ) {
-        try {
-          __cache.insert(
-              all_nodes[all_nodes.size() - 1], *conditioning_nodes, score );
-        } catch ( const gum::DuplicateElement& ) {
-        }
-      } else {
-        try {
-          __cache.insert( all_nodes[0], __empty_conditioning_set, score );
-        } catch ( const gum::DuplicateElement& ) {
-        }
-      }*/
       try {
         __cache.insert(all_nodes, score);
       } catch (const gum::DuplicateElement&) {
@@ -242,7 +206,7 @@ namespace gum {
 
     /// returns the size of the database
     template < typename IdSetAlloc, typename CountAlloc >
-    const Size PartialEntropy< IdSetAlloc, CountAlloc >::_N() {
+    const Size PartialEntropy< IdSetAlloc, CountAlloc >::N() {
       if (this->__N != 0) {
         return this->__N;
       }

@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a cache for caching scores in Indep Test classes (chi2, G2, etc.)
+ * @brief a cache for caching 3 points mutual information in 3off2
  *
  * Caching previously computed scores is very important for learning algorithms
  * because computing independence tests requires parsing the database and this
  * is the most time consuming operation in learning. This class provides an
  * efficient cache that can significantly alleviate the scoring burden.
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Quentin FALCAND
  */
 #ifndef GUM_LEARNING_CACHE_4_3_PT_INFO_H
 #define GUM_LEARNING_CACHE_4_3_PT_INFO_H
@@ -47,7 +47,7 @@ namespace gum {
     /* =========================================================================
      */
     /** @class Cache4Score
-     * @brief a cache for caching scores in Indep Test classes (chi2, G2, etc.)
+     * @brief a cache for caching 3 points mutual information in 3off2
      * @ingroup learning_group
      *
      * Caching previously computed scores is very important for learning

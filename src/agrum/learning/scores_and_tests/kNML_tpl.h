@@ -17,10 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief the class for computing Chi2 scores
+/**
+ * @file
+ * @brief The class for the NML corrections used in 3off2
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Quentin FALCAND
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -269,15 +270,11 @@ namespace gum {
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if (conditioning_nodes != nullptr) {
-        // now, perform 0.5 * sum_Z ( sum_X( log( C^(r_y)_#ZX ) ) - log( C^(r_y)_#Z
-        // )
-        // 					+ sum_Y( log( C^(r_x)_#ZY ) ) - log(
-        // C^(r_x)_#Z
-        // ) )
+        // now, perform 
+        // 0.5 * sum_Z ( sum_X( log( C^(r_y)_#ZX ) ) - log( C^(r_y)_#Z )
+        // 		+ sum_Y( log( C^(r_x)_#ZY ) ) - log( C^(r_x)_#Z ) )
 
         // get the counts for all the targets and for the conditioning nodes
-        // const std::vector<double, CountAlloc>& Nzyx =
-        //    this->_getAllCounts( nodeset_index );
         const std::vector< double, CountAlloc >& Nzy =
           this->_getConditioningCounts(nodeset_index);
         const std::vector< double, CountAlloc >& Nzx =
@@ -314,13 +311,9 @@ namespace gum {
       } else {
         // here, there is no conditioning set
         // now, perform 0.5 * ( sum_X( log( C^(r_y)_#X ) ) - log( C^(r_y)_N )
-        // 					+ sum_Y( log( C^(r_x)_#Y ) ) - log( C^(r_x)_N
-        // )
-        // )
+        //                     + sum_Y( log( C^(r_x)_#Y ) ) - log( C^(r_x)_N ) )
 
         // get the counts for all the targets and for the conditioning nodes
-        // const std::vector<double, CountAlloc>& Nyx =
-        //    this->_getAllCounts( nodeset_index );
         const std::vector< double, CountAlloc >& Ny =
           this->_getConditioningCounts(nodeset_index);
         const std::vector< double, CountAlloc >& Nx =
@@ -358,9 +351,7 @@ namespace gum {
 
     template < typename IdSetAlloc, typename CountAlloc >
     double KNML< IdSetAlloc, CountAlloc >::_C(Size r, Size n) {
-      // std::cout << "r " << r << " n " << n << std::endl;
       if (n == 0 || r == 1) {
-        // std::cout << 1.0 << std::endl;
         return 1.0;
       }
       if (r == 2) {
@@ -375,13 +366,11 @@ namespace gum {
           const double val =
             std::sqrt(n * M_PI / 2) * std::exp(std::sqrt(8 / (9 * n * M_PI)) +
                                                (3 * M_PI - 16) / (36 * n * M_PI));
-          // std::cout << val << std::endl;
           if (__use_cache_C) {
             _insertIntoCCache(r, n, val);
           }
           return val;
         } else {
-          // std::cout << __Cvec[n-1] << std::endl;
           return this->__Cvec[n - 1];
         }
       }

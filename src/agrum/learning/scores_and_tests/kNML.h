@@ -17,16 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-/** @file
- * @brief the class for computing Chi2 scores
+/**
+ * @file
+ * @brief The class for the NML corrections used in 3off2
  *
- * The class should be used as follows: first, to speed-up computations, you
- * should consider computing all the independence tests you need in one pass.
- * To do so, use the appropriate addNodeSet methods. These will compute
- * everything you need. Use method score to retrieve the scores related to
- * the independence test that were computed. See the IndependenceTest class for
- * details.
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * To accomodate for finite datasets, corrections for the mutual information are 
+ * introduced by the authors. The NML correction is one of them, and they claim it 
+ * to be the most effective
+ * 
+ * @author Quentin FALCAND
  */
 
 #ifndef GUM_LEARNING_K_NML_H
@@ -52,14 +51,6 @@ namespace gum {
      * @brief the class for computing Chi2 independence test scores
      * @ingroup learning_group
      *
-     * The class should be used as follows: first, to speed-up computations, you
-     * should consider computing all the independence tests you need in one
-     *pass.
-     * To do so, use the appropriate addNodeSet methods. These will compute
-     * everything you need. Use method score to retrieve the scores related to
-     * the independence test that were computed. See the IndependenceTest class
-     *for
-     * details.
      */
     template < typename IdSetAlloc = std::allocator< Idx >,
                typename CountAlloc = std::allocator< double > >
@@ -88,20 +79,12 @@ namespace gum {
       /// @{
 
       /// returns the score corresponding to a given nodeset
-      /** This method computes sum_X sum_Y sum_Z ( @#XYZ - (@#XZ * @#YZ) / @#Z
-       * )^2 / (( @#XZ * @#YZ) / @#Z ), where @#XYZ, @#XZ, @#YZ, @#Z correspond
-       * to the number of occurences of (X,Y,Z), (X,Z), (Y,Z) and Z
-       * respectively in the database. Then, it computes the critical value
-       * alpha for the chi2 test and returns ( @#sum - alpha ) / alpha, where
-       * @#sum corresponds to the summations mentioned above. Therefore, any
-       * positive result should reflect a dependence whereas negative results
-       * should reflect independences. */
       double score(Idx nodeset_index);
 
       /// @}
 
       protected:
-      /// Computing the universal normalization constant
+      /// Computing the universal normalization constant, intermediary computation
       double _C(Size r, Size n);
 
       /// inserts a new score into the cache for C
@@ -118,7 +101,7 @@ namespace gum {
       /// cache for the values of C
       Cache4PartEntropy __cache_C;
 
-      /// a Boolean indicating whether we wish to use the Kcache
+      /// a Boolean indicating whether we wish to use the cache for C
       bool __use_cache_C{true};
     };
 

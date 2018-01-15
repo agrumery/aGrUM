@@ -20,7 +20,7 @@
 /** @file
  * @brief A pack of learning algorithms that can easily be used
  *
- * The pack currently contains K2, GreedyHillClimbing and
+ * The pack currently contains K2, GreedyHillClimbing, 3off2 and
  *LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN

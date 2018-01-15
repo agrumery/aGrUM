@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The greedy hill learning algorithm (for directed graphs)
+ * @brief Implementation of gum::learning::ThreeOffTwo
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Quentin FALCAND
  */
 
 #include <agrum/core/hashTable.h>
@@ -30,7 +30,6 @@
 #include <agrum/learning/paramUtils/DAG2BNLearner.h>
 #include <agrum/learning/scores_and_tests/correctedMutualInformation.h>
 #include <agrum/learning/threeOffTwo.h>
-//#include <agrum/graphs/graphElements.h>
 
 
 namespace gum {
@@ -130,20 +129,16 @@ namespace gum {
       /// the variables separation sets
       HashTable< std::pair< Idx, Idx >, std::vector< Idx > > sep_set;
 
-      // //std::cout << "INITIATION" << std::endl;
       _initiation(I, graph, sep_set, _rank);
-      /*std::cout << graph << std::endl;*/
               
-      // //std::cout << "ITERATION" << std::endl;
       _iteration(I, graph, sep_set, _rank);
-      /*std::cout << graph << std::endl;*/
               
       if (__usemiic) {
         _orientation_miic(I, graph, sep_set);
       } else {
         _orientation(I, graph, sep_set);
       }
-      /*std::cout << graph << std::endl;*/
+      
       return graph;
     }
 
@@ -167,22 +162,13 @@ namespace gum {
       for (const Edge& edge : edges) {
         x = edge.first();
         y = edge.second();
-        /*std::cout << "Edge " << x << '-' << y << std::endl;*/
         double Ixy = I.score(x, y);
 
-        /*std::cout << "  Ixy " << Ixy << std::endl;*/
-
         if (Ixy <= 0) {  //< K
-          /*std::cout << "  Erase edge " << std::endl;*/
           graph.eraseEdge(edge);
-          // attention, move ça fait des trucs étranges avec l'objet de départ
-          // sep_set.insert( std::make_pair(x, y), std::move( __empty_set ) );
           sep_set.insert(std::make_pair(x, y), __empty_set);
         } else {
-          // tps=time.step();
           _findBestContributor(x, y, __empty_set, graph, I, _rank);
-          // tps = time.step()-tps;
-          // //std::cout << "      best contrib:" << tps << "s" << std::endl;
         }
 
         ++_current_step;
@@ -229,15 +215,11 @@ namespace gum {
         ui = std::get< 3 >(*best.first);
 
         ui.push_back(z);
-        /*std::cout << "Edge " << x << "-" << y << " with ui "<< ui << std::endl;*/
         double Ixy_ui = I.score(x, y, ui);
-        /*std::cout << "  Ixy_ui = " << Ixy_ui << std::endl;*/
         if (Ixy_ui <= 0) {
-          /*std::cout << "  Erase edge " << std::endl;*/
           graph.eraseEdge(Edge(x, y));
           sep_set.insert(std::make_pair(x, y), std::move(ui));
         } else {
-          /*std::cout << "  Find next best contrib" << std::endl;*/
           _findBestContributor(x, y, ui, graph, I, _rank);
         }
 
@@ -270,11 +252,8 @@ namespace gum {
       MixedGraph& graph, 
       const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set) {
           
-      // //std::cout << "ORIENTATION" << std::endl;
-
       std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > > triples =
         _getUnshieldedTriples(graph, I, sep_set);
-      /*std::cout << "Triples found" << std::endl;*/
       Size steps_orient = triples.size();
       Size past_steps = _current_step;
 
@@ -300,15 +279,11 @@ namespace gum {
             ui = sep_set[rev_key];
           }
           double Ixyz_ui = triple.second;
-          /*std::cout << "Triple " << x << y << z << std::endl;*/
-          /*std::cout << "Ixyz " << Ixyz_ui << std::endl;*/
-
       	  //try Rule 0
       	  if ( Ixyz_ui < 0 ){
       	    //if ( z not in Sep[x,y])
             if ( std::find(ui.begin(), ui.end(), z) == ui.end() ){
               //if what we want to add already exists : pass
-              /*std::cout << "Rule 0 " << std::endl;*/
               if (( graph.existsArc( x, z ) || graph.existsArc( z, x ) ) &&
                   ( graph.existsArc( y, z ) || graph.existsArc( z, y ) ) ){
             	++i;
@@ -369,7 +344,6 @@ namespace gum {
               !graph.existsArc(y, z)) {
               reset=true;
               graph.eraseEdge( Edge( z, y ) );
-              /*std::cout << "Rule 1 " << std::endl;*/
               try{
                   std::vector<NodeId> path = graph.directedPath( y, z );
                   //if we find a cycle, we force the competing edge
@@ -386,7 +360,6 @@ namespace gum {
           if (graph.existsArc(y, z) && !graph.existsArc(z, x) &&
               !graph.existsArc(x, z)) {
               reset=true;
-              /*std::cout << "Rule 1 " << std::endl;*/
               graph.eraseEdge( Edge( z, x ) );
               try{
                   std::vector<NodeId> path = graph.directedPath( x, z );
@@ -429,12 +402,9 @@ namespace gum {
       CorrectedMutualInformation<>& I, 
       MixedGraph& graph, 
       const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set) {
-          
-      //std::cout << "ORIENTATION" << std::endl;
 
       std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > > triples =
         _getUnshieldedTriples(graph, I, sep_set);
-      /*std::cout << "Triples found" << std::endl;*/
       Size steps_orient = triples.size();
       Size past_steps = _current_step;
 
@@ -460,15 +430,11 @@ namespace gum {
             ui = sep_set[rev_key];
           }
           double Ixyz_ui = triple.second;
-          /*std::cout << "Triple " << x << y << z << std::endl;*/
-          /*std::cout << "Ixyz " << Ixyz_ui << std::endl;*/
-
          //try Rule 0
          if ( Ixyz_ui < 0 ){
            //if ( z not in Sep[x,y])
             if ( std::find(ui.begin(), ui.end(), z) == ui.end() ){
               //if what we want to add already exists : pass
-              /*std::cout << "Rule 0 " << std::endl;*/
               if (( graph.existsArc( x, z ) || graph.existsArc( z, x ) ) &&
                   ( graph.existsArc( y, z ) || graph.existsArc( z, y ) ) ){
              ++i;
@@ -546,7 +512,6 @@ namespace gum {
               !graph.existsArc(y, z)) {
               reset=true;
               graph.eraseEdge( Edge( z, y ) );
-              /*std::cout << "Rule 1 " << std::endl;*/
               try{
                   std::vector<NodeId> path = graph.directedPath( y, z );
                   //if we find a cycle, we force the competing edge
@@ -559,7 +524,6 @@ namespace gum {
           if (graph.existsArc(y, z) && !graph.existsArc(z, x) &&
               !graph.existsArc(x, z)) {
               reset=true;
-              /*std::cout << "Rule 1 " << std::endl;*/
               graph.eraseEdge( Edge( z, x ) );
               try{
                   std::vector<NodeId> path = graph.directedPath( x, z );
@@ -596,7 +560,6 @@ namespace gum {
       CorrectedMutualInformation<>& I,
       MixedGraph&                   graph,
       const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set) {
-      // std::cout << "Coucou, c'est MIIC ! " << std::endl;
 
       // structure to store the orientations marks -, o, or >,
       // Considers the head of the edge first node -* second node
@@ -609,12 +572,10 @@ namespace gum {
       Size steps_orient = proba_triples.size();
       Size past_steps = _current_step;
 
-      // std::cout << "Etapes à réaliser :" << steps_orient << std::endl;
       std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > best;
       if (steps_orient > 0) {
         best = proba_triples[0];
       }
-      // std::cout << "Et c'est parti ! " << std::endl;
 
       while (!proba_triples.empty() &&
              std::max(std::get< 2 >(best), std::get< 3 >(best)) > 0.5) {
@@ -622,12 +583,10 @@ namespace gum {
         x = std::get< 0 >(*std::get< 0 >(best));
         y = std::get< 1 >(*std::get< 0 >(best));
         z = std::get< 2 >(*std::get< 0 >(best));
-        // std::cout << "Triplet " << x << y << z << std::endl;
 
         const double i3 = std::get< 1 >(best);
 
         if (i3 <= 0) {
-          //std::cout << "V-structure " << std::endl;
           if (marks[{x, z}] == 'o' && marks[{y, z}] == 'o') {
             graph.eraseEdge(Edge(x, z));
             graph.eraseEdge(Edge(y, z));
@@ -643,7 +602,6 @@ namespace gum {
                           __latent_couples.end(),
                           Arc(x, z)) == __latent_couples.end()) {
               __latent_couples.push_back(Arc(z, x));
-              // std::cout << x << "<-" << z << std::endl;
             }
             if (graph.existsArc(z, y) &&
                 std::find(__latent_couples.begin(),
@@ -653,7 +611,6 @@ namespace gum {
                           __latent_couples.end(),
                           Arc(y, z)) == __latent_couples.end()) {
               __latent_couples.push_back(Arc(z, y));
-              // std::cout << y << "<-" << z << std::endl;
             }
           } else if (marks[{x, z}] == '>' && marks[{y, z}] == 'o') {
             graph.eraseEdge(Edge(y, z));
@@ -667,7 +624,6 @@ namespace gum {
                           __latent_couples.end(),
                           Arc(y, z)) == __latent_couples.end()) {
               __latent_couples.push_back(Arc(z, y));
-              // std::cout << y << "<-" << z << std::endl;
             }
           } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o') {
             graph.eraseEdge(Edge(x, z));
@@ -681,13 +637,11 @@ namespace gum {
                           __latent_couples.end(),
                           Arc(x, z)) == __latent_couples.end()) {
               __latent_couples.push_back(Arc(z, x));
-              // std::cout << x << "<-" << z << std::endl;
             }
           }
 
         } else {
           if (marks[{x, z}] == '>' && marks[{y, z}] == 'o') {
-            // std::cout << "propage z->y " << std::endl;
             graph.eraseEdge(Edge(z, y));
             if (!__existsDirectedPath(graph, y, z)) {
               graph.addArc(z, y);
@@ -700,7 +654,6 @@ namespace gum {
               __latent_couples.push_back(Arc(y, z));
             }
           } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o') {
-            // std::cout << "propage z->x " << std::endl;
             graph.eraseEdge(Edge(z, x));
             if (!__existsDirectedPath(graph, x, z)) {
               graph.addArc(z, x);
@@ -719,7 +672,6 @@ namespace gum {
         proba_triples.erase(proba_triples.begin());
         // actualisation of the list of triples
         proba_triples = _updateProbaTriples(graph, proba_triples);
-        // std::cout << "c'est reparti pour un tour ! " << std::endl;
 
         best = proba_triples[0];
 
@@ -743,15 +695,7 @@ namespace gum {
           *iter = Arc(iter->head(), iter->tail());
         } 
       }
-      /*
-      //erasing the the double headed arcs
-      for ( const Arc& arc : __latent_couples ){
-        graph.eraseArc( Arc( arc.head(), arc.tail() ) );
-      }
-      */
-      // std::cout << "Finiiii <3 " << std::endl;
-      // std::cout << graph << std::endl;
-      //std::cout << graph.toDot() << std::endl;
+      
       if (onProgress.hasListener()) {
         GUM_EMIT3(onProgress, 100, 0., _timer.step());
       }
@@ -776,12 +720,11 @@ namespace gum {
       for (const Idx z : graph) {
         // if z!=x and z!=y and z not in ui
         if (z != x && z != y && std::find(ui.begin(), ui.end(), z) == ui.end()) {
-          /*std::cout << "    Trying z = " << z << std::endl;*/
           double Pnv;
           double Pb;
+          
           // Computing Pnv
           const double Ixyz_ui = I.score(x, y, z, ui);
-          /*std::cout << "    Ixyz_ui = " << Ixyz_ui << std::endl;*/
           double calc_expo1 = -Ixyz_ui * __N;
           // if exponentials are too high or to low, crop them at |__maxLog|
           if (calc_expo1 > __maxLog) {
@@ -792,8 +735,6 @@ namespace gum {
             Pnv = 1 / (1 + std::exp(calc_expo1));
           }
 
-
-          /*std::cout << "    Pnv = " << Pnv << std::endl;*/
           // Computing Pb
           const double Ixz_ui = I.score(x, z, ui);
           const double Iyz_ui = I.score(y, z, ui);
@@ -821,8 +762,6 @@ namespace gum {
             Pb = 1 / (1 + expo1 + expo2);
           }
 
-
-          /*std::cout << "    Pb = " << Pb << std::endl;*/
           // Getting max(min(Pnv, pb))
           if (std::min(Pnv, Pb) > maxP) {
             maxP = std::min(Pnv, Pb);
@@ -851,7 +790,6 @@ namespace gum {
         for (Idx x : graph.neighbours(z)) {
           for (Idx y : graph.neighbours(z)) {
             if (y < x && !graph.existsEdge(x, y)) {
-              /*std::cout << "    Triple found !" << std::endl;*/
 
               std::vector< Idx > ui;
               std::pair< Idx, Idx > key = {x, y};
@@ -861,18 +799,15 @@ namespace gum {
               } else if (sep_set.exists(rev_key)) {
                 ui = sep_set[rev_key];
               }
-              /*std::cout << "    separation set : " << ui << std::endl;*/
               // remove z from ui if it's present
               const auto iter_z_place = std::find(ui.begin(), ui.end(), z);
               if (iter_z_place != ui.end()) {
-                /*std::cout << "z in ui" << std::endl;*/
                 ui.erase(iter_z_place);
               }
 
               double Ixyz_ui = I.score(x, y, z, ui);
               std::pair< std::tuple< Idx, Idx, Idx >*, double > triple;
               auto tup = new std::tuple< Idx, Idx, Idx >{x, y, z};
-              // std::tuple<Idx, Idx, Idx> tup = {x, y, z};
               triple.first = tup;
               triple.second = Ixyz_ui;
               triples.push_back(triple);
@@ -900,7 +835,6 @@ namespace gum {
         for (Idx x : graph.neighbours(z)) {
           for (Idx y : graph.neighbours(z)) {
             if (y < x && !graph.existsEdge(x, y)) {
-              /*std::cout << "    Triple found !" << std::endl;*/
 
               std::vector< Idx > ui;
               std::pair< Idx, Idx > key = {x, y};
@@ -910,11 +844,9 @@ namespace gum {
               } else if (sep_set.exists(rev_key)) {
                 ui = sep_set[rev_key];
               }
-              /*std::cout << "    separation set : " << ui << std::endl;*/
               // remove z from ui if it's present
               const auto iter_z_place = std::find(ui.begin(), ui.end(), z);
               if (iter_z_place != ui.end()) {
-                /*std::cout << "z in ui" << std::endl;*/
                 ui.erase(iter_z_place);
               }
 
@@ -962,10 +894,6 @@ namespace gum {
         const double Ixyz = std::get< 1 >(triple);
         double       Pxz = std::get< 2 >(triple);
         double       Pyz = std::get< 3 >(triple);
-        // std::cout << "  Triplet " << x << y << z << std::endl;
-        // std::cout << "  I " << Ixyz << " Pxz " << Pxz << " Pyz " << Pyz <<
-        // std::endl;
-
 
         if (Ixyz <= 0) {
           const double expo = std::exp(Ixyz * __N);
@@ -974,24 +902,19 @@ namespace gum {
           if (Pxz == Pyz && Pyz == 0.5) {
             std::get< 2 >(triple) = P0;
             std::get< 3 >(triple) = P0;
-            // std::cout << "  Pxz=Pyz=" << P0 << std::endl;
           } else {
             if (graph.existsArc(x, z) && Pxz >= P0) {
               std::get< 3 >(triple) = Pxz * (1 / (1 + expo) - 0.5) + 0.5;
-              // std::cout << "  Pyz=" << std::get< 3 >(triple) << std::endl;
             } else if (graph.existsArc(y, z) && Pyz >= P0) {
               std::get< 2 >(triple) = Pyz * (1 / (1 + expo) - 0.5) + 0.5;
-              // std::cout << "  Pxz=" << std::get< 2 >(triple) << std::endl;
             }
           }
         } else {
           const double expo = std::exp(-Ixyz * __N);
           if (graph.existsArc(x, z) && Pxz >= 0.5) {
             std::get< 3 >(triple) = Pxz * (1 / (1 + expo) - 0.5) + 0.5;
-            // std::cout << "  Pyz=" << std::get< 3 >(triple) << std::endl;
           } else if (graph.existsArc(y, z) && Pyz >= 0.5) {
             std::get< 2 >(triple) = Pyz * (1 / (1 + expo) - 0.5) + 0.5;
-            // std::cout << "  Pxz=" << std::get< 2 >(triple) << std::endl;
           }
         }
       }
@@ -1008,11 +931,8 @@ namespace gum {
 
       // Second, orientate remaining edges
       const Sequence< NodeId > order = essentialGraph.topologicalOrder();
-      /*std::cout << order << std::endl;*/
-      /*std::cout << essentialGraph << std::endl;*/
       // first, propagate existing orientations
       for (NodeId x : order) {
-        ///*std::cout << "  " << x << std::endl;*/
         if (!essentialGraph.parents(x).empty()) {
           _propagatesHead(essentialGraph, x);
         }
@@ -1023,8 +943,6 @@ namespace gum {
           _propagatesHead(essentialGraph, x);
         }
       }
-
-      /*std::cout << essentialGraph << std::endl;*/
 
       // turn the mixed graph into a dag
       DAG dag;
@@ -1040,9 +958,7 @@ namespace gum {
 
     /// Propagates the orientation from a node to its neighbours
     void ThreeOffTwo::_propagatesHead(MixedGraph& graph, NodeId node) {
-      ///*std::cout << "  populate " << node << std::endl;*/
       const auto neighbours = graph.neighbours(node);
-      ///*std::cout << "  neighbouring " << neighbours << std::endl;*/
       for (auto& neighbour : neighbours) {
         // only propagate if it doesn't create a circle
         try {

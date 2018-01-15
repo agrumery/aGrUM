@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief A basic pack of learning algorithms that can easily be used
+ * @brief A class for comparing graphs based on their structures
  *
- * The pack currently contains K2, GreedyHillClimbing and
- *LocalSearchWithTabuList
+ * Classifies corresponding arcs, edges and nothing in a graph given a reference 
+ * graph to then return values of recall, precision and Fscore. 
  *
- * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
+ * @author Quentin FALCAND
  */
 #ifndef GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 #define GUM_LEARNING_STRUCTURAL_COMPARATOR_H
@@ -37,9 +37,9 @@
 namespace gum {
 
   /** @class StructuralComparator
-   * @brief A class to compare the structure of graphs
+   * @brief A class for comparing graphs based on their structures
    *
-   * @ingroup learning_group
+   * @ingroup bn_group
    */
   class StructuralComparator {
 
@@ -61,20 +61,28 @@ namespace gum {
     /// @name Accessors
     // ##########################################################################
     /// @{
+    /// compare two DiGraphs
     void compare(const DiGraph& ref, const DiGraph& test);
+    /// compare two UndiGraphs
     void compare(const UndiGraph& ref, const UndiGraph& test);
+    /// compare two MixedGraphs
     void compare(const MixedGraph& ref, const MixedGraph& test);
+    /// compare two BNs based on their DAG
     template < typename GS1, typename GS2 >
     void compare(const BayesNet< GS1 >& ref, const BayesNet< GS2 >& test);
+    /// compare a MixedGraph with the essential graph of a reference BN
     template < typename GUM_SCALAR >
     void compare(const BayesNet< GUM_SCALAR >& ref, const MixedGraph& test);
+    /// compare the essential graph of a BN with a reference MixedGraph
     template < typename GUM_SCALAR >
     void compare(const MixedGraph& ref, const BayesNet< GUM_SCALAR >& test);
 
+    /// Measures for the skeleton, aka graph without orientations
     double precision_skeleton() const;
     double recall_skeleton() const;
     double f_score_skeleton() const;
 
+    /// Measures for the graphs
     double precision() const;
     double recall() const;
     double f_score() const;
@@ -88,13 +96,13 @@ namespace gum {
      *  |true\         |    -->    |    ---    |     X     |
      *  |--------------|-----------|-----------|-----------|
      *  |      -->     | true arc  |wrong edge |wrong none |
-     *  |      		 | mis. arc  |      arc  |      arc  |
+     *  |              | mis. arc  |      arc  |      arc  |
      *  |--------------|-----------|-----------|-----------|
      *  |      ---     |wrong arc  | true edge |wrong none |
-     *  |      		 |      edge |           |      edge |
+     *  |              |      edge |           |      edge |
      *  |--------------|-----------|-----------|-----------|
      *  |       X      |wrong arc  |wrong edge | true none |
-     *  |      		 |      none |      none |           |
+     *  |      	       |      none |      none |           |
      *  |______________|___________|___________|___________|
      *
      */

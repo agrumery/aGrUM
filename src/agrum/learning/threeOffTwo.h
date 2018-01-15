@@ -19,15 +19,19 @@
  ***************************************************************************/
 /**
  * @file
- * @brief The 3off12 algorithm
+ * @brief The 3off2 algorithm
  *
  * The ThreeOffTwo class implements the 3off2 algorithm as proposed by Affeldt and 
  * al. in https://doi.org/10.1186/s12859-015-0856-x. 
- * It starts by eliminating edges that correspond to independent vaiables to build 
- * the skeleton of the graph, and then directs the remaining edges to get an 
+ * It starts by eliminating edges that correspond to independent variables to  
+ * build the skeleton of the graph, and then directs the remaining edges to get an 
  * essential graph. Latent variables can be detected using bi-directed arcs.
  *
- * @author Quentin FALCAND
+ * The variant MIIC is also implemented based on 
+ * https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
+ * from 3off2, with a diffferent ranking method and different propagation rules.  
+ * 
+ * @author Quentin FALCAND and Maria-Virginia RUIZ CUEVAS
  */
 #ifndef GUM_LEARNING_3_OFF_2_H
 #define GUM_LEARNING_3_OFF_2_H
@@ -76,9 +80,16 @@ namespace gum {
      * @class ThreeOffTwo
      * @brief The 3off2 learning algorithm
      *
-     * The ThreeOffTwo class implements a novel structure learning algorithm that
-     * uses the mutual information between variables to assess the conditional
-     * independence between the nodes.
+     * The ThreeOffTwo class implements the 3off2 algorithm as proposed by Affeldt and 
+     * al. in https://doi.org/10.1186/s12859-015-0856-x. 
+     * It starts by eliminating edges that correspond to independent variables to  
+     * build the skeleton of the graph, and then directs the remaining edges to get an 
+     * essential graph. Latent variables can be detected using bi-directed arcs.
+     *
+     * The variant MIIC is also implemented based on 
+     * https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
+     * from 3off2, with a diffferent ranking method and different propagation rules.
+     *  
      * @ingroup learning_group
      */
     class ThreeOffTwo : public ApproximationScheme {
@@ -105,10 +116,6 @@ namespace gum {
 
       /// @}
 
-      // ##########################################################################
-      /// @name Operators
-      // ##########################################################################
-      /// @{
       /*
             /// copy operator
             ThreeOffTwo& operator=( const ThreeOffTwo& from );
@@ -116,7 +123,6 @@ namespace gum {
             /// move operator
             ThreeOffTwo& operator=( ThreeOffTwo&& from );
       */
-      /// @}
 
       // ##########################################################################
       /// @name Accessors / Modifiers
@@ -129,20 +135,17 @@ namespace gum {
       ///		  detect cycles
       /** @param I A mutual information instance that will do the computations
        * and has loaded the database.
-       * @param detectLatent wether or not to detect latent variables
-       * @param graph the MixedGraph we start from for our learning
+       * @param graph the MixedGraph we start from for the learning
        * */
       MixedGraph learnMixedStructure(CorrectedMutualInformation<>& I,
                                      MixedGraph graph);
 
-      /// learns the structure of an Bayesian network, ie a DAG, from an Essential
-      /// graph.
+      /// learns the structure of an Bayesian network, ie a DAG, by first learning
+      /// an Essential graph and then directing the remaining edges.
       /** @param I A mutual information instance that will do the computations
-       * and has loaded the database.
-       * @param detectLatent wether or not to detect latent variables
-       * @param graph the MixedGraph we start from for our learning
-       * @param topologicalOrder a topological order of the variables to sort out
-       * oritation problems*/
+       * and has loaded the database
+       * @param graph the MixedGraph we start from for the learning
+       */
       DAG learnStructure(CorrectedMutualInformation<>& I, MixedGraph graph);
 
       /// learns the structure and the parameters of a BN
@@ -175,18 +178,6 @@ namespace gum {
       /// Sets the orientation phase to follow the one of the 3off2 algorithm
       void orient3off2();
       /// @}
-      // ##########################################################################
-      /// @name Signalers and Listeners
-      // ##########################################################################
-      /// @{
-
-      /**
-       * @brief Returns the approximation scheme message.
-       * @return Returns the approximation scheme message.
-       */
-      // std::string messageApproximationScheme() const;
-
-      /// @}
 
       protected:
       // ##########################################################################
@@ -196,9 +187,14 @@ namespace gum {
       
       /// Initiation phase
       /**
-       * We go over all edges and test if the variables are independent. If they
-       * are,
-       * the edge is deleted. If not, the best contributor is found.
+       * We go over all edges and test if the variables are marginally independent.
+       * If they are, the edge is deleted. If not, the best contributor is found.
+       * 
+       * @param I A mutual information instance that will do the computations
+       * and has loaded the database.
+       * @param graph the MixedGraph we start from for the learning
+       * @param sep_set the separation set for independent couples, here set to {}
+       * @param _rank the heap of ranks of the algorithm
        */
       void _initiation(
         CorrectedMutualInformation<>&                           I, 
@@ -211,7 +207,14 @@ namespace gum {
       /// Iteration phase
       /**
        * As long as we find important nodes for edges, we go over them to see if
-       * we can assess the independence of the variables.
+       * we can assess the conditional independence of the variables.
+       * 
+       * @param I A mutual information instance that will do the computations
+       * and has loaded the database.
+       * @param graph the MixedGraph returned from the previous phase
+       * @param sep_set the separation set for independent couples, built during 
+       * the iterations of the phase
+       * @param _rank the heap of ranks of the algorithm
        */
       void _iteration(
         CorrectedMutualInformation<>&                           I, 
@@ -221,16 +224,39 @@ namespace gum {
           std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
           GreaterPairOn2nd >& _rank);
       
-      /// Orientation phase
+      /// Orientation phase from the 3off2 algorithm, returns a CPDAG
+      /** @param I A mutual information instance that will do the computations
+       * and has loaded the database.
+       * @param graph the MixedGraph returned from the previous phase
+       * @param sep_set the separation set for independent couples, built during 
+       * the previous phase
+       */
       void _orientation(
         CorrectedMutualInformation<>&                                 I, 
         MixedGraph&                                                   graph, 
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
+      
+      /// Modified version of the orientation phase that tries to propagate 
+      /// orientations from both orientations in case of a bidirected arc, not used
+      /** @param I A mutual information instance that will do the computations
+       * and has loaded the database.
+       * @param graph the MixedGraph returned from the previous phase
+       * @param sep_set the separation set for independent couples, built during 
+       * the previous phase
+       */
       void _orientation_latents(
         CorrectedMutualInformation<>&                                 I, 
         MixedGraph&                                                   graph, 
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
 
+      /// Orientation phase from the MIIC algorithm, returns a mixed graph that 
+      /// may contain circles
+      /** @param I A mutual information instance that will do the computations
+       * and has loaded the database.
+       * @param graph the MixedGraph returned from the previous phase
+       * @param sep_set the separation set for independent couples, built during 
+       * the previous phase
+       */
       void _orientation_miic(
         CorrectedMutualInformation<>& I,
         MixedGraph&                   graph,
@@ -241,12 +267,16 @@ namespace gum {
       /**@param x first node
        * @param y second node
        * @param ui conditioning set
+       * @param I A mutual information instance that will do the computations
+       * and has loaded the database.
+       * @param graph containing the assessed nodes
+       * @param _rank the heap of ranks of the algorithm
        */
       void _findBestContributor(
         Idx                           x,
         Idx                           y,
         const std::vector< Idx >&     ui,
-        const MixedGraph&             graphe,
+        const MixedGraph&             graph,
         CorrectedMutualInformation<>& I,
         Heap<
           std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >,
@@ -264,6 +294,13 @@ namespace gum {
         CorrectedMutualInformation<>& I,
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
 
+      /// gets the list of unshielded triples in the graph in decreasing value of
+      ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
+      /*@param graph graph in which to find the triples
+       *@param I mutual information object to compute the scores
+       *@param sep_set hashtable storing the separation sets for pairs of variables
+       * @param marks hashtable containing the orientation marks for edges
+       */
       std::vector<
         std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
       _getUnshieldedTriplesMIIC(
@@ -273,6 +310,9 @@ namespace gum {
         HashTable< std::pair< Idx, Idx >, char >&                     marks);
 
       /// Gets the orientation probabilities like MIIC for the orientation phase
+      /*@param graph graph in which to find the triples
+       *@param proba_triples probabilities for the different triples to update
+       */
       std::vector<
         std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
       _updateProbaTriples(
@@ -280,6 +320,7 @@ namespace gum {
         std::vector<
           std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
           proba_triples);
+      
       /// Propagates the orientation from a node to its neighbours
       /*@param dag graph in which to which to propagate arcs
        *@param node node on which neighbours to propagate th orientation
@@ -303,6 +344,10 @@ namespace gum {
 
       public:
       /// checks for directed paths in a graph, consider double arcs like edges
+      /*@param graph MixedGraph in which to search the path
+       *@param n1 tail of the path
+       *@param n2 head of the path 
+       */
       const bool __existsDirectedPath(const MixedGraph& graph,
                                       const NodeId      n1,
                                       const NodeId      n2) const;

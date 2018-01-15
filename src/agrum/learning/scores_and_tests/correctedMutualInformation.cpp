@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Implementation of gum::learning::MutualInformation.
+ * @brief Implementation of gum::learning::CorrectedMutualInformation.
  *
  * @author Quentin FALCAND.
  */
