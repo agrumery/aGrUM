@@ -238,7 +238,7 @@ namespace gum_tests {
 
     void test_MIIC_asia_NMLcorr() {
       gum::learning::DatabaseFromCSV database(
-        GET_RESSOURCES_PATH("HematoData.csv"));
+        GET_RESSOURCES_PATH("asia.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >

@@ -58,34 +58,34 @@ namespace gum {
       GUM_CONSTRUCTOR(ThreeOffTwo);
     }
     /*
-        /// copy constructor
-        ThreeOffTwo::ThreeOffTwo( const ThreeOffTwo& from )
-            : ApproximationScheme( from ) {
-          GUM_CONS_CPY( ThreeOffTwo );
-        }
+    /// copy constructor
+    ThreeOffTwo::ThreeOffTwo( const ThreeOffTwo& from )
+        : ApproximationScheme( from ) {
+      GUM_CONS_CPY( ThreeOffTwo );
+    }
 
-        /// move constructor
-        ThreeOffTwo::ThreeOffTwo( ThreeOffTwo&& from )
-            : ApproximationScheme( std::move( from ) ) {
-          GUM_CONS_MOV( ThreeOffTwo );
-        }
+    /// move constructor
+    ThreeOffTwo::ThreeOffTwo( ThreeOffTwo&& from )
+        : ApproximationScheme( std::move( from ) ) {
+      GUM_CONS_MOV( ThreeOffTwo );
+    }
     */
     /// destructor
     ThreeOffTwo::~ThreeOffTwo() { GUM_DESTRUCTOR(ThreeOffTwo); }
     /*
-        /// copy operator
-        ThreeOffTwo& ThreeOffTwo::
-        operator=( const ThreeOffTwo& from ) {
-          ApproximationScheme::operator=( from );
-          return *this;
-        }
+    /// copy operator
+    ThreeOffTwo& ThreeOffTwo::
+    operator=( const ThreeOffTwo& from ) {
+      ApproximationScheme::operator=( from );
+      return *this;
+    }
 
-        /// move operator
-        ThreeOffTwo& ThreeOffTwo::
-        operator=( ThreeOffTwo&& from ) {
-          ApproximationScheme::operator=( std::move( from ) );
-          return *this;
-        }
+    /// move operator
+    ThreeOffTwo& ThreeOffTwo::
+    operator=( ThreeOffTwo&& from ) {
+      ApproximationScheme::operator=( std::move( from ) );
+      return *this;
+    }
     */
 
     bool GreaterPairOn2nd::operator()(
@@ -112,6 +112,7 @@ namespace gum {
       double p2yz = std::get< 3 >(e2);
       return std::max(p1xz, p1yz) > std::max(p2xz, p2yz);
     }
+    
     /// learns the structure of a MixedGraph
     MixedGraph ThreeOffTwo::learnMixedStructure(CorrectedMutualInformation<>& I,
                                                 MixedGraph graph) {
@@ -259,9 +260,10 @@ namespace gum {
       
     }
       
-    /// Orientation phase
     /*
     * PHASE 3 : ORIENTATION
+    * 
+    * Try to assess v-structures and propagate them. 
     */
     void ThreeOffTwo::_orientation(
       CorrectedMutualInformation<>& I, 
@@ -422,6 +424,7 @@ namespace gum {
       
     }
     
+    /// varient trying to propagate both orientations in a bidirected arc
     void ThreeOffTwo::_orientation_latents(
       CorrectedMutualInformation<>& I, 
       MixedGraph& graph, 
@@ -587,6 +590,8 @@ namespace gum {
         graph.eraseArc( Arc( arc.head(), arc.tail() ) );
       }
     }
+    
+    /// varient using the orientation protocol of MIIC
     void ThreeOffTwo::_orientation_miic(
       CorrectedMutualInformation<>& I,
       MixedGraph&                   graph,
@@ -622,7 +627,7 @@ namespace gum {
         const double i3 = std::get< 1 >(best);
 
         if (i3 <= 0) {
-          std::cout << "V-structure " << std::endl;
+          //std::cout << "V-structure " << std::endl;
           if (marks[{x, z}] == 'o' && marks[{y, z}] == 'o') {
             graph.eraseEdge(Edge(x, z));
             graph.eraseEdge(Edge(y, z));
@@ -727,19 +732,16 @@ namespace gum {
         }
       }  // while
 
-      // erasing the the double headed arcs
+      // erasing the double headed arcs
       for (auto iter = __latent_couples.rbegin(); iter != __latent_couples.rend();
            ++iter) {
         graph.eraseArc(Arc(iter->head(), iter->tail()));
-        try {
-          std::vector< NodeId > path =
-            graph.directedPath(iter->head(), iter->tail());
+        if (__existsDirectedPath(graph, iter->head(), iter->tail())) {
           // if we find a cycle, we force the competing edge
           graph.addArc(iter->head(), iter->tail());
           graph.eraseArc(Arc(iter->tail(), iter->head()));
           *iter = Arc(iter->head(), iter->tail());
-        } catch (gum::NotFound) {
-        }
+        } 
       }
       /*
       //erasing the the double headed arcs
@@ -749,11 +751,12 @@ namespace gum {
       */
       // std::cout << "Finiiii <3 " << std::endl;
       // std::cout << graph << std::endl;
-      std::cout << graph.toDot() << std::endl;
+      //std::cout << graph.toDot() << std::endl;
       if (onProgress.hasListener()) {
         GUM_EMIT3(onProgress, 100, 0., _timer.step());
       }
     }
+    
     /// finds the best contributor node for a pair given a conditioning set
     void ThreeOffTwo::_findBestContributor(
       Idx                           x,
@@ -838,9 +841,6 @@ namespace gum {
 
     /// gets the list of unshielded triples in the graph in decreasing value of
     ///|I'(x, y, z|{ui})|
-    /*@param graph graph in which to find the triples
-     *
-     */
     std::vector< std::pair< std::tuple< Idx, Idx, Idx >*, double > >
     ThreeOffTwo::_getUnshieldedTriples(
       const MixedGraph&             graph,
@@ -884,6 +884,8 @@ namespace gum {
       return triples;
     }
 
+    /// gets the list of unshielded triples in the graph in decreasing value of
+    ///|I'(x, y, z|{ui})|, prepares the orientation matrix for MIIC
     std::vector<
       std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
     ThreeOffTwo::_getUnshieldedTriplesMIIC(
@@ -942,6 +944,7 @@ namespace gum {
       return triples;
     }
 
+    /// Gets the orientation probabilities like MIIC for the orientation phase
     std::vector<
       std::tuple< std::tuple< Idx, Idx, Idx >*, double, double, double > >
     ThreeOffTwo::_updateProbaTriples(
@@ -995,6 +998,7 @@ namespace gum {
       std::sort(proba_triples.begin(), proba_triples.end(), GreaterTupleOnLast());
       return proba_triples;
     }
+    
     /// learns the structure of an Bayesian network, ie a DAG, from an Essential
     /// graph.
     DAG ThreeOffTwo::learnStructure(CorrectedMutualInformation<>& I,
@@ -1105,10 +1109,10 @@ namespace gum {
           if (mark.exists(new_one))  // if this node is already marked, do not
             continue;                // check it again
 
-          mark.insert(new_one, current);
-
           if (graph.existsArc(current, new_one))  // if there is a double arc, pass
             continue;
+
+          mark.insert(new_one, current);
 
           if (new_one == n1) {
             return true;
