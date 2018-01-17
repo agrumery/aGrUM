@@ -112,7 +112,7 @@ namespace gum_tests {
       // learner.addForbiddenArc ( gum::Arc (5,1) );
       // learner.addForbiddenArc ( gum::Arc (5,7) );
 
-      learner.addMandatoryArc(gum::Arc(5, 7));
+      learner.addMandatoryArc(gum::Arc(7, 5));
       gum::DAG i_dag;
       for (gum::NodeId i = 0; i < 8; ++i) {
         i_dag.addNode(i);
@@ -125,12 +125,16 @@ namespace gum_tests {
 
       try {
         gum::BayesNet< double > bn = learner.learnBN();
-        TS_ASSERT_EQUALS(bn.dag().arcs().size(), gum::Size(8));
+        TS_ASSERT_EQUALS(bn.dag().arcs().size(), gum::Size(9));
         // TS_ASSERT_EQUALS(listen.getNbr(), gum::Size(86));
+        TS_ASSERT(!bn.dag().existsArc(4, 1));
+        TS_ASSERT(bn.dag().existsArc(7, 5));
 
         gum::MixedGraph mg = learner.learnMixedStructure();
-        TS_ASSERT_EQUALS(mg.arcs().size(), gum::Size(6));
-        TS_ASSERT_EQUALS(mg.edges().size(), gum::Size(2));
+        TS_ASSERT_EQUALS(mg.arcs().size(), gum::Size(8));
+        TS_ASSERT_EQUALS(mg.edges().size(), gum::Size(1));
+        TS_ASSERT(!mg.existsArc(4, 1));
+        TS_ASSERT(mg.existsArc(7, 5));
         std::vector< gum::Arc > latents = learner.latentVariables();
         TS_ASSERT_EQUALS(latents.size(), gum::Size(2));
       } catch (gum::Exception& e) {

@@ -596,6 +596,9 @@ namespace gum {
 
       /// returns the DAG learnt
       DAG __learnDAG();
+      
+      /// prepares the initial graph for 3off2
+      MixedGraph __prepare_3off2();
 
       /// checks whether the current score and apriori are compatible
       /** @returns true if the apriori is compatible with the score.

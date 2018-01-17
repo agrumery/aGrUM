@@ -753,12 +753,9 @@ namespace gum {
       if (old_estimator != nullptr) delete old_estimator;
     }
 
-    MixedGraph genericBNLearner::learnMixedStructure() {
-      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
-      }
-      BNLearnerListener listener(this, __3off2);
-      // create the mixedGraph_constraint_MandatoryArcs.arcs();
+    /// prepares the initial graph for 3off2
+    MixedGraph genericBNLearner::__prepare_3off2(){
+      // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
       if (!__initial_dag.empty()) {
         mgraph.populateNodes(__initial_dag);
@@ -774,23 +771,33 @@ namespace gum {
           }
         }
       }
+      // translating the constraints for 3off2
+      HashTable< std::pair< Idx, Idx >, char > initial_marks;
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
       for (const auto& arc : mandatory_arcs) {
-        mgraph.addArc(arc.tail(), arc.head());
-        mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
+        initial_marks.insert({arc.tail(), arc.head()}, '>');
       }
 
       const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs();
       for (const auto& arc : forbidden_arcs) {
-        mgraph.eraseArc(arc);
-        mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
+        initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
-      // create the mutual entropy object
+      __3off2.addConstraints(initial_marks);
+       // create the mutual entropy object
       if (__mutual_info == nullptr) {
-        __mutual_info = new CorrectedMutualInformation<>(
-          __score_database.rowFilter(), __score_database.modalities());
-        __mutual_info->useNML();
+          this->useNML();
       }
+      
+      return mgraph;
+    }
+    
+    MixedGraph genericBNLearner::learnMixedStructure() {
+      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
+      }
+      BNLearnerListener listener(this, __3off2);
+      // create the mixedGraph_constraint_MandatoryArcs.arcs();
+      MixedGraph mgraph = this->__prepare_3off2();
       return __3off2.learnMixedStructure(*__mutual_info, mgraph);
     }
 
@@ -828,37 +835,8 @@ namespace gum {
         case AlgoType::THREE_OFF_TWO: {
           BNLearnerListener listener(this, __3off2);
           // create the mixedGraph
-          MixedGraph mgraph;
-          if (!init_graph.empty()) {
-            mgraph.populateNodes(init_graph);
-          } else {
-            for (Size i = 0; i < __score_database.modalities().size(); ++i) {
-              mgraph.addNode(i);
-            }
-          }
-          //creating complete graph
-          for (NodeId i : mgraph) {
-            for (NodeId j : mgraph) {
-              if (j < i) {
-                mgraph.addEdge(j, i);
-              }
-            }
-          }
-          //mandatory arcs are added to th initial graph
-          for (const auto& arc : init_graph.arcs()) {
-            mgraph.addArc(arc.tail(), arc.head());
-            mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
-          }
-
-          // forbidden arcs are treated as forbidden edges
-          for (const auto& arc : forbidden_arcs) {
-            mgraph.eraseArc(arc);
-            mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
-          }
-          // create the mutual entropy object
-          if (__mutual_info == nullptr) {
-              this->useNML();
-          }
+          MixedGraph mgraph = this->__prepare_3off2();
+          
           return __3off2.learnStructure(*__mutual_info, mgraph);
         }
         // ========================================================================

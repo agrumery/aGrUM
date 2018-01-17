@@ -131,8 +131,6 @@ namespace gum {
 
 
       /// learns the structure of an Essential Graph
-      /// @todo : avoid exception driven programmation in the orientation part to
-      ///		  detect cycles
       /** @param I A mutual information instance that will do the computations
        * and has loaded the database.
        * @param graph the MixedGraph we start from for the learning
@@ -177,6 +175,10 @@ namespace gum {
       void orientMIIC();
       /// Sets the orientation phase to follow the one of the 3off2 algorithm
       void orient3off2();
+      
+      /// Set a ensemble of constraints for the orientation phase
+      void addConstraints(
+        HashTable< std::pair< Idx, Idx >, char > constraints);
       /// @}
 
       protected:
@@ -341,7 +343,13 @@ namespace gum {
       Size __N;
       /// wether to use the miic algorithm or not
       bool __usemiic{false};
+      
+      /// Storing the propabilities for each arc set in the graph
+      ArcProperty< double > __arc_probas;
 
+      /// Initial marks for the orientation phase, used to convey constraints
+      HashTable< std::pair< Idx, Idx >, char > __initial_marks;
+      
       public:
       /// checks for directed paths in a graph, consider double arcs like edges
       /*@param graph MixedGraph in which to search the path
