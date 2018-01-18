@@ -1016,15 +1016,21 @@ namespace gum {
     void ThreeOffTwo::_propagatesHead(MixedGraph& graph, NodeId node) {
       const auto neighbours = graph.neighbours(node);
       for (auto& neighbour : neighbours) {
-        // only propagate if it doesn't create a circle
-        try {
-          std::vector< NodeId > test = graph.directedPath(neighbour, node);
-          graph.eraseEdge(Edge(neighbour, node));
-          graph.addArc(neighbour, node);
-        } catch (gum::NotFound) {
+        // only propagate if it doesn't create a circle and isn't forbidden
+        if (!__existsDirectedPath(graph, neighbour, node) && 
+            !(__initial_marks.exists({node, neighbour}) &&
+                        __initial_marks[{node, neighbour}]=='-') ){
           graph.eraseEdge(Edge(neighbour, node));
           graph.addArc(node, neighbour);
           _propagatesHead(graph, neighbour);
+        } else if (__existsDirectedPath(graph, neighbour, node) && 
+                !(__initial_marks.exists({neighbour, node}) && 
+                                    __initial_marks[{neighbour, node}]=='-') ) {
+          std::vector< NodeId > test = graph.directedPath(neighbour, node);
+          graph.eraseEdge(Edge(neighbour, node));
+          graph.addArc(neighbour, node);
+        } else {
+          graph.eraseEdge(Edge(neighbour, node));
         }
       }
     }

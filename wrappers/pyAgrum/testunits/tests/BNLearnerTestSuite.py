@@ -155,7 +155,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.use3off2()
     learner.useNML()
     learner.addForbiddenArc(4, 1)
-    learner.addMandatoryArc(5, 7)
+    learner.addMandatoryArc(7, 5)
 
     d = gum.DAG()
     for i in range(8):
@@ -168,14 +168,18 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       bn = learner.learnBN()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEquals(len(bn.arcs()), 8)
+    self.assertEquals(len(bn.arcs()), 9)
+    self.assertFalse(bn.dag().existsArc(4, 1))
+    self.assertTrue(bn.dag().existsArc(7, 5))
 
     try:
       mg = learner.learnMixedStructure()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEquals(len(mg.arcs()), 6)
-    self.assertEquals(len(mg.edges()), 2)
+    self.assertEquals(len(mg.arcs()), 8)
+    self.assertEquals(len(mg.edges()), 1)
+    self.assertFalse(bn.dag().existsArc(4, 1))
+    self.assertTrue(bn.dag().existsArc(7, 5))
     self.assertEquals(len(learner.latentVariables()), 2)
 
 

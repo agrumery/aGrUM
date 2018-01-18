@@ -757,20 +757,13 @@ namespace gum {
     MixedGraph genericBNLearner::__prepare_3off2(){
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
-      if (!__initial_dag.empty()) {
-        mgraph.populateNodes(__initial_dag);
-      } else {
-        for (Size i = 0; i < __score_database.modalities().size(); ++i) {
-          mgraph.addNode(i);
+      for (Size i = 0; i < __score_database.modalities().size(); ++i) {
+        mgraph.addNode(i);
+        for (Size j = 0; j < i; ++j) {
+          mgraph.addEdge(j, i);
         }
       }
-      for (NodeId i : mgraph) {
-        for (NodeId j : mgraph) {
-          if (j < i) {
-            mgraph.addEdge(j, i);
-          }
-        }
-      }
+      
       // translating the constraints for 3off2
       HashTable< std::pair< Idx, Idx >, char > initial_marks;
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
