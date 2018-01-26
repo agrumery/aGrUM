@@ -190,7 +190,7 @@ namespace gum_tests {
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
       TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size( 9 ) );
-      TS_ASSERT_EQUALS(latents.size(), gum::Size( 2 ) );
+      TS_ASSERT_EQUALS(latents.size(), gum::Size( 3 ) );
     }
 
     void test_tonda() {

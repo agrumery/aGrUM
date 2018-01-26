@@ -429,6 +429,7 @@ namespace gum {
         , __constraint_MandatoryArcs(from.__constraint_MandatoryArcs)
         , __selected_algo(from.__selected_algo)
         , __K2(from.__K2)
+        , __3off2(from.__3off2)
         , __greedy_hill_climbing(from.__greedy_hill_climbing)
         , __local_search_with_tabu_list(from.__local_search_with_tabu_list)
         , __score_database(from.__score_database)
@@ -452,6 +453,7 @@ namespace gum {
         , __constraint_MandatoryArcs(std::move(from.__constraint_MandatoryArcs))
         , __selected_algo(from.__selected_algo)
         , __K2(std::move(from.__K2))
+        , __3off2(std::move(from.__3off2))
         , __greedy_hill_climbing(std::move(from.__greedy_hill_climbing))
         , __local_search_with_tabu_list(
             std::move(from.__local_search_with_tabu_list))
@@ -516,6 +518,7 @@ namespace gum {
         __constraint_MandatoryArcs = from.__constraint_MandatoryArcs;
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
+        __3off2 = from.__3off2;
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __score_database = from.__score_database;
@@ -567,6 +570,7 @@ namespace gum {
         __constraint_MandatoryArcs = std::move(from.__constraint_MandatoryArcs);
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
+        __3off2 = std::move(from.__3off2);
         __greedy_hill_climbing = std::move(from.__greedy_hill_climbing);
         __local_search_with_tabu_list =
           std::move(from.__local_search_with_tabu_list);

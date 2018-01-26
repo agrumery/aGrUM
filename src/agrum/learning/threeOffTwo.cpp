@@ -38,25 +38,15 @@ namespace gum {
 
     /// default constructor
     ThreeOffTwo::ThreeOffTwo() {
-      /*
-    setEpsilon( 0 );
-    disableMinEpsilonRate();
-    disableMaxIter();
-    disableMaxTime();*/
       GUM_CONSTRUCTOR(ThreeOffTwo);
     }
 
     /// default constructor with maxLog
     ThreeOffTwo::ThreeOffTwo(int maxLog)
         : __maxLog(maxLog) {
-      /*
-    setEpsilon( 0 );
-    disableMinEpsilonRate();
-    disableMaxIter();
-    disableMaxTime();*/
       GUM_CONSTRUCTOR(ThreeOffTwo);
     }
-    /*
+    
     /// copy constructor
     ThreeOffTwo::ThreeOffTwo( const ThreeOffTwo& from )
         : ApproximationScheme( from ) {
@@ -68,10 +58,10 @@ namespace gum {
         : ApproximationScheme( std::move( from ) ) {
       GUM_CONS_MOV( ThreeOffTwo );
     }
-    */
+    
     /// destructor
     ThreeOffTwo::~ThreeOffTwo() { GUM_DESTRUCTOR(ThreeOffTwo); }
-    /*
+    
     /// copy operator
     ThreeOffTwo& ThreeOffTwo::
     operator=( const ThreeOffTwo& from ) {
@@ -85,7 +75,7 @@ namespace gum {
       ApproximationScheme::operator=( std::move( from ) );
       return *this;
     }
-    */
+    
 
     bool GreaterPairOn2nd::operator()(
       const std::pair< std::tuple< Idx, Idx, Idx, std::vector< Idx > >*, double >&
@@ -109,7 +99,13 @@ namespace gum {
       double p1yz = std::get< 3 >(e1);
       double p2xz = std::get< 2 >(e2);
       double p2yz = std::get< 3 >(e2);
-      return std::max(p1xz, p1yz) > std::max(p2xz, p2yz);
+      double I1 = std::get< 1 >(e1);
+      double I2 = std::get< 1 >(e2);
+      if (std::max(p1xz, p1yz) == std::max(p2xz, p2yz)){
+        return I1 > I2;
+      } else {
+        return std::max(p1xz, p1yz) > std::max(p2xz, p2yz);
+      }
     }
     
     /// learns the structure of a MixedGraph
@@ -690,30 +686,30 @@ namespace gum {
           if (marks[{x, z}] == '>' && marks[{y, z}] == 'o' 
               && marks[{z, y}] != '-') {
             graph.eraseEdge(Edge(z, y));
-            if (!__existsDirectedPath(graph, y, z)) {
+            if (!__existsDirectedPath(graph, y, z) && graph.parents(y).empty()) {
               graph.addArc(z, y);
               marks[{z, y}] = '>';
               marks[{y, z}] = '-';
-            if (!__arc_probas.exists(Arc(z, y)))
-              __arc_probas.insert(Arc(z, y), std::get< 3 >(best));
-            } else {
+              if (!__arc_probas.exists(Arc(z, y)))
+                __arc_probas.insert(Arc(z, y), std::get< 3 >(best));
+            } else if (!__existsDirectedPath(graph, z, y) && graph.parents(z).empty()){
               graph.addArc(y, z);
               marks[{z, y}] = '-';
               marks[{y, z}] = '>';
               __latent_couples.push_back(Arc(y, z));
-            if (!__arc_probas.exists(Arc(y, z)))
-              __arc_probas.insert(Arc(y, z), std::get< 3 >(best));
+              if (!__arc_probas.exists(Arc(y, z)))
+                __arc_probas.insert(Arc(y, z), std::get< 3 >(best));
             }
           } else if (marks[{y, z}] == '>' && marks[{x, z}] == 'o' 
               && marks[{z, x}] != '-') {
             graph.eraseEdge(Edge(z, x));
-            if (!__existsDirectedPath(graph, x, z)) {
+            if (!__existsDirectedPath(graph, x, z) && graph.parents(x).empty()) {
               graph.addArc(z, x);
               marks[{z, x}] = '>';
               marks[{x, z}] = '-';
-            if (!__arc_probas.exists(Arc(z, x)))
-              __arc_probas.insert(Arc(z, x), std::get< 2 >(best));
-            } else {
+              if (!__arc_probas.exists(Arc(z, x)))
+                __arc_probas.insert(Arc(z, x), std::get< 2 >(best));
+            } else if (!__existsDirectedPath(graph, z, x) && graph.parents(z).empty()){
               graph.addArc(x, z);
               marks[{z, x}] = '-';
               marks[{x, z}] = '>';
@@ -1017,19 +1013,26 @@ namespace gum {
       const auto neighbours = graph.neighbours(node);
       for (auto& neighbour : neighbours) {
         // only propagate if it doesn't create a circle and isn't forbidden
+        // and doesn't create a new v-structure
         if (!__existsDirectedPath(graph, neighbour, node) && 
             !(__initial_marks.exists({node, neighbour}) &&
-                        __initial_marks[{node, neighbour}]=='-') ){
+                        __initial_marks[{node, neighbour}]=='-') && 
+            graph.parents(neighbour).empty()){
           graph.eraseEdge(Edge(neighbour, node));
           graph.addArc(node, neighbour);
           _propagatesHead(graph, neighbour);
-        } else if (__existsDirectedPath(graph, neighbour, node) && 
-                !(__initial_marks.exists({neighbour, node}) && 
-                                    __initial_marks[{neighbour, node}]=='-') ) {
-          std::vector< NodeId > test = graph.directedPath(neighbour, node);
+        } else if (!__existsDirectedPath(graph, node, neighbour) && 
+            !(__initial_marks.exists({neighbour, node}) &&
+                        __initial_marks[{neighbour, node}]=='-') && 
+            graph.parents(node).empty() ) {
           graph.eraseEdge(Edge(neighbour, node));
           graph.addArc(neighbour, node);
-        } else {
+        } else if (!graph.parents(neighbour).empty() && 
+                   !graph.parents(node).empty()) {
+          graph.eraseEdge(Edge(neighbour, node));
+          graph.addArc(node, neighbour);
+          __latent_couples.push_back(Arc(node, neighbour));
+        } else{
           graph.eraseEdge(Edge(neighbour, node));
         }
       }

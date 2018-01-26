@@ -104,25 +104,23 @@ namespace gum {
 
       /// default constructor with maxLog
       ThreeOffTwo(int maxLog);
-      /*
-            /// copy constructor
-            ThreeOffTwo( const ThreeOffTwo& from );
+      
+      /// copy constructor
+      ThreeOffTwo( const ThreeOffTwo& from );
 
-            /// move constructor
-            ThreeOffTwo( ThreeOffTwo&& from );
-      */
+      /// move constructor
+      ThreeOffTwo( ThreeOffTwo&& from );
+
       /// destructor
       ~ThreeOffTwo();
 
       /// @}
 
-      /*
-            /// copy operator
-            ThreeOffTwo& operator=( const ThreeOffTwo& from );
+      /// copy operator
+      ThreeOffTwo& operator=( const ThreeOffTwo& from );
 
-            /// move operator
-            ThreeOffTwo& operator=( ThreeOffTwo&& from );
-      */
+      /// move operator
+      ThreeOffTwo& operator=( ThreeOffTwo&& from );
 
       // ##########################################################################
       /// @name Accessors / Modifiers

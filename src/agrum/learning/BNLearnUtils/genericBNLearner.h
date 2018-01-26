@@ -437,6 +437,9 @@ namespace gum {
       /// indicate that we wish to use 3off2
       void use3off2() noexcept;
 
+      /// indicate that we wish to use 3off2
+      void useMIIC() noexcept;
+
       /// @}
 
       // ##########################################################################
