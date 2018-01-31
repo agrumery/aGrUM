@@ -79,7 +79,7 @@
 #include <agrum/learning/K2.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
-#include <agrum/learning/threeOffTwo.h>
+#include <agrum/learning/Miic.h>
 
 #include <agrum/core/signal/signaler.h>
 
@@ -555,7 +555,7 @@ namespace gum {
       K2 __K2;
 
       /// the 3off2 algorithm
-      ThreeOffTwo __3off2;
+      Miic __3off2;
 
       /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;
@@ -599,7 +599,7 @@ namespace gum {
 
       /// returns the DAG learnt
       DAG __learnDAG();
-      
+
       /// prepares the initial graph for 3off2
       MixedGraph __prepare_3off2();
 

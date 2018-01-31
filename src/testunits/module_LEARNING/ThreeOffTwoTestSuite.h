@@ -38,7 +38,7 @@
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
 #include <agrum/learning/paramUtils/paramEstimatorML.h>
-#include <agrum/learning/threeOffTwo.h>
+#include <agrum/learning/Miic.h>
 
 namespace gum_tests {
 
@@ -65,7 +65,7 @@ namespace gum_tests {
       I.useNoCorr();
 
 
-      gum::learning::ThreeOffTwo search;
+      gum::learning::Miic search;
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -100,7 +100,7 @@ namespace gum_tests {
       cI.useMDL();
       // cI.useCache( false );
 
-      gum::learning::ThreeOffTwo search;
+      gum::learning::Miic search;
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -137,7 +137,7 @@ namespace gum_tests {
       cI.useNML();
       // cI.useCache( false );
 
-      gum::learning::ThreeOffTwo search;
+      gum::learning::Miic search;
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -154,7 +154,7 @@ namespace gum_tests {
       std::vector< gum::Arc > latents = search.latentVariables();
       TS_ASSERT_EQUALS(latents.size(), gum::Size(2));
     }
-    
+
     void test_3off2_asia_dag() {
       gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
@@ -175,7 +175,7 @@ namespace gum_tests {
       gum::learning::CorrectedMutualInformation<> cI(filter, modalities);
       cI.useNML();
 
-      gum::learning::ThreeOffTwo search;
+      gum::learning::Miic search;
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -216,7 +216,7 @@ namespace gum_tests {
       // cI.useMDL();
       // cI.useNoCorr();
 
-      gum::learning::ThreeOffTwo search;
+      gum::learning::Miic search;
 
       // creating complete graph
       gum::MixedGraph graph;
@@ -257,14 +257,14 @@ namespace gum_tests {
       cI.useNML();
       // cI.useCache( false );
 
-      gum::learning::ThreeOffTwo search;
+      gum::learning::Miic search;
 
       // adding constraints
       gum::HashTable< std::pair< gum::Idx, gum::Idx >, char > initial_marks;
       initial_marks.insert({4, 3}, '>');
       initial_marks.insert({5, 7}, '-');
       search.addConstraints(initial_marks);
-      
+
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -305,10 +305,10 @@ namespace gum_tests {
       cI.useMDL();
       // cI.useCache( false );
 
-      gum::learning::ThreeOffTwo search;
-      search.orientMIIC();
-      search.orient3off2();
-      search.orientMIIC();
+      gum::learning::Miic search;
+      search.setMiicBehaviour();
+      search.set3off2Behaviour();
+      search.setMiicBehaviour();
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
@@ -325,7 +325,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(latents.size(), gum::Size(0));
       gum::DAG dag = search.learnStructure(cI, graph);
     }
-    
+
     void test_MIIC_asia_constraints() {
       gum::learning::DatabaseFromCSV database(
         GET_RESSOURCES_PATH("asia.csv"));
@@ -348,17 +348,17 @@ namespace gum_tests {
       cI.useMDL();
       // cI.useCache( false );
 
-      gum::learning::ThreeOffTwo search;
-      search.orientMIIC();
-      search.orient3off2();
-      search.orientMIIC();
-      
+      gum::learning::Miic search;
+      search.setMiicBehaviour();
+      search.set3off2Behaviour();
+      search.setMiicBehaviour();
+
       // adding constraints
       gum::HashTable< std::pair< gum::Idx, gum::Idx >, char > initial_marks;
       initial_marks.insert({4, 3}, '>');
       initial_marks.insert({5, 7}, '-');
       search.addConstraints(initial_marks);
-      
+
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
