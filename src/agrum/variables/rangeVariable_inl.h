@@ -102,7 +102,7 @@ namespace gum {
     return *this;
   }
 
-  INLINE DiscreteVariable::VarType RangeVariable::varType(void) const {
+  INLINE VarType RangeVariable::varType(void) const {
     return VarType::Range;
   }
 

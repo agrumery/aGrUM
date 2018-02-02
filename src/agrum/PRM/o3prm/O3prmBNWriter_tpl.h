@@ -155,7 +155,7 @@ namespace gum {
   O3prmBNWriter< GUM_SCALAR >::__extractType(const IBayesNet< GUM_SCALAR >& bn,
                                              NodeId                         node) {
     switch (bn.variable(node).varType()) {
-      case gum::DiscreteVariable::VarType::Discretized: {
+    case gum::VarType::Discretized: {
         auto double_var = dynamic_cast< const DiscretizedVariable< double >* >(
           &(bn.variable(node)));
         if (double_var != nullptr) {
@@ -172,7 +172,7 @@ namespace gum {
         GUM_ERROR(InvalidArgument,
                   "DiscretizedVariable ticks are neither doubles or floats");
       }
-      case gum::DiscreteVariable::VarType::Range: {
+      case gum::VarType::Range: {
         return __extractRangeType(bn, node);
       }
       default: { return __extractLabelizedType(bn, node); }

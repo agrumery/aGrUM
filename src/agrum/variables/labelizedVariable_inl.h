@@ -101,11 +101,10 @@ namespace gum {
   }
 
   INLINE
-  DiscreteVariable* LabelizedVariable::clone() const {
-    LabelizedVariable* varPtr = new LabelizedVariable(*this);
-    return (DiscreteVariable*)varPtr;
+  LabelizedVariable* LabelizedVariable::clone() const {
+    return new LabelizedVariable( *this );
   }
-
+  
   // copy operator
   INLINE const LabelizedVariable& LabelizedVariable::
   operator=(const LabelizedVariable& aLDRV) {
@@ -145,7 +144,7 @@ namespace gum {
   // returns the size of the random discrete variable domain
   INLINE Size LabelizedVariable::domainSize() const { return __labels.size(); }
 
-  INLINE DiscreteVariable::VarType LabelizedVariable::varType(void) const {
+  INLINE VarType LabelizedVariable::varType(void) const {
     return VarType::Labelized;
   }
 
