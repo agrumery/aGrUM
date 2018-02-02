@@ -550,6 +550,33 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
     }
 
+    void testSimpleRulesError4() {
+      // Arrange
+      std::stringstream input;
+      input << "type t_state labels(OK, NOK);" << std::endl;
+      input << "class Bar { " << std::endl
+            << "t_state state {[0.2, 0.8]};" << std::endl
+            << "boolean isWorking dependson state {" << std::endl
+            << "BAR: 0.1, 0.9;" << std::endl
+            << "FOO: 0.8, 0.2;" << std::endl
+            << "};" << std::endl
+            << "}";
+      std::stringstream       output;
+      gum::prm::PRM< double > prm;
+      auto factory = gum::prm::o3prm::O3prmReader< double >(prm);
+      // Act
+      TS_GUM_ASSERT_THROWS_NOTHING(factory.parseStream(input, output));
+      // Assert
+      std::string line;
+      std::getline(output, line);
+      std::string msg = "|5 col 1| Error : Label BAR is not part of state domain";
+      TS_ASSERT_EQUALS(line, msg);
+      std::getline(output, line);
+      msg = "|6 col 1| Error : Label FOO is not part of state domain";
+      TS_ASSERT_EQUALS(line, msg);
+      TS_ASSERT_EQUALS(prm.classes().size(), (gum::Size)1);
+    }
+
     void testSimpleParameter1() {
       // Arrange
       std::stringstream input;

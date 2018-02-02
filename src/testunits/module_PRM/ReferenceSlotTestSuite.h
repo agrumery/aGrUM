@@ -105,8 +105,6 @@ namespace gum_tests {
         // Act & Assert
         __classEltTestSuite->testSafeName(ref);
       } catch (gum::Exception& e) {
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
         TS_ASSERT(false);
       }
     }

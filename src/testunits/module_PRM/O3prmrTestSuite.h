@@ -269,7 +269,6 @@ namespace gum_tests {
         // Assert
         TS_ASSERT_EQUALS(bn->size(), (gum::Size)8);
         TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8);
-        // GUM_TRACE( bn->toDot() );
         delete si;
         delete bn;
       } catch (gum::Exception&) {
@@ -299,7 +298,6 @@ namespace gum_tests {
           TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)8);
           delete bn;
         }
-        // GUM_TRACE( bn->toDot() );
         delete si;
       } catch (gum::Exception&) {
         TS_ASSERT(false);
@@ -324,7 +322,6 @@ namespace gum_tests {
         // Assert
         TS_ASSERT_EQUALS(bn->size(), (gum::Size)144);
         TS_ASSERT_EQUALS(bn->sizeArcs(), (gum::Size)193);
-        // GUM_TRACE( bn->toDot() );
         delete si;
         delete bn;
       } catch (gum::Exception&) {
