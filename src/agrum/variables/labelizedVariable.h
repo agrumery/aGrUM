@@ -75,7 +75,7 @@ namespace gum {
     virtual ~LabelizedVariable();
 
     /// a virtual clone ...
-    virtual DiscreteVariable* clone() const;
+    virtual LabelizedVariable* clone() const;
 
     /// @}
 

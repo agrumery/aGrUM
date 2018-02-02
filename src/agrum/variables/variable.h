@@ -35,6 +35,8 @@
 
 namespace gum {
 
+  enum class VarType : char { Discretized, Labelized, Range, Continuous };
+
   class Variable;
 
   /// for friendly displaying the content of the variable

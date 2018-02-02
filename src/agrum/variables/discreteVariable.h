@@ -56,7 +56,7 @@ namespace gum {
 
   class DiscreteVariable : public Variable {
     public:
-    enum class VarType : char { Discretized, Labelized, Range };
+    
 
     // ############################################################################
     /// @name Constructors / Destructors
