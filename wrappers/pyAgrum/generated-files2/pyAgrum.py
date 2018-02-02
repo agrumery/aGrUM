@@ -3608,6 +3608,10 @@ def getDynamicThreadsNumber():
 
     """
     return _pyAgrum.getDynamicThreadsNumber()
+VarType_Discretized = _pyAgrum.VarType_Discretized
+VarType_Labelized = _pyAgrum.VarType_Labelized
+VarType_Range = _pyAgrum.VarType_Range
+VarType_Continuous = _pyAgrum.VarType_Continuous
 class Variable(_object):
     """
 
@@ -3749,9 +3753,6 @@ class DiscreteVariable(Variable):
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
     __repr__ = _swig_repr
-    VarType_Discretized = _pyAgrum.DiscreteVariable_VarType_Discretized
-    VarType_Labelized = _pyAgrum.DiscreteVariable_VarType_Labelized
-    VarType_Range = _pyAgrum.DiscreteVariable_VarType_Range
     __swig_destroy__ = _pyAgrum.delete_DiscreteVariable
     def __del__(self):
         return None
@@ -3833,7 +3834,7 @@ class DiscreteVariable(Variable):
 
     def varType(self):
         """
-        varType(self) -> gum::DiscreteVariable::VarType
+        varType(self) -> gum::VarType
 
 
         returns the type of variable
@@ -4074,7 +4075,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def clone(self):
         """
-        clone(self) -> DiscreteVariable
+        clone(self) -> LabelizedVariable
 
 
         Returns
@@ -4244,7 +4245,7 @@ class LabelizedVariable(DiscreteVariable):
 
     def varType(self):
         """
-        varType(self) -> gum::DiscreteVariable::VarType
+        varType(self) -> gum::VarType
 
 
         returns the type of variable
@@ -4381,7 +4382,7 @@ class RangeVariable(DiscreteVariable):
 
     def varType(self):
         """
-        varType(self) -> gum::DiscreteVariable::VarType
+        varType(self) -> gum::VarType
 
 
         returns the type of variable
@@ -8343,7 +8344,7 @@ class DiscretizedVariable_double(DiscreteVariable):
 
     def varType(self):
         """
-        varType(self) -> gum::DiscreteVariable::VarType
+        varType(self) -> gum::VarType
 
 
         returns the type of variable
