@@ -240,6 +240,16 @@ namespace gum {
     const Potential< GUM_SCALAR >& fillWith(const GUM_SCALAR& v) const;
 
     /**
+     * @brief copy a Potential data using name of variables and labels (not necessarily
+     * the same variables in the same orders)
+     *
+     * @warning a strict control on names of variables and labels are made
+     *
+     * @throw InvalidArgument if the Potential is not compatible with this
+     */
+    const Potential< GUM_SCALAR >& fillWith(const Potential< GUM_SCALAR >& src) const;
+
+    /**
      * @brief Apply abs on every element of the container
      */
     const Potential< GUM_SCALAR >& abs() const;

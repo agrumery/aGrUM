@@ -40,7 +40,7 @@ Warnings
 
 Warnings
 --------
-  FatalError raised if a zero is found in p or the potential and not in the other. 
+  FatalError raised if a zero is found in p or the potential and not in the other.
 "
 
 %feature("docstring") gum::Potential::abs
@@ -85,7 +85,7 @@ bool
 Returns
 -------
 bool
-    Returns true if no variable is in the potential. 
+    Returns true if no variable is in the potential.
 "
 
 %feature("docstring") gum::Potential::entropy
@@ -129,7 +129,7 @@ float
 
 Warnings
 --------
-FatalError raised if a zero is found in p or this and not in the other. 
+FatalError raised if a zero is found in p or this and not in the other.
 "
 
 %feature("docstring") gum::Potential::fill
@@ -153,8 +153,12 @@ Automatically fills the potential with the values in v.
 
 Parameters
 ----------
-v : list
+v : list or Potential
     a list containing the values to fill the Potential with.
+
+Warning
+-------
+    if v is a Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
 
 Returns
 -------
@@ -163,7 +167,7 @@ pyAgrum.Potential
 
 Warnings
 --------
-    SizeError Raised if v size's does not matches the domain size. 
+    SizeError Raised if v size's does not matches the domain size.
 "
 
 %feature("docstring") gum::Potential::populate
@@ -375,7 +379,7 @@ NotFound raised if all value == 0.0
 Returns
 -------
 int
-  the number of vars in the multidimensional container. 
+  the number of vars in the multidimensional container.
 "
 
 %feature("docstring") gum::Potential::newFactory
@@ -421,11 +425,11 @@ v : pyAgrum.DiscreteVariable
 
 Returns
 -------
-    Returns the index of a variable. 
+    Returns the index of a variable.
 
 Warnigs
 -------
-    NotFound raised if v is not in this multidimensional matrix. 
+    NotFound raised if v is not in this multidimensional matrix.
 "
 
 %feature("docstring") gum::Potential::product
@@ -450,7 +454,7 @@ pyAgrum.Potential
 
 Warnings
 --------
-InvalidArgument raised if the var is not in the potential 
+InvalidArgument raised if the var is not in the potential
 "
 
 %feature("docstring") gum::Potential::remove
@@ -467,7 +471,7 @@ pyAgrum.Potential
 
 Warnings
 --------
-IndexError raised if the var is not in the potential 
+IndexError raised if the var is not in the potential
 "
 
 %feature("docstring") gum::Potential::reorganize
@@ -542,16 +546,16 @@ Returns
 "
 Parameters
 ----------
-i : int 
+i : int
   An index of this multidimensional matrix.
 
 Returns
 -------
-  the varible at the ith index 
+  the varible at the ith index
 
 Warnings
 --------
-  NotFound raised if i does not reference a variable in this multidimensional matrix. 
+  NotFound raised if i does not reference a variable in this multidimensional matrix.
 "
 
 

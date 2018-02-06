@@ -41,8 +41,10 @@ namespace gum_tests {
       TS_ASSERT(p.empty());
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+        c("c", "third var", 5), other_a("a", "first var", 2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c);
+      TS_ASSERT_THROWS(p << a << a, gum::DuplicateElement);
+      TS_ASSERT_THROWS(p << a << other_a, gum::DuplicateElement);
     }
 
     void testNormalisation() {
@@ -926,7 +928,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(s0, int(0.3 * NBRITER), DELTA);
         TS_ASSERT_DELTA(s1, int(0.6 * NBRITER), DELTA);
         TS_ASSERT_DELTA(s2, int(0.1 * NBRITER), DELTA);
-      } catch (gum::Exception& e) {
+      } catch (const gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -943,6 +945,25 @@ namespace gum_tests {
       TS_ASSERT(p.variable(0) != p.variable("w"));
 
       TS_ASSERT_THROWS(p.variable("ZZ"), gum::NotFound);
+    }
+
+    void testFillWithPotentialMethod() {
+      try {
+        gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
+        gum::LabelizedVariable vv("v", "v", 2), ww("w", "w", 3);
+        gum::Potential< int >  p;
+        p.add(v);
+        p.add(w);
+        gum::Potential< int > pp;
+        pp.add(ww);
+        pp.add(vv);
+        GUM_TRACE(p.domainSize());
+        p.fillWith({1, 2, 3, 4, 5, 6});
+        pp.fillWith(p);
+        GUM_TRACE(pp);
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+      }
     }
   };
 }

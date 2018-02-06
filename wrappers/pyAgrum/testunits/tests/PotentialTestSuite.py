@@ -18,6 +18,7 @@ class PotentialTestCase(pyAgrumTestCase):
     self.var.update({"r": r})
     self.var.update({"w": gum.LabelizedVariable("w", "herbe mouillée", 2)})
 
+
   def fillBN(self, bn, id_list):
     id_list.append(bn.add(self.var["c"]))
     id_list.append(bn.add(self.var["s"]))
@@ -48,6 +49,16 @@ class TestInsertions(PotentialTestCase):
       self.assertEqual(pot.variable(id), var)
 
     self.assertFalse(pot.contains(gum.LabelizedVariable("a", "", 5)))
+
+    a=gum.DiscretizedVariable("a","a",2)
+    other_a=gum.DiscretizedVariable("a","a",2)
+    p=gum.Potential()
+    p.add(a)
+    with self.assertRaise(gum.DuplicateElement):
+      p.add(a) # once again
+    with self.assertRaise(gum.DuplicateElement):
+      p.add(other_a) # with the same name
+
 
   def testVariableDeletion(self):
     pot = gum.Potential()
@@ -648,6 +659,18 @@ class TestOperators(pyAgrumTestCase):
 
     with self.assertRaises(IndexError):
       x=p.variable("zz")
+
+  def testFillWithPotential(self):
+    bn=gum.fastBN("A->B->C")
+    pABC=bn.cpt("A")*bn.cpt("B")*bn.cpt("C")
+
+    bn2=gum.fastBN("A->B->C")
+    bn2.cpt("A").fillWith(bn.cpt("A"))
+    bn2.cpt("B").fillWith(pABC.margSumIn(["A","B"]/pABC.margSumIn(["A"])))
+    bn2.cpt("C").fillWith(pABC.margSumIn(["B","C"]/pABC.margSumIn(["B"])))
+    pABC2=bn2.cpt("A")*bn2.cpt("B")*bn2.cpt("C")
+
+    self.assertEquals(pABC2,pABC)
 
 
 ts = unittest.TestSuite()
