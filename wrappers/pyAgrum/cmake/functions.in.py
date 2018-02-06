@@ -55,9 +55,9 @@ def availableWriteBNExts():
 
 def loadBN(filename,listeners=None,verbose=False,**opts):
     """
-    :param filename: the name of file
+    :param filename: the name of the input file
     :param listeners: list of functions to execute
-    :param verbose: printing or not warning messages
+    :param verbose: whether to print or not warning messages
     :param system: (for O3PRM) name of the system to flatten in a BN
     :param classpath: (for O3PRM) list of folders containing classes
     :return: a BN from a file using one of the availableBNExts() suffixes.
@@ -112,7 +112,7 @@ def loadID(filename):
   """
   read a gum.InfluenceDiagram from a bifxml file
 
-  :param filename: the name of file
+  :param filename: the name of the input file
   :return: an InfluenceDiagram
   """
 
@@ -135,9 +135,9 @@ def fastBN(arcs,domain_size=2):
   rapid prototyping of BN.
 
   :param arcs: dot-like simple list of arcs ("a->b->c;a->c->d" for instance). The first apparition of a node name can be
-   enhanced with a "[domain_size]" extension. For instance "a[5]->b->c;a[2]->c->d" will create a bn with a variable "a"
-   with a.nbrDim()==5 (the second "a[2]" is not taken into accound since the variable is already created).
-  :param domain_size: number of modalities for each created variable.
+   enhanced with a "[domain_size]" extension. For instance "a[5]->b->c;a[2]->c->d" will create a BN with a variable "a"
+   whos domain size is a.nbrDim()==5 (the second "a[2]" is not taken into account since the variable has already been created).
+  :param domain_size: the domain size of each created variable.
   :return: the created pyAgrum.BayesNet
   """
   return BayesNet.fastPrototype(arcs,domain_size)
@@ -171,9 +171,9 @@ def generateCSV(bn, name_out, n, visible=False, with_labels=False):
   """
   generate a CSV file of samples from a bn.
 
-  :param bn:
+  :param bn: the BN from which the sample is generated
   :type bn: pyAgrum.BayesNet
-  :param name_out: the name for the filename
+  :param name_out: the name for the output filename
   :type name_out: string
   :param n: the number of samples
   :type n: int

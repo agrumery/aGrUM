@@ -49,7 +49,6 @@ namespace gum_tests {
             GUM_ERROR(gum::FatalError, "corrupted ressource file");
           }
         }
-
         {
           // complex_printers.o3prm
           auto path = GET_RESSOURCES_PATH("o3prm/complexprinters.o3prm");
@@ -62,9 +61,7 @@ namespace gum_tests {
           }
         }
       } catch (gum::Exception& e) {
-        GUM_TRACE_NEWLINE;
-        GUM_SHOWERROR(e);
-        throw e;
+        TS_ASSERT(false);
       }
     }
 

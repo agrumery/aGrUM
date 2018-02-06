@@ -332,6 +332,17 @@ namespace gum {
         errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
       }
 
+      void O3PRM_CLASS_ILLEGAL_RULE_LABEL(const O3RuleCPT::O3Rule& rule,
+                                          const O3Label&           label, 
+                                          const O3Label&           parent, 
+                                          ErrorsContainer&         errors) {
+        const auto&       pos = label.position();
+        std::stringstream msg;
+        msg << "Error : "
+            << "Label " << label << " is not part of " << parent << " domain";
+        errors.addError(msg.str(), pos.file(), pos.line(), pos.column());
+      }
+
       void O3PRM_CLASS_WRONG_PARENT(const O3Label& prnt, ErrorsContainer& errors) {
         const auto&       pos = prnt.position();
         std::stringstream msg;

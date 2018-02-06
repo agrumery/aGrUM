@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 `pyAgrum <http://agrum.org>`_ is a Python wrapper for the C++ `aGrUM <https://agrum.lip6.fr>`_ library.
-It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
+It provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian Networks.
 
 The module is generated using the `SWIG <https://www.swig.org>`_ interface generator. Custom-written code was added to make the interface more friendly.
 

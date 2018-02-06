@@ -911,11 +911,11 @@ namespace gum {
    * PriorityQueue<std::string> queue1;
    *
    * // insert elements into the queue
-   * queue1.insert (8,  "AAA");
-   * queue1.insert (10, "BBB");
-   * queue1.insert (2,  "CCC");
-   * queue1.insert (23, "DDD");
-   * queue1.insert (24, "EEE");
+   * queue1.insert ("AAA", 8);
+   * queue1.insert ("BBB", 10);
+   * queue1.insert ("CCC", 2);
+   * queue1.insert ("DDD", 23);
+   * queue1.insert ("EEE", 24);
    *
    * // copy the queue
    * PriorityQueue<std::string> queue2 = queue1;

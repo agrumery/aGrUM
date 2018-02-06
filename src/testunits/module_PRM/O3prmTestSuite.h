@@ -1194,25 +1194,6 @@ namespace gum_tests {
 
         for (auto iter = sys->begin(); iter != sys->end(); ++iter) {
           ++count;
-
-          for (auto jter = (*(iter.val())).begin(); jter != (*(iter.val())).end();
-               ++jter) {
-            if ((*(jter.val())).cpf().nbrDim() == 0) {
-              std::stringstream sBuff;
-              sBuff << (*(iter.val())).name() << "." << (*(jter.val())).safeName();
-              GUM_TRACE(sBuff.str());
-            }
-
-            if (gum::prm::PRMClassElement< double >::isAggregate(
-                  (*(iter.val())).type().get((*(jter.val())).id()))) {
-              if ((*(jter.val())).cpf().nbrDim() == 1) {
-                std::stringstream sBuff;
-                sBuff << (*(iter.val())).name() << "."
-                      << (*(jter.val())).safeName();
-                GUM_TRACE(sBuff.str());
-              }
-            }
-          }
         }
 
         TS_ASSERT_EQUALS(count, 18);
@@ -1603,8 +1584,6 @@ namespace gum_tests {
         delete bn;
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
       }
     }
 
@@ -1648,8 +1627,6 @@ namespace gum_tests {
         delete reader.prm();
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
       }
     }
 
@@ -1670,8 +1647,6 @@ namespace gum_tests {
         delete reader.prm();
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
       }
     }
 
@@ -1692,8 +1667,6 @@ namespace gum_tests {
         delete reader.prm();
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
       }
     }
 
@@ -1721,9 +1694,7 @@ namespace gum_tests {
               auto elt = &(inst->type().get(node));
               if (gum::prm::PRMClassElement< double >::isAttribute(*elt) ||
                   gum::prm::PRMClassElement< double >::isAggregate(*elt)) {
-
-                GUM_TRACE(
-                  inst->type().name() << "." << inst->type().get(node).safeName());
+                TS_ASSERT(false);
               }
             }
           }
@@ -1732,8 +1703,6 @@ namespace gum_tests {
         delete reader.prm();
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
       }
     }
 
@@ -1778,8 +1747,6 @@ namespace gum_tests {
         delete prm;
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
       }
     }
 
@@ -1820,8 +1787,6 @@ namespace gum_tests {
         delete prm;
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
       }
     }
 
@@ -1849,8 +1814,6 @@ namespace gum_tests {
 
       } catch (gum::Exception& e) {
         TS_ASSERT(false);
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
       }
     }
   };

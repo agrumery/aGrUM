@@ -145,6 +145,11 @@ namespace gum {
                                          size_t                   expected,
                                          ErrorsContainer&         errors);
 
+      void O3PRM_CLASS_ILLEGAL_RULE_LABEL(const O3RuleCPT::O3Rule& rule,
+                                          const O3Label&           label, 
+                                          const O3Label&           parent, 
+                                          ErrorsContainer&         errors);
+                                          
       void O3PRM_CLASS_WRONG_PARENT(const O3Label& prnt, ErrorsContainer& errors);
 
       void O3PRM_CLASS_WRONG_PARENT_TYPE(const O3Label&     prnt,
