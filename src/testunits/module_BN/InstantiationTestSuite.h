@@ -267,6 +267,11 @@ namespace gum_tests {
 
       j.setVals(i);
       TS_ASSERT_EQUALS(j.toString(), "<b:2|a:0|c:3>");
+
+      j.chgVal("a", "1");
+      j.chgVal("b", 0);
+      j.chgVal("c", "2");
+      TS_ASSERT_EQUALS(j.toString(), "<b:0|a:1|c:2>");
     }
 
     void testOperatorEgal() {

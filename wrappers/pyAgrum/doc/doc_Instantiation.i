@@ -60,12 +60,12 @@ Assign newval to v (or to the variable at position varPos) in the Instantiation.
 
 Parameters
 ----------
-v : pyAgrum.DiscreteVariable
-  The variable whose value is assigned
+v : pyAgrum.DiscreteVariable or string
+  The variable whose value is assigned (or its name)
 varPos : int
   The index of the variable whose value is assigned in the tuple of variables of the Instantiation
-newval : pyAgrum.DiscreteVariable
-  The index of the value assigned
+newval : int or string
+  The index of the value assigned (or its name)
 
 Returns
 -------

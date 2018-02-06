@@ -116,6 +116,17 @@ namespace gum {
     return *this;
   }
 
+  INLINE Instantiation& Instantiation::chgVal(const std::string& var, Idx newVal) {
+    return chgVal(variable(var), newVal);
+  }
+
+  INLINE Instantiation& Instantiation::chgVal(const std::string& var,
+                                              const std::string& newVal) {
+    const auto& vv = variable(var);
+    Idx         pos = vv.index(newVal);
+    return chgVal(vv, pos);
+  }
+
   // adds a new var to the sequence of vars
   INLINE void Instantiation::add(const DiscreteVariable& v) {
     // if __master : not allowed

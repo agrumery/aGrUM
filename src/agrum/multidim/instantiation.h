@@ -400,6 +400,50 @@ namespace gum {
     Instantiation& chgVal(Idx varPos, Idx newval);
 
     /**
+  * @brief Assign newval to variable at position varPos in the Instantiation.
+  *
+  * Consider the values of v as an array indexed from 0 to n of values
+  * (which might be anything from real numbers to strings, etc). Parameter
+  * newval indicates the index in this array of the new value taken by v.
+  *
+  * In addition to modifying the value of the variable, the Instantiation
+  * informs its master of the modification. This function also unsets the
+  * overflow flag.
+  *
+  * @param var the name of the variable whose value is assigned in the
+  * tuple of variables of the Instantiation.
+  * @param newval The index of the value assigned.
+  * @return A reference to *this in order to chain the chgVal.
+  *
+  * @throw NotFound Raised if the variable does not belong to this
+  * @throw NotFound Raised if newval is not a possible value for the
+  * variable
+  */
+    Instantiation& chgVal(const std::string& var, Idx newval);
+
+    /**
+  * @brief Assign newval to variable at position varPos in the Instantiation.
+  *
+  * Consider the values of v as an array indexed from 0 to n of values
+  * (which might be anything from real numbers to strings, etc). Parameter
+  * newval indicates the index in this array of the new value taken by v.
+  *
+  * In addition to modifying the value of the variable, the Instantiation
+  * informs its master of the modification. This function also unsets the
+  * overflow flag.
+  *
+  * @param var the name of the variable whose value is assigned in the
+  * tuple of variables of the Instantiation.
+  * @param newval The label of the value assigned.
+  * @return A reference to *this in order to chain the chgVal.
+  *
+  * @throw NotFound Raised if the variable does not belong to this
+  * @throw OutOfBound Raised if newval is not a possible value for the
+  * variable
+  */
+    Instantiation& chgVal(const std::string& var, const std::string& newval);
+
+    /**
      * @brief Assign the values from i in the Instantiation.
      *
      * For any variable in i and in *this, value of the variable in i is
@@ -420,7 +464,6 @@ namespace gum {
      * @param i A Instantiation in which the new values are searched.
      * @return Returns a reference to *this in order to chain the chgVal.
      */
-
     Instantiation& setVals(const Instantiation& i);
 
     /**

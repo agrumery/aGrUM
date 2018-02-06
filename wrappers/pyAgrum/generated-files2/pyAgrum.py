@@ -6379,18 +6379,20 @@ class Instantiation(_object):
         chgVal(self, v, newval) -> Instantiation
         chgVal(self, v, newval) -> Instantiation
         chgVal(self, varPos, newval) -> Instantiation
+        chgVal(self, var, newval) -> Instantiation
+        chgVal(self, var, newval) -> Instantiation
 
 
         Assign newval to v (or to the variable at position varPos) in the Instantiation.
 
         Parameters
         ----------
-        v : pyAgrum.DiscreteVariable
-          The variable whose value is assigned
+        v : pyAgrum.DiscreteVariable or string
+          The variable whose value is assigned (or its name)
         varPos : int
           The index of the variable whose value is assigned in the tuple of variables of the Instantiation
-        newval : pyAgrum.DiscreteVariable
-          The index of the value assigned
+        newval : int or string
+          The index of the value assigned (or its name)
 
         Returns
         -------
@@ -6901,7 +6903,7 @@ class Instantiation(_object):
 
 
     def __setitem__(self,key,item):
-      self.chgVal(self.variable(key),item)
+      self.chgVal(key,item)
 
     def __getitem__(self,key):
       return self.val(self.variable(key))
