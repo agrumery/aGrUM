@@ -1066,13 +1066,13 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4);
         TS_ASSERT(SafeComputer.exists("can_print"));
         const auto& cpf = SafeComputer.get("can_print").cpf();
-        auto        set = gum::Set< std::string >();
-        set.insert("can_print");
-        set.insert("working_printer");
-        set.insert("equipState");
+        auto        set = gum::Set< const gum::DiscreteVariable* >();
+        set.insert(&(SafeComputer.get("can_print").type().variable()));
+        set.insert(&(SafeComputer.get("working_printer").type().variable()));
+        set.insert(&(SafeComputer.get("equipState").type().variable()));
         for (auto var : cpf.variablesSequence()) {
-          if (set.contains(var->name())) {
-            set.erase(var->name());
+          if (set.contains(var)) {
+            set.erase(var);
           }
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));
@@ -1095,12 +1095,12 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4);
         TS_ASSERT(SafeComputer.exists("equipState"));
         const auto& cpf = SafeComputer.get("equipState").cpf();
-        auto        set = gum::Set< std::string >();
-        set.insert("equipState");
-        set.insert("room.power.state");
+        auto        set = gum::Set< const gum::DiscreteVariable* >();
+        set.insert(&(SafeComputer.get("equipState").type().variable()));
+        set.insert(&(SafeComputer.get("room.power.state").type().variable()));
         for (auto var : cpf.variablesSequence()) {
-          if (set.contains(var->name())) {
-            set.erase(var->name());
+          if (set.contains(var)) {
+            set.erase(var);
           }
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));
@@ -1123,12 +1123,12 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(SafeComputer.attributes().size(), (gum::Size)4);
         TS_ASSERT(SafeComputer.exists("equipState"));
         const auto& cpf = SafeComputer.get("equipState").cpf();
-        auto        set = gum::Set< std::string >();
-        set.insert("equipState");
-        set.insert("room.power.(fr.lip6.printers.t_state)state");
+        auto        set = gum::Set< const gum::DiscreteVariable* >();
+        set.insert(&(SafeComputer.get("equipState").type().variable()));
+        set.insert(&(SafeComputer.get("room.power.(fr.lip6.printers.t_state)state").type().variable()));
         for (auto var : cpf.variablesSequence()) {
-          if (set.contains(var->name())) {
-            set.erase(var->name());
+          if (set.contains(var)) {
+            set.erase(var);
           }
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));

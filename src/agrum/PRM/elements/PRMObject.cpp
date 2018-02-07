@@ -49,6 +49,13 @@ namespace gum {
       GUM_CONS_CPY(PRMObject);
     }
     // ==========================================================================
+    // Move constructor.
+    // ==========================================================================
+    PRMObject::PRMObject(PRMObject&& source)
+        : __name(std::move(source.__name)) {
+      GUM_CONS_CPY(PRMObject);
+    }
+    // ==========================================================================
     // Destructor.
     // ==========================================================================
     PRMObject::~PRMObject() { GUM_DESTRUCTOR(PRMObject); }
@@ -56,6 +63,12 @@ namespace gum {
     // Copy operator.
     PRMObject& PRMObject::operator=(const PRMObject& source) {
       __name = source.__name;
+      return *this;
+    }
+
+    // Move operator.
+    PRMObject& PRMObject::operator=(PRMObject&& source) {
+      __name = std::move(source.__name);
       return *this;
     }
 

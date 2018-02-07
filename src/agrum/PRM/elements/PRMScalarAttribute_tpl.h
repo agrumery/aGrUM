@@ -47,7 +47,6 @@ namespace gum {
 
       this->_safeName =
         PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
-      this->__type->variable().setName(this->name());
     }
 
     template < typename GUM_SCALAR >

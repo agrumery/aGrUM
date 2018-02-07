@@ -28,6 +28,7 @@
 #define GUM_RANDOM_VARIABLE_TYPE_H
 
 #include <vector>
+#include <sstream>
 
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimImplementation.h>
@@ -239,9 +240,20 @@ namespace gum {
       /// @{
 
       /**
+       * Move constructor.
+       * Not implemented, will raise an exception.
+       */
+      PRMType(PRMType&& from);
+
+      /**
        * Copy operator. Not implemented.
        */
       PRMType& operator=(const PRMType& from);
+
+      /**
+       * Move operator. Not implemented.
+       */
+      PRMType& operator=(PRMType&& from);
 
       /// @}
       // ==========================================================================
@@ -251,6 +263,10 @@ namespace gum {
 
       /// Returns true if this is a valid type or subtype.
       bool __isValid() const;
+
+      /// Used at construction to set a unique name to this class underlying
+      /// DiscreteVariable.
+      void __updateName();
 
       /// The discrete variable
       DiscreteVariable* __var;

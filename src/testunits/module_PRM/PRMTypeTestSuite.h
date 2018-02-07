@@ -117,7 +117,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING(variable = &(boolean.variable()));
       // Assert
-      TS_ASSERT_EQUALS(variable->name(), __boolean->name());
+      TS_ASSERT_DIFFERS(variable->name().find(__boolean->name()), std::string::npos);
       TS_ASSERT_EQUALS(variable->description(), __boolean->description());
       TS_ASSERT_EQUALS(variable->label(0), __boolean->label(0));
       TS_ASSERT_EQUALS(variable->label(1), __boolean->label(1));
@@ -133,7 +133,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING(variable = &(const_boolean.variable()));
       // Assert
-      TS_ASSERT_EQUALS(variable->name(), __boolean->name());
+      TS_ASSERT_DIFFERS(variable->name().find(__boolean->name()), std::string::npos);
       TS_ASSERT_EQUALS(variable->description(), __boolean->description());
       TS_ASSERT_EQUALS(variable->label(0), __boolean->label(0));
       TS_ASSERT_EQUALS(variable->label(1), __boolean->label(1));
@@ -148,7 +148,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING(variable = &(*boolean));
       // Assert
-      TS_ASSERT_EQUALS(variable->name(), __boolean->name());
+      TS_ASSERT_DIFFERS(variable->name().find(__boolean->name()), std::string::npos);
       TS_ASSERT_EQUALS(variable->description(), __boolean->description());
       TS_ASSERT_EQUALS(variable->label(0), __boolean->label(0));
       TS_ASSERT_EQUALS(variable->label(1), __boolean->label(1));
@@ -164,7 +164,7 @@ namespace gum_tests {
       // Act
       TS_ASSERT_THROWS_NOTHING(variable = &(*const_boolean));
       // Assert
-      TS_ASSERT_EQUALS(variable->name(), __boolean->name());
+      TS_ASSERT_DIFFERS(variable->name().find(__boolean->name()), std::string::npos);
       TS_ASSERT_EQUALS(variable->description(), __boolean->description());
       TS_ASSERT_EQUALS(variable->label(0), __boolean->label(0));
       TS_ASSERT_EQUALS(variable->label(1), __boolean->label(1));

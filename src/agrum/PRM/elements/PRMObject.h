@@ -135,6 +135,11 @@ namespace gum {
       PRMObject(const PRMObject& source);
 
       /**
+       * Move constructor.
+       */
+      PRMObject(PRMObject&& source);
+
+      /**
        * Destructor.
        */
       virtual ~PRMObject();
@@ -181,6 +186,11 @@ namespace gum {
        * Copy operator.
        */
       PRMObject& operator=(const PRMObject& source);
+
+      /**
+       * Move operator.
+       */
+      PRMObject& operator=(PRMObject&& source);
 
       /// @}
       private:
