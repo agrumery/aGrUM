@@ -3,7 +3,6 @@
 %ignore gum::MultiDimInterface;
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
-%ignore gum::Potential<double>::fillWith(std::initializer_list< double >) const;
 
 /* Synchronisation between gum::Potential and numpy array */
 %pythonappend gum::Potential<double>::Potential %{
@@ -173,7 +172,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
             content = [self.get(i)]
             self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
             return
-            
+
         content = []
         i = Instantiation(self)
         i.setFirst()
@@ -246,7 +245,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         self.__fill_distrib__()
         if self.empty():
             return self.__distrib__[0]
-            
+
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
@@ -261,8 +260,8 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         if self.empty():
             self.fill(value)
             self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
-            return 
-            
+            return
+
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
