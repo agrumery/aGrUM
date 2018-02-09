@@ -53,7 +53,7 @@ namespace gum_tests {
       gum::LabelizedVariable*      v[100];
 
       for (int i = 0; i < 100; i++)
-        v[i] = new gum::LabelizedVariable("x", "x");
+        v[i] = new gum::LabelizedVariable("x"+std::to_string(i), "x");
 
       TS_ASSERT_THROWS(feedMultiDimUntilOverflow(v, m), gum::OutOfBounds);
 

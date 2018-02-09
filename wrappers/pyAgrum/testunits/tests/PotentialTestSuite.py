@@ -18,7 +18,6 @@ class PotentialTestCase(pyAgrumTestCase):
     self.var.update({"r": r})
     self.var.update({"w": gum.LabelizedVariable("w", "herbe mouillée", 2)})
 
-
   def fillBN(self, bn, id_list):
     id_list.append(bn.add(self.var["c"]))
     id_list.append(bn.add(self.var["s"]))
@@ -50,15 +49,14 @@ class TestInsertions(PotentialTestCase):
 
     self.assertFalse(pot.contains(gum.LabelizedVariable("a", "", 5)))
 
-    a=gum.DiscretizedVariable("a","a",2)
-    other_a=gum.DiscretizedVariable("a","a",2)
-    p=gum.Potential()
+    a = gum.LabelizedVariable("a", "a", 2)
+    other_a = gum.LabelizedVariable("a", "a", 2)
+    p = gum.Potential()
     p.add(a)
-    with self.assertRaise(gum.DuplicateElement):
-      p.add(a) # once again
-    with self.assertRaise(gum.DuplicateElement):
-      p.add(other_a) # with the same name
-
+    with self.assertRaises(gum.DuplicateElement):
+      p.add(a)  # once again
+    with self.assertRaises(gum.DuplicateElement):
+      p.add(other_a)  # with the same name
 
   def testVariableDeletion(self):
     pot = gum.Potential()
@@ -645,32 +643,35 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.FatalError):
       res = r.KL(p)
 
-    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7,2) + 0.5 * math.log(0.5 / 0.3,2), 1e-5)
-    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5,2) + 0.3 * math.log(0.3 / 0.5,2), 1e-5)
+    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7, 2) + 0.5 * math.log(0.5 / 0.3, 2), 1e-5)
+    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5, 2) + 0.3 * math.log(0.3 / 0.5, 2), 1e-5)
 
   def testVariableAccessor(self):
     v = gum.LabelizedVariable("v", "v", 2)
     w = gum.LabelizedVariable("w", "w", 2)
-    p=gum.Potential().add(v).add(w)
-    self.assertEquals(p.variable(0),p.variable('v'))
-    self.assertEquals(p.variable(1),p.variable('w'))
-    self.assertNotEqual(p.variable(1),p.variable('v'))
-    self.assertNotEqual(p.variable(0),p.variable('w'))
+    p = gum.Potential().add(v).add(w)
+    self.assertEquals(p.variable(0), p.variable('v'))
+    self.assertEquals(p.variable(1), p.variable('w'))
+    self.assertNotEqual(p.variable(1), p.variable('v'))
+    self.assertNotEqual(p.variable(0), p.variable('w'))
 
     with self.assertRaises(IndexError):
-      x=p.variable("zz")
+      x = p.variable("zz")
 
   def testFillWithPotential(self):
-    bn=gum.fastBN("A->B->C")
-    pABC=bn.cpt("A")*bn.cpt("B")*bn.cpt("C")
+    bn = gum.fastBN("A->B->C")
+    pABC = bn.cpt("A") * bn.cpt("B") * bn.cpt("C")
 
-    bn2=gum.fastBN("A->B->C")
+    bn2 = gum.fastBN("A->B->C")
     bn2.cpt("A").fillWith(bn.cpt("A"))
-    bn2.cpt("B").fillWith(pABC.margSumIn(["A","B"]/pABC.margSumIn(["A"])))
-    bn2.cpt("C").fillWith(pABC.margSumIn(["B","C"]/pABC.margSumIn(["B"])))
-    pABC2=bn2.cpt("A")*bn2.cpt("B")*bn2.cpt("C")
+    bn2.cpt("B").fillWith(pABC.margSumIn(["A", "B"]) / pABC.margSumIn(["A"]))
+    bn2.cpt("C").fillWith(pABC.margSumIn(["B", "C"]) / pABC.margSumIn(["B"]))
+    pABC2 = (bn2.cpt("A") * bn2.cpt("B") * bn2.cpt("C"))
 
-    self.assertEquals(pABC2,pABC)
+    self.assertAlmostEquals(np.max(pABC2.reorganize(['A', 'B', 'C']).toarray() -
+                                   pABC.reorganize(['A', 'B', 'C']).toarray()), 0)
+    self.assertAlmostEquals(np.max(pABC.reorganize(['A', 'B', 'C']).toarray() -
+                                   pABC2.reorganize(['A', 'B', 'C']).toarray()), 0)
 
 
 ts = unittest.TestSuite()

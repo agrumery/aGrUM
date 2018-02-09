@@ -8853,6 +8853,7 @@ class Potential_double(_object):
 
     def fillWith(self, *args):
         """
+        fillWith(self, src) -> Potential_double
         fillWith(self, v) -> Potential_double
         fillWith(self, v) -> Potential_double
 
@@ -8861,8 +8862,12 @@ class Potential_double(_object):
 
         Parameters
         ----------
-        v : list
+        v : list or Potential
             a list containing the values to fill the Potential with.
+
+        Warning
+        -------
+            if v is a Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
 
         Returns
         -------
@@ -8871,7 +8876,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-            SizeError Raised if v size's does not matches the domain size. 
+            SizeError Raised if v size's does not matches the domain size.
 
         """
         val = _pyAgrum.Potential_double_fillWith(self, *args)
@@ -8967,7 +8972,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-          FatalError raised if a zero is found in p or the potential and not in the other. 
+          FatalError raised if a zero is found in p or the potential and not in the other.
 
         """
         return _pyAgrum.Potential_double_KL(self, p)
@@ -8992,7 +8997,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-        FatalError raised if a zero is found in p or this and not in the other. 
+        FatalError raised if a zero is found in p or this and not in the other.
 
         """
         return _pyAgrum.Potential_double_fastKL(self, p)
@@ -9196,7 +9201,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-        InvalidArgument raised if the var is not in the potential 
+        InvalidArgument raised if the var is not in the potential
 
         """
         return _pyAgrum.Potential_double_putFirst(self, varname)
@@ -9519,7 +9524,7 @@ class Potential_double(_object):
         if self.empty():
             self.fill(value)
             self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
-            return 
+            return
 
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
@@ -9606,7 +9611,7 @@ class Potential_double(_object):
         Returns
         -------
         bool
-            Returns true if no variable is in the potential. 
+            Returns true if no variable is in the potential.
 
         """
         return _pyAgrum.Potential_double_empty(self)
@@ -9624,11 +9629,11 @@ class Potential_double(_object):
 
         Returns
         -------
-            Returns the index of a variable. 
+            Returns the index of a variable.
 
         Warnigs
         -------
-            NotFound raised if v is not in this multidimensional matrix. 
+            NotFound raised if v is not in this multidimensional matrix.
 
         """
         return _pyAgrum.Potential_double_pos(self, v)
@@ -9661,7 +9666,7 @@ class Potential_double(_object):
         Returns
         -------
         int
-          the number of vars in the multidimensional container. 
+          the number of vars in the multidimensional container.
 
         """
         return _pyAgrum.Potential_double_nbrDim(self)
@@ -9675,16 +9680,16 @@ class Potential_double(_object):
 
         Parameters
         ----------
-        i : int 
+        i : int
           An index of this multidimensional matrix.
 
         Returns
         -------
-          the varible at the ith index 
+          the varible at the ith index
 
         Warnings
         --------
-          NotFound raised if i does not reference a variable in this multidimensional matrix. 
+          NotFound raised if i does not reference a variable in this multidimensional matrix.
 
         """
         return _pyAgrum.Potential_double_variable(self, *args)
@@ -9741,7 +9746,7 @@ class Potential_double(_object):
 
         Warnings
         --------
-        IndexError raised if the var is not in the potential 
+        IndexError raised if the var is not in the potential
 
         """
         val = _pyAgrum.Potential_double_remove(self, var)

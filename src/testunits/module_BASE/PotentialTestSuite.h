@@ -948,22 +948,55 @@ namespace gum_tests {
     }
 
     void testFillWithPotentialMethod() {
-      try {
-        gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
-        gum::LabelizedVariable vv("v", "v", 2), ww("w", "w", 3);
-        gum::Potential< int >  p;
-        p.add(v);
-        p.add(w);
-        gum::Potential< int > pp;
-        pp.add(ww);
-        pp.add(vv);
-        GUM_TRACE(p.domainSize());
-        p.fillWith({1, 2, 3, 4, 5, 6});
-        pp.fillWith(p);
-        GUM_TRACE(pp);
-      } catch (gum::Exception& e) {
-        GUM_SHOWERROR(e);
-      }
+      gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
+      gum::LabelizedVariable z("z", "z", 2);
+      gum::LabelizedVariable vv("v", "v", 2), ww("w", "w", 3);
+      gum::LabelizedVariable vvv("v", "v", 3), www("w", "w", 2);
+
+      gum::Potential< int > p;
+      p.add(v);
+      p.add(w);
+
+      gum::Potential< int > pp;
+      pp.add(ww);
+      pp.add(vv);
+
+
+      TS_ASSERT_EQUALS(p.domainSize(), gum::Size(6));
+      TS_ASSERT_EQUALS(pp.domainSize(), gum::Size(6));
+
+      p.fillWith({1, 2, 3, 4, 5, 6});
+      pp.fillWith(p);
+      gum::Instantiation Ip(p);
+      gum::Instantiation Ipp;
+      Ipp.add(vv);
+      Ipp.add(ww);
+      Ipp.setFirst();
+      for (Ip.setFirst(); !Ip.end(); ++Ip, ++Ipp)
+        try {
+          auto vp = p[Ip];
+          auto vpp = pp[Ipp];
+          TS_ASSERT_EQUALS(vp, vpp);
+        } catch (gum::Exception& e) {
+          GUM_SHOWERROR(e);
+        }
+
+      // errors
+      gum::Potential< int > bad_p;
+      bad_p.add(w);
+      TS_ASSERT_THROWS(bad_p.fillWith(p), gum::InvalidArgument);
+
+      gum::Potential< int > bad_p2;
+      bad_p2.add(vvv);
+      bad_p2.add(www);
+      TS_ASSERT_THROWS(bad_p2.fillWith(p), gum::OutOfBounds);
+
+
+      gum::Potential< int > bad_p3;
+      bad_p3.add(w);
+      bad_p3.add(z);
+      // TS_GUM_ASSERT_THROWS_NOTHING(bad_p3.fillWith(p));
+      TS_ASSERT_THROWS(bad_p3.fillWith(p), gum::NotFound  );
     }
   };
 }
