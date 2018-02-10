@@ -8862,12 +8862,13 @@ class Potential_double(_object):
 
         Parameters
         ----------
-        v : list or Potential
-            a list containing the values to fill the Potential with.
+        v : number or list or pyAgrum.Potential the number of parameters of the Potential
+            a value or a list/pyAgrum.Potential containing the values to fill the Potential with.
 
         Warning
         -------
-            if v is a Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
+            if v is a list, the size of the list must be the
+            if v is a pyAgrum.Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
 
         Returns
         -------
@@ -9531,7 +9532,7 @@ class Potential_double(_object):
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
 
 
 
@@ -9598,6 +9599,7 @@ class Potential_double(_object):
         val = _pyAgrum.Potential_double_set(self, i, value)
 
         self._notSync=True
+        return self
 
 
         return val
@@ -9693,40 +9695,6 @@ class Potential_double(_object):
 
         """
         return _pyAgrum.Potential_double_variable(self, *args)
-
-
-    def populate(self, v: 'Vector_double') -> "void":
-        """
-        populate(self, v)
-
-
-        Warnings
-        --------
-        See fillWith to fill the potential.
-
-        """
-        return _pyAgrum.Potential_double_populate(self, v)
-
-
-    def fill(self, d: 'double const &') -> "void":
-        """
-        fill(self, d)
-
-
-        Automatically fills the potential with v.
-
-        Parameters
-        ----------
-        v : double
-            the desired value of the Potential.
-
-        Returns
-        -------
-        pyAgrum.Potential
-              a reference to the modified potential.
-
-        """
-        return _pyAgrum.Potential_double_fill(self, d)
 
 
     def remove(self, var: 'DiscreteVariable') -> "void":
@@ -9994,16 +9962,6 @@ class UtilityTable_double(_object):
         variable(self, name) -> DiscreteVariable
         """
         return _pyAgrum.UtilityTable_double_variable(self, *args)
-
-
-    def populate(self, v: 'Vector_double') -> "void":
-        """populate(self, v)"""
-        return _pyAgrum.UtilityTable_double_populate(self, v)
-
-
-    def fill(self, d: 'double const &') -> "void":
-        """fill(self, d)"""
-        return _pyAgrum.UtilityTable_double_fill(self, d)
 
 
     def remove(self, var: 'DiscreteVariable') -> "void":

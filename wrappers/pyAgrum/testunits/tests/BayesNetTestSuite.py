@@ -30,7 +30,7 @@ class BayesNetTestCase(pyAgrumTestCase):
     bn.addArc(idList[3], idList[4]);
     bn.addArc(idList[1], idList[4]);
 
-  def fill(self, bn, idList):
+  def fillBN(self, bn, idList):
     self.fillTopo(bn, idList)
 
     bn.cpt(idList[0]).fillWith([0.2, 0.8])
@@ -214,7 +214,7 @@ class TestFeatures(BayesNetTestCase):
   def testSomeFunctions(self):
     bn = gum.BayesNet()
     idList = []
-    self.fill(bn, idList)
+    self.fillBN(bn, idList)
 
     self.assertEquals(bn.maxVarDomainSize(), 3)
     self.assertEquals(bn.minParam(), 0.0)

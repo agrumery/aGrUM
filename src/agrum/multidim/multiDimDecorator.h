@@ -187,26 +187,6 @@ namespace gum {
     virtual void populate(const std::vector< GUM_SCALAR >& v) const final;
 
     /**
-     * @brief Automatically fills this MultiDimContainer with the values in
-     * l.
-     *
-     * The order used to fill this MultiDimContainer is the same as with an
-     * instantiation over it.
-     * @code
-     * Size cpt = 0;
-     * Instantiation i( *this );
-     * for (i.setFirst(); !i.end(); ++i, ++cpt) {
-     *   set(i, v[cpt]);
-     * }
-     * @endcode
-     *
-     * @param l contains the data.
-     * @throw SizeError Raised if l size's does not matches this
-     * MultiDimContainer domain size.
-     */
-    virtual void populate(std::initializer_list< GUM_SCALAR > l) const final;
-
-    /**
      * @brief Apply a function on every element of the container
      * @param f the function to apply
      */

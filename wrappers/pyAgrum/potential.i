@@ -30,6 +30,8 @@ CHANGE_THEN_RETURN_SELF(sq)
 CHANGE_THEN_RETURN_SELF(scale)
 CHANGE_THEN_RETURN_SELF(translate)
 CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
+CHANGE_THEN_RETURN_SELF(fillWith)
+CHANGE_THEN_RETURN_SELF(set)
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::margSumOut(const Set<const DiscreteVariable*>& del_vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::margProdOut(const Set<const DiscreteVariable*>& del_vars) const;
@@ -267,7 +269,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
 %}
 
 

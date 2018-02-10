@@ -589,7 +589,7 @@ class TestOperators(pyAgrumTestCase):
     self.assertTrue(p == q)
 
     p2 = gum.Potential()
-    p2.add(a).add(b).fill(0)
+    p2.add(a).add(b).fillWith(0)
 
     with self.assertRaises(gum.FatalError):
       p2.normalizeAsCPT()

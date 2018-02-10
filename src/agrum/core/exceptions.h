@@ -24,7 +24,7 @@
  */
 #ifndef GUM_EXCEPTIONS_H
 #define GUM_EXCEPTIONS_H
-// WARNING : Do not include this file directlty : instead include
+// WARNING : Do not include this file directly : instead include
 // <agrum/config.h>
 
 #include <iomanip>
@@ -33,6 +33,16 @@
 
 #include <agrum/core/types.h>
 
+#ifdef SWIG
+#define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
+#define GUM_ERROR(type, msg) \
+  { throw(type(msg)); }
+#define GUM_SHOWERROR(e)                                                      \
+  {                                                                           \
+    std::cout << std::endl                                                    \
+              << (e).errorType() << " : " << (e).errorContent() << std::endl; \
+  }
+#else
 #ifdef NDEBUG
 #define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
 #define GUM_ERROR(type, msg)                                    \
@@ -57,15 +67,16 @@
     throw(type(                                                                 \
       gum::__createMsg(__FILE__, __FUNCTION__, __LINE__, __error__str.str()))); \
   }
-#define GUM_SHOWERROR(e)                                               \
-  {                                                                    \
-    std::cout << std::endl                                             \
-              << __FILE__ << ":" << __LINE__ << " " << (e).errorType() \
-              << " from " << std::endl                                 \
-              << (e).errorContent() << std::endl;                      \
-    std::cout << (e).errorCallStack() << std::endl;                    \
+#define GUM_SHOWERROR(e)                                              \
+  {                                                                   \
+    #std::cout << std::endl                                           \
+               << __FILE__ << ":" << __LINE__ << " "                  \
+               << (e).errorType() << " from " << std::endl            \
+                                  << (e).errorContent() << std::endl; \
+    std::cout << (e).errorCallStack() << std::endl;                   \
   }
 #endif  // NDEBUG
+#endif  // SWIG
 
 #define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)       \
   class TYPE : public SUPERCLASS {                  \

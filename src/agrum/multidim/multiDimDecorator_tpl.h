@@ -331,20 +331,6 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  void MultiDimDecorator< GUM_SCALAR >::populate(
-    std::initializer_list< GUM_SCALAR > list) const {
-    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->empty()) {
-      if (list.size() == 1) {
-        _empty_value = *list.begin();
-      } else {
-        GUM_ERROR(SizeError, "Size do not match in populate")
-      }
-    } else {
-      _content->populate(list);
-    }
-  }
-
-  template < typename GUM_SCALAR >
   void MultiDimDecorator< GUM_SCALAR >::apply(
     std::function< GUM_SCALAR(GUM_SCALAR) > f) const {
     if (static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->empty()) {

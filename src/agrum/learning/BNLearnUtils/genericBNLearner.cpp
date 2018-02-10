@@ -758,7 +758,7 @@ namespace gum {
     }
 
     /// prepares the initial graph for 3off2
-    MixedGraph genericBNLearner::__prepare_3off2(){
+    MixedGraph genericBNLearner::__prepare_3off2() {
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
       for (Size i = 0; i < __score_database.modalities().size(); ++i) {
@@ -767,7 +767,7 @@ namespace gum {
           mgraph.addEdge(j, i);
         }
       }
-      
+
       // translating the constraints for 3off2
       HashTable< std::pair< Idx, Idx >, char > initial_marks;
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
@@ -780,14 +780,14 @@ namespace gum {
         initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
       __3off2.addConstraints(initial_marks);
-       // create the mutual entropy object
+      // create the mutual entropy object
       if (__mutual_info == nullptr) {
-          this->useNML();
+        this->useNML();
       }
-      
+
       return mgraph;
     }
-    
+
     MixedGraph genericBNLearner::learnMixedStructure() {
       if (__selected_algo != AlgoType::THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
@@ -833,7 +833,7 @@ namespace gum {
           BNLearnerListener listener(this, __3off2);
           // create the mixedGraph
           MixedGraph mgraph = this->__prepare_3off2();
-          
+
           return __3off2.learnStructure(*__mutual_info, mgraph);
         }
         // ========================================================================

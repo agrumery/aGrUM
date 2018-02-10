@@ -132,33 +132,19 @@ Warnings
 FatalError raised if a zero is found in p or this and not in the other.
 "
 
-%feature("docstring") gum::Potential::fill
-"
-Automatically fills the potential with v.
-
-Parameters
-----------
-v : double
-    the desired value of the Potential.
-
-Returns
--------
-pyAgrum.Potential
-      a reference to the modified potential.
-"
-
 %feature("docstring") gum::Potential::fillWith
 "
 Automatically fills the potential with the values in v.
 
 Parameters
 ----------
-v : list or Potential
-    a list containing the values to fill the Potential with.
+v : number or list or pyAgrum.Potential the number of parameters of the Potential
+    a value or a list/pyAgrum.Potential containing the values to fill the Potential with.
 
 Warning
 -------
-    if v is a Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
+    if v is a list, the size of the list must be the
+    if v is a pyAgrum.Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
 
 Returns
 -------
@@ -168,13 +154,6 @@ pyAgrum.Potential
 Warnings
 --------
     SizeError Raised if v size's does not matches the domain size.
-"
-
-%feature("docstring") gum::Potential::populate
-"
-Warnings
---------
-See fillWith to fill the potential.
 "
 
 %feature("docstring") gum::Potential::get
