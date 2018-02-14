@@ -1,6 +1,6 @@
 #
 # aGrUM clang-format specification (version clang-format-3.8)
-# Pierre-Henri Wuillemin - september 2016
+# Pierre-Henri Wuillemin - 2016-2018
 #
 BasedOnStyle: LLVM
 
@@ -12,6 +12,8 @@ MaxEmptyLinesToKeep: 2
 IndentWidth: 2
 ContinuationIndentWidth: 2
 UseTab: Never
+# for future
+#IndentPPDirectives: AfterHash
 
 AccessModifierOffset: 0
 IndentCaseLabels: true

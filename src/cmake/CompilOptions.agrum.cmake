@@ -1,5 +1,3 @@
-option(BUILD_SHARED_LIBS "shared|static libs" ON)
-
 set(AGRUM_INLINING_POLICY "")#"-fno-inline-small-functions")
 
 include (CheckCXXCompilerFlag)
@@ -37,7 +35,6 @@ endif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
 
 set(AGRUM_VERSION "${AGRUM_VERSION_MAJOR}.${AGRUM_VERSION_MINOR}.${AGRUM_VERSION_PATCH}")
 
-#-DNOMINMAX -BIGOBJ is for this stupid mvsc (@todo should be added only if WINDOWS ?)
 if (MSVC)
 	set(MVSC_FLAGS "/DNOMINMAX /bigobj /D_CRT_SECURE_NO_WARNINGS /D_CRT_NONSTDC_NO_DEPRECATE")
 else()
@@ -69,7 +66,8 @@ endif ("${CMAKE_VERBOSE_MAKEFILE}" STREQUAL "ON")
 
 if (GUM_COVERAGE)
   if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} --coverage")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer --coverage")
+    set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fno-omit-frame-pointer --coverage")
     set(GUM_COVERAGE_LINK_LIBRARY "gcov")
   else ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     message(FATAL_ERROR "** Configuration error: code coverage is only supported with GNU GCC.")
@@ -77,5 +75,14 @@ if (GUM_COVERAGE)
 else (GUM_COVERAGE)
   set (GUM_COVERAGE_LINK_LIBRARY "" )
 endif(GUM_COVERAGE)
+
+if (BUILD_PYTHON OR BUILD_JAVA)
+    message("SETTING OPTIONS FOR WRAPPERS")
+    set(CMAKE_CXX_FLAGS_DEBUG " -DSWIG ${CMAKE_CXX_FLAGS_DEBUG}")
+    set(CMAKE_C_FLAGS_DEBUG " -DSWIG ${CMAKE_C_FLAGS_DEBUG}")
+
+    set(CMAKE_CXX_FLAGS_RELEASE " -DSWIG ${CMAKE_CXX_FLAGS_RELEASE}")
+    set(CMAKE_C_FLAGS_RELEASE " -DSWIG ${CMAKE_C_FLAGS_RELEASE}")
+endif ()
 
 set(CMAKE_CXX_FLAGS "${AGRUM_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
