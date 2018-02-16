@@ -155,7 +155,7 @@ namespace gum {
   O3prmBNWriter< GUM_SCALAR >::__extractType(const IBayesNet< GUM_SCALAR >& bn,
                                              NodeId                         node) {
     switch (bn.variable(node).varType()) {
-    case gum::VarType::Discretized: {
+      case gum::VarType::Discretized: {
         auto double_var = dynamic_cast< const DiscretizedVariable< double >* >(
           &(bn.variable(node)));
         if (double_var != nullptr) {
@@ -204,9 +204,9 @@ namespace gum {
   INLINE std::string
   O3prmBNWriter< GUM_SCALAR >::__extractDiscretizedType(const VARTYPE* var) {
     std::stringstream str;
-    if (var->ticks().size() > 3) {
+    if (var->ticks().size() >= 3) {
       str << "real(" << var->ticks()[0];
-      for (size_t i = 1; i < var->ticks().size() - 1; ++i) {
+      for (size_t i = 1; i < var->ticks().size(); ++i) {
         str << ", " << var->ticks()[i];
       }
       str << ")";
