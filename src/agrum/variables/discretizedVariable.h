@@ -30,9 +30,6 @@
 #include <agrum/variables/discreteVariable.h>
 
 namespace gum {
-
-#define INC_MARKS_ARRAY 4
-
   /**
    * @class DiscretizedVariable
    * @brief Class for discretized random variable.
@@ -132,8 +129,8 @@ namespace gum {
      * @param aDRV a labelized discrete random variable
      * @return a reference to *this
      **/
-    const DiscretizedVariable< T_TICKS >&
-    operator=(DiscretizedVariable< T_TICKS >& aDRV);
+    DiscretizedVariable< T_TICKS >&
+    operator=(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      *

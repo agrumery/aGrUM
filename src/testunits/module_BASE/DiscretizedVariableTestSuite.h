@@ -161,6 +161,10 @@ namespace gum_tests {
                     TS_ASSERT_EQUALS(d.domainSize(), (gum::Size)5);
                     TS_ASSERT_EQUALS(d.toString(),
                                      "d<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>");
+                    int s = 1;
+                    for (auto tick : d.ticks()) {
+                      TS_ASSERT_EQUALS(tick, s++);
+                    }
                   }
                 }
     }
