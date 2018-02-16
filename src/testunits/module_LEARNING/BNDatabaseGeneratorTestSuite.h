@@ -217,7 +217,7 @@ namespace gum_tests {
       gum::Size nbSamples2 = nbSamples1 * 100;
       gum::Size nbSamples3 = nbSamples1 * 1000;
 
-      double ll_1, ll_2, ll_3;
+      double ll_1 = 0, ll_2 = 0, ll_3 = 0;
       double tolerance = 0.1;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;

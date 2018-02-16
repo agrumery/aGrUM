@@ -89,12 +89,12 @@ namespace gum_tests {
       std::string file = GET_RESSOURCES_PATH("");
 
       gum::FMDP< float >           fmdp(true);
-      gum::FMDPDatReader< float >* reader;
+      gum::FMDPDatReader< float >* reader = nullptr;
 
       TS_GUM_ASSERT_THROWS_NOTHING(reader =
                                      new gum::FMDPDatReader< float >(&fmdp, file));
 
-      TS_GUM_ASSERT_THROWS_NOTHING(delete reader);
+      TS_GUM_ASSERT_THROWS_NOTHING(if (reader != nullptr) delete reader);
     }
 
     void testReadFileCoffeeRobot() {
