@@ -48,7 +48,7 @@ class CSVGenerator:
   """
 
   def __init__(self):
-    print("** Class 'CSVGenerator' is is deprecated in pyAgrum>0.12.0. Please use gum.genereCSV instead.")
+    print("** Class 'CSVGenerator' is is deprecated in pyAgrum>0.12.0. Please use gum.generateCSV instead.")
     self._parents = {}
     self._probas = {}
 
@@ -61,7 +61,7 @@ class CSVGenerator:
     ----------
     tab : list
       a probability table
-    
+
     Returns
     -------
     tuple
@@ -87,7 +87,7 @@ class CSVGenerator:
     ----------
     bn : pyAgrum.BayesNet
       a Bayesian network
-    n : 
+    n :
       (int) a node id
     n :
       (str) a node name
@@ -114,11 +114,11 @@ class CSVGenerator:
     ----------
     bn : pyAgrum.BayesNet
       a Bayesian network
-    n : 
+    n :
       (int) a node id
     n :
       (str) a node name
-      
+
     Returns
     -------
     tuple
@@ -135,13 +135,13 @@ class CSVGenerator:
     ----------
     bn : pyAgrum.BayesNet
       a Bayesian network
-    node_id : int 
+    node_id : int
       a node id
     n : int
       a node id
     par : list
       the node's parents
-      
+
     Returns
     -------
     list
@@ -275,7 +275,7 @@ def generateCSV(name_in, name_out, n, visible=False, with_labels=True):
     the log2-likelihood of the n samples database
 
   """
-  print("** The function 'gum.lib.bn2csv.generateCSV' is deprecated in pyAgrum>0.12.0. Please use gum.genereCSV instead.")
+  print("** The function 'gum.lib.bn2csv.generateCSV' is deprecated in pyAgrum>0.12.0. Please use gum.generateCSV instead.")
   g = CSVGenerator()
   return g.proceed(name_in, name_out, n, visible, with_labels)
 
@@ -285,7 +285,7 @@ def module_help(exit_value=1):
   """
   print(os.path.basename(sys.argv[0]), "src.{" + gum.availableBNExts() + "} nbr [dst.csv]")
   sys.exit(exit_value)
-print("** The library 'gum.lib.bn2csv' is deprecated in pyAgrum>0.12.0. Please use gum.genereCSV instead.")
+print("** The library 'gum.lib.bn2csv' is deprecated in pyAgrum>0.12.0. Please use gum.generateCSV instead.")
 
 if __name__ == "__main__":
   pyAgrum_header("2011-2017")

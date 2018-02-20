@@ -24,4 +24,4 @@
 %rename ( pop_front ) gum::List::popFront();
 %rename ( pop_back ) gum::List::popBack();
 
-%rename ( __str__ ) *::toString() const;
+%rename ( __repr__ ) *::toString() const;
