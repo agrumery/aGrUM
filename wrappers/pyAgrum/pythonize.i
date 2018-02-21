@@ -24,4 +24,7 @@
 %rename ( pop_front ) gum::List::popFront();
 %rename ( pop_back ) gum::List::popBack();
 
+// get rid of the swig default __repr__ 
+// (s.t. "<Swig Object of type 'gum::Potential< double > *' at 0x7ffa44fa9570> >")
 %rename ( __repr__ ) *::toString() const;
+//%rename ( __str__ ) *::toString() const;

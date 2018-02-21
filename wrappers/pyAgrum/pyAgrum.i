@@ -8,9 +8,6 @@ interface generator."
 %feature("autodoc", "0");
 %include "docs.i"
 
-%ignore *::operator=;
-%ignore *::operator++;
-
 //317 : Specialization of non-template
 //320 : Explicit template instantiation ignored.
 //325 : Nested class not currently supported (Database ignored)
