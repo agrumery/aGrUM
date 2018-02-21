@@ -8,8 +8,15 @@ interface generator."
 %feature("autodoc", "0");
 %include "docs.i"
 
-#pragma SWIG nowarn=341,342 // The 'using' keyword in type aliasing is not fully supported yet.
-#pragma SWIG nowarn=320     // Explicit template instantiation ignored.
+%ignore *::operator=;
+%ignore *::operator++;
+
+//317 : Specialization of non-template
+//320 : Explicit template instantiation ignored.
+//325 : Nested class not currently supported (Database ignored)
+#pragma SWIG nowarn=320,317,325
+
+//#pragma SWIG nowarn=341,342 // The 'using' keyword in type aliasing is not fully supported yet.
 
 
 %begin %{
