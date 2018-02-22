@@ -2002,7 +2002,6 @@ class GumException(Exception):
     __setattr__ = lambda self, name, value: _swig_setattr(self, GumException, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, GumException, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -2020,9 +2019,9 @@ class GumException(Exception):
     def __del__(self):
         return None
 
-    def __str__(self):
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.GumException___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string const"""
+        return _pyAgrum.GumException___repr__(self)
 
 
     def errorContent(self):
@@ -3752,7 +3751,6 @@ class DiscreteVariable(Variable):
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
-    __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_DiscreteVariable
     def __del__(self):
         return None
@@ -3900,9 +3898,9 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_label(self, i)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.DiscreteVariable___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string const"""
+        return _pyAgrum.DiscreteVariable___repr__(self)
 
 
     def toStringWithDescription(self):
@@ -4813,7 +4811,6 @@ class DiGraph(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, DiGraph, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, DiGraph, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -4870,9 +4867,9 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_clear(self)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.DiGraph___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string const"""
+        return _pyAgrum.DiGraph___repr__(self)
 
 
     def toDot(self):
@@ -5283,7 +5280,6 @@ class UndiGraph(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, UndiGraph, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, UndiGraph, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -5340,9 +5336,9 @@ class UndiGraph(_object):
         return _pyAgrum.UndiGraph_clear(self)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.UndiGraph___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string const"""
+        return _pyAgrum.UndiGraph___repr__(self)
 
 
     def toDot(self):
@@ -5662,7 +5658,6 @@ class MixedGraph(UndiGraph, DiGraph):
     for _s in [UndiGraph, DiGraph]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, MixedGraph, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -5785,9 +5780,9 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph_toDot(self)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.MixedGraph___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string const"""
+        return _pyAgrum.MixedGraph___repr__(self)
 
 MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
 MixedGraph_swigregister(MixedGraph)
@@ -5817,7 +5812,6 @@ class CliqueGraph(UndiGraph):
     for _s in [UndiGraph]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, CliqueGraph, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -6089,9 +6083,9 @@ class CliqueGraph(UndiGraph):
         return _pyAgrum.CliqueGraph_isJoinTree(self)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.CliqueGraph___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string const"""
+        return _pyAgrum.CliqueGraph___repr__(self)
 
 
     def toDot(self):
@@ -6201,7 +6195,6 @@ class Instantiation(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, Instantiation, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Instantiation, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -6877,9 +6870,9 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_hamming(self)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string"""
-        return _pyAgrum.Instantiation___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.Instantiation___repr__(self)
 
 
     def reorder(self, *args):
@@ -8550,7 +8543,6 @@ class MultiDimContainer_double(_object):
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
-    __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_MultiDimContainer_double
     def __del__(self):
         return None
@@ -8617,9 +8609,9 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_newFactory(self)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.MultiDimContainer_double___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string const"""
+        return _pyAgrum.MultiDimContainer_double___repr__(self)
 
 
     def toString(self, i):
@@ -8690,7 +8682,6 @@ class Potential_double(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, Potential_double, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Potential_double, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -9133,9 +9124,9 @@ class Potential_double(_object):
 
 
 
-    def __str__(self):
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.Potential_double___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string const"""
+        return _pyAgrum.Potential_double___repr__(self)
 
 
     def extract(self, *args):
@@ -10003,7 +9994,6 @@ class IBayesNet_double(DAGmodel):
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
-    __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_IBayesNet_double
     def __del__(self):
         return None
@@ -10301,9 +10291,9 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_toDot(self)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string"""
-        return _pyAgrum.IBayesNet_double___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.IBayesNet_double___repr__(self)
 
 
     def ids(self):
@@ -23956,7 +23946,6 @@ class CredalNet_double(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, CredalNet_double, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, CredalNet_double, name)
-    __repr__ = _swig_repr
     NodeType_Precise = _pyAgrum.CredalNet_double_NodeType_Precise
     NodeType_Credal = _pyAgrum.CredalNet_double_NodeType_Credal
     NodeType_Vacuous = _pyAgrum.CredalNet_double_NodeType_Vacuous
@@ -24324,9 +24313,9 @@ class CredalNet_double(_object):
         return _pyAgrum.CredalNet_double_saveBNsMinMax(self, min_path, max_path)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string"""
-        return _pyAgrum.CredalNet_double___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.CredalNet_double___repr__(self)
 
 
     def computeCPTMinMax(self):
@@ -25526,7 +25515,6 @@ class InfluenceDiagram_double(DAGmodel):
     for _s in [DAGmodel]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, InfluenceDiagram_double, name)
-    __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_InfluenceDiagram_double
     def __del__(self):
         return None
@@ -25556,9 +25544,9 @@ class InfluenceDiagram_double(DAGmodel):
         return _pyAgrum.InfluenceDiagram_double_toDot(self)
 
 
-    def __str__(self):
-        """__str__(self) -> std::string"""
-        return _pyAgrum.InfluenceDiagram_double___str__(self)
+    def __repr__(self):
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.InfluenceDiagram_double___repr__(self)
 
 
     def cpt(self, varId):
