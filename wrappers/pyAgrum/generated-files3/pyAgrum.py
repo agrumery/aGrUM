@@ -9865,6 +9865,15 @@ class UtilityTable_double(_object):
         return _pyAgrum.UtilityTable_double_newFactory(self)
 
 
+    def fillWith(self, *args) -> "gum::UtilityTable< double > const &":
+        """
+        fillWith(self, src) -> UtilityTable_double
+        fillWith(self, v) -> UtilityTable_double
+        fillWith(self, v) -> UtilityTable_double
+        """
+        return _pyAgrum.UtilityTable_double_fillWith(self, *args)
+
+
     def variablesSequence(self):
         varlist = []
         for i in range(0, self.nbrDim()):
@@ -9981,7 +9990,7 @@ class UtilityTable_double(_object):
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
 
 
 
