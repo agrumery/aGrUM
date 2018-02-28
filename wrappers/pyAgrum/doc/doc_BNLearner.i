@@ -14,7 +14,7 @@ filename: str
 src : pyAgrum.BayesNet
 	the Bayesian network used to find thoes modalities
 parse_database : bool
-	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables. 
+	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables.
 learner : pyAgrum.BNLearner
 	the BNLearner to copy
 "
@@ -28,7 +28,7 @@ asIApproximationSchemeConfiguration
 
 %feature("docstring") gum::learning::BNLearner::learnBN
 "
-learn a BayesNet from a file (must have read the db before) 
+learn a BayesNet from a file (must have read the db before)
 
 Returns
 -------
@@ -45,7 +45,7 @@ Parameters
 dag : pyAgrum.DAG
 bn : pyAgrum.BayesNet
 take_into_account_score : bool
-	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX () 
+	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX ()
 
 Returns
 -------
@@ -69,6 +69,11 @@ dag : pyAgrum.DAG
 	an initial DAG structure
 "
 
+%feature("docstring") gum::learning::BNLearner::useMIIC
+"
+Indicate that we wish to use MIIC.
+"
+
 %feature("docstring") gum::learning::BNLearner::use3off2
 "
 Indicate that we wish to use 3off2.
@@ -76,36 +81,36 @@ Indicate that we wish to use 3off2.
 
 %feature("docstring") gum::learning::BNLearner::useNML
 "
-Indicate that we wish to use the NML correction for 3off2
+Indicate that we wish to use the NML correction for 3off2 or MIIC
 "
 
 %feature("docstring") gum::learning::BNLearner::useMDL
 "
-Indicate that we wish to use the MDL correction for 3off2
+Indicate that we wish to use the MDL correction for 3off2 or MIIC
 "
 
 %feature("docstring") gum::learning::BNLearner::useNoCorr
 "
-Indicate that we wish to use the NoCorr correction for 3off2
+Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
 "
 
 %feature("docstring") gum::learning::BNLearner::learnMixedStructure
 "
 Warnings
 --------
-learner must be using 3off2 algorithm
+learner must be using 3off2 or MIIC algorithm
 
 Returns
 -------
-pyAgrum.MixedGraph
-	the learned mixed structure
+pyAgrum.EssentialGraph
+	the learned structure as an EssentialGraph
 "
 
 %feature("docstring") gum::learning::BNLearner::latentVariables
 "
 Warnings
 --------
-learner must be using 3off2 algorithm
+learner must be using 3off2 or MIIC algorithm
 
 Returns
 -------

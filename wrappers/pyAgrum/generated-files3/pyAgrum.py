@@ -4944,18 +4944,9 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph___str__(self)
 
 
-    def ids(self) -> "PyObject *":
-        """
-        ids(self) -> PyObject *
-
-
-        Returns
-        -------
-        List
-            the list of ids
-
-        """
-        return _pyAgrum.DiGraph_ids(self)
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.DiGraph_nodes(self)
 
 
     def arcs(self) -> "PyObject *":
@@ -5439,18 +5430,9 @@ class UndiGraph(_object):
         return _pyAgrum.UndiGraph___str__(self)
 
 
-    def ids(self) -> "PyObject *":
-        """
-        ids(self) -> PyObject *
-
-
-        Returns
-        -------
-        List
-            the list of ids
-
-        """
-        return _pyAgrum.UndiGraph_ids(self)
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.UndiGraph_nodes(self)
 
 
     def edges(self) -> "PyObject *":
@@ -7102,6 +7084,11 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_empty(self)
 
 
+    def nodes(self) -> "gum::NodeGraphPart const &":
+        """nodes(self) -> NodeGraphPart"""
+        return _pyAgrum.DAGmodel_nodes(self)
+
+
     def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
         """
         variable(self, id) -> DiscreteVariable
@@ -7311,9 +7298,14 @@ class EssentialGraph(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, EssentialGraph, name)
     __repr__ = _swig_repr
 
-    def __init__(self, m: 'DAGmodel'):
-        """__init__(self, m) -> EssentialGraph"""
-        this = _pyAgrum.new_EssentialGraph(m)
+    def __init__(self, *args):
+        """
+        __init__(self) -> EssentialGraph
+        __init__(self, m) -> EssentialGraph
+        __init__(self, m, mg) -> EssentialGraph
+        __init__(self, g) -> EssentialGraph
+        """
+        this = _pyAgrum.new_EssentialGraph(*args)
         try:
             self.this.append(this)
         except __builtin__.Exception:
@@ -7350,63 +7342,6 @@ class EssentialGraph(_object):
         return _pyAgrum.EssentialGraph_toDot(self)
 
 
-    def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        parents(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.EssentialGraph_parents(self, id)
-
-
-    def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        children(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.EssentialGraph_children(self, id)
-
-
-    def neighbours(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        neighbours(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id : int
-            the id of the checked node
-
-        Returns
-        -------
-        Set
-            The set of edges adjacent to the given node 
-
-        """
-        return _pyAgrum.EssentialGraph_neighbours(self, id)
-
-
     def sizeArcs(self) -> "gum::Size":
         """
         sizeArcs(self) -> gum::Size
@@ -7421,20 +7356,6 @@ class EssentialGraph(_object):
         return _pyAgrum.EssentialGraph_sizeArcs(self)
 
 
-    def arcs(self) -> "gum::ArcSet const &":
-        """
-        arcs(self) -> gum::ArcSet const &
-
-
-        Returns
-        -------
-        list
-        	The lisf of arcs in the EssentialGraph
-
-        """
-        return _pyAgrum.EssentialGraph_arcs(self)
-
-
     def sizeEdges(self) -> "gum::Size":
         """
         sizeEdges(self) -> gum::Size
@@ -7447,20 +7368,6 @@ class EssentialGraph(_object):
 
         """
         return _pyAgrum.EssentialGraph_sizeEdges(self)
-
-
-    def edges(self) -> "gum::EdgeSet const &":
-        """
-        edges(self) -> gum::EdgeSet const &
-
-
-        Returns
-        -------
-        List
-          the list of the edges
-
-        """
-        return _pyAgrum.EssentialGraph_edges(self)
 
 
     def sizeNodes(self) -> "gum::Size":
@@ -7489,6 +7396,96 @@ class EssentialGraph(_object):
 
         """
         return _pyAgrum.EssentialGraph_size(self)
+
+
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.EssentialGraph_nodes(self)
+
+
+    def arcs(self) -> "PyObject *":
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the EssentialGraph
+
+        """
+        return _pyAgrum.EssentialGraph_arcs(self)
+
+
+    def parents(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.EssentialGraph_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.EssentialGraph_children(self, id)
+
+
+    def edges(self) -> "PyObject *":
+        """
+        edges(self) -> PyObject *
+
+
+        Returns
+        -------
+        List
+          the list of the edges
+
+        """
+        return _pyAgrum.EssentialGraph_edges(self)
+
+
+    def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        neighbours(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        Set
+            The set of edges adjacent to the given node 
+
+        """
+        return _pyAgrum.EssentialGraph_neighbours(self, id)
 
 EssentialGraph_swigregister = _pyAgrum.EssentialGraph_swigregister
 EssentialGraph_swigregister(EssentialGraph)
@@ -7544,44 +7541,6 @@ class MarkovBlanket(_object):
         return _pyAgrum.MarkovBlanket_toDot(self)
 
 
-    def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        parents(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.MarkovBlanket_parents(self, id)
-
-
-    def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        children(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.MarkovBlanket_children(self, id)
-
-
     def sizeArcs(self) -> "gum::Size":
         """
         sizeArcs(self) -> gum::Size
@@ -7594,20 +7553,6 @@ class MarkovBlanket(_object):
 
         """
         return _pyAgrum.MarkovBlanket_sizeArcs(self)
-
-
-    def arcs(self) -> "gum::ArcSet const &":
-        """
-        arcs(self) -> gum::ArcSet const &
-
-
-        Returns
-        -------
-        List
-        	the list of the arcs
-
-        """
-        return _pyAgrum.MarkovBlanket_arcs(self)
 
 
     def sizeNodes(self) -> "gum::Size":
@@ -7655,6 +7600,63 @@ class MarkovBlanket(_object):
 
         """
         return _pyAgrum.MarkovBlanket_hasSameStructure(self, other)
+
+
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.MarkovBlanket_nodes(self)
+
+
+    def arcs(self) -> "PyObject *":
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        List
+        	the list of the arcs
+
+        """
+        return _pyAgrum.MarkovBlanket_arcs(self)
+
+
+    def parents(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.MarkovBlanket_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.MarkovBlanket_children(self, id)
 
 MarkovBlanket_swigregister = _pyAgrum.MarkovBlanket_swigregister
 MarkovBlanket_swigregister(MarkovBlanket)
@@ -10394,18 +10396,9 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_toString(self)
 
 
-    def ids(self) -> "PyObject *":
-        """
-        ids(self) -> PyObject *
-
-
-        Returns
-        -------
-        list :
-        	The list variables ids.
-
-        """
-        return _pyAgrum.IBayesNet_double_ids(self)
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.IBayesNet_double_nodes(self)
 
 
     def names(self) -> "PyObject *":
@@ -10420,58 +10413,6 @@ class IBayesNet_double(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_double_names(self)
-
-
-    def arcs(self) -> "PyObject *":
-        """
-        arcs(self) -> PyObject *
-
-
-        Returns
-        -------
-        list
-        	The lisf of arcs in the IBayesNet
-
-        """
-        return _pyAgrum.IBayesNet_double_arcs(self)
-
-
-    def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        parents(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.IBayesNet_double_parents(self, id)
-
-
-    def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        children(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.IBayesNet_double_children(self, id)
 
 
     def minimalCondSet(self, *args) -> "PyObject *":
@@ -10500,6 +10441,58 @@ class IBayesNet_double(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_double_minimalCondSet(self, *args)
+
+
+    def arcs(self) -> "PyObject *":
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the IBayesNet
+
+        """
+        return _pyAgrum.IBayesNet_double_arcs(self)
+
+
+    def parents(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.IBayesNet_double_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.IBayesNet_double_children(self, id)
 
 IBayesNet_double_swigregister = _pyAgrum.IBayesNet_double_swigregister
 IBayesNet_double_swigregister(IBayesNet_double)
@@ -11489,112 +11482,6 @@ class BayesNet_double(IBayesNet_double):
 
         """
         return _pyAgrum.BayesNet_double_log10DomainSize(self)
-
-
-    def ids(self) -> "PyObject *":
-        """
-        ids(self) -> PyObject *
-
-
-        Returns
-        -------
-        list :
-        	The list variables ids.
-
-        """
-        return _pyAgrum.BayesNet_double_ids(self)
-
-
-    def names(self) -> "PyObject *":
-        """
-        names(self) -> PyObject *
-
-
-        Returns
-        -------
-        list
-        	The names of the graph variables
-
-        """
-        return _pyAgrum.BayesNet_double_names(self)
-
-
-    def arcs(self) -> "PyObject *":
-        """
-        arcs(self) -> PyObject *
-
-
-        Returns
-        -------
-        list
-        	The lisf of arcs in the IBayesNet
-
-        """
-        return _pyAgrum.BayesNet_double_arcs(self)
-
-
-    def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        parents(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.BayesNet_double_parents(self, id)
-
-
-    def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        children(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.BayesNet_double_children(self, id)
-
-
-    def minimalCondSet(self, *args) -> "PyObject *":
-        """
-        minimalCondSet(self, target, list) -> PyObject
-        minimalCondSet(self, targets, list) -> PyObject *
-
-
-        Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
-
-        Parameters
-        ----------
-        target : int
-        	The id of the target
-        targets : list
-        	The ids of the targets
-        list : list
-        	The list of available variables
-
-        Returns
-        -------
-        Set
-        	The minimal set of variables
-
-        """
-        return _pyAgrum.BayesNet_double_minimalCondSet(self, *args)
 
 
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
@@ -26621,7 +26508,7 @@ class BNLearner_double(_object):
     src : pyAgrum.BayesNet
     	the Bayesian network used to find thoes modalities
     parse_database : bool
-    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables. 
+    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables.
     learner : pyAgrum.BNLearner
     	the BNLearner to copy
 
@@ -26658,7 +26545,7 @@ class BNLearner_double(_object):
         learnBN(self) -> BayesNet_double
 
 
-        learn a BayesNet from a file (must have read the db before) 
+        learn a BayesNet from a file (must have read the db before)
 
         Returns
         -------
@@ -26684,7 +26571,7 @@ class BNLearner_double(_object):
         dag : pyAgrum.DAG
         bn : pyAgrum.BayesNet
         take_into_account_score : bool
-        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX () 
+        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX ()
 
         Returns
         -------
@@ -27385,12 +27272,23 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_use3off2(self)
 
 
+    def useMIIC(self) -> "void":
+        """
+        useMIIC(self)
+
+
+        Indicate that we wish to use MIIC.
+
+        """
+        return _pyAgrum.BNLearner_double_useMIIC(self)
+
+
     def useNML(self) -> "void":
         """
         useNML(self)
 
 
-        Indicate that we wish to use the NML correction for 3off2
+        Indicate that we wish to use the NML correction for 3off2 or MIIC
 
         """
         return _pyAgrum.BNLearner_double_useNML(self)
@@ -27401,7 +27299,7 @@ class BNLearner_double(_object):
         useMDL(self)
 
 
-        Indicate that we wish to use the MDL correction for 3off2
+        Indicate that we wish to use the MDL correction for 3off2 or MIIC
 
         """
         return _pyAgrum.BNLearner_double_useMDL(self)
@@ -27412,7 +27310,7 @@ class BNLearner_double(_object):
         useNoCorr(self)
 
 
-        Indicate that we wish to use the NoCorr correction for 3off2
+        Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
 
         """
         return _pyAgrum.BNLearner_double_useNoCorr(self)
@@ -27426,7 +27324,7 @@ class BNLearner_double(_object):
 
         Warnings
         --------
-        learner must be using 3off2 algorithm
+        learner must be using 3off2 or MIIC algorithm
 
         Returns
         -------
@@ -27444,15 +27342,25 @@ class BNLearner_double(_object):
 
         Warnings
         --------
-        learner must be using 3off2 algorithm
+        learner must be using 3off2 or MIIC algorithm
 
         Returns
         -------
-        pyAgrum.MixedGraph
-        	the learned mixed structure
+        pyAgrum.EssentialGraph
+        	the learned structure as an EssentialGraph
 
         """
-        return _pyAgrum.BNLearner_double_learnMixedStructure(self)
+        val = _pyAgrum.BNLearner_double_learnMixedStructure(self)
+
+        bn=BayesNet()
+        for i in range(len(self.names())):
+          bn.add(self.nameFromId(i),2)
+        ge=EssentialGraph(bn,val)
+        ge._bn=bn
+        return ge
+
+
+        return val
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)

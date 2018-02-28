@@ -369,7 +369,7 @@ namespace gum {
 
   /// check the equality between two DAGCycleDetectors
   INLINE bool DAGCycleDetector::operator==(const DAGCycleDetector& from) const {
-    return (  //( __dag == from.__dag ) &&
+    return (  //( __dagmodel == from.__dagmodel ) &&
       (__ancestors == from.__ancestors) && (__descendants == from.__descendants));
   }
 

@@ -52,7 +52,14 @@ namespace gum {
    */
   class EssentialGraph {
     public:
-    EssentialGraph(const DAGmodel& m);
+    EssentialGraph() = default;
+    // this constructor will build the essential graph
+    explicit EssentialGraph(const DAGmodel& m);
+    // this constructor will use mh as essential graphe for m
+    EssentialGraph(const DAGmodel& m, const MixedGraph& mg);
+    EssentialGraph(const EssentialGraph& g);
+    EssentialGraph& operator=(const EssentialGraph& g);
+
     ~EssentialGraph();
 
     /// @return a copy of the mixed graph
@@ -93,7 +100,7 @@ namespace gum {
     void __buildEssentialGraph();
     bool __strongly_protected(NodeId a, NodeId b);
 
-    const DAGmodel& __dag;
+    const DAGmodel* __dagmodel;
     MixedGraph      __mg;
   };
 }  // namespace gum

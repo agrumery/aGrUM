@@ -403,6 +403,22 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE const ArcSet& IBayesNet< GUM_SCALAR >::arcs() const {
+    return dag().arcs();
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const NodeSet& IBayesNet< GUM_SCALAR >::parents(const NodeId id) const {
+    return dag().parents(id);
+  }
+
+
+  template < typename GUM_SCALAR >
+  INLINE const NodeSet& IBayesNet< GUM_SCALAR >::children(const NodeId id) const {
+    return dag().children(id);
+  }
+
+  template < typename GUM_SCALAR >
   INLINE std::ostream& operator<<(std::ostream&                  output,
                                   const IBayesNet< GUM_SCALAR >& bn) {
     output << bn.toString();

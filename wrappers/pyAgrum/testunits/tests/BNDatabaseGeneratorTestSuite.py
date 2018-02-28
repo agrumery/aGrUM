@@ -50,7 +50,7 @@ class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
     self.assertAlmostEqual(ns1 / ns3, ll1 / ll3, delta=0.1)
 
     jointe = gum.Potential().fillWith(1)
-    for i in bn.ids():
+    for i in bn.nodes():
       jointe *= bn.cpt(i)
     entropy = jointe.entropy()
 

@@ -65,3 +65,14 @@
     return PyAgrumHelper::PyListFromArcVect(self->latentVariables());
   }
 }
+
+
+%pythonappend gum::learning::BNLearner< double >::learnMixedStructure %{
+        bn=BayesNet()
+        for i in range(len(self.names())):
+          bn.add(self.nameFromId(i),2)
+        ge=EssentialGraph(bn,val)
+        ge._bn=bn
+        return ge
+%}
+

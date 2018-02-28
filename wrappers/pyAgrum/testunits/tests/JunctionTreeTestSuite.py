@@ -36,7 +36,7 @@ class JunctionTreeTestCase(pyAgrumTestCase):
 
 class TopologyFeatureTestCase(JunctionTreeTestCase):
   def testSimple(self):
-    self.assertEqual(len(self.jt.ids()), 2)
+    self.assertEqual(len(self.jt.nodes()), 2)
     self.assertEqual(len(self.jt.edges()), 1)
     self.assertEqual(self.jt.clique(0).union(self.jt.clique(1)), set([0, 1, 2, 3]))
     self.assertTrue(self.jt.clique(0).intersection(self.jt.clique(1)) == set([1, 2])

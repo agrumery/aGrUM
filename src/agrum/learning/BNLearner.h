@@ -97,7 +97,7 @@ namespace gum {
 
       /**
        * Wrapper for BNLearner (filename,modalities,parse_database) using a bn
-       * to find those modalities.
+       * to find those modalities and nodeids.
        **/
       BNLearner(const std::string&                 filename,
                 const gum::BayesNet< GUM_SCALAR >& src,

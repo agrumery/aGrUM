@@ -232,10 +232,10 @@ namespace gum {
        * @param sep_set the separation set for independent couples, built during
        * the previous phase
        */
-      void _orientation(
-        CorrectedMutualInformation<>& I,
-        MixedGraph&                   graph,
-        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
+      void _orientation_3off2(
+              CorrectedMutualInformation<> &I,
+              MixedGraph &graph,
+              const HashTable<std::pair<Idx, Idx>, std::vector<Idx> > &sep_set);
 
       /// Modified version of the orientation phase that tries to propagate
       /// orientations from both orientations in case of a bidirected arc, not used

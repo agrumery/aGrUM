@@ -367,7 +367,7 @@ def _reprInformation(bn, evs, size, cmap, asString):
   ie.makeInference()
 
   idEvs = {bn.idFromName(name) for name in evs}
-  nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.ids() if not n in idEvs}
+  nodevals = {bn.variable(n).name(): ie.H(n) for n in bn.nodes() if not n in idEvs}
   arcvals = {(x, y): ie.I(x, y) for x, y in bn.arcs()}
   gr = BN2dot(bn, size, arcvals, _normalizeVals(nodevals, hilightExtrema=False), cmap, showValues=nodevals)
 
