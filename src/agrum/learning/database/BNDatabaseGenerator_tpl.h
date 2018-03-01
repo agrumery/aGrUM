@@ -55,7 +55,9 @@ namespace gum {
 
     /// destructor
     template < typename GUM_SCALAR >
-    BNDatabaseGenerator< GUM_SCALAR >::~BNDatabaseGenerator() {}
+    BNDatabaseGenerator< GUM_SCALAR >::~BNDatabaseGenerator() {
+      GUM_DESTRUCTOR(BNDatabaseGenerator);
+    }
 
 
     /// draw instances from __bn
