@@ -10297,14 +10297,14 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_log2JointProbability(self, i)
 
 
-    def __eq__(self, src: 'IBayesNet_double') -> "bool":
-        """__eq__(self, src) -> bool"""
-        return _pyAgrum.IBayesNet_double___eq__(self, src)
+    def __eq__(self, arg2: 'IBayesNet_double') -> "bool":
+        """__eq__(self, arg2) -> bool"""
+        return _pyAgrum.IBayesNet_double___eq__(self, arg2)
 
 
-    def __ne__(self, src: 'IBayesNet_double') -> "bool":
-        """__ne__(self, src) -> bool"""
-        return _pyAgrum.IBayesNet_double___ne__(self, src)
+    def __ne__(self, arg2: 'IBayesNet_double') -> "bool":
+        """__ne__(self, arg2) -> bool"""
+        return _pyAgrum.IBayesNet_double___ne__(self, arg2)
 
 
     def dim(self) -> "gum::Size":
@@ -10434,7 +10434,7 @@ class IBayesNet_double(DAGmodel):
     def minimalCondSet(self, *args) -> "PyObject *":
         """
         minimalCondSet(self, target, soids) -> gum::NodeSet
-        minimalCondSet(self, target, soids) -> gum::NodeSet
+        minimalCondSet(self, targets, soids) -> gum::NodeSet
         minimalCondSet(self, target, list) -> PyObject
         minimalCondSet(self, targets, list) -> PyObject *
 

@@ -67,7 +67,7 @@ namespace gum {
      * Default constructor.
      */
     IBayesNet();
-    IBayesNet(std::string name);
+    explicit IBayesNet(std::string name);
 
     /**
      * Destructor.
@@ -159,10 +159,10 @@ namespace gum {
      *
      * @return true if the src and this are equal.
      */
-    bool operator==(const IBayesNet< GUM_SCALAR >& src) const;
+    bool operator==(const IBayesNet< GUM_SCALAR >& from) const;
 
     /// @return Returns false if the src and this are equal.
-    bool operator!=(const IBayesNet< GUM_SCALAR >& src) const;
+    bool operator!=(const IBayesNet< GUM_SCALAR >& from) const;
 
     /**
      * Returns the dimension (the number of free parameters) in this bayes net.
@@ -225,7 +225,7 @@ namespace gum {
      *
      * i.e. P(targets| soids)=P(targets|@return)
      */
-    NodeSet minimalCondSet(const NodeSet& target, const NodeSet& soids) const;
+    NodeSet minimalCondSet(const NodeSet& targets, const NodeSet& soids) const;
 
     private:
     void __minimalCondSetVisitUp(NodeId         node,
@@ -248,7 +248,7 @@ namespace gum {
   /// Prints map's DAG in output using the Graphviz-dot format.
   template < typename GUM_SCALAR >
   std::ostream& operator<<(std::ostream&                  output,
-                           const IBayesNet< GUM_SCALAR >& map);
+                           const IBayesNet< GUM_SCALAR >& bn);
 
 } /* namespace gum */
 

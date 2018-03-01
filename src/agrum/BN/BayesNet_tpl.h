@@ -400,14 +400,12 @@ namespace gum {
     // update the conditional distributions of head and tail
     Set< const DiscreteVariable* > del_vars;
     del_vars << &(variable(tail));
-    Potential< GUM_SCALAR >  new_cpt_head = prod.margSumOut(del_vars);
-    Potential< GUM_SCALAR >& cpt_head =
-      const_cast< Potential< GUM_SCALAR >& >(cpt(head));
+    Potential< GUM_SCALAR > new_cpt_head = prod.margSumOut(del_vars);
+    auto& cpt_head = const_cast< Potential< GUM_SCALAR >& >(cpt(head));
     cpt_head = std::move(new_cpt_head);
 
-    Potential< GUM_SCALAR >  new_cpt_tail{prod / cpt_head};
-    Potential< GUM_SCALAR >& cpt_tail =
-      const_cast< Potential< GUM_SCALAR >& >(cpt(tail));
+    Potential< GUM_SCALAR > new_cpt_tail{prod / cpt_head};
+    auto& cpt_tail = const_cast< Potential< GUM_SCALAR >& >(cpt(tail));
     cpt_tail = std::move(new_cpt_tail);
   }
 
@@ -549,7 +547,7 @@ namespace gum {
   void BayesNet< GUM_SCALAR >::addWeightedArc(NodeId     tail,
                                               NodeId     head,
                                               GUM_SCALAR causalWeight) {
-    const MultiDimICIModel< GUM_SCALAR >* CImodel =
+    auto* CImodel =
       dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(cpt(head).content());
 
     if (CImodel != 0) {
