@@ -996,7 +996,7 @@ namespace gum_tests {
       bad_p3.add(w);
       bad_p3.add(z);
       // TS_GUM_ASSERT_THROWS_NOTHING(bad_p3.fillWith(p));
-      TS_ASSERT_THROWS(bad_p3.fillWith(p), gum::NotFound  );
+      TS_ASSERT_THROWS(bad_p3.fillWith(p), gum::NotFound);
     }
   };
 }

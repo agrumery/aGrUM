@@ -27,9 +27,9 @@
 #define GUM_CONTINUOUS_VARIABLE_H
 
 #include <iostream>
+#include <limits>
 #include <sstream>
 #include <string>
-#include <limits>
 
 #include <agrum/agrum.h>
 #include <agrum/variables/variable.h>
@@ -40,10 +40,9 @@ namespace gum {
    * @class ContinuousVariable
    * @brief Defines a continuous random variable.
    */
-  template <typename GUM_SCALAR = float>
+  template < typename GUM_SCALAR = float >
   class ContinuousVariable : public Variable {
     public:
-
     // ##########################################################################
     /// @name Constructors / Destructors
     // ##########################################################################
@@ -54,29 +53,28 @@ namespace gum {
     /** It is possible to create ContinuousVariable with lower_bound > upper_bound.
      * In this case, the min and the max are swapped.
      * By default, the range of the variable is (-inf,+inf). */
-    ContinuousVariable ( const std::string& aName,
-                         const std::string& aDesc,
-                         GUM_SCALAR lower_bound =
-                         -std::numeric_limits<GUM_SCALAR>::infinity (),
-                         GUM_SCALAR upper_bound =
-                         std::numeric_limits<GUM_SCALAR>::infinity () );
+    ContinuousVariable(
+      const std::string& aName,
+      const std::string& aDesc,
+      GUM_SCALAR lower_bound = -std::numeric_limits< GUM_SCALAR >::infinity(),
+      GUM_SCALAR upper_bound = std::numeric_limits< GUM_SCALAR >::infinity());
 
     /// Copy Constructor.
-    ContinuousVariable ( const ContinuousVariable<GUM_SCALAR>& from );
+    ContinuousVariable(const ContinuousVariable< GUM_SCALAR >& from);
 
     /// generalized copy constructor
-    template <typename TX_VAL>
-    ContinuousVariable ( const ContinuousVariable<TX_VAL>& from );
+    template < typename TX_VAL >
+    ContinuousVariable(const ContinuousVariable< TX_VAL >& from);
 
     /// move constructor
-    ContinuousVariable(ContinuousVariable<GUM_SCALAR>&& from );
+    ContinuousVariable(ContinuousVariable< GUM_SCALAR >&& from);
 
     /// destructor
-    virtual ~ContinuousVariable ();
+    virtual ~ContinuousVariable();
 
     /// Copy Factory.
     /// @return Returns a pointer on a new copy of this.
-    virtual ContinuousVariable<GUM_SCALAR>* clone() const;
+    virtual ContinuousVariable< GUM_SCALAR >* clone() const;
 
     /// @}
 
@@ -88,20 +86,23 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ContinuousVariable<GUM_SCALAR>& operator= (const ContinuousVariable<GUM_SCALAR>& from );
+    ContinuousVariable< GUM_SCALAR >&
+    operator=(const ContinuousVariable< GUM_SCALAR >& from);
 
     /// generalized copy operator
-    template <typename TX_VAL>
-    ContinuousVariable<GUM_SCALAR>& operator= (const ContinuousVariable<TX_VAL>& from );
+    template < typename TX_VAL >
+    ContinuousVariable< GUM_SCALAR >&
+    operator=(const ContinuousVariable< TX_VAL >& from);
 
     /// move operator
-    ContinuousVariable<GUM_SCALAR>& operator= (ContinuousVariable<GUM_SCALAR>&& from );
+    ContinuousVariable< GUM_SCALAR >&
+    operator=(ContinuousVariable< GUM_SCALAR >&& from);
 
     /// returns the T_VAL corresponding to a string
     /** @throw OutOfBounds is raised if the value does not belong to the
      * domain of the variable
      * @throw TypeError if the string cannot be converted into a T_VAL */
-    GUM_SCALAR operator[] ( const std::string& str ) const;
+    GUM_SCALAR operator[](const std::string& str) const;
 
     /// @}
 
@@ -113,20 +114,20 @@ namespace gum {
     /// @{
 
     /// returns the lower bound of the domain of the variable
-    GUM_SCALAR lowerBound () const;
+    GUM_SCALAR lowerBound() const;
 
     /// returns the upper bound of the domain of the variable
-    GUM_SCALAR upperBound () const;
+    GUM_SCALAR upperBound() const;
 
     /// updates the lower bound of the domain of the variable
     /** @throw OutOfBounds is raised if the new bound is higher than the
      * current upper bound. */
-    void setLowerBound ( const GUM_SCALAR& new_bound );
+    void setLowerBound(const GUM_SCALAR& new_bound);
 
     /// updates the lower bound of the domain of the variable
-     /** @throw OutOfBounds is raised if the new bound is lower than the
-      * current lower bound */
-    void setUpperBound ( const GUM_SCALAR& new_bound );
+    /** @throw OutOfBounds is raised if the new bound is lower than the
+     * current lower bound */
+    void setUpperBound(const GUM_SCALAR& new_bound);
 
     /// returns a string containing the value of the variable passed in argument
     /**
@@ -134,10 +135,10 @@ namespace gum {
      * @throw OutOfBounds is raised if the value does not belong to the
      * domain of the variable
      */
-    virtual std::string label ( const GUM_SCALAR& value ) const;
+    virtual std::string label(const GUM_SCALAR& value) const;
 
     /// Returns true if the param belongs to the domain of the variable
-    bool belongs ( const GUM_SCALAR& value ) const;
+    bool belongs(const GUM_SCALAR& value) const;
 
     /// returns the domain of the variable as a string
     std::string domain() const;
@@ -154,19 +155,18 @@ namespace gum {
     /// @}
 
 
-  private:
+    private:
     // the lower bound.
     GUM_SCALAR __lower_bound;
 
     // the upper bound.
     GUM_SCALAR __upper_bound;
-
   };
 
 
   /// for friendly displaying the content of the variable
-  template <typename T_VAL>
-  std::ostream& operator<<(std::ostream&, const ContinuousVariable<T_VAL>& );
+  template < typename T_VAL >
+  std::ostream& operator<<(std::ostream&, const ContinuousVariable< T_VAL >&);
 
 } /* namespace gum */
 

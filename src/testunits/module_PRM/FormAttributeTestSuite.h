@@ -298,7 +298,7 @@ namespace gum_tests {
     void testGetCastDescendant() {
       try {
         // Arrange
-        PRMAttribute state(*__class, "state", *__state);
+        PRMAttribute                      state(*__class, "state", *__state);
         gum::prm::PRMAttribute< double >* cast = nullptr;
         // Act
         TS_ASSERT_THROWS_NOTHING(cast = state.getCastDescendant());
@@ -317,45 +317,45 @@ namespace gum_tests {
       }
     }
 
-        void testSetAsCastDescendant() {
-          // Arrange
-          PRMAttribute boolean(*__class, "boolean", *__boolean);
-          PRMAttribute state(*__class, "state", *__state);
-          auto         before = boolean.cpf().variablesSequence().size();
-          // Act
-          TS_ASSERT_THROWS_NOTHING(state.setAsCastDescendant(&boolean));
-          // Assert
-          auto after = boolean.cpf().variablesSequence().size();
-          TS_ASSERT_EQUALS(before + 1, after);
-        }
-    
-        void testSetAsCastDescendantOperationNotAllowed() {
-          // Arrange
-          PRMAttribute boolean(*__class, "boolean", *__boolean);
-          PRMAttribute boolean_bis(*__class, "boolean", *__boolean);
-          auto         before = boolean.cpf().variablesSequence().size();
-          // Act
-          TS_ASSERT_THROWS(boolean_bis.setAsCastDescendant(&boolean),
-                           gum::OperationNotAllowed);
-          // Assert
-          auto after = boolean.cpf().variablesSequence().size();
-          TS_ASSERT_EQUALS(before, after);
-        }
-    
-        void testSetAsCastDescendantTypeError() {
-          // Arrange
-          gum::LabelizedVariable foovar{"Foo", "Bar", 5};
-          PRMAttribute           foo(*__class, "foobar", foovar);
-          PRMAttribute           state(*__class, "state", *__state);
-          auto                   before = foo.cpf().variablesSequence().size();
-          // Act
-          TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::WrongType);
-          // Assert
-          auto after = foo.cpf().variablesSequence().size();
-          TS_ASSERT_EQUALS(before, after);
-        }
-    
-        /// @}
+    void testSetAsCastDescendant() {
+      // Arrange
+      PRMAttribute boolean(*__class, "boolean", *__boolean);
+      PRMAttribute state(*__class, "state", *__state);
+      auto         before = boolean.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS_NOTHING(state.setAsCastDescendant(&boolean));
+      // Assert
+      auto after = boolean.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS(before + 1, after);
+    }
+
+    void testSetAsCastDescendantOperationNotAllowed() {
+      // Arrange
+      PRMAttribute boolean(*__class, "boolean", *__boolean);
+      PRMAttribute boolean_bis(*__class, "boolean", *__boolean);
+      auto         before = boolean.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS(boolean_bis.setAsCastDescendant(&boolean),
+                       gum::OperationNotAllowed);
+      // Assert
+      auto after = boolean.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS(before, after);
+    }
+
+    void testSetAsCastDescendantTypeError() {
+      // Arrange
+      gum::LabelizedVariable foovar{"Foo", "Bar", 5};
+      PRMAttribute           foo(*__class, "foobar", foovar);
+      PRMAttribute           state(*__class, "state", *__state);
+      auto                   before = foo.cpf().variablesSequence().size();
+      // Act
+      TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::WrongType);
+      // Assert
+      auto after = foo.cpf().variablesSequence().size();
+      TS_ASSERT_EQUALS(before, after);
+    }
+
+    /// @}
   };
 
 }  // gum_tests

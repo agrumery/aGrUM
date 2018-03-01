@@ -40,7 +40,7 @@ namespace gum {
                                 const std::string& msg) {
     std::stringstream stream;
 #ifdef SWIG
-    stream << std::endl<< msg << std::endl;
+    stream << std::endl << msg << std::endl;
 #else
     stream << std::endl
            << "<" << filename << "> " << function << "() #" << std::setw(6)

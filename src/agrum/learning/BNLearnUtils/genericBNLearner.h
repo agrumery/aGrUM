@@ -77,9 +77,9 @@
 #include <agrum/core/approximations/approximationSchemeListener.h>
 
 #include <agrum/learning/K2.h>
+#include <agrum/learning/Miic.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
-#include <agrum/learning/Miic.h>
 
 #include <agrum/core/signal/signaler.h>
 

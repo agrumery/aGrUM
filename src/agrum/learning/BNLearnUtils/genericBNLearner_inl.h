@@ -135,13 +135,13 @@ namespace gum {
     // indicate that we wish to use 3off2
     INLINE void genericBNLearner::use3off2() noexcept {
       __selected_algo = AlgoType::MIIC_THREE_OFF_TWO;
-        __miic_3off2.set3off2Behaviour();
+      __miic_3off2.set3off2Behaviour();
     }
 
     // indicate that we wish to use 3off2
     INLINE void genericBNLearner::useMIIC() noexcept {
       __selected_algo = AlgoType::MIIC_THREE_OFF_TWO;
-        __miic_3off2.setMiicBehaviour();
+      __miic_3off2.setMiicBehaviour();
     }
 
     /// indicate that we wish to use the NML correction for 3off2

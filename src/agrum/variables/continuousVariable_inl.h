@@ -32,41 +32,39 @@ namespace gum {
 
   /// returns the GUM_SCALAR corresponding to a string, specialized for floats
   template <>
-  INLINE float
-  ContinuousVariable<float>::operator[] ( const std::string& str ) const {
+  INLINE float ContinuousVariable< float >::
+  operator[](const std::string& str) const {
     float value;
     try {
-      value = std::stof ( str );
-    }
-    catch ( ... ) {
-      GUM_ERROR ( TypeError, "cannot convert the string into a float" );
+      value = std::stof(str);
+    } catch (...) {
+      GUM_ERROR(TypeError, "cannot convert the string into a float");
     }
 
-    if ( belongs ( value ) )
+    if (belongs(value))
       return value;
     else
-      GUM_ERROR ( OutOfBounds,
-                  "the value does not delong to the domain of the variable" );
+      GUM_ERROR(OutOfBounds,
+                "the value does not delong to the domain of the variable");
   }
 
 
   /// returns the GUM_SCALAR corresponding to a string, specialized for doubles
   template <>
-  ALWAYS_INLINE double
-  ContinuousVariable<double>::operator[] ( const std::string& str ) const {
+  ALWAYS_INLINE double ContinuousVariable< double >::
+  operator[](const std::string& str) const {
     double value;
     try {
-      value = std::stod ( str );
-    }
-    catch ( ... ) {
-      GUM_ERROR ( TypeError, "cannot convert the string into a float" );
+      value = std::stod(str);
+    } catch (...) {
+      GUM_ERROR(TypeError, "cannot convert the string into a float");
     }
 
-    if ( belongs ( value ) )
+    if (belongs(value))
       return value;
     else
-      GUM_ERROR ( OutOfBounds,
-                  "the value does not delong to the domain of the variable" );
+      GUM_ERROR(OutOfBounds,
+                "the value does not delong to the domain of the variable");
   }
 
 } /* namespace gum */

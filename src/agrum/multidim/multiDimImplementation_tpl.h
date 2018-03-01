@@ -85,7 +85,7 @@ namespace gum {
       if (w->name() == v.name())
         GUM_ERROR(DuplicateElement,
                   "A var with name '" << v.name()
-                                     << "' already exists in this instantiation");
+                                      << "' already exists in this instantiation");
     }
 
     __domainSize *= v.domainSize();

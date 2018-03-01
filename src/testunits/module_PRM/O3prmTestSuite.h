@@ -1125,7 +1125,9 @@ namespace gum_tests {
         const auto& cpf = SafeComputer.get("equipState").cpf();
         auto        set = gum::Set< const gum::DiscreteVariable* >();
         set.insert(&(SafeComputer.get("equipState").type().variable()));
-        set.insert(&(SafeComputer.get("room.power.(fr.lip6.printers.t_state)state").type().variable()));
+        set.insert(&(SafeComputer.get("room.power.(fr.lip6.printers.t_state)state")
+                       .type()
+                       .variable()));
         for (auto var : cpf.variablesSequence()) {
           if (set.contains(var)) {
             set.erase(var);
@@ -1276,7 +1278,9 @@ namespace gum_tests {
 
         // Checking that all class DAG are generated
         for (auto c : prm->classes()) {
-          for (auto node = c->containerDag().begin(); node != c->containerDag().end(); ++node) {
+          for (auto node = c->containerDag().begin();
+               node != c->containerDag().end();
+               ++node) {
             TS_ASSERT(c->exists(*node));
             TS_ASSERT_THROWS_NOTHING(c->get(*node));
             for (auto prnt : c->containerDag().parents(*node)) {
@@ -1291,19 +1295,19 @@ namespace gum_tests {
           }
           // checking parameters
           for (auto elt : c->parameters()) {
-              c->containerDag().exists(elt->id());
+            c->containerDag().exists(elt->id());
           }
           for (auto elt : c->referenceSlots()) {
-              c->containerDag().exists(elt->id());
+            c->containerDag().exists(elt->id());
           }
           for (auto elt : c->attributes()) {
-              c->containerDag().exists(elt->id());
+            c->containerDag().exists(elt->id());
           }
           for (auto elt : c->aggregates()) {
-              c->containerDag().exists(elt->id());
+            c->containerDag().exists(elt->id());
           }
           for (auto elt : c->slotChains()) {
-              c->containerDag().exists(elt->id());
+            c->containerDag().exists(elt->id());
           }
         }
 

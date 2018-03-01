@@ -233,9 +233,9 @@ namespace gum {
        * the previous phase
        */
       void _orientation_3off2(
-              CorrectedMutualInformation<> &I,
-              MixedGraph &graph,
-              const HashTable<std::pair<Idx, Idx>, std::vector<Idx> > &sep_set);
+        CorrectedMutualInformation<>& I,
+        MixedGraph&                   graph,
+        const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
 
       /// Modified version of the orientation phase that tries to propagate
       /// orientations from both orientations in case of a bidirected arc, not used
@@ -354,9 +354,9 @@ namespace gum {
        *@param n1 tail of the path
        *@param n2 head of the path
        */
-      const bool __existsDirectedPath(const MixedGraph &graph,
-                                      const NodeId n1,
-                                      const NodeId n2) const;
+      const bool __existsDirectedPath(const MixedGraph& graph,
+                                      const NodeId      n1,
+                                      const NodeId      n2) const;
     };
 
   } /* namespace learning */

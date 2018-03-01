@@ -195,7 +195,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE const DAG& PRMClassElementContainer< GUM_SCALAR >::containerDag() const {
+    INLINE const DAG&
+                 PRMClassElementContainer< GUM_SCALAR >::containerDag() const {
       return _dag();
     }
 

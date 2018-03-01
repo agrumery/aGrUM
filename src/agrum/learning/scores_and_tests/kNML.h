@@ -21,10 +21,10 @@
  * @file
  * @brief The class for the NML corrections used in 3off2
  *
- * To accomodate for finite datasets, corrections for the mutual information are 
- * introduced by the authors. The NML correction is one of them, and they claim it 
+ * To accomodate for finite datasets, corrections for the mutual information are
+ * introduced by the authors. The NML correction is one of them, and they claim it
  * to be the most effective
- * 
+ *
  * @author Quentin FALCAND
  */
 

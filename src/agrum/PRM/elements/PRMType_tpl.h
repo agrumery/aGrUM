@@ -29,10 +29,9 @@
 namespace gum {
   namespace prm {
 
-    template<typename GUM_SCALAR>
-    void
-    PRMType<GUM_SCALAR>::__updateName() {
-      const void * address = static_cast<const void*>(this);
+    template < typename GUM_SCALAR >
+    void PRMType< GUM_SCALAR >::__updateName() {
+      const void*       address = static_cast< const void* >(this);
       std::stringstream ss;
       ss << this->name() << "-" << address;
       this->__var->setName(ss.str());
@@ -80,9 +79,9 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR>
-    PRMType<GUM_SCALAR>::PRMType(PRMType<GUM_SCALAR>&& from) 
-      : PRMObject(from) {
+    template < typename GUM_SCALAR >
+    PRMType< GUM_SCALAR >::PRMType(PRMType< GUM_SCALAR >&& from)
+        : PRMObject(from) {
       GUM_CONS_MOV(PRMType);
       GUM_ERROR(FatalError, "Move constructor must not be used");
     }
@@ -96,15 +95,13 @@ namespace gum {
       }
     }
 
-    template <typename GUM_SCALAR>
-    PRMType<GUM_SCALAR>& 
-    PRMType<GUM_SCALAR>::operator=(const PRMType& from) {
+    template < typename GUM_SCALAR >
+    PRMType< GUM_SCALAR >& PRMType< GUM_SCALAR >::operator=(const PRMType& from) {
       GUM_ERROR(FatalError, "Copy operator must not be used");
     }
 
-    template <typename GUM_SCALAR>
-    PRMType<GUM_SCALAR>& 
-    PRMType<GUM_SCALAR>::operator=(PRMType&& from) {
+    template < typename GUM_SCALAR >
+    PRMType< GUM_SCALAR >& PRMType< GUM_SCALAR >::operator=(PRMType&& from) {
       GUM_ERROR(FatalError, "Move operator must not be used");
     }
 

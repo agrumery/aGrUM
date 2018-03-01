@@ -37,8 +37,8 @@
 
 #include <agrum/BN/generator/simpleBayesNetGenerator.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/Miic.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 namespace gum_tests {
 
@@ -189,8 +189,8 @@ namespace gum_tests {
 
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size( 9 ) );
-      TS_ASSERT_EQUALS(latents.size(), gum::Size( 3 ) );
+      TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size(9));
+      TS_ASSERT_EQUALS(latents.size(), gum::Size(3));
     }
 
     void test_tonda() {
@@ -227,13 +227,13 @@ namespace gum_tests {
         }
       }
       gum::MixedGraph g = search.learnMixedStructure(cI, graph);
-      TS_ASSERT_EQUALS(g.arcs().size(), gum::Size( 0 ) );
-      TS_ASSERT_EQUALS(g.edges().size(), gum::Size( 9 ) );
+      TS_ASSERT_EQUALS(g.arcs().size(), gum::Size(0));
+      TS_ASSERT_EQUALS(g.edges().size(), gum::Size(9));
 
       gum::DAG                dag = search.learnStructure(cI, graph);
       std::vector< gum::Arc > latents = search.latentVariables();
-      TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size( 9 ) );
-      TS_ASSERT_EQUALS(latents.size(), gum::Size( 0 ) );
+      TS_ASSERT_EQUALS(dag.arcs().size(), gum::Size(9));
+      TS_ASSERT_EQUALS(latents.size(), gum::Size(0));
     }
 
     void test_3off2_asia_constraints() {
@@ -284,8 +284,7 @@ namespace gum_tests {
     }
 
     void test_MIIC_asia_NMLcorr() {
-      gum::learning::DatabaseFromCSV database(
-        GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -327,8 +326,7 @@ namespace gum_tests {
     }
 
     void test_MIIC_asia_constraints() {
-      gum::learning::DatabaseFromCSV database(
-        GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
 
       gum::learning::DBRowTranslatorSet<
         gum::learning::CellTranslatorCompactIntId >
@@ -373,8 +371,8 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph.edges().size(), gum::Size(3));
       std::vector< gum::Arc > latents = search.latentVariables();
       TS_ASSERT_EQUALS(latents.size(), gum::Size(0));
-      TS_ASSERT(graph.existsArc( 4, 3 ));
-      TS_ASSERT(graph.existsEdge( 5, 7 ));
+      TS_ASSERT(graph.existsArc(4, 3));
+      TS_ASSERT(graph.existsEdge(5, 7));
     }
   };
 

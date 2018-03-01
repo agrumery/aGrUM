@@ -627,8 +627,7 @@ namespace gum_tests {
       TS_ASSERT(prm.isType("range"));
       const auto& range = prm.type("range");
       TS_ASSERT_EQUALS(range.variable().labels().size(), (gum::Size)10);
-      TS_ASSERT_EQUALS(range.variable().varType(),
-                       gum::VarType::Range);
+      TS_ASSERT_EQUALS(range.variable().varType(), gum::VarType::Range);
       TS_ASSERT_EQUALS(range.variable().labels().at(0), "1");
       TS_ASSERT_EQUALS(range.variable().labels().at(1), "2");
       TS_ASSERT_EQUALS(range.variable().labels().at(2), "3");
@@ -649,8 +648,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(prm.types().size(), (gum::Size)2);
       TS_ASSERT(prm.isType("angle"));
       const auto& angle = prm.type("angle");
-      TS_ASSERT_EQUALS(angle.variable().varType(),
-                       gum::VarType::Discretized);
+      TS_ASSERT_EQUALS(angle.variable().varType(), gum::VarType::Discretized);
       TS_ASSERT_EQUALS(angle.variable().labels().size(), (gum::Size)2);
       TS_ASSERT_EQUALS(angle.variable().labels().at(0), "[0;90[");
       TS_ASSERT_EQUALS(angle.variable().labels().at(1), "[90;180]");

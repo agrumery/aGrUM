@@ -231,7 +231,7 @@ namespace gum {
      * @throw InvalidArgument if the Potential is not compatible with this
      */
     const Potential< GUM_SCALAR >&
-    fillWith(const Potential<GUM_SCALAR> &src) const;
+    fillWith(const Potential< GUM_SCALAR >& src) const;
 
     /**
      * @brief Automatically fills the potential with the values in

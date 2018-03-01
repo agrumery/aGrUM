@@ -177,23 +177,23 @@ namespace gum {
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_score(
       Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids) {
-      
+
       double I = this->_I_score(var1, var2, conditioning_ids);
       double K = _K(var1, var2, conditioning_ids);
-      Size N = this->N();
-      
+      Size   N = this->N();
+
       double score = I - K / N;
-      
+
       return score;
     }
 
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_score(
       Idx var1, Idx var2, Idx var3, const std::vector< Idx >& conditioning_ids) {
-        
+
       double I = this->_I_score(var1, var2, var3, conditioning_ids);
       double K = _K(var1, var2, var3, conditioning_ids);
-      Size N = this->N();
+      Size   N = this->N();
 
       double score = I + K / N;
 
@@ -295,7 +295,7 @@ namespace gum {
         return score;
       }
     }
-    
+
     template < typename IdSetAlloc, typename CountAlloc >
     double CorrectedMutualInformation< IdSetAlloc, CountAlloc >::_K(
       Idx var1, Idx var2, const std::vector< Idx >& conditioning_ids) {
