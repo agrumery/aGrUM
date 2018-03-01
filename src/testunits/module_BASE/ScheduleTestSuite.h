@@ -100,7 +100,7 @@ namespace gum_tests {
       schedule.insert(comb1);
       TS_ASSERT(schedule.availableOperations().size() == 2);
 
-      TS_ASSERT(schedule.dag().sizeArcs() == 3);
+      TS_ASSERT(schedule.scheduling_dag().sizeArcs() == 3);
       TS_ASSERT(comb1 == schedule.operation(3));
       TS_ASSERT(3 == schedule.nodeId(comb1));
 
@@ -235,7 +235,7 @@ namespace gum_tests {
       schedule.insert(comb1);
       TS_ASSERT(schedule.availableOperations().size() == 2);
 
-      TS_ASSERT(schedule.dag().sizeArcs() == 3);
+      TS_ASSERT(schedule.scheduling_dag().sizeArcs() == 3);
       TS_ASSERT(comb1 == schedule.operation(3));
       TS_ASSERT(3 == schedule.nodeId(comb1));
 

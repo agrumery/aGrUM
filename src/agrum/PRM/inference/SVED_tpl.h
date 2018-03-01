@@ -323,7 +323,7 @@ namespace gum {
             // We need to put in the output_elim_order aggregator's parents
             // which are
             // innner nodes
-            for (const auto par : c.dag().parents(elt.first))
+            for (const auto par : c.containerDag().parents(elt.first))
               if (PRMClassElement< GUM_SCALAR >::isAttribute(i->type().get(par)) &&
                   i->type().isInnerNode(i->type().get(par)) &&
                   __bb.requisiteNodes(i).exists(par)) {

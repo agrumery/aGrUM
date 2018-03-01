@@ -643,7 +643,7 @@ namespace gum {
         Instantiation inst_default;
         inst_default << var;
 
-        for (auto node : __bn->dag().parents(varId)) {
+        for (auto node : __bn->parents(varId)) {
           if (!__parents->contains(__bn->variable(node))) {
             inst_default << __bn->variable(node);
           }
@@ -772,7 +772,7 @@ namespace gum {
       if (redefineParents) {
         __setCPTAndParents(var, table);
       } else if (table->contains(var)) {
-        for (auto node : __bn->dag().parents(varId)) {
+        for (auto node : __bn->parents(varId)) {
           if (!table->contains(__bn->variable(node))) {
             GUM_ERROR(OperationNotAllowed,
                       "The CPT is not valid in the current BayesNet.");

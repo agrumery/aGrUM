@@ -82,13 +82,13 @@ namespace gum {
               false;  // If this is set at true, then node is an outer node
 
             // Children existing in the instance type's DAG
-            for (const auto chld : inst->type().dag().children(elt.second->id())) {
+            for (const auto chld : inst->type().containerDag().children(elt.second->id())) {
               data.graph.addEdge(
                 node, data.node2attr.first(__str(inst, inst->get(chld))));
             }
 
             // Parents existing in the instance type's DAG
-            for (const auto par : inst->type().dag().parents(elt.second->id())) {
+            for (const auto par : inst->type().containerDag().parents(elt.second->id())) {
               switch (inst->type().get(par).elt_type()) {
                 case PRMClassElement< GUM_SCALAR >::prm_attribute:
                 case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
@@ -125,7 +125,7 @@ namespace gum {
                 if (match.exists(pair->first)) {
                   NodeId id = pair->first->type().get(pair->second).id();
 
-                  for (const auto child : pair->first->type().dag().children(id))
+                  for (const auto child : pair->first->type().containerDag().children(id))
                     data.graph.addEdge(node,
                                        data.node2attr.first(__str(
                                          pair->first, pair->first->get(child))));

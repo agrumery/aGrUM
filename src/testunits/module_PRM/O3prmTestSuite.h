@@ -424,7 +424,7 @@ namespace gum_tests {
         gum::prm::PRMClass< double >& PowerSupply =
           prm->getClass("fr.lip6.printers.PowerSupply");
         TS_ASSERT_EQUALS(PowerSupply.attributes().size(), (gum::Size)2);
-        TS_ASSERT_EQUALS(PowerSupply.dag().sizeArcs(), (gum::Size)1);
+        TS_ASSERT_EQUALS(PowerSupply.containerDag().sizeArcs(), (gum::Size)1);
         TS_GUM_ASSERT_THROWS_NOTHING(PowerSupply["(boolean)state"]);
         TS_GUM_ASSERT_THROWS_NOTHING(PowerSupply["state"]);
         TS_ASSERT(PowerSupply["state"].type().isSubTypeOf(
@@ -437,7 +437,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
           n3 = PowerSupply["(fr.lip6.printers.t_state)state"].id());
         TS_ASSERT_EQUALS(n2, n3);
-        TS_ASSERT(PowerSupply.dag().existsArc(n2, n1));
+        TS_ASSERT(PowerSupply.containerDag().existsArc(n2, n1));
         TS_ASSERT_EQUALS(PowerSupply.referenceSlots().size(), (gum::Size)0);
         TS_ASSERT_EQUALS(PowerSupply.aggregates().size(), (gum::Size)0);
         TS_ASSERT_EQUALS(PowerSupply.slotChains().size(), (gum::Size)0);
@@ -1276,34 +1276,34 @@ namespace gum_tests {
 
         // Checking that all class DAG are generated
         for (auto c : prm->classes()) {
-          for (auto node = c->dag().begin(); node != c->dag().end(); ++node) {
+          for (auto node = c->containerDag().begin(); node != c->containerDag().end(); ++node) {
             TS_ASSERT(c->exists(*node));
             TS_ASSERT_THROWS_NOTHING(c->get(*node));
-            for (auto prnt : c->dag().parents(*node)) {
+            for (auto prnt : c->containerDag().parents(*node)) {
               TS_ASSERT(c->exists(prnt));
               TS_ASSERT_THROWS_NOTHING(c->get(prnt));
             }
 
-            for (auto child : c->dag().children(*node)) {
+            for (auto child : c->containerDag().children(*node)) {
               TS_ASSERT(c->exists(child));
               TS_ASSERT_THROWS_NOTHING(c->get(child));
             }
           }
           // checking parameters
           for (auto elt : c->parameters()) {
-            c->dag().exists(elt->id());
+              c->containerDag().exists(elt->id());
           }
           for (auto elt : c->referenceSlots()) {
-            c->dag().exists(elt->id());
+              c->containerDag().exists(elt->id());
           }
           for (auto elt : c->attributes()) {
-            c->dag().exists(elt->id());
+              c->containerDag().exists(elt->id());
           }
           for (auto elt : c->aggregates()) {
-            c->dag().exists(elt->id());
+              c->containerDag().exists(elt->id());
           }
           for (auto elt : c->slotChains()) {
-            c->dag().exists(elt->id());
+              c->containerDag().exists(elt->id());
           }
         }
 
@@ -1485,7 +1485,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("Asia")));
         // Assert
         TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)8);
-        TS_ASSERT_EQUALS(asia->dag().sizeArcs(), (gum::Size)8);
+        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)8);
         delete prm;
       } catch (gum::Exception&) {
         TS_ASSERT(false);
@@ -1533,7 +1533,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("VisitAsia")));
         // Assert
         TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)2);
-        TS_ASSERT_EQUALS(asia->dag().sizeArcs(), (gum::Size)1);
+        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)1);
         delete prm;
       } catch (gum::Exception&) {
         TS_ASSERT(false);
@@ -1555,7 +1555,7 @@ namespace gum_tests {
         // Assert
         TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)6);
         TS_ASSERT_EQUALS(asia->referenceSlots().size(), (gum::Size)1);
-        TS_ASSERT_EQUALS(asia->dag().sizeArcs(), (gum::Size)7);
+        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)7);
         delete prm;
       } catch (gum::Exception&) {
         TS_ASSERT(false);
@@ -1688,7 +1688,7 @@ namespace gum_tests {
         auto sys = &(reader.prm()->getSystem("fr.base.Work"));
         for (auto iter : *sys) {
           auto inst = iter.second;
-          for (auto node : inst->type().dag()) {
+          for (auto node : inst->type().containerDag()) {
             // TS_ASSERT( inst->exists( node ) );
             if ((!inst->exists(node)) && inst->type().exists(node)) {
               auto elt = &(inst->type().get(node));

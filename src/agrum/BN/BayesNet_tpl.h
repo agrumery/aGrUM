@@ -306,7 +306,7 @@ namespace gum {
   void BayesNet< GUM_SCALAR >::erase(NodeId varId) {
     if (__varMap.exists(varId)) {
       // Reduce the variable child's CPT
-      const NodeSet& children = dag().children(varId);
+      const NodeSet& children = this->children(varId);
 
       for (const auto c : children) {
         __probaMap[c]->erase(variable(varId));
@@ -370,7 +370,11 @@ namespace gum {
     // modify the topology of the graph: add to tail all the parents of head
     // and add to head all the parents of tail
     beginTopologyTransformation();
-    NodeSet new_parents = dag().parents(tail) + dag().parents(head);
+    NodeSet new_parents;
+    for (const auto node : this->parents(tail))
+      new_parents.insert(node);
+    for (const auto node : this->parents(head))
+      new_parents.insert(node);
     // remove arc (head, tail)
     eraseArc(arc);
 

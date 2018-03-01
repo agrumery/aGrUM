@@ -170,7 +170,7 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     INLINE bool PRMClassElementContainer< GUM_SCALAR >::exists(NodeId id) const {
-      return dag().exists(id);
+      return containerDag().exists(id);
     }
 
     template < typename GUM_SCALAR >
@@ -195,7 +195,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE const DAG& PRMClassElementContainer< GUM_SCALAR >::dag() const {
+    INLINE const DAG& PRMClassElementContainer< GUM_SCALAR >::containerDag() const {
       return _dag();
     }
 
@@ -209,13 +209,13 @@ operator<<(std::ostream&                                           output,
   std::string tab = "  ";
   output << "digraph \"" << container.name() << "\" {" << std::endl;
 
-  for (const auto node : container.dag().nodes()) {
-    if (container.dag().children(node).size() > 0) {
-      for (const auto chi : container.dag().children(node)) {
+  for (const auto node : container.containerDag().nodes()) {
+    if (container.containerDag().children(node).size() > 0) {
+      for (const auto chi : container.containerDag().children(node)) {
         output << tab << "\"" << container.get(node).name() << "\" -> "
                << "\"" << container.get(chi).name() << "\";" << std::endl;
       }
-    } else if (container.dag().parents(node).size() == 0) {
+    } else if (container.containerDag().parents(node).size() == 0) {
       output << tab << "\"" << container.get(node).name() << "\";" << std::endl;
     }
   }

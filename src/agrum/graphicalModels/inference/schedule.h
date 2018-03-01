@@ -139,7 +139,7 @@ namespace gum {
     /// returns a DAG indicating in which order the operations can be performed
     /** In this DAG, each node corresponds to an operation and an operation
      * can be performed only if its ancestors have all been performed. */
-    const DAG& dag() const;
+    const DAG& scheduling_dag() const;
 
     /// returns the scheduleOperation corresponding to an id in the DAG
     /** @throws NotFound exception is raised if the DAG does not contain the id

@@ -1113,10 +1113,10 @@ namespace gum {
       }  // end of : for each original variable
 
       for (auto node : __current_bn->nodes()) {
-        NodeSet parents = __current_bn->dag().parents(node);
+        NodeSet parents = __current_bn->parents(node);
 
         if (!parents.empty()) {
-          for (auto par : __current_bn->dag().parents(node)) {
+          for (auto par : __current_bn->parents(node)) {
             for (Size parent_bit = 0, spbits = Size(__var_bits[par].size());
                  parent_bit < spbits;
                  parent_bit++)

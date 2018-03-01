@@ -83,7 +83,7 @@ namespace gum {
     for (auto node : nodes()) {
       Size q = 1;
 
-      for (auto parent : dag().parents(node))
+      for (auto parent : parents(node))
         q *= variable(parent).domainSize();
 
       dim += (variable(node).domainSize() - 1) * q;
@@ -210,12 +210,12 @@ namespace gum {
     std::string tab = "  ";
 
     for (auto node : nodes()) {
-      if (dag().children(node).size() > 0) {
-        for (auto child : dag().children(node)) {
+      if (children(node).size() > 0) {
+        for (auto child : children(node)) {
           output << tab << "\"" << variable(node).name() << "\" -> "
                  << "\"" << variable(child).name() << "\";" << std::endl;
         }
-      } else if (dag().parents(node).size() == 0) {
+      } else if (parents(node).size() == 0) {
         output << tab << "\"" << variable(node).name() << "\";" << std::endl;
       }
     }
@@ -400,22 +400,6 @@ namespace gum {
       res += minimalCondSet(node, soids);
     }
     return res;
-  }
-
-  template < typename GUM_SCALAR >
-  INLINE const ArcSet& IBayesNet< GUM_SCALAR >::arcs() const {
-    return dag().arcs();
-  }
-
-  template < typename GUM_SCALAR >
-  INLINE const NodeSet& IBayesNet< GUM_SCALAR >::parents(const NodeId id) const {
-    return dag().parents(id);
-  }
-
-
-  template < typename GUM_SCALAR >
-  INLINE const NodeSet& IBayesNet< GUM_SCALAR >::children(const NodeId id) const {
-    return dag().children(id);
   }
 
   template < typename GUM_SCALAR >

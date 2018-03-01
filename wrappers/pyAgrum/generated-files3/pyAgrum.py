@@ -7215,6 +7215,22 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_arcs(self)
 
 
+    def parents(self, *args) -> "gum::NodeSet const &":
+        """
+        parents(self, id) -> gum::NodeSet const
+        parents(self, name) -> gum::NodeSet const &
+        """
+        return _pyAgrum.DAGmodel_parents(self, *args)
+
+
+    def children(self, *args) -> "gum::NodeSet const &":
+        """
+        children(self, id) -> gum::NodeSet const
+        children(self, name) -> gum::NodeSet const &
+        """
+        return _pyAgrum.DAGmodel_children(self, *args)
+
+
     def moralGraph(self, clear: 'bool'=True) -> "gum::UndiGraph const &":
         """
         moralGraph(self, clear=True) -> UndiGraph

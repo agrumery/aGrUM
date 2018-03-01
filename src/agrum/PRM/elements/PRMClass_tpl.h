@@ -55,7 +55,7 @@ namespace gum {
             new Bijection< const DiscreteVariable*, const DiscreteVariable* >()) {
       GUM_CONSTRUCTOR(PRMClass);
       if (!delayInheritance) {
-        __dag = super.dag();
+        __dag = super.containerDag();
         __inheritClass(super);
       }
     }
@@ -87,7 +87,7 @@ namespace gum {
             new Bijection< const DiscreteVariable*, const DiscreteVariable* >()) {
       GUM_CONSTRUCTOR(PRMClass);
       if (!delayInheritance) {
-        __dag = super.dag();
+        __dag = super.containerDag();
         __inheritClass(super);
       }
 
@@ -315,7 +315,7 @@ namespace gum {
                     "you can only complete inheritance for attributes");
         }
 
-        for (const auto& prnt : super().dag().parents(elt.id())) {
+        for (const auto& prnt : super().containerDag().parents(elt.id())) {
           this->addArc(super().get(prnt).safeName(), elt.safeName());
         }
 
@@ -442,7 +442,7 @@ namespace gum {
         }
 
         // Copying dependencies yield by arcs
-        for (const auto& arc : c.dag().arcs()) {
+        for (const auto& arc : c.containerDag().arcs()) {
           __nodeIdMap[arc.tail()]->addChild(*(__nodeIdMap[arc.head()]));
           __nodeIdMap[arc.head()]->addParent(*(__nodeIdMap[arc.tail()]));
         }
@@ -908,7 +908,7 @@ namespace gum {
             sc = new PRMSlotChain< GUM_SCALAR >(sc_name, seq);
             sc->setId(slotchain->id());
 
-            for (const auto child : this->dag().children(sc->id())) {
+            for (const auto child : this->containerDag().children(sc->id())) {
               auto& elt = get(child);
               if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)) {
                 auto& attr = static_cast< PRMAttribute< GUM_SCALAR >& >(elt);

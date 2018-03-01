@@ -108,7 +108,7 @@ namespace gum {
     gum::Instantiation Itop(*I);
     Itop.erase(_sampling_bn.variable(id));
     gum::Potential< GUM_SCALAR > p = _sampling_bn.cpt(id).extract(Itop);
-    for (const auto nod : _sampling_bn.dag().children(id))
+    for (const auto nod : _sampling_bn.children(id))
       p *= _sampling_bn.cpt(nod).extract(Itop);
     GUM_ASSERT(p.nbrDim() == 1);
     if (p.sum() != 0) {

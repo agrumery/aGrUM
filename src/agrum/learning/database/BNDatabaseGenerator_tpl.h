@@ -337,7 +337,7 @@ namespace gum {
     void BNDatabaseGenerator< GUM_SCALAR >::setRandomVarOrder() {
 
       std::vector< std::string > varOrder;
-      varOrder.reserve(__bn.dag().size());
+      varOrder.reserve(__bn.size());
       for (const auto& var : __bn.dag()) {
         varOrder.push_back(__bn.variable(var).name());
       }

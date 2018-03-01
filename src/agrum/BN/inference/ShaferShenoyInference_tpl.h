@@ -419,7 +419,7 @@ namespace gum {
 
       // check that all the nodes are not targets, otherwise, there is no
       // barren node
-      if (target_nodes.size() != bn.dag().sizeNodes()) {
+      if (target_nodes.size() != bn.size()) {
         BarrenNodesFinder finder(&(bn.dag()));
         finder.setTargets(&target_nodes);
 
@@ -440,7 +440,7 @@ namespace gum {
 
     // 3/ add edges so that each node and its parents in the BN form a clique
     for (const auto node : __graph) {
-      const NodeSet& parents = bn.dag().parents(node);
+      const NodeSet& parents = bn.parents(node);
       for (auto iter1 = parents.cbegin(); iter1 != parents.cend(); ++iter1) {
         __graph.addEdge(*iter1, node);
         auto iter2 = iter1;

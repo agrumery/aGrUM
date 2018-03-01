@@ -279,19 +279,15 @@ namespace gum {
        * @brief Returns the gum::DAG of this PRMClassElementContainer.
        *
        * Be very careful when using NodeId with PRMClassElement<GUM_SCALAR>:
-       *there
-       *is no
-       * guarantee that an inherited PRMClassElement<GUM_SCALAR> will have the
-       *same
-       * NodeId
-       * than its superclass counterpart.
+       * there is no guarantee that an inherited PRMClassElement<GUM_SCALAR> will
+       * have the same NodeId than its superclass counterpart.
        *
        * When dealing with different classes and interfaces ALWAYS use safe-name
        * as identifier.
        *
        * @return the DAG of this PRMClassElementContainer.
        */
-      virtual const DAG& dag() const;
+      virtual const DAG& containerDag() const;
 
       /**
        * Returns true if a member with the given id exists in this

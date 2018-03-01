@@ -67,12 +67,12 @@ namespace gum {
 
     // marry the parents
     for (const auto node : nodes()) {
-      const NodeSet& parents = dag().parents(node);
+      const auto& par = parents(node);
 
-      for (auto it1 = parents.begin(); it1 != parents.end(); ++it1) {
+      for (auto it1 = par.begin(); it1 != par.end(); ++it1) {
         auto it2 = it1;
 
-        for (++it2; it2 != parents.end(); ++it2) {
+        for (++it2; it2 != par.end(); ++it2) {
           // will automatically check if this edge already exists
           __mutableMoralGraph->addEdge(*it1, *it2);
         }

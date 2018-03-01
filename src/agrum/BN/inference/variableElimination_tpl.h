@@ -270,7 +270,7 @@ namespace gum {
     if (__barren_nodes_type == FindBarrenNodesType::FIND_BARREN_NODES) {
       // check that all the nodes are not targets, otherwise, there is no
       // barren node
-      if (targets.size() != bn.dag().sizeNodes()) {
+      if (targets.size() != bn.size()) {
         BarrenNodesFinder finder(&(bn.dag()));
         finder.setTargets(&targets);
 
@@ -335,7 +335,7 @@ namespace gum {
 
     // 4/ add edges so that each node and its parents in the BN form a clique
     for (const auto node : __graph) {
-      const NodeSet& parents = bn.dag().parents(node);
+      const NodeSet& parents = bn.parents(node);
       for (auto iter1 = parents.cbegin(); iter1 != parents.cend(); ++iter1) {
         // before adding an edge between node and its parent, check that the
         // parent belong to the graph. Actually, when d-separated nodes are
