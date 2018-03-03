@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 2.8)
 # -DCMAKE_BUILD_TYPE=DEBUG|RELEASE 
 # -G "MinGW Makefiles" 
 
-
 # cmake -DCMAKE_BUILD_TYPE=DEBUG
 # or
 # cmake -DCMAKE_BUILD_TYPE=RELEASE
@@ -32,12 +31,12 @@ endif (aGrUM_FOUND)
 file(GLOB HOWTO_BUILD_SIMPLE_BN_SOURCE ${HOWTO_BUILD_SIMPLE_BN_SOURCE_DIR}/*.cpp)
 file(GLOB HOWTO_BUILD_SIMPLE_BN_INCLUDE ${HOWTO_BUILD_SIMPLE_BN_SOURCE_DIR}/*.h)
 
-add_executable (buildSimpleBN ${HOWTO_BUILD_SIMPLE_BN_SOURCE})
+add_executable (example ${HOWTO_BUILD_SIMPLE_BN_SOURCE})
 if (${CMAKE_BUILD_TYPE}  STREQUAL "RELEASE") # release : act install release
-  target_link_libraries(buildSimpleBN agrum)
+  target_link_libraries(example agrum)
 else() # debug : act install debug
-  target_link_libraries(buildSimpleBN agrum-dbg)
+  target_link_libraries(example agrum-dbg)
 endif()
 
-install (TARGETS buildSimpleBN DESTINATION bin)
+install (TARGETS example DESTINATION bin)
 

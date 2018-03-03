@@ -31,12 +31,12 @@ endif (aGrUM_FOUND)
 file(GLOB OPERATIONS_WITH_POTENTIAL_SOURCE ${OPERATIONS_WITH_POTENTIAL_SOURCE_DIR}/*.cpp)
 file(GLOB OPERATIONS_WITH_POTENTIAL_INCLUDE ${OPERATIONS_WITH_POTENTIAL_SOURCE_DIR}/*.h)
 
-add_executable (ops_potentials ${OPERATIONS_WITH_POTENTIAL_SOURCE})
+add_executable (example ${OPERATIONS_WITH_POTENTIAL_SOURCE})
 if (${CMAKE_BUILD_TYPE}  STREQUAL "RELEASE") # release : act install release
-  target_link_libraries(ops_potentials agrum)
+  target_link_libraries(example agrum)
 else() # debug : act install debug
-  target_link_libraries(ops_potentials agrum-dbg)
+  target_link_libraries(example agrum-dbg)
 endif()
 
-install (TARGETS ops_potentials DESTINATION bin)
+install (TARGETS example DESTINATION bin)
 

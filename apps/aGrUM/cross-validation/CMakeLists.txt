@@ -33,12 +33,12 @@ endif (aGrUM_FOUND)
 file(GLOB EXAMPLE_SOURCE ${EXAMPLE_SOURCE_DIR}/*.cpp)
 file(GLOB EXAMPLE_INCLUDE ${EXAMPLE_SOURCE_DIR}/*.h)
 
-add_executable (crossvalid ${EXAMPLE_SOURCE})
+add_executable (example ${EXAMPLE_SOURCE})
 if (${CMAKE_BUILD_TYPE}  STREQUAL "RELEASE") # release : act install release
-  target_link_libraries(crossvalid agrum)
+  target_link_libraries(example agrum)
 else() # debug : act install debug
-  target_link_libraries(crossvalid agrum-dbg)
+  target_link_libraries(example agrum-dbg)
 endif()
 
-install (TARGETS crossvalid DESTINATION bin)
+install (TARGETS example DESTINATION bin)
 
