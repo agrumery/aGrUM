@@ -8,7 +8,7 @@ Welcome to aGrUM's contribution guide and thank you for helping us making aGrUM 
 
 Please follow as much as possible this template :
 
-> *One issue, One bug*
+> ⚠️ *One issue, One bug*
 >
 >(Describe your issue in detail. Provide as much as possible steps to reproduce.)
 >
