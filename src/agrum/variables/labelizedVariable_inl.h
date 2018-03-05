@@ -102,9 +102,9 @@ namespace gum {
 
   INLINE
   LabelizedVariable* LabelizedVariable::clone() const {
-    return new LabelizedVariable( *this );
+    return new LabelizedVariable(*this);
   }
-  
+
   // copy operator
   INLINE const LabelizedVariable& LabelizedVariable::
   operator=(const LabelizedVariable& aLDRV) {

@@ -232,7 +232,7 @@ namespace gum {
        * @param sep_set the separation set for independent couples, built during
        * the previous phase
        */
-      void _orientation(
+      void _orientation_3off2(
         CorrectedMutualInformation<>& I,
         MixedGraph&                   graph,
         const HashTable< std::pair< Idx, Idx >, std::vector< Idx > >& sep_set);
@@ -354,9 +354,9 @@ namespace gum {
        *@param n1 tail of the path
        *@param n2 head of the path
        */
-      const bool __existsDirectedPath(const MixedGraph &graph,
-                                      const NodeId n1,
-                                      const NodeId n2) const;
+      const bool __existsDirectedPath(const MixedGraph& graph,
+                                      const NodeId      n1,
+                                      const NodeId      n2) const;
     };
 
   } /* namespace learning */

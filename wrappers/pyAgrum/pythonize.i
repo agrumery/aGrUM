@@ -24,4 +24,29 @@
 %rename ( pop_front ) gum::List::popFront();
 %rename ( pop_back ) gum::List::popBack();
 
-%rename ( __str__ ) *::toString() const;
+
+%define ADD_REPR_STR_API(classname)
+%extend classname {
+  // adding __repr__ and __str__ calling toString
+  std::string __repr__() const {
+   std::stringstream s;
+   s<<"(classname@"<<std::hex<<self<<") "<<self->toString();
+   return s.str();
+  }
+  std::string __str__() const { return self->toString();};
+}
+%enddef
+
+ADD_REPR_STR_API(gum::Potential<double>)
+ADD_REPR_STR_API(gum::Instantiation)
+
+ADD_REPR_STR_API(gum::DiscreteVariable)
+ADD_REPR_STR_API(gum::RangeVariable)
+ADD_REPR_STR_API(gum::LabelizedVariable)
+ADD_REPR_STR_API(gum::DiscretizedVariable<double>)
+
+ADD_REPR_STR_API(gum::UndiGraph)
+ADD_REPR_STR_API(gum::DiGraph)
+ADD_REPR_STR_API(gum::MixedGraph)
+
+ADD_REPR_STR_API(gum::BayesNet<double>)

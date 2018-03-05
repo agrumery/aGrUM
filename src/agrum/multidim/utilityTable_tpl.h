@@ -91,4 +91,35 @@ namespace gum {
     MultiDimDecorator< GUM_SCALAR >::content()->swap(*x, *y);
   }
 
+  template < typename GUM_SCALAR >
+  INLINE const UtilityTable< GUM_SCALAR >&
+  UtilityTable< GUM_SCALAR >::fillWith(const std::vector< GUM_SCALAR >& v) const {
+    this->populate(v);
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const UtilityTable< GUM_SCALAR >&
+  UtilityTable< GUM_SCALAR >::fillWith(const GUM_SCALAR& v) const {
+    this->fill(v);
+    return *this;
+  }
+  template < typename GUM_SCALAR >
+  INLINE const UtilityTable< GUM_SCALAR >& UtilityTable< GUM_SCALAR >::fillWith(
+    const UtilityTable< GUM_SCALAR >& src) const {
+    if (src.domainSize() != this->domainSize()) {
+      GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.");
+    }
+    Instantiation Isrc(src);
+    Instantiation Idst(*this);
+    for (Isrc.setFirst(); !Isrc.end(); ++Isrc) {
+      for (Idx i = 0; i < this->nbrDim(); i++) {
+        Idst.chgVal(Isrc.variable(i).name(), Isrc.variable(i).label(Isrc.val(i)));
+      }
+      this->set(Idst, src.get(Isrc));
+    }
+
+    return *this;
+  }
+
 } /* namespace gum */

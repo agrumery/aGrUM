@@ -20,9 +20,9 @@
 /**
  * @file
  * @brief Partial entropy class used in 3off2
- * 
- * The partial entropy is computed using Shannons formula and the natural 
- * log function. 
+ *
+ * The partial entropy is computed using Shannons formula and the natural
+ * log function.
  *
  * @author Quentin FALCAND.
  */

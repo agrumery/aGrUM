@@ -216,7 +216,7 @@ namespace gum {
         }
 
         // Second we search for active outputs
-        for (const auto nn : node->n->type().dag().nodes()) {
+        for (const auto nn : node->n->type().containerDag().nodes()) {
           if (node->n->type().isOutputNode(node->n->type().get(nn))) {
             try {
               sBuff << "-" << node->n->getRefAttr(nn).size()

@@ -89,7 +89,7 @@ def realNameFrom2TBNname(name, ts):
 def getTimeSlicesRange(dbn):
   """
   get the range and (name,radical) of each variables
-  
+
   :param dbn: a 2TBN or an unrolled BN
   :return: all the timeslice of a dbn
 
@@ -99,7 +99,7 @@ def getTimeSlicesRange(dbn):
   """
   timeslices = {}
 
-  for i in dbn.ids():
+  for i in dbn.nodes():
     n = dbn.variable(i).name()
     label, ts = _splitName(n)
     if ts in timeslices:
@@ -133,7 +133,7 @@ def is2TBN(bn):
 
 def _TimeSlicesToDot(dbn):
   """
-  Try to correctly represent dBN and 2TBN in dot format 
+  Try to correctly represent dBN and 2TBN in dot format
   """
   timeslices = getTimeSlicesRange(dbn)
 
@@ -170,7 +170,7 @@ def _TimeSlicesToDot(dbn):
 
 def showTimeSlices(dbn, size="6", format="png"):
   """
-  Try to correctly display dBN and 2TBN 
+  Try to correctly display dBN and 2TBN
 
   :param dbn: the dynamic BN
   :param size: size of the figue
@@ -209,7 +209,7 @@ def unroll2TBN(dbn, nbr):
   bn = gum.BayesNet()
 
   # variable creation
-  for dbn_id in dbn.ids():
+  for dbn_id in dbn.nodes():
     name = dbn.variable(dbn_id).name()
     if _isInNoTimeSlice(name):
       bn.add(dbn.variable(dbn_id))
@@ -222,7 +222,7 @@ def unroll2TBN(dbn, nbr):
 
   # add parents
   # the main pb : to have the same order for parents w.r.t the order in 2TBN
-  for dbn_id in dbn.ids():
+  for dbn_id in dbn.nodes():
     name = dbn.variable(dbn_id).name()
     # right order for parents
     l = dbn.cpt(dbn_id).var_names
@@ -250,7 +250,7 @@ def unroll2TBN(dbn, nbr):
           bn.addArc(bn.idFromName(new_name_parent), bn.idFromName(new_name))
 
   # potential creation
-  for dbn_id in dbn.ids():
+  for dbn_id in dbn.nodes():
     name = dbn.variable(dbn_id).name()
     if not _isInSecondTimeSlice(name):
       bn.cpt(bn.idFromName(name))[:] = dbn.cpt(dbn_id)[:]

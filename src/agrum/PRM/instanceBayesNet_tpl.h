@@ -32,7 +32,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void
     InstanceBayesNet< GUM_SCALAR >::__init(const PRMInstance< GUM_SCALAR >& i) {
-      for (const auto node : i.type().dag().nodes()) {
+      for (const auto node : i.type().containerDag().nodes()) {
         try {
           // Adding the attribute
           const PRMAttribute< GUM_SCALAR >& attr = i.get(node);
@@ -43,7 +43,7 @@ namespace gum {
         }
       }
 
-      for (const auto& arc : i.type().dag().arcs()) {
+      for (const auto& arc : i.type().containerDag().arcs()) {
         try {
           this->_dag.addArc(arc.tail(), arc.head());
         } catch (InvalidNode&) {
@@ -160,14 +160,14 @@ namespace gum {
       output << __inst->name() << "\" {" << std::endl;
 
       for (const auto node : this->nodes()) {
-        if (this->dag().children(node).size() > 0) {
-          const NodeSet& children = this->dag().children(node);
+        if (this->children(node).size() > 0) {
+          const NodeSet& children = this->children(node);
 
           for (const auto chi : children) {
             output << tab << "\"" << variable(node).name() << "\" -> ";
             output << "\"" << variable(chi).name() << "\";" << std::endl;
           }
-        } else if (this->dag().parents(node).size() == 0) {
+        } else if (this->parents(node).size() == 0) {
           output << tab << "\"" << variable(node).name() << "\";" << std::endl;
         }
       }

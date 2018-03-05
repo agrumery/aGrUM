@@ -119,7 +119,7 @@ namespace gum_tests {
                (**c).attributes().begin();
              a != (**c).attributes().end();
              ++a) {
-          TS_ASSERT((**c).dag().parents((**a).id()).size() < 6);
+          TS_ASSERT((**c).containerDag().parents((**a).id()).size() < 6);
         }
       }
 
@@ -202,7 +202,7 @@ namespace gum_tests {
                (**c).attributes().begin();
              a != (**c).attributes().end();
              ++a) {
-          TS_ASSERT((**c).dag().parents((**a).id()).size() < 6);
+          TS_ASSERT((**c).containerDag().parents((**a).id()).size() < 6);
         }
       }
 

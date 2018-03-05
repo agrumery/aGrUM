@@ -32,24 +32,42 @@
 
 namespace gum {
   EssentialGraph::EssentialGraph(const DAGmodel& m)
-      : __dag(m) {
+      : __dagmodel(&m) {
     __buildEssentialGraph();
+  }
+
+  EssentialGraph::EssentialGraph(const DAGmodel& m, const MixedGraph& mg)
+      : __dagmodel(&m)
+      , __mg(mg) {}
+  EssentialGraph::EssentialGraph(const EssentialGraph& g) {
+    __dagmodel = g.__dagmodel;
+    __buildEssentialGraph();
+  }
+  EssentialGraph& EssentialGraph::operator=(const EssentialGraph& g) {
+    if (&g != this) {
+      __dagmodel = g.__dagmodel;
+      __buildEssentialGraph();
+    }
+    return *this;
   }
 
   EssentialGraph::~EssentialGraph() {}
 
   void EssentialGraph::__buildEssentialGraph() {
-    for (const auto& node : __dag.nodes()) {
+    __mg.clear();
+    if (__dagmodel == nullptr) return;
+
+    for (const auto& node : __dagmodel->nodes()) {
       __mg.addNode(node);
     }
-    for (const auto& arc : __dag.arcs()) {
+    for (const auto& arc : __dagmodel->arcs()) {
       __mg.addArc(arc.tail(), arc.head());
     }
 
     std::vector< Arc > v;
     do {
       v.clear();
-      for (const auto x : __dag.topologicalOrder())
+      for (const auto x : __dagmodel->topologicalOrder())
         for (const auto y : __mg.children(x))
           if (!__strongly_protected(x, y)) v.push_back(Arc(x, y));
       for (const auto& arc : v) {
@@ -106,22 +124,23 @@ namespace gum {
            << "no_name\" {" << std::endl;
     nodeStream << "node [shape = ellipse];" << std::endl;
     std::string tab = "  ";
+    if (__dagmodel != nullptr) {
+      for (const auto node : __mg.nodes()) {
+        nodeStream << tab << node << "[label=\""
+                   << __dagmodel->variable(node).name() << "\"];";
 
-    for (const auto node : __mg.nodes()) {
-      nodeStream << tab << node << "[label=\"" << __dag.variable(node).name()
-                 << "\"];";
+        for (const auto nei : __mg.neighbours(node))
+          if (!treatedNodes.exists(nei))
+            edgeStream << tab << node << " -> " << nei << " [dir=none];"
+                       << std::endl;
 
-      for (const auto nei : __mg.neighbours(node))
-        if (!treatedNodes.exists(nei))
-          edgeStream << tab << node << " -> " << nei << " [dir=none];"
+        for (const auto chi : __mg.children(node))
+          edgeStream << tab << node << " -> " << chi << " [color=red];"
                      << std::endl;
 
-      for (const auto chi : __mg.children(node))
-        edgeStream << tab << node << " -> " << chi << " [color=red];" << std::endl;
-
-      treatedNodes.insert(node);
+        treatedNodes.insert(node);
+      }
     }
-
     output << nodeStream.str() << std::endl
            << edgeStream.str() << std::endl
            << "}" << std::endl;

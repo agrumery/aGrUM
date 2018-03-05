@@ -27,8 +27,8 @@
 #ifndef GUM_RANDOM_VARIABLE_TYPE_H
 #define GUM_RANDOM_VARIABLE_TYPE_H
 
-#include <vector>
 #include <sstream>
+#include <vector>
 
 #include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/multiDimImplementation.h>

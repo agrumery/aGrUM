@@ -171,7 +171,7 @@ namespace gum {
   INLINE bool MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     __checkConditions() {
 
-    return IBNG::_maxArcs >= IBNG::_bayesNet.dag().sizeArcs();
+    return IBNG::_maxArcs >= IBNG::_bayesNet.sizeArcs();
   }
 
   // main algorithme for moving between state of the IBayesNet according on the
@@ -429,20 +429,20 @@ namespace gum {
     NodeId temp = rand() % IBNG::_bayesNet.size();
     Size   co = 0;
 
-    if (IBNG::_bayesNet.dag().parents(temp).size()) {
+    if (IBNG::_bayesNet.parents(temp).size()) {
       j = temp;
-      auto it = IBNG::_bayesNet.dag().parents(j).begin();
-      co = rand() % IBNG::_bayesNet.dag().parents(j).size();
+      auto it = IBNG::_bayesNet.parents(j).begin();
+      co = rand() % IBNG::_bayesNet.parents(j).size();
 
       while (co--) {
         ++it;
       }
 
       i = *it;
-    } else if (IBNG::_bayesNet.dag().children(temp).size()) {
+    } else if (IBNG::_bayesNet.children(temp).size()) {
       i = temp;
-      auto it = IBNG::_bayesNet.dag().children(i).begin();
-      co = rand() % IBNG::_bayesNet.dag().children(i).size();
+      auto it = IBNG::_bayesNet.children(i).begin();
+      co = rand() % IBNG::_bayesNet.children(i).size();
 
       while (co--) {
         ++it;

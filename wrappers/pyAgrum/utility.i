@@ -1,5 +1,5 @@
 /*
-This file is just the copy of potential.i 
+This file is just the copy of potential.i
 s/Potential/UtilityTable/g
 */
 
@@ -107,7 +107,7 @@ s/Potential/UtilityTable/g
         return tuple(index)
 %}
 
-/* 
+/*
 * %feature("shadow") gum::UtilityTable::__str__ %{
 *     def __str__(self):
 *         self.__fill_distrib__()
@@ -150,7 +150,7 @@ s/Potential/UtilityTable/g
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
 %}
 
 

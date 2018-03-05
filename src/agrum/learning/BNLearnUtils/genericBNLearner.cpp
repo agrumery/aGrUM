@@ -20,7 +20,7 @@
 /** @file
  * @brief A pack of learning algorithms that can easily be used
  *
- * The pack currently contains K2, GreedyHillClimbing, 3off2 and
+ * The pack currently contains K2, GreedyHillClimbing, miic, 3off2 and
  *LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -429,7 +429,7 @@ namespace gum {
         , __constraint_MandatoryArcs(from.__constraint_MandatoryArcs)
         , __selected_algo(from.__selected_algo)
         , __K2(from.__K2)
-        , __3off2(from.__3off2)
+        , __miic_3off2(from.__miic_3off2)
         , __greedy_hill_climbing(from.__greedy_hill_climbing)
         , __local_search_with_tabu_list(from.__local_search_with_tabu_list)
         , __score_database(from.__score_database)
@@ -453,7 +453,7 @@ namespace gum {
         , __constraint_MandatoryArcs(std::move(from.__constraint_MandatoryArcs))
         , __selected_algo(from.__selected_algo)
         , __K2(std::move(from.__K2))
-        , __3off2(std::move(from.__3off2))
+        , __miic_3off2(std::move(from.__miic_3off2))
         , __greedy_hill_climbing(std::move(from.__greedy_hill_climbing))
         , __local_search_with_tabu_list(
             std::move(from.__local_search_with_tabu_list))
@@ -518,7 +518,7 @@ namespace gum {
         __constraint_MandatoryArcs = from.__constraint_MandatoryArcs;
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
-        __3off2 = from.__3off2;
+        __miic_3off2 = from.__miic_3off2;
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __score_database = from.__score_database;
@@ -570,7 +570,7 @@ namespace gum {
         __constraint_MandatoryArcs = std::move(from.__constraint_MandatoryArcs);
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
-        __3off2 = std::move(from.__3off2);
+        __miic_3off2 = std::move(from.__miic_3off2);
         __greedy_hill_climbing = std::move(from.__greedy_hill_climbing);
         __local_search_with_tabu_list =
           std::move(from.__local_search_with_tabu_list);
@@ -757,8 +757,8 @@ namespace gum {
       if (old_estimator != nullptr) delete old_estimator;
     }
 
-    /// prepares the initial graph for 3off2
-    MixedGraph genericBNLearner::__prepare_3off2() {
+    /// prepares the initial graph for 3off2 or miic
+    MixedGraph genericBNLearner::__prepare_miic_3off2() {
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
       for (Size i = 0; i < __score_database.modalities().size(); ++i) {
@@ -768,7 +768,7 @@ namespace gum {
         }
       }
 
-      // translating the constraints for 3off2
+      // translating the constraints for 3off2 or miic
       HashTable< std::pair< Idx, Idx >, char > initial_marks;
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
       for (const auto& arc : mandatory_arcs) {
@@ -779,7 +779,7 @@ namespace gum {
       for (const auto& arc : forbidden_arcs) {
         initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
-      __3off2.addConstraints(initial_marks);
+      __miic_3off2.addConstraints(initial_marks);
       // create the mutual entropy object
       if (__mutual_info == nullptr) {
         this->useNML();
@@ -789,13 +789,13 @@ namespace gum {
     }
 
     MixedGraph genericBNLearner::learnMixedStructure() {
-      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
+      if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
+        GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm");
       }
-      BNLearnerListener listener(this, __3off2);
+      BNLearnerListener listener(this, __miic_3off2);
       // create the mixedGraph_constraint_MandatoryArcs.arcs();
-      MixedGraph mgraph = this->__prepare_3off2();
-      return __3off2.learnMixedStructure(*__mutual_info, mgraph);
+      MixedGraph mgraph = this->__prepare_miic_3off2();
+      return __miic_3off2.learnMixedStructure(*__mutual_info, mgraph);
     }
 
     DAG genericBNLearner::learnDAG() {
@@ -829,12 +829,12 @@ namespace gum {
 
       switch (__selected_algo) {
         // ========================================================================
-        case AlgoType::THREE_OFF_TWO: {
-          BNLearnerListener listener(this, __3off2);
+        case AlgoType::MIIC_THREE_OFF_TWO: {
+          BNLearnerListener listener(this, __miic_3off2);
           // create the mixedGraph
-          MixedGraph mgraph = this->__prepare_3off2();
+          MixedGraph mgraph = this->__prepare_miic_3off2();
 
-          return __3off2.learnStructure(*__mutual_info, mgraph);
+          return __miic_3off2.learnStructure(*__mutual_info, mgraph);
         }
         // ========================================================================
         case AlgoType::GREEDY_HILL_CLIMBING: {

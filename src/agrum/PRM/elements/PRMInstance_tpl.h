@@ -88,7 +88,7 @@ namespace gum {
       for (const auto agg : type().aggregates()) {
         PRMAttribute< GUM_SCALAR >& attr = get(agg->safeName());
 
-        for (const auto node : type().dag().parents(agg->id())) {
+        for (const auto node : type().containerDag().parents(agg->id())) {
           try {
             attr.addParent(get(node));
           } catch (NotFound&) {

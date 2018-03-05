@@ -80,7 +80,7 @@ namespace gum {
     str << O3PRM_INDENT;
     str << __extractType(bn, node) << " ";
     str << __extractName(bn, node) << " ";
-    if (bn.dag().parents(node).size() > 0) {
+    if (bn.parents(node).size() > 0) {
       str << "dependson " << __extractParents(bn, node) << " ";
     }
     str << " {" << __extractCPT(bn, node) << "};" << std::endl;

@@ -333,8 +333,8 @@ namespace gum {
       }
 
       void O3PRM_CLASS_ILLEGAL_RULE_LABEL(const O3RuleCPT::O3Rule& rule,
-                                          const O3Label&           label, 
-                                          const O3Label&           parent, 
+                                          const O3Label&           label,
+                                          const O3Label&           parent,
                                           ErrorsContainer&         errors) {
         const auto&       pos = label.position();
         std::stringstream msg;

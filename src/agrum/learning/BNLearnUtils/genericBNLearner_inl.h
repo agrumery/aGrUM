@@ -134,19 +134,19 @@ namespace gum {
 
     // indicate that we wish to use 3off2
     INLINE void genericBNLearner::use3off2() noexcept {
-      __selected_algo = AlgoType::THREE_OFF_TWO;
-        __3off2.set3off2Behaviour();
+      __selected_algo = AlgoType::MIIC_THREE_OFF_TWO;
+      __miic_3off2.set3off2Behaviour();
     }
 
     // indicate that we wish to use 3off2
     INLINE void genericBNLearner::useMIIC() noexcept {
-      __selected_algo = AlgoType::THREE_OFF_TWO;
-        __3off2.setMiicBehaviour();
+      __selected_algo = AlgoType::MIIC_THREE_OFF_TWO;
+      __miic_3off2.setMiicBehaviour();
     }
 
     /// indicate that we wish to use the NML correction for 3off2
     INLINE void genericBNLearner::useNML() {
-      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+      if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
       __mutual_info = new CorrectedMutualInformation<>(
@@ -155,7 +155,7 @@ namespace gum {
     }
     /// indicate that we wish to use the MDL correction for 3off2
     INLINE void genericBNLearner::useMDL() {
-      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+      if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
       __mutual_info = new CorrectedMutualInformation<>(
@@ -164,7 +164,7 @@ namespace gum {
     }
     /// indicate that we wish to use the NoCorr correction for 3off2
     INLINE void genericBNLearner::useNoCorr() {
-      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+      if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
       __mutual_info = new CorrectedMutualInformation<>(
@@ -174,10 +174,10 @@ namespace gum {
 
     /// get the list of arcs hiding latent variables
     INLINE const std::vector< Arc > genericBNLearner::latentVariables() const {
-      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
+      if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
-      return __3off2.latentVariables();
+      return __miic_3off2.latentVariables();
     }
 
     // indicate that we wish to use a K2 algorithm

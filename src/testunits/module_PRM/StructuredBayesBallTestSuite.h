@@ -81,7 +81,11 @@ namespace gum_tests {
 
       for (auto i = sys->begin(); i != sys->end(); ++i) {
         for (auto a = (*(i.val())).begin(); a != (*(i.val())).end(); ++a) {
-          if ((*(i.val())).type().dag().parents((*(a.val())).id()).empty()) {
+          if ((*(i.val()))
+                .type()
+                .containerDag()
+                .parents((*(a.val())).id())
+                .empty()) {
             TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()));
 
             for (auto j = sys->begin(); j != sys->end(); ++j) {
@@ -110,7 +114,11 @@ namespace gum_tests {
 
       for (auto i = small_sys->begin(); i != small_sys->end(); ++i) {
         for (auto a = (*(i.val())).begin(); a != (*(i.val())).end(); ++a) {
-          if ((*(i.val())).type().dag().parents((*(a.val())).id()).empty()) {
+          if ((*(i.val()))
+                .type()
+                .containerDag()
+                .parents((*(a.val())).id())
+                .empty()) {
             TS_GUM_ASSERT_THROWS_NOTHING(bb->compute(i.val(), (*(a.val())).id()));
 
             for (gum::prm::PRMSystem< double >::iterator j = small_sys->begin();
@@ -131,7 +139,6 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete bb);
     }
-
   };
 
 }  // namespace gum_tests

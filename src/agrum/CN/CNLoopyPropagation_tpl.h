@@ -889,8 +889,8 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_msgL(const NodeId Y, const NodeId X) {
-      NodeSet const& children = __bnet->dag().children(Y);
-      NodeSet const& _parents = __bnet->dag().parents(Y);
+      NodeSet const& children = __bnet->children(Y);
+      NodeSet const& _parents = __bnet->parents(Y);
 
       const Potential< GUM_SCALAR >* parents = &__bnet->cpt(Y);
 
@@ -1092,7 +1092,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     void CNLoopyPropagation< GUM_SCALAR >::_msgP(const NodeId X,
                                                  const NodeId demanding_child) {
-      NodeSet const& children = __bnet->dag().children(X);
+      NodeSet const& children = __bnet->children(X);
 
       const Potential< GUM_SCALAR >* parents = &__bnet->cpt(X);
 
@@ -1327,7 +1327,7 @@ namespace gum {
           continue;
         }
 
-        NodeSet const& children = __bnet->dag().children(node);
+        NodeSet const& children = __bnet->children(node);
 
         const Potential< GUM_SCALAR >* parents = &__bnet->cpt(node);
 
@@ -1551,7 +1551,7 @@ namespace gum {
           continue;
         }
 
-        for (auto pare : __bnet->dag().parents(node)) {
+        for (auto pare : __bnet->parents(node)) {
           _msgP(pare, node);
         }
       }

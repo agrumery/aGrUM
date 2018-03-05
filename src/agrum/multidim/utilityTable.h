@@ -82,6 +82,37 @@ namespace gum {
 
     virtual UtilityTable< GUM_SCALAR >* newFactory() const;
 
+    /**
+    *@brief copy a Potential data using name of variables and labels (not
+    *necessarily
+    *the same variables in the same orders)
+    *
+    *@warning a strict control on names of variables and labels are made
+    *
+    *@throw InvalidArgument if the Potential is not compatible with this
+    */
+    const UtilityTable< GUM_SCALAR >&
+    fillWith(const UtilityTable< GUM_SCALAR >& src) const;
+
+    /**
+     * @brief Automatically fills the potential with the values in
+     * v.
+     *
+     * @param v Vector of values.
+     * @throw SizeError Raised if v size's does not matches this
+     * MultiDimContainer domain size.
+     */
+    const UtilityTable< GUM_SCALAR >&
+    fillWith(const std::vector< GUM_SCALAR >& v) const;
+
+    /**
+     * @brief Automatically fills this MultiDimContainer with the value v
+     *
+     * @param v contains the data.
+     */
+    const UtilityTable< GUM_SCALAR >& fillWith(const GUM_SCALAR& v) const;
+
+
     protected:
     virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
   };

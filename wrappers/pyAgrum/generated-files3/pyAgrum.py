@@ -2020,9 +2020,9 @@ class GumException(Exception):
     def __del__(self):
         return None
 
-    def __str__(self) -> "std::string const":
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.GumException___str__(self)
+    def toString(self) -> "std::string const":
+        """toString(self) -> std::string const"""
+        return _pyAgrum.GumException_toString(self)
 
 
     def errorContent(self) -> "std::string const":
@@ -3752,7 +3752,6 @@ class DiscreteVariable(Variable):
 
     def __init__(self, *args, **kwargs):
         raise AttributeError("No constructor defined - class is abstract")
-    __repr__ = _swig_repr
     __swig_destroy__ = _pyAgrum.delete_DiscreteVariable
     def __del__(self):
         return None
@@ -3900,9 +3899,9 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_label(self, i)
 
 
-    def __str__(self) -> "std::string const":
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.DiscreteVariable___str__(self)
+    def toString(self) -> "std::string const":
+        """toString(self) -> std::string const"""
+        return _pyAgrum.DiscreteVariable_toString(self)
 
 
     def toStringWithDescription(self) -> "std::string const":
@@ -3931,6 +3930,16 @@ class DiscreteVariable(Variable):
 
         """
         return _pyAgrum.DiscreteVariable_domain(self)
+
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.DiscreteVariable___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.DiscreteVariable___str__(self)
 
 
     def __getitem__(self,label):   # adding the y() function here
@@ -4055,7 +4064,6 @@ class LabelizedVariable(DiscreteVariable):
     for _s in [DiscreteVariable]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, LabelizedVariable, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -4272,6 +4280,16 @@ class LabelizedVariable(DiscreteVariable):
         """
         return _pyAgrum.LabelizedVariable_domain(self)
 
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.LabelizedVariable___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.LabelizedVariable___str__(self)
+
 LabelizedVariable_swigregister = _pyAgrum.LabelizedVariable_swigregister
 LabelizedVariable_swigregister(LabelizedVariable)
 
@@ -4334,7 +4352,6 @@ class RangeVariable(DiscreteVariable):
     for _s in [DiscreteVariable]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, RangeVariable, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -4557,10 +4574,19 @@ class RangeVariable(DiscreteVariable):
         """
         return _pyAgrum.RangeVariable_domain(self)
 
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.RangeVariable___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.RangeVariable___str__(self)
+
 RangeVariable_swigregister = _pyAgrum.RangeVariable_swigregister
 RangeVariable_swigregister(RangeVariable)
 
-INC_MARKS_ARRAY = _pyAgrum.INC_MARKS_ARRAY
 class Edge(_object):
     """
 
@@ -4814,7 +4840,6 @@ class DiGraph(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, DiGraph, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, DiGraph, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -4871,9 +4896,9 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_clear(self)
 
 
-    def __str__(self) -> "std::string const":
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.DiGraph___str__(self)
+    def toString(self) -> "std::string const":
+        """toString(self) -> std::string const"""
+        return _pyAgrum.DiGraph_toString(self)
 
 
     def toDot(self) -> "std::string const":
@@ -4909,18 +4934,19 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_topologicalOrder(self, clear)
 
 
-    def ids(self) -> "PyObject *":
-        """
-        ids(self) -> PyObject *
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.DiGraph___repr__(self)
 
 
-        Returns
-        -------
-        List
-            the list of ids
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.DiGraph___str__(self)
 
-        """
-        return _pyAgrum.DiGraph_ids(self)
+
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.DiGraph_nodes(self)
 
 
     def arcs(self) -> "PyObject *":
@@ -5284,7 +5310,6 @@ class UndiGraph(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, UndiGraph, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, UndiGraph, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -5341,9 +5366,9 @@ class UndiGraph(_object):
         return _pyAgrum.UndiGraph_clear(self)
 
 
-    def __str__(self) -> "std::string const":
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.UndiGraph___str__(self)
+    def toString(self) -> "std::string const":
+        """toString(self) -> std::string const"""
+        return _pyAgrum.UndiGraph_toString(self)
 
 
     def toDot(self) -> "std::string const":
@@ -5395,18 +5420,19 @@ class UndiGraph(_object):
         return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
 
 
-    def ids(self) -> "PyObject *":
-        """
-        ids(self) -> PyObject *
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.UndiGraph___repr__(self)
 
 
-        Returns
-        -------
-        List
-            the list of ids
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.UndiGraph___str__(self)
 
-        """
-        return _pyAgrum.UndiGraph_ids(self)
+
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.UndiGraph_nodes(self)
 
 
     def edges(self) -> "PyObject *":
@@ -5663,7 +5689,6 @@ class MixedGraph(UndiGraph, DiGraph):
     for _s in [UndiGraph, DiGraph]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, MixedGraph, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -5786,8 +5811,18 @@ class MixedGraph(UndiGraph, DiGraph):
         return _pyAgrum.MixedGraph_toDot(self)
 
 
-    def __str__(self) -> "std::string const":
-        """__str__(self) -> std::string const"""
+    def toString(self) -> "std::string const":
+        """toString(self) -> std::string const"""
+        return _pyAgrum.MixedGraph_toString(self)
+
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.MixedGraph___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
         return _pyAgrum.MixedGraph___str__(self)
 
 MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
@@ -6090,9 +6125,9 @@ class CliqueGraph(UndiGraph):
         return _pyAgrum.CliqueGraph_isJoinTree(self)
 
 
-    def __str__(self) -> "std::string const":
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.CliqueGraph___str__(self)
+    def toString(self) -> "std::string const":
+        """toString(self) -> std::string const"""
+        return _pyAgrum.CliqueGraph_toString(self)
 
 
     def toDot(self) -> "std::string const":
@@ -6202,7 +6237,6 @@ class Instantiation(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, Instantiation, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Instantiation, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -6878,9 +6912,9 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_hamming(self)
 
 
-    def __str__(self) -> "std::string":
-        """__str__(self) -> std::string"""
-        return _pyAgrum.Instantiation___str__(self)
+    def toString(self) -> "std::string":
+        """toString(self) -> std::string"""
+        return _pyAgrum.Instantiation_toString(self)
 
 
     def reorder(self, *args) -> "void":
@@ -6900,6 +6934,16 @@ class Instantiation(_object):
 
         """
         return _pyAgrum.Instantiation_reorder(self, *args)
+
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.Instantiation___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.Instantiation___str__(self)
 
 
     def __setitem__(self,key,item):
@@ -7040,6 +7084,11 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_empty(self)
 
 
+    def nodes(self) -> "gum::NodeGraphPart const &":
+        """nodes(self) -> NodeGraphPart"""
+        return _pyAgrum.DAGmodel_nodes(self)
+
+
     def variable(self, id: 'gum::NodeId') -> "gum::DiscreteVariable const &":
         """
         variable(self, id) -> DiscreteVariable
@@ -7166,6 +7215,22 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_arcs(self)
 
 
+    def parents(self, *args) -> "gum::NodeSet const &":
+        """
+        parents(self, id) -> gum::NodeSet const
+        parents(self, name) -> gum::NodeSet const &
+        """
+        return _pyAgrum.DAGmodel_parents(self, *args)
+
+
+    def children(self, *args) -> "gum::NodeSet const &":
+        """
+        children(self, id) -> gum::NodeSet const
+        children(self, name) -> gum::NodeSet const &
+        """
+        return _pyAgrum.DAGmodel_children(self, *args)
+
+
     def moralGraph(self, clear: 'bool'=True) -> "gum::UndiGraph const &":
         """
         moralGraph(self, clear=True) -> UndiGraph
@@ -7249,9 +7314,14 @@ class EssentialGraph(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, EssentialGraph, name)
     __repr__ = _swig_repr
 
-    def __init__(self, m: 'DAGmodel'):
-        """__init__(self, m) -> EssentialGraph"""
-        this = _pyAgrum.new_EssentialGraph(m)
+    def __init__(self, *args):
+        """
+        __init__(self) -> EssentialGraph
+        __init__(self, m) -> EssentialGraph
+        __init__(self, m, mg) -> EssentialGraph
+        __init__(self, g) -> EssentialGraph
+        """
+        this = _pyAgrum.new_EssentialGraph(*args)
         try:
             self.this.append(this)
         except __builtin__.Exception:
@@ -7288,63 +7358,6 @@ class EssentialGraph(_object):
         return _pyAgrum.EssentialGraph_toDot(self)
 
 
-    def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        parents(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.EssentialGraph_parents(self, id)
-
-
-    def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        children(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.EssentialGraph_children(self, id)
-
-
-    def neighbours(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        neighbours(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id : int
-            the id of the checked node
-
-        Returns
-        -------
-        Set
-            The set of edges adjacent to the given node 
-
-        """
-        return _pyAgrum.EssentialGraph_neighbours(self, id)
-
-
     def sizeArcs(self) -> "gum::Size":
         """
         sizeArcs(self) -> gum::Size
@@ -7359,20 +7372,6 @@ class EssentialGraph(_object):
         return _pyAgrum.EssentialGraph_sizeArcs(self)
 
 
-    def arcs(self) -> "gum::ArcSet const &":
-        """
-        arcs(self) -> gum::ArcSet const &
-
-
-        Returns
-        -------
-        list
-        	The lisf of arcs in the EssentialGraph
-
-        """
-        return _pyAgrum.EssentialGraph_arcs(self)
-
-
     def sizeEdges(self) -> "gum::Size":
         """
         sizeEdges(self) -> gum::Size
@@ -7385,20 +7384,6 @@ class EssentialGraph(_object):
 
         """
         return _pyAgrum.EssentialGraph_sizeEdges(self)
-
-
-    def edges(self) -> "gum::EdgeSet const &":
-        """
-        edges(self) -> gum::EdgeSet const &
-
-
-        Returns
-        -------
-        List
-          the list of the edges
-
-        """
-        return _pyAgrum.EssentialGraph_edges(self)
 
 
     def sizeNodes(self) -> "gum::Size":
@@ -7427,6 +7412,96 @@ class EssentialGraph(_object):
 
         """
         return _pyAgrum.EssentialGraph_size(self)
+
+
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.EssentialGraph_nodes(self)
+
+
+    def arcs(self) -> "PyObject *":
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the EssentialGraph
+
+        """
+        return _pyAgrum.EssentialGraph_arcs(self)
+
+
+    def parents(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.EssentialGraph_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.EssentialGraph_children(self, id)
+
+
+    def edges(self) -> "PyObject *":
+        """
+        edges(self) -> PyObject *
+
+
+        Returns
+        -------
+        List
+          the list of the edges
+
+        """
+        return _pyAgrum.EssentialGraph_edges(self)
+
+
+    def neighbours(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        neighbours(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+            the id of the checked node
+
+        Returns
+        -------
+        Set
+            The set of edges adjacent to the given node 
+
+        """
+        return _pyAgrum.EssentialGraph_neighbours(self, id)
 
 EssentialGraph_swigregister = _pyAgrum.EssentialGraph_swigregister
 EssentialGraph_swigregister(EssentialGraph)
@@ -7482,44 +7557,6 @@ class MarkovBlanket(_object):
         return _pyAgrum.MarkovBlanket_toDot(self)
 
 
-    def parents(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        parents(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.MarkovBlanket_parents(self, id)
-
-
-    def children(self, id: 'gum::NodeId const') -> "gum::NodeSet const &":
-        """
-        children(self, id) -> gum::NodeSet const &
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.MarkovBlanket_children(self, id)
-
-
     def sizeArcs(self) -> "gum::Size":
         """
         sizeArcs(self) -> gum::Size
@@ -7532,20 +7569,6 @@ class MarkovBlanket(_object):
 
         """
         return _pyAgrum.MarkovBlanket_sizeArcs(self)
-
-
-    def arcs(self) -> "gum::ArcSet const &":
-        """
-        arcs(self) -> gum::ArcSet const &
-
-
-        Returns
-        -------
-        List
-        	the list of the arcs
-
-        """
-        return _pyAgrum.MarkovBlanket_arcs(self)
 
 
     def sizeNodes(self) -> "gum::Size":
@@ -7593,6 +7616,63 @@ class MarkovBlanket(_object):
 
         """
         return _pyAgrum.MarkovBlanket_hasSameStructure(self, other)
+
+
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.MarkovBlanket_nodes(self)
+
+
+    def arcs(self) -> "PyObject *":
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        List
+        	the list of the arcs
+
+        """
+        return _pyAgrum.MarkovBlanket_arcs(self)
+
+
+    def parents(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.MarkovBlanket_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.MarkovBlanket_children(self, id)
 
 MarkovBlanket_swigregister = _pyAgrum.MarkovBlanket_swigregister
 MarkovBlanket_swigregister(MarkovBlanket)
@@ -8313,7 +8393,6 @@ class DiscretizedVariable_double(DiscreteVariable):
     for _s in [DiscreteVariable]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, DiscretizedVariable_double, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -8538,6 +8617,16 @@ class DiscretizedVariable_double(DiscreteVariable):
         """
         return _pyAgrum.DiscretizedVariable_double_ticks(self)
 
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.DiscretizedVariable_double___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.DiscretizedVariable_double___str__(self)
+
 DiscretizedVariable_double_swigregister = _pyAgrum.DiscretizedVariable_double_swigregister
 DiscretizedVariable_double_swigregister(DiscretizedVariable_double)
 
@@ -8618,14 +8707,12 @@ class MultiDimContainer_double(_object):
         return _pyAgrum.MultiDimContainer_double_newFactory(self)
 
 
-    def __str__(self) -> "std::string const":
-        """__str__(self) -> std::string const"""
-        return _pyAgrum.MultiDimContainer_double___str__(self)
-
-
-    def toString(self, i: 'Instantiation') -> "std::string const":
-        """toString(self, i) -> std::string const"""
-        return _pyAgrum.MultiDimContainer_double_toString(self, i)
+    def toString(self, *args) -> "std::string const":
+        """
+        toString(self) -> std::string const
+        toString(self, i) -> std::string const
+        """
+        return _pyAgrum.MultiDimContainer_double_toString(self, *args)
 
 
     def __eq__(self, p: 'MultiDimContainer_double') -> "bool":
@@ -8691,7 +8778,6 @@ class Potential_double(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, Potential_double, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Potential_double, name)
-    __repr__ = _swig_repr
 
     def __init__(self, *args):
         """
@@ -9134,8 +9220,18 @@ class Potential_double(_object):
 
 
 
-    def __str__(self) -> "std::string const":
-        """__str__(self) -> std::string const"""
+    def toString(self) -> "std::string const":
+        """toString(self) -> std::string const"""
+        return _pyAgrum.Potential_double_toString(self)
+
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.Potential_double___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
         return _pyAgrum.Potential_double___str__(self)
 
 
@@ -9787,6 +9883,15 @@ class UtilityTable_double(_object):
         return _pyAgrum.UtilityTable_double_newFactory(self)
 
 
+    def fillWith(self, *args) -> "gum::UtilityTable< double > const &":
+        """
+        fillWith(self, src) -> UtilityTable_double
+        fillWith(self, v) -> UtilityTable_double
+        fillWith(self, v) -> UtilityTable_double
+        """
+        return _pyAgrum.UtilityTable_double_fillWith(self, *args)
+
+
     def variablesSequence(self):
         varlist = []
         for i in range(0, self.nbrDim()):
@@ -9903,7 +10008,7 @@ class UtilityTable_double(_object):
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
 
 
 
@@ -10192,14 +10297,14 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_log2JointProbability(self, i)
 
 
-    def __eq__(self, src: 'IBayesNet_double') -> "bool":
-        """__eq__(self, src) -> bool"""
-        return _pyAgrum.IBayesNet_double___eq__(self, src)
+    def __eq__(self, arg2: 'IBayesNet_double') -> "bool":
+        """__eq__(self, arg2) -> bool"""
+        return _pyAgrum.IBayesNet_double___eq__(self, arg2)
 
 
-    def __ne__(self, src: 'IBayesNet_double') -> "bool":
-        """__ne__(self, src) -> bool"""
-        return _pyAgrum.IBayesNet_double___ne__(self, src)
+    def __ne__(self, arg2: 'IBayesNet_double') -> "bool":
+        """__ne__(self, arg2) -> bool"""
+        return _pyAgrum.IBayesNet_double___ne__(self, arg2)
 
 
     def dim(self) -> "gum::Size":
@@ -10302,23 +10407,14 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_toDot(self)
 
 
-    def __str__(self) -> "std::string":
-        """__str__(self) -> std::string"""
-        return _pyAgrum.IBayesNet_double___str__(self)
+    def toString(self) -> "std::string":
+        """toString(self) -> std::string"""
+        return _pyAgrum.IBayesNet_double_toString(self)
 
 
-    def ids(self) -> "PyObject *":
-        """
-        ids(self) -> PyObject *
-
-
-        Returns
-        -------
-        list :
-        	The list variables ids.
-
-        """
-        return _pyAgrum.IBayesNet_double_ids(self)
+    def nodes(self) -> "PyObject *":
+        """nodes(self) -> PyObject *"""
+        return _pyAgrum.IBayesNet_double_nodes(self)
 
 
     def names(self) -> "PyObject *":
@@ -10335,62 +10431,10 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_names(self)
 
 
-    def arcs(self) -> "PyObject *":
-        """
-        arcs(self) -> PyObject *
-
-
-        Returns
-        -------
-        list
-        	The lisf of arcs in the IBayesNet
-
-        """
-        return _pyAgrum.IBayesNet_double_arcs(self)
-
-
-    def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        parents(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.IBayesNet_double_parents(self, id)
-
-
-    def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        children(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.IBayesNet_double_children(self, id)
-
-
     def minimalCondSet(self, *args) -> "PyObject *":
         """
         minimalCondSet(self, target, soids) -> gum::NodeSet
-        minimalCondSet(self, target, soids) -> gum::NodeSet
+        minimalCondSet(self, targets, soids) -> gum::NodeSet
         minimalCondSet(self, target, list) -> PyObject
         minimalCondSet(self, targets, list) -> PyObject *
 
@@ -10413,6 +10457,58 @@ class IBayesNet_double(DAGmodel):
 
         """
         return _pyAgrum.IBayesNet_double_minimalCondSet(self, *args)
+
+
+    def arcs(self) -> "PyObject *":
+        """
+        arcs(self) -> PyObject *
+
+
+        Returns
+        -------
+        list
+        	The lisf of arcs in the IBayesNet
+
+        """
+        return _pyAgrum.IBayesNet_double_arcs(self)
+
+
+    def parents(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        parents(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id :
+        	The id of the child node
+
+        Returns
+        -------
+        Set
+            the set of the parents ids.
+
+        """
+        return _pyAgrum.IBayesNet_double_parents(self, id)
+
+
+    def children(self, id: 'gum::NodeId') -> "PyObject *":
+        """
+        children(self, id) -> PyObject *
+
+
+        Parameters
+        ----------
+        id : int
+          the id of the parent
+
+        Returns
+        -------
+        Set
+        	the set of all the children
+
+        """
+        return _pyAgrum.IBayesNet_double_children(self, id)
 
 IBayesNet_double_swigregister = _pyAgrum.IBayesNet_double_swigregister
 IBayesNet_double_swigregister(IBayesNet_double)
@@ -10508,7 +10604,6 @@ class BayesNet_double(IBayesNet_double):
     for _s in [IBayesNet_double]:
         __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
     __getattr__ = lambda self, name: _swig_getattr(self, BayesNet_double, name)
-    __repr__ = _swig_repr
 
     def fastPrototype(dotlike: 'std::string const &', domainSize: 'gum::Size'=2) -> "gum::BayesNet< double >":
         """
@@ -11405,112 +11500,6 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_log10DomainSize(self)
 
 
-    def ids(self) -> "PyObject *":
-        """
-        ids(self) -> PyObject *
-
-
-        Returns
-        -------
-        list :
-        	The list variables ids.
-
-        """
-        return _pyAgrum.BayesNet_double_ids(self)
-
-
-    def names(self) -> "PyObject *":
-        """
-        names(self) -> PyObject *
-
-
-        Returns
-        -------
-        list
-        	The names of the graph variables
-
-        """
-        return _pyAgrum.BayesNet_double_names(self)
-
-
-    def arcs(self) -> "PyObject *":
-        """
-        arcs(self) -> PyObject *
-
-
-        Returns
-        -------
-        list
-        	The lisf of arcs in the IBayesNet
-
-        """
-        return _pyAgrum.BayesNet_double_arcs(self)
-
-
-    def parents(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        parents(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id :
-        	The id of the child node
-
-        Returns
-        -------
-        Set
-            the set of the parents ids.
-
-        """
-        return _pyAgrum.BayesNet_double_parents(self, id)
-
-
-    def children(self, id: 'gum::NodeId const') -> "PyObject *":
-        """
-        children(self, id) -> PyObject *
-
-
-        Parameters
-        ----------
-        id : int
-          the id of the parent
-
-        Returns
-        -------
-        Set
-        	the set of all the children
-
-        """
-        return _pyAgrum.BayesNet_double_children(self, id)
-
-
-    def minimalCondSet(self, *args) -> "PyObject *":
-        """
-        minimalCondSet(self, target, list) -> PyObject
-        minimalCondSet(self, targets, list) -> PyObject *
-
-
-        Returns, given one or many targets and a list of variables, the minimal set of those needed to calculate the target/targets.
-
-        Parameters
-        ----------
-        target : int
-        	The id of the target
-        targets : list
-        	The ids of the targets
-        list : list
-        	The list of available variables
-
-        Returns
-        -------
-        Set
-        	The minimal set of variables
-
-        """
-        return _pyAgrum.BayesNet_double_minimalCondSet(self, *args)
-
-
     def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdded=None,whenArcDeleted=None):
         """
         Add the listeners in parameters to the list of existing ones.
@@ -11815,6 +11804,16 @@ class BayesNet_double(IBayesNet_double):
 
         """
         return _pyAgrum.BayesNet_double_saveUAI(self, name)
+
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.BayesNet_double___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.BayesNet_double___str__(self)
 
 BayesNet_double_swigregister = _pyAgrum.BayesNet_double_swigregister
 BayesNet_double_swigregister(BayesNet_double)
@@ -24325,9 +24324,9 @@ class CredalNet_double(_object):
         return _pyAgrum.CredalNet_double_saveBNsMinMax(self, min_path, max_path)
 
 
-    def __str__(self) -> "std::string":
-        """__str__(self) -> std::string"""
-        return _pyAgrum.CredalNet_double___str__(self)
+    def toString(self) -> "std::string":
+        """toString(self) -> std::string"""
+        return _pyAgrum.CredalNet_double_toString(self)
 
 
     def computeCPTMinMax(self) -> "void":
@@ -25557,9 +25556,9 @@ class InfluenceDiagram_double(DAGmodel):
         return _pyAgrum.InfluenceDiagram_double_toDot(self)
 
 
-    def __str__(self) -> "std::string":
-        """__str__(self) -> std::string"""
-        return _pyAgrum.InfluenceDiagram_double___str__(self)
+    def toString(self) -> "std::string":
+        """toString(self) -> std::string"""
+        return _pyAgrum.InfluenceDiagram_double_toString(self)
 
 
     def cpt(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
@@ -26525,7 +26524,7 @@ class BNLearner_double(_object):
     src : pyAgrum.BayesNet
     	the Bayesian network used to find thoes modalities
     parse_database : bool
-    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables. 
+    	if true, the modalities specified by the user will be considered as a superset of the modalities of the variables.
     learner : pyAgrum.BNLearner
     	the BNLearner to copy
 
@@ -26562,7 +26561,7 @@ class BNLearner_double(_object):
         learnBN(self) -> BayesNet_double
 
 
-        learn a BayesNet from a file (must have read the db before) 
+        learn a BayesNet from a file (must have read the db before)
 
         Returns
         -------
@@ -26588,7 +26587,7 @@ class BNLearner_double(_object):
         dag : pyAgrum.DAG
         bn : pyAgrum.BayesNet
         take_into_account_score : bool
-        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX () 
+        	The dag passed in argument may have been learnt from a structure learning. In this case, if the score used to learn the structure has an implicit apriori (like K2 which has a 1-smoothing apriori), it is important to also take into account this implicit apriori for parameter learning. By default, if a score exists, we will learn parameters by taking into account the apriori specified by methods useAprioriXXX () + the implicit apriori of the score, else we just take into account the apriori specified by useAprioriXXX ()
 
         Returns
         -------
@@ -27289,12 +27288,23 @@ class BNLearner_double(_object):
         return _pyAgrum.BNLearner_double_use3off2(self)
 
 
+    def useMIIC(self) -> "void":
+        """
+        useMIIC(self)
+
+
+        Indicate that we wish to use MIIC.
+
+        """
+        return _pyAgrum.BNLearner_double_useMIIC(self)
+
+
     def useNML(self) -> "void":
         """
         useNML(self)
 
 
-        Indicate that we wish to use the NML correction for 3off2
+        Indicate that we wish to use the NML correction for 3off2 or MIIC
 
         """
         return _pyAgrum.BNLearner_double_useNML(self)
@@ -27305,7 +27315,7 @@ class BNLearner_double(_object):
         useMDL(self)
 
 
-        Indicate that we wish to use the MDL correction for 3off2
+        Indicate that we wish to use the MDL correction for 3off2 or MIIC
 
         """
         return _pyAgrum.BNLearner_double_useMDL(self)
@@ -27316,7 +27326,7 @@ class BNLearner_double(_object):
         useNoCorr(self)
 
 
-        Indicate that we wish to use the NoCorr correction for 3off2
+        Indicate that we wish to use the NoCorr correction for 3off2 or MIIC
 
         """
         return _pyAgrum.BNLearner_double_useNoCorr(self)
@@ -27330,7 +27340,7 @@ class BNLearner_double(_object):
 
         Warnings
         --------
-        learner must be using 3off2 algorithm
+        learner must be using 3off2 or MIIC algorithm
 
         Returns
         -------
@@ -27348,15 +27358,25 @@ class BNLearner_double(_object):
 
         Warnings
         --------
-        learner must be using 3off2 algorithm
+        learner must be using 3off2 or MIIC algorithm
 
         Returns
         -------
-        pyAgrum.MixedGraph
-        	the learned mixed structure
+        pyAgrum.EssentialGraph
+        	the learned structure as an EssentialGraph
 
         """
-        return _pyAgrum.BNLearner_double_learnMixedStructure(self)
+        val = _pyAgrum.BNLearner_double_learnMixedStructure(self)
+
+        bn=BayesNet()
+        for i in range(len(self.names())):
+          bn.add(self.nameFromId(i),2)
+        ge=EssentialGraph(bn,val)
+        ge._bn=bn
+        return ge
+
+
+        return val
 
 BNLearner_double_swigregister = _pyAgrum.BNLearner_double_swigregister
 BNLearner_double_swigregister(BNLearner_double)

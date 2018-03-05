@@ -499,7 +499,7 @@ namespace gum {
       __lifted_pools.insert(&c, lifted_pool);
       NodeSet inners, outers;
 
-      for (const auto node : c.dag().nodes())
+      for (const auto node : c.containerDag().nodes())
         if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(node))) {
           if (c.isOutputNode(c.get(node)))
             outers.insert(node);
@@ -514,7 +514,7 @@ namespace gum {
           // We need to put in the output_elim_order aggregator's parents which
           // are
           // innner nodes
-          for (const auto par : c.dag().parents(node))
+          for (const auto par : c.containerDag().parents(node))
             if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(par)) &&
                 c.isInnerNode(c.get(par))) {
               inners.erase(par);

@@ -20,8 +20,8 @@
 /** @file
  * @brief A class for comparing graphs based on their structures
  *
- * Classifies corresponding arcs, edges and nothing in a graph given a reference 
- * graph to then return values of recall, precision and Fscore. 
+ * Classifies corresponding arcs, edges and nothing in a graph given a reference
+ * graph to then return values of recall, precision and Fscore.
  *
  * @author Quentin FALCAND
  */

@@ -28,7 +28,7 @@ class SamplingTestCase(pyAgrumTestCase):
     return "Approximations always bad : on {} tests, {:1.7}>{:1.7}".format(nbr, min, seuil)
 
   def unsharpen(self,bn):
-    for nod in bn.ids():
+    for nod in bn.nodes():
       bn.cpt(nod).translate(bn.maxParam() / 2).normalizeAsCPT()
 
   def setUp(self):
@@ -142,7 +142,7 @@ class TestDictFeature(SamplingTestCase):
     ie3.setVerbosity(False)
     ie3.setEpsilon(0.1)
     ie3.setMinEpsilonRate(0.01)
-    
+
     msg = self.iterTest(proto, ie3, self.s, {'r': [0, 1], 'w': (1, 0)})
     if msg is not None:
       self.fail(msg)

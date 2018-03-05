@@ -174,6 +174,9 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   void use3off2() {
     self->gum::learning::genericBNLearner::use3off2();
   }
+  void useMIIC() {
+    self->gum::learning::genericBNLearner::useMIIC();
+  }
   void useNML(){
     self->gum::learning::genericBNLearner::useNML();
   }

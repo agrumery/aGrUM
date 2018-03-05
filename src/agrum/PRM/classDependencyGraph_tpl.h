@@ -49,7 +49,7 @@ namespace gum {
         __node_map.insert(
           ci, new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >());
 
-        for (const auto node : ci->dag().nodes())
+        for (const auto node : ci->containerDag().nodes())
           __addNode(ci, ci->get(node));
       }
 
@@ -57,14 +57,14 @@ namespace gum {
         __node_map.insert(
           ii, new HashTable< const PRMClassElement< GUM_SCALAR >*, NodeId >());
 
-        for (const auto node : ii->dag().nodes()) {
+        for (const auto node : ii->containerDag().nodes()) {
           __addNode(ii, ii->get(node));
         }
       }
 
       // Then we add the arcs
       for (const auto cc : prm.classes())
-        for (const auto node : cc->dag().nodes())
+        for (const auto node : cc->containerDag().nodes())
           __addArcs(*cc, node, *(__node_map[cc]));
     }
 
@@ -79,7 +79,7 @@ namespace gum {
           const PRMSlotChain< GUM_SCALAR >& sc =
             static_cast< const PRMSlotChain< GUM_SCALAR >& >(c.get(node));
 
-          for (const auto chi : c.dag().children(node))
+          for (const auto chi : c.containerDag().children(node))
             __graph.addArc((*(__node_map[&(sc.end())]))[&(
                              sc.end().get(sc.lastElt().safeName()))],
                            map[&(c.get(chi))]);
@@ -89,7 +89,7 @@ namespace gum {
 
         case PRMClassElement< GUM_SCALAR >::prm_aggregate:
         case PRMClassElement< GUM_SCALAR >::prm_attribute: {
-          for (const auto chi : c.dag().children(node))
+          for (const auto chi : c.containerDag().children(node))
             __graph.addArc(map[&(c.get(node))], map[&(c.get(chi))]);
 
           break;

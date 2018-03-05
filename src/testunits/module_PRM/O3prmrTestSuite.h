@@ -246,7 +246,7 @@ namespace gum_tests {
         TS_ASSERT_THROWS_NOTHING(asia = &(prm->getClass("Asia.Asia")));
         // Assert
         TS_ASSERT_EQUALS(asia->attributes().size(), (gum::Size)8);
-        TS_ASSERT_EQUALS(asia->dag().sizeArcs(), (gum::Size)8);
+        TS_ASSERT_EQUALS(asia->containerDag().sizeArcs(), (gum::Size)8);
         delete si;
       } catch (gum::Exception&) {
         TS_ASSERT(false);

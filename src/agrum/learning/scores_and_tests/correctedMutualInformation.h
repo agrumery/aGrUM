@@ -49,9 +49,9 @@ namespace gum {
      * @class CorrectedMutualInformation
      * @brief class CorrectedMutualInformation, used in the 3off2 algorithm
      *
-     * This class handles the computations and storage of the mutual information 
-     * values used in 3off2 and potential corrections. 
-     * 
+     * This class handles the computations and storage of the mutual information
+     * values used in 3off2 and potential corrections.
+     *
      * @ingroup learning_group
      */
     template < typename IdSetAlloc = std::allocator< Idx >,

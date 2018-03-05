@@ -102,7 +102,7 @@ namespace gum {
     void PRMSystem< GUM_SCALAR >::__groundAttr(
       const PRMInstance< GUM_SCALAR >& instance,
       BayesNetFactory< GUM_SCALAR >&   factory) const {
-      for (const auto node : instance.type().dag()) {
+      for (const auto node : instance.type().containerDag()) {
         // Working a Class<GUM_SCALAR> level because PRMAggregate<GUM_SCALAR>
         // are
         // instantiated as PRMAttribute<GUM_SCALAR> in an
@@ -223,7 +223,8 @@ namespace gum {
         elt_name << instance.name() << "." << elt.second->safeName();
         factory.startParentsDeclaration(elt_name.str());
 
-        for (const auto par : instance.type().dag().parents(elt.second->id())) {
+        for (const auto par :
+             instance.type().containerDag().parents(elt.second->id())) {
           switch (instance.type().get(par).elt_type()) {
             case PRMClassElement< GUM_SCALAR >::prm_aggregate:
             case PRMClassElement< GUM_SCALAR >::prm_attribute: {
@@ -278,7 +279,7 @@ namespace gum {
       bijection.insert(&(attr.type().variable()),
                        &(factory.variable(var_name.str())));
 
-      for (const auto parent : instance.type().dag().parents(attr.id())) {
+      for (const auto parent : instance.type().containerDag().parents(attr.id())) {
         switch (instance.type().get(parent).elt_type()) {
           case PRMClassElement< GUM_SCALAR >::prm_aggregate:
           case PRMClassElement< GUM_SCALAR >::prm_attribute: {

@@ -218,7 +218,7 @@ namespace gum {
           for (gum::Size i = 0; i < src.variable(graphId).domainSize(); ++i)
             modals[col].insert(src.variable(graphId).label(i));
         } catch (const gum::NotFound&) {
-          // no problem : a colonne which is not in the BN...
+          // no problem : a column which is not in the BN...
         }
       }
 

@@ -47,15 +47,15 @@ namespace gum {
       GUM_ERROR(InvalidArgument, "Node " << __node << " does not exist.");
 
     __mb.addNode(__node);
-    for (const auto& parent : __model.dag().parents(__node)) {
+    for (const auto& parent : __model.parents(__node)) {
       __mb.addNode(parent);
       __mb.addArc(parent, __node);
     }
 
-    for (const auto& child : __model.dag().children(__node)) {
+    for (const auto& child : __model.children(__node)) {
       if (!__mb.nodes().exists(child)) __mb.addNode(child);
       __mb.addArc(__node, child);
-      for (const auto& opar : __model.dag().parents(child)) {
+      for (const auto& opar : __model.parents(child)) {
         if (opar != __node) {
           if (!__mb.nodes().exists(opar)) __mb.addNode(opar);
           __mb.addArc(opar, child);
@@ -67,7 +67,7 @@ namespace gum {
     // the last ones.
     // For instance, an arc between a parent and a parent of children
     for (const auto node : __mb.nodes()) {
-      for (const auto child : __model.dag().children(node)) {
+      for (const auto child : __model.children(node)) {
         if (__mb.existsNode(child) && !__mb.existsArc(Arc(node, child))) {
           __mb.addArc(node, child);
           __specialArcs.insert(Arc(node, child));

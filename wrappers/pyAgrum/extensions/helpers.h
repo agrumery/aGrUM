@@ -27,6 +27,7 @@
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/core/set.h>
 #include <agrum/graphs/graphElements.h>
+#include <agrum/graphs/parts/nodeGraphPart.h>
 #include <agrum/multidim/potential.h>
 
 namespace PyAgrumHelper {
@@ -201,7 +202,17 @@ namespace PyAgrumHelper {
 
     return q;
   }
+
   PyObject* PySetFromNodeSet(const gum::NodeSet& nodeset) {
+    PyObject* q = PySet_New(0);
+
+    for (auto node : nodeset) {
+      PySet_Add(q, PyLong_FromUnsignedLong((unsigned long)node));
+    }
+
+    return q;
+  }
+  PyObject* PySetFromNodeSet(const gum::NodeGraphPart& nodeset) {
     PyObject* q = PySet_New(0);
 
     for (auto node : nodeset) {
@@ -223,6 +234,14 @@ namespace PyAgrumHelper {
     PyObject* q = PySet_New(0);
     for (auto arc : arcset) {
       PySet_Add(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+    }
+    return q;
+  }
+
+  PyObject* PySetFromEdgeSet(const gum::EdgeSet& edgeset) {
+    PyObject* q = PySet_New(0);
+    for (auto edg : edgeset) {
+      PySet_Add(q, Py_BuildValue("(i,i)", edg.first(), edg.second()));
     }
     return q;
   }

@@ -270,7 +270,7 @@ namespace gum {
       // here, we distinguish nodesets with conditioning nodes from those
       // without conditioning nodes
       if (conditioning_nodes != nullptr) {
-        // now, perform 
+        // now, perform
         // 0.5 * sum_Z ( sum_X( log( C^(r_y)_#ZX ) ) - log( C^(r_y)_#Z )
         // 		+ sum_Y( log( C^(r_x)_#ZY ) ) - log( C^(r_x)_#Z ) )
 

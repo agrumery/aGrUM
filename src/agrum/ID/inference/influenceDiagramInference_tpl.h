@@ -238,7 +238,7 @@ namespace gum {
     NodeSet idSet;
     idSet.insert(id);
 
-    for (const auto par : this->influenceDiagram().dag().parents(id))
+    for (const auto par : this->influenceDiagram().parents(id))
       idSet.insert(par);
 
     //***********************************************************************************************************************************

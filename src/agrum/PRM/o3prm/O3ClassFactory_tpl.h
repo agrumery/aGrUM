@@ -770,8 +770,8 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
-      INLINE bool O3ClassFactory< GUM_SCALAR >::__checkLabelsNumber(const O3RuleCPT& attr,
-                                                                    const O3RuleCPT::O3Rule& rule ) {
+      INLINE bool O3ClassFactory< GUM_SCALAR >::__checkLabelsNumber(
+        const O3RuleCPT& attr, const O3RuleCPT::O3Rule& rule) {
         // Check that the number of labels is correct
         if (rule.first.size() != attr.parents().size()) {
           O3PRM_CLASS_ILLEGAL_RULE_SIZE(
@@ -792,14 +792,15 @@ namespace gum {
           auto prnt = attr.parents()[i];
           try {
             auto real_labels = __resolveSlotChain(c, prnt)->type()->labels();
-            //c.get(prnt.label()).type()->labels();
-            if (label.label() != "*" && std::find(real_labels.begin(), real_labels.end(), label.label()) ==
-                real_labels.end()) {
+            // c.get(prnt.label()).type()->labels();
+            if (label.label() != "*" &&
+                std::find(real_labels.begin(), real_labels.end(), label.label()) ==
+                  real_labels.end()) {
               O3PRM_CLASS_ILLEGAL_RULE_LABEL(rule, label, prnt, *__errors);
               errors = true;
             }
           } catch (Exception& e) {
-              // parent does not exists and is already reported
+            // parent does not exists and is already reported
           }
         }
         return errors == false;
@@ -808,7 +809,7 @@ namespace gum {
       template < typename GUM_SCALAR >
       INLINE void O3ClassFactory< GUM_SCALAR >::__addParamsToForms(
         const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
-        O3RuleCPT::O3Rule&                                           rule) {
+        O3RuleCPT::O3Rule& rule) {
         // Add parameters to formulas
         for (auto& f : rule.second) {
           f.formula().variables().clear();
