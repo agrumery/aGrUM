@@ -24,6 +24,8 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #include <utility>
+#include <cerrno>
+#include <cstdlib>
 
 #include <agrum/agrum.h>
 #include <agrum/variables/continuousVariable.h>
@@ -37,9 +39,9 @@ namespace gum {
   template <typename GUM_SCALAR>
   INLINE
   ContinuousVariable<GUM_SCALAR>::ContinuousVariable ( const std::string& aName,
-                                                  const std::string& aDesc,
-                                                  GUM_SCALAR lower_bound,
-                                                  GUM_SCALAR upper_bound )
+                                                       const std::string& aDesc,
+                                                       GUM_SCALAR lower_bound,
+                                                       GUM_SCALAR upper_bound )
     : Variable(aName, aDesc)
     , __lower_bound ( lower_bound )
     , __upper_bound ( upper_bound ) {
@@ -93,7 +95,8 @@ namespace gum {
 
   /// Copy Factory.
   template <typename GUM_SCALAR>
-  INLINE ContinuousVariable<GUM_SCALAR>* ContinuousVariable<GUM_SCALAR>::clone() const {
+  INLINE ContinuousVariable<GUM_SCALAR>*
+  ContinuousVariable<GUM_SCALAR>::clone() const {
     return new ContinuousVariable<GUM_SCALAR> ( *this );
   }
 
@@ -101,7 +104,8 @@ namespace gum {
   /// copy operator
   template <typename GUM_SCALAR>
   INLINE ContinuousVariable<GUM_SCALAR>&
-  ContinuousVariable<GUM_SCALAR>::operator= (const ContinuousVariable<GUM_SCALAR>& from ) {
+  ContinuousVariable<GUM_SCALAR>::operator= (
+    const ContinuousVariable<GUM_SCALAR>& from ) {
     Variable::operator= ( from );
     __lower_bound = from.__lower_bound;
     __upper_bound = from.__upper_bound;
@@ -113,7 +117,8 @@ namespace gum {
   template <typename GUM_SCALAR>
   template <typename TX_VAL>
   INLINE ContinuousVariable<GUM_SCALAR>&
-  ContinuousVariable<GUM_SCALAR>::operator= (const ContinuousVariable<TX_VAL>& from ) {
+  ContinuousVariable<GUM_SCALAR>::operator= (
+    const ContinuousVariable<TX_VAL>& from ) {
     Variable::operator= ( from );
     __lower_bound = from.__lower_bound;
     __upper_bound = from.__upper_bound;
@@ -124,7 +129,8 @@ namespace gum {
   /// move operator
   template <typename GUM_SCALAR>
   INLINE ContinuousVariable<GUM_SCALAR>&
-  ContinuousVariable<GUM_SCALAR>::operator= (ContinuousVariable<GUM_SCALAR>&& from ) {
+  ContinuousVariable<GUM_SCALAR>::operator= (
+    ContinuousVariable<GUM_SCALAR>&& from ) {
     Variable::operator= ( std::move ( from ) );
     __lower_bound = from.__lower_bound;
     __upper_bound = from.__upper_bound;

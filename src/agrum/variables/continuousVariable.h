@@ -88,14 +88,17 @@ namespace gum {
     /// @{
 
     /// copy operator
-    ContinuousVariable<GUM_SCALAR>& operator= (const ContinuousVariable<GUM_SCALAR>& from );
+    ContinuousVariable<GUM_SCALAR>&
+    operator= (const ContinuousVariable<GUM_SCALAR>& from );
 
     /// generalized copy operator
     template <typename TX_VAL>
-    ContinuousVariable<GUM_SCALAR>& operator= (const ContinuousVariable<TX_VAL>& from );
+    ContinuousVariable<GUM_SCALAR>&
+    operator= (const ContinuousVariable<TX_VAL>& from );
 
     /// move operator
-    ContinuousVariable<GUM_SCALAR>& operator= (ContinuousVariable<GUM_SCALAR>&& from );
+    ContinuousVariable<GUM_SCALAR>&
+    operator= (ContinuousVariable<GUM_SCALAR>&& from );
 
     /// returns the T_VAL corresponding to a string
     /** @throw OutOfBounds is raised if the value does not belong to the
@@ -161,6 +164,9 @@ namespace gum {
     // the upper bound.
     GUM_SCALAR __upper_bound;
 
+    template <typename TX_VAL>
+    friend class ContinuousVariable;
+
   };
 
 
@@ -168,6 +174,15 @@ namespace gum {
   template <typename T_VAL>
   std::ostream& operator<<(std::ostream&, const ContinuousVariable<T_VAL>& );
 
+  
+  // specialized operator[] for real numbers
+  template <>
+  float ContinuousVariable<float>::operator[] ( const std::string& str ) const;
+
+  template <>
+  double ContinuousVariable<double>::operator[] ( const std::string& str ) const;
+  
+  
 } /* namespace gum */
 
 // always include the template implementation
