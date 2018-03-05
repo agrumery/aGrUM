@@ -24,8 +24,7 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #include <utility>
-#include <cerrno>
-#include <cstdlib>
+#include <sstream>
 
 #include <agrum/agrum.h>
 #include <agrum/variables/continuousVariable.h>

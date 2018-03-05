@@ -25,6 +25,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <cctype>
+#include <cstdlib>
+
 #include <agrum/variables/continuousVariable.h>
 
 namespace gum {
