@@ -3,6 +3,8 @@ stages:
 - pyagrum
 - agrum_test
 - pyagrum_test
+- documentation
+- deployment
 
 cache:
   untracked: false
@@ -140,3 +142,37 @@ windows_pyAgrum_test:
   script:
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - python act --no-fun test release pyAgrum %ACT_OPTIONS%  -t quick || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS% -t quick
+
+################################################################################
+# Documentation
+################################################################################
+agrum_master_documentation:
+  only:
+    - tags
+    - master@agrumery/aGrUM
+  tags:
+    - linux
+    - python3
+    - doxygen
+  stage: documentation
+  allow_failure: true
+  script:
+    - python act clean --no-fun && python act release doc aGrUM --no-fun
+    - cd ${CI_PROJECT_DIR}/build/release/docs/html && tar czf $(basename ${CI_COMMIT_REF_NAME}).tgz ./* && mv $(basename ${CI_COMMIT_REF_NAME}).tgz ${CI_PROJECT_DIR}
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "rm -rf ~/www/aGrUM/${CI_COMMIT_REF_NAME}"
+    - sshpass -p "${OVH_PASSWORD}" scp -oStrictHostKeyChecking=no ${CI_PROJECT_DIR}/$(basename ${CI_COMMIT_REF_NAME}).tgz ${OVH_LOGIN}@${OVH_URL}:~/$(basename ${CI_COMMIT_REF_NAME}).tgz
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "mkdir -p ~/www/aGrUM/${CI_COMMIT_REF_NAME}"
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "tar xzf ~/$(basename ${CI_COMMIT_REF_NAME}).tgz -C ~/www/aGrUM/${CI_COMMIT_REF_NAME}/"
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "rm -f ~/$(basename ${CI_COMMIT_REF_NAME}).tgz"
+
+################################################################################
+# Deployment
+################################################################################
+aGruM-Deploy:
+  only:
+    - tags
+  tags:
+    - linux
+  stage: deployment
+  script:
+    - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
