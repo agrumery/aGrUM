@@ -2,6 +2,37 @@
 
 Welcome to aGrUM's contribution guide and thank you for helping us making aGrUM the best open source API for using Graphical Probabilistic Models.
 
+## Reporting new issue 
+
+[Opening an issue](https://gitlab.com/agrumery/aGrUM/issues/new?issue%5Bassignee_id%5D=&issue%5Bmilestone_id%5D=) does not imply to fill the aGrUM's contribution agreement.
+
+Please follow as much as possible this template :
+
+> ⚠️ *One issue, One bug*
+>
+>(Describe your issue in detail. Provide as much as possible steps to reproduce.)
+>
+>#### Environment
+>
+>(describe your os, you CC compiler, your python version, the agrum version, etc.)
+>
+>#### Expected Behavior
+>
+>(Write what you thought would happen.)
+>
+>#### Actual Behavior
+>
+>(Write what happened. Include screenshots if needed.)
+
+## What to contribute
+
+You can contribute to aGrUM in the following domains:
+
+* Code
+* Documentation
+* Packaging and distributing
+
+
 ## Before contributing
 
 Before submitting your first contribution, please take the time to fill aGrUM's contribution agreement. We will not accept any contribution without it !
@@ -12,14 +43,6 @@ You can find the individual agreement [here](https://gitlab.com/agrumery/aGrUM/w
 ### Why a contribution agreement ?
 
 We are planning to change aGrUM's licence, but don't worry aGrUM will always be Open Source. To do so, we need your agreement as one of aGrUM's contributor. There is also some legal consideration about how your contribution can be used and distributed with aGrUM. So please take your time and read the agreement before sending it to us. And if you have any question, feel free to ask us at [info@agrum.org](mailto:info@agrum.org).
-
-## What to contribute
-
-You can contribute to aGrUM in the following domains:
-
-* Code
-* Documentation
-* Packaging and distributing
 
 ### Contributing to aGrUM's Code
 

@@ -25,6 +25,9 @@
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+#include <cctype>
+#include <cstdlib>
+
 #include <agrum/variables/continuousVariable.h>
 
 namespace gum {
@@ -32,39 +35,61 @@ namespace gum {
 
   /// returns the GUM_SCALAR corresponding to a string, specialized for floats
   template <>
-  INLINE float ContinuousVariable< float >::
-  operator[](const std::string& str) const {
+  INLINE float
+  ContinuousVariable<float>::operator[] ( const std::string& str ) const {
     float value;
+    std::size_t pos;
     try {
-      value = std::stof(str);
-    } catch (...) {
-      GUM_ERROR(TypeError, "cannot convert the string into a float");
+      value = std::stof ( str, &pos );
     }
-
-    if (belongs(value))
+    catch ( std::invalid_argument& ) {
+      GUM_ERROR ( TypeError, "the value is not a number" );
+    }
+    catch ( std::out_of_range& ) {
+      GUM_ERROR ( OutOfBounds, "the value is too huge" );
+    }
+    
+    // check whether there remains non-space unprocessed characters
+    for ( auto iter = str.begin() + pos, end = str.end (); iter != end; ++iter ) {
+      if ( ! std::isspace(static_cast<unsigned char>( *iter ) ) )
+        GUM_ERROR ( TypeError, "the value is not a number" );
+    }
+      
+    if ( belongs ( value ) )
       return value;
     else
-      GUM_ERROR(OutOfBounds,
-                "the value does not delong to the domain of the variable");
+      GUM_ERROR ( OutOfBounds,
+                  "the value does not delong to the domain of the variable" );
   }
 
 
   /// returns the GUM_SCALAR corresponding to a string, specialized for doubles
   template <>
-  ALWAYS_INLINE double ContinuousVariable< double >::
-  operator[](const std::string& str) const {
+  INLINE double
+  ContinuousVariable<double>::operator[] ( const std::string& str ) const {
     double value;
+    std::size_t pos;
     try {
-      value = std::stod(str);
-    } catch (...) {
-      GUM_ERROR(TypeError, "cannot convert the string into a float");
+      value = std::stod ( str, &pos );
     }
-
-    if (belongs(value))
+    catch ( std::invalid_argument& ) {
+      GUM_ERROR ( TypeError, "the value is not a number" );
+    }
+    catch ( std::out_of_range& ) {
+      GUM_ERROR ( OutOfBounds, "the value is too huge" );
+    }
+    
+    // check whether there remains non-space unprocessed characters
+    for ( auto iter = str.begin() + pos, end = str.end (); iter != end; ++iter ) {
+      if ( ! std::isspace(static_cast<unsigned char>( *iter ) ) )
+        GUM_ERROR ( TypeError, "the value is not a number" );
+    }
+      
+    if ( belongs ( value ) )
       return value;
     else
-      GUM_ERROR(OutOfBounds,
-                "the value does not delong to the domain of the variable");
+      GUM_ERROR ( OutOfBounds,
+                  "the value does not delong to the domain of the variable" );
   }
 
 } /* namespace gum */
