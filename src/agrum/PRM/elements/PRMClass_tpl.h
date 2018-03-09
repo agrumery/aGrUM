@@ -912,8 +912,8 @@ namespace gum {
               auto& elt = get(child);
               if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)) {
                 auto& attr = static_cast< PRMAttribute< GUM_SCALAR >& >(elt);
-                auto& old_type = slotchain->lastElt().type().variable();
-                auto& new_type = sc->lastElt().type().variable();
+                auto& old_type = slotchain->lastElt().type();
+                auto& new_type = sc->lastElt().type();
                 attr.swap(old_type, new_type);
               } else {
                 GUM_ERROR(OperationNotAllowed, "unexpected ClassElement");
