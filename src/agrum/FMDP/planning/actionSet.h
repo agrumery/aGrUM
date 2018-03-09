@@ -226,5 +226,3 @@ namespace gum {
   };
 }
 #endif  // GUM_ACTION_SET_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

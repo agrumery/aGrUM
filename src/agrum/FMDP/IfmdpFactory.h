@@ -280,5 +280,3 @@ namespace gum {
 
 
 #endif  // GUM_ABSTRACT_FMDP_FACTORY_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

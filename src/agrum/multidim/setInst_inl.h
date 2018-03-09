@@ -528,7 +528,7 @@ namespace gum {
   }
 
   // removes everything
-  INLINE void SetInst::clear(void) {
+  INLINE void SetInst::clear() {
     // if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave SetInst" );
 
     __vars.clear();

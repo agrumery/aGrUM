@@ -60,7 +60,7 @@ namespace gum {
       Median(const Median< GUM_SCALAR >& from);
       virtual ~Median();
 
-      virtual std::string aggregatorName(void) const;
+      virtual std::string aggregatorName() const;
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -85,7 +85,7 @@ namespace gum {
       virtual Idx _buildValue(const gum::Instantiation& i) const;
 
       // fold scheme is not used, these methods are neutralized
-      virtual Idx _neutralElt(void) const { return 0; };
+      virtual Idx _neutralElt() const { return 0; };
       virtual Idx
       _fold(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
 

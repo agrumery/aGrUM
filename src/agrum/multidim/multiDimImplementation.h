@@ -152,8 +152,7 @@ namespace gum {
 
     virtual void erase(const DiscreteVariable& v);
 
-    virtual const Sequence< const DiscreteVariable* >&
-    variablesSequence(void) const;
+    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const;
 
     virtual const DiscreteVariable& variable(Idx i) const;
     virtual const DiscreteVariable& variable(const std::string& name) const;
@@ -170,9 +169,9 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual bool registerSlave(Instantiation& i);
+    virtual bool registerSlave(Instantiation& slave);
 
-    virtual bool unregisterSlave(Instantiation& i);
+    virtual bool unregisterSlave(Instantiation& slave);
 
     /// @}
     // =========================================================================
@@ -184,9 +183,9 @@ namespace gum {
 
     virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0;
 
-    virtual void beginMultipleChanges(void);
+    virtual void beginMultipleChanges();
 
-    virtual void endMultipleChanges(void);
+    virtual void endMultipleChanges();
 
     virtual void endMultipleChanges(const GUM_SCALAR&);
 
@@ -201,7 +200,7 @@ namespace gum {
     /**
      * @brief Synchronize content after MultipleChanges.
      */
-    virtual void _commitMultipleChanges(void);
+    virtual void _commitMultipleChanges();
 
     /**
      * @brief Synchronize content after MultipleChanges.

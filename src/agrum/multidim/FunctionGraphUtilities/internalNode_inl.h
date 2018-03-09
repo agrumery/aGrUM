@@ -23,7 +23,7 @@
  * @brief Inline implementation of the InternalNode class.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
@@ -53,7 +53,7 @@ namespace gum {
 
   INLINE
   bool Parent::operator==(const Parent& comp) const {
-    if (comp.parentId == this->parentId && comp.modality == this->modality)
+    if ((comp.parentId == this->parentId) && (comp.modality == this->modality))
       return true;
     return false;
   }

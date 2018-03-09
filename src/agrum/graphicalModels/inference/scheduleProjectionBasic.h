@@ -75,7 +75,7 @@ namespace gum {
     /// @{
 
     /// default constructor
-    ScheduleProjectionBasic(MultiDimImplementation< GUM_SCALAR >* (*proj)(
+    explicit ScheduleProjectionBasic(MultiDimImplementation< GUM_SCALAR >* (*proj)(
       const MultiDimImplementation< GUM_SCALAR >&,
       const Set< const DiscreteVariable* >&));
 

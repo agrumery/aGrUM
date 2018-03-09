@@ -28,7 +28,7 @@ namespace gum {
     // get the barren nodes
     ArcProperty< NodeSet > barren_nodes = this->barrenNodes(junction_tree);
 
-    // transform the nodesets into sets of potentials
+    // transform the node sets into sets of potentials
     ArcProperty< Set< const Potential< GUM_SCALAR >* > > result;
     for (const auto& barren : barren_nodes) {
       Set< const Potential< GUM_SCALAR >* > potentials;

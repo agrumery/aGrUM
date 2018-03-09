@@ -42,7 +42,7 @@ namespace gum_tests {
 
     private:
 #define DELTA_DIFFERS(a, b) ((a) < (b)) ? ((b) - (a) > 1e-6) : ((a) - (b) > 1e-6)
-    bool matchedRandomValues(void) {
+    bool matchedRandomValues() {
       gum::initRandom(GUM_RANDOMSEED);
 
       std::vector< double > v1 = gum::randomDistribution< double >(10);

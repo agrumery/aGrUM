@@ -506,7 +506,7 @@ namespace gum {
      * @brief Returns true if the instantiation is empty.
      * @return Returns true if the instantiation is empty.
      */
-    virtual bool empty(void) const;
+    virtual bool empty() const;
 
     /// @}
     // =========================================================================

@@ -67,10 +67,10 @@ namespace gum {
      * @warning note that, by aGrUM's rule, the BN is not copied but only
              * referenced by the inference algorithm. */
 
-    SamplingInference(const IBayesNet< GUM_SCALAR >* bn);
+    explicit SamplingInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
-    virtual ~SamplingInference();
+    ~SamplingInference() override;
 
     /// Computes and returns the actual estimation of the posterior of a node.
     /**
@@ -84,7 +84,7 @@ namespace gum {
      * @throw UndefinedElement if node is not in the set of targets.
      * @throw NotFound if node is not in the BN.
      */
-    const Potential< GUM_SCALAR >& currentPosterior(const NodeId id);
+    const Potential< GUM_SCALAR >& currentPosterior(NodeId id);
 
     /// Computes and returns the actual estimation of the posterior of a node by
     /// its name.
@@ -125,23 +125,8 @@ namespace gum {
      * @throw UndefinedElement if node is not in the set of targets.
      * @throw NotFound if node is not in the BN.
      */
-    virtual const Potential< GUM_SCALAR >& _posterior(const NodeId id);
+    const Potential< GUM_SCALAR >& _posterior(NodeId id) override;
 
-    /// Computes and returns the posterior of a node referred by it's name.
-    /**
-     * @returns a const ref to the posterior probability of the node referred by
-     * name.
-     * @param name the name of the node for which we need a posterior probability
-     *
-     * @warning for efficiency reasons, the potential is returned by reference.
-     * In order to ensure that the potential may still exist even if the Inference
-     * object is destroyed, the user has to copy it explicitly.
-     *
-     * @throw UndefinedElement if node corresponding to name is not in the set of
-     * targets.
-     * @throw NotFound if node corresponding to name is not in the BN.
-     */
-    virtual const Potential< GUM_SCALAR >& _posterior(const std::string& name);
     /// @}
 
 
@@ -209,8 +194,8 @@ namespace gum {
     virtual Instantiation _draw(float* w, Instantiation prev) = 0;
 
     /// makes the inference by generating samples
-    virtual void _makeInference();
-    void         _loopApproxInference();
+    void _makeInference() override;
+    void _loopApproxInference();
 
     /// adds a node to current instantiation
     /**
@@ -233,30 +218,29 @@ namespace gum {
     */
     virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn);
 
+    void _onEvidenceAdded(NodeId id, bool isHardEvidence) override;
 
-    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence);
+    void _onEvidenceErased(NodeId id, bool isHardEvidence) override;
 
-    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence);
+    void _onAllEvidenceErased(bool contains_hard_evidence) override;
 
-    virtual void _onAllEvidenceErased(bool contains_hard_evidence);
+    void _onEvidenceChanged(NodeId id, bool hasChangedSoftHard) override;
 
-    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard);
+    void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) override;
 
-    virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn);
+    void _updateOutdatedBNStructure() override;
 
-    virtual void _updateOutdatedBNStructure();
+    void _updateOutdatedBNPotentials() override;
 
-    virtual void _updateOutdatedBNPotentials();
+    void _onMarginalTargetAdded(NodeId id) override;
 
-    virtual void _onMarginalTargetAdded(const NodeId id);
+    void _onMarginalTargetErased(NodeId id) override;
 
-    virtual void _onMarginalTargetErased(const NodeId id);
+    void _onAllMarginalTargetsAdded() override;
 
-    virtual void _onAllMarginalTargetsAdded();
+    void _onAllMarginalTargetsErased() override;
 
-    virtual void _onAllMarginalTargetsErased();
-
-    virtual void _onStateChanged();
+    void _onStateChanged() override;
 
     private:
     BayesNetFragment< GUM_SCALAR >* __samplingBN;

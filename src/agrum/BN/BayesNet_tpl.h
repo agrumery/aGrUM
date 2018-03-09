@@ -95,8 +95,8 @@ namespace gum {
     NodeId idVar;
     try {
       idVar = bn.idFromName(name);
-    } catch (gum::NotFound) {
-      if (labels.size() == 0) {
+    } catch (gum::NotFound&) {
+      if (labels.empty()) {
         idVar = bn.add(LabelizedVariable(name, name, ds));
       } else {
         auto l = LabelizedVariable(name, name, 0);
@@ -206,8 +206,8 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var) {
-    MultiDimArray< GUM_SCALAR >* ptr = new MultiDimArray< GUM_SCALAR >();
-    NodeId                       res = 0;
+    auto   ptr = new MultiDimArray< GUM_SCALAR >();
+    NodeId res = 0;
 
     try {
       res = add(var, ptr);
@@ -247,8 +247,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var,
                                             NodeId                  id) {
-    MultiDimArray< GUM_SCALAR >* ptr = new MultiDimArray< GUM_SCALAR >();
-    NodeId                       res = 0;
+    auto   ptr = new MultiDimArray< GUM_SCALAR >();
+    NodeId res = 0;
 
     try {
       res = add(var, ptr, id);
@@ -269,7 +269,7 @@ namespace gum {
     __varMap.insert(id, var);
     this->_dag.addNode(id);
 
-    Potential< GUM_SCALAR >* cpt = new Potential< GUM_SCALAR >(aContent);
+    auto cpt = new Potential< GUM_SCALAR >(aContent);
     (*cpt) << variable(id);
     __probaMap.insert(id, cpt);
     return id;
@@ -599,11 +599,10 @@ namespace gum {
   void
   BayesNet< GUM_SCALAR >::__copyPotentials(const BayesNet< GUM_SCALAR >& source) {
     // Copying potentials
-    Potential< GUM_SCALAR >* copy_array = nullptr;
 
     for (const auto src : source.__probaMap) {
       // First we build the node's CPT
-      copy_array = new Potential< GUM_SCALAR >();
+      Potential< GUM_SCALAR >* copy_array = new Potential< GUM_SCALAR >();
       copy_array->beginMultipleChanges();
       for (gum::Idx i = 0; i < src.second->nbrDim(); i++) {
         (*copy_array) << variableFromName(src.second->variable(i).name());
@@ -658,6 +657,12 @@ namespace gum {
                                                  Potential< GUM_SCALAR >* newPot) {
     delete __probaMap[id];
     __probaMap[id] = newPot;
+  }
+
+  template < typename GUM_SCALAR >
+  void BayesNet< GUM_SCALAR >::changePotential(const std::string&       name,
+                                               Potential< GUM_SCALAR >* newPot) {
+    changePotential(idFromName(name), newPot);
   }
 
 } /* namespace gum */

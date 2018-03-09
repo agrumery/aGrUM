@@ -75,15 +75,16 @@ namespace gum {
     /**
      * @brief copy operator
      */
-    MultiDimDecorator< GUM_SCALAR >& operator=(const MultiDimDecorator& from);
+    MultiDimDecorator< GUM_SCALAR >&
+    operator=(const MultiDimDecorator& from) noexcept;
 
     /**
-     * @brief Class move constructor & assignment
+     * @brief Class move constructor
      */
-    MultiDimDecorator(MultiDimDecorator< GUM_SCALAR >&&);
+    MultiDimDecorator(MultiDimDecorator< GUM_SCALAR >&&) noexcept;
 
     /**
-     * @brief Copy operator.
+     * @brief assignment operator.
      */
     MultiDimDecorator< GUM_SCALAR >& operator=(MultiDimDecorator&& from);
 
@@ -129,8 +130,8 @@ namespace gum {
 
     virtual void changeNotification(Instantiation&                i,
                                     const DiscreteVariable* const var,
-                                    const Idx&                    oldval,
-                                    const Idx&                    newval) final;
+                                    Idx                           oldval,
+                                    Idx                           newval) final;
 
     virtual void setChangeNotification(Instantiation& i) final;
 
@@ -203,9 +204,9 @@ namespace gum {
 
     virtual MultiDimDecorator< GUM_SCALAR >* newFactory() const = 0;
 
-    virtual void beginMultipleChanges(void) final;
+    virtual void beginMultipleChanges() final;
 
-    virtual void endMultipleChanges(void) final;
+    virtual void endMultipleChanges() final;
 
     virtual void endMultipleChanges(const GUM_SCALAR&) final;
 

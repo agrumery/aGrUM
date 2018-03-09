@@ -21,7 +21,7 @@
 * @file
 * @brief Sources for fusion context class
 *
-* @author Jean-Christophe Magnan
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/leaves/fusionContext.h>

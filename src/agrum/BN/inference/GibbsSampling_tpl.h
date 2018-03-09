@@ -70,7 +70,7 @@ namespace gum {
     gum::Instantiation Ip;
     if (this->burnIn() == 0) return Ip;
 
-    float w = 1.;
+    float w = 1.0f;
     Ip = _monteCarloSample();
     for (Size i = 1; i < this->burnIn(); i++)
       Ip = this->_draw(&w, Ip);

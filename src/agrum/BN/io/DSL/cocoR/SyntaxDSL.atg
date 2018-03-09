@@ -15,7 +15,7 @@ void setFactory(gum::IBayesNetFactory* f) {
   __factory=f;
 }
 
-gum::IBayesNetFactory& factory(void) {
+gum::IBayesNetFactory& factory() {
   if (__factory) return *__factory;
   GUM_ERROR(gum::OperationNotAllowed,"Please set a factory for scanning DSL file...");
 }

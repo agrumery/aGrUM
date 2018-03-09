@@ -153,7 +153,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string IBayesNet< GUM_SCALAR >::toString(void) const {
+  INLINE std::string IBayesNet< GUM_SCALAR >::toString() const {
     Size   param = 0;
     double dSize = log10DomainSize();
 
@@ -183,7 +183,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::string IBayesNet< GUM_SCALAR >::toDot(void) const {
+  std::string IBayesNet< GUM_SCALAR >::toDot() const {
     std::stringstream output;
     output << "digraph \"";
 
@@ -231,7 +231,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR
   IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
-    GUM_SCALAR value = (GUM_SCALAR)1.0;
+    auto value = (GUM_SCALAR)1.0;
 
     GUM_SCALAR tmp;
 
@@ -252,7 +252,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR
   IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
-    GUM_SCALAR value = (GUM_SCALAR)0.0;
+    auto value = (GUM_SCALAR)0.0;
 
     GUM_SCALAR tmp;
 

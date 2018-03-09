@@ -55,7 +55,7 @@ namespace gum {
     EssentialGraph() = default;
     // this constructor will build the essential graph
     explicit EssentialGraph(const DAGmodel& m);
-    // this constructor will use mh as essential graphe for m
+    // this constructor will use mh as essential graph for m
     EssentialGraph(const DAGmodel& m, const MixedGraph& mg);
     EssentialGraph(const EssentialGraph& g);
     EssentialGraph& operator=(const EssentialGraph& g);
@@ -66,7 +66,7 @@ namespace gum {
     MixedGraph mixedGraph();
 
     /// @return a dot representation of this essentialGraph
-    std::string toDot(void) const;
+    std::string toDot() const;
 
     /// wrapping @ref MixedGraph::parents(id)
     const NodeSet& parents(const NodeId id) const;

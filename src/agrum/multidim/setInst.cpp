@@ -140,7 +140,7 @@ namespace gum {
 
       while (si-- != 0) {
         std::stringstream sstr4;
-        sstr4 << (valb & 1 ? "1" : "0") << sstr2.str();
+        sstr4 << ((valb & 1) ? "1" : "0") << sstr2.str();
         valb >>= 1;
         sstr2.str("");
         ;
@@ -160,7 +160,7 @@ namespace gum {
         while (si-- != 0) {
           std::stringstream sstr4;
 
-          sstr4 << (valb & 1 ? "1" : "0") << sstr3.str();
+          sstr4 << ((valb & 1) ? "1" : "0") << sstr3.str();
           valb >>= 1;
           sstr3.str("");
           sstr3 << sstr4.str();

@@ -143,13 +143,13 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Size MultiDimArray< GUM_SCALAR >::realSize(void) const {
+  INLINE Size MultiDimArray< GUM_SCALAR >::realSize() const {
     return this->domainSize();
   }
 
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::_commitMultipleChanges(void) {
+  INLINE void MultiDimArray< GUM_SCALAR >::_commitMultipleChanges() {
     if (MultiDimWithOffset< GUM_SCALAR >::domainSize() != _values.size()) {
       _values.resize(MultiDimWithOffset< GUM_SCALAR >::domainSize());
     }

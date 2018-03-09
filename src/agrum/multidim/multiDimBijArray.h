@@ -171,7 +171,7 @@ namespace gum {
     protected:
     virtual GUM_SCALAR& _get(const Instantiation& i) const;
 
-    virtual void _commitMultipleChanges(void);
+    virtual void _commitMultipleChanges();
 
     virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
 

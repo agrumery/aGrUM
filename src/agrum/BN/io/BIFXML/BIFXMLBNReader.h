@@ -108,7 +108,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~BIFXMLBNReader();
+    ~BIFXMLBNReader() final;
 
     /**
      * Reads the bayes net from the file referenced by filePath  given at the
@@ -116,7 +116,7 @@ namespace gum {
      * @return Returns 0 if no error, 1 if any
      * @warning XMLBNReader can not give the number of errors.
      */
-    virtual Size proceed();
+     Size proceed() final;
 
     /**
      * Signaler used to indicates how many percent of the Xml files have been

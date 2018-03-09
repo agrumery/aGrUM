@@ -239,7 +239,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void
-  O3prmBNWriter< GUM_SCALAR >::write(std::string                    filePath,
+  O3prmBNWriter< GUM_SCALAR >::write(const std::string&             filePath,
                                      const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 

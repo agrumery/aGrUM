@@ -113,7 +113,7 @@ namespace gum {
 
   // synchronise content after MultipleChanges
   template < typename GUM_SCALAR >
-  INLINE void MultiDimSparse< GUM_SCALAR >::_commitMultipleChanges(void) {
+  INLINE void MultiDimSparse< GUM_SCALAR >::_commitMultipleChanges() {
     //@todo : anything better than that !
     fill(_default);
   }
@@ -126,7 +126,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE Size MultiDimSparse< GUM_SCALAR >::realSize(void) const {
+  INLINE Size MultiDimSparse< GUM_SCALAR >::realSize() const {
     return _params.size();
   }
 

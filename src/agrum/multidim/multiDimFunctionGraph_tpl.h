@@ -22,7 +22,7 @@
  * @brief Template methods of MultiDimFunctionGraph.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #include <agrum/multidim/multiDimFunctionGraph.h>
 
@@ -179,10 +179,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::changeNotification(
-    Instantiation&                i,
-    const DiscreteVariable* const var,
-    const Idx&                    oldval,
-    const Idx&                    newval) {}
+    Instantiation& i, const DiscreteVariable* const var, Idx oldval, Idx newval) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void

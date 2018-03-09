@@ -22,7 +22,7 @@
  * @brief Class used to compute the operation between two decision diagrams
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/multidim/FunctionGraphUtilities/operators/regress.h>

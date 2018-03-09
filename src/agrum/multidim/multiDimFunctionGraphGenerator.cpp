@@ -22,7 +22,7 @@
  * @brief Sources of MultiDimFunctionGraphGenerator.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 

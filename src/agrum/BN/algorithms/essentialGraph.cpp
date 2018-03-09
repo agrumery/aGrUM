@@ -115,7 +115,7 @@ namespace gum {
     }
   }
 
-  std::string EssentialGraph::toDot(void) const {
+  std::string EssentialGraph::toDot() const {
     std::stringstream output;
     std::stringstream nodeStream;
     std::stringstream edgeStream;

@@ -135,7 +135,7 @@ namespace gum {
       inf.makeInference();
 
       for (auto node : bayesNetinit.nodes()) {
-        Potential< GUM_SCALAR >* pottemp = new Potential< GUM_SCALAR >();
+        auto pottemp = new Potential< GUM_SCALAR >();
         pottemp->copy(inf.posterior(node));
         _hashMarginal.insert(node, pottemp);
       }
@@ -184,7 +184,7 @@ namespace gum {
   MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::__PMMx_poly() {
     if (!_iteration--) return;
 
-    Idx per = rand() % 100;
+    Idx per = randomValue(100);
 
     if (per < _p) {
       __AorR();
@@ -231,7 +231,7 @@ namespace gum {
 
     if (!_iteration--) return;
 
-    Idx per = rand() % 100;
+    Idx per = randomValue(100);
 
     if (per < _p + _q) {
       __AorR();
@@ -299,7 +299,7 @@ namespace gum {
     if (__dag.existsArc(i, j) || __dag.existsArc(j, i)) {
       return;
     } else {
-      Idx per = rand() % 100;
+      Idx per = randomValue(100);
 
       if (per < 50) {
         head = i;
@@ -314,7 +314,6 @@ namespace gum {
         excluded.insert(j);
 
         if (__connect(node, i, excluded)) {
-          std::string nameit = IBNG::_bayesNet.variable(node).name();
           IBNG::_bayesNet.eraseArc(node, j);  // TODO reflect
           IBNG::_bayesNet.addArc(head, tail);
           return;
@@ -326,7 +325,6 @@ namespace gum {
         excluded.insert(j);
 
         if (__connect(node, i, excluded)) {
-          std::string nameit = IBNG::_bayesNet.variable(node).name();
           IBNG::_bayesNet.eraseArc(j, node);
           IBNG::_bayesNet.addArc(head, tail);
           return;
@@ -414,11 +412,11 @@ namespace gum {
   INLINE void
   MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::__chooseNodes(
     NodeId& i, NodeId& j) {
-    i = rand() % IBNG::_bayesNet.size();
-    j = rand() % IBNG::_bayesNet.size();
+    i = randomValue(IBNG::_bayesNet.size());
+    j = randomValue(IBNG::_bayesNet.size());
 
     while (i == j)
-      j = rand() % IBNG::_bayesNet.size();
+      j = randomValue(IBNG::_bayesNet.size());
   }
 
   template < typename GUM_SCALAR,
@@ -426,13 +424,13 @@ namespace gum {
              template < typename > class ICPTDisturber >
   void MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     __chooseCloseNodes(NodeId& i, NodeId& j) {
-    NodeId temp = rand() % IBNG::_bayesNet.size();
+    NodeId temp = randomValue(IBNG::_bayesNet.size());
     Size   co = 0;
 
     if (IBNG::_bayesNet.parents(temp).size()) {
       j = temp;
       auto it = IBNG::_bayesNet.parents(j).begin();
-      co = rand() % IBNG::_bayesNet.parents(j).size();
+      co = randomValue(IBNG::_bayesNet.parents(j).size());
 
       while (co--) {
         ++it;
@@ -442,15 +440,16 @@ namespace gum {
     } else if (IBNG::_bayesNet.children(temp).size()) {
       i = temp;
       auto it = IBNG::_bayesNet.children(i).begin();
-      co = rand() % IBNG::_bayesNet.children(i).size();
+      co = randomValue(IBNG::_bayesNet.children(i).size());
 
       while (co--) {
         ++it;
       }
 
       j = *it;
-    } else
-      GUM_ERROR(FatalError, "Sorry Misconstructed BN because of isolated node.")
+    } else {
+      GUM_ERROR(FatalError, "Sorry Misconstructed BN because of isolated node.");
+    }
   }
 
   template < typename GUM_SCALAR,
@@ -460,7 +459,7 @@ namespace gum {
   MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::__createTree(
     Size BNSize) {
     Idx               n = 0;
-    int               nb_mod = 2 + rand() % (IBNG::_maxModality - 1);
+    int               nb_mod = 2 + randomValue(IBNG::_maxModality - 1);
     std::stringstream strBuff;
     strBuff << "n_" << n++;
     NodeId root =
@@ -469,7 +468,7 @@ namespace gum {
     Size SubG = 0;
 
     while (maxNodes) {
-      SubG = (rand() % (maxNodes)) + 1;
+      SubG = randomValue(maxNodes) + 1;
       maxNodes = maxNodes - SubG;
       NodeId rootS = __createPartTree(SubG, n);
       IBNG::_bayesNet.addArc(root, rootS);
@@ -481,7 +480,7 @@ namespace gum {
              template < typename > class ICPTDisturber >
   NodeId MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     __createPartTree(Size BNSize, Idx& n) {
-    int               nb_mod = 2 + rand() % (IBNG::_maxModality - 1);
+    int               nb_mod = 2 + randomValue(IBNG::_maxModality - 1);
     std::stringstream strBuff;
     strBuff << "n_" << n++;
     NodeId root =
@@ -490,7 +489,7 @@ namespace gum {
     Size SubG = 0;
 
     while (maxNodes) {
-      SubG = (rand() % (maxNodes)) + 1;
+      SubG = randomValue(maxNodes) + 1;
       maxNodes = maxNodes - SubG;
       NodeId rootS = __createPartTree(SubG, n);
       IBNG::_bayesNet.addArc(root, rootS);
@@ -581,7 +580,7 @@ namespace gum {
              template < typename > class ICPTDisturber >
   bool
   MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::__directedPath(
-    const NodeId tail, const NodeId head) {
+    NodeId tail, NodeId head) {
     const DAG __dag = IBNG::_bayesNet.dag();
 
     if (__dag.existsArc(tail, head))
@@ -603,7 +602,7 @@ namespace gum {
              template < typename > class ICPTDisturber >
   bool
   MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::__directedPath(
-    const NodeId tail, const NodeId head, NodeSet& excluded) {
+    NodeId tail, NodeId head, NodeSet& excluded) {
 
     const DAG __dag = IBNG::_bayesNet.dag();
 

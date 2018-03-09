@@ -61,7 +61,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE std::string Max< GUM_SCALAR >::aggregatorName(void) const {
+    INLINE std::string Max< GUM_SCALAR >::aggregatorName() const {
       return "max";
     }
 
@@ -72,4 +72,4 @@ namespace gum {
 
   }  // aggregator
 }  // namespace gum
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
+

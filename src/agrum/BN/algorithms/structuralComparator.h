@@ -23,7 +23,7 @@
  * Classifies corresponding arcs, edges and nothing in a graph given a reference
  * graph to then return values of recall, precision and Fscore.
  *
- * @author Quentin FALCAND
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_STRUCTURAL_COMPARATOR_H
 #define GUM_LEARNING_STRUCTURAL_COMPARATOR_H

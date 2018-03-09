@@ -60,7 +60,7 @@ namespace gum {
     return *this;
   }
 
-  void VariableNodeMap::clear(void) {
+  void VariableNodeMap::clear() {
     for (auto iter = __nodes2vars.begin(); iter != __nodes2vars.end(); ++iter)
       delete iter.second();
 

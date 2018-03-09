@@ -100,7 +100,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >::MultiDimDecorator(
-    MultiDimDecorator< GUM_SCALAR >&& from)
+    MultiDimDecorator< GUM_SCALAR >&& from) noexcept
       : MultiDimContainer< GUM_SCALAR >(
           std::forward< MultiDimContainer< GUM_SCALAR > >(from)) {
     GUM_CONS_MOV(MultiDimDecorator);
@@ -113,7 +113,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE MultiDimDecorator< GUM_SCALAR >& MultiDimDecorator< GUM_SCALAR >::
-  operator=(const MultiDimDecorator< GUM_SCALAR >& from) {
+  operator=(const MultiDimDecorator< GUM_SCALAR >& from) noexcept {
     GUM_OP_CPY(MultiDimDecorator);
     ___initPotentialOperators< GUM_SCALAR >();
     MultiDimContainer< GUM_SCALAR >::operator=(from);
@@ -180,10 +180,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimDecorator< GUM_SCALAR >::changeNotification(
-    Instantiation&                i,
-    const DiscreteVariable* const var,
-    const Idx&                    oldval,
-    const Idx&                    newval) {
+    Instantiation& i, const DiscreteVariable* const var, Idx oldval, Idx newval) {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->changeNotification(
       i, var, oldval, newval);
   }
@@ -365,13 +362,13 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimDecorator< GUM_SCALAR >::beginMultipleChanges(void) {
+  INLINE void MultiDimDecorator< GUM_SCALAR >::beginMultipleChanges() {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)
       ->beginMultipleChanges();
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimDecorator< GUM_SCALAR >::endMultipleChanges(void) {
+  INLINE void MultiDimDecorator< GUM_SCALAR >::endMultipleChanges() {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)
       ->endMultipleChanges();
   }

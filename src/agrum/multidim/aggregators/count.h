@@ -57,7 +57,7 @@ namespace gum {
       Count(const Count< GUM_SCALAR >& from);
       virtual ~Count();
 
-      virtual std::string aggregatorName(void) const;
+      virtual std::string aggregatorName() const;
 
       /**
        * This method creates a clone of this object, withouth its content
@@ -79,7 +79,7 @@ namespace gum {
       virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
 
       protected:
-      virtual Idx _neutralElt(void) const;
+      virtual Idx _neutralElt() const;
       virtual Idx
       _fold(const DiscreteVariable& v, Idx i1, Idx i2, bool& stop_iteration) const;
 

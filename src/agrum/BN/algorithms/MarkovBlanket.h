@@ -57,7 +57,7 @@ namespace gum {
     // node of interest is in red
     // special arcs (not used during the construction of the Markov Blanket) are in
     // grey
-    std::string toDot(void) const;
+    std::string toDot() const;
 
     /// wrapping @ref DiGraph::parents(id)
     const NodeSet& parents(const NodeId id) const;

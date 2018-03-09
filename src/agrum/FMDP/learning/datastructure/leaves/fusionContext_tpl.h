@@ -21,7 +21,7 @@
 * @file
 * @brief Templates for fusion context class
 *
-* @author Jean-Christophe Magnan
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 // =======================================================
 #include <cmath>

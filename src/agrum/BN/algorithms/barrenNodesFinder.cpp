@@ -24,8 +24,6 @@
 #include <limits>
 
 #include <agrum/BN/algorithms/barrenNodesFinder.h>
-#include <agrum/core/list.h>
-#include <agrum/core/sequence.h>
 
 #ifdef GUM_NO_INLINE
 #include <agrum/BN/algorithms/barrenNodesFinder_inl.h>
@@ -73,7 +71,7 @@ namespace gum {
     // of adjacent cliques its set of barren nodes.
     ArcProperty< NodeSet > result;
     for (const auto& edge : junction_tree.edges()) {
-      NodeSet separator = junction_tree.separator(edge);
+      const NodeSet& separator = junction_tree.separator(edge);
 
       NodeSet non_barren1 = junction_tree.clique(edge.first());
       for (auto iter = non_barren1.beginSafe(); iter != non_barren1.endSafe();
@@ -225,7 +223,7 @@ namespace gum {
               }
             }
           } else {
-            const Size nb_match = Size(std::min(nb_parents, nb_children) - 1);
+            auto nb_match = Size(std::min(nb_parents, nb_children) - 1);
             auto       iter_par = parents.beginSafe();
             ++iter_par;  // skip the first parent, whose arc with node will
                          // remain

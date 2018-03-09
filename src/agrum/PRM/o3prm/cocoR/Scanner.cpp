@@ -47,8 +47,8 @@ Token::Token() {
   pos  = 0;
   col  = 0;
   line = 0;
-  val  = NULL;
-  next = NULL;
+  val  = nullptr;
+  next = nullptr;
 }
 
 Token::~Token() {
@@ -84,13 +84,13 @@ Buffer::Buffer( FILE* s, bool isUserStream ) {
 Buffer::Buffer( Buffer* b ) {
   buf = b->buf;
   bufCapacity = b->bufCapacity;
-  b->buf = NULL;
+  b->buf = nullptr;
   bufStart = b->bufStart;
   bufLen = b->bufLen;
   fileLen = b->fileLen;
   bufPos = b->bufPos;
   stream = b->stream;
-  b->stream = NULL;
+  b->stream = nullptr;
   isUserStream = b->isUserStream;
 }
 
@@ -102,22 +102,22 @@ Buffer::Buffer( const unsigned char* buf, int len ) {
   bufCapacity = bufLen = len;
   fileLen = len;
   bufPos = 0;
-  stream = NULL;
+  stream = nullptr;
 }
 
 Buffer::~Buffer() {
   Close();
 
-  if ( buf != NULL ) {
+  if ( buf != nullptr ) {
     delete [] buf;
-    buf = NULL;
+    buf = nullptr;
   }
 }
 
 void Buffer::Close() {
-  if ( !isUserStream && stream != NULL ) {
+  if ( !isUserStream && stream != nullptr ) {
     fclose( stream );
-    stream = NULL;
+    stream = nullptr;
   }
 }
 
@@ -132,7 +132,7 @@ int Buffer::Read() {
 
     SetPos( GetPos() ); // shift buffer start to Pos
     return buf[bufPos++];
-  } else if ( ( stream != NULL ) && !CanSeek() && ( ReadNextStreamChunk() > 0 ) ) {
+  } else if ( ( stream != nullptr ) && !CanSeek() && ( ReadNextStreamChunk() > 0 ) ) {
     return buf[bufPos++];
   } else {
     return EoF;
@@ -167,7 +167,7 @@ int Buffer::GetPos() {
 }
 
 void Buffer::SetPos( int value ) {
-  if ( ( value >= fileLen ) && ( stream != NULL ) && !CanSeek() ) {
+  if ( ( value >= fileLen ) && ( stream != nullptr ) && !CanSeek() ) {
     // Wanted position is after buffer and the stream
     // is not seek-able e.g. network or console,
     // thus we have to read the stream manually till
@@ -182,7 +182,7 @@ void Buffer::SetPos( int value ) {
 
   if ( ( value >= bufStart ) && ( value < ( bufStart + bufLen ) ) ) { // already in buffer
     bufPos = value - bufStart;
-  } else if ( stream != NULL ) { // must be swapped in
+  } else if ( stream != nullptr ) { // must be swapped in
     fseek( stream, value, SEEK_SET );
     bufLen = (int)fread( buf, int(sizeof( unsigned char )), bufCapacity, stream );
     bufStart = value; bufPos = 0;
@@ -222,7 +222,7 @@ int Buffer::ReadNextStreamChunk() {
 }
 
 bool Buffer::CanSeek() {
-  return ( stream != NULL ) && ( ftell( stream ) != -1 );
+  return ( stream != nullptr ) && ( ftell( stream ) != -1 );
 }
 
 int UTF8Buffer::Read() {
@@ -280,7 +280,7 @@ void Scanner::Load( const wchar_t* fileName ) {
   FILE* stream;
   char* chFileName = coco_string_create_char( fileName );
 
-  if ( ( stream = fopen( chFileName, "rb" ) ) == NULL ) {
+  if ( ( stream = fopen( chFileName, "rb" ) ) == nullptr ) {
     std::string s( "No such file : " ); s+=chFileName;
     GUM_ERROR( gum::IOError,s );
   }
@@ -301,7 +301,7 @@ Scanner::Scanner( FILE* s,bool trace ) {
 Scanner::~Scanner() {
   char* cur = ( char* ) firstHeap;
 
-  while ( cur != NULL ) {
+  while ( cur != nullptr ) {
     cur = *( char** )( cur + HEAP_BLOCK_SIZE );
     free( firstHeap );
     firstHeap = cur;
@@ -386,7 +386,7 @@ void Scanner::Init() {
 
     Buffer* oldBuf = buffer;
     buffer = new UTF8Buffer( buffer ); col = 0; charPos = -1;
-    delete oldBuf; oldBuf = NULL;
+    delete oldBuf; oldBuf = nullptr;
     NextCh();
   }
 
@@ -513,8 +513,8 @@ Token* Scanner::CreateToken() {
 
   t = ( Token* ) heapTop;
   heapTop = ( void* )( ( char* ) heapTop + sizeof( Token ) );
-  t->val = NULL;
-  t->next = NULL;
+  t->val = nullptr;
+  t->next = nullptr;
   return t;
 }
 
@@ -665,7 +665,7 @@ void Scanner::SetScannerBehindT() {
 
 // get the next token (possibly a token already seen during peeking)
 Token* Scanner::Scan() {
-  if ( tokens->next == NULL ) {
+  if ( tokens->next == nullptr ) {
     return pt = tokens = NextToken();
   } else {
     pt = tokens = tokens->next;
@@ -676,7 +676,7 @@ Token* Scanner::Scan() {
 // peek for the next token, ignore pragmas
 Token* Scanner::Peek() {
   do {
-    if ( pt->next == NULL ) {
+    if ( pt->next == nullptr ) {
       pt->next = NextToken();
     }
 

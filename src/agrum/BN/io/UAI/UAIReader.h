@@ -64,7 +64,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~UAIReader();
+    ~UAIReader() final;
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists
@@ -74,13 +74,13 @@ namespace gum {
     const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
-    bool trace(void) const;
+    bool trace() const;
     void trace(bool b);
 
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed(void);
+    Size proceed() final;
 
     void
     buildFromQuartets(std::vector< std::tuple< float, int, int, int > > quartets);
@@ -129,11 +129,11 @@ namespace gum {
     // proceed()
     bool __ioerror;
 
-    void __addFatalError(int                lig,
-                         int                col,
+    void __addFatalError(Idx                lig,
+                         Idx                col,
                          const std::string& s);  // throw an exception
-    void __addError(int lig, int col, const std::string& s);
-    void __addWarning(int lig, int col, const std::string& s);
+    void __addError(Idx lig, Idx col, const std::string& s);
+    void __addWarning(Idx lig, Idx col, const std::string& s);
   };
 
 

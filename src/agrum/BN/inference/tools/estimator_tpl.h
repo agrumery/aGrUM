@@ -156,7 +156,7 @@ namespace gum {
   /* expected value considering a Bernouilli variable with parameter val */
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR Estimator< GUM_SCALAR >::EV(std::string name, int val) {
+  GUM_SCALAR Estimator< GUM_SCALAR >::EV(std::string name, Idx val) {
     return _estimator[name][val] / _wtotal;
   }
 
@@ -164,7 +164,7 @@ namespace gum {
   /* variance considering a Bernouilli variable with parameter val */
 
   template < typename GUM_SCALAR >
-  GUM_SCALAR Estimator< GUM_SCALAR >::variance(std::string name, int val) {
+  GUM_SCALAR Estimator< GUM_SCALAR >::variance(std::string name, Idx val) {
 
     GUM_SCALAR p = EV(name, val);
     return p * (1 - p);
@@ -181,7 +181,7 @@ namespace gum {
 
     for (auto iter = _estimator.begin(); iter != _estimator.end(); ++iter) {
 
-      for (Size i = 0; i < iter.val().size(); i++) {
+      for (Idx i = 0; i < iter.val().size(); i++) {
 
         GUM_SCALAR ic = 2 * 1.96 * sqrt(variance(iter.key(), i) / (_ntotal - 1));
         if (ic > ic_max) ic_max = ic;

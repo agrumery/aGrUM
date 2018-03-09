@@ -381,5 +381,3 @@ namespace gum {
 #include <agrum/FMDP/planning/structuredPlaner_tpl.h>
 
 #endif  // GUM_STRUCTURED_PLANNING_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

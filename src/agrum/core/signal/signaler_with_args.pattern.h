@@ -83,7 +83,7 @@ namespace gum {
         _connectors.clear();
       }
 
-      bool hasListener(void) { return (!(_connectors.empty())); }
+      bool hasListener() { return (!(_connectors.empty())); }
 
       void detach(Listener* target) {
         for (ConnectorIterator it =

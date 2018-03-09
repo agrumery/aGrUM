@@ -40,7 +40,7 @@ namespace gum {
 
 
   /// move constructor
-  INLINE BarrenNodesFinder::BarrenNodesFinder(BarrenNodesFinder&& from)
+  INLINE BarrenNodesFinder::BarrenNodesFinder(BarrenNodesFinder&& from) noexcept
       : __dag(from.__dag)
       , __observed_nodes(from.__observed_nodes)
       , __target_nodes(from.__target_nodes) {

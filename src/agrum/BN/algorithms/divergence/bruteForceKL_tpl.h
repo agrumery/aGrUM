@@ -24,10 +24,11 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
+#include <cmath>
+
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-#include <cmath>
 
 namespace gum {
   template < typename GUM_SCALAR >

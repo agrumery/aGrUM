@@ -20,7 +20,7 @@
 /** @file
  * @brief a cache for caching 3 points mutual information in 3off2
  *
- * @author Quentin FALCAND
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/learning/scores_and_tests/cache43ptInfo.h>

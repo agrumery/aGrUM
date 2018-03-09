@@ -274,7 +274,7 @@ def lineStartsBlock( line ):
     '''Check if current line starts a new CXXTEST_CODE() block'''
     return re.search( r'\bCXXTEST_CODE\s*\(', line ) is not None
 
-test_re = re.compile( r'^([^/]|/[^/])*\bvoid\s+([Tt]est\w+)\s*\(\s*(void)?\s*\)' )
+test_re = re.compile( r'^([^/]|/[^/])*\bvoid\s+([Tt]est\w+)\s*\(\s*()?\s*\)' )
 def scanLineForTest( suite, lineNo, line ):
     '''Check if current line starts a test'''
     m = test_re.search( line )
@@ -308,7 +308,7 @@ def fixBlockLine( suite, lineNo, line):
                    r'_\1(%s,%s,' % (suite['cfile'], lineNo),
                    line, 0 )
 
-create_re = re.compile( r'\bstatic\s+\w+\s*\*\s*createSuite\s*\(\s*(void)?\s*\)' )
+create_re = re.compile( r'\bstatic\s+\w+\s*\*\s*createSuite\s*\(\s*()?\s*\)' )
 def scanLineForCreate( suite, lineNo, line ):
     '''Check if current line defines a createSuite() function'''
     if create_re.search( line ):

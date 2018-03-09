@@ -420,6 +420,9 @@ namespace gum {
                   << "## Session '" << sessionName << "' finished." << std::endl
                   << std::endl
                   << std::endl;
+
+          // todo : check memory leak
+          // delete new_session; ??
         }
 
         if (isVerboseMode() && errors() != 0)

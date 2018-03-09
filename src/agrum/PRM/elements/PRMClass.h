@@ -66,7 +66,7 @@ namespace gum {
        * Default constructor.
        * @param name The class name.
        */
-      PRMClass(const std::string& name);
+      explicit PRMClass(const std::string& name);
 
       /**
        * Constructor for building a subclass of super.

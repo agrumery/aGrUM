@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of gum::learning::Entropy.
  *
- * @author Quentin FALCAND.
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN.
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

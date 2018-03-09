@@ -239,7 +239,7 @@ namespace gum {
     /// in a const multiDimArray
     mutable std::vector< GUM_SCALAR > _values;
 
-    virtual void _commitMultipleChanges(void);
+    virtual void _commitMultipleChanges();
 
     virtual void _commitMultipleChanges(const GUM_SCALAR&);
 

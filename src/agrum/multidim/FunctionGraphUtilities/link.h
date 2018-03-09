@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the Link and LinkedList classes.
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_LINK_H
@@ -55,7 +55,7 @@ namespace gum {
     /**
      * @brief Constructor
      */
-    Link(const T& elem);
+    explicit Link(const T& elem);
 
     /**
      * @brief Constructor that insert link before the given link

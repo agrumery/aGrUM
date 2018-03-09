@@ -84,7 +84,7 @@ namespace gum {
      *
      * @param bufferSize The amount of memory allowed for this bucket.
      */
-    MultiDimBucket(Size bufferSize = INT_MAX);
+    explicit MultiDimBucket(Size bufferSize = INT_MAX);
 
     /**
      * @brief Copy constructor.
@@ -215,44 +215,44 @@ namespace gum {
     // ========================================================================
     /// @{
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const override;
 
-    const std::string& name() const;
+    const std::string& name() const override;
 
-    virtual void add(const DiscreteVariable& v);
+    virtual void add(const DiscreteVariable& v) override;
 
-    virtual void erase(const DiscreteVariable& v);
+    virtual void erase(const DiscreteVariable& v) override;
 
-    virtual Size realSize() const;
+    virtual Size realSize() const override;
 
-    bool contains(const DiscreteVariable& v) const;
+    bool contains(const DiscreteVariable& v) const override;
 
-    virtual GUM_SCALAR get(const Instantiation& i) const;
+    virtual GUM_SCALAR get(const Instantiation& i) const override;
 
     virtual void changeNotification(Instantiation&                i,
                                     const DiscreteVariable* const var,
-                                    const Idx&                    oldval,
-                                    const Idx&                    newval);
+                                    Idx                           oldval,
+                                    Idx                           newval) override;
 
-    virtual void setFirstNotification(Instantiation& i);
+    virtual void setFirstNotification(Instantiation& i) override;
 
-    virtual void setLastNotification(Instantiation& i);
+    virtual void setLastNotification(Instantiation& i) override;
 
-    virtual void setIncNotification(Instantiation& i);
+    virtual void setIncNotification(Instantiation& i) override;
 
-    virtual void setDecNotification(Instantiation& i);
+    virtual void setDecNotification(Instantiation& i) override;
 
-    virtual void setChangeNotification(Instantiation& i);
+    virtual void setChangeNotification(Instantiation& i) override;
 
-    virtual bool registerSlave(Instantiation& i);
+    virtual bool registerSlave(Instantiation& i) override;
 
-    virtual bool unregisterSlave(Instantiation& i);
+    virtual bool unregisterSlave(Instantiation& i) override;
 
-    virtual MultiDimAdressable& getMasterRef(void);
+    virtual MultiDimAdressable& getMasterRef() override;
 
-    virtual const MultiDimAdressable& getMasterRef(void) const;
+    virtual const MultiDimAdressable& getMasterRef() const override;
 
-    virtual const std::string toString(const Instantiation* i) const;
+    virtual const std::string toString(const Instantiation* i) const override;
 
     /// @}
 
@@ -264,7 +264,7 @@ namespace gum {
     multidims() const;
 
     protected:
-    virtual void _commitMultipleChanges();
+    virtual void _commitMultipleChanges() override;
 
     /**
      * @warning This will raise en exception, you should directly use the get()

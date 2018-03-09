@@ -25,7 +25,7 @@
  * introduced by the authors. The NML correction is one of them, and they claim it
  * to be the most effective
  *
- * @author Quentin FALCAND
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 
 #ifndef GUM_LEARNING_K_NML_H

@@ -83,7 +83,7 @@ namespace gum {
     BayesNetFragment(const BayesNetFragment< GUM_SCALAR >& fragment) = delete;
     BayesNetFragment(BayesNetFragment< GUM_SCALAR >&& fragment) = delete;
 
-    BayesNetFragment(const IBayesNet< GUM_SCALAR >& bn);
+    explicit BayesNetFragment(const IBayesNet< GUM_SCALAR >& bn);
 
     virtual ~BayesNetFragment();
     /// @}
@@ -164,7 +164,7 @@ namespace gum {
      * creates a dot representing the whole referred BN hilighting the fragment.
      * @return Returns a dot representation of this fragment
      */
-    virtual std::string toDot(void) const override;
+    virtual std::string toDot() const override;
 
     /// @}
 

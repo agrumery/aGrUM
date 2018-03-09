@@ -25,7 +25,7 @@
  * is the most time consuming operation in learning. This class provides an
  * efficient cache that can significantly alleviate the scoring burden.
  *
- * @author Quentin FALCAND
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_LEARNING_CACHE_4_3_PT_INFO_H
 #define GUM_LEARNING_CACHE_4_3_PT_INFO_H

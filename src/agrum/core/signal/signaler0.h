@@ -61,7 +61,7 @@ namespace gum {
       public:
       virtual ~BasicSignaler0();
 
-      bool hasListener(void);
+      bool hasListener();
 
       void detach(Listener* target);
 

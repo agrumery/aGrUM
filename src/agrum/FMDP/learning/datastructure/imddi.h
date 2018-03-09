@@ -185,5 +185,3 @@ namespace gum {
 #include <agrum/FMDP/learning/datastructure/imddi_tpl.h>
 
 #endif  // GUM_IMDDI_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

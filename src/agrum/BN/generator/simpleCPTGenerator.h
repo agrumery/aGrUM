@@ -54,7 +54,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~SimpleCPTGenerator();
+    ~SimpleCPTGenerator() override;
     /// @}
 
     // ############################################################################
@@ -66,7 +66,8 @@ namespace gum {
      * @param varId The variable id of the CPT owner.
      * @param cpt A reference on the CPT to fill.
      */
-    virtual void generateCPT(const Idx& varId, const Potential< GUM_SCALAR >& cpt);
+    void generateCPT(const Idx&                     varId,
+                     const Potential< GUM_SCALAR >& cpt) override;
   };
 
 

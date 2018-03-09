@@ -21,7 +21,7 @@
 * @file
 * @brief Template implementation of InfluenceDiagram/InfluenceDiagram.h classes.
 *
-* @author Jean-Christophe Magnan & Pierre_Henri WUILLEMIN
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 
 #include <agrum/ID/influenceDiagram.h>
@@ -106,11 +106,9 @@ namespace gum {
   void InfluenceDiagram< GUM_SCALAR >::_copyTables(
     const InfluenceDiagram< GUM_SCALAR >& IDsource) {
     // Copying potentials
-    Potential< GUM_SCALAR >* potentialCpy = nullptr;
-
     for (const auto& pot : IDsource.__potentialMap) {
       // Instanciation of the node's CPT
-      potentialCpy = new Potential< GUM_SCALAR >;
+      auto potentialCpy = new Potential< GUM_SCALAR >;
       (*potentialCpy) << variable(pot.first);
 
       // Addition of the parents
@@ -135,11 +133,9 @@ namespace gum {
     }
 
     // Copying Utilities
-    UtilityTable< GUM_SCALAR >* utilityCpy;
-
     for (const auto& uti : IDsource.__utilityMap) {
       // Instanciation of the node's CPT
-      utilityCpy = new UtilityTable< GUM_SCALAR >;
+      auto utilityCpy = new UtilityTable< GUM_SCALAR >;
       (*utilityCpy) << variable(uti.first);
 
       // Addition of the parents
@@ -166,7 +162,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::string InfluenceDiagram< GUM_SCALAR >::toDot(void) const {
+  std::string InfluenceDiagram< GUM_SCALAR >::toDot() const {
     std::stringstream output;
     std::stringstream decisionNode;
     std::stringstream utilityNode;
@@ -217,7 +213,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::string InfluenceDiagram< GUM_SCALAR >::toString(void) const {
+  std::string InfluenceDiagram< GUM_SCALAR >::toString() const {
     std::stringstream output;
 
     output << "Influence Diagram{" << std::endl;
@@ -797,4 +793,3 @@ namespace gum {
     return __temporalOrder;
   }
 }
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

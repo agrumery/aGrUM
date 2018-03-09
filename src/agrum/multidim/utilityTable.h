@@ -57,7 +57,7 @@ namespace gum {
      * @brief Constructor.
      * @param aContent The implementation of this utility table.
      */
-    UtilityTable(MultiDimImplementation< GUM_SCALAR >* aContent);
+    explicit UtilityTable(MultiDimImplementation< GUM_SCALAR >* aContent);
 
     /**
      * @brief Class destructor.

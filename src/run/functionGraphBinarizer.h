@@ -5,34 +5,36 @@
 #include <agrum/variables/labelizedVariable.h>
 
 namespace gum {
-class FunctionGraphBinarizer {
+  class FunctionGraphBinarizer {
 
-  public :
-    FunctionGraphBinarizer( ) {
+    public:
+    FunctionGraphBinarizer()
+        : __binarizedFG(nullptr)
+        , __dest(nullptr)
+        , __defaultNode(0) {
       GUM_CONSTRUCTOR(FunctionGraphBinarizer)
     }
 
     ~FunctionGraphBinarizer();
 
-    void loadFunctionGraph( const MultiDimFunctionGraph<double>* src );
-    MultiDimFunctionGraph<double>* binarize();
+    void loadFunctionGraph(const MultiDimFunctionGraph< double >* src);
+    MultiDimFunctionGraph< double >* binarize();
 
-  private :
+    private:
+    void   __binarizeVariables();
+    NodeId __recurBinarize(NodeId binarizedNode, Idx valueModa, Idx vPos);
+    void __binarizeFunctionGraph();
 
-    void __binarizeVariables();
-    NodeId __recurBinarize(NodeId binarizedNode, Idx valueModa, Idx vPos );
-    void __binarizeFunctionGraph (  );
 
+    const MultiDimFunctionGraph< double >* __binarizedFG;
+    MultiDimFunctionGraph< double >*       __dest;
 
-    const MultiDimFunctionGraph<double>* __binarizedFG;
-    MultiDimFunctionGraph<double>* __dest;
-
-    HashTable<const DiscreteVariable*, Sequence<const DiscreteVariable*>*> __varMap;
-    HashTable<NodeId, NodeId> __src2dest;
+    HashTable< const DiscreteVariable*, Sequence< const DiscreteVariable* >* >
+      __varMap;
+    HashTable< NodeId, NodeId > __src2dest;
 
     NodeId __defaultNode;
-
-};
+  };
 }
 
-#endif // GUM_FUNCTION_GRAPH_BINARIZER_H
+#endif  // GUM_FUNCTION_GRAPH_BINARIZER_H

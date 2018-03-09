@@ -21,7 +21,7 @@
 // * @file
 // * @brief Sources of
 // *
-// * @author Jean-Christophe Magnan
+// * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 // *
 // */
 //// =====================================================================

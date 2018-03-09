@@ -166,12 +166,12 @@ namespace gum {
       auto newLambda =
         (__computeProdPi(X, U) * lamX).margSumIn({&this->BN().variable(U)});
       newLambda.normalize();
-      GUM_SCALAR ekl = static_cast< GUM_SCALAR >(0);
+      auto ekl = static_cast< GUM_SCALAR >(0);
       try {
         ekl = __messages[Arc(X, U)].KL(newLambda);
-      } catch (InvalidArgument) {
+      } catch (InvalidArgument& e) {
         GUM_ERROR(InvalidArgument, "Not compatible pi during computation");
-      } catch (FatalError) {  // 0 misplaced
+      } catch (FatalError& e) {  // 0 misplaced
         ekl = std::numeric_limits< GUM_SCALAR >::infinity();
       }
       if (ekl > KL) {
@@ -188,9 +188,9 @@ namespace gum {
       GUM_SCALAR ekl = KL;
       try {
         ekl = __messages[Arc(X, Y)].KL(newPi);
-      } catch (InvalidArgument) {
+      } catch (InvalidArgument& e) {
         GUM_ERROR(InvalidArgument, "Not compatible pi during computation");
-      } catch (FatalError) {  // 0 misplaced
+      } catch (FatalError& e) {  // 0 misplaced
         ekl = std::numeric_limits< GUM_SCALAR >::infinity();
       }
       if (ekl > KL) {

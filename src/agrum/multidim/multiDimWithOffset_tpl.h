@@ -102,10 +102,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimWithOffset< GUM_SCALAR >::changeNotification(
-    Instantiation&                i,
-    const DiscreteVariable* const var,
-    const Idx&                    oldval,
-    const Idx&                    newval) {
+    Instantiation& i, const DiscreteVariable* const var, Idx oldval, Idx newval) {
     GUM_ASSERT(_offsets.exists(&i));
     GUM_ASSERT(_offsets[&i] < this->domainSize());
     GUM_ASSERT(newval < var->domainSize());

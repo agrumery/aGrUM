@@ -200,16 +200,16 @@ namespace gum {
     * @param q probability for the change of the state (see \ref probability_p_q
     * )
     */
-    MCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
-                        Size                   iteration = 5000,
-                        Idx                    p = 30,
-                        Idx                    q = 40);
+    explicit MCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
+                                 Size                   iteration = 5000,
+                                 Idx                    p = 30,
+                                 Idx                    q = 40);
 
     /**
     * Destructor.
     */
 
-    ~MCBayesNetGenerator();
+    ~MCBayesNetGenerator() override;
 
     /// @}
 
@@ -222,7 +222,7 @@ namespace gum {
      * @param bayesNet empty IBayesNet to generate.
      * @return null but modify inputed Bayesian Network
      */
-    void generateBN(BayesNet< GUM_SCALAR >& bayesNet);
+    void generateBN(BayesNet< GUM_SCALAR >& bayesNet) override;
 
     /**
     * Change randomly the topology of a specific bayesian networks.
@@ -294,12 +294,12 @@ namespace gum {
     /**
      * The function that verify if node i and j are connected.
      **/
-    bool __connect(const NodeId i, const NodeId j);
+    bool __connect(NodeId i, NodeId j);
     /**
      * The function that verify if there is a oriented path from node i to node
      *j.
      **/
-    bool __directedPath(const NodeId i, const NodeId j);
+    bool __directedPath(NodeId tail, NodeId head);
     /**
      * The function that will insert an arc between node i to node j, but only
      *if
@@ -380,14 +380,14 @@ namespace gum {
      *listed in excluded.
      **/
 
-    bool __connect(const NodeId i, const NodeId j, NodeSet& excluded);
+    bool __connect(NodeId i, NodeId j, NodeSet& excluded);
 
     /**
      * The internal function used by the previous __directedPath. It asserts the
      *existence of an oriented path between node i and node j avoiding passing
      *through nodes listed in excluded.
      **/
-    bool __directedPath(const NodeId tail, const NodeId head, NodeSet& excluded);
+    bool __directedPath(NodeId tail, NodeId head, NodeSet& excluded);
 
     /**
      * The function that randomly choose two nodes of the graph.

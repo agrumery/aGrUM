@@ -161,7 +161,7 @@ namespace gum {
   }
 
   // removes everything
-  INLINE void Instantiation::clear(void) {
+  INLINE void Instantiation::clear() {
     if (__master) {
       GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
     }
@@ -405,9 +405,9 @@ namespace gum {
           ++i_cpt;
       } else {
         int cpt = pos(v);
-        Idx v = __vals[cpt];
+        Idx iv = __vals[cpt];
 
-        if (v + 1 == __vars[cpt]->domainSize()) {
+        if (iv + 1 == __vars[cpt]->domainSize()) {
           __chgVal(cpt, 0);
 
           if (i_cpt == p) {
@@ -416,7 +416,7 @@ namespace gum {
           } else
             ++i_cpt;
         } else {
-          __chgVal(cpt, v + 1);
+          __chgVal(cpt, iv + 1);
           return;
         }
       }
@@ -443,9 +443,9 @@ namespace gum {
           ++i_cpt;
       } else {
         int cpt = pos(v);
-        Idx v = __vals[cpt];
+        Idx iv = __vals[cpt];
 
-        if (v == 0) {
+        if (iv == 0) {
           __chgVal(cpt, __vars[cpt]->domainSize() - 1);
 
           if (i_cpt == p) {
@@ -454,7 +454,7 @@ namespace gum {
           } else
             ++i_cpt;
         } else {
-          __chgVal(cpt, v - 1);
+          __chgVal(cpt, iv - 1);
           return;
         }
       }
@@ -598,9 +598,9 @@ namespace gum {
         } else
           ++cpt;
       } else {
-        Idx v = __vals[cpt];
+        Idx iv = __vals[cpt];
 
-        if (v + 1 == __vars[cpt]->domainSize()) {
+        if (iv + 1 == __vars[cpt]->domainSize()) {
           __chgVal(cpt, 0);
 
           if (cpt == p) {
@@ -609,7 +609,7 @@ namespace gum {
           } else
             ++cpt;
         } else {
-          __chgVal(cpt, v + 1);
+          __chgVal(cpt, iv + 1);
           return;
         }
       }
@@ -632,9 +632,9 @@ namespace gum {
         } else
           ++cpt;
       } else {
-        Idx v = __vals[cpt];
+        Idx iv = __vals[cpt];
 
-        if (v == 0) {
+        if (iv == 0) {
           __chgVal(cpt, __vars[cpt]->domainSize() - 1);
 
           if (cpt == p) {
@@ -643,7 +643,7 @@ namespace gum {
           } else
             ++cpt;
         } else {
-          __chgVal(cpt, v - 1);
+          __chgVal(cpt, iv - 1);
           return;
         }
       }

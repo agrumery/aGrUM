@@ -140,16 +140,16 @@ namespace gum {
     * "use
     * of p and q" )
     */
-    MaxParentsMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
-                                  Size                   maxParents = 2,
-                                  Idx                    iteration = 5000,
-                                  Idx                    p = 30,
-                                  Idx                    q = 40);
+    explicit MaxParentsMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
+                                           Size                   maxParents = 2,
+                                           Idx                    iteration = 5000,
+                                           Idx                    p = 30,
+                                           Idx                    q = 40);
 
     /**
      * Destructor.
      */
-    ~MaxParentsMCBayesNetGenerator();
+    ~MaxParentsMCBayesNetGenerator() final;
 
     /// @}
 
@@ -183,7 +183,7 @@ namespace gum {
      * @return boolean state that verify the conditions
      */
 
-    virtual bool __checkConditions();
+    bool __checkConditions() final;
   };
 
 

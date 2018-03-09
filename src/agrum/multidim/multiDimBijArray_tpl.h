@@ -114,7 +114,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBijArray< GUM_SCALAR >::_commitMultipleChanges(void) {
+  INLINE void MultiDimBijArray< GUM_SCALAR >::_commitMultipleChanges() {
     // Do nothing
   }
 

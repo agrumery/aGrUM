@@ -144,7 +144,7 @@ namespace gum {
     std::string domain() const;
 
     /// returns the type of the variable
-    virtual VarType varType(void) const;
+    virtual VarType varType() const;
 
     /// string version of *this
     const std::string toString() const;

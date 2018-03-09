@@ -581,7 +581,7 @@ namespace gum {
           else if (den == 0 || beta == 1)
             epsilon = GUM_SCALAR(1.0);
           else
-            epsilon = GUM_SCALAR(std::pow(beta, std::log(den + 1)));
+            epsilon = GUM_SCALAR(std::pow(beta, std::log1p(den)));
 
           epsi_moy += epsilon;
           epsi_den += 1;

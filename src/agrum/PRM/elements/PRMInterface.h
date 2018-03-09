@@ -64,7 +64,7 @@ namespace gum {
        * Default constructor.
        * @param name The interface name.
        */
-      PRMInterface(const std::string& name);
+      explicit PRMInterface(const std::string& name);
 
       /**
        * Constructor for building a subclass of super.

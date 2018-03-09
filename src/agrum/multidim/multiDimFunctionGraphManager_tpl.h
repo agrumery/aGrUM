@@ -22,7 +22,7 @@
  * @brief Template methods of gum::MultiDimFunctionGraphManager.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #include <agrum/core/sequence.h>

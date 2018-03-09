@@ -52,27 +52,11 @@ namespace gum {
     std::vector< GUM_SCALAR > v;
 
     for (Size i = 0; i < cpt.domainSize(); ++i) {
-      v.push_back((GUM_SCALAR)rand());
+      v.push_back((GUM_SCALAR)randomProba());
     }
 
     cpt.fillWith(v);
-    Instantiation varInst;
-    varInst.add(cpt.variable(varId));
-    Instantiation cptInst(cpt);
-
-    for (cptInst.setFirstOut(varInst); !cptInst.end(); cptInst.incOut(varInst)) {
-      GUM_SCALAR sum = (GUM_SCALAR)0;
-
-      for (cptInst.setFirstIn(varInst); !cptInst.end(); cptInst.incIn(varInst)) {
-        sum += cpt[cptInst];
-      }
-
-      for (cptInst.setFirstIn(varInst); !cptInst.end(); cptInst.incIn(varInst)) {
-        cpt.set(cptInst, cpt[cptInst] / sum);
-      }
-
-      cptInst.unsetEnd();
-    }
+    cpt.normalizeAsCPT();
   }
 
 } /* namespace gum */

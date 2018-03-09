@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of gum::learning::kNML.
  *
- * @author Quentin FALCAND
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/learning/scores_and_tests/kNML.h>

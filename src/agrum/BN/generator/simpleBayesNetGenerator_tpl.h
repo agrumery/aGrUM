@@ -74,12 +74,11 @@ namespace gum {
     IBNG::_bayesNet = bayesNet;
     HashTable< Size, NodeId > map;
     std::stringstream strBuff;
-    int               nb_mod;
 
     for (Size i = 0; i < IBNG::_nbrNodes; ++i) {
       strBuff << "n" << i;
-      nb_mod =
-        (IBNG::_maxModality == 2) ? 2 : 2 + rand() % (IBNG::_maxModality - 1);
+      int nb_mod =
+        (IBNG::_maxModality == 2) ? 2 : 2 + randomValue(IBNG::_maxModality);
       map.insert(
         i, IBNG::_bayesNet.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
       strBuff.str("");
@@ -92,7 +91,7 @@ namespace gum {
 
     for (Size i = 0; i < IBNG::_nbrNodes; ++i)
       for (Size j = i + 1; j < IBNG::_nbrNodes; ++j)
-        if (((float)rand()) < p) IBNG::_bayesNet.addArc(map[i], map[j]);
+        if (randomProba() < p) IBNG::_bayesNet.addArc(map[i], map[j]);
 
     IBNG::fillCPT();
 

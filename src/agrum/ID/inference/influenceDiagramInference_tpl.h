@@ -383,7 +383,7 @@ namespace gum {
       } else
         try {
           __cliqueEliminationMap.insert(0, cli);
-        } catch (Exception e) {
+        } catch (Exception& e) {
           throw(e);
         }
     }
@@ -915,4 +915,4 @@ namespace gum {
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;
+

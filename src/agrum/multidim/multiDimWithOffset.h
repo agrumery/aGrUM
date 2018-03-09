@@ -99,8 +99,8 @@ namespace gum {
 
     virtual void changeNotification(Instantiation&                i,
                                     const DiscreteVariable* const var,
-                                    const Idx&                    oldval,
-                                    const Idx&                    newval);
+                                    Idx                           oldval,
+                                    Idx                           newval);
 
     virtual void setChangeNotification(Instantiation& i);
 

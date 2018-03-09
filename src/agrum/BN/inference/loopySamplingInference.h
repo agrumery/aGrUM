@@ -59,7 +59,7 @@ namespace gum {
     /**
           * Default constructor
      */
-    LoopySamplingInference(const IBayesNet< GUM_SCALAR >* bn);
+    explicit LoopySamplingInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
      * destructor

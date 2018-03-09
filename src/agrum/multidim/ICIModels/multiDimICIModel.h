@@ -94,14 +94,14 @@ namespace gum {
     /// @{
 
     public:
-    const std::string toString(void) const override;
+    const std::string toString() const override;
 
     // @todo : optimisation with a always up-to-date value associated to each
     // instantiation
     virtual void changeNotification(gum::Instantiation&,
                                     const gum::DiscreteVariable* const,
-                                    const gum::Idx&,
-                                    const gum::Idx&) override{};
+                                    gum::Idx,
+                                    gum::Idx) override{};
 
     virtual void setFirstNotification(gum::Instantiation&) override{};
 

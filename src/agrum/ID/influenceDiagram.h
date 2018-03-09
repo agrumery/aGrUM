@@ -22,7 +22,7 @@
  * @file
  * @brief Class representing Influence Diagrams
  *
- * @author Jean-Christophe Magnan & Pierre_Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_INF_DIAG_H
@@ -83,10 +83,10 @@ namespace gum {
     /// @}
 
     /// @return Returns a dot representation of this Influence Diagram.
-    std::string toDot(void) const;
+    std::string toDot() const;
 
     /// @return Returns a string representation of this Influence Diagram.
-    std::string toString(void) const;
+    std::string toString() const;
 
     // ===========================================================================
     /// @name Variable manipulation methods.
@@ -397,4 +397,3 @@ namespace gum {
 
 #endif /* GUM_INF_DIAG_H */
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

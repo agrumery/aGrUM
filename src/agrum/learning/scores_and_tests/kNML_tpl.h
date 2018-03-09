@@ -21,7 +21,7 @@
  * @file
  * @brief The class for the NML corrections used in 3off2
  *
- * @author Quentin FALCAND
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

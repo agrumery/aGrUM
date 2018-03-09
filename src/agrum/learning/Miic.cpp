@@ -20,7 +20,7 @@
 /** @file
  * @brief Implementation of gum::learning::ThreeOffTwo
  *
- * @author Quentin FALCAND
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/core/hashTable.h>

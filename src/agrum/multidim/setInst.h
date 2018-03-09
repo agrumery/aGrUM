@@ -705,7 +705,7 @@ namespace gum {
      * @brief Returns true if the SetInst is empty.
      * @return Returns true if the SetInst is empty.
      */
-    virtual bool empty(void) const;
+    virtual bool empty() const;
 
     /**
      * @brief Give a string version of SetInst.

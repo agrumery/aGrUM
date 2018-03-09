@@ -238,7 +238,7 @@ namespace gum {
        *
        * @param credalNet The credal net to be used with this inference engine.
        */
-      InferenceEngine(const CredalNet< GUM_SCALAR >& credalNet);
+      explicit InferenceEngine(const CredalNet< GUM_SCALAR >& credalNet);
       /**
        * Destructor.
        */

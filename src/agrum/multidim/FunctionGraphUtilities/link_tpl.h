@@ -21,7 +21,7 @@
  * @file
  * @brief Template methods of MultiDimFunctionGraph.
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  *
  */

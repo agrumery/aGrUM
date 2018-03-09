@@ -234,8 +234,7 @@ namespace gum {
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
   INLINE void
-  LazyPropagation< GUM_SCALAR >::_onEvidenceAdded(const NodeId id,
-                                                  bool         isHardEvidence) {
+  LazyPropagation< GUM_SCALAR >::_onEvidenceAdded(NodeId id, bool isHardEvidence) {
     // if we have a new hard evidence, this modifies the undigraph over which
     // the join tree is created. This is also the case if id is not a node of
     // of the undigraph
@@ -258,8 +257,8 @@ namespace gum {
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
   INLINE void
-  LazyPropagation< GUM_SCALAR >::_onEvidenceErased(const NodeId id,
-                                                   bool         isHardEvidence) {
+  LazyPropagation< GUM_SCALAR >::_onEvidenceErased(NodeId id,
+                                                   bool   isHardEvidence) {
     // if we delete a hard evidence, this modifies the undigraph over which
     // the join tree is created.
     if (isHardEvidence)
@@ -311,8 +310,8 @@ namespace gum {
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
   INLINE void
-  LazyPropagation< GUM_SCALAR >::_onEvidenceChanged(const NodeId id,
-                                                    bool hasChangedSoftHard) {
+  LazyPropagation< GUM_SCALAR >::_onEvidenceChanged(NodeId id,
+                                                    bool   hasChangedSoftHard) {
     if (hasChangedSoftHard)
       __is_new_jt_needed = true;
     else {
@@ -329,14 +328,12 @@ namespace gum {
 
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
-  INLINE void
-  LazyPropagation< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId id) {}
+  INLINE void LazyPropagation< GUM_SCALAR >::_onMarginalTargetAdded(NodeId id) {}
 
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
-  INLINE void
-  LazyPropagation< GUM_SCALAR >::_onMarginalTargetErased(const NodeId id) {}
+  INLINE void LazyPropagation< GUM_SCALAR >::_onMarginalTargetErased(NodeId id) {}
 
 
   /// fired after a new set target is inserted
@@ -678,7 +675,7 @@ namespace gum {
         NodeSet     hard_nodes;
         const auto& variables = cpt.variablesSequence();
         for (const auto var : variables) {
-          const NodeId xnode = bn.nodeId(*var);
+          NodeId xnode = bn.nodeId(*var);
           if (__hard_ev_nodes.contains(xnode)) hard_nodes.insert(xnode);
         }
 
@@ -763,7 +760,7 @@ namespace gum {
   /// invalidate all the messages sent from a given clique
   template < typename GUM_SCALAR >
   void LazyPropagation< GUM_SCALAR >::__diffuseMessageInvalidations(
-    const NodeId from_id, const NodeId to_id, NodeSet& invalidated_cliques) {
+    NodeId from_id, NodeId to_id, NodeSet& invalidated_cliques) {
     // invalidate the current clique
     invalidated_cliques.insert(to_id);
 
@@ -913,7 +910,7 @@ namespace gum {
       Set< const DiscreteVariable* > hard_variables;
       __PotentialSet                 marg_cpt_set{&cpt};
       for (const auto var : variables) {
-        const NodeId xnode = bn.nodeId(*var);
+        NodeId xnode = bn.nodeId(*var);
         if (__hard_ev_nodes.exists(xnode)) {
           marg_cpt_set.insert(evidence[xnode]);
           hard_variables.insert(var);
@@ -1012,7 +1009,7 @@ namespace gum {
       };
     __roots.clear();
     for (const auto xclique : possible_roots) {
-      const NodeId clique = xclique.first;
+      NodeId clique = xclique.first;
       if (!marked[clique]) {
         __roots.insert(clique);
         diffuse_marks(clique, clique);
@@ -1023,8 +1020,8 @@ namespace gum {
 
   // performs the collect phase of Lazy Propagation
   template < typename GUM_SCALAR >
-  INLINE void LazyPropagation< GUM_SCALAR >::__collectMessage(const NodeId id,
-                                                              const NodeId from) {
+  INLINE void LazyPropagation< GUM_SCALAR >::__collectMessage(NodeId id,
+                                                              NodeId from) {
     for (const auto other : __JT->neighbours(id)) {
       if ((other != from) && !__messages_computed[Arc(other, id)])
         __collectMessage(other, id);
@@ -1276,8 +1273,8 @@ namespace gum {
 
   // creates the message sent by clique from_id to clique to_id
   template < typename GUM_SCALAR >
-  void LazyPropagation< GUM_SCALAR >::__produceMessage(const NodeId from_id,
-                                                       const NodeId to_id) {
+  void LazyPropagation< GUM_SCALAR >::__produceMessage(NodeId from_id,
+                                                       NodeId to_id) {
     // get the potentials of the clique.
     __PotentialSet pot_list = __clique_potentials[from_id];
 
@@ -1364,7 +1361,7 @@ namespace gum {
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
-  LazyPropagation< GUM_SCALAR >::_unnormalizedJointPosterior(const NodeId id) {
+  LazyPropagation< GUM_SCALAR >::_unnormalizedJointPosterior(NodeId id) {
     const auto& bn = this->BN();
 
     // hard evidence do not belong to the join tree
@@ -1375,7 +1372,7 @@ namespace gum {
 
     // if we still need to perform some inference task, do it (this should
     // already have been done by _makeInference)
-    const NodeId clique_of_id = __node_to_clique[id];
+    NodeId clique_of_id = __node_to_clique[id];
     __collectMessage(clique_of_id, clique_of_id);
 
     // now we just need to create the product of the potentials of the clique
@@ -1445,7 +1442,7 @@ namespace gum {
   /// returns the posterior of a given variable
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  LazyPropagation< GUM_SCALAR >::_posterior(const NodeId id) {
+  LazyPropagation< GUM_SCALAR >::_posterior(NodeId id) {
     // check if we have already computed the posterior
     if (__target_posteriors.exists(id)) {
       return *(__target_posteriors[id]);
@@ -1702,7 +1699,7 @@ namespace gum {
     GUM_SCALAR prob_ev = 1;
     for (const auto root : __roots) {
       // get a node in the clique
-      const NodeId             node = *(__JT->clique(root).begin());
+      NodeId                   node = *(__JT->clique(root).begin());
       Potential< GUM_SCALAR >* tmp = _unnormalizedJointPosterior(node);
       GUM_SCALAR               sum = 0;
       for (Instantiation iter(*tmp); !iter.end(); ++iter)

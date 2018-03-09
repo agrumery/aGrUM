@@ -24,7 +24,7 @@
  * The partial entropy is computed using Shannons formula and the natural
  * log function.
  *
- * @author Quentin FALCAND.
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN.
  */
 #ifndef GUM_LEARNING_PARTIALENTROPY_H
 #define GUM_LEARNING_PARTIALENTROPY_H

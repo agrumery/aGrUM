@@ -144,19 +144,19 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE bool
-  MultiDimImplementation< GUM_SCALAR >::registerSlave(Instantiation& i) {
+  MultiDimImplementation< GUM_SCALAR >::registerSlave(Instantiation& slave) {
     // check that the Instantiation has the same variables as this
-    if (i.nbrDim() != __vars.size()) return false;
+    if (slave.nbrDim() != __vars.size()) return false;
 
     for (Sequence< const DiscreteVariable* >::iterator_safe iter =
            __vars.beginSafe();
          iter != __vars.endSafe();
          ++iter)
-      if (!i.contains(*iter)) return false;
+      if (!slave.contains(*iter)) return false;
 
-    i.synchronizeWithMaster(this);
+    slave.synchronizeWithMaster(this);
 
-    __slaveInstantiations += (&i);
+    __slaveInstantiations += (&slave);
 
     return true;
   }
@@ -214,7 +214,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE const Sequence< const DiscreteVariable* >&
-               MultiDimImplementation< GUM_SCALAR >::variablesSequence(void) const {
+               MultiDimImplementation< GUM_SCALAR >::variablesSequence() const {
     return __vars;
   }
 
@@ -226,12 +226,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimImplementation< GUM_SCALAR >::beginMultipleChanges(void) {
+  INLINE void MultiDimImplementation< GUM_SCALAR >::beginMultipleChanges() {
     __internalChangeMethod = __InternalChangeMethod::MULTIPLE_CHANGE;
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimImplementation< GUM_SCALAR >::endMultipleChanges(void) {
+  INLINE void MultiDimImplementation< GUM_SCALAR >::endMultipleChanges() {
     if (__internalChangeState == __InternalChangeState::NOT_COMMITTED_CHANGE) {
       _commitMultipleChanges();
       __internalChangeState = __InternalChangeState::NO_CHANGE;
@@ -252,7 +252,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimImplementation< GUM_SCALAR >::_commitMultipleChanges(void) {
+  INLINE void MultiDimImplementation< GUM_SCALAR >::_commitMultipleChanges() {
     // empty!
   }
 

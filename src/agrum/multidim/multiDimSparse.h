@@ -56,7 +56,7 @@ namespace gum {
      * @brief Default constructor: creates an empty null dimensional matrix.
      * @param default_value The default value of this MultiDimSparse.
      */
-    MultiDimSparse(const GUM_SCALAR& default_value);
+    explicit MultiDimSparse(const GUM_SCALAR& default_value);
 
     /**
      * @brief Copy constructor.
@@ -116,7 +116,7 @@ namespace gum {
     mutable GUM_SCALAR _default;
 
     /// Synchronise content after MultipleChanges.
-    virtual void _commitMultipleChanges(void);
+    virtual void _commitMultipleChanges();
 
     /**
      * @warning Will raise an OperationNotAllowed as this use its own internal

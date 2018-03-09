@@ -52,7 +52,7 @@ namespace gum {
     /**
      * Constructor with Bayesian Network
      */
-    Estimator(const IBayesNet< GUM_SCALAR >* bn);
+    explicit Estimator(const IBayesNet< GUM_SCALAR >* bn);
 
     /* Destructor */
     ~Estimator();
@@ -134,7 +134,7 @@ namespace gum {
     * computes the amount of cumulative weights for paramater val over the amount
     * of total cumulative weights
     */
-    GUM_SCALAR EV(std::string name, int val);
+    GUM_SCALAR EV(std::string name, Idx val);
 
     /// returns variance of Bernouilli variable (called by it's name) of given
     /// parameter
@@ -146,7 +146,7 @@ namespace gum {
     *
     * computes variance for Bernouilli law using EV(name, val)
     */
-    GUM_SCALAR variance(std::string name, int val);  // variance corrigée
+    GUM_SCALAR variance(std::string name, Idx val);  // variance corrigée
 
     private:
     /// the set of single posteriors computed during the last inference

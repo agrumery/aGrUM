@@ -104,7 +104,7 @@ namespace gum {
       // ===========================================================================
       /// @{
       /// @return Returns a dot representation of this IBayesNet.
-      virtual std::string toDot(void) const;
+      virtual std::string toDot() const;
 
       /// @}
       private:

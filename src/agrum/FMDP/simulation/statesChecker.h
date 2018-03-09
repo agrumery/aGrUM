@@ -91,5 +91,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif  // GUM_STATES_CHECKER_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

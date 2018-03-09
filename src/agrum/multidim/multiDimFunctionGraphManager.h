@@ -22,7 +22,7 @@
  * @brief Headers of MultiDimFunctionGraphManager.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_MANAGER_H
@@ -93,7 +93,7 @@ namespace gum {
      * of MultiDimFunctionGraphManager bound to your function graph.
      */
     protected:
-    MultiDimFunctionGraphManager(
+    explicit MultiDimFunctionGraphManager(
       MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >* master);
 
     public:

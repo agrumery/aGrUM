@@ -23,7 +23,7 @@
  * @brief Methods of the MultiDimFunctionGraph InternalNode class.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>

@@ -52,7 +52,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE std::string Amplitude< GUM_SCALAR >::aggregatorName(void) const {
+    INLINE std::string Amplitude< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "amplitude";
       return ss.str();

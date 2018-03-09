@@ -61,7 +61,7 @@ namespace gum {
     /// default constructor
     /** @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    JointTargetedInference(const IBayesNet< GUM_SCALAR >* bn);
+    explicit JointTargetedInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
     virtual ~JointTargetedInference();
@@ -107,7 +107,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential< GUM_SCALAR >& posterior(const NodeId node) final;
+    virtual const Potential< GUM_SCALAR >& posterior(NodeId node) final;
 
     /// Computes and returns the posterior of a node.
     /**
@@ -154,15 +154,15 @@ namespace gum {
     /**
      * @throw UndefinedElement if some node(s) do not belong to the Bayes net
      */
-    virtual void addJointTarget(const NodeSet& target) final;
+    virtual void addJointTarget(const NodeSet& joint_target) final;
 
     /// removes an existing joint target
     /** @warning If the joint target does not already exist, the method does
      * nothing. In particular, it does not raise any exception. */
-    virtual void eraseJointTarget(const NodeSet& target) final;
+    virtual void eraseJointTarget(const NodeSet& joint_target) final;
 
     /// return true if target is a joint target.
-    virtual bool isJointTarget(const NodeSet& target) const final;
+    virtual bool isJointTarget(const NodeSet& vars) const final;
 
     /// returns the list of joint targets
     virtual const Set< NodeSet >& jointTargets() const noexcept final;
@@ -213,7 +213,7 @@ namespace gum {
      * this value
      * @throw OperationNotAllowed in these cases
      */
-    GUM_SCALAR I(const NodeId X, const NodeId Y);
+    GUM_SCALAR I(NodeId X, NodeId Y);
 
     /** Variation of information between X and Y
      * @see http://en.wikipedia.org/wiki/Variation_of_information
@@ -222,7 +222,7 @@ namespace gum {
      * this value
      * @throw OperationNotAllowed in these cases
      */
-    GUM_SCALAR VI(const NodeId X, const NodeId Y);
+    GUM_SCALAR VI(NodeId X, NodeId Y);
 
     /// @}
 
@@ -271,7 +271,7 @@ namespace gum {
 
     /// returns a fresh potential equal to P(argument,evidence)
     virtual Potential< GUM_SCALAR >*
-    _unnormalizedJointPosterior(const NodeId id) = 0;
+    _unnormalizedJointPosterior(NodeId id) = 0;
 
 
     private:

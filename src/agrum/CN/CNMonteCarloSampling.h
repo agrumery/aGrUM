@@ -107,7 +107,7 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used by the algorithm.
        */
-      CNMonteCarloSampling(const CredalNet< GUM_SCALAR >& credalNet);
+      explicit CNMonteCarloSampling(const CredalNet< GUM_SCALAR >& credalNet);
       /** Destructor. */
       virtual ~CNMonteCarloSampling();
       /// @}

@@ -342,7 +342,7 @@ namespace gum {
       class RefIterator {
 
         public:
-        RefIterator(Set< PRMInstance< GUM_SCALAR >* >& set);
+        explicit RefIterator(Set< PRMInstance< GUM_SCALAR >* >& set);
 
         RefIterator(const RefIterator& from);
 
@@ -393,7 +393,7 @@ namespace gum {
        */
       class RefConstIterator {
         public:
-        RefConstIterator(const Set< PRMInstance< GUM_SCALAR >* >& set);
+        explicit RefConstIterator(const Set< PRMInstance< GUM_SCALAR >* >& set);
 
         RefConstIterator(const RefConstIterator& from);
 

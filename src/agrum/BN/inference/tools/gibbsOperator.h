@@ -66,7 +66,7 @@ namespace gum {
 
     bool isDrawnAtRandom() const { return _atRandom; }
 
-    void setDrawnAtRandom(bool _atRandom) { _atRandom = _atRandom; }
+    void setDrawnAtRandom(bool atRandom) { _atRandom = atRandom; }
 
     /// draws a Monte Carlo sample
     Instantiation monteCarloSample();

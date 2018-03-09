@@ -143,7 +143,7 @@ namespace gum {
 
     /// @name Arc manipulation methods.
     /// @{
-    const ArcSet& arcs(void) const;
+    const ArcSet& arcs() const;
 
     /// returns the set of nodes with arc ingoing to a given node
     /** Note that the set of arcs returned may be empty if no arc within the
@@ -184,7 +184,7 @@ namespace gum {
 
     /// @return Returns the log10 domain size of the joint probabilty for the
     /// Directed Graphical Model
-    double log10DomainSize(void) const;
+    double log10DomainSize() const;
 
     /// @return true if all the named node are the same and all the named arcs are
     /// the same

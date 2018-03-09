@@ -158,11 +158,11 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    virtual void resize(Size s);
+    virtual void resize(Size new_size);
 
     /**
      * @brief Computes the hashed value of a key.
@@ -219,18 +219,18 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size s);
+    void resize(Size new_size);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Key& key) const;
+    Size operator()(const Key& key) const override;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -263,11 +263,11 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size s);
+    void resize(Size new_size);
 
     /**
      * @brief Returns the value of a key as an unsigned long.
@@ -318,18 +318,18 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size s);
+    void resize(Size new_size);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Key& key) const;
+    Size operator()(const Key& key) const override;
 
     /**
      * @brief Returns the value of a key as an unsigned long.
@@ -368,11 +368,11 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size s);
+    void resize(Size new_size);
 
     /**
      * @brief Cast key to the exepcted type.
@@ -435,18 +435,18 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size s);
+    void resize(Size new_size);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const std::pair< Key1, Key2 >& key) const;
+    Size operator()(const std::pair< Key1, Key2 >& key) const override;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -477,18 +477,18 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param s The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size s);
+    void resize(Size new_size);
 
     /**
      * @brief Computes the hashed value of a key.
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const std::pair< Key1, Key2 >& key) const;
+    Size operator()(const std::pair< Key1, Key2 >& key) const override;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.
@@ -716,7 +716,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const std::string& key) const;
+    Size operator()(const std::string& key) const override;
   };
 
   /**

@@ -120,12 +120,11 @@ namespace gum {
           __nodes.insert(iter.key(), node);
         }
 
-        NodeData< GUM_SCALAR >* data = nullptr;
         NodeData< GUM_SCALAR >* u = nullptr;
         NodeData< GUM_SCALAR >* v = nullptr;
 
         for (const auto& elt : __nodes) {
-          data = elt.second;
+          NodeData< GUM_SCALAR >* data data = elt.second;
 
           for (const auto chain : data->n->type().slotChains()) {
             for (const auto inst : data->n->getInstances(chain->id())) {

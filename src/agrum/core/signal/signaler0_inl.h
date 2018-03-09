@@ -35,7 +35,7 @@ namespace gum {
   namespace __sig__ {
 
     INLINE
-    bool BasicSignaler0::hasListener(void) { return (!(_connectors.empty())); }
+    bool BasicSignaler0::hasListener() { return (!(_connectors.empty())); }
 
     INLINE
     void BasicSignaler0::detach(Listener* target) {

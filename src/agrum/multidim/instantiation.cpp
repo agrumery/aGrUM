@@ -31,6 +31,8 @@ namespace gum {
 
   void Instantiation::__init(MultiDimAdressable* master) {
     // for speed issues
+    assert(master!=nullptr);
+
     const Sequence< const DiscreteVariable* >& v = master->variablesSequence();
     __vars.resize(v.size());
     __vals.reserve(v.size());
@@ -39,7 +41,7 @@ namespace gum {
     for (const auto var : v)
       __add(*var);
 
-    if (master) actAsSlave(master->getMasterRef());
+    actAsSlave(master->getMasterRef());
   }
 
   // constructor for a Instantiation contained into a MultiDimInterface

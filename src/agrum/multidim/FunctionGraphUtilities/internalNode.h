@@ -23,7 +23,7 @@
  * @brief Headers of the InternalNode class.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_INTERNAL_NODE_H
@@ -143,7 +143,7 @@ namespace gum {
      * Creates a node and attached the specified variable.
      * Initializes the sons.
      */
-    InternalNode(const DiscreteVariable* v);
+    explicit InternalNode(const DiscreteVariable* v);
 
     /**
      * @brief Constructor

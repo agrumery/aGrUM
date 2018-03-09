@@ -53,10 +53,10 @@ namespace gum {
   /// returns a hashed key for hash tables the keys of which are represented
   /// by strings
   INLINE Size HashFunc< std::string >::operator()(const std::string& key) const {
-    Size                 h = 0;
-    unsigned int         size = (unsigned int)key.size();
-    const char*          char_ptr = key.c_str();
-    const unsigned long* int_ptr = (const unsigned long*)char_ptr;
+    Size        h = 0;
+    auto        size = (unsigned int)key.size();
+    const char* char_ptr = key.c_str();
+    auto        int_ptr = (const unsigned long*)char_ptr;
 
     for (; size >= sizeof(unsigned long);
          size -= sizeof(unsigned long), ++int_ptr) {
@@ -76,10 +76,10 @@ namespace gum {
   operator()(const std::pair< std::string, std::string >& key) const {
     Size h = 0;
 
-    const std::string&   s1 = key.first;
-    unsigned int         size = (unsigned int)s1.size();
-    const char*          char_ptr = s1.c_str();
-    const unsigned long* int_ptr = (const unsigned long*)char_ptr;
+    const std::string& s1 = key.first;
+    auto               size = (unsigned int)s1.size();
+    const char*        char_ptr = s1.c_str();
+    auto               int_ptr = (const unsigned long*)char_ptr;
 
     for (; size >= sizeof(unsigned long);
          size -= sizeof(unsigned long), ++int_ptr) {
@@ -104,7 +104,7 @@ namespace gum {
       h = 19 * h + *char_ptr;
     }
 
-    return (h & _hash_mask);
+    return (h & this->_hash_mask);
   }
 
   /// returns a hashed key for hash tables the keys of which are represented
@@ -117,7 +117,7 @@ namespace gum {
     for (Size i = 0; i < siz; ++i)
       h += i * key[i];
 
-    return ((h * HashFuncConst::gold) & _hash_mask);
+    return ((h * HashFuncConst::gold) & this->_hash_mask);
   }
 
   /// returns a hashed key for hash tables the keys of which are represented
@@ -128,10 +128,9 @@ namespace gum {
     for (size_t i = 0, j = key.size(); i < j; ++i)
       h = 19 * h + key[i];
 
-    return ((h * HashFuncConst::gold) & _hash_mask);
+    return ((h * HashFuncConst::gold) & this->_hash_mask);
   }
 
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

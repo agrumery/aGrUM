@@ -166,7 +166,7 @@ namespace gum {
 
         public:
         /// Default constructor.
-        InterfaceGraph(const PRMSystem< GUM_SCALAR >& sys);
+        explicit InterfaceGraph(const PRMSystem< GUM_SCALAR >& sys);
 
         /// Copy constructor, proceeds with a shallow copy so for friends only.
         InterfaceGraph(const InterfaceGraph& source);

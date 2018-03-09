@@ -153,7 +153,7 @@ namespace gum {
     GUM_EMIT1(onNodeAdded, id);
   }
 
-  void NodeGraphPart::__clearNodes(void) {
+  void NodeGraphPart::__clearNodes() {
     NodeId bound = __boundVal;
     __boundVal = 0;
 

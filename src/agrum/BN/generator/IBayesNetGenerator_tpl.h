@@ -92,7 +92,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   INLINE void
   IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::setNbrNodes(Size nbrNodes) {
-    if (_maxArcs < nbrNodes - 1 || _maxArcs > (nbrNodes * (nbrNodes - 1)) / 2)
+    if ((_maxArcs < nbrNodes - 1) || (_maxArcs > (nbrNodes * (nbrNodes - 1)) / 2))
       GUM_ERROR(OperationNotAllowed, " nbrNodes value not possible ");
 
     _nbrNodes = nbrNodes;
@@ -113,4 +113,3 @@ namespace gum {
   // @return A BNs randomly generated.
 
 } /* namespace gum */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

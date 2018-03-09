@@ -56,7 +56,7 @@ namespace gum {
     /// default constructor
     /** @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    EvidenceInference(const IBayesNet< GUM_SCALAR >* bn);
+    explicit EvidenceInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
     virtual ~EvidenceInference();

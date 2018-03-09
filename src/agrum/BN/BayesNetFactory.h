@@ -69,7 +69,7 @@ namespace gum {
      * @throw DuplicateElement Raised if two variables in bn share the same
      *                         name.
      */
-    BayesNetFactory(BayesNet< GUM_SCALAR >* bn);
+    explicit BayesNetFactory(BayesNet< GUM_SCALAR >* bn);
 
     /**
      * @brief Copy constructor.
@@ -107,14 +107,14 @@ namespace gum {
     BayesNet< GUM_SCALAR >* bayesNet();
 
     /** short-cut accessor for a DiscreveVariable in the BN */
-    const DiscreteVariable& varInBN(NodeId id);
+    const DiscreteVariable& varInBN(NodeId id) final;
 
     /// Returns the current state of the factory.
-    factory_state state() const;
+    factory_state state() const final;
 
     /// Returns the NodeId of a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
-    NodeId variableId(const std::string& name) const;
+    NodeId variableId(const std::string& name) const final;
 
     /// Returns a constant reference on a variable given it's name.
     /// @throw NotFound Raised if no variable matches the name.
@@ -122,7 +122,7 @@ namespace gum {
 
     /// Returns the domainSize of the cpt for the node n.
     /// @throw NotFound raised if no such NodeId exists.
-    Size cptDomainSize(const NodeId n) const;
+    Size cptDomainSize(NodeId n) const final;
 
     /// @}
     // ==========================================================================
@@ -131,14 +131,14 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're in a network declaration.
-    void startNetworkDeclaration();
+    void startNetworkDeclaration() final;
 
     /// Tells the factory to add a property to the current network.
     void addNetworkProperty(const std::string& propName,
-                            const std::string& propValue);
+                            const std::string& propValue) final;
 
     /// Tells the factory that we're out of a network declaration.
-    void endNetworkDeclaration();
+    void endNetworkDeclaration() final;
 
     /// @}
     // ==========================================================================
@@ -147,18 +147,18 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're in a variable declaration.
-    void startVariableDeclaration();
+    void startVariableDeclaration() final;
 
     /// Tells the factory the current variable's name.
     /// @throw DuplicateElement Raised if a variable with the same name already
     ///                         exist.
-    void variableName(const std::string& name);
+    void variableName(const std::string& name) final;
 
     /// Tells the factory the current variable's description.
-    void variableDescription(const std::string& desc);
+    void variableDescription(const std::string& desc) final;
 
     /// Adds a modality to the current variable.
-    void addModality(const std::string& name);
+    void addModality(const std::string& name) final;
 
     /**
      * @brief Defines the implementation to use for var's Potential.
@@ -176,7 +176,7 @@ namespace gum {
      * @throw OperationNotAllowed If an implementation is already defined for
      * the current variable.
      */
-    void setVariableCPTImplementation(MultiDimAdressable* impl);
+    void setVariableCPTImplementation(MultiDimAdressable* adressable) final;
 
     /**
      * Tells the factory that we're out of a variable declaration.
@@ -184,7 +184,7 @@ namespace gum {
      * @throw gum::OperationNotAllowed Raised if the variable isn't defined
      * (or / not enough defined).
      */
-    NodeId endVariableDeclaration();
+    NodeId endVariableDeclaration() final;
 
     /// @}
     // ==========================================================================
@@ -195,12 +195,12 @@ namespace gum {
     /// Tells the factory that we're declaring parents for some variable.
     /// @param var The concerned variable's name.
     /// @throw NotFound Raised if var does not exists.
-    void startParentsDeclaration(const std::string& var);
+    void startParentsDeclaration(const std::string& var) final;
 
     /// Tells the factory for which variable we're declaring parents.
     /// @param var The parent's name.
     /// @throw NotFound Raised if var does not exists.
-    void addParent(const std::string& var);
+    void addParent(const std::string& var) final;
 
     /// Tells the factory that we've finished declaring parents for some
     /// variable.
@@ -210,7 +210,7 @@ namespace gum {
     /// in BIF file for probability specification, these arcs are created in the
     /// inverse order of
     /// the order of the parent specifications.
-    void endParentsDeclaration();
+    void endParentsDeclaration() final;
 
     /// @}
     // ==========================================================================
@@ -221,7 +221,7 @@ namespace gum {
     /// Tells the factory that we're declaring a conditional probability table
     /// for some variable.
     /// @param var The concerned variable's name.
-    void startRawProbabilityDeclaration(const std::string& var);
+    void startRawProbabilityDeclaration(const std::string& var) final;
 
     /**
      * @brief Fills the variable's table with the values in rawTable.
@@ -241,7 +241,7 @@ namespace gum {
      * @param rawTable The raw table.
      */
     void rawConditionalTable(const std::vector< std::string >& variables,
-                             const std::vector< float >&       rawTable);
+                             const std::vector< float >&       rawTable) final;
 
     /**
     * @brief Fills the variable's table with the values in rawTable.
@@ -250,11 +250,11 @@ namespace gum {
     *
     * @param rawTable The raw table.
     */
-    void rawConditionalTable(const std::vector< float >& rawTable);
+    void rawConditionalTable(const std::vector< float >& rawTable) final;
 
     /// Tells the factory that we finished declaring a conditional probability
     /// table.
-    void endRawProbabilityDeclaration();
+    void endRawProbabilityDeclaration() final;
 
     /// @}
     // ==========================================================================
@@ -264,19 +264,19 @@ namespace gum {
     /// @{
 
     /// Tells the factory that we're starting a factorized declaration.
-    void startFactorizedProbabilityDeclaration(const std::string& var);
+    void startFactorizedProbabilityDeclaration(const std::string& var) final;
 
     /// Tells the factory that we start an entry of a factorized conditional
     /// probability table.
-    void startFactorizedEntry();
+    void startFactorizedEntry() final;
 
     /// Tells the factory that we end an entry of a factorized conditional
     /// probability table.
-    void endFactorizedEntry();
+    void endFactorizedEntry() final;
 
     /// Tells the factory on which modality we want to instantiate one of
     /// variable's parent.
-    void setParentModality(const std::string& parent, const std::string& modality);
+    void setParentModality(const std::string& parent, const std::string& modality) final;
 
     /**
      * @brief Gives the values of the variable with respect to precedent
@@ -305,21 +305,21 @@ namespace gum {
      * as for rawProba, if value's size is different than the number of
      *modalities of
      *the current variable,
-     * we don't use the supplementary values and we fill by 0 the missign
+     * we don't use the supplementary values and we fill by 0 the missing
      *values.
      */
-    void setVariableValuesUnchecked(const std::vector< float >& values);
+    void setVariableValuesUnchecked(const std::vector< float >& values) final;
 
     /**
     * @brief same than below with gum::OperationNotAllowed exception if value's
     * size
     * not OK.
     */
-    void setVariableValues(const std::vector< float >& values);
+    void setVariableValues(const std::vector< float >& values) final;
 
     /// Tells the factory that we finished declaring a conditional probability
     /// table.
-    void endFactorizedProbabilityDeclaration();
+    void endFactorizedProbabilityDeclaration() final;
 
     /// @}
     // ==========================================================================
@@ -343,7 +343,7 @@ namespace gum {
      * @throw OperationNotAllowed Raised if redefineParents == false and if
      * table is not a valid CPT for var in the current state of the BayesNet.
      */
-    void setVariable(const DiscreteVariable& var);
+    void setVariable(const DiscreteVariable& var) final;
 
     /**
      * @brief Define a variable's CPT.
@@ -369,7 +369,7 @@ namespace gum {
      */
     void setVariableCPT(const std::string&  varName,
                         MultiDimAdressable* table,
-                        bool                redefineParents = false);
+                        bool                redefineParents) final;
 
     /// @}
 
@@ -455,4 +455,3 @@ namespace gum {
 
 #endif  // GUM_BAYESNET_FACTORY_H
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

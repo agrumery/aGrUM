@@ -99,7 +99,7 @@ namespace gum {
     return true;
   }
 
-  std::string MarkovBlanket::toDot(void) const {
+  std::string MarkovBlanket::toDot() const {
     std::stringstream output;
     std::stringstream nodeStream;
     std::stringstream arcStream;

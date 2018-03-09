@@ -41,7 +41,7 @@ namespace gum {
       __scanner = new DSL::Scanner(__streamName.c_str());
       __parser = new DSL::Parser(__scanner);
       __parser->setFactory((IBayesNetFactory*)__factory);
-    } catch (IOError e) {
+    } catch (IOError& e) {
       __ioerror = true;
     }
   }
@@ -75,7 +75,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool DSLReader< GUM_SCALAR >::trace(void) const {
+  INLINE bool DSLReader< GUM_SCALAR >::trace() const {
     return __traceScanning;
   }
 
@@ -86,7 +86,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Size DSLReader< GUM_SCALAR >::proceed(void) {
+  Size DSLReader< GUM_SCALAR >::proceed() {
     if (__ioerror) {
       GUM_ERROR(gum::IOError, "No such file " + streamName());
     }
@@ -195,4 +195,3 @@ namespace gum {
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

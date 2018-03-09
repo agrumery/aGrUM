@@ -45,12 +45,12 @@ namespace gum {
   MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
                                        Size maxArcs,
-                                       Size max_modality,
+                                       Size maxModality,
                                        Size maxInducedWidth,
                                        Idx  iteration,
                                        Idx  p,
                                        Idx  q)
-      : MCBG(nbrNodes, maxArcs, max_modality, iteration, p, q) {
+      : MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
     if (maxInducedWidth == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxInducedWidth must be at least equal "

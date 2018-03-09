@@ -20,8 +20,7 @@
 /**
  * @file
  * @brief Implementation of the UtilityTable class.
- * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Philippe DUBUS
+ * @author Jean-Philippe DUBUS and Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 #include <agrum/multidim/utilityTable.h>
 

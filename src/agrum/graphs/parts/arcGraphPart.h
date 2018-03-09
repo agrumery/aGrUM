@@ -296,4 +296,4 @@ namespace gum {
 #include <agrum/graphs/parts/arcGraphPart_tpl.h>
 
 #endif  // GUM_ARC_GRAPH_PART_H
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;
+

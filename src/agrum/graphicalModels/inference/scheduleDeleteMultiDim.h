@@ -50,7 +50,7 @@ namespace gum {
     /** @warning the table is stored by copy into the ScheduleDeleteMultiDim.
      * This is actually compulsory for the appropriate use of
      * ScheduleCombination classes */
-    ScheduleDeleteMultiDim(const ScheduleMultiDim< GUM_SCALAR >& table);
+    explicit ScheduleDeleteMultiDim(const ScheduleMultiDim< GUM_SCALAR >& table);
 
     /// copy constructor
     ScheduleDeleteMultiDim(const ScheduleDeleteMultiDim< GUM_SCALAR >&);

@@ -84,7 +84,7 @@ namespace gum {
    * @throws Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  void DSLWriter< GUM_SCALAR >::write(std::string                    filePath,
+  void DSLWriter< GUM_SCALAR >::write(const std::string&             filePath,
                                       const IBayesNet< GUM_SCALAR >& bn) {
     std::filebuf fb;
     fb.open(filePath.c_str(), std::ios::out);
@@ -103,10 +103,7 @@ namespace gum {
   DSLWriter< GUM_SCALAR >::__variableBloc(const IBayesNet< GUM_SCALAR >& bn,
                                           const DiscreteVariable&        var) {
     NodeId             id;
-    gum::Size          i = 0;
     std::ostringstream oss;
-
-    std::string val("");
 
     id = bn.idFromName(var.name());
 
@@ -136,7 +133,7 @@ namespace gum {
     ////////////////////////////
     oss << "\t\t\tNAMESTATES = (";
 
-    for (i = 0; i < var.domainSize(); i++) {
+    for (Idx i = 0; i < var.domainSize(); i++) {
       if (i != 0) oss << ", ";
 
       oss << var.label(i);
@@ -148,7 +145,7 @@ namespace gum {
 
     ////////////////////////////
     oss << "\t\t\tPROBABILITIES = (";
-    i = 0;
+    Idx i = 0;
 
     Instantiation iter(*bn.cpt(id).content());
     for (iter.setFirst(); i < bn.cpt(id).domainSize(); ++iter, ++i) {
@@ -170,4 +167,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

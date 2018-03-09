@@ -20,7 +20,7 @@
 /** @file
  * @brief a cache for caching 3 points mutual information in 3off2
  *
- * @author Quentin FALCAND
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

@@ -86,7 +86,7 @@ namespace gum {
 
     /// copy operator
     /** @param aLDRV the labelized discrete random variable we copy */
-    const LabelizedVariable& operator=(const LabelizedVariable& aLDRV);
+    LabelizedVariable& operator=(const LabelizedVariable& aLDRV);
 
 
     /// returns the index of a given label
@@ -116,7 +116,7 @@ namespace gum {
        * the label
        * @return *this which allows : v.addLabel("1").addLabel("2")...;
        */
-    LabelizedVariable& addLabel(const std::string aLabel);
+    LabelizedVariable& addLabel(const std::string& aLabel);
 
     /// change a label for this index
     /** @param pos the index of the label to be changed
@@ -128,10 +128,10 @@ namespace gum {
      * variable representation,
        * this method is allowed on const LabelizedVariable.
        */
-    void changeLabel(Idx pos, const std::string aLabel) const;
+    void changeLabel(Idx pos, const std::string& aLabel) const;
 
     /// erase all the labels
-    void eraseLabels(void);
+    void eraseLabels();
 
     /// returns the ith label
     /** @param i
@@ -145,10 +145,10 @@ namespace gum {
     virtual Size domainSize() const;
 
     /// returns the type of variable
-    virtual VarType varType(void) const;
+    virtual VarType varType() const;
 
     /// Returns the domain
-    virtual const std::string domain(void) const;
+    virtual const std::string domain() const;
 
     /// @}
 

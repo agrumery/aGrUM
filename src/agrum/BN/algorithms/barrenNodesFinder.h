@@ -49,13 +49,13 @@ namespace gum {
     /// @{
 
     /// default constructor
-    BarrenNodesFinder(const DAG* dag);
+    explicit BarrenNodesFinder(const DAG* dag);
 
     /// copy constructor
     BarrenNodesFinder(const BarrenNodesFinder& from);
 
     /// move constructor
-    BarrenNodesFinder(BarrenNodesFinder&& from);
+    BarrenNodesFinder(BarrenNodesFinder&& from) noexcept;
 
     /// destructor
     ~BarrenNodesFinder();

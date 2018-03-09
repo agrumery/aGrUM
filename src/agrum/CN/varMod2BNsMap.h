@@ -98,7 +98,7 @@ namespace gum {
        *
        * @param cn The CredalNet to be used.
        */
-      VarMod2BNsMap(const CredalNet< GUM_SCALAR >& cn);
+      explicit VarMod2BNsMap(const CredalNet< GUM_SCALAR >& cn);
 
       /** Default constructor that should be used only by InferenceEngine since
        * it

@@ -21,7 +21,7 @@
 * @file Template Implementations of the IMDDI datastructure learner
 * @brief
 *
-* @author Jean-Christophe Magnan
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 // =======================================================
 #include <cmath>

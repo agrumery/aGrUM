@@ -21,7 +21,7 @@
 * @file
 * @brief Sources for concrete leaf class
 *
-* @author Jean-Christophe Magnan
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 // =======================================================
 #include <cmath>

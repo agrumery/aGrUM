@@ -90,7 +90,7 @@ namespace gum {
        * Default Constructor.
        * A copy is made of var.
        */
-      PRMType(const DiscreteVariable& var);
+      explicit PRMType(const DiscreteVariable& var);
 
       /**
        * Sub type constructor.

@@ -101,13 +101,13 @@ namespace gum {
     const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
-    bool trace(void) const;
+    bool trace() const;
     void trace(bool b);
 
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed(void);
+    Size proceed();
 
     /// @{
     /// publishing Errors API
@@ -160,5 +160,3 @@ namespace gum {
 #include <agrum/FMDP/io/dat/fmdpDatReader_tpl.h>
 
 #endif  // FMDP_DAT_READER_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

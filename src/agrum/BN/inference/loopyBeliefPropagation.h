@@ -41,7 +41,7 @@ namespace gum {
     /**
      * Default constructor
      */
-    LoopyBeliefPropagation(const IBayesNet< GUM_SCALAR >* bn);
+    explicit LoopyBeliefPropagation(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
      * Destructor.
@@ -75,7 +75,7 @@ namespace gum {
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential< GUM_SCALAR >& _posterior(const NodeId id);
+    virtual const Potential< GUM_SCALAR >& _posterior(NodeId id);
 
     virtual void _makeInference();
 
@@ -89,7 +89,7 @@ namespace gum {
     void                    __init_messages();
     Potential< GUM_SCALAR > __computeProdPi(NodeId X);
     Potential< GUM_SCALAR > __computeProdPi(NodeId X, NodeId except);
-    Potential< GUM_SCALAR > __computeProdLambda(NodeId node);
+    Potential< GUM_SCALAR > __computeProdLambda(NodeId X);
     Potential< GUM_SCALAR > __computeProdLambda(NodeId X, NodeId except);
 
     // return the max differential KL for this node

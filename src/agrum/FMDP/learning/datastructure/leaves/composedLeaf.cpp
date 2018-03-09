@@ -21,7 +21,7 @@
 * @file
 * @brief Sources for Composed Leaf class
 *
-* @author Jean-Christophe Magnan
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/leaves/composedLeaf.h>

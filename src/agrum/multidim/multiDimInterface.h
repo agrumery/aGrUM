@@ -157,7 +157,7 @@ namespace gum {
      * @brief Returns true if no var is in *this.
      * @return Returns true if no var is in *this.
      */
-    virtual bool empty(void) const = 0;
+    virtual bool empty() const = 0;
 
     /**
      * @brief Swap two variables in this multidim.

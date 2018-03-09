@@ -95,7 +95,7 @@ namespace gum {
   void ImportanceSampling< GUM_SCALAR >::_unsharpenBN(
     BayesNetFragment< GUM_SCALAR >* bn, float epsilon) {
     for (const auto nod : bn->nodes().asNodeSet()) {
-      Potential< GUM_SCALAR >* p = new Potential< GUM_SCALAR >();
+      auto p = new Potential< GUM_SCALAR >();
       *p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
       p->normalizeAsCPT();
       bn->installCPT(nod, p);

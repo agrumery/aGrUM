@@ -194,7 +194,7 @@ namespace gum {
           }
 
           gum::Set< gum::Idx >                  elimination;
-          gum::Sequence< gum::Instantiation* >* newSeq = 0;
+          gum::Sequence< gum::Instantiation* >* newSeq = nullptr;
 
           for (auto& elt : orderStruct) {
             bool added = false;
@@ -256,8 +256,9 @@ namespace gum {
               str2 << "-" << vartable[str.str()] << " ";
             }
 
-            if (itpvall.key().compare("0") != 0 &&
-                itpvall.key().compare("0.0") != 0) {
+            // if (itpvall.key().compare("0") != 0 &&
+            //    itpvall.key().compare("0.0") != 0) {
+            if (itpvall.key() != "0" && itpvall.key() != "0.0") {
               std::stringstream strinst;
               strinst << itvar.key()->name();
               strinst << "_val=" << itpvall.key();
@@ -300,7 +301,7 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void
   ContextualDependenciesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
-    std::string filePath, const IBayesNet< GUM_SCALAR >& bn) {
+    const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
@@ -421,7 +422,7 @@ namespace gum {
           for (auto seqv : *pv) {
             if (seqv->nbrDim() > 1) {
               for (Idx iInst = 0; iInst < seqv->nbrDim(); iInst++) {
-                gum::Instantiation* instpro = new gum::Instantiation(*seqv, false);
+                auto instpro = new gum::Instantiation(*seqv, false);
                 const gum::DiscreteVariable* var = &(seqv->variable(iInst));
                 instpro->erase(*var);
                 instpro->reorder(Order);
@@ -531,8 +532,9 @@ namespace gum {
               str2 << "-" << vartable[str.str()] << " ";
             }
 
-            if (itpvall.key().compare("0") != 0 &&
-                itpvall.key().compare("0.0") != 0) {
+            /*if (itpvall.key().compare("0") != 0 &&
+                itpvall.key().compare("0.0") != 0) {  */
+            if (itpvall.key() != "0" && itpvall.key() != "0.0") {
               std::stringstream strinst;
               strinst << itvar.key()->name();
               strinst << "_val=" << itpvall.key();

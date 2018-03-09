@@ -32,7 +32,7 @@ namespace gum {
   //=================NODEGRAPHPARTITERATOR============================
 
   /// ensure that the nodeId is either end() either a valid NodeId
-  INLINE void NodeGraphPartIterator::_validate(void) noexcept {
+  INLINE void NodeGraphPartIterator::_validate() noexcept {
     _valid = false;
 
     if (_pos > _nodes->bound()) {
@@ -124,7 +124,7 @@ namespace gum {
   }
 
   /// dereferencing operator
-  INLINE NodeId NodeGraphPartIterator::operator*(void)const {
+  INLINE NodeId NodeGraphPartIterator::operator*()const {
     if (!_valid) {
       GUM_ERROR(UndefinedIteratorValue, "This iterator is not valid !");
     }

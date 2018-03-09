@@ -673,7 +673,7 @@ namespace gum {
       };
 
       /// Get the value of epsilon
-      double epsilon(void) const {
+      double epsilon() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->epsilon();
         else
@@ -716,7 +716,7 @@ namespace gum {
       };
 
       /// Get the value of the minimal epsilon rate
-      double minEpsilonRate(void) const {
+      double minEpsilonRate() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->minEpsilonRate();
         else
@@ -757,7 +757,7 @@ namespace gum {
       };
 
       /// @return the criterion on number of iterations
-      Size maxIter(void) const {
+      Size maxIter() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->maxIter();
         else
@@ -799,7 +799,7 @@ namespace gum {
       }
 
       /// returns the timeout (in seconds)
-      double maxTime(void) const {
+      double maxTime() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->maxTime();
         else
@@ -807,7 +807,7 @@ namespace gum {
       };
 
       /// get the current running time in second (double)
-      double currentTime(void) const {
+      double currentTime() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->currentTime();
         else
@@ -844,7 +844,7 @@ namespace gum {
         __local_search_with_tabu_list.setPeriodSize(p);
       };
 
-      Size periodSize(void) const {
+      Size periodSize() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->periodSize();
         else
@@ -860,7 +860,7 @@ namespace gum {
         __local_search_with_tabu_list.setVerbosity(v);
       };
 
-      bool verbosity(void) const {
+      bool verbosity() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->verbosity();
         else

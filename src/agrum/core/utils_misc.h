@@ -132,7 +132,7 @@ namespace gum {
   /**
    * @brief Used for debug purpose.
    */
-  void __atexit(void);
+  void __atexit();
 
   /**
    * @brief Indicate whether two elements are (almost) different or not.

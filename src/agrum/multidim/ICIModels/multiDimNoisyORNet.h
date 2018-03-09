@@ -104,7 +104,7 @@ namespace gum {
     public:
     virtual GUM_SCALAR get(const Instantiation& i) const;
 
-    const std::string toString(void) const;
+    const std::string toString() const;
 
     ///
     /**

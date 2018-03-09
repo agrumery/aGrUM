@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for generating bayesian netwroks.
+ * @brief Class for generating bayesian networks.
  *
  * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
@@ -69,7 +69,7 @@ namespace gum {
      * The cptGenerator will be erased when the destructor is called.
      * @param cptGenerator The policy used to generate CPT.
      */
-    InfluenceDiagramGenerator(ICPTGenerator< GUM_SCALAR >* cptGenerator);
+    explicit InfluenceDiagramGenerator(ICPTGenerator< GUM_SCALAR >* cptGenerator);
 
     /**
      * Use this constructor if you want to use a different policy for generating
@@ -77,7 +77,7 @@ namespace gum {
      * The utGenerator will be erased when the destructor is called.
      * @param utGenerator The policy used to generate UT.
      */
-    InfluenceDiagramGenerator(UTGenerator* utGenerator);
+    explicit InfluenceDiagramGenerator(UTGenerator* utGenerator);
 
     /**
      * Use this constructor if you want to use a different policy for generating
@@ -130,4 +130,3 @@ namespace gum {
 #include <agrum/ID/generator/influenceDiagramGenerator_tpl.h>
 #endif /* GUM_INF_DIAG_GENERATOR_H */
 
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

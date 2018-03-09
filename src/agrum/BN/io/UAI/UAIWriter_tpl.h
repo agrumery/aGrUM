@@ -78,7 +78,7 @@ namespace gum {
    * @throw IOError Raised if an I/O error occurs.
    */
   template < typename GUM_SCALAR >
-  INLINE void UAIWriter< GUM_SCALAR >::write(std::string filePath,
+  INLINE void UAIWriter< GUM_SCALAR >::write(const std::string& filePath,
                                              const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 

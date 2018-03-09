@@ -306,13 +306,13 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE MultiDimAdressable& MultiDimContainer< GUM_SCALAR >::getMasterRef(void) {
+  INLINE MultiDimAdressable& MultiDimContainer< GUM_SCALAR >::getMasterRef() {
     return static_cast< MultiDimAdressable& >(*content());
   }
 
   template < typename GUM_SCALAR >
   INLINE const MultiDimAdressable&
-               MultiDimContainer< GUM_SCALAR >::getMasterRef(void) const {
+               MultiDimContainer< GUM_SCALAR >::getMasterRef() const {
     return static_cast< const MultiDimAdressable& >(*content());
   }
 

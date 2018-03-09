@@ -127,7 +127,7 @@ namespace gum {
        * Constructor.
        * @param name The name of this object.
        */
-      PRMObject(const std::string& name);
+      explicit PRMObject(const std::string& name);
 
       /**
        * Copy constructor.

@@ -192,7 +192,7 @@ sub lineStartsBlock($) {
 
 sub scanLineForTest($$) {
   my ($lineNo, $line) = @_;
-  if ( $line =~ m/^([^\/]|\/[^\/])*\bvoid\s+([Tt]est\w+)\s*\(\s*(void)?\s*\)/ ) {
+  if ( $line =~ m/^([^\/]|\/[^\/])*\bvoid\s+([Tt]est\w+)\s*\(\s*()?\s*\)/ ) {
     addTest( $2, $lineNo );
   }
 }
@@ -224,7 +224,7 @@ sub fixBlockLine($$$) {
 
 sub scanLineForCreate($$) {
   my ($lineNo, $line) = @_;
-  if ( $line =~ m/\bstatic\s+\w+\s*\*\s*createSuite\s*\(\s*(void)?\s*\)/ ) {
+  if ( $line =~ m/\bstatic\s+\w+\s*\*\s*createSuite\s*\(\s*()?\s*\)/ ) {
     addCreateSuite( $lineNo );
   }
 }

@@ -198,7 +198,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE void DiscretizedVariable< T_TICKS >::eraseTicks(void) {
+  INLINE void DiscretizedVariable< T_TICKS >::eraseTicks() {
     if (__ticks_size != 0) {
       __ticks_size = 0;
     }
@@ -256,7 +256,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE VarType DiscretizedVariable< T_TICKS >::varType(void) const {
+  INLINE VarType DiscretizedVariable< T_TICKS >::varType() const {
     return VarType::Discretized;
   }
 
@@ -270,7 +270,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  const std::string DiscretizedVariable< T_TICKS >::domain(void) const {
+  const std::string DiscretizedVariable< T_TICKS >::domain() const {
     std::stringstream s;
     s << "<";
 

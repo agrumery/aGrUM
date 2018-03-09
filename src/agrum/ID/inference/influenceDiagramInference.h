@@ -72,7 +72,7 @@ namespace gum {
      * Default constructor.
      * @param infDiag the influence diagram we want to perform inference upon
      */
-    InfluenceDiagramInference(const InfluenceDiagram< GUM_SCALAR >& infDiag);
+    explicit InfluenceDiagramInference(const InfluenceDiagram< GUM_SCALAR >& infDiag);
 
     /**
      * Destructor.
@@ -96,7 +96,7 @@ namespace gum {
     Idx getBestDecisionChoice(NodeId decisionId);
 
     /// displays the result of an inference
-    std::string displayResult(void);
+    std::string displayResult();
 
     /// @}
     // ====================================================================

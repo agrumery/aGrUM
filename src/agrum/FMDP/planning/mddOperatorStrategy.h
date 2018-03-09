@@ -187,5 +187,3 @@ namespace gum {
 #include <agrum/FMDP/planning/mddOperatorStrategy_tpl.h>
 
 #endif  // GUM_MDD_OPERATOR_STRATEGY_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

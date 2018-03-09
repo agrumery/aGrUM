@@ -84,7 +84,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool FMDPDatReader< GUM_SCALAR >::trace(void) const {
+  INLINE bool FMDPDatReader< GUM_SCALAR >::trace() const {
     return __traceScanning;
   }
 
@@ -95,7 +95,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Size FMDPDatReader< GUM_SCALAR >::proceed(void) {
+  Size FMDPDatReader< GUM_SCALAR >::proceed() {
     if (__ioerror) {
       GUM_ERROR(gum::IOError, "No such file " + streamName());
     }

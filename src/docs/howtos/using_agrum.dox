@@ -53,7 +53,7 @@ endif()
 
 #include <agrum/core/hashTable.h>
 
-int main(void) {
+int main() {
   gum::HashTable<std::string,int> h;
 
   h.insert("Hello",1);

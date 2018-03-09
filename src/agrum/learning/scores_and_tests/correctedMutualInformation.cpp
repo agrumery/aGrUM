@@ -21,7 +21,7 @@
  * @file
  * @brief Implementation of gum::learning::CorrectedMutualInformation.
  *
- * @author Quentin FALCAND.
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN.
  */
 
 #include <agrum/learning/scores_and_tests/correctedMutualInformation.h>

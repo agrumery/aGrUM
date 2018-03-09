@@ -445,5 +445,3 @@ namespace gum {
 
 
 #endif  // GUM_SDYNA_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

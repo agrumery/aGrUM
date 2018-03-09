@@ -21,7 +21,7 @@
  * @file
  * @brief Class used to compute the projection of a function graph
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 

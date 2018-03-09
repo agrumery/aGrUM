@@ -74,14 +74,14 @@ namespace gum {
     /**
      * @brief Class move constructor.
      */
-    MultiDimAdressable(MultiDimAdressable&&);
-    MultiDimAdressable& operator=(MultiDimAdressable&& from);
+    MultiDimAdressable(MultiDimAdressable&&) noexcept;
+    MultiDimAdressable& operator=(MultiDimAdressable&& from) noexcept;
 
 
     /**
      * @brief Destructor.
      */
-    virtual ~MultiDimAdressable();
+    ~MultiDimAdressable() override;
 
     /// @}
     // =======================================================================
@@ -93,14 +93,14 @@ namespace gum {
     * virtualize the access to master pointer.
     * @return Returns the master of this MultiDimAdressable.
     */
-    virtual MultiDimAdressable& getMasterRef(void) = 0;
+    virtual MultiDimAdressable& getMasterRef() = 0;
 
     /**
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the master of this MultiDimAdressable.
     */
-    virtual const MultiDimAdressable& getMasterRef(void) const = 0;
+    virtual const MultiDimAdressable& getMasterRef() const = 0;
 
     /**
      * @brief Register i as a slave of this MultiDimAdressable.
@@ -123,10 +123,10 @@ namespace gum {
      * @param oldval The old value.
      * @param newval The changed value.
      */
-    virtual void changeNotification(Instantiation&                i,
+    virtual void changeNotification(Instantiation&          i,
                                     const DiscreteVariable* const var,
-                                    const Idx&                    oldval,
-                                    const Idx&                    newval) = 0;
+                                    Idx                     oldval,
+                                    Idx                     newval) = 0;
 
     /**
      * @brief Listen to setFirst in a given Instantiation.

@@ -22,7 +22,7 @@
  * @brief Class used to manipulate o4DGContext in Function Graph Operations
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #ifndef O4DGCONTEXT_H

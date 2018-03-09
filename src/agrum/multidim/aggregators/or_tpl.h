@@ -67,7 +67,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE std::string Or< GUM_SCALAR >::aggregatorName(void) const {
+    INLINE std::string Or< GUM_SCALAR >::aggregatorName() const {
       return std::string("or");
     }
 

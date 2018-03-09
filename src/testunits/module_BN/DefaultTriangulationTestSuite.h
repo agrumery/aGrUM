@@ -116,57 +116,57 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(if (triangle) delete triangle);
     };
 
-    void xxtestBIFtriangulation1(void) {
+    void xxtestBIFtriangulation1() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("Barley.bif")));
     };
 
-    void xxtestBIFtriangulation1bis(void) {
+    void xxtestBIFtriangulation1bis() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("alarm.bif")));
     };
 
-    void xxtestBIFtriangulation2(void) {
+    void xxtestBIFtriangulation2() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("carpo.bif")));
     };
 
-    void xxtestBIFtriangulation3(void) {
+    void xxtestBIFtriangulation3() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("Pigs.bif")));
     };
 
-    void xxtestBIFtriangulation4(void) {
+    void xxtestBIFtriangulation4() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("Water.bif")));
     };
 
-    void xxtestBIFtriangulation5(void) {
+    void xxtestBIFtriangulation5() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("Link.bif")));
     };
 
-    void xxtestBIFtriangulation6(void) {
+    void xxtestBIFtriangulation6() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("Mildew.bif")));
     };
 
-    void xxtestBIFtriangulation7(void) {
+    void xxtestBIFtriangulation7() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("Munin1.bif")));
     };
 
-    void xxtestBIFtriangulation8(void) {
+    void xxtestBIFtriangulation8() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("hailfinder.bif")));
     };
 
-    void xxtestBIFtriangulation9(void) {
+    void xxtestBIFtriangulation9() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("Diabetes.bif")));
     };
 
-    void xxtestBIFtriangulation10(void) {
+    void xxtestBIFtriangulation10() {
       TS_GUM_ASSERT_THROWS_NOTHING(
         __triangulate_bif(GET_RESSOURCES_PATH("insurance.bif")));
     };

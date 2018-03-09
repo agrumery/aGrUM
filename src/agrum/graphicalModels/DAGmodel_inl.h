@@ -74,7 +74,7 @@ namespace gum {
   }
 
   INLINE
-  double DAGmodel::log10DomainSize(void) const {
+  double DAGmodel::log10DomainSize() const {
     double dSize = 0.0;
 
     for (const auto node : nodes()) {

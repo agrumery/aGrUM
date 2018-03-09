@@ -207,10 +207,10 @@ namespace gum {
     GUM_SCALAR maxNonOneParam() const;
 
     /// @return Returns a dot representation of this IBayesNet.
-    virtual std::string toDot(void) const;
+    virtual std::string toDot() const;
 
     /// @return Returns a string representation of this IBayesNet.
-    std::string toString(void) const;
+    std::string toString() const;
 
     /***
      * @return the minimal subset of soids that conditions the target

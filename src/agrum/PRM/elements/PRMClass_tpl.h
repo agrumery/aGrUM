@@ -109,8 +109,8 @@ namespace gum {
     void PRMClass< GUM_SCALAR >::__implementInterfaces(bool delayedInheritance) {
       for (const auto impl : *__implements) {
         impl->__addImplementation(this);
-        if ((!__superClass) || (__superClass && !super().isSubTypeOf(*impl)) ||
-            (__superClass && delayedInheritance)) {
+        if ((!__superClass) || (!super().isSubTypeOf(*impl)) ||
+            delayedInheritance) {
           // Reserve reference id in DAG
           for (auto ref : impl->referenceSlots()) {
             __dag.addNode(ref->id());
@@ -450,10 +450,8 @@ namespace gum {
         // Copying the IO flag
         this->_copyIOFlags(c);
         // Copying content of CPF
-        PRMAttribute< GUM_SCALAR >* a = 0;
-
         for (const auto attr : c.__attributes) {
-          a = static_cast< PRMAttribute< GUM_SCALAR >* >(
+          auto a = static_cast< PRMAttribute< GUM_SCALAR >* >(
             __nameMap[attr->safeName()]);
           a->copyCpf(bij, *attr);
         }
@@ -659,7 +657,7 @@ namespace gum {
       } catch (DuplicateElement& e) {
         if (!(PRMClassElement< GUM_SCALAR >::isSlotChain(*elt) ||
               PRMClassElement< GUM_SCALAR >::isParameter(*elt))) {
-          throw e;
+          throw DuplicateElement(e);
         }
       }
 
@@ -1116,13 +1114,12 @@ namespace gum {
       const PRMClass< GUM_SCALAR >* c;
       Idx                           depth;
 
-      ParamScopeData(std::string                           s,
+      ParamScopeData(const std::string&                    s,
                      const PRMReferenceSlot< GUM_SCALAR >& ref,
-                     Idx                                   d) {
-        prefix = s + ref.name() + ".";
-        c = static_cast< const PRMClass< GUM_SCALAR >* >(&(ref.slotType()));
-        depth = d;
-      }
+                     Idx                                   d)
+          : prefix(s + ref.name() + ".")
+          , c(static_cast< const PRMClass< GUM_SCALAR >* >(&(ref.slotType())))
+          , depth(d) {}
     };
 
     template < typename GUM_SCALAR >

@@ -272,14 +272,14 @@ namespace gum {
      * virtualize the access to master pointer.
      * @return Returns the ref to content as MultiDimAdressable&
     */
-    virtual MultiDimAdressable& getMasterRef(void);
+    virtual MultiDimAdressable& getMasterRef();
 
     /**
      * @brief In order to insure the dereference for decorators, we need to
      * virtualize the access to master pointer.
      * @return Returns the master of this MultiDimAdressable.
     */
-    virtual const MultiDimAdressable& getMasterRef(void) const;
+    virtual const MultiDimAdressable& getMasterRef() const;
 
 
     /**
@@ -371,13 +371,13 @@ namespace gum {
      * @warning Remember to call endMultipleChanges() when you finish your
      * changes.
      */
-    virtual void beginMultipleChanges(void) = 0;
+    virtual void beginMultipleChanges() = 0;
 
     /**
      * @brief Call this method after doing important changes in this
      * MultiDimContainer.
      */
-    virtual void endMultipleChanges(void) = 0;
+    virtual void endMultipleChanges() = 0;
 
     /**
      * @brief Call this method after doing important changes in this

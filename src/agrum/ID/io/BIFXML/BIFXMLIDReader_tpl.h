@@ -96,7 +96,7 @@ namespace gum {
       status = "Instanciation of network completed";
       GUM_EMIT2(onProceed, 100, status);
 
-    } catch (ticpp::Exception tinyexception) {
+    } catch (ticpp::Exception& tinyexception) {
       GUM_ERROR(IOError, tinyexception.what());
     }
   }

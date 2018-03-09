@@ -115,12 +115,12 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE const IBayesNet< GUM_SCALAR >& KL< GUM_SCALAR >::p(void) const {
+  INLINE const IBayesNet< GUM_SCALAR >& KL< GUM_SCALAR >::p() const {
     return _p;
   }
 
   template < typename GUM_SCALAR >
-  INLINE const IBayesNet< GUM_SCALAR >& KL< GUM_SCALAR >::q(void) const {
+  INLINE const IBayesNet< GUM_SCALAR >& KL< GUM_SCALAR >::q() const {
     return _q;
   }
 

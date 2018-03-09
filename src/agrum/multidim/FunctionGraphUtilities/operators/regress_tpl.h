@@ -22,7 +22,7 @@
  * @brief Class used to compute the operation between two decision diagrams
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/multidim/FunctionGraphUtilities/internalNode.h>
@@ -488,7 +488,7 @@ namespace gum {
           newVal,
           __combine(__DG1->nodeValue(__DG1->node(origDG1)->son(targetModa)),
                     __DG2->nodeValue(__DG2->node(origDG2)->son(targetModa))));
-      NodeId newNode = __rd->manager()->addTerminalNode(newVal);
+      newNode = __rd->manager()->addTerminalNode(newVal);
       __explorationTable.insert(curSitKey, newNode);
       DEALLOCATE(instNeeded, sizeof(short int) * __nbVar);
       return newNode;
@@ -502,7 +502,7 @@ namespace gum {
             newVal,
             __combine(__DG1->nodeValue(origDG1),
                       __DG2->nodeValue(__DG2->node(origDG2)->son(targetModa))));
-        NodeId newNode = __rd->manager()->addTerminalNode(newVal);
+        newNode = __rd->manager()->addTerminalNode(newVal);
         __explorationTable.insert(curSitKey, newNode);
         DEALLOCATE(instNeeded, sizeof(short int) * __nbVar);
         return newNode;
@@ -517,7 +517,7 @@ namespace gum {
             newVal,
             __combine(__DG1->nodeValue(__DG1->node(origDG1)->son(targetModa)),
                       __DG2->nodeValue(origDG2)));
-        NodeId newNode = __rd->manager()->addTerminalNode(newVal);
+        newNode = __rd->manager()->addTerminalNode(newVal);
         __explorationTable.insert(curSitKey, newNode);
         DEALLOCATE(instNeeded, sizeof(short int) * __nbVar);
         return newNode;

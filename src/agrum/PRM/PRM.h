@@ -88,13 +88,13 @@ namespace gum {
        * @param name The name of a possible PRMType<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a PRMType<GUM_SCALAR> in this PRM.
        */
-      bool isType(const std::string name) const;
+      bool isType(const std::string& name) const;
 
       /**
        * @param name The name of a possible Class<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a Class<GUM_SCALAR> in this PRM.
        */
-      bool isClass(const std::string name) const;
+      bool isClass(const std::string& name) const;
 
       /**
        * @param name The name of a possible PRMInterface<GUM_SCALAR> in this
@@ -102,13 +102,13 @@ namespace gum {
        * @return Returns true if name names a PRMInterface<GUM_SCALAR> in this
        * PRM.
        */
-      bool isInterface(const std::string name) const;
+      bool isInterface(const std::string& name) const;
 
       /**
        * @param name The name of a possible PRMSystem<GUM_SCALAR> in this PRM.
        * @return Returns true if name names a PRMSystem<GUM_SCALAR> in this PRM.
        */
-      bool isSystem(const std::string name) const;
+      bool isSystem(const std::string& name) const;
 
       /**
        * Returns a constant reference on a PRMType<GUM_SCALAR> given it's name.

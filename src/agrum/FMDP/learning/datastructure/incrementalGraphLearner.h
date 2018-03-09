@@ -416,5 +416,3 @@ namespace gum {
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner_tpl.h>
 
 #endif  // GUM_INCREMENTAL_GRAPH_LEARNER_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -122,7 +122,7 @@ typedef unsigned __int64 uint64_t;
 #define mulint(a, b, c) *(c) = *(a) * *(b)
 #define one(a) (*(a) == 1)
 #define negative(a) (*(a) < 0)
-#define normalize(a) (void)0
+#define normalize(a) ()0
 #define positive(a) (*(a) > 0)
 #define sign(a) (*(a) < 0 ? NEG : POS)
 #define storesign(a, sa) (*(a) = labs(*(a)) * sa)

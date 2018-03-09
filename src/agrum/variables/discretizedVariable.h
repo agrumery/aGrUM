@@ -122,7 +122,7 @@ namespace gum {
 
     /// returns the type of variable
 
-    virtual VarType varType(void) const;
+    virtual VarType varType() const;
 
     /**
      * operator =
@@ -149,7 +149,7 @@ namespace gum {
     /**
      * erase all the Ticks
      */
-    void eraseTicks(void);
+    void eraseTicks();
 
     /**
      * @param i
@@ -169,8 +169,8 @@ namespace gum {
     *
     * @return the size of the random discrete variable domain
     */
-    virtual Size              domainSize(void) const;
-    virtual const std::string domain(void) const;
+    virtual Size              domainSize() const;
+    virtual const std::string domain() const;
 
     /// from the index to the tick.
     /// @throws NotFound

@@ -302,7 +302,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::string BayesNetFragment< GUM_SCALAR >::toDot(void) const {
+  std::string BayesNetFragment< GUM_SCALAR >::toDot() const {
     std::stringstream output;
     output << "digraph \"";
 

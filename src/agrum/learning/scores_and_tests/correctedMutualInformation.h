@@ -21,7 +21,7 @@
  * @file
  * @brief class CorrectedMutualInformation, used in the 3off2 algorithm
  *
- * @author Quentin FALCAND.
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN.
  */
 #ifndef GUM_LEARNING_CORRECTEDMUTUALINFORMATION_H
 #define GUM_LEARNING_CORRECTEDMUTUALINFORMATION_H

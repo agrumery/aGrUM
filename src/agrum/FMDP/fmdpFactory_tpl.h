@@ -21,7 +21,7 @@
  * @file
  * @brief Template Implementation of the FMDPFactory class.
  *
- * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/FMDP/fmdpFactory.h>

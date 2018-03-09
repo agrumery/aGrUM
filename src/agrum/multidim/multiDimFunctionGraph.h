@@ -22,7 +22,7 @@
  * @brief Headers of MultiDimFunctionGraph.
  *
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_H
 #define GUM_MULTI_DIM_FUNCTION_GRAPH_H
@@ -178,8 +178,8 @@ namespace gum {
 
     virtual void changeNotification(Instantiation&                i,
                                     const DiscreteVariable* const var,
-                                    const Idx&                    oldval,
-                                    const Idx&                    newval);
+                                    Idx                           oldval,
+                                    Idx                           newval);
 
     virtual void setFirstNotification(Instantiation& i);
 

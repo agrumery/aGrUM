@@ -89,11 +89,9 @@ namespace gum {
          iCopy.incNotVar(bayesNet.variable(varIdi)), ++i) {
       for (iCopy.setFirstVar(bayesNet.variable(varIdi)); !iCopy.end();
            iCopy.incVar(bayesNet.variable(varIdi))) {
-        bayesNet.cpt(varIdj).set(
-          iCopy,
-          cptCopy.get(i) +
-            (GUM_SCALAR)(rand() % (Size)(variation * 100000)) /
-              100000);  // TODO better to do here
+        bayesNet.cpt(varIdj).set(iCopy,
+                                 cptCopy.get(i) + randomProba() * variation);
+        bayesNet.cpt(varIdj).normalizeAsCPT();
       }
     }
 
