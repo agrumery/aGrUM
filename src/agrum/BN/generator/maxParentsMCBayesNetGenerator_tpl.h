@@ -115,4 +115,3 @@ namespace gum {
   }
 } /* namespace gum */
 
-#undef MCBG

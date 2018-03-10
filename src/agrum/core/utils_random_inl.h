@@ -19,7 +19,7 @@
  ***************************************************************************/
 /**
  * @file
- * @brief Contains usefull methods for random stuff.
+ * @brief Contains useful methods for random stuff.
  *
  * @author Vincent RENAUDINEAU and Pierre-Henri WUILLEMIN
  */

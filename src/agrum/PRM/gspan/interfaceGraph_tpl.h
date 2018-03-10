@@ -124,7 +124,7 @@ namespace gum {
         NodeData< GUM_SCALAR >* v = nullptr;
 
         for (const auto& elt : __nodes) {
-          NodeData< GUM_SCALAR >* data data = elt.second;
+          NodeData< GUM_SCALAR >* data = elt.second;
 
           for (const auto chain : data->n->type().slotChains()) {
             for (const auto inst : data->n->getInstances(chain->id())) {

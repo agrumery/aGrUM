@@ -46,56 +46,41 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void SimpleCPTDisturber< GUM_SCALAR >::disturbReducCPT(
-    NodeId                   varIdi,
-    NodeId                   varIdj,
+    NodeId                   node,
     BayesNet< GUM_SCALAR >&  bayesNet,
-    Potential< GUM_SCALAR >& cptCopy,
+    Potential< GUM_SCALAR >& src,
     Potential< GUM_SCALAR >& marg) {
-    Instantiation i(cptCopy);
-    Instantiation iCopy(cptCopy);
-    Instantiation imarg(marg);
+    Instantiation i_src(src);
+    Instantiation i_dest(bayesNet.cpt(node));
+    Instantiation i_marg(marg);
 
-    iCopy.forgetMaster();
-    iCopy.erase(bayesNet.variable(varIdi));
-
-    for (i.setFirstNotVar(bayesNet.variable(varIdi)); !i.end();
-         i.incNotVar(bayesNet.variable(varIdi)), ++iCopy) {
+    for (i_dest.setFirst(); !i_dest.end(); ++i_dest) {
       GUM_SCALAR potval = 0;
 
-      for (i.setFirstVar(bayesNet.variable(varIdi)), imarg.setFirst(); !i.end();
-           i.incVar(bayesNet.variable(varIdi)), ++imarg) {
-        potval += cptCopy.get(i) * marg.get(imarg);
+      i_src.setVals(i_dest);
+      for (i_marg.setFirst(); !i_marg.end(); ++i_marg) {
+        i_src.setVals(i_marg);
+        potval += src.get(i_src) * marg.get(i_marg);
       }
 
-      bayesNet.cpt(varIdj).set(iCopy, potval);
+      bayesNet.cpt(node).set(i_dest, potval);
     }
 
-    bayesNet.cpt(varIdj).normalize();
+    bayesNet.cpt(node).normalizeAsCPT();
   }
 
   template < typename GUM_SCALAR >
   void SimpleCPTDisturber< GUM_SCALAR >::disturbAugmCPT(
-    NodeId                   varIdi,
-    NodeId                   varIdj,
+    NodeId                   node,
     BayesNet< GUM_SCALAR >&  bayesNet,
-    Potential< GUM_SCALAR >& cptCopy,
+    Potential< GUM_SCALAR >& src,
     GUM_SCALAR               variation) {
-    Instantiation i(cptCopy);
-    Instantiation iCopy(cptCopy);
-    iCopy.forgetMaster();
-    iCopy.add(bayesNet.variable(varIdi));
+    Instantiation i(bayesNet.cpt(node));
 
-    for (iCopy.setFirstNotVar(bayesNet.variable(varIdi)); !iCopy.end();
-         iCopy.incNotVar(bayesNet.variable(varIdi)), ++i) {
-      for (iCopy.setFirstVar(bayesNet.variable(varIdi)); !iCopy.end();
-           iCopy.incVar(bayesNet.variable(varIdi))) {
-        bayesNet.cpt(varIdj).set(iCopy,
-                                 cptCopy.get(i) + randomProba() * variation);
-        bayesNet.cpt(varIdj).normalizeAsCPT();
-      }
-    }
+    for (i.setFirst(); !i.end(); ++i)
+      bayesNet.cpt(node).set(i, src.get(i) + randomProba() * variation);
 
-    bayesNet.cpt(varIdj).normalize();
+    bayesNet.cpt(node).normalizeAsCPT();
   }
 
 } /* namespace gum */

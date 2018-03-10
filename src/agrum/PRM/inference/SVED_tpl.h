@@ -506,14 +506,6 @@ namespace gum {
       GUM_CONSTRUCTOR(SVED);
     }
 
-    template < typename GUM_SCALAR >
-    INLINE SVED< GUM_SCALAR >::SVED(const PRM< GUM_SCALAR >& prm,
-                                    const std::string&       model)
-        : PRMInference< GUM_SCALAR >(prm, model)
-        , __class_elim_order(0)
-        , __bb(*this) {
-      GUM_CONSTRUCTOR(SVED);
-    }
 
     template < typename GUM_SCALAR >
     INLINE void

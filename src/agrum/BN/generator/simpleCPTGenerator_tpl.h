@@ -51,12 +51,29 @@ namespace gum {
     const Idx& varId, const Potential< GUM_SCALAR >& cpt) {
     std::vector< GUM_SCALAR > v;
 
+    v.reserve(cpt.domainSize());
     for (Size i = 0; i < cpt.domainSize(); ++i) {
-      v.push_back((GUM_SCALAR)randomProba());
+      v.push_back((GUM_SCALAR)randomValue(10000));
     }
 
     cpt.fillWith(v);
-    cpt.normalizeAsCPT();
+    Instantiation varInst;
+    varInst.add(cpt.variable(varId));
+    Instantiation cptInst(cpt);
+
+    for (cptInst.setFirstOut(varInst); !cptInst.end(); cptInst.incOut(varInst)) {
+      GUM_SCALAR sum = (GUM_SCALAR)0;
+
+      for (cptInst.setFirstIn(varInst); !cptInst.end(); cptInst.incIn(varInst)) {
+        sum += cpt[cptInst];
+      }
+
+      for (cptInst.setFirstIn(varInst); !cptInst.end(); cptInst.incIn(varInst)) {
+        cpt.set(cptInst, cpt[cptInst] / sum);
+      }
+
+      cptInst.unsetEnd();
+    }
   }
 
 } /* namespace gum */

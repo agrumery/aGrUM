@@ -345,9 +345,9 @@ namespace gum_tests {
     void testSetAsCastDescendantTypeError() {
       // Arrange
       gum::LabelizedVariable foovar{"Foo", "Bar", 5};
-      PRMAttribute           foo(*__class, "foobar", foovar);
-      PRMAttribute           state(*__class, "state", *__state);
-      auto                   before = foo.cpf().variablesSequence().size();
+      PRMAttribute foo(*__class, "foobar", gum::prm::PRMType< double >(foovar));
+      PRMAttribute state(*__class, "state", *__state);
+      auto         before = foo.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::WrongType);
       // Assert
