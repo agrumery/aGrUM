@@ -28,6 +28,11 @@
 
 namespace gum {
 
+#ifdef _MSC_VER
+#define IBNG IBayesNetGenerator
+#else
+#define IBNG IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
+#endif
 
   template < typename GUM_SCALAR >
   gum::Size getMaxModality(gum::BayesNet< GUM_SCALAR >& bayesNet) {
@@ -48,8 +53,7 @@ namespace gum {
   MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     MCBayesNetGenerator(
       Size nbrNodes, Size maxArcs, Idx maxModality, Size iteration, Idx p, Idx q)
-      : IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >(
-          nbrNodes, maxArcs, maxModality)
+      : IBNG(nbrNodes, maxArcs, maxModality)
       , _bayesNettemp()
       , _hashMarginal() {
     if (p + q > 100)
