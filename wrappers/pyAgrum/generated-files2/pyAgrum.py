@@ -7215,6 +7215,22 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_arcs(self)
 
 
+    def parents(self, *args):
+        """
+        parents(self, id) -> gum::NodeSet const
+        parents(self, name) -> gum::NodeSet const &
+        """
+        return _pyAgrum.DAGmodel_parents(self, *args)
+
+
+    def children(self, *args):
+        """
+        children(self, id) -> gum::NodeSet const
+        children(self, name) -> gum::NodeSet const &
+        """
+        return _pyAgrum.DAGmodel_children(self, *args)
+
+
     def moralGraph(self, clear=True):
         """
         moralGraph(self, clear=True) -> UndiGraph
@@ -10281,14 +10297,14 @@ class IBayesNet_double(DAGmodel):
         return _pyAgrum.IBayesNet_double_log2JointProbability(self, i)
 
 
-    def __eq__(self, src):
-        """__eq__(self, src) -> bool"""
-        return _pyAgrum.IBayesNet_double___eq__(self, src)
+    def __eq__(self, arg2):
+        """__eq__(self, arg2) -> bool"""
+        return _pyAgrum.IBayesNet_double___eq__(self, arg2)
 
 
-    def __ne__(self, src):
-        """__ne__(self, src) -> bool"""
-        return _pyAgrum.IBayesNet_double___ne__(self, src)
+    def __ne__(self, arg2):
+        """__ne__(self, arg2) -> bool"""
+        return _pyAgrum.IBayesNet_double___ne__(self, arg2)
 
 
     def dim(self):
@@ -10418,7 +10434,7 @@ class IBayesNet_double(DAGmodel):
     def minimalCondSet(self, *args):
         """
         minimalCondSet(self, target, soids) -> gum::NodeSet
-        minimalCondSet(self, target, soids) -> gum::NodeSet
+        minimalCondSet(self, targets, soids) -> gum::NodeSet
         minimalCondSet(self, target, list) -> PyObject
         minimalCondSet(self, targets, list) -> PyObject *
 
@@ -10682,11 +10698,11 @@ class BayesNet_double(IBayesNet_double):
 
     def add(self, *args):
         """
-        add(self, variable) -> gum::NodeId
+        add(self, var) -> gum::NodeId
         add(self, name, nbrmod) -> gum::NodeId
-        add(self, variable, aContent) -> gum::NodeId
-        add(self, variable, id) -> gum::NodeId
-        add(self, variable, aContent, id) -> gum::NodeId
+        add(self, var, aContent) -> gum::NodeId
+        add(self, var, id) -> gum::NodeId
+        add(self, var, aContent, id) -> gum::NodeId
 
 
         Add a variable to the pyAgrum.BayesNet. 
@@ -10725,7 +10741,7 @@ class BayesNet_double(IBayesNet_double):
 
     def erase(self, *args):
         """
-        erase(self, id)
+        erase(self, varId)
         erase(self, name)
         erase(self, var)
 
@@ -10990,8 +11006,8 @@ class BayesNet_double(IBayesNet_double):
 
     def addNoisyOR(self, *args):
         """
-        addNoisyOR(self, variable, externalWeight) -> gum::NodeId
-        addNoisyOR(self, variable, externalWeight, id) -> gum::NodeId
+        addNoisyOR(self, var, external_weight) -> gum::NodeId
+        addNoisyOR(self, var, external_weight, id) -> gum::NodeId
 
 
         Add a variable, it's associate node and a noisyOR implementation.
@@ -11024,8 +11040,8 @@ class BayesNet_double(IBayesNet_double):
 
     def addNoisyORNet(self, *args):
         """
-        addNoisyORNet(self, variable, externalWeight) -> gum::NodeId
-        addNoisyORNet(self, variable, externalWeight, id) -> gum::NodeId
+        addNoisyORNet(self, var, external_weight) -> gum::NodeId
+        addNoisyORNet(self, var, external_weight, id) -> gum::NodeId
 
 
         Add a variable, its associate node and a noisyOR implementation.
@@ -11054,8 +11070,8 @@ class BayesNet_double(IBayesNet_double):
 
     def addNoisyORCompound(self, *args):
         """
-        addNoisyORCompound(self, variable, externalWeight) -> gum::NodeId
-        addNoisyORCompound(self, variable, externalWeight, id) -> gum::NodeId
+        addNoisyORCompound(self, var, external_weight) -> gum::NodeId
+        addNoisyORCompound(self, var, external_weight, id) -> gum::NodeId
 
 
         Add a variable, it's associate node and a noisyOR implementation.
@@ -11088,8 +11104,8 @@ class BayesNet_double(IBayesNet_double):
 
     def addNoisyAND(self, *args):
         """
-        addNoisyAND(self, variable, externalWeight, id) -> gum::NodeId
-        addNoisyAND(self, variable, externalWeight) -> gum::NodeId
+        addNoisyAND(self, var, external_weight, id) -> gum::NodeId
+        addNoisyAND(self, var, external_weight) -> gum::NodeId
 
 
         Add a variable, its associate node and a noisyAND implementation.
@@ -11120,8 +11136,8 @@ class BayesNet_double(IBayesNet_double):
 
     def addLogit(self, *args):
         """
-        addLogit(self, variable, externalWeight, id) -> gum::NodeId
-        addLogit(self, variable, externalWeight) -> gum::NodeId
+        addLogit(self, var, external_weight, id) -> gum::NodeId
+        addLogit(self, var, external_weight) -> gum::NodeId
 
 
         Add a variable, its associate node and a Logit implementation.
@@ -11149,9 +11165,9 @@ class BayesNet_double(IBayesNet_double):
         return _pyAgrum.BayesNet_double_addLogit(self, *args)
 
 
-    def addOR(self, variable):
+    def addOR(self, var):
         """
-        addOR(self, variable) -> gum::NodeId
+        addOR(self, var) -> gum::NodeId
 
 
         Add a variable, it's associate node and an OR implementation.
@@ -11177,12 +11193,12 @@ class BayesNet_double(IBayesNet_double):
         	SizeError raised if variable.domainSize()>2 
 
         """
-        return _pyAgrum.BayesNet_double_addOR(self, variable)
+        return _pyAgrum.BayesNet_double_addOR(self, var)
 
 
-    def addAND(self, variable):
+    def addAND(self, var):
         """
-        addAND(self, variable) -> gum::NodeId
+        addAND(self, var) -> gum::NodeId
 
 
         Add a variable, it's associate node and an AND implementation.
@@ -11204,12 +11220,12 @@ class BayesNet_double(IBayesNet_double):
         	SizeError if variable.domainSize()>2 
 
         """
-        return _pyAgrum.BayesNet_double_addAND(self, variable)
+        return _pyAgrum.BayesNet_double_addAND(self, var)
 
 
-    def addAMPLITUDE(self, variable):
+    def addAMPLITUDE(self, var):
         """
-        addAMPLITUDE(self, variable) -> gum::NodeId
+        addAMPLITUDE(self, var) -> gum::NodeId
 
 
         Others aggregators
@@ -11225,13 +11241,13 @@ class BayesNet_double(IBayesNet_double):
         	the id of the added value
 
         """
-        return _pyAgrum.BayesNet_double_addAMPLITUDE(self, variable)
+        return _pyAgrum.BayesNet_double_addAMPLITUDE(self, var)
 
 
-    def addCOUNT(self, variable, Value=1):
+    def addCOUNT(self, var, value=1):
         """
-        addCOUNT(self, variable, Value=1) -> gum::NodeId
-        addCOUNT(self, variable) -> gum::NodeId
+        addCOUNT(self, var, value=1) -> gum::NodeId
+        addCOUNT(self, var) -> gum::NodeId
 
 
         Others aggregators
@@ -11247,13 +11263,13 @@ class BayesNet_double(IBayesNet_double):
         	the id of the added value
 
         """
-        return _pyAgrum.BayesNet_double_addCOUNT(self, variable, Value)
+        return _pyAgrum.BayesNet_double_addCOUNT(self, var, value)
 
 
-    def addEXISTS(self, variable, Value=1):
+    def addEXISTS(self, var, value=1):
         """
-        addEXISTS(self, variable, Value=1) -> gum::NodeId
-        addEXISTS(self, variable) -> gum::NodeId
+        addEXISTS(self, var, value=1) -> gum::NodeId
+        addEXISTS(self, var) -> gum::NodeId
 
 
         Others aggregators
@@ -11269,13 +11285,13 @@ class BayesNet_double(IBayesNet_double):
         	the id of the added value
 
         """
-        return _pyAgrum.BayesNet_double_addEXISTS(self, variable, Value)
+        return _pyAgrum.BayesNet_double_addEXISTS(self, var, value)
 
 
-    def addFORALL(self, variable, Value=1):
+    def addFORALL(self, var, value=1):
         """
-        addFORALL(self, variable, Value=1) -> gum::NodeId
-        addFORALL(self, variable) -> gum::NodeId
+        addFORALL(self, var, value=1) -> gum::NodeId
+        addFORALL(self, var) -> gum::NodeId
 
 
         Others aggregators
@@ -11291,12 +11307,12 @@ class BayesNet_double(IBayesNet_double):
         	the id of the added variable.
 
         """
-        return _pyAgrum.BayesNet_double_addFORALL(self, variable, Value)
+        return _pyAgrum.BayesNet_double_addFORALL(self, var, value)
 
 
-    def addMAX(self, variable):
+    def addMAX(self, var):
         """
-        addMAX(self, variable) -> gum::NodeId
+        addMAX(self, var) -> gum::NodeId
 
 
         Others aggregators
@@ -11312,12 +11328,12 @@ class BayesNet_double(IBayesNet_double):
         	the id of the added value
 
         """
-        return _pyAgrum.BayesNet_double_addMAX(self, variable)
+        return _pyAgrum.BayesNet_double_addMAX(self, var)
 
 
-    def addMEDIAN(self, variable):
+    def addMEDIAN(self, var):
         """
-        addMEDIAN(self, variable) -> gum::NodeId
+        addMEDIAN(self, var) -> gum::NodeId
 
 
         Others aggregators
@@ -11333,12 +11349,12 @@ class BayesNet_double(IBayesNet_double):
         	the id of the added value
 
         """
-        return _pyAgrum.BayesNet_double_addMEDIAN(self, variable)
+        return _pyAgrum.BayesNet_double_addMEDIAN(self, var)
 
 
-    def addMIN(self, variable):
+    def addMIN(self, var):
         """
-        addMIN(self, variable) -> gum::NodeId
+        addMIN(self, var) -> gum::NodeId
 
 
         Others aggregators
@@ -11354,7 +11370,7 @@ class BayesNet_double(IBayesNet_double):
         	the id of the added value
 
         """
-        return _pyAgrum.BayesNet_double_addMIN(self, variable)
+        return _pyAgrum.BayesNet_double_addMIN(self, var)
 
 
     def addWeightedArc(self, *args):
@@ -11922,9 +11938,9 @@ class BayesNetInference_double(_object):
         return _pyAgrum.BayesNetInference_double_addEvidence(self, *args)
 
 
-    def addSetOfEvidence(self, potlist):
-        """addSetOfEvidence(self, potlist)"""
-        return _pyAgrum.BayesNetInference_double_addSetOfEvidence(self, potlist)
+    def addSetOfEvidence(self, potset):
+        """addSetOfEvidence(self, potset)"""
+        return _pyAgrum.BayesNetInference_double_addSetOfEvidence(self, potset)
 
 
     def addListOfEvidence(self, potlist):

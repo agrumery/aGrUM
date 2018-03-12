@@ -9,7 +9,7 @@
   %}
 }
 
-%feature("shadow") gum::LabelizedVariable::addLabel(const std::string aLabel) %{
+%feature("shadow") gum::LabelizedVariable::addLabel(const std::string& aLabel) %{
 def addLabel(self,*args):
     """
     Add a label with a new index (we assume that we will NEVER remove a label).

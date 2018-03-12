@@ -17,46 +17,46 @@ import pyAgrum as gum
 
 import unittest
 
-from tests import MarkovBlanketTestSuite
-from tests import EssentialGraphTestSuite
-from tests import VariablesTestSuite
+from tests import AggregatorsForBNTestSuite
+from tests import AllIncrementalInferenceTestSuite
 from tests import BayesNetTestSuite
+from tests import BNDatabaseGeneratorTestSuite
+from tests import BNLearnerTestSuite
 from tests import BNListenerTestSuite
-from tests import PotentialTestSuite
+from tests import EssentialGraphTestSuite
+from tests import ICIModelsForBNTestSuite
+from tests import InstantiationTestSuite
 from tests import JTInferenceTestSuite
 from tests import JunctionTreeTestSuite
-from tests import ICIModelsForBNTestSuite
-from tests import BNLearnerTestSuite
-from tests import AggregatorsForBNTestSuite
-from tests import PRMexplorerTestSuite
-from tests import AllIncrementalInferenceTestSuite
 from tests import LazyPropagationTestSuite
-from tests import SamplingTestSuite
 from tests import LoopyBeliefPropagationTestSuite
-from tests import InstantiationTestSuite
-from tests import BNDatabaseGeneratorTestSuite
+from tests import MarkovBlanketTestSuite
+from tests import PotentialTestSuite
+from tests import PRMexplorerTestSuite
+from tests import SamplingTestSuite
+from tests import VariablesTestSuite
 
 import time
 
 tests = list()
-tests.append(InstantiationTestSuite.ts)
-tests.append(MarkovBlanketTestSuite.ts)
-tests.append(EssentialGraphTestSuite.ts)
-tests.append(VariablesTestSuite.ts)
-tests.append(BayesNetTestSuite.ts)
-tests.append(BNListenerTestSuite.ts)
-tests.append(PotentialTestSuite.ts)
-tests.append(JTInferenceTestSuite.ts)
+tests.append(AggregatorsForBNTestSuite.ts)
 tests.append(AllIncrementalInferenceTestSuite.ts)
+tests.append(BayesNetTestSuite.ts)
+tests.append(BNDatabaseGeneratorTestSuite.ts)
+tests.append(BNLearnerTestSuite.ts)
+tests.append(BNListenerTestSuite.ts)
+tests.append(EssentialGraphTestSuite.ts)
+tests.append(ICIModelsForBNTestSuite.ts)
+tests.append(InstantiationTestSuite.ts)
+tests.append(JTInferenceTestSuite.ts)
 tests.append(JunctionTreeTestSuite.ts)
 tests.append(LazyPropagationTestSuite.ts)
-tests.append(ICIModelsForBNTestSuite.ts)
-tests.append(BNLearnerTestSuite.ts)
-tests.append(AggregatorsForBNTestSuite.ts)
+tests.append(LoopyBeliefPropagationTestSuite.ts)
+tests.append(MarkovBlanketTestSuite.ts)
+tests.append(PotentialTestSuite.ts)
 tests.append(PRMexplorerTestSuite.ts)
 tests.append(SamplingTestSuite.ts)
-tests.append(LoopyBeliefPropagationTestSuite.ts)
-tests.append(BNDatabaseGeneratorTestSuite.ts)
+tests.append(VariablesTestSuite.ts)
 
 tests = unittest.TestSuite(tests)
 

@@ -36,10 +36,10 @@ print("pyAgrum path : {}".format(gum.__file__), end='\n', file=sys.stdout)
 print("*****************")
 print("Python Test Suite")
 print("*****************")
-import TestSuite
+import testsOnPython
 
 try:
-  total_errs += TestSuite.errs
+  total_errs += testsOnPython.errs
 except NameError:
   pass
 except:
@@ -51,7 +51,7 @@ if testNotebooks:
   print("*******************")
   print("Notebook Test Suite")
   print("*******************")
-  from NotebookTestSuite import runNotebooks
+  from testsOnNotebooks import runNotebooks
 
   try:
     total_errs += runNotebooks()
