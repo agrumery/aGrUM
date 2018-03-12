@@ -115,12 +115,12 @@ namespace gum {
     // ============================================================================
     /// Returns the performance of current variable according to the test
     // ============================================================================
-    void computeScore() const;
+    void computeScore();
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
     // ============================================================================
-    double score() const;
+    double score();
 
     // ============================================================================
     /// Returns a second criterion to severe ties

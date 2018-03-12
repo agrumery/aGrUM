@@ -25,4 +25,5 @@
  * @author Pierre-Henri WUILLEMIN and Christophe GONZALES
  */
 
+#include <agrum/agrum.h>
 #include <agrum/BN/IBayesNetFactory.h>
