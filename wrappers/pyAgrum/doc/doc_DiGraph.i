@@ -30,7 +30,7 @@ Warnings
 InvalidNode raised if head or tail does not belong to the graph nodes.
 "
 
-%feature("docstring") gum::DiGraph::addNode
+%feature("docstring") gum::DiGraph::addNodeWithId
 "
 Returns
 -------
@@ -213,7 +213,7 @@ int
 Returns
 -------
 str
-    a friendly display of the graph in DOT format 
+    a friendly display of the graph in DOT format
 "
 
 %feature("docstring") gum::DiGraph::topologicalOrder

@@ -53,8 +53,8 @@ namespace gum_tests {
       gum::NodeId next2 = ngp.addNode();
       TS_ASSERT_EQUALS(next, next2);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNode(next2 + 1));
-      TS_ASSERT_THROWS(ngp.addNode(next2 + 1), gum::DuplicateElement);
+      TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(next2 + 1));
+      TS_ASSERT_THROWS(ngp.addNodeWithId(next2 + 1), gum::DuplicateElement);
     }
 
     void testSuppression() {
@@ -68,8 +68,8 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(ngp.eraseNode(id3));
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)3);
 
-      TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNode(id3));
-      TS_ASSERT_THROWS(ngp.addNode(id3), gum::DuplicateElement);
+      TS_GUM_ASSERT_THROWS_NOTHING(ngp.addNodeWithId(id3));
+      TS_ASSERT_THROWS(ngp.addNodeWithId(id3), gum::DuplicateElement);
       TS_ASSERT_EQUALS(ngp.size(), (gum::Size)4);
 
       ngp.clear();
@@ -103,48 +103,48 @@ namespace gum_tests {
       gum::NodeId        f = 6;
       gum::NodeId        g = 7;
 
-      ngp.addNode(c);
+        ngp.addNodeWithId(c);
       TS_ASSERT(ngp.__inHoles(a));
       TS_ASSERT(ngp.__inHoles(b));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(3)));
       TS_ASSERT_EQUALS(ngp.bound(), c + 1);
 
-      ngp.addNode(a);
+        ngp.addNodeWithId(a);
       TS_ASSERT(ngp.__inHoles(b));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(2)));
       TS_ASSERT_EQUALS(ngp.bound(), c + 1);
 
-      ngp.addNode(f);
+        ngp.addNodeWithId(f);
       TS_ASSERT(ngp.__inHoles(b));
       TS_ASSERT(ngp.__inHoles(d));
       TS_ASSERT(ngp.__inHoles(e));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(4)));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
-      ngp.addNode(e);
+        ngp.addNodeWithId(e);
       TS_ASSERT(ngp.__inHoles(b));
       TS_ASSERT(ngp.__inHoles(d));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(3)));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
-      ngp.addNode(b);
+        ngp.addNodeWithId(b);
       TS_ASSERT(ngp.__inHoles(d));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(2)));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
-      ngp.addNode(d);
+        ngp.addNodeWithId(d);
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(1)));
       TS_ASSERT_EQUALS(ngp.bound(), f + 1);
 
-      ngp.addNode(g);
+        ngp.addNodeWithId(g);
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(1)));
       TS_ASSERT_EQUALS(ngp.bound(), g + 1);
 
-      ngp.addNode(gum::NodeId(0));
+        ngp.addNodeWithId(gum::NodeId(0));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(0)));
       TS_ASSERT_EQUALS(ngp.bound(), g + 1);
 
-      TS_ASSERT_THROWS(ngp.addNode(f), gum::DuplicateElement);
+      TS_ASSERT_THROWS(ngp.addNodeWithId(f), gum::DuplicateElement);
     }
 
     void testGarbageCollecting() {
@@ -154,7 +154,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(0));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(0)));
       TS_ASSERT_EQUALS(ngp.nextNodeId(), (gum::Size(0)));
-      ngp.addNode(node);
+        ngp.addNodeWithId(node);
       TS_ASSERT_EQUALS(ngp.bound(), (gum::NodeId)(node + 1));
       TS_ASSERT_EQUALS(ngp.__sizeHoles(), (gum::Size(node)));
       TS_ASSERT(ngp.nextNodeId() < node);  // we fill one of the holes
@@ -165,7 +165,7 @@ namespace gum_tests {
 
       // do we fill all the holes?
       gum::NodeGraphPart ngp2;
-      ngp2.addNode(node);
+        ngp2.addNodeWithId(node);
 
       for (gum::Size i = 1; i < node; i++) {
         TS_ASSERT_EQUALS(ngp2.__sizeHoles(), (gum::Size(node) + 1 - i));
@@ -186,7 +186,7 @@ namespace gum_tests {
       gum::NodeGraphPart ngp;
 
       for (gum::NodeId i = 0; i < 20; ++i) {
-        ngp.addNode(i);
+          ngp.addNodeWithId(i);
       }
 
       for (gum::NodeId i = 0; i < 20; ++i) {
@@ -298,7 +298,7 @@ namespace gum_tests {
         // direct with id
 
         for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
-          ngp.addNode(node);
+            ngp.addNodeWithId(node);
         }
 
         for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
@@ -312,7 +312,7 @@ namespace gum_tests {
         // reverse with id
 
         for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {
-          ngp.addNode(NBR_PROFILING_NODES - node);
+            ngp.addNodeWithId(NBR_PROFILING_NODES - node);
         }
 
         for (gum::NodeId node = 1; node < NBR_PROFILING_NODES; node++) {

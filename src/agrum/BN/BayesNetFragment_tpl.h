@@ -145,7 +145,7 @@ namespace gum {
       GUM_ERROR(NotFound, "Node " << id << " does not exist in referred BayesNet");
 
     if (!isInstalledNode(id)) {
-      this->_dag.addNode(id);
+        this->_dag.addNodeWithId(id);
 
       // adding arcs with id as a tail
       for (auto pa : this->__bn.parents(id)) {

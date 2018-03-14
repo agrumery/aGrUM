@@ -115,7 +115,7 @@ namespace gum_tests {
       learner.addMandatoryArc(gum::Arc(7, 5));
       gum::DAG i_dag;
       for (gum::NodeId i = 0; i < 8; ++i) {
-        i_dag.addNode(i);
+          i_dag.addNodeWithId(i);
       }
       learner.setInitialDAG(i_dag);
       // learner.addMandatoryArc( "bronchitis?", "lung_cancer?" );
@@ -434,7 +434,7 @@ namespace gum_tests {
       gum::DAG dag;
 
       for (unsigned int i = 0; i < 8; ++i) {
-        dag.addNode(i);
+          dag.addNodeWithId(i);
       }
 
       for (unsigned int i = 0; i < 7; ++i) {
@@ -476,7 +476,7 @@ namespace gum_tests {
       gum::DAG dag;
 
       for (unsigned int i = 0; i < 8; ++i) {
-        dag.addNode(i);
+          dag.addNodeWithId(i);
       }
 
       for (unsigned int i = 0; i < 7; ++i) {

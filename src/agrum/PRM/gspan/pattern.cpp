@@ -42,7 +42,7 @@ namespace gum {
 
         for (NodeId node = 1; node <= source.size(); ++node) {
           node_map.insert(node,
-                          addNode(const_cast< LabelData& >(source.label(node))));
+                          addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
         }
 
         for (const auto edge : source.code().codes)
@@ -102,8 +102,8 @@ namespace gum {
       bool Pattern::__expandCodeIsMinimal(NodeId u, NodeId v) {
         Bijection< NodeId, NodeId > node_map;
         Pattern p;
-        node_map.insert(u, p.addNode(label(u)));
-        node_map.insert(v, p.addNode(label(v)));
+        node_map.insert(u, p.addNodeWithLabel(label(u)));
+        node_map.insert(v, p.addNodeWithLabel(label(v)));
 
         try {
           p.addArc(1, 2, label(u, v));
@@ -144,7 +144,7 @@ namespace gum {
             return false;
           }
         } else {
-          node_map.insert(v, p.addNode(label(v)));
+          node_map.insert(v, p.addNodeWithLabel(label(v)));
         }
 
         // Retrieving arc label data
@@ -222,7 +222,7 @@ namespace gum {
                 go = false;
               }
             } else {
-              node_map.insert(v, p.addNode(label(v)));
+              node_map.insert(v, p.addNodeWithLabel(label(v)));
             }
 
             if (go) {

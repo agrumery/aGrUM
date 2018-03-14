@@ -1,6 +1,6 @@
 %ignore gum::MixedGraph::addArc;
 %ignore gum::MixedGraph::addEdge;
-%ignore gum::MixedGraph::addNode;
+%ignore gum::MixedGraph::addNodeWithId;
 %ignore gum::MixedGraph::addNodeWithId;
 %ignore gum::MixedGraph::empty;
 %ignore gum::MixedGraph::emptyArcs;
@@ -44,7 +44,7 @@ node2 : int
 Returns
 -------
 List
-	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs) 
+	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs)
 
 Warnings
 --------
@@ -56,14 +56,14 @@ NotFound raised if no path can be found between the two nodes
 Parameters
 ----------
 node1 : int
-	the id from which the path begins 
+	the id from which the path begins
 node2 : int
 	the id to which the path ends
 
 Returns
 -------
 List
-	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs) 
+	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs)
 
 Warnings
 --------

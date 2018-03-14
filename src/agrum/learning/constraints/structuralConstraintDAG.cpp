@@ -45,7 +45,7 @@ namespace gum {
 
       DAG g;
       for (NodeId i = 0; i < nb_nodes; ++i) {
-        g.addNode(i);
+          g.addNodeWithId(i);
       }
       _DAG__cycle_detector.setDAG(g);
 

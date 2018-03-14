@@ -762,7 +762,7 @@ namespace gum {
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
       for (Size i = 0; i < __score_database.modalities().size(); ++i) {
-        mgraph.addNode(i);
+          mgraph.addNodeWithId(i);
         for (Size j = 0; j < i; ++j) {
           mgraph.addEdge(j, i);
         }
@@ -814,9 +814,9 @@ namespace gum {
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
 
       for (const auto& arc : mandatory_arcs) {
-        if (!init_graph.exists(arc.tail())) init_graph.addNode(arc.tail());
+        if (!init_graph.exists(arc.tail())) init_graph.addNodeWithId(arc.tail());
 
-        if (!init_graph.exists(arc.head())) init_graph.addNode(arc.head());
+        if (!init_graph.exists(arc.head())) init_graph.addNodeWithId(arc.head());
 
         init_graph.addArc(arc.tail(), arc.head());
       }

@@ -120,7 +120,7 @@ namespace gum {
     INLINE void StructuralConstraintUndiGraph::setGraph(Size nb_nodes) {
       _UndiGraph__graph.clear();
       for (NodeId i = 0; i < nb_nodes; ++i) {
-        _UndiGraph__graph.addNode(i);
+          _UndiGraph__graph.addNodeWithId(i);
       }
     }
 

@@ -36,7 +36,7 @@ namespace gum {
         try {
           // Adding the attribute
           const PRMAttribute< GUM_SCALAR >& attr = i.get(node);
-          this->_dag.addNode(attr.id());
+            this->_dag.addNodeWithId(attr.id());
           __varNodeMap.insert(&(attr.type().variable()), &attr);
         } catch (NotFound&) {
           // Not an attribute

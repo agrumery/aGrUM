@@ -47,7 +47,7 @@ namespace gum {
 
       if (a != b || a != c /*|| b != c*/)
         GUM_ERROR(OperationNotAllowed,
-                  "addNode : not the same id over all networks : " << a << ", "
+                  "addNodeWithId : not the same id over all networks : " << a << ", "
                                                                    << b
                                                                    << ", "
                                                                    << c);

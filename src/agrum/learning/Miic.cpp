@@ -1003,7 +1003,7 @@ namespace gum {
       // turn the mixed graph into a dag
       DAG dag;
       for (auto node : essentialGraph) {
-        dag.addNode(node);
+        dag.addNodeWithId(node);
       }
       for (const Arc& arc : essentialGraph.arcs()) {
         dag.addArc(arc.tail(), arc.head());

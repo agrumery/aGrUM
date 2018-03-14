@@ -97,7 +97,7 @@ ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
     }
 };
 %ignore gum::CliqueGraph::clique;
-%ignore gum::CliqueGraph::addNode;
+%ignore gum::CliqueGraph::addNodeWithId;
 %ignore gum::CliqueGraph::addEdge(const gum::NodeId,const gum::NodeId);
 
 %include "extensions/JTGenerator.h"

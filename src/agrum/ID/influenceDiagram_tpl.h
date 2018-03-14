@@ -475,7 +475,7 @@ namespace gum {
 
     __variableMap.insert(proposedId, variableType);
 
-    _dag.addNode(proposedId);
+      _dag.addNodeWithId(proposedId);
 
     // end critical section
     return proposedId;
@@ -590,7 +590,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::_moralGraph(UndiGraph& graph) const {
     for (const auto node : _dag.nodes())
-      if (!isUtilityNode(node)) graph.addNode(node);
+      if (!isUtilityNode(node)) graph.addNodeWithId(node);
 
     for (const auto node : _dag.nodes()) {
       if (!isDecisionNode(node))
@@ -680,10 +680,10 @@ namespace gum {
 
     for (const auto node : _dag.nodes()) {
       if (isDecisionNode(node)) {
-        if (!temporalGraph->existsNode(node)) temporalGraph->addNode(node);
+        if (!temporalGraph->existsNode(node)) temporalGraph->addNodeWithId(node);
 
         for (const auto chi : _getChildrenDecision(node)) {
-          if (!temporalGraph->existsNode(chi)) temporalGraph->addNode(chi);
+          if (!temporalGraph->existsNode(chi)) temporalGraph->addNodeWithId(chi);
 
           temporalGraph->addArc(node, chi);
         }

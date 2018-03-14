@@ -4909,7 +4909,7 @@ class DiGraph(_object):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format 
+            a friendly display of the graph in DOT format
 
         """
         return _pyAgrum.DiGraph_toDot(self)
@@ -5002,16 +5002,7 @@ class DiGraph(_object):
 
 
     def addNode(self):
-        """
-        addNode(self) -> gum::NodeId
-
-
-        Returns
-        -------
-        int
-          the new NodeId
-
-        """
+        """addNode(self) -> gum::NodeId"""
         return _pyAgrum.DiGraph_addNode(self)
 
 
@@ -5379,7 +5370,7 @@ class UndiGraph(_object):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format 
+            a friendly display of the graph in DOT format
 
         """
         return _pyAgrum.UndiGraph_toDot(self)
@@ -5414,7 +5405,7 @@ class UndiGraph(_object):
         Returns
         -------
         pyAgrum.UndiGraph
-            The partial graph formed by the nodes given in parameter 
+            The partial graph formed by the nodes given in parameter
 
         """
         return _pyAgrum.UndiGraph_partialUndiGraph(self, nodesSet)
@@ -5462,23 +5453,14 @@ class UndiGraph(_object):
         Returns
         -------
         Set
-            The set of edges adjacent to the given node 
+            The set of edges adjacent to the given node
 
         """
         return _pyAgrum.UndiGraph_neighbours(self, id)
 
 
     def addNode(self):
-        """
-        addNode(self) -> gum::NodeId
-
-
-        Returns
-        -------
-        int
-          the new NodeId
-
-        """
+        """addNode(self) -> gum::NodeId"""
         return _pyAgrum.UndiGraph_addNode(self)
 
 
@@ -5762,7 +5744,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs) 
+        	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs)
 
         Warnings
         --------
@@ -5780,14 +5762,14 @@ class MixedGraph(UndiGraph, DiGraph):
         Parameters
         ----------
         node1 : int
-        	the id from which the path begins 
+        	the id from which the path begins
         node2 : int
         	the id to which the path ends
 
         Returns
         -------
         List
-        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs) 
+        	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs)
 
         Warnings
         --------
@@ -5805,7 +5787,7 @@ class MixedGraph(UndiGraph, DiGraph):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format 
+            a friendly display of the graph in DOT format
 
         """
         return _pyAgrum.MixedGraph_toDot(self)
@@ -5824,6 +5806,11 @@ class MixedGraph(UndiGraph, DiGraph):
     def __str__(self):
         """__str__(self) -> std::string"""
         return _pyAgrum.MixedGraph___str__(self)
+
+
+    def addNode(self):
+        """addNode(self) -> gum::NodeId"""
+        return _pyAgrum.MixedGraph_addNode(self)
 
 MixedGraph_swigregister = _pyAgrum.MixedGraph_swigregister
 MixedGraph_swigregister(MixedGraph)
@@ -5922,6 +5909,16 @@ class CliqueGraph(UndiGraph):
 
         """
         return _pyAgrum.CliqueGraph_clearEdges(self)
+
+
+    def addNode(self, *args):
+        """
+        addNode(self, clique) -> gum::NodeId
+        addNode(self) -> gum::NodeId
+        addNode(self, id, clique)
+        addNode(self, id)
+        """
+        return _pyAgrum.CliqueGraph_addNode(self, *args)
 
 
     def eraseNode(self, node):
@@ -6138,7 +6135,7 @@ class CliqueGraph(UndiGraph):
         Returns
         -------
         str
-            a friendly display of the graph in DOT format 
+            a friendly display of the graph in DOT format
 
         """
         return _pyAgrum.CliqueGraph_toDot(self)
@@ -23948,7 +23945,7 @@ class CredalNet_double(_object):
     src_min_num
     	(pyAgrum.BayesNet) the BayesNet which contains lower probabilities.
     src_max_den
-    	(pyAgrum.BayesNet) the (optional) BayesNet which contains upper probabilities. 
+    	(pyAgrum.BayesNet) the (optional) BayesNet which contains upper probabilities.
 
     """
 
@@ -23980,29 +23977,7 @@ class CredalNet_double(_object):
         return None
 
     def addNode(self, name, card):
-        """
-        addNode(self, name, card) -> gum::NodeId
-
-
-        Adds a discrete node into the network.
-
-        Parameters
-        ----------
-        name : str
-        	The name of the discrete variable to be added
-        card : int
-        	The cardinality of the variable
-
-        Returns
-        -------
-        int
-            The NodeId of the variable in the network
-
-        Warnings
-        --------
-        DuplicateLabel raised if a node with the label already exists.
-
-        """
+        """addNode(self, name, card) -> gum::NodeId"""
         return _pyAgrum.CredalNet_double_addNode(self, name, card)
 
 
@@ -24017,7 +23992,7 @@ class CredalNet_double(_object):
         ----------
         tail :
         	the id of the tail node
-        head : int 
+        head : int
         	the id of the head node
 
         Warnings
@@ -24052,7 +24027,7 @@ class CredalNet_double(_object):
         ----------
         id : int
         	the NodeId of the node
-        cpt	: tbw 
+        cpt	: tbw
         	the vertices of every credal set (for each instantiation of the parents)
 
         Warning
@@ -24083,7 +24058,7 @@ class CredalNet_double(_object):
         entry : int
         	the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
         ins : pyAgrum.Instantiation
-        	the Instantiation (only the parents matter to find the credal set index) 
+        	the Instantiation (only the parents matter to find the credal set index)
         cpt	: tbw
         	the vertices of every credal set (for each instantiation of the parents)
 
@@ -24100,11 +24075,11 @@ class CredalNet_double(_object):
         fillConstraints(self, id, lower, upper)
 
 
-        Set the interval constraints of the credal sets of a given node (all instantiations) 
+        Set the interval constraints of the credal sets of a given node (all instantiations)
 
         Parameters
         ----------
-        id : int 
+        id : int
         	The id of the node
         lower : list
         	The lower value for each probability in correct order
@@ -24133,7 +24108,7 @@ class CredalNet_double(_object):
 
         Parameters
         ----------
-        id : int 
+        id : int
         	The id of the node
         entry : int
         	The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
@@ -24150,7 +24125,7 @@ class CredalNet_double(_object):
 
         Warning
         -------
-        DOES change the BayesNet (s) associated to this credal net ! 
+        DOES change the BayesNet (s) associated to this credal net !
 
         """
         return _pyAgrum.CredalNet_double_fillConstraint(self, *args)
@@ -24173,7 +24148,7 @@ class CredalNet_double(_object):
         Returns
         -------
         pyAgrum.Instantiation
-            the instantiation 
+            the instantiation
 
         """
         return _pyAgrum.CredalNet_double_instantiation(self, id)
@@ -24192,7 +24167,7 @@ class CredalNet_double(_object):
         Returns
         -------
         int
-            The cardinality of the node 
+            The cardinality of the node
 
         """
         return _pyAgrum.CredalNet_double_domainSize(self, id)
@@ -24231,7 +24206,7 @@ class CredalNet_double(_object):
 
         Computes the vertices of each credal set according to their interval definition (uses lrs).
 
-        Use this method when using a single BayesNet storing counts of events. 
+        Use this method when using a single BayesNet storing counts of events.
 
         """
         return _pyAgrum.CredalNet_double_intervalToCredalWithFiles(self)
@@ -24259,7 +24234,7 @@ class CredalNet_double(_object):
 
         Use this method when using a single BayesNet storing counts of events. Lagrange normalization. This call is irreversible and modify counts stored by __src_bn.
 
-        Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value). 
+        Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value).
 
         """
         return _pyAgrum.CredalNet_double_lagrangeNormalization(self)
@@ -24281,7 +24256,7 @@ class CredalNet_double(_object):
         s : int
         	the IDM parameter.
         keepZeroes : bool
-        	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept. 
+        	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
 
         """
         return _pyAgrum.CredalNet_double_idmLearning(self, s, keepZeroes)
@@ -24350,7 +24325,7 @@ class CredalNet_double(_object):
         Returns
         -------
         pyAgrum.BayesNet
-            Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter). 
+            Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter).
 
         """
         return _pyAgrum.CredalNet_double_src_bn(self)
@@ -24364,7 +24339,7 @@ class CredalNet_double(_object):
         Returns
         -------
         pyAgrum.BayesNet
-            Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter). 
+            Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter).
 
         """
         return _pyAgrum.CredalNet_double_current_bn(self)
@@ -24413,13 +24388,13 @@ class CredalNet_double(_object):
 
         Parameters
         ----------
-        id : int 
+        id : int
         	The constant reference to the choosen NodeId
 
         Returns
         -------
         pyAgrum.CredalNet
-            the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise. 
+            the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise.
 
         """
         return _pyAgrum.CredalNet_double_currentNodeType(self, id)
@@ -24438,7 +24413,7 @@ class CredalNet_double(_object):
         Returns
         -------
         pyAgrum.CredalNet
-        	the type of the choosen node in the (up-to-date) CredalNet in __src_bn. 
+        	the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
 
         """
         return _pyAgrum.CredalNet_double_nodeType(self, id)
@@ -24452,7 +24427,7 @@ class CredalNet_double(_object):
         Returns
         -------
         double
-            a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet. 
+            a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet.
 
         """
         return _pyAgrum.CredalNet_double_epsilonMin(self)
@@ -24466,7 +24441,7 @@ class CredalNet_double(_object):
         Returns
         -------
         double
-            a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet. 
+            a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet.
 
         """
         return _pyAgrum.CredalNet_double_epsilonMax(self)
@@ -24480,7 +24455,7 @@ class CredalNet_double(_object):
         Returns
         -------
         double
-            a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet. 
+            a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet.
 
         """
         return _pyAgrum.CredalNet_double_epsilonMean(self)
@@ -24494,7 +24469,7 @@ class CredalNet_double(_object):
         Returns
         -------
         bool
-        	True if this CredalNet is separately and interval specified, False otherwise. 
+        	True if this CredalNet is separately and interval specified, False otherwise.
 
         """
         return _pyAgrum.CredalNet_double_isSeparatelySpecified(self)

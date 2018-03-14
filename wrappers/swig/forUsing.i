@@ -8,7 +8,7 @@
     return self->gum::NodeGraphPart::addNode();
   }
   void addNodeWithId(const gum::NodeId id) {
-    self->gum::NodeGraphPart::addNode(id);
+    self->gum::NodeGraphPart::addNodeWithId(id);
   }
   bool existsNode(const gum::NodeId id) const {
     return self->gum::NodeGraphPart::existsNode(id);

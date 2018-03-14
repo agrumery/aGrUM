@@ -70,7 +70,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNode(i);
+          graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
@@ -105,7 +105,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNode(i);
+          graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
@@ -142,7 +142,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNode(i);
+          graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
@@ -180,7 +180,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNode(i);
+          graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
@@ -221,7 +221,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNode(i);
+          graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
@@ -268,7 +268,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNode(i);
+          graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
@@ -311,7 +311,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNode(i);
+          graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
@@ -360,7 +360,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph, g;
       for (gum::Size i = 0; i < modalities.size(); ++i) {
-        graph.addNode(i);
+          graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }

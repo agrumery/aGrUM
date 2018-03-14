@@ -30,7 +30,7 @@ Warnings
 InvalidNode raised if n1 or n2 does not belong to the graph nodes.
 "
 
-%feature("docstring") gum::UndiGraph::addNode
+%feature("docstring") gum::UndiGraph::addNodeWithId
 "
 Returns
 -------
@@ -177,7 +177,7 @@ id : int
 Returns
 -------
 Set
-    The set of edges adjacent to the given node 
+    The set of edges adjacent to the given node
 "
 
 %feature("docstring") gum::UndiGraph::partialUndiGraph
@@ -190,7 +190,7 @@ nodesSet : Set
 Returns
 -------
 pyAgrum.UndiGraph
-    The partial graph formed by the nodes given in parameter 
+    The partial graph formed by the nodes given in parameter
 "
 
 %feature("docstring") gum::UndiGraph::size
@@ -214,5 +214,5 @@ int
 Returns
 -------
 str
-    a friendly display of the graph in DOT format 
+    a friendly display of the graph in DOT format
 "

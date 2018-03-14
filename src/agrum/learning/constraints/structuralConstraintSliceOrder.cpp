@@ -54,7 +54,7 @@ namespace gum {
     StructuralConstraintSliceOrder::StructuralConstraintSliceOrder(
       const NodeProperty< NodeId >& order) {
       for (auto iter = order.cbegin(); iter != order.cend(); ++iter) {
-        _DiGraph__graph.addNode(iter.key());
+          _DiGraph__graph.addNodeWithId(iter.key());
       }
       _SliceOrder__order = order;
 

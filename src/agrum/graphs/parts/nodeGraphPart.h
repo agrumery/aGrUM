@@ -348,7 +348,7 @@ namespace gum {
      * @ref populateNodes or @ref populateNodesFromProperty when possible
      * @throws DuplicateElement exception if the id already exists
      */
-    virtual void addNode(const NodeId id);
+    virtual void addNodeWithId(const NodeId id);
 
     /// erase the node with the given id
     /** If the NodeGraphPart does not contain the nodeId, then nothing is done.

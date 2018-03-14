@@ -182,7 +182,7 @@ namespace gum_tests {
       gum::UndiGraph graph;
 
       for (unsigned int i = 1; i <= 8; ++i)
-        graph.addNode(i);
+          graph.addNodeWithId(i);
 
       createClique(graph, c1);
       createClique(graph, c2);
@@ -236,7 +236,7 @@ namespace gum_tests {
       gum::UndiGraph graph;
 
       for (unsigned int i = 1; i <= 8; ++i)
-        graph.addNode(i);
+          graph.addNodeWithId(i);
 
       for (unsigned int i = 1; i <= 7; ++i)
         graph.addEdge(i, i + 1);
@@ -318,7 +318,7 @@ namespace gum_tests {
         idList.insert(graph.addNode());
         idList.insert(graph.addNode());
         idList.insert(graph.addNode());
-        idList.insert(graph.addNode());*/
+        idList.insert(graph.addNodeWithId());*/
 
       graph.addEdge(idList[0], idList[2]);
       graph.addEdge(idList[0], idList[3]);

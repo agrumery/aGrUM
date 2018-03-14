@@ -244,8 +244,8 @@ namespace gum {
     }
   }
 
-  // warning: do not try to use function addNode ( const NodeId id ) within
-  // function addNode(): as both functions are virtual, this may create
+  // warning: do not try to use function addNodeWithId ( const NodeId id ) within
+  // function addNodeWithId(): as both functions are virtual, this may create
   // bugs within the graphs hierarchy (i.e., virtual functions calling
   // recursively
   // each other along the hierarchy) that are not easy to debug.

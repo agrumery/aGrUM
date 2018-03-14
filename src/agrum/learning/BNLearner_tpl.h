@@ -176,7 +176,7 @@ namespace gum {
         }
 
         mapIds.insert(node, new_id);
-        newDAG.addNode(new_id);
+          newDAG.addNodeWithId(new_id);
       }
 
       for (const auto& arc : bn.arcs()) {

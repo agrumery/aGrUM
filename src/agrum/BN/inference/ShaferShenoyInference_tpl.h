@@ -403,7 +403,7 @@ namespace gum {
     const auto& bn = this->BN();
     __graph.clear();
     for (auto node : bn.dag())
-      __graph.addNode(node);
+        __graph.addNodeWithId(node);
 
     // 2/ if we wish to exploit barren nodes, we shall remove them from the
     // BN to do so: we identify all the nodes that are not targets and have
