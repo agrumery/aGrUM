@@ -26,7 +26,7 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/multidim/operators/multiDimCombinationDefault.h>
+#include <agrum/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>
 

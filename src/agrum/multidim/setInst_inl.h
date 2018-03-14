@@ -19,7 +19,7 @@
  ***************************************************************************/
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 
 // to ease IDE PARSER
 #include <agrum/multidim/setInst.h>

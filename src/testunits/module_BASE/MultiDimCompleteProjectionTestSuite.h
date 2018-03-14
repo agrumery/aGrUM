@@ -27,9 +27,9 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/core/set.h>
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/operators/completeProjections4MultiDim.h>
-#include <agrum/multidim/operators/multiDimCompleteProjection.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/utils/operators/completeProjections4MultiDim.h>
+#include <agrum/multidim/utils/operators/multiDimCompleteProjection.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>
 

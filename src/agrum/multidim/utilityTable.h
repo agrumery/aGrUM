@@ -29,8 +29,8 @@
 
 #include <agrum/agrum.h>
 
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimDecorator.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimDecorator.h>
 
 namespace gum {
 

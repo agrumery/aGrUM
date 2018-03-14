@@ -24,7 +24,7 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 
 namespace gum {
 

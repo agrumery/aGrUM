@@ -36,7 +36,7 @@
 #include <agrum/agrum.h>
 #include <agrum/core/list.h>
 
-#include <agrum/multidim/multiDimSparse.h>
+#include <agrum/multidim/implementations/multiDimSparse.h>
 #include <agrum/variables/discreteVariable.h>
 
 #include <agrum/PRM/IPRMFactory.h>

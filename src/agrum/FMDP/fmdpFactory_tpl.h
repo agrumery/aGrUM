@@ -26,7 +26,7 @@
 
 #include <agrum/FMDP/fmdpFactory.h>
 
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <agrum/multidim/potential.h>
 
 

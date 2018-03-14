@@ -30,7 +30,7 @@
 #include <vector>
 
 #include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 #include <agrum/variables/labelizedVariable.h>
 
 namespace gum {

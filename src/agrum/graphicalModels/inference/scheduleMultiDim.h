@@ -31,8 +31,8 @@
 
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/multiDimDecorator.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimDecorator.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <agrum/variables/discreteVariable.h>
 
 namespace gum {

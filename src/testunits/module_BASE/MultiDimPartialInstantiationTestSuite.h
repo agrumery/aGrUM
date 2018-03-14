@@ -28,9 +28,9 @@
 
 #include <agrum/core/debug.h>
 #include <agrum/core/set.h>
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimPartialInstantiation.h>
-#include <agrum/multidim/partialInstantiation4MultiDim.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimPartialInstantiation.h>
+#include <agrum/multidim/utils/partialInstantiation4MultiDim.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>
 

@@ -24,7 +24,7 @@
 
 #include <agrum/core/exceptions.h>
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
 

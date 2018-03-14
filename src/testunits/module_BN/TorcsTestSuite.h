@@ -27,7 +27,7 @@
 #include <agrum/BN/inference/ShaferShenoyInference.h>
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/core/hashTable.h>
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {

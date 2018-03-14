@@ -72,7 +72,7 @@
 #include <agrum/FMDP/fmdpFactory.h>
 #include <agrum/FMDP/io/fmdpReader.h>
 // ======================================================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 // ======================================================================================================
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

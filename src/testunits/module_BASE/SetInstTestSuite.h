@@ -21,7 +21,7 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/multidim/setInst.h>
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/variables/labelizedVariable.h>

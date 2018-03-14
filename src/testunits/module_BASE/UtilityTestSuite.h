@@ -23,7 +23,7 @@
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/multidim/utilityTable.h>
 
 namespace gum_tests {

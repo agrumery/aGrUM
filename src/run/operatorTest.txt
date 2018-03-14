@@ -29,8 +29,8 @@
 // ==============================================================================
 #include<agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // ==============================================================================
-#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
-#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraphGenerator.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 // ==============================================================================
 #include <agrum/variables/labelizedVariable.h>
 // ==============================================================================

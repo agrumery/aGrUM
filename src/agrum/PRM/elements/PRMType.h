@@ -30,8 +30,8 @@
 #include <sstream>
 #include <vector>
 
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <agrum/variables/discreteVariable.h>
 #include <agrum/variables/labelizedVariable.h>
 

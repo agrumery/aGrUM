@@ -35,14 +35,14 @@
 #include <agrum/graphs/cliqueGraph.h>
 #include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/variables/discreteVariable.h>
-#include <agrum/multidim/multiDimInterface.h>
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimInterface.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimContainer.h>
-#include <agrum/multidim/multiDimDecorator.h>
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimWithOffset.h>
-#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/implementations/multiDimContainer.h>
+#include <agrum/multidim/implementations/multiDimDecorator.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimWithOffset.h>
+#include <agrum/multidim/implementations/multiDimReadOnly.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/graphicalModels/variableNodeMap.h>
@@ -56,7 +56,7 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/multidim/utilityTable.h>
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNet.h>
@@ -283,19 +283,21 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %import <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 %import <agrum/graphs/algorithms/triangulations/triangulation.h>
 
-%include <agrum/multidim/multiDimInterface.h>
-%import <agrum/multidim/multiDimAdressable.h>
-%include <agrum/multidim/instantiation.h>
-%include <agrum/multidim/multiDimContainer.h>
-%include <agrum/multidim/multiDimDecorator.h>
-%include <agrum/multidim/multiDimImplementation.h>
-%include <agrum/multidim/multiDimWithOffset.h>
-%import <agrum/multidim/multiDimReadOnly.h>
+%import <agrum/multidim/implementations/multiDimInterface.h>
+%import <agrum/multidim/implementations/multiDimAdressable.h>
+%import <agrum/multidim/implementations/multiDimContainer.h>
+%import <agrum/multidim/implementations/multiDimDecorator.h>
+%import <agrum/multidim/implementations/multiDimImplementation.h>
+%import <agrum/multidim/implementations/multiDimWithOffset.h>
+%import <agrum/multidim/implementations/multiDimReadOnly.h>
+%import <agrum/multidim/implementations/multiDimArray.h>
+
 %include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 %include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+
+%include <agrum/multidim/instantiation.h>
 %include <agrum/multidim/potential.h>
 %include <agrum/multidim/utilityTable.h>
-%include <agrum/multidim/multiDimArray.h>
 
 %import <agrum/core/refPtr.h>
 %include <agrum/core/list.h>

@@ -26,7 +26,7 @@
 
 #include <agrum/PRM/elements/PRMInstance.h>
 
-#include <agrum/multidim/multiDimSparse.h>
+#include <agrum/multidim/implementations/multiDimSparse.h>
 
 namespace gum {
   namespace prm {

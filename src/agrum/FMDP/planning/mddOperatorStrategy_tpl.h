@@ -34,8 +34,8 @@
 // =========================================================================
 #include <agrum/core/functors.h>
 // =========================================================================
-#include <agrum/multidim/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
-#include <agrum/multidim/FunctionGraphUtilities/operators/regress.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/operators/regress.h>
 #include <agrum/multidim/potential.h>
 // =========================================================================
 #include <agrum/FMDP/planning/mddOperatorStrategy.h>

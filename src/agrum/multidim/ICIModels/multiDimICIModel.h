@@ -34,7 +34,7 @@
 #define GUM_MULTI_DIM_ICI_MODEL_H
 
 #include <agrum/core/bijection.h>
-#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/implementations/multiDimReadOnly.h>
 
 namespace gum {
 

@@ -34,7 +34,7 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/variableElimination.h>
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:

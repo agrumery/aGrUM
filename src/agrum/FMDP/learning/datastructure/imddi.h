@@ -28,7 +28,7 @@
 #ifndef GUM_IMDDI_H
 #define GUM_IMDDI_H
 // =========================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>

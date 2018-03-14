@@ -25,7 +25,7 @@
  */
 
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 
 namespace gum {
 

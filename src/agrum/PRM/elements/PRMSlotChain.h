@@ -31,7 +31,7 @@
 
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
-#include <agrum/multidim/multiDimBijArray.h>
+#include <agrum/multidim/implementations/multiDimBijArray.h>
 
 #include <agrum/PRM/elements/PRMClassElement.h>
 

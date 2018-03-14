@@ -32,7 +32,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/core/hashTable.h>
-#include <agrum/multidim/multiDimInterface.h>
+#include <agrum/multidim/implementations/multiDimInterface.h>
 
 namespace gum {
 

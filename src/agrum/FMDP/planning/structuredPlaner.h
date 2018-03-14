@@ -35,8 +35,8 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
-#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/SDyna/Strategies/IPlanningStrategy.h>
 #include <agrum/FMDP/fmdp.h>

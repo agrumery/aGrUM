@@ -28,10 +28,10 @@
 #include <cxxtest/AgrumTestSuite.h>
 // =========================================================================
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
-#include <agrum/multidim/multiDimFunctionGraphManager.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraphGenerator.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraphManager.h>
 // =========================================================================
 #include <agrum/variables/labelizedVariable.h>
 // =========================================================================

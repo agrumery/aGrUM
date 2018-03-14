@@ -33,8 +33,8 @@
 #include <agrum/BN/algorithms/dSeparation.h>
 #include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
-#include <agrum/multidim/operators/multiDimProjection.h>
+#include <agrum/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
+#include <agrum/multidim/utils/operators/multiDimProjection.h>
 
 
 namespace gum {

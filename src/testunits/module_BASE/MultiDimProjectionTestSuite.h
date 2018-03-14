@@ -28,9 +28,9 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/utils_random.h>
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/operators/multiDimProjection.h>
-#include <agrum/multidim/operators/projections4MultiDim.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/utils/operators/multiDimProjection.h>
+#include <agrum/multidim/utils/operators/projections4MultiDim.h>
 #include <agrum/multidim/potential.h>
 #include <agrum/variables/labelizedVariable.h>
 

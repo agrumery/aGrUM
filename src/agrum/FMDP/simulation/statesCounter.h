@@ -32,7 +32,7 @@
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
 // =========================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 
 namespace gum {

@@ -35,8 +35,8 @@
 #include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/FMDP/planning/treeOperatorStrategy.h>
-#include <agrum/multidim/FunctionGraphUtilities/operators/treeOperator.h>
-#include <agrum/multidim/FunctionGraphUtilities/operators/treeRegress.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/operators/treeOperator.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/operators/treeRegress.h>
 // =========================================================================
 
 /// For shorter line and hence more comprehensive code only

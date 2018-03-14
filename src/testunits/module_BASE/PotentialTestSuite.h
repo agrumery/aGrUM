@@ -25,7 +25,7 @@
 
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum_tests {

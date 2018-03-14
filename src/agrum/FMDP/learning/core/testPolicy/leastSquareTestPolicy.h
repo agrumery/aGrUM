@@ -31,7 +31,7 @@
 #include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
-#include <agrum/multidim/FunctionGraphUtilities/link.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/link.h>
 // ============================================================================
 
 namespace gum {

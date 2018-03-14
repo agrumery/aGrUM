@@ -27,7 +27,7 @@
 #ifndef GUM_MULTI_DIM_AGGREGATOR_H
 #define GUM_MULTI_DIM_AGGREGATOR_H
 
-#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/implementations/multiDimReadOnly.h>
 
 namespace gum {
   namespace aggregator {

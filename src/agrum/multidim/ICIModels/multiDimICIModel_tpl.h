@@ -29,7 +29,7 @@
  */
 #include <agrum/core/bijection.h>
 #include <agrum/multidim/ICIModels/multiDimICIModel.h>
-#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/implementations/multiDimReadOnly.h>
 
 namespace gum {
 

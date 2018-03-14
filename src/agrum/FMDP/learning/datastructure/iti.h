@@ -30,7 +30,7 @@
 // =========================================================================
 #include <agrum/core/multiPriorityQueue.h>
 // =========================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>

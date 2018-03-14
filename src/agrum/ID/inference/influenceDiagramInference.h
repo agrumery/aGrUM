@@ -38,8 +38,8 @@
 
 #include <agrum/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 
-#include <agrum/multidim/multiDimBucket.h>
-#include <agrum/multidim/multiDimSparse.h>
+#include <agrum/multidim/implementations/multiDimBucket.h>
+#include <agrum/multidim/implementations/multiDimSparse.h>
 
 #include <agrum/ID/inference/IInfluenceDiagramInference.h>
 
