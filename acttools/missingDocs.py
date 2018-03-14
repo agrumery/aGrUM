@@ -29,7 +29,7 @@ from .utils import trace, notif, critic, warn, error, recglob, srcAgrum
 pathtopyAgrum = "./wrappers/pyAgrum/generated-files3/pyAgrum.py"
 
 classesToSkip = ['Vector_int','Vector_double','Vector_string','SwigPyIterator','GumException','SyntaxError'
-           ,'MultiDimContainer_double','UtilityTable_double','BayesNetInference_double']
+           ,'MultiDimContainer_double','Potential_double','BayesNetInference_double']
 
 methodsToSkip = ['swig_import_helper','setTriangulation','statsObj','whenNodeAdded','whenNodeDeleted','whenArcAdded','whenArcDeleted','whenLoading','whenProgress','whenStop']
 
@@ -52,7 +52,7 @@ def noDocstring2(lines,dic):
                     if not(methodClass in dic) :
                         dic[methodClass]=[]
                     dic[methodClass].append(getMethodName(line)+" does not have any doc")
-                
+
 def signatureOnly2(lines,dic):
     for i, line in enumerate(lines):
         if re.match("^def [^_].*",line, flags = 0) :
@@ -71,7 +71,7 @@ def signatureOnly2(lines,dic):
                     if not(methodClass in dic) :
                         dic[methodClass]=[]
                     dic[methodClass].append(methodName+" only has a signature")
-                
+
 def multipleSignatureOnly2(lines,dic):
     for i, line in enumerate(lines):
         if re.match("^def [^_].*",line, flags = 0):
@@ -116,7 +116,7 @@ def multipleSignatureOnly2(lines,dic):
                         if not(methodClass in dic) :
                             dic[methodClass]=[]
                         dic[methodClass].append(methodName+" only has multiple signatures")
-                
+
 def getClass(lines,i):
     previousline = lines[i-1]
     while not(re.match("^class",previousline, flags = 0)):

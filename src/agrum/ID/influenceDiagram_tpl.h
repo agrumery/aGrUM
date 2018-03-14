@@ -135,7 +135,7 @@ namespace gum {
     // Copying Utilities
     for (const auto& uti : IDsource.__utilityMap) {
       // Instanciation of the node's CPT
-      auto utilityCpy = new UtilityTable< GUM_SCALAR >;
+      auto utilityCpy = new Potential< GUM_SCALAR >;
       (*utilityCpy) << variable(uti.first);
 
       // Addition of the parents
@@ -251,7 +251,7 @@ namespace gum {
   * Returns the utility table of a utility node.
   */
   template < typename GUM_SCALAR >
-  INLINE const UtilityTable< GUM_SCALAR >&
+  INLINE const Potential< GUM_SCALAR >&
   InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
     return *(__utilityMap[varId]);
   }
@@ -449,7 +449,7 @@ namespace gum {
 
     NodeId proposedId = _addNode(var, DesiredId);
 
-    UtilityTable< GUM_SCALAR >* varut = new UtilityTable< GUM_SCALAR >(aContent);
+    Potential< GUM_SCALAR >* varut = new Potential< GUM_SCALAR >(aContent);
 
     (*varut) << variable(proposedId);
 

@@ -25,7 +25,7 @@
 #ifndef GUM_UT_GENERATOR_H
 #define GUM_UT_GENERATOR_H
 
-#include <agrum/multidim/utilityTable.h>
+#include <agrum/multidim/potential.h>
 
 namespace gum {
 
@@ -63,7 +63,7 @@ namespace gum {
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT(const Idx& varId, const UtilityTable< float >& ut) = 0;
+    virtual void generateUT(const Idx& varId, const Potential< float >& ut) = 0;
 
     /**
      * Generates a UT using doubles.
@@ -71,7 +71,7 @@ namespace gum {
      * @param ut A reference on the UT to fill.
      */
     virtual void generateUT(const Idx&                    varId,
-                            const UtilityTable< double >& ut) = 0;
+                            const Potential< double >& ut) = 0;
     /// @}
   };
 

@@ -41,7 +41,7 @@ from .pyAgrum import statsObj
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
-from .pyAgrum import Potential, Instantiation, UtilityTable
+from .pyAgrum import Potential, Instantiation, Potential
 from .pyAgrum import BruteForceKL, GibbsKL, StructuralComparator
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
@@ -71,7 +71,7 @@ __all__=[
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
   'BayesNet','EssentialGraph'
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
-  'Potential','Instantiation','UtilityTable',
+  'Potential','Instantiation','Potential',
   'BruteForceKL','GibbsKL','StructuralComparator',
   'LoopyBeliefPropagation','GibbsSampling','MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
   'LoopyImportanceSampling','LoopyGibbsSampling','LoopyWeightedSampling','LoopyMonteCarloSampling'

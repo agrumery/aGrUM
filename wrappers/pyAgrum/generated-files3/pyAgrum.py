@@ -9846,248 +9846,6 @@ class Potential_double(_object):
 Potential_double_swigregister = _pyAgrum.Potential_double_swigregister
 Potential_double_swigregister(Potential_double)
 
-class UtilityTable_double(_object):
-    """Proxy of C++ gum::UtilityTable< double > class."""
-
-    __swig_setmethods__ = {}
-    __setattr__ = lambda self, name, value: _swig_setattr(self, UtilityTable_double, name, value)
-    __swig_getmethods__ = {}
-    __getattr__ = lambda self, name: _swig_getattr(self, UtilityTable_double, name)
-    __repr__ = _swig_repr
-    __swig_destroy__ = _pyAgrum.delete_UtilityTable_double
-    def __del__(self):
-        return None
-
-    def __init__(self, *args):
-        """
-        __init__(self) -> UtilityTable_double
-        __init__(self, aContent) -> UtilityTable_double
-        __init__(self, toCopy) -> UtilityTable_double
-        """
-        this = _pyAgrum.new_UtilityTable_double(*args)
-        try:
-            self.this.append(this)
-        except __builtin__.Exception:
-            self.this = this
-
-        self._notSync=True
-
-
-
-
-    def newFactory(self) -> "gum::UtilityTable< double > *":
-        """newFactory(self) -> UtilityTable_double"""
-        return _pyAgrum.UtilityTable_double_newFactory(self)
-
-
-    def fillWith(self, *args) -> "gum::UtilityTable< double > const &":
-        """
-        fillWith(self, src) -> UtilityTable_double
-        fillWith(self, v) -> UtilityTable_double
-        fillWith(self, v) -> UtilityTable_double
-        """
-        return _pyAgrum.UtilityTable_double_fillWith(self, *args)
-
-
-    def variablesSequence(self):
-        varlist = []
-        for i in range(0, self.nbrDim()):
-            varlist.append(self.variable(i))
-        return varlist
-
-    def __mul__(self,p2):
-        """
-        return self * p2
-        """
-        p=UtilityTable()
-        p.multiplicate(self,p2)
-        return p
-
-    def eliminates(self,var):
-        """
-        eliminates a variable in the UtilityTable. Returns the new UtilityTable or self if the variable is not in self.
-        @warning : returns a list with only one scalar if eliminates remove the last variable
-        """
-        if var.name() in self.var_names:
-            q=UtilityTable()
-            for i in range(self.nbrDim()):
-                if self.variable(i)!=var:
-                    q.add(self.variable(i))
-            if q.nbrDim()>0:
-                q.marginalize(self)
-            else:
-                q=[self.sum()]
-            return q
-        else:
-            return self
-
-
-    def __fill_distrib__(self):
-      if not hasattr(self,'_notSync'):
-        self._notSync=True
-
-      if self._notSync:
-        self._notSync=False
-        self._var_names = []
-        self._var_dims = []
-        content = []
-        if self.empty():
-            self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
-            return
-        i = Instantiation(self)
-        i.setFirst()
-        while not i.end():
-            content.append(self.get(i))
-            i.inc()
-        self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
-        for var in self.variablesSequence():
-            self._var_names.append(var.name())
-            self._var_dims.append(var.domainSize())
-        self._var_names.reverse()
-        self._var_dims.reverse()
-        self.__distrib__.shape = tuple(self._var_dims)
-
-
-
-    def __indexfromdict__(self, id_dict):
-        index = []
-        for name, dim in zip(self._var_names, self._var_dims):
-            if name in id_dict:
-                id_value = id_dict[name]
-                if isinstance(id_value, str):
-    # id_value is a label of a LabelizedVar
-                    i = self._var_names.index(name)
-                    var = self.variable(len(self._var_names) - 1 - i)
-                    id_value = var[id_value]
-                if id_value >= dim:
-                    raise IndexError("\"%s\" size is %d !"%(name, dim))
-                index.append(id_value)
-            else:
-                index.append(slice(None, None, None)) # equivalent to ':'
-        return tuple(index)
-
-
-
-    def __str__(self) -> "char const *":
-        """__str__(self) -> char const *"""
-        return _pyAgrum.UtilityTable_double___str__(self)
-
-
-    def tolist(self):
-        self.__fill_distrib__()
-        return self.__distrib__.tolist()
-
-
-
-    def toarray(self):
-        return numpy.array(self.tolist())
-
-
-
-    def __getitem__(self, id):
-        self.__fill_distrib__()
-        if self.empty():
-            raise IndexError("%s is empty !!"%(str(self)))
-        if isinstance(id, dict):
-            id_slice = self.__indexfromdict__(id)
-        else:
-            id_slice = id
-        return self.__distrib__[id_slice]
-
-
-
-    def __setitem__(self, id, value):
-        self.__fill_distrib__()
-        if self.empty():
-            raise IndexError("%s is empty !!"%(str(self)))
-        if isinstance(id, dict):
-            id_slice = self.__indexfromdict__(id)
-        else:
-            id_slice = id
-        self.__distrib__[id_slice] = value
-        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
-
-
-
-    @property
-    def var_names(self):
-        self.__fill_distrib__()
-        return self._var_names
-
-
-
-    @property
-    def var_dims(self):
-        self.__fill_distrib__()
-        return self._var_dims
-
-
-
-    def get(self, i: 'Instantiation') -> "double":
-        """get(self, i) -> double"""
-        return _pyAgrum.UtilityTable_double_get(self, i)
-
-
-    def set(self, i: 'Instantiation', value: 'double const &') -> "void":
-        """set(self, i, value)"""
-        val = _pyAgrum.UtilityTable_double_set(self, i, value)
-
-        self._notSync=True
-
-
-        return val
-
-
-    def empty(self) -> "bool":
-        """empty(self) -> bool"""
-        return _pyAgrum.UtilityTable_double_empty(self)
-
-
-    def pos(self, v: 'DiscreteVariable') -> "gum::Idx":
-        """pos(self, v) -> gum::Idx"""
-        return _pyAgrum.UtilityTable_double_pos(self, v)
-
-
-    def contains(self, v: 'DiscreteVariable') -> "bool":
-        """contains(self, v) -> bool"""
-        return _pyAgrum.UtilityTable_double_contains(self, v)
-
-
-    def nbrDim(self) -> "gum::Idx":
-        """nbrDim(self) -> gum::Idx"""
-        return _pyAgrum.UtilityTable_double_nbrDim(self)
-
-
-    def variable(self, *args) -> "gum::DiscreteVariable const &":
-        """
-        variable(self, i) -> DiscreteVariable
-        variable(self, name) -> DiscreteVariable
-        """
-        return _pyAgrum.UtilityTable_double_variable(self, *args)
-
-
-    def remove(self, var: 'DiscreteVariable') -> "void":
-        """remove(self, var)"""
-        val = _pyAgrum.UtilityTable_double_remove(self, var)
-
-        self._notSync=True
-
-
-        return val
-
-
-    def add(self, v: 'DiscreteVariable') -> "void":
-        """add(self, v)"""
-        val = _pyAgrum.UtilityTable_double_add(self, v)
-
-        self._notSync=True
-
-
-        return val
-
-UtilityTable_double_swigregister = _pyAgrum.UtilityTable_double_swigregister
-UtilityTable_double_swigregister(UtilityTable_double)
-
 class IBayesNet_double(DAGmodel):
     """
 
@@ -25551,11 +25309,11 @@ class InfluenceDiagram_double(DAGmodel):
         Returns
         -------
         pyAgrum.Potential
-        	The variable's CPT. 
+        	The variable's CPT.
 
         Warnings
         --------
-        NotFound raised if no variable's id matches varId. 
+        NotFound raised if no variable's id matches varId.
 
         """
         val = _pyAgrum.InfluenceDiagram_double_cpt(self, varId)
@@ -25566,19 +25324,19 @@ class InfluenceDiagram_double(DAGmodel):
         return val
 
 
-    def utility(self, varId: 'gum::NodeId') -> "gum::UtilityTable< double > const &":
+    def utility(self, varId: 'gum::NodeId') -> "gum::Potential< double > const &":
         """
-        utility(self, varId) -> UtilityTable_double
+        utility(self, varId) -> Potential_double
 
 
         Parameters
         ----------
-        varId : int 
+        varId : int
         	the tested node id.
 
         Returns
         -------
-        pyAgrum.UtilityTable
+        pyAgrum.Potential
         	the utility table of the node
 
         Warnings
@@ -25601,7 +25359,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Parameters
         ----------
-        varId : int 
+        varId : int
         	the tested node id.
 
         Returns
@@ -25620,7 +25378,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Parameters
         ----------
-        varId : int 
+        varId : int
         	the tested node id.
 
         Returns
@@ -25639,7 +25397,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Parameters
         ----------
-        varId : int 
+        varId : int
         	the tested node id.
 
         Returns
@@ -25673,7 +25431,7 @@ class InfluenceDiagram_double(DAGmodel):
         Returns
         -------
         int
-        	the number of chance nodes. 
+        	the number of chance nodes.
 
         """
         return _pyAgrum.InfluenceDiagram_double_chanceNodeSize(self)
@@ -25710,7 +25468,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        NotFound raised if no variable's id matches the parameter 
+        NotFound raised if no variable's id matches the parameter
 
         """
         return _pyAgrum.InfluenceDiagram_double_variable(self, id)
@@ -25754,11 +25512,11 @@ class InfluenceDiagram_double(DAGmodel):
         Returns
         -------
         int
-        	the variable's node id. 
+        	the variable's node id.
 
         Warnings
         --------
-        NotFound raised if no such name exists in the graph. 
+        NotFound raised if no such name exists in the graph.
 
         """
         return _pyAgrum.InfluenceDiagram_double_idFromName(self, name)
@@ -25806,16 +25564,16 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        give an id (not 0) should be reserved for rare and specific situations !!! 
+        give an id (not 0) should be reserved for rare and specific situations !!!
 
         Returns
         -------
         int
-            the id of the added variable. 
+            the id of the added variable.
 
         Warnings
         --------
-        DuplicateElement raised if id(<>0) is already used 
+        DuplicateElement raised if id(<>0) is already used
 
         """
         return _pyAgrum.InfluenceDiagram_double_add(self, variable, id)
@@ -25840,16 +25598,16 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        give an id (not 0) should be reserved for rare and specific situations !!! 
+        give an id (not 0) should be reserved for rare and specific situations !!!
 
         Returns
         -------
         int
-            the id of the added variable. 
+            the id of the added variable.
 
         Warnings
         --------
-        DuplicateElement raised if id(<>0) is already used 
+        DuplicateElement raised if id(<>0) is already used
 
         """
         return _pyAgrum.InfluenceDiagram_double_addDecisionNode(self, variable, id)
@@ -25876,16 +25634,16 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        give an id (not 0) should be reserved for rare and specific situations !!! 
+        give an id (not 0) should be reserved for rare and specific situations !!!
 
         Returns
         -------
         int
-            the id of the added variable. 
+            the id of the added variable.
 
         Warnings
         --------
-        DuplicateElement raised if id(<>0) is already used 
+        DuplicateElement raised if id(<>0) is already used
 
         """
         return _pyAgrum.InfluenceDiagram_double_addChanceNode(self, *args)
@@ -25899,7 +25657,7 @@ class InfluenceDiagram_double(DAGmodel):
         addUtilityNode(self, variable, aContent) -> gum::NodeId
 
 
-        Add a utility variable, it's associate node and it's UT. 
+        Add a utility variable, it's associate node and it's UT.
 
         The id of the new variable is automatically generated.
 
@@ -25912,12 +25670,12 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        give an id (not 0) should be reserved for rare and specific situations !!! 
+        give an id (not 0) should be reserved for rare and specific situations !!!
 
         Returns
         -------
         int
-            the id of the added variable. 
+            the id of the added variable.
 
         Warnings
         --------
@@ -25925,7 +25683,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        DuplicateElement raised if id(<>0) is already used 
+        DuplicateElement raised if id(<>0) is already used
 
         """
         return _pyAgrum.InfluenceDiagram_double_addUtilityNode(self, *args)
@@ -25946,7 +25704,7 @@ class InfluenceDiagram_double(DAGmodel):
         id : int
         	The id of the variable to erase.
         var : pyAgrum.DiscreteVariable
-        	The reference on the variable to remove. 
+        	The reference on the variable to remove.
 
         """
         return _pyAgrum.InfluenceDiagram_double_erase(self, *args)
@@ -25962,7 +25720,7 @@ class InfluenceDiagram_double(DAGmodel):
         id : int
         	the node Id
         new_name : str
-        	the name of the variable 
+        	the name of the variable
 
         Warnings
         --------
@@ -25970,7 +25728,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        NotFound raised if no nodes matches id. 
+        NotFound raised if no nodes matches id.
 
         """
         return _pyAgrum.InfluenceDiagram_double_changeVariableName(self, id, new_name)
@@ -25996,7 +25754,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        InvalidEdge raised if tail is a utility node 
+        InvalidEdge raised if tail is a utility node
 
         """
         return _pyAgrum.InfluenceDiagram_double_addArc(self, tail, head)
@@ -26047,7 +25805,7 @@ class InfluenceDiagram_double(DAGmodel):
         Returns
         -------
         pyAgrum.DAG
-        	the temporal Graph. 
+        	the temporal Graph.
 
         """
         return _pyAgrum.InfluenceDiagram_double_getDecisionGraph(self)
@@ -26065,7 +25823,7 @@ class InfluenceDiagram_double(DAGmodel):
 
         Warnings
         --------
-        NotFound raised if such a path does not exist 
+        NotFound raised if such a path does not exist
 
         """
         return _pyAgrum.InfluenceDiagram_double_getDecisionOrder(self)
@@ -26079,7 +25837,7 @@ class InfluenceDiagram_double(DAGmodel):
         Returns
         -------
         bool
-        	true if a path exists between two nodes. 
+        	true if a path exists between two nodes.
 
         """
         return _pyAgrum.InfluenceDiagram_double_existsPathBetween(self, src, dest)
@@ -27459,7 +27217,7 @@ def statsObj() -> "void":
     return _pyAgrum.statsObj()
 
 Potential = Potential_double
-UtilityTable = UtilityTable_double
+Potential = Potential_double
 
 randomDistribution = randomDistribution_double
 

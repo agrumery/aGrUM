@@ -157,7 +157,7 @@ namespace gum_tests {
           p5.populate(v);
         }
 
-        const gum::UtilityTable< float >& u1 = id.utility(idList[9]);
+        const gum::Potential< float >& u1 = id.utility(idList[9]);
         {
           // FILLING PARAMS
           const float                t[4] = {42.0f, 69.0f, 666.0f, 84.0f};
@@ -166,7 +166,7 @@ namespace gum_tests {
           u1.populate(v);
         }
 
-        const gum::UtilityTable< float >& u2 = id.utility(idList[10]);
+        const gum::Potential< float >& u2 = id.utility(idList[10]);
         {
           // FILLING PARAMS
           const float                t[4] = {42.0f, -69.0f, 666.0f, 84.0f};
@@ -347,8 +347,8 @@ namespace gum_tests {
           }
 
         } else if (source.isUtilityNode(node)) {
-          const gum::UtilityTable< float >& srcUT = source.utility(node);
-          const gum::UtilityTable< float >& cpUT = copy->utility(node);
+          const gum::Potential< float >& srcUT = source.utility(node);
+          const gum::Potential< float >& cpUT = copy->utility(node);
 
           gum::Instantiation srcInst(srcUT);
           gum::Instantiation cpInst(cpUT);

@@ -69,7 +69,7 @@ def prettifying_errors(line):
                                             cfg.C_ERROR + t[1],
                                             cfg.C_VALUE + t[2] + cfg.C_END])
     else:
-      return res + s
+      return res + s[1]
   return line
 
 

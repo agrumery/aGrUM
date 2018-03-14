@@ -42,9 +42,11 @@ namespace gum {
    * @class Potential potential.h <agrum/multidim/potential.h>
    * @ingroup multidim_group
    *
-   * @brief Class representing a potential.
+   * @brief aGrUM's Potential is a multi-dimensional array with tensor operators.
+   * It is used to represent probabilities and utilities in aGrUMs'
+   * multidimensional (graphical) models.
    *
-   * Using the decorator pattern, this representation is independant from the
+   * Using the decorator pattern, this representation is independent from the
    * implementation of the multidimensional matrix.
    *
    * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional

@@ -55,7 +55,6 @@
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/utilityTable.h>
 #include <agrum/multidim/implementations/multiDimArray.h>
 
 #include <agrum/BN/IBayesNet.h>
@@ -297,7 +296,6 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 
 %include <agrum/multidim/instantiation.h>
 %include <agrum/multidim/potential.h>
-%include <agrum/multidim/utilityTable.h>
 
 %import <agrum/core/refPtr.h>
 %include <agrum/core/list.h>
@@ -365,7 +363,6 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( MultiDimArray_double ) gum::MultiDimArray<double>;
 
 %template ( Potential_double ) gum::Potential<double>;
-%template ( UtilityTable_double ) gum::UtilityTable<double>;
 
 %template (IBayesNet_double ) gum::IBayesNet<double>;
 %template ( BayesNet_double ) gum::BayesNet<double>;

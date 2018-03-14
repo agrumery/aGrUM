@@ -49,7 +49,6 @@ interface generator."
 %include "instantiation.i"
 
 %include "potential.i"
-%include "utility.i"
 
 %include "graphs.i"
 
@@ -75,7 +74,7 @@ interface generator."
 
 %pythoncode %{
 Potential = Potential_double
-UtilityTable = UtilityTable_double
+Potential = Potential_double
 
 randomDistribution = randomDistribution_double
 

@@ -140,13 +140,13 @@ namespace gum {
     Set< Potential< GUM_SCALAR >* > __potentialDummies;
 
     /// The set of dummies sparse utilities matrix created.
-    Set< UtilityTable< GUM_SCALAR >* > __utilityDummies;
+    Set< Potential< GUM_SCALAR >* > __utilityDummies;
 
     /// The resulting potential from inference
     Potential< GUM_SCALAR >* __inferencePotential;
 
     /// The resulting utility from inference
-    UtilityTable< GUM_SCALAR >* __inferenceUtility;
+    Potential< GUM_SCALAR >* __inferenceUtility;
 
     /// @}
     // ====================================================================
@@ -204,7 +204,7 @@ namespace gum {
     void __reduceClique(CliqueProperties< GUM_SCALAR >* absorbedClique,
                         NodeSet&                        separator,
                         Potential< GUM_SCALAR >*&       potentialMarginal,
-                        UtilityTable< GUM_SCALAR >*&    utilityMarginal);
+                        Potential< GUM_SCALAR >*&    utilityMarginal);
 
     /// Returns a pointer over a "dummy" potential, which is a CPT filled with
     /// one MultiDimSparse filled with 1. This is used by empty cliques.
@@ -220,7 +220,7 @@ namespace gum {
     /// @param cliqueId The NodeId of the cliqueId for which we build a dummy
     /// utility.
     /// @return A pointer over the dummy bucket.
-    UtilityTable< GUM_SCALAR >* __makeDummyUtility(NodeId cliqueId);
+    Potential< GUM_SCALAR >* __makeDummyUtility(NodeId cliqueId);
 
     /// Returns true if observed  node is eliminated after current node
     bool __IsEliminatedAfter(NodeId observedNode, NodeId currentNode);
@@ -263,7 +263,7 @@ namespace gum {
     /// @param removable for cleaning purpose after inference, we have to keep
     /// track
     /// of adding potential during inference
-    void addUtility(const UtilityTable< GUM_SCALAR >& ut, bool removable = false);
+    void addUtility(const Potential< GUM_SCALAR >& ut, bool removable = false);
 
     /// Removes all potential and utility table added during an inference
     void cleanFromInference();
@@ -293,7 +293,7 @@ namespace gum {
     potentialBucket();
 
     /// @return Returns the bucket of this Clique
-    const HashTable< const UtilityTable< GUM_SCALAR >*, Instantiation* >&
+    const HashTable< const Potential< GUM_SCALAR >*, Instantiation* >&
     utilityBucket();
 
     /// @return returns the elimination sequence for this clique
@@ -314,7 +314,7 @@ namespace gum {
     HashTable< const Potential< GUM_SCALAR >*, Instantiation* > __potentialBucket;
 
     /// The utility bucket of this clique
-    HashTable< const UtilityTable< GUM_SCALAR >*, Instantiation* > __utilityBucket;
+    HashTable< const Potential< GUM_SCALAR >*, Instantiation* > __utilityBucket;
 
     /// The sequence of elimination of node in the clique
     Sequence< NodeId > __eliminationOrder;
@@ -329,7 +329,7 @@ namespace gum {
     List< const Potential< GUM_SCALAR >* > __removablePotentialList;
 
     /// The list of utilities that have been had during an inference
-    List< const UtilityTable< GUM_SCALAR >* > __removableUtilityList;
+    List< const Potential< GUM_SCALAR >* > __removableUtilityList;
   };
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
