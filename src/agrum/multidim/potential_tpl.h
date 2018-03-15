@@ -235,18 +235,65 @@ namespace gum {
     this->fill(v);
     return *this;
   }
+
   template < typename GUM_SCALAR >
   INLINE const Potential< GUM_SCALAR >&
   Potential< GUM_SCALAR >::fillWith(const Potential< GUM_SCALAR >& src) const {
     if (src.domainSize() != this->domainSize()) {
       GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.");
     }
+    gum::Set< std::string > son;  // set of names
+    for (const auto& v : src.variablesSequence()) {
+      son.insert(v->name());
+    }
+    for (const auto& v : this->variablesSequence()) {
+      if (!son.contains(v->name())) {
+        GUM_ERROR(InvalidArgument,
+                  "Variable <" << v->name() << "> not present in src.");
+      }
+      // we check size, labels and order of labels in the same time
+      if (v->toString() != src.variable(v->name()).toString()) {
+        GUM_ERROR(InvalidArgument,
+                  "Variables <" << v->name() << "> are not identical.");
+      }
+    }
+
     Instantiation Isrc(src);
     Instantiation Idst(*this);
     for (Isrc.setFirst(); !Isrc.end(); ++Isrc) {
       for (Idx i = 0; i < this->nbrDim(); i++) {
         Idst.chgVal(Isrc.variable(i).name(), Isrc.variable(i).label(Isrc.val(i)));
       }
+      this->set(Idst, src.get(Isrc));
+    }
+
+    return *this;
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE const Potential< GUM_SCALAR >& Potential< GUM_SCALAR >::fillWith(
+    const Potential< GUM_SCALAR >&    src,
+    const std::vector< std::string >& mapSrc) const {
+    if (src.nbrDim() != this->nbrDim()) {
+      GUM_ERROR(InvalidArgument, "Potential to copy has not the same dimension.");
+    }
+    if (src.nbrDim() != mapSrc.size()) {
+      GUM_ERROR(InvalidArgument,
+                "Potential and vector have not the same dimension.");
+    }
+    Instantiation Isrc;
+    for (Idx i = 0; i < src.nbrDim(); i++) {
+      if (src.variable(mapSrc[i]).domainSize() != this->variable(i).domainSize()) {
+        GUM_ERROR(InvalidArgument,
+                  "Variables " << mapSrc[i] << " (in the argument) and "
+                                   << this->variable(i).name()
+                                   << " have not the same dimension.");
+      } else {
+        Isrc.add(src.variable(mapSrc[i]));
+      }
+    }
+    Instantiation Idst(*this);
+    for (Isrc.setFirst(); !Isrc.end(); ++Isrc, ++Idst) {
       this->set(Idst, src.get(Isrc));
     }
 

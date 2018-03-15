@@ -655,7 +655,7 @@ class TestOperators(pyAgrumTestCase):
     self.assertNotEqual(p.variable(1), p.variable('v'))
     self.assertNotEqual(p.variable(0), p.variable('w'))
 
-    with self.assertRaises(IndexError):
+    with self.assertRaises(gum.NotFound):
       x = p.variable("zz")
 
   def testFillWithPotential(self):
@@ -673,6 +673,24 @@ class TestOperators(pyAgrumTestCase):
     self.assertAlmostEquals(np.max(pABC.reorganize(['A', 'B', 'C']).toarray() -
                                    pABC2.reorganize(['A', 'B', 'C']).toarray()), 0)
 
+  def testFillWithPotentialAndMap(self):
+    v = gum.LabelizedVariable("v", "v", 2)
+    w = gum.LabelizedVariable("w", "w", 3)
+    p = gum.Potential().add(v).add(w)
+    p.fillWith([1, 2, 3, 4, 5, 6])
+
+    vv = gum.LabelizedVariable("vv", "vv", 2)
+    ww = gum.LabelizedVariable("ww", "ww", 3)
+    pp = gum.Potential().add(ww).add(vv)
+    pp.fillWith(p, ["w", "v"])
+    self.assertAlmostEquals(np.max(p.reorganize(['v', 'w']).toarray() -
+                                   pp.reorganize(['vv', 'ww']).toarray()), 0)
+
+    vvv = gum.LabelizedVariable("vvv", "vvv", 2)
+    www = gum.LabelizedVariable("www", "www", 2)
+    ppp = gum.Potential().add(vvv).add(www)
+    with self.assertRaises(gum.InvalidArgument):
+      ppp.fillWith(p, ["w", "v"])
 
 ts = unittest.TestSuite()
 addTests(ts, TestInsertions)

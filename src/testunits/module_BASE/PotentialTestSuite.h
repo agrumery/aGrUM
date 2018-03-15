@@ -24,8 +24,8 @@
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
-#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum_tests {
@@ -501,6 +501,7 @@ namespace gum_tests {
       r.fillWith({3, 6, 9, 12, 15, 18, 21, 24, 27});
       TS_ASSERT(pot.reorganize({&b, &c, &a}).extract(I) == r);
     }
+
     void testOperatorEqual() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
@@ -961,7 +962,6 @@ namespace gum_tests {
       pp.add(ww);
       pp.add(vv);
 
-
       TS_ASSERT_EQUALS(p.domainSize(), gum::Size(6));
       TS_ASSERT_EQUALS(pp.domainSize(), gum::Size(6));
 
@@ -989,14 +989,38 @@ namespace gum_tests {
       gum::Potential< int > bad_p2;
       bad_p2.add(vvv);
       bad_p2.add(www);
-      TS_ASSERT_THROWS(bad_p2.fillWith(p), gum::OutOfBounds);
-
+      TS_ASSERT_THROWS(bad_p2.fillWith(p), gum::InvalidArgument);
 
       gum::Potential< int > bad_p3;
       bad_p3.add(w);
       bad_p3.add(z);
-      // TS_GUM_ASSERT_THROWS_NOTHING(bad_p3.fillWith(p));
-      TS_ASSERT_THROWS(bad_p3.fillWith(p), gum::NotFound);
+      TS_ASSERT_THROWS(bad_p3.fillWith(p), gum::InvalidArgument);
+
+      gum::Potential< int >  bad_p4;
+      gum::LabelizedVariable badv("v", "v", 0);
+      badv.addLabel("3").addLabel("1");
+      bad_p4.add(w);
+      bad_p4.add(badv);
+      TS_ASSERT_THROWS(bad_p4.fillWith(p), gum::InvalidArgument);
+    }
+
+    void testFillWithPotentialAndMapMethod() {
+      gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< int >  p;
+      p.add(v);
+      p.add(w);
+
+      gum::LabelizedVariable vv("vv", "vv", 2), ww("ww", "ww", 3);
+      gum::Potential< int >  pp;
+      pp.add(ww);
+      pp.add(vv);
+
+      TS_ASSERT_EQUALS(p.domainSize(), gum::Size(6));
+      TS_ASSERT_EQUALS(pp.domainSize(), gum::Size(6));
+
+      p.fillWith({1, 2, 3, 4, 5, 6});
+      TS_GUM_ASSERT_THROWS_NOTHING(pp.fillWith(p, {"w", "v"}));
+      TS_ASSERT_THROWS(pp.fillWith(p, {"v", "w"}), gum::InvalidArgument);
     }
   };
 }

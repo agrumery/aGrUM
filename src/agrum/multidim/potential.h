@@ -225,8 +225,7 @@ namespace gum {
 
     /**
      * @brief copy a Potential data using name of variables and labels (not
-     * necessarily
-     * the same variables in the same orders)
+     * necessarily the same variables in the same orders)
      *
      * @warning a strict control on names of variables and labels are made
      *
@@ -234,6 +233,26 @@ namespace gum {
      */
     const Potential< GUM_SCALAR >&
     fillWith(const Potential< GUM_SCALAR >& src) const;
+
+    /**
+     * @brief copy a Potential data using the sequence of names in mapSrc to find
+     * the corresponding variables.
+     *
+     * For instance, to copy the potential P(A,B,C) in Q(D,E,A) with the mapping
+     * P.A<->Q.E, P.B<->Q.A, P.C<->Q.D (assuming that the corresponding variables
+     * have the same domain size and the order of labels):
+     *
+     * @code
+     *   Q.fillWith(P,{"C","A","B"});
+     * @endcode
+     *
+     * @warning a strict control on names of variables and labels are made
+     *
+     * @throw InvalidArgument if the Potential is not compatible with this
+     * */
+    const Potential< GUM_SCALAR >&
+    fillWith(const Potential< GUM_SCALAR >&    src,
+             const std::vector< std::string >& mapSrc) const;
 
     /**
      * @brief Automatically fills the potential with the values in

@@ -556,8 +556,23 @@ def _reprPotential(pot, digits=4, withColors=True, varnames=None, asString=False
   else:
     return HTML("".join(html))
 
+def __isKindOfProba(pot):
+  """
+  check if pot is a joint proba or a CPT
+  :param pot: the potential
+  :return: True or False
+  """
+  if abs(pot.sum()-1)<1e-2:
+    return True
 
-def showPotential(pot, digits=4, withColors=True, varnames=None):
+  q=pot.margSumOut([pot.variable(0).name()])
+  if abs(q.max()-1)>1e-2:
+    return False
+  if abs(q.min()-1)>1e-2:
+    return False
+  return True
+
+def showPotential(pot, digits=4, withColors=None, varnames=None):
   """
   show a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -568,10 +583,13 @@ def showPotential(pot, digits=4, withColors=True, varnames=None):
   :param list of strings varnames: the aliases for variables name in the table
   :return: the display of the potential
   """
+  if withColors is None:
+    withColors=__isKindOfProba
+
   display(_reprPotential(pot, digits, withColors, varnames, asString=False))
 
 
-def getPotential(pot, digits=4, withColors=True, varnames=None):
+def getPotential(pot, digits=4, withColors=None, varnames=None):
   """
   return a HTML string of a gum.Potential as a HTML table.
   The first dimension is special (horizontal) due to the representation of conditional probability table
@@ -582,6 +600,9 @@ def getPotential(pot, digits=4, withColors=True, varnames=None):
   :param list of strings varnames: the aliases for variables name in the table
   :return: the HTML string
   """
+  if withColors is None:
+    withColors=__isKindOfProba(pot)
+
   return _reprPotential(pot, digits, withColors, varnames, asString=True)
 
 

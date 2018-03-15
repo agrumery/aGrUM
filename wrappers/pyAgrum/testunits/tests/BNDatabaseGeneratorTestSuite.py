@@ -32,7 +32,7 @@ class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.FatalError):
       dbgen.setVarOrder(["A", "O", "R", "S", "T"])
 
-    with self.assertRaises(IndexError):
+    with self.assertRaises(gum.NotFound):
       dbgen.setVarOrder(["A", "O", "R", "S", "T", "X"])
 
   def testDrawSamples(self):
