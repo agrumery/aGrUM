@@ -238,6 +238,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %exceptionclass gum::DefaultInLabel;
 %exceptionclass gum::Circuit;
 %exceptionclass gum::InvalidNode;
+%exceptionclass gum::NotFound;
 %exceptionclass gum::InvalidEdge;
 %exceptionclass gum::DuplicateLabel;
 %exceptionclass gum::DuplicateElement;

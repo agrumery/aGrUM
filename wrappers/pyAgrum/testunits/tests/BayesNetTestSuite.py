@@ -170,7 +170,7 @@ class TestFeatures(BayesNetTestCase):
     bn.cpt("A").fillWith(1).normalize()
     bn.generateCPT("B")
     bn.generateCPT("C")
-    with self.assertRaises(IndexError):
+    with self.assertRaises(gum.NotFound):
       bn.cpt("XX")
 
     bn.reverseArc("A", "C")
@@ -180,19 +180,19 @@ class TestFeatures(BayesNetTestCase):
       bn.reverseArc("A", "C")
     with self.assertRaises(gum.GraphError):
       bn.reverseArc("A", "C")
-    with self.assertRaises(IndexError):
+    with self.assertRaises(gum.NotFound):
       bn.reverseArc("A", "X")
 
     bn.erase("A")
     self.assertEqual(str(bn), "BN{nodes: 2, arcs: 1, domainSize: 4, parameters: 6, compression ratio: -50% }")
 
-    with self.assertRaises(IndexError):
+    with self.assertRaises(gum.NotFound):
       bn.erase("A")
 
     bn.eraseArc("B", "C")
     self.assertEqual(str(bn), "BN{nodes: 2, arcs: 0, domainSize: 4, parameters: 4, compression ratio: 0% }")
 
-    with self.assertRaises(IndexError):
+    with self.assertRaises(gum.NotFound):
       bn.eraseArc("B", "C")
 
   def testShortcutAdd(self):

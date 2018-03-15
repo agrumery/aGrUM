@@ -29,7 +29,7 @@ class LazyPropagationTestCase(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidArgument):
       res = ie.evidenceImpact("visit_to_Asia?", ["visit_to_Asia?", "tuberculosis?", "tuberculos_or_cancer?"])
 
-    with self.assertRaises(IndexError):
+    with self.assertRaises(gum.NotFound):
       res = ie.evidenceImpact("visit_to_Asia?", ["toto", "tuberculosis?", "tuberculos_or_cancer?"])
 
     res = ie.evidenceImpact("visit_to_Asia?", ["tuberculosis?", "tuberculos_or_cancer?"])

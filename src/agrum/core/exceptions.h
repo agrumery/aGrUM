@@ -36,22 +36,12 @@
 #define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
 
 #ifdef SWIG
-#ifdef NDEBUG
-#define GUM_ERROR(type, msg)                                    \
-  {                                                             \
-    std::ostringstream __error__str;                            \
-    __error__str << __FILE__ << ":" << __LINE__ << ": " << msg; \
-    throw(type(__error__str.str()));                            \
-  }
-#else
 #define GUM_ERROR(type, msg)         \
   {                                  \
     std::ostringstream __error__str; \
     __error__str << msg;             \
     throw(type(__error__str.str())); \
   }
-#endif  // NDEBUG
-
 #define GUM_SHOWERROR(e)                                                      \
   {                                                                           \
     std::cout << std::endl                                                    \
@@ -59,7 +49,6 @@
   }
 #else
 #ifdef NDEBUG
-#define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
 #define GUM_ERROR(type, msg)                                    \
   {                                                             \
     std::ostringstream __error__str;                            \
@@ -74,7 +63,6 @@
               << (e).errorContent() << std::endl;                      \
   }
 #else
-#define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
 #define GUM_ERROR(type, msg)                                                    \
   {                                                                             \
     std::ostringstream __error__str;                                            \
@@ -98,6 +86,8 @@
     public:                                         \
     TYPE(std::string aMsg, std::string aType = MSG) \
         : SUPERCLASS(aMsg, aType){};                \
+    TYPE(const TYPE& src)                           \
+        : SUPERCLASS(src){};                        \
   };
 
 #define GUM_SYNTAX_ERROR(msg, line, column)                    \
@@ -131,9 +121,12 @@ namespace gum {
 
     ~Exception() {}
 
-    /// @}
-
-    const std::string toString() const { return _msg; }
+/// @}
+#ifdef SWIG
+    const std::string what() const { return "[pyAgrum] "+_type + ": " + _msg; }
+#else
+    const std::string what() const { return "[pyAgrum] "+ _type + " : " + _msg; }
+#endif
 
     /**
      * @brief Returns the message content.

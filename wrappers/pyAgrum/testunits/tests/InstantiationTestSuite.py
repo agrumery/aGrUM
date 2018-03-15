@@ -23,7 +23,7 @@ class TestInstantiation(pyAgrumTestCase):
     with self.assertRaises(gum.OutOfBounds):
       i['e']=1000
 
-    with self.assertRaises(IndexError):
+    with self.assertRaises(gum.NotFound):
       i['z']=0
 
 ts = unittest.TestSuite()
