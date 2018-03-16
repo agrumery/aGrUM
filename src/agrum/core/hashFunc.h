@@ -281,7 +281,7 @@ namespace gum {
      * @param key The key to compute the hashed value.
      * @return Returns the hashed value of a key.
      */
-    Size operator()(const Key& key) const;
+    Size operator()(const Key& key) const override;
 
     protected:
     /// The number of right shift to perform to get correct hashed values.

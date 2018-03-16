@@ -270,9 +270,10 @@ namespace gum {
      * @warning This will raise en exception, you should directly use the get()
      * and operator[]() methods.
      */
-    virtual GUM_SCALAR& _get(const Instantiation& i) const;
+    virtual GUM_SCALAR& _get(const Instantiation& i) const override;
 
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _swap(const DiscreteVariable* x,
+                       const DiscreteVariable* y) override;
 
     private:
     /// The number of element allowed in __bucket.

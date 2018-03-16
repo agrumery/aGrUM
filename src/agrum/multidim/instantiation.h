@@ -209,7 +209,7 @@ namespace gum {
      * @brief Returns the number of variables in the Instantiation.
      * @return Returns the number of variables in the Instantiation.
      */
-    Idx nbrDim() const override;
+    Idx nbrDim() const final;
 
     /**
      * @brief Adds a new variable in the Instantiation.
@@ -232,7 +232,7 @@ namespace gum {
      * @throw InvalidArgument Raised if the name of v is already used in this Instantiation.
      * @throw OperationNotAllowed Raised if this is a slave Instantiation.
      */
-    void add(const DiscreteVariable& v) override;
+    void add(const DiscreteVariable& v) final;
 
     /**
      * @brief Removes a variable from the Instantiation.
@@ -247,7 +247,7 @@ namespace gum {
      * @throw NotFound Raised if v does not belong to this Instantiation.
      * @throw OperationNotAllowed Raised if the instantiation is a slave.
      */
-    void erase(const DiscreteVariable& v) override;
+    void erase(const DiscreteVariable& v) final;
 
     /**
      * @brief Erase all variables from an Instantiation
@@ -261,7 +261,7 @@ namespace gum {
      * @return Returns the product of the variable's domain size in the
      * Instantiation.
      */
-    Size domainSize() const override;
+    Size domainSize() const final;
 
     /**
      * @brief Returns the position of the variable v.
@@ -270,7 +270,7 @@ namespace gum {
      *
      * @throw NotFound Raised if v does not belong to the instantiation.
      */
-    Idx pos(const DiscreteVariable& v) const;
+    Idx pos(const DiscreteVariable& v) const final;
 
     /**
      * @brief Returns the current value of the variable at position i.
@@ -324,7 +324,7 @@ namespace gum {
      * @return Returns the variable at position i in the tuple.
      * @throw NotFound Raised if the element cannot be found.
      */
-    const DiscreteVariable& variable(Idx i) const;
+    const DiscreteVariable& variable(Idx i) const final;
 
     /**
    * @brief Returns the variable with the name
@@ -334,7 +334,7 @@ namespace gum {
    * @warging This function is not O(1)
    * @throw NotFound Raised if the element cannot be found.
    */
-    const DiscreteVariable& variable(const std::string& name) const;
+    const DiscreteVariable& variable(const std::string& name) const final;
 
     /**
      * @brief Assign newval to variable v in the Instantiation.
@@ -487,7 +487,7 @@ namespace gum {
      * @param v The variable for which the test is made.
      * @return Returns true if v is in the Instantiation.
      */
-    bool contains(const DiscreteVariable& v) const;
+    bool contains(const DiscreteVariable& v) const final;
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.
@@ -501,13 +501,13 @@ namespace gum {
      * @brief Returns the sequence of DiscreteVariable of this instantiation.
      * @return Returns the sequence of DiscreteVariable of this instantiation.
      */
-    const Sequence< const DiscreteVariable* >& variablesSequence() const;
+    const Sequence< const DiscreteVariable* >& variablesSequence() const final;
 
     /**
      * @brief Returns true if the instantiation is empty.
      * @return Returns true if the instantiation is empty.
      */
-    virtual bool empty() const;
+    virtual bool empty() const final;
 
     /// @}
     // =========================================================================
@@ -1108,7 +1108,7 @@ namespace gum {
      * @param x The variable to replace.
      * @param y The variable replacing x.
      */
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y) final;
 
     private:
     /// The master, if any, contains precisely the set of variables to be
