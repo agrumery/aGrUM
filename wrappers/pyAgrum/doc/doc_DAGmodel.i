@@ -15,10 +15,10 @@ double
 "
 Get an instantiation over all the variables of the model.
 
-Parameters
+Returns
 ----------
-i : pyAgrum.instantiation
-	the instantiation to complete
+pyAgrum.instantiation
+	the complete instantiation
 "
 
 %feature("docstring") gum::DAGmodel::dag
@@ -47,7 +47,7 @@ pyAgrum.DAGmodel
 Returns
 -------
 bool
-    True if all the named node are the same and all the named arcs are the same 
+    True if all the named node are the same and all the named arcs are the same
 "
 
 %feature("docstring") gum::DAGmodel::size
@@ -122,7 +122,7 @@ list
 Returns
 -------
 str
-    a friendly display of the graph in DOT format 
+    a friendly display of the graph in DOT format
 "
 
 %feature("docstring") gum::DAGmodel::idFromName
@@ -137,7 +137,7 @@ name : str
 Returns
 -------
 int :
-	The variable's node id. 
+	The variable's node id.
 
 Warnings
 --------

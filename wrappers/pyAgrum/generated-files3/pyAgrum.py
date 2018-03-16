@@ -6267,7 +6267,7 @@ class Instantiation(_object):
 
     Examples
     --------
-    >>> ## Access the value of A in an instantiation aI 
+    >>> ## Access the value of A in an instantiation aI
     >>> valueOfA = aI['A']
     >>> ## Modify the value
     >>> aI['A'] = newValueOfA
@@ -6987,6 +6987,45 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation___str__(self)
 
 
+    def todict(self, withLabels: 'bool'=False) -> "PyObject *":
+        """
+        todict(self, withLabels=False) -> PyObject
+        todict(self) -> PyObject *
+
+
+        Create a dict (variable_name:value) from an instantiation
+
+        Parameters
+        ----------
+        withLabels : boolean
+        	The value will be a label (string) if True. It will be a position (int) if False.
+
+        Returns
+        -------
+        Dict
+            The dictionary
+
+        """
+        return _pyAgrum.Instantiation_todict(self, withLabels)
+
+
+    def fromdict(self, dict: 'PyObject *') -> "void":
+        """
+        fromdict(self, dict)
+
+
+        Change the values in an instantiation from a dict (variable_name:value) where value can be a position (int) or a label (string).
+
+        If a variable_name does not occur in the instantiation, nothing is done.
+
+        Warnings
+        --------
+            OutOfBounds raised if a value cannot be found.
+
+        """
+        return _pyAgrum.Instantiation_fromdict(self, dict)
+
+
     def __setitem__(self,key,item):
       self.chgVal(key,item)
 
@@ -7193,7 +7232,7 @@ class DAGmodel(_object):
         Returns
         -------
         int :
-        	The variable's node id. 
+        	The variable's node id.
 
         Warnings
         --------
@@ -7226,20 +7265,20 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_variableFromName(self, name)
 
 
-    def completeInstantiation(self, I: 'Instantiation') -> "void":
+    def completeInstantiation(self) -> "gum::Instantiation":
         """
-        completeInstantiation(self, I)
+        completeInstantiation(self) -> Instantiation
 
 
         Get an instantiation over all the variables of the model.
 
-        Parameters
+        Returns
         ----------
-        i : pyAgrum.instantiation
-        	the instantiation to complete
+        pyAgrum.instantiation
+        	the complete instantiation
 
         """
-        return _pyAgrum.DAGmodel_completeInstantiation(self, I)
+        return _pyAgrum.DAGmodel_completeInstantiation(self)
 
 
     def arcs(self) -> "gum::ArcSet const &":
@@ -7335,7 +7374,7 @@ class DAGmodel(_object):
         Returns
         -------
         bool
-            True if all the named node are the same and all the named arcs are the same 
+            True if all the named node are the same and all the named arcs are the same
 
         """
         return _pyAgrum.DAGmodel_hasSameStructure(self, other)
@@ -10018,7 +10057,7 @@ class IBayesNet_double(DAGmodel):
         Returns
         -------
         int :
-        	The variable's node id. 
+        	The variable's node id.
 
         Warnings
         --------
@@ -10657,7 +10696,7 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         int :
-        	The variable's node id. 
+        	The variable's node id.
 
         Warnings
         --------

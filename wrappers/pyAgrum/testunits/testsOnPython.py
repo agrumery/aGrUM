@@ -4,9 +4,8 @@
 from __future__ import print_function
 
 import os
-import sys
-
 import platform
+import sys
 from sys import platform as os_platform
 
 if len(sys.argv) > 1:

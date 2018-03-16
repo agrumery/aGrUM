@@ -88,8 +88,7 @@ def computeScores(bn_name, csv_name, visible=False, transforme_label=None):
   if positions is None:
     sys.exit(1)
 
-  inst = gum.Instantiation()
-  bn.completeInstantiation(inst)
+  inst = bn.completeInstantiation()
 
   if visible:
     prog = ProgressBar(csv_name + ' : ', 0, nbr_lines, 77, mode='static', char='#')

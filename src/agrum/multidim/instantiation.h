@@ -229,6 +229,7 @@ namespace gum {
      * @param v The new variable added to this Instantiation.
      *
      * @throw DuplicateElement Raised if v is already in this Instantiation.
+     * @throw InvalidArgument Raised if the name of v is already used in this Instantiation.
      * @throw OperationNotAllowed Raised if this is a slave Instantiation.
      */
     void add(const DiscreteVariable& v) override;

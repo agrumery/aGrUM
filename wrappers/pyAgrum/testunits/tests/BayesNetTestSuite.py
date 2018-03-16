@@ -246,7 +246,6 @@ class TestFeatures(BayesNetTestCase):
     with self.assertRaises(gum.InvalidDirectedCycle):
       bn = gum.fastBN("a->b->c->a")
 
-
     bn = gum.fastBN("a{yes|maybe|no}->b->c;a->c");
     self.assertEquals(bn.size(), 3);
     self.assertEquals(bn.sizeArcs(), 3);
@@ -254,52 +253,52 @@ class TestFeatures(BayesNetTestCase):
                       (3 - 1) + (3 * (2 - 1)) + (3 * 2 * (2 - 1)));
 
     with self.assertRaises(gum.InvalidArgument):
-      bn=gum.fastBN("a{yes}->b->c;a->c")
+      bn = gum.fastBN("a{yes}->b->c;a->c")
 
     with self.assertRaises(gum.InvalidArgument):
-      bn=gum.fastBN("a{yes|no|yes}->b->c;a->c")
+      bn = gum.fastBN("a{yes|no|yes}->b->c;a->c")
 
     bn = gum.fastBN("a->b->c->d->e->f");
     self.assertEquals(bn.size(), 6);
     self.assertEquals(bn.sizeArcs(), 5);
     self.assertEquals(bn.dim(),
-                      1+5*2);
+                      1 + 5 * 2);
 
     bn = gum.fastBN("a<-b<-c<-d<-e<-f");
     self.assertEquals(bn.size(), 6);
     self.assertEquals(bn.sizeArcs(), 5);
     self.assertEquals(bn.dim(),
-                      1+5*2);
+                      1 + 5 * 2);
 
     bn = gum.fastBN("a<-b->c<-d->e<-f");
     self.assertEquals(bn.size(), 6);
     self.assertEquals(bn.sizeArcs(), 5);
     self.assertEquals(bn.dim(),
-                      3*1+2+2*4);
+                      3 * 1 + 2 + 2 * 4);
 
     bn = gum.fastBN("a->b<-c->d<-e->f");
     self.assertEquals(bn.size(), 6);
     self.assertEquals(bn.sizeArcs(), 5);
     self.assertEquals(bn.dim(),
-                      3*1+2+2*4);
+                      3 * 1 + 2 + 2 * 4);
 
     bn = gum.fastBN("a->b<-c;c->d<-e->f");
     self.assertEquals(bn.size(), 6);
     self.assertEquals(bn.sizeArcs(), 5);
     self.assertEquals(bn.dim(),
-                      3*1+2+2*4);
+                      3 * 1 + 2 + 2 * 4);
 
     bn = gum.fastBN("a->b<-c->d;d<-e->f");
     self.assertEquals(bn.size(), 6);
     self.assertEquals(bn.sizeArcs(), 5);
     self.assertEquals(bn.dim(),
-                      3*1+2+2*4);
+                      3 * 1 + 2 + 2 * 4);
 
     bn = gum.fastBN("a->b;b<-c;c->d;d<-e;e->f");
     self.assertEquals(bn.size(), 6);
     self.assertEquals(bn.sizeArcs(), 5);
     self.assertEquals(bn.dim(),
-                      3*1+2+2*4);
+                      3 * 1 + 2 + 2 * 4);
 
   def test_minimalCondSet(self):
     bn = gum.fastBN("A->C->E->F->G;B->C;B->D->F;H->E")
@@ -507,14 +506,14 @@ class TestSaveBN(BayesNetTestCase):
 
     gum.saveBN(bn, self.agrumSrcDir("src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"))
 
-    bn2=gum.loadBN(self.agrumSrcDir("src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"),system="BayesNet")
+    bn2 = gum.loadBN(self.agrumSrcDir("src/testunits/ressources/o3prm/BNO3PRMIO_file.o3prm"), system="BayesNet")
 
     self.assertEquals(bn.dim(), bn2.dim())
     self.assertEquals(bn.log10DomainSize(), bn2.log10DomainSize())
     for n in bn.names():
-      self.assertEquals(bn.variable(n).name(),bn2.variable(n).name())
-      self.assertEquals(bn.variable(n).varType(),bn2.variable(n).varType())
-      self.assertEquals(bn.variable(n).domainSize(),bn2.variable(n).domainSize())
+      self.assertEquals(bn.variable(n).name(), bn2.variable(n).name())
+      self.assertEquals(bn.variable(n).varType(), bn2.variable(n).varType())
+      self.assertEquals(bn.variable(n).domainSize(), bn2.variable(n).domainSize())
 
 
 ts = unittest.TestSuite()

@@ -138,7 +138,7 @@ namespace gum {
     variableFromName(const std::string& name) const = 0;
 
     /// Get an instantiation over all the variables of the model
-    virtual void completeInstantiation(Instantiation& I) const;
+    virtual Instantiation completeInstantiation() const final;
     /// @}
 
     /// @name Arc manipulation methods.

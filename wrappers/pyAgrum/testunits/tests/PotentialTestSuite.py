@@ -692,6 +692,7 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidArgument):
       ppp.fillWith(p, ["w", "v"])
 
+
 ts = unittest.TestSuite()
 addTests(ts, TestInsertions)
 addTests(ts, TestIndexs)

@@ -2020,9 +2020,9 @@ class GumException(Exception):
     def __del__(self):
         return None
 
-    def toString(self):
-        """toString(self) -> std::string const"""
-        return _pyAgrum.GumException_toString(self)
+    def what(self):
+        """what(self) -> std::string const"""
+        return _pyAgrum.GumException_what(self)
 
 
     def errorContent(self):
@@ -2090,6 +2090,7 @@ class IdError(GumException):
         """
         __init__(self, aMsg, aType) -> IdError
         __init__(self, aMsg) -> IdError
+        __init__(self, src) -> IdError
         """
         this = _pyAgrum.new_IdError(*args)
         try:
@@ -2119,6 +2120,7 @@ class FatalError(GumException):
         """
         __init__(self, aMsg, aType) -> FatalError
         __init__(self, aMsg) -> FatalError
+        __init__(self, src) -> FatalError
         """
         this = _pyAgrum.new_FatalError(*args)
         try:
@@ -2148,6 +2150,7 @@ class UndefinedIteratorValue(GumException):
         """
         __init__(self, aMsg, aType) -> UndefinedIteratorValue
         __init__(self, aMsg) -> UndefinedIteratorValue
+        __init__(self, src) -> UndefinedIteratorValue
         """
         this = _pyAgrum.new_UndefinedIteratorValue(*args)
         try:
@@ -2177,6 +2180,7 @@ class UndefinedIteratorKey(GumException):
         """
         __init__(self, aMsg, aType) -> UndefinedIteratorKey
         __init__(self, aMsg) -> UndefinedIteratorKey
+        __init__(self, src) -> UndefinedIteratorKey
         """
         this = _pyAgrum.new_UndefinedIteratorKey(*args)
         try:
@@ -2206,6 +2210,7 @@ class NullElement(GumException):
         """
         __init__(self, aMsg, aType) -> NullElement
         __init__(self, aMsg) -> NullElement
+        __init__(self, src) -> NullElement
         """
         this = _pyAgrum.new_NullElement(*args)
         try:
@@ -2235,6 +2240,7 @@ class UndefinedElement(GumException):
         """
         __init__(self, aMsg, aType) -> UndefinedElement
         __init__(self, aMsg) -> UndefinedElement
+        __init__(self, src) -> UndefinedElement
         """
         this = _pyAgrum.new_UndefinedElement(*args)
         try:
@@ -2264,6 +2270,7 @@ class SizeError(GumException):
         """
         __init__(self, aMsg, aType) -> SizeError
         __init__(self, aMsg) -> SizeError
+        __init__(self, src) -> SizeError
         """
         this = _pyAgrum.new_SizeError(*args)
         try:
@@ -2293,6 +2300,7 @@ class EmptySet(GumException):
         """
         __init__(self, aMsg, aType) -> EmptySet
         __init__(self, aMsg) -> EmptySet
+        __init__(self, src) -> EmptySet
         """
         this = _pyAgrum.new_EmptySet(*args)
         try:
@@ -2322,6 +2330,7 @@ class InvalidArgumentsNumber(GumException):
         """
         __init__(self, aMsg, aType) -> InvalidArgumentsNumber
         __init__(self, aMsg) -> InvalidArgumentsNumber
+        __init__(self, src) -> InvalidArgumentsNumber
         """
         this = _pyAgrum.new_InvalidArgumentsNumber(*args)
         try:
@@ -2351,6 +2360,7 @@ class InvalidArgument(GumException):
         """
         __init__(self, aMsg, aType) -> InvalidArgument
         __init__(self, aMsg) -> InvalidArgument
+        __init__(self, src) -> InvalidArgument
         """
         this = _pyAgrum.new_InvalidArgument(*args)
         try:
@@ -2380,6 +2390,7 @@ class IOError(GumException):
         """
         __init__(self, aMsg, aType) -> IOError
         __init__(self, aMsg) -> IOError
+        __init__(self, src) -> IOError
         """
         this = _pyAgrum.new_IOError(*args)
         try:
@@ -2409,6 +2420,7 @@ class FormatNotFound(IOError):
         """
         __init__(self, aMsg, aType) -> FormatNotFound
         __init__(self, aMsg) -> FormatNotFound
+        __init__(self, src) -> FormatNotFound
         """
         this = _pyAgrum.new_FormatNotFound(*args)
         try:
@@ -2438,6 +2450,7 @@ class OperationNotAllowed(GumException):
         """
         __init__(self, aMsg, aType) -> OperationNotAllowed
         __init__(self, aMsg) -> OperationNotAllowed
+        __init__(self, src) -> OperationNotAllowed
         """
         this = _pyAgrum.new_OperationNotAllowed(*args)
         try:
@@ -2467,6 +2480,7 @@ class NotFound(GumException):
         """
         __init__(self, aMsg, aType) -> NotFound
         __init__(self, aMsg) -> NotFound
+        __init__(self, src) -> NotFound
         """
         this = _pyAgrum.new_NotFound(*args)
         try:
@@ -2496,6 +2510,7 @@ class ReferenceError(GumException):
         """
         __init__(self, aMsg, aType) -> ReferenceError
         __init__(self, aMsg) -> ReferenceError
+        __init__(self, src) -> ReferenceError
         """
         this = _pyAgrum.new_ReferenceError(*args)
         try:
@@ -2525,6 +2540,7 @@ class OutOfBounds(ReferenceError):
         """
         __init__(self, aMsg, aType) -> OutOfBounds
         __init__(self, aMsg) -> OutOfBounds
+        __init__(self, src) -> OutOfBounds
         """
         this = _pyAgrum.new_OutOfBounds(*args)
         try:
@@ -2554,6 +2570,7 @@ class OutOfLowerBound(OutOfBounds):
         """
         __init__(self, aMsg, aType) -> OutOfLowerBound
         __init__(self, aMsg) -> OutOfLowerBound
+        __init__(self, src) -> OutOfLowerBound
         """
         this = _pyAgrum.new_OutOfLowerBound(*args)
         try:
@@ -2583,6 +2600,7 @@ class OutOfUpperBound(OutOfBounds):
         """
         __init__(self, aMsg, aType) -> OutOfUpperBound
         __init__(self, aMsg) -> OutOfUpperBound
+        __init__(self, src) -> OutOfUpperBound
         """
         this = _pyAgrum.new_OutOfUpperBound(*args)
         try:
@@ -2612,6 +2630,7 @@ class DuplicateElement(ReferenceError):
         """
         __init__(self, aMsg, aType) -> DuplicateElement
         __init__(self, aMsg) -> DuplicateElement
+        __init__(self, src) -> DuplicateElement
         """
         this = _pyAgrum.new_DuplicateElement(*args)
         try:
@@ -2641,6 +2660,7 @@ class DuplicateLabel(ReferenceError):
         """
         __init__(self, aMsg, aType) -> DuplicateLabel
         __init__(self, aMsg) -> DuplicateLabel
+        __init__(self, src) -> DuplicateLabel
         """
         this = _pyAgrum.new_DuplicateLabel(*args)
         try:
@@ -2670,6 +2690,7 @@ class GraphError(GumException):
         """
         __init__(self, aMsg, aType) -> GraphError
         __init__(self, aMsg) -> GraphError
+        __init__(self, src) -> GraphError
         """
         this = _pyAgrum.new_GraphError(*args)
         try:
@@ -2699,6 +2720,7 @@ class NoNeighbour(GraphError):
         """
         __init__(self, aMsg, aType) -> NoNeighbour
         __init__(self, aMsg) -> NoNeighbour
+        __init__(self, src) -> NoNeighbour
         """
         this = _pyAgrum.new_NoNeighbour(*args)
         try:
@@ -2728,6 +2750,7 @@ class NoParent(GraphError):
         """
         __init__(self, aMsg, aType) -> NoParent
         __init__(self, aMsg) -> NoParent
+        __init__(self, src) -> NoParent
         """
         this = _pyAgrum.new_NoParent(*args)
         try:
@@ -2757,6 +2780,7 @@ class NoChild(GraphError):
         """
         __init__(self, aMsg, aType) -> NoChild
         __init__(self, aMsg) -> NoChild
+        __init__(self, src) -> NoChild
         """
         this = _pyAgrum.new_NoChild(*args)
         try:
@@ -2786,6 +2810,7 @@ class InvalidEdge(GraphError):
         """
         __init__(self, aMsg, aType) -> InvalidEdge
         __init__(self, aMsg) -> InvalidEdge
+        __init__(self, src) -> InvalidEdge
         """
         this = _pyAgrum.new_InvalidEdge(*args)
         try:
@@ -2815,6 +2840,7 @@ class InvalidArc(GraphError):
         """
         __init__(self, aMsg, aType) -> InvalidArc
         __init__(self, aMsg) -> InvalidArc
+        __init__(self, src) -> InvalidArc
         """
         this = _pyAgrum.new_InvalidArc(*args)
         try:
@@ -2844,6 +2870,7 @@ class InvalidNode(GraphError):
         """
         __init__(self, aMsg, aType) -> InvalidNode
         __init__(self, aMsg) -> InvalidNode
+        __init__(self, src) -> InvalidNode
         """
         this = _pyAgrum.new_InvalidNode(*args)
         try:
@@ -2873,6 +2900,7 @@ class EmptyBSTree(GraphError):
         """
         __init__(self, aMsg, aType) -> EmptyBSTree
         __init__(self, aMsg) -> EmptyBSTree
+        __init__(self, src) -> EmptyBSTree
         """
         this = _pyAgrum.new_EmptyBSTree(*args)
         try:
@@ -2902,6 +2930,7 @@ class DefaultInLabel(GraphError):
         """
         __init__(self, aMsg, aType) -> DefaultInLabel
         __init__(self, aMsg) -> DefaultInLabel
+        __init__(self, src) -> DefaultInLabel
         """
         this = _pyAgrum.new_DefaultInLabel(*args)
         try:
@@ -2931,6 +2960,7 @@ class InvalidDirectedCycle(GraphError):
         """
         __init__(self, aMsg, aType) -> InvalidDirectedCycle
         __init__(self, aMsg) -> InvalidDirectedCycle
+        __init__(self, src) -> InvalidDirectedCycle
         """
         this = _pyAgrum.new_InvalidDirectedCycle(*args)
         try:
@@ -2960,6 +2990,7 @@ class CPTError(GumException):
         """
         __init__(self, aMsg, aType) -> CPTError
         __init__(self, aMsg) -> CPTError
+        __init__(self, src) -> CPTError
         """
         this = _pyAgrum.new_CPTError(*args)
         try:
@@ -2989,6 +3020,7 @@ class CPTNoSumTo1(CPTError):
         """
         __init__(self, aMsg, aType) -> CPTNoSumTo1
         __init__(self, aMsg) -> CPTNoSumTo1
+        __init__(self, src) -> CPTNoSumTo1
         """
         this = _pyAgrum.new_CPTNoSumTo1(*args)
         try:
@@ -3018,6 +3050,7 @@ class IncompatibleEvidence(GumException):
         """
         __init__(self, aMsg, aType) -> IncompatibleEvidence
         __init__(self, aMsg) -> IncompatibleEvidence
+        __init__(self, src) -> IncompatibleEvidence
         """
         this = _pyAgrum.new_IncompatibleEvidence(*args)
         try:
@@ -3047,6 +3080,7 @@ class FactoryError(GumException):
         """
         __init__(self, aMsg, aType) -> FactoryError
         __init__(self, aMsg) -> FactoryError
+        __init__(self, src) -> FactoryError
         """
         this = _pyAgrum.new_FactoryError(*args)
         try:
@@ -3076,6 +3110,7 @@ class FactoryInvalidState(FactoryError):
         """
         __init__(self, aMsg, aType) -> FactoryInvalidState
         __init__(self, aMsg) -> FactoryInvalidState
+        __init__(self, src) -> FactoryInvalidState
         """
         this = _pyAgrum.new_FactoryInvalidState(*args)
         try:
@@ -3105,6 +3140,7 @@ class WrongType(FactoryError):
         """
         __init__(self, aMsg, aType) -> WrongType
         __init__(self, aMsg) -> WrongType
+        __init__(self, src) -> WrongType
         """
         this = _pyAgrum.new_WrongType(*args)
         try:
@@ -3134,6 +3170,7 @@ class WrongClassElement(FactoryError):
         """
         __init__(self, aMsg, aType) -> WrongClassElement
         __init__(self, aMsg) -> WrongClassElement
+        __init__(self, src) -> WrongClassElement
         """
         this = _pyAgrum.new_WrongClassElement(*args)
         try:
@@ -3163,6 +3200,7 @@ class TypeError(FactoryError):
         """
         __init__(self, aMsg, aType) -> TypeError
         __init__(self, aMsg) -> TypeError
+        __init__(self, src) -> TypeError
         """
         this = _pyAgrum.new_TypeError(*args)
         try:
@@ -3192,6 +3230,7 @@ class LearningError(GumException):
         """
         __init__(self, aMsg, aType) -> LearningError
         __init__(self, aMsg) -> LearningError
+        __init__(self, src) -> LearningError
         """
         this = _pyAgrum.new_LearningError(*args)
         try:
@@ -3221,6 +3260,7 @@ class IncompatibleScoreApriori(LearningError):
         """
         __init__(self, aMsg, aType) -> IncompatibleScoreApriori
         __init__(self, aMsg) -> IncompatibleScoreApriori
+        __init__(self, src) -> IncompatibleScoreApriori
         """
         this = _pyAgrum.new_IncompatibleScoreApriori(*args)
         try:
@@ -3250,6 +3290,7 @@ class PossiblyIncompatibleScoreApriori(LearningError):
         """
         __init__(self, aMsg, aType) -> PossiblyIncompatibleScoreApriori
         __init__(self, aMsg) -> PossiblyIncompatibleScoreApriori
+        __init__(self, src) -> PossiblyIncompatibleScoreApriori
         """
         this = _pyAgrum.new_PossiblyIncompatibleScoreApriori(*args)
         try:
@@ -3279,6 +3320,7 @@ class DatabaseError(LearningError):
         """
         __init__(self, aMsg, aType) -> DatabaseError
         __init__(self, aMsg) -> DatabaseError
+        __init__(self, src) -> DatabaseError
         """
         this = _pyAgrum.new_DatabaseError(*args)
         try:
@@ -3308,6 +3350,7 @@ class MissingVariableInDatabase(LearningError):
         """
         __init__(self, aMsg, aType) -> MissingVariableInDatabase
         __init__(self, aMsg) -> MissingVariableInDatabase
+        __init__(self, src) -> MissingVariableInDatabase
         """
         this = _pyAgrum.new_MissingVariableInDatabase(*args)
         try:
@@ -3337,6 +3380,7 @@ class UnknownLabelInDatabase(LearningError):
         """
         __init__(self, aMsg, aType) -> UnknownLabelInDatabase
         __init__(self, aMsg) -> UnknownLabelInDatabase
+        __init__(self, src) -> UnknownLabelInDatabase
         """
         this = _pyAgrum.new_UnknownLabelInDatabase(*args)
         try:
@@ -7149,7 +7193,7 @@ class DAGmodel(_object):
         Returns
         -------
         int :
-        	The variable's node id. 
+        	The variable's node id.
 
         Warnings
         --------
@@ -7182,20 +7226,20 @@ class DAGmodel(_object):
         return _pyAgrum.DAGmodel_variableFromName(self, name)
 
 
-    def completeInstantiation(self, I):
+    def completeInstantiation(self):
         """
-        completeInstantiation(self, I)
+        completeInstantiation(self) -> Instantiation
 
 
         Get an instantiation over all the variables of the model.
 
-        Parameters
+        Returns
         ----------
-        i : pyAgrum.instantiation
-        	the instantiation to complete
+        pyAgrum.instantiation
+        	the complete instantiation
 
         """
-        return _pyAgrum.DAGmodel_completeInstantiation(self, I)
+        return _pyAgrum.DAGmodel_completeInstantiation(self)
 
 
     def arcs(self):
@@ -7291,7 +7335,7 @@ class DAGmodel(_object):
         Returns
         -------
         bool
-            True if all the named node are the same and all the named arcs are the same 
+            True if all the named node are the same and all the named arcs are the same
 
         """
         return _pyAgrum.DAGmodel_hasSameStructure(self, other)
@@ -8937,6 +8981,7 @@ class Potential_double(_object):
     def fillWith(self, *args):
         """
         fillWith(self, src) -> Potential_double
+        fillWith(self, src, mapSrc) -> Potential_double
         fillWith(self, v) -> Potential_double
         fillWith(self, v) -> Potential_double
 
@@ -9973,7 +10018,7 @@ class IBayesNet_double(DAGmodel):
         Returns
         -------
         int :
-        	The variable's node id. 
+        	The variable's node id.
 
         Warnings
         --------
@@ -10612,7 +10657,7 @@ class BayesNet_double(IBayesNet_double):
         Returns
         -------
         int :
-        	The variable's node id. 
+        	The variable's node id.
 
         Warnings
         --------

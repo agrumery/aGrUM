@@ -33,7 +33,7 @@ Instantiation is subscriptable therefore values can be easily accessed/modified.
 
 Examples
 --------
->>> ## Access the value of A in an instantiation aI 
+>>> ## Access the value of A in an instantiation aI
 >>> valueOfA = aI['A']
 >>> ## Modify the value
 >>> aI['A'] = newValueOfA
@@ -453,4 +453,30 @@ Returns
 -------
 List
     the sequence of DiscreteVariable of this instantiation.
+"
+
+%feature("docstring") gum::Instantiation::todict
+"
+Create a dict (variable_name:value) from an instantiation
+
+Parameters
+----------
+withLabels : boolean
+	The value will be a label (string) if True. It will be a position (int) if False.
+
+Returns
+-------
+Dict
+    The dictionary
+"
+
+%feature("docstring") gum::Instantiation::fromdict
+"
+Change the values in an instantiation from a dict (variable_name:value) where value can be a position (int) or a label (string).
+
+If a variable_name does not occur in the instantiation, nothing is done.
+
+Warnings
+--------
+    OutOfBounds raised if a value cannot be found.
 "

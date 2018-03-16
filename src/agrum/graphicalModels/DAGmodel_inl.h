@@ -85,11 +85,13 @@ namespace gum {
   }
 
   INLINE
-  void DAGmodel::completeInstantiation(Instantiation& I) const {
-    I.clear();
+  Instantiation DAGmodel::completeInstantiation() const {
+    Instantiation I;
 
     for (const auto node : dag())
       I << variable(node);
+
+    return I;
   }
 
   INLINE

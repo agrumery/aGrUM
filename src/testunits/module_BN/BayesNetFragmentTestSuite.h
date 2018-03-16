@@ -230,8 +230,7 @@ namespace gum_tests {
                        gum::Size((2 * (3 - 1)) + (2 * (2 - 1)) + (2 - 1)));
       TS_ASSERT_DELTA(pow(10, frag.log10DomainSize()), 2 * 2 * 3, 1e-5);
 
-      gum::Instantiation I;
-      frag.completeInstantiation(I);
+      auto I = frag.completeInstantiation();
       I.setFirst();
       TS_ASSERT_EQUALS(I.toString(), "<v1:0|v3:0|v6:0>");
 

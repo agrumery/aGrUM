@@ -95,10 +95,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void GibbsKL< GUM_SCALAR >::_computeKL() {
-
-    gum::Instantiation Iq;
-    _q.completeInstantiation(Iq);
-
+    auto Iq = _q.completeInstantiation();
 
     gum::Instantiation I = this->monteCarloSample();
     initApproximationScheme();
@@ -175,9 +172,13 @@ namespace gum {
     _bhattacharya = -std::log(_bhattacharya);
   }
 
-    template<typename GUM_SCALAR>
-    void GibbsKL<GUM_SCALAR>::setBurnIn(Size b) { this->_burn_in = b; }
+  template < typename GUM_SCALAR >
+  void GibbsKL< GUM_SCALAR >::setBurnIn(Size b) {
+    this->_burn_in = b;
+  }
 
-    template<typename GUM_SCALAR>
-    Size GibbsKL<GUM_SCALAR>::burnIn() const { return this->_burn_in; }
+  template < typename GUM_SCALAR >
+  Size GibbsKL< GUM_SCALAR >::burnIn() const {
+    return this->_burn_in;
+  }
 }

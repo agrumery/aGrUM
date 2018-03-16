@@ -137,7 +137,16 @@ namespace gum {
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
     if (__vars.exists(&v)) {
-      GUM_ERROR(DuplicateElement, "Var already exists in this instantiation");
+      GUM_ERROR(DuplicateElement,
+                "Var <" << v.name() << "> already exists in this instantiation");
+    }
+
+    for (const auto& vv : __vars) {
+      if (vv->name() == v.name()) {
+        GUM_ERROR(InvalidArgument,
+                  "Var with name <" << v.name()
+                                    << "> already exists in this instantiation");
+      }
     }
 
     // actually add the new dimension

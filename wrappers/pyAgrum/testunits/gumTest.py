@@ -17,7 +17,7 @@ for cde in sys.argv:
     testNotebooks = (cde == "all")
 
 print("+ Mode detected : " + mod)
-print("+ Testing notebooks : "+str(testNotebooks))
+print("+ Testing notebooks : " + str(testNotebooks))
 
 if mod != "standalone":
   if mod == "debug":

@@ -1,33 +1,35 @@
 # -*- encoding: UTF-8 -*-
 from __future__ import print_function
+
+import time
 import unittest
 
 import pyAgrum as gum
 from pyAgrumTestSuite import pyAgrumTestCase, addTests
-import time
+
 
 class SamplingTestCase(pyAgrumTestCase):
   def iterTest(self, goalPotential, inferenceEngine, target, evs, seuil=0.1, nbr=10):
     min = 1000
 
     for i in range(nbr):
-      deb=time.time()
+      deb = time.time()
       inferenceEngine.eraseAllEvidence()
       inferenceEngine.setEvidence(evs)
       inferenceEngine.makeInference()
       result = inferenceEngine.posterior(target)
-      fin=time.time()
+      fin = time.time()
       diff = (goalPotential - result).abs().max()
       if diff <= seuil:
         return None
       else:
-        print("{:1.4f}[{:2.3f}]!".format(diff,fin-deb), end="")
+        print("{:1.4f}[{:2.3f}]!".format(diff, fin - deb), end="")
       if min > diff:
         min = diff
 
     return "Approximations always bad : on {} tests, {:1.7}>{:1.7}".format(nbr, min, seuil)
 
-  def unsharpen(self,bn):
+  def unsharpen(self, bn):
     for nod in bn.nodes():
       bn.cpt(nod).translate(bn.maxParam() / 2).normalizeAsCPT()
 

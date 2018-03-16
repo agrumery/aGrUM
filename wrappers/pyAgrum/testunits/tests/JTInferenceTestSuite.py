@@ -7,8 +7,8 @@ from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 class JTInferenceTestCase(pyAgrumTestCase):
 
-  def _getInference(self,bn):
-    raise(NotImplementedError("This class is a generic class for JT Inference"))
+  def _getInference(self, bn):
+    raise (NotImplementedError("This class is a generic class for JT Inference"))
 
   def setUp(self):
     self.bn = gum.BayesNet()
@@ -183,16 +183,19 @@ class JTInferenceTestCase(pyAgrumTestCase):
 
 
 class LazyPropagationTestCase(JTInferenceTestCase):
-  def _getInference(self,bn):
+  def _getInference(self, bn):
     return gum.LazyPropagation(bn)
 
+
 class ShaferShenoyTestCase(JTInferenceTestCase):
-  def _getInference(self,bn):
+  def _getInference(self, bn):
     return gum.ShaferShenoyInference(bn)
 
+
 class VariableEliminationTestCase(JTInferenceTestCase):
-  def _getInference(self,bn):
+  def _getInference(self, bn):
     return gum.VariableElimination(bn)
+
 
 ts = unittest.TestSuite()
 addTests(ts, LazyPropagationTestCase)

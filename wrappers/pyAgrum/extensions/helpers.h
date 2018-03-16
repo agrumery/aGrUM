@@ -129,13 +129,14 @@ namespace PyAgrumHelper {
   void fillInstantiationFromPyObject(const gum::Potential< double >* pot,
                                      gum::Instantiation&             inst,
                                      PyObject*                       dict) {
+    if (!PyDict_Check(dict)) {
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary");
+    }
+
     gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
     for (gum::Idx i = 0; i < pot->nbrDim(); i++)
       namesToVars.insert(pot->variable(i).name(), &(pot->variable(i)));
 
-    if (!PyDict_Check(dict)) {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionnary");
-    }
 
     PyObject * key, *value;
     Py_ssize_t pos = 0;

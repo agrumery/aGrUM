@@ -192,7 +192,7 @@ class TestInferenceResults(LBPTestCase):
     ie.makeInference()
     result = ie.posterior(self.r2)
     expected = [1 - 0.3577, 0.3577]
-    self.assertDelta(result.tolist(), expected, delta=0.3) # LBP is not OK for this node
+    self.assertDelta(result.tolist(), expected, delta=0.3)  # LBP is not OK for this node
 
 
 ts = unittest.TestSuite()
