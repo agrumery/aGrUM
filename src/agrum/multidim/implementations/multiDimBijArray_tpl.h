@@ -150,9 +150,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBijArray< GUM_SCALAR >::_swap(const DiscreteVariable* x,
-                                                    const DiscreteVariable* y) {
-    MultiDimImplementation< GUM_SCALAR >::_swap(x, y);
+  INLINE void MultiDimBijArray< GUM_SCALAR >::_replace(const DiscreteVariable* x,
+                                                       const DiscreteVariable* y) {
+    MultiDimImplementation< GUM_SCALAR >::_replace(x, y);
   }
 
 }  // namespace gum

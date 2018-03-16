@@ -63,7 +63,7 @@ gum::Sequence< const gum::DiscreteVariable* >* generateRandomVarList ( gum::Idx 
 
 void shuffleVarList ( gum::Sequence< const gum::DiscreteVariable* >* varList ) {
   for ( gum::Idx j = 0; j < 10; j++ )
-    varList->swap ( rand() % ( varList->size() ), rand() % ( varList->size() ) );
+    varList->replace ( rand() % ( varList->size() ), rand() % ( varList->size() ) );
 }
 
 

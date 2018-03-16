@@ -44,7 +44,7 @@ namespace gum {
     GUM_CONS_CPY(MultiDimLogit);
   }
 
-  // Copy constructor using a bijection to swap variables from source.
+  // Copy constructor using a bijection to replace variables from source.
   template < typename GUM_SCALAR >
   INLINE MultiDimLogit< GUM_SCALAR >::MultiDimLogit(
     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,

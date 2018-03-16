@@ -158,7 +158,7 @@ namespace gum {
     virtual bool empty() const = 0;
 
     /**
-     * @brief Swap two variables in this multidim.
+     * @brief Replace variables in this multidim.
      *
      * If x is in this MultiDim and y has the same domain size,
      * then x will be replace by y in this MultiDim.
@@ -169,21 +169,21 @@ namespace gum {
      * @throw OperationNotAllowed If y and x are not interchangeable.
      * @throw DuplicateElement If y is already in this MultiDim.
      */
-    void swap(const DiscreteVariable& x, const DiscreteVariable& y);
+    void replace(const DiscreteVariable &x, const DiscreteVariable &y);
 
     /// @}
 
     protected:
     /**
-     * @brief This is called by MultiDimContainer::swap() to proceed with the
-     * swapping between x and y.
+     * @brief This is called by MultiDimContainer::replace() to proceed with the
+     * replacing between x and y.
      *
      * This is called only when everything have been checked.
      *
-     * @param x The first variable to swap.
+     * @param x The variable to replace in
      * @param y The second variable to swap.
      */
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y) = 0;
+    virtual void _replace(const DiscreteVariable *x, const DiscreteVariable *y) = 0;
   };
 
   /**

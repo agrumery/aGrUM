@@ -229,20 +229,20 @@ namespace gum {
 
     virtual GUM_SCALAR get(const Instantiation& i) const override;
 
-    virtual void changeNotification(Instantiation&                i,
+    virtual void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,
                                     Idx                           oldval,
                                     Idx                           newval) override;
 
-    virtual void setFirstNotification(Instantiation& i) override;
+    virtual void setFirstNotification(const Instantiation& i) override;
 
-    virtual void setLastNotification(Instantiation& i) override;
+    virtual void setLastNotification(const Instantiation& i) override;
 
-    virtual void setIncNotification(Instantiation& i) override;
+    virtual void setIncNotification(const Instantiation& i) override;
 
-    virtual void setDecNotification(Instantiation& i) override;
+    virtual void setDecNotification(const Instantiation& i) override;
 
-    virtual void setChangeNotification(Instantiation& i) override;
+    virtual void setChangeNotification(const Instantiation& i) override;
 
     virtual bool registerSlave(Instantiation& i) override;
 
@@ -272,8 +272,8 @@ namespace gum {
      */
     virtual GUM_SCALAR& _get(const Instantiation& i) const override;
 
-    virtual void _swap(const DiscreteVariable* x,
-                       const DiscreteVariable* y) override;
+    virtual void _replace(const DiscreteVariable* x,
+                          const DiscreteVariable* y) override;
 
     private:
     /// The number of element allowed in __bucket.

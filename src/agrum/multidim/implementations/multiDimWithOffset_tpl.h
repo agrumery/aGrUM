@@ -102,7 +102,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimWithOffset< GUM_SCALAR >::changeNotification(
-    Instantiation& i, const DiscreteVariable* const var, Idx oldval, Idx newval) {
+    const Instantiation&          i,
+    const DiscreteVariable* const var,
+    Idx                           oldval,
+    Idx                           newval) {
     GUM_ASSERT(_offsets.exists(&i));
     GUM_ASSERT(_offsets[&i] < this->domainSize());
     GUM_ASSERT(newval < var->domainSize());
@@ -121,7 +124,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimWithOffset< GUM_SCALAR >::setChangeNotification(Instantiation& i) {
+  MultiDimWithOffset< GUM_SCALAR >::setChangeNotification(const Instantiation& i) {
     GUM_ASSERT(_offsets.exists(&i));
     _offsets[&i] = _getOffs(i);
   }
@@ -130,7 +133,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimWithOffset< GUM_SCALAR >::setFirstNotification(Instantiation& i) {
+  MultiDimWithOffset< GUM_SCALAR >::setFirstNotification(const Instantiation& i) {
     GUM_ASSERT(_offsets.exists(&i));
     _offsets[&i] = 0;
   }
@@ -139,7 +142,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimWithOffset< GUM_SCALAR >::setLastNotification(Instantiation& i) {
+  MultiDimWithOffset< GUM_SCALAR >::setLastNotification(const Instantiation& i) {
     GUM_ASSERT(_offsets.exists(&i));
     _offsets[&i] = this->domainSize() - 1;
   }
@@ -148,7 +151,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimWithOffset< GUM_SCALAR >::setIncNotification(Instantiation& i) {
+  MultiDimWithOffset< GUM_SCALAR >::setIncNotification(const Instantiation& i) {
     GUM_ASSERT(_offsets.exists(&i));
     GUM_ASSERT(_offsets[&i] != this->domainSize() - 1);
     ++_offsets[&i];
@@ -158,7 +161,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimWithOffset< GUM_SCALAR >::setDecNotification(Instantiation& i) {
+  MultiDimWithOffset< GUM_SCALAR >::setDecNotification(const Instantiation& i) {
     GUM_ASSERT(_offsets.exists(&i));
     GUM_ASSERT(_offsets[&i] != 0);
     --_offsets[&i];

@@ -423,9 +423,6 @@ namespace gum {
     ///@}
 
     protected:
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
-
-
     Set< const DiscreteVariable* >
     _complementVars(const Set< const DiscreteVariable* >& del_vars) const;
   };

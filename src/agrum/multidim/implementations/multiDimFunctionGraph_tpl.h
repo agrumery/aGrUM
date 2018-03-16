@@ -179,32 +179,35 @@ namespace gum {
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::changeNotification(
-    Instantiation& i, const DiscreteVariable* const var, Idx oldval, Idx newval) {}
+    const Instantiation&          i,
+    const DiscreteVariable* const var,
+    Idx                           oldval,
+    Idx                           newval) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setFirstNotification(
-    Instantiation& i) {}
+    const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setLastNotification(
-    Instantiation& i) {}
+    const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setIncNotification(
-    Instantiation& i) {}
+    const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setDecNotification(
-    Instantiation& i) {}
+    const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void
   MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::setChangeNotification(
-    Instantiation& i) {}
+    const Instantiation& i) {}
 
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE const std::string
@@ -666,8 +669,8 @@ namespace gum {
 
   // Not implemented yet
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
-  INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::_swap(
-    const DiscreteVariable* x, const DiscreteVariable* y) {
+  INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::_replace(
+          const DiscreteVariable *x, const DiscreteVariable *y) {
     GUM_ERROR(OperationNotAllowed, "Not Implemented Yet")
   }
 

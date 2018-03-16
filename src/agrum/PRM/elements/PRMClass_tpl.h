@@ -915,7 +915,7 @@ namespace gum {
                 attr.swap(old_type, new_type);
               } else {
                 GUM_ERROR(OperationNotAllowed, "unexpected ClassElement");
-                // get( child ).cpf().swap(
+                // get( child ).cpf().replace(
                 // slotchain->lastElt().type().variable(),
                 // sc->lastElt().type().variable() );
               }

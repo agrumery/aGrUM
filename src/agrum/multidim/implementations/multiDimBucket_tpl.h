@@ -251,11 +251,17 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimBucket< GUM_SCALAR >::changeNotification(
-    Instantiation& i, const DiscreteVariable* const var, Idx oldval, Idx newval) {
+    const Instantiation&          i,
+    const DiscreteVariable* const var,
+    Idx                           oldval,
+    Idx                           newval) {
     if (__bucket) {
       try {
         __bucket->changeNotification(
-          *(__instantiations).second(&i), var, oldval, newval);
+          *(__instantiations).second(const_cast< Instantiation* >(&i)),
+          var,
+          oldval,
+          newval);
       } catch (NotFound&) {
         // Then i is not a slave of this
       }
@@ -266,49 +272,11 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimBucket< GUM_SCALAR >::setFirstNotification(Instantiation& i) {
+  MultiDimBucket< GUM_SCALAR >::setFirstNotification(const Instantiation& i) {
     if (__bucket) {
       try {
-        __bucket->setFirstNotification(*(__instantiations).second(&i));
-      } catch (NotFound&) {
-        // Then i is not a slave of this
-      }
-    } else {
-      __slavesValue.erase(&i);
-    }
-  }
-
-  template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setLastNotification(Instantiation& i) {
-    if (__bucket) {
-      try {
-        __bucket->setLastNotification(*(__instantiations).second(&i));
-      } catch (NotFound&) {
-        // Then i is not a slave of this
-      }
-    } else {
-      __slavesValue.erase(&i);
-    }
-  }
-
-  template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setIncNotification(Instantiation& i) {
-    if (__bucket) {
-      try {
-        __bucket->setIncNotification(*(__instantiations.second(&i)));
-      } catch (NotFound&) {
-        // Then i is not a slave of this
-      }
-    } else {
-      __slavesValue.erase(&i);
-    }
-  }
-
-  template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::setDecNotification(Instantiation& i) {
-    if (__bucket) {
-      try {
-        __bucket->setDecNotification(*(__instantiations.second(&i)));
+        __bucket->setFirstNotification(
+          *(__instantiations).second(const_cast< Instantiation* >(&i)));
       } catch (NotFound&) {
         // Then i is not a slave of this
       }
@@ -319,10 +287,56 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimBucket< GUM_SCALAR >::setChangeNotification(Instantiation& i) {
+  MultiDimBucket< GUM_SCALAR >::setLastNotification(const Instantiation& i) {
     if (__bucket) {
       try {
-        __bucket->setChangeNotification(*(__instantiations.second(&i)));
+        __bucket->setLastNotification(
+          *(__instantiations).second(const_cast< Instantiation* >(&i)));
+      } catch (NotFound&) {
+        // Then i is not a slave of this
+      }
+    } else {
+      __slavesValue.erase(&i);
+    }
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE void
+  MultiDimBucket< GUM_SCALAR >::setIncNotification(const Instantiation& i) {
+    if (__bucket) {
+      try {
+        __bucket->setIncNotification(
+          *(__instantiations.second(const_cast< Instantiation* >(&i))));
+      } catch (NotFound&) {
+        // Then i is not a slave of this
+      }
+    } else {
+      __slavesValue.erase(&i);
+    }
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE void
+  MultiDimBucket< GUM_SCALAR >::setDecNotification(const Instantiation& i) {
+    if (__bucket) {
+      try {
+        __bucket->setDecNotification(
+          *(__instantiations.second(const_cast< Instantiation* >(&i))));
+      } catch (NotFound&) {
+        // Then i is not a slave of this
+      }
+    } else {
+      __slavesValue.erase(&i);
+    }
+  }
+
+  template < typename GUM_SCALAR >
+  INLINE void
+  MultiDimBucket< GUM_SCALAR >::setChangeNotification(const Instantiation& i) {
+    if (__bucket) {
+      try {
+        __bucket->setChangeNotification(
+          *(__instantiations.second(const_cast< Instantiation* >(&i))));
       } catch (NotFound&) {
         // Then i is not a slave of this
       }
@@ -559,23 +573,23 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimBucket< GUM_SCALAR >::_swap(const DiscreteVariable* x,
-                                                  const DiscreteVariable* y) {
-    MultiDimImplementation< GUM_SCALAR >::_swap(x, y);
+  INLINE void MultiDimBucket< GUM_SCALAR >::_replace(const DiscreteVariable* x,
+                                                     const DiscreteVariable* y) {
+    MultiDimImplementation< GUM_SCALAR >::_replace(x, y);
     typedef Bijection< Instantiation*, Instantiation* >::iterator_safe Iter;
 
     for (Iter iter = __instantiations.beginSafe();
          iter != __instantiations.endSafe();
          ++iter) {
-      iter.first()->swap(*x, *y);
-      iter.second()->swap(*x, *y);
+      iter.first()->replace(*x, *y);
+      iter.second()->replace(*x, *y);
     }
 
-    if (__bucket) __bucket->swap(*x, *y);
+    if (__bucket) __bucket->replace(*x, *y);
 
     __allVariables.erase(x);
     __allVariables.insert(y);
-    __allVarsInst.swap(*x, *y);
+    __allVarsInst.replace(*x, *y);
   }
 
   template < typename GUM_SCALAR >

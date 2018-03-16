@@ -219,8 +219,8 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimArray< GUM_SCALAR >::_swap(const DiscreteVariable* x,
+  INLINE void MultiDimArray< GUM_SCALAR >::_replace(const DiscreteVariable* x,
                                                  const DiscreteVariable* y) {
-    MultiDimImplementation< GUM_SCALAR >::_swap(x, y);
+    MultiDimImplementation< GUM_SCALAR >::_replace(x, y);
   }
 } /* namespace gum */

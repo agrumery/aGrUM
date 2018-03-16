@@ -70,7 +70,7 @@ namespace gum {
                                       Idx                       var3,
                                       const std::vector< Idx >& conditioning_set,
                                       double                    score) {
-      // if ( var1 > var2 ) std::swap( var1, var2 );
+      // if ( var1 > var2 ) std::replace( var1, var2 );
       __scores.insert(std::tuple< IdSet<>, Idx, Idx, Idx >(
                         IdSet<>(conditioning_set, 0), var1, var2, var3),
                       std::move(score));
@@ -83,7 +83,7 @@ namespace gum {
                                       Idx             var3,
                                       IdSet< Alloc >& conditioning_set,
                                       double          score) {
-      // if ( var1 > var2 ) std::swap( var1, var2 );
+      // if ( var1 > var2 ) std::replace( var1, var2 );
       __scores.insert(
         std::tuple< IdSet<>, Idx, Idx, Idx >(conditioning_set, var1, var2, var3),
         std::move(score));
@@ -94,7 +94,7 @@ namespace gum {
                                      Idx                       var2,
                                      Idx                       var3,
                                      const std::vector< Idx >& conditioning_set) {
-      // if ( var1 > var2 ) std::swap( var1, var2 );
+      // if ( var1 > var2 ) std::replace( var1, var2 );
       __scores.erase(std::tuple< IdSet<>, Idx, Idx, Idx >(
         IdSet<>(conditioning_set, 0), var1, var2, var3));
     }
@@ -105,7 +105,7 @@ namespace gum {
                                      Idx                   var2,
                                      Idx                   var3,
                                      const IdSet< Alloc >& conditioning_set) {
-      // if ( var1 > var2 ) std::swap( var1, var2 );
+      // if ( var1 > var2 ) std::replace( var1, var2 );
       __scores.erase(
         std::tuple< IdSet<>, Idx, Idx, Idx >(conditioning_set, var1, var2, var3));
     }
@@ -115,7 +115,7 @@ namespace gum {
                                       Idx                       var2,
                                       Idx                       var3,
                                       const std::vector< Idx >& conditioning_set) {
-      // if ( var1 > var2 ) std::swap( var1, var2 );
+      // if ( var1 > var2 ) std::replace( var1, var2 );
       return __scores.exists(std::tuple< IdSet<>, Idx, Idx, Idx >(
         IdSet<>(conditioning_set, 0), var1, var2, var3));
     }
@@ -123,7 +123,7 @@ namespace gum {
     /// returns a given score
     INLINE double Cache43ptInfo::score(
       Idx var1, Idx var2, Idx var3, const std::vector< Idx >& conditioning_set) {
-      // if ( var1 > var2 ) std::swap( var1, var2 );
+      // if ( var1 > var2 ) std::replace( var1, var2 );
       return __scores[std::tuple< IdSet<>, Idx, Idx, Idx >(
         IdSet<>(conditioning_set, 0), var1, var2, var3)];
     }

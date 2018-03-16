@@ -535,11 +535,11 @@ namespace gum_tests {
 
 
       // *********************************************************************
-      // Testing swap()
+      // Testing replace()
       // *********************************************************************
       gum::LabelizedVariable* lv =
         new gum::LabelizedVariable("Test", "Cornichon", 2);
-      TS_ASSERT_THROWS(functionGraph->swap(*Cvar, *lv), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv), gum::OperationNotAllowed);
       delete lv;
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);

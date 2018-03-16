@@ -122,12 +122,6 @@ namespace gum {
         this->content()->newFactory()));
   }
 
-  template < typename GUM_SCALAR >
-  INLINE void Potential< GUM_SCALAR >::_swap(const DiscreteVariable* x,
-                                             const DiscreteVariable* y) {
-    this->content()->swap(*x, *y);
-  }
-
   // sum of all elements in this
   template < typename GUM_SCALAR >
   INLINE GUM_SCALAR Potential< GUM_SCALAR >::sum() const {

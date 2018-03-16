@@ -49,7 +49,7 @@ namespace gum {
    * @tparam Val The type referenced by both gum::RefPtr.
    * @param ptr1 The smart pointer the content of which we swap with that of
    * ptr2.
-   * @param ptr2 The smart pointer the content of which we swap with that of
+   * @param ptr2 The smart pointer the content of which we replace with that of
    * ptr1.
    */
   /// @brief Swap the contents of two RefPtr.

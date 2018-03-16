@@ -97,20 +97,20 @@ namespace gum {
 
     virtual const std::string toString(const Instantiation* i) const;
 
-    virtual void changeNotification(Instantiation&                i,
+    virtual void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,
                                     Idx                           oldval,
                                     Idx                           newval);
 
-    virtual void setChangeNotification(Instantiation& i);
+    virtual void setChangeNotification(const Instantiation& i);
 
-    virtual void setFirstNotification(Instantiation& i);
+    virtual void setFirstNotification(const Instantiation& i);
 
-    virtual void setLastNotification(Instantiation& i);
+    virtual void setLastNotification(const Instantiation& i);
 
-    void setIncNotification(Instantiation& i);
+    void setIncNotification(const Instantiation& i);
 
-    void setDecNotification(Instantiation& i);
+    void setDecNotification(const Instantiation& i);
 
     virtual bool registerSlave(Instantiation& i);
 

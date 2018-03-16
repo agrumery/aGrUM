@@ -546,7 +546,7 @@ namespace gum {
     __v[i] = &new_key;
   }
 
-  // swap two elements in the sequence
+  // replace two elements in the sequence
   template < typename Key, typename Alloc, bool Gen >
   INLINE void SequenceImplementation< Key, Alloc, Gen >::swap(Idx i, Idx j) {
     if (i == j) return;
@@ -959,7 +959,7 @@ namespace gum {
     __v[i] = newKey;
   }
 
-  // swap two elements in the sequence
+  // replace two elements in the sequence
   template < typename Key, typename Alloc >
   INLINE void SequenceImplementation< Key, Alloc, true >::swap(Idx i, Idx j) {
     if (i == j) return;

@@ -123,7 +123,7 @@ namespace gum {
      * @param oldval The old value.
      * @param newval The changed value.
      */
-    virtual void changeNotification(Instantiation&          i,
+    virtual void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,
                                     Idx                     oldval,
                                     Idx                     newval) = 0;
@@ -132,31 +132,31 @@ namespace gum {
      * @brief Listen to setFirst in a given Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setFirstNotification(Instantiation& i) = 0;
+    virtual void setFirstNotification(const Instantiation& i) = 0;
 
     /**
      * @brief Listen to setLast in a given Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setLastNotification(Instantiation& i) = 0;
+    virtual void setLastNotification(const Instantiation& i) = 0;
 
     /**
      * @brief Listen to increment in a given Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setIncNotification(Instantiation& i) = 0;
+    virtual void setIncNotification(const Instantiation& i) = 0;
 
     /**
      * @brief Listen to increment in each recorded Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setDecNotification(Instantiation& i) = 0;
+    virtual void setDecNotification(const Instantiation& i) = 0;
 
     /**
      * @brief Listen to an assignment of a value in a Instantiation.
      * @param i The Instantiation to listen.
      */
-    virtual void setChangeNotification(Instantiation& i) = 0;
+    virtual void setChangeNotification(const Instantiation& i) = 0;
 
     /**
      * @brief Return a string representation of internal data about i in this.

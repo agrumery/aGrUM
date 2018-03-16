@@ -2148,7 +2148,7 @@ namespace gum {
     return **__getIthBucket(i);
   }
 
-  // swap the current list with another one
+  // replace the current list with another one
   template < typename Val, typename Alloc >
   INLINE void List< Val, Alloc >::swap(List& other_list) {
     std::swap(__deb_list, other_list.__deb_list);

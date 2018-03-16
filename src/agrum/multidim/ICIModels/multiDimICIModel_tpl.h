@@ -55,7 +55,7 @@ namespace gum {
     __causal_weights = from.__causal_weights;
   }
 
-  // Copy constructor using a bijection to swap variables from source.
+  // Copy constructor using a bijection to replace variables from source.
   template < typename GUM_SCALAR >
   INLINE MultiDimICIModel< GUM_SCALAR >::MultiDimICIModel(
     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,
@@ -157,9 +157,9 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE void MultiDimICIModel< GUM_SCALAR >::_swap(const DiscreteVariable* x,
-                                                    const DiscreteVariable* y) {
-    MultiDimReadOnly< GUM_SCALAR >::_swap(x, y);
+  INLINE void MultiDimICIModel< GUM_SCALAR >::_replace(const DiscreteVariable* x,
+                                                       const DiscreteVariable* y) {
+    MultiDimReadOnly< GUM_SCALAR >::_replace(x, y);
     __causal_weights.insert(y, __causal_weights[x]);
     __causal_weights.erase(x);
   }

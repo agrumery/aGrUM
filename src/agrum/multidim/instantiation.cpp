@@ -27,17 +27,21 @@
 #include <agrum/multidim/implementations/multiDimAdressable.h>
 #include <agrum/multidim/instantiation.h>
 
+#ifdef GUM_NO_INLINE
+#include <agrum/multidim/instantiation_inl.h>
+#endif /* GUM_NO_INLINE */
+
 namespace gum {
 
   // Default constructor
-  INLINE Instantiation::Instantiation()
-      : __master(0)
+  Instantiation::Instantiation()
+      : __master(nullptr)
       , __overflow(false) {
     GUM_CONSTRUCTOR(Instantiation);
   }
 
   // destructor
-  INLINE Instantiation::~Instantiation() {
+  Instantiation::~Instantiation() {
     GUM_DESTRUCTOR(Instantiation);
     // unregister the Instantiation from its __master
 
@@ -198,6 +202,73 @@ namespace gum {
     }
   }
 
+  void Instantiation::__masterChangeNotification(Idx varPos,
+                                                 Idx newVal,
+                                                 Idx oldVal) const {
+    if (__master)
+      __master->changeNotification(*this, __vars[varPos], oldVal, newVal);
+  }
+
+  void Instantiation::__masterFirstNotification() const {
+    if (__master) __master->setFirstNotification(*this);
+  }
+
+  void Instantiation::__masterIncNotification() const {
+    if (__master) __master->setIncNotification(*this);
+  }
+  void Instantiation::__masterLastNotification() const {
+    if (__master) __master->setLastNotification(*this);
+  }
+  void Instantiation::__masterDecNotification() const {
+    if (__master) __master->setDecNotification(*this);
+  }
+
+  // deassociate the master MultiDimAdressable, if any
+  bool Instantiation::forgetMaster() {
+    if (__master) {
+      __master->unregisterSlave(*this);
+      __master = nullptr;
+    }
+    return true;
+  }
+  // force the variables sequence order to be the same as the master one
+  void Instantiation::synchronizeWithMaster(const MultiDimAdressable* m) {
+    if (m != __master) {
+      GUM_ERROR(OperationNotAllowed, "only master can do this");
+    }
+
+    __reorder(__master->variablesSequence());
+  }
+  // erase new dim by master
+  void Instantiation::eraseWithMaster(const MultiDimAdressable* m,
+                                      const DiscreteVariable&   v) {
+    if (m != __master) {
+      GUM_ERROR(OperationNotAllowed, "only master can do this");
+    }
+
+    __erase(v);
+
+    if (__master) __master->setChangeNotification(*this);
+  }
+
+  // tries to register the Instantiation to a MultiDimAdressable
+  bool Instantiation::actAsSlave(MultiDimAdressable& aMD) {
+    // if __master : not allowed
+    if (__master != nullptr) {
+      GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
+    }
+
+    __master = &aMD;
+
+    // perform the registration
+    if (aMD.registerSlave(*this)) {
+      return true;
+    } else {
+      __master = nullptr;
+      return false;
+    }
+  }
+
   // an operator for user-friendly displaying the content of a Instantiation
   std::ostream& operator<<(std::ostream& aStream, const Instantiation& i) {
     aStream << i.toString();
@@ -205,7 +276,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-
-#ifdef GUM_NO_INLINE
-#include <agrum/multidim/instantiation_inl.h>
-#endif /* GUM_NO_INLINE */

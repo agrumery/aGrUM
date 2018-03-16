@@ -180,7 +180,10 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void MultiDimDecorator< GUM_SCALAR >::changeNotification(
-    Instantiation& i, const DiscreteVariable* const var, Idx oldval, Idx newval) {
+    const Instantiation&          i,
+    const DiscreteVariable* const var,
+    Idx                           oldval,
+    Idx                           newval) {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->changeNotification(
       i, var, oldval, newval);
   }
@@ -189,7 +192,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimDecorator< GUM_SCALAR >::setChangeNotification(Instantiation& i) {
+  MultiDimDecorator< GUM_SCALAR >::setChangeNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)
       ->setChangeNotification(i);
   }
@@ -198,7 +201,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimDecorator< GUM_SCALAR >::setFirstNotification(Instantiation& i) {
+  MultiDimDecorator< GUM_SCALAR >::setFirstNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)
       ->setFirstNotification(i);
   }
@@ -207,7 +210,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimDecorator< GUM_SCALAR >::setLastNotification(Instantiation& i) {
+  MultiDimDecorator< GUM_SCALAR >::setLastNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->setLastNotification(
       i);
   }
@@ -216,7 +219,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimDecorator< GUM_SCALAR >::setIncNotification(Instantiation& i) {
+  MultiDimDecorator< GUM_SCALAR >::setIncNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->setIncNotification(
       i);
   }
@@ -225,7 +228,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimDecorator< GUM_SCALAR >::setDecNotification(Instantiation& i) {
+  MultiDimDecorator< GUM_SCALAR >::setDecNotification(const Instantiation& i) {
     static_cast< MultiDimContainer< GUM_SCALAR >* >(_content)->setDecNotification(
       i);
   }
@@ -399,6 +402,14 @@ namespace gum {
   INLINE const std::string
   MultiDimDecorator< GUM_SCALAR >::toString(const Instantiation* i) const {
     return _content->toString(i);
+  }
+
+
+  template < typename GUM_SCALAR >
+  INLINE void
+  MultiDimDecorator< GUM_SCALAR >::_replace(const DiscreteVariable* x,
+                                            const DiscreteVariable* y) {
+    this->content()->replace(*x, *y);
   }
 
   template < typename GUM_SCALAR >

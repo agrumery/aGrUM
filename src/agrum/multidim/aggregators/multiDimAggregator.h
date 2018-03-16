@@ -112,20 +112,20 @@ namespace gum {
       virtual std::string aggregatorName() const = 0;
       const std::string   toString() const override;
 
-       void changeNotification(gum::Instantiation&,
-                                      const gum::DiscreteVariable* const,
-                                      gum::Idx,
-                                      gum::Idx) override{};
+      void changeNotification(const gum::Instantiation&,
+                              const gum::DiscreteVariable* const,
+                              gum::Idx,
+                              gum::Idx) override{};
 
-       void setFirstNotification(gum::Instantiation&) override{};
+      void setFirstNotification(const gum::Instantiation&) override{};
 
-       void setLastNotification(gum::Instantiation&) override{};
+      void setLastNotification(const gum::Instantiation&) override{};
 
-       void setIncNotification(gum::Instantiation&) override{};
+      void setIncNotification(const gum::Instantiation&) override{};
 
-       void setDecNotification(gum::Instantiation&) override{};
+      void setDecNotification(const gum::Instantiation&) override{};
 
-       void setChangeNotification(gum::Instantiation&) override{};
+      void setChangeNotification(const gum::Instantiation&) override{};
 
       const std::string toString(const gum::Instantiation* i) const override {
         return i->toString();
@@ -136,7 +136,7 @@ namespace gum {
        *
        * This function is used for compute @see compressionRatio()
        */
-       Size realSize() const override { return 0; };
+      Size realSize() const override { return 0; };
 
       /**
        * @brief Returns the real name of the multiDimArray.
@@ -149,7 +149,7 @@ namespace gum {
        * determine which is the best functions to use, say, when we wish to use
        * operators such as operator+ on two MultiDimImplementations.
        */
-       const std::string& name() const override;
+      const std::string& name() const override;
 
       /**
        * @brief Copy of a multiDimICIModel.
@@ -160,8 +160,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if src does not have the same domain
        * size than this MultiDimContainer.
        **/
-       void
-      copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
+      void copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
 
       /// @}
       protected:

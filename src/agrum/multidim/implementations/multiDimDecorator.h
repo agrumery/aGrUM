@@ -128,20 +128,20 @@ namespace gum {
 
     virtual bool registerSlave(Instantiation& i) final;
 
-    virtual void changeNotification(Instantiation&                i,
+    virtual void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,
                                     Idx                           oldval,
                                     Idx                           newval) final;
 
-    virtual void setChangeNotification(Instantiation& i) final;
+    virtual void setChangeNotification(const Instantiation& i) final;
 
-    virtual void setFirstNotification(Instantiation& i) final;
+    virtual void setFirstNotification(const Instantiation& i) final;
 
-    virtual void setLastNotification(Instantiation& i) final;
+    virtual void setLastNotification(const Instantiation& i) final;
 
-    virtual void setIncNotification(Instantiation& i) final;
+    virtual void setIncNotification(const Instantiation& i) final;
 
-    virtual void setDecNotification(Instantiation& i) final;
+    virtual void setDecNotification(const Instantiation& i) final;
 
     virtual void notifyChange() const final;
 
@@ -233,6 +233,8 @@ namespace gum {
 
     /// @}
     protected:
+    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
+
     /**
      * protecte method to swap the implementation behind the Potential
      * @warning unsafe method for slave Instantiations !

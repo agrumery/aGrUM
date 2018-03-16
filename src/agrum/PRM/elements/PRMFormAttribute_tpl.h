@@ -343,11 +343,11 @@ namespace gum {
     PRMFormAttribute< GUM_SCALAR >::swap(const PRMType< GUM_SCALAR >& old_type,
                                          const PRMType< GUM_SCALAR >& new_type) {
       if (&(old_type) == __type) {
-        GUM_ERROR(OperationNotAllowed, "Cannot swap attribute own type");
+        GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
       }
       if (old_type->domainSize() != new_type->domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot swap types with difference domain size");
+                  "Cannot replace types with difference domain size");
       }
       if (!__formulas->contains(old_type.variable())) {
         GUM_ERROR(NotFound, "could not find variable " + old_type.name());
@@ -395,7 +395,7 @@ namespace gum {
 
       if (__type->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot swap types with difference domain size");
+                  "Cannot replace types with difference domain size");
       }
       auto old = __formulas;
 

@@ -245,7 +245,7 @@ namespace gum {
 
     virtual GUM_SCALAR& _get(const Instantiation& i) const;
 
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
   };
 
 

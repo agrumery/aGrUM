@@ -229,7 +229,8 @@ namespace gum {
      * @param v The new variable added to this Instantiation.
      *
      * @throw DuplicateElement Raised if v is already in this Instantiation.
-     * @throw InvalidArgument Raised if the name of v is already used in this Instantiation.
+     * @throw InvalidArgument Raised if the name of v is already used in this
+     * Instantiation.
      * @throw OperationNotAllowed Raised if this is a slave Instantiation.
      */
     void add(const DiscreteVariable& v) final;
@@ -1108,7 +1109,8 @@ namespace gum {
      * @param x The variable to replace.
      * @param y The variable replacing x.
      */
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y) final;
+    virtual void _replace(const DiscreteVariable* x,
+                          const DiscreteVariable* y) final;
 
     private:
     /// The master, if any, contains precisely the set of variables to be
@@ -1215,6 +1217,12 @@ namespace gum {
      * @param v The new order of variables in this Instantiation.
      */
     void __reorder(const Sequence< const DiscreteVariable* >& v);
+
+    void __masterChangeNotification(Idx varPos, Idx newVal, Idx oldVal) const;
+    void __masterFirstNotification() const;
+    void __masterIncNotification() const;
+    void __masterLastNotification() const;
+    void __masterDecNotification() const;
   };
 
   /**

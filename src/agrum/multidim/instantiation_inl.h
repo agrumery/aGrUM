@@ -43,8 +43,7 @@ namespace gum {
     Idx oldVal = __vals[varPos];
     __vals[varPos] = newVal;
 
-    if (__master)
-      __master->changeNotification(*this, __vars[varPos], oldVal, newVal);
+    __masterChangeNotification(varPos, newVal, oldVal);
   }
 
   // modifies the value of a given variable of the sequence (external function)
@@ -269,9 +268,7 @@ namespace gum {
 
         if (cpt == p) {
           __overflow = true;
-
-          if (__master) __master->setFirstNotification(*this);
-
+          __masterFirstNotification();
           return;
         } else
           ++cpt;
@@ -281,7 +278,7 @@ namespace gum {
       }
     }
 
-    if (__master) __master->setIncNotification(*this);
+    __masterIncNotification();
   }
 
   // operator --
@@ -306,7 +303,7 @@ namespace gum {
         if (cpt == p) {
           __overflow = true;
 
-          if (__master) __master->setLastNotification(*this);
+          __masterLastNotification();
 
           return;
         } else
@@ -317,7 +314,7 @@ namespace gum {
       }
     }
 
-    if (__master) __master->setDecNotification(*this);
+    __masterDecNotification();
   }
 
   // operator ++
@@ -358,7 +355,7 @@ namespace gum {
     for (Idx p = 0; p < s; ++p)
       __vals[p] = 0;
 
-    if (__master) __master->setFirstNotification(*this);
+    __masterFirstNotification();
   }
 
   // put the (D1-1,D2-1,...) last value in the Instantiation
@@ -369,7 +366,7 @@ namespace gum {
     for (Idx p = 0; p < s; ++p)
       __vals[p] = __vars[p]->domainSize() - 1;
 
-    if (__master) __master->setLastNotification(*this);
+    __masterLastNotification();
   }
 
   // operator ++ limited only to the variables in i
@@ -745,17 +742,8 @@ namespace gum {
     return __vars;
   }
 
-  // deassociate the master MultiDimAdressable, if any
-  INLINE bool Instantiation::forgetMaster() {
-    if (__master) {
-      __master->unregisterSlave(*this);
-      __master = 0;
-    }
 
-    return true;
-  }
-
-  // swap 2 vars in the Instantiation
+  // replace 2 vars in the Instantiation
   INLINE void Instantiation::__swap(Idx i, Idx j) {
     if (i == j) return;
 
@@ -771,7 +759,7 @@ namespace gum {
   INLINE
   void
   Instantiation::reorder(const Sequence< const DiscreteVariable* >& original) {
-    if (__master) {
+    if (__master != nullptr) {
       GUM_ERROR(OperationNotAllowed,
                 "Reordering impossible in slave instantiation");
     }
@@ -784,27 +772,19 @@ namespace gum {
   Instantiation::__reorder(const Sequence< const DiscreteVariable* >& original) {
     Idx max = original.size();
     Idx position = 0;
-
     for (Idx i = 0; i < max; ++i) {
       const DiscreteVariable* pv = original.atPos(i);
 
       if (contains(pv)) {
-        GUM_ASSERT(pos(*pv) >= position);  // this var should not be
-        // already placed.
-        __swap(position, pos(*pv));
+        auto p = pos(*pv);
+        GUM_ASSERT(p >= position);  // this var should not be
+                                    // already placed.
+        __swap(position, p);
         position++;
       }
     }
   }
 
-  // force the variables sequence order to be the same as the master one
-  INLINE void Instantiation::synchronizeWithMaster(const MultiDimAdressable* m) {
-    if (m != __master) {
-      GUM_ERROR(OperationNotAllowed, "only master can do this");
-    }
-
-    __reorder(__master->variablesSequence());
-  }
 
   // add new dim by master
   INLINE void Instantiation::addWithMaster(const MultiDimAdressable* m,
@@ -816,35 +796,6 @@ namespace gum {
     __add(v);
   }
 
-  // erase new dim by master
-  INLINE void Instantiation::eraseWithMaster(const MultiDimAdressable* m,
-                                             const DiscreteVariable&   v) {
-    if (m != __master) {
-      GUM_ERROR(OperationNotAllowed, "only master can do this");
-    }
-
-    __erase(v);
-
-    if (__master) __master->setChangeNotification(*this);
-  }
-
-  // tries to register the Instantiation to a MultiDimAdressable
-  INLINE bool Instantiation::actAsSlave(MultiDimAdressable& aMD) {
-    // if __master : not allowed
-    if (__master) {
-      GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
-    }
-
-    __master = &aMD;
-
-    // perform the registration
-    if (aMD.registerSlave(*this)) {
-      return true;
-    } else {
-      __master = 0;
-      return false;
-    }
-  }
 
   // adds a new var to the sequence of vars
   INLINE void Instantiation::__add(const DiscreteVariable& v) {
@@ -865,8 +816,8 @@ namespace gum {
   INLINE bool Instantiation::empty() const { return __vals.empty(); }
 
   // Replace x by y.
-  INLINE void Instantiation::_swap(const DiscreteVariable* x,
-                                   const DiscreteVariable* y) {
+  INLINE void Instantiation::_replace(const DiscreteVariable *x,
+                                      const DiscreteVariable *y) {
     __vars.setAtPos(__vars.pos(x), y);
   }
 

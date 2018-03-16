@@ -303,15 +303,15 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   INLINE void
-  MultiDimImplementation< GUM_SCALAR >::_swap(const DiscreteVariable* x,
-                                              const DiscreteVariable* y) {
+  MultiDimImplementation< GUM_SCALAR >::_replace(const DiscreteVariable* x,
+                                                 const DiscreteVariable* y) {
     __vars.setAtPos(__vars.pos(x), y);
 
     for (List< Instantiation* >::iterator_safe iter =
            __slaveInstantiations.beginSafe();
          iter != __slaveInstantiations.endSafe();
          ++iter) {
-      (**iter).swap(*x, *y);
+      (**iter).replace(*x, *y);
     }
   }
 

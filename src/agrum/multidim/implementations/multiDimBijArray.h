@@ -173,7 +173,7 @@ namespace gum {
 
     virtual void _commitMultipleChanges();
 
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _replace(const DiscreteVariable *x, const DiscreteVariable *y);
 
     private:
     /// The true data.

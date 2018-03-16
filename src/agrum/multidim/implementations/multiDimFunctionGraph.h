@@ -36,12 +36,12 @@
 
 #include <agrum/graphs/graphElements.h>
 
+#include <agrum/multidim/implementations/multiDimFunctionGraphManager.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/internalNode.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/link.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ITerminalNodePolicy.h>
-#include <agrum/multidim/implementations/multiDimFunctionGraphManager.h>
-#include <agrum/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
 
@@ -176,20 +176,20 @@ namespace gum {
 
     virtual Size realSize() const;
 
-    virtual void changeNotification(Instantiation&                i,
+    virtual void changeNotification(const Instantiation&          i,
                                     const DiscreteVariable* const var,
                                     Idx                           oldval,
                                     Idx                           newval);
 
-    virtual void setFirstNotification(Instantiation& i);
+    virtual void setFirstNotification(const Instantiation& i);
 
-    virtual void setLastNotification(Instantiation& i);
+    virtual void setLastNotification(const Instantiation& i);
 
-    virtual void setIncNotification(Instantiation& i);
+    virtual void setIncNotification(const Instantiation& i);
 
-    virtual void setDecNotification(Instantiation& i);
+    virtual void setDecNotification(const Instantiation& i);
 
-    virtual void setChangeNotification(Instantiation& i);
+    virtual void setChangeNotification(const Instantiation& i);
 
     virtual const std::string toString(const Instantiation* i) const;
 
@@ -357,7 +357,7 @@ namespace gum {
      * @warning This will raise an OperationNotAllowed as this method has not
      * yet been implemented.
      */
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _replace(const DiscreteVariable *x, const DiscreteVariable *y);
 
     /**
      * @warning This will raise an OperationNotAllowed as you should not use

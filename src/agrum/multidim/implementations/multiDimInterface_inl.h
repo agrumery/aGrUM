@@ -30,8 +30,8 @@
 namespace gum {
   // Swap two variables in this multidim.
   INLINE
-  void MultiDimInterface::swap(const DiscreteVariable& x,
-                               const DiscreteVariable& y) {
+  void MultiDimInterface::replace(const DiscreteVariable &x,
+                                  const DiscreteVariable &y) {
     if (!contains(x)) {
       GUM_ERROR(NotFound, "could not find the variable");
     }
@@ -44,7 +44,7 @@ namespace gum {
       GUM_ERROR(OperationNotAllowed, "incompatible variables");
     }
 
-    _swap(&x, &y);
+    _replace(&x, &y);
   }
 
 } /* namespace gum */
