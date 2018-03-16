@@ -223,7 +223,7 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size new_size);
+    void resize(Size new_size) override;
 
     /**
      * @brief Computes the hashed value of a key.
@@ -267,7 +267,7 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size new_size);
+    void resize(Size new_size) override;
 
     /**
      * @brief Returns the value of a key as an unsigned long.
@@ -322,7 +322,7 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size new_size);
+    void resize(Size new_size) override;
 
     /**
      * @brief Computes the hashed value of a key.
@@ -372,7 +372,7 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size new_size);
+    void resize(Size new_size) override;
 
     /**
      * @brief Cast key to the exepcted type.
@@ -439,7 +439,7 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size new_size);
+    void resize(Size new_size) override;
 
     /**
      * @brief Computes the hashed value of a key.
@@ -481,7 +481,7 @@ namespace gum {
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
-    void resize(Size new_size);
+    void resize(Size new_size) override;
 
     /**
      * @brief Computes the hashed value of a key.
