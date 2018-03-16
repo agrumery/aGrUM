@@ -88,9 +88,8 @@ namespace gum {
     __multiDims.insert(impl, new Instantiation(*impl));
 
     if (!MultiDimImplementation< GUM_SCALAR >::_isInMultipleChangeMethod()) {
-      for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end();
-           ++iter) {
-        __addVariable(*iter);
+      for (const auto var : impl->variablesSequence()) {
+        __addVariable(var);
       }
     }
 
@@ -111,9 +110,8 @@ namespace gum {
       __multiDims.erase(impl);
 
       if (!MultiDimImplementation< GUM_SCALAR >::_isInMultipleChangeMethod()) {
-        for (MultiDimInterface::iterator iter = impl->begin(); iter != impl->end();
-             ++iter) {
-          __eraseVariable(*iter);
+        for (auto var : impl->variablesSequence()) {
+          __eraseVariable(var);
         }
       }
 
@@ -414,10 +412,8 @@ namespace gum {
     for (  // HashTableIteratorSafe<const MultiDimContainer<GUM_SCALAR>*,
            // Instantiation*>
       auto iter = __multiDims.beginSafe(); iter != __multiDims.endSafe(); ++iter) {
-      for (MultiDimInterface::iterator jter = iter.key()->begin();
-           jter != iter.key()->end();
-           ++jter) {
-        __addVariable(*jter);
+      for (auto var : iter.key()->variablesSequence()) {
+        __addVariable(var);
       }
     }
 
@@ -481,9 +477,8 @@ namespace gum {
     // Creating the table.
     __bucket = new MultiDimArray< GUM_SCALAR >();
 
-    for (MultiDimInterface::iterator iter = this->begin(); iter != this->end();
-         ++iter) {
-      __bucket->add(**iter);
+    for (auto var : this->variablesSequence()) {
+      __bucket->add(*var);
     }
 
     if (!this->_slaves().empty()) {

@@ -1317,7 +1317,7 @@ namespace gum_tests {
             try {
               auto inst = gum::Instantiation(attr.val()->cpf());
               auto sum = 0.0;
-              for (inst.begin(); !inst.end(); inst.inc()) {
+              for (inst.setFirst(); !inst.end(); inst.inc()) {
                 sum += attr.val()->cpf()[inst];
               }
               gum::Size card = 1;
@@ -1402,7 +1402,7 @@ namespace gum_tests {
 
         gum::Instantiation    inst(hasInk.cpf());
         std::vector< double > values;
-        for (inst.begin(); !inst.end(); inst.inc()) {
+        for (inst.setFirst(); !inst.end(); inst.inc()) {
           values.push_back(hasInk.cpf()[inst]);
         }
 
@@ -1431,7 +1431,7 @@ namespace gum_tests {
 
         gum::Instantiation    inst(hasPaper.cpf());
         std::vector< double > values;
-        for (inst.begin(); !inst.end(); inst.inc()) {
+        for (inst.setFirst(); !inst.end(); inst.inc()) {
           values.push_back(hasPaper.cpf()[inst]);
         }
 
@@ -1462,7 +1462,7 @@ namespace gum_tests {
 
         gum::Instantiation    inst(hasInk.cpf());
         std::vector< double > values;
-        for (inst.begin(); !inst.end(); inst.inc()) {
+        for (inst.setFirst(); !inst.end(); inst.inc()) {
           values.push_back(hasInk.cpf()[inst]);
         }
 

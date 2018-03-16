@@ -27,12 +27,12 @@
 #ifndef GUM_DAGMODEL_H
 #define GUM_DAGMODEL_H
 #include <agrum/agrum.h>
+#include <agrum/multidim/instantiation.h>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
 
 #include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/multidim/instantiation.h>
 
 namespace gum {
 

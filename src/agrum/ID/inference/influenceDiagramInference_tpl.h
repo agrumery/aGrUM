@@ -464,7 +464,7 @@ namespace gum {
     // absorbing one
     NodeSet separator = __getSeparator(absorbedCliqueId, absorbingCliqueId);
 
-    Potential< GUM_SCALAR >*    potentialMarginal = 0;
+    Potential< GUM_SCALAR >* potentialMarginal = 0;
     Potential< GUM_SCALAR >* utilityMarginal = 0;
 
     // First  we reduce absorbed clique by eleminating clique variables which
@@ -518,7 +518,7 @@ namespace gum {
     CliqueProperties< GUM_SCALAR >* absorbedClique,
     NodeSet&                        separator,
     Potential< GUM_SCALAR >*&       potentialMarginal,
-    Potential< GUM_SCALAR >*&    utilityMarginal) {
+    Potential< GUM_SCALAR >*&       utilityMarginal) {
 
     Instantiation cliqueInstance(absorbedClique->cliqueInstantiation());
     Sequence< const DiscreteVariable* > cliqueRemainVarList(
@@ -531,7 +531,7 @@ namespace gum {
         // Initialisation Operations
 
         // First we create the tables that will result from variable elimination
-        Potential< GUM_SCALAR >*    newPotential = new Potential< GUM_SCALAR >();
+        Potential< GUM_SCALAR >* newPotential = new Potential< GUM_SCALAR >();
         Potential< GUM_SCALAR >* newUtility = new Potential< GUM_SCALAR >();
 
         // Then we need to add all not yet eliminated variables of the clique in
@@ -676,8 +676,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE Potential< GUM_SCALAR >*
   InfluenceDiagramInference< GUM_SCALAR >::__makeDummyUtility(NodeId cliqueId) {
-    Potential< GUM_SCALAR >* ut = new Potential< GUM_SCALAR >(
-      new MultiDimSparse< GUM_SCALAR >((GUM_SCALAR)0));
+    Potential< GUM_SCALAR >* ut =
+      new Potential< GUM_SCALAR >(new MultiDimSparse< GUM_SCALAR >((GUM_SCALAR)0));
     __utilityDummies.insert(ut);
 
     for (const auto cliqueNode : __triangulation->junctionTree().clique(cliqueId))
@@ -745,9 +745,8 @@ namespace gum {
 
     if (removable) __removablePotentialList.insert(&cpt);
 
-    for (Sequence< const DiscreteVariable* >::iterator_safe iter = cpt.begin();
-         iter != cpt.end();
-         ++iter) {
+    const auto& vars = cpt.variablesSequence();
+    for (auto iter = vars.beginSafe(); iter != vars.end(); ++iter) {
       if (removable && !__allVarsInst.contains(**iter)) try {
           __removableVarList.insert(*iter);
         } catch (DuplicateElement&) {
@@ -777,16 +776,14 @@ namespace gum {
 
     if (removable) __removableUtilityList.insert(&ut);
 
-    for (Sequence< const DiscreteVariable* >::iterator_safe iter = ut.begin();
-         iter != ut.end();
-         ++iter) {
-      if (removable && !__allVarsInst.contains(**iter)) try {
-          __removableVarList.insert(*iter);
+    for (auto var : ut.variablesSequence()) {
+      if (removable && !__allVarsInst.contains(*var)) try {
+          __removableVarList.insert(var);
         } catch (DuplicateElement&) {
           // Nothing to do then!
         }
 
-      addVariable(**iter);
+      addVariable(*var);
     }
   }
 
@@ -914,5 +911,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
-

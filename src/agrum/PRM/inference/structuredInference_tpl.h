@@ -594,7 +594,7 @@ namespace gum {
       }
 
       for (const auto p : pool) {
-        for (const auto v : *p) {
+        for (const auto v : p->variablesSequence()) {
           try {
             target = data.map[data.vars.first(v)];
             bij.insert(

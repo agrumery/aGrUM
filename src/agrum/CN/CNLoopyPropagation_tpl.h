@@ -687,7 +687,7 @@ namespace gum {
          * messages and so parents need to be read in order of appearance
          * use potentials instead of dag
          */
-        const Potential< GUM_SCALAR >* parents = &__bnet->cpt(node);
+        const auto parents = &__bnet->cpt(node).variablesSequence();
 
         std::vector< std::vector< std::vector< GUM_SCALAR > > > msgs_p;
         std::vector< std::vector< GUM_SCALAR > >                msg_p;
@@ -892,9 +892,9 @@ namespace gum {
       NodeSet const& children = __bnet->children(Y);
       NodeSet const& _parents = __bnet->parents(Y);
 
-      const Potential< GUM_SCALAR >* parents = &__bnet->cpt(Y);
+      const auto parents = &__bnet->cpt(Y).variablesSequence();
 
-      if (((children.size() + parents->nbrDim() - 1) == 1) &&
+      if (((children.size() + parents->size() - 1) == 1) &&
           (!__infE::_evidence.exists(Y))) {
         return;
       }
@@ -1003,8 +1003,8 @@ namespace gum {
         for (auto jt = ++parents->begin(), theEnd = parents->end(); jt != theEnd;
              ++jt) {
           if (__bnet->nodeId(**jt) == X) {
-            pos =
-              parents->pos(**jt) - 1;  // retirer la variable courante de la taille
+            // retirer la variable courante de la taille
+            pos = parents->pos(*jt) - 1;
             continue;
           }
 
@@ -1094,9 +1094,9 @@ namespace gum {
                                                  const NodeId demanding_child) {
       NodeSet const& children = __bnet->children(X);
 
-      const Potential< GUM_SCALAR >* parents = &__bnet->cpt(X);
+      const auto parents = &__bnet->cpt(X).variablesSequence();
 
-      if (((children.size() + parents->nbrDim() - 1) == 1) &&
+      if (((children.size() + parents->size() - 1) == 1) &&
           (!__infE::_evidence.exists(X))) {
         return;
       }
@@ -1329,7 +1329,7 @@ namespace gum {
 
         NodeSet const& children = __bnet->children(node);
 
-        const Potential< GUM_SCALAR >* parents = &__bnet->cpt(node);
+        auto parents = &__bnet->cpt(node).variablesSequence();
 
         if (_update_l[node]) {
           GUM_SCALAR lmin = 1.;
@@ -1380,7 +1380,7 @@ namespace gum {
         }  // end of : update_l
 
         if (_update_p[node]) {
-          if ((parents->nbrDim() - 1) > 0 && !__infE::_evidence.exists(node)) {
+          if ((parents->size() - 1) > 0 && !__infE::_evidence.exists(node)) {
             std::vector< std::vector< std::vector< GUM_SCALAR > > > msgs_p;
             std::vector< std::vector< GUM_SCALAR > >                msg_p;
             std::vector< GUM_SCALAR >                               distri(2);

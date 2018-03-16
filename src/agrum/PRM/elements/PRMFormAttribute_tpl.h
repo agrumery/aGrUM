@@ -81,7 +81,7 @@ namespace gum {
       }
 
       Instantiation inst(*(copy->__formulas)), jnst(*__formulas);
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         copy->__formulas->set(inst, __formulas->get(jnst));
       }
@@ -108,7 +108,7 @@ namespace gum {
 
         Instantiation inst(__formulas), jnst(src.__formulas);
 
-        for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+        for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
              inst.inc(), jnst.inc()) {
           __formulas->set(inst, src.__formulas->get(jnst));
         }
@@ -119,7 +119,7 @@ namespace gum {
 
         Instantiation inst(__formulas), jnst(source.cpf());
 
-        for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+        for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
              inst.inc(), jnst.inc()) {
 
           auto val = std::to_string(source.cpf().get(jnst));
@@ -296,7 +296,7 @@ namespace gum {
         Instantiation inst(__formulas);
         Instantiation jnst(__cpf);
 
-        for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+        for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
              inst.inc(), jnst.inc()) {
 
           // With CPT defined using rules, empty values can appear
@@ -367,7 +367,7 @@ namespace gum {
 
       Instantiation inst(__formulas), jnst(old);
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __formulas->set(inst, old->get(jnst));
       }
@@ -411,7 +411,7 @@ namespace gum {
 
       Instantiation inst(__formulas), jnst(old);
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __formulas->set(inst, old->get(jnst));
       }

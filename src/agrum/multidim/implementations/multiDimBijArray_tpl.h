@@ -37,9 +37,8 @@ namespace gum {
       , __name(from.__name) {
     GUM_CONS_CPY(MultiDimBijArray);
 
-    for (MultiDimInterface::iterator iter = from.begin(); iter != from.end();
-         ++iter) {
-      MultiDimWithOffset< GUM_SCALAR >::add(**iter);
+    for (auto var : from.variablesSequence()) {
+      MultiDimWithOffset< GUM_SCALAR >::add(*var);
     }
   }
 
@@ -51,9 +50,8 @@ namespace gum {
       , __name("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
-    for (MultiDimInterface::iterator iter = array.begin(); iter != array.end();
-         ++iter) {
-      MultiDimWithOffset< GUM_SCALAR >::add(*(bijection.second(*iter)));
+    for (auto var : array.variablesSequence()) {
+      MultiDimWithOffset< GUM_SCALAR >::add(*(bijection.second(var)));
     }
   }
 
@@ -65,9 +63,8 @@ namespace gum {
       , __name("MultiDimBijArray") {
     GUM_CONSTRUCTOR(MultiDimBijArray);
 
-    for (MultiDimInterface::iterator iter = array.begin(); iter != array.end();
-         ++iter) {
-      MultiDimWithOffset< GUM_SCALAR >::add(*(bijection.second(*iter)));
+    for (auto var : array.variablesSequence()) {
+      MultiDimWithOffset< GUM_SCALAR >::add(*(bijection.second(var)));
     }
   }
 

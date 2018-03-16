@@ -105,11 +105,10 @@ namespace gum {
             static_cast< const PRMAttribute< GUM_SCALAR >* >(__chain->back());
 
           Bijection< const DiscreteVariable*, const DiscreteVariable* > bij;
-          for (auto iter = old_attr->cpf().begin(); iter != old_attr->cpf().end();
-               ++iter) {
-            if ((*iter) != &(old_attr->type().variable())) {
+          for (auto var : old_attr->cpf().variablesSequence()) {
+            if (var != &(old_attr->type().variable())) {
 
-              bij.insert(*iter, *iter);
+              bij.insert(var, var);
             }
           }
 

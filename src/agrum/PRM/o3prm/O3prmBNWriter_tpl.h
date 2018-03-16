@@ -130,7 +130,7 @@ namespace gum {
       }
       inst.setFirst();
       auto currentval = inst.val(0) + 1;
-      for (jnst.begin(); !jnst.end(); jnst.inc()) {
+      for (jnst.setFirst(); !jnst.end(); jnst.inc()) {
         inst.setVals(jnst);
         if (!first) {
           str << ", ";

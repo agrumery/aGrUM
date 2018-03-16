@@ -28,33 +28,6 @@
 #include <agrum/multidim/implementations/multiDimInterface.h>
 
 namespace gum {
-
-  // Iterator pointing at the beginning of the Sequence of variables.
-  INLINE
-  MultiDimInterface::iterator MultiDimInterface::begin() const {
-    return variablesSequence().begin();
-  }
-
-  // Iterator pointing at the rbeginning of the Sequence of variables.
-  INLINE
-  MultiDimInterface::iterator MultiDimInterface::rbegin() const {
-    return variablesSequence().rbegin();
-  }
-
-  // Constant reference on the iterator pointing at the end of the Sequence
-  // of variables.
-  INLINE
-  const MultiDimInterface::iterator& MultiDimInterface::end() const {
-    return variablesSequence().end();
-  }
-
-  // Constant reference on the iterator pointing at the rend of the Sequence
-  // of variables.
-  INLINE
-  const MultiDimInterface::iterator& MultiDimInterface::rend() const {
-    return variablesSequence().rend();
-  }
-
   // Swap two variables in this multidim.
   INLINE
   void MultiDimInterface::swap(const DiscreteVariable& x,

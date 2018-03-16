@@ -196,21 +196,6 @@ namespace gum {
     return __vars.pos(&k);
   }
 
-  // Default constructor
-  INLINE Instantiation::Instantiation()
-      : __master(0)
-      , __overflow(false) {
-    GUM_CONSTRUCTOR(Instantiation);
-  }
-
-  // destructor
-  INLINE Instantiation::~Instantiation() {
-    GUM_DESTRUCTOR(Instantiation);
-    // unregister the Instantiation from its __master
-
-    if (__master) __master->unregisterSlave(*this);
-  }
-
   // returns the number of vars in the sequence
   INLINE Idx Instantiation::nbrDim() const { return __vars.size(); }
 

@@ -24,14 +24,29 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/implementations/multiDimAdressable.h>
+#include <agrum/multidim/instantiation.h>
 
 namespace gum {
 
+  // Default constructor
+  INLINE Instantiation::Instantiation()
+      : __master(0)
+      , __overflow(false) {
+    GUM_CONSTRUCTOR(Instantiation);
+  }
+
+  // destructor
+  INLINE Instantiation::~Instantiation() {
+    GUM_DESTRUCTOR(Instantiation);
+    // unregister the Instantiation from its __master
+
+    if (__master) __master->unregisterSlave(*this);
+  }
+
   void Instantiation::__init(MultiDimAdressable* master) {
     // for speed issues
-    assert(master!=nullptr);
+    assert(master != nullptr);
 
     const Sequence< const DiscreteVariable* >& v = master->variablesSequence();
     __vars.resize(v.size());
@@ -192,5 +207,5 @@ namespace gum {
 } /* namespace gum */
 
 #ifdef GUM_NO_INLINE
-// Inline file added in agrum/multidim/multiDimAdressable.cpp
+#include <agrum/multidim/instantiation_inl.h>
 #endif /* GUM_NO_INLINE */

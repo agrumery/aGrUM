@@ -322,7 +322,7 @@ namespace gum {
         p->add(*(bijection.second(var)));
       }
       Instantiation inst(attr.cpf()), jnst(*p);
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         p->set(jnst, attr.cpf().get(inst));
       }

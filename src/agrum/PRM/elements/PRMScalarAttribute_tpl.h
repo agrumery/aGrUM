@@ -106,7 +106,7 @@ namespace gum {
 
       Instantiation inst(*__cpf), jnst(source.cpf());
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __cpf->set(inst, source.cpf().get(jnst));
       }
@@ -262,7 +262,7 @@ namespace gum {
 
       Instantiation inst(__cpf), jnst(old);
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __cpf->set(inst, old->get(jnst));
       }
@@ -301,7 +301,7 @@ namespace gum {
 
       Instantiation inst(__cpf), jnst(old);
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __cpf->set(inst, old->get(jnst));
       }

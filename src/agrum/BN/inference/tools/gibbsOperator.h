@@ -62,7 +62,7 @@ namespace gum {
     /** Getters and setters*/
     Size nbrDrawnVar() const { return _nbr; }
 
-    void setNbrDrawnVar(Size _nbr) { _nbr = _nbr; }
+    void setNbrDrawnVar(Size nbr) { _nbr = nbr; }
 
     bool isDrawnAtRandom() const { return _atRandom; }
 

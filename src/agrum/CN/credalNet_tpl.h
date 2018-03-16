@@ -46,11 +46,11 @@ namespace gum {
       NodeId c = __src_bn_max.add(var);
 
       if (a != b || a != c /*|| b != c*/)
-        GUM_ERROR(OperationNotAllowed,
-                  "addNodeWithId : not the same id over all networks : " << a << ", "
-                                                                   << b
-                                                                   << ", "
-                                                                   << c);
+        GUM_ERROR(
+          OperationNotAllowed,
+          "addNodeWithId : not the same id over all networks : " << a << ", " << b
+                                                                 << ", "
+                                                                 << c);
 
       return a;
     }
@@ -1586,12 +1586,9 @@ namespace gum {
       dest.beginTopologyTransformation();
 
       for (auto node : __current_bn->nodes()) {
-        for (auto parent_idIt = __current_bn->cpt(node).begin(),
-                  theEnd2 = __current_bn->cpt(node).end();
-             parent_idIt != theEnd2;
-             ++parent_idIt) {
-          if (__current_bn->nodeId(**parent_idIt) != node)
-            dest.addArc(__current_bn->nodeId(**parent_idIt), node);
+        for (auto parent_idIt : __current_bn->cpt(node).variablesSequence()) {
+          if (__current_bn->nodeId(*parent_idIt) != node)
+            dest.addArc(__current_bn->nodeId(*parent_idIt), node);
         }  // end of : for each parent in order of appearence
       }    // end of : for each variable
 

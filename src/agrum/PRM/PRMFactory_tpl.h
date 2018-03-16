@@ -397,7 +397,7 @@ namespace gum {
           jnst.add(**idx);
         }
 
-        jnst.begin();
+        jnst.setFirst();
         auto idx = (std::size_t)0;
         while ((!jnst.end()) && idx < array.size()) {
           inst.setVals(jnst);
@@ -2052,7 +2052,7 @@ namespace gum {
           jnst.add(**idx);
         }
 
-        jnst.begin();
+        jnst.setFirst();
         auto idx = (std::size_t)0;
         while ((!jnst.end()) && idx < array.size()) {
           inst.setVals(jnst);

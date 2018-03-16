@@ -61,14 +61,12 @@ namespace gum {
    */
   class MultiDimInterface {
     public:
-    /// Alias for Sequence<DiscreteVariable*>::iterator.
-    typedef Sequence< const DiscreteVariable* >::iterator iterator;
 
     /**
      * @brief Class destructor.
      * @warning No constructor : interface only.
      */
-    virtual ~MultiDimInterface(){};
+    virtual ~MultiDimInterface() {};
 
     // =========================================================================
     /// @name Accessors / Modifiers
@@ -174,44 +172,7 @@ namespace gum {
     void swap(const DiscreteVariable& x, const DiscreteVariable& y);
 
     /// @}
-    // =========================================================================
-    /// @name Iterators
-    // =========================================================================
-    /// @{
 
-    /**
-     * @brief Returns an iterator pointing at the beginning of the Sequence of
-     * variables.
-     * @return Returns an iterator pointing at the beginning of the Sequence of
-     * variables.
-     */
-    iterator begin() const;
-
-    /**
-     * @brief Returns an iterator pointing at the rbeginning of the Sequence
-     * of variables.
-     * @return Returns an iterator pointing at the rbeginning of the Sequence
-     * of variables.
-     */
-    iterator rbegin() const;
-
-    /**
-     * @brief Returns a constant reference on the iterator pointing at the end
-     * of the Sequence of variables.
-     * @return Returns a constant reference on the iterator pointing at the end
-     * of the Sequence of variables.
-     */
-    const iterator& end() const;
-
-    /**
-     * @brief Constant reference on the iterator pointing at the rend of the
-     * Sequence of variables.
-     * @return Constant reference on the iterator pointing at the rend of the
-     * Sequence of variables.
-     */
-    const iterator& rend() const;
-
-    /// @}
     protected:
     /**
      * @brief This is called by MultiDimContainer::swap() to proceed with the
