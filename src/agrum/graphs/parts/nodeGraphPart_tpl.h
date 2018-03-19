@@ -58,11 +58,10 @@ namespace gum {
         GUM_ERROR(DuplicateElement, new_one << " already exists in the graph");
       }
 
-        addNodeWithId(new_one);
+      addNodeWithId(new_one);
     }
   }
 
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-

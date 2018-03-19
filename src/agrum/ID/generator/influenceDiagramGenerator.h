@@ -129,4 +129,3 @@ namespace gum {
 
 #include <agrum/ID/generator/influenceDiagramGenerator_tpl.h>
 #endif /* GUM_INF_DIAG_GENERATOR_H */
-

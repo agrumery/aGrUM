@@ -881,7 +881,7 @@ namespace gum {
           }
 
           case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
-              moral_graph.addNodeWithId(node);
+            moral_graph.addNodeWithId(node);
             mods.insert(node, c.get(node).type()->domainSize());
             break;
           }

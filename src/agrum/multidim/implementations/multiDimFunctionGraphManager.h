@@ -30,8 +30,8 @@
 
 #include <agrum/agrum.h>
 #include <agrum/graphs/parts/nodeGraphPart.h>
-#include <agrum/multidim/utils/FunctionGraphUtilities/internalNode.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/internalNode.h>
 
 namespace gum {
 

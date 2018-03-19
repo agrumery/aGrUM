@@ -68,22 +68,22 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool PRM< GUM_SCALAR >::isType(const std::string &name) const {
+    INLINE bool PRM< GUM_SCALAR >::isType(const std::string& name) const {
       return __typeMap.exists(name);
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool PRM< GUM_SCALAR >::isClass(const std::string &name) const {
+    INLINE bool PRM< GUM_SCALAR >::isClass(const std::string& name) const {
       return __classMap.exists(name);
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool PRM< GUM_SCALAR >::isInterface(const std::string &name) const {
+    INLINE bool PRM< GUM_SCALAR >::isInterface(const std::string& name) const {
       return __interfaceMap.exists(name);
     }
 
     template < typename GUM_SCALAR >
-    INLINE bool PRM< GUM_SCALAR >::isSystem(const std::string &name) const {
+    INLINE bool PRM< GUM_SCALAR >::isSystem(const std::string& name) const {
       return __systemMap.exists(name);
     }
 

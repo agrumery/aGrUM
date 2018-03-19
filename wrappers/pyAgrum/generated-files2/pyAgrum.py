@@ -6267,7 +6267,7 @@ class Instantiation(_object):
 
     Examples
     --------
-    >>> ## Access the value of A in an instantiation aI 
+    >>> ## Access the value of A in an instantiation aI
     >>> valueOfA = aI['A']
     >>> ## Modify the value
     >>> aI['A'] = newValueOfA
@@ -6985,6 +6985,45 @@ class Instantiation(_object):
     def __str__(self):
         """__str__(self) -> std::string"""
         return _pyAgrum.Instantiation___str__(self)
+
+
+    def todict(self, withLabels=False):
+        """
+        todict(self, withLabels=False) -> PyObject
+        todict(self) -> PyObject *
+
+
+        Create a dict (variable_name:value) from an instantiation
+
+        Parameters
+        ----------
+        withLabels : boolean
+        	The value will be a label (string) if True. It will be a position (int) if False.
+
+        Returns
+        -------
+        Dict
+            The dictionary
+
+        """
+        return _pyAgrum.Instantiation_todict(self, withLabels)
+
+
+    def fromdict(self, dict):
+        """
+        fromdict(self, dict)
+
+
+        Change the values in an instantiation from a dict (variable_name:value) where value can be a position (int) or a label (string).
+
+        If a variable_name does not occur in the instantiation, nothing is done.
+
+        Warnings
+        --------
+            OutOfBounds raised if a value cannot be found.
+
+        """
+        return _pyAgrum.Instantiation_fromdict(self, dict)
 
 
     def __setitem__(self,key,item):

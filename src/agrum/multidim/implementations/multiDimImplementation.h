@@ -237,7 +237,8 @@ namespace gum {
      * @param x The first variable to swap.
      * @param y The second variable to swap.
      */
-    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y) override;
+    virtual void _replace(const DiscreteVariable* x,
+                          const DiscreteVariable* y) override;
 
     /**
      * @brief Inverts variables at position p1 and p2

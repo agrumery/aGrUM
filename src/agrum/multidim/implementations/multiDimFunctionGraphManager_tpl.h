@@ -26,8 +26,8 @@
  *
  */
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/utils/FunctionGraphUtilities/link.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraphManager.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/link.h>
 
 namespace gum {
 

@@ -270,8 +270,7 @@ namespace gum {
     _unnormalizedJointPosterior(const NodeSet& set) = 0;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential< GUM_SCALAR >*
-    _unnormalizedJointPosterior(NodeId id) = 0;
+    virtual Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) = 0;
 
 
     private:

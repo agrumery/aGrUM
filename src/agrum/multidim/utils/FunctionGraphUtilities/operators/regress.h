@@ -28,9 +28,9 @@
 #ifndef GUM_REGRESS_H
 #define GUM_REGRESS_H
 
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/operators/o4DGContext.h>
 #include <agrum/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
-#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 
 namespace gum {
 

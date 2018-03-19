@@ -816,8 +816,8 @@ namespace gum {
   INLINE bool Instantiation::empty() const { return __vals.empty(); }
 
   // Replace x by y.
-  INLINE void Instantiation::_replace(const DiscreteVariable *x,
-                                      const DiscreteVariable *y) {
+  INLINE void Instantiation::_replace(const DiscreteVariable* x,
+                                      const DiscreteVariable* y) {
     __vars.setAtPos(__vars.pos(x), y);
   }
 

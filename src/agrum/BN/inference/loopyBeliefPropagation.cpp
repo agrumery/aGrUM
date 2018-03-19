@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <agrum/agrum.h>
 #include <agrum/BN/inference/loopyBeliefPropagation.h>
+#include <agrum/agrum.h>
 
-template class gum::LoopyBeliefPropagation<float>;
-template class gum::LoopyBeliefPropagation<double>;
+template class gum::LoopyBeliefPropagation< float >;
+template class gum::LoopyBeliefPropagation< double >;

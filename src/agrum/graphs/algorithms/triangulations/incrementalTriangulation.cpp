@@ -160,7 +160,7 @@ namespace gum {
     if (__graph.existsNode(node)) return;
 
     // add the new node to the graph
-      __graph.addNodeWithId(node);
+    __graph.addNodeWithId(node);
     __domain_sizes.insert(node, modal);
 
     // add a new clique to T_mpd and the junction tree

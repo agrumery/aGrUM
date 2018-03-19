@@ -357,7 +357,7 @@ namespace gum {
      * @warning This will raise an OperationNotAllowed as this method has not
      * yet been implemented.
      */
-    virtual void _replace(const DiscreteVariable *x, const DiscreteVariable *y);
+    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
 
     /**
      * @warning This will raise an OperationNotAllowed as you should not use

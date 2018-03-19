@@ -27,7 +27,8 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
-#warning To use completeProjectionPattern4MultiDimImplementation.h, you must define GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
+// #warning To use completeProjectionPattern4MultiDimImplementation.h, you must
+// define GUM_COMPLETE_PROJECTION_PATTERN_ALLOWED
 
 #else
 namespace gum {

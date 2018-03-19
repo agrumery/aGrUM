@@ -128,4 +128,3 @@ namespace gum_tests {
     }
   };
 }
-

@@ -22,8 +22,8 @@
 #include <cxxtest/AgrumTestSuite.h>
 #include <cxxtest/testsuite_utils.h>
 
-#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/instantiation.h>
 #include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {

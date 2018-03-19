@@ -31,7 +31,8 @@
  * https://doi.org/10.1371/journal.pcbi.1005662. Only the orientation phase differs
  * from 3off2, with a diffferent ranking method and different propagation rules.
  *
- * @author Quentin FALCAND and Pierre-Henri WUILLEMIN and Maria-Virginia RUIZ CUEVAS
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN and Maria-Virginia RUIZ
+ * CUEVAS
  */
 #ifndef GUM_LEARNING_3_OFF_2_H
 #define GUM_LEARNING_3_OFF_2_H

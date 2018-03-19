@@ -70,8 +70,7 @@ namespace gum {
      * @param varId The variable id of the UT owner.
      * @param ut A reference on the UT to fill.
      */
-    virtual void generateUT(const Idx&                    varId,
-                            const Potential< double >& ut) = 0;
+    virtual void generateUT(const Idx& varId, const Potential< double >& ut) = 0;
     /// @}
   };
 

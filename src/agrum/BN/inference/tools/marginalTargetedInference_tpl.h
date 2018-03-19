@@ -69,7 +69,8 @@ namespace gum {
 
   // return true if variable is a target
   template < typename GUM_SCALAR >
-  INLINE bool MarginalTargetedInference< GUM_SCALAR >::isTarget(NodeId node) const {
+  INLINE bool
+  MarginalTargetedInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the bn
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,

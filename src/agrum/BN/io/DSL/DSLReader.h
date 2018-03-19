@@ -134,4 +134,3 @@ namespace gum {
 #include "DSLReader_tpl.h"
 
 #endif  // DSLREADER_H
-

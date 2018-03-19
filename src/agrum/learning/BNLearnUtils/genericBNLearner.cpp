@@ -762,7 +762,7 @@ namespace gum {
       // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
       for (Size i = 0; i < __score_database.modalities().size(); ++i) {
-          mgraph.addNodeWithId(i);
+        mgraph.addNodeWithId(i);
         for (Size j = 0; j < i; ++j) {
           mgraph.addEdge(j, i);
         }

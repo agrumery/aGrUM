@@ -72,4 +72,3 @@ namespace gum {
 
   }  // aggregator
 }  // namespace gum
-

@@ -116,7 +116,7 @@ namespace gum {
      * @return Returns 0 if no error, 1 if any
      * @warning XMLBNReader can not give the number of errors.
      */
-     Size proceed() final;
+    Size proceed() final;
 
     /**
      * Signaler used to indicates how many percent of the Xml files have been

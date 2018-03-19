@@ -36,9 +36,9 @@
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORNet.h>
 #include <agrum/multidim/implementations/multiDimSparse.h>
+#include <agrum/multidim/potential.h>
 #include <agrum/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/multidim/utils/operators/projections4MultiDim.h>
-#include <agrum/multidim/potential.h>
 
 #include <agrum/graphs/algorithms/triangulations/partialOrderedTriangulation.h>
 

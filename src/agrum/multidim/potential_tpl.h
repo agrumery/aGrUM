@@ -280,8 +280,8 @@ namespace gum {
       if (src.variable(mapSrc[i]).domainSize() != this->variable(i).domainSize()) {
         GUM_ERROR(InvalidArgument,
                   "Variables " << mapSrc[i] << " (in the argument) and "
-                                   << this->variable(i).name()
-                                   << " have not the same dimension.");
+                               << this->variable(i).name()
+                               << " have not the same dimension.");
       } else {
         Isrc.add(src.variable(mapSrc[i]));
       }

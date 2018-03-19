@@ -160,4 +160,3 @@ namespace gum {
   }
 
 } /* namespace gum */
-

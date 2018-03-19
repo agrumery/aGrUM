@@ -475,7 +475,7 @@ namespace gum {
 
     __variableMap.insert(proposedId, variableType);
 
-      _dag.addNodeWithId(proposedId);
+    _dag.addNodeWithId(proposedId);
 
     // end critical section
     return proposedId;

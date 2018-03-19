@@ -31,13 +31,14 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_PROJECTION_PATTERN_ALLOWED
 
-#warning To use projectionPattern, you must define GUM_PROJECTION_PATTERN_ALLOWED
+// #warning To use projectionPattern, you must define
+// GUM_PROJECTION_PATTERN_ALLOWED
 
 #else
 
-#include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/multidim/implementations/multiDimImplementation.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphProjector.h>
 
 namespace gum {
 

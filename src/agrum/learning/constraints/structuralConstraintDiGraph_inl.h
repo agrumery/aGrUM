@@ -143,7 +143,7 @@ namespace gum {
       _DiGraph__graph.clear();
 
       for (NodeId i = 0; i < nb_nodes; ++i) {
-          _DiGraph__graph.addNodeWithId(i);
+        _DiGraph__graph.addNodeWithId(i);
       }
     }
 

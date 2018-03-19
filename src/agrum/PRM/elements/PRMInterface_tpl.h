@@ -94,7 +94,7 @@ namespace gum {
         }
 
         __nameMap.insert(attr->safeName(), attr);
-          __dag.addNodeWithId(attr->id());
+        __dag.addNodeWithId(attr->id());
       }
 
       // Copying reference slots
@@ -113,7 +113,7 @@ namespace gum {
         }
 
         __nameMap.insert(ref->safeName(), ref);
-          __dag.addNodeWithId(ref->id());
+        __dag.addNodeWithId(ref->id());
       }
     }
 
@@ -131,7 +131,7 @@ namespace gum {
 
         while (true) {
           attr->setId(nextNodeId());
-            __dag.addNodeWithId(attr->id());
+          __dag.addNodeWithId(attr->id());
           __nodeIdMap.insert(attr->id(), attr);
           __nameMap.insert(attr->safeName(), attr);
           __attributes.insert(attr);
@@ -144,7 +144,7 @@ namespace gum {
         }
       } else if (PRMClassElement< GUM_SCALAR >::isReferenceSlot(*elt)) {
         elt->setId(nextNodeId());
-          __dag.addNodeWithId(elt->id());
+        __dag.addNodeWithId(elt->id());
         __nodeIdMap.insert(elt->id(), elt);
         __referenceSlots.insert(
           static_cast< PRMReferenceSlot< GUM_SCALAR >* >(elt));
@@ -219,7 +219,7 @@ namespace gum {
       PRMAttribute< GUM_SCALAR >* overloaded) {
       if (overloader->type() != overloaded->type()) {
         overloader->setId(nextNodeId());
-          __dag.addNodeWithId(overloader->id());
+        __dag.addNodeWithId(overloader->id());
         __nodeIdMap.insert(overloader->id(), overloader);
         __nameMap[overloader->name()] = overloader;
         __nameMap.insert(overloader->safeName(), overloader);
@@ -265,7 +265,7 @@ namespace gum {
       while (parent->type().superType() != end->type()) {
         child = parent->getCastDescendant();
         child->setId(nextNodeId());
-          __dag.addNodeWithId(child->id());
+        __dag.addNodeWithId(child->id());
         __nodeIdMap.insert(child->id(), child);
         // Only use child's safe name when adding to the name map!
         __nameMap.insert(child->safeName(), child);

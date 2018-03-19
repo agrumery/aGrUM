@@ -56,7 +56,7 @@ namespace gum {
     /**
      * Destructor
      */
-    ~WeightedSampling() override ;
+    ~WeightedSampling() override;
 
     protected:
     /// draws a defined number of samples without updating the estimators

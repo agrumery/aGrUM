@@ -28,7 +28,8 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_PROJECTION_PATTERN_ALLOWED
 
-#warning To use projectionPattern, you must define GUM_PROJECTION_PATTERN_ALLOWED
+// #warning To use projectionPattern, you must define
+// GUM_PROJECTION_PATTERN_ALLOWED
 
 #else
 namespace gum {

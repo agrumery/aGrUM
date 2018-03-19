@@ -216,8 +216,7 @@ namespace gum {
           const Potential< GUM_SCALAR >* table = &__infdiag->cpt(currentVarId);
           table->populate(tablevector);
         } else if (__infdiag->isUtilityNode(currentVarId)) {
-          const Potential< GUM_SCALAR >* table =
-            &__infdiag->utility(currentVarId);
+          const Potential< GUM_SCALAR >* table = &__infdiag->utility(currentVarId);
           table->populate(tablevector);
         }
       }

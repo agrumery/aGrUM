@@ -27,11 +27,11 @@
 #include "testsuite_utils.h"
 #include <cxxtest/AgrumTestSuite.h>
 // =========================================================================
-#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraphGenerator.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraphManager.h>
+#include <agrum/multidim/instantiation.h>
 // =========================================================================
 #include <agrum/variables/labelizedVariable.h>
 // =========================================================================
@@ -539,7 +539,8 @@ namespace gum_tests {
       // *********************************************************************
       gum::LabelizedVariable* lv =
         new gum::LabelizedVariable("Test", "Cornichon", 2);
-      TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(functionGraph->replace(*Cvar, *lv),
+                       gum::OperationNotAllowed);
       delete lv;
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete functionGraph);

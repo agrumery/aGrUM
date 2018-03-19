@@ -28,15 +28,16 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_OPERATOR_PATTERN_ALLOWED
 
-#warning To use operatorPattern4MultiDimFunctionGraph.h, you must define GUM_OPERATOR_PATTERN_ALLOWED
+// #warning To use operatorPattern4MultiDimFunctionGraph.h, you must define
+// GUM_OPERATOR_PATTERN_ALLOWED
 
 #else
 
 #include <agrum/core/functors.h>
 
-#include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 #include <agrum/multidim/implementations/multiDimImplementation.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/operators/multiDimFunctionGraphOperator.h>
 
 namespace gum {
 

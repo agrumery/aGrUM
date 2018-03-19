@@ -115,7 +115,7 @@ namespace gum {
           NodeData< GUM_SCALAR >* node = new NodeData< GUM_SCALAR >();
           node->n = iter.val();
           __label(node, label_map);
-            __graph.addNodeWithId(iter.key());
+          __graph.addNodeWithId(iter.key());
           __idMap.insert(node->n, iter.key());
           __nodes.insert(iter.key(), node);
         }

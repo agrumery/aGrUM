@@ -31,9 +31,9 @@
 #include <agrum/multidim/implementations/multiDimBijArray.h>
 #include <agrum/multidim/implementations/multiDimBucket.h>
 #include <agrum/multidim/implementations/multiDimSparse.h>
+#include <agrum/multidim/potential.h>
 #include <agrum/multidim/utils/operators/multiDimCombinationDefault.h>
 #include <agrum/multidim/utils/operators/projections4MultiDim.h>
-#include <agrum/multidim/potential.h>
 
 #include <agrum/PRM/elements/PRMObject.h>
 

@@ -27,7 +27,8 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_OPERATOR_PATTERN_ALLOWED
 
-#warning To use operatorPattern4MultiDimArray.h, you must define GUM_OPERATOR_PATTERN_ALLOWED
+// #warning To use operatorPattern4MultiDimArray.h, you must define
+// GUM_OPERATOR_PATTERN_ALLOWED
 
 #else
 
@@ -83,7 +84,7 @@ namespace gum {
   MultiDimImplementation<T*>*
   GUM_MULTI_DIM_OPERATOR_POINTER_IMPL2ARRAY_NAME(
       const MultiDimImplementation<T*>* tt1,
-      const MultiDimImplementation<T*>* tt2 ) 
+      const MultiDimImplementation<T*>* tt2 )
 #endif
 
   // clang-format on

@@ -670,7 +670,7 @@ namespace gum {
   // Not implemented yet
   template < typename GUM_SCALAR, template < class > class TerminalNodePolicy >
   INLINE void MultiDimFunctionGraph< GUM_SCALAR, TerminalNodePolicy >::_replace(
-          const DiscreteVariable *x, const DiscreteVariable *y) {
+    const DiscreteVariable* x, const DiscreteVariable* y) {
     GUM_ERROR(OperationNotAllowed, "Not Implemented Yet")
   }
 

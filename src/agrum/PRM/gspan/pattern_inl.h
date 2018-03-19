@@ -41,7 +41,7 @@ namespace gum {
       INLINE
       NodeId Pattern::addNodeWithLabel(LabelData& l) {
         NodeId n = NodeId(size() + 1);
-          DiGraph::addNodeWithId(n);
+        DiGraph::addNodeWithId(n);
         __node_map.insert(n, &l);
         __last = &l;
         return n;

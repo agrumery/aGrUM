@@ -110,7 +110,7 @@ namespace gum {
     NodeGraphPartIterator& operator++() noexcept;
 
     /// dereferencing operator
-    value_type operator*()const;
+    value_type operator*() const;
 
     /// @}
 

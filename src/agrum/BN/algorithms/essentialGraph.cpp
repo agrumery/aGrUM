@@ -58,7 +58,7 @@ namespace gum {
     if (__dagmodel == nullptr) return;
 
     for (const auto& node : __dagmodel->nodes()) {
-        __mg.addNodeWithId(node);
+      __mg.addNodeWithId(node);
     }
     for (const auto& arc : __dagmodel->arcs()) {
       __mg.addArc(arc.tail(), arc.head());

@@ -158,7 +158,8 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a
+     * hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
@@ -219,7 +220,8 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a
+     * hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
@@ -263,7 +265,8 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a
+     * hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
@@ -318,7 +321,8 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a
+     * hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
@@ -368,7 +372,8 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a
+     * hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
@@ -435,7 +440,8 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a
+     * hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */
@@ -477,7 +483,8 @@ namespace gum {
      * array of lists, not the number of elements stored into the
      * gum::HashTable.
      *
-     * @param new_size The hashtable's size wished by the user. Actually, a hashtable
+     * @param new_size The hashtable's size wished by the user. Actually, a
+     * hashtable
      * of size n is an array of n lists.
      * @throw SizeError Raised if s is too small.
      */

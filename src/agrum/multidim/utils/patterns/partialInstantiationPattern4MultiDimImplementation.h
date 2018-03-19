@@ -29,7 +29,8 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
-#warning To use partialIntantiationPattern4MultiDimImplementation.h, you must define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
+// #warning To use partialIntantiationPattern4MultiDimImplementation.h, you must
+// define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
 #else
 namespace gum {

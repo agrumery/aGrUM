@@ -30,8 +30,8 @@
 
 #include <functional>
 
-#include <agrum/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/ExactTerminalNodePolicy.h>
 
 namespace gum {
 

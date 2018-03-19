@@ -41,8 +41,8 @@ namespace gum {
         NodeProperty< NodeId > node_map;
 
         for (NodeId node = 1; node <= source.size(); ++node) {
-          node_map.insert(node,
-                          addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
+          node_map.insert(
+            node, addNodeWithLabel(const_cast< LabelData& >(source.label(node))));
         }
 
         for (const auto edge : source.code().codes)

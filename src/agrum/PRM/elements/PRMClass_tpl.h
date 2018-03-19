@@ -113,11 +113,11 @@ namespace gum {
             delayedInheritance) {
           // Reserve reference id in DAG
           for (auto ref : impl->referenceSlots()) {
-              __dag.addNodeWithId(ref->id());
+            __dag.addNodeWithId(ref->id());
           }
           // Reserve attribute id in DAG
           for (auto attr : impl->attributes()) {
-              __dag.addNodeWithId(attr->id());
+            __dag.addNodeWithId(attr->id());
           }
         }
       }
@@ -176,7 +176,7 @@ namespace gum {
           ref->setId(c_refslot->id());
           // Not reserved by an interface
           if (!__dag.existsNode(ref->id())) {
-              __dag.addNodeWithId(ref->id());
+            __dag.addNodeWithId(ref->id());
           }
           __nodeIdMap.insert(ref->id(), ref);
           __referenceSlots.insert(ref);
@@ -202,7 +202,7 @@ namespace gum {
           __parameters.insert(param);
 
           param->setId(c_param->id());
-            __dag.addNodeWithId(param->id());
+          __dag.addNodeWithId(param->id());
           __nodeIdMap.insert(param->id(), param);
           __nameMap.insert(param->name(), param);
         }
@@ -221,7 +221,7 @@ namespace gum {
                               &(attr->type().variable()));
           attr->setId(c_attr->id());
           try {
-              __dag.addNodeWithId(attr->id());
+            __dag.addNodeWithId(attr->id());
           } catch (gum::Exception&) {
             // Node reserved by an interface
           }
@@ -258,7 +258,7 @@ namespace gum {
           __bijection->insert(&(c_agg->type().variable()),
                               &(agg->type().variable()));
           agg->setId(c_agg->id());
-            __dag.addNodeWithId(agg->id());
+          __dag.addNodeWithId(agg->id());
           __nodeIdMap.insert(agg->id(), agg);
           __aggregates.insert(agg);
 
@@ -290,7 +290,7 @@ namespace gum {
             __bijection->insert(&(c_sc->type().variable()),
                                 &(sc->type().variable()));
             sc->setId(c_sc->id());
-              __dag.addNodeWithId(sc->id());
+            __dag.addNodeWithId(sc->id());
             __nodeIdMap.insert(sc->id(), sc);
             __slotChains.insert(sc);
 
@@ -648,7 +648,7 @@ namespace gum {
       }
 
       elt->setId(nextNodeId());
-        __dag.addNodeWithId(elt->id());
+      __dag.addNodeWithId(elt->id());
       __nodeIdMap.insert(elt->id(), elt);
       __nameMap.insert(elt->name(), elt);
 
@@ -738,7 +738,7 @@ namespace gum {
         }
         if (!found) {
           child->setId(nextNodeId());
-            __dag.addNodeWithId(child->id());
+          __dag.addNodeWithId(child->id());
         }
         __nodeIdMap.insert(child->id(), child);
         // Only use child's safe name when adding to the name map!
@@ -834,7 +834,7 @@ namespace gum {
       // Checking if we have to add cast descendant
       if (overloader->type() != overloaded->type()) {
         overloader->setId(nextNodeId());
-          __dag.addNodeWithId(overloader->id());
+        __dag.addNodeWithId(overloader->id());
         __nodeIdMap.insert(overloader->id(), overloader);
         __nameMap[overloader->name()] = overloader;
         __nameMap.insert(overloader->safeName(), overloader);
@@ -973,7 +973,7 @@ namespace gum {
         child = parent->getCastDescendant();
         child->setId(nextNodeId());
         __nodeIdMap.insert(child->id(), child);
-          __dag.addNodeWithId(child->id());
+        __dag.addNodeWithId(child->id());
         // Only use child's safe name when adding to the name map!
         __nameMap.insert(child->safeName(), child);
         __attributes.insert(child);

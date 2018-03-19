@@ -224,7 +224,7 @@ namespace gum {
             }
           } else {
             auto nb_match = Size(std::min(nb_parents, nb_children) - 1);
-            auto       iter_par = parents.beginSafe();
+            auto iter_par = parents.beginSafe();
             ++iter_par;  // skip the first parent, whose arc with node will
                          // remain
             auto iter_child = children.beginSafe();

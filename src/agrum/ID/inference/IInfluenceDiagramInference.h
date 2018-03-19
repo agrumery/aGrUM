@@ -45,7 +45,8 @@ namespace gum {
     /**
      * Default constructor
      */
-    explicit IInfluenceDiagramInference(const InfluenceDiagram< GUM_SCALAR >& infDiag);
+    explicit IInfluenceDiagramInference(
+      const InfluenceDiagram< GUM_SCALAR >& infDiag);
 
     /**
      * Destructor.

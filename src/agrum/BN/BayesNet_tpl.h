@@ -267,7 +267,7 @@ namespace gum {
                               MultiDimImplementation< GUM_SCALAR >* aContent,
                               NodeId                                id) {
     __varMap.insert(id, var);
-      this->_dag.addNodeWithId(id);
+    this->_dag.addNodeWithId(id);
 
     auto cpt = new Potential< GUM_SCALAR >(aContent);
     (*cpt) << variable(id);

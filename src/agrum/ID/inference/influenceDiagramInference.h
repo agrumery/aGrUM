@@ -72,7 +72,8 @@ namespace gum {
      * Default constructor.
      * @param infDiag the influence diagram we want to perform inference upon
      */
-    explicit InfluenceDiagramInference(const InfluenceDiagram< GUM_SCALAR >& infDiag);
+    explicit InfluenceDiagramInference(
+      const InfluenceDiagram< GUM_SCALAR >& infDiag);
 
     /**
      * Destructor.
@@ -204,7 +205,7 @@ namespace gum {
     void __reduceClique(CliqueProperties< GUM_SCALAR >* absorbedClique,
                         NodeSet&                        separator,
                         Potential< GUM_SCALAR >*&       potentialMarginal,
-                        Potential< GUM_SCALAR >*&    utilityMarginal);
+                        Potential< GUM_SCALAR >*&       utilityMarginal);
 
     /// Returns a pointer over a "dummy" potential, which is a CPT filled with
     /// one MultiDimSparse filled with 1. This is used by empty cliques.

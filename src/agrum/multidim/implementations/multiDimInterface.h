@@ -61,12 +61,11 @@ namespace gum {
    */
   class MultiDimInterface {
     public:
-
     /**
      * @brief Class destructor.
      * @warning No constructor : interface only.
      */
-    virtual ~MultiDimInterface() {};
+    virtual ~MultiDimInterface(){};
 
     // =========================================================================
     /// @name Accessors / Modifiers
@@ -169,7 +168,7 @@ namespace gum {
      * @throw OperationNotAllowed If y and x are not interchangeable.
      * @throw DuplicateElement If y is already in this MultiDim.
      */
-    void replace(const DiscreteVariable &x, const DiscreteVariable &y);
+    void replace(const DiscreteVariable& x, const DiscreteVariable& y);
 
     /// @}
 
@@ -183,7 +182,8 @@ namespace gum {
      * @param x The variable to replace in
      * @param y The second variable to swap.
      */
-    virtual void _replace(const DiscreteVariable *x, const DiscreteVariable *y) = 0;
+    virtual void _replace(const DiscreteVariable* x,
+                          const DiscreteVariable* y) = 0;
   };
 
   /**

@@ -38,7 +38,7 @@ namespace gum {
       DAG g;
 
       for (auto node : graph)
-          g.addNodeWithId(node);
+        g.addNodeWithId(node);
 
       for (auto& arc : graph.arcs())
         g.addArc(arc.tail(), arc.head());
@@ -51,7 +51,7 @@ namespace gum {
       DAG g;
 
       for (NodeId i = 0; i < nb_nodes; ++i) {
-          g.addNodeWithId(i);
+        g.addNodeWithId(i);
       }
 
       _DAG__cycle_detector.setDAG(g);

@@ -174,14 +174,12 @@ namespace gum {
 
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceAdded(NodeId,
-                                                                  bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceAdded(NodeId, bool) {}
 
 
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceErased(NodeId,
-                                                                   bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceErased(NodeId, bool) {}
 
 
   /// fired when all the evidence are erased
@@ -191,20 +189,18 @@ namespace gum {
 
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceChanged(NodeId,
-                                                                    bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceChanged(NodeId, bool) {
+  }
 
 
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
-  INLINE void
-  VariableElimination< GUM_SCALAR >::_onMarginalTargetAdded(NodeId) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetAdded(NodeId) {}
 
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
-  INLINE void
-  VariableElimination< GUM_SCALAR >::_onMarginalTargetErased(NodeId) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetErased(NodeId) {}
 
 
   /// fired after a new set target is inserted
@@ -260,7 +256,7 @@ namespace gum {
     const auto& bn = this->BN();
     __graph.clear();
     for (auto node : bn.dag())
-        __graph.addNodeWithId(node);
+      __graph.addNodeWithId(node);
 
     // 2/ if we wish to exploit barren nodes, we shall remove them from the BN
     // to do so: we identify all the nodes that are not targets and have
@@ -671,8 +667,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::pair< Set< const Potential< GUM_SCALAR >* >,
              Set< const Potential< GUM_SCALAR >* > >
-  VariableElimination< GUM_SCALAR >::__collectMessage(NodeId id,
-                                                      NodeId from) {
+  VariableElimination< GUM_SCALAR >::__collectMessage(NodeId id, NodeId from) {
     // collect messages from all the neighbors
     std::pair< __PotentialSet, __PotentialSet > collect_messages;
     for (const auto other : __JT->neighbours(id)) {
@@ -942,7 +937,7 @@ namespace gum {
     // if we still need to perform some inference task, do it
     __createNewJT(NodeSet{id});
     NodeId clique_of_id = __node_to_clique[id];
-    auto         pot_list = __collectMessage(clique_of_id, clique_of_id);
+    auto   pot_list = __collectMessage(clique_of_id, clique_of_id);
 
     // get the set of variables that need be removed from the potentials
     const NodeSet&                 nodes = __JT->clique(clique_of_id);

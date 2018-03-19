@@ -910,5 +910,3 @@ namespace gum {
     __stringBag.clear();
   }
 } /* namespace gum */
-
-

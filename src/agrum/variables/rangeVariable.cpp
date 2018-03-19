@@ -68,4 +68,3 @@ namespace gum {
     return s.str();
   }
 } /* namespace gum */
-

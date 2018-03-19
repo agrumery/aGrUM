@@ -34,8 +34,8 @@
 #include <agrum/core/functors.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/potential.h>
 // =========================================================================
 #include <agrum/FMDP/planning/adaptiveRMaxPlaner.h>

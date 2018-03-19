@@ -36,7 +36,7 @@ namespace gum_tests {
       std::default_random_engine generator = gum::getRandomGenerator();
       gum::DAG                   dag;
       for (gum::Idx i = 0; i < nb_nodes; ++i) {
-          dag.addNodeWithId(i);
+        dag.addNodeWithId(i);
       }
       std::uniform_int_distribution< int > distribution(0, nb_nodes - 1);
       while (nb_arcs) {
@@ -240,7 +240,7 @@ namespace gum_tests {
     void testG1() {
       gum::DAG g;
       for (gum::Idx i = 0; i < 10; ++i) {
-          g.addNodeWithId(i);
+        g.addNodeWithId(i);
       }
       g.addArc(3, 9);
       g.addArc(3, 5);

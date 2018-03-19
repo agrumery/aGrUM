@@ -114,4 +114,3 @@ namespace gum {
     _maxParents = maxParents;
   }
 } /* namespace gum */
-

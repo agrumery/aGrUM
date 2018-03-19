@@ -123,9 +123,9 @@ namespace gum {
 
 /// @}
 #ifdef SWIG
-    const std::string what() const { return "[pyAgrum] "+_type + ": " + _msg; }
+    const std::string what() const { return "[pyAgrum] " + _type + ": " + _msg; }
 #else
-    const std::string what() const { return "[pyAgrum] "+ _type + " : " + _msg; }
+    const std::string what() const { return "[pyAgrum] " + _type + " : " + _msg; }
 #endif
 
     /**

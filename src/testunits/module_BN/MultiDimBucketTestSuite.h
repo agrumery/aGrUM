@@ -24,8 +24,8 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/BN/generator/simpleCPTGenerator.h>
-#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/implementations/multiDimBucket.h>
+#include <agrum/multidim/instantiation.h>
 #include <agrum/multidim/utils/operators/operators4MultiDim.h>
 #include <agrum/multidim/utils/operators/projections4MultiDim.h>
 #include <agrum/variables/labelizedVariable.h>

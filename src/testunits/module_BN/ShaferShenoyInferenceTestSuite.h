@@ -843,4 +843,3 @@ namespace gum_tests {
     }
   };
 }
-

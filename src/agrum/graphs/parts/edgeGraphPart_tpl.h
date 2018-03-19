@@ -50,4 +50,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-

@@ -46,9 +46,9 @@ namespace gum {
     if (!__model.nodes().exists(__node))
       GUM_ERROR(InvalidArgument, "Node " << __node << " does not exist.");
 
-      __mb.addNodeWithId(__node);
+    __mb.addNodeWithId(__node);
     for (const auto& parent : __model.parents(__node)) {
-        __mb.addNodeWithId(parent);
+      __mb.addNodeWithId(parent);
       __mb.addArc(parent, __node);
     }
 

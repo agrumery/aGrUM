@@ -139,7 +139,7 @@ namespace gum {
     UndiGraph partialGraph;
 
     for (const auto node : nodesSet) {
-        partialGraph.addNodeWithId(node);
+      partialGraph.addNodeWithId(node);
 
       for (const auto nei : neighbours(node))
         if (nodesSet.contains(nei) && partialGraph.existsNode(nei))

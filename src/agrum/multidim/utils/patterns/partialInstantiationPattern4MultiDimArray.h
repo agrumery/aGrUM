@@ -31,7 +31,8 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
-#warning To use partialIntantiationPattern, you must define GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
+// #warning To use partialIntantiationPattern, you must define
+// GUM_PARTIAL_INSTANTIATION_PATTERN_ALLOWED
 
 #else
 namespace gum {
@@ -56,7 +57,7 @@ namespace gum {
   MultiDimArray<GUM_SCALAR*>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_NAME(
       const MultiDimArray<GUM_SCALAR*>* table,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars ) 
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars )
 #endif
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME
@@ -65,7 +66,7 @@ namespace gum {
   MultiDimImplementation<GUM_SCALAR>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_IMPL2ARRAY_NAME(
       const MultiDimImplementation<GUM_SCALAR>* ttable,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars ) 
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars )
 #endif
 
 #ifdef GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME
@@ -75,7 +76,7 @@ namespace gum {
   MultiDimImplementation<GUM_SCALAR*>*
   GUM_MULTI_DIM_PARTIAL_INSTANTIATION_POINTER_IMPL2ARRAY_NAME(
       const MultiDimImplementation<GUM_SCALAR*>* ttable,
-      const HashTable<const DiscreteVariable*, Idx>& inst_vars ) 
+      const HashTable<const DiscreteVariable*, Idx>& inst_vars )
 #endif
 
   // clang-format on

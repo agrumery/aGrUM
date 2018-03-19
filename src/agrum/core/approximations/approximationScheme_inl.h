@@ -131,9 +131,7 @@ namespace gum {
   INLINE double ApproximationScheme::maxTime() const { return _max_time; }
 
   // get the current running time in second (double)
-  INLINE double ApproximationScheme::currentTime() const {
-    return _timer.step();
-  }
+  INLINE double ApproximationScheme::currentTime() const { return _timer.step(); }
 
   // Disable stopping criterion on timeout
   INLINE void ApproximationScheme::disableMaxTime() { _enabled_max_time = false; }

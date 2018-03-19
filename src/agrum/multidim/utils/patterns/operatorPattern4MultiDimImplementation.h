@@ -27,7 +27,8 @@
 // check if we allowed these patterns to be used
 #ifndef GUM_OPERATOR_PATTERN_ALLOWED
 
-#warning To use operatorPattern4MultiDimImplementation.h, you must define GUM_OPERATOR_PATTERN_ALLOWED
+// #warning To use operatorPattern4MultiDimImplementation.h, you must define
+// GUM_OPERATOR_PATTERN_ALLOWED
 
 #else
 

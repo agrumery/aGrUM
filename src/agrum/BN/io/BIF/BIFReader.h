@@ -123,7 +123,7 @@ namespace gum {
     public:
     BIFReader(BayesNet< GUM_SCALAR >* bn, const std::string& filename);
 
-      ~BIFReader() final;
+    ~BIFReader() final;
 
     /// Direct access to BIF scanner (mandatory for listener connection)
     /// @throws IOError if file not exists

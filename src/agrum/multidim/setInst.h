@@ -835,7 +835,7 @@ namespace gum {
     /// @}
 
     protected:
-    virtual void _replace(const DiscreteVariable *x, const DiscreteVariable *y);
+    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
 
     private:
     /// The tuple of variables to be instantiated.

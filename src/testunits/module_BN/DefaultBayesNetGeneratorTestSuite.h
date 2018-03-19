@@ -178,4 +178,3 @@ namespace gum_tests {
     }
   };
 }
-

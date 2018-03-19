@@ -276,7 +276,8 @@ namespace gum {
 
     /// Tells the factory on which modality we want to instantiate one of
     /// variable's parent.
-    void setParentModality(const std::string& parent, const std::string& modality) final;
+    void setParentModality(const std::string& parent,
+                           const std::string& modality) final;
 
     /**
      * @brief Gives the values of the variable with respect to precedent
@@ -454,4 +455,3 @@ namespace gum {
 #include <agrum/BN/BayesNetFactory_tpl.h>
 
 #endif  // GUM_BAYESNET_FACTORY_H
-
