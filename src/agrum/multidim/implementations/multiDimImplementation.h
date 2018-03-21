@@ -152,16 +152,18 @@ namespace gum {
 
     virtual void erase(const DiscreteVariable& v) override;
 
-    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const override;
+    virtual const Sequence< const DiscreteVariable* >&
+    variablesSequence() const override;
 
     virtual const DiscreteVariable& variable(Idx i) const override;
-    virtual const DiscreteVariable& variable(const std::string& name) constv;
+    virtual const DiscreteVariable&
+    variable(const std::string& name) const override;
 
     virtual Idx pos(const DiscreteVariable& v) const override;
 
     virtual bool contains(const DiscreteVariable& v) const override;
 
-    virtual bool empty() const override override;
+    virtual bool empty() const override;
 
     /// @}
     // =========================================================================
@@ -181,7 +183,7 @@ namespace gum {
 
     using MultiDimContainer< GUM_SCALAR >::get;
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0 override;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const override = 0;
 
     virtual void beginMultipleChanges() override;
 
