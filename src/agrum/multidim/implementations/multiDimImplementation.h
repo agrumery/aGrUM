@@ -144,24 +144,24 @@ namespace gum {
     /// @name MultiDimInterface implementation
     // ========================================================================
     /// @{
-    virtual Idx nbrDim() const;
+    virtual Idx nbrDim() const override;
 
-    virtual Size domainSize() const;
+    virtual Size domainSize() const override;
 
-    virtual void add(const DiscreteVariable& v);
+    virtual void add(const DiscreteVariable& v) override;
 
-    virtual void erase(const DiscreteVariable& v);
+    virtual void erase(const DiscreteVariable& v) override;
 
-    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const;
+    virtual const Sequence< const DiscreteVariable* >& variablesSequence() const override;
 
-    virtual const DiscreteVariable& variable(Idx i) const;
-    virtual const DiscreteVariable& variable(const std::string& name) const;
+    virtual const DiscreteVariable& variable(Idx i) const override;
+    virtual const DiscreteVariable& variable(const std::string& name) constv;
 
-    virtual Idx pos(const DiscreteVariable& v) const;
+    virtual Idx pos(const DiscreteVariable& v) const override;
 
-    virtual bool contains(const DiscreteVariable& v) const;
+    virtual bool contains(const DiscreteVariable& v) const override;
 
-    virtual bool empty() const;
+    virtual bool empty() const override override;
 
     /// @}
     // =========================================================================
@@ -169,9 +169,9 @@ namespace gum {
     // =========================================================================
     /// @{
 
-    virtual bool registerSlave(Instantiation& slave);
+    virtual bool registerSlave(Instantiation& slave) override;
 
-    virtual bool unregisterSlave(Instantiation& slave);
+    virtual bool unregisterSlave(Instantiation& slave) override;
 
     /// @}
     // =========================================================================
@@ -181,13 +181,13 @@ namespace gum {
 
     using MultiDimContainer< GUM_SCALAR >::get;
 
-    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0;
+    virtual MultiDimContainer< GUM_SCALAR >* newFactory() const = 0 override;
 
-    virtual void beginMultipleChanges();
+    virtual void beginMultipleChanges() override;
 
-    virtual void endMultipleChanges();
+    virtual void endMultipleChanges() override;
 
-    virtual void endMultipleChanges(const GUM_SCALAR&);
+    virtual void endMultipleChanges(const GUM_SCALAR&) override;
 
     /// @}
 
