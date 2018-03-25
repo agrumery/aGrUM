@@ -315,6 +315,29 @@ namespace gum {
     }
 
     /**
+  * @brief Changes a variable's label in the gum::BayesNet.
+  *
+  * This will change the gum::LabelizedVariable names in the gum::BayesNet.
+  *
+  * @throws DuplicateLabel Raised if new_label is already used in this
+  *                        gum::LabelizedVariable.
+  * @throws NotFound Raised if no variable matches id or if the variable is not a
+  * LabelizedVariable
+  */
+    void changeVariableLabel(NodeId             id,
+                             const std::string& old_label,
+                             const std::string& new_label);
+
+    /**
+     * @brief Changes a variable's name.
+     */
+    void changeVariableLabel(const std::string& name,
+                             const std::string& old_label,
+                             const std::string& new_label) {
+      changeVariableLabel(idFromName(name), old_label, new_label);
+    }
+
+    /**
      * @brief Returns a variable's id in the gum::BayesNet.
      *
      * @param var The variable from which the gum::NodeId is returned.

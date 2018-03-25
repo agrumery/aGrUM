@@ -200,6 +200,19 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::changeVariableLabel(
+    NodeId id, const std::string& old_label, const std::string& new_label) {
+    if (variable(id).varType() != VarType::Labelized) {
+      GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.");
+    }
+    LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(
+      const_cast< DiscreteVariable* >(&variable(id)));
+
+    var->changeLabel(var->posLabel(old_label), new_label);
+  }
+
+
+  template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
     return __varMap.get(var);
   }
