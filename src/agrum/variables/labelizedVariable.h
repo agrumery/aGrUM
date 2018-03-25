@@ -53,7 +53,7 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /** @brief Default constructor
+    /** @brief constructor
     * @param aName the name
     * @param aDesc the Description
     * @param nbrLabel the domainSize (2 by default)
@@ -62,6 +62,16 @@ namespace gum {
     LabelizedVariable(const std::string& aName,
                       const std::string& aDesc = "",
                       const int          nbrLabel = 2);
+
+    /** @brief constructor
+    * @param aName the name
+    * @param aDesc the Description
+    * @param labels the labels
+    */
+
+    LabelizedVariable(const std::string&                aName,
+                      const std::string&                aDesc,
+                      const std::vector< std::string >& labels);
 
     /// Copy constructor
     /**
@@ -137,6 +147,9 @@ namespace gum {
     /** @param i
      * @return the ith label */
     virtual std::string label(Idx i) const;
+
+    /// return the pos from label
+    Idx posLabel(const std::string& label) const;
 
     /// get a numerical representation of he indice-the value.
     virtual double numerical(Idx indice) const;

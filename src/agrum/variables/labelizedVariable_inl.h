@@ -83,6 +83,21 @@ namespace gum {
       addLabel(oss.str());
     }
   }
+  INLINE LabelizedVariable::LabelizedVariable(
+    const std::string&                      aName,
+    const std::string&                      aDesc,
+    const std::vector< std::string >& labels)
+      : DiscreteVariable(aName, aDesc) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR(LabelizedVariable);
+    __labels.clear();
+    for (Idx i = 0; i < labels.size(); ++i)
+      __labels.insert(labels[i]);
+  }
+
+  INLINE Idx LabelizedVariable::posLabel(const std::string& label) const {
+    return __labels.pos(label);
+  }
 
   // Copy constructor
 
