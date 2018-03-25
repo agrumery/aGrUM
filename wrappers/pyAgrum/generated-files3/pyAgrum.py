@@ -1973,6 +1973,212 @@ class Vector_string(_object):
 Vector_string_swigregister = _pyAgrum.Vector_string_swigregister
 Vector_string_swigregister(Vector_string)
 
+class Vector_string_ref(_object):
+    """Proxy of C++ std::vector< std::string const & > class."""
+
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Vector_string_ref, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Vector_string_ref, name)
+    __repr__ = _swig_repr
+
+    def iterator(self) -> "swig::SwigPyIterator *":
+        """iterator(self) -> SwigPyIterator"""
+        return _pyAgrum.Vector_string_ref_iterator(self)
+
+    def __iter__(self):
+        return self.iterator()
+
+    def __nonzero__(self) -> "bool":
+        """__nonzero__(self) -> bool"""
+        return _pyAgrum.Vector_string_ref___nonzero__(self)
+
+
+    def __bool__(self) -> "bool":
+        """__bool__(self) -> bool"""
+        return _pyAgrum.Vector_string_ref___bool__(self)
+
+
+    def __len__(self) -> "std::vector< std::string const & >::size_type":
+        """__len__(self) -> std::vector< std::string const & >::size_type"""
+        return _pyAgrum.Vector_string_ref___len__(self)
+
+
+    def __getslice__(self, i: 'std::vector< std::string const & >::difference_type', j: 'std::vector< std::string const & >::difference_type') -> "std::vector< std::string const &,std::allocator< std::string const & > > *":
+        """__getslice__(self, i, j) -> Vector_string_ref"""
+        return _pyAgrum.Vector_string_ref___getslice__(self, i, j)
+
+
+    def __setslice__(self, *args) -> "void":
+        """
+        __setslice__(self, i, j)
+        __setslice__(self, i, j, v)
+        """
+        return _pyAgrum.Vector_string_ref___setslice__(self, *args)
+
+
+    def __delslice__(self, i: 'std::vector< std::string const & >::difference_type', j: 'std::vector< std::string const & >::difference_type') -> "void":
+        """__delslice__(self, i, j)"""
+        return _pyAgrum.Vector_string_ref___delslice__(self, i, j)
+
+
+    def __delitem__(self, *args) -> "void":
+        """
+        __delitem__(self, i)
+        __delitem__(self, slice)
+        """
+        return _pyAgrum.Vector_string_ref___delitem__(self, *args)
+
+
+    def __getitem__(self, *args) -> "std::vector< std::string const & >::value_type const &":
+        """
+        __getitem__(self, slice) -> Vector_string_ref
+        __getitem__(self, i) -> std::vector< std::string const & >::value_type const &
+        """
+        return _pyAgrum.Vector_string_ref___getitem__(self, *args)
+
+
+    def __setitem__(self, *args) -> "void":
+        """
+        __setitem__(self, slice, v)
+        __setitem__(self, slice)
+        __setitem__(self, i, x)
+        """
+        return _pyAgrum.Vector_string_ref___setitem__(self, *args)
+
+
+    def pop(self) -> "std::vector< std::string const & >::value_type":
+        """pop(self) -> std::vector< std::string const & >::value_type"""
+        return _pyAgrum.Vector_string_ref_pop(self)
+
+
+    def append(self, x: 'std::vector< std::string const & >::value_type const &') -> "void":
+        """append(self, x)"""
+        return _pyAgrum.Vector_string_ref_append(self, x)
+
+
+    def empty(self) -> "bool":
+        """empty(self) -> bool"""
+        return _pyAgrum.Vector_string_ref_empty(self)
+
+
+    def size(self) -> "std::vector< std::string const & >::size_type":
+        """size(self) -> std::vector< std::string const & >::size_type"""
+        return _pyAgrum.Vector_string_ref_size(self)
+
+
+    def swap(self, v: 'Vector_string_ref') -> "void":
+        """swap(self, v)"""
+        return _pyAgrum.Vector_string_ref_swap(self, v)
+
+
+    def begin(self) -> "std::vector< std::string const & >::iterator":
+        """begin(self) -> std::vector< std::string const & >::iterator"""
+        return _pyAgrum.Vector_string_ref_begin(self)
+
+
+    def end(self) -> "std::vector< std::string const & >::iterator":
+        """end(self) -> std::vector< std::string const & >::iterator"""
+        return _pyAgrum.Vector_string_ref_end(self)
+
+
+    def rbegin(self) -> "std::vector< std::string const & >::reverse_iterator":
+        """rbegin(self) -> std::vector< std::string const & >::reverse_iterator"""
+        return _pyAgrum.Vector_string_ref_rbegin(self)
+
+
+    def rend(self) -> "std::vector< std::string const & >::reverse_iterator":
+        """rend(self) -> std::vector< std::string const & >::reverse_iterator"""
+        return _pyAgrum.Vector_string_ref_rend(self)
+
+
+    def clear(self) -> "void":
+        """clear(self)"""
+        return _pyAgrum.Vector_string_ref_clear(self)
+
+
+    def get_allocator(self) -> "std::vector< std::string const & >::allocator_type":
+        """get_allocator(self) -> std::vector< std::string const & >::allocator_type"""
+        return _pyAgrum.Vector_string_ref_get_allocator(self)
+
+
+    def pop_back(self) -> "void":
+        """pop_back(self)"""
+        return _pyAgrum.Vector_string_ref_pop_back(self)
+
+
+    def erase(self, *args) -> "std::vector< std::string const & >::iterator":
+        """
+        erase(self, pos) -> std::vector< std::string const & >::iterator
+        erase(self, first, last) -> std::vector< std::string const & >::iterator
+        """
+        return _pyAgrum.Vector_string_ref_erase(self, *args)
+
+
+    def __init__(self, *args):
+        """
+        __init__(self) -> Vector_string_ref
+        __init__(self, arg2) -> Vector_string_ref
+        __init__(self, size) -> Vector_string_ref
+        __init__(self, size, value) -> Vector_string_ref
+        """
+        this = _pyAgrum.new_Vector_string_ref(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+
+    def push_back(self, x: 'std::vector< std::string const & >::value_type const &') -> "void":
+        """push_back(self, x)"""
+        return _pyAgrum.Vector_string_ref_push_back(self, x)
+
+
+    def front(self) -> "std::vector< std::string const & >::value_type const &":
+        """front(self) -> std::vector< std::string const & >::value_type const &"""
+        return _pyAgrum.Vector_string_ref_front(self)
+
+
+    def back(self) -> "std::vector< std::string const & >::value_type const &":
+        """back(self) -> std::vector< std::string const & >::value_type const &"""
+        return _pyAgrum.Vector_string_ref_back(self)
+
+
+    def assign(self, n: 'std::vector< std::string const & >::size_type', x: 'std::vector< std::string const & >::value_type const &') -> "void":
+        """assign(self, n, x)"""
+        return _pyAgrum.Vector_string_ref_assign(self, n, x)
+
+
+    def resize(self, *args) -> "void":
+        """
+        resize(self, new_size)
+        resize(self, new_size, x)
+        """
+        return _pyAgrum.Vector_string_ref_resize(self, *args)
+
+
+    def insert(self, *args) -> "void":
+        """
+        insert(self, pos, x) -> std::vector< std::string const & >::iterator
+        insert(self, pos, n, x)
+        """
+        return _pyAgrum.Vector_string_ref_insert(self, *args)
+
+
+    def reserve(self, n: 'std::vector< std::string const & >::size_type') -> "void":
+        """reserve(self, n)"""
+        return _pyAgrum.Vector_string_ref_reserve(self, n)
+
+
+    def capacity(self) -> "std::vector< std::string const & >::size_type":
+        """capacity(self) -> std::vector< std::string const & >::size_type"""
+        return _pyAgrum.Vector_string_ref_capacity(self)
+
+    __swig_destroy__ = _pyAgrum.delete_Vector_string_ref
+    def __del__(self):
+        return None
+Vector_string_ref_swigregister = _pyAgrum.Vector_string_ref_swigregister
+Vector_string_ref_swigregister(Vector_string_ref)
+
 class SetIteratorStaticEnd(_object):
     """Proxy of C++ gum::SetIteratorStaticEnd class."""
 
@@ -3990,7 +4196,7 @@ class DiscreteVariable(Variable):
         return self.index(label)
 
 
-    def toLabelizedVar(self) -> "gum::LabelizedVariable &":
+    def toLabelizedVar(self) -> "gum::LabelizedVariable":
         """
         toLabelizedVar(self) -> LabelizedVariable
 
@@ -4007,7 +4213,7 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_toLabelizedVar(self)
 
 
-    def toRangeVar(self) -> "gum::RangeVariable &":
+    def toRangeVar(self) -> "gum::RangeVariable":
         """
         toRangeVar(self) -> RangeVariable
 
@@ -4025,7 +4231,7 @@ class DiscreteVariable(Variable):
         return _pyAgrum.DiscreteVariable_toRangeVar(self)
 
 
-    def toDiscretizedVar(self) -> "gum::DiscretizedVariable< double > &":
+    def toDiscretizedVar(self) -> "gum::DiscretizedVariable< double >":
         """
         toDiscretizedVar(self) -> DiscretizedVariable_double
 
@@ -4114,6 +4320,7 @@ class LabelizedVariable(DiscreteVariable):
         __init__(self, aName, aDesc, nbrLabel=2) -> LabelizedVariable
         __init__(self, aName, aDesc) -> LabelizedVariable
         __init__(self, aName) -> LabelizedVariable
+        __init__(self, aName, aDesc, labels) -> LabelizedVariable
         __init__(self, aLDRV) -> LabelizedVariable
         """
         this = _pyAgrum.new_LabelizedVariable(*args)
@@ -4260,6 +4467,11 @@ class LabelizedVariable(DiscreteVariable):
 
         """
         return _pyAgrum.LabelizedVariable_label(self, i)
+
+
+    def posLabel(self, label: 'std::string const &') -> "gum::Idx":
+        """posLabel(self, label) -> gum::Idx"""
+        return _pyAgrum.LabelizedVariable_posLabel(self, label)
 
 
     def numerical(self, indice: 'gum::Idx') -> "double":
@@ -9776,7 +9988,6 @@ class Potential_double(_object):
         val = _pyAgrum.Potential_double_set(self, i, value)
 
         self._notSync=True
-        return self
 
 
         return val
@@ -10656,6 +10867,14 @@ class BayesNet_double(IBayesNet_double):
 
         """
         return _pyAgrum.BayesNet_double_changeVariableName(self, *args)
+
+
+    def changeVariableLabel(self, *args) -> "void":
+        """
+        changeVariableLabel(self, id, old_label, new_label)
+        changeVariableLabel(self, name, old_label, new_label)
+        """
+        return _pyAgrum.BayesNet_double_changeVariableLabel(self, *args)
 
 
     def nodeId(self, var: 'DiscreteVariable') -> "gum::NodeId":
@@ -27300,7 +27519,6 @@ def statsObj() -> "void":
     """statsObj()"""
     return _pyAgrum.statsObj()
 
-Potential = Potential_double
 Potential = Potential_double
 
 randomDistribution = randomDistribution_double

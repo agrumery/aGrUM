@@ -4114,6 +4114,7 @@ class LabelizedVariable(DiscreteVariable):
         __init__(self, aName, aDesc, nbrLabel=2) -> LabelizedVariable
         __init__(self, aName, aDesc) -> LabelizedVariable
         __init__(self, aName) -> LabelizedVariable
+        __init__(self, aName, aDesc, labels) -> LabelizedVariable
         __init__(self, aLDRV) -> LabelizedVariable
         """
         this = _pyAgrum.new_LabelizedVariable(*args)
@@ -4260,6 +4261,11 @@ class LabelizedVariable(DiscreteVariable):
 
         """
         return _pyAgrum.LabelizedVariable_label(self, i)
+
+
+    def posLabel(self, label):
+        """posLabel(self, label) -> gum::Idx"""
+        return _pyAgrum.LabelizedVariable_posLabel(self, label)
 
 
     def numerical(self, indice):
@@ -9776,7 +9782,6 @@ class Potential_double(_object):
         val = _pyAgrum.Potential_double_set(self, i, value)
 
         self._notSync=True
-        return self
 
 
         return val
@@ -10656,6 +10661,14 @@ class BayesNet_double(IBayesNet_double):
 
         """
         return _pyAgrum.BayesNet_double_changeVariableName(self, *args)
+
+
+    def changeVariableLabel(self, *args):
+        """
+        changeVariableLabel(self, id, old_label, new_label)
+        changeVariableLabel(self, name, old_label, new_label)
+        """
+        return _pyAgrum.BayesNet_double_changeVariableLabel(self, *args)
 
 
     def nodeId(self, var):
@@ -27300,7 +27313,6 @@ def statsObj():
     """statsObj()"""
     return _pyAgrum.statsObj()
 
-Potential = Potential_double
 Potential = Potential_double
 
 randomDistribution = randomDistribution_double
