@@ -156,6 +156,8 @@ class TestFeatures(BayesNetTestCase):
 
     self.assertEqual(str(bn.variable(0)), "HISTORY<TRUE,FALSE>")
     bn.variable(0).toLabelizedVar().changeLabel(0, "toto")
+    self.assertNotEqual(str(bn.variable(0)), "HISTORY<toto,FALSE>")
+    bn.changeVariableLabel(0, "TRUE", "toto")
     self.assertEqual(str(bn.variable(0)), "HISTORY<toto,FALSE>")
 
   def testStringAccessors(self):

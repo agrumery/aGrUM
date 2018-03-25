@@ -74,7 +74,6 @@ interface generator."
 
 %pythoncode %{
 Potential = Potential_double
-Potential = Potential_double
 
 randomDistribution = randomDistribution_double
 
