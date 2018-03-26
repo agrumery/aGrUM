@@ -57,7 +57,7 @@ namespace gum {
     genericBNLearner::Database::idFromName(const std::string& var_name) const {
       try {
         return __name2nodeId.second(const_cast< std::string& >(var_name));
-      } catch (gum::NotFound& ) {
+      } catch (gum::NotFound&) {
         GUM_ERROR(MissingVariableInDatabase, "for variable " << var_name);
       }
     }

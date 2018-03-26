@@ -83,10 +83,10 @@ namespace gum {
       addLabel(oss.str());
     }
   }
-  INLINE LabelizedVariable::LabelizedVariable(
-    const std::string&                      aName,
-    const std::string&                      aDesc,
-    const std::vector< std::string >& labels)
+  INLINE
+  LabelizedVariable::LabelizedVariable(const std::string&                aName,
+                                       const std::string&                aDesc,
+                                       const std::vector< std::string >& labels)
       : DiscreteVariable(aName, aDesc) {
     // for debugging purposes
     GUM_CONSTRUCTOR(LabelizedVariable);
