@@ -75,7 +75,7 @@ namespace gum_tests {
         i.setFirst();
         TS_ASSERT_EQUALS(p[i], 2.0 / (taille * (taille + 1)));
 
-      } catch (gum::Exception e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }

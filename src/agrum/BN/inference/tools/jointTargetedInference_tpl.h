@@ -333,11 +333,11 @@ namespace gum {
   JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
     const std::vector< NodeId >& targets, const std::vector< NodeId >& evs) {
 
-    NodeSet sotargets(targets.size());
+    NodeSet sotargets(Size(targets.size()));
     for (const auto& e : targets)
       sotargets << e;
 
-    NodeSet soevs(evs.size());
+    NodeSet soevs(Size(evs.size()));
     for (const auto& e : evs)
       soevs << e;
 

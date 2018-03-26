@@ -283,7 +283,7 @@ namespace gum {
     NodeId target, const std::vector< NodeId >& evs) {
     const auto& vtarget = this->BN().variable(target);
 
-    NodeSet soids(evs.size());
+    NodeSet soids(Size(evs.size()));
     for (const auto& e : evs)
       soids << e;
     if (soids.contains(target)) {

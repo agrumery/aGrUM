@@ -108,7 +108,7 @@ namespace gum_tests {
         if (inf != 0) {
           TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
         }
-      } catch (gum::Exception e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;

@@ -58,7 +58,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(prm->type("t_color_p").variable().domainSize(),
                          (gum::Size)5);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -90,7 +90,7 @@ namespace gum_tests {
         TS_ASSERT(prm->type("t_color_p").isSubTypeOf(prm->type("t_degraded")));
         TS_ASSERT_EQUALS(prm->types().size(), (gum::Size)7);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -111,7 +111,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Printer"));
         TS_GUM_ASSERT_THROWS_NOTHING(prm->getClass("Computer"));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -129,7 +129,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
         TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)0);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -147,7 +147,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
         TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)0);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -165,7 +165,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
         TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)1);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -183,7 +183,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)0);
         TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)1);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -201,7 +201,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(c.aggregates().size(), (gum::Size)1);
         TS_ASSERT_EQUALS(c.slotChains().size(), (gum::Size)2);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -235,7 +235,7 @@ namespace gum_tests {
             prm->getInterface("fr.lip6.printers.Printer"));
           delete prm;
         }
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -321,7 +321,7 @@ namespace gum_tests {
         TS_ASSERT(!Computer.isSubTypeOf(ColorPrinter));
         TS_ASSERT(Computer.isSubTypeOf(Computer));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -407,7 +407,7 @@ namespace gum_tests {
         TS_ASSERT(!Computer.isSuperTypeOf(ColorPrinter));
         TS_ASSERT(Computer.isSuperTypeOf(Computer));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -455,7 +455,7 @@ namespace gum_tests {
         TS_ASSERT(!PowerSupply.isInnerNode(
           PowerSupply["(fr.lip6.printers.t_state)state"]));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -475,7 +475,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(Room.aggregates().size(), (gum::Size)0);
         TS_ASSERT_EQUALS(Room.slotChains().size(), (gum::Size)0);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -529,7 +529,7 @@ namespace gum_tests {
         TS_ASSERT(!Equipment.isInputNode(Equipment["(boolean)equipState"]));
         TS_ASSERT(Equipment.isInnerNode(Equipment["(boolean)equipState"]));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -599,7 +599,7 @@ namespace gum_tests {
         TS_ASSERT(!Printer.isInputNode(Printer["hasInk"]));
         TS_ASSERT(Printer.isInnerNode(Printer["hasInk"]));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1008,7 +1008,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(Computer["printers.equipState"]);
         TS_GUM_ASSERT_THROWS_NOTHING(Computer["room.power.state"]);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1048,7 +1048,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(
           SafeComputer["room.power.(fr.lip6.printers.t_state)state"]);
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1077,7 +1077,7 @@ namespace gum_tests {
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1105,7 +1105,7 @@ namespace gum_tests {
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1135,7 +1135,7 @@ namespace gum_tests {
         }
         TS_ASSERT_EQUALS(set.size(), gum::Size(0));
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1154,7 +1154,7 @@ namespace gum_tests {
         if (prm) {
           delete prm;
         }
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1203,7 +1203,7 @@ namespace gum_tests {
         if (prm) {
           delete prm;
         }
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1246,7 +1246,7 @@ namespace gum_tests {
         if (prm) {
           delete prm;
         }
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1336,7 +1336,7 @@ namespace gum_tests {
         if (prm) {
           delete prm;
         }
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1361,7 +1361,7 @@ namespace gum_tests {
         TS_GUM_ASSERT_THROWS_NOTHING(ParamClass["equipState"]);
 
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1382,7 +1382,7 @@ namespace gum_tests {
           prm->getClass("fr.lip6.printers.ParamClass<lambda=0.001,t=4>"));
 
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1411,7 +1411,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(values[1], 0.6, 1e-6);
 
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
@@ -1441,7 +1441,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(values[2], 0.0, 1e-6);
 
         delete prm;
-      } catch (gum::Exception) {
+      } catch (gum::Exception&) {
         TS_ASSERT(false);
       }
     }
