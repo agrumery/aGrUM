@@ -343,6 +343,13 @@ namespace gum {
     /** @return the id chosen by the internal idFactory */
     virtual NodeId addNode();
 
+    /** insert n nodes
+     *
+     * @param n the number of nodes to add
+     * @return the vector of chosen ids
+     */
+    std::vector< NodeId > addNodes(Size n);
+
     /// try to insert a node with the given id
     /** @warning This method should be carefully used. Please prefer
      * @ref populateNodes or @ref populateNodesFromProperty when possible

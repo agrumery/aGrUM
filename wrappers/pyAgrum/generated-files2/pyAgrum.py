@@ -4999,6 +4999,11 @@ class DiGraph(_object):
         return _pyAgrum.DiGraph_nodes(self)
 
 
+    def addNodes(self, n):
+        """addNodes(self, n) -> PyObject *"""
+        return _pyAgrum.DiGraph_addNodes(self, n)
+
+
     def arcs(self):
         """
         arcs(self) -> PyObject *
@@ -5300,6 +5305,11 @@ class DAG(DiGraph):
     def __del__(self):
         return None
 
+    def addNodes(self, n):
+        """addNodes(self, n) -> PyObject *"""
+        return _pyAgrum.DAG_addNodes(self, n)
+
+
     def addArc(self, *args):
         """
         addArc(self, tail, head)
@@ -5474,6 +5484,11 @@ class UndiGraph(_object):
     def nodes(self):
         """nodes(self) -> PyObject *"""
         return _pyAgrum.UndiGraph_nodes(self)
+
+
+    def addNodes(self, n):
+        """addNodes(self, n) -> PyObject *"""
+        return _pyAgrum.UndiGraph_addNodes(self, n)
 
 
     def edges(self):
@@ -5856,6 +5871,11 @@ class MixedGraph(UndiGraph, DiGraph):
     def __str__(self):
         """__str__(self) -> std::string"""
         return _pyAgrum.MixedGraph___str__(self)
+
+
+    def addNodes(self, n):
+        """addNodes(self, n) -> PyObject *"""
+        return _pyAgrum.MixedGraph_addNodes(self, n)
 
 
     def addNode(self):
