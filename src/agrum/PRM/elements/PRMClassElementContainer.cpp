@@ -28,6 +28,10 @@
 #include <agrum/PRM/elements/PRMClassElementContainer.h>
 
 namespace gum {
+
+  template class HashFuncMediumCastKey<prm::PRMClassElementContainer<float>*>;
+  template class HashFuncMediumCastKey<prm::PRMClassElementContainer<double>*>;
+
   namespace prm {
 
     template class PRMClassElementContainer<float>;

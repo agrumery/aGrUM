@@ -28,6 +28,7 @@
 #define GUM_CLASS_ELEMENT_CONTAINER_H
 
 #include <agrum/core/hashTable.h>
+#include <agrum/core/hashFunc.h>
 #include <agrum/core/set.h>
 
 #include <agrum/graphs/DAG.h>
