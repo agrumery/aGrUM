@@ -1,8 +1,8 @@
-%include "doc_Arc.i"
-%include "doc_Edge.i"
-%include "doc_DiGraph.i"
+%include "doc/doc_Arc.i"
+%include "doc/doc_Edge.i"
+%include "doc/doc_DiGraph.i"
 
-%include "doc_LabelizedVariable.i"
-%include "doc_DiscretizedVariable.i"
+%include "doc/doc_LabelizedVariable.i"
+%include "doc/doc_DiscretizedVariable.i"
 
-%include "doc_BayesNet.i"
+%include "doc/doc_BayesNet.i"
