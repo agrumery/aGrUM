@@ -29,8 +29,10 @@
 
 namespace gum {
 
+#ifndef _WIN32
   template class HashFuncMediumCastKey<prm::PRMType<float>*>;
   template class HashFuncMediumCastKey<prm::PRMType<double>*>;
+#endif
 
   namespace prm {
 
