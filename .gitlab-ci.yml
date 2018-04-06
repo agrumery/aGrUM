@@ -3,8 +3,8 @@ stages:
 - pyagrum
 - agrum_test
 - pyagrum_test
-- wheels
 - documentation
+- deployment
 
 cache:
   untracked: false
@@ -15,8 +15,6 @@ cache:
 .linux_template: &linux_template
   only:
     - branches@agrumery/aGrUM
-  except:
-    - /^documentation.*$/
   tags:
     - linux
     - python3
@@ -57,44 +55,6 @@ linux_pyAgrum_test:
     - if ! python act --no-fun test release pyAgrum --python=3 -t quick; then python act --no-fun clean ; python act --no-fun test release pyAgrum --python=3 -t quick; fi
     - deactivate
 
-linux_pyagrum_wheel_i686:
-  image: malichief/pyagrum_manylinux1_i686
-  only:
-    - tags
-    - triggers
-  tags:
-    - linux
-    - docker
-    - manylinux1
-  stage: wheels
-  script:
-    - /bin/bash wrappers/pyAgrum/wheelhouse/build_wheels.sh
-  artifacts:
-    name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
-    when: on_success
-    expire_in: 1 week
-    paths:
-      - wheelhouse/*.whl
-
-linux_pyagrum_wheel_x86_64:
-  image: malichief/pyagrum_manylinux1_x86_64
-  only:
-    - tags
-    - triggers
-  tags:
-    - linux
-    - docker
-    - manylinux1
-  stage: wheels
-  script:
-    - /bin/bash wrappers/pyAgrum/wheelhouse/build_wheels.sh
-  artifacts:
-    name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
-    when: on_success
-    expire_in: 1 week
-    paths:
-      - wheelhouse/*.whl
-
 ################################################################################
 # MacOS / clang
 ################################################################################
@@ -102,8 +62,6 @@ linux_pyagrum_wheel_x86_64:
 .macos_template: &macos_template
   only:
     - branches@agrumery/aGrUM
-  except:
-    - /^documentation.*$/
   tags:
     - macos
     - python3
@@ -143,61 +101,15 @@ macos_pyAgrum_test:
     - if ! python act --no-fun test release pyAgrum --python=3 -t quick; then python act --no-fun clean ; python act --no-fun test release pyAgrum --python=3 -t quick; fi
     - deactivate
 
-macos_pyagrum_cp27_wheel:
-  only:
-    - tags
-    - triggers
-  tags:
-    - macos
-    - python3
-  stage: wheels
-  script:
-    - rm -rf venv wheels
-    - mkdir -p wheels
-    - virtualenv venv --python=$(which python2.7)
-    - source venv/bin/activate
-    - python act release wheel pyAgrum -d ${CI_PROJECT_DIR}/wheels --python=2
-    - deactivate
-  artifacts:
-    name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
-    when: on_success
-    expire_in: 1 week
-    paths:
-      - wheels/*.whl
-
-macos_pyagrum_cp36_wheel:
-  only:
-    - tags
-    - triggers
-  tags:
-    - macos
-    - python3
-  stage: wheels
-  script:
-    - rm -rf venv wheels
-    - mkdir -p wheels
-    - virtualenv venv --python=$(which python3)
-    - source venv/bin/activate
-    - python act release wheel pyAgrum -d ${CI_PROJECT_DIR}/wheels --python=3
-    - deactivate
-  artifacts:
-    name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
-    when: on_success
-    expire_in: 1 week
-    paths:
-      - wheels/*.whl
-
 ################################################################################
 # Windows / MVSC
 ################################################################################
 .windows_template: &windows_template
   only:
     - branches@agrumery/aGrUM
-  except:
-    - /^documentation.*$/
   tags:
     - windows
-    - conda64
+    - conda
   variables:
     PATH: "C:\\Program Files\\Git\\bin;C:\\Users\\conda64\\Anaconda3;C:\\Users\\conda64\\Anaconda3\\Library\\mingw-w64\\bin;C:\\Users\\conda64\\Anaconda3\\Library\\usr\\bin;C:\\Users\\conda64\\Anaconda3\\Library\\bin;C:\\Users\\conda64\\Anaconda3\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
     ACT_OPTIONS: "--no-fun --mvsc -d build"
@@ -210,13 +122,13 @@ windows_aGrUM_build:
   <<: *windows_template
   stage: agrum
   script:
-    - python act --no-fun install release aGrUM %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun lib release aGrUM %ACT_OPTIONS%
+    - python act --no-fun install release aGrUM %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun install release aGrUM %ACT_OPTIONS%
 
 windows_pyAgrum_build:
   <<: *windows_template
   stage: pyagrum
   script:
-    - python act --no-fun install release pyAgrum %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun lib release pyAgrum %ACT_OPTIONS%
+    - python act --no-fun install release pyAgrum %ACT_OPTIONS% || python act --no-fun clean && python act --no-fun install release pyAgrum %ACT_OPTIONS%
 
 windows_aGrUM_test:
   <<: *windows_template
@@ -231,142 +143,36 @@ windows_pyAgrum_test:
     - pip install -r wrappers/pyAgrum/testunits/requirements.txt
     - python act --no-fun test release pyAgrum %ACT_OPTIONS%  -t quick || python act --no-fun clean && python act --no-fun test release pyAgrum %ACT_OPTIONS% -t quick
 
-windows_32_pyagrum_cp27_wheels:
-  only:
-    - tags
-    - triggers
-  tags:
-    - windows
-    - conda32
-  stage: wheels
-  variables:
-    PATH: "C:\\Program Files\\Git\\bin;C:\\Users\\conda32\\Anaconda3\\envs\\py27;C:\\Users\\conda32\\Anaconda3\\envs\\py27\\Library\\bin;C:\\Users\\conda32\\Anaconda3\\envs\\py27\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
-    ACT_OPTIONS: "--no-fun --mvsc32 -d build"
-  script:
-    - md wheels
-    - python act %ACT_OPTIONS% release wheel pyAgrum -d wheels
-  artifacts:
-    name: "%CI_JOB_NAME%_%CI_COMMIT_REF_NAME%"
-    when: on_success
-    expire_in: 1 week
-    untracked: true
-    paths:
-      - wheels\\*.whl
-
-windows_32_pyagrum_cp36_wheels:
-  only:
-    - tags
-    - triggers
-  tags:
-    - windows
-    - conda32
-  stage: wheels
-  variables:
-    PATH: "C:\\Program Files\\Git\\bin;C:\\Users\\conda32\\Anaconda3\\envs\\py36;C:\\Users\\conda32\\Anaconda3\\envs\\py36\\Library\\bin;C:\\Users\\conda32\\Anaconda3\\envs\\py36\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
-    ACT_OPTIONS: "--no-fun --mvsc32 -d build"
-  script:
-    - md wheels
-    - python act %ACT_OPTIONS% release wheel pyAgrum -d wheels
-  artifacts:
-    name: "%CI_JOB_NAME%_%CI_COMMIT_REF_NAME%"
-    when: on_success
-    expire_in: 1 week
-    untracked: true
-    paths:
-      - wheels\\*.whl
-
-windows_64_pyagrum_cp27_wheels:
-  only:
-    - tags
-    - triggers
-  tags:
-    - windows
-    - conda64
-  stage: wheels
-  variables:
-    PATH: "C:\\Program Files\\Git\\bin;C:\\Users\\conda64\\Anaconda3\\envs\\py27;C:\\Users\\conda64\\Anaconda3\\envs\\py27\\Library\\bin;C:\\Users\\conda64\\Anaconda3\\envs\\py27\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
-    ACT_OPTIONS: "--no-fun --mvsc -d build"
-  script:
-    - md wheels
-    - python act %ACT_OPTIONS% release wheel pyAgrum -d wheels
-  artifacts:
-    name: "%CI_JOB_NAME%_%CI_COMMIT_REF_NAME%"
-    when: on_success
-    expire_in: 1 week
-    untracked: true
-    paths:
-      - wheels\\*.whl
-
-windows_64_pyagrum_cp36_wheels:
-  only:
-    - tags
-    - triggers
-  tags:
-    - windows
-    - conda64
-  stage: wheels
-  variables:
-    PATH: "C:\\Program Files\\Git\\bin;C:\\Users\\conda64\\Anaconda3\\envs\\py36;C:\\Users\\conda64\\Anaconda3\\envs\\py36\\Library\\bin;C:\\Users\\conda64\\Anaconda3\\envs\\py36\\Scripts;C:\\Program Files\\CMake\\bin;C:\\Program Files (x86)\\MSBuild\\14.0\\Bin;%PATH%;"
-    ACT_OPTIONS: "--no-fun --mvsc -d build"
-  script:
-    - md wheels
-    - python act %ACT_OPTIONS% release wheel pyAgrum -d wheels
-  artifacts:
-    name: "%CI_JOB_NAME%_%CI_COMMIT_REF_NAME%"
-    when: on_success
-    expire_in: 1 week
-    untracked: true
-    paths:
-      - wheels\\*.whl
-
 ################################################################################
-# pyAgrum Documentation
+# Documentation
 ################################################################################
-pyAgrum_documentation:
+agrum_master_documentation:
   only:
-    - branches@agrumery/aGrUM
+    - tags
+    - master@agrumery/aGrUM
   tags:
     - linux
     - python3
-    - deploy_ovh
-  variables:
-    CC: "/usr/bin/gcc-5"
-    CXX: "/usr/bin/g++-5"
-  cache:
-    key: linux
-    paths:
-    - build/
+    - doxygen
   stage: documentation
+  allow_failure: true
   script:
-    - virtualenv venv --python=python3
-    - source venv/bin/activate
-    - pip install -r wrappers/pyAgrum/testunits/requirements.txt
-    - pip install sphinx
-    - python act doc pyAgrum --python=3
-    - deploy_ovh "pyAgrum/last/${CI_COMMIT_REF_NAME}"
+    - python act clean --no-fun && python act release doc aGrUM --no-fun
+    - cd ${CI_PROJECT_DIR}/build/release/docs/html && tar czf $(basename ${CI_COMMIT_REF_NAME}).tgz ./* && mv $(basename ${CI_COMMIT_REF_NAME}).tgz ${CI_PROJECT_DIR}
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "rm -rf ~/www/aGrUM/${CI_COMMIT_REF_NAME}"
+    - sshpass -p "${OVH_PASSWORD}" scp -oStrictHostKeyChecking=no ${CI_PROJECT_DIR}/$(basename ${CI_COMMIT_REF_NAME}).tgz ${OVH_LOGIN}@${OVH_URL}:~/$(basename ${CI_COMMIT_REF_NAME}).tgz
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "mkdir -p ~/www/aGrUM/${CI_COMMIT_REF_NAME}"
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "tar xzf ~/$(basename ${CI_COMMIT_REF_NAME}).tgz -C ~/www/aGrUM/${CI_COMMIT_REF_NAME}/"
+    - sshpass -p "${OVH_PASSWORD}" ssh -oStrictHostKeyChecking=no ${OVH_LOGIN}@${OVH_URL} "rm -f ~/$(basename ${CI_COMMIT_REF_NAME}).tgz"
 
-pyAgrum_documentation_tags:
+################################################################################
+# Deployment
+################################################################################
+aGruM-Deploy:
   only:
     - tags
   tags:
     - linux
-    - python3
-    - deploy_ovh
-  cache:
-  variables:
-    CC: "/usr/bin/gcc-5"
-    CXX: "/usr/bin/g++-5"
-  cache:
-    key: linux
-    paths:
-    - build/
-  stage: documentation
+  stage: deployment
   script:
-    - virtualenv venv --python=python3
-    - source venv/bin/activate
-    - pip install -r wrappers/pyAgrum/testunits/requirements.txt
-    - pip install sphinx
-    - python act doc pyAgrum --python=3
-    - deploy_ovh "pyAgrum/tags/${CI_COMMIT_TAG}"
-    - deploy_ovh "pyAgrum/last"
-    
+    - curl -X POST -F token=${AGRUM_DEPLOY_TOKEN} -F ref=master https://gitlab.com/api/v4/projects/4935470/trigger/pipeline
