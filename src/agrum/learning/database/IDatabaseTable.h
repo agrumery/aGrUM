@@ -86,13 +86,14 @@ namespace gum {
       /// insert a new row at the end of the database
       /** The new row passed in argument is supposed to come from an external
        * database. So it must contain data for the ignored columns. */
-      virtual void insertRow ( const DBVector<std::string>& new_row ) = 0;
+      virtual void
+      insertRow ( const std::vector<std::string,ALLOC<std::string>>& new_row ) = 0;
 
       /// insert new rows at the end of the database
       /** The new rows passed in argument are supposed to come from an external
        * database. So they must contain data for the ignored columns. */
       virtual void insertRows (
-        const DBVector<DBVector<std::string>>& new_row );
+        const DBVector<DBVector<std::string>>& new_rows );
     };
 
     
@@ -118,7 +119,7 @@ namespace gum {
       /** The new rows passed in argument are supposed to come from an external
        * database. So they must contain data for the ignored columns. */
       virtual void insertRows (
-        const DBVector<DBVector<std::string>>& new_row );
+        const DBVector<DBVector<std::string>>& new_rows );
     };
 
 
