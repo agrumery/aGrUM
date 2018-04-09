@@ -52,11 +52,16 @@ namespace gum {
 
     template<template<typename> class ALLOC>
     struct IDatabaseTableInsert4DBCell<ALLOC,true> {
-      template <typename T_DATA>
-      using Row = DBRow<T_DATA,ALLOC>;
+      template <typename TX_DATA>
+      using DBVector = std::vector<TX_DATA,ALLOC<TX_DATA>>;
 
-      template <typename T_DATA>
-      using Matrix = std::vector<Row<T_DATA>,ALLOC<Row<T_DATA>>>;
+      template <typename TX_DATA>
+      using Row = DBRow<TX_DATA,ALLOC>;
+
+      template <typename TX_DATA>
+      using Matrix = std::vector<DBRow<TX_DATA,ALLOC>,
+                                 ALLOC<DBRow<TX_DATA,ALLOC>>>;
+
       
       /// insert a new DBRow at the end of the database
       /** The new row passed in argument is supposed to come from an external
@@ -81,18 +86,39 @@ namespace gum {
       /// insert a new row at the end of the database
       /** The new row passed in argument is supposed to come from an external
        * database. So it must contain data for the ignored columns. */
-      virtual void insertRow (
-           const std::vector<std::string,ALLOC<std::string>>& new_row ) = 0;
+      virtual void insertRow ( const DBVector<std::string>& new_row ) = 0;
+
+      /// insert new rows at the end of the database
+      /** The new rows passed in argument are supposed to come from an external
+       * database. So they must contain data for the ignored columns. */
+      virtual void insertRows (
+        const DBVector<DBVector<std::string>>& new_row );
     };
 
     
     template<template<typename> class ALLOC>
     struct IDatabaseTableInsert4DBCell<ALLOC,false> {
+      template <typename TX_DATA>
+      using DBVector = std::vector<TX_DATA,ALLOC<TX_DATA>>;
+
+      template <typename TX_DATA>
+      using Row = DBRow<TX_DATA,ALLOC>;
+
+      template <typename TX_DATA>
+      using Matrix = std::vector<DBRow<TX_DATA,ALLOC>,
+                                 ALLOC<DBRow<TX_DATA,ALLOC>>>;
+
       /// insert a new row at the end of the database
       /** The new row passed in argument is supposed to come from an external
        * database. So it must contain data for the ignored columns. */
       virtual void insertRow (
            const std::vector<std::string,ALLOC<std::string>>& new_row ) = 0;
+
+      /// insert new rows at the end of the database
+      /** The new rows passed in argument are supposed to come from an external
+       * database. So they must contain data for the ignored columns. */
+      virtual void insertRows (
+        const DBVector<DBVector<std::string>>& new_row );
     };
 
 
@@ -242,7 +268,8 @@ namespace gum {
 
       /// the type for the matrices stored into the database
       template<typename TX_DATA>
-      using Matrix = DBVector<Row<TX_DATA>>;
+      using Matrix = std::vector<DBRow<TX_DATA,ALLOC>,
+                                 ALLOC<DBRow<TX_DATA,ALLOC>>>;
 
       template <template<typename> class XALLOC>
       using MissingValType = std::vector<std::string,XALLOC<std::string>>;
@@ -362,7 +389,8 @@ namespace gum {
         using Row = DBRow<TX_DATA,ALLOC>;
 
         template<typename TX_DATA>
-        using Matrix = DBVector<Row<TX_DATA>>;
+        using Matrix = std::vector<DBRow<TX_DATA,ALLOC>,
+                                   ALLOC<DBRow<TX_DATA,ALLOC>>>;
 
         
         // ########################################################################
@@ -978,6 +1006,9 @@ namespace gum {
        * @throw SizeError is raised if the size of the new_row is not equal to
        * the number of columns retained in the IDatabaseTable */
       virtual void insertRow( const Row<T_DATA>& new_row );
+
+      using IDatabaseTableInsert4DBCell<ALLOC,
+                !std::is_same<T_DATA,DBCell>::value>::insertRows;
 
       /// insert a set of new DBRows at the end of the database
       /** Unlike methods insertRows for data whose type is different from T_DATA,

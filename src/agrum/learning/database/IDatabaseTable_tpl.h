@@ -1123,6 +1123,25 @@ namespace gum {
       return __missing_symbols;
     }
 
+
+    /// insert new rows at the end of the database
+    template <template<typename> class ALLOC>
+    void IDatabaseTableInsert4DBCell<ALLOC,true>::insertRows (
+        const typename IDatabaseTableInsert4DBCell<ALLOC,true>::template
+        DBVector<DBVector<std::string>>& new_rows ) {
+      for ( const auto& new_row : new_rows )
+        this->insertRow ( new_row );
+    }
+
+    
+    /// insert new rows at the end of the database
+    template <template<typename> class ALLOC>
+    void IDatabaseTableInsert4DBCell<ALLOC,false>::insertRows (
+        const typename IDatabaseTableInsert4DBCell<ALLOC,false>::template
+        DBVector<DBVector<std::string>>& new_rows ) {
+      for ( const auto& new_row : new_rows )
+        this->insertRow ( new_row );
+    }
   
   } /* namespace learning */
 

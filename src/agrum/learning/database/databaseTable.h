@@ -186,7 +186,8 @@ namespace gum {
 
       /// the type for the matrices stored into the database
       template<typename TX_DATA>
-      using Matrix = DBVector<Row<TX_DATA>>;
+      using Matrix = std::vector<DBRow<TX_DATA,ALLOC>,
+                                 ALLOC<DBRow<TX_DATA,ALLOC>>>;
 
       template <template<typename> class XALLOC>
       using MissingValType = std::vector<std::string,XALLOC<std::string>>;

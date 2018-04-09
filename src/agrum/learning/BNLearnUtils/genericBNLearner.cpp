@@ -44,13 +44,16 @@ namespace gum {
   
     
     genericBNLearner::Database::Database(const DatabaseTable<>& db)
-      : __database(db)
-      , __modalities ( db.domainSizes () ) {
+      : __database(db) {
       // get the variables names
       const auto& var_names = __database.variableNames ();
       const std::size_t nb_vars = var_names.size ();
-      for ( std::size_t i = 0; i < nb_vars; ++i )
+      __modalities.resize ( nb_vars );
+      const auto domainSizes = __database.domainSizes ();
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
         __name2nodeId.insert ( var_names[i], i );
+        __modalities[i] = domainSizes[i];
+      }
 
       // create the parser
       __parser = new DBRowGeneratorParser<> ( __database.handler (),
