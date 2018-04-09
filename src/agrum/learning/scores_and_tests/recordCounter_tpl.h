@@ -112,7 +112,7 @@ namespace gum {
     RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::RecordCounterThread(
       const RowFilter& filter, const std::vector< Size >& var_modalities)
         : Base(var_modalities)
-        , __filter(filter) {
+        , __parser(filter) {
       GUM_CONSTRUCTOR(RecordCounterThread);
     }
 
@@ -122,7 +122,7 @@ namespace gum {
     RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::RecordCounterThread(
       const RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >& from)
         : Base(from)
-        , __filter(from.__filter) {
+        , __parser(from.__parser) {
       GUM_CONS_CPY(RecordCounterThread);
     }
 
@@ -132,7 +132,7 @@ namespace gum {
     RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::RecordCounterThread(
       RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >&& from)
         : Base(std::move(from))
-        , __filter(std::move(from.__filter)) {
+        , __parser(std::move(from.__parser)) {
       GUM_CONS_MOV(RecordCounterThread);
     }
 
@@ -153,15 +153,15 @@ namespace gum {
     /// update all the countings of all the nodesets by parsing the database
     template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
     INLINE void RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::count() {
-      __filter.reset();
+      __parser.reset();
 
       // get the number of nodesets to process
       const auto size = this->_nodesets.size();
 
       try {
-        while (__filter.hasRows()) {
+        while (__parser.hasRows()) {
           // get the observed filtered rows
-          FilteredRow& row = __filter.row();
+          const DBRow<DBTranslatedValue>& row = __parser.row();
 
           // fill the counts for the ith nodeset
           for (Idx i = 0; i < size; ++i) {
@@ -170,7 +170,7 @@ namespace gum {
             Idx                       dim = 1;
 
             for (Idx j = 0, vsize = Size(var_ids.size()); j < vsize; ++j) {
-              offset += row[var_ids[j]] * dim;
+              offset += row[var_ids[j]].discr_val * dim;
               dim *= this->_modalities->operator[](var_ids[j]);
             }
 
@@ -186,22 +186,22 @@ namespace gum {
     /// returns the filter used for the countings
     template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
     INLINE RowFilter&
-           RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::filter() noexcept {
-      return __filter;
+           RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::parser() noexcept {
+      return __parser;
     }
 
     /// returns the size of the database
     template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
     INLINE Size
            RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::DBSize() noexcept {
-      return __filter.handler().DBSize();
+      return __parser.handler().DBSize();
     }
 
     /// sets the interval of records on which countings should be performed
     template < typename RowFilter, typename IdSetAlloc, typename CountAlloc >
     INLINE void RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >::setRange(
       Size min_range, Size max_range) {
-      __filter.handler().setRange(min_range, max_range);
+      __parser.handler().setRange(min_range, max_range);
     }
 
     // ============================================================================
@@ -354,7 +354,7 @@ namespace gum {
       }
 
       // for nonempty sets, always add the node to the subset lattice
-      __subset_lattice.addNodeWithId(node);
+      __subset_lattice.addNodeWithId (node);
       IdSet< IdSetAlloc > tmp_idset(ids, set_size);
 
       if (!__idsets.existsFirst(tmp_idset)) {

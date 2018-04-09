@@ -2133,6 +2133,36 @@ class FatalError(GumException):
 FatalError_swigregister = _pyAgrum.FatalError_swigregister
 FatalError_swigregister(FatalError)
 
+class NotImplementedYet(GumException):
+    """Proxy of C++ gum::NotImplementedYet class."""
+
+    __swig_setmethods__ = {}
+    for _s in [GumException]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, NotImplementedYet, name, value)
+    __swig_getmethods__ = {}
+    for _s in [GumException]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, NotImplementedYet, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(self, aMsg, aType) -> NotImplementedYet
+        __init__(self, aMsg) -> NotImplementedYet
+        __init__(self, src) -> NotImplementedYet
+        """
+        this = _pyAgrum.new_NotImplementedYet(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_NotImplementedYet
+    def __del__(self):
+        return None
+NotImplementedYet_swigregister = _pyAgrum.NotImplementedYet_swigregister
+NotImplementedYet_swigregister(NotImplementedYet)
+
 class UndefinedIteratorValue(GumException):
     """Proxy of C++ gum::UndefinedIteratorValue class."""
 
@@ -3759,6 +3789,11 @@ class Variable(_object):
 
         """
         return _pyAgrum.Variable_description(self)
+
+
+    def varType(self) -> "gum::VarType":
+        """varType(self) -> gum::VarType"""
+        return _pyAgrum.Variable_varType(self)
 
 Variable_swigregister = _pyAgrum.Variable_swigregister
 Variable_swigregister(Variable)
@@ -26370,9 +26405,6 @@ class BNLearner_double(_object):
         """
         __init__(self, filename) -> BNLearner_double
         __init__(self, db) -> BNLearner_double
-        __init__(self, filename, modalities, parse_database=False) -> BNLearner_double
-        __init__(self, filename, modalities) -> BNLearner_double
-        __init__(self, filename, src, parse_database=False) -> BNLearner_double
         __init__(self, filename, src) -> BNLearner_double
         __init__(self, arg2) -> BNLearner_double
         __init__(self, arg2) -> BNLearner_double
@@ -27247,12 +27279,12 @@ class BNDatabaseGenerator_double(_object):
         return _pyAgrum.BNDatabaseGenerator_double_toCSV(self, *args)
 
 
-    def toDatabaseVectInRAM(self, useLabels: 'bool'=True) -> "gum::learning::DatabaseVectInRAM":
+    def toDatabaseTable(self, useLabels: 'bool'=True) -> "gum::learning::DatabaseTable< >":
         """
-        toDatabaseVectInRAM(self, useLabels=True) -> DatabaseVectInRAM
-        toDatabaseVectInRAM(self) -> DatabaseVectInRAM
+        toDatabaseTable(self, useLabels=True) -> gum::learning::DatabaseTable< >
+        toDatabaseTable(self) -> gum::learning::DatabaseTable< >
         """
-        return _pyAgrum.BNDatabaseGenerator_double_toDatabaseVectInRAM(self, useLabels)
+        return _pyAgrum.BNDatabaseGenerator_double_toDatabaseTable(self, useLabels)
 
 
     def database(self) -> "std::vector< std::vector< gum::Idx,std::allocator< gum::Idx > >,std::allocator< std::vector< gum::Idx,std::allocator< gum::Idx > > > >":

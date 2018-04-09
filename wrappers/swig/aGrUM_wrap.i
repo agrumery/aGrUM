@@ -108,7 +108,7 @@
 #include <agrum/CN/CNMonteCarloSampling.h>
 #include <agrum/CN/CNLoopyPropagation.h>
 
-#include <agrum/learning/database/databaseVectInRAM.h>
+#include <agrum/learning/database/databaseTable.h>
 #include <agrum/learning/BNLearner.h>
 #include <agrum/learning/database/BNDatabaseGenerator.h>
 
@@ -256,7 +256,7 @@ namespace std {
 %import <agrum/graphs/parts/listeners/diGraphListener.h>
 %import <agrum/BN/io/BIF/BIFReader.h>
 
-%import <agrum/learning/database/databaseVectInRAM.h>
+%import <agrum/learning/database/databaseTable.h>
 %import <agrum/learning/BNLearnUtils/genericBNLearner.h>
 %include <agrum/learning/BNLearner.h>
 %include <agrum/learning/database/BNDatabaseGenerator.h>

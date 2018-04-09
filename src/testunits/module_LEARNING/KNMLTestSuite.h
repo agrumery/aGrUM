@@ -22,9 +22,11 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
-#include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+#include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/database/DBInitializerFromCSV.h>
+#include <agrum/learning/database/databaseTable.h>
+#include <agrum/learning/database/DBTranslatorSet.h>
 #include <agrum/learning/scores_and_tests/kNML.h>
 
 namespace gum_tests {
@@ -32,24 +34,28 @@ namespace gum_tests {
   class KNMLTestSuite : public CxxTest::TestSuite {
     public:
     void test1() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBInitializerFromCSV<>
+        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      gum::learning::DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowTranslatorSet<
-        gum::learning::CellTranslatorCompactIntId >
-        translators;
-      translators.insertTranslator(0, 8);
+      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
 
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
+      std::vector< gum::Size > modalities(nb_vars, 2);
 
-
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-
-      std::vector< gum::Size > modalities = filter.modalities();
-
-      gum::learning::KNML<> score(filter, modalities);
+      gum::learning::KNML<> score(parser, modalities);
       /* 3-4 K 2.6844818514806183
        * 2-6 K 4.1414644088786756
        * 4-7|5 K 3.763846399915938

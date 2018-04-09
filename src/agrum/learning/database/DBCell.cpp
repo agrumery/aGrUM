@@ -22,11 +22,11 @@
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
-#ifndef NDEBUG
-#include <agrum/core/debug.h>
-#endif
-
+#include <cstdio>
 #include <agrum/learning/database/DBCell.h>
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /// include the inlined functions if necessary
 #ifdef GUM_NO_INLINE
@@ -39,54 +39,214 @@ namespace gum {
 
     // create the static members
     int DBCell::__string_max_index = 0;
-    Bijection< std::string, int >& DBCell::__strings() {
+
+    
+    Bijection<std::string,int>& DBCell::__strings() {
 #ifndef NDEBUG
       static bool first_time = true;
-      if (first_time) {
+      if ( first_time ) {
         first_time = false;
         __debug__::__dec_creation(
-          "Bijection", "__strings", 0, "BCell string bijection", 0);
+            "Bijection", "__strings", 0, "BCell string bijection", 0 );
+        __debug__::__dec_creation( "BijectionImplementation",
+                                   "__strings",
+                                   0,
+                                   "BCell string bijection",
+                                   0 );
         __debug__::__dec_creation(
-          "BijectionImplementation", "__strings", 0, "BCell string bijection", 0);
+            "HashTable", "__strings", 0, "BCell string bijection", 0 );
         __debug__::__dec_creation(
-          "HashTable", "__strings", 0, "BCell string bijection", 0);
-        __debug__::__dec_creation(
-          "HashTable", "__strings", 0, "BCell string bijection", 0);
+            "HashTable", "__strings", 0, "BCell string bijection", 0 );
       }
 #endif
-      static Bijection< std::string, int > strings;
+      static Bijection<std::string,int> strings;
       return strings;
     }
 
-    /// safely sets the content of the DBCell with the best possible type
-    void DBCell::setAgainTypeSafe(const std::string& elt) {
-      // try first to set the DBCell with the current type
-      switch (__type) {
-        case EltType::REAL:
-          // try to convert the string into a double
-          try {
-            __setRealFromStringSafe(elt);
-            return;
-          } catch (std::invalid_argument&) {
-          }
-          break;
+    
+    // determines whether a string corresponds to an integer
+    bool DBCell::isInteger ( const std::string& str ) {
+      if( str.empty() ) return false;
+                    
+      // trim the string
+      auto start_iter = str.begin() + str.find_first_not_of(" \t");
+      auto end_iter   = str.begin() + str.find_last_not_of(" \t\r\n") + 1;
 
-        case EltType::STRING:
-          // here, the best type is a string
-          setString(elt);
-          return;
+      if( start_iter == end_iter ) return false;
 
-        case EltType::MISSING:
-          break;
+      // if the number is negative, pass the '-' sign
+      if( *start_iter == '-' ) ++start_iter;
 
-        default:
-          GUM_ERROR(TypeError, "type not handled in DBCell copy constructor");
+      // check wether we have a number
+      for ( ; start_iter != end_iter; ++start_iter ) {
+        if ( ( *start_iter < '0' ) || ( *start_iter > '9' ) ) return false;
       }
 
-      // here, set the content of the DBCell with the best type
-      setBestTypeSafe(elt);
+      return true;
+    }
+
+    
+    // determines whether a string corresponds to an integer
+    bool DBCell::isReal ( const std::string& str ) {
+      if( str.empty() ) return false;
+                    
+      // trim the string
+      auto start_iter = str.begin() + str.find_first_not_of(" \t");
+      auto end_iter   = str.begin() + str.find_last_not_of(" \t\r\n") + 1;
+
+      if( start_iter == end_iter ) return false;
+
+      // check wether we have a number
+      bool has_dot      = false;
+      bool has_exponent = false;
+      bool has_digit    = false;
+      bool has_negation = false;
+      for ( ; start_iter != end_iter; ++start_iter ) {
+        if( *start_iter == '-' ) {
+          if ( has_negation ) return false;
+        }
+        else if ( *start_iter == '.' ) {
+          if ( has_dot || has_exponent ) return false;
+          has_dot = true;
+        }
+        else if ( ( *start_iter == 'e' ) || ( *start_iter == 'E' ) ) {
+          if ( has_exponent || ! has_digit ) return false;
+          has_exponent = true;
+          has_negation = false;
+        }
+        else if ( ( *start_iter < '0' ) || ( *start_iter > '9' ) ) return false;
+        else has_digit = true;
+      }
+
+      return true;
+    }
+
+
+    // try to convert the content of the DBCell into another type
+    bool DBCell::convertType( const EltType new_type ) {
+      if ( new_type == __type ) return true;
+      switch ( new_type ) {
+        // ===================================
+      case EltType::REAL:
+        switch ( __type ) {
+        case EltType::INTEGER:
+          __val_real = float ( __val_integer );
+          __type = EltType::REAL;
+          return true;
+
+        case EltType::STRING:
+          try {
+            const std::string& str = __strings().first( __val_index );
+            if ( ! isReal ( str ) ) return false;
+            __val_real = std::stof( str );
+            __type = EltType::REAL;
+            return true;
+          }
+          catch ( std::invalid_argument& ) {
+            return false;
+          }
+
+        case EltType::MISSING:
+          return false;
+          
+        default:
+          GUM_ERROR( NotImplementedYet,
+                     "type not supported by DBCell convertType" );
+        }
+
+        // ===================================
+      case EltType::INTEGER:
+        switch ( __type ) {
+        case EltType::REAL:
+          {
+            const int nb = int ( __val_real );
+            if ( nb == __val_real ) {
+              __val_integer = nb;
+              __type = EltType::INTEGER;
+              return true;
+            }
+            else return false;
+          }
+
+        case EltType::STRING:
+          try {
+            const std::string& str = __strings().first( __val_index );
+            if ( ! isInteger ( str ) ) return false;
+            __val_integer = std::stoi( str );
+            __type = EltType::INTEGER;
+            return true;
+          }
+          catch ( std::invalid_argument& ) {
+            return false;
+          }
+
+        case EltType::MISSING:
+          return false;
+          
+        default:
+          GUM_ERROR( NotImplementedYet,
+                     "type not supported by DBCell convertType" );
+        }
+
+        // ===================================
+      case EltType::STRING:
+        switch ( __type ) {
+        case EltType::REAL:
+          {
+            char buffer[100];
+            sprintf( buffer, "%g", __val_real );
+            const std::string str ( buffer );
+            if ( !__strings().existsFirst( str ) ) {
+              __strings().insert( str, __string_max_index );
+              __val_index = __string_max_index;
+              ++__string_max_index;
+            }
+            else {
+              __val_index = __strings().second( str );
+            }
+          }
+          __type = EltType::STRING;
+          return true;
+
+        case EltType::INTEGER:
+          {
+            
+            const std::string str = std::to_string( __val_integer );
+            if ( !__strings().existsFirst( str ) ) {
+              __strings().insert( str, __string_max_index );
+              __val_index = __string_max_index;
+              ++__string_max_index;
+            }
+            else {
+              __val_index = __strings().second( str );
+            }
+          }
+          __type = EltType::STRING;
+          return true;
+
+        case EltType::MISSING:
+          return false;
+          
+        default:
+          GUM_ERROR( NotImplementedYet,
+                     "type not supported by DBCell convertType" );
+        }
+        
+        // ===================================
+      case EltType::MISSING:
+        __type = EltType::MISSING;
+        return true;
+
+      default:
+        GUM_ERROR( NotImplementedYet,
+                   "type not supported by DBCell convertType" );
+      }
+
+      return false;
     }
 
   } /* namespace learning */
 
 } /* namespace gum */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */

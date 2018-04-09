@@ -26,9 +26,11 @@
 #include <agrum/graphs/DAG.h>
 #include <agrum/variables/labelizedVariable.h>
 
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
-#include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+#include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/database/DBInitializerFromCSV.h>
+#include <agrum/learning/database/databaseTable.h>
+#include <agrum/learning/database/DBTranslatorSet.h>
 
 #include <agrum/learning/scores_and_tests/scoreBDeu.h>
 #include <agrum/learning/scores_and_tests/scoreK2.h>
@@ -52,30 +54,36 @@ namespace gum_tests {
   class K2TestSuite : public CxxTest::TestSuite {
     public:
     void test_k2_asia() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBInitializerFromCSV<>
+        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      gum::learning::DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowTranslatorSet<
-        gum::learning::CellTranslatorCompactIntId >
-        translators;
-      translators.insertTranslator(0, 8);
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
+      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
 
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-
-      std::vector< gum::Size > modalities = filter.modalities();
+      std::vector< gum::Size > modalities(nb_vars, 2);
 
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreK2<>          score(filter, modalities, apriori);
+      gum::learning::ScoreK2<>          score(parser, modalities, apriori);
 
       gum::learning::StructuralConstraintDAG struct_constraint(
         gum::Size(modalities.size()));
 
-      gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori);
+      gum::learning::ParamEstimatorML<> estimator(parser, modalities, apriori);
 
-      std::vector< gum::NodeId > order(filter.modalities().size());
+      std::vector< gum::NodeId > order(modalities.size());
       for (gum::NodeId i = 0; i < order.size(); ++i) {
         order[i] = i;
       }
@@ -97,14 +105,14 @@ namespace gum_tests {
                                                         estimator,
                                                         database.variableNames(),
                                                         modalities,
-                                                        filter.translatorSet());
+                                                        database.translatorSet());
 
         gum::BayesNet< double > bn2 =
           k2.learnBN< double >(selector,
                                estimator,
                                database.variableNames(),
                                modalities,
-                               filter.translatorSet());
+                               database.translatorSet());
         TS_ASSERT(bn.dag().arcs().size() == 8);
         TS_ASSERT(bn2.dag().arcs().size() == 8);
       } catch (gum::Exception& e) {

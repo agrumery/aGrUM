@@ -34,11 +34,9 @@ namespace gum {
   namespace learning {
 
     // returns the row filter
-    INLINE DBRowFilter< DatabaseVectInRAM::Handler,
-                        DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                        FilteredRowGeneratorSet< RowGeneratorIdentity > >&
-    genericBNLearner::Database::rowFilter() {
-      return *__row_filter;
+    INLINE DBRowGeneratorParser<>&
+    genericBNLearner::Database::parser () {
+      return *__parser;
     }
 
     // returns the modalities of the variables
@@ -57,7 +55,7 @@ namespace gum {
     genericBNLearner::Database::idFromName(const std::string& var_name) const {
       try {
         return __name2nodeId.second(const_cast< std::string& >(var_name));
-      } catch (gum::NotFound&) {
+      } catch (gum::NotFound) {
         GUM_ERROR(MissingVariableInDatabase, "for variable " << var_name);
       }
     }
@@ -68,11 +66,13 @@ namespace gum {
       return __name2nodeId.first(id);
     }
 
-    // returns the "raw" translators (needed for the aprioris)
-    INLINE DBRowTranslatorSet< CellTranslatorUniversal >&
-           genericBNLearner::Database::rawTranslators() {
-      return __raw_translators;
+    
+    /// returns the internal database table
+    INLINE const DatabaseTable<>&
+    genericBNLearner::Database::databaseTable () const {
+      return __database;
     }
+
 
     // ===========================================================================
 
@@ -150,7 +150,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
       __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.rowFilter(), __score_database.modalities());
+        __score_database.parser(), __score_database.modalities());
       __mutual_info->useNML();
     }
     /// indicate that we wish to use the MDL correction for 3off2
@@ -159,7 +159,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
       __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.rowFilter(), __score_database.modalities());
+        __score_database.parser(), __score_database.modalities());
       __mutual_info->useMDL();
     }
     /// indicate that we wish to use the NoCorr correction for 3off2
@@ -168,7 +168,7 @@ namespace gum {
         GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
       }
       __mutual_info = new CorrectedMutualInformation<>(
-        __score_database.rowFilter(), __score_database.modalities());
+        __score_database.parser(), __score_database.modalities());
       __mutual_info->useNoCorr();
     }
 

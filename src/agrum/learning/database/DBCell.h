@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The class representing cells in tabular databases
+ * @brief The class representing the original values of the cells of databases
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -29,6 +29,7 @@
 #include <stdexcept>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 #include <agrum/agrum.h>
 #include <agrum/core/bijection.h>
@@ -38,12 +39,37 @@ namespace gum {
   namespace learning {
 
     /** @class DBCell
-     * @ingroup learning_group
-     * @brief the type of the elements read from the database */
+     * @headerfile DBCell.h <agrum/learning/database/DBCell.h>
+     * @brief The class representing the original values of the cells
+     * of databases
+     *
+     * Learning algorithms read input data, the so-called datasets, and
+     * infer their models. To be fast, they should not parse directly
+     * the original datasets, which are often databases of strings, but rather
+     * they should parse preprocessed data with types more suited for fast
+     * analysis. To do so, in aGrUM, learning algorithms parse datasets of
+     * DBTranslatedValue instances. However, sometimes, these algorithms make
+     * some decisions which, afterwards, they may realize were not so good and
+     * should be modified. For instance, when coping with continuous variables,
+     * they may use a discretization for fast learning the structure of a hybrid
+     * Bayesian network. But, given the structure found, they may try to find
+     * a better discretization. With a new discretization, the original dataset
+     * should be parsed again and mapped into new DBTranslatedValue instances.
+     * Unfortunately, reparsing, say, a CSV file or a SQL database, is time
+     * consuming. Sometimes, it is faster to read such datasets once and store
+     * them in an appropriate form that can be mapped easily into
+     * DBTranslatedValue instances. The RawDatabaseTable class is made precisely
+     * for this purpose and can be thought of as a 2-dimensional table, the
+     * elements of which are DBCell instances. The latter can actually encode
+     * compactly integers, real numbers, strings and even missing values. So they
+     * are very well suited to be the type of the cells of the RawDatabaseTable
+     * class.
+     *
+     * @ingroup learning_database */
     class DBCell {
-      public:
+    public:
       /// the set of types possibly taken by the last element read
-      enum EltType { REAL, STRING, MISSING };
+      enum class EltType : unsigned char { REAL, INTEGER, STRING, MISSING };
 
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -51,26 +77,30 @@ namespace gum {
 
       /// @{
 
-      /// default constructor
+      /// default constructor (ontains a missing value)
       DBCell();
 
-      /// constructor for a number
-      DBCell(double nb);
+      /// constructor for a real number 
+      DBCell( const float nb );
+
+      /// constructor for an integer number 
+      DBCell( const int nb );
 
       /// constructor for a string
-      DBCell(const std::string& str);
+      DBCell( const std::string& str );
 
       /// copy constructor
-      DBCell(const DBCell& from);
+      DBCell( const DBCell& from );
 
       /// move constructor
-      DBCell(DBCell&& from);
+      DBCell( DBCell&& from );
 
       /// destructor
       ~DBCell();
 
       /// @}
 
+      
       // ##########################################################################
       /// @name Operators
       // ##########################################################################
@@ -78,116 +108,181 @@ namespace gum {
       /// @{
 
       /// copy operator
-      DBCell& operator=(const DBCell& from);
+      DBCell& operator=( const DBCell& from );
 
       /// move operator
-      DBCell& operator=(DBCell&& from);
+      DBCell& operator=( DBCell&& from );
 
-      /// unsafe set operator (assumes that the preceding type is of the same
-      /// type)
-      DBCell& operator=(double x) noexcept;
+      /// assignment operator
+      DBCell& operator=( const float x );
 
-      /// unsafe set operator (assumes that the preceding type is of the same
-      /// type)
-      DBCell& operator=(const std::string& x) noexcept;
+      /// assignment operator
+      DBCell& operator=( const int x );
 
+      /// assignment operator 
+      DBCell& operator=( const std::string& x );
+
+      /// test of equality
+      bool operator== ( const DBCell& from ) const;
+
+      /// test of inequality
+      bool operator!= ( const DBCell& from ) const;
+      
       /// @}
 
+      
       // ##########################################################################
       /// @name Accessors / Modifiers
       // ##########################################################################
 
       /// @{
 
-      /// returns the DBcell as a double (without checking its type)
-      /** @warning this method is unsafe: it assumes that you know the
-       * correct type of the element in the DBCell */
-      double getReal() const noexcept;
-
-      /// returns the DBcell as a double (safe with type checking)
-      /** @throw TypeError if the DBCell does not contain this type */
-      double getRealSafe() const;
-
-      /// unsafe set (assumes that the preceding type is of the same type)
-      void setReal(double x);
-
-      /// sets the content of the DBCell (safe type checking)
-      void setRealSafe(double elt);
-
-      /// returns the DBcell as a string (without checking its type)
-      /** @warning this method is unsafe: it assumes that you know the
-       * correct type of the element in the DBCell */
-      const std::string& getString() const noexcept;
-
-      /// returns the DBcell as a string (safe with type checking)
-      /** @throw TypeError if the DBCell does not contain this type */
-      const std::string& getStringSafe() const;
-
-      /** @brief returns the DBcell as the index of a string in a static
-       *bijection
-       * (without checking its type)
-       *
-       * @warning this method is unsafe: it assumes that you know the
-       * correct type of the element in the DBCell */
-      int getStringIndex() const noexcept;
-
-      /// returns the DBcell as the index of a string in a static bijection
-      int getStringIndexSafe() const;
-
-      /// strings are stored into a static bijection. Get its ith string
-      static const std::string& getString(Idx index);
-
-      /// unsafe set (assumes that the preceding type is of the same type)
-      void setString(const std::string& x);
-
-      /// sets the content of the DBCell (safe type checking)
-      void setStringSafe(const std::string& elt);
-
-      /// sets the DBCell as a missing element
-      void setMissingSafe();
-
-      /// safely sets the content of the DBCell with the best possible type
-      /** This method is used to parse the string passed in argument and
-       * estimate which internal type is the most appropriate for the DBCell.
-       * Then it fills the DBCell with this type. */
-      void setBestTypeSafe(const std::string& elt);
-
-      /** @brief safely sets the content of the DBCell with the preceding type
-       * or,
-       * if this is not possible, with the best possible type */
-      void setAgainTypeSafe(const std::string& elt);
-
       /// returns the current type of the DBCell
       EltType type() const noexcept;
 
       /// try to convert the content of the DBCell into another type
-      bool convertType(EltType);
+      /** @return true if the conversion has been successfully performed. */
+      bool convertType( const EltType newtype );
+
+      /// returns the DBcell as a real number
+      /** @warning if the cell is not of type REAL, the dbcell will not try to
+       * convert its content into a real number, it will raise a TypeError
+       * exception.
+       * @return the content of the DBCell (if this is a real number)
+       * @throw TypeError if the DBCell is not labelled as type REAL */
+      float real() const;
+
+      /// sets the content of the DBCell
+      void setReal ( const float x );
+      
+      /// sets the content of the DBCell from a string
+      /** @throw TypeError if the string does not correspond to a real number */
+      void setReal ( const std::string& elt );
+
+      /// returns the DBcell as an integer
+      /** @warning if the cell is not of type INTEGER, the dbcell will not try
+       * to convert its content into a float, it will raise a TypeError
+       * exception.
+       * @throw TypeError if the DBCell is not labelled as type INTEGER */
+      int integer () const;
+
+      /// sets the content of the DBCell
+      void setInteger( const int x );
+      
+      /// sets the content of the DBCell from a string
+      /** @throw TypeError if the string does not correspond to an integer */
+      void setInteger ( const std::string& elt );
+
+      /// returns the DBcell as a string
+      /** @warning if the cell is not of type STRING, the dbcell will not try to
+       * convert its content into a string, it will raise a TypeError exception.
+       * @throw TypeError if the DBCell is not labelled as type STRING */
+      const std::string& string() const;
+
+      /** @brief returns the DBcell as the index of a string in a static
+       * bijection
+       *
+       * All strings referenced by DBCells are stored in a bijection. This method
+       * returns the index of the string referenced by the current DBCell.
+       * @throw TypeError if the DBCell is not labelled as type STRING */
+      int stringIndex() const;
+
+      /// sets the content of the DBCell
+      void setString ( const std::string& elt );
+
+      /// sets the DBCell as a missing element
+      void setMissingState ();
+
+      /// indicates whether the cell contains a missing value
+      bool isMissing () const;
 
       /// @}
 
-      private:
-      using Real = double;
-      // typename std::conditional<sizeof( double ) >= sizeof( int
-      // ),double,double>::type;
+      
+      // ##########################################################################
+      /// @name Public Static Accessors / Modifiers
+      // ##########################################################################
 
-      /// the real type of the last element read from the database
-      EltType __type{EltType::REAL};
+      /// @{
 
-      /// the element read from the database
+      /// strings are stored into a static bijection. Get its ith string
+      /** @throw UndefinedElement if the index does not correspond to
+       * any string */
+      static const std::string& string( const int index );
+     
+      /// returns the best type to store a given element encoded as a string
+      /** @param str the string to convert into a DBCell
+       * @param missingVals a vector containing the set of strings that should
+       * be interpreted as missing values. Whenever str matches one these strings,
+       * the returned EltType represents a missing value. */
+      template <template<typename> class ALLOC = std::allocator>
+      static EltType
+      bestType( const std::string& str,
+                const std::vector<std::string,ALLOC<std::string>>& missingVals );
+
+      /// returns the DBCell with the best type for an element encoded as a string
+      /** @param str the string to convert into a DBCell
+       * @param missingVals a vector containing the set of strings that should
+       * be interpreted as missing values. Whenever str matches one these strings,
+       * the returned DBCell represents a missing value. */
+      template <template<typename> class ALLOC = std::allocator>
+      static DBCell
+      bestDBCell( const std::string& str,
+                  const std::vector<std::string,ALLOC<std::string>>& missingVals );
+
+      /// returns the content of the DBCell as a string, whatever its type
+      /** @throw UndefinedElement is raised if the DBCell corresponds to a
+       * missing value but the set of missing values passed in argument is
+       * empty. */
+      template <template<typename> class ALLOC = std::allocator>
+      std::string
+      toString ( const std::vector<std::string,ALLOC<std::string>>& missingVals )
+        const;
+
+      /// determines whether a string corresponds precisely to an integer
+      static bool isInteger ( const std::string& str );
+
+      /// determine whether a string corresponds precisely to a real number
+      static bool isReal ( const std::string& str );
+
+      /// checks whether a string correspond to a missing value
+      template <template<typename> class ALLOC = std::allocator>
+      static bool isMissing ( const std::string& str,
+                              const std::vector<std::string,
+                                                ALLOC<std::string>>& missingVals );
+
+      /// @}
+
+      
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+      
+    private:
+      // the real type of the last element read from the database
+      EltType __type { EltType::MISSING };
+
+      // the element read from the database
       union {
-        Idx  __index;  // stores string indices
-        Real __value{0.0};
+        int   __val_index;   // stores string indices. Basically, it should have
+        int   __val_integer; // been an Idx, but int are shorter than Idx.
+        float __val_real;
       };
 
-      /// a bijection assigning to each string index its corresponding string
-      static Bijection< std::string, int >& __strings();
 
-      /// the last index used so far
+      // determine the longest type of the union. This is used for fast
+      // copying/moving DBCells
+      using UnionType = typename
+        std::conditional<sizeof(int) < sizeof(float),float,int>::type;
+
+      
+      // a bijection assigning to each string index its corresponding string
+      static Bijection<std::string,int>& __strings ();
+
+      
+      // the last index used so far
       static int __string_max_index;
 
-      /// sets the content of the DBCell from a string
-      /** @throws std::invalid_argument if the string cannot be converted */
-      void __setRealFromStringSafe(const std::string& str);
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+      
     };
 
   } /* namespace learning */
@@ -198,5 +293,7 @@ namespace gum {
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/database/DBCell_inl.h>
 #endif /* GUM_NO_INLINE */
+
+#include <agrum/learning/database/DBCell_tpl.h>
 
 #endif /* GUM_LEARNING_DB_CELL_H */

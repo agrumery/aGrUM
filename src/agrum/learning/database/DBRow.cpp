@@ -18,14 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief The class representing rows in tabular database
+ * @brief The class representing a record stored in a tabular database
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/learning/database/DBRow.h>
 
-/// include the inlined functions if necessary
-#ifdef GUM_NO_INLINE
-#include <agrum/learning/database/DBRow_inl.h>
-#endif /* GUM_NO_INLINE */
+

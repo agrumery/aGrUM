@@ -41,330 +41,132 @@ namespace gum {
 
   namespace learning {
 
-    genericBNLearner::Database::Database(const std::string& filename)
-        : Database(genericBNLearner::__readFile(filename)) {}
+  
+    
+    genericBNLearner::Database::Database(const DatabaseTable<>& db)
+      : __database(db)
+      , __modalities ( db.domainSizes () ) {
+      // get the variables names
+      const auto& var_names = __database.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      for ( std::size_t i = 0; i < nb_vars; ++i )
+        __name2nodeId.insert ( var_names[i], i );
 
-    genericBNLearner::Database::Database(const DatabaseVectInRAM& db)
-        : __database(db) {
-      // create the RowFilter used for learning: we first generate a universal
-      // filter that can parse any database. Then, we parse once the DB to
-      // convert it into a compact int (an interval 0..N-1) so that we can
-      // parse it very quickly
-      __raw_translators.insertTranslator(0, __database.nbVariables());
-
-      __generators.insertGenerator();
-
-      auto raw_filter =
-        make_DB_row_filter(__database, __raw_translators, __generators);
-
-      __raw_translators = raw_filter.translatorSet();
-      __modalities = raw_filter.modalities();
-
-      // create the fast translators
-      DBTransformCompactInt raw2fast_transfo;
-      raw2fast_transfo.transform(raw_filter);
-
-      __translators.insertTranslator(
-        CellTranslatorCompactIntId(false), 0, __database.nbVariables());
-
-      // create the row filter using the fast translators
-      __row_filter =
-        new DBRowFilter< DatabaseVectInRAM::Handler,
-                         DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                         FilteredRowGeneratorSet< RowGeneratorIdentity > >(
-          __database.handler(), __translators, __generators);
-      __translators = __row_filter->translatorSet();
-
-      // fill the variable name -> nodeid hashtable
-      const std::vector< std::string >& var_names = __database.variableNames();
-      Idx                               id = 0;
-
-      for (const auto& name : var_names) {
-        __name2nodeId.insert(const_cast< std::string& >(name), id);
-        ++id;
-      }
+      // create the parser
+      __parser = new DBRowGeneratorParser<> ( __database.handler (),
+                                              DBRowGeneratorSet<> () );
     }
 
+        
+    genericBNLearner::Database::Database(const std::string& filename)
+      : Database(genericBNLearner::__readFile(filename)) {}
+
+
+    
+
+    /*
     genericBNLearner::Database::Database(
       std::string                                    filename,
       const NodeProperty< Sequence< std::string > >& modalities,
       bool                                           check_database)
         : __database(genericBNLearner::__readFile(filename)) {
-      // create the RowFilter used for learning: we first generate a universal
-      // filter that can parse any database. Then, we parse once the DB to
-      // convert it into a compact int (an interval 0..N-1) so that we can
-      // parse it very quickly
-      CellTranslatorUniversal dummy_translator(
-        Sequence< std::string >(),
-        true);  // by default, check the database
-      __raw_translators.insertTranslator(
-        dummy_translator, 0, __database.nbVariables());
+      
+      // #### TODO: change the domain sizes of the variables
+      
+      // get the variables names
+      const auto& var_names = __database.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      for ( std::size_t i = 0; i < nb_vars; ++i )
+        __name2nodeId.insert ( var_names[i], i );
 
-      __generators.insertGenerator();
-
-      // assign the user values to the raw translators
-      for (auto iter = modalities.cbegin(); iter != modalities.cend(); ++iter) {
-        __raw_translators[iter.key()].setUserValues(iter.val(), check_database);
+      // get the domain sizes of the variables
+      __modalities.resize ( nb_vars );
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        const DiscreteVariable& var =
+          static_cast<const DiscreteVariable&> __database.variable ( i );
+        __modalities[i] = var.domainSize ();
       }
 
-      auto raw_filter =
-        make_DB_row_filter(__database, __raw_translators, __generators);
-      __raw_translators = raw_filter.translatorSet();
-
-      // check that the database complies with the modalities specified by the
-      // user. Notably, if the db contains numbers that correspond to strings
-      // specified by the user, map them into strings
-      {
-        DBHandler& handler = raw_filter.handler();
-        const Size db_size = handler.DBSize();
-
-        // determine the number of threads to use for the parsing
-        Size max_nb_threads = std::max(
-          Size(1),
-          std::min(db_size / __min_nb_rows_per_thread, __max_threads_number));
-
-        const Size max_size_per_thread =
-          (db_size + max_nb_threads - 1) / max_nb_threads;
-
-        max_nb_threads = db_size / max_size_per_thread;
-
-        std::vector< DatabaseVectInRAM::Handler > handlers(max_nb_threads,
-                                                           __database.handler());
-
-        // as we shall not raise exception inside OMP threads, we shall keep
-        // track of the errors and raise exceptions after OMP threads have
-        // completed their job
-        std::vector< std::pair< int, std::string > > errors(
-          max_nb_threads, std::pair< int, std::string >(-1, ""));
-
-#pragma omp parallel num_threads(max_nb_threads)
-        {
-          // use the ith handler
-          const Size num_threads = getNumberOfRunningThreads();
-          const int  this_thread = getThreadNumber();
-          DBHandler& the_handler = handlers[this_thread];
-
-          // indicate to the filter which part of the database it must parse
-          const Size size_per_thread = (db_size + num_threads - 1) / num_threads;
-          const Size min_range = size_per_thread * this_thread;
-          const Size max_range = std::min(min_range + size_per_thread, db_size);
-
-          if (min_range < max_range) {
-            bool has_errors = false;
-
-            for (the_handler.setRange(min_range, max_range);
-                 the_handler.hasRows() && !has_errors;
-                 the_handler.nextRow()) {
-              DBRow& row = the_handler.row();
-
-              for (auto iter = modalities.cbegin(); iter != modalities.cend();
-                   ++iter) {
-                const Idx i = iter.key();
-
-                switch (row[i].type()) {
-                  case DBCell::EltType::STRING:
-                    if (!iter.val().exists(row[i].getString())) {
-                      std::stringstream str;
-                      str << "Column " << 1 + iter.key() << " contains modality '"
-                          << row[i].getString()
-                          << "' which has not been specified by the user in "
-                             "line "
-                          << the_handler.numRow();
-                      errors[this_thread].first = i;
-                      errors[this_thread].second = str.str();
-                      has_errors = true;
-                    }
-
-                    break;
-
-                  case DBCell::EltType::MISSING:
-                    break;
-
-                  case DBCell::EltType::REAL: {
-                    std::stringstream str;
-                    str << row[i].getReal();
-
-                    if (!iter.val().exists(str.str())) {
-                      std::stringstream str2;
-                      str2 << "Column " << 1 + iter.key() << " contains modality '"
-                           << str.str()
-                           << "' which has not been specified by the user in "
-                              "line "
-                           << the_handler.numRow();
-                      errors[this_thread].first = i;
-                      errors[this_thread].second = str2.str();
-                      has_errors = true;
-                    } else {
-                      row[i].setStringSafe(str.str());
-                    }
-                  } break;
-
-                  default:
-                    GUM_ERROR(TypeError,
-                              "type not supported by DBCell convertType");
-                }
-              }
-            }
-          }
-        }
-
-        // raise an exception if needed
-        for (const auto& error : errors) {
-          if (error.first != -1) {
-            GUM_ERROR(UnknownLabelInDatabase, error.second);
-          }
-        }
-      }
-
-      // get the modalities of the filters
-      __modalities = raw_filter.modalities();
-
-      // create the fast translators
-      DBTransformCompactInt raw2fast_transfo;
-      raw2fast_transfo.transform(raw_filter);
-
-      __translators.insertTranslator(
-        CellTranslatorCompactIntId(false), 0, __database.nbVariables());
-
-      // create the row filter using the fast translators
-      __row_filter =
-        new DBRowFilter< DatabaseVectInRAM::Handler,
-                         DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                         FilteredRowGeneratorSet< RowGeneratorIdentity > >(
-          __database.handler(), __translators, __generators);
-      __translators = __row_filter->translatorSet();
-
-      // fill the variable name -> nodeid hashtable
-      const std::vector< std::string >& var_names = __database.variableNames();
-      Idx                               id = 0;
-
-      for (const auto& name : var_names) {
-        __name2nodeId.insert(const_cast< std::string& >(name), id);
-        ++id;
-      }
+      // create the parser
+      __parser = new DBRowGeneratorParser<> ( __database.handler (),
+                                              DBRowGeneratorSet<> () );
     }
+    */
+  
 
-    genericBNLearner::Database::Database(std::string filename,
-                                         Database&   score_database)
-        : __database(genericBNLearner::__readFile(filename)) {
+    genericBNLearner::Database::Database(const std::string& filename,
+                                         Database&  apriori_database)
+      : __database(genericBNLearner::__readFile(filename)) {
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
-      if (__database.nbVariables() < score_database.__database.nbVariables()) {
+      if (__database.nbVariables() < apriori_database.__database.nbVariables()) {
         GUM_ERROR(InvalidArgument,
                   "the a priori seems to have fewer variables "
                   "than the observed database");
       }
 
-      __generators.insertGenerator();
-
+      const std::vector< std::string >& apriori_vars =
+        apriori_database.__database.variableNames();
       const std::vector< std::string >& score_vars =
-        score_database.__database.variableNames();
-      const std::vector< std::string >& apriori_vars = __database.variableNames();
+        __database.variableNames();
 
-      Size size = Size(score_vars.size());
+      Size size = Size(apriori_vars.size());
       for (Idx i = 0; i < size; ++i) {
-        if (score_vars[i] != apriori_vars[i]) {
+        if (apriori_vars[i] != score_vars[i]) {
           GUM_ERROR(InvalidArgument,
                     "some a priori variables do not match "
                     "their counterpart in the score database");
         }
       }
-
-      // create the RowFilter used for learning: we first generate a universal
-      // filter that can parse any database. Then, we parse once the DB to
-      // convert it into a compact int (an interval 0..N-1) so that we can
-      // parse it very quickly. We first copy the raw translators of the score
-      // database so that we take into account the values observed in this
-      // database. Then we copy back these raw translators so that the score
-      // filter knows about these values.
+      
+      /*
+        ##### TODO: see what is the point of passing in argument score_database
+        
       __raw_translators = score_database.__raw_translators;
       auto raw_filter =
         make_DB_row_filter(__database, __raw_translators, __generators);
       __raw_translators = raw_filter.translatorSet();
       score_database.__raw_translators = raw_filter.translatorSet();
-
-      // update the modalities of the two databases
-      __modalities = raw_filter.modalities();
-      score_database.__modalities = __modalities;
-
-      // create the fast translators
-      DBTransformCompactInt raw2fast_transfo;
-      raw2fast_transfo.transform(raw_filter);
-
-      __translators.insertTranslator(CellTranslatorCompactIntId(false),
-                                     0,
-                                     score_database.__database.nbVariables());
-
-      __row_filter =
-        new DBRowFilter< DatabaseVectInRAM::Handler,
-                         DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                         FilteredRowGeneratorSet< RowGeneratorIdentity > >(
-          __database.handler(), __translators, __generators);
-      __translators = __row_filter->translatorSet();
-
-      __name2nodeId = score_database.__name2nodeId;
+      */
+      
     }
 
-    genericBNLearner::Database::Database(
-      std::string                                    filename,
-      Database&                                      score_database,
-      const NodeProperty< Sequence< std::string > >& modalities)
-        : __database(genericBNLearner::__readFile(filename)) {
-      GUM_ERROR(OperationNotAllowed,
-                "Learners with both Dirichlet apriori and "
-                "variables' modalities specified are not implemented yet");
-    }
+    
 
+    
     genericBNLearner::Database::Database(const Database& from)
         : __database(from.__database)
-        , __raw_translators(from.__raw_translators)
-        , __translators(from.__translators)
-        , __generators(from.__generators)
         , __modalities(from.__modalities)
         , __name2nodeId(from.__name2nodeId) {
-      // create the row filter for the __database
-      __row_filter =
-        new DBRowFilter< DatabaseVectInRAM::Handler,
-                         DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                         FilteredRowGeneratorSet< RowGeneratorIdentity > >(
-          __database.handler(), __translators, __generators);
+      // create the parser
+      __parser = new DBRowGeneratorParser<> ( __database.handler (),
+                                              DBRowGeneratorSet<> () );
     }
+    
 
     genericBNLearner::Database::Database(Database&& from)
         : __database(std::move(from.__database))
-        , __raw_translators(std::move(from.__raw_translators))
-        , __translators(std::move(from.__translators))
-        , __generators(std::move(from.__generators))
         , __modalities(std::move(from.__modalities))
         , __name2nodeId(std::move(from.__name2nodeId)) {
-      // create the row filter for the __database
-      __row_filter =
-        new DBRowFilter< DatabaseVectInRAM::Handler,
-                         DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                         FilteredRowGeneratorSet< RowGeneratorIdentity > >(
-          __database.handler(), __translators, __generators);
+      // create the parser
+      __parser = new DBRowGeneratorParser<> ( __database.handler (),
+                                              DBRowGeneratorSet<> () );
     }
+    
 
-    genericBNLearner::Database::~Database() { delete __row_filter; }
+    genericBNLearner::Database::~Database() { delete __parser; }
 
     genericBNLearner::Database& genericBNLearner::Database::
     operator=(const Database& from) {
       if (this != &from) {
-        delete __row_filter;
-        __row_filter = nullptr;
+        delete __parser;
         __database = from.__database;
-        __raw_translators = from.__raw_translators;
-        __translators = from.__translators;
-        __generators = from.__generators;
         __modalities = from.__modalities;
         __name2nodeId = from.__name2nodeId;
 
-        // create the row filter for the __database
-        __row_filter =
-          new DBRowFilter< DatabaseVectInRAM::Handler,
-                           DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                           FilteredRowGeneratorSet< RowGeneratorIdentity > >(
-            __database.handler(), __translators, __generators);
+        // create the parser
+        __parser = new DBRowGeneratorParser<> ( __database.handler (),
+                                                DBRowGeneratorSet<> () );
       }
 
       return *this;
@@ -373,39 +175,44 @@ namespace gum {
     genericBNLearner::Database& genericBNLearner::Database::
     operator=(Database&& from) {
       if (this != &from) {
-        delete __row_filter;
-        __row_filter = nullptr;
+        delete __parser;
         __database = std::move(from.__database);
-        __raw_translators = std::move(from.__raw_translators);
-        __translators = std::move(from.__translators);
-        __generators = std::move(from.__generators);
         __modalities = std::move(from.__modalities);
         __name2nodeId = std::move(from.__name2nodeId);
 
-        // create the row filter for the __database
-        __row_filter =
-          new DBRowFilter< DatabaseVectInRAM::Handler,
-                           DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                           FilteredRowGeneratorSet< RowGeneratorIdentity > >(
-            __database.handler(), __translators, __generators);
+        // create the parser
+        __parser = new DBRowGeneratorParser<> ( __database.handler (),
+                                                DBRowGeneratorSet<> () );
       }
 
       return *this;
     }
 
+
+
+    
+    
+    
+
     // ===========================================================================
 
     genericBNLearner::genericBNLearner(const std::string& filename)
-        : __score_database(filename) {
-      // for debugging purposes
-      GUM_CONSTRUCTOR(genericBNLearner);
-    }
-    genericBNLearner::genericBNLearner(const DatabaseVectInRAM& db)
-        : __score_database(db) {
+      : __score_database ( filename ) {
       // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 
+    
+    genericBNLearner::genericBNLearner(const DatabaseTable<>& db)
+      : __score_database(db) {
+      // for debugging purposes
+      GUM_CONSTRUCTOR(genericBNLearner);
+    }
+
+    
+
+    /*
+    
     genericBNLearner::genericBNLearner(
       const std::string&                             filename,
       const NodeProperty< Sequence< std::string > >& modalities,
@@ -416,6 +223,9 @@ namespace gum {
       // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
     }
+
+    */
+    
 
     genericBNLearner::genericBNLearner(const genericBNLearner& from)
         : __score_type(from.__score_type)
@@ -585,7 +395,9 @@ namespace gum {
       return *this;
     }
 
-    DatabaseVectInRAM readFile(const std::string& filename) {
+
+    
+    DatabaseTable<> readFile(const std::string& filename) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
@@ -599,16 +411,34 @@ namespace gum {
       std::transform(
         extension.begin(), extension.end(), extension.begin(), ::tolower);
 
-      if (extension == ".csv") {
-        return DatabaseFromCSV(filename);
+      if (extension != ".csv") {
+        GUM_ERROR(
+                  OperationNotAllowed,
+                  "genericBNLearner does not support yet this type "
+                  "of database file");
       }
 
-      GUM_ERROR(
-        OperationNotAllowed,
-        "genericBNLearner does not support yet this type of database file");
+      DBInitializerFromCSV<> initializer ( filename );
+
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      DBTranslatorSet<> translator_set;
+      DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
+      
+      return database;
+
     }
 
-    DatabaseVectInRAM genericBNLearner::__readFile(const std::string& filename) {
+
+    void genericBNLearner::__checkFileName(const std::string& filename) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
@@ -622,14 +452,54 @@ namespace gum {
       std::transform(
         extension.begin(), extension.end(), extension.begin(), ::tolower);
 
-      if (extension == ".csv") {
-        return DatabaseFromCSV(filename);
-      }
-
-      GUM_ERROR(
+      if (extension != ".csv") {
+       GUM_ERROR(
         OperationNotAllowed,
         "genericBNLearner does not support yet this type of database file");
+      }
     }
+
+    
+
+    DatabaseTable<> genericBNLearner::__readFile(const std::string& filename) {
+      // get the extension of the file
+      Size filename_size = Size(filename.size());
+
+      if (filename_size < 4) {
+        GUM_ERROR(FormatNotFound,
+                  "genericBNLearner could not determine the "
+                  "file type of the database");
+      }
+
+      std::string extension = filename.substr(filename.size() - 4);
+      std::transform(
+        extension.begin(), extension.end(), extension.begin(), ::tolower);
+
+      if (extension != ".csv") {
+       GUM_ERROR(
+        OperationNotAllowed,
+        "genericBNLearner does not support yet this type of database file");
+      }
+
+
+      DBInitializerFromCSV<> initializer ( filename );
+
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      DBTranslatorSet<> translator_set;
+      DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
+      
+      return database;
+    }
+    
 
     void genericBNLearner::__createApriori() {
       // first, save the old apriori, to be delete if everything is ok
@@ -654,12 +524,13 @@ namespace gum {
           if (__user_modalities.empty()) {
             __apriori_database = new Database(__apriori_dbname, __score_database);
           } else {
-            __apriori_database =
-              new Database(__apriori_dbname, __score_database, __user_modalities);
+            GUM_ERROR(OperationNotAllowed, "not implemented" );
+            //__apriori_database =
+            //  new Database(__apriori_dbname, __score_database, __user_modalities);
           }
 
           __apriori = new AprioriDirichletFromDatabase<>(
-            __apriori_database->rowFilter(), __apriori_database->modalities());
+            __apriori_database->parser(), __apriori_database->modalities());
           break;
 
         default:
@@ -681,37 +552,37 @@ namespace gum {
       // create the new scoring function
       switch (__score_type) {
         case ScoreType::AIC:
-          __score = new ScoreAIC<>(__score_database.rowFilter(),
+          __score = new ScoreAIC<>(__score_database.parser(),
                                    __score_database.modalities(),
                                    *__apriori);
           break;
 
         case ScoreType::BD:
-          __score = new ScoreBD<>(__score_database.rowFilter(),
+          __score = new ScoreBD<>(__score_database.parser(),
                                   __score_database.modalities(),
                                   *__apriori);
           break;
 
         case ScoreType::BDeu:
-          __score = new ScoreBDeu<>(__score_database.rowFilter(),
+          __score = new ScoreBDeu<>(__score_database.parser(),
                                     __score_database.modalities(),
                                     *__apriori);
           break;
 
         case ScoreType::BIC:
-          __score = new ScoreBIC<>(__score_database.rowFilter(),
+          __score = new ScoreBIC<>(__score_database.parser(),
                                    __score_database.modalities(),
                                    *__apriori);
           break;
 
         case ScoreType::K2:
-          __score = new ScoreK2<>(__score_database.rowFilter(),
+          __score = new ScoreK2<>(__score_database.parser(),
                                   __score_database.modalities(),
                                   *__apriori);
           break;
 
         case ScoreType::LOG2LIKELIHOOD:
-          __score = new ScoreLog2Likelihood<>(__score_database.rowFilter(),
+          __score = new ScoreLog2Likelihood<>(__score_database.parser(),
                                               __score_database.modalities(),
                                               *__apriori);
           break;
@@ -734,13 +605,13 @@ namespace gum {
         case ParamEstimatorType::ML:
           if (take_into_account_score && (__score != nullptr)) {
             __param_estimator =
-              new ParamEstimatorML<>(__score_database.rowFilter(),
+              new ParamEstimatorML<>(__score_database.parser(),
                                      __score_database.modalities(),
                                      *__apriori,
                                      __score->internalApriori());
           } else {
             __param_estimator =
-              new ParamEstimatorML<>(__score_database.rowFilter(),
+              new ParamEstimatorML<>(__score_database.parser(),
                                      __score_database.modalities(),
                                      *__apriori);
           }

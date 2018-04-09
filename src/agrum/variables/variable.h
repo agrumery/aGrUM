@@ -123,6 +123,11 @@ namespace gum {
 
     const std::string& description() const;
 
+    /// returns the type of variable
+
+    virtual VarType varType() const = 0;
+
+
     /// @}
 
     protected:

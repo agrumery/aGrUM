@@ -38,12 +38,11 @@
 #include <agrum/core/sequence.h>
 #include <agrum/graphs/DAG.h>
 
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorUniversal.h>
-#include <agrum/learning/database/DBRowTranslatorSet.h>
-#include <agrum/learning/database/DBTransformCompactInt.h>
-#include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+#include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/database/DBInitializerFromCSV.h>
+#include <agrum/learning/database/databaseTable.h>
+#include <agrum/learning/database/DBRowGeneratorParser.h>
 
 #include <agrum/learning/scores_and_tests/scoreAIC.h>
 #include <agrum/learning/scores_and_tests/scoreBD.h>
@@ -87,9 +86,6 @@ namespace gum {
 
   namespace learning {
 
-    /// reads a file and returns a databaseVectInRam
-    DatabaseVectInRAM readFile(const std::string& filename);
-
     class BNLearnerListener;
 
     /** @class genericBNLearner
@@ -120,6 +116,7 @@ namespace gum {
         MIIC_THREE_OFF_TWO
       };
 
+      
       /// a helper to easily read databases
       class Database {
         public:
@@ -130,7 +127,7 @@ namespace gum {
 
         /// default constructor
         explicit Database(const std::string& file);
-        explicit Database(const DatabaseVectInRAM& db);
+        explicit Database(const DatabaseTable<>& db);
 
         /// default constructor with defined modalities for some variables
         /**
@@ -144,10 +141,12 @@ namespace gum {
          * @param check_database If true, the database will be checked.
          *
          */
+        /*
         Database(std::string                                    filename,
                  const NodeProperty< Sequence< std::string > >& modalities,
                  bool check_database = false);
-
+        */
+        
         /// default constructor for the aprioris
         /** We must ensure that, when reading the apriori database, if the
          * "apriori" rowFilter says that a given variable has value i
@@ -155,7 +154,7 @@ namespace gum {
          * apriori database is the same as in the score/parameter database
          * read before creating the apriori. This is compulsory to have
          * aprioris that make sense. */
-        Database(std::string filename, Database& score_database);
+        Database(const std::string& filename, Database& score_database);
 
         /// default constructor for the aprioris
         /** We must ensure that, when reading the apriori database, if the
@@ -174,10 +173,15 @@ namespace gum {
          * of id 1 in the BN will have 3 modalities, the first one being True,
          * the second one being False, and the third bein Big.
          */
-        Database(std::string                                    filename,
-                 Database&                                      score_database,
-                 const NodeProperty< Sequence< std::string > >& modalities);
-
+        template < typename GUM_SCALAR >
+        Database( const std::string&                 filename,
+                  const gum::BayesNet< GUM_SCALAR >& bn);
+       
+        template < typename GUM_SCALAR >
+        Database( const std::string&                 filename,
+                  Database&                          score_database,
+                  const gum::BayesNet< GUM_SCALAR >& bn);
+       
         /// copy constructor
         Database(const Database& from);
 
@@ -207,11 +211,8 @@ namespace gum {
         // ########################################################################
         /// @{
 
-        /// returns the row filter
-        DBRowFilter< DatabaseVectInRAM::Handler,
-                     DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                     FilteredRowGeneratorSet< RowGeneratorIdentity > >&
-        rowFilter();
+        /// returns the parser for the database
+        DBRowGeneratorParser<>& parser ();
 
         /// returns the modalities of the variables
         std::vector< Size >& modalities() noexcept;
@@ -225,35 +226,17 @@ namespace gum {
         /// returns the variable name corresponding to a given node id
         const std::string& nameFromId(NodeId id) const;
 
-        /// returns the "raw" translators (needed for the aprioris)
-        /** We must ensure that, when reading the apriori database, if the
-         * "apriori" rowFilter says that a given variable has value i
-         * (given by its fast translator), the corresponding "raw" value in the
-         * apriori database is the same as in the score/parameter database
-         * read before creating the apriori. This is compulsory to have
-         * aprioris that make sense. */
-        DBRowTranslatorSet< CellTranslatorUniversal >& rawTranslators();
+        /// returns the internal database table
+        const DatabaseTable<>& databaseTable () const;
 
         /// @}
 
         protected:
         /// the database itself
-        DatabaseVectInRAM __database;
+        DatabaseTable<> __database;
 
-        /// the rwo translators
-        DBRowTranslatorSet< CellTranslatorUniversal > __raw_translators;
-
-        /// the translators used for reading the database
-        DBRowTranslatorSet< CellTranslatorCompactIntId > __translators;
-
-        /// the generators used for reading the database
-        FilteredRowGeneratorSet< RowGeneratorIdentity > __generators;
-
-        /// the filtered row that reads the database
-        DBRowFilter< DatabaseVectInRAM::Handler,
-                     DBRowTranslatorSet< CellTranslatorCompactIntId >,
-                     FilteredRowGeneratorSet< RowGeneratorIdentity > >*
-          __row_filter{nullptr};
+        /// the parser used for reading the database
+        DBRowGeneratorParser<>* __parser { nullptr };
 
         /// the modalities of the variables
         std::vector< Size > __modalities;
@@ -270,8 +253,21 @@ namespace gum {
 
         /// the minimal number of rows to parse (on average) by thread
         Size __min_nb_rows_per_thread{100};
+
+      private:
+        // returns the set of variables as a BN. This is convenient for
+        // the constructors of apriori Databases
+        template < typename GUM_SCALAR >
+        BayesNet<GUM_SCALAR> __BNVars () const;
       };
 
+
+
+
+
+
+
+      
       public:
       // ##########################################################################
       /// @name Constructors / Destructors
@@ -284,7 +280,7 @@ namespace gum {
        * names
        */
       genericBNLearner(const std::string& db);
-      genericBNLearner(const DatabaseVectInRAM& db);
+      genericBNLearner(const DatabaseTable<>& db);
 
       /**
        * read the database file for the score / parameter estimation and var
@@ -305,10 +301,10 @@ namespace gum {
        * as being exactly those of the variables of the BN (as a consequence,
        * if we find other values in the database, an exception will be raised
        * during learning). */
-      genericBNLearner(const std::string&                             filename,
-                       const NodeProperty< Sequence< std::string > >& modalities,
-                       bool parse_database = false);
-
+      template < typename GUM_SCALAR >
+      genericBNLearner(const std::string&                 filename,
+                       const gum::BayesNet< GUM_SCALAR >& src );
+                       
       /// copy constructor
       genericBNLearner(const genericBNLearner&);
 
@@ -586,8 +582,11 @@ namespace gum {
       const ApproximationScheme* __current_algorithm{nullptr};
 
       /// reads a file and returns a databaseVectInRam
-      static DatabaseVectInRAM __readFile(const std::string& filename);
+      static DatabaseTable<> __readFile(const std::string& filename);
 
+      /// checks whether the extension of a CSV filename is correct
+      static void __checkFileName(const std::string& filename);
+      
       /// create the apriori used for learning
       void __createApriori();
 
@@ -904,5 +903,7 @@ namespace gum {
 #ifndef GUM_NO_INLINE
 #include <agrum/learning/BNLearnUtils/genericBNLearner_inl.h>
 #endif /* GUM_NO_INLINE */
+
+#include <agrum/learning/BNLearnUtils/genericBNLearner_tpl.h>
 
 #endif /* GUM_LEARNING_GENERIC_BN_LEARNER_H */

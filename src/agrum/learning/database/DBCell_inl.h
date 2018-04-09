@@ -23,259 +23,246 @@
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 #include <agrum/learning/database/DBCell.h>
-#include <string>
+
 namespace gum {
 
   namespace learning {
 
     /// default constructor
-    INLINE DBCell::DBCell() { GUM_CONSTRUCTOR(DBCell); }
-
-    /// constructor for a number
-    INLINE DBCell::DBCell(double nb)
-        : __value(nb) {
-      GUM_CONSTRUCTOR(DBCell);
+    INLINE DBCell::DBCell() {
+      GUM_CONSTRUCTOR( DBCell );
     }
 
+
+    /// constructor for a real number
+    INLINE DBCell::DBCell( const float nb )
+      : __type ( DBCell::EltType::REAL ),
+        __val_real ( nb ) {
+      GUM_CONSTRUCTOR( DBCell );
+    }
+    
+
+    /// constructor for an integer number
+    INLINE DBCell::DBCell( const int nb )
+      : __type ( DBCell::EltType::INTEGER ),
+        __val_integer ( nb ) {
+      GUM_CONSTRUCTOR( DBCell );
+    }
+
+    
     /// constructor for a string
-    INLINE DBCell::DBCell(const std::string& str)
-        : __type(DBCell::EltType::STRING) {
+    INLINE DBCell::DBCell( const std::string& str )
+        : __type( DBCell::EltType::STRING ) {
       // store the string into the static list of strings
-      if (!__strings().existsFirst(str)) {
-        __strings().insert(str, __string_max_index);
-        __index = __string_max_index;
+      if ( ! __strings().existsFirst ( str ) ) {
+        __strings().insert( str, __string_max_index );
+        __val_index = __string_max_index;
         ++__string_max_index;
-      } else {
-        __index = __strings().second(str);
+      }
+      else {
+        __val_index = __strings().second( str );
       }
 
-      GUM_CONSTRUCTOR(DBCell);
+      GUM_CONSTRUCTOR( DBCell );
     }
 
+    
     /// copy constructor
-    INLINE DBCell::DBCell(const DBCell& from)
-        : __type(from.__type) {
-      std::memcpy(&__value, &(from.__value), sizeof(Real));
+    INLINE DBCell::DBCell( const DBCell& from )
+        : __type( from.__type ) {
+      std::memcpy( &__val_index, &( from.__val_index ), sizeof( UnionType ) );
 
       // for debugging
-      GUM_CONS_CPY(DBCell);
+      GUM_CONS_CPY( DBCell );
     }
 
+    
     /// move constructor
-    INLINE DBCell::DBCell(DBCell&& from)
-        : __type(from.__type) {
-      std::memcpy(&__value, &(from.__value), sizeof(Real));
+    INLINE DBCell::DBCell( DBCell&& from )
+      : __type( from.__type ) {
+      std::memcpy( &__val_index, &( from.__val_index ), sizeof( UnionType ) );
 
       // for debugging
-      GUM_CONS_MOV(DBCell);
+      GUM_CONS_MOV( DBCell );
     }
 
+    
     /// destructor
-    INLINE DBCell::~DBCell() { GUM_DESTRUCTOR(DBCell); }
+    INLINE DBCell::~DBCell() { GUM_DESTRUCTOR( DBCell ); }
 
+    
     /// copy operator
-    INLINE DBCell& DBCell::operator=(const DBCell& from) {
-      if (this != &from) {
+    INLINE DBCell& DBCell::operator=( const DBCell& from ) {
+      if ( this != &from ) {
         __type = from.__type;
-        std::memcpy(&__value, &(from.__value), sizeof(Real));
+        std::memcpy( &__val_index, &( from.__val_index ), sizeof( UnionType ) );
       }
 
       return *this;
     }
+    
 
     /// move operator
-    INLINE DBCell& DBCell::operator=(DBCell&& from) {
-      if (this != &from) {
+    INLINE DBCell& DBCell::operator=( DBCell&& from ) {
+      if ( this != &from ) {
         __type = from.__type;
-        std::memcpy(&__value, &(from.__value), sizeof(Real));
+        std::memcpy( &__val_index, &( from.__val_index ), sizeof( UnionType ) );
       }
 
       return *this;
     }
 
-    /// unsafe set operator (assumes that the preceding type is of the same
-    /// type)
-    INLINE DBCell& DBCell::operator=(double x) noexcept {
+    
+    /// assignment operator
+    INLINE DBCell& DBCell::operator=( const float x ) {
       __type = EltType::REAL;
-      __value = x;
+      __val_real = x;
       return *this;
     }
 
-    /// unsafe set operator (assumes that the preceding type is of the same
-    /// type)
-    INLINE DBCell& DBCell::operator=(const std::string& str) noexcept {
-      if (!__strings().existsFirst(str)) {
-        __strings().insert(str, __string_max_index);
-        __index = __string_max_index;
-        ++__string_max_index;
-      } else {
-        __index = __strings().second(str);
-      }
 
+    /// assignment operator
+    INLINE DBCell& DBCell::operator=( const int x ) {
+      __type = EltType::INTEGER;
+      __val_integer = x;
       return *this;
     }
 
-    /// returns the DBcell as a double (without checking its type)
-    INLINE double DBCell::getReal() const noexcept { return __value; }
-
-    /// returns the DBcell as a double (safe with type checking)
-    INLINE double DBCell::getRealSafe() const {
-      if (__type == EltType::REAL)
-        return __value;
-      else
-        GUM_ERROR(TypeError, "the DBCell does not contain a double");
-    }
-
-    /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setReal(double x) { __value = x; }
-
-    /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setRealSafe(double elt) {
-      __type = EltType::REAL;
-      __value = elt;
-    }
-
-    /// sets the content of the DBCell from a string
-    INLINE void DBCell::__setRealFromStringSafe(const std::string& elt) {
-      __value = stof(elt);
-      __type = EltType::REAL;
-    }
-
-    /// returns the DBcell as a string (without checking its type)
-    INLINE const std::string& DBCell::getString() const noexcept {
-      return __strings().first(__index);
-    }
-
-    /// returns the DBcell as a string (safe with type checking)
-    INLINE const std::string& DBCell::getStringSafe() const {
-      if (__type == EltType::STRING)
-        return __strings().first(__index);
-      else
-        GUM_ERROR(TypeError, "the DBCell does not contain a string");
-    }
-
-    /// returns the DBcell as a string index (without checking its type)
-    INLINE int DBCell::getStringIndex() const noexcept { return __index; }
-
-    /// returns the DBcell as a string (safe with type checking)
-    INLINE int DBCell::getStringIndexSafe() const {
-      if (__type == EltType::STRING)
-        return __index;
-      else
-        GUM_ERROR(TypeError, "the DBCell does not contain a string");
-    }
-
-    /// returns the DBcell as a string (without checking its type)
-    INLINE const std::string& DBCell::getString(Idx index) {
-      return __strings().first(index);
-    }
-
-    /// unsafe set (assumes that the preceding type is of the same type)
-    INLINE void DBCell::setString(const std::string& str) {
-      if (!__strings().existsFirst(str)) {
-        __strings().insert(str, __string_max_index);
-        __index = __string_max_index;
+    
+    /// assignment operator
+    INLINE DBCell& DBCell::operator=( const std::string& str ) {
+      if ( !__strings().existsFirst( str ) ) {
+        __strings().insert( str, __string_max_index );
+        __val_index = __string_max_index;
         ++__string_max_index;
-      } else {
-        __index = __strings().second(str);
       }
-    }
-
-    /// sets the content of the DBCell (safe type checking)
-    INLINE void DBCell::setStringSafe(const std::string& str) {
-      if (!__strings().existsFirst(str)) {
-        __strings().insert(str, __string_max_index);
-        __index = __string_max_index;
-        ++__string_max_index;
-      } else {
-        __index = __strings().second(str);
+      else {
+        __val_index = __strings().second( str );
       }
       __type = EltType::STRING;
+
+      return *this;
     }
 
-    /// sets the DBCell as a missing element
-    INLINE void DBCell::setMissingSafe() { __type = EltType::MISSING; }
 
-    /// safely sets the content of the DBCell with the best possible type
-    INLINE void DBCell::setBestTypeSafe(const std::string& elt) {
-      if (!elt.empty() &&
-          elt.find_first_not_of("0123456789-.") == std::string::npos) {
-        // try to convert the string into a double
-        try {
-          __setRealFromStringSafe(elt);
-          return;
-        } catch (std::invalid_argument&) {
-          // nothing
-        }
-      }
+    /// test of equality
+    INLINE bool DBCell::operator== ( const DBCell& from ) const {
+      return (__type == from.__type ) &&
+        ( ( __type == EltType::MISSING ) ||
+          ( ( __type == EltType::REAL ) && ( __val_real == from.__val_real ) ) ||
+          ( __val_integer == from.__val_integer ) );
+    }
+    
 
-      // here, the best type is a string
-      setStringSafe(elt);
+    /// test of inequality
+    INLINE bool DBCell::operator!= ( const DBCell& from ) const {
+      return ! operator== ( from );
     }
 
+    
     /// returns the current type of the DBCell
     INLINE DBCell::EltType DBCell::type() const noexcept { return __type; }
 
-    /// try to convert the content of the DBCell into another type
-    INLINE bool DBCell::convertType(EltType new_type) {
-      if (new_type == __type) return true;
-      switch (new_type) {
-        // ===================================
-        case REAL:
-          switch (__type) {
-            case STRING:
-              try {
-                __value = stof(__strings().first(__index));
-                __type = EltType::REAL;
-                return true;
-              } catch (std::invalid_argument&) {
-                return false;
-              }
 
-            case MISSING:
-              __type = EltType::MISSING;
-              return true;
-
-            default:
-              GUM_ERROR(TypeError, "type not supported by DBCell convertType");
-          }
-
-        // ===================================
-        case STRING:
-          switch (__type) {
-            case REAL: {
-              std::string str = std::to_string(__value);
-              if (!__strings().existsFirst(str)) {
-                __strings().insert(str, __string_max_index);
-                __index = __string_max_index;
-                ++__string_max_index;
-              } else {
-                __index = __strings().second(str);
-              }
-              __type = EltType::STRING;
-            }
-              return true;
-
-            case MISSING:
-              __type = EltType::MISSING;
-              return true;
-
-            default:
-              GUM_ERROR(TypeError, "type not supported by DBCell convertType");
-          }
-
-        // ===================================
-        case MISSING:
-          setMissingSafe();
-          return true;
-
-        default:
-          GUM_ERROR(TypeError, "type not supported by DBCell convertType");
-      }
-
-      return false;
+    /// returns the DBcell as a float
+    INLINE float DBCell::real () const {
+      if ( __type == EltType::REAL )
+        return __val_real;
+      else
+        GUM_ERROR( TypeError, "the DBCell does not contain a real number" );
     }
+    
+
+    /// sets the content of the DBCell
+    INLINE void DBCell::setReal ( const float x ) {
+      __type = EltType::REAL;
+      __val_real = x;
+    }
+
+
+    /// sets the content of the DBCell from a string
+    INLINE void DBCell::setReal ( const std::string& elt ) {
+      if ( ! isReal ( elt ) )
+        GUM_ERROR( TypeError, "the string does not contain a real number" );
+      __val_real = std::stof( elt );
+      __type = EltType::REAL;
+    }
+
+
+    /// returns the DBcell as an integer
+    INLINE int DBCell::integer () const {
+      if ( __type == EltType::INTEGER )
+        return __val_integer;
+      else
+        GUM_ERROR( TypeError, "the DBCell does not contain an integer" );
+    }
+    
+
+    /// sets the content of the DBCell
+    INLINE void DBCell::setInteger ( const int x ) {
+      __type = EltType::INTEGER;
+      __val_integer = x;
+    }
+
+
+    /// sets the content of the DBCell from a string
+    INLINE void DBCell::setInteger ( const std::string& elt ) {
+      if ( ! isInteger ( elt ) )
+        GUM_ERROR( TypeError, "the string does not contain an integer" );
+      __val_integer = std::stoi( elt );
+      __type = EltType::INTEGER;
+    }
+
+
+    /// returns the DBcell as a string
+    INLINE const std::string& DBCell::string() const {
+      if ( __type == EltType::STRING )
+        return __strings().first( __val_index );
+      else
+        GUM_ERROR( TypeError, "the DBCell does not contain a string" );
+    }
+    
+
+    /// returns the DBcell as a string index (if it contains a string)
+    INLINE int DBCell::stringIndex() const { 
+      if ( __type == EltType::STRING )
+        return __val_index;
+      else
+        GUM_ERROR( TypeError, "the DBCell does not contain a string" );
+    }
+
+    
+    /// returns the DBcell as a string (without checking its type)
+    INLINE const std::string& DBCell::string( const int index ) {
+      return __strings().first( index );
+    }
+    
+
+    /// set the content of the DBCell from a string
+    INLINE void DBCell::setString( const std::string& str ) {
+      if ( !__strings().existsFirst( str ) ) {
+        __strings().insert( str, __string_max_index );
+        __val_index = __string_max_index;
+        ++__string_max_index;
+      }
+      else {
+        __val_index = __strings().second( str );
+      }
+      __type = EltType::STRING;
+    }
+    
+
+    /// sets the DBCell as a missing element
+    INLINE void DBCell::setMissingState () { __type = EltType::MISSING; }
+
+    
+    /// indicates whether the cell contains a missing value
+    INLINE bool DBCell::isMissing () const {
+      return __type == EltType::MISSING;
+    }
+    
 
   } /* namespace learning */
 

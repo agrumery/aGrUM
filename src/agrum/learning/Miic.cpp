@@ -472,7 +472,7 @@ namespace gum {
                   std::vector< NodeId > path = graph.directedPath(z, x);
                   // if we find a cycle, we force the competing edge
                   __latent_couples.push_back(Arc(z, x));
-                } catch (gum::NotFound&) {
+                } catch (gum::NotFound) {
                   graph.addArc(x, z);
                 }
                 graph.addArc(z, x);
@@ -482,7 +482,7 @@ namespace gum {
                   // if we find a cycle, we force the competing edge
                   graph.addArc(z, x);
                   __latent_couples.push_back(Arc(z, x));
-                } catch (gum::NotFound&) {
+                } catch (gum::NotFound) {
                   graph.addArc(x, z);
                 }
               }
@@ -492,7 +492,7 @@ namespace gum {
                   std::vector< NodeId > path = graph.directedPath(z, y);
                   // if we find a cycle, we force the competing edge
                   __latent_couples.push_back(Arc(z, y));
-                } catch (gum::NotFound&) {
+                } catch (gum::NotFound) {
                   graph.addArc(y, z);
                 }
                 graph.addArc(z, y);
@@ -503,7 +503,7 @@ namespace gum {
                   graph.addArc(z, y);
                   __latent_couples.push_back(Arc(z, y));
 
-                } catch (gum::NotFound&) {
+                } catch (gum::NotFound) {
                   graph.addArc(y, z);
                 }
               }
@@ -540,7 +540,7 @@ namespace gum {
               // if we find a cycle, we force the competing edge
               graph.addArc(y, z);
               __latent_couples.push_back(Arc(y, z));
-            } catch (gum::NotFound&) {
+            } catch (gum::NotFound) {
               graph.addArc(z, y);
             }
           }
@@ -553,7 +553,7 @@ namespace gum {
               // if we find a cycle, we force the competing edge
               graph.addArc(x, z);
               __latent_couples.push_back(Arc(x, z));
-            } catch (gum::NotFound&) {
+            } catch (gum::NotFound) {
               graph.addArc(z, x);
             }
           }

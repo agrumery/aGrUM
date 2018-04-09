@@ -36,19 +36,23 @@ namespace gum_tests {
     template <typename U>
     MyAlloc( const MyAlloc<U>& ) noexcept {}
 
+    bool operator== ( const MyAlloc<T>& ) { return true; }
+
+    bool operator!= ( const MyAlloc<T>& ) { return false; }
+
     T* allocate( std::size_t num ) {
-      ++MyAllocCount::allocs;
+      MyAllocCount::allocs += num;
       return static_cast<T*>(::operator new( num * sizeof( T ) ) );
     }
 
     void deallocate( T* p, std::size_t num ) {
-      ++MyAllocCount::deallocs;
+      MyAllocCount::deallocs += num;
       ::operator delete( p );
     }
 
     template <typename... Args>
-    void construct( T* p, Args... args ) {
-      ::new ( p ) T( std::forward<Args>( args )... );
+    void construct( T* p, Args&&... args ) {
+      ::new ( (void*) p ) T( std::forward<Args>( args )... );
     }
 
     void destroy( T* p ) { p->~T(); }

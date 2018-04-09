@@ -40,7 +40,7 @@
 #include <agrum/core/bijection.h>
 #include <agrum/core/hashTable.h>
 #include <agrum/graphs/DAG.h>
-#include <agrum/learning/database/DBRowFilter.h>
+#include <agrum/learning/database/DBRowGeneratorParser.h>
 #include <agrum/learning/scores_and_tests/idSet.h>
 
 namespace gum {
@@ -158,7 +158,7 @@ namespace gum {
      * by class RecordCounter. When the latter has to create several threads to
      * parse the database, it does so by creating RecorCounterThreads.
      */
-    template < typename RowFilter,
+    template < typename RowGeneratorParser,
                typename IdSetAlloc = std::allocator< Idx >,
                typename CountAlloc = std::allocator< double > >
     class RecordCounterThread
@@ -173,19 +173,20 @@ namespace gum {
       /// @{
 
       /// default constructor
-      RecordCounterThread(const RowFilter&           filter,
+      RecordCounterThread(const RowGeneratorParser&  parser,
                           const std::vector< Size >& var_modalities);
 
       /// copy constructor
       RecordCounterThread(
-        const RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >& from);
+        const RecordCounterThread< RowGeneratorParser, IdSetAlloc,
+        CountAlloc >& from);
 
       /// move operator
       RecordCounterThread(
-        RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >&& from);
+        RecordCounterThread< RowGeneratorParser, IdSetAlloc, CountAlloc >&& from);
 
       /// virtual copy constructor
-      virtual RecordCounterThread< RowFilter, IdSetAlloc, CountAlloc >*
+      virtual RecordCounterThread< RowGeneratorParser, IdSetAlloc, CountAlloc >*
       copyFactory() const;
 
       /// destructor
@@ -217,14 +218,14 @@ namespace gum {
       /// sets the interval of records on which countings should be performed
       void setRange(Size min_index, Size max_index);
 
-      /// returns the filter used for the countings
-      RowFilter& filter() noexcept;
+      /// returns the generatorParser used for the countings
+      RowGeneratorParser& parser() noexcept;
 
       /// @}
 
       private:
-      /// the DBRowFilter used to parse the database
-      RowFilter __filter;
+      /// the DBRowGeneratorParser used to parse the database
+      RowGeneratorParser __parser;
     };
 
     /* =========================================================================
@@ -252,8 +253,8 @@ namespace gum {
       /// @{
 
       /// default constructor
-      template < typename RowFilter >
-      RecordCounter(const RowFilter&           filter,
+      template < typename RowGeneratorParser >
+      RecordCounter(const RowGeneratorParser&  parser,
                     const std::vector< Size >& var_modalities,
                     Size                       min_range = 0,
                     Size max_range = std::numeric_limits< Size >::max());

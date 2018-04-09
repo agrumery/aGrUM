@@ -22,9 +22,11 @@
 #include <cxxtest/testsuite_utils.h>
 #include <iostream>
 
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
-#include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+#include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/database/DBInitializerFromCSV.h>
+#include <agrum/learning/database/databaseTable.h>
+#include <agrum/learning/database/DBTranslatorSet.h>
 #include <agrum/learning/scores_and_tests/indepTestG2.h>
 
 namespace gum_tests {
@@ -32,23 +34,28 @@ namespace gum_tests {
   class IndepTestG2TestSuite : public CxxTest::TestSuite {
     public:
     void test_G2() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBInitializerFromCSV<>
+        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      gum::learning::DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowTranslatorSet<
-        gum::learning::CellTranslatorCompactIntId >
-        translators;
-      translators.insertTranslator(0, 8);
+      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
 
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
+      std::vector< gum::Size > modalities(nb_vars, 2);
 
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-
-      std::vector< gum::Size > modalities(8, 2);
-
-      gum::learning::IndepTestG2<> score(filter, modalities);
+      gum::learning::IndepTestG2<> score(parser, modalities);
 
       gum::Idx id1 = score.addNodeSet(0, 1);
       gum::Idx id2 = score.addNodeSet(3, 1);
@@ -90,21 +97,28 @@ namespace gum_tests {
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBInitializerFromCSV<>
+        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      gum::learning::DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowTranslatorSet<
-        gum::learning::CellTranslatorCompactIntId >
-        translators;
-      translators.insertTranslator(0, 8);
+      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
 
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
+      std::vector< gum::Size > modalities(nb_vars, 2);
 
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-      std::vector< gum::Size >     modalities = filter.modalities();
-      gum::learning::IndepTestG2<> score(filter, modalities);
+      gum::learning::IndepTestG2<> score(parser, modalities);
       // score.useCache ( false );
 
       gum::Idx id1, id2, id3, id4, id5, id6, id7;
@@ -128,21 +142,28 @@ namespace gum_tests {
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBInitializerFromCSV<>
+        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      gum::learning::DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowTranslatorSet<
-        gum::learning::CellTranslatorCompactIntId >
-        translators;
-      translators.insertTranslator(0, 8);
+      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
 
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
+      std::vector< gum::Size > modalities(nb_vars, 2);
 
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-      std::vector< gum::Size >     modalities = filter.modalities();
-      gum::learning::IndepTestG2<> score(filter, modalities);
+      gum::learning::IndepTestG2<> score(parser, modalities);
       // score.useCache ( false );
 
       gum::Idx id1, id2, id3, id4, id5, id6, id7;

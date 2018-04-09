@@ -66,7 +66,7 @@ namespace gum {
        * names
        */
       BNLearner(const std::string& filename);
-      BNLearner(const DatabaseVectInRAM& db);
+      BNLearner(const DatabaseTable<>& db);
 
       /**
        * @brief Read the database file for the score / parameter estimation and
@@ -91,17 +91,18 @@ namespace gum {
        * @param parse_database if true, the modalities specified by the user
        * will be considered as a superset of the modalities of the variables.
        */
+      /*
       BNLearner(const std::string&                             filename,
-                const NodeProperty< Sequence< std::string > >& modalities,
-                bool parse_database = false);
+                const NodeProperty< Sequence< std::string > >& modalities );
+      */
 
+      
       /**
        * Wrapper for BNLearner (filename,modalities,parse_database) using a bn
        * to find those modalities and nodeids.
        **/
       BNLearner(const std::string&                 filename,
-                const gum::BayesNet< GUM_SCALAR >& src,
-                bool                               parse_database = false);
+                const gum::BayesNet< GUM_SCALAR >& src );
 
       /// copy constructor
       BNLearner(const BNLearner&);

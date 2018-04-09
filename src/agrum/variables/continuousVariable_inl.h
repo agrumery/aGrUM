@@ -57,7 +57,7 @@ namespace gum {
       return value;
     else
       GUM_ERROR(OutOfBounds,
-                "the value does not delong to the domain of the variable");
+                "the value does not belong to the domain of the variable");
   }
 
 
@@ -85,7 +85,7 @@ namespace gum {
       return value;
     else
       GUM_ERROR(OutOfBounds,
-                "the value does not delong to the domain of the variable");
+                "the value does not belong to the domain of the variable");
   }
 
 } /* namespace gum */

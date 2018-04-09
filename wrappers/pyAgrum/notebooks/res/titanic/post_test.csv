@@ -1,4 +1,4 @@
-Pclass,Sex,SibSp,Parch,Embarked,Survived,decade
+Pclass,Sex,SibSp,Parch,Embarked,Survived,Decade
 3,male,0,0,Q,0,30th
 3,female,1,0,S,1,40th
 2,male,0,0,Q,0,60th

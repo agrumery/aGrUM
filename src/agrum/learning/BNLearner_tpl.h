@@ -33,7 +33,6 @@
 #include <agrum/learning/BNLearner.h>
 
 #include <agrum/learning/BNLearnUtils/BNLearnerListener.h>
-#include <agrum/learning/database/CSVParser.h>
 
 namespace gum {
 
@@ -45,41 +44,29 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseVectInRAM& db)
+    BNLearner< GUM_SCALAR >::BNLearner(const DatabaseTable<>& db)
         : genericBNLearner(db) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(
-      const std::string&                             filename,
-      const NodeProperty< Sequence< std::string > >& modalities,
-      bool                                           parse_database)
-        : genericBNLearner(filename, modalities, parse_database) {
-      GUM_CONSTRUCTOR(BNLearner);
-    }
-
-    template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(const std::string&                 filename,
-                                       const gum::BayesNet< GUM_SCALAR >& src,
-                                       bool parse_database)
-        : BNLearner(filename,
-                    BNLearner< GUM_SCALAR >::__labelsFromBN(filename, src),
-                    parse_database) {
-      // GUM_CONSTRUCTOR in BNLearner(filename,modalities,parse_database)
+                                       const gum::BayesNet< GUM_SCALAR >& bn )
+      : genericBNLearner(filename, bn ) {
+      GUM_CONSTRUCTOR (BNLearner)
     }
 
     /// copy constructor
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(const BNLearner< GUM_SCALAR >& src)
-        : genericBNLearner(static_cast< const genericBNLearner& >(src)) {
+        : genericBNLearner( src ) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
     /// move constructor
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >::BNLearner(BNLearner< GUM_SCALAR >&& src)
-        : genericBNLearner(static_cast< genericBNLearner&& >(src)) {
+        : genericBNLearner( src ) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -100,8 +87,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::
     operator=(const BNLearner< GUM_SCALAR >& src) {
-      static_cast< genericBNLearner* >(this)->operator=(
-        static_cast< const genericBNLearner& >(src));
+      genericBNLearner::operator=( src );
       return *this;
     }
 
@@ -109,8 +95,7 @@ namespace gum {
     template < typename GUM_SCALAR >
     BNLearner< GUM_SCALAR >& BNLearner< GUM_SCALAR >::
     operator=(BNLearner< GUM_SCALAR >&& src) {
-      static_cast< genericBNLearner* >(this)->operator=(
-        static_cast< genericBNLearner&& >(src));
+      genericBNLearner::operator=( std::move (src) );
       return *this;
     }
 
@@ -125,12 +110,12 @@ namespace gum {
       return DAG2BNLearner::createBN<
         GUM_SCALAR,
         ParamEstimator<>,
-        DBRowTranslatorSet< CellTranslatorUniversal > >(
+        DBTranslatorSet<> >(
         *__param_estimator,
         __learnDAG(),
         __score_database.names(),
         __score_database.modalities(),
-        __score_database.rawTranslators());
+        __score_database.databaseTable().translatorSet ());
     }
 
     /// learns a BN (its parameters) when its structure is known
@@ -145,12 +130,12 @@ namespace gum {
       return DAG2BNLearner::createBN<
         GUM_SCALAR,
         ParamEstimator<>,
-        DBRowTranslatorSet< CellTranslatorUniversal > >(
+        DBTranslatorSet<> >(
         *__param_estimator,
         dag,
         __score_database.names(),
         __score_database.modalities(),
-        __score_database.rawTranslators());
+        __score_database.databaseTable().translatorSet ());
     }
 
     /// learns a BN (its parameters) when its structure is known
@@ -186,12 +171,12 @@ namespace gum {
       return DAG2BNLearner::createBN<
         GUM_SCALAR,
         ParamEstimator<>,
-        DBRowTranslatorSet< CellTranslatorUniversal > >(
+        DBTranslatorSet<> >(
         *__param_estimator,
         newDAG,
         __score_database.names(),
         __score_database.modalities(),
-        __score_database.rawTranslators());
+        __score_database.databaseTable().translatorSet ());
     }
 
     template < typename GUM_SCALAR >
@@ -204,7 +189,7 @@ namespace gum {
         GUM_ERROR(gum::IOError, "File " << filename << " not found");
       }
 
-      CSVParser parser(in);
+      CSVParser<> parser(in);
       parser.next();
       auto names = parser.current();
 

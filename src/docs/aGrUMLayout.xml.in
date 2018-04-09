@@ -48,12 +48,6 @@
       <packagemethods title=""/>
       <packagestaticattributes title=""/>
       <packagestaticmethods title=""/>
-      <privateslots title=""/>
-      <privateattributes title=""/>
-      <privatemethods title=""/>
-      <privatestaticattributes title=""/>
-      <privatestaticmethods title=""/>
-      <privatetypes title=""/>
       <properties title=""/>
       <events title=""/>
       <friends title=""/>
@@ -149,7 +143,6 @@
       <signals title=""/>
       <publicslots title=""/>
       <protectedslots title=""/>
-      <privateslots title=""/>
       <events title=""/>
       <properties title=""/>
       <friends title=""/>
@@ -167,7 +160,6 @@
       <signals title=""/>
       <publicslots title=""/>
       <protectedslots title=""/>
-      <privateslots title=""/>
       <events title=""/>
       <properties title=""/>
       <friends title=""/>

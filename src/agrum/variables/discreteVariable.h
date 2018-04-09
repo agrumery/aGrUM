@@ -56,6 +56,7 @@ namespace gum {
 
   class DiscreteVariable : public Variable {
     public:
+    
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################

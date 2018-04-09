@@ -28,4 +28,10 @@
 
 /**
  * \defgroup learning_group Tools for learning
+ * @{
+ * \defgroup learning_database Database Manipulations
+ * \defgroup learning_scores Scores and Independence Tests
+ * \defgroup learning_aprioris Scores A Prioris 
+ * \defgroup learning_constraints Structural Constraints
+ * @}
  */

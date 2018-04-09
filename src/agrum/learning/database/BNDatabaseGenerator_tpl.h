@@ -215,32 +215,56 @@ namespace gum {
 
     /// generates a DatabaseVectInRAM
     template < typename GUM_SCALAR >
-    DatabaseVectInRAM
-    BNDatabaseGenerator< GUM_SCALAR >::toDatabaseVectInRAM(bool useLabels) const {
+    DatabaseTable<>
+    BNDatabaseGenerator< GUM_SCALAR >::toDatabaseTable(bool useLabels) const {
 
       if (!__drawnSamples)
         GUM_ERROR(OperationNotAllowed, "proceed() must be called first.");
 
-      DatabaseVectInRAM          db;
+      DatabaseTable<>            db;
       std::vector< std::string > varNames;
       varNames.reserve(__nbVars);
       for (const auto& i : __varOrder) {
         varNames.push_back(__names2ids.first(i));
       }
-      db.setVariableNames(varNames);
 
-      db.setVariableNames(varOrderNames());
+      // create the translators
+      for ( std::size_t i = 0; i < __nbVars; ++i ) {
+        const Variable& var = __bn.variable ( __varOrder[i] );
+        db.insertTranslator ( var, i );
+      }
 
-      for (const auto& row : __database) {
-        DBRow dbrow(__nbVars);
-        for (Idx i = 0; i < __nbVars; ++i) {
-          Idx j = __varOrder.at(i);
-          if (useLabels)
-            dbrow[i] = DBCell(__bn.variable(j).label(row.at(j)));
-          else
-            dbrow[i] = DBCell((double)(row.at(j)));
+      
+      //db.setVariableNames(varNames);
+      //db.setVariableNames(varOrderNames());
+
+      if ( useLabels) {
+        std::vector<std::string> xrow (__nbVars);
+        for (const auto& row : __database) {
+          for (Idx i = 0; i < __nbVars; ++i) {
+            Idx j = __varOrder.at(i);
+            xrow[i] = __bn.variable(j).label(row.at(j));
+          }
+          db.insertRow(xrow);
         }
-        db.insertDBRow(dbrow);
+      }
+      else {
+        std::vector<DBTranslatedValueType> translatorType ( __nbVars );
+        for ( std::size_t i = 0; i < __nbVars; ++i ) {
+          translatorType[i] = db.translator(i).getValType ();
+        }
+        DBRow<DBTranslatedValue> xrow ( __nbVars );
+        for (const auto& row : __database) {
+          for (Idx i = 0; i < __nbVars; ++i) {
+            Idx j = __varOrder.at(i);
+
+            if ( translatorType[i] == DBTranslatedValueType::DISCRETE )
+              xrow[i].discr_val = std::size_t ( row.at(j) );
+            else
+              xrow[i].cont_val = float ( row.at(j) );
+          }
+        }
+        db.insertRow(xrow);
       }
 
       return db;

@@ -24,9 +24,11 @@
 
 #include <agrum/learning/aprioris/aprioriNoApriori.h>
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
-#include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
-#include <agrum/learning/database/databaseFromCSV.h>
-#include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
+#include <agrum/learning/database/DBTranslator4LabelizedVariable.h>
+#include <agrum/learning/database/DBRowGeneratorParser.h>
+#include <agrum/learning/database/DBInitializerFromCSV.h>
+#include <agrum/learning/database/databaseTable.h>
+#include <agrum/learning/database/DBTranslatorSet.h>
 #include <agrum/learning/scores_and_tests/scoreBD.h>
 
 namespace gum_tests {
@@ -34,24 +36,29 @@ namespace gum_tests {
   class ScoreBDTestSuite : public CxxTest::TestSuite {
     public:
     void test_BD() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBInitializerFromCSV<>
+        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      gum::learning::DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowTranslatorSet<
-        gum::learning::CellTranslatorCompactIntId >
-        translators;
-      translators.insertTranslator(0, 8);
+      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
 
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
-
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-
-      std::vector< gum::Size > modalities = filter.modalities();
+      std::vector< gum::Size > modalities(nb_vars, 2);
 
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBD<>          score(filter, modalities, apriori);
+      gum::learning::ScoreBD<>          score(parser, modalities, apriori);
 
       // to test, we exploit the fact that if the hyperparameters are all equal
       // to 1, then score BD = score K2
@@ -118,21 +125,29 @@ namespace gum_tests {
     }
 
     void test_cache() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBInitializerFromCSV<>
+        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      gum::learning::DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowTranslatorSet<
-        gum::learning::CellTranslatorCompactIntId >
-        translators;
-      translators.insertTranslator(0, 8);
+      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
 
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-      std::vector< gum::Idx >           modalities = filter.modalities();
+      std::vector< gum::Size > modalities(nb_vars, 2);
+
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBD<>          score(filter, modalities, apriori);
+      gum::learning::ScoreBD<>          score(parser, modalities, apriori);
       // score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal
@@ -160,21 +175,29 @@ namespace gum_tests {
     }
 
     void test_clearcache() {
-      gum::learning::DatabaseFromCSV database(GET_RESSOURCES_PATH("asia.csv"));
+      gum::learning::DBInitializerFromCSV<>
+        initializer ( GET_RESSOURCES_PATH( "asia.csv" ) );
+      const auto& var_names = initializer.variableNames ();
+      const std::size_t nb_vars = var_names.size ();
+      
+      gum::learning::DBTranslatorSet<> translator_set;
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
+      for ( std::size_t i = 0; i < nb_vars; ++i ) {
+        translator_set.insertTranslator ( translator, i );
+      }
+      
+      gum::learning::DatabaseTable<> database ( translator_set );
+      database.setVariableNames( initializer.variableNames () );
+      initializer.fillDatabase ( database );
 
-      gum::learning::DBRowTranslatorSet<
-        gum::learning::CellTranslatorCompactIntId >
-        translators;
-      translators.insertTranslator(0, 8);
+      gum::learning::DBRowGeneratorSet<> genset;
+      gum::learning::DBRowGeneratorParser<>
+        parser ( database.handler (), genset );
 
-      gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
-        generators;
-      generators.insertGenerator();
-      auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-      std::vector< gum::Idx >           modalities = filter.modalities();
+      std::vector< gum::Size > modalities(nb_vars, 2);
+
       gum::learning::AprioriSmoothing<> apriori;
-      gum::learning::ScoreBD<>          score(filter, modalities, apriori);
+      gum::learning::ScoreBD<>          score(parser, modalities, apriori);
       // score.useCache ( false );
 
       // to test, we exploit the fact that if the hyperparameters are all equal

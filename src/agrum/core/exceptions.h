@@ -466,6 +466,14 @@ namespace gum {
    */
   class SyntaxError;
 
+  /**
+   * @class gum::NotImplementedYet agrum/core/exceptions.h
+   * @extends gum::Exception
+   * Exception : there is something wrong with an arc
+   */
+  class NotImplementedYet;
+
+  
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   const std::string __createMsg(const std::string& filename,
                                 const std::string& function,
@@ -473,6 +481,7 @@ namespace gum {
                                 const std::string& msg);
   GUM_MAKE_ERROR(IdError, Exception, "ID error")
   GUM_MAKE_ERROR(FatalError, Exception, "Fatal error")
+  GUM_MAKE_ERROR(NotImplementedYet, Exception, "Not implemented yet")
   GUM_MAKE_ERROR(UndefinedIteratorValue, Exception, "Undefined iterator")
   GUM_MAKE_ERROR(UndefinedIteratorKey, Exception, "Undefined iterator's key")
   GUM_MAKE_ERROR(NullElement, Exception, "Null element")

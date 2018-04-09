@@ -402,7 +402,7 @@ namespace gum_tests {
       delete (dbgen);
     }
 
-    void testToDatabaseVectInRam() {
+    void testToDatabaseTable() {
 
       gum::Size domSizeA = 3;
       gum::Size domSizeS = 2;
@@ -422,41 +422,47 @@ namespace gum_tests {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
-      TS_ASSERT_THROWS(dbgen->toDatabaseVectInRAM(), gum::OperationNotAllowed);
+      TS_ASSERT_THROWS(dbgen->toDatabaseTable(), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
-      gum::learning::DatabaseVectInRAM db;
+      gum::learning::DatabaseTable<> db;
       bool                             useLabels = true;
-      TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseVectInRAM(useLabels));
+      TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseTable(useLabels));
 
       auto handler = db.handler();
       while (handler.hasRows()) {
         auto row = handler.row();
-        TS_ASSERT_DIFFERS(std::find(domA.begin(), domA.end(), row[0].getString()),
+        TS_ASSERT_DIFFERS(std::find(domA.begin(), domA.end(),
+                                    db.translator(0).translateBack(row[0]) ),
                           domA.end());
-        TS_ASSERT_DIFFERS(std::find(domS.begin(), domS.end(), row[1].getString()),
+        TS_ASSERT_DIFFERS(std::find(domS.begin(), domS.end(),
+                                    db.translator(1).translateBack(row[1]) ),
                           domS.end());
-        TS_ASSERT_DIFFERS(std::find(domE.begin(), domE.end(), row[2].getString()),
+        TS_ASSERT_DIFFERS(std::find(domE.begin(), domE.end(),
+                                    db.translator(2).translateBack(row[2]) ),
                           domE.end());
-        TS_ASSERT_DIFFERS(std::find(domO.begin(), domO.end(), row[3].getString()),
+        TS_ASSERT_DIFFERS(std::find(domO.begin(), domO.end(),
+                                    db.translator(3).translateBack(row[3]) ),
                           domO.end());
-        TS_ASSERT_DIFFERS(std::find(domR.begin(), domR.end(), row[4].getString()),
+        TS_ASSERT_DIFFERS(std::find(domR.begin(), domR.end(),
+                                    db.translator(4).translateBack(row[4]) ),
                           domR.end());
-        TS_ASSERT_DIFFERS(std::find(domT.begin(), domT.end(), row[5].getString()),
+        TS_ASSERT_DIFFERS(std::find(domT.begin(), domT.end(),
+                                    db.translator(5).translateBack(row[5]) ),
                           domT.end());
         handler.nextRow();
       }
 
       useLabels = false;
-      TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseVectInRAM(useLabels));
+      TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseTable(useLabels));
       handler = db.handler();
       while (handler.hasRows()) {
         auto row = handler.row();
-        TS_ASSERT_LESS_THAN(row[0].getReal(), domSizeA);
-        TS_ASSERT_LESS_THAN(row[1].getReal(), domSizeS);
-        TS_ASSERT_LESS_THAN(row[2].getReal(), domSizeE);
-        TS_ASSERT_LESS_THAN(row[3].getReal(), domSizeO);
-        TS_ASSERT_LESS_THAN(row[4].getReal(), domSizeR);
-        TS_ASSERT_LESS_THAN(row[5].getReal(), domSizeT);
+        TS_ASSERT_LESS_THAN(row[0].discr_val, domSizeA);
+        TS_ASSERT_LESS_THAN(row[1].discr_val, domSizeS);
+        TS_ASSERT_LESS_THAN(row[2].discr_val, domSizeE);
+        TS_ASSERT_LESS_THAN(row[3].discr_val, domSizeO);
+        TS_ASSERT_LESS_THAN(row[4].discr_val, domSizeR);
+        TS_ASSERT_LESS_THAN(row[5].discr_val, domSizeT);
         handler.nextRow();
       }
 
@@ -464,36 +470,46 @@ namespace gum_tests {
       TS_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(vOrder1));
 
       useLabels = true;
-      TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseVectInRAM(useLabels));
+      TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseTable(useLabels));
       handler = db.handler();
       while (handler.hasRows()) {
         auto row = handler.row();
-        TS_ASSERT_DIFFERS(std::find(domS.begin(), domS.end(), row[0].getString()),
-                          domS.end());
-        TS_ASSERT_DIFFERS(std::find(domE.begin(), domE.end(), row[1].getString()),
+
+
+
+       TS_ASSERT_DIFFERS(std::find(domS.begin(), domS.end(),
+                                    db.translator(0).translateBack(row[0]) ),
+                         domS.end());
+        TS_ASSERT_DIFFERS(std::find(domE.begin(), domE.end(),
+                                    db.translator(1).translateBack(row[1]) ),
                           domE.end());
-        TS_ASSERT_DIFFERS(std::find(domT.begin(), domT.end(), row[2].getString()),
+        TS_ASSERT_DIFFERS(std::find(domT.begin(), domT.end(),
+                                    db.translator(2).translateBack(row[2]) ),
                           domT.end());
-        TS_ASSERT_DIFFERS(std::find(domR.begin(), domR.end(), row[3].getString()),
+        TS_ASSERT_DIFFERS(std::find(domR.begin(), domR.end(),
+                                    db.translator(3).translateBack(row[3]) ),
                           domR.end());
-        TS_ASSERT_DIFFERS(std::find(domA.begin(), domA.end(), row[4].getString()),
+        TS_ASSERT_DIFFERS(std::find(domA.begin(), domA.end(),
+                                    db.translator(4).translateBack(row[4]) ),
                           domA.end());
-        TS_ASSERT_DIFFERS(std::find(domO.begin(), domO.end(), row[5].getString()),
+        TS_ASSERT_DIFFERS(std::find(domO.begin(), domO.end(),
+                                    db.translator(5).translateBack(row[5]) ),
                           domO.end());
+
         handler.nextRow();
       }
 
       useLabels = false;
-      TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseVectInRAM(useLabels));
+      TS_ASSERT_THROWS_NOTHING(db = dbgen->toDatabaseTable(useLabels));
       handler = db.handler();
       while (handler.hasRows()) {
         auto row = handler.row();
-        TS_ASSERT_LESS_THAN(row[0].getReal(), domSizeS);
-        TS_ASSERT_LESS_THAN(row[1].getReal(), domSizeE);
-        TS_ASSERT_LESS_THAN(row[2].getReal(), domSizeT);
-        TS_ASSERT_LESS_THAN(row[3].getReal(), domSizeR);
-        TS_ASSERT_LESS_THAN(row[4].getReal(), domSizeA);
-        TS_ASSERT_LESS_THAN(row[5].getReal(), domSizeO);
+        TS_ASSERT_LESS_THAN(row[0].discr_val, domSizeS);
+        TS_ASSERT_LESS_THAN(row[1].discr_val, domSizeE);
+        TS_ASSERT_LESS_THAN(row[2].discr_val, domSizeT);
+        TS_ASSERT_LESS_THAN(row[3].discr_val, domSizeR);
+        TS_ASSERT_LESS_THAN(row[4].discr_val, domSizeA);
+        TS_ASSERT_LESS_THAN(row[5].discr_val, domSizeO);
         handler.nextRow();
       }
 

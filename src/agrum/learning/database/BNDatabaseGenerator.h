@@ -67,7 +67,7 @@
 
 #include <agrum/BN/BayesNet.h>
 #include <agrum/core/progressNotification.h>
-#include <agrum/learning/database/databaseVectInRAM.h>
+#include <agrum/learning/database/databaseTable.h>
 #include <fstream>
 
 namespace gum {
@@ -108,7 +108,7 @@ namespace gum {
                  bool               checkOnAppend = false) const;
 
       /// generates a DatabaseVectInRAM
-      DatabaseVectInRAM toDatabaseVectInRAM(bool useLabels = true) const;
+      DatabaseTable<> toDatabaseTable (bool useLabels = true) const;
 
       /// generates database according to bn into a std::vector
       /// @warning: makes a copy of the whole database

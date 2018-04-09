@@ -25,6 +25,7 @@
  */
 
 #include <agrum/variables/labelizedVariable.h>
+#include <agrum/learning/database/DBTranslatedValue.h>
 
 #include <algorithm>
 #include <string>
@@ -63,15 +64,16 @@ namespace gum {
                             const DAG&                        dag,
                             const std::vector< std::string >& names,
                             const std::vector< Size >&        modal,
-                            const CELL_TRANSLATORS&           translator) {
+                            const CELL_TRANSLATORS&           translators) {
       BayesNet< GUM_SCALAR > bn;
 
       // create a bn with dummy parameters corresponding to the dag
       for (const auto id : dag) {
         // create the labelized variable
         std::vector< std::string > labels;
+        auto& translator = translators.translator ( id );
         for (Idx i = 0; i < modal[id]; ++i) {
-          labels.push_back(translator.translateBack(id, i));
+          labels.push_back(translator.translateBack(DBTranslatedValue{std::size_t(i)}));
         }
         sort(labels.begin(), labels.end());
 
