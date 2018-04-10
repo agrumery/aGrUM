@@ -203,6 +203,13 @@ namespace gum {
     /// @throw NotFound if all value == 0.0
     GUM_SCALAR minNonZero() const;
 
+    /// set of instantiation corresponding to the parameter v in the Potential
+    Set< Instantiation > findAll(GUM_SCALAR v) const;
+    /// set of instantiation corresponding to the max in the Potential
+    Set< Instantiation > argmax() const;
+    /// set of instantiation corresponding to the min in the Potential
+    Set< Instantiation > argmin() const;
+
     /// entropy of the Potential
     GUM_SCALAR entropy() const;
 
