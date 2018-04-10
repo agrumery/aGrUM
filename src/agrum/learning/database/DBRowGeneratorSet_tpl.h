@@ -45,7 +45,7 @@ namespace gum {
     DBRowGeneratorSet<ALLOC>::DBRowGeneratorSet(
       const DBRowGeneratorSet<ALLOC>& from,
       const typename DBRowGeneratorSet<ALLOC>::allocator_type& alloc )
-      : __generators(from.__generators.size(), alloc )
+      : __generators(from.__nb_generators, nullptr, alloc )
       , __nb_generators ( from.__nb_generators )
       , __setInputRow_performed ( from.__nb_generators, 0, alloc ) {
       // create the generators
