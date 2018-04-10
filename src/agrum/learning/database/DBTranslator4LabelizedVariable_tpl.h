@@ -245,7 +245,7 @@ namespace gum {
       // Finally, if this is still not a missing value and, if enabled, try
       // to add str as a new label
       try {
-        return DBTranslatedValue { __variable[str] };
+        return DBTranslatedValue { std::size_t(__variable[str]) };
       }
       catch ( gum::Exception& ) {
         // check that this is not a missing value

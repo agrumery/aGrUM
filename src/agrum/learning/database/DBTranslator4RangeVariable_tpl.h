@@ -452,7 +452,7 @@ namespace gum {
           }
           __variable.setMaxVal ( new_value );
           
-          return DBTranslatedValue { size - 1 };
+          return DBTranslatedValue { size - std::size_t(1) };
         }
       }
     }

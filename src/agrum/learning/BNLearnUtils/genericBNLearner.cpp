@@ -51,8 +51,8 @@ namespace gum {
       __modalities.resize ( nb_vars );
       const auto domainSizes = __database.domainSizes ();
       for ( std::size_t i = 0; i < nb_vars; ++i ) {
-        __name2nodeId.insert ( var_names[i], i );
-        __modalities[i] = domainSizes[i];
+        __name2nodeId.insert ( var_names[i], NodeId(i) );
+        __modalities[i] = Size( domainSizes[i] );
       }
 
       // create the parser

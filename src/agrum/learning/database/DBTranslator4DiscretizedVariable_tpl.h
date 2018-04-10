@@ -121,10 +121,6 @@ namespace gum {
         __variable.addTick ( tick );
       }
 
-      // the the bounds of the discretized variable
-      const float lower_bound = ticks[0];
-      const float upper_bound = ticks.back ();
-      
       // add the content of the variable into the back dictionary
       std::size_t size = 0;
       for ( const auto& label : var.labels() ) {
@@ -249,7 +245,7 @@ namespace gum {
                 const std::string& str ) {
       // try to get the index of str within the discretized variable.
       try {
-        return DBTranslatedValue { __variable[str] };
+        return DBTranslatedValue { std::size_t(__variable[str]) };
       }
       catch ( gum::Exception& ) {
         // check for a missing symbol
