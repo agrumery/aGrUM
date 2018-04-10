@@ -263,6 +263,44 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, max_cpt);
     }
 
+    void testIteratorAddNodes() {
+      gum::NodeGraphPart nodeset;
+
+      auto v = nodeset.addNodes(100);
+      for (gum::NodeId i = 0; i < 100; i++)
+        TS_ASSERT_EQUALS(v[i], i)
+
+      for (int i = 0; i < 5; i++)
+        nodeset.eraseNode(gum::randomValue(100));
+
+      nodeset.addNodes(5);
+
+      TS_ASSERT_EQUALS(nodeset.size(), gum::Size(100));
+
+      gum::NodeId i = 0;
+      for (auto n : nodeset.nodes())
+        TS_ASSERT_EQUALS(n, i++);
+
+      gum::NodeGraphPart nodeset2;
+      nodeset2.addNodes(10);
+      gum::NodeGraphPart futureIds;
+
+      nodeset2.eraseNode(1);
+      futureIds.addNodeWithId(1);
+      nodeset2.eraseNode(3);
+      futureIds.addNodeWithId(3);
+      nodeset2.eraseNode(5);
+      futureIds.addNodeWithId(5);
+
+      auto v2 = nodeset2.addNodes(4);
+      futureIds.addNodeWithId(10);  // the 4th added node as 10 for id
+
+      for (auto n : v2) {
+        TS_GUM_ASSERT_THROWS_NOTHING(futureIds.eraseNode(n));
+      }
+      TS_ASSERT(futureIds.empty());
+    }
+
     private:
 #define NBR_PROFILING_NODES 50000
     void __testBigNodeGrapPart() {

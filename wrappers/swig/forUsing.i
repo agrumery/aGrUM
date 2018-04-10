@@ -81,8 +81,12 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 
 %define ADD_NODEGRAPHPART_API(classname)
 %extend classname {
+  // erase node is not in this list since it is redefined by the very classes {Mixed|Di|Undi}Graph)
   gum::NodeId addNode() {
     return self->gum::NodeGraphPart::addNode();
+  }
+  std::vector<gum::NodeId> addNodes(gum::Size n) {
+    return self->gum::NodeGraphPart::addNodes(n);
   }
   void addNodeWithId(const gum::NodeId id) {
     self->gum::NodeGraphPart::addNodeWithId(id);

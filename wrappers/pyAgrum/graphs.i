@@ -1,4 +1,4 @@
-%define ADD_NODES_METHOD_TO_GRAPHCLASS(classname)
+%define ADD_CST_NODES_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
   PyObject *nodes() const {
     return PyAgrumHelper::PySetFromNodeSet(self->nodes());
@@ -12,13 +12,33 @@
   };
 };
 %enddef
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
+
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
 %ignore gum::EssentialGraph::nodes const;
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
 %ignore gum::MarkovBlanket::nodes const;
-ADD_NODES_METHOD_TO_GRAPHCLASS(gum::IBayesNet);
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::IBayesNet);
+
+%define ADD_NODES_METHOD_TO_GRAPHCLASS(classname)
+%ignore classname::addNodes(gum::Size n);
+%extend classname {
+  PyObject *addNodes(gum::Size n) const {
+    PyObject* q=PySet_New(0);
+
+    for(auto node : const_cast<classname *>(self)->addNodes(n)) {
+          PySet_Add(q,PyInt_FromLong(node));
+        }
+
+    return q;
+  };
+};
+%enddef
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph);
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DAG);
 
 %define ADD_DI_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {

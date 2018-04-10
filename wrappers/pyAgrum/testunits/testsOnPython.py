@@ -23,6 +23,7 @@ from tests import BNDatabaseGeneratorTestSuite
 from tests import BNLearnerTestSuite
 from tests import BNListenerTestSuite
 from tests import EssentialGraphTestSuite
+from tests import GraphTestSuite
 from tests import ICIModelsForBNTestSuite
 from tests import InstantiationTestSuite
 from tests import JTInferenceTestSuite
@@ -45,6 +46,7 @@ tests.append(BNDatabaseGeneratorTestSuite.ts)
 tests.append(BNLearnerTestSuite.ts)
 tests.append(BNListenerTestSuite.ts)
 tests.append(EssentialGraphTestSuite.ts)
+tests.append(GraphTestSuite.ts)
 tests.append(ICIModelsForBNTestSuite.ts)
 tests.append(InstantiationTestSuite.ts)
 tests.append(JTInferenceTestSuite.ts)

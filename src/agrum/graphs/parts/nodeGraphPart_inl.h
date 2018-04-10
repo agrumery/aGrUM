@@ -267,6 +267,15 @@ namespace gum {
     return newNode;
   }
 
+  INLINE std::vector< NodeId > NodeGraphPart::addNodes(Size N) {
+    std::vector< NodeId > v;
+    v.reserve(N);
+    for (Idx i = 0; i < N; i++)
+      v.push_back(this->addNode());
+    return v;
+  }
+
+
   INLINE Size NodeGraphPart::sizeNodes() const {
     return (__holes) ? (__boundVal - __holes->size()) : __boundVal;
   }
