@@ -1039,6 +1039,11 @@ namespace gum {
     /// @{
 
     /**
+     * @brief operator==
+     */
+    bool operator==(const Instantiation& other) const;
+
+    /**
      * @brief Alias of Instantiation::inc().
      * @return Returns this Instantiation.
      */
@@ -1230,6 +1235,20 @@ namespace gum {
    */
   std::ostream& operator<<(std::ostream&, const Instantiation&);
 
+  /**
+   * @brief Hash function for gum::Instantiation.
+   * @ingroup hashfunctions_group
+   */
+  template <>
+  class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
+    public:
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    Size operator()(const Instantiation& key) const;
+  };
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE

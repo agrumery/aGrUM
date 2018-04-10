@@ -821,4 +821,23 @@ namespace gum {
     __vars.setAtPos(__vars.pos(x), y);
   }
 
+  /// returns a hashed key for hash tables the keys of which are represented
+  /// by vectors of Idx
+  INLINE Size HashFunc< Instantiation >::
+  operator()(const Instantiation& key) const {
+    Size                    h = 0;
+    for (const auto& k : key.variablesSequence()) // k are unique only by address (not by name)
+      h += Size(k) * key.val(*k);
+
+    return ((h * HashFuncConst::gold) & this->_hash_mask);
+  }
+
+  INLINE bool Instantiation::operator==(const Instantiation& other) const {
+    if (other.nbrDim() != nbrDim()) return false;
+    for (const auto& k : variablesSequence()) {
+      if (!other.contains(k)) return false;
+      if (val(*k) != other.val(*k)) return false;
+    }
+    return true;
+  }
 } /* namespace gum */

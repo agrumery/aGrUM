@@ -326,6 +326,22 @@ namespace gum_tests {
       }
     }
 
+    void testOperatorEqual() {
+      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
+        c("c", "third var", 5), d("d", "fourth var", 2);
+      gum::MultiDimArray< char > p;
+      p << a << b << c;
+
+      gum::Instantiation i1(p), i2(p);
+      i2.setFirst();
+      ++i2;  // for i2 to be !=i1 in the first iteration
+      for (i1.setFirst(); !i1.end(); ++i1) {
+        TS_ASSERT_DIFFERS(i1, i2);
+        p.fromOffset(i2, p.toOffset(i1));
+        TS_ASSERT_EQUALS(i1, i2);
+      }
+    }
+
     private:
     // Builds a BN to test the inference
     void fill(gum::BayesNet< double >& bn) {
