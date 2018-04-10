@@ -692,6 +692,44 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.InvalidArgument):
       ppp.fillWith(p, ["w", "v"])
 
+  """
+      void __testval_for_set(const gum::Potential< int >&         p,
+                             int                                  val,
+                             const gum::Set< gum::Instantiation > s,
+                             gum::Size                            expected_size) {
+        gum::Instantiation ip(p);
+  
+        TS_ASSERT_EQUALS(s.size(), expected_size);
+        for (ip.setFirst(); !ip.end(); ++ip) {
+          if (s.contains(ip)) {
+            TS_ASSERT_EQUALS(p[ip], val);
+          } else {
+            TS_ASSERT_DIFFERS(p[ip], val);
+          }
+        }
+      } 
+  """
+
+  def __test_val_for_set(self, p, val, soi, nbr):
+    self.assertEqual(len(soi), nbr)
+    for i in soi:
+      self.assertEqual(p[i], val)
+
+  def testArgMaxMinFindAll(self):
+    v = gum.LabelizedVariable("v", "v", 2)
+    w = gum.LabelizedVariable("w", "w", 3)
+
+    p = gum.Potential()
+    self.__test_val_for_set(p, 10, p.findAll(10), 0)
+
+    p.add(v).add(w)
+    p.fillWith([1, 3, 2, 4, 1, 4])
+
+    self.__test_val_for_set(p, 3, p.findAll(3), 1)
+    self.__test_val_for_set(p, 10, p.findAll(10), 0)
+    self.__test_val_for_set(p, 4, p.argmax(), 2)
+    self.__test_val_for_set(p, 1, p.argmin(), 2)
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestInsertions)

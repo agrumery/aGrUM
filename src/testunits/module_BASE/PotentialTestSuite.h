@@ -1049,7 +1049,6 @@ namespace gum_tests {
       p.add(v);
       p.add(w);
       p.fillWith({1, 3, 2, 4, 1, 4});
-      gum::Instantiation ip(p);
 
       __testval_for_set(p, 3, p.findAll(3), 1);
       __testval_for_set(p, 10, p.findAll(10), 0);

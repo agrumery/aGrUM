@@ -340,6 +340,11 @@ namespace gum_tests {
         p.fromOffset(i2, p.toOffset(i1));
         TS_ASSERT_EQUALS(i1, i2);
       }
+
+      gum::Instantiation j;
+      TS_ASSERT_DIFFERS(i1, j);
+      j.inc();                 // j is in overflow
+      TS_ASSERT_EQUALS(i1, j);  // both are in overflow => equals
     }
 
     private:

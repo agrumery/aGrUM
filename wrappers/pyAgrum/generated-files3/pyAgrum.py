@@ -6955,6 +6955,11 @@ class Instantiation(_object):
         return _pyAgrum.Instantiation_setLastVar(self, v)
 
 
+    def __eq__(self, other: 'Instantiation') -> "bool":
+        """__eq__(self, other) -> bool"""
+        return _pyAgrum.Instantiation___eq__(self, other)
+
+
     def __iadd__(self, depl: 'gum::Size') -> "gum::Instantiation &":
         """__iadd__(self, depl) -> Instantiation"""
         return _pyAgrum.Instantiation___iadd__(self, depl)
@@ -9027,6 +9032,21 @@ class Potential_double(_object):
 
         """
         return _pyAgrum.Potential_double_minNonZero(self)
+
+
+    def findAll(self, v: 'double') -> "gum::Set< gum::Instantiation >":
+        """findAll(self, v) -> gum::Set< gum::Instantiation >"""
+        return _pyAgrum.Potential_double_findAll(self, v)
+
+
+    def argmax(self) -> "gum::Set< gum::Instantiation >":
+        """argmax(self) -> gum::Set< gum::Instantiation >"""
+        return _pyAgrum.Potential_double_argmax(self)
+
+
+    def argmin(self) -> "gum::Set< gum::Instantiation >":
+        """argmin(self) -> gum::Set< gum::Instantiation >"""
+        return _pyAgrum.Potential_double_argmin(self)
 
 
     def entropy(self) -> "double":
