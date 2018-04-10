@@ -36,11 +36,38 @@ namespace gum {
     template <template<typename> class VARALLOC,
               template<typename> class MISSALLOC>
     INLINE RawDatabaseTable<ALLOC>::RawDatabaseTable(
+      const typename RawDatabaseTable<ALLOC>::template
+      MissingValType<MISSALLOC>& missing_symbols,
       const std::vector<std::string,VARALLOC<std::string>>& var_names,
+      const typename RawDatabaseTable<ALLOC>::allocator_type& alloc )
+      : IDatabaseTable<DBCell,ALLOC> ( missing_symbols, var_names, alloc )
+      , __ignored_cols ( alloc ) {
+      GUM_CONSTRUCTOR( RawDatabaseTable );
+    }
+
+
+    // default constructor
+    template <template<typename> class ALLOC>
+    template <template<typename> class MISSALLOC>
+    INLINE RawDatabaseTable<ALLOC>::RawDatabaseTable(
       const typename RawDatabaseTable<ALLOC>::template
       MissingValType<MISSALLOC>& missing_symbols,
       const typename RawDatabaseTable<ALLOC>::allocator_type& alloc )
-      : IDatabaseTable<DBCell,ALLOC> ( var_names, missing_symbols, alloc )
+      : IDatabaseTable<DBCell,ALLOC> (
+          missing_symbols,
+          std::vector<std::string,ALLOC<std::string>> (), alloc )
+      , __ignored_cols ( alloc ) {
+      GUM_CONSTRUCTOR( RawDatabaseTable );
+    }
+
+    
+    // default constructor
+    template <template<typename> class ALLOC>
+    INLINE RawDatabaseTable<ALLOC>::RawDatabaseTable(
+      const typename RawDatabaseTable<ALLOC>::allocator_type& alloc )
+      : IDatabaseTable<DBCell,ALLOC> (
+          std::vector<std::string,ALLOC<std::string>> (),
+          std::vector<std::string,ALLOC<std::string>> (), alloc )
       , __ignored_cols ( alloc ) {
       GUM_CONSTRUCTOR( RawDatabaseTable );
     }

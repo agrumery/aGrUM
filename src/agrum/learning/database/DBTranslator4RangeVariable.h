@@ -155,10 +155,26 @@ namespace gum {
        * @param alloc The allocator used to allocate memory for all the
        * fields of the DBTranslator4RangeVariable
        */
-      template <template<typename> class XALLOC = ALLOC>
+      template <template<typename> class XALLOC>
       DBTranslator4RangeVariable (
-          std::vector<std::string,XALLOC<std::string>> missing_symbols =
-          std::vector<std::string,XALLOC<std::string>> (),
+          const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
+          std::size_t max_dico_entries =
+          std::numeric_limits<std::size_t>::max(),
+          const allocator_type& alloc = allocator_type () );
+
+      /// default constructor without any initial variable nor missing symbols
+      /** When using this constructor, it is assumed implicitly that the
+       * dictionary contained into the translator is editable. So, when reading
+       * the database, if we observe a value that has not been encountered
+       * before, we update the range of the dictionary of the translator (hence
+       * that of the variable contained by the translator).
+       * @param max_dico_entries the max number of entries that the dictionary
+       * can contain. If we try to add new entries in the dictionary, this will
+       * be considered as an error and a SizeError exception will be raised
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator4RangeVariable
+       */
+      DBTranslator4RangeVariable (
           std::size_t max_dico_entries =
           std::numeric_limits<std::size_t>::max(),
           const allocator_type& alloc = allocator_type () );
@@ -166,7 +182,7 @@ namespace gum {
       /// default constructor with a discrete variable as translator
       /** @param var a range variable which will be used for translations.
        * The translator keeps a copy of this variable
-       * @param  missing_symbols the set of symbols in the dataset
+       * @param missing_symbols the set of symbols in the dataset
        * representing missing values
        * @param editable_dictionary the mode in which the translator will perform
        * translations: when false (the default), the translation of a string
@@ -183,11 +199,37 @@ namespace gum {
        * the range that is equal to a missing value symbol, the range value will
        * be taken into account in the translations, not the missing value.
        */
-      template <template<typename> class XALLOC = ALLOC>
+      template <template<typename> class XALLOC>
       DBTranslator4RangeVariable (
           const RangeVariable& var,
-          std::vector<std::string,XALLOC<std::string>> missing_symbols =
-          std::vector<std::string,XALLOC<std::string>> (),
+          const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
+          const bool editable_dictionary = false,
+          std::size_t max_dico_entries =
+          std::numeric_limits<std::size_t>::max(),
+          const allocator_type& alloc = allocator_type () );
+
+      /** @brief default constructor with a discrete variable as translator
+       * but without missing symbols
+       *
+       * @param var a range variable which will be used for translations.
+       * The translator keeps a copy of this variable
+       * @param editable_dictionary the mode in which the translator will perform
+       * translations: when false (the default), the translation of a string
+       * that does not correspond to an integer within the range of var will
+       * raise a NotFound exception; when true, the translator will try to
+       * expand the domain of the RangeVariable so that the number represented in
+       * the string belongs to this domain ((and therefore to the dictionary)
+       * @param max_dico_entries the max number of entries that the dictionary
+       * can contain. If we try to add new entries in the dictionary, this will
+       * be considered as an error and a SizeError exception will be raised
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator4RangeVariable
+       * @warning If the variable contained into the translator has a value in
+       * the range that is equal to a missing value symbol, the range value will
+       * be taken into account in the translations, not the missing value.
+       */
+      DBTranslator4RangeVariable (
+          const RangeVariable& var,
           const bool editable_dictionary = false,
           std::size_t max_dico_entries =
           std::numeric_limits<std::size_t>::max(),

@@ -42,7 +42,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     template <template<typename> class XALLOC>
     DBTranslator4RangeVariable<ALLOC>::DBTranslator4RangeVariable (
-        std::vector<std::string,XALLOC<std::string>> missing_symbols,
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
         std::size_t max_dico_entries,
         const typename
         DBTranslator4RangeVariable<ALLOC>::allocator_type& alloc )
@@ -67,6 +67,18 @@ namespace gum {
 
       GUM_CONSTRUCTOR( DBTranslator4RangeVariable );
     }
+
+    
+    /// default constructor
+    template <template<typename> class ALLOC>
+    DBTranslator4RangeVariable<ALLOC>::DBTranslator4RangeVariable (
+        std::size_t max_dico_entries,
+        const typename DBTranslator4RangeVariable<ALLOC>::allocator_type& alloc )
+      : DBTranslator<ALLOC> ( DBTranslatedValueType::DISCRETE,
+                              true, max_dico_entries, alloc )
+      , __variable ( "var", "", 1, 0 ) {
+      GUM_CONSTRUCTOR( DBTranslator4RangeVariable );
+    }
       
 
     /// default constructor with a range variable as translator
@@ -74,7 +86,7 @@ namespace gum {
     template <template<typename> class XALLOC>
     DBTranslator4RangeVariable<ALLOC>::DBTranslator4RangeVariable (
         const RangeVariable& var,
-        std::vector<std::string,XALLOC<std::string>> missing_symbols,
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
         const bool editable_dictionary,
         std::size_t max_dico_entries,
         const typename
@@ -136,7 +148,42 @@ namespace gum {
 
       GUM_CONSTRUCTOR( DBTranslator4RangeVariable );
     }
-         
+
+
+    /// default constructor with a range variable as translator
+    template <template<typename> class ALLOC>
+    DBTranslator4RangeVariable<ALLOC>::DBTranslator4RangeVariable (
+        const RangeVariable& var,
+        const bool editable_dictionary,
+        std::size_t max_dico_entries,
+        const typename
+        DBTranslator4RangeVariable<ALLOC>::allocator_type& alloc )
+      : DBTranslator<ALLOC> ( DBTranslatedValueType::DISCRETE,
+                              editable_dictionary, max_dico_entries, alloc )
+      , __variable ( var ) {
+      // get the bounds of the range variable
+      const long lower_bound = var.minVal();
+      const long upper_bound = var.maxVal();
+
+      // check that the variable has not too many entries for the dictionary
+      if ( ( upper_bound >= lower_bound ) &&
+           ( std::size_t ( upper_bound - lower_bound + 1 ) >
+             this->_max_dico_entries ) ) {
+        GUM_ERROR ( SizeError,
+                    "the dictionary induced by the variable is too large" );
+      }
+
+      // add the content of the variable into the back dictionary
+      std::size_t size = 0;
+      for ( const auto& label : var.labels() ) {
+        // insert the label into the back_dictionary
+        this->_back_dico.insert ( size, label );
+        ++size;
+      }
+
+      GUM_CONSTRUCTOR( DBTranslator4RangeVariable );
+    }
+
 
     /// copy constructor with a given allocator
     template <template<typename> class ALLOC>

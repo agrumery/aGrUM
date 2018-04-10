@@ -52,7 +52,7 @@ namespace gum {
     template <template<typename> class XALLOC>
     INLINE DBTranslator<ALLOC>::DBTranslator (
            DBTranslatedValueType val_type,
-           std::vector<std::string,XALLOC<std::string>> missing_symbols,
+           const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
            const bool dynamic_dictionary,
            std::size_t max_dico_entries,
            const typename DBTranslator<ALLOC>::allocator_type& alloc )
@@ -70,6 +70,21 @@ namespace gum {
         }
       }
 
+      GUM_CONSTRUCTOR( DBTranslator );
+    }
+
+    
+    /// default constructor
+    template <template<typename> class ALLOC>
+    INLINE DBTranslator<ALLOC>::DBTranslator (
+           DBTranslatedValueType val_type,
+           const bool dynamic_dictionary,
+           std::size_t max_dico_entries,
+           const typename DBTranslator<ALLOC>::allocator_type& alloc )
+      : DBTranslator<ALLOC>::allocator_type ( alloc )
+      , _is_dictionary_dynamic ( dynamic_dictionary )
+      , _max_dico_entries ( max_dico_entries )
+      , _val_type ( val_type ) {
       GUM_CONSTRUCTOR( DBTranslator );
     }
 

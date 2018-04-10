@@ -40,7 +40,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     template <template<typename> class XALLOC>
     DBTranslator4ContinuousVariable<ALLOC>::DBTranslator4ContinuousVariable (
-        std::vector<std::string,XALLOC<std::string>> missing_symbols,
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
         const bool fit_range,
         const typename
         DBTranslator4ContinuousVariable<ALLOC>::allocator_type& alloc )
@@ -78,12 +78,32 @@ namespace gum {
     }
       
 
+    /// default constructor
+    template <template<typename> class ALLOC>
+    DBTranslator4ContinuousVariable<ALLOC>::DBTranslator4ContinuousVariable (
+        const bool fit_range,
+        const typename
+        DBTranslator4ContinuousVariable<ALLOC>::allocator_type& alloc )
+      : DBTranslator<ALLOC> ( DBTranslatedValueType::CONTINUOUS,
+                              fit_range, 1, alloc )
+      , __variable ( "var", "" )
+      , __fit_range ( fit_range ) {
+      // if fit_range is true, we shall be able to update the ranges of
+      // the continuous variable. To indicate that we did not encountered any
+      // value yet in the database, we fix the lower bound of __variable to +max
+      if ( __fit_range )
+        __variable.setLowerBound ( std::numeric_limits<float>::infinity () );
+      
+      GUM_CONSTRUCTOR( DBTranslator4ContinuousVariable );
+    }
+      
+
     /// default constructor with a range variable as translator
     template <template<typename> class ALLOC>
     template <typename GUM_SCALAR, template<typename> class XALLOC>
     DBTranslator4ContinuousVariable<ALLOC>::DBTranslator4ContinuousVariable (
         const ContinuousVariable<GUM_SCALAR>& var,
-        std::vector<std::string,XALLOC<std::string>> missing_symbols,
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
         const bool fit_range,
         const typename
         DBTranslator4ContinuousVariable<ALLOC>::allocator_type& alloc )
@@ -119,7 +139,29 @@ namespace gum {
       
       GUM_CONSTRUCTOR( DBTranslator4ContinuousVariable );
     }
-         
+
+    
+    /// default constructor with a range variable as translator
+    template <template<typename> class ALLOC>
+    template <typename GUM_SCALAR>
+    DBTranslator4ContinuousVariable<ALLOC>::DBTranslator4ContinuousVariable (
+        const ContinuousVariable<GUM_SCALAR>& var,
+        const bool fit_range,
+        const typename
+        DBTranslator4ContinuousVariable<ALLOC>::allocator_type& alloc )
+      : DBTranslator<ALLOC> ( DBTranslatedValueType::CONTINUOUS,
+                              fit_range, 1, alloc )
+      , __variable ( var.name (), var.description () )
+      , __fit_range ( fit_range ) {
+      // get the bounds of the range variable
+      const float lower_bound = float ( var.lowerBound () );
+      const float upper_bound = float ( var.upperBound () );
+      __variable.setLowerBound ( lower_bound );
+      __variable.setUpperBound ( upper_bound );
+      
+      GUM_CONSTRUCTOR( DBTranslator4ContinuousVariable );
+    }
+       
 
     /// copy constructor with a given allocator
     template <template<typename> class ALLOC>

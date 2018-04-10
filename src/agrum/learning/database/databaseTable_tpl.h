@@ -35,11 +35,36 @@ namespace gum {
     template <template<typename> class ALLOC>
     template <template<typename> class XALLOC>
     DatabaseTable<ALLOC>::DatabaseTable(
-      const DBTranslatorSet<ALLOC>& translators,
       const typename DatabaseTable<ALLOC>::template MissingValType<XALLOC>&
       missing_symbols,
+      const DBTranslatorSet<ALLOC>& translators,
       const typename DatabaseTable<ALLOC>::allocator_type& alloc )
-      : IDatabaseTable<DBTranslatedValue,ALLOC> ( {}, missing_symbols, alloc )
+      : IDatabaseTable<DBTranslatedValue,ALLOC> (
+          missing_symbols, std::vector<std::string,ALLOC<std::string>> (), alloc )
+      , __translators ( translators, alloc ) {
+      if ( translators.size () ) {
+        // set the variables names according to those of the translators
+        std::vector<std::string,ALLOC<std::string>>
+          var_names ( translators.size () );
+        for ( std::size_t i = std::size_t ( 0 ), size = translators.size ();
+              i < size; ++i ) {
+          var_names[i] = __translators.translator(i).variable()->name ();
+        }
+        setVariableNames ( var_names, false );
+      }
+      
+      GUM_CONSTRUCTOR( DatabaseTable );
+    }
+
+
+    // default constructor
+    template <template<typename> class ALLOC>
+    DatabaseTable<ALLOC>::DatabaseTable(
+      const DBTranslatorSet<ALLOC>& translators,
+      const typename DatabaseTable<ALLOC>::allocator_type& alloc )
+      : IDatabaseTable<DBTranslatedValue,ALLOC> (
+          std::vector<std::string,ALLOC<std::string>> (), 
+          std::vector<std::string,ALLOC<std::string>> (), alloc )
       , __translators ( translators, alloc ) {
       if ( translators.size () ) {
         // set the variables names according to those of the translators

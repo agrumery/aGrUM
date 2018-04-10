@@ -156,13 +156,21 @@ namespace gum {
       /// @{
 
       /// default constructor
-      template <template<typename> class VARALLOC = ALLOC,
-                template<typename> class MISSALLOC = ALLOC>
+      template <template<typename> class VARALLOC,
+                template<typename> class MISSALLOC>
       RawDatabaseTable(
-        const std::vector<std::string,VARALLOC<std::string>>& var_names =
-        std::vector<std::string,VARALLOC<std::string>> (),
-        const MissingValType<MISSALLOC>& missing_symbols =
-        MissingValType<MISSALLOC> (),
+        const MissingValType<MISSALLOC>& missing_symbols,
+        const std::vector<std::string,VARALLOC<std::string>>& var_names,
+        const allocator_type& alloc = allocator_type () );
+
+      /// default constructor
+      template <template<typename> class MISSALLOC>
+      RawDatabaseTable(
+        const MissingValType<MISSALLOC>& missing_symbols,
+        const allocator_type& alloc = allocator_type () );
+
+      /// default constructor
+      RawDatabaseTable(
         const allocator_type& alloc = allocator_type () );
 
       /// copy constructor

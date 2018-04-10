@@ -40,7 +40,7 @@ namespace gum {
     template <template<typename> class ALLOC>
     template <template<typename> class XALLOC>
     DBTranslator4LabelizedVariable<ALLOC>::DBTranslator4LabelizedVariable (
-        std::vector<std::string,XALLOC<std::string>> missing_symbols,
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
         std::size_t max_dico_entries,
         const typename
         DBTranslator4LabelizedVariable<ALLOC>::allocator_type& alloc )
@@ -52,12 +52,25 @@ namespace gum {
     }
       
 
+    /// default constructor without missing symbols
+    template <template<typename> class ALLOC>
+    DBTranslator4LabelizedVariable<ALLOC>::DBTranslator4LabelizedVariable (
+        std::size_t max_dico_entries,
+        const typename
+        DBTranslator4LabelizedVariable<ALLOC>::allocator_type& alloc )
+      : DBTranslator<ALLOC> ( DBTranslatedValueType::DISCRETE,
+                              true, max_dico_entries, alloc )
+      , __variable ( "var", "", 0 ) {
+      GUM_CONSTRUCTOR( DBTranslator4LabelizedVariable );
+    }
+      
+
     /// default constructor with a labelized variable as translator
     template <template<typename> class ALLOC>
     template <template<typename> class XALLOC>
-    INLINE DBTranslator4LabelizedVariable<ALLOC>::DBTranslator4LabelizedVariable (
+    DBTranslator4LabelizedVariable<ALLOC>::DBTranslator4LabelizedVariable (
         const LabelizedVariable& var,
-        std::vector<std::string,XALLOC<std::string>> missing_symbols,
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
         const bool editable_dictionary,
         std::size_t max_dico_entries,
         const typename
@@ -81,6 +94,35 @@ namespace gum {
           this->_missing_symbols.erase ( label );
         }
 
+        // insert the label into the back_dictionary
+        this->_back_dico.insert ( size, label );
+        ++size;
+      }
+
+      GUM_CONSTRUCTOR( DBTranslator4LabelizedVariable );
+    }
+
+    
+    /// default constructor with a labelized variable as translator
+    template <template<typename> class ALLOC>
+    DBTranslator4LabelizedVariable<ALLOC>::DBTranslator4LabelizedVariable (
+        const LabelizedVariable& var,
+        const bool editable_dictionary,
+        std::size_t max_dico_entries,
+        const typename
+        DBTranslator4LabelizedVariable<ALLOC>::allocator_type& alloc )
+      : DBTranslator<ALLOC> ( DBTranslatedValueType::DISCRETE,
+                              editable_dictionary, max_dico_entries, alloc )
+      , __variable ( var ) {
+      // check that the variable has not too many entries
+      if ( var.domainSize () > max_dico_entries ) {
+        GUM_ERROR ( SizeError,
+                    "the dictionary induced by the variable is too large" );
+      }
+
+      // add the content of the variable into the back dictionary
+      std::size_t size = 0;
+      for ( const auto& label : var.labels() ) {
         // insert the label into the back_dictionary
         this->_back_dico.insert ( size, label );
         ++size;

@@ -139,9 +139,28 @@ namespace gum {
        * fields of the DBTranslator
        */
       template <template<typename> class XALLOC>
+      DBTranslator (
+        DBTranslatedValueType val_type,
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
+        const bool editable_dictionary = true,
+        std::size_t max_dico_entries =
+        std::numeric_limits<std::size_t>::max(),
+        const allocator_type& alloc = allocator_type () );
+
+      /// default constructor without missing symbols
+      /** @param val_type indicates whether the DBTranslator deals with discrete
+       * or continuous variables
+       * @param editable_dictionary indicates whether the dictionary used for
+       * translations can be updated dynamically when observing new string or
+       * whether it should remain constant. To see how this parameter is handled,
+       * see the child classes inheriting from DBTranslator
+       * @param max_dico_entries the max number of entries that the dictionary
+       * can contain. If we try to add new entries in the dictionary, this will
+       * be considered as an error and a SizeError exception will be raised
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator
+       */
       DBTranslator ( DBTranslatedValueType val_type,
-                     std::vector<std::string,XALLOC<std::string>> missing_symbols =
-                     std::vector<std::string,XALLOC<std::string>> (),
                      const bool editable_dictionary = true,
                      std::size_t max_dico_entries =
                      std::numeric_limits<std::size_t>::max(),

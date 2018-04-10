@@ -786,11 +786,11 @@ namespace gum {
       /// @{
 
       /// default constructor
-      template <template<typename> class VARALLOC = ALLOC,
-                template<typename> class MISSALLOC = ALLOC>
+      template <template<typename> class VARALLOC,
+                template<typename> class MISSALLOC>
       IDatabaseTable(
-         const std::vector<std::string,VARALLOC<std::string>>& var_names,
          const MissingValType<MISSALLOC>& missing_symbols,
+         const std::vector<std::string,VARALLOC<std::string>>& var_names,
          const ALLOC<T_DATA>& alloc );
 
       /// copy constructor

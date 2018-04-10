@@ -221,11 +221,15 @@ namespace gum {
       /// @{
 
       /// default constructor
-      template <template<typename> class XALLOC = ALLOC>
+      template <template<typename> class XALLOC>
+      DatabaseTable( const MissingValType<XALLOC>& missing_symbols,
+                     const DBTranslatorSet<ALLOC>& translators =
+                     DBTranslatorSet<ALLOC> (),
+                     const allocator_type& alloc = allocator_type () );
+
+      /// default constructor
       DatabaseTable( const DBTranslatorSet<ALLOC>& translators =
                      DBTranslatorSet<ALLOC> (),
-                     const MissingValType<XALLOC>& missing_symbols =
-                     MissingValType<XALLOC> (),
                      const allocator_type& alloc = allocator_type () );
 
       /// copy constructor

@@ -259,7 +259,7 @@ namespace gum_tests {
       xvar.addLabel ( "2" );
       xvar.addLabel ( "3" );
       gum::learning::DBTranslator4LabelizedVariable<>
-        translator ( xvar, {}, true );
+        translator ( xvar, true );
       for ( std::size_t i = 0; i < nb_vars; ++i ) {
         translator_set.insertTranslator ( translator, i );
       }

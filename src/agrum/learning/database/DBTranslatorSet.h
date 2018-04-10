@@ -224,9 +224,25 @@ namespace gum {
       std::size_t insertTranslator(
         const Variable& var,
         const std::size_t column,
-        std::vector<std::string,XALLOC<std::string>> missing_symbols =
-        std::vector<std::string,XALLOC<std::string>> () );
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols );
       
+      /// inserts a new translator for a given variable in the translator set
+      /** The first template parameter (GUM_SCALAR) is necessary only for
+       * inserting variables of true types DiscretizedVariable and
+       * ContinuousVariable, which depend on the GUM_SCALAR parameter type.
+       * However, usually, when you use this function, this is to add into
+       * the TranslatorSet the variables of a BayesNet<GUM_SCALAR>. As such, you
+       * can safely call insert all the variables of this Bayesian network
+       * using inertTranslator<GUM_SCALAR> ( bn.variable() ... ) instructions.
+       * @param var the variable that will be contained into the translator
+       * @param column the index of the column that this new translator should
+       * read in the database.
+       * @throw DuplicateElement is raised if there already exists a translator
+       * reading the column passed in argument.
+       */
+      template <typename GUM_SCALAR = float>
+      std::size_t insertTranslator( const Variable& var,
+                                    const std::size_t column );
 
       /** @brief erases either the kth translator or that parsing the kth
        * column of the input database

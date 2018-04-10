@@ -508,9 +508,9 @@ namespace gum {
     template <template<typename> class VARALLOC,
               template<typename> class MISSALLOC>
     IDatabaseTable<T_DATA,ALLOC>::IDatabaseTable(
-      const std::vector<std::string,VARALLOC<std::string>>& var_names,
       const typename IDatabaseTable<T_DATA,ALLOC>::template
       MissingValType<MISSALLOC>& missing_symbols,
+      const std::vector<std::string,VARALLOC<std::string>>& var_names,
       const ALLOC<T_DATA>& alloc )
       : ALLOC<T_DATA> ( alloc )
       , _variable_names ( alloc )

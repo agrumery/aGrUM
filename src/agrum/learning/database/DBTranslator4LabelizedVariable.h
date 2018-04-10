@@ -156,10 +156,26 @@ namespace gum {
        * @param alloc The allocator used to allocate memory for all the
        * fields of the DBTranslator4LabelizedVariable
        */
-      template <template<typename> class XALLOC = ALLOC>
+      template <template<typename> class XALLOC>
       DBTranslator4LabelizedVariable (
-          std::vector<std::string,XALLOC<std::string>> missing_symbols =
-          std::vector<std::string,XALLOC<std::string>> (),
+          const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
+          std::size_t max_dico_entries =
+          std::numeric_limits<std::size_t>::max(),
+          const allocator_type& alloc = allocator_type () );
+
+      /// default constructor without any initial variable nor missing symbols
+      /** When using this constructor, it is assumed implicitly that the
+       * dictionary contained into the translator is editable. So, when reading
+       * the database, if we observe a label that has not been encountered
+       * before, we add it into the dictionary of the translator (hence into
+       * the variable contained by the translator).
+       * @param max_dico_entries the max number of entries that the dictionary
+       * can contain. If we try to add new entries in the dictionary, this will
+       * be considered as an error and a SizeError exception will be raised
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator4LabelizedVariable
+       */
+      DBTranslator4LabelizedVariable (
           std::size_t max_dico_entries =
           std::numeric_limits<std::size_t>::max(),
           const allocator_type& alloc = allocator_type () );
@@ -183,11 +199,36 @@ namespace gum {
        * equal to a missing value symbol, the label will be taken into
        * account in the translations, not the missing value.
        */
-      template <template<typename> class XALLOC = ALLOC>
+      template <template<typename> class XALLOC>
       DBTranslator4LabelizedVariable (
           const LabelizedVariable& var,
-          std::vector<std::string,XALLOC<std::string>> missing_symbols =
-          std::vector<std::string,XALLOC<std::string>> (),
+          const std::vector<std::string,XALLOC<std::string>>& missing_symbols,
+          const bool editable_dictionary = false,
+          std::size_t max_dico_entries =
+          std::numeric_limits<std::size_t>::max(),
+          const allocator_type& alloc = allocator_type () );
+
+      /** @brief default constructor with a labelized variable as translator
+       * but without missing symbols
+       *
+       * @param var a labelized variable whose labels will be used for
+       * translations. The translator keeps a copy of this variable
+       * @param editable_dictionary the mode in which the translator will perform
+       * translations: when false (the default), the translation of a string
+       * that does not correspond to a label of var will raise a NotFound
+       * exception; when true, the translator will try to add the string as
+       * a new label into var (and therefore into the dictionary)
+       * @param max_dico_entries the max number of entries that the dictionary
+       * can contain. If we try to add new entries in the dictionary, this will
+       * be considered as an error and a SizeError exception will be raised
+       * @param alloc The allocator used to allocate memory for all the
+       * fields of the DBTranslator4LabelizedVariable
+       * @warning If the variable contained into the translator has a label
+       * equal to a missing value symbol, the label will be taken into
+       * account in the translations, not the missing value.
+       */
+      DBTranslator4LabelizedVariable (
+          const LabelizedVariable& var,
           const bool editable_dictionary = false,
           std::size_t max_dico_entries =
           std::numeric_limits<std::size_t>::max(),

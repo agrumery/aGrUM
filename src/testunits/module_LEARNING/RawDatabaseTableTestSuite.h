@@ -89,8 +89,9 @@ namespace gum_tests {
 
 
     void test_db1_bis() {
+      const std::vector<std::string> empty_miss;
       std::vector<std::string> vnames {"v1", "v2", "v3"} ; 
-      gum::learning::RawDatabaseTable<MyAlloc> database ( vnames );
+      gum::learning::RawDatabaseTable<MyAlloc> database ( empty_miss, vnames );
       TS_ASSERT( database.variableNames().size() == 3 );
       TS_ASSERT( database.nbVariables() == 3 );
 
@@ -677,8 +678,9 @@ namespace gum_tests {
     }
 
     void test_ignored_colums () {
+      const std::vector<std::string> empty_miss;
       std::vector<std::string> names {"v0", "v1", "v2", "v3", "v4", "v5"};
-      gum::learning::RawDatabaseTable<> database ( names );
+      gum::learning::RawDatabaseTable<> database ( empty_miss, names );
       const auto& dbnames = database.variableNames();
       const auto& content = database.content ();
       TS_ASSERT( dbnames[0] == "v0" );

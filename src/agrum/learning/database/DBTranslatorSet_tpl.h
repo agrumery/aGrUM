@@ -269,7 +269,7 @@ namespace gum {
     std::size_t DBTranslatorSet<ALLOC>::insertTranslator(
         const Variable& var,
         const std::size_t column,
-        std::vector<std::string,XALLOC<std::string>> missing_symbols ) {
+        const std::vector<std::string,XALLOC<std::string>>& missing_symbols ) {
       // create the translatator, depending on the type of the variable
       switch ( var.varType() ) {
       case VarType::Labelized:
@@ -312,7 +312,18 @@ namespace gum {
         GUM_ERROR ( NotImplementedYet, "not implemented yet" );
       }
     }
-      
+
+
+    /// inserts a new translator for a given variable in the translator set
+    template <template<typename> class ALLOC>
+    template <typename GUM_SCALAR>
+    INLINE std::size_t DBTranslatorSet<ALLOC>::insertTranslator(
+        const Variable& var,
+        const std::size_t column ) {
+      const std::vector<std::string,ALLOC<std::string>> missing;
+      return insertTranslator<GUM_SCALAR,ALLOC>( var, column, missing );
+    }
+
     
     /// erase the kth translator
     template <template<typename> class ALLOC>

@@ -300,7 +300,7 @@ namespace gum_tests {
       LearningAlloc<float> alloc ( 10000 );
 
       gum::learning::DBTranslator4DiscretizedVariable<LearningAlloc>
-        translator ( var, {}, 1000, alloc );
+        translator ( var, 1000, alloc );
 
       std::cout << alloc.toString () << std::endl;
       std::cout << translator.getAllocator ().toString () << std::endl;
