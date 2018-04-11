@@ -20,6 +20,7 @@ include("modules.txt")
 include(Modules.agrum)
 
 include(Nanodbc.agrum)
+include(threads)
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in" "${AGRUM_BINARY_DIR}/agrum/config.h")
 
