@@ -271,7 +271,7 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(v[i], i)
 
       for (int i = 0; i < 5; i++)
-        nodeset.eraseNode(gum::randomValue(100));
+        nodeset.eraseNode(2+i*19);
 
       nodeset.addNodes(5);
 
