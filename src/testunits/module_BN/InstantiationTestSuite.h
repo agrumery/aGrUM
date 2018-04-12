@@ -343,7 +343,7 @@ namespace gum_tests {
 
       gum::Instantiation j;
       TS_ASSERT_DIFFERS(i1, j);
-      j.inc();                 // j is in overflow
+      j.inc();                  // j is in overflow
       TS_ASSERT_EQUALS(i1, j);  // both are in overflow => equals
     }
 

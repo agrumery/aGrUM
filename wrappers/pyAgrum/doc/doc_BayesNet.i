@@ -7,35 +7,7 @@ Available constructors:
 
 	``BayesNet(source) -> BayesNet``
 
-Listeners could be added in order to monitor its loading.
-
-Examples
---------
->>> import pyAgrum as gum
->>>
->>> # creating a new liseners
->>> def foo(progress):
->>>    if progress==200:
->>>        print(' BN loaded ')
->>>        return
->>>    elif progress==100:
->>>        car='%'
->>>    elif progress%10==0:
->>>        car='#'
->>>    else:
->>>        car='.'
->>>    print(car,end='',flush=True)
->>>    
->>> def bar(progress):
->>>    if progress==50:
->>>        print('50%')
->>>
->>> 
->>> gum.loadBN('./bn.bif',listeners=[foo,bar])
->>> # .........#.........#.........#.........#..50%
->>> # .......#.........#.........#.........#.........#.........% | bn loaded
-
-Listeners could also be added when structural modification are made
+Listeners could be added in order to follow structural modifications
 
 Examples
 --------
@@ -455,6 +427,26 @@ name : str
 Warnings
 --------
 	NotAllowed raised if newPot has not the same signature as __probaMap[NodeId] 
+"
+
+%feature("docstring") gum::BayesNet::changeVariableLabel
+"
+change the label of the variable associated to nodeId to the new value.
+
+Parameters
+----------
+id : int
+	the id of the node
+name : str
+	the name of the variable
+old_label : str
+	the new label
+new_label : str
+	the new label
+
+Exception
+--------
+	NotFound raised if old_label does not exist
 "
 
 %feature("docstring") gum::BayesNet::changeVariableName
