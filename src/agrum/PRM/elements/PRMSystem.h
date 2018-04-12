@@ -57,7 +57,7 @@ namespace gum {
       /// @{
 
       /// Default constructor.
-      PRMSystem(const std::string& name);
+      explicit PRMSystem(const std::string& name);
 
       /// Destructor.
       virtual ~PRMSystem();

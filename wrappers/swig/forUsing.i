@@ -1,14 +1,95 @@
 // this file is for giving access to methods defined in ancestor.
 
+
+%define ADD_APPROXIMATIONSCHEME_API(parent,classname...)
+%extend classname {
+  using parent::setVerbosity;
+  using parent::setEpsilon;
+  using parent::setMinEpsilonRate;
+  using parent::setMaxIter;
+  using parent::setMaxTime;
+  using parent::setPeriodSize;
+
+  using parent::verbosity;
+  using parent::epsilon;
+  using parent::minEpsilonRate;
+  using parent::maxIter;
+  using parent::maxTime;
+  using parent::periodSize;
+
+  using parent::nbrIterations;
+  using parent::currentTime;
+
+  using parent::messageApproximationScheme;
+  using parent::history;
+
+  const gum::IApproximationSchemeConfiguration& asIApproximationSchemeConfiguration() const {
+    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  }
+}
+%enddef
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::ImportanceSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::WeightedSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::MonteCarloSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::ImportanceSampling>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::WeightedSampling>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::GibbsSampling>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::MonteCarloSampling>)
+
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
+
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
+
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
+ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
+
+%extend gum::learning::BNLearner<double> {
+  using gum::learning::genericBNLearner::setMaxTime;
+  using gum::learning::genericBNLearner::maxTime;
+  using gum::learning::genericBNLearner::currentTime;
+
+  using gum::learning::genericBNLearner::learnDAG;
+  using gum::learning::genericBNLearner::names;
+  using gum::learning::genericBNLearner::modalities;
+  using gum::learning::genericBNLearner::idFromName;
+  using gum::learning::genericBNLearner::nameFromId;
+  using gum::learning::genericBNLearner::useScoreAIC;
+  using gum::learning::genericBNLearner::useScoreBD;
+  using gum::learning::genericBNLearner::useScoreBDeu;
+  using gum::learning::genericBNLearner::useScoreBIC;
+  using gum::learning::genericBNLearner::useScoreK2;
+  using gum::learning::genericBNLearner::useScoreLog2Likelihood;
+  using gum::learning::genericBNLearner::setAprioriWeight;
+  using gum::learning::genericBNLearner::useNoApriori;
+  using gum::learning::genericBNLearner::useAprioriSmoothing;
+  using gum::learning::genericBNLearner::useAprioriDirichlet;
+  using gum::learning::genericBNLearner::useGreedyHillClimbing;
+  using gum::learning::genericBNLearner::useLocalSearchWithTabuList;
+  using gum::learning::genericBNLearner::useK2;
+  using gum::learning::genericBNLearner::setMaxIndegree;
+  using gum::learning::genericBNLearner::setSliceOrder;
+  using gum::learning::genericBNLearner::addForbiddenArc;
+  using gum::learning::genericBNLearner::eraseForbiddenArc;
+  using gum::learning::genericBNLearner::addMandatoryArc;
+  using gum::learning::genericBNLearner::addMandatoryArc;
+  using gum::learning::genericBNLearner::eraseMandatoryArc;
+}
+
 #####################################
 
 %define ADD_NODEGRAPHPART_API(classname)
 %extend classname {
+  // erase node is not in this list since it is redefined by the very classes {Mixed|Di|Undi}Graph)
   gum::NodeId addNode() {
     return self->gum::NodeGraphPart::addNode();
   }
+  std::vector<gum::NodeId> addNodes(gum::Size n) {
+    return self->gum::NodeGraphPart::addNodes(n);
+  }
   void addNodeWithId(const gum::NodeId id) {
-    self->gum::NodeGraphPart::addNode(id);
+    self->gum::NodeGraphPart::addNodeWithId(id);
   }
   bool existsNode(const gum::NodeId id) const {
     return self->gum::NodeGraphPart::existsNode(id);
@@ -118,15 +199,6 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
     return self->gum::MultiDimDecorator<double>::variable(name);
   }
 
-
-  void populate ( const std::vector< double >& v ) const {
-    self->gum::MultiDimDecorator<double>::populate(v);
-  }
-
-  void fill ( const double& d ) const {
-    self->gum::MultiDimDecorator<double>::fill(d);
-  }
-
   void remove(const gum::DiscreteVariable& var) {
     self->erase(var);
   }
@@ -137,7 +209,7 @@ ADD_ARCGRAPHPART_API(gum::MixedGraph);
 }
 %enddef
 ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
-ADD_MULTIDIMDECORATOR_API(gum::UtilityTable<double>)
+ADD_MULTIDIMDECORATOR_API(gum::Potential<double>)
 
 
 #####################################
@@ -182,6 +254,9 @@ ADD_CREDALINFERENCEENGINCE_API(gum::credal::CNLoopyPropagation<double>)
   }
   void use3off2() {
     self->gum::learning::genericBNLearner::use3off2();
+  }
+  void useMIIC() {
+    self->gum::learning::genericBNLearner::useMIIC();
   }
   void useNML(){
     self->gum::learning::genericBNLearner::useNML();

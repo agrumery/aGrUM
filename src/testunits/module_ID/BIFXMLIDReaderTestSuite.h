@@ -328,7 +328,7 @@ namespace gum_tests {
         instChanceVar5.chgVal(chanceVar5, 1);
         TS_ASSERT_DELTA(cptChanceVar5[instChanceVar5], 0.7, 0.001);
 
-        const gum::UtilityTable< float >& utUtilityVar1 =
+        const gum::Potential< float >& utUtilityVar1 =
           net->utility(idMap["utilityVar1"]);
         TS_ASSERT_EQUALS(utUtilityVar1.domainSize(), (gum::Size)4);
         gum::Instantiation instUtilityVar1(utUtilityVar1);
@@ -344,7 +344,7 @@ namespace gum_tests {
         instUtilityVar1.chgVal(chanceVar1, 1);
         TS_ASSERT_DELTA(utUtilityVar1[instUtilityVar1], 84, 0.001);
 
-        const gum::UtilityTable< float >& utUtilityVar2 =
+        const gum::Potential< float >& utUtilityVar2 =
           net->utility(idMap["utilityVar2"]);
         TS_ASSERT_EQUALS(utUtilityVar2.domainSize(), (gum::Size)4);
         gum::Instantiation instUtilityVar2(utUtilityVar2);

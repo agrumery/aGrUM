@@ -57,8 +57,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   Instantiation ImportanceSampling< GUM_SCALAR >::_draw(float*        w,
                                                         Instantiation prev) {
-
-    GUM_SCALAR pSurQ = 1.;
+    GUM_SCALAR pSurQ;
 
     do {
       prev.clear();
@@ -68,7 +67,7 @@ namespace gum {
         prev.chgVal(this->BN().variable(ev), this->hardEvidence()[ev]);
       }
 
-      for (const auto nod : this->samplingBN().topologicalOrder()) {
+      for (const auto nod : this->BN().topologicalOrder()) {
         if (!this->hasHardEvidence(nod)) {
           this->_addVarSample(nod, &prev);
         }
@@ -96,7 +95,7 @@ namespace gum {
   void ImportanceSampling< GUM_SCALAR >::_unsharpenBN(
     BayesNetFragment< GUM_SCALAR >* bn, float epsilon) {
     for (const auto nod : bn->nodes().asNodeSet()) {
-      Potential< GUM_SCALAR >* p = new Potential< GUM_SCALAR >();
+      auto p = new Potential< GUM_SCALAR >();
       *p = bn->cpt(nod).isNonZeroMap().scale(epsilon) + bn->cpt(nod);
       p->normalizeAsCPT();
       bn->installCPT(nod, p);

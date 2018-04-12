@@ -33,7 +33,7 @@
 // =========================================================================
 #include <agrum/graphs/parts/nodeGraphPart.h>
 // =========================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/variables/discreteVariable.h>
 // =========================================================================

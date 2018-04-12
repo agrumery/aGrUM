@@ -63,7 +63,7 @@ namespace gum {
     /** @warning By default, all the nodes of the Bayes net are targets.
      * @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    MarginalTargetedInference(const IBayesNet< GUM_SCALAR >* bn);
+    explicit MarginalTargetedInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// destructor
     virtual ~MarginalTargetedInference();
@@ -91,7 +91,7 @@ namespace gum {
      *
      * @throw UndefinedElement if node is not in the set of targets
      */
-    virtual const Potential< GUM_SCALAR >& posterior(const NodeId node);
+    virtual const Potential< GUM_SCALAR >& posterior(NodeId node);
 
     /// Computes and returns the posterior of a node.
     /**
@@ -129,7 +129,7 @@ namespace gum {
     /**
      * @throw UndefinedElement if target is not a NodeId in the Bayes net
      */
-    virtual void addTarget(const NodeId target) final;
+    virtual void addTarget(NodeId target) final;
 
     /// Add a marginal target to the list of targets
     /**
@@ -140,7 +140,7 @@ namespace gum {
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
      * In particular, it does not raise any exception. */
-    virtual void eraseTarget(const NodeId target) final;
+    virtual void eraseTarget(NodeId target) final;
 
     /// removes an existing (marginal) target
     /** @warning If the target does not already exist, the method does nothing.
@@ -148,7 +148,7 @@ namespace gum {
     virtual void eraseTarget(const std::string& nodeName) final;
 
     /// return true if variable is a (marginal) target
-    virtual bool isTarget(const NodeId variable) const final;
+    virtual bool isTarget(NodeId node) const final;
 
     /// return true if variable is a (marginal) target
     virtual bool isTarget(const std::string& nodeName) const final;
@@ -170,7 +170,7 @@ namespace gum {
      * Compute Shanon's entropy of a node given the observation
      * @see http://en.wikipedia.org/wiki/Information_entropy
      */
-    virtual GUM_SCALAR H(const NodeId X) final;
+    virtual GUM_SCALAR H(NodeId X) final;
 
     /** Entropy
      * Compute Shanon's entropy of a node given the observation
@@ -211,11 +211,11 @@ namespace gum {
     protected:
     /// fired after a new marginal target is inserted
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded(const NodeId id) = 0;
+    virtual void _onMarginalTargetAdded(NodeId id) = 0;
 
     /// fired before a marginal target is removed
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased(const NodeId id) = 0;
+    virtual void _onMarginalTargetErased(NodeId id) = 0;
 
     /// fired after all the nodes of the BN are added as marginal targets
     virtual void _onAllMarginalTargetsAdded() = 0;
@@ -228,7 +228,7 @@ namespace gum {
 
     /// asks derived classes for the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential< GUM_SCALAR >& _posterior(const NodeId id) = 0;
+    virtual const Potential< GUM_SCALAR >& _posterior(NodeId id) = 0;
 
     protected:
     void _setTargetedMode();
@@ -242,8 +242,8 @@ namespace gum {
     NodeSet __targets;
 
 
-    /// remove all the marginal posteriors computed
-    void __invalidatePosteriors() noexcept;
+    /*/// remove all the marginal posteriors computed
+    void __invalidatePosteriors() noexcept;*/
 
     /// sets all the nodes of the Bayes net as targets
     void __setAllMarginalTargets();

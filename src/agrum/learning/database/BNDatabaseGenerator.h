@@ -146,7 +146,7 @@ namespace gum {
 
       private:
       /// Bayesian network
-      BayesNet< GUM_SCALAR > __bn;
+      const BayesNet< GUM_SCALAR >& __bn;
 
       /// bijection nodes names
       Bijection< std::string, NodeId > __names2ids;

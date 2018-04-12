@@ -53,7 +53,7 @@ namespace gum {
     // ############################################################################
     /// @{
 
-    /** @brief Default constructor
+    /** @brief constructor
     * @param aName the name
     * @param aDesc the Description
     * @param nbrLabel the domainSize (2 by default)
@@ -62,6 +62,16 @@ namespace gum {
     LabelizedVariable(const std::string& aName,
                       const std::string& aDesc = "",
                       const int          nbrLabel = 2);
+
+    /** @brief constructor
+    * @param aName the name
+    * @param aDesc the Description
+    * @param labels the labels
+    */
+
+    LabelizedVariable(const std::string&                aName,
+                      const std::string&                aDesc,
+                      const std::vector< std::string >& labels);
 
     /// Copy constructor
     /**
@@ -75,7 +85,7 @@ namespace gum {
     virtual ~LabelizedVariable();
 
     /// a virtual clone ...
-    virtual DiscreteVariable* clone() const;
+    virtual LabelizedVariable* clone() const;
 
     /// @}
 
@@ -86,7 +96,7 @@ namespace gum {
 
     /// copy operator
     /** @param aLDRV the labelized discrete random variable we copy */
-    const LabelizedVariable& operator=(const LabelizedVariable& aLDRV);
+    LabelizedVariable& operator=(const LabelizedVariable& aLDRV);
 
 
     /// returns the index of a given label
@@ -116,7 +126,7 @@ namespace gum {
        * the label
        * @return *this which allows : v.addLabel("1").addLabel("2")...;
        */
-    LabelizedVariable& addLabel(const std::string aLabel);
+    LabelizedVariable& addLabel(const std::string& aLabel);
 
     /// change a label for this index
     /** @param pos the index of the label to be changed
@@ -128,15 +138,18 @@ namespace gum {
      * variable representation,
        * this method is allowed on const LabelizedVariable.
        */
-    void changeLabel(Idx pos, const std::string aLabel) const;
+    void changeLabel(Idx pos, const std::string& aLabel) const;
 
     /// erase all the labels
-    void eraseLabels(void);
+    void eraseLabels();
 
     /// returns the ith label
     /** @param i
      * @return the ith label */
     virtual std::string label(Idx i) const;
+
+    /// return the pos from label
+    Idx posLabel(const std::string& label) const;
 
     /// get a numerical representation of he indice-the value.
     virtual double numerical(Idx indice) const;
@@ -145,10 +158,10 @@ namespace gum {
     virtual Size domainSize() const;
 
     /// returns the type of variable
-    virtual VarType varType(void) const;
+    virtual VarType varType() const;
 
     /// Returns the domain
-    virtual const std::string domain(void) const;
+    virtual const std::string domain() const;
 
     /// @}
 

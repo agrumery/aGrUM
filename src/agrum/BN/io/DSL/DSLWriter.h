@@ -58,7 +58,7 @@ namespace gum {
     /**
     * Destructor.
     */
-    virtual ~DSLWriter();
+    ~DSLWriter() final;
 
     /// @}
 
@@ -69,7 +69,7 @@ namespace gum {
     * @param bn The Bayesian Network writen in output.
     * @throws IOError Raised if and I/O error occurs.
     */
-    virtual void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
+    void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
     * Writes a Bayesian Network in the referenced file using the DSL format.
@@ -79,7 +79,8 @@ namespace gum {
     * @param bn The Bayesian Network writed in the file.
     * @throws IOError Raised if and I/O error occurs.
     */
-    virtual void write(std::string filePath, const IBayesNet< GUM_SCALAR >& bn);
+    void write(const std::string&             filePath,
+               const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     // Returns a bloc defining a variable in the DSL format.

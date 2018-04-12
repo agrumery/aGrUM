@@ -26,3 +26,4 @@
  */
 
 #include <agrum/BN/IBayesNetFactory.h>
+#include <agrum/agrum.h>

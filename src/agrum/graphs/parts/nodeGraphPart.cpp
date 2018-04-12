@@ -130,7 +130,7 @@ namespace gum {
     return stream;
   }
 
-  void NodeGraphPart::addNode(const NodeId id) {
+  void NodeGraphPart::addNodeWithId(const NodeId id) {
     if (id >= __boundVal) {
       if (id > __boundVal) {  // we have to add holes
         if (!__holes) __holes = new NodeSet();
@@ -153,7 +153,7 @@ namespace gum {
     GUM_EMIT1(onNodeAdded, id);
   }
 
-  void NodeGraphPart::__clearNodes(void) {
+  void NodeGraphPart::__clearNodes() {
     NodeId bound = __boundVal;
     __boundVal = 0;
 

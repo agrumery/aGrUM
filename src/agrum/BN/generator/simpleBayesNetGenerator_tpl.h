@@ -71,32 +71,29 @@ namespace gum {
   template < typename GUM_SCALAR, template < typename > class ICPTGenerator >
   void SimpleBayesNetGenerator< GUM_SCALAR, ICPTGenerator >::generateBN(
     BayesNet< GUM_SCALAR >& bayesNet) {
-    IBNG::_bayesNet = bayesNet;
+    this->_bayesNet = bayesNet;
     HashTable< Size, NodeId > map;
     std::stringstream strBuff;
-    int               nb_mod;
 
-    for (Size i = 0; i < IBNG::_nbrNodes; ++i) {
+    for (Size i = 0; this->_nbrNodes > i; ++i) {
       strBuff << "n" << i;
-      nb_mod =
-        (IBNG::_maxModality == 2) ? 2 : 2 + rand() % (IBNG::_maxModality - 1);
+      int nb_mod =
+        (this->_maxModality == 2) ? 2 : 2 + randomValue(this->_maxModality - 1);
       map.insert(
-        i, IBNG::_bayesNet.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
+        i, this->_bayesNet.add(LabelizedVariable(strBuff.str(), "", nb_mod)));
       strBuff.str("");
     }
 
     // We add arcs
-    float density = (float)(IBNG::_maxArcs * 2) /
-                    (float)(IBNG::_nbrNodes * (IBNG::_nbrNodes - 1));
-    float p = density * (float)RAND_MAX;
+    float density = (float)(this->_maxArcs * 2) /
+                    (float)(this->_nbrNodes * (this->_nbrNodes - 1));
 
-    for (Size i = 0; i < IBNG::_nbrNodes; ++i)
-      for (Size j = i + 1; j < IBNG::_nbrNodes; ++j)
-        if (((float)rand()) < p) IBNG::_bayesNet.addArc(map[i], map[j]);
+    for (Size i = 0; i < this->_nbrNodes; ++i)
+      for (Size j = i + 1; j < this->_nbrNodes; ++j)
+        if (randomProba() < density) this->_bayesNet.addArc(map[i], map[j]);
 
-    IBNG::fillCPT();
+    this->fillCPT();
 
-    bayesNet = IBNG::_bayesNet;
+    bayesNet = this->_bayesNet;
   }
 } /* namespace gum */
-#undef IBNG

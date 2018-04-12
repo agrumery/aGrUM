@@ -17,6 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief class CorrectedMutualInformation, used in the 3off2 algorithm
+ *
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN.
+ */
 #ifndef GUM_LEARNING_CORRECTEDMUTUALINFORMATION_H
 #define GUM_LEARNING_CORRECTEDMUTUALINFORMATION_H
 
@@ -39,25 +45,38 @@ namespace gum {
      */
     /* =========================================================================
      */
+    /**
+     * @class CorrectedMutualInformation
+     * @brief class CorrectedMutualInformation, used in the 3off2 algorithm
+     *
+     * This class handles the computations and storage of the mutual information
+     * values used in 3off2 and potential corrections.
+     *
+     * @ingroup learning_group
+     */
     template < typename IdSetAlloc = std::allocator< Idx >,
                typename CountAlloc = std::allocator< double > >
     class CorrectedMutualInformation {
       public:
       // ##########################################################################
-      // Constructors and destructors
+      /// @name Constructors and destructors
       // ##########################################################################
 
+      /// @{
       template < typename RowFilter >
       CorrectedMutualInformation(const RowFilter&           filter,
                                  const std::vector< Size >& var_modalities);
 
       virtual ~CorrectedMutualInformation();
+      /// @}
 
 
       // ##########################################################################
       // Public member functions
       // ##########################################################################
 
+      /// @name functions for cache
+      /// @{
       /// clears all the data structures from memory
       virtual void clear();
 
@@ -69,7 +88,10 @@ namespace gum {
 
       /// turn on/off the use of a cache of the previously computed score
       void useCache(bool on_off) noexcept;
+      /// @}
 
+      /// @name score function, used to declare the variables
+      /// @{
       /// returns the 2-point mutual information corresponding to a given nodeset
       double score(Idx var1, Idx var2);
 
@@ -98,14 +120,17 @@ namespace gum {
       /// returns the 3-point mutual information corresponding to a given nodeset
       double score(const std::tuple< Idx, Idx, Idx >& vars,
                    const std::vector< Idx >& conditioning_ids);
+      /// @}
 
       /// Size of the database
       const Size N();
 
-      /// functions to choose which correction to use
+      /// @name functions to choose which correction to use
+      /// @{
       void useMDL();
       void useNML();
       void useNoCorr();
+      /// @}
 
 
       /// the description type for the complexity correction

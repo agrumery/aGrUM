@@ -193,7 +193,7 @@ namespace gum {
     /// default constructor
     /** @warning note that, by aGrUM's rule, the BN is not copied but only
      * referenced by the inference algorithm. */
-    BayesNetInference(const IBayesNet< GUM_SCALAR >* bn);
+    explicit BayesNetInference(const IBayesNet< GUM_SCALAR >* bn);
 
     /// default constructor with a null BN (useful for virtual inheritance)
     /** @warning BayesNetInference is virtually inherited by
@@ -280,7 +280,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id already has an evidence
      */
-    virtual void addEvidence(const NodeId id, const Idx val) final;
+    virtual void addEvidence(NodeId id, const Idx val) final;
 
     /// adds a new hard evidence on node named nodeName
     /**
@@ -296,7 +296,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id already has an evidence
      */
-    virtual void addEvidence(const NodeId id, const std::string& label) final;
+    virtual void addEvidence(NodeId id, const std::string& label) final;
 
     /// adds a new hard evidence on node named nodeName
     /**
@@ -315,7 +315,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void addEvidence(const NodeId                     id,
+    virtual void addEvidence(NodeId                           id,
                              const std::vector< GUM_SCALAR >& vals) final;
 
     /// adds a new evidence on node named nodeName (might be soft or hard)
@@ -361,7 +361,7 @@ namespace gum {
      * @throw FatalError if pot=[0,0,...,0]
      */
     virtual void
-    addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potlist) final;
+    addSetOfEvidence(const Set< const Potential< GUM_SCALAR >* >& potset) final;
 
     /// adds a new list of evidence
     /**
@@ -381,7 +381,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence(const NodeId id, const Idx val) final;
+    virtual void chgEvidence(NodeId id, const Idx val) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -397,7 +397,7 @@ namespace gum {
      * @throw InvalidArgument if val is not a value for id
      * @throw InvalidArgument if id does not already have an evidence
      */
-    virtual void chgEvidence(const NodeId id, const std::string& label) final;
+    virtual void chgEvidence(NodeId id, const std::string& label) final;
 
     /// change the value of an already existing hard evidence
     /**
@@ -416,7 +416,7 @@ namespace gum {
      * @throw InvalidArgument if the size of vals is different from the domain
      *        size of node id
      */
-    virtual void chgEvidence(const NodeId                     id,
+    virtual void chgEvidence(NodeId                           id,
                              const std::vector< GUM_SCALAR >& vals) final;
 
     /// change the value of an already existing evidence (might be soft or hard)
@@ -445,7 +445,7 @@ namespace gum {
     virtual void eraseAllEvidence() final;
 
     /// removed the evidence, if any, corresponding to node id
-    virtual void eraseEvidence(const NodeId id) final;
+    virtual void eraseEvidence(NodeId id) final;
 
     /// removed the evidence, if any, corresponding to node of name nodeName
     virtual void eraseEvidence(const std::string& nodeName) final;
@@ -454,13 +454,13 @@ namespace gum {
     virtual bool hasEvidence() const final;
 
     /// indicates whether node id has received an evidence
-    virtual bool hasEvidence(const NodeId id) const final;
+    virtual bool hasEvidence(NodeId id) const final;
 
     /// indicates whether node id has received a hard evidence
-    virtual bool hasHardEvidence(const NodeId id) const final;
+    virtual bool hasHardEvidence(NodeId id) const final;
 
     /// indicates whether node id has received a soft evidence
-    virtual bool hasSoftEvidence(const NodeId id) const final;
+    virtual bool hasSoftEvidence(NodeId id) const final;
     /// indicates whether node id has received an evidence
 
     virtual bool hasEvidence(const std::string& nodeName) const final;
@@ -500,10 +500,10 @@ namespace gum {
     virtual void _onStateChanged() = 0;
 
     /// fired after a new evidence is inserted
-    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence) = 0;
+    virtual void _onEvidenceAdded(NodeId id, bool isHardEvidence) = 0;
 
     /// fired before an evidence is removed
-    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence) = 0;
+    virtual void _onEvidenceErased(NodeId id, bool isHardEvidence) = 0;
 
     /// fired before all the evidence are erased
     virtual void _onAllEvidenceErased(bool contains_hard_evidence) = 0;
@@ -516,7 +516,7 @@ namespace gum {
      * Hard or from Hard to Soft
      *
      */
-    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard) = 0;
+    virtual void _onEvidenceChanged(NodeId id, bool hasChangedSoftHard) = 0;
 
     /// fired after a new Bayes net has been assigned to the engine
     virtual void _onBayesNetChanged(const IBayesNet< GUM_SCALAR >* bn) = 0;

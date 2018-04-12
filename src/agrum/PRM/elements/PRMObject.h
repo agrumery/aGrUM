@@ -127,12 +127,17 @@ namespace gum {
        * Constructor.
        * @param name The name of this object.
        */
-      PRMObject(const std::string& name);
+      explicit PRMObject(const std::string& name);
 
       /**
        * Copy constructor.
        */
       PRMObject(const PRMObject& source);
+
+      /**
+       * Move constructor.
+       */
+      PRMObject(PRMObject&& source);
 
       /**
        * Destructor.
@@ -181,6 +186,11 @@ namespace gum {
        * Copy operator.
        */
       PRMObject& operator=(const PRMObject& source);
+
+      /**
+       * Move operator.
+       */
+      PRMObject& operator=(PRMObject&& source);
 
       /// @}
       private:

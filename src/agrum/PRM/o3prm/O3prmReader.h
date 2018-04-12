@@ -67,7 +67,7 @@ namespace gum {
       class O3prmReader {
         public:
         O3prmReader();
-        O3prmReader(PRM< GUM_SCALAR >& prm);
+        explicit O3prmReader(PRM< GUM_SCALAR >& prm);
         O3prmReader(const O3prmReader& src);
         O3prmReader(O3prmReader&& src);
         ~O3prmReader();

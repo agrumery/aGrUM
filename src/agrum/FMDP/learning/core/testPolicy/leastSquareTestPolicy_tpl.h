@@ -78,7 +78,7 @@ namespace gum {
   // Computes the GStat of current variable according to the test
   // ============================================================================
   template < typename GUM_SCALAR >
-  void LeastSquareTestPolicy< GUM_SCALAR >::computeScore() const {
+  void LeastSquareTestPolicy< GUM_SCALAR >::computeScore() {
     ITestPolicy< GUM_SCALAR >::computeScore();
     double mean = __sumO / (double)this->nbObservation();
     double errorO = 0.0;
@@ -107,7 +107,7 @@ namespace gum {
   // Returns the performance of current variable according to the test
   // ============================================================================
   template < typename GUM_SCALAR >
-  double LeastSquareTestPolicy< GUM_SCALAR >::score() const {
+  double LeastSquareTestPolicy< GUM_SCALAR >::score() {
     if (this->_isModified()) computeScore();
     return __score;
   }

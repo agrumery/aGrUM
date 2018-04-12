@@ -24,10 +24,11 @@
  * @author Pierre-Henri WUILLEMIN
  */
 
+#include <cmath>
+
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/algorithms/divergence/KL.h>
 #include <agrum/BN/algorithms/divergence/bruteForceKL.h>
-#include <cmath>
 
 namespace gum {
   template < typename GUM_SCALAR >
@@ -53,10 +54,8 @@ namespace gum {
     _klPQ = _klQP = _hellinger = _bhattacharya = (GUM_SCALAR)0.0;
     _errorPQ = _errorQP = 0;
 
-    gum::Instantiation Ip;
-    _p.completeInstantiation(Ip);
-    gum::Instantiation Iq;
-    _q.completeInstantiation(Iq);
+    auto Ip = _p.completeInstantiation();
+    auto Iq = _q.completeInstantiation();
 
     // map between _p variables and _q variables (using name of vars)
     HashTable< const DiscreteVariable*, const DiscreteVariable* > map;

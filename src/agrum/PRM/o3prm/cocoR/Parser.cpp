@@ -72,7 +72,7 @@ void Parser::Get() {
       dummyToken->pos = t->pos;
       dummyToken->col = t->col;
       dummyToken->line = t->line;
-      dummyToken->next = NULL;
+      dummyToken->next = nullptr;
       coco_string_delete( dummyToken->val );
       dummyToken->val = coco_string_create( t->val );
       t = dummyToken;
@@ -1004,7 +1004,7 @@ struct ParserInitExistsRecognizer {
   template<typename U>
   static InitExistsType is_here( ExistsIfInitIsDefinedMarker<U>* );
 
-  enum { InitExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( InitExistsType ) ) };
+  enum { InitExists = ( sizeof( is_here<T>( nullptr ) ) == sizeof( InitExistsType ) ) };
 };
 
 template<typename T>
@@ -1028,7 +1028,7 @@ struct ParserDestroyExistsRecognizer {
   template<typename U>
   static DestroyExistsType is_here( ExistsIfDestroyIsDefinedMarker<U>* );
 
-  enum { DestroyExists = ( sizeof( is_here<T>( NULL ) ) == sizeof( DestroyExistsType ) ) };
+  enum { DestroyExists = ( sizeof( is_here<T>( nullptr ) ) == sizeof( DestroyExistsType ) ) };
 };
 
 // The folloing templates are used to call the Init and Destroy methods if they exist.
@@ -1065,7 +1065,7 @@ struct ParserDestroyCaller<T, true> {
   }
 };
 void Parser::Parse() {
-  t = NULL;
+  t = nullptr;
   la = dummyToken = new Token();
   la->val = coco_string_create( L"Dummy Token" );
   Get();
@@ -1077,8 +1077,8 @@ Parser::Parser( Scanner* scanner ) {
   	maxT = 32;
 
   ParserInitCaller<Parser>::CallInit( this );
-  dummyToken = NULL;
-  t = la = NULL;
+  dummyToken = nullptr;
+  t = la = nullptr;
   minErrDist = 2;
   errDist = minErrDist;
   this->scanner = scanner;

@@ -22,8 +22,7 @@
  * @brief Interface-like class for generating bayesian networks.
  *
  * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and
- *Ariele-Paolo
- *MAESANO
+ * Ariele-Paolo MAESANO
  */
 #ifndef GUM_I_BAYES_NET_GENERATOR_H
 #define GUM_I_BAYES_NET_GENERATOR_H
@@ -85,7 +84,7 @@ namespace gum {
      * Destructor.
      */
 
-    ~IBayesNetGenerator();
+    virtual ~IBayesNetGenerator();
     /// @}
 
     // ############################################################################

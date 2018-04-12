@@ -7,8 +7,8 @@ from pyAgrumTestSuite import pyAgrumTestCase, addTests
 
 class JTInferenceTestCase(pyAgrumTestCase):
 
-  def _getInference(self,bn):
-    raise(NotImplementedError("This class is a generic class for JT Inference"))
+  def _getInference(self, bn):
+    raise (NotImplementedError("This class is a generic class for JT Inference"))
 
   def setUp(self):
     self.bn = gum.BayesNet()
@@ -16,6 +16,7 @@ class JTInferenceTestCase(pyAgrumTestCase):
     self.c, self.r = \
       [self.bn.add(gum.LabelizedVariable(name, name, 2))
        for name in 'c r'.split()]
+
     self.s, self.w = \
       [self.bn.add(gum.LabelizedVariable(name, name, 0).addLabel('no').addLabel('yes'))
        for name in 's w'.split()]
@@ -35,7 +36,6 @@ class JTInferenceTestCase(pyAgrumTestCase):
     self.bn.cpt(self.w)[1, 1, :] = [0.01, 0.99]
 
     self.bni = gum.BayesNet()
-
     self.ci, self.si = \
       [self.bni.add(gum.LabelizedVariable(name, name, 2))
        for name in 'ci si'.split()]
@@ -76,7 +76,6 @@ class JTInferenceTestCase(pyAgrumTestCase):
     self.bn2.cpt(self.w2)[0, 1, :] = [0.1, 0.9]
     self.bn2.cpt(self.w2)[1, 0, :] = [0.2, 0.8]
     self.bn2.cpt(self.w2)[1, 1, :] = [0.01, 0.99]
-
 
   def testSimpleInference(self):
     ie = self._getInference(self.bn)
@@ -184,16 +183,19 @@ class JTInferenceTestCase(pyAgrumTestCase):
 
 
 class LazyPropagationTestCase(JTInferenceTestCase):
-  def _getInference(self,bn):
+  def _getInference(self, bn):
     return gum.LazyPropagation(bn)
 
+
 class ShaferShenoyTestCase(JTInferenceTestCase):
-  def _getInference(self,bn):
+  def _getInference(self, bn):
     return gum.ShaferShenoyInference(bn)
 
+
 class VariableEliminationTestCase(JTInferenceTestCase):
-  def _getInference(self,bn):
+  def _getInference(self, bn):
     return gum.VariableElimination(bn)
+
 
 ts = unittest.TestSuite()
 addTests(ts, LazyPropagationTestCase)

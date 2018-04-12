@@ -50,7 +50,7 @@ namespace gum {
     GUM_CONS_CPY(MultiDimNoisyAND);
   }
 
-  // Copy constructor using a bijection to swap variables from source.
+  // Copy constructor using a bijection to replace variables from source.
   template < typename GUM_SCALAR >
   INLINE MultiDimNoisyAND< GUM_SCALAR >::MultiDimNoisyAND(
     const Bijection< const DiscreteVariable*, const DiscreteVariable* >& bij,

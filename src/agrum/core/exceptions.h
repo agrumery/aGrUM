@@ -24,7 +24,7 @@
  */
 #ifndef GUM_EXCEPTIONS_H
 #define GUM_EXCEPTIONS_H
-// WARNING : Do not include this file directlty : instead include
+// WARNING : Do not include this file directly : instead include
 // <agrum/config.h>
 
 #include <iomanip>
@@ -33,8 +33,22 @@
 
 #include <agrum/core/types.h>
 
-#ifdef NDEBUG
 #define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
+
+#ifdef SWIG
+#define GUM_ERROR(type, msg)         \
+  {                                  \
+    std::ostringstream __error__str; \
+    __error__str << msg;             \
+    throw(type(__error__str.str())); \
+  }
+#define GUM_SHOWERROR(e)                                                      \
+  {                                                                           \
+    std::cout << std::endl                                                    \
+              << (e).errorType() << " : " << (e).errorContent() << std::endl; \
+  }
+#else
+#ifdef NDEBUG
 #define GUM_ERROR(type, msg)                                    \
   {                                                             \
     std::ostringstream __error__str;                            \
@@ -49,7 +63,6 @@
               << (e).errorContent() << std::endl;                      \
   }
 #else
-#define GUM_ERROR_IN_EXPR(type, msg) throw(type(msg))
 #define GUM_ERROR(type, msg)                                                    \
   {                                                                             \
     std::ostringstream __error__str;                                            \
@@ -66,12 +79,15 @@
     std::cout << (e).errorCallStack() << std::endl;                    \
   }
 #endif  // NDEBUG
+#endif  // SWIG
 
 #define GUM_MAKE_ERROR(TYPE, SUPERCLASS, MSG)       \
   class TYPE : public SUPERCLASS {                  \
     public:                                         \
     TYPE(std::string aMsg, std::string aType = MSG) \
         : SUPERCLASS(aMsg, aType){};                \
+    TYPE(const TYPE& src)                           \
+        : SUPERCLASS(src){};                        \
   };
 
 #define GUM_SYNTAX_ERROR(msg, line, column)                    \
@@ -105,9 +121,12 @@ namespace gum {
 
     ~Exception() {}
 
-    /// @}
-
-    const std::string toString() const { return _msg; }
+/// @}
+#ifdef SWIG
+    const std::string what() const { return "[pyAgrum] " + _type + ": " + _msg; }
+#else
+    const std::string what() const { return "[pyAgrum] " + _type + " : " + _msg; }
+#endif
 
     /**
      * @brief Returns the message content.
@@ -127,7 +146,6 @@ namespace gum {
      */
     const std::string errorCallStack() const { return _callstack; }
   };
-
 
   /**
    * @class gum::IdError agrum/core/exceptions.h
@@ -149,7 +167,6 @@ namespace gum {
    * Exception : iterator does not point to any valid value
    */
   class UndefinedIteratorValue;
-
 
   /**
    * @class gum::UndefinedIteratorKey agrum/core/exceptions.h
@@ -208,7 +225,6 @@ namespace gum {
    * Exception : input/output problem
    */
   class IOError;
-
 
   /**
    * @class gum::FormatNotFound agrum/core/exceptions.h
@@ -343,7 +359,6 @@ namespace gum {
    * Exception : existence of a directed cycle in a graph
    */
   class InvalidDirectedCycle;
-
 
   ///////////////////////////////////
   /**

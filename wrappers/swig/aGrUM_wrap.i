@@ -35,14 +35,14 @@
 #include <agrum/graphs/cliqueGraph.h>
 #include <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 #include <agrum/variables/discreteVariable.h>
-#include <agrum/multidim/multiDimInterface.h>
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimInterface.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimContainer.h>
-#include <agrum/multidim/multiDimDecorator.h>
-#include <agrum/multidim/multiDimImplementation.h>
-#include <agrum/multidim/multiDimWithOffset.h>
-#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/implementations/multiDimContainer.h>
+#include <agrum/multidim/implementations/multiDimDecorator.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimWithOffset.h>
+#include <agrum/multidim/implementations/multiDimReadOnly.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 #include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
 #include <agrum/graphicalModels/variableNodeMap.h>
@@ -55,8 +55,7 @@
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/graphs/graphElements.h>
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/utilityTable.h>
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/BayesNet.h>
@@ -134,97 +133,18 @@ namespace std {
 
 /* CLASS EXTENSIONS */
 %extend gum::DiscreteVariable {
-  gum::LabelizedVariable & toLabelizedVar() {
-    return dynamic_cast<gum::LabelizedVariable&> ( * ( self ) );
+  gum::LabelizedVariable toLabelizedVar() {
+    return gum::LabelizedVariable(* dynamic_cast<gum::LabelizedVariable*>(self ));
   }
 
-  gum::RangeVariable & toRangeVar() {
-    return dynamic_cast<gum::RangeVariable&> ( * ( self ) );
+  gum::RangeVariable toRangeVar() {
+    return gum::RangeVariable(* dynamic_cast<gum::RangeVariable*>(self ));
   }
 
-  gum::DiscretizedVariable<double>& toDiscretizedVar() {
-    return dynamic_cast<gum::DiscretizedVariable<double> &> ( * ( self ) );
-  }
-}
-
-
-%define ADD_APPROXIMATIONSCHEME_API(parent,classname...)
-%extend classname {
-  using parent::setVerbosity;
-  using parent::setEpsilon;
-  using parent::setMinEpsilonRate;
-  using parent::setMaxIter;
-  using parent::setMaxTime;
-  using parent::setPeriodSize;
-
-  using parent::verbosity;
-  using parent::epsilon;
-  using parent::minEpsilonRate;
-  using parent::maxIter;
-  using parent::maxTime;
-  using parent::periodSize;
-
-  using parent::nbrIterations;
-  using parent::currentTime;
-
-  using parent::messageApproximationScheme;
-  using parent::history;
-
-  const gum::IApproximationSchemeConfiguration& asIApproximationSchemeConfiguration() const {
-    return *(dynamic_cast<const gum::IApproximationSchemeConfiguration *>(self));
+  gum::DiscretizedVariable<double> toDiscretizedVar() {
+    return gum::DiscretizedVariable<double>(* dynamic_cast<gum::DiscretizedVariable<double> *> (self ));
   }
 }
-%enddef
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsSampling<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::ImportanceSampling<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::WeightedSampling<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::MonteCarloSampling<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::ImportanceSampling>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::WeightedSampling>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::GibbsSampling>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopySamplingInference<double,gum::MonteCarloSampling>)
-
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::LoopyBeliefPropagation<double>)
-
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::GibbsKL<double>)
-
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNMonteCarloSampling<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::ApproximationScheme,gum::credal::CNLoopyPropagation<double>)
-ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLearner<double>)
-
-%extend gum::learning::BNLearner<double> {
-  using gum::learning::genericBNLearner::setMaxTime;
-  using gum::learning::genericBNLearner::maxTime;
-  using gum::learning::genericBNLearner::currentTime;
-
-  using gum::learning::genericBNLearner::learnDAG;
-  using gum::learning::genericBNLearner::names;
-  using gum::learning::genericBNLearner::modalities;
-  using gum::learning::genericBNLearner::idFromName;
-  using gum::learning::genericBNLearner::nameFromId;
-  using gum::learning::genericBNLearner::useScoreAIC;
-  using gum::learning::genericBNLearner::useScoreBD;
-  using gum::learning::genericBNLearner::useScoreBDeu;
-  using gum::learning::genericBNLearner::useScoreBIC;
-  using gum::learning::genericBNLearner::useScoreK2;
-  using gum::learning::genericBNLearner::useScoreLog2Likelihood;
-  using gum::learning::genericBNLearner::setAprioriWeight;
-  using gum::learning::genericBNLearner::useNoApriori;
-  using gum::learning::genericBNLearner::useAprioriSmoothing;
-  using gum::learning::genericBNLearner::useAprioriDirichlet;
-  using gum::learning::genericBNLearner::useGreedyHillClimbing;
-  using gum::learning::genericBNLearner::useLocalSearchWithTabuList;
-  using gum::learning::genericBNLearner::useK2;
-  using gum::learning::genericBNLearner::setMaxIndegree;
-  using gum::learning::genericBNLearner::setSliceOrder;
-  using gum::learning::genericBNLearner::addForbiddenArc;
-  using gum::learning::genericBNLearner::eraseForbiddenArc;
-  using gum::learning::genericBNLearner::addMandatoryArc;
-  using gum::learning::genericBNLearner::addMandatoryArc;
-  using gum::learning::genericBNLearner::eraseMandatoryArc;
-}
-
-
 
 %include "forUsing.i"
 
@@ -239,6 +159,7 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %exceptionclass gum::DefaultInLabel;
 %exceptionclass gum::Circuit;
 %exceptionclass gum::InvalidNode;
+%exceptionclass gum::NotFound;
 %exceptionclass gum::InvalidEdge;
 %exceptionclass gum::DuplicateLabel;
 %exceptionclass gum::DuplicateElement;
@@ -283,19 +204,20 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %import <agrum/graphs/algorithms/triangulations/defaultTriangulation.h>
 %import <agrum/graphs/algorithms/triangulations/triangulation.h>
 
-%include <agrum/multidim/multiDimInterface.h>
-%import <agrum/multidim/multiDimAdressable.h>
-%include <agrum/multidim/instantiation.h>
-%include <agrum/multidim/multiDimContainer.h>
-%include <agrum/multidim/multiDimDecorator.h>
-%include <agrum/multidim/multiDimImplementation.h>
-%include <agrum/multidim/multiDimWithOffset.h>
-%import <agrum/multidim/multiDimReadOnly.h>
+%import <agrum/multidim/implementations/multiDimInterface.h>
+%import <agrum/multidim/implementations/multiDimAdressable.h>
+%import <agrum/multidim/implementations/multiDimContainer.h>
+%import <agrum/multidim/implementations/multiDimDecorator.h>
+%import <agrum/multidim/implementations/multiDimImplementation.h>
+%import <agrum/multidim/implementations/multiDimWithOffset.h>
+%import <agrum/multidim/implementations/multiDimReadOnly.h>
+%import <agrum/multidim/implementations/multiDimArray.h>
+
 %include <agrum/multidim/ICIModels/multiDimNoisyORCompound.h>
 %include <agrum/multidim/ICIModels/multiDimNoisyAND.h>
+
+%include <agrum/multidim/instantiation.h>
 %include <agrum/multidim/potential.h>
-%include <agrum/multidim/utilityTable.h>
-%include <agrum/multidim/multiDimArray.h>
 
 %import <agrum/core/refPtr.h>
 %include <agrum/core/list.h>
@@ -363,7 +285,6 @@ ADD_APPROXIMATIONSCHEME_API(gum::learning::genericBNLearner,gum::learning::BNLea
 %template ( MultiDimArray_double ) gum::MultiDimArray<double>;
 
 %template ( Potential_double ) gum::Potential<double>;
-%template ( UtilityTable_double ) gum::UtilityTable<double>;
 
 %template (IBayesNet_double ) gum::IBayesNet<double>;
 %template ( BayesNet_double ) gum::BayesNet<double>;

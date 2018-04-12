@@ -28,8 +28,8 @@
 // ==========================================================================
 #include <agrum/core/timer.h>
 // ==========================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
-#include <agrum/multidim/multiDimFunctionGraphGenerator.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraphGenerator.h>
 #include <agrum/multidim/potential.h>
 // ==========================================================================
 #include <agrum/variables/labelizedVariable.h>

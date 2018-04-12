@@ -46,11 +46,11 @@ namespace gum {
       NodeId c = __src_bn_max.add(var);
 
       if (a != b || a != c /*|| b != c*/)
-        GUM_ERROR(OperationNotAllowed,
-                  "addNode : not the same id over all networks : " << a << ", "
-                                                                   << b
-                                                                   << ", "
-                                                                   << c);
+        GUM_ERROR(
+          OperationNotAllowed,
+          "addNodeWithId : not the same id over all networks : " << a << ", " << b
+                                                                 << ", "
+                                                                 << c);
 
       return a;
     }
@@ -581,7 +581,7 @@ namespace gum {
           else if (den == 0 || beta == 1)
             epsilon = GUM_SCALAR(1.0);
           else
-            epsilon = GUM_SCALAR(std::pow(beta, std::log(den + 1)));
+            epsilon = GUM_SCALAR(std::pow(beta, std::log1p(den)));
 
           epsi_moy += epsilon;
           epsi_den += 1;
@@ -1113,10 +1113,10 @@ namespace gum {
       }  // end of : for each original variable
 
       for (auto node : __current_bn->nodes()) {
-        NodeSet parents = __current_bn->dag().parents(node);
+        NodeSet parents = __current_bn->parents(node);
 
         if (!parents.empty()) {
-          for (auto par : __current_bn->dag().parents(node)) {
+          for (auto par : __current_bn->parents(node)) {
             for (Size parent_bit = 0, spbits = Size(__var_bits[par].size());
                  parent_bit < spbits;
                  parent_bit++)
@@ -1586,12 +1586,9 @@ namespace gum {
       dest.beginTopologyTransformation();
 
       for (auto node : __current_bn->nodes()) {
-        for (auto parent_idIt = __current_bn->cpt(node).begin(),
-                  theEnd2 = __current_bn->cpt(node).end();
-             parent_idIt != theEnd2;
-             ++parent_idIt) {
-          if (__current_bn->nodeId(**parent_idIt) != node)
-            dest.addArc(__current_bn->nodeId(**parent_idIt), node);
+        for (auto parent_idIt : __current_bn->cpt(node).variablesSequence()) {
+          if (__current_bn->nodeId(*parent_idIt) != node)
+            dest.addArc(__current_bn->nodeId(*parent_idIt), node);
         }  // end of : for each parent in order of appearence
       }    // end of : for each variable
 

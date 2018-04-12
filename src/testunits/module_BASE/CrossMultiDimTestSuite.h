@@ -23,8 +23,8 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/multidim/aggregators/min.h>
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimSparse.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimSparse.h>
 #include <agrum/variables/rangeVariable.h>
 
 namespace gum_tests {

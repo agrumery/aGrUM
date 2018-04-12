@@ -428,7 +428,6 @@ namespace gum {
                          // 15)
               std::string var_name = _workingSet[threadId]->variable(i).name();
               auto        delim = var_name.find_first_of("_");
-              std::string time_step = var_name.substr(delim + 1, var_name.size());
               var_name = var_name.substr(0, delim);
 
               if (!_l_modal[threadId].exists(var_name)) continue;
@@ -465,7 +464,6 @@ namespace gum {
                i++) {  // long instead of Idx due to omp for visual C++15
             std::string var_name = _workingSet[threadId]->variable(i).name();
             auto        delim = var_name.find_first_of("_");
-            std::string time_step = var_name.substr(delim + 1, var_name.size());
             var_name = var_name.substr(0, delim);
 
             if (!_l_modal[threadId].exists(var_name)) continue;

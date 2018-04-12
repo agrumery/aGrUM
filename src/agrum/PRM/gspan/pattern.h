@@ -93,7 +93,7 @@ namespace gum {
          * @brief Insert a node with the given LabelData.
          * @returns The id assigned to the inserted node.
          */
-        NodeId addNode(LabelData& l);
+        NodeId addNodeWithLabel(LabelData& l);
 
         /// Returns the LabelData assigned to node.
         LabelData& label(NodeId node);

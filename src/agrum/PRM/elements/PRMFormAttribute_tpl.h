@@ -51,7 +51,6 @@ namespace gum {
       __formulas->add(__type->variable());
       this->_safeName =
         PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
-      this->__type->variable().setName(this->name());
     }
 
     template < typename GUM_SCALAR >
@@ -82,7 +81,7 @@ namespace gum {
       }
 
       Instantiation inst(*(copy->__formulas)), jnst(*__formulas);
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         copy->__formulas->set(inst, __formulas->get(jnst));
       }
@@ -109,7 +108,7 @@ namespace gum {
 
         Instantiation inst(__formulas), jnst(src.__formulas);
 
-        for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+        for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
              inst.inc(), jnst.inc()) {
           __formulas->set(inst, src.__formulas->get(jnst));
         }
@@ -120,7 +119,7 @@ namespace gum {
 
         Instantiation inst(__formulas), jnst(source.cpf());
 
-        for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+        for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
              inst.inc(), jnst.inc()) {
 
           auto val = std::to_string(source.cpf().get(jnst));
@@ -297,7 +296,7 @@ namespace gum {
         Instantiation inst(__formulas);
         Instantiation jnst(__cpf);
 
-        for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+        for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
              inst.inc(), jnst.inc()) {
 
           // With CPT defined using rules, empty values can appear
@@ -344,11 +343,11 @@ namespace gum {
     PRMFormAttribute< GUM_SCALAR >::swap(const PRMType< GUM_SCALAR >& old_type,
                                          const PRMType< GUM_SCALAR >& new_type) {
       if (&(old_type) == __type) {
-        GUM_ERROR(OperationNotAllowed, "Cannot swap attribute own type");
+        GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
       }
       if (old_type->domainSize() != new_type->domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot swap types with difference domain size");
+                  "Cannot replace types with difference domain size");
       }
       if (!__formulas->contains(old_type.variable())) {
         GUM_ERROR(NotFound, "could not find variable " + old_type.name());
@@ -368,7 +367,7 @@ namespace gum {
 
       Instantiation inst(__formulas), jnst(old);
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __formulas->set(inst, old->get(jnst));
       }
@@ -396,7 +395,7 @@ namespace gum {
 
       if (__type->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot swap types with difference domain size");
+                  "Cannot replace types with difference domain size");
       }
       auto old = __formulas;
 
@@ -412,7 +411,7 @@ namespace gum {
 
       Instantiation inst(__formulas), jnst(old);
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __formulas->set(inst, old->get(jnst));
       }

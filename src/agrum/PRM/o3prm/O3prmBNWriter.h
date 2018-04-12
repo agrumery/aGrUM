@@ -78,7 +78,8 @@ namespace gum {
      * @param bn The bayes net writen in the stream.
      * @throws IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::ostream& output, const IBayesNet< GUM_SCALAR >& bn);
+    virtual void write(std::ostream&                  output,
+                       const IBayesNet< GUM_SCALAR >& bn) final;
 
     /**
      * Writes an bayes net in the file referenced by filePath.
@@ -89,7 +90,8 @@ namespace gum {
      * @param bn The bayes net written in the file.
      * @throw IOError Raised if an I/O error occurs.
      */
-    virtual void write(std::string filePath, const IBayesNet< GUM_SCALAR >& bn);
+    virtual void write(const std::string&             filePath,
+                       const IBayesNet< GUM_SCALAR >& bn) final;
 
     private:
     std::string __extractAttribute(const IBayesNet< GUM_SCALAR >& bn, NodeId node);

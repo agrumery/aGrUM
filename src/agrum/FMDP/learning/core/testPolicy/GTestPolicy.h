@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the GTestPolicy
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_G_TEST_POLICY_H

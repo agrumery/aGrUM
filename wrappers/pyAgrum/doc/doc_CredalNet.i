@@ -42,7 +42,7 @@ gum.DuplicateElement
 	If one of the arc already exists
 "
 
-%feature("docstring") gum::credal::CredalNet::addNode
+%feature("docstring") gum::credal::CredalNet::addNodeWithId
 "
 Adds a discrete node into the network.
 

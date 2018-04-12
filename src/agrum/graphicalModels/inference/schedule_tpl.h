@@ -331,7 +331,7 @@ namespace gum {
 
   /// returns a DAG indicating in which order the operations can be performed
   template < typename GUM_SCALAR >
-  INLINE const DAG& Schedule< GUM_SCALAR >::dag() const {
+  INLINE const DAG& Schedule< GUM_SCALAR >::scheduling_dag() const {
     // first update the set of parents of the nodes of the graph whose parents
     // were not set correctly
     __updateWrongParents();

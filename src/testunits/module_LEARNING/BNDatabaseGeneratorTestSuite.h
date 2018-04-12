@@ -114,8 +114,6 @@ namespace gum_tests {
       std::vector< std::string > badOrder2 = {"A", "E", "O", "R", "A", "S", "T"};
       std::vector< gum::Idx >    badOrder3 = {1, 0, 3, 5, 4};
       std::vector< std::string > badOrder4 = {"A", "O", "R", "S", "T"};
-      std::vector< gum::Idx >    badOrder5 = {1, 0, 3, 6, 5, 4};
-      std::vector< std::string > badOrder6 = {"A", "O", "R", "S", "T", "X"};
 
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->setVarOrder(goodOrder1));
       auto varOrderNames = dbgen->varOrderNames();
@@ -172,6 +170,7 @@ namespace gum_tests {
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(
         dbgen = new gum::learning::BNDatabaseGenerator< double >(*bn));
+
       TS_ASSERT_THROWS(dbgen->database(), gum::OperationNotAllowed);
       TS_GUM_ASSERT_THROWS_NOTHING(dbgen->drawSamples(nbSamples));
       std::vector< std::vector< gum::Idx > > database;
@@ -210,6 +209,7 @@ namespace gum_tests {
         TS_ASSERT_LESS_THAN(row.at(4), domSizeO);
         TS_ASSERT_LESS_THAN(row.at(5), domSizeA);
       }
+      delete dbgen;
     }
 
     void testDrawSamplesLog2likelihood() {
@@ -217,7 +217,7 @@ namespace gum_tests {
       gum::Size nbSamples2 = nbSamples1 * 100;
       gum::Size nbSamples3 = nbSamples1 * 1000;
 
-      double ll_1, ll_2, ll_3;
+      double ll_1 = 0, ll_2 = 0, ll_3 = 0;
       double tolerance = 0.1;
 
       gum::learning::BNDatabaseGenerator< double >* dbgen = nullptr;
@@ -243,6 +243,8 @@ namespace gum_tests {
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples1 / ll_1), tolerance);
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples2 / ll_2), tolerance);
       TS_ASSERT_LESS_THAN(std::abs(1 + entropy * nbSamples3 / ll_3), tolerance);
+
+      delete (dbgen);
     }
 
     void testToCSV_1() {
@@ -318,6 +320,8 @@ namespace gum_tests {
         TS_ASSERT_DIFFERS(std::find(domT.begin(), domT.end(), valT), domT.end());
       }
       csvFile.close();
+
+      delete (dbgen);
     }
 
     void testToCSV_2() {
@@ -394,6 +398,8 @@ namespace gum_tests {
         break;
       }
       csvFile.close();
+
+      delete (dbgen);
     }
 
     void testToDatabaseVectInRam() {
@@ -490,6 +496,8 @@ namespace gum_tests {
         TS_ASSERT_LESS_THAN(row[5].getReal(), domSizeO);
         handler.nextRow();
       }
+
+      delete (dbgen);
     }
 
     void testListenToDrawSamples() {

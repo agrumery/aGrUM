@@ -126,16 +126,16 @@ namespace gum {
     * "use
     * of p and q" )
     */
-    MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
-                                       Size                   maxInducedWidth = 3,
-                                       Idx                    iteration = 5000,
-                                       Idx                    p = 30,
-                                       Idx                    q = 40);
+    explicit MaxInducedWidthMCBayesNetGenerator(BayesNet< GUM_SCALAR > bayesNet,
+                                                Size maxInducedWidth = 3,
+                                                Idx  iteration = 5000,
+                                                Idx  p = 30,
+                                                Idx  q = 40);
 
     /**
      * Destructor.
      */
-    ~MaxInducedWidthMCBayesNetGenerator();
+    ~MaxInducedWidthMCBayesNetGenerator() final;
 
     /// @}
 
@@ -169,7 +169,7 @@ namespace gum {
      * @return boolean state that verify the conditions
      */
 
-    virtual bool __checkConditions();
+    bool __checkConditions() final;
   };
 
 

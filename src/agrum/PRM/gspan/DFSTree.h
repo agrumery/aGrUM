@@ -90,7 +90,7 @@ namespace gum {
 
         struct PatternData {
           /// Constructor.
-          PatternData(Pattern* p);
+          explicit PatternData(Pattern* p);
           /// Copy constructor.
           PatternData(const PatternData& from);
           /// Destructor.
@@ -242,7 +242,7 @@ namespace gum {
 
         struct NeighborDegreeSort {
           /// Constructor
-          NeighborDegreeSort(UndiGraph& graph);
+          explicit NeighborDegreeSort(UndiGraph& graph);
           /// Copy constructor.
           NeighborDegreeSort(const NeighborDegreeSort& source);
           /// Destructor.

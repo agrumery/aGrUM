@@ -34,7 +34,7 @@
 #include <agrum/core/set.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/scheduleOperation.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <agrum/variables/discreteVariable.h>
 
 namespace gum {

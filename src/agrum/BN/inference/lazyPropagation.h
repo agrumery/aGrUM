@@ -74,14 +74,22 @@ namespace gum {
     /// @{
 
     /// default constructor
-    LazyPropagation(const IBayesNet< GUM_SCALAR >* BN,
-                    RelevantPotentialsFinderType =
-                      RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
-                    FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES,
-                    bool use_binary_join_tree = true);
+    explicit LazyPropagation(
+      const IBayesNet< GUM_SCALAR >* BN,
+      RelevantPotentialsFinderType =
+        RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
+      FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES,
+      bool use_binary_join_tree = true);
+
+    /// avoid copy constructors
+    LazyPropagation(const LazyPropagation< GUM_SCALAR >&) = delete;
+
+    /// avoid copy operators
+    LazyPropagation< GUM_SCALAR >&
+    operator=(const LazyPropagation< GUM_SCALAR >&) = delete;
 
     /// destructor
-    virtual ~LazyPropagation();
+    ~LazyPropagation() final;
 
     /// @}
 
@@ -127,20 +135,20 @@ namespace gum {
      **/
     const JunctionTree* junctionTree();
     /// returns the probability of evidence
-    GUM_SCALAR evidenceProbability();
+    GUM_SCALAR evidenceProbability() final;
 
     /// @}
 
 
     protected:
     /// fired after a new evidence is inserted
-    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence);
+    void _onEvidenceAdded(NodeId id, bool isHardEvidence) final;
 
     /// fired before an evidence is removed
-    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence);
+    void _onEvidenceErased(NodeId id, bool isHardEvidence) final;
 
     /// fired before all the evidence are erased
-    virtual void _onAllEvidenceErased(bool contains_hard_evidence);
+    void _onAllEvidenceErased(bool has_hard_evidence) final;
 
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
@@ -149,64 +157,64 @@ namespace gum {
      * @param hasChangedSoftHard true if the evidence has changed from Soft to
      * Hard or from Hard to Soft
      */
-    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard);
+    void _onEvidenceChanged(NodeId id, bool hasChangedSoftHard) final;
 
     /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded(const NodeId id);
+    void _onMarginalTargetAdded(NodeId id) final;
 
     /// fired before a single target is removed
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased(const NodeId id);
+    void _onMarginalTargetErased(NodeId id) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetAdded(const NodeSet& set);
+    void _onJointTargetAdded(const NodeSet& set) final;
 
     /// fired before a joint target is removed
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetErased(const NodeSet& set);
+    void _onJointTargetErased(const NodeSet& set) final;
 
     /// fired after all the nodes of the BN are added as single targets
-    virtual void _onAllMarginalTargetsAdded();
+    void _onAllMarginalTargetsAdded() final;
 
     /// fired before a all the single targets are removed
-    virtual void _onAllMarginalTargetsErased();
+    void _onAllMarginalTargetsErased() final;
 
     /// fired before a all the joint targets are removed
-    virtual void _onAllJointTargetsErased();
+    void _onAllJointTargetsErased() final;
 
     /// fired before a all single and joint_targets are removed
-    virtual void _onAllTargetsErased();
+    void _onAllTargetsErased() final;
 
     /// fired when the stage is changed
-    virtual void _onStateChanged(){};
+    void _onStateChanged() final{};
 
     /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _updateOutdatedBNStructure and
      * _makeInference. */
-    virtual void _updateOutdatedBNStructure();
+    void _updateOutdatedBNStructure() final;
 
     /// prepares inference when the latter is in OutdatedBNPotentials state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _updateOutdatedBNPotentials and
      * _makeInference. */
-    virtual void _updateOutdatedBNPotentials();
+    void _updateOutdatedBNPotentials() final;
 
     /// called when the inference has to be performed effectively
     /** Once the inference is done, _fillPosterior can be called. */
-    virtual void _makeInference();
+    void _makeInference() final;
 
 
     /// returns the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential< GUM_SCALAR >& _posterior(const NodeId id);
+    const Potential< GUM_SCALAR >& _posterior(NodeId id) final;
 
     /// returns the posterior of a declared target set
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    virtual const Potential< GUM_SCALAR >& _jointPosterior(const NodeSet& set);
+    const Potential< GUM_SCALAR >& _jointPosterior(const NodeSet& set) final;
 
     /** @brief asks derived classes for the joint posterior of a set of
      * variables not declared as a joint target
@@ -215,15 +223,15 @@ namespace gum {
      * posterior is looked for.
      * @param declared_target the joint target declared by the user that contains
      * set */
-    virtual const Potential< GUM_SCALAR >&
-    _jointPosterior(const NodeSet& wanted_target, const NodeSet& declared_target);
+    const Potential< GUM_SCALAR >&
+    _jointPosterior(const NodeSet& wanted_target,
+                    const NodeSet& declared_target) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential< GUM_SCALAR >* _unnormalizedJointPosterior(const NodeId id);
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential< GUM_SCALAR >*
-    _unnormalizedJointPosterior(const NodeSet& set);
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior(const NodeSet& set) final;
 
 
     private:
@@ -382,9 +390,9 @@ namespace gum {
       const Potential< GUM_SCALAR >&, const Potential< GUM_SCALAR >&));
 
     /// invalidate all the messages sent from a given clique
-    void __diffuseMessageInvalidations(const NodeId from,
-                                       const NodeId to,
-                                       NodeSet&     cliques_invalidated);
+    void __diffuseMessageInvalidations(NodeId   from_id,
+                                       NodeId   to_id,
+                                       NodeSet& invalidated_cliques);
 
     /// invalidate all messages, posteriors and created potentials
     void __invalidateAllMessages();
@@ -434,16 +442,10 @@ namespace gum {
                                     Set< const DiscreteVariable* >& kept_vars);
 
     /// creates the message sent by clique from_id to clique to_id
-    void __produceMessage(const NodeId from_id, const NodeId to_id);
+    void __produceMessage(NodeId from_id, NodeId to_id);
 
     /// actually perform the collect phase
-    void __collectMessage(const NodeId id, const NodeId from);
-
-    /// avoid copy constructors
-    LazyPropagation(const LazyPropagation< GUM_SCALAR >&);
-
-    /// avoid copy operators
-    LazyPropagation< GUM_SCALAR >& operator=(const LazyPropagation< GUM_SCALAR >&);
+    void __collectMessage(NodeId id, NodeId from);
   };
 
 

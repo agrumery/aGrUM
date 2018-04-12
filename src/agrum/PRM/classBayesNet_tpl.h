@@ -31,13 +31,13 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     void ClassBayesNet< GUM_SCALAR >::__init(const PRMClass< GUM_SCALAR >& c) {
-      for (const auto node : c.dag().nodes()) {
+      for (const auto node : c.containerDag().nodes()) {
         try {
           // Adding the attribute
           if (PRMClassElement< GUM_SCALAR >::isAttribute(c.get(node)) ||
               PRMClassElement< GUM_SCALAR >::isAggregate(c.get(node))) {
             const PRMClassElement< GUM_SCALAR >& elt = c.get(node);
-            this->_dag.addNode(elt.id());
+            this->_dag.addNodeWithId(elt.id());
             this->__varNodeMap.insert(&(elt.type().variable()), &elt);
           }
         } catch (NotFound&) {
@@ -45,7 +45,7 @@ namespace gum {
         }
       }
 
-      for (const auto& arc : c.dag().arcs()) {
+      for (const auto& arc : c.containerDag().arcs()) {
         try {
           this->_dag.addArc(arc.tail(), arc.head());
         } catch (InvalidNode&) {
@@ -164,12 +164,12 @@ namespace gum {
       output << __class->name() << "\" {" << std::endl;
 
       for (const auto node : this->nodes()) {
-        if (this->dag().children(node).size() > 0)
-          for (const auto chi : this->dag().children(node)) {
+        if (this->children(node).size() > 0)
+          for (const auto chi : this->children(node)) {
             output << tab << "\"" << variable(node).name() << "\" -> ";
             output << "\"" << variable(chi).name() << "\";" << std::endl;
           }
-        else if (this->dag().parents(node).size() == 0) {
+        else if (this->parents(node).size() == 0) {
           output << tab << "\"" << variable(node).name() << "\";" << std::endl;
         }
       }

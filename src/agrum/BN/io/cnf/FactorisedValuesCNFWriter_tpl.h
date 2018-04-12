@@ -146,7 +146,7 @@ namespace gum {
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR, template < class > class IApproximationPolicy >
   INLINE void FactorisedValuesCNFWriter< GUM_SCALAR, IApproximationPolicy >::write(
-    std::string filePath, const IBayesNet< GUM_SCALAR >& bn) {
+    const std::string& filePath, const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
     std::ofstream outputvar((filePath + ".var").c_str(), std::ios_base::trunc);
 
@@ -282,4 +282,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

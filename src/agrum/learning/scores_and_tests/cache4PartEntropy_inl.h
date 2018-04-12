@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a cache for caching partial entropy in PartEntropy class
+ * @brief a cache for caching partial entropy in 3off2
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */
@@ -71,46 +71,46 @@ namespace gum {
     /// insert a new score into the cache
     INLINE void Cache4PartEntropy::insert(const std::vector< Idx >& var_set,
                                           double                    score) {
-      std::vector<Idx> var_set2 = var_set;
-      std::sort( var_set2.begin(), var_set2.end() );
-      __scores.insert( var_set2, std::move( score ) );
+      std::vector< Idx > var_set2 = var_set;
+      std::sort(var_set2.begin(), var_set2.end());
+      __scores.insert(var_set2, std::move(score));
     }
 
     /// insert a new score into the cache
     template < typename Alloc >
     INLINE void Cache4PartEntropy::insert(const std::vector< Idx >& var_set,
                                           double                    score) {
-        std::vector<Idx> var_set2 = var_set;
-        std::sort( var_set2.begin(), var_set2.end() );
-      __scores.insert( var_set2, std::move( score ) );
+      std::vector< Idx > var_set2 = var_set;
+      std::sort(var_set2.begin(), var_set2.end());
+      __scores.insert(var_set2, std::move(score));
     }
 
     /// removes a score (if it exists)
     INLINE void Cache4PartEntropy::erase(const std::vector< Idx >& var_set) {
-        std::vector<Idx> var_set2 = var_set;
-        std::sort( var_set2.begin(), var_set2.end() );
-      __scores.erase( var_set2 );
+      std::vector< Idx > var_set2 = var_set;
+      std::sort(var_set2.begin(), var_set2.end());
+      __scores.erase(var_set2);
     }
 
     /// removes a score (if it exists)
     template < typename Alloc >
     INLINE void Cache4PartEntropy::erase(const std::vector< Idx >& var_set) {
-        std::vector<Idx> var_set2 = var_set;
-        std::sort( var_set2.begin(), var_set2.end() );
-      __scores.erase( var_set2 );
+      std::vector< Idx > var_set2 = var_set;
+      std::sort(var_set2.begin(), var_set2.end());
+      __scores.erase(var_set2);
     }
 
     /// indicates whether a given score exists
     INLINE bool Cache4PartEntropy::exists(const std::vector< Idx >& var_set) {
-        std::vector<Idx> var_set2 = var_set;
-        std::sort( var_set2.begin(), var_set2.end() );
-      return __scores.exists( var_set2 );
+      std::vector< Idx > var_set2 = var_set;
+      std::sort(var_set2.begin(), var_set2.end());
+      return __scores.exists(var_set2);
     }
 
     /// returns a given score
     INLINE double Cache4PartEntropy::score(const std::vector< Idx >& var_set) {
-        std::vector<Idx> var_set2 = var_set;
-        std::sort( var_set2.begin(), var_set2.end() );
+      std::vector< Idx > var_set2 = var_set;
+      std::sort(var_set2.begin(), var_set2.end());
       return __scores[var_set2];
     }
 

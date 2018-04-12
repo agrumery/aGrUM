@@ -1,6 +1,7 @@
-%define ADD_IDS_METHOD_TO_GRAPHCLASS(classname)
+%define ADD_CST_NODES_METHOD_TO_GRAPHCLASS(classname)
 %extend classname {
-  PyObject *ids() {
+  PyObject *nodes() const {
+    return PyAgrumHelper::PySetFromNodeSet(self->nodes());
     PyObject* q=PyList_New(0);
 
     for ( auto node : self->nodes()) {
@@ -11,60 +12,76 @@
   };
 };
 %enddef
-ADD_IDS_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
-ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
 
-%extend gum::DiGraph {
-  PyObject *arcs() { // add for the sub-classes (including MixedGraph)
-    PyObject* q=PyList_New(0);
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
+%ignore gum::EssentialGraph::nodes const;
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
+%ignore gum::MarkovBlanket::nodes const;
+ADD_CST_NODES_METHOD_TO_GRAPHCLASS(gum::IBayesNet);
 
-    for ( auto arc : self->arcs()) {
-      PyList_Append(q,Py_BuildValue("(i,i)", arc.tail(), arc.head()));
-    }
-
-    return q;
-  };
-  PyObject *parents(gum::NodeId id) {
+%define ADD_NODES_METHOD_TO_GRAPHCLASS(classname)
+%ignore classname::addNodes(gum::Size n);
+%extend classname {
+  PyObject *addNodes(gum::Size n) const {
     PyObject* q=PySet_New(0);
 
-    for ( auto node : self->parents(id)) {
-      PySet_Add(q,PyInt_FromLong(node));
-    }
-
-    return q;
-  };
-  PyObject *children(gum::NodeId id) {
-    PyObject* q=PySet_New(0);
-
-    for ( auto node : self->children(id)) {
-      PySet_Add(q,PyInt_FromLong(node));
-    }
+    for(auto node : const_cast<classname *>(self)->addNodes(n)) {
+          PySet_Add(q,PyInt_FromLong(node));
+        }
 
     return q;
   };
 };
+%enddef
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DiGraph);
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::MixedGraph);
+ADD_NODES_METHOD_TO_GRAPHCLASS(gum::DAG);
 
-%extend gum::UndiGraph {
+%define ADD_DI_METHOD_TO_GRAPHCLASS(classname)
+%extend classname {
+  PyObject *arcs() const { // add for the sub-classes (including MixedGraph)
+    return PyAgrumHelper::PySetFromArcSet(self->arcs());
+  };
+  PyObject *parents(gum::NodeId id) {
+    return PyAgrumHelper::PySetFromNodeSet(self->parents(id));
+  };
+  PyObject *children(gum::NodeId id) {
+    return PyAgrumHelper::PySetFromNodeSet(self->children(id));
+  };
+};
+%enddef
+ADD_DI_METHOD_TO_GRAPHCLASS(gum::DiGraph); // add for the sub-classes (including MixedGraph)
+ADD_DI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
+%ignore gum::EssentialGraph::arcs const;
+%ignore gum::EssentialGraph::parents const;
+%ignore gum::EssentialGraph::children const;
+ADD_DI_METHOD_TO_GRAPHCLASS(gum::MarkovBlanket);
+%ignore gum::MarkovBlanket::arcs const;
+%ignore gum::MarkovBlanket::parents const;
+%ignore gum::MarkovBlanket::children const;
+ADD_DI_METHOD_TO_GRAPHCLASS(gum::IBayesNet<double>);
+%ignore gum::IBayesNet<double>::arcs const;
+%ignore gum::IBayesNet<double>::parents const;
+%ignore gum::IBayesNet<double>::children const;
+
+%define ADD_UNDI_METHOD_TO_GRAPHCLASS(classname)
+%extend classname {
   PyObject *edges() { // add for the sub-classes (including MixedGraph)
-    PyObject* q=PyList_New(0);
-
-    for ( auto edge :  self->edges()) {
-      PyList_Append(q,Py_BuildValue("(i,i)", edge.first(), edge.second()));
-    }
-
-    return q;
+    return PyAgrumHelper::PySetFromEdgeSet(self->edges());
   };
 
   PyObject *neighbours(gum::NodeId id) {
-    PyObject* q=PySet_New(0);
-
-    for ( auto node : self->neighbours(id)) {
-      PySet_Add(q,PyInt_FromLong(node));
-    }
-
-    return q;
+    return PyAgrumHelper::PySetFromNodeSet(self->neighbours(id));
   };
 };
+%enddef
+ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::UndiGraph); // add for the sub-classes (including MixedGraph)
+ADD_UNDI_METHOD_TO_GRAPHCLASS(gum::EssentialGraph);
+%ignore gum::EssentialGraph::edges const;
+%ignore gum::EssentialGraph::neighbours const;
 
 
 %extend gum::CliqueGraph {
@@ -85,7 +102,7 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
       ----------
       bn : pyAgrum.BayesNet
       a Bayesian network
-  
+
       Returns
       -------
       str
@@ -99,9 +116,8 @@ ADD_IDS_METHOD_TO_GRAPHCLASS(gum::UndiGraph);
       return m.sub(nameFromId,self.toDot())
     }
 };
-
 %ignore gum::CliqueGraph::clique;
-%ignore gum::CliqueGraph::addNode;
+%ignore gum::CliqueGraph::addNodeWithId;
 %ignore gum::CliqueGraph::addEdge(const gum::NodeId,const gum::NodeId);
 
 %include "extensions/JTGenerator.h"

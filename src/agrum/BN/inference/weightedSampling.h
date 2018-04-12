@@ -51,16 +51,16 @@ namespace gum {
     /**
      * Default constructor
      */
-    WeightedSampling(const IBayesNet< GUM_SCALAR >* bn);
+    explicit WeightedSampling(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
      * Destructor
      */
-    virtual ~WeightedSampling();
+    ~WeightedSampling() override;
 
     protected:
     /// draws a defined number of samples without updating the estimators
-    virtual Instantiation _burnIn();
+    Instantiation _burnIn() override;
 
     /// draws a sample according to Weighted sampling
     /**
@@ -74,7 +74,7 @@ namespace gum {
     * The sample weight is the product of each node's weight.
     *
     */
-    virtual Instantiation _draw(float* w, Instantiation prev);
+    Instantiation _draw(float* w, Instantiation prev) override;
   };
 
   extern template class WeightedSampling< float >;

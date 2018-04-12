@@ -479,14 +479,12 @@ namespace gum {
             class_factory.completeAggregates();
             class_factory.completeAttributes();
             system_factory.build();
-          } catch (Exception&) {
-
+          } catch (Exception& e) {
             if (__errors.count() == 0) {
               __errors.addException("an unknown error occured", file);
             }
             // GUM_TRACE_NEWLINE;
             // GUM_SHOWERROR( e );
-
           } catch (...) {
             __errors.addException("an unknown exception occured", file);
           }

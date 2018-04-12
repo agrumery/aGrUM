@@ -20,7 +20,7 @@
 /** @file
  * @brief A pack of learning algorithms that can easily be used
  *
- * The pack currently contains K2, GreedyHillClimbing and
+ * The pack currently contains K2, GreedyHillClimbing, miic, 3off2 and
  *LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -429,6 +429,7 @@ namespace gum {
         , __constraint_MandatoryArcs(from.__constraint_MandatoryArcs)
         , __selected_algo(from.__selected_algo)
         , __K2(from.__K2)
+        , __miic_3off2(from.__miic_3off2)
         , __greedy_hill_climbing(from.__greedy_hill_climbing)
         , __local_search_with_tabu_list(from.__local_search_with_tabu_list)
         , __score_database(from.__score_database)
@@ -452,6 +453,7 @@ namespace gum {
         , __constraint_MandatoryArcs(std::move(from.__constraint_MandatoryArcs))
         , __selected_algo(from.__selected_algo)
         , __K2(std::move(from.__K2))
+        , __miic_3off2(std::move(from.__miic_3off2))
         , __greedy_hill_climbing(std::move(from.__greedy_hill_climbing))
         , __local_search_with_tabu_list(
             std::move(from.__local_search_with_tabu_list))
@@ -516,6 +518,7 @@ namespace gum {
         __constraint_MandatoryArcs = from.__constraint_MandatoryArcs;
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
+        __miic_3off2 = from.__miic_3off2;
         __greedy_hill_climbing = from.__greedy_hill_climbing;
         __local_search_with_tabu_list = from.__local_search_with_tabu_list;
         __score_database = from.__score_database;
@@ -567,6 +570,7 @@ namespace gum {
         __constraint_MandatoryArcs = std::move(from.__constraint_MandatoryArcs);
         __selected_algo = from.__selected_algo;
         __K2 = from.__K2;
+        __miic_3off2 = std::move(from.__miic_3off2);
         __greedy_hill_climbing = std::move(from.__greedy_hill_climbing);
         __local_search_with_tabu_list =
           std::move(from.__local_search_with_tabu_list);
@@ -753,45 +757,45 @@ namespace gum {
       if (old_estimator != nullptr) delete old_estimator;
     }
 
-    MixedGraph genericBNLearner::learnMixedStructure() {
-      if (__selected_algo != AlgoType::THREE_OFF_TWO) {
-        GUM_ERROR(OperationNotAllowed, "Must be using the 3off2 algorithm");
-      }
-      BNLearnerListener listener(this, __3off2);
-      // create the mixedGraph_constraint_MandatoryArcs.arcs();
+    /// prepares the initial graph for 3off2 or miic
+    MixedGraph genericBNLearner::__prepare_miic_3off2() {
+      // Initialize the mixed graph to the fully connected graph
       MixedGraph mgraph;
-      if (!__initial_dag.empty()) {
-        mgraph.populateNodes(__initial_dag);
-      } else {
-        for (Size i = 0; i < __score_database.modalities().size(); ++i) {
-          mgraph.addNode(i);
+      for (Size i = 0; i < __score_database.modalities().size(); ++i) {
+        mgraph.addNodeWithId(i);
+        for (Size j = 0; j < i; ++j) {
+          mgraph.addEdge(j, i);
         }
       }
-      for (NodeId i : mgraph) {
-        for (NodeId j : mgraph) {
-          if (j < i) {
-            mgraph.addEdge(j, i);
-          }
-        }
-      }
+
+      // translating the constraints for 3off2 or miic
+      HashTable< std::pair< Idx, Idx >, char > initial_marks;
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
       for (const auto& arc : mandatory_arcs) {
-        mgraph.addArc(arc.tail(), arc.head());
-        mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
+        initial_marks.insert({arc.tail(), arc.head()}, '>');
       }
 
       const ArcSet& forbidden_arcs = __constraint_ForbiddenArcs.arcs();
       for (const auto& arc : forbidden_arcs) {
-        mgraph.eraseArc(arc);
-        mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
+        initial_marks.insert({arc.tail(), arc.head()}, '-');
       }
+      __miic_3off2.addConstraints(initial_marks);
       // create the mutual entropy object
       if (__mutual_info == nullptr) {
-        __mutual_info = new CorrectedMutualInformation<>(
-          __score_database.rowFilter(), __score_database.modalities());
-        __mutual_info->useNML();
+        this->useNML();
       }
-      return __3off2.learnMixedStructure(*__mutual_info, mgraph);
+
+      return mgraph;
+    }
+
+    MixedGraph genericBNLearner::learnMixedStructure() {
+      if (__selected_algo != AlgoType::MIIC_THREE_OFF_TWO) {
+        GUM_ERROR(OperationNotAllowed, "Must be using the miic/3off2 algorithm");
+      }
+      BNLearnerListener listener(this, __miic_3off2);
+      // create the mixedGraph_constraint_MandatoryArcs.arcs();
+      MixedGraph mgraph = this->__prepare_miic_3off2();
+      return __miic_3off2.learnMixedStructure(*__mutual_info, mgraph);
     }
 
     DAG genericBNLearner::learnDAG() {
@@ -810,9 +814,9 @@ namespace gum {
       const ArcSet& mandatory_arcs = __constraint_MandatoryArcs.arcs();
 
       for (const auto& arc : mandatory_arcs) {
-        if (!init_graph.exists(arc.tail())) init_graph.addNode(arc.tail());
+        if (!init_graph.exists(arc.tail())) init_graph.addNodeWithId(arc.tail());
 
-        if (!init_graph.exists(arc.head())) init_graph.addNode(arc.head());
+        if (!init_graph.exists(arc.head())) init_graph.addNodeWithId(arc.head());
 
         init_graph.addArc(arc.tail(), arc.head());
       }
@@ -825,39 +829,12 @@ namespace gum {
 
       switch (__selected_algo) {
         // ========================================================================
-        case AlgoType::THREE_OFF_TWO: {
-          BNLearnerListener listener(this, __3off2);
+        case AlgoType::MIIC_THREE_OFF_TWO: {
+          BNLearnerListener listener(this, __miic_3off2);
           // create the mixedGraph
-          MixedGraph mgraph;
-          if (!init_graph.empty()) {
-            mgraph.populateNodes(init_graph);
-          } else {
-            for (Size i = 0; i < __score_database.modalities().size(); ++i) {
-              mgraph.addNode(i);
-            }
-          }
-          for (NodeId i : mgraph) {
-            for (NodeId j : mgraph) {
-              if (j < i) {
-                mgraph.addEdge(j, i);
-              }
-            }
-          }
-          for (const auto& arc : init_graph.arcs()) {
-            mgraph.addArc(arc.tail(), arc.head());
-            mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
-          }
+          MixedGraph mgraph = this->__prepare_miic_3off2();
 
-          for (const auto& arc : forbidden_arcs) {
-            mgraph.eraseArc(arc);
-            mgraph.eraseEdge(Edge(arc.tail(), arc.head()));
-          }
-          // create the mutual entropy object
-          if (__mutual_info == nullptr) {
-            __mutual_info = new CorrectedMutualInformation<>(
-              __score_database.rowFilter(), __score_database.modalities());
-          }
-          return __3off2.learnStructure(*__mutual_info, mgraph);
+          return __miic_3off2.learnStructure(*__mutual_info, mgraph);
         }
         // ========================================================================
         case AlgoType::GREEDY_HILL_CLIMBING: {

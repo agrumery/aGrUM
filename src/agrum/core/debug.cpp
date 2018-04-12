@@ -113,7 +113,7 @@ namespace gum {
       __deletion()[zeKey]++;
     }
 
-    void __dumpObjects(void) {
+    void __dumpObjects() {
       Size   nb_err = 0;
       double total_size = 0.0;
 
@@ -243,7 +243,7 @@ namespace gum {
     // exit())
     void __staticCorrections() {}
 
-    void __atexit(void) {
+    void __atexit() {
       __staticCorrections();
       __dumpObjects();
       __creation().clear();

@@ -24,7 +24,7 @@
  * @author Pierre-Henri WUILLEMIN et Christophe GONZALES
  */
 
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 
 namespace gum {
 
@@ -43,8 +43,7 @@ namespace gum {
     Idx oldVal = __vals[varPos];
     __vals[varPos] = newVal;
 
-    if (__master)
-      __master->changeNotification(*this, __vars[varPos], oldVal, newVal);
+    __masterChangeNotification(varPos, newVal, oldVal);
   }
 
   // modifies the value of a given variable of the sequence (external function)
@@ -116,6 +115,17 @@ namespace gum {
     return *this;
   }
 
+  INLINE Instantiation& Instantiation::chgVal(const std::string& var, Idx newVal) {
+    return chgVal(variable(var), newVal);
+  }
+
+  INLINE Instantiation& Instantiation::chgVal(const std::string& var,
+                                              const std::string& newVal) {
+    const auto& vv = variable(var);
+    Idx         pos = vv.index(newVal);
+    return chgVal(vv, pos);
+  }
+
   // adds a new var to the sequence of vars
   INLINE void Instantiation::add(const DiscreteVariable& v) {
     // if __master : not allowed
@@ -126,7 +136,16 @@ namespace gum {
     // check if the variable already belongs to the tuple of variables
     // of the Instantiation
     if (__vars.exists(&v)) {
-      GUM_ERROR(DuplicateElement, "Var already exists in this instantiation");
+      GUM_ERROR(DuplicateElement,
+                "Var <" << v.name() << "> already exists in this instantiation");
+    }
+
+    for (const auto& vv : __vars) {
+      if (vv->name() == v.name()) {
+        GUM_ERROR(InvalidArgument,
+                  "Var with name <" << v.name()
+                                    << "> already exists in this instantiation");
+      }
     }
 
     // actually add the new dimension
@@ -150,7 +169,7 @@ namespace gum {
   }
 
   // removes everything
-  INLINE void Instantiation::clear(void) {
+  INLINE void Instantiation::clear() {
     if (__master) {
       GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
     }
@@ -174,21 +193,6 @@ namespace gum {
   // returns the index of a var
   INLINE Idx Instantiation::pos(const DiscreteVariable& k) const {
     return __vars.pos(&k);
-  }
-
-  // Default constructor
-  INLINE Instantiation::Instantiation()
-      : __master(0)
-      , __overflow(false) {
-    GUM_CONSTRUCTOR(Instantiation);
-  }
-
-  // destructor
-  INLINE Instantiation::~Instantiation() {
-    GUM_DESTRUCTOR(Instantiation);
-    // unregister the Instantiation from its __master
-
-    if (__master) __master->unregisterSlave(*this);
   }
 
   // returns the number of vars in the sequence
@@ -264,9 +268,7 @@ namespace gum {
 
         if (cpt == p) {
           __overflow = true;
-
-          if (__master) __master->setFirstNotification(*this);
-
+          __masterFirstNotification();
           return;
         } else
           ++cpt;
@@ -276,7 +278,7 @@ namespace gum {
       }
     }
 
-    if (__master) __master->setIncNotification(*this);
+    __masterIncNotification();
   }
 
   // operator --
@@ -301,7 +303,7 @@ namespace gum {
         if (cpt == p) {
           __overflow = true;
 
-          if (__master) __master->setLastNotification(*this);
+          __masterLastNotification();
 
           return;
         } else
@@ -312,7 +314,7 @@ namespace gum {
       }
     }
 
-    if (__master) __master->setDecNotification(*this);
+    __masterDecNotification();
   }
 
   // operator ++
@@ -353,7 +355,7 @@ namespace gum {
     for (Idx p = 0; p < s; ++p)
       __vals[p] = 0;
 
-    if (__master) __master->setFirstNotification(*this);
+    __masterFirstNotification();
   }
 
   // put the (D1-1,D2-1,...) last value in the Instantiation
@@ -364,7 +366,7 @@ namespace gum {
     for (Idx p = 0; p < s; ++p)
       __vals[p] = __vars[p]->domainSize() - 1;
 
-    if (__master) __master->setLastNotification(*this);
+    __masterLastNotification();
   }
 
   // operator ++ limited only to the variables in i
@@ -394,9 +396,9 @@ namespace gum {
           ++i_cpt;
       } else {
         int cpt = pos(v);
-        Idx v = __vals[cpt];
+        Idx iv = __vals[cpt];
 
-        if (v + 1 == __vars[cpt]->domainSize()) {
+        if (iv + 1 == __vars[cpt]->domainSize()) {
           __chgVal(cpt, 0);
 
           if (i_cpt == p) {
@@ -405,7 +407,7 @@ namespace gum {
           } else
             ++i_cpt;
         } else {
-          __chgVal(cpt, v + 1);
+          __chgVal(cpt, iv + 1);
           return;
         }
       }
@@ -432,9 +434,9 @@ namespace gum {
           ++i_cpt;
       } else {
         int cpt = pos(v);
-        Idx v = __vals[cpt];
+        Idx iv = __vals[cpt];
 
-        if (v == 0) {
+        if (iv == 0) {
           __chgVal(cpt, __vars[cpt]->domainSize() - 1);
 
           if (i_cpt == p) {
@@ -443,7 +445,7 @@ namespace gum {
           } else
             ++i_cpt;
         } else {
-          __chgVal(cpt, v - 1);
+          __chgVal(cpt, iv - 1);
           return;
         }
       }
@@ -587,9 +589,9 @@ namespace gum {
         } else
           ++cpt;
       } else {
-        Idx v = __vals[cpt];
+        Idx iv = __vals[cpt];
 
-        if (v + 1 == __vars[cpt]->domainSize()) {
+        if (iv + 1 == __vars[cpt]->domainSize()) {
           __chgVal(cpt, 0);
 
           if (cpt == p) {
@@ -598,7 +600,7 @@ namespace gum {
           } else
             ++cpt;
         } else {
-          __chgVal(cpt, v + 1);
+          __chgVal(cpt, iv + 1);
           return;
         }
       }
@@ -621,9 +623,9 @@ namespace gum {
         } else
           ++cpt;
       } else {
-        Idx v = __vals[cpt];
+        Idx iv = __vals[cpt];
 
-        if (v == 0) {
+        if (iv == 0) {
           __chgVal(cpt, __vars[cpt]->domainSize() - 1);
 
           if (cpt == p) {
@@ -632,7 +634,7 @@ namespace gum {
           } else
             ++cpt;
         } else {
-          __chgVal(cpt, v - 1);
+          __chgVal(cpt, iv - 1);
           return;
         }
       }
@@ -740,17 +742,8 @@ namespace gum {
     return __vars;
   }
 
-  // deassociate the master MultiDimAdressable, if any
-  INLINE bool Instantiation::forgetMaster() {
-    if (__master) {
-      __master->unregisterSlave(*this);
-      __master = 0;
-    }
 
-    return true;
-  }
-
-  // swap 2 vars in the Instantiation
+  // replace 2 vars in the Instantiation
   INLINE void Instantiation::__swap(Idx i, Idx j) {
     if (i == j) return;
 
@@ -766,7 +759,7 @@ namespace gum {
   INLINE
   void
   Instantiation::reorder(const Sequence< const DiscreteVariable* >& original) {
-    if (__master) {
+    if (__master != nullptr) {
       GUM_ERROR(OperationNotAllowed,
                 "Reordering impossible in slave instantiation");
     }
@@ -779,27 +772,19 @@ namespace gum {
   Instantiation::__reorder(const Sequence< const DiscreteVariable* >& original) {
     Idx max = original.size();
     Idx position = 0;
-
     for (Idx i = 0; i < max; ++i) {
       const DiscreteVariable* pv = original.atPos(i);
 
       if (contains(pv)) {
-        GUM_ASSERT(pos(*pv) >= position);  // this var should not be
-        // already placed.
-        __swap(position, pos(*pv));
+        auto p = pos(*pv);
+        GUM_ASSERT(p >= position);  // this var should not be
+                                    // already placed.
+        __swap(position, p);
         position++;
       }
     }
   }
 
-  // force the variables sequence order to be the same as the master one
-  INLINE void Instantiation::synchronizeWithMaster(const MultiDimAdressable* m) {
-    if (m != __master) {
-      GUM_ERROR(OperationNotAllowed, "only master can do this");
-    }
-
-    __reorder(__master->variablesSequence());
-  }
 
   // add new dim by master
   INLINE void Instantiation::addWithMaster(const MultiDimAdressable* m,
@@ -811,35 +796,6 @@ namespace gum {
     __add(v);
   }
 
-  // erase new dim by master
-  INLINE void Instantiation::eraseWithMaster(const MultiDimAdressable* m,
-                                             const DiscreteVariable&   v) {
-    if (m != __master) {
-      GUM_ERROR(OperationNotAllowed, "only master can do this");
-    }
-
-    __erase(v);
-
-    if (__master) __master->setChangeNotification(*this);
-  }
-
-  // tries to register the Instantiation to a MultiDimAdressable
-  INLINE bool Instantiation::actAsSlave(MultiDimAdressable& aMD) {
-    // if __master : not allowed
-    if (__master) {
-      GUM_ERROR(OperationNotAllowed, "in slave Instantiation");
-    }
-
-    __master = &aMD;
-
-    // perform the registration
-    if (aMD.registerSlave(*this)) {
-      return true;
-    } else {
-      __master = 0;
-      return false;
-    }
-  }
 
   // adds a new var to the sequence of vars
   INLINE void Instantiation::__add(const DiscreteVariable& v) {
@@ -860,9 +816,30 @@ namespace gum {
   INLINE bool Instantiation::empty() const { return __vals.empty(); }
 
   // Replace x by y.
-  INLINE void Instantiation::_swap(const DiscreteVariable* x,
-                                   const DiscreteVariable* y) {
+  INLINE void Instantiation::_replace(const DiscreteVariable* x,
+                                      const DiscreteVariable* y) {
     __vars.setAtPos(__vars.pos(x), y);
   }
 
+  /// returns a hashed key for hash tables the keys of which are represented
+  /// by vectors of Idx
+  INLINE Size HashFunc< Instantiation >::
+  operator()(const Instantiation& key) const {
+    Size h = 0;
+    for (const auto& k :
+         key.variablesSequence())  // k are unique only by address (not by name)
+      h += Size(k) * key.val(*k);
+
+    return ((h * HashFuncConst::gold) & this->_hash_mask);
+  }
+
+  INLINE bool Instantiation::operator==(const Instantiation& other) const {
+    if (inOverflow() && other.inOverflow()) return true;
+    if (other.nbrDim() != nbrDim()) return false;
+    for (const auto& k : variablesSequence()) {
+      if (!other.contains(k)) return false;
+      if (val(*k) != other.val(*k)) return false;
+    }
+    return true;
+  }
 } /* namespace gum */

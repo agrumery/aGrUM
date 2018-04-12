@@ -72,7 +72,7 @@ namespace gum {
     INLINE
 
       std::string
-      Forall< GUM_SCALAR >::aggregatorName(void) const {
+      Forall< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "forall[" << __value << "]";
       return ss.str();
@@ -86,4 +86,3 @@ namespace gum {
 
   }  // aggregator
 }  // namespace gum
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

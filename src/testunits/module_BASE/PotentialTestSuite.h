@@ -24,8 +24,8 @@
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/multidim/ICIModels/multiDimLogit.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimArray.h>
 #include <agrum/multidim/potential.h>
 
 namespace gum_tests {
@@ -41,8 +41,10 @@ namespace gum_tests {
       TS_ASSERT(p.empty());
 
       gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
-        c("c", "third var", 5);
+        c("c", "third var", 5), other_a("a", "first var", 2);
       TS_GUM_ASSERT_THROWS_NOTHING(p << a << b << c);
+      TS_ASSERT_THROWS(p << a << a, gum::DuplicateElement);
+      TS_ASSERT_THROWS(p << a << other_a, gum::DuplicateElement);
     }
 
     void testNormalisation() {
@@ -73,7 +75,7 @@ namespace gum_tests {
         i.setFirst();
         TS_ASSERT_EQUALS(p[i], 2.0 / (taille * (taille + 1)));
 
-      } catch (gum::Exception e) {
+      } catch (gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -499,6 +501,7 @@ namespace gum_tests {
       r.fillWith({3, 6, 9, 12, 15, 18, 21, 24, 27});
       TS_ASSERT(pot.reorganize({&b, &c, &a}).extract(I) == r);
     }
+
     void testOperatorEqual() {
       auto a = gum::LabelizedVariable("a", "afoo", 3);
       auto b = gum::LabelizedVariable("b", "bfoo", 3);
@@ -926,7 +929,7 @@ namespace gum_tests {
         TS_ASSERT_DELTA(s0, int(0.3 * NBRITER), DELTA);
         TS_ASSERT_DELTA(s1, int(0.6 * NBRITER), DELTA);
         TS_ASSERT_DELTA(s2, int(0.1 * NBRITER), DELTA);
-      } catch (gum::Exception& e) {
+      } catch (const gum::Exception& e) {
         GUM_SHOWERROR(e);
       }
     }
@@ -943,6 +946,114 @@ namespace gum_tests {
       TS_ASSERT(p.variable(0) != p.variable("w"));
 
       TS_ASSERT_THROWS(p.variable("ZZ"), gum::NotFound);
+    }
+
+    void testFillWithPotentialMethod() {
+      gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
+      gum::LabelizedVariable z("z", "z", 2);
+      gum::LabelizedVariable vv("v", "v", 2), ww("w", "w", 3);
+      gum::LabelizedVariable vvv("v", "v", 3), www("w", "w", 2);
+
+      gum::Potential< int > p;
+      p.add(v);
+      p.add(w);
+
+      gum::Potential< int > pp;
+      pp.add(ww);
+      pp.add(vv);
+
+      TS_ASSERT_EQUALS(p.domainSize(), gum::Size(6));
+      TS_ASSERT_EQUALS(pp.domainSize(), gum::Size(6));
+
+      p.fillWith({1, 2, 3, 4, 5, 6});
+      pp.fillWith(p);
+      gum::Instantiation Ip(p);
+      gum::Instantiation Ipp;
+      Ipp.add(vv);
+      Ipp.add(ww);
+      Ipp.setFirst();
+      for (Ip.setFirst(); !Ip.end(); ++Ip, ++Ipp)
+        try {
+          auto vp = p[Ip];
+          auto vpp = pp[Ipp];
+          TS_ASSERT_EQUALS(vp, vpp);
+        } catch (gum::Exception& e) {
+          GUM_SHOWERROR(e);
+        }
+
+      // errors
+      gum::Potential< int > bad_p;
+      bad_p.add(w);
+      TS_ASSERT_THROWS(bad_p.fillWith(p), gum::InvalidArgument);
+
+      gum::Potential< int > bad_p2;
+      bad_p2.add(vvv);
+      bad_p2.add(www);
+      TS_ASSERT_THROWS(bad_p2.fillWith(p), gum::InvalidArgument);
+
+      gum::Potential< int > bad_p3;
+      bad_p3.add(w);
+      bad_p3.add(z);
+      TS_ASSERT_THROWS(bad_p3.fillWith(p), gum::InvalidArgument);
+
+      gum::Potential< int >  bad_p4;
+      gum::LabelizedVariable badv("v", "v", 0);
+      badv.addLabel("3").addLabel("1");
+      bad_p4.add(w);
+      bad_p4.add(badv);
+      TS_ASSERT_THROWS(bad_p4.fillWith(p), gum::InvalidArgument);
+    }
+
+    void testFillWithPotentialAndMapMethod() {
+      gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< int >  p;
+      p.add(v);
+      p.add(w);
+
+      gum::LabelizedVariable vv("vv", "vv", 2), ww("ww", "ww", 3);
+      gum::Potential< int >  pp;
+      pp.add(ww);
+      pp.add(vv);
+
+      TS_ASSERT_EQUALS(p.domainSize(), gum::Size(6));
+      TS_ASSERT_EQUALS(pp.domainSize(), gum::Size(6));
+
+      p.fillWith({1, 2, 3, 4, 5, 6});
+      TS_GUM_ASSERT_THROWS_NOTHING(pp.fillWith(p, {"w", "v"}));
+      TS_ASSERT_THROWS(pp.fillWith(p, {"v", "w"}), gum::InvalidArgument);
+    }
+
+    private:
+    void __testval_for_set(const gum::Potential< int >&         p,
+                           int                                  val,
+                           const gum::Set< gum::Instantiation > s,
+                           gum::Size                            expected_size) {
+      gum::Instantiation ip(p);
+
+      TS_ASSERT_EQUALS(s.size(), expected_size);
+      for (ip.setFirst(); !ip.end(); ++ip) {
+        if (s.contains(ip)) {
+          TS_ASSERT_EQUALS(p[ip], val);
+        } else {
+          TS_ASSERT_DIFFERS(p[ip], val);
+        }
+      }
+    }
+
+    public:
+    void testArgMaxMinFindAll() {
+      gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< int >  p;
+      __testval_for_set(p, 4, p.findAll(4), 0);
+
+      p.add(v);
+      p.add(w);
+      p.fillWith({1, 3, 2, 4, 1, 4});
+
+      __testval_for_set(p, 3, p.findAll(3), 1);
+      __testval_for_set(p, 10, p.findAll(10), 0);
+      __testval_for_set(p, 4, p.argmax(), 2);
+      __testval_for_set(p, 1, p.argmin(), 2);
     }
   };
 }

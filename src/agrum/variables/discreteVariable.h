@@ -56,8 +56,6 @@ namespace gum {
 
   class DiscreteVariable : public Variable {
     public:
-    enum class VarType : char { Discretized, Labelized, Range };
-
     // ############################################################################
     /// @name Constructors / Destructors
     // ############################################################################
@@ -109,7 +107,7 @@ namespace gum {
 
     /// returns the varType of variable
 
-    virtual VarType varType(void) const = 0;
+    virtual VarType varType() const = 0;
     /// @}
 
     // ############################################################################
@@ -170,4 +168,3 @@ namespace gum {
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_DISCRETE_VARIABLE_H */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

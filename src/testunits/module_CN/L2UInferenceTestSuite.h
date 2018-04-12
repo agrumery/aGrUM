@@ -50,7 +50,7 @@ namespace gum_tests {
 
     protected:
     public:
-    L2UListener(gum::ApproximationScheme& aS)
+    explicit L2UListener(gum::ApproximationScheme& aS)
         : gum::ApproximationSchemeListener(aS)
         , __nbr(0)
         , __msg(""){};

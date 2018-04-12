@@ -28,7 +28,7 @@
 #define GUM_FUNC_ATTRIBUTE_H
 
 #include <agrum/PRM/elements/PRMScalarAttribute.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
   namespace prm {

@@ -337,7 +337,7 @@ namespace gum_tests {
     void testSetAsCastDescendantTypeError() {
       // Arrange
       gum::LabelizedVariable foovar{"Foo", "Bar", 5};
-      PRMAttribute           foo("foobar", foovar);
+      PRMAttribute           foo("foobar", gum::prm::PRMType< double >(foovar));
       PRMAttribute           state("state", *__state);
       auto                   before = foo.cpf().variablesSequence().size();
       // Act

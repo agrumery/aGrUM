@@ -49,10 +49,8 @@ namespace gum {
               static_cast< MultiDimImplementation< GUM_SCALAR >* >(
                 impl->newFactory()));
 
-            for (MultiDimInterface::iterator iter = impl->begin();
-                 iter != impl->end();
-                 ++iter)
-              p->add(*(bij.second(*iter)));
+            for (auto var : impl->variablesSequence())
+              p->add(*(bij.second(var)));
           } else if (dynamic_cast< const MultiDimBucket< GUM_SCALAR >* >(impl)) {
             // This is necessary just to prevent non initialized arrays
             const_cast< MultiDimBucket< GUM_SCALAR >* >(

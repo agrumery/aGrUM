@@ -21,7 +21,7 @@
 * @file
 * @brief
 *
-* @author Jean-Christophe Magnan
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 // =======================================================
 #include <agrum/FMDP/learning/datastructure/imddi.h>

@@ -28,10 +28,10 @@
 
 #include <agrum/core/set.h>
 #include <agrum/core/utils_random.h>
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/operators/multiDimProjection.h>
-#include <agrum/multidim/operators/projections4MultiDim.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/multidim/potential.h>
+#include <agrum/multidim/utils/operators/multiDimProjection.h>
+#include <agrum/multidim/utils/operators/projections4MultiDim.h>
 #include <agrum/variables/labelizedVariable.h>
 
 namespace gum_tests {
@@ -123,7 +123,7 @@ namespace gum_tests {
     bool equal(const gum::MultiDimImplementation< T* >& t1,
                const gum::MultiDimImplementation< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
-        for (const auto var : t1)
+        for (const auto var : t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
 
         gum::Instantiation i(t1);
@@ -145,7 +145,7 @@ namespace gum_tests {
     template < typename T >
     bool equal(const gum::Potential< T* >& t1, const gum::Potential< T* >& t2) {
       if ((t1.nbrDim() == t2.nbrDim()) && (t1.domainSize() == t2.domainSize())) {
-        for (const auto var : t1)
+        for (const auto var : t1.variablesSequence())
           if (!t2.variablesSequence().exists(var)) return false;
 
         gum::Instantiation i(t1);

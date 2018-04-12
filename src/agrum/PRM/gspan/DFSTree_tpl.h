@@ -69,8 +69,8 @@ namespace gum {
             roots_edges[p]->insert(edge);
             DFSTree< GUM_SCALAR >::PatternData* data =
               new DFSTree< GUM_SCALAR >::PatternData(p);
-            NodeId u = p->addNode((u_first) ? *edge->l_u : *edge->l_v);
-            NodeId v = p->addNode((!u_first) ? *edge->l_u : *edge->l_v);
+            NodeId u = p->addNodeWithLabel((u_first) ? *edge->l_u : *edge->l_v);
+            NodeId v = p->addNodeWithLabel((!u_first) ? *edge->l_u : *edge->l_v);
             p->addArc(u, v, label);
             __node_map.insert(DiGraph::addNode(), p);
             __data.insert(p, data);
@@ -192,7 +192,7 @@ namespace gum {
 
         // First we check if the edge is legal
         if (v == 0) {
-          v = child->addNode(*(edge_growth.l_v));
+          v = child->addNodeWithLabel(*(edge_growth.l_v));
         }
 
         child->addArc(edge_growth.u, v, *(edge_growth.edge));

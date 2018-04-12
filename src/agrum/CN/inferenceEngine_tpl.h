@@ -716,7 +716,6 @@ namespace gum {
 
         var_name = _credalNet->current_bn().variable(node).name();
         auto delim = var_name.find_first_of("_");
-        time_step = var_name.substr(delim + 1, var_name.size());
         var_name = var_name.substr(0, delim);
 
         if (!_modal.exists(var_name)) continue;

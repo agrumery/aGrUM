@@ -52,17 +52,17 @@ namespace gum {
     /**
      * Default constructor
      */
-    ImportanceSampling(const IBayesNet< GUM_SCALAR >* bn);
+    explicit ImportanceSampling(const IBayesNet< GUM_SCALAR >* bn);
 
 
     /**
      * Destructor
      */
-    virtual ~ImportanceSampling();
+    ~ImportanceSampling() override;
 
     protected:
     /// draws a defined number of samples without updating the estimators
-    virtual Instantiation _burnIn();
+    Instantiation _burnIn() override;
 
 
     /// draws a sample according to Importance sampling
@@ -78,7 +78,7 @@ namespace gum {
     * Each node added to the sample (in a topological order) has a weight.
     * The sample's weight is the product of all weights.
     */
-    virtual Instantiation _draw(float* w, Instantiation prev);
+    Instantiation _draw(float* w, Instantiation prev) override;
 
 
     /// modifies the cpts of a BN in order to tend to uniform distributions
@@ -91,8 +91,7 @@ namespace gum {
     * normalizing
     *
     */
-    virtual void _unsharpenBN(BayesNetFragment< GUM_SCALAR >* bn,
-                              float                           epsilon = 1e-2);
+    void _unsharpenBN(BayesNetFragment< GUM_SCALAR >* bn, float epsilon);
 
     /// fired when Bayesian network is contextualized
     /**
@@ -105,7 +104,7 @@ namespace gum {
    * BN.
    *
    */
-    virtual void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn);
+    void _onContextualize(BayesNetFragment< GUM_SCALAR >* bn) override;
   };
 
   extern template class ImportanceSampling< float >;

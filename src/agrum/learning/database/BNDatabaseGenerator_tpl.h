@@ -55,7 +55,9 @@ namespace gum {
 
     /// destructor
     template < typename GUM_SCALAR >
-    BNDatabaseGenerator< GUM_SCALAR >::~BNDatabaseGenerator() {}
+    BNDatabaseGenerator< GUM_SCALAR >::~BNDatabaseGenerator() {
+      GUM_DESTRUCTOR(BNDatabaseGenerator);
+    }
 
 
     /// draw instances from __bn
@@ -120,7 +122,6 @@ namespace gum {
 
           __log2likelihood += std::log2(__bn.cpt(node)[inst]);
         }
-
       }
 
       __drawnSamples = true;
@@ -336,7 +337,7 @@ namespace gum {
     void BNDatabaseGenerator< GUM_SCALAR >::setRandomVarOrder() {
 
       std::vector< std::string > varOrder;
-      varOrder.reserve(__bn.dag().size());
+      varOrder.reserve(__bn.size());
       for (const auto& var : __bn.dag()) {
         varOrder.push_back(__bn.variable(var).name());
       }

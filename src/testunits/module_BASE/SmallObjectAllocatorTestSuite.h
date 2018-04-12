@@ -41,12 +41,12 @@ namespace gum_tests {
     // ==============================================================================
     void test_Fixed_Allocator_CONST_AND_DEST() {
 
-      gum::FixedAllocator* fa;
+      gum::FixedAllocator* fa = nullptr;
       // Test constructor
       TS_ASSERT_THROWS_NOTHING(
         fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50));
       // Test destructor
-      TS_ASSERT_THROWS_NOTHING(delete fa);
+      TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa);
     }
 
     // ==============================================================================
@@ -55,10 +55,10 @@ namespace gum_tests {
     void test_Fixed_Allocator_ALLOC_DEALLOC_1_ELEM() {
 
       gum::FixedAllocator* fa = new gum::FixedAllocator(5 * sizeof(gum::Idx), 50);
-      void*                pVoid;
+      void*                pVoid = nullptr;
       TS_ASSERT_THROWS_NOTHING(pVoid = fa->allocate());
       TS_ASSERT_THROWS_NOTHING(fa->deallocate(pVoid));
-      TS_ASSERT_THROWS_NOTHING(delete fa);
+      TS_ASSERT_THROWS_NOTHING(if (fa != nullptr) delete fa);
     }
 
     // ==============================================================================
@@ -136,7 +136,7 @@ namespace gum_tests {
     // Test Allocation et Deallocation d'un élément
     // ==============================================================================
     void test_Small_Object_Allocator_ALLOC_DEALLOC_1_ELEM() {
-      void* pVoid;
+      void* pVoid = nullptr;
       TS_ASSERT_THROWS_NOTHING(
         pVoid =
           gum::SmallObjectAllocator::instance().allocate(5 * sizeof(gum::Idx)));
@@ -205,4 +205,3 @@ namespace gum_tests {
     //    }
   };
 }
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

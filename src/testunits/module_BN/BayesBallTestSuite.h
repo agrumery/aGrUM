@@ -44,7 +44,6 @@ namespace gum_tests {
 
       gum::Set< gum::NodeId >      query, hardEvidence, softEvidence;
       gum::Sequence< gum::NodeId > nodes_seq;
-
       for (const auto node : bn.nodes())
         nodes_seq.insert(node);
 

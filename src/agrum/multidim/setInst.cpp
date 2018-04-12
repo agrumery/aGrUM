@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 #include <agrum/multidim/setInst.h>
 #include <sstream>
 
@@ -140,7 +140,7 @@ namespace gum {
 
       while (si-- != 0) {
         std::stringstream sstr4;
-        sstr4 << (valb & 1 ? "1" : "0") << sstr2.str();
+        sstr4 << ((valb & 1) ? "1" : "0") << sstr2.str();
         valb >>= 1;
         sstr2.str("");
         ;
@@ -160,7 +160,7 @@ namespace gum {
         while (si-- != 0) {
           std::stringstream sstr4;
 
-          sstr4 << (valb & 1 ? "1" : "0") << sstr3.str();
+          sstr4 << ((valb & 1) ? "1" : "0") << sstr3.str();
           valb >>= 1;
           sstr3.str("");
           sstr3 << sstr4.str();

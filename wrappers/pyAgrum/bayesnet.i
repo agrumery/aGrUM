@@ -11,16 +11,6 @@
         val.__fill_distrib__()
 %}
 
-%typemap(out) const gum::Sequence<gum::NodeId>& {
-  PyObject *q=PyList_New(0);
-  for(auto i : *$1) {
-    PyList_Append(q,PyInt_FromLong(i));
-  }
-  $result=q;
-}
-
-%ignore *::nodes;
-
 %include "extensions/BNGenerator.h"
 
 %{
@@ -29,14 +19,6 @@
 
 %define IMPROVE_BAYESNET_API(classname)
 %extend classname {
-  PyObject *ids() {
-    PyObject* q=PyList_New(0);
-    for ( auto node : self->dag().nodes()) {
-      PyList_Append(q,PyLong_FromUnsignedLong((unsigned long)node));
-    }
-    return q;
-  };
-
   PyObject *names() const {
     PyObject* q=PyList_New(0);
 
@@ -44,23 +26,6 @@
       PyList_Append(q,PyString_FromString(self->variable(node).name().c_str()));
     }
     return q;
-  };
-
-  PyObject *arcs() {
-    return PyAgrumHelper::PySetFromArcSet(self->dag().arcs());
-  };
-
-  PyObject *nodes() {
-    return ids();
-  };
-
-
-  PyObject *parents(const NodeId id) const {
-    return PyAgrumHelper::PyListFromNodeSet(self->dag().parents(id));
-  };
-
-  PyObject *children(const NodeId id) const {
-    return PyAgrumHelper::PyListFromNodeSet(self->dag().children(id));
   };
 
   PyObject *minimalCondSet(gum::NodeId target,PyObject* list) const {
@@ -80,9 +45,8 @@
   };
 }
 %enddef
-
 IMPROVE_BAYESNET_API(gum::IBayesNet);
-IMPROVE_BAYESNET_API(gum::BayesNet);
+
 
 %extend gum::BayesNet {
 %pythoncode {
@@ -103,7 +67,7 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
     """
     if [whenNodeAdded,whenNodeDeleted,whenArcAdded,whenArcDeleted]==[None,None,None,None]:
       return
-  
+
     if not hasattr(self,"_listeners"):
       self._listeners=[]
 
@@ -299,3 +263,5 @@ def addStructureListener(self,whenNodeAdded=None,whenNodeDeleted=None,whenArcAdd
   };
 }
 
+
+%ignore gum::BayesNet<double>::nodes const;

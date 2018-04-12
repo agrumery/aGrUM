@@ -53,16 +53,16 @@ namespace gum {
     /**
      * Default constructor
      */
-    MonteCarloSampling(const IBayesNet< GUM_SCALAR >* bn);
+    explicit MonteCarloSampling(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
      * Destructor
      */
-    virtual ~MonteCarloSampling();
+    ~MonteCarloSampling() override;
 
     protected:
     /// draws a defined number of samples without updating the estimators
-    virtual Instantiation _burnIn();
+    Instantiation _burnIn() override;
 
     /// draws a sample according to classic Monte Carlo sampling
     /**
@@ -76,7 +76,7 @@ namespace gum {
     * samples not consistent with evidence
     *
     */
-    virtual Instantiation _draw(float* w, Instantiation prev);
+    Instantiation _draw(float* w, Instantiation prev) override;
   };
 
   extern template class MonteCarloSampling< float >;

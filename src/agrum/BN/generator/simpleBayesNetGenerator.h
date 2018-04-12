@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for generating bayesian netwroks.
+ * @brief Class for generating bayesian networks.
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN and Ariele-Paolo
  *MAESANO
@@ -73,7 +73,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    ~SimpleBayesNetGenerator();
+    ~SimpleBayesNetGenerator() override;
     /// @}
 
     // ############################################################################
@@ -85,7 +85,7 @@ namespace gum {
      * @param bayesNet Bayesian Network to be completed after initialisation
      * @return null but modify inputed Bayesian Network
      */
-    void generateBN(BayesNet< GUM_SCALAR >& bayesNet);
+    void generateBN(BayesNet< GUM_SCALAR >& bayesNet) override;
 
     /// @}
   }; /* class SimpleBayesNetGenerator */

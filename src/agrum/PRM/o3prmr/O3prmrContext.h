@@ -56,7 +56,7 @@ namespace gum {
           SetGndEngine
         };
 
-        O3prmrCommand(int line)
+        explicit O3prmrCommand(int line)
             : line(line) {}
         O3prmrCommand(const O3prmrCommand& c)
             : line(c.line) {}
@@ -175,10 +175,10 @@ namespace gum {
       template < typename GUM_SCALAR >
       class QueryCommand : public O3prmrCommand {
         public:
-        QueryCommand(int line, const std::string& value)
-            : O3prmrCommand(line) {
-          this->value = value;
-        }
+        QueryCommand(int line, const std::string& val)
+            : O3prmrCommand(line)
+            , value(val)
+            , system(nullptr) {}
 
         std::string                                value;
         const PRMSystem< GUM_SCALAR >*             system;
@@ -202,7 +202,7 @@ namespace gum {
           m_infEngineMap;
 
         public:
-        O3prmrSession(const std::string& name = std::string());
+        explicit O3prmrSession(const std::string& name = std::string());
         O3prmrSession(const O3prmrSession& s);
         virtual ~O3prmrSession();
 
@@ -238,7 +238,7 @@ namespace gum {
         ImportCommand*                              m_mainImport;
 
         public:
-        O3prmrContext(const std::string& filename = std::string());
+        explicit O3prmrContext(const std::string& filename = std::string());
         O3prmrContext(const O3prmrContext& s);
         virtual ~O3prmrContext();
 

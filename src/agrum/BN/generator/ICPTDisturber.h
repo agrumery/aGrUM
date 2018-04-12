@@ -61,31 +61,27 @@ namespace gum {
     /// @name CPT disturbing methods
     // ############################################################################
     /**
-     * Generates a CPT using floats.
-     * @param varIdi The variable id parent of the CPT owner
-     * @param varIdj A reference on the CPT owner
-     * @param bayesNet the modified Bayesian Network
-     * @param cptCopy copy of the CPT before changing size
-     * @param marg of the inference before changing size
+     * Generates a CPT using GUM_SCALAR.
+     * @param node The variable on the CPT owner.
+     * @param bayesNet the Bayesian Network.
+     * @param src copy of the CPT before reduction.
+     * @param marg of the inference before reduction on the node varIdi.
      */
-    virtual void disturbReducCPT(NodeId                   varIdi,
-                                 NodeId                   varIdj,
+    virtual void disturbReducCPT(NodeId                   node,
                                  BayesNet< GUM_SCALAR >&  bayesNet,
-                                 Potential< GUM_SCALAR >& cptCopy,
+                                 Potential< GUM_SCALAR >& src,
                                  Potential< GUM_SCALAR >& marg) = 0;
 
     /**
-     * Generates a CPT using floats.
-     * @param varIdi The variable id parent of the CPT owner
-     * @param varIdj A reference on the CPT owner
-     * @param bayesNet the modified Bayesian Network
-     * @param cptCopy copy of the CPT before changing size
-     * @param variation degree of variation from the initial probability
+     * Disturb a CPT using GUM_SCALAR when inserting a new parent.
+     * @param node A reference on the CPT owner.
+     * @param bayesNet the Bayesian Network.
+     * @param src copy of the CPT before augmentation.
+     * @param variation degree of variation from the initial probability.
      */
-    virtual void disturbAugmCPT(NodeId                   varIdi,
-                                NodeId                   varIdj,
+    virtual void disturbAugmCPT(NodeId                   node,
                                 BayesNet< GUM_SCALAR >&  bayesNet,
-                                Potential< GUM_SCALAR >& cptCopy,
+                                Potential< GUM_SCALAR >& src,
                                 GUM_SCALAR               variation) = 0;
   };
 

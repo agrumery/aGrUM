@@ -21,12 +21,12 @@
  * @file
  * @brief Template Implementation of the FMDPFactory class.
  *
- * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  */
 
 #include <agrum/FMDP/fmdpFactory.h>
 
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <agrum/multidim/potential.h>
 
 

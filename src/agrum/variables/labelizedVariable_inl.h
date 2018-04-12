@@ -40,7 +40,7 @@ namespace gum {
 
   // erase all the labels
 
-  INLINE void LabelizedVariable::eraseLabels(void) { __labels.clear(); }
+  INLINE void LabelizedVariable::eraseLabels() { __labels.clear(); }
 
   // copies the content of aLDRV
 
@@ -51,14 +51,15 @@ namespace gum {
   }
 
   // add a label with a new index (we assume that we will NEVER remove a label)
-  INLINE LabelizedVariable& LabelizedVariable::addLabel(const std::string aLabel) {
+  INLINE LabelizedVariable&
+  LabelizedVariable::addLabel(const std::string& aLabel) {
     __labels.insert(aLabel);
 
     return *this;
   }
 
-  INLINE void LabelizedVariable::changeLabel(Idx               pos,
-                                             const std::string aLabel) const {
+  INLINE void LabelizedVariable::changeLabel(Idx                pos,
+                                             const std::string& aLabel) const {
     if (__labels[pos] == aLabel) return;
 
     if (isLabel(aLabel))
@@ -82,6 +83,21 @@ namespace gum {
       addLabel(oss.str());
     }
   }
+  INLINE
+  LabelizedVariable::LabelizedVariable(const std::string&                aName,
+                                       const std::string&                aDesc,
+                                       const std::vector< std::string >& labels)
+      : DiscreteVariable(aName, aDesc) {
+    // for debugging purposes
+    GUM_CONSTRUCTOR(LabelizedVariable);
+    __labels.clear();
+    for (Idx i = 0; i < labels.size(); ++i)
+      __labels.insert(labels[i]);
+  }
+
+  INLINE Idx LabelizedVariable::posLabel(const std::string& label) const {
+    return __labels.pos(label);
+  }
 
   // Copy constructor
 
@@ -101,13 +117,12 @@ namespace gum {
   }
 
   INLINE
-  DiscreteVariable* LabelizedVariable::clone() const {
-    LabelizedVariable* varPtr = new LabelizedVariable(*this);
-    return (DiscreteVariable*)varPtr;
+  LabelizedVariable* LabelizedVariable::clone() const {
+    return new LabelizedVariable(*this);
   }
 
   // copy operator
-  INLINE const LabelizedVariable& LabelizedVariable::
+  INLINE LabelizedVariable& LabelizedVariable::
   operator=(const LabelizedVariable& aLDRV) {
     // avoid self assignment
     if (&aLDRV != this) {
@@ -145,9 +160,7 @@ namespace gum {
   // returns the size of the random discrete variable domain
   INLINE Size LabelizedVariable::domainSize() const { return __labels.size(); }
 
-  INLINE DiscreteVariable::VarType LabelizedVariable::varType(void) const {
-    return VarType::Labelized;
-  }
+  INLINE VarType LabelizedVariable::varType() const { return VarType::Labelized; }
 
 } /* namespace gum */
 

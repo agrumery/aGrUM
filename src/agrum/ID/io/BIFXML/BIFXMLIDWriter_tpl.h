@@ -215,7 +215,7 @@ namespace gum {
     std::stringstream str;
 
     if (!((infdiag.isDecisionNode(varNodeId)) &&
-          (infdiag.dag().parents(varNodeId).empty()))) {
+          (infdiag.parents(varNodeId).empty()))) {
       // Declaration
       str << "<DEFINITION>" << std::endl;
 
@@ -226,7 +226,7 @@ namespace gum {
       // Conditional Parents
       List< std::string > parentList;
 
-      for (const auto par : infdiag.dag().parents(varNodeId))
+      for (const auto par : infdiag.parents(varNodeId))
         parentList.pushBack(infdiag.variable(par).name());
 
       for (List< std::string >::iterator parentListIte = parentList.rbegin();
@@ -276,4 +276,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

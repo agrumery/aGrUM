@@ -43,12 +43,12 @@ namespace gum {
   MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     MaxParentsMCBayesNetGenerator(Size nbrNodes,
                                   Size maxArcs,
-                                  Size max_modality,
+                                  Size maxModality,
                                   Size maxParents,
                                   Idx  iteration,
                                   Idx  p,
                                   Idx  q)
-      : MCBG(nbrNodes, maxArcs, max_modality, iteration, p, q) {
+      : MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
     if (maxParents == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxParents must be at least equal to 1 to have a connexe graph");
@@ -88,7 +88,7 @@ namespace gum {
   bool MaxParentsMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     __checkConditions() {
     for (auto node : this->_bayesNet.nodes())
-      if (this->_bayesNet.dag().parents(node).size() > _maxParents) return false;
+      if (this->_bayesNet.parents(node).size() > _maxParents) return false;
 
     return MCBG::__checkConditions();
   }
@@ -114,5 +114,3 @@ namespace gum {
     _maxParents = maxParents;
   }
 } /* namespace gum */
-
-#undef MCBG

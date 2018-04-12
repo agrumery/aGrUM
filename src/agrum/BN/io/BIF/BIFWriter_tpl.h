@@ -83,7 +83,7 @@ namespace gum {
   // @param bn The Bayesian Network writed in the file.
   // @throws Raised if an I/O error occurs.
   template < typename GUM_SCALAR >
-  INLINE void BIFWriter< GUM_SCALAR >::write(std::string filePath,
+  INLINE void BIFWriter< GUM_SCALAR >::write(const std::string& filePath,
                                              const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 
@@ -217,4 +217,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

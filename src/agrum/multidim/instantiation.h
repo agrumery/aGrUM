@@ -32,7 +32,7 @@
 #include <agrum/agrum.h>
 
 #include <agrum/core/hashTable.h>
-#include <agrum/multidim/multiDimInterface.h>
+#include <agrum/multidim/implementations/multiDimInterface.h>
 
 namespace gum {
 
@@ -209,7 +209,7 @@ namespace gum {
      * @brief Returns the number of variables in the Instantiation.
      * @return Returns the number of variables in the Instantiation.
      */
-    Idx nbrDim() const override;
+    Idx nbrDim() const final;
 
     /**
      * @brief Adds a new variable in the Instantiation.
@@ -229,9 +229,11 @@ namespace gum {
      * @param v The new variable added to this Instantiation.
      *
      * @throw DuplicateElement Raised if v is already in this Instantiation.
+     * @throw InvalidArgument Raised if the name of v is already used in this
+     * Instantiation.
      * @throw OperationNotAllowed Raised if this is a slave Instantiation.
      */
-    void add(const DiscreteVariable& v) override;
+    void add(const DiscreteVariable& v) final;
 
     /**
      * @brief Removes a variable from the Instantiation.
@@ -246,7 +248,7 @@ namespace gum {
      * @throw NotFound Raised if v does not belong to this Instantiation.
      * @throw OperationNotAllowed Raised if the instantiation is a slave.
      */
-    void erase(const DiscreteVariable& v) override;
+    void erase(const DiscreteVariable& v) final;
 
     /**
      * @brief Erase all variables from an Instantiation
@@ -260,7 +262,7 @@ namespace gum {
      * @return Returns the product of the variable's domain size in the
      * Instantiation.
      */
-    Size domainSize() const override;
+    Size domainSize() const final;
 
     /**
      * @brief Returns the position of the variable v.
@@ -269,7 +271,7 @@ namespace gum {
      *
      * @throw NotFound Raised if v does not belong to the instantiation.
      */
-    Idx pos(const DiscreteVariable& v) const;
+    Idx pos(const DiscreteVariable& v) const final;
 
     /**
      * @brief Returns the current value of the variable at position i.
@@ -323,7 +325,7 @@ namespace gum {
      * @return Returns the variable at position i in the tuple.
      * @throw NotFound Raised if the element cannot be found.
      */
-    const DiscreteVariable& variable(Idx i) const;
+    const DiscreteVariable& variable(Idx i) const final;
 
     /**
    * @brief Returns the variable with the name
@@ -333,7 +335,7 @@ namespace gum {
    * @warging This function is not O(1)
    * @throw NotFound Raised if the element cannot be found.
    */
-    const DiscreteVariable& variable(const std::string& name) const;
+    const DiscreteVariable& variable(const std::string& name) const final;
 
     /**
      * @brief Assign newval to variable v in the Instantiation.
@@ -400,6 +402,50 @@ namespace gum {
     Instantiation& chgVal(Idx varPos, Idx newval);
 
     /**
+  * @brief Assign newval to variable at position varPos in the Instantiation.
+  *
+  * Consider the values of v as an array indexed from 0 to n of values
+  * (which might be anything from real numbers to strings, etc). Parameter
+  * newval indicates the index in this array of the new value taken by v.
+  *
+  * In addition to modifying the value of the variable, the Instantiation
+  * informs its master of the modification. This function also unsets the
+  * overflow flag.
+  *
+  * @param var the name of the variable whose value is assigned in the
+  * tuple of variables of the Instantiation.
+  * @param newval The index of the value assigned.
+  * @return A reference to *this in order to chain the chgVal.
+  *
+  * @throw NotFound Raised if the variable does not belong to this
+  * @throw NotFound Raised if newval is not a possible value for the
+  * variable
+  */
+    Instantiation& chgVal(const std::string& var, Idx newval);
+
+    /**
+  * @brief Assign newval to variable at position varPos in the Instantiation.
+  *
+  * Consider the values of v as an array indexed from 0 to n of values
+  * (which might be anything from real numbers to strings, etc). Parameter
+  * newval indicates the index in this array of the new value taken by v.
+  *
+  * In addition to modifying the value of the variable, the Instantiation
+  * informs its master of the modification. This function also unsets the
+  * overflow flag.
+  *
+  * @param var the name of the variable whose value is assigned in the
+  * tuple of variables of the Instantiation.
+  * @param newval The label of the value assigned.
+  * @return A reference to *this in order to chain the chgVal.
+  *
+  * @throw NotFound Raised if the variable does not belong to this
+  * @throw OutOfBound Raised if newval is not a possible value for the
+  * variable
+  */
+    Instantiation& chgVal(const std::string& var, const std::string& newval);
+
+    /**
      * @brief Assign the values from i in the Instantiation.
      *
      * For any variable in i and in *this, value of the variable in i is
@@ -420,7 +466,6 @@ namespace gum {
      * @param i A Instantiation in which the new values are searched.
      * @return Returns a reference to *this in order to chain the chgVal.
      */
-
     Instantiation& setVals(const Instantiation& i);
 
     /**
@@ -443,7 +488,7 @@ namespace gum {
      * @param v The variable for which the test is made.
      * @return Returns true if v is in the Instantiation.
      */
-    bool contains(const DiscreteVariable& v) const;
+    bool contains(const DiscreteVariable& v) const final;
 
     /**
      * Indicates whether a given variable belongs to the Instantiation.
@@ -457,13 +502,13 @@ namespace gum {
      * @brief Returns the sequence of DiscreteVariable of this instantiation.
      * @return Returns the sequence of DiscreteVariable of this instantiation.
      */
-    const Sequence< const DiscreteVariable* >& variablesSequence() const;
+    const Sequence< const DiscreteVariable* >& variablesSequence() const final;
 
     /**
      * @brief Returns true if the instantiation is empty.
      * @return Returns true if the instantiation is empty.
      */
-    virtual bool empty(void) const;
+    virtual bool empty() const final;
 
     /// @}
     // =========================================================================
@@ -994,6 +1039,11 @@ namespace gum {
     /// @{
 
     /**
+     * @brief operator==
+     */
+    bool operator==(const Instantiation& other) const;
+
+    /**
      * @brief Alias of Instantiation::inc().
      * @return Returns this Instantiation.
      */
@@ -1064,7 +1114,8 @@ namespace gum {
      * @param x The variable to replace.
      * @param y The variable replacing x.
      */
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _replace(const DiscreteVariable* x,
+                          const DiscreteVariable* y) final;
 
     private:
     /// The master, if any, contains precisely the set of variables to be
@@ -1171,6 +1222,12 @@ namespace gum {
      * @param v The new order of variables in this Instantiation.
      */
     void __reorder(const Sequence< const DiscreteVariable* >& v);
+
+    void __masterChangeNotification(Idx varPos, Idx newVal, Idx oldVal) const;
+    void __masterFirstNotification() const;
+    void __masterIncNotification() const;
+    void __masterLastNotification() const;
+    void __masterDecNotification() const;
   };
 
   /**
@@ -1178,10 +1235,24 @@ namespace gum {
    */
   std::ostream& operator<<(std::ostream&, const Instantiation&);
 
+  /**
+   * @brief Hash function for gum::Instantiation.
+   * @ingroup hashfunctions_group
+   */
+  template <>
+  class HashFunc< Instantiation > : public HashFuncBase< Instantiation > {
+    public:
+    /**
+     * @brief Computes the hashed value of a key.
+     * @param key The key to compute the hashed value.
+     * @return Returns the hashed value of a key.
+     */
+    Size operator()(const Instantiation& key) const;
+  };
 } /* namespace gum */
 
 #ifndef GUM_NO_INLINE
-// Inline file included by agrum/multidim/multiDimAdressable.h
+#include <agrum/multidim/instantiation_inl.h>
 #endif /* GUM_NO_INLINE */
 
 #endif /* GUM_INSTANTIATION_H */

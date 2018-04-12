@@ -22,7 +22,7 @@
  * @file
  * @brief Sources of gum::FixedAllocator
  *
- * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 // ============================================================================

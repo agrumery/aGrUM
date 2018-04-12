@@ -3,7 +3,6 @@
 %ignore gum::MultiDimInterface;
 %ignore gum::MultiDimDecorator;
 %ignore gum::MultiDimArray;
-%ignore gum::Potential<double>::fillWith(std::initializer_list< double >) const;
 
 /* Synchronisation between gum::Potential and numpy array */
 %pythonappend gum::Potential<double>::Potential %{
@@ -43,6 +42,11 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
 
 %rename ("$ignore", fullname=1) gum::Potential<double>::reorganize(const Set<const DiscreteVariable*>& vars) const;
 %rename ("$ignore", fullname=1) gum::Potential<double>::putFirst(const DiscreteVariable* var) const;
+
+/* Convert from C --> Python */
+%typemap(out) gum::Set<gum::Instantiation> {
+    $result = PyAgrumHelper::PySeqFromSetOfInstantiation($1);
+}
 
 %extend gum::Potential<double> {
     Potential<double> extract(PyObject* dict) {
@@ -173,7 +177,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
             content = [self.get(i)]
             self.__distrib__ = numpy.array(content, dtype=numpy.float64) #M
             return
-            
+
         content = []
         i = Instantiation(self)
         i.setFirst()
@@ -209,14 +213,6 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         return tuple(index)
 %}
 
-/*
-* %feature("shadow") gum::Potential::__str__ %{
-*     def __str__(self):
-*         self.__fill_distrib__()
-*         return self.__distrib__.__str__()
-* %}
-*/
-
 %feature("shadow") gum::Potential::tolist %{
     def tolist(self):
         """
@@ -246,7 +242,7 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         self.__fill_distrib__()
         if self.empty():
             return self.__distrib__[0]
-            
+
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
@@ -261,14 +257,14 @@ CHANGE_THEN_RETURN_SELF(normalizeAsCPT)
         if self.empty():
             self.fill(value)
             self.__distrib__= numpy.array([value], dtype=numpy.float64) #M
-            return 
-            
+            return
+
         if isinstance(id, dict):
             id_slice = self.__indexfromdict__(id)
         else:
             id_slice = id
         self.__distrib__[id_slice] = value
-        self.populate(self.__distrib__.reshape(self.__distrib__.size).tolist())
+        self.fillWith(self.__distrib__.reshape(self.__distrib__.size).tolist())
 %}
 
 

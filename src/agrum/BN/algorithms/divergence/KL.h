@@ -79,7 +79,7 @@ namespace gum {
     KL(const KL< GUM_SCALAR >& kl);
 
     /** destructor */
-    ~KL();
+    virtual ~KL();
 
     /**
      * return
@@ -114,16 +114,16 @@ namespace gum {
     double bhattacharya();
 
     /// @return p
-    const IBayesNet< GUM_SCALAR >& p(void) const;
+    const IBayesNet< GUM_SCALAR >& p() const;
 
     /// @return q
-    const IBayesNet< GUM_SCALAR >& q(void) const;
+    const IBayesNet< GUM_SCALAR >& q() const;
     /// @}
 
     protected:
     // should be pure virtual but using KL directly is a way to delay the choice
     // between different computation scheme (@see BruteForceKL)
-    virtual void _computeKL(void);
+    virtual void _computeKL();
     void         _process();
 
     const IBayesNet< GUM_SCALAR >& _p;

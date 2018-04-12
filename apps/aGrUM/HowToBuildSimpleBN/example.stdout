@@ -1,0 +1,29 @@
+== Created BN ==
+================
+
+BN{nodes: 3, arcs: 2, domainSize: 8, parameters: 12, compression ratio: -50% }
+
+
+== dot version of the BN ==
+===========================
+
+digraph "no_name" {
+  graph [bgcolor=transparent,label="no_name"];
+  node [style=filled fillcolor="#ffffaa"];
+
+"foo" [comment="0:foo<0,1>"];
+"bar" [comment="1:bar<0,1>"];
+"qux" [comment="2:qux<0,1>"];
+
+  "foo" -> "bar";
+  "qux" -> "bar";
+}
+
+
+
+== cpt for 'bar' variable ==
+============================
+<bar:0|foo:0|qux:0> :: 0.2 /<bar:1|foo:0|qux:0> :: 0.8 /<bar:0|foo:1|qux:0> :: 0.3 /<bar:1|foo:1|qux:0> :: 0.7 /<bar:0|foo:0|qux:1> :: 0.9 /<bar:1|foo:0|qux:1> :: 0.1 /<bar:0|foo:1|qux:1> :: 0.5 /<bar:1|foo:1|qux:1> :: 0.5
+
+
+

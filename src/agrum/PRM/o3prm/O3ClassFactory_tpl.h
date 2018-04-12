@@ -770,60 +770,116 @@ namespace gum {
       }
 
       template < typename GUM_SCALAR >
+      INLINE bool O3ClassFactory< GUM_SCALAR >::__checkLabelsNumber(
+        const O3RuleCPT& attr, const O3RuleCPT::O3Rule& rule) {
+        // Check that the number of labels is correct
+        if (rule.first.size() != attr.parents().size()) {
+          O3PRM_CLASS_ILLEGAL_RULE_SIZE(
+            rule, rule.first.size(), attr.parents().size(), *__errors);
+          return false;
+        }
+        return true;
+      }
+
+      template < typename GUM_SCALAR >
+      INLINE bool O3ClassFactory< GUM_SCALAR >::__checkLabelsValues(
+        const PRMClass< GUM_SCALAR >& c,
+        const O3RuleCPT&              attr,
+        const O3RuleCPT::O3Rule&      rule) {
+        bool errors = false;
+        for (std::size_t i = 0; i < attr.parents().size(); ++i) {
+          auto label = rule.first[i];
+          auto prnt = attr.parents()[i];
+          try {
+            auto real_labels = __resolveSlotChain(c, prnt)->type()->labels();
+            // c.get(prnt.label()).type()->labels();
+            if (label.label() != "*" &&
+                std::find(real_labels.begin(), real_labels.end(), label.label()) ==
+                  real_labels.end()) {
+              O3PRM_CLASS_ILLEGAL_RULE_LABEL(rule, label, prnt, *__errors);
+              errors = true;
+            }
+          } catch (Exception& e) {
+            // parent does not exists and is already reported
+          }
+        }
+        return errors == false;
+      }
+
+      template < typename GUM_SCALAR >
+      INLINE void O3ClassFactory< GUM_SCALAR >::__addParamsToForms(
+        const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
+        O3RuleCPT::O3Rule& rule) {
+        // Add parameters to formulas
+        for (auto& f : rule.second) {
+          f.formula().variables().clear();
+          for (const auto& values : scope) {
+            f.formula().variables().insert(values.first, values.second->value());
+          }
+        }
+      }
+
+
+      template < typename GUM_SCALAR >
+      INLINE bool O3ClassFactory< GUM_SCALAR >::__checkRuleCPTSumsTo1(
+        const PRMClass< GUM_SCALAR >& c,
+        const O3RuleCPT&              attr,
+        const O3RuleCPT::O3Rule&      rule) {
+        bool errors = false;
+        // Check that formulas are valid and sums to 1
+        GUM_SCALAR sum = 0.0;
+        for (const auto& f : rule.second) {
+          try {
+            auto value = GUM_SCALAR(f.formula().result());
+            sum += value;
+            if (value < 0.0 || 1.0 < value) {
+              O3PRM_CLASS_ILLEGAL_CPT_VALUE(c.name(), attr.name(), f, *__errors);
+              errors = true;
+            }
+          } catch (OperationNotAllowed&) {
+            O3PRM_CLASS_ILLEGAL_CPT_VALUE(c.name(), attr.name(), f, *__errors);
+            errors = true;
+          }
+        }
+
+        // Check that CPT sums to 1
+        if (std::abs(sum - 1.0) > 1e-3) {
+          O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(
+            c.name(), attr.name(), float(sum), *__errors);
+          errors = true;
+        } else if (std::abs(sum - 1.0f) > 1e-6) {
+          O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(
+            c.name(), attr.name(), float(sum), *__errors);
+        }
+        return errors == false;
+      }
+
+      template < typename GUM_SCALAR >
       INLINE bool
       O3ClassFactory< GUM_SCALAR >::__checkRuleCPT(const PRMClass< GUM_SCALAR >& c,
                                                    O3RuleCPT& attr) {
 
         const auto& scope = c.scope();
-
+        bool        errors = false;
         for (auto& rule : attr.rules()) {
-
-          // Check labels for all parents
-          if (rule.first.size() != attr.parents().size()) {
-            O3PRM_CLASS_ILLEGAL_RULE_SIZE(
-              rule, rule.first.size(), attr.parents().size(), *__errors);
-            return false;
-          }
-
-          // Add parameters to formulas
-          for (auto& f : rule.second) {
-            f.formula().variables().clear();
-            for (const auto& values : scope) {
-              f.formula().variables().insert(values.first, values.second->value());
+          try {
+            if (!__checkLabelsNumber(attr, rule)) {
+              errors = true;
             }
-          }
-
-          // Check that formulas are valid and sums to 1
-          GUM_SCALAR sum = 0.0;
-          for (const auto& f : rule.second) {
-            try {
-              auto value = GUM_SCALAR(f.formula().result());
-              sum += value;
-
-              if (value < 0.0 || 1.0 < value) {
-                O3PRM_CLASS_ILLEGAL_CPT_VALUE(c.name(), attr.name(), f, *__errors);
-                return false;
-              }
-
-            } catch (OperationNotAllowed&) {
-
-              O3PRM_CLASS_ILLEGAL_CPT_VALUE(c.name(), attr.name(), f, *__errors);
-              return false;
+            if (!__checkLabelsValues(c, attr, rule)) {
+              errors = true;
             }
-          }
-
-          // Check that CPT sums to 1
-          if (std::abs(sum - 1.0) > 1e-3) {
-            O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1(
-              c.name(), attr.name(), float(sum), *__errors);
-            return false;
-          } else if (std::abs(sum - 1.0f) > 1e-6) {
-            O3PRM_CLASS_CPT_DOES_NOT_SUM_TO_1_WARNING(
-              c.name(), attr.name(), float(sum), *__errors);
+            __addParamsToForms(scope, rule);
+            if (!__checkRuleCPTSumsTo1(c, attr, rule)) {
+              errors = true;
+            }
+          } catch (Exception& e) {
+            GUM_SHOWERROR(e);
+            errors = true;
           }
         }
 
-        return true;
+        return errors == false;
       }
 
       template < typename GUM_SCALAR >

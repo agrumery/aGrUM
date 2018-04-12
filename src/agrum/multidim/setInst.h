@@ -33,8 +33,8 @@
 #include <agrum/agrum.h>
 
 #include <agrum/core/bijection.h>
-#include <agrum/multidim/multiDimAdressable.h>
-#include <agrum/multidim/multiDimInterface.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimInterface.h>
 
 namespace gum {
 
@@ -705,7 +705,7 @@ namespace gum {
      * @brief Returns true if the SetInst is empty.
      * @return Returns true if the SetInst is empty.
      */
-    virtual bool empty(void) const;
+    virtual bool empty() const;
 
     /**
      * @brief Give a string version of SetInst.
@@ -835,7 +835,7 @@ namespace gum {
     /// @}
 
     protected:
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
+    virtual void _replace(const DiscreteVariable* x, const DiscreteVariable* y);
 
     private:
     /// The tuple of variables to be instantiated.

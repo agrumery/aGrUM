@@ -21,7 +21,7 @@
 * @file
 * @brief Template implementation of InfluenceDiagram/InfluenceDiagram.h classes.
 *
-* @author Jean-Christophe Magnan & Pierre_Henri WUILLEMIN
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 
 #include <agrum/ID/influenceDiagram.h>
@@ -106,11 +106,9 @@ namespace gum {
   void InfluenceDiagram< GUM_SCALAR >::_copyTables(
     const InfluenceDiagram< GUM_SCALAR >& IDsource) {
     // Copying potentials
-    Potential< GUM_SCALAR >* potentialCpy = nullptr;
-
     for (const auto& pot : IDsource.__potentialMap) {
       // Instanciation of the node's CPT
-      potentialCpy = new Potential< GUM_SCALAR >;
+      auto potentialCpy = new Potential< GUM_SCALAR >;
       (*potentialCpy) << variable(pot.first);
 
       // Addition of the parents
@@ -135,11 +133,9 @@ namespace gum {
     }
 
     // Copying Utilities
-    UtilityTable< GUM_SCALAR >* utilityCpy;
-
     for (const auto& uti : IDsource.__utilityMap) {
       // Instanciation of the node's CPT
-      utilityCpy = new UtilityTable< GUM_SCALAR >;
+      auto utilityCpy = new Potential< GUM_SCALAR >;
       (*utilityCpy) << variable(uti.first);
 
       // Addition of the parents
@@ -166,7 +162,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::string InfluenceDiagram< GUM_SCALAR >::toDot(void) const {
+  std::string InfluenceDiagram< GUM_SCALAR >::toDot() const {
     std::stringstream output;
     std::stringstream decisionNode;
     std::stringstream utilityNode;
@@ -217,7 +213,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::string InfluenceDiagram< GUM_SCALAR >::toString(void) const {
+  std::string InfluenceDiagram< GUM_SCALAR >::toString() const {
     std::stringstream output;
 
     output << "Influence Diagram{" << std::endl;
@@ -255,7 +251,7 @@ namespace gum {
   * Returns the utility table of a utility node.
   */
   template < typename GUM_SCALAR >
-  INLINE const UtilityTable< GUM_SCALAR >&
+  INLINE const Potential< GUM_SCALAR >&
   InfluenceDiagram< GUM_SCALAR >::utility(NodeId varId) const {
     return *(__utilityMap[varId]);
   }
@@ -453,7 +449,7 @@ namespace gum {
 
     NodeId proposedId = _addNode(var, DesiredId);
 
-    UtilityTable< GUM_SCALAR >* varut = new UtilityTable< GUM_SCALAR >(aContent);
+    Potential< GUM_SCALAR >* varut = new Potential< GUM_SCALAR >(aContent);
 
     (*varut) << variable(proposedId);
 
@@ -479,7 +475,7 @@ namespace gum {
 
     __variableMap.insert(proposedId, variableType);
 
-    _dag.addNode(proposedId);
+    _dag.addNodeWithId(proposedId);
 
     // end critical section
     return proposedId;
@@ -594,7 +590,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   void InfluenceDiagram< GUM_SCALAR >::_moralGraph(UndiGraph& graph) const {
     for (const auto node : _dag.nodes())
-      if (!isUtilityNode(node)) graph.addNode(node);
+      if (!isUtilityNode(node)) graph.addNodeWithId(node);
 
     for (const auto node : _dag.nodes()) {
       if (!isDecisionNode(node))
@@ -684,10 +680,10 @@ namespace gum {
 
     for (const auto node : _dag.nodes()) {
       if (isDecisionNode(node)) {
-        if (!temporalGraph->existsNode(node)) temporalGraph->addNode(node);
+        if (!temporalGraph->existsNode(node)) temporalGraph->addNodeWithId(node);
 
         for (const auto chi : _getChildrenDecision(node)) {
-          if (!temporalGraph->existsNode(chi)) temporalGraph->addNode(chi);
+          if (!temporalGraph->existsNode(chi)) temporalGraph->addNodeWithId(chi);
 
           temporalGraph->addArc(node, chi);
         }
@@ -797,4 +793,3 @@ namespace gum {
     return __temporalOrder;
   }
 }
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

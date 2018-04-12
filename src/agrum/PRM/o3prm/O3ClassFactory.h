@@ -26,6 +26,7 @@
  * @author Lionel TORTI
  */
 
+#include <algorithm>
 #include <memory>
 #include <string>
 
@@ -159,10 +160,24 @@ namespace gum {
         bool __checkRemoteParent(const PRMClassElementContainer< GUM_SCALAR >& c,
                                  const O3Label& prnt);
 
-
         bool __checkRawCPT(const PRMClass< GUM_SCALAR >& c, O3RawCPT& attr);
 
         bool __checkRuleCPT(const PRMClass< GUM_SCALAR >& c, O3RuleCPT& attr);
+
+        bool __checkLabelsNumber(const O3RuleCPT&         attr,
+                                 const O3RuleCPT::O3Rule& rule);
+
+        bool __checkLabelsValues(const PRMClass< GUM_SCALAR >& c,
+                                 const O3RuleCPT&              attr,
+                                 const O3RuleCPT::O3Rule&      rule);
+
+        void __addParamsToForms(
+          const HashTable< std::string, const PRMParameter< GUM_SCALAR >* >& scope,
+          O3RuleCPT::O3Rule& rule);
+
+        bool __checkRuleCPTSumsTo1(const PRMClass< GUM_SCALAR >& c,
+                                   const O3RuleCPT&              attr,
+                                   const O3RuleCPT::O3Rule&      rule);
 
         /// @}
 

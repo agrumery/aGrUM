@@ -47,7 +47,6 @@ namespace gum {
 
       this->_safeName =
         PRMObject::LEFT_CAST() + __type->name() + PRMObject::RIGHT_CAST() + name;
-      this->__type->variable().setName(this->name());
     }
 
     template < typename GUM_SCALAR >
@@ -107,7 +106,7 @@ namespace gum {
 
       Instantiation inst(*__cpf), jnst(source.cpf());
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __cpf->set(inst, source.cpf().get(jnst));
       }
@@ -239,11 +238,11 @@ namespace gum {
     PRMScalarAttribute< GUM_SCALAR >::swap(const PRMType< GUM_SCALAR >& old_type,
                                            const PRMType< GUM_SCALAR >& new_type) {
       if (&(old_type) == __type) {
-        GUM_ERROR(OperationNotAllowed, "Cannot swap attribute own type");
+        GUM_ERROR(OperationNotAllowed, "Cannot replace attribute own type");
       }
       if (old_type->domainSize() != new_type->domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot swap types with difference domain size");
+                  "Cannot replace types with difference domain size");
       }
       if (!__cpf->contains(old_type.variable())) {
         GUM_ERROR(NotFound, "could not find variable " + old_type.name());
@@ -263,7 +262,7 @@ namespace gum {
 
       Instantiation inst(__cpf), jnst(old);
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __cpf->set(inst, old->get(jnst));
       }
@@ -286,7 +285,7 @@ namespace gum {
 
       if (__type->variable().domainSize() != t->variable().domainSize()) {
         GUM_ERROR(OperationNotAllowed,
-                  "Cannot swap types with difference domain size");
+                  "Cannot replace types with difference domain size");
       }
       auto old = __cpf;
 
@@ -302,7 +301,7 @@ namespace gum {
 
       Instantiation inst(__cpf), jnst(old);
 
-      for (inst.begin(), jnst.begin(); !(inst.end() || jnst.end());
+      for (inst.setFirst(), jnst.setFirst(); !(inst.end() || jnst.end());
            inst.inc(), jnst.inc()) {
         __cpf->set(inst, old->get(jnst));
       }

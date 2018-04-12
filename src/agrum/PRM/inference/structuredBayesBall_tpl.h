@@ -113,7 +113,7 @@ namespace gum {
           if (!__getMark(marks, i, n).second) {
             __getMark(marks, i, n).second = true;
 
-            for (const auto chi : i->type().dag().children(n))
+            for (const auto chi : i->type().containerDag().children(n))
               __fromParent(i, chi, marks);
           }
 
@@ -126,7 +126,7 @@ namespace gum {
             __getMark(marks, i, n).first = true;
 
             if (!__isHardEvidence(i, n))
-              for (const auto par : i->type().dag().parents(n))
+              for (const auto par : i->type().containerDag().parents(n))
                 __fromChild(i, par, marks);
           }
 
@@ -134,7 +134,7 @@ namespace gum {
             __getMark(marks, i, n).second = true;
 
             // In i.
-            for (const auto chi : i->type().dag().children(n))
+            for (const auto chi : i->type().containerDag().children(n))
               __fromParent(i, chi, marks);
 
             // Out of i.
@@ -177,13 +177,13 @@ namespace gum {
       if ((__isHardEvidence(i, n)) && (!__getMark(marks, i, n).first)) {
         __getMark(marks, i, n).first = true;
 
-        for (const auto par : i->type().dag().parents(n))
+        for (const auto par : i->type().containerDag().parents(n))
           __fromChild(i, par, marks);
       } else if (!__getMark(marks, i, n).second) {
         __getMark(marks, i, n).second = true;
 
         // In i.
-        for (const auto chi : i->type().dag().children(n))
+        for (const auto chi : i->type().containerDag().children(n))
           __fromParent(i, chi, marks);
 
         // Out of i.
@@ -249,7 +249,7 @@ namespace gum {
       std::stringstream sBuff;
       sBuff << i->type().name();
 
-      for (const auto node : i->type().dag().nodes())
+      for (const auto node : i->type().containerDag().nodes())
         if (req_nodes.exists(node)) sBuff << "-" << node;
 
       return sBuff.str();

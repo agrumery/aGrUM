@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief Class for generating bayesian netwroks.
+ * @brief Class for generating bayesian networks.
  *
  * @author Christophe GONZALES, Pierre-Henri WUILLEMIN, Lionel TORTI and
- *Ariele-Paolo
- *MAESANO
+ * Ariele-Paolo MAESANO
  */
 #include <agrum/BN/generator/IBayesNetGenerator.h>
+#include <agrum/agrum.h>

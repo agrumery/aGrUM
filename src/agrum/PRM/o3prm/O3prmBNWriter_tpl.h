@@ -80,7 +80,7 @@ namespace gum {
     str << O3PRM_INDENT;
     str << __extractType(bn, node) << " ";
     str << __extractName(bn, node) << " ";
-    if (bn.dag().parents(node).size() > 0) {
+    if (bn.parents(node).size() > 0) {
       str << "dependson " << __extractParents(bn, node) << " ";
     }
     str << " {" << __extractCPT(bn, node) << "};" << std::endl;
@@ -130,7 +130,7 @@ namespace gum {
       }
       inst.setFirst();
       auto currentval = inst.val(0) + 1;
-      for (jnst.begin(); !jnst.end(); jnst.inc()) {
+      for (jnst.setFirst(); !jnst.end(); jnst.inc()) {
         inst.setVals(jnst);
         if (!first) {
           str << ", ";
@@ -155,7 +155,7 @@ namespace gum {
   O3prmBNWriter< GUM_SCALAR >::__extractType(const IBayesNet< GUM_SCALAR >& bn,
                                              NodeId                         node) {
     switch (bn.variable(node).varType()) {
-      case gum::DiscreteVariable::VarType::Discretized: {
+      case gum::VarType::Discretized: {
         auto double_var = dynamic_cast< const DiscretizedVariable< double >* >(
           &(bn.variable(node)));
         if (double_var != nullptr) {
@@ -172,7 +172,7 @@ namespace gum {
         GUM_ERROR(InvalidArgument,
                   "DiscretizedVariable ticks are neither doubles or floats");
       }
-      case gum::DiscreteVariable::VarType::Range: {
+      case gum::VarType::Range: {
         return __extractRangeType(bn, node);
       }
       default: { return __extractLabelizedType(bn, node); }
@@ -204,9 +204,9 @@ namespace gum {
   INLINE std::string
   O3prmBNWriter< GUM_SCALAR >::__extractDiscretizedType(const VARTYPE* var) {
     std::stringstream str;
-    if (var->ticks().size() > 3) {
+    if (var->ticks().size() >= 3) {
       str << "real(" << var->ticks()[0];
-      for (size_t i = 1; i < var->ticks().size() - 1; ++i) {
+      for (size_t i = 1; i < var->ticks().size(); ++i) {
         str << ", " << var->ticks()[i];
       }
       str << ")";
@@ -239,7 +239,7 @@ namespace gum {
    */
   template < typename GUM_SCALAR >
   INLINE void
-  O3prmBNWriter< GUM_SCALAR >::write(std::string                    filePath,
+  O3prmBNWriter< GUM_SCALAR >::write(const std::string&             filePath,
                                      const IBayesNet< GUM_SCALAR >& bn) {
     std::ofstream output(filePath.c_str(), std::ios_base::trunc);
 

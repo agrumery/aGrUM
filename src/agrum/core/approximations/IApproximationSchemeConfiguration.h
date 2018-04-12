@@ -112,7 +112,7 @@ namespace gum {
      * @brief Returns the value of epsilon.
      * @return Returns the value of epsilon.
      */
-    virtual double epsilon(void) const = 0;
+    virtual double epsilon() const = 0;
 
     /**
      * @brief Disable stopping criterion on epsilon.
@@ -147,7 +147,7 @@ namespace gum {
      * @brief Returns the value of the minimal epsilon rate.
      * @return Returns the value of the minimal epsilon rate.
      */
-    virtual double minEpsilonRate(void) const = 0;
+    virtual double minEpsilonRate() const = 0;
 
     /**
      * @brief Disable stopping criterion on epsilon rate.
@@ -181,7 +181,7 @@ namespace gum {
      * @brief Returns the criterion on number of iterations.
      * @return Returns the criterion on number of iterations.
      */
-    virtual Size maxIter(void) const = 0;
+    virtual Size maxIter() const = 0;
 
     /**
      * @brief Disable stopping criterion on max iterations.
@@ -215,13 +215,13 @@ namespace gum {
      * @brief Returns the timeout (in seconds).
      * @return Returns the timeout (in seconds).
      */
-    virtual double maxTime(void) const = 0;
+    virtual double maxTime() const = 0;
 
     /**
      * @brief Returns the current running time in second.
      * @return Returns the current running time in second.
      */
-    virtual double currentTime(void) const = 0;
+    virtual double currentTime() const = 0;
 
     /**
      * @brief Disable stopping criterion on timeout.
@@ -253,7 +253,7 @@ namespace gum {
      * @brief Returns the period size.
      * @return Returns the period size.
      */
-    virtual Size periodSize(void) const = 0;
+    virtual Size periodSize() const = 0;
 
     /**
      * @brief Set the verbosity on (true) or off (false).
@@ -265,7 +265,7 @@ namespace gum {
      * @brief Returns true if verbosity is enabled.
      * @return Returns true if verbosity is enabled.
      */
-    virtual bool verbosity(void) const = 0;
+    virtual bool verbosity() const = 0;
 
     /**
      * @brief Returns the approximation scheme state.

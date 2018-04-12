@@ -8,8 +8,12 @@ interface generator."
 %feature("autodoc", "0");
 %include "docs.i"
 
-#pragma SWIG nowarn=341,342 // The 'using' keyword in type aliasing is not fully supported yet.
-#pragma SWIG nowarn=320     // Explicit template instantiation ignored.
+//317 : Specialization of non-template
+//320 : Explicit template instantiation ignored.
+//325 : Nested class not currently supported (Database ignored)
+#pragma SWIG nowarn=320,317,325
+
+//#pragma SWIG nowarn=341,342 // The 'using' keyword in type aliasing is not fully supported yet.
 
 
 %begin %{
@@ -45,7 +49,6 @@ interface generator."
 %include "instantiation.i"
 
 %include "potential.i"
-%include "utility.i"
 
 %include "graphs.i"
 
@@ -71,7 +74,6 @@ interface generator."
 
 %pythoncode %{
 Potential = Potential_double
-UtilityTable = UtilityTable_double
 
 randomDistribution = randomDistribution_double
 

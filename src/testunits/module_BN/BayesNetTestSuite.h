@@ -137,7 +137,7 @@ namespace gum_tests {
       delete var5;
     }
 
-    void testConstructor() {
+    void /*test*/ Constructor() {
       gum::BayesNet< float >* topology = nullptr;
       TS_GUM_ASSERT_THROWS_NOTHING(topology = new gum::BayesNet< float >());
       TS_ASSERT_EQUALS(topology->size(), (gum::Idx)0);
@@ -160,7 +160,7 @@ namespace gum_tests {
 
       TS_GUM_ASSERT_THROWS_NOTHING(delete topology);
     }
-    void testCopyConstructor() {
+    void /*test*/ CopyConstructor() {
       gum::BayesNet< float >   source;
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(source, idList));
@@ -214,7 +214,7 @@ namespace gum_tests {
       }
     }
 
-    void testCopyOperator() {
+    void /*test*/ CopyOperator() {
       gum::BayesNet< float >   source;
       gum::BayesNet< float >   copy;
       gum::List< gum::NodeId > idList;
@@ -278,7 +278,7 @@ namespace gum_tests {
       }
     }
 
-    void testInsertion_1() {
+    void /*test*/ Insertion_1() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -317,7 +317,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
     }
 
-    void testInsertion_2() {
+    void /*test*/ Insertion_2() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -342,7 +342,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(*((gum::LabelizedVariable*)&bn.variable(idList[4])), *var5);
     }
 
-    void testIterations() {
+    void /*test*/ Iterations() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(bn, idList));
@@ -365,7 +365,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(cpt, bn.sizeArcs());
     }
 
-    void testArcInsertion() {
+    void /*test*/ ArcInsertion() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -385,7 +385,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.dag().sizeArcs(), (gum::Size)6);
     }
 
-    void testEraseVar() {
+    void /*test*/ EraseVar() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -426,7 +426,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.dag().sizeArcs(), (gum::Size)6);
     }
 
-    void testEraseArc() {
+    void /*test*/ EraseArc() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -453,7 +453,7 @@ namespace gum_tests {
       TS_ASSERT(bn.dag().emptyArcs());
     }
 
-    void testStringAccessors() {
+    void /*test*/ StringAccessors() {
       gum::BayesNet< float > bn;
       for (const auto& x : {"A", "B", "C"}) {
         bn.add(gum::LabelizedVariable(x, x, 2));
@@ -499,7 +499,7 @@ namespace gum_tests {
     }
 
 
-    void testIterator() {
+    void /*test*/ Iterator() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -508,7 +508,7 @@ namespace gum_tests {
       }
     }
 
-    void testRandomlyFilled() {
+    void /*test*/ RandomlyFilled() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -524,7 +524,7 @@ namespace gum_tests {
       }
     }
 
-    void testMoralGraph() {
+    void /*test*/ MoralGraph() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -535,7 +535,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(graph, getRealMoralGraph(bn, idList));
     }
 
-    void testTopologicalOrder() {
+    void /*test*/ TopologicalOrder() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -547,7 +547,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(topoOrder.size(), (gum::Size)5);
     }
 
-    void testcpt() {
+    void /*test*/ cpt() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -559,7 +559,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.cpt(idList[4]).domainSize(), (gum::Size)24);
     }
 
-    void testCPTCoherencyVarRemoval() {
+    void /*test*/ CPTCoherencyVarRemoval() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -594,7 +594,7 @@ namespace gum_tests {
       TS_ASSERT(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
     }
 
-    void testCPTCoherencyArcRemoval() {
+    void /*test*/ CPTCoherencyArcRemoval() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -628,7 +628,7 @@ namespace gum_tests {
       TS_ASSERT(bn.cpt(idList[3]).contains(bn.variable(idList[3])));
     }
 
-    void testStreamOperator() {
+    void /*test*/ StreamOperator() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -637,7 +637,7 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(sBuff << bn);
     }
 
-    void testAccessorByName() {
+    void /*test*/ AccessorByName() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
@@ -658,7 +658,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(bn.idFromName("var1"), gum::NotFound);
     }
 
-    void testCopyAndEqualityOperators() {
+    void /*test*/ CopyAndEqualityOperators() {
       gum::BayesNet< float >*               bn_1 = new gum::BayesNet< float >();
       gum::SimpleBayesNetGenerator< float > generator(20, 30, 4);
       generator.generateBN(*bn_1);
@@ -711,7 +711,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(s1, s2);
     }
 
-    void testAggregatorNodes() {
+    void /*test*/ AggregatorNodes() {
       {
         gum::BayesNet< float > bn;
         gum::Idx               i1 = 0;
@@ -736,14 +736,13 @@ namespace gum_tests {
       }
     }
 
-    void testJointProbability() {
+    void /*test*/ JointProbability() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
 
       fill(bn, idList);
 
-      gum::Instantiation i;
-      bn.completeInstantiation(i);
+      auto i = bn.completeInstantiation();
       TS_ASSERT_EQUALS(i.nbrDim(), bn.size());
 
       TS_ASSERT_EQUALS(i.domainSize(), (gum::Size)(2 * 2 * 2 * 2 * 3));
@@ -754,21 +753,24 @@ namespace gum_tests {
       TS_ASSERT_DELTA(a, 0.00072, 1e-4);
 
       gum::Instantiation j;
-      float              b = 0.0;
-      TS_ASSERT_THROWS_NOTHING(b = bn.jointProbability(j));
+      for (auto n : bn.nodes()) {
+        TS_ASSERT_THROWS(bn.jointProbability(j), gum::InvalidArgument);
+        j.add(bn.variable(n));
+      }
+      float b;
+      TS_GUM_ASSERT_THROWS_NOTHING(b = bn.jointProbability(j));
 
       TS_ASSERT_EQUALS(a, b);
     }
 
-    void testArcReversal() {
+    void /*test*/ ArcReversal() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
       fill(bn, idList);
 
       std::vector< float > joint;
       joint.reserve(2 * bn.dim());
-      gum::Instantiation i;
-      bn.completeInstantiation(i);
+      auto i = bn.completeInstantiation();
 
       for (i.setFirst(); !i.end(); i.inc()) {
         joint.push_back(bn.jointProbability(i));
@@ -788,7 +790,7 @@ namespace gum_tests {
       }
     }
 
-    void testChangeLabelOfVariable() {
+    void /*test*/ ChangeLabelOfVariable() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
       fill(bn, idList);
@@ -800,7 +802,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.variable(0).toString(), "var1<x,1>");
     }
 
-    void testShortCutAddLabelized() {
+    void /*test*/ ShortCutAddLabelized() {
       gum::BayesNet< float > bn;
 
       gum::NodeId i1, i2, i3;
@@ -818,7 +820,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.log10DomainSize(), std::log10(2.0 * 3.0));
     }
 
-    void testSomeFunctions() {
+    void /*test*/ SomeFunctions() {
       gum::BayesNet< float >   bn;
       gum::List< gum::NodeId > idList;
       TS_GUM_ASSERT_THROWS_NOTHING(fill(bn, idList));
@@ -830,7 +832,7 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(bn.maxNonOneParam(), 0.9f);
     }
 
-    void testMinimalCondSet() {
+    void /*test*/ MinimalCondSet() {
       /*
        A   B        0   1
         \ / \        \ / \
@@ -880,7 +882,7 @@ namespace gum_tests {
                        gum::NodeSet({b, c, f, h}));
     }
 
-    void testMinimalCondSet2() {
+    void /*test*/ MinimalCondSet2() {
       /*
       F  A
       \ / \

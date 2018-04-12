@@ -28,7 +28,7 @@
 #define GUM_ATTRIBUTE_H
 
 #include <agrum/PRM/elements/PRMClassElement.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
   namespace prm {
@@ -62,7 +62,7 @@ namespace gum {
       /// @name Constructors & destructor
       // ========================================================================
       /// @{
-      PRMAttribute(const std::string& name);
+      explicit PRMAttribute(const std::string& name);
 
       /// Destructor.
       virtual ~PRMAttribute();

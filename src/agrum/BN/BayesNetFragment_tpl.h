@@ -145,15 +145,15 @@ namespace gum {
       GUM_ERROR(NotFound, "Node " << id << " does not exist in referred BayesNet");
 
     if (!isInstalledNode(id)) {
-      this->_dag.addNode(id);
+      this->_dag.addNodeWithId(id);
 
       // adding arcs with id as a tail
-      for (auto pa : this->__bn.dag().parents(id)) {
+      for (auto pa : this->__bn.parents(id)) {
         if (isInstalledNode(pa)) this->_dag.addArc(pa, id);
       }
 
       // addin arcs with id as a head
-      for (auto son : this->__bn.dag().children(id))
+      for (auto son : this->__bn.children(id))
         if (isInstalledNode(son)) this->_dag.addArc(id, son);
     }
   }
@@ -163,7 +163,7 @@ namespace gum {
     installNode(id);
 
     // bn is a dag => this will have an end ...
-    for (auto pa : this->__bn.dag().parents(id))
+    for (auto pa : this->__bn.parents(id))
       installAscendants(pa);
   }
 
@@ -191,7 +191,7 @@ namespace gum {
   void BayesNetFragment< GUM_SCALAR >::_installCPT(
     NodeId id, const Potential< GUM_SCALAR >* pot) noexcept {
     // topology
-    const auto& parents = dag().parents(id);
+    const auto& parents = this->parents(id);
     for (auto node_it = parents.beginSafe(); node_it != parents.endSafe();
          ++node_it)  // safe iterator needed here
       _uninstallArc(*node_it, id);
@@ -222,7 +222,7 @@ namespace gum {
                   << ">");
     }
 
-    const NodeSet& parents = __bn.dag().parents(id);
+    const NodeSet& parents = __bn.parents(id);
 
     for (Idx i = 1; i < pot->nbrDim(); i++) {
       if (!parents.contains(__bn.idFromName(pot->variable(i).name())))
@@ -283,7 +283,6 @@ namespace gum {
     if (!isInstalledNode(id))
       GUM_ERROR(NotFound, "The node " << id << " is not part of this fragment");
 
-    const auto& parents = dag().parents(id);
     const auto& cpt = this->cpt(id);
     NodeSet     cpt_parents;
 
@@ -291,7 +290,7 @@ namespace gum {
       cpt_parents.insert(__bn.idFromName(cpt.variable(i).name()));
     }
 
-    return (parents == cpt_parents);
+    return (this->parents(id) == cpt_parents);
   }
 
   template < typename GUM_SCALAR >
@@ -303,7 +302,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::string BayesNetFragment< GUM_SCALAR >::toDot(void) const {
+  std::string BayesNetFragment< GUM_SCALAR >::toDot() const {
     std::stringstream output;
     output << "digraph \"";
 
@@ -357,8 +356,8 @@ namespace gum {
     std::string tab = "  ";
 
     for (auto node : __bn.nodes()) {
-      if (__bn.dag().children(node).size() > 0) {
-        for (auto child : __bn.dag().children(node)) {
+      if (__bn.children(node).size() > 0) {
+        for (auto child : __bn.children(node)) {
           output << tab << "\"" << __bn.variable(node).name() << "\" -> "
                  << "\"" << __bn.variable(child).name() << "\" [";
 

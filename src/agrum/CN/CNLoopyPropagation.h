@@ -132,7 +132,7 @@ namespace gum {
        * Constructor.
        * @param cnet The CredalNet to be used with this algorithm.
        */
-      CNLoopyPropagation(const CredalNet< GUM_SCALAR >& cnet);
+      explicit CNLoopyPropagation(const CredalNet< GUM_SCALAR >& cnet);
       /** Destructor. */
       virtual ~CNLoopyPropagation();
       /// @}

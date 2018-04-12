@@ -47,7 +47,7 @@ namespace gum {
          varIter != __binarizedFG->variablesSequence().endSafe(); ++varIter)  {
       if( !__varMap.exists(*varIter)){
         __varMap.insert( *varIter, new  Sequence<const DiscreteVariable*>() );
-        Idx nbVar = Idx(std::ceil(std::log2((*varIter)->domainSize())));
+        auto nbVar = Idx(std::ceil(std::log2((*varIter)->domainSize())));
         for( Idx i = 0; i < nbVar; ++i )
           __varMap[*varIter]->insert(new LabelizedVariable((*varIter)->name() + std::to_string(i)));
       }

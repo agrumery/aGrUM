@@ -29,8 +29,8 @@
 
 #include <agrum/agrum.h>
 #include <agrum/core/set.h>
-#include <agrum/multidim/multiDimDecorator.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimDecorator.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
 
@@ -42,9 +42,11 @@ namespace gum {
    * @class Potential potential.h <agrum/multidim/potential.h>
    * @ingroup multidim_group
    *
-   * @brief Class representing a potential.
+   * @brief aGrUM's Potential is a multi-dimensional array with tensor operators.
+   * It is used to represent probabilities and utilities in aGrUMs'
+   * multidimensional (graphical) models.
    *
-   * Using the decorator pattern, this representation is independant from the
+   * Using the decorator pattern, this representation is independent from the
    * implementation of the multidimensional matrix.
    *
    * @tparam GUM_SCALAR The type of the scalar stored in this multidimensional
@@ -201,6 +203,13 @@ namespace gum {
     /// @throw NotFound if all value == 0.0
     GUM_SCALAR minNonZero() const;
 
+    /// set of instantiation corresponding to the parameter v in the Potential
+    Set< Instantiation > findAll(GUM_SCALAR v) const;
+    /// set of instantiation corresponding to the max in the Potential
+    Set< Instantiation > argmax() const;
+    /// set of instantiation corresponding to the min in the Potential
+    Set< Instantiation > argmin() const;
+
     /// entropy of the Potential
     GUM_SCALAR entropy() const;
 
@@ -222,6 +231,37 @@ namespace gum {
     Potential< GUM_SCALAR > putFirst(const DiscreteVariable* var) const;
 
     /**
+     * @brief copy a Potential data using name of variables and labels (not
+     * necessarily the same variables in the same orders)
+     *
+     * @warning a strict control on names of variables and labels are made
+     *
+     * @throw InvalidArgument if the Potential is not compatible with this
+     */
+    const Potential< GUM_SCALAR >&
+    fillWith(const Potential< GUM_SCALAR >& src) const;
+
+    /**
+     * @brief copy a Potential data using the sequence of names in mapSrc to find
+     * the corresponding variables.
+     *
+     * For instance, to copy the potential P(A,B,C) in Q(D,E,A) with the mapping
+     * P.A<->Q.E, P.B<->Q.A, P.C<->Q.D (assuming that the corresponding variables
+     * have the same domain size and the order of labels):
+     *
+     * @code
+     *   Q.fillWith(P,{"C","A","B"});
+     * @endcode
+     *
+     * @warning a strict control on names of variables and labels are made
+     *
+     * @throw InvalidArgument if the Potential is not compatible with this
+     * */
+    const Potential< GUM_SCALAR >&
+    fillWith(const Potential< GUM_SCALAR >&    src,
+             const std::vector< std::string >& mapSrc) const;
+
+    /**
      * @brief Automatically fills the potential with the values in
      * v.
      *
@@ -238,6 +278,7 @@ namespace gum {
      * @param v contains the data.
      */
     const Potential< GUM_SCALAR >& fillWith(const GUM_SCALAR& v) const;
+
 
     /**
      * @brief Apply abs on every element of the container
@@ -389,9 +430,6 @@ namespace gum {
     ///@}
 
     protected:
-    virtual void _swap(const DiscreteVariable* x, const DiscreteVariable* y);
-
-
     Set< const DiscreteVariable* >
     _complementVars(const Set< const DiscreteVariable* >& del_vars) const;
   };

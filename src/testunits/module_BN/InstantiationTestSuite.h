@@ -22,8 +22,8 @@
 #include <cxxtest/testsuite_utils.h>
 
 #include <agrum/BN/BayesNet.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/multiDimArray.h>
 #include <agrum/variables/discretizedVariable.h>
 #include <agrum/variables/labelizedVariable.h>
 
@@ -267,6 +267,11 @@ namespace gum_tests {
 
       j.setVals(i);
       TS_ASSERT_EQUALS(j.toString(), "<b:2|a:0|c:3>");
+
+      j.chgVal("a", "1");
+      j.chgVal("b", 0);
+      j.chgVal("c", "2");
+      TS_ASSERT_EQUALS(j.toString(), "<b:0|a:1|c:2>");
     }
 
     void testOperatorEgal() {
@@ -319,6 +324,27 @@ namespace gum_tests {
         p.fromOffset(i2, l);
         TS_ASSERT_EQUALS(p.toOffset(i1), p.toOffset(i2));
       }
+    }
+
+    void testOperatorEqual() {
+      gum::LabelizedVariable a("a", "first var", 2), b("b", "second var", 4),
+        c("c", "third var", 5), d("d", "fourth var", 2);
+      gum::MultiDimArray< char > p;
+      p << a << b << c;
+
+      gum::Instantiation i1(p), i2(p);
+      i2.setFirst();
+      ++i2;  // for i2 to be !=i1 in the first iteration
+      for (i1.setFirst(); !i1.end(); ++i1) {
+        TS_ASSERT_DIFFERS(i1, i2);
+        p.fromOffset(i2, p.toOffset(i1));
+        TS_ASSERT_EQUALS(i1, i2);
+      }
+
+      gum::Instantiation j;
+      TS_ASSERT_DIFFERS(i1, j);
+      j.inc();                 // j is in overflow
+      TS_ASSERT_EQUALS(i1, j);  // both are in overflow => equals
     }
 
     private:

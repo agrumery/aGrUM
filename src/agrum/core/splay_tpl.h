@@ -790,7 +790,7 @@ namespace gum {
     if (root)
       return root->size;
     else
-      return 0;
+      return Size(0);
   }
 
   // Test if the tree contains the element

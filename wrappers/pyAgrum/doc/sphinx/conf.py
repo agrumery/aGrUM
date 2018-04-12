@@ -473,7 +473,7 @@ gumReplaceList = [
   ('gum::NodeId', 'int'),
   ('gum::NodeSet', 'Set'),
   ('std::string', 'str'),
-  ('gum::DiscreteVariable::VarType', 'int'),
+  ('gum::Variable::VarType', 'int'),
   ('gum::', 'pyAgrum.'),
   ('_double ', ' '),
   ('_double', ''),

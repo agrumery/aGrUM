@@ -27,7 +27,6 @@
 #include <agrum/BN/generator/maxInducedWidthMCBayesNetGenerator.h>
 
 namespace gum {
-
 #ifdef _MSC_VER
 #define MCBG MCBayesNetGenerator
 #define IBNG IBayesNetGenerator
@@ -35,7 +34,6 @@ namespace gum {
 #define MCBG MCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >
 #define IBNG IBayesNetGenerator< GUM_SCALAR, ICPTGenerator >
 #endif
-
   // Default constructor.
   // Use the SimpleCPTGenerator for generating the BNs CPT.
   template < typename GUM_SCALAR,
@@ -45,12 +43,12 @@ namespace gum {
   MaxInducedWidthMCBayesNetGenerator< GUM_SCALAR, ICPTGenerator, ICPTDisturber >::
     MaxInducedWidthMCBayesNetGenerator(Size nbrNodes,
                                        Size maxArcs,
-                                       Size max_modality,
+                                       Size maxModality,
                                        Size maxInducedWidth,
                                        Idx  iteration,
                                        Idx  p,
                                        Idx  q)
-      : MCBG(nbrNodes, maxArcs, max_modality, iteration, p, q) {
+      : MCBG(nbrNodes, maxArcs, maxModality, iteration, p, q) {
     if (maxInducedWidth == 0)
       GUM_ERROR(OperationNotAllowed,
                 "maxInducedWidth must be at least equal "
@@ -110,7 +108,7 @@ namespace gum {
     NodeProperty< Size > __modalitiesMap;
 
     for (auto node : this->_bayesNet.nodes())
-      __modalitiesMap.insert(node, IBNG::_bayesNet.variable(node).domainSize());
+      __modalitiesMap.insert(node, this->_bayesNet.variable(node).domainSize());
 
     DefaultTriangulation tri(&(this->_bayesNet.moralGraph()), &__modalitiesMap);
 
@@ -141,6 +139,3 @@ namespace gum {
     _maxlog10InducedWidth = maxlog10InducedWidth;
   }
 } /* namespace gum */
-
-#undef MCBG
-#undef IBNG

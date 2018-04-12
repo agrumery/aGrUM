@@ -290,7 +290,7 @@ namespace gum {
               // the
               // max independent set
               // over the remaining matches
-              reduced_iso_graph.addNode(node);
+              reduced_iso_graph.addNodeWithId(node);
 
               for (const auto iso : reduced_iso_graph.nodes())
                 if (iso_graph->existsEdge(node, iso))

@@ -260,7 +260,7 @@ namespace gum {
     return __refcount;
   }
 
-  // swap the contents of two RefPtr
+  // replace the contents of two RefPtr
 
   template < typename Val >
   void swap(RefPtr< Val >& ptr1, RefPtr< Val >& ptr2) {

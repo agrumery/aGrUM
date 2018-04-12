@@ -262,5 +262,3 @@ namespace gum {
 #include <agrum/FMDP/learning/fmdpLearner_tpl.h>
 
 #endif  // GUM_FMDP_LEARNER_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

@@ -30,12 +30,21 @@ namespace gum {
   namespace prm {
 
     template < typename GUM_SCALAR >
+    void PRMType< GUM_SCALAR >::__updateName() {
+      const void*       address = static_cast< const void* >(this);
+      std::stringstream ss;
+      ss << this->name() << "-" << address;
+      this->__var->setName(ss.str());
+    }
+
+    template < typename GUM_SCALAR >
     PRMType< GUM_SCALAR >::PRMType(const DiscreteVariable& var)
         : PRMObject(var.name())
         , __var(var.clone())
         , __superType(0)
         , __label_map(0) {
       GUM_CONSTRUCTOR(PRMType);
+      this->__updateName();
     }
 
     template < typename GUM_SCALAR >
@@ -47,6 +56,7 @@ namespace gum {
         , __superType(&super_type)
         , __label_map(new std::vector< Idx >(label_map)) {
       GUM_CONSTRUCTOR(PRMType);
+      this->__updateName();
 
       if (!__isValid()) {
         delete __label_map;
@@ -62,10 +72,18 @@ namespace gum {
         , __superType(from.__superType)
         , __label_map(0) {
       GUM_CONS_CPY(PRMType);
+      this->__updateName();
 
       if (__superType) {
         __label_map = new std::vector< Idx >(from.label_map());
       }
+    }
+
+    template < typename GUM_SCALAR >
+    PRMType< GUM_SCALAR >::PRMType(PRMType< GUM_SCALAR >&& from)
+        : PRMObject(from) {
+      GUM_CONS_MOV(PRMType);
+      GUM_ERROR(FatalError, "Move constructor must not be used");
     }
 
     template < typename GUM_SCALAR >
@@ -75,6 +93,16 @@ namespace gum {
       if (__label_map) {
         delete __label_map;
       }
+    }
+
+    template < typename GUM_SCALAR >
+    PRMType< GUM_SCALAR >& PRMType< GUM_SCALAR >::operator=(const PRMType& from) {
+      GUM_ERROR(FatalError, "Copy operator must not be used");
+    }
+
+    template < typename GUM_SCALAR >
+    PRMType< GUM_SCALAR >& PRMType< GUM_SCALAR >::operator=(PRMType&& from) {
+      GUM_ERROR(FatalError, "Move operator must not be used");
     }
 
     template < typename GUM_SCALAR >

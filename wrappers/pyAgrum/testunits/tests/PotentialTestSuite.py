@@ -49,6 +49,15 @@ class TestInsertions(PotentialTestCase):
 
     self.assertFalse(pot.contains(gum.LabelizedVariable("a", "", 5)))
 
+    a = gum.LabelizedVariable("a", "a", 2)
+    other_a = gum.LabelizedVariable("a", "a", 2)
+    p = gum.Potential()
+    p.add(a)
+    with self.assertRaises(gum.DuplicateElement):
+      p.add(a)  # once again
+    with self.assertRaises(gum.DuplicateElement):
+      p.add(other_a)  # with the same name
+
   def testVariableDeletion(self):
     pot = gum.Potential()
     pot.add(self.var['s'])
@@ -580,7 +589,7 @@ class TestOperators(pyAgrumTestCase):
     self.assertTrue(p == q)
 
     p2 = gum.Potential()
-    p2.add(a).add(b).fill(0)
+    p2.add(a).add(b).fillWith(0)
 
     with self.assertRaises(gum.FatalError):
       p2.normalizeAsCPT()
@@ -634,20 +643,92 @@ class TestOperators(pyAgrumTestCase):
     with self.assertRaises(gum.FatalError):
       res = r.KL(p)
 
-    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7,2) + 0.5 * math.log(0.5 / 0.3,2), 1e-5)
-    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5,2) + 0.3 * math.log(0.3 / 0.5,2), 1e-5)
+    self.assertAlmostEqual(q.KL(r), 0.5 * math.log(0.5 / 0.7, 2) + 0.5 * math.log(0.5 / 0.3, 2), 1e-5)
+    self.assertAlmostEqual(r.KL(q), 0.7 * math.log(0.7 / 0.5, 2) + 0.3 * math.log(0.3 / 0.5, 2), 1e-5)
 
   def testVariableAccessor(self):
     v = gum.LabelizedVariable("v", "v", 2)
     w = gum.LabelizedVariable("w", "w", 2)
-    p=gum.Potential().add(v).add(w)
-    self.assertEquals(p.variable(0),p.variable('v'))
-    self.assertEquals(p.variable(1),p.variable('w'))
-    self.assertNotEqual(p.variable(1),p.variable('v'))
-    self.assertNotEqual(p.variable(0),p.variable('w'))
+    p = gum.Potential().add(v).add(w)
+    self.assertEquals(p.variable(0), p.variable('v'))
+    self.assertEquals(p.variable(1), p.variable('w'))
+    self.assertNotEqual(p.variable(1), p.variable('v'))
+    self.assertNotEqual(p.variable(0), p.variable('w'))
 
-    with self.assertRaises(IndexError):
-      x=p.variable("zz")
+    with self.assertRaises(gum.NotFound):
+      x = p.variable("zz")
+
+  def testFillWithPotential(self):
+    bn = gum.fastBN("A->B->C")
+    pABC = bn.cpt("A") * bn.cpt("B") * bn.cpt("C")
+
+    bn2 = gum.fastBN("A->B->C")
+    bn2.cpt("A").fillWith(bn.cpt("A"))
+    bn2.cpt("B").fillWith(pABC.margSumIn(["A", "B"]) / pABC.margSumIn(["A"]))
+    bn2.cpt("C").fillWith(pABC.margSumIn(["B", "C"]) / pABC.margSumIn(["B"]))
+    pABC2 = (bn2.cpt("A") * bn2.cpt("B") * bn2.cpt("C"))
+
+    self.assertAlmostEquals(np.max(pABC2.reorganize(['A', 'B', 'C']).toarray() -
+                                   pABC.reorganize(['A', 'B', 'C']).toarray()), 0)
+    self.assertAlmostEquals(np.max(pABC.reorganize(['A', 'B', 'C']).toarray() -
+                                   pABC2.reorganize(['A', 'B', 'C']).toarray()), 0)
+
+  def testFillWithPotentialAndMap(self):
+    v = gum.LabelizedVariable("v", "v", 2)
+    w = gum.LabelizedVariable("w", "w", 3)
+    p = gum.Potential().add(v).add(w)
+    p.fillWith([1, 2, 3, 4, 5, 6])
+
+    vv = gum.LabelizedVariable("vv", "vv", 2)
+    ww = gum.LabelizedVariable("ww", "ww", 3)
+    pp = gum.Potential().add(ww).add(vv)
+    pp.fillWith(p, ["w", "v"])
+    self.assertAlmostEquals(np.max(p.reorganize(['v', 'w']).toarray() -
+                                   pp.reorganize(['vv', 'ww']).toarray()), 0)
+
+    vvv = gum.LabelizedVariable("vvv", "vvv", 2)
+    www = gum.LabelizedVariable("www", "www", 2)
+    ppp = gum.Potential().add(vvv).add(www)
+    with self.assertRaises(gum.InvalidArgument):
+      ppp.fillWith(p, ["w", "v"])
+
+  """
+      void __testval_for_set(const gum::Potential< int >&         p,
+                             int                                  val,
+                             const gum::Set< gum::Instantiation > s,
+                             gum::Size                            expected_size) {
+        gum::Instantiation ip(p);
+  
+        TS_ASSERT_EQUALS(s.size(), expected_size);
+        for (ip.setFirst(); !ip.end(); ++ip) {
+          if (s.contains(ip)) {
+            TS_ASSERT_EQUALS(p[ip], val);
+          } else {
+            TS_ASSERT_DIFFERS(p[ip], val);
+          }
+        }
+      } 
+  """
+
+  def __test_val_for_set(self, p, val, soi, nbr):
+    self.assertEqual(len(soi), nbr)
+    for i in soi:
+      self.assertEqual(p[i], val)
+
+  def testArgMaxMinFindAll(self):
+    v = gum.LabelizedVariable("v", "v", 2)
+    w = gum.LabelizedVariable("w", "w", 3)
+
+    p = gum.Potential()
+    self.__test_val_for_set(p, 10, p.findAll(10), 0)
+
+    p.add(v).add(w)
+    p.fillWith([1, 3, 2, 4, 1, 4])
+
+    self.__test_val_for_set(p, 3, p.findAll(3), 1)
+    self.__test_val_for_set(p, 10, p.findAll(10), 0)
+    self.__test_val_for_set(p, 4, p.argmax(), 2)
+    self.__test_val_for_set(p, 1, p.argmin(), 2)
 
 
 ts = unittest.TestSuite()

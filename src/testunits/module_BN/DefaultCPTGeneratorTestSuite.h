@@ -88,10 +88,10 @@ namespace gum_tests {
       pot2D->add(*binVar4);
 
       nVar1 = new gum::LabelizedVariable("nVar1", "A discrete variable", 2);
-      nVar2 = new gum::LabelizedVariable("nVar1", "A discrete variable", 3);
-      nVar3 = new gum::LabelizedVariable("nVar1", "A discrete variable", 4);
-      nVar4 = new gum::LabelizedVariable("nVar1", "A discrete variable", 5);
-      nVar5 = new gum::LabelizedVariable("nVar1", "A discrete variable", 10);
+      nVar2 = new gum::LabelizedVariable("nVar2", "A discrete variable", 3);
+      nVar3 = new gum::LabelizedVariable("nVar3", "A discrete variable", 4);
+      nVar4 = new gum::LabelizedVariable("nVar4", "A discrete variable", 5);
+      nVar5 = new gum::LabelizedVariable("nVar5", "A discrete variable", 10);
 
       pot3F = new gum::Potential< float >();
       pot3F->add(*nVar1);
@@ -367,5 +367,3 @@ namespace gum_tests {
     }
   };
 }
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

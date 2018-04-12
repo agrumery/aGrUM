@@ -238,7 +238,7 @@ def BNinference2dot(bn, size="4",engine=None, evs={}, targets={}, format='png', 
   dotstr += "  label=\"Inference in {:6.2f}ms\";\n".format(1000 * (stopTime - startTime))
   dotstr += "  node [fillcolor=floralwhite, style=filled,color=grey];\n"
 
-  for nid in bn.ids():
+  for nid in bn.nodes():
     name = bn.variable(nid).name()
 
     if vals is None or name not in vals or nid not in vals:

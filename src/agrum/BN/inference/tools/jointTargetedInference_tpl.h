@@ -205,19 +205,18 @@ namespace gum {
   // Compute the posterior of a nodeset.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& vars) {
-    // try to get the smallest set of targets that contains "vars"
+  JointTargetedInference< GUM_SCALAR >::jointPosterior(const NodeSet& nodes) {
+    // try to get the smallest set of targets that contains "nodes"
     NodeSet set;
-    bool    found_exact_target;
+    bool    found_exact_target = false;
 
-    if (__joint_targets.contains(vars)) {
-      set = vars;
+    if (__joint_targets.contains(nodes)) {
+      set = nodes;
       found_exact_target = true;
     } else {
       for (const auto& target : __joint_targets) {
-        if (vars.isSubsetOf(target)) {
+        if (nodes.isSubsetOf(target)) {
           set = target;
-          found_exact_target = false;
           break;
         }
       }
@@ -225,7 +224,7 @@ namespace gum {
 
     if (set.empty()) {
       GUM_ERROR(UndefinedElement,
-                " no joint target containing " << vars << "could be found");
+                " no joint target containing " << nodes << "could be found");
     }
 
     if (!this->isDone()) {
@@ -233,16 +232,16 @@ namespace gum {
     }
 
     if (found_exact_target)
-      return _jointPosterior(vars);
+      return _jointPosterior(nodes);
     else
-      return _jointPosterior(vars, set);
+      return _jointPosterior(nodes, set);
   }
 
 
   // Compute the posterior of a node
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  JointTargetedInference< GUM_SCALAR >::posterior(const NodeId node) {
+  JointTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
     if (this->isTarget(node))
       return MarginalTargetedInference< GUM_SCALAR >::posterior(node);
     else
@@ -268,8 +267,7 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template < typename GUM_SCALAR >
-  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::I(const NodeId X,
-                                                     const NodeId Y) {
+  GUM_SCALAR JointTargetedInference< GUM_SCALAR >::I(NodeId X, NodeId Y) {
     Potential< GUM_SCALAR > pX, pY, *pXY = nullptr;
 
     try {
@@ -294,7 +292,7 @@ namespace gum {
     }
 
     Instantiation i(*pXY);
-    GUM_SCALAR    res = (GUM_SCALAR)0;
+    auto          res = (GUM_SCALAR)0;
 
     for (i.setFirst(); !i.end(); ++i) {
       GUM_SCALAR vXY = (*pXY)[i];
@@ -325,8 +323,7 @@ namespace gum {
    * @throw OperationNotAllowed in these cases
    */
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR JointTargetedInference< GUM_SCALAR >::VI(const NodeId X,
-                                                             const NodeId Y) {
+  INLINE GUM_SCALAR JointTargetedInference< GUM_SCALAR >::VI(NodeId X, NodeId Y) {
     return this->H(X) + this->H(Y) - 2 * I(X, Y);
   }
 
@@ -336,15 +333,15 @@ namespace gum {
   JointTargetedInference< GUM_SCALAR >::evidenceJointImpact(
     const std::vector< NodeId >& targets, const std::vector< NodeId >& evs) {
 
-    NodeSet sotargets(targets.size());
+    NodeSet sotargets(Size(targets.size()));
     for (const auto& e : targets)
       sotargets << e;
 
-    NodeSet soevs(evs.size());
+    NodeSet soevs(Size(evs.size()));
     for (const auto& e : evs)
       soevs << e;
 
-    if ((soevs * sotargets).size() > 0) {
+    if (!(soevs * sotargets).empty()) {
       GUM_ERROR(InvalidArgument,
                 "Targets (" << targets << ") can not intersect evs (" << evs
                             << ").");

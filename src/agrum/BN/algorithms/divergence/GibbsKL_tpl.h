@@ -24,13 +24,13 @@
  * @author Paul ALAM & Pierre-Henri WUILLEMIN
  */
 
+#include <cmath>
 
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/BN/algorithms/divergence/GibbsKL.h>
 #include <agrum/BN/inference/tools/gibbsOperator.h>
 #include <agrum/core/approximations/approximationScheme.h>
 #include <agrum/core/hashTable.h>
-#include <cmath>
 
 #define GIBBSKL_DEFAULT_MAXITER 10000000
 #define GIBBSKL_DEFAULT_EPSILON 1e-10
@@ -95,10 +95,7 @@ namespace gum {
 
   template < typename GUM_SCALAR >
   void GibbsKL< GUM_SCALAR >::_computeKL() {
-
-    gum::Instantiation Iq;
-    _q.completeInstantiation(Iq);
-
+    auto Iq = _q.completeInstantiation();
 
     gum::Instantiation I = this->monteCarloSample();
     initApproximationScheme();
@@ -173,5 +170,15 @@ namespace gum {
     _klQP = -_klQP / (nbrIterations());
     _hellinger = std::sqrt(_hellinger / nbrIterations());
     _bhattacharya = -std::log(_bhattacharya);
+  }
+
+  template < typename GUM_SCALAR >
+  void GibbsKL< GUM_SCALAR >::setBurnIn(Size b) {
+    this->_burn_in = b;
+  }
+
+  template < typename GUM_SCALAR >
+  Size GibbsKL< GUM_SCALAR >::burnIn() const {
+    return this->_burn_in;
   }
 }

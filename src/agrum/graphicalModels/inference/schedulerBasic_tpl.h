@@ -73,7 +73,7 @@ namespace gum {
       }
     }
 
-    return (schedule.dag().size() == 0);
+    return (schedule.scheduling_dag().size() == 0);
   }
 
   /// execute only k operations of a given schedule (default k = 1)
@@ -90,7 +90,7 @@ namespace gum {
       }
     }
 
-    return !k || (schedule.dag().size() == 0);
+    return !k || (schedule.scheduling_dag().size() == 0);
   }
 
   /** @bried returns an estimation of the number of elementary operations needed
@@ -99,7 +99,7 @@ namespace gum {
   float SchedulerBasic< GUM_SCALAR >::nbOperations(
     const Schedule< GUM_SCALAR >& schedule) const {
     NodeSet available = schedule.availableOperations();
-    DAG     dag = schedule.dag();
+    DAG     dag = schedule.scheduling_dag();
     float   nb_operations = 0;
 
     while (!available.empty()) {
@@ -133,7 +133,7 @@ namespace gum {
   float SchedulerBasic< GUM_SCALAR >::nbOperations(
     const Schedule< GUM_SCALAR >& schedule, Size k) const {
     NodeSet available = schedule.availableOperations();
-    DAG     dag = schedule.dag();
+    DAG     dag = schedule.scheduling_dag();
     float   nb_operations = 0;
 
     while (!available.empty() && k) {
@@ -166,7 +166,7 @@ namespace gum {
   std::pair< long, long > SchedulerBasic< GUM_SCALAR >::memoryUsage(
     const Schedule< GUM_SCALAR >& schedule) const {
     NodeSet available = schedule.availableOperations();
-    DAG     dag = schedule.dag();
+    DAG     dag = schedule.scheduling_dag();
     long    max_memory = 0;
     long    current_memory = 0;
 
@@ -215,7 +215,7 @@ namespace gum {
   SchedulerBasic< GUM_SCALAR >::memoryUsage(const Schedule< GUM_SCALAR >& schedule,
                                             Size k) const {
     NodeSet available = schedule.availableOperations();
-    DAG     dag = schedule.dag();
+    DAG     dag = schedule.scheduling_dag();
     long    max_memory = 0;
     long    current_memory = 0;
 

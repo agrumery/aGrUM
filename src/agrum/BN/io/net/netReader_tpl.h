@@ -41,7 +41,7 @@ namespace gum {
       __scanner = new net::Scanner(__streamName.c_str());
       __parser = new net::Parser(__scanner);
       __parser->setFactory((IBayesNetFactory*)__factory);
-    } catch (IOError e) {
+    } catch (IOError& e) {
       __ioerror = true;
     }
   }
@@ -75,7 +75,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE bool NetReader< GUM_SCALAR >::trace(void) const {
+  INLINE bool NetReader< GUM_SCALAR >::trace() const {
     return __traceScanning;
   }
 
@@ -86,7 +86,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  Size NetReader< GUM_SCALAR >::proceed(void) {
+  Size NetReader< GUM_SCALAR >::proceed() {
     if (__ioerror) {
       GUM_ERROR(gum::IOError, "No such file " + streamName());
     }

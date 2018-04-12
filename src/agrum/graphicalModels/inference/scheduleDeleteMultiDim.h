@@ -33,7 +33,7 @@
 #include <agrum/core/sequence.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
 #include <agrum/graphicalModels/inference/scheduleOperation.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 
 namespace gum {
 
@@ -50,7 +50,7 @@ namespace gum {
     /** @warning the table is stored by copy into the ScheduleDeleteMultiDim.
      * This is actually compulsory for the appropriate use of
      * ScheduleCombination classes */
-    ScheduleDeleteMultiDim(const ScheduleMultiDim< GUM_SCALAR >& table);
+    explicit ScheduleDeleteMultiDim(const ScheduleMultiDim< GUM_SCALAR >& table);
 
     /// copy constructor
     ScheduleDeleteMultiDim(const ScheduleDeleteMultiDim< GUM_SCALAR >&);

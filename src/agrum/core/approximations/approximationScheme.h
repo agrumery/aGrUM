@@ -135,7 +135,7 @@ namespace gum {
      * @brief Returns the value of epsilon.
      * @return Returns the value of epsilon.
      */
-    double epsilon(void) const;
+    double epsilon() const;
 
     /**
      * @brief Disable stopping criterion on epsilon.
@@ -170,7 +170,7 @@ namespace gum {
      * @brief Returns the value of the minimal epsilon rate.
      * @return Returns the value of the minimal epsilon rate.
      */
-    double minEpsilonRate(void) const;
+    double minEpsilonRate() const;
 
     /**
      * @brief Disable stopping criterion on epsilon rate.
@@ -204,7 +204,7 @@ namespace gum {
      * @brief Returns the criterion on number of iterations.
      * @return Returns the criterion on number of iterations.
      */
-    Size maxIter(void) const;
+    Size maxIter() const;
 
     /**
      * @brief Disable stopping criterion on max iterations.
@@ -238,13 +238,13 @@ namespace gum {
      * @brief Returns the timeout (in seconds).
      * @return Returns the timeout (in seconds).
      */
-    double maxTime(void) const;
+    double maxTime() const;
 
     /**
      * @brief Returns the current running time in second.
      * @return Returns the current running time in second.
      */
-    double currentTime(void) const;
+    double currentTime() const;
 
     /**
      * @brief Disable stopping criterion on timeout.
@@ -276,7 +276,7 @@ namespace gum {
      * @brief Returns the period size.
      * @return Returns the period size.
      */
-    Size periodSize(void) const;
+    Size periodSize() const;
 
     /**
      * @brief Set the verbosity on (true) or off (false).
@@ -288,7 +288,7 @@ namespace gum {
      * @brief Returns true if verbosity is enabled.
      * @return Returns true if verbosity is enabled.
      */
-    bool verbosity(void) const;
+    bool verbosity() const;
 
     /**
      * @brief Returns the approximation scheme state.

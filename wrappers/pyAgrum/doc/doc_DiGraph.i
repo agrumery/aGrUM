@@ -31,7 +31,7 @@ gum.InvalidNode
   If head or tail does not belong to the graph nodes.
 "
 
-%feature("docstring") gum::DiGraph::addNode
+%feature("docstring") gum::DiGraph::addNodeWithId
 "
 Returns
 -------

@@ -85,7 +85,7 @@ namespace gum {
 
     /// returns the type of variable
 
-    virtual VarType varType(void) const;
+    virtual VarType varType() const;
 
     ///
     /**

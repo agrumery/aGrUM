@@ -17,6 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+/**
+ * @file
+ * @brief Partial entropy class used in 3off2
+ *
+ * The partial entropy is computed using Shannons formula and the natural
+ * log function.
+ *
+ * @author Quentin FALCAND and Pierre-Henri WUILLEMIN.
+ */
 #ifndef GUM_LEARNING_PARTIALENTROPY_H
 #define GUM_LEARNING_PARTIALENTROPY_H
 
@@ -42,7 +51,9 @@ namespace gum {
     class PartialEntropy : public Counter< IdSetAlloc, CountAlloc > {
       public:
       // ##########################################################################
+      /// @name Constructors / Destructors
       // ##########################################################################
+      /// @{
 
 
       template < typename RowFilter >
@@ -52,11 +63,13 @@ namespace gum {
                      Size max_range = std::numeric_limits< Size >::max());
 
       ~PartialEntropy();
+      /// @}
 
 
       // ##########################################################################
+      /// @name Accessors / Modifiers
       // ##########################################################################
-
+      /// @{
       Idx addNodeSet(const std::vector< Idx >& var_set);
 
       Idx addNodeSet(Idx var);
@@ -84,7 +97,8 @@ namespace gum {
       void setRange(Size min_range, Size max_range);
 
       /// return the size of the database
-      const Size _N();
+      const Size N();
+      /// @}
 
       protected:
       /// 1 / log(2)

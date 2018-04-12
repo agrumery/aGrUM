@@ -22,7 +22,7 @@
  * @brief A class for generic framework of learning algorithms that can easily
  * be used.
  *
- * The pack currently contains K2, GreedyHillClimbing and
+ * The pack currently contains K2, GreedyHillClimbing, miic, 3off2 and
  * LocalSearchWithTabuList
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
@@ -77,9 +77,9 @@
 #include <agrum/core/approximations/approximationSchemeListener.h>
 
 #include <agrum/learning/K2.h>
+#include <agrum/learning/Miic.h>
 #include <agrum/learning/greedyHillClimbing.h>
 #include <agrum/learning/localSearchWithTabuList.h>
-#include <agrum/learning/threeOffTwo.h>
 
 #include <agrum/core/signal/signaler.h>
 
@@ -117,7 +117,7 @@ namespace gum {
         K2,
         GREEDY_HILL_CLIMBING,
         LOCAL_SEARCH_WITH_TABU_LIST,
-        THREE_OFF_TWO
+        MIIC_THREE_OFF_TWO
       };
 
       /// a helper to easily read databases
@@ -342,7 +342,7 @@ namespace gum {
       DAG learnDAG();
 
       /// learn a partial structure from a file (must have read the db before and
-      /// must have selected 3off2)
+      /// must have selected miic or 3off2)
       MixedGraph learnMixedStructure();
 
       /// sets an initial DAG structure
@@ -437,20 +437,27 @@ namespace gum {
       /// indicate that we wish to use 3off2
       void use3off2() noexcept;
 
+      /// indicate that we wish to use MIIC
+      void useMIIC() noexcept;
+
       /// @}
 
       // ##########################################################################
-      /// @name 3off2 parameterization and specific results
+      /// @name 3off2/MIIC parameterization and specific results
       // ##########################################################################
       /// @{
       /// indicate that we wish to use the NML correction for 3off2
+      /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
       void useNML();
       /// indicate that we wish to use the MDL correction for 3off2
+      /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
       void useMDL();
       /// indicate that we wish to use the NoCorr correction for 3off2
+      /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
       void useNoCorr();
 
       /// get the list of arcs hiding latent variables
+      /// @throws OperationNotAllowed when 3off2 is not the selected algorithm
       const std::vector< Arc > latentVariables() const;
 
       /// @}
@@ -514,7 +521,7 @@ namespace gum {
       /// the parameter estimator to use
       ParamEstimator<>* __param_estimator{nullptr};
 
-      /// the selected correction for 3off2
+      /// the selected correction for 3off2 and miic
       CorrectedMutualInformation<>* __mutual_info{nullptr};
 
       /// the a priori selected for the score and parameters
@@ -548,7 +555,7 @@ namespace gum {
       K2 __K2;
 
       /// the 3off2 algorithm
-      ThreeOffTwo __3off2;
+      Miic __miic_3off2;
 
       /// the greedy hill climbing algorithm
       GreedyHillClimbing __greedy_hill_climbing;
@@ -592,6 +599,9 @@ namespace gum {
 
       /// returns the DAG learnt
       DAG __learnDAG();
+
+      /// prepares the initial graph for 3off2 or miic
+      MixedGraph __prepare_miic_3off2();
 
       /// checks whether the current score and apriori are compatible
       /** @returns true if the apriori is compatible with the score.
@@ -663,7 +673,7 @@ namespace gum {
       };
 
       /// Get the value of epsilon
-      double epsilon(void) const {
+      double epsilon() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->epsilon();
         else
@@ -706,7 +716,7 @@ namespace gum {
       };
 
       /// Get the value of the minimal epsilon rate
-      double minEpsilonRate(void) const {
+      double minEpsilonRate() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->minEpsilonRate();
         else
@@ -747,7 +757,7 @@ namespace gum {
       };
 
       /// @return the criterion on number of iterations
-      Size maxIter(void) const {
+      Size maxIter() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->maxIter();
         else
@@ -789,7 +799,7 @@ namespace gum {
       }
 
       /// returns the timeout (in seconds)
-      double maxTime(void) const {
+      double maxTime() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->maxTime();
         else
@@ -797,7 +807,7 @@ namespace gum {
       };
 
       /// get the current running time in second (double)
-      double currentTime(void) const {
+      double currentTime() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->currentTime();
         else
@@ -834,7 +844,7 @@ namespace gum {
         __local_search_with_tabu_list.setPeriodSize(p);
       };
 
-      Size periodSize(void) const {
+      Size periodSize() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->periodSize();
         else
@@ -850,7 +860,7 @@ namespace gum {
         __local_search_with_tabu_list.setVerbosity(v);
       };
 
-      bool verbosity(void) const {
+      bool verbosity() const {
         if (__current_algorithm != nullptr)
           return __current_algorithm->verbosity();
         else

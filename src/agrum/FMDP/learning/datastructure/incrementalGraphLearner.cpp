@@ -21,7 +21,7 @@
 * @file
 * @brief Source fot the IncrementalGraphLearner class
 *
-* @author Jean-Christophe Magnan
+* @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
 */
 
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner.h>

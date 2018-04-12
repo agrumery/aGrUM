@@ -117,7 +117,7 @@ class StartStates {
       public:
         int key, val;
         Elem* next;
-        Elem( int key, int val ) { this->key = key; this->val = val; next = NULL; }
+        Elem( int key, int val ) { this->key = key; this->val = val; next = nullptr; }
     };
 
     Elem** tab;
@@ -128,7 +128,7 @@ class StartStates {
       for ( int i = 0; i < 128; ++i ) {
         Elem* e = tab[i];
 
-        while ( e != NULL ) {
+        while ( e != nullptr ) {
           Elem* next = e->next;
           delete e;
           e = next;
@@ -147,9 +147,9 @@ class StartStates {
     int state( int key ) {
       Elem* e = tab[( ( unsigned int ) key ) % 128];
 
-      while ( e != NULL && e->key != key ) e = e->next;
+      while ( e != nullptr && e->key != key ) e = e->next;
 
-      return e == NULL ? 0 : e->val;
+      return e == nullptr ? 0 : e->val;
     }
 };
 
@@ -163,7 +163,7 @@ class KeywordMap {
         wchar_t* key;
         int val;
         Elem* next;
-        Elem( const wchar_t* key, int val ) { this->key = coco_string_create( key ); this->val = val; next = NULL; }
+        Elem( const wchar_t* key, int val ) { this->key = coco_string_create( key ); this->val = val; next = nullptr; }
         virtual ~Elem() { coco_string_delete( key ); }
     };
 
@@ -175,7 +175,7 @@ class KeywordMap {
       for ( int i = 0; i < 128; ++i ) {
         Elem* e = tab[i];
 
-        while ( e != NULL ) {
+        while ( e != nullptr ) {
           Elem* next = e->next;
           delete e;
           e = next;
@@ -194,9 +194,9 @@ class KeywordMap {
     int get( const wchar_t* key, int defaultVal ) {
       Elem* e = tab[coco_string_hash( key ) % 128];
 
-      while ( e != NULL && !coco_string_equal( e->key, key ) ) e = e->next;
+      while ( e != nullptr && !coco_string_equal( e->key, key ) ) e = e->next;
 
-      return e == NULL ? defaultVal : e->val;
+      return e == nullptr ? defaultVal : e->val;
     }
 };
 

@@ -35,8 +35,8 @@
 #include <agrum/core/inline.h>
 #include <agrum/core/smallobjectallocator/smallObjectAllocator.h>
 // =========================================================================
-#include <agrum/multidim/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
-#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/terminalNodePolicies/SetTerminalNodePolicy.h>
 // =========================================================================
 #include <agrum/FMDP/fmdp.h>
 // =========================================================================
@@ -226,5 +226,3 @@ namespace gum {
   };
 }
 #endif  // GUM_ACTION_SET_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

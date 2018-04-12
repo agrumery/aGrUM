@@ -55,7 +55,7 @@ namespace gum {
             new Bijection< const DiscreteVariable*, const DiscreteVariable* >()) {
       GUM_CONSTRUCTOR(PRMClass);
       if (!delayInheritance) {
-        __dag = super.dag();
+        __dag = super.containerDag();
         __inheritClass(super);
       }
     }
@@ -87,7 +87,7 @@ namespace gum {
             new Bijection< const DiscreteVariable*, const DiscreteVariable* >()) {
       GUM_CONSTRUCTOR(PRMClass);
       if (!delayInheritance) {
-        __dag = super.dag();
+        __dag = super.containerDag();
         __inheritClass(super);
       }
 
@@ -109,15 +109,15 @@ namespace gum {
     void PRMClass< GUM_SCALAR >::__implementInterfaces(bool delayedInheritance) {
       for (const auto impl : *__implements) {
         impl->__addImplementation(this);
-        if ((!__superClass) || (__superClass && !super().isSubTypeOf(*impl)) ||
-            (__superClass && delayedInheritance)) {
+        if ((!__superClass) || (!super().isSubTypeOf(*impl)) ||
+            delayedInheritance) {
           // Reserve reference id in DAG
           for (auto ref : impl->referenceSlots()) {
-            __dag.addNode(ref->id());
+            __dag.addNodeWithId(ref->id());
           }
           // Reserve attribute id in DAG
           for (auto attr : impl->attributes()) {
-            __dag.addNode(attr->id());
+            __dag.addNodeWithId(attr->id());
           }
         }
       }
@@ -176,7 +176,7 @@ namespace gum {
           ref->setId(c_refslot->id());
           // Not reserved by an interface
           if (!__dag.existsNode(ref->id())) {
-            __dag.addNode(ref->id());
+            __dag.addNodeWithId(ref->id());
           }
           __nodeIdMap.insert(ref->id(), ref);
           __referenceSlots.insert(ref);
@@ -202,7 +202,7 @@ namespace gum {
           __parameters.insert(param);
 
           param->setId(c_param->id());
-          __dag.addNode(param->id());
+          __dag.addNodeWithId(param->id());
           __nodeIdMap.insert(param->id(), param);
           __nameMap.insert(param->name(), param);
         }
@@ -221,7 +221,7 @@ namespace gum {
                               &(attr->type().variable()));
           attr->setId(c_attr->id());
           try {
-            __dag.addNode(attr->id());
+            __dag.addNodeWithId(attr->id());
           } catch (gum::Exception&) {
             // Node reserved by an interface
           }
@@ -258,7 +258,7 @@ namespace gum {
           __bijection->insert(&(c_agg->type().variable()),
                               &(agg->type().variable()));
           agg->setId(c_agg->id());
-          __dag.addNode(agg->id());
+          __dag.addNodeWithId(agg->id());
           __nodeIdMap.insert(agg->id(), agg);
           __aggregates.insert(agg);
 
@@ -290,7 +290,7 @@ namespace gum {
             __bijection->insert(&(c_sc->type().variable()),
                                 &(sc->type().variable()));
             sc->setId(c_sc->id());
-            __dag.addNode(sc->id());
+            __dag.addNodeWithId(sc->id());
             __nodeIdMap.insert(sc->id(), sc);
             __slotChains.insert(sc);
 
@@ -315,7 +315,7 @@ namespace gum {
                     "you can only complete inheritance for attributes");
         }
 
-        for (const auto& prnt : super().dag().parents(elt.id())) {
+        for (const auto& prnt : super().containerDag().parents(elt.id())) {
           this->addArc(super().get(prnt).safeName(), elt.safeName());
         }
 
@@ -442,7 +442,7 @@ namespace gum {
         }
 
         // Copying dependencies yield by arcs
-        for (const auto& arc : c.dag().arcs()) {
+        for (const auto& arc : c.containerDag().arcs()) {
           __nodeIdMap[arc.tail()]->addChild(*(__nodeIdMap[arc.head()]));
           __nodeIdMap[arc.head()]->addParent(*(__nodeIdMap[arc.tail()]));
         }
@@ -450,10 +450,8 @@ namespace gum {
         // Copying the IO flag
         this->_copyIOFlags(c);
         // Copying content of CPF
-        PRMAttribute< GUM_SCALAR >* a = 0;
-
         for (const auto attr : c.__attributes) {
-          a = static_cast< PRMAttribute< GUM_SCALAR >* >(
+          auto a = static_cast< PRMAttribute< GUM_SCALAR >* >(
             __nameMap[attr->safeName()]);
           a->copyCpf(bij, *attr);
         }
@@ -650,7 +648,7 @@ namespace gum {
       }
 
       elt->setId(nextNodeId());
-      __dag.addNode(elt->id());
+      __dag.addNodeWithId(elt->id());
       __nodeIdMap.insert(elt->id(), elt);
       __nameMap.insert(elt->name(), elt);
 
@@ -659,7 +657,7 @@ namespace gum {
       } catch (DuplicateElement& e) {
         if (!(PRMClassElement< GUM_SCALAR >::isSlotChain(*elt) ||
               PRMClassElement< GUM_SCALAR >::isParameter(*elt))) {
-          throw e;
+          throw DuplicateElement(e);
         }
       }
 
@@ -740,7 +738,7 @@ namespace gum {
         }
         if (!found) {
           child->setId(nextNodeId());
-          __dag.addNode(child->id());
+          __dag.addNodeWithId(child->id());
         }
         __nodeIdMap.insert(child->id(), child);
         // Only use child's safe name when adding to the name map!
@@ -836,7 +834,7 @@ namespace gum {
       // Checking if we have to add cast descendant
       if (overloader->type() != overloaded->type()) {
         overloader->setId(nextNodeId());
-        __dag.addNode(overloader->id());
+        __dag.addNodeWithId(overloader->id());
         __nodeIdMap.insert(overloader->id(), overloader);
         __nameMap[overloader->name()] = overloader;
         __nameMap.insert(overloader->safeName(), overloader);
@@ -908,16 +906,16 @@ namespace gum {
             sc = new PRMSlotChain< GUM_SCALAR >(sc_name, seq);
             sc->setId(slotchain->id());
 
-            for (const auto child : this->dag().children(sc->id())) {
+            for (const auto child : this->containerDag().children(sc->id())) {
               auto& elt = get(child);
               if (PRMClassElement< GUM_SCALAR >::isAttribute(elt)) {
                 auto& attr = static_cast< PRMAttribute< GUM_SCALAR >& >(elt);
-                auto& old_type = slotchain->lastElt().type().variable();
-                auto& new_type = sc->lastElt().type().variable();
+                auto& old_type = slotchain->lastElt().type();
+                auto& new_type = sc->lastElt().type();
                 attr.swap(old_type, new_type);
               } else {
                 GUM_ERROR(OperationNotAllowed, "unexpected ClassElement");
-                // get( child ).cpf().swap(
+                // get( child ).cpf().replace(
                 // slotchain->lastElt().type().variable(),
                 // sc->lastElt().type().variable() );
               }
@@ -975,7 +973,7 @@ namespace gum {
         child = parent->getCastDescendant();
         child->setId(nextNodeId());
         __nodeIdMap.insert(child->id(), child);
-        __dag.addNode(child->id());
+        __dag.addNodeWithId(child->id());
         // Only use child's safe name when adding to the name map!
         __nameMap.insert(child->safeName(), child);
         __attributes.insert(child);
@@ -1116,13 +1114,12 @@ namespace gum {
       const PRMClass< GUM_SCALAR >* c;
       Idx                           depth;
 
-      ParamScopeData(std::string                           s,
+      ParamScopeData(const std::string&                    s,
                      const PRMReferenceSlot< GUM_SCALAR >& ref,
-                     Idx                                   d) {
-        prefix = s + ref.name() + ".";
-        c = static_cast< const PRMClass< GUM_SCALAR >* >(&(ref.slotType()));
-        depth = d;
-      }
+                     Idx                                   d)
+          : prefix(s + ref.name() + ".")
+          , c(static_cast< const PRMClass< GUM_SCALAR >* >(&(ref.slotType())))
+          , depth(d) {}
     };
 
     template < typename GUM_SCALAR >

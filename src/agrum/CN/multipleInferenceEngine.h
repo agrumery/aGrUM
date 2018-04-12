@@ -200,7 +200,7 @@ namespace gum {
        * Constructor.
        * @param credalNet The CredalNet to be used.
        */
-      MultipleInferenceEngine(const CredalNet< GUM_SCALAR >& credalNet);
+      explicit MultipleInferenceEngine(const CredalNet< GUM_SCALAR >& credalNet);
 
       /** Destructor. */
       virtual ~MultipleInferenceEngine();

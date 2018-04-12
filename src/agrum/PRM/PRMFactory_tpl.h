@@ -111,7 +111,7 @@ namespace gum {
       try {
         for (const auto& i : c->implements()) {
           try {
-            for (const auto& node : i->dag().nodes()) {
+            for (const auto& node : i->containerDag().nodes()) {
               std::string name = i->get(node).name();
 
               switch (i->get(node).elt_type()) {
@@ -243,7 +243,7 @@ namespace gum {
       const Sequence< const DiscreteVariable* >& vars =
         attr->cpf().variablesSequence();
 
-      for (const auto& node : c->dag().nodes()) {
+      for (const auto& node : c->containerDag().nodes()) {
         try {
           if (vars.exists(&(c->get(node).type().variable()))) {
             ++count;
@@ -397,7 +397,7 @@ namespace gum {
           jnst.add(**idx);
         }
 
-        jnst.begin();
+        jnst.setFirst();
         auto idx = (std::size_t)0;
         while ((!jnst.end()) && idx < array.size()) {
           inst.setVals(jnst);
@@ -2052,7 +2052,7 @@ namespace gum {
           jnst.add(**idx);
         }
 
-        jnst.begin();
+        jnst.setFirst();
         auto idx = (std::size_t)0;
         while ((!jnst.end()) && idx < array.size()) {
           inst.setVals(jnst);

@@ -35,7 +35,7 @@
 #include <agrum/graphs/graphElements.h>
 #include <agrum/graphs/parts/nodeGraphPart.h>
 // =========================================================================
-#include <agrum/multidim/FunctionGraphUtilities/link.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/link.h>
 // =========================================================================
 #include <agrum/FMDP/learning/datastructure/leaves/abstractLeaf.h>
 #include <agrum/FMDP/learning/datastructure/leaves/concreteLeaf.h>

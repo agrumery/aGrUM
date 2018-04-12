@@ -62,7 +62,7 @@ namespace gum {
     /**
      * Default destructor.
      */
-    ~DSLReader();
+    ~DSLReader() final;
 
     /// Direct access to DSL scanner (mandatory for listener connection)
     /// @throws IOError if file not exists
@@ -72,13 +72,13 @@ namespace gum {
     const std::string& streamName() const;
 
     /// accessor to trace function (just write the number of parser line)
-    bool trace(void) const;
+    bool trace() const;
     void trace(bool b);
 
     /// parse.
     /// @return the number of detected errors
     /// @throws IOError if file not exists
-    Size proceed(void);
+    Size proceed() final;
 
     /// @{
     /// publishing Errors API
@@ -134,5 +134,3 @@ namespace gum {
 #include "DSLReader_tpl.h"
 
 #endif  // DSLREADER_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

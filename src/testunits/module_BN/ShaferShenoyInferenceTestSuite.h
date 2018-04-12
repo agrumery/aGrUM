@@ -34,7 +34,7 @@
 #include <agrum/BN/inference/lazyPropagation.h>
 #include <agrum/BN/inference/tools/relevantPotentialsFinderType.h>
 #include <agrum/BN/inference/variableElimination.h>
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/variables/labelizedVariable.h>
 
 // The graph used for the tests:
@@ -108,7 +108,7 @@ namespace gum_tests {
         if (inf != 0) {
           TS_GUM_ASSERT_THROWS_NOTHING(delete inf);
         }
-      } catch (gum::Exception e) {
+      } catch (gum::Exception& e) {
         TS_ASSERT(false);
         std::cerr << std::endl << e.errorContent() << std::endl;
         throw;
@@ -843,5 +843,3 @@ namespace gum_tests {
     }
   };
 }
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

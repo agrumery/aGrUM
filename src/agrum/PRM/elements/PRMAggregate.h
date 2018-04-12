@@ -28,7 +28,7 @@
 #define GUM_AGGREGATE_H
 
 #include <agrum/multidim/aggregators/multiDimAggregator.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 
 #include <agrum/PRM/elements/PRMClassElement.h>
 

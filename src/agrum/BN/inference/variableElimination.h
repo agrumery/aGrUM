@@ -72,14 +72,21 @@ namespace gum {
     /// @{
 
     /// default constructor
-    VariableElimination(
+    explicit VariableElimination(
       const IBayesNet< GUM_SCALAR >* BN,
       RelevantPotentialsFinderType   relevant_type =
         RelevantPotentialsFinderType::DSEP_BAYESBALL_POTENTIALS,
       FindBarrenNodesType = FindBarrenNodesType::FIND_BARREN_NODES);
 
+    /// avoid copy constructors
+    VariableElimination(const VariableElimination< GUM_SCALAR >&) = delete;
+
+    /// avoid copy operators
+    VariableElimination< GUM_SCALAR >&
+    operator=(const VariableElimination< GUM_SCALAR >&) = delete;
+
     /// destructor
-    virtual ~VariableElimination();
+    ~VariableElimination() final;
 
     /// @}
 
@@ -112,23 +119,23 @@ namespace gum {
     void setFindBarrenNodesType(FindBarrenNodesType type);
 
     /// returns the join tree used for compute the posterior of node id
-    const JunctionTree* junctionTree(const NodeId id);
+    const JunctionTree* junctionTree(NodeId id);
 
     /// @}
 
 
     protected:
     /// fired when the stage is changed
-    virtual void _onStateChanged(){};
+    void _onStateChanged() final{};
 
     /// fired after a new evidence is inserted
-    virtual void _onEvidenceAdded(const NodeId id, bool isHardEvidence);
+    void _onEvidenceAdded(NodeId id, bool isHardEvidence) final;
 
     /// fired before an evidence is removed
-    virtual void _onEvidenceErased(const NodeId id, bool isHardEvidence);
+    void _onEvidenceErased(NodeId id, bool isHardEvidence) final;
 
     /// fired before all the evidence are erased
-    virtual void _onAllEvidenceErased(bool contains_hard_evidence);
+    void _onAllEvidenceErased(bool contains_hard_evidence) final;
 
     /** @brief fired after an evidence is changed, in particular when its status
      * (soft/hard) changes
@@ -137,61 +144,61 @@ namespace gum {
      * @param hasChangedSoftHard true if the evidence has changed from Soft to
      * Hard or from Hard to Soft
      */
-    virtual void _onEvidenceChanged(const NodeId id, bool hasChangedSoftHard);
+    void _onEvidenceChanged(NodeId id, bool hasChangedSoftHard) final;
 
     /// fired after a new single target is inserted
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetAdded(const NodeId id);
+    void _onMarginalTargetAdded(NodeId id) final;
 
     /// fired before a single target is removed
     /** @param id The target variable's id. */
-    virtual void _onMarginalTargetErased(const NodeId id);
+    void _onMarginalTargetErased(NodeId id) final;
 
     /// fired after a new joint target is inserted
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetAdded(const NodeSet& set);
+    void _onJointTargetAdded(const NodeSet& set) final;
 
     /// fired before a joint target is removed
     /** @param set The set of target variable's ids. */
-    virtual void _onJointTargetErased(const NodeSet& set);
+    void _onJointTargetErased(const NodeSet& set) final;
 
     /// fired after all the nodes of the BN are added as single targets
-    virtual void _onAllMarginalTargetsAdded();
+    void _onAllMarginalTargetsAdded() final;
 
     /// fired before a all the single targets are removed
-    virtual void _onAllMarginalTargetsErased();
+    void _onAllMarginalTargetsErased() final;
 
     /// fired before a all the joint targets are removed
-    virtual void _onAllJointTargetsErased();
+    void _onAllJointTargetsErased() final;
 
     /// fired before a all single and joint_targets are removed
-    virtual void _onAllTargetsErased();
+    void _onAllTargetsErased() final;
 
     /// prepares inference when the latter is in OutdatedBNStructure state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _updateOutdatedBNStructure and
      * _makeInference. */
-    virtual void _updateOutdatedBNStructure();
+    void _updateOutdatedBNStructure() final;
 
     /// prepares inference when the latter is in OutdatedBNPotentials state
     /** Note that the values of evidence are not necessarily
      * known and can be changed between _updateOutdatedBNPotentials and
      * _makeInference. */
-    virtual void _updateOutdatedBNPotentials();
+    void _updateOutdatedBNPotentials() final;
 
     /// called when the inference has to be performed effectively
     /** Once the inference is done, _fillPosterior can be called. */
-    virtual void _makeInference();
+    void _makeInference() final;
 
 
     /// returns the posterior of a given variable
     /** @param id The variable's id. */
-    virtual const Potential< GUM_SCALAR >& _posterior(const NodeId id);
+    const Potential< GUM_SCALAR >& _posterior(NodeId id) final;
 
     /// returns the posterior of a declared target set
     /** @param set The set of ids of the variables whose joint posterior is
      * looked for. */
-    virtual const Potential< GUM_SCALAR >& _jointPosterior(const NodeSet& set);
+    const Potential< GUM_SCALAR >& _jointPosterior(const NodeSet& set) final;
 
     /** @brief asks derived classes for the joint posterior of a set of
      * variables not declared as a joint target
@@ -200,15 +207,15 @@ namespace gum {
      * posterior is looked for.
      * @param declared_target the joint target declared by the user that contains
      * set */
-    virtual const Potential< GUM_SCALAR >&
-    _jointPosterior(const NodeSet& wanted_target, const NodeSet& declared_target);
+    const Potential< GUM_SCALAR >&
+    _jointPosterior(const NodeSet& wanted_target,
+                    const NodeSet& declared_target) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential< GUM_SCALAR >* _unnormalizedJointPosterior(const NodeId id);
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior(NodeId id) final;
 
     /// returns a fresh potential equal to P(argument,evidence)
-    virtual Potential< GUM_SCALAR >*
-    _unnormalizedJointPosterior(const NodeSet& set);
+    Potential< GUM_SCALAR >* _unnormalizedJointPosterior(const NodeSet& set) final;
 
 
     private:
@@ -271,7 +278,7 @@ namespace gum {
 
 
     /// create a new junction tree as well as its related data structures
-    void __createNewJT(const NodeSet& joint_target);
+    void __createNewJT(const NodeSet& targets);
 
     /// sets the operator for performing the projections
     void __setProjectionFunction(Potential< GUM_SCALAR >* (*proj)(
@@ -317,31 +324,23 @@ namespace gum {
                             Set< const DiscreteVariable* >& del_vars);
 
     /// actually perform the collect phase
-    std::pair< __PotentialSet, __PotentialSet >
-    __collectMessage(const NodeId id, const NodeId from);
+    std::pair< __PotentialSet, __PotentialSet > __collectMessage(NodeId id,
+                                                                 NodeId from);
 
     /// returns the CPT + evidence of a node projected w.r.t. hard evidence
-    std::pair< __PotentialSet, __PotentialSet >
-    __NodePotentials(const NodeId node);
+    std::pair< __PotentialSet, __PotentialSet > __NodePotentials(NodeId node);
 
     /// creates the message sent by clique from_id to clique to_id
-    std::pair< __PotentialSet, __PotentialSet >
-    __produceMessage(const NodeId from_id,
-                     const NodeId to_id,
-                     std::pair< __PotentialSet, __PotentialSet >&& in_mess);
+    std::pair< __PotentialSet, __PotentialSet > __produceMessage(
+      NodeId from_id,
+      NodeId to_id,
+      std::pair< __PotentialSet, __PotentialSet >&& incoming_messages);
 
     /** @brief removes variables del_vars from a list of potentials and
      * returns the resulting list */
     __PotentialSet __marginalizeOut(__PotentialSet                  pot_list,
                                     Set< const DiscreteVariable* >& del_vars,
                                     Set< const DiscreteVariable* >& kept_vars);
-
-    /// avoid copy constructors
-    VariableElimination(const VariableElimination< GUM_SCALAR >&);
-
-    /// avoid copy operators
-    VariableElimination< GUM_SCALAR >&
-    operator=(const VariableElimination< GUM_SCALAR >&);
   };
 
 
@@ -356,4 +355,3 @@ namespace gum {
 
 
 #endif /* GUM_VARIABLE_ELIMINATION_ */
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

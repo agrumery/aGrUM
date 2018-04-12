@@ -33,7 +33,7 @@ give an id (not 0) should be reserved for rare and specific situations !!!
 Returns
 -------
 int
-    the id of the added variable.
+    the id of the added variable. 
 
 Raises
 ------
@@ -438,7 +438,7 @@ varId : int
 
 Returns
 -------
-pyAgrum.UtilityTable
+pyAgrum.Potential
 	the utility table of the node
 
 Raises

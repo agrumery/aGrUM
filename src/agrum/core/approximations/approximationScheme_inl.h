@@ -48,7 +48,7 @@ namespace gum {
   }
 
   // Get the value of epsilon
-  INLINE double ApproximationScheme::epsilon(void) const { return _eps; }
+  INLINE double ApproximationScheme::epsilon() const { return _eps; }
 
   // Disable stopping criterion on epsilon
   INLINE void ApproximationScheme::disableEpsilon() { _enabled_eps = false; }
@@ -73,7 +73,7 @@ namespace gum {
   }
 
   // Get the value of the minimal epsilon rate
-  INLINE double ApproximationScheme::minEpsilonRate(void) const {
+  INLINE double ApproximationScheme::minEpsilonRate() const {
     return _min_rate_eps;
   }
 
@@ -103,7 +103,7 @@ namespace gum {
   }
 
   // @return the criterion on number of iterations
-  INLINE Size ApproximationScheme::maxIter(void) const { return _max_iter; }
+  INLINE Size ApproximationScheme::maxIter() const { return _max_iter; }
 
   // Disable stopping criterion on max iterations
   INLINE void ApproximationScheme::disableMaxIter() { _enabled_max_iter = false; }
@@ -128,12 +128,10 @@ namespace gum {
   }
 
   // returns the timeout (in seconds)
-  INLINE double ApproximationScheme::maxTime(void) const { return _max_time; }
+  INLINE double ApproximationScheme::maxTime() const { return _max_time; }
 
   // get the current running time in second (double)
-  INLINE double ApproximationScheme::currentTime(void) const {
-    return _timer.step();
-  }
+  INLINE double ApproximationScheme::currentTime() const { return _timer.step(); }
 
   // Disable stopping criterion on timeout
   INLINE void ApproximationScheme::disableMaxTime() { _enabled_max_time = false; }
@@ -156,12 +154,12 @@ namespace gum {
     _period_size = p;
   }
 
-  INLINE Size ApproximationScheme::periodSize(void) const { return _period_size; }
+  INLINE Size ApproximationScheme::periodSize() const { return _period_size; }
 
   // verbosity
   INLINE void ApproximationScheme::setVerbosity(bool v) { _verbosity = v; }
 
-  INLINE bool ApproximationScheme::verbosity(void) const { return _verbosity; }
+  INLINE bool ApproximationScheme::verbosity() const { return _verbosity; }
 
   // history
   INLINE IApproximationSchemeConfiguration::ApproximationSchemeSTATE

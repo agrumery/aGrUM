@@ -93,7 +93,7 @@ namespace gum {
       GUM_EMIT2(onProceed, 100, status);
 
       return 0;
-    } catch (ticpp::Exception tinyexception) {
+    } catch (ticpp::Exception& tinyexception) {
       GUM_ERROR(IOError, tinyexception.what());
       return 1;
     }
@@ -124,8 +124,7 @@ namespace gum {
       std::string     varDescription = varDescrElement->GetTextOrDefault("");
 
       // Instanciation de la variable
-      LabelizedVariable* newVar =
-        new LabelizedVariable(varName, varDescription, 0);
+      auto newVar = new LabelizedVariable(varName, varDescription, 0);
 
       // Getting variable outcomes
       ticpp::Iterator< ticpp::Element > varOutComesIte("OUTCOME");
@@ -134,9 +133,6 @@ namespace gum {
            varOutComesIte != varOutComesIte.end();
            ++varOutComesIte)
         newVar->addLabel(varOutComesIte->GetTextOrDefault(""));
-
-      // Getting variable type
-      std::string nodeType = currentVar->GetAttribute< std::string >("TYPE");
 
       // Add the variable to the bn and then delete newVar (add makes a copy)
       __bn->add(*newVar);

@@ -27,12 +27,12 @@
 #ifndef GUM_DAGMODEL_H
 #define GUM_DAGMODEL_H
 #include <agrum/agrum.h>
+#include <agrum/multidim/instantiation.h>
 
 #include <agrum/graphs/DAG.h>
 #include <agrum/graphs/undiGraph.h>
 
 #include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/multidim/instantiation.h>
 
 namespace gum {
 
@@ -138,12 +138,30 @@ namespace gum {
     variableFromName(const std::string& name) const = 0;
 
     /// Get an instantiation over all the variables of the model
-    virtual void completeInstantiation(Instantiation& I) const;
+    virtual Instantiation completeInstantiation() const final;
     /// @}
 
     /// @name Arc manipulation methods.
     /// @{
-    const ArcSet& arcs(void) const;
+    const ArcSet& arcs() const;
+
+    /// returns the set of nodes with arc ingoing to a given node
+    /** Note that the set of arcs returned may be empty if no arc within the
+     * ArcGraphPart is ingoing into the given node.
+     * @param id the node toward which the arcs returned are pointing */
+    const NodeSet& parents(const NodeId id) const;
+    const NodeSet& parents(const std::string& name) const {
+      return parents(idFromName(name));
+    };
+
+    /// returns the set of nodes with arc outgoing from a given node
+    /** Note that the set of arcs returned may be empty if no arc within the
+     * ArcGraphPart is outgoing from the given node.
+     * @param id the node which is the tail of the arcs returned */
+    const NodeSet& children(const NodeId id) const;
+    const NodeSet& children(const std::string& name) const {
+      return parents(idFromName(name));
+    };
     /// @}
 
     /// @name Graphical methods
@@ -166,7 +184,7 @@ namespace gum {
 
     /// @return Returns the log10 domain size of the joint probabilty for the
     /// Directed Graphical Model
-    double log10DomainSize(void) const;
+    double log10DomainSize() const;
 
     /// @return true if all the named node are the same and all the named arcs are
     /// the same

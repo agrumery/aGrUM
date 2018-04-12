@@ -330,7 +330,6 @@ namespace gum_tests {
     }
 
     void testInference() {
-      // GUM_TRACE_VAR(UINT_MAX);
       gum::prm::GroundedInference< double >* g_ve = 0;
       gum::prm::GroundedInference< double >* g_ss = 0;
       gum::VariableElimination< double >*    ve = 0;
@@ -365,19 +364,14 @@ namespace gum_tests {
             std::make_pair(&instance, &attribute);
           std::string dot = ".";
           g_ve->marginal(chain, m_ve);
-          // GUM_TRACE("VE done");
           g_ss->marginal(chain, m_ss);
-          // GUM_TRACE("SS done");
           gum::prm::SVE< double > sve(*prm, prm->getSystem("aSys"));
           sve.marginal(chain, m_sve);
-          // GUM_TRACE("SVE<double> done");
           gum::prm::SVED< double > sved(*prm, prm->getSystem("aSys"));
           sved.marginal(chain, m_sved);
-          // GUM_TRACE("SVED<double> done");
           gum::prm::StructuredInference< double > structinf(
             *prm, prm->getSystem("aSys"));
           structinf.marginal(chain, m_struct);
-          // GUM_TRACE("StructInf done");
           // We need two instantiations, one for the grounded potentials and one
           // for the PRM<double>-level ones
           gum::Instantiation inst(m_ve), jnst(m_sve);
@@ -399,20 +393,7 @@ namespace gum_tests {
             TS_ASSERT_DELTA(m_sved.get(jnst), m_struct.get(jnst), 1.0e-3);
           }
 
-          bool zero = true;
-
-          for (jnst.setFirst(); !jnst.end(); jnst.inc()) {
-            if (m_sved.get(jnst) != (double)0.0) {
-              zero = false;
-              break;
-            }
-          }
-
-          if (zero) {
-            GUM_TRACE(foo);
-          }
         } catch (gum::Exception& e) {
-          GUM_TRACE_VAR(bn.variableNodeMap().name(node));
           TS_GUM_ASSERT_THROWS_NOTHING(throw e);
           break;
         }

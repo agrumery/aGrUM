@@ -2,6 +2,7 @@
 option (USE_SWIG "use swig to generate bindings" ON)
 
 if (USE_SWIG)
+
   # https://github.com/swig/swig/issues/817 for NodeProperty
   find_package(SWIG 3.0.11)
   if (SWIG_FOUND)
@@ -14,13 +15,10 @@ else()
   message(STATUS "** aGrUM notification : Swig not used : you cannot change *.i files !")
 endif()
 
-option (BUILD_PYTHON "python bindings" ON)
 if (BUILD_PYTHON)
   add_subdirectory (pyAgrum)
 endif ()
 
-## Very experimental for now.
-option (BUILD_JAVA "java bindings" OFF)
 if (BUILD_JAVA)
   find_package (JNI)
   if (JNI_FOUND)

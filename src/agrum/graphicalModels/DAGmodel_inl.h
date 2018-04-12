@@ -74,7 +74,7 @@ namespace gum {
   }
 
   INLINE
-  double DAGmodel::log10DomainSize(void) const {
+  double DAGmodel::log10DomainSize() const {
     double dSize = 0.0;
 
     for (const auto node : nodes()) {
@@ -85,11 +85,13 @@ namespace gum {
   }
 
   INLINE
-  void DAGmodel::completeInstantiation(Instantiation& I) const {
-    I.clear();
+  Instantiation DAGmodel::completeInstantiation() const {
+    Instantiation I;
 
     for (const auto node : dag())
       I << variable(node);
+
+    return I;
   }
 
   INLINE
@@ -102,6 +104,15 @@ namespace gum {
   Size DAGmodel::sizeArcs() const { return _dag.sizeArcs(); }
 
   INLINE const ArcSet& DAGmodel::arcs() const { return _dag.arcs(); }
+
+  INLINE const NodeSet& DAGmodel::parents(const NodeId id) const {
+    return _dag.parents(id);
+  }
+
+
+  INLINE const NodeSet& DAGmodel::children(const NodeId id) const {
+    return _dag.children(id);
+  }
 
   INLINE const NodeGraphPart& DAGmodel::nodes() const {
     return (NodeGraphPart&)_dag;

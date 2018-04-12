@@ -110,7 +110,7 @@ namespace gum {
     NodeGraphPartIterator& operator++() noexcept;
 
     /// dereferencing operator
-    value_type operator*(void)const;
+    value_type operator*() const;
 
     /// @}
 
@@ -119,7 +119,7 @@ namespace gum {
     void _setPos(NodeId id) noexcept;
 
     /// ensure that the nodeId is either end() either a valid NodeId
-    void _validate(void) noexcept;
+    void _validate() noexcept;
 
     /// the nodegraphpart on which points the iterator
     const NodeGraphPart* _nodes;
@@ -343,12 +343,19 @@ namespace gum {
     /** @return the id chosen by the internal idFactory */
     virtual NodeId addNode();
 
+    /** insert n nodes
+     *
+     * @param n the number of nodes to add
+     * @return the vector of chosen ids
+     */
+    std::vector< NodeId > addNodes(Size n);
+
     /// try to insert a node with the given id
     /** @warning This method should be carefully used. Please prefer
      * @ref populateNodes or @ref populateNodesFromProperty when possible
      * @throws DuplicateElement exception if the id already exists
      */
-    virtual void addNode(const NodeId id);
+    virtual void addNodeWithId(const NodeId id);
 
     /// erase the node with the given id
     /** If the NodeGraphPart does not contain the nodeId, then nothing is done.
@@ -464,7 +471,7 @@ namespace gum {
     void __updateEndIteratorSafe();
 
     /// code for clearing nodes (called twice)
-    void __clearNodes(void);
+    void __clearNodes();
 
     /// to delete hole.
     /// @warning the hole is assumed to be existing.
@@ -517,5 +524,3 @@ namespace gum {
 #include <agrum/graphs/parts/nodeGraphPart_tpl.h>
 
 #endif  // GUM_NODE_GRAPH_PART_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

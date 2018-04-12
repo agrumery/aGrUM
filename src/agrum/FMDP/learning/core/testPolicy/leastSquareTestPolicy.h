@@ -21,7 +21,7 @@
  * @file
  * @brief Headers of the LeastSquareTestPolicy
  *
- * @author Jean-Christophe Magnan
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_MULTI_DIM_FUNCTION_GRAPH_LEAST_SQUARE_TEST_POLICY_H
@@ -31,7 +31,7 @@
 #include <agrum/FMDP/learning/core/contingencyTable.h>
 #include <agrum/FMDP/learning/core/testPolicy/ITestPolicy.h>
 // ============================================================================
-#include <agrum/multidim/FunctionGraphUtilities/link.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/link.h>
 // ============================================================================
 
 namespace gum {
@@ -115,12 +115,12 @@ namespace gum {
     // ============================================================================
     /// Returns the performance of current variable according to the test
     // ============================================================================
-    void computeScore() const;
+    void computeScore();
 
     // ============================================================================
     /// Returns the performance of current variable according to the test
     // ============================================================================
-    double score() const;
+    double score();
 
     // ============================================================================
     /// Returns a second criterion to severe ties

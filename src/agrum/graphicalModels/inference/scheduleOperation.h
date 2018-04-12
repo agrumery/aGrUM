@@ -126,7 +126,7 @@ namespace gum {
 
     protected:
     /// default constructor
-    ScheduleOperation(Type t);
+    explicit ScheduleOperation(Type t);
 
     /// copy constructor
     ScheduleOperation(const ScheduleOperation< GUM_SCALAR >& from);

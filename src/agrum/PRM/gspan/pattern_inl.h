@@ -39,9 +39,9 @@ namespace gum {
       Pattern::~Pattern() { GUM_DESTRUCTOR(Pattern); }
 
       INLINE
-      NodeId Pattern::addNode(LabelData& l) {
+      NodeId Pattern::addNodeWithLabel(LabelData& l) {
         NodeId n = NodeId(size() + 1);
-        DiGraph::addNode(n);
+        DiGraph::addNodeWithId(n);
         __node_map.insert(n, &l);
         __last = &l;
         return n;

@@ -62,11 +62,11 @@ namespace gum {
     /** Getters and setters*/
     Size nbrDrawnVar() const { return _nbr; }
 
-    void setNbrDrawnVar(Size _nbr) { _nbr = _nbr; }
+    void setNbrDrawnVar(Size nbr) { _nbr = nbr; }
 
     bool isDrawnAtRandom() const { return _atRandom; }
 
-    void setDrawnAtRandom(bool _atRandom) { _atRandom = _atRandom; }
+    void setDrawnAtRandom(bool atRandom) { _atRandom = atRandom; }
 
     /// draws a Monte Carlo sample
     Instantiation monteCarloSample();

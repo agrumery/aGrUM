@@ -33,8 +33,8 @@
 #include <agrum/BN/algorithms/dSeparation.h>
 #include <agrum/graphs/algorithms/binaryJoinTreeConverterDefault.h>
 #include <agrum/multidim/instantiation.h>
-#include <agrum/multidim/operators/multiDimCombineAndProjectDefault.h>
-#include <agrum/multidim/operators/multiDimProjection.h>
+#include <agrum/multidim/utils/operators/multiDimCombineAndProjectDefault.h>
+#include <agrum/multidim/utils/operators/multiDimProjection.h>
 
 
 namespace gum {
@@ -84,7 +84,7 @@ namespace gum {
   /// returns the current join tree used
   template < typename GUM_SCALAR >
   INLINE const JunctionTree*
-  VariableElimination< GUM_SCALAR >::junctionTree(const NodeId id) {
+  VariableElimination< GUM_SCALAR >::junctionTree(NodeId id) {
     __createNewJT(NodeSet{id});
 
     return __JT;
@@ -174,14 +174,12 @@ namespace gum {
 
   /// fired when a new evidence is inserted
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceAdded(const NodeId,
-                                                                  bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceAdded(NodeId, bool) {}
 
 
   /// fired when an evidence is removed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceErased(const NodeId,
-                                                                   bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceErased(NodeId, bool) {}
 
 
   /// fired when all the evidence are erased
@@ -191,20 +189,18 @@ namespace gum {
 
   /// fired when an evidence is changed
   template < typename GUM_SCALAR >
-  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceChanged(const NodeId,
-                                                                    bool) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onEvidenceChanged(NodeId, bool) {
+  }
 
 
   /// fired after a new target is inserted
   template < typename GUM_SCALAR >
-  INLINE void
-  VariableElimination< GUM_SCALAR >::_onMarginalTargetAdded(const NodeId) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetAdded(NodeId) {}
 
 
   /// fired before a target is removed
   template < typename GUM_SCALAR >
-  INLINE void
-  VariableElimination< GUM_SCALAR >::_onMarginalTargetErased(const NodeId) {}
+  INLINE void VariableElimination< GUM_SCALAR >::_onMarginalTargetErased(NodeId) {}
 
 
   /// fired after a new set target is inserted
@@ -260,7 +256,7 @@ namespace gum {
     const auto& bn = this->BN();
     __graph.clear();
     for (auto node : bn.dag())
-      __graph.addNode(node);
+      __graph.addNodeWithId(node);
 
     // 2/ if we wish to exploit barren nodes, we shall remove them from the BN
     // to do so: we identify all the nodes that are not targets and have
@@ -270,7 +266,7 @@ namespace gum {
     if (__barren_nodes_type == FindBarrenNodesType::FIND_BARREN_NODES) {
       // check that all the nodes are not targets, otherwise, there is no
       // barren node
-      if (targets.size() != bn.dag().sizeNodes()) {
+      if (targets.size() != bn.size()) {
         BarrenNodesFinder finder(&(bn.dag()));
         finder.setTargets(&targets);
 
@@ -335,7 +331,7 @@ namespace gum {
 
     // 4/ add edges so that each node and its parents in the BN form a clique
     for (const auto node : __graph) {
-      const NodeSet& parents = bn.dag().parents(node);
+      const NodeSet& parents = bn.parents(node);
       for (auto iter1 = parents.cbegin(); iter1 != parents.cend(); ++iter1) {
         // before adding an edge between node and its parent, check that the
         // parent belong to the graph. Actually, when d-separated nodes are
@@ -671,8 +667,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::pair< Set< const Potential< GUM_SCALAR >* >,
              Set< const Potential< GUM_SCALAR >* > >
-  VariableElimination< GUM_SCALAR >::__collectMessage(const NodeId id,
-                                                      const NodeId from) {
+  VariableElimination< GUM_SCALAR >::__collectMessage(NodeId id, NodeId from) {
     // collect messages from all the neighbors
     std::pair< __PotentialSet, __PotentialSet > collect_messages;
     for (const auto other : __JT->neighbours(id)) {
@@ -693,7 +688,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   std::pair< Set< const Potential< GUM_SCALAR >* >,
              Set< const Potential< GUM_SCALAR >* > >
-  VariableElimination< GUM_SCALAR >::__NodePotentials(const NodeId node) {
+  VariableElimination< GUM_SCALAR >::__NodePotentials(NodeId node) {
     std::pair< __PotentialSet, __PotentialSet > res;
     const auto& bn = this->BN();
 
@@ -717,7 +712,7 @@ namespace gum {
       // for inference
       if (this->hardEvidenceNodes().contains(node)) {
         for (const auto var : variables) {
-          const NodeId xnode = bn.nodeId(*var);
+          NodeId xnode = bn.nodeId(*var);
           if (!this->hardEvidenceNodes().contains(xnode) &&
               !__graph.existsNode(xnode))
             return res;
@@ -727,7 +722,7 @@ namespace gum {
       // get the list of nodes with hard evidence in cpt
       NodeSet hard_nodes;
       for (const auto var : variables) {
-        const NodeId xnode = bn.nodeId(*var);
+        NodeId xnode = bn.nodeId(*var);
         if (this->hardEvidenceNodes().contains(xnode)) hard_nodes.insert(xnode);
       }
 
@@ -785,8 +780,8 @@ namespace gum {
   std::pair< Set< const Potential< GUM_SCALAR >* >,
              Set< const Potential< GUM_SCALAR >* > >
   VariableElimination< GUM_SCALAR >::__produceMessage(
-    const NodeId from_id,
-    const NodeId to_id,
+    NodeId from_id,
+    NodeId to_id,
     std::pair< Set< const Potential< GUM_SCALAR >* >,
                Set< const Potential< GUM_SCALAR >* > >&& incoming_messages) {
     // get the messages sent by adjacent nodes to from_id
@@ -930,7 +925,7 @@ namespace gum {
   /// returns a fresh potential equal to P(1st arg,evidence)
   template < typename GUM_SCALAR >
   Potential< GUM_SCALAR >*
-  VariableElimination< GUM_SCALAR >::_unnormalizedJointPosterior(const NodeId id) {
+  VariableElimination< GUM_SCALAR >::_unnormalizedJointPosterior(NodeId id) {
     const auto& bn = this->BN();
 
     // hard evidence do not belong to the join tree
@@ -941,8 +936,8 @@ namespace gum {
 
     // if we still need to perform some inference task, do it
     __createNewJT(NodeSet{id});
-    const NodeId clique_of_id = __node_to_clique[id];
-    auto         pot_list = __collectMessage(clique_of_id, clique_of_id);
+    NodeId clique_of_id = __node_to_clique[id];
+    auto   pot_list = __collectMessage(clique_of_id, clique_of_id);
 
     // get the set of variables that need be removed from the potentials
     const NodeSet&                 nodes = __JT->clique(clique_of_id);
@@ -1008,7 +1003,7 @@ namespace gum {
   /// returns the posterior of a given variable
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  VariableElimination< GUM_SCALAR >::_posterior(const NodeId id) {
+  VariableElimination< GUM_SCALAR >::_posterior(NodeId id) {
     // compute the joint posterior and normalize
     auto joint = _unnormalizedJointPosterior(id);
     joint->normalize();
@@ -1154,4 +1149,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -23,6 +23,11 @@ cmake_minimum_required (VERSION 3.1)
 
 include("VERSION.txt")
 
+# options
+option(BUILD_SHARED_LIBS "build shared|static libs" ON)
+option (BUILD_PYTHON "build python bindings" ON)
+option (BUILD_JAVA "build java bindings (experimental)" OFF) ## Very experimental for now.
+
 set (AGRUM_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set (AGRUM_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 

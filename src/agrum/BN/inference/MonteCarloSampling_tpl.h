@@ -58,7 +58,7 @@ namespace gum {
   Instantiation MonteCarloSampling< GUM_SCALAR >::_draw(float*        w,
                                                         Instantiation prev) {
 
-    *w = 1.;
+    *w = 1.0f;
     bool wrong_value = false;
     do {
       wrong_value = false;

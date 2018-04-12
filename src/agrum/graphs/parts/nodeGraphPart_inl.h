@@ -32,7 +32,7 @@ namespace gum {
   //=================NODEGRAPHPARTITERATOR============================
 
   /// ensure that the nodeId is either end() either a valid NodeId
-  INLINE void NodeGraphPartIterator::_validate(void) noexcept {
+  INLINE void NodeGraphPartIterator::_validate() noexcept {
     _valid = false;
 
     if (_pos > _nodes->bound()) {
@@ -124,7 +124,7 @@ namespace gum {
   }
 
   /// dereferencing operator
-  INLINE NodeId NodeGraphPartIterator::operator*(void)const {
+  INLINE NodeId NodeGraphPartIterator::operator*() const {
     if (!_valid) {
       GUM_ERROR(UndefinedIteratorValue, "This iterator is not valid !");
     }
@@ -244,8 +244,8 @@ namespace gum {
     }
   }
 
-  // warning: do not try to use function addNode ( const NodeId id ) within
-  // function addNode(): as both functions are virtual, this may create
+  // warning: do not try to use function addNodeWithId ( const NodeId id ) within
+  // function addNodeWithId(): as both functions are virtual, this may create
   // bugs within the graphs hierarchy (i.e., virtual functions calling
   // recursively
   // each other along the hierarchy) that are not easy to debug.
@@ -266,6 +266,15 @@ namespace gum {
 
     return newNode;
   }
+
+  INLINE std::vector< NodeId > NodeGraphPart::addNodes(Size N) {
+    std::vector< NodeId > v;
+    v.reserve(N);
+    for (Idx i = 0; i < N; i++)
+      v.push_back(this->addNode());
+    return v;
+  }
+
 
   INLINE Size NodeGraphPart::sizeNodes() const {
     return (__holes) ? (__boundVal - __holes->size()) : __boundVal;

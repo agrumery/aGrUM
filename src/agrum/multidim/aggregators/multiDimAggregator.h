@@ -27,7 +27,7 @@
 #ifndef GUM_MULTI_DIM_AGGREGATOR_H
 #define GUM_MULTI_DIM_AGGREGATOR_H
 
-#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/implementations/multiDimReadOnly.h>
 
 namespace gum {
   namespace aggregator {
@@ -109,23 +109,23 @@ namespace gum {
       public:
       virtual GUM_SCALAR get(const Instantiation& i) const override;
 
-      virtual std::string aggregatorName(void) const = 0;
-      const std::string   toString(void) const override;
+      virtual std::string aggregatorName() const = 0;
+      const std::string   toString() const override;
 
-      virtual void changeNotification(gum::Instantiation&,
-                                      const gum::DiscreteVariable* const,
-                                      const gum::Idx&,
-                                      const gum::Idx&) override{};
+      void changeNotification(const gum::Instantiation&,
+                              const gum::DiscreteVariable* const,
+                              gum::Idx,
+                              gum::Idx) override{};
 
-      virtual void setFirstNotification(gum::Instantiation&) override{};
+      void setFirstNotification(const gum::Instantiation&) override{};
 
-      virtual void setLastNotification(gum::Instantiation&) override{};
+      void setLastNotification(const gum::Instantiation&) override{};
 
-      virtual void setIncNotification(gum::Instantiation&) override{};
+      void setIncNotification(const gum::Instantiation&) override{};
 
-      virtual void setDecNotification(gum::Instantiation&) override{};
+      void setDecNotification(const gum::Instantiation&) override{};
 
-      virtual void setChangeNotification(gum::Instantiation&) override{};
+      void setChangeNotification(const gum::Instantiation&) override{};
 
       const std::string toString(const gum::Instantiation* i) const override {
         return i->toString();
@@ -136,7 +136,7 @@ namespace gum {
        *
        * This function is used for compute @see compressionRatio()
        */
-      virtual Size realSize() const override { return 0; };
+      Size realSize() const override { return 0; };
 
       /**
        * @brief Returns the real name of the multiDimArray.
@@ -149,7 +149,7 @@ namespace gum {
        * determine which is the best functions to use, say, when we wish to use
        * operators such as operator+ on two MultiDimImplementations.
        */
-      virtual const std::string& name() const override;
+      const std::string& name() const override;
 
       /**
        * @brief Copy of a multiDimICIModel.
@@ -160,8 +160,7 @@ namespace gum {
        * @throw OperationNotAllowed Raised if src does not have the same domain
        * size than this MultiDimContainer.
        **/
-      virtual void
-      copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
+      void copyFrom(const MultiDimContainer< GUM_SCALAR >& src) const override;
 
       /// @}
       protected:
@@ -173,7 +172,7 @@ namespace gum {
 
 
       /// _neutralElt() is the result value for the first application of _fold
-      virtual Idx _neutralElt(void) const = 0;
+      virtual Idx _neutralElt() const = 0;
 
       /// _fold is applied on value i1 for variable v. the actual result for
       /// precedent applications is i2.

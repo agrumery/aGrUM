@@ -72,7 +72,7 @@ namespace gum {
     INLINE
 
       std::string
-      Exists< GUM_SCALAR >::aggregatorName(void) const {
+      Exists< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "exists[" << __value << "]";
       return ss.str();
@@ -86,4 +86,3 @@ namespace gum {
 
   }  // namespace aggregator
 }  // namespace gum
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

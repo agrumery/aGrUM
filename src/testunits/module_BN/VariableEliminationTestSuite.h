@@ -28,7 +28,7 @@
 #include <agrum/BN/io/BIF/BIFReader.h>
 #include <agrum/config.h>
 
-#include <agrum/multidim/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
 #include <agrum/variables/labelizedVariable.h>
 
 #include <agrum/BN/inference/ShaferShenoyInference.h>

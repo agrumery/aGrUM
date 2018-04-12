@@ -90,7 +90,7 @@ namespace gum {
 
     /** copy constructor
      */
-    GibbsKL(const KL< GUM_SCALAR >& kl);
+    explicit GibbsKL(const KL< GUM_SCALAR >& kl);
 
     /** destructor */
     ~GibbsKL();
@@ -100,16 +100,16 @@ namespace gum {
      * @param b The number of burn in.
      * @throw OutOfLowerBound Raised if b < 1.
      */
-    void setBurnIn(Size b) { this->_burn_in = b; };
+    void setBurnIn(Size b);
 
     /**
      * @brief Returns the number of burn in.
      * @return Returns the number of burn in.
      */
-    Size burnIn(void) const { return this->_burn_in; };
+    Size burnIn() const;
 
     protected:
-    void _computeKL(void);
+    void _computeKL() final;
 
     using KL< GUM_SCALAR >::_p;
     using KL< GUM_SCALAR >::_q;

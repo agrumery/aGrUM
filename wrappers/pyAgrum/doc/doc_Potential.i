@@ -139,23 +139,13 @@ Automatically fills the potential with v.
 
 Parameters
 ----------
-v : double
-    the desired value of the Potential.
+v : number or list or pyAgrum.Potential the number of parameters of the Potential
+    a value or a list/pyAgrum.Potential containing the values to fill the Potential with.
 
-Returns
+Warning
 -------
-pyAgrum.Potential
-      a reference to the modified potential.
-"
-
-%feature("docstring") gum::Potential::fillWith
-"
-Automatically fills the potential with the values in v.
-
-Parameters
-----------
-v : list
-    a list containing the values to fill the Potential with.
+    if v is a list, the size of the list must be the
+    if v is a pyAgrum.Potential. It must to contain variables with exactly the same names and labels but not necessarily the same variables.
 
 Returns
 -------
@@ -170,9 +160,10 @@ gum.SizeError
 
 %feature("docstring") gum::Potential::populate
 "
-Warnings
+Raises:
 --------
-See fillWith to fill the potential.
+gum.SizeError 
+  if v size's does not matches the domain size.
 "
 
 %feature("docstring") gum::Potential::get
@@ -260,10 +251,9 @@ Returns
 pyAgrum.Potential
   the projected Potential
 
-Raises
-------
-gum.InvalidArgument
-  If varnames contains only one variable that does not exist in the Potential
+Warnings
+--------
+InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
 "
 
 %feature("docstring") gum::Potential::margProdIn
@@ -476,10 +466,9 @@ Returns
 pyAgrum.Potential
   a reference to the modified potential
 
-Raises
-------
-gum.IndexError
-  If the var is not in the potential 
+Warnings
+--------
+IndexError raised if the var is not in the potential 
 "
 
 %feature("docstring") gum::Potential::reorganize

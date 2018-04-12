@@ -19,7 +19,7 @@
  ***************************************************************************/
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 
 // to ease IDE PARSER
 #include <agrum/multidim/setInst.h>
@@ -528,7 +528,7 @@ namespace gum {
   }
 
   // removes everything
-  INLINE void SetInst::clear(void) {
+  INLINE void SetInst::clear() {
     // if ( __master ) GUM_ERROR( OperationNotAllowed, "in slave SetInst" );
 
     __vars.clear();
@@ -690,7 +690,7 @@ namespace gum {
     return __vars;
   }
 
-  // swap 2 vars in the SetInst
+  // replace 2 vars in the SetInst
 
   INLINE void SetInst::__swap(Idx i, Idx j) {
     if (i == j) return;
@@ -746,8 +746,8 @@ namespace gum {
   INLINE bool SetInst::empty() const { return __vals.empty(); }
 
   // Replace x by y.
-  INLINE void SetInst::_swap(const DiscreteVariable* x,
-                             const DiscreteVariable* y) {
+  INLINE void SetInst::_replace(const DiscreteVariable* x,
+                                const DiscreteVariable* y) {
     __vars.setAtPos(__vars.pos(x), y);
   }
 } /* namespace gum */

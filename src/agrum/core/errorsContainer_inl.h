@@ -84,7 +84,7 @@ namespace gum {
   }
 
   INLINE
-  Size ErrorsContainer::count(void) const { return error_count + warning_count; }
+  Size ErrorsContainer::count() const { return error_count + warning_count; }
 
   INLINE
   void ErrorsContainer::syntheticResults(std::ostream& o) const {

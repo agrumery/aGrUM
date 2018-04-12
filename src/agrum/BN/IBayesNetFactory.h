@@ -30,7 +30,7 @@
 #include <vector>
 
 #include <agrum/graphicalModels/variableNodeMap.h>
-#include <agrum/multidim/multiDimAdressable.h>
+#include <agrum/multidim/implementations/multiDimAdressable.h>
 #include <agrum/variables/labelizedVariable.h>
 
 namespace gum {
@@ -64,6 +64,8 @@ namespace gum {
       FACT_ENTRY
     };
 
+    IBayesNetFactory()
+        : __verbose(false){};
     // just to make some compilers happy
     virtual ~IBayesNetFactory(){};
 
@@ -86,7 +88,7 @@ namespace gum {
     virtual const DiscreteVariable& varInBN(NodeId id) = 0;
     virtual factory_state state() const = 0;
     virtual NodeId variableId(const std::string& name) const = 0;
-    virtual Size cptDomainSize(const NodeId n) const = 0;
+    virtual Size cptDomainSize(NodeId n) const = 0;
 
     virtual void startNetworkDeclaration() = 0;
     virtual void addNetworkProperty(const std::string& propName,
@@ -118,7 +120,7 @@ namespace gum {
     virtual void setVariable(const DiscreteVariable& var) = 0;
     virtual void setVariableCPT(const std::string&  varName,
                                 MultiDimAdressable* table,
-                                bool                redefineParents = false) = 0;
+                                bool                redefineParents) = 0;
     /// @}
 
     private:
@@ -127,5 +129,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif  // GUM_ASBTRACT_BAYESNET_FACTORY_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

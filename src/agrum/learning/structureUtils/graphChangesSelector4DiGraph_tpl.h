@@ -271,7 +271,7 @@ namespace gum {
       Size nb_nodes = Size(modal.size());
       for (NodeId i = 0; i < nb_nodes; ++i) {
         if (!graph.existsNode(i)) {
-          graph.addNode(i);
+          graph.addNodeWithId(i);
         }
       }
 

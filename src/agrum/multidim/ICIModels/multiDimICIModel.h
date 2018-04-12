@@ -34,7 +34,7 @@
 #define GUM_MULTI_DIM_ICI_MODEL_H
 
 #include <agrum/core/bijection.h>
-#include <agrum/multidim/multiDimReadOnly.h>
+#include <agrum/multidim/implementations/multiDimReadOnly.h>
 
 namespace gum {
 
@@ -94,24 +94,24 @@ namespace gum {
     /// @{
 
     public:
-    const std::string toString(void) const override;
+    const std::string toString() const override;
 
     // @todo : optimisation with a always up-to-date value associated to each
     // instantiation
-    virtual void changeNotification(gum::Instantiation&,
+    virtual void changeNotification(const gum::Instantiation&,
                                     const gum::DiscreteVariable* const,
-                                    const gum::Idx&,
-                                    const gum::Idx&) override{};
+                                    gum::Idx,
+                                    gum::Idx) override{};
 
-    virtual void setFirstNotification(gum::Instantiation&) override{};
+    virtual void setFirstNotification(const gum::Instantiation&) override{};
 
-    virtual void setLastNotification(gum::Instantiation&) override{};
+    virtual void setLastNotification(const gum::Instantiation&) override{};
 
-    virtual void setIncNotification(gum::Instantiation&) override{};
+    virtual void setIncNotification(const gum::Instantiation&) override{};
 
-    virtual void setDecNotification(gum::Instantiation&) override{};
+    virtual void setDecNotification(const gum::Instantiation&) override{};
 
-    virtual void setChangeNotification(gum::Instantiation&) override{};
+    virtual void setChangeNotification(const gum::Instantiation&) override{};
 
     const std::string toString(const gum::Instantiation* i) const override {
       return i->toString();
@@ -172,8 +172,8 @@ namespace gum {
     mutable HashTable< const DiscreteVariable*, GUM_SCALAR > __causal_weights;
     /// @}
 
-    virtual void _swap(const DiscreteVariable* x,
-                       const DiscreteVariable* y) override;
+    virtual void _replace(const DiscreteVariable* x,
+                          const DiscreteVariable* y) override;
   };
 
 

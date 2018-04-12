@@ -63,7 +63,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE std::string Count< GUM_SCALAR >::aggregatorName(void) const {
+    INLINE std::string Count< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "count[" << __value << "]";
       return ss.str();
@@ -77,4 +77,3 @@ namespace gum {
 
   }  // aggregator
 }  // namespace gum
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

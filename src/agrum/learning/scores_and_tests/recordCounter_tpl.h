@@ -354,7 +354,7 @@ namespace gum {
       }
 
       // for nonempty sets, always add the node to the subset lattice
-      __subset_lattice.addNode(node);
+      __subset_lattice.addNodeWithId(node);
       IdSet< IdSetAlloc > tmp_idset(ids, set_size);
 
       if (!__idsets.existsFirst(tmp_idset)) {

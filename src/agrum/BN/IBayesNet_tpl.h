@@ -83,7 +83,7 @@ namespace gum {
     for (auto node : nodes()) {
       Size q = 1;
 
-      for (auto parent : dag().parents(node))
+      for (auto parent : parents(node))
         q *= variable(parent).domainSize();
 
       dim += (variable(node).domainSize() - 1) * q;
@@ -153,7 +153,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  INLINE std::string IBayesNet< GUM_SCALAR >::toString(void) const {
+  INLINE std::string IBayesNet< GUM_SCALAR >::toString() const {
     Size   param = 0;
     double dSize = log10DomainSize();
 
@@ -183,7 +183,7 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
-  std::string IBayesNet< GUM_SCALAR >::toDot(void) const {
+  std::string IBayesNet< GUM_SCALAR >::toDot() const {
     std::stringstream output;
     output << "digraph \"";
 
@@ -210,12 +210,12 @@ namespace gum {
     std::string tab = "  ";
 
     for (auto node : nodes()) {
-      if (dag().children(node).size() > 0) {
-        for (auto child : dag().children(node)) {
+      if (children(node).size() > 0) {
+        for (auto child : children(node)) {
           output << tab << "\"" << variable(node).name() << "\" -> "
                  << "\"" << variable(child).name() << "\";" << std::endl;
         }
-      } else if (dag().parents(node).size() == 0) {
+      } else if (parents(node).size() == 0) {
         output << tab << "\"" << variable(node).name() << "\";" << std::endl;
       }
     }
@@ -231,7 +231,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR
   IBayesNet< GUM_SCALAR >::jointProbability(const Instantiation& i) const {
-    GUM_SCALAR value = (GUM_SCALAR)1.0;
+    auto value = (GUM_SCALAR)1.0;
 
     GUM_SCALAR tmp;
 
@@ -252,7 +252,7 @@ namespace gum {
   template < typename GUM_SCALAR >
   GUM_SCALAR
   IBayesNet< GUM_SCALAR >::log2JointProbability(const Instantiation& i) const {
-    GUM_SCALAR value = (GUM_SCALAR)0.0;
+    auto value = (GUM_SCALAR)0.0;
 
     GUM_SCALAR tmp;
 

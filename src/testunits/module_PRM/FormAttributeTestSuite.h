@@ -296,18 +296,25 @@ namespace gum_tests {
     /// Get and set Cast Descendants
     /// @{
     void testGetCastDescendant() {
-      // Arrange
-      PRMAttribute                      state(*__class, "state", *__state);
-      gum::prm::PRMAttribute< double >* cast = nullptr;
-      // Act
-      TS_ASSERT_THROWS_NOTHING(cast = state.getCastDescendant());
-      // Assert
-      TS_ASSERT_DIFFERS(cast, nullptr);
-      TS_ASSERT_EQUALS(cast->type(), *__boolean);
-      TS_ASSERT_DIFFERS(&(cast->type().variable()), &(__boolean->variable()));
-      TS_ASSERT(cast->cpf().contains(cast->type().variable()));
-      TS_ASSERT(cast->cpf().contains(state.type().variable()));
-      TS_ASSERT_THROWS_NOTHING(delete cast);
+      try {
+        // Arrange
+        PRMAttribute                      state(*__class, "state", *__state);
+        gum::prm::PRMAttribute< double >* cast = nullptr;
+        // Act
+        TS_ASSERT_THROWS_NOTHING(cast = state.getCastDescendant());
+        // Assert
+        TS_ASSERT_DIFFERS(cast, nullptr);
+        if (cast != nullptr) {
+          TS_ASSERT_EQUALS(cast->type(), *__boolean);
+          TS_ASSERT_DIFFERS(&(cast->type().variable()), &(__boolean->variable()));
+          TS_ASSERT(cast->cpf().contains(cast->type().variable()));
+          TS_ASSERT(cast->cpf().contains(state.type().variable()));
+          TS_ASSERT_THROWS_NOTHING(delete cast);
+        }
+      } catch (gum::Exception& e) {
+        GUM_SHOWERROR(e);
+        TS_ASSERT_THROWS_NOTHING(throw e);
+      }
     }
 
     void testSetAsCastDescendant() {
@@ -338,9 +345,9 @@ namespace gum_tests {
     void testSetAsCastDescendantTypeError() {
       // Arrange
       gum::LabelizedVariable foovar{"Foo", "Bar", 5};
-      PRMAttribute           foo(*__class, "foobar", foovar);
-      PRMAttribute           state(*__class, "state", *__state);
-      auto                   before = foo.cpf().variablesSequence().size();
+      PRMAttribute foo(*__class, "foobar", gum::prm::PRMType< double >(foovar));
+      PRMAttribute state(*__class, "state", *__state);
+      auto         before = foo.cpf().variablesSequence().size();
       // Act
       TS_ASSERT_THROWS(state.setAsCastDescendant(&foo), gum::WrongType);
       // Assert

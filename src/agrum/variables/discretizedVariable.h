@@ -30,9 +30,6 @@
 #include <agrum/variables/discreteVariable.h>
 
 namespace gum {
-
-#define INC_MARKS_ARRAY 4
-
   /**
    * @class DiscretizedVariable
    * @brief Class for discretized random variable.
@@ -125,15 +122,15 @@ namespace gum {
 
     /// returns the type of variable
 
-    virtual VarType varType(void) const;
+    virtual VarType varType() const;
 
     /**
      * operator =
      * @param aDRV a labelized discrete random variable
      * @return a reference to *this
      **/
-    const DiscretizedVariable< T_TICKS >&
-    operator=(DiscretizedVariable< T_TICKS >& aDRV);
+    DiscretizedVariable< T_TICKS >&
+    operator=(const DiscretizedVariable< T_TICKS >& aDRV);
 
     /**
      *
@@ -152,7 +149,7 @@ namespace gum {
     /**
      * erase all the Ticks
      */
-    void eraseTicks(void);
+    void eraseTicks();
 
     /**
      * @param i
@@ -172,8 +169,8 @@ namespace gum {
     *
     * @return the size of the random discrete variable domain
     */
-    virtual Size              domainSize(void) const;
-    virtual const std::string domain(void) const;
+    virtual Size              domainSize() const;
+    virtual const std::string domain() const;
 
     /// from the index to the tick.
     /// @throws NotFound

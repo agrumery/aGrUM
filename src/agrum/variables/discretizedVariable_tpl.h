@@ -23,12 +23,6 @@
 #include <agrum/variables/discretizedVariable.h>
 
 namespace gum {
-#define INC_TICKS_ARRAY 4
-
-#define LESS_THAN_FIRST_RANGE "less than first range"
-#define MORE_THAN_LAST_RANGE "more than last range"
-#define NOT_ENOUGH_TICKS "not enough ticks"
-
   template < typename T_TICKS >
   INLINE void DiscretizedVariable< T_TICKS >::_copy(
     const DiscretizedVariable< T_TICKS >& aDRV) {
@@ -69,15 +63,15 @@ namespace gum {
   template < typename T_TICKS >
   INLINE Idx DiscretizedVariable< T_TICKS >::_pos(const T_TICKS& target) const {
     if (__ticks_size < 2) {
-      GUM_ERROR(OutOfBounds, NOT_ENOUGH_TICKS);
+      GUM_ERROR(OutOfBounds, "not enough ticks");
     }
 
     if (target < __ticks[0]) {
-      GUM_ERROR(OutOfLowerBound, LESS_THAN_FIRST_RANGE);
+      GUM_ERROR(OutOfLowerBound, "less than first range");
     }
 
     if (target > __ticks[__ticks_size - 1]) {
-      GUM_ERROR(OutOfUpperBound, MORE_THAN_LAST_RANGE);
+      GUM_ERROR(OutOfUpperBound, "more than last range");
     }
 
     if (target == __ticks[__ticks_size - 1])  // special case for upper limit
@@ -94,7 +88,7 @@ namespace gum {
       : DiscreteVariable(aName, aDesc)
       , __ticks_size((Size)0) {
     GUM_CONSTRUCTOR(DiscretizedVariable);
-    __ticks.reserve(INC_TICKS_ARRAY);
+    __ticks.reserve(1);
   }
 
   template < typename T_TICKS >
@@ -115,7 +109,7 @@ namespace gum {
     const DiscretizedVariable< T_TICKS >& aDRV)
       : DiscreteVariable(aDRV) {
     GUM_CONS_CPY(DiscretizedVariable);
-    __ticks.reserve(INC_TICKS_ARRAY);
+    __ticks.reserve(1);
     _copy(aDRV);
   }
 
@@ -133,8 +127,8 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE const DiscretizedVariable< T_TICKS >& DiscretizedVariable< T_TICKS >::
-  operator=(DiscretizedVariable< T_TICKS >& aDRV) {
+  INLINE DiscretizedVariable< T_TICKS >& DiscretizedVariable< T_TICKS >::
+  operator=(const DiscretizedVariable< T_TICKS >& aDRV) {
     _copy(aDRV);
     return *this;
   }
@@ -165,7 +159,7 @@ namespace gum {
     }
 
     if (__ticks_size == __ticks.size()) {  // streching __ticks if necessary
-      __ticks.resize(__ticks_size + INC_MARKS_ARRAY);
+      __ticks.resize(__ticks_size + 1);
     }
 
     if (__ticks_size == 0) {  // special case for first tick
@@ -204,7 +198,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE void DiscretizedVariable< T_TICKS >::eraseTicks(void) {
+  INLINE void DiscretizedVariable< T_TICKS >::eraseTicks() {
     if (__ticks_size != 0) {
       __ticks_size = 0;
     }
@@ -262,8 +256,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  INLINE DiscreteVariable::VarType
-         DiscretizedVariable< T_TICKS >::varType(void) const {
+  INLINE VarType DiscretizedVariable< T_TICKS >::varType() const {
     return VarType::Discretized;
   }
 
@@ -277,7 +270,7 @@ namespace gum {
   }
 
   template < typename T_TICKS >
-  const std::string DiscretizedVariable< T_TICKS >::domain(void) const {
+  const std::string DiscretizedVariable< T_TICKS >::domain() const {
     std::stringstream s;
     s << "<";
 

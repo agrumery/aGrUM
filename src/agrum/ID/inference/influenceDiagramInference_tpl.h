@@ -238,7 +238,7 @@ namespace gum {
     NodeSet idSet;
     idSet.insert(id);
 
-    for (const auto par : this->influenceDiagram().dag().parents(id))
+    for (const auto par : this->influenceDiagram().parents(id))
       idSet.insert(par);
 
     //***********************************************************************************************************************************
@@ -383,7 +383,7 @@ namespace gum {
       } else
         try {
           __cliqueEliminationMap.insert(0, cli);
-        } catch (Exception e) {
+        } catch (Exception& e) {
           throw(e);
         }
     }
@@ -464,8 +464,8 @@ namespace gum {
     // absorbing one
     NodeSet separator = __getSeparator(absorbedCliqueId, absorbingCliqueId);
 
-    Potential< GUM_SCALAR >*    potentialMarginal = 0;
-    UtilityTable< GUM_SCALAR >* utilityMarginal = 0;
+    Potential< GUM_SCALAR >* potentialMarginal = 0;
+    Potential< GUM_SCALAR >* utilityMarginal = 0;
 
     // First  we reduce absorbed clique by eleminating clique variables which
     // aren't
@@ -518,7 +518,7 @@ namespace gum {
     CliqueProperties< GUM_SCALAR >* absorbedClique,
     NodeSet&                        separator,
     Potential< GUM_SCALAR >*&       potentialMarginal,
-    UtilityTable< GUM_SCALAR >*&    utilityMarginal) {
+    Potential< GUM_SCALAR >*&       utilityMarginal) {
 
     Instantiation cliqueInstance(absorbedClique->cliqueInstantiation());
     Sequence< const DiscreteVariable* > cliqueRemainVarList(
@@ -531,8 +531,8 @@ namespace gum {
         // Initialisation Operations
 
         // First we create the tables that will result from variable elimination
-        Potential< GUM_SCALAR >*    newPotential = new Potential< GUM_SCALAR >();
-        UtilityTable< GUM_SCALAR >* newUtility = new UtilityTable< GUM_SCALAR >();
+        Potential< GUM_SCALAR >* newPotential = new Potential< GUM_SCALAR >();
+        Potential< GUM_SCALAR >* newUtility = new Potential< GUM_SCALAR >();
 
         // Then we need to add all not yet eliminated variables of the clique in
         // ours
@@ -674,10 +674,10 @@ namespace gum {
   //  __makeDummyUtility : creates a generic utility
 
   template < typename GUM_SCALAR >
-  INLINE UtilityTable< GUM_SCALAR >*
+  INLINE Potential< GUM_SCALAR >*
   InfluenceDiagramInference< GUM_SCALAR >::__makeDummyUtility(NodeId cliqueId) {
-    UtilityTable< GUM_SCALAR >* ut = new UtilityTable< GUM_SCALAR >(
-      new MultiDimSparse< GUM_SCALAR >((GUM_SCALAR)0));
+    Potential< GUM_SCALAR >* ut =
+      new Potential< GUM_SCALAR >(new MultiDimSparse< GUM_SCALAR >((GUM_SCALAR)0));
     __utilityDummies.insert(ut);
 
     for (const auto cliqueNode : __triangulation->junctionTree().clique(cliqueId))
@@ -745,9 +745,8 @@ namespace gum {
 
     if (removable) __removablePotentialList.insert(&cpt);
 
-    for (Sequence< const DiscreteVariable* >::iterator_safe iter = cpt.begin();
-         iter != cpt.end();
-         ++iter) {
+    const auto& vars = cpt.variablesSequence();
+    for (auto iter = vars.beginSafe(); iter != vars.end(); ++iter) {
       if (removable && !__allVarsInst.contains(**iter)) try {
           __removableVarList.insert(*iter);
         } catch (DuplicateElement&) {
@@ -771,28 +770,26 @@ namespace gum {
   // inference or not
   template < typename GUM_SCALAR >
   void
-  CliqueProperties< GUM_SCALAR >::addUtility(const UtilityTable< GUM_SCALAR >& ut,
+  CliqueProperties< GUM_SCALAR >::addUtility(const Potential< GUM_SCALAR >& ut,
                                              bool removable) {
     __utilityBucket.insert(&ut, new Instantiation(ut));
 
     if (removable) __removableUtilityList.insert(&ut);
 
-    for (Sequence< const DiscreteVariable* >::iterator_safe iter = ut.begin();
-         iter != ut.end();
-         ++iter) {
-      if (removable && !__allVarsInst.contains(**iter)) try {
-          __removableVarList.insert(*iter);
+    for (auto var : ut.variablesSequence()) {
+      if (removable && !__allVarsInst.contains(*var)) try {
+          __removableVarList.insert(var);
         } catch (DuplicateElement&) {
           // Nothing to do then!
         }
 
-      addVariable(**iter);
+      addVariable(*var);
     }
   }
 
   //  utilityBucket : Returns the utiluty table bucket of this Clique
   template < typename GUM_SCALAR >
-  INLINE const HashTable< const UtilityTable< GUM_SCALAR >*, Instantiation* >&
+  INLINE const HashTable< const Potential< GUM_SCALAR >*, Instantiation* >&
                CliqueProperties< GUM_SCALAR >::utilityBucket() {
     return __utilityBucket;
   }
@@ -914,5 +911,3 @@ namespace gum {
 } /* namespace gum */
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

@@ -31,8 +31,8 @@
 
 #include <agrum/core/hashTable.h>
 #include <agrum/core/sequence.h>
-#include <agrum/multidim/multiDimDecorator.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimDecorator.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <agrum/variables/discreteVariable.h>
 
 namespace gum {
@@ -109,17 +109,17 @@ namespace gum {
     /// @{
 
     /// constructs a ScheduleMultiDim containing an already built implementation
-    ScheduleMultiDim(const MultiDimImplementation< GUM_SCALAR >&);
+    explicit ScheduleMultiDim(const MultiDimImplementation< GUM_SCALAR >&);
 
     /// constructs a ScheduleMultiDim containing an already built implementation
-    ScheduleMultiDim(const MultiDimDecorator< GUM_SCALAR >&);
+    explicit ScheduleMultiDim(const MultiDimDecorator< GUM_SCALAR >&);
 
     /// construct a ScheduleMultiDim for an implementation yet to be built
     /** The ScheduleMultiDim created is abstract, i.e., it does not contain a
      * proper MultiDimImplementation yet. However, the variables of the latter
      * need be known to optimize inference processes
      * @warning the sequence of variables is copied into the wrapper. */
-    ScheduleMultiDim(const Sequence< const DiscreteVariable* >& vars);
+    explicit ScheduleMultiDim(const Sequence< const DiscreteVariable* >& vars);
 
     /// copy constructor
     ScheduleMultiDim(const ScheduleMultiDim< GUM_SCALAR >&);

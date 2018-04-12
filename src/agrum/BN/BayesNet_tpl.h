@@ -95,8 +95,8 @@ namespace gum {
     NodeId idVar;
     try {
       idVar = bn.idFromName(name);
-    } catch (gum::NotFound) {
-      if (labels.size() == 0) {
+    } catch (gum::NotFound&) {
+      if (labels.empty()) {
         idVar = bn.add(LabelizedVariable(name, name, ds));
       } else {
         auto l = LabelizedVariable(name, name, 0);
@@ -200,14 +200,27 @@ namespace gum {
   }
 
   template < typename GUM_SCALAR >
+  INLINE void BayesNet< GUM_SCALAR >::changeVariableLabel(
+    NodeId id, const std::string& old_label, const std::string& new_label) {
+    if (variable(id).varType() != VarType::Labelized) {
+      GUM_ERROR(NotFound, "Variable " << id << " is not a LabelizedVariable.");
+    }
+    LabelizedVariable* var = dynamic_cast< LabelizedVariable* >(
+      const_cast< DiscreteVariable* >(&variable(id)));
+
+    var->changeLabel(var->posLabel(old_label), new_label);
+  }
+
+
+  template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::nodeId(const DiscreteVariable& var) const {
     return __varMap.get(var);
   }
 
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var) {
-    MultiDimArray< GUM_SCALAR >* ptr = new MultiDimArray< GUM_SCALAR >();
-    NodeId                       res = 0;
+    auto   ptr = new MultiDimArray< GUM_SCALAR >();
+    NodeId res = 0;
 
     try {
       res = add(var, ptr);
@@ -247,8 +260,8 @@ namespace gum {
   template < typename GUM_SCALAR >
   INLINE NodeId BayesNet< GUM_SCALAR >::add(const DiscreteVariable& var,
                                             NodeId                  id) {
-    MultiDimArray< GUM_SCALAR >* ptr = new MultiDimArray< GUM_SCALAR >();
-    NodeId                       res = 0;
+    auto   ptr = new MultiDimArray< GUM_SCALAR >();
+    NodeId res = 0;
 
     try {
       res = add(var, ptr, id);
@@ -267,9 +280,9 @@ namespace gum {
                               MultiDimImplementation< GUM_SCALAR >* aContent,
                               NodeId                                id) {
     __varMap.insert(id, var);
-    this->_dag.addNode(id);
+    this->_dag.addNodeWithId(id);
 
-    Potential< GUM_SCALAR >* cpt = new Potential< GUM_SCALAR >(aContent);
+    auto cpt = new Potential< GUM_SCALAR >(aContent);
     (*cpt) << variable(id);
     __probaMap.insert(id, cpt);
     return id;
@@ -306,7 +319,7 @@ namespace gum {
   void BayesNet< GUM_SCALAR >::erase(NodeId varId) {
     if (__varMap.exists(varId)) {
       // Reduce the variable child's CPT
-      const NodeSet& children = dag().children(varId);
+      const NodeSet& children = this->children(varId);
 
       for (const auto c : children) {
         __probaMap[c]->erase(variable(varId));
@@ -370,7 +383,11 @@ namespace gum {
     // modify the topology of the graph: add to tail all the parents of head
     // and add to head all the parents of tail
     beginTopologyTransformation();
-    NodeSet new_parents = dag().parents(tail) + dag().parents(head);
+    NodeSet new_parents;
+    for (const auto node : this->parents(tail))
+      new_parents.insert(node);
+    for (const auto node : this->parents(head))
+      new_parents.insert(node);
     // remove arc (head, tail)
     eraseArc(arc);
 
@@ -396,14 +413,12 @@ namespace gum {
     // update the conditional distributions of head and tail
     Set< const DiscreteVariable* > del_vars;
     del_vars << &(variable(tail));
-    Potential< GUM_SCALAR >  new_cpt_head = prod.margSumOut(del_vars);
-    Potential< GUM_SCALAR >& cpt_head =
-      const_cast< Potential< GUM_SCALAR >& >(cpt(head));
+    Potential< GUM_SCALAR > new_cpt_head = prod.margSumOut(del_vars);
+    auto& cpt_head = const_cast< Potential< GUM_SCALAR >& >(cpt(head));
     cpt_head = std::move(new_cpt_head);
 
-    Potential< GUM_SCALAR >  new_cpt_tail{prod / cpt_head};
-    Potential< GUM_SCALAR >& cpt_tail =
-      const_cast< Potential< GUM_SCALAR >& >(cpt(tail));
+    Potential< GUM_SCALAR > new_cpt_tail{prod / cpt_head};
+    auto& cpt_tail = const_cast< Potential< GUM_SCALAR >& >(cpt(tail));
     cpt_tail = std::move(new_cpt_tail);
   }
 
@@ -545,7 +560,7 @@ namespace gum {
   void BayesNet< GUM_SCALAR >::addWeightedArc(NodeId     tail,
                                               NodeId     head,
                                               GUM_SCALAR causalWeight) {
-    const MultiDimICIModel< GUM_SCALAR >* CImodel =
+    auto* CImodel =
       dynamic_cast< const MultiDimICIModel< GUM_SCALAR >* >(cpt(head).content());
 
     if (CImodel != 0) {
@@ -597,11 +612,10 @@ namespace gum {
   void
   BayesNet< GUM_SCALAR >::__copyPotentials(const BayesNet< GUM_SCALAR >& source) {
     // Copying potentials
-    Potential< GUM_SCALAR >* copy_array = nullptr;
 
     for (const auto src : source.__probaMap) {
       // First we build the node's CPT
-      copy_array = new Potential< GUM_SCALAR >();
+      Potential< GUM_SCALAR >* copy_array = new Potential< GUM_SCALAR >();
       copy_array->beginMultipleChanges();
       for (gum::Idx i = 0; i < src.second->nbrDim(); i++) {
         (*copy_array) << variableFromName(src.second->variable(i).name());
@@ -656,6 +670,12 @@ namespace gum {
                                                  Potential< GUM_SCALAR >* newPot) {
     delete __probaMap[id];
     __probaMap[id] = newPot;
+  }
+
+  template < typename GUM_SCALAR >
+  void BayesNet< GUM_SCALAR >::changePotential(const std::string&       name,
+                                               Potential< GUM_SCALAR >* newPot) {
+    changePotential(idFromName(name), newPot);
   }
 
 } /* namespace gum */

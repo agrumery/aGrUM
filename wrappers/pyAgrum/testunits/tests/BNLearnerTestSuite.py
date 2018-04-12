@@ -91,7 +91,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
 
     bn2 = learner.learnParameters(bn)
     for i in range(bn.size()):
-      #self.assertEquals(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
+      # self.assertEquals(str(bn2.variable(i)), str(bn.variable(bn.idFromName(bn2.variable(i).name()))))
       self.assertEquals(set(bn2.variable(i).labels()), set(
           bn.variable(bn.idFromName(bn2.variable(i).name())).labels()))
 
@@ -105,16 +105,16 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
   def testDBNTonda(self):
     dbn = gum.BayesNet()
     l = [dbn.add(gum.LabelizedVariable(name, name, nbr)) for (name, nbr) in [
-        ("bf_0", 4),
-        ("bf_t", 4),
-        ("c_0", 5),
-        ("c_t", 5),
-        ("h_0", 5),
-        ("h_t", 5),
-        ("tf_0", 5),
-        ("tf_t", 5),
-        ("wl_0", 4),
-        ("wl_t", 4)
+      ("bf_0", 4),
+      ("bf_t", 4),
+      ("c_0", 5),
+      ("c_t", 5),
+      ("h_0", 5),
+      ("h_t", 5),
+      ("tf_0", 5),
+      ("tf_t", 5),
+      ("wl_0", 4),
+      ("wl_t", 4)
     ]]
     for node in ["c_t", "h_t", "wl_t"]:
       dbn.addArc(dbn.idFromName("tf_0"), dbn.idFromName(node))
@@ -155,7 +155,7 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
     learner.use3off2()
     learner.useNML()
     learner.addForbiddenArc(4, 1)
-    learner.addMandatoryArc(5, 7)
+    learner.addMandatoryArc(7, 5)
 
     d = gum.DAG()
     for i in range(8):
@@ -168,14 +168,18 @@ class BNLearnerCSVTestCase(pyAgrumTestCase):
       bn = learner.learnBN()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEquals(len(bn.arcs()), 8)
+    self.assertEquals(len(bn.arcs()), 9)
+    self.assertFalse(bn.dag().existsArc(4, 1))
+    self.assertTrue(bn.dag().existsArc(7, 5))
 
     try:
       mg = learner.learnMixedStructure()
     except:
       self.fail("Exception has been raised and should not")
-    self.assertEquals(len(mg.arcs()), 6)
-    self.assertEquals(len(mg.edges()), 2)
+    self.assertEquals(mg.sizeArcs(), 8)
+    self.assertEquals(mg.sizeEdges(), 1)
+    self.assertFalse(bn.dag().existsArc(4, 1))
+    self.assertTrue(bn.dag().existsArc(7, 5))
     self.assertEquals(len(learner.latentVariables()), 2)
 
 

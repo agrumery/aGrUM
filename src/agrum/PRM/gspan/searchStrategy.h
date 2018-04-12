@@ -128,7 +128,7 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        FrequenceSearch(Size freq);
+        explicit FrequenceSearch(Size freq);
 
         /// Copy constructor.
         FrequenceSearch(const FrequenceSearch& from);
@@ -177,7 +177,7 @@ namespace gum {
         /// @{
 
         /// Default constructor.
-        StrictSearch(Size freq = 2);
+        explicit StrictSearch(Size freq = 2);
 
         /// Copy constructor.
         StrictSearch(const StrictSearch& from);
@@ -314,5 +314,3 @@ namespace gum {
 #include <agrum/PRM/gspan/searchStrategy_tpl.h>
 
 #endif /* GUM_DFS_TREE_H */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

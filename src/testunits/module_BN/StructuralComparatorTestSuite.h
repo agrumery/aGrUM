@@ -39,27 +39,27 @@ namespace gum_tests {
 
       gum::DiGraph   dig1, dig2;
       gum::UndiGraph undig1, undig2;
-      dig1.addNode(0);
-      undig1.addNode(0);
+      dig1.addNodeWithId(0);
+      undig1.addNodeWithId(0);
 
       TS_ASSERT_THROWS(comp.compare(dig1, dig2), gum::OperationNotAllowed);
       TS_ASSERT_THROWS(comp.compare(dig2, dig1), gum::OperationNotAllowed);
       TS_ASSERT_THROWS(comp.compare(undig1, undig2), gum::OperationNotAllowed);
       TS_ASSERT_THROWS(comp.compare(undig2, undig1), gum::OperationNotAllowed);
 
-      dig2.addNode(2);
-      undig2.addNode(2);
+      dig2.addNodeWithId(2);
+      undig2.addNodeWithId(2);
       TS_ASSERT_THROWS(comp.compare(dig1, dig2), gum::InvalidNode);
       TS_ASSERT_THROWS(comp.compare(dig2, dig1), gum::InvalidNode);
       TS_ASSERT_THROWS(comp.compare(undig1, undig2), gum::InvalidNode);
       TS_ASSERT_THROWS(comp.compare(undig2, undig1), gum::InvalidNode);
 
-      dig1.addNode(1);
-      dig1.addNode(2);
+      dig1.addNodeWithId(1);
+      dig1.addNodeWithId(2);
       dig1.addArc(0, 1);
       dig1.addArc(0, 2);
-      dig2.addNode(1);
-      dig2.addNode(0);
+      dig2.addNodeWithId(1);
+      dig2.addNodeWithId(0);
       dig2.addArc(0, 1);
       dig2.addArc(0, 2);
       dig2.addArc(1, 2);
@@ -69,12 +69,12 @@ namespace gum_tests {
       TS_ASSERT_DELTA(comp.recall_skeleton(), 1, 1e-3);
       TS_ASSERT_DELTA(comp.f_score_skeleton(), 0.8, 1e-3);
 
-      undig1.addNode(1);
-      undig1.addNode(2);
+      undig1.addNodeWithId(1);
+      undig1.addNodeWithId(2);
       undig1.addEdge(0, 1);
       undig1.addEdge(0, 2);
-      undig2.addNode(1);
-      undig2.addNode(0);
+      undig2.addNodeWithId(1);
+      undig2.addNodeWithId(0);
       undig2.addEdge(0, 1);
       undig2.addEdge(0, 2);
       undig2.addEdge(2, 1);
@@ -87,7 +87,7 @@ namespace gum_tests {
       // creating complete graph
       gum::MixedGraph graph;
       for (gum::Size i = 0; i < 8; ++i) {
-        graph.addNode(i);
+        graph.addNodeWithId(i);
         for (gum::Size j = 0; j < i; ++j) {
           graph.addEdge(j, i);
         }
@@ -95,7 +95,7 @@ namespace gum_tests {
       // creating Asia
       gum::MixedGraph asia;
       for (gum::Size i = 0; i < 8; ++i) {
-        asia.addNode(i);
+        asia.addNodeWithId(i);
       }
       asia.addArc(3, 4);
       asia.addArc(4, 5);
@@ -111,7 +111,7 @@ namespace gum_tests {
       TS_ASSERT_THROWS(comp.compare(asia, g), gum::OperationNotAllowed);
 
       for (gum::Size i = 0; i < 16; i += 2) {
-        g.addNode(i);
+        g.addNodeWithId(i);
       }
 
       TS_ASSERT_THROWS(comp.compare(asia, g), gum::InvalidNode);
@@ -147,7 +147,7 @@ namespace gum_tests {
 
       gum::MixedGraph mg;
       for (gum::Idx i = 0; i < 8; ++i) {
-        mg.addNode(i);
+        mg.addNodeWithId(i);
       }
       mg.addArc(0, 1);
       mg.addArc(1, 5);

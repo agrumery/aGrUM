@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 /** @file
- * @brief a cache for caching scores in Score classes (BIC, BDeu, K2, etc.)
+ * @brief a cache for caching partial entropy in 3off2
  *
  * @author Christophe GONZALES and Pierre-Henri WUILLEMIN
  */

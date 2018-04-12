@@ -643,7 +643,7 @@ namespace gum {
         Instantiation inst_default;
         inst_default << var;
 
-        for (auto node : __bn->dag().parents(varId)) {
+        for (auto node : __bn->parents(varId)) {
           if (!__parents->contains(__bn->variable(node))) {
             inst_default << __bn->variable(node);
           }
@@ -757,8 +757,8 @@ namespace gum {
   //                            of the BayesNet.
   template < typename GUM_SCALAR >
   INLINE void BayesNetFactory< GUM_SCALAR >::setVariableCPT(
-    const std::string& varName, MultiDimAdressable* adr, bool redefineParents) {
-    Potential< GUM_SCALAR >* table = dynamic_cast< Potential< GUM_SCALAR >* >(adr);
+    const std::string& varName, MultiDimAdressable* table, bool redefineParents) {
+    auto pot = dynamic_cast< Potential< GUM_SCALAR >* >(table);
 
     if (state() != factory_state::NONE) {
       __illegalStateError("setVariableCPT");
@@ -770,17 +770,17 @@ namespace gum {
       // method.
 
       if (redefineParents) {
-        __setCPTAndParents(var, table);
-      } else if (table->contains(var)) {
-        for (auto node : __bn->dag().parents(varId)) {
-          if (!table->contains(__bn->variable(node))) {
+        __setCPTAndParents(var, pot);
+      } else if (pot->contains(var)) {
+        for (auto node : __bn->parents(varId)) {
+          if (!pot->contains(__bn->variable(node))) {
             GUM_ERROR(OperationNotAllowed,
                       "The CPT is not valid in the current BayesNet.");
           }
         }
 
         // CPT are created when a variable is added.
-        __bn->_unsafeChangePotential(varId, table);
+        __bn->_unsafeChangePotential(varId, pot);
       }
     }
   }
@@ -910,5 +910,3 @@ namespace gum {
     __stringBag.clear();
   }
 } /* namespace gum */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on;

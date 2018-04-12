@@ -56,12 +56,12 @@ namespace gum {
     /**
      * Default constructor
      */
-    GibbsSampling(const IBayesNet< GUM_SCALAR >* bn);
+    explicit GibbsSampling(const IBayesNet< GUM_SCALAR >* bn);
 
     /**
   * Destructor
   */
-    virtual ~GibbsSampling();
+    ~GibbsSampling() override;
 
     /**
      * @brief Number of burn in for one iteration.
@@ -74,11 +74,11 @@ namespace gum {
      * @brief Returns the number of burn in.
      * @return Returns the number of burn in.
      */
-    Size burnIn(void) const { return this->_burn_in; };
+    Size burnIn() const { return this->_burn_in; };
 
     protected:
     /// draws a defined number of samples without updating the estimators
-    virtual Instantiation _burnIn();
+    Instantiation _burnIn() override;
 
     /// draws a sample given previous one according to Gibbs sampling
     /**
@@ -94,7 +94,7 @@ namespace gum {
     * sample, given the instantiation of all other nodes. It requires computing  of
     * P( x \given instantiation_markovblanket(x)).
     */
-    virtual Instantiation _draw(float* w, Instantiation prev);
+    Instantiation _draw(float* w, Instantiation prev) override;
 
     /// draws a Monte Carlo sample
     /**
@@ -107,7 +107,7 @@ namespace gum {
     * class Approximate Inference because it also initializes attributes needed for
     * Gibbs sampling.
     */
-    virtual Instantiation _monteCarloSample();
+    Instantiation _monteCarloSample();
   };
 
   extern template class GibbsSampling< float >;

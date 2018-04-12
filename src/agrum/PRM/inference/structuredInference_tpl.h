@@ -384,7 +384,8 @@ namespace gum {
           __insertNodeInElimLists(data, match, inst, elt.second, id, v);
 
           if (data.inners().exists(id) &&
-              (inst->type().dag().children(elt.second->id()).size() == 0) &&
+              (inst->type().containerDag().children(elt.second->id()).size() ==
+               0) &&
               __allInstanceNoRefAttr(data, v))
             data.barren.insert(id);
         }
@@ -593,7 +594,7 @@ namespace gum {
       }
 
       for (const auto p : pool) {
-        for (const auto v : *p) {
+        for (const auto v : p->variablesSequence()) {
           try {
             target = data.map[data.vars.first(v)];
             bij.insert(
@@ -870,7 +871,7 @@ namespace gum {
       GUM_CONSTRUCTOR(StructuredInference< GUM_SCALAR >::CData);
 
       // First step we add Attributes and Aggregators
-      for (const auto node : c.dag().nodes()) {
+      for (const auto node : c.containerDag().nodes()) {
         switch (c.get(node).elt_type()) {
           case PRMClassElement< GUM_SCALAR >::prm_attribute: {
             pool.insert(
@@ -880,7 +881,7 @@ namespace gum {
           }
 
           case PRMClassElement< GUM_SCALAR >::prm_aggregate: {
-            moral_graph.addNode(node);
+            moral_graph.addNodeWithId(node);
             mods.insert(node, c.get(node).type()->domainSize());
             break;
           }
@@ -892,7 +893,7 @@ namespace gum {
 
       // Second, we add edges, moralise the graph and build the partial ordering
       for (const auto node : moral_graph.nodes()) {
-        const auto& parents = c.dag().parents(node);
+        const auto& parents = c.containerDag().parents(node);
 
         // Adding edges and marrying parents
         for (auto tail = parents.begin(); tail != parents.end(); ++tail) {
@@ -923,7 +924,7 @@ namespace gum {
             // If the aggregators is not an output and have parents which are
             // not outputs, we must eliminate the parents after adding the
             // aggregator's CPT
-            for (const auto par : c.dag().parents(node)) {
+            for (const auto par : c.containerDag().parents(node)) {
               const auto& prnt = c.get(par);
 
               if ((!c.isOutputNode(prnt)) &&

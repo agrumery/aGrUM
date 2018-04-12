@@ -77,7 +77,7 @@
 #include <agrum/core/set.h>
 #include <agrum/graphicalModels/inference/schedule.h>
 #include <agrum/graphicalModels/inference/scheduleMultiDim.h>
-#include <agrum/multidim/multiDimImplementation.h>
+#include <agrum/multidim/implementations/multiDimImplementation.h>
 #include <utility>
 
 namespace gum {

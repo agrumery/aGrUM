@@ -27,6 +27,7 @@
 #include <agrum/BN/IBayesNet.h>
 #include <agrum/core/set.h>
 #include <agrum/graphs/graphElements.h>
+#include <agrum/graphs/parts/nodeGraphPart.h>
 #include <agrum/multidim/potential.h>
 
 namespace PyAgrumHelper {
@@ -128,13 +129,14 @@ namespace PyAgrumHelper {
   void fillInstantiationFromPyObject(const gum::Potential< double >* pot,
                                      gum::Instantiation&             inst,
                                      PyObject*                       dict) {
+    if (!PyDict_Check(dict)) {
+      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionary");
+    }
+
     gum::HashTable< std::string, const gum::DiscreteVariable* > namesToVars;
     for (gum::Idx i = 0; i < pot->nbrDim(); i++)
       namesToVars.insert(pot->variable(i).name(), &(pot->variable(i)));
 
-    if (!PyDict_Check(dict)) {
-      GUM_ERROR(gum::InvalidArgument, "Argument is not a dictionnary");
-    }
 
     PyObject * key, *value;
     Py_ssize_t pos = 0;
@@ -201,7 +203,17 @@ namespace PyAgrumHelper {
 
     return q;
   }
+
   PyObject* PySetFromNodeSet(const gum::NodeSet& nodeset) {
+    PyObject* q = PySet_New(0);
+
+    for (auto node : nodeset) {
+      PySet_Add(q, PyLong_FromUnsignedLong((unsigned long)node));
+    }
+
+    return q;
+  }
+  PyObject* PySetFromNodeSet(const gum::NodeGraphPart& nodeset) {
     PyObject* q = PySet_New(0);
 
     for (auto node : nodeset) {
@@ -223,6 +235,32 @@ namespace PyAgrumHelper {
     PyObject* q = PySet_New(0);
     for (auto arc : arcset) {
       PySet_Add(q, Py_BuildValue("(i,i)", arc.tail(), arc.head()));
+    }
+    return q;
+  }
+
+  PyObject* PySetFromEdgeSet(const gum::EdgeSet& edgeset) {
+    PyObject* q = PySet_New(0);
+    for (auto edg : edgeset) {
+      PySet_Add(q, Py_BuildValue("(i,i)", edg.first(), edg.second()));
+    }
+    return q;
+  }
+
+  PyObject* PyDictFromInstantiation(const gum::Instantiation& inst) {
+    PyObject* q = PyDict_New();
+    for (const auto& k : inst.variablesSequence()) {
+      PyDict_SetItemString(q,
+                           k->name().c_str(),
+                           PyLong_FromUnsignedLong((unsigned long)inst.val(*k)));
+    }
+    return q;
+  }
+  PyObject*
+  PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
+    PyObject* q = PyList_New(0);
+    for (const auto& inst : soi) {
+      PyList_Append(q, PyDictFromInstantiation(inst));
     }
     return q;
   }

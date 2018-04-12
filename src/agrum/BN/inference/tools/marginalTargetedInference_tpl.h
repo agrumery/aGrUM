@@ -70,17 +70,17 @@ namespace gum {
   // return true if variable is a target
   template < typename GUM_SCALAR >
   INLINE bool
-  MarginalTargetedInference< GUM_SCALAR >::isTarget(const NodeId var) const {
+  MarginalTargetedInference< GUM_SCALAR >::isTarget(NodeId node) const {
     // check that the variable belongs to the bn
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
                 "No Bayes net has been assigned to the "
                 "inference algorithm");
-    if (!this->__bn->dag().exists(var)) {
-      GUM_ERROR(UndefinedElement, var << " is not a NodeId in the bn");
+    if (!this->__bn->dag().exists(node)) {
+      GUM_ERROR(UndefinedElement, node << " is not a NodeId in the bn");
     }
 
-    return __targets.contains(var);
+    return __targets.contains(node);
   }
 
   // Add a single target to the list of targets
@@ -166,7 +166,7 @@ namespace gum {
 
   // removes an existing target
   template < typename GUM_SCALAR >
-  void MarginalTargetedInference< GUM_SCALAR >::eraseTarget(const NodeId target) {
+  void MarginalTargetedInference< GUM_SCALAR >::eraseTarget(NodeId target) {
     // check if the node belongs to the Bayesian network
     if (this->__bn == nullptr)
       GUM_ERROR(NullElement,
@@ -236,21 +236,21 @@ namespace gum {
   // Compute the posterior of a node.
   template < typename GUM_SCALAR >
   const Potential< GUM_SCALAR >&
-  MarginalTargetedInference< GUM_SCALAR >::posterior(const NodeId var) {
-    if (this->hardEvidenceNodes().contains(var)) {
-      return *(this->evidence()[var]);
+  MarginalTargetedInference< GUM_SCALAR >::posterior(NodeId node) {
+    if (this->hardEvidenceNodes().contains(node)) {
+      return *(this->evidence()[node]);
     }
 
-    if (!isTarget(var)) {
+    if (!isTarget(node)) {
       // throws UndefinedElement if var is not a target
-      GUM_ERROR(UndefinedElement, var << " is not a target node");
+      GUM_ERROR(UndefinedElement, node << " is not a target node");
     }
 
     if (!this->isDone()) {
       this->makeInference();
     }
 
-    return _posterior(var);
+    return _posterior(node);
   }
 
   // Compute the posterior of a node.
@@ -264,7 +264,7 @@ namespace gum {
    * Compute Shanon's entropy of a node given the observation
    */
   template < typename GUM_SCALAR >
-  INLINE GUM_SCALAR MarginalTargetedInference< GUM_SCALAR >::H(const NodeId X) {
+  INLINE GUM_SCALAR MarginalTargetedInference< GUM_SCALAR >::H(NodeId X) {
     return posterior(X).entropy();
   }
 
@@ -283,7 +283,7 @@ namespace gum {
     NodeId target, const std::vector< NodeId >& evs) {
     const auto& vtarget = this->BN().variable(target);
 
-    NodeSet soids(evs.size());
+    NodeSet soids(Size(evs.size()));
     for (const auto& e : evs)
       soids << e;
     if (soids.contains(target)) {

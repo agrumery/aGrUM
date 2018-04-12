@@ -31,7 +31,7 @@ distribution.
  * - fixed buggy compares operator==(), operator<(), and operator>()
  * - fixed operator+=() to take a const ref argument, following spec.
  * - added "copy" constructor with length, and most compare operators.
- * - added swap(), clear(), size(), capacity(), operator+().
+ * - added replace(), clear(), size(), capacity(), operator+().
  */
 
 #ifndef TIXML_USE_STL
@@ -175,7 +175,7 @@ class TiXmlString {
   void clear() {
     // Lee:
     // The original was just too strange, though correct:
-    //  TiXmlString().swap(*this);
+    //  TiXmlString().replace(*this);
     // Instead use the quit & re-init:
     quit();
     init(0, 0);

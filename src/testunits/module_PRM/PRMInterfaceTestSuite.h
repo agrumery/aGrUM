@@ -277,13 +277,7 @@ namespace gum_tests {
       PRMInterface  sub_c("sub_c", c);
       PRMAttribute* state = new PRMAttribute("attr", *__state);
       // Act
-      // TS_ASSERT_THROWS_NOTHING( sub_c.overload( state) );
-      try {
-        sub_c.overload(state);
-      } catch (gum::Exception& e) {
-        GUM_TRACE(e.errorContent());
-        GUM_TRACE(e.errorCallStack());
-      }
+      TS_ASSERT_THROWS_NOTHING(sub_c.overload(state));
       // Assert
       TS_ASSERT(sub_c.exists(state->safeName()));
       TS_ASSERT(sub_c.exists(attr->safeName()));

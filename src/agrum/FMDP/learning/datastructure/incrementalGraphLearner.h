@@ -30,13 +30,13 @@
 #define GUM_INCREMENTAL_GRAPH_LEARNER_H
 // =========================================================================
 // =========================================================================
-#include <agrum/multidim/multiDimFunctionGraph.h>
+#include <agrum/multidim/implementations/multiDimFunctionGraph.h>
 // =========================================================================
 #include <agrum/FMDP/learning/core/templateStrategy.h>
 #include <agrum/FMDP/learning/datastructure/IVisitableGraphLearner.h>
 #include <agrum/FMDP/learning/datastructure/nodeDatabase.h>
 // =========================================================================
-#include <agrum/multidim/FunctionGraphUtilities/link.h>
+#include <agrum/multidim/utils/FunctionGraphUtilities/link.h>
 // =========================================================================
 
 namespace gum {
@@ -416,5 +416,3 @@ namespace gum {
 #include <agrum/FMDP/learning/datastructure/incrementalGraphLearner_tpl.h>
 
 #endif  // GUM_INCREMENTAL_GRAPH_LEARNER_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

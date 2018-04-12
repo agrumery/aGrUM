@@ -165,8 +165,8 @@ namespace gum {
                         long        zeLine,
                         const char* zeMsg,
                         const void* zePtr);
-    void __dumpObjects(void);
-    void __atexit(void);
+    void __dumpObjects();
+    void __atexit();
 
   } /* namespace gum::__debug__ */
 

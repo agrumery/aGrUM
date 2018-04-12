@@ -1,10 +1,12 @@
-#include <iostream>
 #include <agrum/BN/BayesNet.h>
+#include <iostream>
 
-#include <agrum/learning/database/databaseVectInRAM.h>
 #include <agrum/learning/database/databaseFromCSV.h>
+#include <agrum/learning/database/databaseVectInRAM.h>
 
+#include <agrum/learning/database/DBCellTranslator.h>
 #include <agrum/learning/database/DBCellTranslators/cellTranslatorCompactIntId.h>
+#include <agrum/learning/database/DBRowTranslatorSet.h>
 
 #include <agrum/learning/database/filteredRowGenerators/rowGeneratorIdentity.h>
 
@@ -12,89 +14,100 @@
 
 #include <agrum/learning/aprioris/aprioriSmoothing.h>
 
-#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 #include <agrum/learning/constraints/structuralConstraintDAG.h>
+#include <agrum/learning/constraints/structuralConstraintDiGraph.h>
 
-#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 #include <agrum/learning/structureUtils/graphChangesGenerator4DiGraph.h>
+#include <agrum/learning/structureUtils/graphChangesSelector4DiGraph.h>
 
-#include <agrum/learning/paramUtils/paramEstimatorML.h>
 #include <agrum/learning/greedyHillClimbing.h>
+#include <agrum/learning/paramUtils/paramEstimatorML.h>
 
 
-int main(int argc, char *argv[]) {
-  std::cout<<"Simple K-Cross-Validation with aGrUM"
-            <<std::endl<<std::endl;
+int main(int argc, char* argv[]) {
+  std::cout << "Simple K-Cross-Validation with aGrUM" << std::endl << std::endl;
 
-  if (argc<2) {
-    std::cout<<"Call : example K"
-             <<std::endl<<std::endl;
-    exit(0);
+  gum::Idx k;
+  if (argc < 2) {
+    std::cout << "Please type 'example K' for a K-fold cross validation"
+              << std::endl;
+    std::cout << "...using K=3 by default" << std::endl << std::endl;
+    k = 3;
+  } else {
+    k = atoi(argv[1]);
   }
 
-  int k = atoi(argv[1]);
-  std::string csvfilename("../asia.csv");
+  std::string                    csvfilename("../asia.csv");
   gum::learning::DatabaseFromCSV database(csvfilename);
 
   // K-fold Cross Validation Start
   int n = database.content().size();
 
-  std::cout<<"  K="<<k<<" on "<<csvfilename<<" (size:"<<n<<")"
-            <<std::endl<<std::endl;
+  std::cout << "  K=" << k << " on " << csvfilename << " (size:" << n << ")"
+            << std::endl
+            << std::endl;
 
 
   // K-fold Cross Validation
   try {
     // Structure Learning
-    const int nbCol = 8; // <-- has to be changed for each csv file (nb of variables in the csv)
+    const int nbCol =
+      8;  // <-- has to be changed for each csv file (nb of variables in the csv)
 
     // will parse the database once
-    auto translators = gum::learning::make_translators(
-        gum::learning::Create<gum::learning::CellTranslatorCompactIntId,
-                              gum::learning::Col<0>, nbCol>());
-    auto generators =
-        gum::learning::make_generators(gum::learning::RowGeneratorIdentity());
+    gum::learning::DBRowTranslatorSet< gum::learning::CellTranslatorCompactIntId >
+      translators;
+    translators.insertTranslator(0, nbCol);
+
+    gum::learning::FilteredRowGeneratorSet< gum::learning::RowGeneratorIdentity >
+      generators;
+    generators.insertGenerator();
 
     auto filter =
-        gum::learning::make_DB_row_filter(database, translators, generators);
-    std::vector<gum::Size> modalities = filter.modalities();
+      gum::learning::make_DB_row_filter(database, translators, generators);
+
+    std::vector< gum::Size > modalities = filter.modalities();
 
     gum::learning::AprioriSmoothing<> apriori;
 
     gum::learning::StructuralConstraintSetStatic<
-        gum::learning::StructuralConstraintDAG> struct_constraint;
+      gum::learning::StructuralConstraintDAG >
+      struct_constraint;
 
-    gum::learning::GraphChangesGenerator4DiGraph<decltype(struct_constraint)>
-        op_set(struct_constraint);
+    gum::learning::GraphChangesGenerator4DiGraph< decltype(struct_constraint) >
+      op_set(struct_constraint);
 
     gum::learning::GreedyHillClimbing search;
 
     int foldSize = database.content().size() / k;
 
     for (int fold = 0; fold < k; fold++) {
-      Idx fold_deb = fold * foldSize;
-      Idx fold_end = fold_deb + foldSize - 1;
+      gum::Idx fold_deb = fold * foldSize;
+      gum::Idx fold_end = fold_deb + foldSize - 1;
       std::cout << "+ LEARNING on [" << fold_deb << "," << fold_end << "] : ";
 
       // LEARNING
       filter.handler().setRange(fold_deb, fold_end);
-      gum::learning::ScoreBDeu<> score(filter, modalities, apriori);
-      gum::learning::ParamEstimatorML<> estimator(filter, modalities, apriori,
-                                                  score.internalApriori());
-      gum::learning::GraphChangesSelector4DiGraph<
-          decltype(score), decltype(struct_constraint), decltype(op_set)>
-          selector(score, struct_constraint, op_set);
-      gum::Timer timer;
-      gum::BayesNet<float> bn =
-          search.learnBN(selector, estimator, database.variableNames(),
-                         modalities, filter.translatorSet());
+      gum::learning::ScoreBDeu<>        score(filter, modalities, apriori);
+      gum::learning::ParamEstimatorML<> estimator(
+        filter, modalities, apriori, score.internalApriori());
+      gum::learning::GraphChangesSelector4DiGraph< decltype(score),
+                                                   decltype(struct_constraint),
+                                                   decltype(op_set) >
+                              selector(score, struct_constraint, op_set);
+      gum::Timer              timer;
+      gum::BayesNet< double > bn = search.learnBN(selector,
+                                                  estimator,
+                                                  database.variableNames(),
+                                                  modalities,
+                                                  filter.translatorSet());
       std::cout << timer.step() << "s ";
       std::cout << bn.arcs().size() << " arcs" << std::endl;
 
       // TESTING
       gum::Instantiation I;
 
-      for (auto &name : filter.variableNames()) {
+      for (auto& name : filter.variableNames()) {
         I.add(bn.variableFromName(name));
       }
 
@@ -117,8 +130,8 @@ int main(int argc, char *argv[]) {
       }
 
       if (fold_end + 1 < database.content().size() - 1) {
-        if (LL!=0.0) {
-          std::cout<<" U ";
+        if (LL != 0.0) {
+          std::cout << " U ";
         }
 
         std::cout << "[" << fold_end + 1 << "," << database.content().size() - 1
@@ -138,7 +151,7 @@ int main(int argc, char *argv[]) {
 
       std::cout << " : LL=" << LL << std::endl << std::endl;
     }
-  } catch (const gum::Exception &ex) {
+  } catch (const gum::Exception& ex) {
     std::cout << ex.errorContent() << std::endl;
   }
 }

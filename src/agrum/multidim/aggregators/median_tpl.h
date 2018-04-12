@@ -53,7 +53,7 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    INLINE std::string Median< GUM_SCALAR >::aggregatorName(void) const {
+    INLINE std::string Median< GUM_SCALAR >::aggregatorName() const {
       std::stringstream ss;
       ss << "median";
       return ss.str();

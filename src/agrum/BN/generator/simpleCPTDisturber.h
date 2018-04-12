@@ -57,7 +57,7 @@ namespace gum {
     /**
      * Destructor.
      */
-    virtual ~SimpleCPTDisturber();
+    ~SimpleCPTDisturber() override;
     /// @}
 
     // ############################################################################
@@ -66,31 +66,27 @@ namespace gum {
     /// @{
     /**
      * Disturb a CPT using GUM_SCALAR when removing parent varIdi.
-     * @param varIdi The variable id parent of the CPT owner.
-     * @param varIdj The variable on the CPT owner.
+     * @param node The variable on the CPT owner.
      * @param bayesNet the Bayesian Network.
-     * @param cptCopy copy of the CPT before reduction.
+     * @param src copy of the CPT before reduction.
      * @param marg of the inference before reduction on the node varIdi.
      */
-    virtual void disturbReducCPT(NodeId                   varIdi,
-                                 NodeId                   varIdj,
-                                 BayesNet< GUM_SCALAR >&  bayesNet,
-                                 Potential< GUM_SCALAR >& cptCopy,
-                                 Potential< GUM_SCALAR >& marg);
+    void disturbReducCPT(NodeId                   node,
+                         BayesNet< GUM_SCALAR >&  bayesNet,
+                         Potential< GUM_SCALAR >& src,
+                         Potential< GUM_SCALAR >& marg) override;
 
     /**
-     * Disturb a CPT using GUM_SCALAR when inserting a new parent varIdi.
-     * @param varIdi The variable id parent of the CPT owner.
-     * @param varIdj A reference on the CPT owner.
+     * Disturb a CPT using GUM_SCALAR when inserting a new parent new_parent.
+     * @param node A reference on the CPT owner.
      * @param bayesNet the Bayesian Network.
-     * @param cptCopy copy of the CPT before augmentation.
+     * @param src copy of the CPT before augmentation.
      * @param variation degree of variation from the initial probability.
      */
-    virtual void disturbAugmCPT(NodeId                   varIdi,
-                                NodeId                   varIdj,
-                                BayesNet< GUM_SCALAR >&  bayesNet,
-                                Potential< GUM_SCALAR >& cptCopy,
-                                GUM_SCALAR               variation);
+    void disturbAugmCPT(NodeId                   node,
+                        BayesNet< GUM_SCALAR >&  bayesNet,
+                        Potential< GUM_SCALAR >& src,
+                        GUM_SCALAR               variation) override;
   };
 
 

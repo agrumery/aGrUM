@@ -96,7 +96,7 @@ namespace gum {
       status = "Instanciation of network completed";
       GUM_EMIT2(onProceed, 100, status);
 
-    } catch (ticpp::Exception tinyexception) {
+    } catch (ticpp::Exception& tinyexception) {
       GUM_ERROR(IOError, tinyexception.what());
     }
   }
@@ -216,8 +216,7 @@ namespace gum {
           const Potential< GUM_SCALAR >* table = &__infdiag->cpt(currentVarId);
           table->populate(tablevector);
         } else if (__infdiag->isUtilityNode(currentVarId)) {
-          const UtilityTable< GUM_SCALAR >* table =
-            &__infdiag->utility(currentVarId);
+          const Potential< GUM_SCALAR >* table = &__infdiag->utility(currentVarId);
           table->populate(tablevector);
         }
       }

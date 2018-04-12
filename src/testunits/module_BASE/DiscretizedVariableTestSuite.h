@@ -50,7 +50,7 @@ namespace gum_tests {
       v.setDescription("toto");
       TS_ASSERT_EQUALS(v.description(), "toto");
 
-      TS_ASSERT_EQUALS(v.varType(), gum::DiscreteVariable::VarType::Discretized);
+      TS_ASSERT_EQUALS(v.varType(), gum::VarType::Discretized);
 
       const gum::DiscretizedVariable< int >& w = v;
       w.setDescription("Lol");  // change description does not change a variable
@@ -161,6 +161,10 @@ namespace gum_tests {
                     TS_ASSERT_EQUALS(d.domainSize(), (gum::Size)5);
                     TS_ASSERT_EQUALS(d.toString(),
                                      "d<[1;2[,[2;3[,[3;4[,[4;5[,[5;6]>");
+                    int s = 1;
+                    for (auto tick : d.ticks()) {
+                      TS_ASSERT_EQUALS(tick, s++);
+                    }
                   }
                 }
     }

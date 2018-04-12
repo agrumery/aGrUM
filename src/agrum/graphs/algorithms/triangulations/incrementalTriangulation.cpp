@@ -160,7 +160,7 @@ namespace gum {
     if (__graph.existsNode(node)) return;
 
     // add the new node to the graph
-    __graph.addNode(node);
+    __graph.addNodeWithId(node);
     __domain_sizes.insert(node, modal);
 
     // add a new clique to T_mpd and the junction tree
@@ -748,7 +748,7 @@ namespace gum {
 
     // get the nodes that are concerned by the triangulation update
     for (const auto node : __junction_tree.clique(Mx))
-      if (!theGraph.exists(node)) theGraph.addNode(node);
+      if (!theGraph.exists(node)) theGraph.addNodeWithId(node);
 
     // go on with the neighbour cliques in the junction tree
     for (const auto othernode : __junction_tree.neighbours(Mx))

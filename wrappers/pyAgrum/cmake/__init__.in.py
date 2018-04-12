@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 `pyAgrum <http://agrum.org>`_ is a Python wrapper for the C++ `aGrUM <https://agrum.lip6.fr>`_ library.
-It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
+It provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian Networks.
 
 The module is generated using the `SWIG <https://www.swig.org>`_ interface generator. Custom-written code was added to make the interface more friendly.
 
@@ -41,7 +41,7 @@ from .pyAgrum import statsObj
 from .pyAgrum import Arc, Edge, DiGraph, UndiGraph, MixedGraph, DAG, CliqueGraph
 from .pyAgrum import BayesNet, EssentialGraph, MarkovBlanket
 from .pyAgrum import DiscretizedVariable, LabelizedVariable, RangeVariable, DiscreteVariable
-from .pyAgrum import Potential, Instantiation, UtilityTable
+from .pyAgrum import Potential, Instantiation, Potential
 from .pyAgrum import BruteForceKL, GibbsKL, StructuralComparator
 from .pyAgrum import LazyPropagation, ShaferShenoyInference, VariableElimination
 from .pyAgrum import LoopyBeliefPropagation, GibbsSampling, MonteCarloSampling, ImportanceSampling, WeightedSampling
@@ -71,7 +71,7 @@ __all__=[
   'Arc','Edge','DiGraph','UndiGraph','MixedGraph','DAG','CliqueGraph',
   'BayesNet','EssentialGraph'
   'DiscretizedVariable','LabelizedVariable','RangeVariable','DiscreteVariable',
-  'Potential','Instantiation','UtilityTable',
+  'Potential','Instantiation','Potential',
   'BruteForceKL','GibbsKL','StructuralComparator',
   'LoopyBeliefPropagation','GibbsSampling','MonteCarloSampling', 'ImportanceSampling', 'WeightedSampling',
   'LoopyImportanceSampling','LoopyGibbsSampling','LoopyWeightedSampling','LoopyMonteCarloSampling'

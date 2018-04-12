@@ -36,8 +36,8 @@ namespace gum {
   // Generates a UT using floats.
   // @param varID The variable id of the UT owner.
   // @param ut A reference on the UT to fill.
-  void SimpleUTGenerator::generateUT(const Idx&                   varId,
-                                     const UtilityTable< float >& ut) {
+  void SimpleUTGenerator::generateUT(const Idx&                varId,
+                                     const Potential< float >& ut) {
     std::vector< float > v;
 
     for (Size i = 0; i < ut.domainSize(); ++i)
@@ -49,8 +49,8 @@ namespace gum {
   // Generates a UT using doubles.
   // @param varID The variable id of the UT owner.
   // @param ut A reference on the UT to fill.
-  void SimpleUTGenerator::generateUT(const Idx&                    varId,
-                                     const UtilityTable< double >& ut) {
+  void SimpleUTGenerator::generateUT(const Idx&                 varId,
+                                     const Potential< double >& ut) {
     std::vector< double > v;
 
     for (Size i = 0; i < ut.domainSize(); ++i)

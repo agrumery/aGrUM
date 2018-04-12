@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Christophe GONZALES and Pierre-Henri WUILLEMIN  *
  *   {prenom.nom}_at_lip6.fr                                               *
@@ -22,7 +21,7 @@
  * @file
  * @brief Inlines of gum::SmallObjectAllocator
  *
- * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 // ============================================================================

@@ -35,8 +35,8 @@
 
 #include <agrum/BN/inference/variableElimination.h>
 
-#include <agrum/multidim/multiDimArray.h>
-#include <agrum/multidim/multiDimBucket.h>
+#include <agrum/multidim/implementations/multiDimArray.h>
+#include <agrum/multidim/implementations/multiDimBucket.h>
 #include <agrum/multidim/potential.h>
 
 #include <agrum/PRM/inference/PRMInference.h>
@@ -65,9 +65,6 @@ namespace gum {
 
       /// Default Constructor.
       SVED(const PRM< GUM_SCALAR >& prm, const PRMSystem< GUM_SCALAR >& model);
-
-      /// Default Constructor.
-      SVED(const PRM< GUM_SCALAR >& prm, const std::string& model);
 
       /// Destructor.
       ~SVED();

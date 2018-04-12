@@ -41,9 +41,8 @@ class TestDiscreteVariable(VariablesTestCase):
     v = gum.DiscretizedVariable("e", "e").addTick(1).addTick(2).addTick(3).addTick(4)
     self.assertEqual(v.labels(), ("[1;2[", "[2;3[", "[3;4]"))
 
-    v = gum.DiscretizedVariable("f", "f", [1,5,2,4])
+    v = gum.DiscretizedVariable("f", "f", [1, 5, 2, 4])
     self.assertEqual(v.labels(), ("[1;2[", "[2;4[", "[4;5]"))
-
 
 
 class TestLabelizedVariable(VariablesTestCase):

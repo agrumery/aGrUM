@@ -8,7 +8,7 @@ Author-email: pierre-henri.wuillemin@lip6.fr
 License: GPL
 Download-URL: http://agrum.org
 Description:pyAgrum is a Python wrapper for the C++ aGrUM library.
-It provides a high-level interface to the part of aGrUM allowing to create, handle and make computations into Bayesian Networks.
+It provides a high-level interface to the C++ part of aGrUM allowing to create, manage and perform efficient computations with Bayesian Networks.
 
 The module is a straightforward application of the SWIG interface generator. Custom-written code was added to make the interface more similar to OpenBayes, a free Bayesian Network library for Python.
 

@@ -21,7 +21,7 @@
  * @file
  * @brief
  *
- * @author Jean-Christophe Magnan and Pierre-Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_TUPLE_HASH_FUNC_H

@@ -115,17 +115,16 @@ namespace gum {
           NodeData< GUM_SCALAR >* node = new NodeData< GUM_SCALAR >();
           node->n = iter.val();
           __label(node, label_map);
-          __graph.addNode(iter.key());
+          __graph.addNodeWithId(iter.key());
           __idMap.insert(node->n, iter.key());
           __nodes.insert(iter.key(), node);
         }
 
-        NodeData< GUM_SCALAR >* data = nullptr;
         NodeData< GUM_SCALAR >* u = nullptr;
         NodeData< GUM_SCALAR >* v = nullptr;
 
         for (const auto& elt : __nodes) {
-          data = elt.second;
+          NodeData< GUM_SCALAR >* data = elt.second;
 
           for (const auto chain : data->n->type().slotChains()) {
             for (const auto inst : data->n->getInstances(chain->id())) {
@@ -216,7 +215,7 @@ namespace gum {
         }
 
         // Second we search for active outputs
-        for (const auto nn : node->n->type().dag().nodes()) {
+        for (const auto nn : node->n->type().containerDag().nodes()) {
           if (node->n->type().isOutputNode(node->n->type().get(nn))) {
             try {
               sBuff << "-" << node->n->getRefAttr(nn).size()

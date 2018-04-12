@@ -75,13 +75,13 @@ namespace gum {
 
     /** copy constructor
      */
-    BruteForceKL(const KL< GUM_SCALAR >& kl);
+    explicit BruteForceKL(const KL< GUM_SCALAR >& kl);
 
     /** destructor */
     virtual ~BruteForceKL();
 
     protected:
-    void _computeKL(void);
+    void _computeKL() final;
 
     using KL< GUM_SCALAR >::_p;
     using KL< GUM_SCALAR >::_q;

@@ -163,5 +163,3 @@ namespace gum {
 #include <agrum/FMDP/planning/treeOperatorStrategy_tpl.h>
 
 #endif  // GUM_TreeOperatorStrategy_H
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

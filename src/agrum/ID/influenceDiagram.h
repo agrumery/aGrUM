@@ -22,7 +22,7 @@
  * @file
  * @brief Class representing Influence Diagrams
  *
- * @author Jean-Christophe Magnan & Pierre_Henri WUILLEMIN
+ * @author Jean-Christophe MAGNAN and Pierre-Henri WUILLEMIN
  *
  */
 #ifndef GUM_INF_DIAG_H
@@ -38,7 +38,6 @@
 #include <agrum/graphicalModels/DAGmodel.h>
 
 #include <agrum/multidim/potential.h>
-#include <agrum/multidim/utilityTable.h>
 
 namespace gum {
 
@@ -83,10 +82,10 @@ namespace gum {
     /// @}
 
     /// @return Returns a dot representation of this Influence Diagram.
-    std::string toDot(void) const;
+    std::string toDot() const;
 
     /// @return Returns a string representation of this Influence Diagram.
-    std::string toString(void) const;
+    std::string toString() const;
 
     // ===========================================================================
     /// @name Variable manipulation methods.
@@ -103,7 +102,7 @@ namespace gum {
      * Returns the utility table of a utility node.
      * @throw NotFound If no variable's id matches varId.
      */
-    virtual const UtilityTable< GUM_SCALAR >& utility(NodeId varId) const;
+    virtual const Potential< GUM_SCALAR >& utility(NodeId varId) const;
 
     /**
      * Returns a constant reference to the VariableNodeMap of this Influence
@@ -385,7 +384,7 @@ namespace gum {
     /// Mapping between potential variable's id and their CPT
     NodeProperty< Potential< GUM_SCALAR >* > __potentialMap;
     /// Mapping between utility variable's id and their utility table
-    NodeProperty< UtilityTable< GUM_SCALAR >* > __utilityMap;
+    NodeProperty< Potential< GUM_SCALAR >* > __utilityMap;
 
     /// The temporal order
     mutable List< NodeSet > __temporalOrder;
@@ -396,5 +395,3 @@ namespace gum {
 #include <agrum/ID/influenceDiagram_tpl.h>
 
 #endif /* GUM_INF_DIAG_H */
-
-// kate: indent-mode cstyle; indent-width 2; replace-tabs on; ;

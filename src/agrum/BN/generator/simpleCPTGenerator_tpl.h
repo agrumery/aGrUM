@@ -51,8 +51,9 @@ namespace gum {
     const Idx& varId, const Potential< GUM_SCALAR >& cpt) {
     std::vector< GUM_SCALAR > v;
 
+    v.reserve(cpt.domainSize());
     for (Size i = 0; i < cpt.domainSize(); ++i) {
-      v.push_back((GUM_SCALAR)rand());
+      v.push_back((GUM_SCALAR)randomValue(10000));
     }
 
     cpt.fillWith(v);
