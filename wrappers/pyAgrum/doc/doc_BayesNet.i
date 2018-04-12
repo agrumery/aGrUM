@@ -425,6 +425,27 @@ gum.NotFound
     If no variable matches id.
 "
 
+%feature("docstring") gum::BayesNet::changeVariableLabel
+"
+change the label of the variable associated to nodeId to the new value.
+
+Parameters
+----------
+id : int
+	the id of the node
+name : str
+	the name of the variable
+old_label : str
+	the new label
+new_label : str
+	the new label
+
+Raises
+------
+gum.NotFound
+    if id/name is not a variable or if old_label does not exist.
+"
+
 %feature("docstring") gum::BayesNet::endTopologyTransformation
 "
 Terminates a sequence of insertions/deletions of arcs by adjusting all CPTs dimensions.

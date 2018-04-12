@@ -4,6 +4,7 @@
 %ignore gum::DAG::eraseParents;
 %ignore gum::DAG::existsArc;
 %ignore gum::DAG::ids;
+%ignore gum::DAG::nodes;
 %ignore gum::DAG::sizeArcs;
 
 %feature("docstring") gum::DAG

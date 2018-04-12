@@ -325,6 +325,21 @@ Use this method when using a single BayesNet storing counts of events. Lagrange 
 Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value). 
 "
 
+%feature("docstring") gum::credal::CredalNet::addVariable
+"
+Parameters
+----------
+name : str
+	the name of the new variable
+card: int
+    the domainSize of the new variable
+
+Returns
+-------
+int
+	the id of the new node
+"
+
 %feature("docstring") gum::credal::CredalNet::nodeType
 "
 Parameters

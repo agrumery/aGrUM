@@ -1,6 +1,7 @@
 %ignore gum::MixedGraph::addArc;
 %ignore gum::MixedGraph::addEdge;
-%ignore gum::MixedGraph::addNodeWithId;
+%ignore gum::MixedGraph::addNode;
+%ignore gum::MixedGraph::addNodes;
 %ignore gum::MixedGraph::addNodeWithId;
 %ignore gum::MixedGraph::empty;
 %ignore gum::MixedGraph::emptyArcs;

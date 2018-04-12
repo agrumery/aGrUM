@@ -183,6 +183,14 @@ gum.IndexError
 	If the graph does not contain the variable
 "
 
+%feature("docstring") gum::DAGmodel::nodes
+"
+Returns
+-------
+set
+    the set of ids
+"
+
 %feature("docstring") gum::DAGmodel::variable
 "
 Parameters

@@ -153,10 +153,16 @@ Set
 
 %feature("docstring") gum::IBayesNet::ids
 "
+.. note:: Deprecated in pyAgrum>0.13.0
+    Please use nodes() instead
+"
+
+%feature("docstring") gum::IBayesNet::nodes
+"
 Returns
 -------
-list :
-	The list variables ids.
+set
+    the set of ids
 "
 
 %feature("docstring") gum::IBayesNet::names

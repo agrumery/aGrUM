@@ -31,12 +31,27 @@ gum.InvalidNode
   If head or tail does not belong to the graph nodes.
 "
 
-%feature("docstring") gum::DiGraph::addNodeWithId
+%feature("docstring") gum::DiGraph::addNode
 "
 Returns
 -------
 int
   the new NodeId
+"
+
+%feature("docstring") gum::DiGraph::addNodes
+"
+Add n nodes.
+
+Parameters
+----------
+n : int
+  the number of nodes to add.
+
+Returns
+-------
+Set of int
+  the new ids
 "
 
 %feature("docstring") gum::DiGraph::addNodeWithId
@@ -175,10 +190,16 @@ bool
 
 %feature("docstring") gum::DiGraph::ids
 "
+.. note:: Deprecated in pyAgrum>0.13.0
+    Please use nodes() instead
+"
+
+%feature("docstring") gum::DiGraph::nodes
+"
 Returns
 -------
-List
-    the list of ids
+set
+    the set of ids
 "
 
 %feature("docstring") gum::DiGraph::parents

@@ -31,12 +31,27 @@ gum.InvalidNode
   If n1 or n2 does not belong to the graph nodes.
 "
 
-%feature("docstring") gum::UndiGraph::addNodeWithId
+%feature("docstring") gum::UndiGraph::addNode
 "
 Returns
 -------
 int
   the new NodeId
+"
+
+%feature("docstring") gum::UndiGraph::addNodes
+"
+Add n nodes.
+
+Parameters
+----------
+n : int
+  the number of nodes to add.
+
+Returns
+-------
+Set of int
+  the new ids
 "
 
 %feature("docstring") gum::UndiGraph::addNodeWithId
@@ -163,11 +178,18 @@ bool
 
 %feature("docstring") gum::UndiGraph::ids
 "
+.. note:: Deprecated in pyAgrum>0.13.0
+    Please use nodes() instead
+"
+
+%feature("docstring") gum::UndiGraph::nodes
+"
 Returns
 -------
-List
-    the list of ids
+set
+    the set of ids
 "
+
 
 %feature("docstring") gum::UndiGraph::neighbours
 "

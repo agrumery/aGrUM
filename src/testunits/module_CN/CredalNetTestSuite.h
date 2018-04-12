@@ -109,9 +109,9 @@ namespace gum_tests {
       initCNet();
 
       std::vector< gum::NodeId > ids;
-      ids.push_back(cn->addNode("A", 3));  // id 0
-      ids.push_back(cn->addNode("B", 3));  // id 1
-      ids.push_back(cn->addNode("C", 3));  // id 2
+      ids.push_back(cn->addVariable("A", 3));  // id 0
+      ids.push_back(cn->addVariable("B", 3));  // id 1
+      ids.push_back(cn->addVariable("C", 3));  // id 2
 
       TS_ASSERT_EQUALS(ids[0], 0U);
       TS_ASSERT_EQUALS(ids[1], 1U);
