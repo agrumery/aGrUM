@@ -338,7 +338,8 @@ namespace gum {
       // indices to the new one
       this->_back_dico.clear ();
       HashTable<std::size_t,std::size_t,
-                ALLOC<std::pair<std::size_t,std::size_t>>> mapping ( size );
+                ALLOC<std::pair<std::size_t,std::size_t>>>
+        mapping ( (Size) size );
       for ( std::size_t i = std::size_t(0); i < size; ++i ) {
         mapping.insert ( xlabels[i].first, i );
         this->_back_dico.insert ( i, xlabels[i].second );

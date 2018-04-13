@@ -105,7 +105,9 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser<>
         parser ( database.handler (), genset );
 
-      std::vector< gum::Size > modalities = database.domainSizes ();
+      std::vector< gum::Size > modalities;
+      for ( auto dom : database.domainSizes () )
+        modalities.push_back ( dom );
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<>          score(parser, modalities, apriori);
@@ -185,7 +187,9 @@ namespace gum_tests {
       gum::learning::DBRowGeneratorParser<>
         parser ( database.handler (), genset );
 
-      std::vector< gum::Size > modalities = database.domainSizes ();
+      std::vector< gum::Size > modalities;
+      for ( auto dom : database.domainSizes () )
+        modalities.push_back ( dom );
 
       gum::learning::AprioriSmoothing<> apriori;
       gum::learning::ScoreK2<>          score(parser, modalities, apriori);

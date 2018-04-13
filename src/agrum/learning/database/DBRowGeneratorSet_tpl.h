@@ -143,7 +143,7 @@ namespace gum {
         // produce the new generators
         ALLOC<DBRowGenerator<ALLOC>> allocator ( this->getAllocator () );
         std::vector<DBRowGenerator<ALLOC>*,ALLOC<DBRowGenerator<ALLOC>*>>
-          new_generators ( from.__nb_generators, allocator );
+          new_generators ( from.__nb_generators, nullptr, allocator );
         for (std::size_t i = std::size_t(0); i < from.__nb_generators; ++i) {
           try {
             new_generators[i] = from.__generators[i]->clone ( allocator );

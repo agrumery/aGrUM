@@ -35,6 +35,7 @@
 #include <agrum/core/set.h>
 #include <agrum/learning/database/DBCell.h>
 #include <agrum/learning/database/DBRow.h>
+#include <agrum/learning/database/DBTranslatedValue.h>
 #include <agrum/learning/database/IDatabaseTable.h>
 #include <agrum/learning/database/DBTranslatorSet.h>
 #include <agrum/learning/database/DBTranslator4ContinuousVariable.h>

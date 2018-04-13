@@ -6,20 +6,20 @@
 namespace gum_tests {
 
   struct MyAllocCount {
-    static unsigned int allocs;
-    static unsigned int deallocs;
+    static std::size_t allocs;
+    static std::size_t deallocs;
 
-    static unsigned int nbAllocations() noexcept { return allocs; }
+    static std::size_t nbAllocations() noexcept { return allocs; }
 
-    static unsigned int nbDeallocations() noexcept { return deallocs; }
+    static std::size_t nbDeallocations() noexcept { return deallocs; }
 
     static bool hasMeroryLeak() noexcept {
       return allocs != MyAllocCount::deallocs;
     }
   };
 
-  unsigned int MyAllocCount::allocs{0};
-  unsigned int MyAllocCount::deallocs{0};
+  std::size_t MyAllocCount::allocs{0};
+  std::size_t MyAllocCount::deallocs{0};
 
   template <typename T>
   class MyAlloc : public MyAllocCount {
@@ -36,9 +36,9 @@ namespace gum_tests {
     template <typename U>
     MyAlloc( const MyAlloc<U>& ) noexcept {}
 
-    bool operator== ( const MyAlloc<T>& ) { return true; }
+    bool operator== ( const MyAlloc<T>& ) const { return true; }
 
-    bool operator!= ( const MyAlloc<T>& ) { return false; }
+    bool operator!= ( const MyAlloc<T>& ) const { return false; }
 
     T* allocate( std::size_t num ) {
       MyAllocCount::allocs += num;

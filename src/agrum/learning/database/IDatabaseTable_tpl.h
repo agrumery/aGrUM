@@ -582,31 +582,6 @@ namespace gum {
       : IDatabaseTable<T_DATA,ALLOC> ( std::move (from), from.getAllocator () ) {}
 
     
-    /// virtual copy constructor with a given allocator
-    template <typename T_DATA, template<typename> class ALLOC>
-    IDatabaseTable<T_DATA,ALLOC>*
-    IDatabaseTable<T_DATA,ALLOC>::clone ( const allocator_type& alloc ) const {
-      ALLOC<IDatabaseTable<T_DATA,ALLOC>> allocator ( alloc );
-      IDatabaseTable<T_DATA,ALLOC>* set = allocator.allocate(1);
-      try {
-        allocator.construct ( set, *this, alloc );
-      }
-      catch ( ... ) {
-        allocator.deallocate ( set, 1 );
-        throw;
-      }
-      return set;
-    }
-
-    
-    /// virtual copy constructor
-    template <typename T_DATA, template<typename> class ALLOC>
-    INLINE IDatabaseTable<T_DATA,ALLOC>*
-    IDatabaseTable<T_DATA,ALLOC>::clone () const {
-      return clone ( this->getAllocator () );
-    }
-
-    
     // destructor
     template <typename T_DATA, template<typename> class ALLOC>
     IDatabaseTable<T_DATA,ALLOC>::~IDatabaseTable() {

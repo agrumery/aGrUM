@@ -585,6 +585,21 @@ namespace gum {
   template <>
   class HashFunc< unsigned long > : public HashFuncSmallKey< unsigned long > {};
 
+  template <typename T>
+  class dummyHash {};
+  
+  /**
+   * @headerfile hashFunc.h <agrum/core/hashFunc.h>
+   * @brief Hash function for std::size_t.
+   * @ingroup hashfunctions_group
+   */
+  template <>
+  class HashFunc< std::conditional<
+                    std::is_same<std::size_t,unsigned long>::value,
+                    dummyHash<std::size_t>,
+                    std::size_t >::type > :
+    public HashFuncCastKey< std::size_t >::type {};
+
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for floats.

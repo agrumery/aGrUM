@@ -64,7 +64,7 @@ namespace gum {
       
       if ( size ) {
         // save the set of symbols representing the missing values
-        _missing_symbols.resize ( missing_symbols.size () );
+        _missing_symbols.resize ( (Size) missing_symbols.size () );
         for ( const auto& symbol : missing_symbols ) {
           _missing_symbols.insert ( symbol );
         }

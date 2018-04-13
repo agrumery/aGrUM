@@ -58,12 +58,12 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto& ticks = var.ticks ();
       for ( const auto tick : ticks ) {
-        __variable.addTick ( tick );
+        __variable.addTick ( (float) tick );
       }
 
       // the the bounds of the discretized variable
-      const float lower_bound = ticks[0];
-      const float upper_bound = ticks.back ();
+      const float lower_bound = (float) ticks[0];
+      const float upper_bound = (float) ticks.back ();
 
       // remove all the missing symbols corresponding to a number between
       // lower_bound and upper_bound
@@ -118,7 +118,7 @@ namespace gum {
       // copy the ticks of var into our internal variable
       const auto& ticks = var.ticks ();
       for ( const auto tick : ticks ) {
-        __variable.addTick ( tick );
+        __variable.addTick ( (float) tick );
       }
 
       // add the content of the variable into the back dictionary
@@ -322,7 +322,8 @@ namespace gum {
     DBTranslator4DiscretizedVariable<ALLOC>::reorder () {
       const std::size_t size = __variable.domainSize ();
       HashTable<std::size_t,std::size_t,
-                ALLOC<std::pair<std::size_t,std::size_t>>> mapping ( size );
+                ALLOC<std::pair<std::size_t,std::size_t>>>
+        mapping ( (Size) size );
       for ( std::size_t i = std::size_t (0); i < size; ++i )
         mapping.insert ( i,i );
       return mapping;

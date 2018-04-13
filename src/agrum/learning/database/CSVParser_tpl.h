@@ -86,14 +86,14 @@ namespace gum {
         last_letter_token = __correspondingQuoteMarker( str, first_letter_token );
 
         if ( last_letter_token == std::string::npos )
-          GUM_SYNTAX_ERROR( "String quote missing", nbLine(), first_letter_token );
+          GUM_SYNTAX_ERROR( "String quote missing", (Size) nbLine(), first_letter_token );
 
         next_token = str.find_first_of( __delimiter, last_letter_token + 1 );
         std::size_t next_char =
           str.find_first_not_of( __spaces, last_letter_token + 1 );
 
         if ( next_char < next_token ) {
-          GUM_SYNTAX_ERROR( "Delimiter missing at line", nbLine(), next_char );
+          GUM_SYNTAX_ERROR( "Delimiter missing at line", (Size) nbLine(), next_char );
         }
       }
       else {
@@ -124,7 +124,7 @@ namespace gum {
         quoteMarkerEnd = __correspondingQuoteMarker( s, quoteMarker );
 
         if ( quoteMarkerEnd == std::string::npos )
-          GUM_SYNTAX_ERROR( "String quote missing", nbLine(), quoteMarker );
+          GUM_SYNTAX_ERROR( "String quote missing", (Size) nbLine(), quoteMarker );
 
         while ( commentMarker < quoteMarkerEnd ) {  // the comment was in the quote
           commentMarker = s.find_first_of( __commentMarker, commentMarker + 1 );

@@ -487,8 +487,8 @@ namespace gum {
     bool DBTranslator4RangeVariable<ALLOC>::needsReordering () {
       // if the variable contains only numbers, they should be increasing
       const auto& labels = __variable.labels ();
-      float last_number = std::numeric_limits<float>::lowest ();
-      float number;
+      std::size_t last_number = std::numeric_limits<std::size_t>::lowest ();
+      std::size_t number;
       for ( const auto& label : labels ) {
         number = this->_back_dico.first ( label );
         if ( number < last_number ) return true;
@@ -518,7 +518,8 @@ namespace gum {
       // indices to the new one
       this->_back_dico.clear ();
       HashTable<std::size_t,std::size_t,
-                ALLOC<std::pair<std::size_t,std::size_t>>> mapping ( size );
+                ALLOC<std::pair<std::size_t,std::size_t>>>
+        mapping ( (Size) size );
       for ( std::size_t i = std::size_t(0); i < size; ++i ) {
         mapping.insert ( xlabels[i].first, i );
         this->_back_dico.insert ( i, xlabels[i].second );

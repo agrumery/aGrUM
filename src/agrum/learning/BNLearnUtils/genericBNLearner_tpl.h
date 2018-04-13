@@ -32,7 +32,8 @@ namespace gum {
       initializer.fillDatabase ( __database );
       
       // get the domain sizes of the variables
-      __modalities = __database.domainSizes ();
+      for ( auto dom : __database.domainSizes () )
+        __modalities.push_back ( dom );
 
       nb_vars = __database.nbVariables ();
       for ( std::size_t i = std::size_t(0); i < nb_vars; ++i )
