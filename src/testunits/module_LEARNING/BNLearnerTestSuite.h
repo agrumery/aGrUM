@@ -709,8 +709,9 @@ namespace gum_tests {
         learner.useLocalSearchWithTabuList();
 
         gum::BayesNet< double > bn = learner.learnBN();
+        //std::cout << bn.dag () << std::endl;
 
-        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(13), 1);  // 75 ?
+        TS_ASSERT_DELTA(listen.getNbr(), gum::Size(15), 1);  // 75 ?
         TS_ASSERT_EQUALS(listen.getMess(), "stopped on request");
         TS_ASSERT_EQUALS(learner.messageApproximationScheme(),
                          "stopped on request");

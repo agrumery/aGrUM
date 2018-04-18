@@ -101,6 +101,8 @@ namespace gum_tests {
       database.setVariableNames( initializer.variableNames () );
       initializer.fillDatabase ( database );
 
+      database.reorder ();
+
       gum::learning::DBRowGeneratorSet<> genset;
       gum::learning::DBRowGeneratorParser<>
         parser ( database.handler (), genset );

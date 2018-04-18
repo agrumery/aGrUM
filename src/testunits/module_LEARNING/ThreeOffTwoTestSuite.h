@@ -49,10 +49,7 @@ namespace gum_tests {
       const std::size_t nb_vars = var_names.size ();
       
       gum::learning::DBTranslatorSet<> translator_set;
-      gum::LabelizedVariable var_lab ( "x", "" , 0 );
-      var_lab.addLabel ( "0" );
-      var_lab.addLabel ( "1" );
-      gum::learning::DBTranslator4LabelizedVariable<> translator ( var_lab );
+      gum::learning::DBTranslator4LabelizedVariable<> translator;
       for ( std::size_t i = 0; i < nb_vars; ++i ) {
         translator_set.insertTranslator ( translator, i );
       }
@@ -60,6 +57,8 @@ namespace gum_tests {
       gum::learning::DatabaseTable<> database ( translator_set );
       database.setVariableNames( initializer.variableNames () );
       initializer.fillDatabase ( database );
+
+      //database.reorder ();
 
       gum::learning::DBRowGeneratorSet<> genset;
       gum::learning::DBRowGeneratorParser<>
@@ -82,7 +81,7 @@ namespace gum_tests {
         }
       }
       graph = search.learnMixedStructure(I, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(0));
+      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(6));
     }
 
     void test_3off2_asia_MDLcorr() {

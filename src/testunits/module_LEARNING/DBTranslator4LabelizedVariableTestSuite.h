@@ -703,9 +703,7 @@ namespace gum_tests {
       TS_ASSERT ( translator2.missingSymbols () == missing_kept2 );
 
       auto new_order2 = translator2.reorder ();
-      TS_ASSERT ( new_order2[0] == 0 );
-      TS_ASSERT ( new_order2[1] == 1 );
-      TS_ASSERT ( new_order2[2] == 2 );
+      TS_ASSERT ( new_order2.size () == 0 );
       
     }
     

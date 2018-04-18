@@ -267,15 +267,10 @@ namespace gum {
       virtual void setEditableDictionaryMode ( bool new_mode ) final;
 
       /// indicates that the translations should never be reordered
-      virtual bool needsReordering () final;
+      virtual bool needsReordering () const final;
 
-      /** @brief performs a reordering of the dictionary and returns a mapping
-       * from the old translated values to the new ones.
-       *
-       * When a reordering is needed, i.e., string values must be translated
-       * differently. Method reorder() computes how the translations should be
-       * changed. It updates accordingly the dictionary and returns the mapping
-       * that enables changing the old dictionary values into the new ones. */
+      /** @brief returns an empty HashTable to indicate that no reordering
+       * is needed. */
       virtual HashTable<std::size_t,std::size_t,
                         ALLOC<std::pair<std::size_t,std::size_t>>>
       reorder () final;

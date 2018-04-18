@@ -292,16 +292,29 @@ namespace gum {
 
     /// indicates whether the translations should be reordered
     template <template<typename> class ALLOC>
-    bool DBTranslator4LabelizedVariable<ALLOC>::needsReordering () {
+    bool DBTranslator4LabelizedVariable<ALLOC>::needsReordering () const {
       // if the variable contains only numbers, they should be increasing
       const auto& labels = __variable.labels ();
       float last_number = std::numeric_limits<float>::lowest ();
       float number;
+      bool  only_numbers = true;
       for ( const auto& label : labels ) {
-        if ( ! DBCell::isReal ( label ) ) return false;
+        if ( ! DBCell::isReal ( label ) ) {
+          only_numbers = false;
+          break;
+        }
         number = std::stof( label );
         if ( number < last_number ) return true;
         last_number = number;
+      }
+
+      if ( ! only_numbers ) {
+        // here we shall examine whether the strings are sorted by
+        // lexicographical order
+        const std::size_t size = labels.size ();
+        for ( std::size_t i = 1; i < size; ++i ) {
+          if ( labels[i] < labels[i-1] ) return true;
+        }
       }
       
       return false;
@@ -310,12 +323,22 @@ namespace gum {
 
     /// returns a mapping to reorder the current dictionary and updates it
     template <template<typename> class ALLOC>
-    INLINE HashTable<std::size_t,std::size_t,
-                     ALLOC<std::pair<std::size_t,std::size_t>>>
+    HashTable<std::size_t,std::size_t,ALLOC<std::pair<std::size_t,std::size_t>>>
     DBTranslator4LabelizedVariable<ALLOC>::reorder () {
-      // assign to each label its current index
+      // check whether the variable contains only numeric values. In this
+      // case, we have to sort the values by increasing number
       const auto& labels = __variable.labels ();
       const std::size_t size = labels.size ();
+
+      bool only_numbers = true;
+      for ( const auto& label : labels ) {
+        if ( ! DBCell::isReal ( label ) ) {
+          only_numbers = false;
+          break;
+        }
+      }
+      
+      // assign to each label its current index
       std::vector<std::pair<std::size_t,std::string>,
                   ALLOC<std::pair<std::size_t,std::string>>> xlabels;
       xlabels.reserve ( size );
@@ -323,10 +346,31 @@ namespace gum {
         xlabels.push_back ( std::make_pair ( i, labels[i] ) );
 
       // reorder by increasing order
-      std::sort( xlabels.begin(), xlabels.end(), 
-                 []( const std::pair<std::size_t,std::string>& a,
-                     const std::pair<std::size_t,std::string>& b) -> bool
-                 { return std::stof( a.second ) < std::stof( b.second ); } );
+      if ( only_numbers )
+        std::sort( xlabels.begin(), xlabels.end(), 
+                   []( const std::pair<std::size_t,std::string>& a,
+                       const std::pair<std::size_t,std::string>& b) -> bool
+                   { return std::stof( a.second ) < std::stof( b.second ); } );
+      else
+        std::sort( xlabels.begin(), xlabels.end(), 
+                   []( const std::pair<std::size_t,std::string>& a,
+                       const std::pair<std::size_t,std::string>& b) -> bool
+                   { return a.second < b.second; } );
+
+      // check whether there were any modification
+      bool modifications = false;
+      for ( std::size_t i = std::size_t(0); i < size; ++i ) {
+        if ( xlabels[i].first != i ) {
+          modifications = true;
+          break;
+        }
+      }
+
+      // if there were no modification, return an empty update hashtable
+      if ( ! modifications ) {
+        return HashTable<std::size_t,std::size_t,
+                         ALLOC<std::pair<std::size_t,std::size_t>>> ();
+      }
 
       // recreate the variable so that the labels correspond to the
       // new ordering

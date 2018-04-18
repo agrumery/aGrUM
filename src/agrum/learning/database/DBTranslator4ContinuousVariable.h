@@ -316,7 +316,7 @@ namespace gum {
       virtual std::size_t domainSize () const final;
 
       /// indicates that the translations should never be reordered
-      virtual bool needsReordering () final;
+      virtual bool needsReordering () const final;
 
       /** @brief returns an empty mapping, indicating that old tanslations
        * are equal to the newly reordered ones. */

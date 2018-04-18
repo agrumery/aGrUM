@@ -310,7 +310,7 @@ namespace gum {
     
     /// indicates whether the translations should be reordered
     template <template<typename> class ALLOC>
-    bool DBTranslator4DiscretizedVariable<ALLOC>::needsReordering () {
+    bool DBTranslator4DiscretizedVariable<ALLOC>::needsReordering () const {
       return false;
     }
 
@@ -320,15 +320,10 @@ namespace gum {
     INLINE HashTable<std::size_t,std::size_t,
                      ALLOC<std::pair<std::size_t,std::size_t>>>
     DBTranslator4DiscretizedVariable<ALLOC>::reorder () {
-      const std::size_t size = __variable.domainSize ();
-      HashTable<std::size_t,std::size_t,
-                ALLOC<std::pair<std::size_t,std::size_t>>>
-        mapping ( (Size) size );
-      for ( std::size_t i = std::size_t (0); i < size; ++i )
-        mapping.insert ( i,i );
-      return mapping;
+      return HashTable<std::size_t,std::size_t,
+                       ALLOC<std::pair<std::size_t,std::size_t>>> ();
     }
-    
+
       
     /// returns the domain size of a variable corresponding to the translations
     template <template<typename> class ALLOC>

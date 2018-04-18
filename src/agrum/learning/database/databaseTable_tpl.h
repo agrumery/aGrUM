@@ -530,6 +530,70 @@ namespace gum {
       return dom;
     }
 
+
+    // indicates whether a reordering is needed to make the kth
+    // translator sorted by lexicographical order
+    template <template<typename> class ALLOC>
+    INLINE bool
+    DatabaseTable<ALLOC>::needsReordering ( const std::size_t k,
+                                            const bool k_is_input_col ) const {
+      // find the position kk of the translator that contains the variable
+      const std::size_t nb_trans = __translators.size ();
+      const std::size_t kk = __getKthIndex ( k, k_is_input_col );
+
+      // check if the translator exists
+      if ( nb_trans <= kk )
+        GUM_ERROR ( UndefinedElement,
+                    "the translator could not be found in the database table" );
+
+      return __translators.needsReordering ( kk );
+    }
+
+    
+    // performs a a lexicographic reordering of the kth translator or
+    // of the translator corresponding to the kth column of the input database
+    template <template<typename> class ALLOC>
+    void DatabaseTable<ALLOC>::reorder ( const std::size_t k,
+                                         const bool k_is_input_col ) {
+      // find the position kk of the translator that contains the variable
+      const std::size_t nb_trans = __translators.size ();
+      const std::size_t kk = __getKthIndex ( k, k_is_input_col );
+
+      // check if the translator exists
+      if ( nb_trans <= kk )
+        GUM_ERROR ( UndefinedElement,
+                    "the translator could not be found in the database table" );
+
+      // get the translation to perform
+      auto updates = __translators.reorder ( kk );
+      if ( updates.empty () ) return;
+      
+      const std::size_t size = updates.size ();
+      std::vector<std::size_t,ALLOC<std::size_t>> new_values ( size );
+      for ( const auto& update : updates ) {
+        if ( update.first >= size )
+          new_values.resize ( update.first + 1 );
+        new_values[update.first] = update.second;
+      }
+
+      // apply the translations
+      //auto nb_threads = thread::getMaxNumberOfThreads();
+      for ( auto& xrow : this->_content () ) {
+        auto& elt = xrow.row()[kk].discr_val;
+        if ( elt != std::numeric_limits<std::size_t>::max () )
+          elt = new_values[elt];
+      }
+    }
+
+
+    /// performs a reordering of all the columns
+    template <template<typename> class ALLOC>
+    INLINE void DatabaseTable<ALLOC>::reorder () {
+      const std::size_t nb_trans = __translators.size ();
+      for ( std::size_t i = std::size_t(0); i < nb_trans; ++i )
+        reorder ( i, false );
+    }
+
     
     /// insert a new row at the end of the database
     template <template<typename> class ALLOC>

@@ -125,9 +125,7 @@ namespace gum_tests {
                    ( gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max ()} ) ) );
       TS_ASSERT( translator2.needsReordering () == false );
       const auto new_order = translator2.reorder ();
-      TS_ASSERT( new_order[0] == 0 );
-      TS_ASSERT( new_order[1] == 1 );
-      TS_ASSERT( new_order[2] == 2 );
+      TS_ASSERT( new_order.size() == 0 );
 
       gum::RangeVariable var ( "X2", "", 2, 3 );
       gum::learning::DBTranslator4RangeVariable<>
@@ -285,9 +283,7 @@ namespace gum_tests {
       TS_ASSERT( possible_translated_miss.exists ( translator2.translateBack ( gum::learning::DBTranslatedValue{std::numeric_limits<std::size_t>::max ()} ) ) );
       TS_ASSERT( translator2.needsReordering () == false );
       const auto new_order = translator2.reorder ();
-      TS_ASSERT( new_order[0] == 0 );
-      TS_ASSERT( new_order[1] == 1 );
-      TS_ASSERT( new_order[2] == 2 );
+      TS_ASSERT( new_order.size() == 0 );
 
       gum::RangeVariable var ( "X2", "", 2, 3 );
       gum::learning::DBTranslator4RangeVariable<MyAlloc>

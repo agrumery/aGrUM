@@ -478,6 +478,48 @@ namespace gum {
     }
 
 
+    // indicates whether a reordering is needed to make the kth translator
+    // sorted by lexicographical order
+    template <template<typename> class ALLOC>
+    INLINE bool
+    DBTranslatorSet<ALLOC>::needsReordering ( const std::size_t k ) const {
+      return __translators[k]->needsReordering ();
+    }
+
+
+    // indicates whether a reordering is needed to make the kth translator
+    // sorted by lexicographical order
+    template <template<typename> class ALLOC>
+    INLINE bool
+    DBTranslatorSet<ALLOC>::needsReorderingSafe ( const std::size_t k ) const {
+      if ( __translators.size () <= k )
+        GUM_ERROR ( UndefinedElement, "the variable could not be found" );
+      return __translators[k]->needsReordering ();
+    }
+
+    
+    // performs a reordering of the dictionary and returns a mapping
+    // from the old translated values to the new ones.
+    template <template<typename> class ALLOC>
+    INLINE
+    HashTable<std::size_t,std::size_t,ALLOC<std::pair<std::size_t,std::size_t>>>
+    DBTranslatorSet<ALLOC>::reorder ( const std::size_t k ) {
+      return __translators[k]->reorder();
+    }
+
+    
+    // performs a reordering of the dictionary and returns a mapping
+    // from the old translated values to the new ones.
+    template <template<typename> class ALLOC>
+    INLINE
+    HashTable<std::size_t,std::size_t,ALLOC<std::pair<std::size_t,std::size_t>>>
+    DBTranslatorSet<ALLOC>::reorderSafe ( const std::size_t k ) {
+      if ( __translators.size () <= k )
+        GUM_ERROR ( UndefinedElement, "the variable could not be found" );
+      return __translators[k]->reorder();
+    }
+
+    
     /** @brief returns the column of the input database that will be written
      * in the kth column of the DatabaseTable */
     template <template<typename> class ALLOC>

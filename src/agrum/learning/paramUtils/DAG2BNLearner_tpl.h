@@ -70,18 +70,20 @@ namespace gum {
       // create a bn with dummy parameters corresponding to the dag
       for (const auto id : dag) {
         // create the labelized variable
+        /*
         std::vector< std::string > labels;
         auto& translator = translators.translator ( id );
         for (Idx i = 0; i < modal[id]; ++i) {
           labels.push_back(translator.translateBack(DBTranslatedValue{std::size_t(i)}));
         }
         sort(labels.begin(), labels.end());
-
         LabelizedVariable variable(names[id], "", 0);
         for (auto s : labels) {
           variable.addLabel(s);
         }
-        bn.add(variable, id);
+        */
+
+        bn.add(dynamic_cast<const DiscreteVariable&> (translators.variable(id)), id);
       }
 
       // add the arcs

@@ -429,7 +429,7 @@ namespace gum {
     /// indicates whether the translations should be reordered
     template <template<typename> class ALLOC>
     INLINE bool
-    DBTranslator4ContinuousVariable<ALLOC>::needsReordering () {
+    DBTranslator4ContinuousVariable<ALLOC>::needsReordering () const {
       return false;
     }
 

@@ -282,12 +282,22 @@ namespace gum {
         const std::vector< double, CountAlloc >& Nz =
           this->_getConditioningCounts(nodeset_index + 1);
 
-        const auto Z_size = Size(Nz.size());
         const auto Y_size = Size(modals[all_nodes[all_nodes.size() - 2]]);
         const auto X_size = Size(modals[all_nodes[all_nodes.size() - 1]]);
 
         double score = 0.0;
 
+        for ( auto n_zx : Nzx )
+          score += std::log(this->_C(Y_size, n_zx));
+        for ( auto n_zy : Nzy )
+          score += std::log(this->_C(X_size, n_zy));
+        for ( auto n_z : Nz ) {
+          score -= std::log(this->_C(X_size, n_z));
+          score -= std::log(this->_C(Y_size, n_z));
+        }
+        
+        
+         /*
         for (Idx z = 0, beg_zx = 0, beg_zy = 0; z < Z_size;
              ++z, beg_zx += X_size, beg_zy += Y_size) {
           double sumX = 0.0, sumY = 0.0;
@@ -300,6 +310,7 @@ namespace gum {
           }
           score += sumY - std::log(this->_C(X_size, Nz[z]));
         }
+         */
 
         score *= 0.5;
         // shall we put the score into the cache?

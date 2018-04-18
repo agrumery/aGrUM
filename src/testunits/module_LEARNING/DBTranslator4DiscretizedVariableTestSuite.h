@@ -520,9 +520,7 @@ namespace gum_tests {
       TS_ASSERT ( translator.needsReordering () == false);
 
       auto new_order = translator.reorder ();
-      TS_ASSERT ( new_order[0] == 0 );
-      TS_ASSERT ( new_order[1] == 1 );
-      TS_ASSERT ( new_order[2] == 2 );
+      TS_ASSERT ( new_order.size () == 0 );
       
     }
 

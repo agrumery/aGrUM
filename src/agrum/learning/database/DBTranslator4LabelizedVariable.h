@@ -337,8 +337,16 @@ namespace gum {
        * sizes. */
       virtual std::size_t domainSize () const final;
 
-      /// indicates whether the translations should be reordered
-      /** When constructing dynamically its dictionary, the translator may
+      /** @brief indicates whether a reordering is needed to make the
+       * translations sorted
+       *
+       * If the strings represented by the translations are only numbers,
+       * translations are considered to be sorted if and only if they are sorted
+       * by increasing number. If the strings do not only represent numbers, then
+       * translations are considered to be sorted if and only if they are sorted
+       * lexicographically.
+       *
+       * When constructing dynamically its dictionary, the translator may
        * assign wrong DBTranslatedValue values to strings. For instance, a
        * translator reading sequentially integer strings 4, 1, 3, may map
        * 4 into DBTranslatedValue{std::size_t(0)},
@@ -349,7 +357,7 @@ namespace gum {
        * reordering. Method needsReodering() returns a Boolean indicating
        * whether such a reordering should be performed or whether the current
        * order is OK. */
-      virtual bool needsReordering () final;
+      virtual bool needsReordering () const final;
 
       /** @brief performs a reordering of the dictionary and returns a mapping
        * from the old translated values to the new ones.
@@ -357,7 +365,9 @@ namespace gum {
        * When a reordering is needed, i.e., string values must be translated
        * differently. Method reorder() computes how the translations should be
        * changed. It updates accordingly the dictionary and returns the mapping
-       * that enables changing the old dictionary values into the new ones. */
+       * that enables changing the old dictionary values into the new ones.
+       * @warning If there is no reordering to perform, the method returns
+       * an empty hashtable. */
       virtual HashTable<std::size_t,std::size_t,
                         ALLOC<std::pair<std::size_t,std::size_t>>>
       reorder () final;

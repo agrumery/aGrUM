@@ -499,6 +499,8 @@ namespace gum {
       DatabaseTable<> database ( translator_set );
       database.setVariableNames( initializer.variableNames () );
       initializer.fillDatabase ( database );
+
+      database.reorder ();
       
       return database;
     }

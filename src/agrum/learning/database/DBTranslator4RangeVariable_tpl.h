@@ -484,7 +484,7 @@ namespace gum {
 
     /// indicates whether the translations should be reordered
     template <template<typename> class ALLOC>
-    bool DBTranslator4RangeVariable<ALLOC>::needsReordering () {
+    bool DBTranslator4RangeVariable<ALLOC>::needsReordering () const {
       // if the variable contains only numbers, they should be increasing
       const auto& labels = __variable.labels ();
       std::size_t last_number = std::numeric_limits<std::size_t>::lowest ();
@@ -510,9 +510,19 @@ namespace gum {
       std::vector<std::pair<std::size_t,std::string>,
                   ALLOC<std::pair<std::size_t,std::string>>> xlabels;
       xlabels.reserve ( size );
-      for ( std::size_t i = std::size_t(0); i < size; ++i )
-        xlabels.push_back ( std::make_pair ( this->_back_dico.first( labels[i] ),
-                                             labels[i] ) );
+      bool modifications = false;
+      for ( std::size_t i = std::size_t(0); i < size; ++i ) {
+        const std::size_t new_val = this->_back_dico.first( labels[i] );
+        xlabels.push_back ( std::make_pair ( new_val, labels[i] ) );
+        if ( new_val != i ) modifications = true;
+      }
+
+      
+      // if there were no modification, return an empty update hashtable
+      if ( ! modifications ) {
+        return HashTable<std::size_t,std::size_t,
+                         ALLOC<std::pair<std::size_t,std::size_t>>> ();
+      }
 
       // create the hashTable corresponding to the mapping from the old
       // indices to the new one

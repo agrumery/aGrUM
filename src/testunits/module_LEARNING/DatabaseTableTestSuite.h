@@ -993,6 +993,91 @@ namespace gum_tests {
       TS_ASSERT( database.content().size() == 13 );
     }
 
+
+    void test_reordering () {
+      std::vector<std::string> missing { "?", "N/A", "???" };
+      gum::learning::DatabaseTable<> database;
+
+      gum::LabelizedVariable var ( "var0", "", 0 );
+      var.addLabel ( "L1" );
+      var.addLabel ( "L2" );
+      var.addLabel ( "L0" );
+
+      database.insertTranslator<> ( var, 0, missing );
+
+      gum::LabelizedVariable var1 ( "var1", "", 0 );
+      var1.addLabel ( "L0" );
+      var1.addLabel ( "L1" );
+      var1.addLabel ( "L2" );
+      database.insertTranslator<> ( var1, 1, missing );
+
+      var.setName ( "var2" );
+      database.insertTranslator<> ( var, 2, missing );
+
+      const auto& vnames = database.variableNames();
+      TS_ASSERT( vnames.size() == 3 );
+      TS_ASSERT( vnames[0] == "var0" );
+      TS_ASSERT( vnames[1] == "var1" );
+      TS_ASSERT( vnames[2] == "var2" );
+      
+
+      gum::learning::DBRow<gum::learning::DBTranslatedValue>
+        row( 3, gum::learning::DBTranslatedValue { std::size_t(2) } );
+      database.insertRow( row );
+      TS_ASSERT( database.content().size() == 1 );
+
+      const auto dom1 = database.domainSizes ();
+      TS_ASSERT ( dom1.size () == std::size_t(3) );
+      TS_ASSERT ( dom1[0] == std::size_t(3) );
+      TS_ASSERT ( dom1[1] == std::size_t(3) );
+      TS_ASSERT ( dom1[2] == std::size_t(3) );
+      TS_ASSERT ( database.domainSize(0) == dom1[0] );
+      TS_ASSERT ( database.domainSize(1) == dom1[1] );
+      TS_ASSERT ( database.domainSize(2) == dom1[2] );
+
+      gum::learning::DBRow<gum::learning::DBTranslatedValue>
+        row2 ( 3, gum::learning::DBTranslatedValue { std::size_t(1) } );
+      database.insertRow( row2 );
+      gum::learning::DBRow<gum::learning::DBTranslatedValue>
+        row3 ( 3, gum::learning::DBTranslatedValue { std::size_t(0) } );
+      database.insertRow( std::move ( row3 ) );
+      TS_ASSERT( database.content().size() == 3 );
+
+      TS_ASSERT ( database.needsReordering ( 0 ) );
+      TS_ASSERT ( database.needsReordering ( 1 ) == false );
+      TS_ASSERT ( database.needsReordering ( 2 ) );
+
+      const auto& content = database.content ();
+      database.reorder ( 0 );
+      TS_ASSERT ( content[0][0].discr_val == 0 );
+      TS_ASSERT ( content[0][1].discr_val == 2 );
+      TS_ASSERT ( content[0][2].discr_val == 2 );
+      
+      TS_ASSERT ( content[1][0].discr_val == 2 );
+      TS_ASSERT ( content[1][1].discr_val == 1 );
+      TS_ASSERT ( content[1][2].discr_val == 1 );
+      
+      TS_ASSERT ( content[2][0].discr_val == 1 );
+      TS_ASSERT ( content[2][1].discr_val == 0 );
+      TS_ASSERT ( content[2][2].discr_val == 0 );
+
+      database.reorder ();
+      TS_ASSERT ( content[0][0].discr_val == 0 );
+      TS_ASSERT ( content[0][1].discr_val == 2 );
+      TS_ASSERT ( content[0][2].discr_val == 0 );
+      
+      TS_ASSERT ( content[1][0].discr_val == 2 );
+      TS_ASSERT ( content[1][1].discr_val == 1 );
+      TS_ASSERT ( content[1][2].discr_val == 2 );
+      
+      TS_ASSERT ( content[2][0].discr_val == 1 );
+      TS_ASSERT ( content[2][1].discr_val == 0 );
+      TS_ASSERT ( content[2][2].discr_val == 1 );
+      
+    }
+
+    
+
     
       
   private:

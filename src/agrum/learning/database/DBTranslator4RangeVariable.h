@@ -343,8 +343,10 @@ namespace gum {
       /** Returns the size of the range of the variable. */
        virtual std::size_t domainSize () const final;
 
-      /// indicates whether the translations should be reordered
-      /** When constructing dynamically its dictionary, the translator may
+      /** @brief indicates whether a reordering is needed to make the
+       * translations sorted by increasing numbers
+       *
+       * When constructing dynamically its dictionary, the translator may
        * assign wrong DBTranslatedValue values to strings. For instance, a
        * translator reading sequentially integer strings 2, 1, 3, may map
        * 2 into DBTranslatedValue{std::size_t(0)},
@@ -356,7 +358,7 @@ namespace gum {
        * whether such a reordering should be performed or whether the current
        * order is OK.
        */
-       virtual bool needsReordering () final;
+       virtual bool needsReordering () const final;
 
       /** @brief performs a reordering of the dictionary and returns a mapping
        * from the old translated values to the new ones.

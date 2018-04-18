@@ -33,6 +33,7 @@
 
 #include <agrum/agrum.h>
 #include <agrum/core/set.h>
+#include <agrum/core/thread.h>
 #include <agrum/learning/database/DBCell.h>
 #include <agrum/learning/database/DBRow.h>
 #include <agrum/learning/database/DBTranslatedValue.h>
@@ -468,6 +469,70 @@ namespace gum {
 
       /// returns the domain sizes of all the variables in the database table
       DBVector<std::size_t> domainSizes () const;
+
+      /** @brief indicates whether a reordering is needed to make the kth
+       * translator sorted 
+       *
+       * For a given translator, if the strings represented by the translations
+       * are only numbers, the translations are considered to be sorted if and
+       * only if they are sorted by increasing number. If the strings do not
+       * only represent numbers, then translations are considered to be sorted
+       * if and only if they are sorted lexicographically.
+       *
+       * When constructing dynamically its dictionary, the translator may
+       * assign wrong DBTranslatedValue values to strings. For instance, a
+       * translator reading sequentially integer strings 4, 1, 3, may map
+       * 4 into DBTranslatedValue{std::size_t(0)},
+       * 1 into DBTranslatedValue{std::size_t(1)} and
+       * 3 into DBTranslatedValue{std::size_t(2)}, resulting in random variables
+       * having domain {4,1,3}. The user may prefer having domain {1,3,4}, i.e.,
+       * a domain specified with increasing values. This requires a
+       * reordering. Method needsReodering() returns a Boolean indicating
+       * whether such a reordering should be performed or whether the current
+       * order is OK.
+       *
+       * Translators read an input dataset that is not necessarily the same as
+       * the content of the DatabaseTable. For instance, a CSV may contain 10
+       * columns, but if a DatabaseTable only contains two translators reading
+       * columns 3 and 5 respectively, then the DatabaseTable only contains 2
+       * columns. When k_is_input_col is set to false, Parameter k passed in
+       * argument corresponds to either 0 or 1, i.e., the index of one of these
+       * two columns. When k_is_input_col is set to true, the translator to be
+       * reordered is that which parses the kth column of the input database.
+       * @throw UndefinedElement is raised if there is no translator
+       * corresponding to k. */
+      bool needsReordering ( const std::size_t k,
+                             const bool k_is_input_col = false ) const;
+
+      /** @brief performs a reordering of the kth translator or
+       * of the translator corresponding to the kth column of the input database
+       *
+       * For a given translator, if the strings represented by the translations
+       * are only numbers, the translations are considered to be sorted if and
+       * only if they are sorted by increasing number. If the strings do not
+       * only represent numbers, then translations are considered to be sorted
+       * if and only if they are sorted lexicographically.
+       *
+       * Translators read an input dataset that is not necessarily the same as
+       * the content of the DatabaseTable. For instance, a CSV may contain 10
+       * columns, but if a DatabaseTable only contains two translators reading
+       * columns 3 and 5 respectively, then the DatabaseTable only contains 2
+       * columns. When k_is_input_col is set to false, Parameter k passed in
+       * argument corresponds to either 0 or 1, i.e., the index of one of these
+       * two columns. When k_is_input_col is set to true, the translator to be
+       * reordered is that which parses the kth column of the input database.
+       * @throw UndefinedElement is raised if there is no translator
+       * corresponding to k. */
+      void reorder ( const std::size_t k,
+                     const bool k_is_input_col = false );
+
+      /// performs a reordering of all the columns
+      /** For a given translator, if the strings represented by the translations
+       * are only numbers, the translations are considered to be sorted if and
+       * only if they are sorted by increasing number. If the strings do not
+       * only represent numbers, then translations are considered to be sorted
+       * if and only if they are sorted lexicographically. */
+      void reorder ();
       
       /// insert a new row at the end of the database
       using IDatabaseTable<DBTranslatedValue,ALLOC>::insertRow;
