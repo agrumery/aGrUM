@@ -249,12 +249,30 @@ namespace gum {
         id_yz = _H.addNodeSet(vec_yz);
         id_xyz = _H.addNodeSet(vec_xyz);
 
-        double Hz = _H.score(id_z);
-        double Hxz = _H.score(id_xz);
-        double Hyz = _H.score(id_yz);
-        double Hxyz = _H.score(id_xyz);
+        const double Hz = _H.score(id_z);
+        const double Hxz = _H.score(id_xz);
+        const double Hyz = _H.score(id_yz);
+        const double Hxyz = _H.score(id_xyz);
 
-        score = Hxz + Hyz - Hz - Hxyz;
+        double Hxz_Hyz = Hxz + Hyz;
+        double Hz_Hxyz = Hz + Hxyz;
+
+        // avoid numeric instability due to rounding errors
+        double ratio = 1;
+        if ( Hxz_Hyz > 0 ) {
+          ratio = ( Hxz_Hyz - Hz_Hxyz ) / Hxz_Hyz;
+        }
+        else if ( Hz_Hxyz > 0 ) {
+          ratio = ( Hxz_Hyz - Hz_Hxyz ) / Hz_Hxyz;
+        }
+        if ( ratio < 0 ) ratio = -ratio;
+        if ( ratio < __threshold ) {
+          Hz_Hxyz = Hxz_Hyz; // ensure that the score is equal to 0
+          //std::cout << Hxz_Hyz << "  " << Hz_Hxyz << "  " << ratio << "  =>  ";
+        }
+
+        score = Hxz_Hyz - Hz_Hxyz;
+        //std::cout << score << std::endl;
 
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
@@ -282,11 +300,28 @@ namespace gum {
         id_y = _H.addNodeSet(var2);
         id_xy = _H.addNodeSet(var1, var2);
 
-        double Hx = _H.score(id_x);
-        double Hy = _H.score(id_y);
-        double Hxy = _H.score(id_xy);
+        const double Hx = _H.score(id_x);
+        const double Hy = _H.score(id_y);
+        const double Hxy = _H.score(id_xy);
 
-        score = Hx + Hy - Hxy;
+        double Hx_Hy = Hx + Hy;
+
+        // avoid numeric instability due to rounding errors
+        double ratio = 1;
+        if ( Hx_Hy > 0 ) {
+          ratio = ( Hx_Hy - Hxy ) / Hx_Hy;
+        }
+        else if ( Hxy > 0 ) {
+          ratio = ( Hx_Hy - Hxy ) / Hxy;
+        }
+        if ( ratio < 0 ) ratio = -ratio;
+        if ( ratio < __threshold ) {
+          Hx_Hy = Hxy; // ensure that the score is equal to 0
+          //std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
+        }
+        
+        score = Hx_Hy - Hxy;
+        //std::cout << score << std::endl;
 
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
@@ -400,17 +435,38 @@ namespace gum {
         id_zyui = _H.addNodeSet(vec_zyui);
         id_xyzui = _H.addNodeSet(vec_xyzui);
 
-        double Hui = _H.score(id_ui);
-        double Hxui = _H.score(id_xui);
-        double Hyui = _H.score(id_yui);
-        double Hzui = _H.score(id_zui);
-        double Hxyui = _H.score(id_xyui);
-        double Hxzui = _H.score(id_xzui);
-        double Hzyui = _H.score(id_zyui);
-        double Hxyzui = _H.score(id_xyzui);
+        const double Hui = _H.score(id_ui);
+        const double Hxui = _H.score(id_xui);
+        const double Hyui = _H.score(id_yui);
+        const double Hzui = _H.score(id_zui);
+        const double Hxyui = _H.score(id_xyui);
+        const double Hxzui = _H.score(id_xzui);
+        const double Hzyui = _H.score(id_zyui);
+        const double Hxyzui = _H.score(id_xyzui);
 
-        score = Hxyzui - Hxyui - Hxzui - Hzyui + Hxui + Hyui + Hzui - Hui;
+        double Hxyzui_Hxui_Hyui_Hzui = Hxyzui + Hxui + Hyui + Hzui;
+        double Hxyui_Hxzui_Hzyui_Hui = Hxyui + Hxzui + Hzyui + Hui;
 
+        // avoid numeric instability due to rounding errors
+        double ratio = 1;
+        if ( Hxyzui_Hxui_Hyui_Hzui > 0 ) {
+          ratio = ( Hxyzui_Hxui_Hyui_Hzui - Hxyui_Hxzui_Hzyui_Hui ) /
+            Hxyzui_Hxui_Hyui_Hzui;
+        }
+        else if ( Hxyui_Hxzui_Hzyui_Hui > 0 ) {
+          ratio = ( Hxyzui_Hxui_Hyui_Hzui - Hxyui_Hxzui_Hzyui_Hui ) /
+            Hxyui_Hxzui_Hzyui_Hui;
+        }
+        if ( ratio < 0 ) ratio = -ratio;
+        if ( ratio < __threshold ) {
+          // ensure that the score is equal to 0
+          Hxyzui_Hxui_Hyui_Hzui = Hxyui_Hxzui_Hzyui_Hui;
+          //std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
+        }
+        
+        score = Hxyzui_Hxui_Hyui_Hzui - Hxyui_Hxzui_Hzyui_Hui;
+        //std::cout << score << std::endl;
+        
         // shall we put the score into the cache?
         if (this->_isUsingCache()) {
           this->_insertIntoCache(var1, var2, var3, conditioning_ids, score);
@@ -441,16 +497,34 @@ namespace gum {
         id_zy = _H.addNodeSet(var3, var2);
         id_xyz = _H.addNodeSet(std::vector< Idx >{var1, var2, var3});
 
-        double Hx = _H.score(id_x);
-        double Hy = _H.score(id_y);
-        double Hz = _H.score(id_z);
-        double Hxy = _H.score(id_xy);
-        double Hxz = _H.score(id_xz);
-        double Hzy = _H.score(id_zy);
-        double Hxyz = _H.score(id_xyz);
+        const double Hx = _H.score(id_x);
+        const double Hy = _H.score(id_y);
+        const double Hz = _H.score(id_z);
+        const double Hxy = _H.score(id_xy);
+        const double Hxz = _H.score(id_xz);
+        const double Hzy = _H.score(id_zy);
+        const double Hxyz = _H.score(id_xyz);
 
-        score = Hx + Hy + Hz - Hxy - Hxz - Hzy + Hxyz;
+        double Hx_Hy_Hz_Hxyz = Hx + Hy + Hz + Hxyz;
+        double Hxy_Hxz_Hzy   = Hxy + Hxz + Hzy;
 
+        // avoid numeric instability due to rounding errors
+        double ratio = 1;
+        if ( Hx_Hy_Hz_Hxyz > 0 ) {
+          ratio = ( Hx_Hy_Hz_Hxyz - Hxy_Hxz_Hzy ) / Hx_Hy_Hz_Hxyz;
+        }
+        else if ( Hxy_Hxz_Hzy > 0 ) {
+          ratio = ( Hx_Hy_Hz_Hxyz - Hxy_Hxz_Hzy ) / Hxy_Hxz_Hzy;
+        }
+        if ( ratio < 0 ) ratio = -ratio;
+        if ( ratio < __threshold ) {
+          Hx_Hy_Hz_Hxyz = Hxy_Hxz_Hzy; // ensure that the score is equal to 0
+          //std::cout << Hx_Hy << "  " << Hxy << "  " << ratio << "  =>  ";
+        }
+        
+        score = Hx_Hy_Hz_Hxyz - Hxy_Hxz_Hzy;
+        //std::cout << score << std::endl;
+        
         // shall we put the score into the cache?
 
         if (this->_isUsingCache()) {

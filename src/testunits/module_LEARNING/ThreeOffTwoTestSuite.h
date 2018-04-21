@@ -58,14 +58,16 @@ namespace gum_tests {
       database.setVariableNames( initializer.variableNames () );
       initializer.fillDatabase ( database );
 
-      //database.reorder ();
+      database.reorder ();
 
       gum::learning::DBRowGeneratorSet<> genset;
       gum::learning::DBRowGeneratorParser<>
         parser ( database.handler (), genset );
 
-      std::vector< gum::Size > modalities(nb_vars, 2);
- 
+      std::vector< gum::Size > modalities;
+      for ( auto dom : database.domainSizes () )
+        modalities.push_back ( dom );
+
       gum::learning::CorrectedMutualInformation<> I(parser, modalities);
       I.useNoCorr();
 
@@ -81,7 +83,8 @@ namespace gum_tests {
         }
       }
       graph = search.learnMixedStructure(I, graph);
-      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(6));
+      TS_ASSERT_EQUALS(graph.arcs().size(), gum::Size(0));
+
     }
 
     void test_3off2_asia_MDLcorr() {

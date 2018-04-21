@@ -512,9 +512,9 @@ namespace gum {
       xlabels.reserve ( size );
       bool modifications = false;
       for ( std::size_t i = std::size_t(0); i < size; ++i ) {
-        const std::size_t new_val = this->_back_dico.first( labels[i] );
-        xlabels.push_back ( std::make_pair ( new_val, labels[i] ) );
-        if ( new_val != i ) modifications = true;
+        const std::size_t old_val = this->_back_dico.first( labels[i] );
+        xlabels.push_back ( std::make_pair ( old_val, labels[i] ) );
+        if ( old_val != i ) modifications = true;
       }
 
       

@@ -102,7 +102,7 @@ namespace gum {
     }
 
     template < typename IdSetAlloc, typename CountAlloc >
-    double PartialEntropy< IdSetAlloc, CountAlloc >::score(Idx nodeset_index) {
+    double PartialEntropy< IdSetAlloc, CountAlloc >::score(Idx nodeset_index ) {
       // if the score has already been computed, get its value
       if (this->_isInCache(nodeset_index)) {
         return this->_cachedScore(nodeset_index);
@@ -121,12 +121,24 @@ namespace gum {
         }
       }
 
+      /*
       for (Idx zyx = 0; zyx < ZXY_size; ++zyx) {
         if (Nzyx[zyx]) {
           // score -= Nzyx[zyx] / this->__N * log2(Nzyx[zyx] / this->__N);
-          score -= Nzyx[zyx] / this->__N * log(Nzyx[zyx] / this->__N);
+          score -= ( Nzyx[zyx] / this->__N ) * log(Nzyx[zyx] / this->__N);
         }
       }
+      */
+      
+      // score = -sum_xyz ( Nzyx[zyx] / this->__N ) * log(Nzyx[zyx] / this->__N)
+      for (Idx zyx = 0; zyx < ZXY_size; ++zyx) {
+        if (Nzyx[zyx]) {
+          // score -= Nzyx[zyx] / this->__N * log2(Nzyx[zyx] / this->__N);
+          score -= Nzyx[zyx] * log(Nzyx[zyx]);
+        }
+      }
+      score /= this->__N;
+      score += log ( this->__N );
 
       // shall we put the score into the cache?
       if (this->_isUsingCache()) {

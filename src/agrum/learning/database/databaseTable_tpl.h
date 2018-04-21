@@ -568,19 +568,21 @@ namespace gum {
       auto updates = __translators.reorder ( kk );
       if ( updates.empty () ) return;
       
-      const std::size_t size = updates.size ();
+      std::size_t size = updates.size ();
       std::vector<std::size_t,ALLOC<std::size_t>> new_values ( size );
       for ( const auto& update : updates ) {
-        if ( update.first >= size )
-          new_values.resize ( update.first + 1 );
+        if ( update.first >= size ) {
+          size = update.first + 1;
+          new_values.resize ( size );
+        }
         new_values[update.first] = update.second;
       }
 
       // apply the translations
       //auto nb_threads = thread::getMaxNumberOfThreads();
-      for ( auto& xrow : this->_content () ) {
-        auto& elt = xrow.row()[kk].discr_val;
-        if ( elt != std::numeric_limits<std::size_t>::max () )
+      for ( auto& row : this->_content () ) {
+        auto& elt = row[kk].discr_val;
+        if ( elt != std::numeric_limits<std::size_t>::max () ) 
           elt = new_values[elt];
       }
     }

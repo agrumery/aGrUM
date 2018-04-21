@@ -224,6 +224,8 @@ namespace gum {
 
       /// variables modalities
       std::vector< Size > __modalities;
+
+      const double __threshold { 1e-10 };
     };
 
   } /* namespace learning */
