@@ -35,9 +35,11 @@ namespace gum {
     DBRowGenerator<ALLOC>::DBRowGenerator(
       const std::vector<DBTranslatedValueType,ALLOC<DBTranslatedValueType>>
       column_types,
+      const DBRowGeneratorGoal goal,
       const allocator_type& alloc )
       : _column_types ( column_types, alloc )
-      , _columns_of_interest ( alloc ) {
+      , _columns_of_interest ( alloc )
+      , _goal ( goal ) {
       GUM_CONSTRUCTOR( DBRowGenerator );
     }
 
@@ -49,7 +51,8 @@ namespace gum {
       const typename DBRowGenerator<ALLOC>::allocator_type& alloc )
       : _nb_remaining_output_rows ( from._nb_remaining_output_rows )
       , _column_types ( from._column_types, alloc )
-      , _columns_of_interest ( from._columns_of_interest, alloc ) {
+      , _columns_of_interest ( from._columns_of_interest, alloc )
+      , _goal ( from._goal ) {
       GUM_CONS_CPY( DBRowGenerator );
     }
 
@@ -68,7 +71,8 @@ namespace gum {
       const typename DBRowGenerator<ALLOC>::allocator_type& alloc )
       : _nb_remaining_output_rows ( from._nb_remaining_output_rows )
       , _column_types ( std::move ( from._column_types ), alloc )
-      , _columns_of_interest ( std::move ( from._columns_of_interest ), alloc ) {
+      , _columns_of_interest ( std::move ( from._columns_of_interest ), alloc )
+      , _goal ( from._goal ) {
       GUM_CONS_MOV( DBRowGenerator );
     }
 
@@ -94,6 +98,7 @@ namespace gum {
       _nb_remaining_output_rows = from._nb_remaining_output_rows;
       _column_types = from._column_types;
       _columns_of_interest = from._columns_of_interest;
+      _goal = from._goal;
       return *this;
     }
 
@@ -105,6 +110,7 @@ namespace gum {
       _nb_remaining_output_rows = from._nb_remaining_output_rows;
       _column_types = std::move ( from._column_types );
       _columns_of_interest = std::move ( from._columns_of_interest );
+      _goal = from._goal;
       return *this;
     }
 
@@ -168,6 +174,13 @@ namespace gum {
     typename DBRowGenerator<ALLOC>::allocator_type
     DBRowGenerator<ALLOC>::getAllocator () const {
       return _columns_of_interest.get_allocator ();
+    }
+
+
+    /// returns the goal of the DBRowGenerator
+    template <template<typename> class ALLOC>
+    INLINE DBRowGeneratorGoal DBRowGenerator<ALLOC>::goal () const {
+      return _goal;
     }
     
     

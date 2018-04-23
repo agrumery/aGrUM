@@ -37,7 +37,9 @@ namespace gum {
       const std::vector<DBTranslatedValueType,
                         ALLOC<DBTranslatedValueType>> column_types,
       const typename DBRowGeneratorIdentity<ALLOC>::allocator_type& alloc )
-      : DBRowGenerator<ALLOC> ( column_types, alloc ) {
+      : DBRowGenerator<ALLOC>
+      ( column_types,
+        DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES, alloc ) {
       GUM_CONSTRUCTOR( DBRowGeneratorIdentity );
     }
 

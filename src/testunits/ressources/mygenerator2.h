@@ -50,7 +50,7 @@ namespace gum {
                                      ALLOC<DBTranslatedValueType>> column_types,
                    const std::size_t nb_duplicates,
                    const allocator_type& alloc  = allocator_type () )
-        : DBRowGenerator<ALLOC> ( column_types, alloc )
+        : DBRowGenerator<ALLOC> ( column_types, DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES, alloc )
         , __nb_duplicates ( nb_duplicates ) {
         GUM_CONSTRUCTOR( MyGenerator2 );
       }

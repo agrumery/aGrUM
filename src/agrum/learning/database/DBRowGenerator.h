@@ -35,6 +35,22 @@ namespace gum {
 
   namespace learning {
 
+    /** @enum DBRowGeneratorGoal
+     * @headerfile DBRowGenerator.h <agrum/learning/database/DBRowGenerator.h>
+     * @brief the type of things that a DBRowGenerator is designed for
+     *
+     * @ingroup learning_database
+     */
+    enum class DBRowGeneratorGoal : char {
+      // the generator's goal is only to remove all missing values
+      ONLY_REMOVE_MISSING_VALUES,
+
+      // the generator does something else than just missing values
+      OTHER_THINGS_THAN_REMOVE_MISSING_VALUES
+    };
+    
+
+    
     /** @class DBRowGenerator
      * @headerfile DBRowGenerator.h <agrum/learning/database/DBRowGenerator.h>
      * @ingroup learning_database
@@ -232,6 +248,7 @@ namespace gum {
        * @param alloc the allocator used by all the methods */
       DBRowGenerator( const std::vector<DBTranslatedValueType,
                                         ALLOC<DBTranslatedValueType>> column_types,
+                      const DBRowGeneratorGoal goal,
                       const allocator_type& alloc = allocator_type () );
 
       /// copy constructor
@@ -331,6 +348,9 @@ namespace gum {
       /// returns the allocator used
       allocator_type getAllocator () const;
 
+      /// returns the goal of the DBRowGenerator
+      DBRowGeneratorGoal goal () const;
+
       /// @}
       
 
@@ -347,6 +367,10 @@ namespace gum {
 
       /// the set of columns of interest
       std::vector<std::size_t,ALLOC<std::size_t>> _columns_of_interest;
+
+      /// the goal of the DBRowGenerator (just remove missing values or not)
+      DBRowGeneratorGoal
+      _goal { DBRowGeneratorGoal::OTHER_THINGS_THAN_REMOVE_MISSING_VALUES };
     
 
       /// copy constructor
