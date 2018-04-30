@@ -7818,7 +7818,16 @@ class MarkovBlanket(_object):
 
 
     def nodes(self) -> "PyObject *":
-        """nodes(self) -> PyObject *"""
+        """
+        nodes(self) -> PyObject *
+
+
+        Returns
+        -------
+        set
+            the set of ids
+
+        """
         return _pyAgrum.MarkovBlanket_nodes(self)
 
 
@@ -23773,7 +23782,6 @@ class CredalNet_double(_object):
     __setattr__ = lambda self, name, value: _swig_setattr(self, CredalNet_double, name, value)
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, CredalNet_double, name)
-    __repr__ = _swig_repr
     NodeType_Precise = _pyAgrum.CredalNet_double_NodeType_Precise
     NodeType_Credal = _pyAgrum.CredalNet_double_NodeType_Credal
     NodeType_Vacuous = _pyAgrum.CredalNet_double_NodeType_Vacuous
@@ -24132,11 +24140,6 @@ class CredalNet_double(_object):
         return _pyAgrum.CredalNet_double_saveBNsMinMax(self, min_path, max_path)
 
 
-    def toString(self) -> "std::string":
-        """toString(self) -> std::string"""
-        return _pyAgrum.CredalNet_double_toString(self)
-
-
     def computeCPTMinMax(self) -> "void":
         """
         computeCPTMinMax(self)
@@ -24356,6 +24359,16 @@ class CredalNet_double(_object):
 
         """
         return _pyAgrum.CredalNet_double_get_CPT_max(self)
+
+
+    def __repr__(self) -> "std::string":
+        """__repr__(self) -> std::string"""
+        return _pyAgrum.CredalNet_double___repr__(self)
+
+
+    def __str__(self) -> "std::string":
+        """__str__(self) -> std::string"""
+        return _pyAgrum.CredalNet_double___str__(self)
 
 CredalNet_double_swigregister = _pyAgrum.CredalNet_double_swigregister
 CredalNet_double_swigregister(CredalNet_double)

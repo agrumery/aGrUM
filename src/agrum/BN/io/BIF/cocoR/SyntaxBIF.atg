@@ -129,6 +129,7 @@ MODALITY_LIST = (. std::string label; .)
 //==============
 PROBA =
    "probability"  (.
+                std::vector<std::string> var_seq;
                 std::string var;
                 std::vector<float> proba;
                 std::vector<std::string> parents;
@@ -139,7 +140,13 @@ PROBA =
                 TRY(factory().startParentsDeclaration(var));
                .)
   [ '|' LISTE_PARENTS<parents> ]
-  ')'            (. TRY(factory().endParentsDeclaration()); .)
+  ')'            (.
+  for (Size i=Size(parents.size());i>=Size(1);--i){
+    TRY(factory().variableId(parents[i-1]));
+    TRY( factory().addParent(parents[i-1]));
+    var_seq.push_back(parents[i-1]);
+  }
+  TRY(factory().endParentsDeclaration()); .)
   '{'
   { PROPERTY }
   (
@@ -150,7 +157,7 @@ PROBA =
                             TRY(s=factory().cptDomainSize(factory().variableId(var)));
                             if (proba.size()<s) Warning("Not enough data for cpt of node "+var);
                             if (proba.size()>s) Warning("Too many data for cpt of node "+var);
-                            TRY(factory().rawConditionalTable(proba));
+                            TRY(factory().rawConditionalTable(var_seq,proba));
                             TRY(factory().endRawProbabilityDeclaration());
                           }
                         .)
@@ -163,12 +170,13 @@ PROBA =
 
 //==============
 LISTE_PARENTS<. std::vector<std::string>& parents .> = (.std::string parent; .)
-  IDENT<parent>        (.
-                      TRY(factory().variableId(parent));
-                      TRY( factory().addParent(parent));
-                      parents.push_back(parent);
-                     .)
-  [ WEAK ',' LISTE_PARENTS<parents> ]
+  IDENT<parent>         (.
+                        parents.push_back(parent);
+                       .)
+  { ',' IDENT<parent>  (.
+                        parents.push_back(parent);
+                       .)
+  }
 .
 
 //==============
