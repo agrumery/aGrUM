@@ -616,11 +616,16 @@ namespace gum {
       const std::size_t nb_trans = __translators.size ();
       Row<DBTranslatedValue> dbrow;
       dbrow.reserve ( nb_trans );
+      bool has_missing_val = false;
       for ( std::size_t i = std::size_t (0); i < nb_trans; ++i ) {
-        dbrow.pushBack ( __translators.translate ( new_row, i ) );
+        const DBTranslatedValue new_val ( __translators.translate ( new_row, i ) );
+        if ( __translators.isMissingValue ( new_val, i ) )
+          has_missing_val = true;
+        dbrow.pushBack ( new_val );
       }
 
-      this->insertRow ( std::move ( dbrow ) );
+      this->insertRow ( std::move ( dbrow ),
+                        has_missing_val ? IsMissing::True : IsMissing::False );
     }
 
     
@@ -664,7 +669,8 @@ namespace gum {
     /// insert a new DBRow at the end of the database
     template <template<typename> class ALLOC>
     INLINE void DatabaseTable<ALLOC>::insertRow(
-      typename DatabaseTable<ALLOC>::template Row<DBTranslatedValue>&& new_row ) {
+      typename DatabaseTable<ALLOC>::template Row<DBTranslatedValue>&& new_row,
+      const typename DatabaseTable<ALLOC>::IsMissing contains_missing_data ) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
       if ( ! __isRowCompatible ( new_row ) ) {
@@ -672,7 +678,8 @@ namespace gum {
                    "the new row is not compatible with the current translators" );
       }
       
-      IDatabaseTable<DBTranslatedValue,ALLOC>::insertRow ( std::move ( new_row ) );
+      IDatabaseTable<DBTranslatedValue,ALLOC>::insertRow ( std::move ( new_row ),
+                                                           contains_missing_data );
     }
 
 
@@ -680,7 +687,8 @@ namespace gum {
     template <template<typename> class ALLOC>
     INLINE void DatabaseTable<ALLOC>::insertRow(
       const typename DatabaseTable<ALLOC>::template
-      Row<DBTranslatedValue>& new_row ) {
+      Row<DBTranslatedValue>& new_row,
+      const typename DatabaseTable<ALLOC>::IsMissing contains_missing_data ) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
       if ( ! __isRowCompatible ( new_row ) ) {
@@ -688,7 +696,8 @@ namespace gum {
                    "the new row is not compatible with the current translators" );
       }
       
-      IDatabaseTable<DBTranslatedValue,ALLOC>::insertRow ( new_row );
+      IDatabaseTable<DBTranslatedValue,ALLOC>::insertRow ( new_row,
+                                                           contains_missing_data );
     }
 
 
@@ -731,7 +740,9 @@ namespace gum {
     /// insert a set of new DBRows at the end of the database
     template <template<typename> class ALLOC>
     void DatabaseTable<ALLOC>::insertRows(
-      typename DatabaseTable<ALLOC>::template Matrix<DBTranslatedValue>&& rows ) {
+      typename DatabaseTable<ALLOC>::template Matrix<DBTranslatedValue>&& rows,
+      const typename DatabaseTable<ALLOC>::template DBVector<IsMissing>&
+      rows_have_missing_vals ) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
       for ( const auto& new_row : rows ) {
@@ -741,7 +752,8 @@ namespace gum {
         }
       }
         
-      IDatabaseTable<DBTranslatedValue,ALLOC>::insertRows ( std::move ( rows ) );
+      IDatabaseTable<DBTranslatedValue,ALLOC>::insertRows(std::move ( rows ),
+                                                          rows_have_missing_vals);
     }
       
 
@@ -749,7 +761,9 @@ namespace gum {
     template <template<typename> class ALLOC>
     void DatabaseTable<ALLOC>::insertRows(
       const typename DatabaseTable<ALLOC>::template
-      Matrix<DBTranslatedValue>& new_rows ) {
+      Matrix<DBTranslatedValue>& new_rows,
+      const typename DatabaseTable<ALLOC>::template DBVector<IsMissing>&
+      rows_have_missing_vals ) {
       // check that the new rows values are compatible with the values of
       // the variables stored within the translators
       for ( const auto& new_row : new_rows ) {
@@ -759,7 +773,8 @@ namespace gum {
         }
       }
         
-      IDatabaseTable<DBTranslatedValue,ALLOC>::insertRows ( new_rows );
+      IDatabaseTable<DBTranslatedValue,ALLOC>::insertRows(new_rows,
+                                                          rows_have_missing_vals);
     }
 
 

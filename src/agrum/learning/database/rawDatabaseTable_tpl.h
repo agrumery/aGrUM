@@ -365,29 +365,39 @@ namespace gum {
       // create the dbrow that will contain the new data
       Row<DBCell> dbrow;
       dbrow.reserve ( row_size - ignored_size );
+      bool has_missing_val = false;
       
       // translate the row into T_data and put them into the newly created dbrow
       if ( ignored_size == 0 ) {
-        for ( const auto& elt : new_row )
-          dbrow.pushBack ( this->__convert ( elt ) );
+        for ( const auto& elt : new_row ) {
+          const DBCell new_cell ( this->__convert ( elt ) );
+          if ( new_cell.isMissing () ) has_missing_val = true;
+          dbrow.pushBack ( new_cell );
+        }
       }
       else {
         for ( std::size_t i = std::size_t (0), j = std::size_t (0);
               i < row_size; ++i ) {
           if ( i != __ignored_cols[j] ) {
-            dbrow.pushBack ( this->__convert ( new_row[i] ) );
+            const DBCell new_cell ( this->__convert ( new_row[i] ) );
+            if ( new_cell.isMissing () ) has_missing_val = true;
+            dbrow.pushBack ( new_cell );
           }
           else {
             if ( ++j == ignored_size ) {
               for ( ++i; i < row_size; ++i ) {
-                dbrow.pushBack ( this->__convert ( new_row[i] ) );
+                const DBCell new_cell ( this->__convert ( new_row[i] ) );
+                if ( new_cell.isMissing () ) has_missing_val = true;
+                dbrow.pushBack ( new_cell );
               }
             }
           }
         }
       }
 
-      IDatabaseTable<DBCell,ALLOC>::insertRow ( std::move ( dbrow ) );
+      IDatabaseTable<DBCell,ALLOC>::insertRow (
+        std::move ( dbrow ),
+        has_missing_val ? IsMissing::True : IsMissing::False  );
     }
 
 

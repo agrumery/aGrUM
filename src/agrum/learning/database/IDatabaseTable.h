@@ -275,6 +275,8 @@ namespace gum {
       template <template<typename> class XALLOC>
       using MissingValType = std::vector<std::string,XALLOC<std::string>>;
 
+      
+      enum IsMissing : char { True, False };
 
       
       /** @class Handler
@@ -997,7 +999,9 @@ namespace gum {
        * as is into the database table.
        * @throw SizeError is raised if the size of the new_row is not equal to
        * the number of columns retained in the IDatabaseTable */
-      virtual void insertRow( Row<T_DATA>&& new_row );
+      virtual void
+      insertRow( Row<T_DATA>&& new_row,
+                 const IsMissing contains_missing_data );
 
       /// insert a new row at the end of the database
       /** Unlike methods insertRow for data whose type is different from T_DATA,
@@ -1006,7 +1010,9 @@ namespace gum {
        * as is into the database table.
        * @throw SizeError is raised if the size of the new_row is not equal to
        * the number of columns retained in the IDatabaseTable */
-      virtual void insertRow( const Row<T_DATA>& new_row );
+      virtual void
+      insertRow( const Row<T_DATA>& new_row,
+                 const IsMissing contains_missing_data );
 
       using IDatabaseTableInsert4DBCell<ALLOC,
                 !std::is_same<T_DATA,DBCell>::value>::insertRows;
@@ -1018,7 +1024,8 @@ namespace gum {
        * copied as is into the database table.
        * @throw SizeError is raised if the size of at least one row in new_rows
        * is not equal to the number of columns retained in the IDatabaseTable */
-      virtual void insertRows( Matrix<T_DATA>&& new_rows );
+      virtual void insertRows( Matrix<T_DATA>&& new_rows,
+                               const DBVector<IsMissing>& rows_have_missing_vals );
 
       /// insert a set of new DBRows at the end of the database
       /** Unlike methods insertRows for data whose type is different from T_DATA,
@@ -1027,7 +1034,8 @@ namespace gum {
        * copied as is into the database table.
        * @throw SizeError is raised if the size of at least one row in new_rows
        * is not equal to the number of columns retained in the IDatabaseTable */
-      virtual void insertRows( const Matrix<T_DATA>& new_rows );
+      virtual void insertRows( const Matrix<T_DATA>& new_rows,
+                               const DBVector<IsMissing>& rows_have_missing_vals );
 
       /// erase a given row specified by its index in the table
       /** In the database, rows are indexed, starting from 0. 
@@ -1102,6 +1110,9 @@ namespace gum {
 
       // the set of string corresponding to missing values
       DBVector<std::string> __missing_symbols;
+
+      // a vector indicating which rows have missing values (char != 0)
+      DBVector<IsMissing> __has_row_missing_val;
 
       // the list of handlers currently attached to the database
       /* this is useful when the database is resized */

@@ -350,6 +350,9 @@ namespace gum {
       /// returns the allocator used by the translator
       allocator_type getAllocator () const;
 
+      /// indicates whether a translated value corresponds to a missing value
+      bool isMissingValue ( const DBTranslatedValue& val ) const;
+
       /// @}
 
 

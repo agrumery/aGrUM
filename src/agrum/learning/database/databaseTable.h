@@ -201,6 +201,9 @@ namespace gum {
       /// the safe handler type
       using HandlerSafe =
         typename IDatabaseTable<DBTranslatedValue,ALLOC>::HandlerSafe;
+
+      using IsMissing =
+        typename IDatabaseTable<DBTranslatedValue,ALLOC>::IsMissing;
       
       /// Types for STL compliance.
       /// @{
@@ -554,7 +557,9 @@ namespace gum {
        * basically, it could be copied as is into the database table.
        * @throw SizeError is raised if the size of the new_row is not equal to
        * the number of translators of the DatabaseTable  */
-      virtual void insertRow( Row<DBTranslatedValue>&& new_row ) final;
+      virtual void
+      insertRow( Row<DBTranslatedValue>&& new_row,
+                 const IsMissing contains_missing_data ) final;
 
       /// insert a new row at the end of the database
       /** Unlike methods insertRow for data whose type is different from
@@ -563,7 +568,9 @@ namespace gum {
        * basically, it could be copied as is into the database table.
        * @throw SizeError is raised if the size of the new_row is not equal to
        * the number of translators of the DatabaseTable  */
-      virtual void insertRow( const Row<DBTranslatedValue>& new_row ) final;
+      virtual void
+      insertRow( const Row<DBTranslatedValue>& new_row,
+                 const IsMissing contains_missing_data ) final;
 
       /// insert a new DBRow of DBCells at the end of the database
       /** The new_row passed in argument is supposed to come from an external
@@ -590,7 +597,9 @@ namespace gum {
        * these rows could be copied as is into the database table.
        * @throw SizeError is raised if the size of at least one row in new_rows
        * is not equal to the number of translators in the DatabaseTable  */
-      virtual void insertRows( Matrix<DBTranslatedValue>&& new_rows ) final;
+      virtual void
+      insertRows( Matrix<DBTranslatedValue>&& new_rows,
+                  const DBVector<IsMissing>& rows_have_missing_vals ) final;
 
       /// insert a set of new DBRows at the end of the database
       /** Unlike methods insertRows for data whose type is different from
@@ -599,7 +608,9 @@ namespace gum {
        * these rows could be copied as is into the database table.
        * @throw SizeError is raised if the size of at least one row in new_rows
        * is not equal to the number of translators in the DatabaseTable  */
-      virtual void insertRows( const Matrix<DBTranslatedValue>& new_rows ) final;
+      virtual void
+      insertRows( const Matrix<DBTranslatedValue>& new_rows,
+                  const DBVector<IsMissing>& rows_have_missing_vals ) final;
 
       /// insert a set of new DBRows at the end of the database
       /** The new rows passed in argument are supposed to come from an external

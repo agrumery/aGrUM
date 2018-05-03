@@ -343,6 +343,31 @@ namespace gum {
       std::string translateBackSafe ( const DBTranslatedValue translated_val,
                                       const std::size_t k ) const;
 
+      /** @brief indicates whether the kth translator considers a translated_val
+       * as a missing value
+       *
+       * @param translated_val the value that we compare to the translation of
+       * a missing value
+       * @param k the index of the translator that performed the translation
+       * @warning this method assumes that there are at least k translators.
+       * So, it won't check that the kth translator actually exists. If unsure,
+       * use method isMissingValueSafe that performs this check.
+       */
+      bool isMissingValue ( const DBTranslatedValue translated_val,
+                            const std::size_t k ) const;
+
+      /** @brief similar to method isMissingValue, except that it checks that
+       * the kth translator exists
+       *
+       * @param translated_val the value that we compare to the translation of
+       * a missing value
+       * @param k the index of the translator that performed the translation
+       * @throw UndefinedElement is raised if there are fewer than k
+       * translators in the translator set.
+       */
+      bool isMissingValueSafe ( const DBTranslatedValue translated_val,
+                                const std::size_t k ) const;
+
       /// returns the domain size of the variable stored into the kth translator
       /** @warning this method assumes that there are at least k translators.
        * So, it won't check that the kth translator actually exists. If unsure,

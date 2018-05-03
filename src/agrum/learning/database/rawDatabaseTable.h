@@ -134,6 +134,8 @@ namespace gum {
       /// the safe handler type
       using HandlerSafe = typename IDatabaseTable<DBCell,ALLOC>::HandlerSafe;
       
+      using IsMissing = typename IDatabaseTable<DBCell,ALLOC>::IsMissing;
+      
       /// Types for STL compliance.
       /// @{
       using value_type = Row<DBCell>;

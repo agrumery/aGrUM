@@ -516,6 +516,7 @@ namespace gum {
       , _variable_names ( alloc )
       , __data ( alloc )
       , __missing_symbols ( alloc )
+      , __has_row_missing_val ( alloc )
       , __list_of_safe_handlers ( alloc ) {
       // copy the names
       _variable_names.reserve ( var_names.size () );
@@ -543,6 +544,7 @@ namespace gum {
       , _variable_names( from._variable_names, alloc )
       , __data( from.__data, alloc )
       , __missing_symbols ( from.__missing_symbols, alloc )
+      , __has_row_missing_val ( from.__has_row_missing_val, alloc )
       , __list_of_safe_handlers ( alloc ) {
       // create the end iterators
       __createEndIterators ();
@@ -567,6 +569,7 @@ namespace gum {
       , _variable_names( std::move( from._variable_names ), alloc )
       , __data( std::move( from.__data ), alloc )
       , __missing_symbols ( std::move ( from.__missing_symbols ), alloc )
+      , __has_row_missing_val ( std::move( from.__has_row_missing_val ), alloc ) 
       , __list_of_safe_handlers ( alloc ) {
       // create the end iterators
       __createEndIterators ();
@@ -627,6 +630,7 @@ namespace gum {
         __data = from.__data;
         _variable_names = from._variable_names;
         __missing_symbols = from.__missing_symbols;
+        __has_row_missing_val = from.__has_row_missing_val; 
           
         // update the end iterators
         const std::size_t db_size = __data.size();
@@ -661,6 +665,7 @@ namespace gum {
         __data = std::move( from.__data );
         _variable_names = std::move( from._variable_names );
         __missing_symbols = std::move ( from.__missing_symbols );
+        __has_row_missing_val = std::move ( from.__has_row_missing_val ); 
         
         // update the end iterators
         const std::size_t db_size = __data.size();
@@ -881,31 +886,43 @@ namespace gum {
     // insert a new DBRow at the end of the database
     template <typename T_DATA, template<typename> class ALLOC>
     void IDatabaseTable<T_DATA,ALLOC>::insertRow (
-          typename IDatabaseTable<T_DATA,ALLOC>::template Row<T_DATA>&& new_row ) {
+      typename IDatabaseTable<T_DATA,ALLOC>::template Row<T_DATA>&& new_row,
+      const typename IDatabaseTable<T_DATA,ALLOC>::IsMissing contains_missing ) {
       // check that the size of the row is the same as the rest of the database
       if ( ! _isRowSizeOK ( new_row.size () ) )
         GUM_ERROR( SizeError,
                    "the new row has not the same size as the "
                    "rest of the database" );
-
+      
       __updateHandlers( __data.size() + 1 );
       __data.push_back( std::move( new_row ) );
+      try {
+        __has_row_missing_val.push_back( contains_missing );
+      }
+      catch ( ... ) {
+        __data.pop_back ();
+        throw;
+      }
     }
 
 
     // insert a new DBRow at the end of the database
     template <typename T_DATA, template<typename> class ALLOC>
     INLINE void IDatabaseTable<T_DATA,ALLOC>::insertRow
-    ( const typename IDatabaseTable<T_DATA,ALLOC>::template Row<T_DATA>& row ) {
+    ( const typename IDatabaseTable<T_DATA,ALLOC>::template Row<T_DATA>& row,
+      const typename IDatabaseTable<T_DATA,ALLOC>::IsMissing contains_missing ) {
       this->insertRow ( typename IDatabaseTable<T_DATA,ALLOC>::template
-                        Row<T_DATA> ( row ) );
+                        Row<T_DATA> ( row ), contains_missing );
     }
 
 
     // insert a set of new DBRow at the end of the database
     template <typename T_DATA, template<typename> class ALLOC>
     void IDatabaseTable<T_DATA,ALLOC>::insertRows
-    ( typename IDatabaseTable<T_DATA,ALLOC>::template Matrix<T_DATA>&& new_rows ) {
+    ( typename IDatabaseTable<T_DATA,ALLOC>::template Matrix<T_DATA>&& new_rows,
+      const typename IDatabaseTable<T_DATA,ALLOC>::template
+      DBVector<typename IDatabaseTable<T_DATA,ALLOC>::IsMissing>&
+      rows_have_missing_vals ) {
       if ( new_rows.empty() ) return;
 
       // check that all the rows have the same size
@@ -928,9 +945,18 @@ namespace gum {
                    "number of columns in the database" );
       }
 
+      std::size_t nb_new_rows = new_rows.size ();
       try {
-        for ( auto row : new_rows ) {
-          __data.push_back( std::move( row ) );
+        for ( std::size_t i = std::size_t(0); i < nb_new_rows; ++i ) {
+          __data.push_back( std::move( new_rows[i] ) );
+          try {
+            __has_row_missing_val.push_back( rows_have_missing_vals[i] );
+          }
+          catch ( ... ) {
+            __data.pop_back ();
+            throw;
+          }
+          
           ++db_size;
         }
       }
@@ -947,7 +973,10 @@ namespace gum {
     template <typename T_DATA, template<typename> class ALLOC>
     void IDatabaseTable<T_DATA,ALLOC>::insertRows
     ( const typename IDatabaseTable<T_DATA,ALLOC>::template
-      Matrix<T_DATA>& new_rows ) {
+      Matrix<T_DATA>& new_rows,
+      const typename IDatabaseTable<T_DATA,ALLOC>::template
+      DBVector<typename IDatabaseTable<T_DATA,ALLOC>::IsMissing>&
+      rows_have_missing_vals  ) {
       if ( new_rows.empty() ) return;
 
       // check that all the rows have the same size
@@ -971,9 +1000,18 @@ namespace gum {
                    "number of columns in the database" );
       }
 
+      std::size_t nb_new_rows = new_rows.size ();
       try {
-        for ( const auto& row : new_rows ) {
-          __data.push_back( row );
+        for ( std::size_t i = std::size_t(0); i < nb_new_rows; ++i ) {
+          __data.push_back( new_rows[i] );
+          try {
+            __has_row_missing_val.push_back( rows_have_missing_vals[i] );
+          }
+          catch ( ... ) {
+            __data.pop_back ();
+            throw;
+          }
+          
           ++db_size;
         }
       }
@@ -994,6 +1032,7 @@ namespace gum {
       if ( index < db_size ) {
         __updateHandlers( db_size - 1 );
         __data.erase( __data.begin() + index );
+        __has_row_missing_val.erase( __has_row_missing_val.begin() + index );
       }
     }
     
@@ -1006,6 +1045,7 @@ namespace gum {
       if ( db_size ) {
         __updateHandlers( db_size - 1 );
         __data.pop_back();
+        __has_row_missing_val.pop_back();
       }
     }
   
@@ -1018,6 +1058,7 @@ namespace gum {
       if ( db_size ) {
         __updateHandlers( db_size - 1 );
         __data.erase( __data.begin() );
+        __has_row_missing_val.erase( __has_row_missing_val.begin() );
       }
     }
 
@@ -1027,6 +1068,7 @@ namespace gum {
     INLINE void IDatabaseTable<T_DATA,ALLOC>::eraseAllRows() {
       __updateHandlers( 0 );
       __data.clear();
+      __has_row_missing_val.clear();
     }
 
   
@@ -1041,6 +1083,8 @@ namespace gum {
       } else {
         __updateHandlers( db_size - nb_rows );
         __data.erase( __data.begin(), __data.begin() + nb_rows );
+        __has_row_missing_val.erase( __has_row_missing_val.begin(),
+                                     __has_row_missing_val.begin() + nb_rows );
       }
     }
     
@@ -1057,6 +1101,9 @@ namespace gum {
         __updateHandlers( db_size - nb_rows );
         __data.erase( __data.begin() + ( db_size - nb_rows ),
                       __data.begin() + db_size );
+        __has_row_missing_val.erase( __has_row_missing_val.begin() +
+                                     ( db_size - nb_rows ),
+                                     __has_row_missing_val.begin() + db_size );
       }
     }
 
@@ -1078,6 +1125,8 @@ namespace gum {
       } else {
         __updateHandlers( db_size - ( end - deb ) );
         __data.erase( __data.begin() + deb, __data.begin() + end );
+        __has_row_missing_val.erase( __has_row_missing_val.begin() + deb,
+                                     __has_row_missing_val.begin() + end );
       }
     }
 
@@ -1087,6 +1136,7 @@ namespace gum {
     INLINE void IDatabaseTable<T_DATA,ALLOC>::clear() {
       __updateHandlers( 0 );
       __data.clear();
+      __has_row_missing_val.clear();
       _variable_names.clear();
     }
 

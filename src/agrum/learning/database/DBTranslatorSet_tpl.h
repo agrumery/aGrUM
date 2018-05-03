@@ -405,6 +405,29 @@ namespace gum {
       return __translators[k]->translateBack ( translated_val );
     }
 
+
+    // indicates whether the kth translator considers a translated_val
+    // as a missing value
+    template <template<typename> class ALLOC>
+    INLINE bool
+    DBTranslatorSet<ALLOC>::isMissingValue( const DBTranslatedValue translated_val,
+                                            const std::size_t k ) const {
+      return __translators[k]->isMissingValue ( translated_val );
+    }
+
+    
+    // indicates whether the kth translator considers a translated_val
+    // as a missing value
+    template <template<typename> class ALLOC>
+    INLINE bool
+    DBTranslatorSet<ALLOC>::isMissingValueSafe (
+      const DBTranslatedValue translated_val,
+      const std::size_t k ) const {
+      if ( __translators.size () <= k )
+        GUM_ERROR ( UndefinedElement, "the translator could not be found" );
+      return __translators[k]->isMissingValue ( translated_val );
+    }
+
     
     /// returns the kth translator
     template <template<typename> class ALLOC>

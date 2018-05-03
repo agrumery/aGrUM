@@ -254,6 +254,7 @@ namespace gum {
           translatorType[i] = db.translator(i).getValType ();
         }
         DBRow<DBTranslatedValue> xrow ( __nbVars );
+        const auto xmiss = gum::learning::DatabaseTable<>::IsMissing::False;
         for (const auto& row : __database) {
           for (Idx i = 0; i < __nbVars; ++i) {
             Idx j = __varOrder.at(i);
@@ -264,7 +265,7 @@ namespace gum {
               xrow[i].cont_val = float ( row.at(j) );
           }
         }
-        db.insertRow(xrow);
+        db.insertRow(xrow, xmiss);
       }
 
       return db;

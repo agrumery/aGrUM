@@ -235,7 +235,26 @@ namespace gum {
     DBTranslator<ALLOC>::setVariableDescription ( const std::string& str ) const {
       const_cast<Variable*> ( this->variable () )->setDescription ( str );
     }
-    
+
+
+    /// indicates whether a translated value corresponds to a missing value
+    template <template<typename> class ALLOC>
+    INLINE bool
+    DBTranslator<ALLOC>::isMissingValue ( const DBTranslatedValue& value ) const {
+      switch ( _val_type ) {
+      case DBTranslatedValueType::DISCRETE:
+        return value.discr_val == std::numeric_limits<std::size_t>::max ();
+
+      case DBTranslatedValueType::CONTINUOUS:
+        return value.cont_val == std::numeric_limits<float>::max ();
+
+      default:
+        GUM_ERROR ( NotImplementedYet,
+                    "No missing value interpretation for this "
+                    "translated value type" );
+      }
+    }
+
     
   } /* namespace learning */
 
