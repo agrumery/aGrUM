@@ -36,7 +36,7 @@ namespace gum {
       // check that the database does not contain any missing value
       if ( __database.hasMissingValues () )
         GUM_ERROR ( MissingValueInDatabase,
-                    "For the moment, the BNLearaner is unable to cope "
+                    "For the moment, the BNLearner is unable to cope "
                     "with missing values in databases" );
       
       // get the domain sizes of the variables

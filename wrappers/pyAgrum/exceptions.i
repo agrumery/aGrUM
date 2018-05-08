@@ -30,6 +30,7 @@ static void SetPythonizeAgrumException() {
   PYGUM_CATCH(FatalError)
   PYGUM_CATCH(UndefinedElement)
   PYGUM_CATCH(InvalidArgument)
+  PYGUM_CATCH(MissingValueInDatabase)
   catch ( gum::Exception& e ) {
     PyErr_SetString ( PyExc_Exception, e.what().c_str() );
   }

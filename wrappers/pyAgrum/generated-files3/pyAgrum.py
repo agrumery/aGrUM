@@ -3406,6 +3406,36 @@ class MissingVariableInDatabase(LearningError):
 MissingVariableInDatabase_swigregister = _pyAgrum.MissingVariableInDatabase_swigregister
 MissingVariableInDatabase_swigregister(MissingVariableInDatabase)
 
+class MissingValueInDatabase(LearningError):
+    """Proxy of C++ gum::MissingValueInDatabase class."""
+
+    __swig_setmethods__ = {}
+    for _s in [LearningError]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, MissingValueInDatabase, name, value)
+    __swig_getmethods__ = {}
+    for _s in [LearningError]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, MissingValueInDatabase, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(self, aMsg, aType) -> MissingValueInDatabase
+        __init__(self, aMsg) -> MissingValueInDatabase
+        __init__(self, src) -> MissingValueInDatabase
+        """
+        this = _pyAgrum.new_MissingValueInDatabase(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_MissingValueInDatabase
+    def __del__(self):
+        return None
+MissingValueInDatabase_swigregister = _pyAgrum.MissingValueInDatabase_swigregister
+MissingValueInDatabase_swigregister(MissingValueInDatabase)
+
 class UnknownLabelInDatabase(LearningError):
     """Proxy of C++ gum::UnknownLabelInDatabase class."""
 
@@ -26415,8 +26445,10 @@ class BNLearner_double(_object):
 
     def __init__(self, *args):
         """
+        __init__(self, filename, missing_symbols) -> BNLearner_double
         __init__(self, filename) -> BNLearner_double
         __init__(self, db) -> BNLearner_double
+        __init__(self, filename, src, missing_symbols) -> BNLearner_double
         __init__(self, filename, src) -> BNLearner_double
         __init__(self, arg2) -> BNLearner_double
         __init__(self, arg2) -> BNLearner_double
