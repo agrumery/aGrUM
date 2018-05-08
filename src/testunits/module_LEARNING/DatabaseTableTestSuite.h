@@ -1107,7 +1107,95 @@ namespace gum_tests {
     }
 
     
+    void test_missing_vals () {
+      std::vector<std::string> missing { "?", "N/A", "???" };
+      gum::learning::DatabaseTable<> database;
 
+      gum::LabelizedVariable var ( "var0", "", 0 );
+      var.addLabel ( "L1" );
+      var.addLabel ( "L2" );
+      var.addLabel ( "L0" );
+
+      database.insertTranslator<> ( var, 0, missing );
+
+      gum::LabelizedVariable var1 ( "var1", "", 0 );
+      var1.addLabel ( "L0" );
+      var1.addLabel ( "L1" );
+      var1.addLabel ( "L2" );
+      database.insertTranslator<> ( var1, 1, missing );
+
+      var.setName ( "var2" );
+      database.insertTranslator<> ( var, 2, missing );
+
+      var.setName ( "var3" );
+      database.insertTranslator<> ( var, 3, missing );
+
+      const auto& vnames = database.variableNames();
+      TS_ASSERT( vnames.size() == 4 );
+      TS_ASSERT( vnames[0] == "var0" );
+      TS_ASSERT( vnames[1] == "var1" );
+      TS_ASSERT( vnames[2] == "var2" );
+      TS_ASSERT( vnames[3] == "var3" );
+
+      std::vector<std::string> row { "L0", "L1", "L2", "L0" };
+      database.insertRow( row );
+
+      row[0] = "?";
+      database.insertRow( row );
+      
+      row[0] = "L0";
+      row[1] = "?";
+      database.insertRow( row );
+
+      row[2] = "N/A";
+      database.insertRow( row );
+
+      row[0] = "???";
+      database.insertRow( row );
+
+      row[0] = "L0";
+      row[1] = "L0";
+      row[2] = "L0";
+
+      TS_ASSERT ( database.hasMissingValues () );
+
+      TS_ASSERT ( database.hasMissingValues ( 0 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 1 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 2 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 3 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 4 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 5 ) == false );
+
+      database.ignoreColumn ( 1 );
+      TS_ASSERT ( database.hasMissingValues () );
+      TS_ASSERT ( database.hasMissingValues ( 0 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 1 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 2 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 3 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 4 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 5 ) == false );
+
+      database.ignoreColumn ( 2 );
+      TS_ASSERT ( database.hasMissingValues () );
+      TS_ASSERT ( database.hasMissingValues ( 0 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 1 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 2 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 3 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 4 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 5 ) == false );
+     
+      database.ignoreColumn ( 0 );
+      TS_ASSERT ( database.hasMissingValues ()  == false );
+      TS_ASSERT ( database.hasMissingValues ( 0 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 1 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 2 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 3 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 4 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 5 ) == false );
+
+      database.ignoreColumn ( 3 );
+      TS_ASSERT ( database.hasMissingValues ()  == false );
+    }
     
       
   private:

@@ -73,6 +73,14 @@ namespace gum {
       return __database;
     }
 
+    
+    /// returns the set of missing symbols taken into account
+    INLINE const std::vector<std::string>&
+    genericBNLearner::Database::missingSymbols () const {
+      return __database.missingSymbols ();
+    }
+    
+
 
     // ===========================================================================
 

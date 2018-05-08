@@ -43,7 +43,7 @@ namespace gum {
 
   
     
-    genericBNLearner::Database::Database(const DatabaseTable<>& db)
+    genericBNLearner::Database::Database( const DatabaseTable<>& db)
       : __database(db) {
       // get the variables names
       const auto& var_names = __database.variableNames ();
@@ -61,8 +61,10 @@ namespace gum {
     }
 
         
-    genericBNLearner::Database::Database(const std::string& filename)
-      : Database(genericBNLearner::__readFile(filename)) {}
+    genericBNLearner::Database::Database(
+      const std::string& filename,
+      const std::vector<std::string>& missing_symbols)
+      : Database(genericBNLearner::__readFile(filename, missing_symbols) ) {}
 
 
     
@@ -97,9 +99,11 @@ namespace gum {
     */
   
 
-    genericBNLearner::Database::Database(const std::string& filename,
-                                         Database&  apriori_database)
-      : __database(genericBNLearner::__readFile(filename)) {
+    genericBNLearner::Database::Database(
+      const std::string& filename,
+      Database&  apriori_database,
+      const std::vector<std::string>& missing_symbols)
+      : __database(genericBNLearner::__readFile(filename,missing_symbols)) {
       // check that there are at least as many variables in the a priori
       // database as those in the score_database
       if (__database.nbVariables() < apriori_database.__database.nbVariables()) {
@@ -199,8 +203,10 @@ namespace gum {
 
     // ===========================================================================
 
-    genericBNLearner::genericBNLearner(const std::string& filename)
-      : __score_database ( filename ) {
+    genericBNLearner::genericBNLearner(
+      const std::string& filename,
+      const std::vector<std::string>& missing_symbols)
+      : __score_database ( filename, missing_symbols ) {
       // for debugging purposes
       GUM_CONSTRUCTOR(genericBNLearner);
     }
@@ -464,7 +470,9 @@ namespace gum {
 
     
 
-    DatabaseTable<> genericBNLearner::__readFile(const std::string& filename) {
+    DatabaseTable<>
+    genericBNLearner::__readFile(const std::string& filename,
+                                 const std::vector<std::string>& missing_symbols) {
       // get the extension of the file
       Size filename_size = Size(filename.size());
 
@@ -491,14 +499,20 @@ namespace gum {
       const std::size_t nb_vars = var_names.size ();
       
       DBTranslatorSet<> translator_set;
-      DBTranslator4LabelizedVariable<> translator;
+      DBTranslator4LabelizedVariable<> translator ( missing_symbols );
       for ( std::size_t i = 0; i < nb_vars; ++i ) {
         translator_set.insertTranslator ( translator, i );
       }
       
-      DatabaseTable<> database ( translator_set );
+      DatabaseTable<> database ( missing_symbols, translator_set );
       database.setVariableNames( initializer.variableNames () );
       initializer.fillDatabase ( database );
+
+      // check that the database does not contain any missing value
+      if ( database.hasMissingValues () )
+        GUM_ERROR ( MissingValueInDatabase,
+                    "For the moment, the BNLearaner is unable to cope "
+                    "with missing values in databases" );
 
       database.reorder ();
       
@@ -527,7 +541,8 @@ namespace gum {
           }
 
           if (__user_modalities.empty()) {
-            __apriori_database = new Database(__apriori_dbname, __score_database);
+            __apriori_database = new Database(__apriori_dbname, __score_database,
+                                              __score_database.missingSymbols () );
           } else {
             GUM_ERROR(OperationNotAllowed, "not implemented" );
             //__apriori_database =

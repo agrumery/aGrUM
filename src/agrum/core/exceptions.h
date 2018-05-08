@@ -460,6 +460,14 @@ namespace gum {
   class UnknownLabelInDatabase;
 
   /**
+   * @class gum::MissingValueInDatabase agrum/core/exceptions.h
+   * @extends gum::LearningError
+   * Error: The database contains some missing values
+   */
+  class MissingValueInDatabase;
+
+
+  /**
    * @class gum::SyntaxError exceptions.h <agrum/core/exceptions.h>
    * @extends gum::IOError
    * Special exception for syntax errors in files.
@@ -531,6 +539,9 @@ namespace gum {
   GUM_MAKE_ERROR(MissingVariableInDatabase,
                  LearningError,
                  "Missing variable name in database")
+  GUM_MAKE_ERROR(MissingValueInDatabase,
+                 LearningError,
+                 "The database contains some missing values")
   GUM_MAKE_ERROR(UnknownLabelInDatabase,
                  LearningError,
                  "Unknown label found in database")

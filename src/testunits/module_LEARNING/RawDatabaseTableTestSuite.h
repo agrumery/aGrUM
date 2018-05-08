@@ -825,6 +825,81 @@ namespace gum_tests {
     }
 
 
+    void test_missing_vals () {
+      std::vector<std::string> missing { "?", "N/A", "???" };
+      gum::learning::RawDatabaseTable<> database ( missing );
+      TS_ASSERT( database.content().size() == 0 );
+      TS_ASSERT( database.variableNames().size() == 0 );
+
+      std::vector<std::string> vect { "v0", "v1", "v2", "v3" };
+      database.setVariableNames( vect );
+      TS_ASSERT( database.variableNames().size() == 4 );
+      TS_ASSERT( database.nbVariables() == 4 );
+
+      std::vector<std::string> row { "L0", "L1", "L2", "L0" };
+      database.insertRow( row );
+
+      row[0] = "?";
+      database.insertRow( row );
+      
+      row[0] = "L0";
+      row[1] = "?";
+      database.insertRow( row );
+
+      row[2] = "N/A";
+      database.insertRow( row );
+
+      row[0] = "???";
+      database.insertRow( row );
+
+      row[0] = "L0";
+      row[1] = "L0";
+      row[2] = "L0";
+
+      TS_ASSERT ( database.hasMissingValues () );
+
+      TS_ASSERT ( database.hasMissingValues ( 0 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 1 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 2 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 3 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 4 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 5 ) == false );
+
+      database.ignoreColumn ( 1 );
+      TS_ASSERT ( database.hasMissingValues () );
+      TS_ASSERT ( database.hasMissingValues ( 0 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 1 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 2 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 3 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 4 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 5 ) == false );
+
+      database.ignoreColumn ( 2 );
+      TS_ASSERT ( database.hasMissingValues () );
+      TS_ASSERT ( database.hasMissingValues ( 0 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 1 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 2 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 3 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 4 ) == true );
+      TS_ASSERT ( database.hasMissingValues ( 5 ) == false );
+     
+      database.ignoreColumn ( 0 );
+      TS_ASSERT ( database.hasMissingValues ()  == false );
+      TS_ASSERT ( database.hasMissingValues ( 0 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 1 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 2 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 3 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 4 ) == false );
+      TS_ASSERT ( database.hasMissingValues ( 5 ) == false );
+
+      database.ignoreColumn ( 3 );
+      TS_ASSERT ( database.hasMissingValues ()  == false );
+    }
+    
+
+    
+
+
   private:
     
     void __create_handler ( gum::learning::RawDatabaseTable<>* database,

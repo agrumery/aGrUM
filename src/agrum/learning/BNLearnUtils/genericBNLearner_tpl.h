@@ -5,8 +5,9 @@ namespace gum {
 
     template < typename GUM_SCALAR >
     genericBNLearner::Database::Database(
-      const std::string&                 filename,
-      const BayesNet< GUM_SCALAR >& bn ) {
+      const std::string&  filename,
+      const BayesNet< GUM_SCALAR >& bn,
+      const std::vector<std::string>& missing_symbols ) {
       // assign to each column name in the database its position
       genericBNLearner::__checkFileName( filename );
       DBInitializerFromCSV<> initializer ( filename );
@@ -20,7 +21,8 @@ namespace gum {
       try {
         for ( auto node : bn.dag () ) {
           const Variable& var = bn.variable(node);
-          __database.insertTranslator ( var, var_names[var.name()] );
+          __database.insertTranslator ( var, var_names[var.name()],
+                                        missing_symbols );
         }
       }
       catch ( NotFound& ) {
@@ -30,6 +32,12 @@ namespace gum {
       
       // fill the database
       initializer.fillDatabase ( __database );
+
+      // check that the database does not contain any missing value
+      if ( __database.hasMissingValues () )
+        GUM_ERROR ( MissingValueInDatabase,
+                    "For the moment, the BNLearaner is unable to cope "
+                    "with missing values in databases" );
       
       // get the domain sizes of the variables
       for ( auto dom : __database.domainSizes () )
@@ -50,8 +58,9 @@ namespace gum {
     genericBNLearner::Database::Database(
       const std::string&             filename,
       Database&                      score_database,
-      const  BayesNet< GUM_SCALAR >& bn)
-      : __database(genericBNLearner::__readFile(filename,bn)) {
+      const  BayesNet< GUM_SCALAR >& bn,
+      const std::vector<std::string>& missing_symbols)
+      : __database(genericBNLearner::__readFile(filename,bn,missing_symbols)) {
     }
 
 
@@ -72,8 +81,9 @@ namespace gum {
     template < typename GUM_SCALAR >
     genericBNLearner::genericBNLearner(
       const std::string&                 filename,
-      const gum::BayesNet< GUM_SCALAR >& bn )
-      : __score_database ( filename, bn ) {
+      const gum::BayesNet< GUM_SCALAR >& bn,
+      const std::vector<std::string>& missing_symbols )
+      : __score_database ( filename, bn, missing_symbols ) {
       GUM_CONSTRUCTOR(genericBNLearner);
     }
 

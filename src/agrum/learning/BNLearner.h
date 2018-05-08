@@ -65,7 +65,8 @@ namespace gum {
        * read the database file for the score / parameter estimation and var
        * names
        */
-      BNLearner(const std::string& filename);
+      BNLearner(const std::string& filename,
+                const std::vector<std::string>& missing_symbols = { "?" } );
       BNLearner(const DatabaseTable<>& db);
 
       /**
@@ -102,7 +103,8 @@ namespace gum {
        * to find those modalities and nodeids.
        **/
       BNLearner(const std::string&                 filename,
-                const gum::BayesNet< GUM_SCALAR >& src );
+                const gum::BayesNet< GUM_SCALAR >& src,
+                const std::vector<std::string>& missing_symbols = { "?" } );
 
       /// copy constructor
       BNLearner(const BNLearner&);

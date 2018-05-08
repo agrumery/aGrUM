@@ -820,6 +820,23 @@ namespace gum_tests {
         TS_ASSERT_EQUALS(p1[I1], p3[I3]);                // same probabilities
       }
     }
+
+
+    void test_asia_with_missing_values() {
+      int nb = 0;
+      try {
+        gum::learning::BNLearner< double >
+          learner(GET_RESSOURCES_PATH("asia3-faulty.csv"),
+                  std::vector<std::string>{"BEURK"});
+        learner.useK2(std::vector< gum::NodeId >{1, 5, 2, 6, 0, 3, 4, 7});
+      }
+      catch (gum::MissingValueInDatabase& e) {
+        nb = 1;
+      }
+
+      TS_ASSERT ( nb == 1 );
+    }
+    
   };
 
 } /* namespace gum_tests */

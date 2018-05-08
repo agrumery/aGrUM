@@ -261,9 +261,28 @@ namespace gum {
           IDatabaseTable<DBCell,ALLOC>::eraseAllRows ();
         }
         else {
-          for ( auto& xrow : IDatabaseTable<DBCell,ALLOC>::_content () ) {
-            auto& row = xrow.row ();
-            row.erase ( row.begin() + col );
+          auto& rows =
+            IDatabaseTable<DBCell,ALLOC>::_content();
+          auto& has_row_missing_val =
+            IDatabaseTable<DBCell,ALLOC>::_hasRowMissingVal ();
+          const std::size_t nb_rows = rows.size ();
+          if ( nb_rows != std::size_t (0) ) {
+            const std::size_t nb_cols = rows[0].size ();
+            for ( std::size_t i = std::size_t(0); i < nb_rows; ++i ) {
+              auto& row = rows[i].row ();
+              if ( has_row_missing_val[i] == IsMissing::True ) {
+                bool has_missing_val = false;
+                for ( std::size_t j = std::size_t (0); j < nb_cols; ++j ) {
+                  if ( ( j != col ) && row[j].isMissing () ) {
+                    has_missing_val = true;
+                    break;
+                  }
+                }
+                if ( ! has_missing_val )
+                  has_row_missing_val[i] = IsMissing::False;
+              }
+              row.erase ( row.begin() + col );
+            }
           }
         }
       }

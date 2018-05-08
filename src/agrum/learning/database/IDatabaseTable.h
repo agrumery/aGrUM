@@ -276,7 +276,7 @@ namespace gum {
       using MissingValType = std::vector<std::string,XALLOC<std::string>>;
 
       
-      enum IsMissing : char { True, False };
+      enum IsMissing : char { False, True };
 
       
       /** @class Handler
@@ -977,6 +977,13 @@ namespace gum {
       /** @brief returns the set of columns of the original dataset that are
        * present in the IDatabaseTable */
       virtual const DBVector<std::size_t> inputColumns () const = 0;
+
+
+      /// indicates whether the database contains some missing values
+      bool hasMissingValues () const;
+
+      /// indicates whether the kth row contains some missing values
+      bool hasMissingValues ( const std::size_t k ) const;
       
       using IDatabaseTableInsert4DBCell<ALLOC,
                 !std::is_same<T_DATA,DBCell>::value>::insertRow;
@@ -1076,6 +1083,9 @@ namespace gum {
       /// returns the allocator of the database
       ALLOC<T_DATA> getAllocator () const;
 
+      /// returns the set of missing symbols
+      const DBVector<std::string>& missingSymbols () const;
+
       /// @}
 
       
@@ -1085,6 +1095,9 @@ namespace gum {
       
       /// returns the content of the database
       Matrix<T_DATA>& _content() noexcept;
+
+      /// returns the vector indicating whether a row contains missing values
+      DBVector<IsMissing>& _hasRowMissingVal () noexcept;
 
       /// returns the set of symbols for the missing values
       const DBVector<std::string>& _missingSymbols () const;

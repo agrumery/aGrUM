@@ -436,17 +436,34 @@ namespace gum {
         // as well as the resulting column in __data and the _variable_names.
         // Note that if there remains no more variable left, __data should
         // become empty
-        __translators.eraseTranslator ( pos, false );
         this->_variable_names.erase ( this->_variable_names.begin() + pos );
         if ( this->_variable_names.empty () ) {
           IDatabaseTable<DBTranslatedValue,ALLOC>::eraseAllRows();
+          __translators.eraseTranslator ( pos, false );
         }
         else {
-          for ( auto& xrow :
-                  IDatabaseTable<DBTranslatedValue,ALLOC>::_content() ) {
-            auto& row = xrow.row ();
+          auto& rows =
+            IDatabaseTable<DBTranslatedValue,ALLOC>::_content();
+          auto& has_row_missing_val =
+            IDatabaseTable<DBTranslatedValue,ALLOC>::_hasRowMissingVal ();
+          const std::size_t nb_trans = __translators.size ();
+          const std::size_t nb_rows = rows.size ();
+          for ( std::size_t i = std::size_t(0); i < nb_rows; ++i ) {
+            auto& row = rows[i].row ();
+            if ( has_row_missing_val[i] == IsMissing::True ) {
+              bool has_missing_val = false;
+              for ( std::size_t j = std::size_t (0); j < nb_trans; ++j ) {
+                if ( ( j != pos ) && __translators.isMissingValue(row[j], j) ) {
+                  has_missing_val = true;
+                  break;
+                }
+              }
+              if ( ! has_missing_val )
+                has_row_missing_val[i] = IsMissing::False;
+            }
             row.erase ( row.begin() + pos );
           }
+          __translators.eraseTranslator ( pos, false );
         }
       }
     }
@@ -643,7 +660,9 @@ namespace gum {
       for ( std::size_t i = std::size_t(0); i < row_size; ++i ) {
         switch ( translators[i]->getValType () ) {
         case DBTranslatedValueType::DISCRETE:
-          if ( row[i].discr_val >= translators[i]->domainSize () ) return false;
+          if ( ( row[i].discr_val >= translators[i]->domainSize () ) &&
+               ( row[i].discr_val != std::numeric_limits<std::size_t>::max() ) )
+               return false;
           break;
 
         case DBTranslatedValueType::CONTINUOUS:
@@ -651,8 +670,10 @@ namespace gum {
             const ContinuousVariable<float>* var =
               static_cast<const ContinuousVariable<float>*>
               ( translators[i]->variable () );
-            if ( ( var->lowerBound () > row[i].cont_val ) ||
-                 ( var->upperBound () < row[i].cont_val ) ) return false;
+            if ( ( ( var->lowerBound () > row[i].cont_val ) ||
+                   ( var->upperBound () < row[i].cont_val ) ) &&
+                 ( row[i].cont_val != std::numeric_limits<float>::max() ) )
+              return false;
             break;
           }
 

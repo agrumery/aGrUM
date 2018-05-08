@@ -742,6 +742,32 @@ namespace gum {
       return __data;
     }
 
+    
+    /// returns the vector indicating whether a row contains missing values
+    template <typename T_DATA, template<typename> class ALLOC>
+    INLINE typename IDatabaseTable<T_DATA,ALLOC>::template
+    DBVector<typename IDatabaseTable<T_DATA,ALLOC>::IsMissing>&
+    IDatabaseTable<T_DATA,ALLOC>::_hasRowMissingVal () noexcept {
+      return __has_row_missing_val;
+    }
+
+    
+    /// indicates whether the database contains some missing values
+    template <typename T_DATA, template<typename> class ALLOC>
+    bool IDatabaseTable<T_DATA,ALLOC>::hasMissingValues () const {
+      for ( const auto& status : __has_row_missing_val )
+        if ( status == IsMissing::True ) return true;
+      return false;
+    }
+
+    
+    /// indicates whether the kth row contains some missing values
+    template <typename T_DATA, template<typename> class ALLOC>
+    INLINE bool
+    IDatabaseTable<T_DATA,ALLOC>::hasMissingValues ( const std::size_t k ) const {
+      return __has_row_missing_val[k] == IsMissing::True;
+    }
+
 
     // returns the variable names for all the columns
     template <typename T_DATA, template<typename> class ALLOC>
@@ -1145,6 +1171,14 @@ namespace gum {
     template <typename T_DATA, template<typename> class ALLOC>
     INLINE const std::vector<std::string,ALLOC<std::string>>&
     IDatabaseTable<T_DATA,ALLOC>::_missingSymbols () const {
+      return __missing_symbols;
+    }
+
+
+    // returns the set of symbols for the missing values
+    template <typename T_DATA, template<typename> class ALLOC>
+    INLINE const std::vector<std::string,ALLOC<std::string>>&
+    IDatabaseTable<T_DATA,ALLOC>::missingSymbols () const {
       return __missing_symbols;
     }
 

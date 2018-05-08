@@ -38,8 +38,10 @@ namespace gum {
 
   namespace learning {
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const std::string& filename)
-        : genericBNLearner(filename) {
+    BNLearner< GUM_SCALAR >::BNLearner(
+      const std::string& filename,
+      const std::vector<std::string>& missing_symbols)
+      : genericBNLearner(filename,missing_symbols) {
       GUM_CONSTRUCTOR(BNLearner);
     }
 
@@ -50,9 +52,11 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    BNLearner< GUM_SCALAR >::BNLearner(const std::string&                 filename,
-                                       const gum::BayesNet< GUM_SCALAR >& bn )
-      : genericBNLearner(filename, bn ) {
+    BNLearner< GUM_SCALAR >::BNLearner(
+      const std::string&                 filename,
+      const gum::BayesNet< GUM_SCALAR >& bn,
+      const std::vector<std::string>&    missing_symbols )
+      : genericBNLearner(filename, bn, missing_symbols ) {
       GUM_CONSTRUCTOR (BNLearner)
     }
 
