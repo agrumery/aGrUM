@@ -37,8 +37,8 @@ namespace gum {
     }
 
     template < typename GUM_SCALAR >
-    NodeId CredalNet< GUM_SCALAR >::addNode(const std::string& name,
-                                            const Size&        card) {
+    NodeId CredalNet< GUM_SCALAR >::addVariable(const std::string& name,
+                                                const Size&        card) {
       LabelizedVariable var(name, "node " + name, card);
 
       NodeId a = __src_bn.add(var);
@@ -46,11 +46,11 @@ namespace gum {
       NodeId c = __src_bn_max.add(var);
 
       if (a != b || a != c /*|| b != c*/)
-        GUM_ERROR(
-          OperationNotAllowed,
-          "addNodeWithId : not the same id over all networks : " << a << ", " << b
-                                                                 << ", "
-                                                                 << c);
+        GUM_ERROR(OperationNotAllowed,
+                  "addVariable : not the same id over all networks : " << a << ", "
+                                                                       << b
+                                                                       << ", "
+                                                                       << c);
 
       return a;
     }

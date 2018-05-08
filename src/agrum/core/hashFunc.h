@@ -790,7 +790,6 @@ namespace gum {
      */
     Size operator()(const Debug& key) const;
   };
-
 } /* namespace gum */
 
 /// include the inlined functions if necessary

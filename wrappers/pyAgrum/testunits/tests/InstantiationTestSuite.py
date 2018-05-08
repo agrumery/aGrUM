@@ -33,6 +33,22 @@ class TestInstantiation(pyAgrumTestCase):
     i.fromdict({'a': 'tiede', 'bar': 'foo'})
     self.assertEqual(i.todict(), {'a': 1, 'b': 0, 'c': 0, 'd': 0, 'e': 0})
 
+  def testOperatorEqual(self):
+    bn = gum.fastBN("a{chaud|tiede|froid}->b[5]<-c->d->e;c->e");
+    i = bn.completeInstantiation()
+    j = bn.completeInstantiation()
+    self.assertEqual(i, j)
+    while not i.end():
+      self.assertEquals(i, j)
+      i.inc()
+      self.assertNotEqual(i, j)
+      j.inc()
+
+    k = gum.Instantiation()
+    self.assertNotEqual(i, k)  # not the same size
+    k.inc()
+    self.assertEquals(i, k)  # both are in overflow => equals
+
 
 ts = unittest.TestSuite()
 addTests(ts, TestInstantiation)

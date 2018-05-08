@@ -24,9 +24,10 @@ Parameters
 evidence : pyAgrum.Potential
 	the evidence to remove
 
-Warnings
---------
-IndexError raised if the evidence does not belong to the influence diagram
+Raises
+------
+gum.IndexError
+	If the evidence does not belong to the influence diagram
 "
 
 %feature("docstring") gum::InfluenceDiagramInference::getBestDecisionChoice
@@ -38,22 +39,22 @@ Parameters
 decisionId : int
 	the id of the decision variable
 
-Warnings
---------
-OperationNotAllowed raised if no inference have yet been made
-
-Warnings
---------
-InvalidNode raised if node given in parmaeter is not a decision node 
+Raises
+------
+gum.OperationNotAllowed
+	If no inference have yet been made
+gum.InvalidNode
+	If node given in parmaeter is not a decision node 
 "
 
 %feature("docstring") gum::InfluenceDiagramInference::getMEU
 "
 Returns maximum expected utility obtained from inference.
 
-Warnings
---------
-OperationNotAllowed raised if no inference have yet been made 
+Raises
+------
+gum.OperationNotAllowed
+	If no inference have yet been made 
 "
 
 %feature("docstring") gum::InfluenceDiagramInference::influenceDiagram
@@ -79,9 +80,10 @@ Warnings
 --------
 If an evidence already w.r.t. a given node and a new evidence w.r.t. this node is onserted, the old evidence is removed
 
-Warnings
---------
-OperationNotAllowed raised if an evidence is over more than one variable
+Raises
+------
+gum.OperationNotAllowed
+	If an evidence is over more than one variable
 "
 
 %feature("docstring") gum::InfluenceDiagramInference::junctionTreeToDot

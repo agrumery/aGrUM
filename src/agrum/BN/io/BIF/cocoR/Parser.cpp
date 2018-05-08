@@ -168,6 +168,7 @@ void Parser::VARIABLE() {
 
 void Parser::PROBA() {
 		Expect(16 /* "probability" */);
+		std::vector<std::string> var_seq;
 		std::string var;
 		std::vector<float> proba;
 		std::vector<std::string> parents;
@@ -183,6 +184,14 @@ void Parser::PROBA() {
 			LISTE_PARENTS(parents);
 		}
 		Expect(19 /* ")" */);
+		for (Size i=Size(parents.size());i>=Size(1);--i){
+		 TRY(factory().variableId(parents[i-1]));
+		 TRY( factory().addParent(parents[i-1]));
+		}
+		var_seq.push_back(var);
+		for (Size i=0;i<Size(parents.size());++i){
+		 var_seq.push_back(parents[i]);
+		}
 		TRY(factory().endParentsDeclaration()); 
 		Expect(7 /* "{" */);
 		while (la->kind == 23 /* "property" */) {
@@ -196,7 +205,7 @@ void Parser::PROBA() {
 			 TRY(s=factory().cptDomainSize(factory().variableId(var)));
 			 if (proba.size()<s) Warning("Not enough data for cpt of node "+var);
 			 if (proba.size()>s) Warning("Too many data for cpt of node "+var);
-			 TRY(factory().rawConditionalTable(proba));
+			 TRY(factory().rawConditionalTable(var_seq,proba));
 			 TRY(factory().endRawProbabilityDeclaration());
 			}
 			
@@ -277,13 +286,13 @@ void Parser::IDENT_OR_INTEGER(std::string& name) {
 void Parser::LISTE_PARENTS(std::vector<std::string>& parents ) {
 		std::string parent; 
 		IDENT(parent);
-		TRY(factory().variableId(parent));
-		TRY( factory().addParent(parent));
 		parents.push_back(parent);
 		
-		if (la->kind == 15 /* "," */) {
-			ExpectWeak(15 /* "," */, 2);
-			LISTE_PARENTS(parents);
+		while (la->kind == 15 /* "," */) {
+			Get();
+			IDENT(parent);
+			parents.push_back(parent);
+			
 		}
 }
 
@@ -307,7 +316,7 @@ void Parser::LISTE_FLOAT(std::vector<float>& v ) {
 		float value; 
 		FLOAT(value);
 		v.push_back(value); 
-		if (StartOf(3)) {
+		if (StartOf(2)) {
 			if (la->kind == 15 /* "," */ || la->kind == 18 /* "|" */) {
 				if (la->kind == 15 /* "," */) {
 					Get();
@@ -362,7 +371,7 @@ void Parser::LISTE_LABELS(const std::vector<std::string>& parents,std::vector<st
 			labels.push_back("*"); 
 		} else SynErr(33);
 		if (la->kind == 15 /* "," */) {
-			ExpectWeak(15 /* "," */, 4);
+			ExpectWeak(15 /* "," */, 3);
 			LISTE_LABELS(parents,labels,num_label+1);
 		}
 }
@@ -490,10 +499,9 @@ bool Parser::StartOf( int s ) {
   const bool T = true;
   const bool x = false;
 
-  	static bool set[5][27] = {
+  	static bool set[4][27] = {
 		{T,x,x,x, x,x,x,x, x,T,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x},
 		{T,T,T,x, x,x,x,x, x,T,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x},
-		{T,T,x,x, x,x,x,x, x,T,x,x, x,x,x,x, T,x,x,x, x,x,x,x, x,x,x},
 		{x,x,T,T, x,x,x,x, x,x,x,x, x,x,x,T, x,x,T,x, x,x,x,x, x,x,x},
 		{T,T,T,x, x,x,x,x, x,T,x,x, x,x,x,x, T,x,x,x, x,x,T,x, x,x,x}
 	};

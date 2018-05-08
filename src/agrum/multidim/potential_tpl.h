@@ -587,4 +587,29 @@ namespace gum {
     return out;
   }
 
+  // argmax of all elements in this
+  template < typename GUM_SCALAR >
+  Set< Instantiation > Potential< GUM_SCALAR >::findAll(GUM_SCALAR v) const {
+    Instantiation        I(*this);
+    Set< Instantiation > res;
+
+    if (static_cast< MultiDimContainer< GUM_SCALAR >* >(this->_content)->empty()) {
+      return res;
+    }
+    for (I.setFirst(); !I.end(); ++I) {
+      if (this->get(I) == v) res.insert(I);
+    }
+    return res;
+  }
+  // argmax of all elements in this
+  template < typename GUM_SCALAR >
+  INLINE Set< Instantiation > Potential< GUM_SCALAR >::argmax() const {
+    return findAll(max());
+  }
+  // argmin of all elements in this
+  template < typename GUM_SCALAR >
+  INLINE Set< Instantiation > Potential< GUM_SCALAR >::argmin() const {
+    return findAll(min());
+  }
+
 } /* namespace gum */

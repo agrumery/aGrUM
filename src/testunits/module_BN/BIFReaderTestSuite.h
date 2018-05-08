@@ -199,7 +199,7 @@ namespace gum_tests {
 
     void testRead_file3() {
       std::string             file = GET_RESSOURCES_PATH("BIFReader_file3.bif");
-      gum::BayesNet< float >* net = new gum::BayesNet< float >();
+      auto net = new gum::BayesNet< float >();
       gum::BIFReader< float > reader(net, file);
 
       int nbrErr = 0;
@@ -209,9 +209,9 @@ namespace gum_tests {
       TS_ASSERT_EQUALS(reader.warnings(), (gum::Size)3);
       // 3 warnings
       TS_ASSERT_EQUALS(reader.errors(), (gum::Size)0);
-      TS_ASSERT(net != 0);
+      TS_ASSERT(net != nullptr);
 
-      if (net != 0) {
+      if (net != nullptr) {
         gum::HashTable< std::string, gum::NodeId > idMap;
 
         for (const auto node : net->nodes())

@@ -18,9 +18,10 @@ Returns
 list
 	the list of aggregates in the class
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
+Raises
+------
+gum.IndexError
+	If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classAttributes
@@ -35,9 +36,10 @@ Returns
 list
 	the list of attributes
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
+Raises
+------
+gum.IndexError
+	If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classDag
@@ -52,9 +54,10 @@ Returns
 tuple
 	a description of the DAG
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
+Raises
+------
+gum.IndexError
+	If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classImplements
@@ -82,9 +85,10 @@ Returns
 list
 	the list of parameters
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
+Raises
+------
+gum.IndexError
+	If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classReferences
@@ -99,9 +103,10 @@ Returns
 list
 	the list of references
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
+Raises
+------
+gum.IndexError
+	If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classSlotChains
@@ -116,9 +121,10 @@ Returns
 list
 	the list of class slot chains
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
+Raises
+------
+gum.IndexError 
+	if the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::classes
@@ -144,17 +150,14 @@ Returns
 pyAgrum.Potential
 	the potential of the attribute
 
-Warnings
---------
-OperationNotAllowed	Raised if the class element doesn't have any gum::Potential (like a gum::PRMReferenceSlot). 
-
-Warnings
---------
-IndexError raised if the class is not in the PRM
-
-Warnings
---------
-IndexError raised if the attribute in parameters does not exist 
+Raises
+------
+gum.OperationNotAllowed
+	If the class element doesn't have any gum::Potential (like a gum::PRMReferenceSlot). 
+gum.IndexError
+	If the class is not in the PRM
+gum.IndexError
+	If the attribute in parameters does not exist 
 "
 
 %feature("docstring") PRMexplorer::getDirectSubClass
@@ -169,9 +172,10 @@ Returns
 list
 	the list of direct subclasses
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
+Raises
+------
+gum.IndexError
+	If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getDirectSubInterfaces
@@ -186,9 +190,10 @@ Returns
 list
 	the list of direct subinterfaces
 
-Warnings
---------
-IndexError raised if the interface is not in the PRM
+Raises
+------
+gum.IndexError
+	If the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getDirectSubTypes
@@ -203,9 +208,10 @@ Returns
 list
 	the list of direct subtypes
 
-Warnings
---------
-IndexError raised if the type is not in the PRM
+Raises
+------
+gum.IndexError
+	If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getImplementations
@@ -220,9 +226,10 @@ Returns
 str
 	the list of classes implementing the interface 
 
-Warnings
---------
-IndexError raised if the interface is not in the PRM
+Raises
+------
+gum.IndexError
+	If the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getLabelMap
@@ -237,9 +244,10 @@ Returns
 dict
 	a dict containing pairs of label and their values 
 
-Warnings
---------
-IndexError raised if the type is not in the PRM
+Raises
+------
+gum.IndexError
+	If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getLabels
@@ -254,9 +262,10 @@ Returns
 list
 	the list of type labels
 
-Warnings
---------
-IndexError raised if the type is not in the PRM
+Raises
+------
+gum.IndexError
+	If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperClass
@@ -271,9 +280,10 @@ Returns
 str
 	the class extended by class_name
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
+Raises
+------
+gum.IndexError
+	If the class is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperInterface
@@ -288,9 +298,10 @@ Returns
 str
 	the interace extended by interface_name
 
-Warnings
---------
-IndexError raised if the interface is not in the PRM
+Raises
+------
+gum.IndexError
+	If the interface is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getSuperType
@@ -305,9 +316,10 @@ Returns
 str
 	the type extended by type_name
 
-Warnings
---------
-IndexError raised if the type is not in the PRM
+Raises
+------
+gum.IndexError
+	If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::getalltheSystems
@@ -333,9 +345,10 @@ Returns
 list
 	the list of (<type>,<attribute_name>) for the given interface
 
-Warnings
---------
-IndexError raised if the type is not in the PRM
+Raises
+------
+gum.IndexError
+	If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::interReferences
@@ -350,9 +363,10 @@ Returns
 list
 	the list of (<reference_type>,<reference_name>,<True if the reference is an array>) for the given interface
 
-Warnings
---------
-IndexError raised if the type is not in the PRM
+Raises
+------
+gum.IndexError
+	If the type is not in the PRM
 "
 
 %feature("docstring") PRMexplorer::interfaces
@@ -377,13 +391,12 @@ Returns
 bool
 	True if att_name is an attribute of class_name
 
-Warnings
---------
-IndexError raised if the class is not in the PRM
-
-Warnings
---------
-IndexError raised att_name is not an element of class_name
+Raises
+------
+gum.IndexError
+	If the class is not in the PRM
+gum.IndexError
+	If att_name is not an element of class_name
 "
 
 %feature("docstring") PRMexplorer::isClass
@@ -436,9 +449,10 @@ filename : str
 classpath : str
 	the classpath of the PRM
 
-Warnings
---------
-FatalError raised if file not found
+Raises
+------
+gum.FatalError
+	If file not found
 "
 
 %feature("docstring") PRMexplorer::types

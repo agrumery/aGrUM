@@ -246,4 +246,22 @@ namespace PyAgrumHelper {
     }
     return q;
   }
+
+  PyObject* PyDictFromInstantiation(const gum::Instantiation& inst) {
+    PyObject* q = PyDict_New();
+    for (const auto& k : inst.variablesSequence()) {
+      PyDict_SetItemString(q,
+                           k->name().c_str(),
+                           PyLong_FromUnsignedLong((unsigned long)inst.val(*k)));
+    }
+    return q;
+  }
+  PyObject*
+  PySeqFromSetOfInstantiation(const gum::Set< gum::Instantiation >& soi) {
+    PyObject* q = PyList_New(0);
+    for (const auto& inst : soi) {
+      PyList_Append(q, PyDictFromInstantiation(inst));
+    }
+    return q;
+  }
 }  // namespace PyAgrumHelper

@@ -35,6 +35,7 @@
   }
   std::string __str__() const { return self->toString();};
 }
+%ignore classname::toString;
 %enddef
 
 ADD_REPR_STR_API(gum::Potential<double>)
@@ -49,4 +50,8 @@ ADD_REPR_STR_API(gum::UndiGraph)
 ADD_REPR_STR_API(gum::DiGraph)
 ADD_REPR_STR_API(gum::MixedGraph)
 
+ADD_REPR_STR_API(gum::IBayesNet<double>)
 ADD_REPR_STR_API(gum::BayesNet<double>)
+ADD_REPR_STR_API(gum::InfluenceDiagram<double>)
+
+ADD_REPR_STR_API(gum::credal::CredalNet<double>)

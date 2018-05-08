@@ -17,7 +17,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# sys.path.insert(0, os.path.abspath('..'))
+
 
 # -- General configuration ------------------------------------------------
 
@@ -40,6 +40,7 @@ matplotlib.use('agg') # work around for tkinter.file_dialog not found
 
 extensions = [
   'sphinx.ext.autodoc',
+  'sphinx.ext.mathjax',
   #'sphinx.ext.todo',
   #'sphinx.ext.viewcode',
   #'sphinx.ext.coverage',
@@ -74,7 +75,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pyAgrum'
-copyright = '2017, aGrUM/pyAgrum Team'
+copyright = '2018, aGrUM/pyAgrum Team'
 author = 'Pierre-henri Wuillemin'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -153,12 +154,15 @@ todo_include_todos = True
 # a list of builtin themes.
 #
 # html_theme = 'alabaster'
+
+
 html_theme = 'classic'
 html_theme_options = {
-    "rightsidebar": "true",
+    "rightsidebar": "false",
     "stickysidebar" :"true",
     "relbarbgcolor": "black"
 }
+
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -489,7 +493,6 @@ gumReplaceList = [
 dico = {re.escape(x): y for x, y in gumReplaceList}
 pattern = re.compile('|'.join([re.escape(x) for x, _ in gumReplaceList]))
 
-
 def substitution4swigautodoc(l):
   if l is None:
     return None
@@ -537,7 +540,42 @@ autodoc_default_flags = ['members',
                          #'undoc-members',
                          #'show-inheritance',
                          ]
+
+
+############################ Google Analytics #############
+
+from sphinx.application import ExtensionError
+
+def add_ga_javascript(app, pagename, templatename, context, doctree):
+    if not app.config.googleanalytics_enabled:
+        return
+
+    metatags = context.get('metatags', '')
+    metatags += """<script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '%s']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>""" % app.config.googleanalytics_id
+    context['metatags'] = metatags
+
+def check_config(app):
+    if not app.config.googleanalytics_id:
+        raise ExtensionError("'googleanalytics_id' config value must be set for ga statistics to function properly.")
+
+googleanalytics_id = 'UA-97418814-4'
+
 def setup(app):
   app.connect('autodoc-process-docstring', process_docstring)
   app.connect('autodoc-process-signature', process_signature)
   app.connect("autodoc-skip-member", skip)
+  app.add_config_value('googleanalytics_id', '', 'html')
+  app.add_config_value('googleanalytics_enabled', True, 'html')
+  app.connect('html-page-context', add_ga_javascript)
+  app.connect('builder-inited', check_config)

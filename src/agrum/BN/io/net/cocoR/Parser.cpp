@@ -284,11 +284,12 @@ void Parser::PARENTS_DEFINITION(std::string& name,std::vector<std::string>& var_
 				for (Size i=Size(parents.size());i>=Size(1);--i){
 				   TRY(factory().variableId(parents[i-1]));
 				   TRY(factory().addParent(parents[i-1]));
+				 var_seq.push_back(parents[i-1]);
 				}
 				
-				for(Size i=0;i<Size(parents.size());i++) {
+				/*for(Size i=0;i<Size(parents.size());i++) {
 				 var_seq.push_back(parents[i]);
-				}
+				} */
 				
 			}
 		}

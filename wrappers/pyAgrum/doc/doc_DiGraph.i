@@ -25,17 +25,33 @@ tail : int
 head : int
   the id of the head node
 
-Warnings
---------
-InvalidNode raised if head or tail does not belong to the graph nodes.
+Raises
+------
+gum.InvalidNode
+  If head or tail does not belong to the graph nodes.
 "
 
-%feature("docstring") gum::DiGraph::addNodeWithId
+%feature("docstring") gum::DiGraph::addNode
 "
 Returns
 -------
 int
   the new NodeId
+"
+
+%feature("docstring") gum::DiGraph::addNodes
+"
+Add n nodes.
+
+Parameters
+----------
+n : int
+  the number of nodes to add.
+
+Returns
+-------
+Set of int
+  the new ids
 "
 
 %feature("docstring") gum::DiGraph::addNodeWithId
@@ -47,9 +63,10 @@ Parameters
 id : int
   The id of the new node
 
-Warnings
---------
-DuplicateElement raised if the given id is already used
+Raises
+------
+gum.DuplicateElement
+  If the given id is already used
 "
 
 %feature("docstring") gum::DiGraph::arcs
@@ -173,10 +190,16 @@ bool
 
 %feature("docstring") gum::DiGraph::ids
 "
+.. note:: Deprecated in pyAgrum>0.13.0
+    Please use nodes() instead
+"
+
+%feature("docstring") gum::DiGraph::nodes
+"
 Returns
 -------
-List
-    the list of ids
+set
+    the set of ids
 "
 
 %feature("docstring") gum::DiGraph::parents
@@ -213,7 +236,7 @@ int
 Returns
 -------
 str
-    a friendly display of the graph in DOT format
+    a friendly display of the graph in DOT format 
 "
 
 %feature("docstring") gum::DiGraph::topologicalOrder
@@ -223,7 +246,8 @@ Returns
 List
     the list of the nodes Ids in a topological order
 
-Warnings
---------
-InvalidDirectedCycle raised if this graph contains cycles
+Raises
+------
+gum.InvalidDirectedCycle
+  If this graph contains cycles
 "

@@ -1022,5 +1022,38 @@ namespace gum_tests {
       TS_GUM_ASSERT_THROWS_NOTHING(pp.fillWith(p, {"w", "v"}));
       TS_ASSERT_THROWS(pp.fillWith(p, {"v", "w"}), gum::InvalidArgument);
     }
+
+    private:
+    void __testval_for_set(const gum::Potential< int >&         p,
+                           int                                  val,
+                           const gum::Set< gum::Instantiation > s,
+                           gum::Size                            expected_size) {
+      gum::Instantiation ip(p);
+
+      TS_ASSERT_EQUALS(s.size(), expected_size);
+      for (ip.setFirst(); !ip.end(); ++ip) {
+        if (s.contains(ip)) {
+          TS_ASSERT_EQUALS(p[ip], val);
+        } else {
+          TS_ASSERT_DIFFERS(p[ip], val);
+        }
+      }
+    }
+
+    public:
+    void testArgMaxMinFindAll() {
+      gum::LabelizedVariable v("v", "v", 2), w("w", "w", 3);
+      gum::Potential< int >  p;
+      __testval_for_set(p, 4, p.findAll(4), 0);
+
+      p.add(v);
+      p.add(w);
+      p.fillWith({1, 3, 2, 4, 1, 4});
+
+      __testval_for_set(p, 3, p.findAll(3), 1);
+      __testval_for_set(p, 10, p.findAll(10), 0);
+      __testval_for_set(p, 4, p.argmax(), 2);
+      __testval_for_set(p, 1, p.argmin(), 2);
+    }
   };
 }

@@ -48,9 +48,10 @@ def parents_name(bn, n):
   map
   	a list of name of parents of node n
 
-  Warnings
-  --------
-  IndexError raised if the node is not in the Bayesian network	
+  Raises
+  ------
+  gum.IndexError
+    If the node is not in the Bayesian network	
   """
   return map(lambda n: bn.variable(n).name(), bn.parents(nodeId(bn, n)))
   return l
@@ -70,9 +71,10 @@ def nodeId(bn, n):
   int
   	the id of the node
 
-  Warnings
-  --------
-  IndexError raised if the node is not in the Bayesian network	
+  Raises
+  ------
+  gum.IndexError
+    If the node is not in the Bayesian network	
   """
   if type(n) == str:
     return bn.idFromName(n)
@@ -162,9 +164,10 @@ def compareCPT(b1, cpt1, b2, cpt2):
   str
   	'OK' if CPTs are the same
 
-  Warnings
-  --------
-  KeyError cpts are not from the same variable
+  Raises
+  ------
+  gum.KeyError
+    If cpts are not from the same variable
   """
 
   dico2 = {}

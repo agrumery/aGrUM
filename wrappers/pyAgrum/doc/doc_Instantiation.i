@@ -48,9 +48,10 @@ Parameters
 v : pyAgrum.DiscreteVariable
   The new variable added to the Instantiation
 
-Warnings
---------
-DuplicateElement Raised if the variable is already in this Instantiation
+Raises
+------
+DuplicateElement
+  If the variable is already in this Instantiation
 
 "
 
@@ -72,13 +73,12 @@ Returns
 pyAgrum.Instantiation
     The modified instantiation
 
-Warnings
---------
-    NotFound  Raised if variable v does not belong to the instantiation.
-
-Warnings
---------
-    OutOfBound  Raised if newval is not a possible value for the variable.
+Raises
+------
+NotFound
+  If variable v does not belong to the instantiation.
+OutOfBound
+  If newval is not a possible value for the variable.
 "
 
 %feature("docstring") gum::Instantiation::clear
@@ -145,9 +145,10 @@ Parameters
 v : pyAgrum.DiscreteVariable
  The variable to decrement in this Instantiation.
 
-Warnings
---------
-NotFound raised if variable v does not belong to the Instantiation.
+Raises
+------
+NotFound
+  If variable v does not belong to the Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::domainSize
@@ -181,9 +182,10 @@ Parameters
 v : pyAgrum.DiscreteVariable
   The variable to be removed from this Instantiation.
 
-Warnings
---------
-NotFound raised if v does not belong to this Instantiation.
+Raises
+------
+NotFound
+  If v does not belong to this Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::hamming
@@ -246,9 +248,10 @@ Parameters
 v : pyAgrum.DiscreteVariable
     The variable to increment in this Instantiation.
 
-Warnings
---------
-NotFound raised if variable v does not belong to the Instantiation.
+Raises
+------
+NotFound
+  If variable v does not belong to the Instantiation.
 "
 
 %feature("docstring") gum::Instantiation::nbrDim
@@ -271,9 +274,10 @@ Parameters
 v : pyAgrum.DiscreteVariable
     the variable for which its position is return.
 
-Warnings
---------
-NotFound raised if v does not belong to the instantiation.
+Raises
+------
+NotFound
+  If v does not belong to the instantiation.
 "
 
 %feature("docstring") gum::Instantiation::rend
@@ -425,9 +429,10 @@ Returns
 int
 	the current value of the variable.
 
-Warnings
---------
-    NotFound raised if the element cannot be found.
+Raises
+------
+NotFound
+  If the element cannot be found.
 "
 
 %feature("docstring") gum::Instantiation::variable
@@ -442,9 +447,10 @@ Returns
 pyAgrum.DiscreteVariable
   the variable at position i in the tuple.
 
-Warnings
---------
-    NotFound raised if the element cannot be found.
+Raises
+------
+NotFound
+  If the element cannot be found.
 "
 
 %feature("docstring") gum::Instantiation::variablesSequence

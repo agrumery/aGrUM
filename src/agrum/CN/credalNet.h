@@ -151,7 +151,7 @@ namespace gum {
        * @param card The cardinality of the variable
        * @return The \c NodeId of the variable in the network
        */
-      NodeId addNode(const std::string& name, const Size& card);
+      NodeId addVariable(const std::string& name, const Size& card);
 
       /**
        * @brief Adds an arc between two nodes.

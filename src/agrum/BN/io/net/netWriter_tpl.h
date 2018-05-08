@@ -109,8 +109,8 @@ namespace gum {
     std::stringstream str;
     std::string       tab = "   ";  // poor tabulation
 
+    Instantiation inst(cpt);
     if (cpt.nbrDim() == 1) {
-      Instantiation inst(cpt);
       str << "potential (" << cpt.variable(0).name() << ") {" << std::endl
           << tab << "data = ( ";
 
@@ -118,59 +118,55 @@ namespace gum {
         str << " " << cpt[inst];
       }
 
-      str << ");" << std::endl << "}" << std::endl;
-    } else if (cpt.domainSize() > 1) {
-      // Instantiation inst( cpt );
-      Instantiation condVars;  // Instantiation on the conditioning variables
+      str << ");";
+    } else {  // cpt.domainSize() > 1
       const Sequence< const DiscreteVariable* >& varsSeq = cpt.variablesSequence();
+
+      Instantiation conds;
+      for (Idx i = 1; i < varsSeq.size(); i++)
+        conds.add(*varsSeq[i]);
+
       str << "potential ( " << (varsSeq[(Idx)0])->name() << " | ";
+      for (Idx i = 1; i < varsSeq.size(); i++)
+        str << varsSeq[i]->name() << "   ";
+      str << ") {" << std::endl << tab << "data = \n";
 
-      for (Idx i = 0; i < varsSeq.size(); i++) {
-        if (i != 0) str << varsSeq[i]->name() << "   ";
+      std::string comment;
+      conds.setFirst();
+      while (true) {
+        str << tab << "(";
+        for (Idx i = 0; i < conds.nbrDim(); i++) {
+          if (conds.val(i) != 0) break;
+          str << "(";
+        }
 
-        condVars << *(varsSeq[i]);
-      }
+        inst.setVals(conds);
+        for (inst.setFirstVar(*varsSeq[0]); !inst.end(); inst.incVar(*varsSeq[0]))
+          str << tab << cpt[inst];
 
-      // condVars << *( varsSeq[(Idx)0] );
-      str << ") {" << std::endl << tab << "data = ";
+        comment = tab + "% ";
+        for (Idx i = 0; i < conds.nbrDim(); i++) {
+          comment += conds.variable(i).name() + "=" +
+                     conds.variable(i).label(conds.val(i)) + tab;
+        }
 
-      for (condVars.setFirst(); !condVars.end(); ++condVars) {
-
-        // Writing the probabilities of the variable
-        if (condVars.valFromPtr(varsSeq[(Idx)0]) !=
-              (varsSeq[(Idx)0])->domainSize() - 1 &&
-            condVars.valFromPtr(varsSeq[(Idx)0]) != 0) {
-          str << tab << cpt[condVars];
+        ++conds;
+        if (conds.end()) {
+          for (Idx i = 0; i < inst.nbrDim(); i++) {
+            str << ")";
+          }
+          str << ";" << comment;
+          break;
         } else {
-          bool notend = false;
-
-          for (Idx i = 0; i < condVars.nbrDim(); i++) {
-            if (condVars.val(condVars.variable(i)) == 0) {
-              notend = true;
-              str << (i == 0 ? "\n   " : "") << "(";
-            } else
-              break;
+          for (Idx i = 0; i < conds.nbrDim(); i++) {
+            str << ")";
+            if (conds.val(i) != 0) break;
           }
-
-          str << tab << cpt[condVars];
-
-          if (!notend) {
-            for (Idx i = 0; i < condVars.nbrDim(); i++) {
-
-              if (condVars.val(condVars.variable(i)) ==
-                  condVars.variable(i).domainSize() - 1)
-                str << ")" << (i == condVars.nbrDim() - 1 ? ";" : "");
-              else
-                break;
-            }
-          }
+          str << comment << "\n" ;
         }
       }
-
-      //       inst.unsetOverflow();
-      str << "\n}" << std::endl;
     }
-
+    str << "\n}\n" << std::endl;
     return str.str();
   }
 
@@ -183,8 +179,7 @@ namespace gum {
     str << std::endl << "net {" << std::endl;
     str << "  name = " << bn.propertyWithDefault("name", "unnamedBN") << ";"
         << std::endl;
-    str << "  software = \"aGrUM "
-        << "\";" << std::endl;
+    str << "  software = \"aGrUM " << GUM_VERSION << "\";" << std::endl;
     str << "  node_size = (50 50);" << std::endl;
     str << "}" << std::endl;
     return str.str();

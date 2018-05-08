@@ -54,7 +54,7 @@ class BNDatabaseGeneratorTestCase(pyAgrumTestCase):
       jointe *= bn.cpt(i)
     entropy = jointe.entropy()
 
-    self.assertAlmostEqual(entropy, -ll1 / ns1, delta=0.3)
+    self.assertAlmostEqual(entropy, -ll1 / ns1, delta=0.5)
     self.assertAlmostEqual(entropy, -ll2 / ns2, delta=0.2)
     self.assertAlmostEqual(entropy, -ll3 / ns3, delta=0.1)
 

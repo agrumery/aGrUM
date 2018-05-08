@@ -52,13 +52,12 @@ Returns
 pyAgrum.BayesNet
 	the learned BayesNet
 
-Warnings
---------
-MissingVariableInDatabase if a variable of the BN is not found in the database
-
-Warnings
---------
-UnknownLabelInDatabase raise if a label is found in the database that do not correspond to the variable
+Raises
+------
+gum.MissingVariableInDatabase
+	If a variable of the BN is not found in the database
+gum.UnknownLabelInDatabase
+	If a label is found in the database that do not correspond to the variable
 "
 
 %feature("docstring") gum::learning::BNLearner::setInitialDAG

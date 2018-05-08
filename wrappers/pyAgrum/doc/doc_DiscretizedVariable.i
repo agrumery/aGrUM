@@ -68,9 +68,10 @@ Returns
 pyAgrum.DiscretizedVariable
 	the discretized variable
 
-Warnings
---------
-DefaultInLabel raised if the Tick is already defined
+Raises
+------
+gum.DefaultInLabel
+	If the Tick is already defined
 "
 
 %feature("docstring") gum::DiscretizedVariable::eraseTicks
@@ -105,9 +106,10 @@ Returns
 aTick : double
 	the index-th Tick
 
-Warnings
---------
-NotFound raised if the index is greater than the number of Ticks
+Raises
+------
+gum.NotFound
+	If the index is greater than the number of Ticks
 "
 
 %feature("docstring") gum::DiscretizedVariable::ticks
