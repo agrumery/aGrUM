@@ -1137,25 +1137,32 @@ namespace gum_tests {
       TS_ASSERT( vnames[2] == "var2" );
       TS_ASSERT( vnames[3] == "var3" );
 
+      // row 0
       std::vector<std::string> row { "L0", "L1", "L2", "L0" };
       database.insertRow( row );
 
+      // row 1
       row[0] = "?";
       database.insertRow( row );
-      
+
+      // row 2
       row[0] = "L0";
       row[1] = "?";
       database.insertRow( row );
 
+      // row 3
       row[2] = "N/A";
       database.insertRow( row );
 
+      // row 4
       row[0] = "???";
       database.insertRow( row );
 
+      // row 5
       row[0] = "L0";
       row[1] = "L0";
       row[2] = "L0";
+      database.insertRow( row );
 
       TS_ASSERT ( database.hasMissingValues () );
 
