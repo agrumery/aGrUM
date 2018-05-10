@@ -107,6 +107,7 @@ namespace gum {
               __data[i] = "NULL";
             }
           }
+          ++__nb_line;
           return true;
         }
       } catch ( std::runtime_error& e ) {
@@ -119,13 +120,8 @@ namespace gum {
     
     // return the current number line
     template <template<typename> class ALLOC>
-    INLINE
-    std::size_t NanodbcParser<ALLOC>::nbLine() const {
-      try {
-        return std::size_t ( __result.position() );
-      } catch ( std::runtime_error& e ) {
-        return std::size_t(0);
-      }
+    INLINE std::size_t NanodbcParser<ALLOC>::nbLine() const {
+      return __nb_line >= 1 ? __nb_line - 1 : std::size_t(0);
     }
 
     
@@ -148,6 +144,7 @@ namespace gum {
                                              const std::string& query ) {
       __result = nanodbc::execute( connexion, query );
       __data.resize ( std::size_t ( __result.columns() ) );
+      __nb_line = std::size_t(0);
     }
 
     

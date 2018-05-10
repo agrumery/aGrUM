@@ -35,19 +35,69 @@ namespace gum {
 
   namespace learning {
 
+
+    /// perform a connection from a connection string
+    template <template<typename> class ALLOC>
+    void DBInitializerFromSQL<ALLOC>::__connect(const std::string& connection_string,
+                                                long               timeout) {
+      // analyze the connection string: either this is a user-defined connection
+      // string or this is an aGrUM-constructed one derived from a datasource,
+      // a login and a password
+      bool agrum_connection = ( connection_string.size () > 4 ) &&
+        ( connection_string.compare( 0, 4, "gum " ) == 0 );
+      
+      // perform the connection to the database
+      if ( ! agrum_connection ) {
+        __connection.connect ( connection_string, timeout );
+      }
+      else {
+        std::size_t deb_index, end_index;
+        const std::string delimiter = "|";
+
+        deb_index = connection_string.find ( delimiter, 0 );
+        if ( deb_index == std::string::npos )
+          GUM_ERROR ( DatabaseError, "could not determine the datasource" );
+        deb_index += std::size_t(1);
+        end_index = connection_string.find ( delimiter, deb_index );
+        if ( end_index == std::string::npos )
+          GUM_ERROR ( DatabaseError, "could not determine the datasource" );
+        std::string dataSource =
+          connection_string.substr ( deb_index, end_index - deb_index );
+
+        deb_index = connection_string.find ( delimiter, end_index + std::size_t(1) );
+        if ( deb_index == std::string::npos )
+          GUM_ERROR ( DatabaseError, "could not determine the database login" );
+        deb_index += std::size_t(1);
+        end_index = connection_string.find ( delimiter, deb_index );
+        if ( end_index == std::string::npos )
+          GUM_ERROR ( DatabaseError, "could not determine the database login" );
+        std::string login =
+          connection_string.substr ( deb_index, end_index - deb_index );
+
+        deb_index = connection_string.find ( delimiter, end_index + std::size_t(1) );
+        if ( deb_index == std::string::npos )
+          GUM_ERROR ( DatabaseError, "could not determine the database password" );
+        deb_index += std::size_t(1);
+        end_index = connection_string.find ( delimiter, deb_index );
+        if ( end_index == std::string::npos )
+          GUM_ERROR ( DatabaseError, "could not determine the database password" );
+        std::string password =
+          connection_string.substr ( deb_index, end_index - deb_index );
+
+        __connection.connect ( dataSource, login, password, timeout );
+      }
+    }
+
+
     /// default constructor
     template <template<typename> class ALLOC>
     DBInitializerFromSQL<ALLOC>::DBInitializerFromSQL (
-      const std::string& dataSource,
-      const std::string& login,
-      const std::string& password,
+      const std::string& connection_string,
       const std::string& query,
       long               timeout,
       const typename DBInitializerFromSQL<ALLOC>::allocator_type& alloc )
       : IDBInitializer<ALLOC> ( IDBInitializer<ALLOC>::InputType::STRING, alloc )
-      , __data_source ( dataSource )
-      , __login ( login )
-      , __password ( password )
+      , __connection_string ( connection_string )
       , __query ( query )
       , __timeout ( timeout )
       , __var_names ( alloc )
@@ -56,9 +106,9 @@ namespace gum {
       // will change it
       const std::string current_locale = std::setlocale(LC_NUMERIC, NULL );
 
-      // perform the connection to the database
-      __connection.connect ( dataSource, login, password, timeout );
-
+      // perform the connection
+      __connect ( connection_string, timeout );
+        
       // restore the locale
       std::setlocale(LC_NUMERIC, current_locale.c_str () );
 
@@ -75,14 +125,26 @@ namespace gum {
     }
 
 
+    /// default constructor
+    template <template<typename> class ALLOC>
+    DBInitializerFromSQL<ALLOC>::DBInitializerFromSQL (
+      const std::string& dataSource,
+      const std::string& login,
+      const std::string& password,
+      const std::string& query,
+      long               timeout,
+      const typename DBInitializerFromSQL<ALLOC>::allocator_type& alloc )
+      : DBInitializerFromSQL<ALLOC> ( "gum datasource=|" + dataSource + "|; login=|" +
+                                      login + "|; password=|" + password + "|",
+                                      query, timeout, alloc ) {}
+
+    
     /// copy constructor with a given allocator
     template <template<typename> class ALLOC>
     DBInitializerFromSQL<ALLOC>::DBInitializerFromSQL (
       const DBInitializerFromSQL<ALLOC>& from,
       const allocator_type& alloc )
-      : DBInitializerFromSQL<ALLOC> ( from.__data_source,
-                                      from.__login,
-                                      from.__password,
+      : DBInitializerFromSQL<ALLOC> ( from.__connection_string,
                                       from.__query,
                                       from.__timeout,
                                       alloc ) {}
@@ -100,9 +162,7 @@ namespace gum {
     DBInitializerFromSQL<ALLOC>::DBInitializerFromSQL (
       DBInitializerFromSQL<ALLOC>&& from,
       const allocator_type& alloc )
-      : DBInitializerFromSQL<ALLOC> ( from.__data_source,
-                                      from.__login,
-                                      from.__password,
+      : DBInitializerFromSQL<ALLOC> ( from.__connection_string,
                                       from.__query,
                                       from.__timeout,
                                       alloc ) {}
@@ -156,23 +216,18 @@ namespace gum {
         IDBInitializer<ALLOC>::operator= ( from );
         // check if the connection parameters have changed
         const bool connexion_changed =
-          ( __data_source != from.__data_source ) ||
-          ( __login       != from.__login ) ||
-          ( __password    != from.__password ) ||
-          ( __timeout     != from.__timeout );
+          ( __connection_string != from.__connection_string );
 
         // save the new connection parameters
-        __data_source = from.__data_source;
-        __login       = from.__login;
-        __password    = from.__password;
-        __query       = from.__query;
-        __timeout     = from.__timeout;
+        __connection_string = from.__connection_string;
+        __query             = from.__query;
+        __timeout           = from.__timeout;
 
         // recreate the connection if needed
         if ( connexion_changed ) {
           if ( __connection.connected () )
             __connection.disconnect ();
-          __connection.connect ( __data_source, __login, __password, __timeout );
+          __connect ( __connection_string, __timeout );
         }
         
         // initiate the SQL parser

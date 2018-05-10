@@ -57,30 +57,30 @@ namespace gum {
       /// type for the allocators passed in arguments of methods
       using allocator_type = ALLOC<std::string>;
 
-      
+
       // ##########################################################################
       /// @name Constructors / Destructors
       // ##########################################################################
       /// @{
 
       /// Default constructor: create a parser without being connected
-      NanodbcParser( const allocator_type& alloc = allocator_type () );
+      NanodbcParser( const ALLOC<std::string>& alloc = ALLOC<std::string>() );
 
       /// constructor that executes an SQL query if the connection is active
       /** @param connection a nanODBC connection to a SQL database
        * @param query a string containing an SQL query
        * @param alloc The allocator that will be used by all methods
        */
-      NanodbcParser( nanodbc::connection&  connection,
-                     const std::string&    query,
-                     const allocator_type& alloc = allocator_type () );
+      NanodbcParser( nanodbc::connection&      connection,
+                     const std::string&        query,
+                     const ALLOC<std::string>& alloc = ALLOC<std::string> () );
 
       /// destructor
       virtual ~NanodbcParser();
 
       /// @}
 
-      
+
       // ########################################################################
       /// @name Accessors / Modifiers
       // ########################################################################
@@ -109,19 +109,22 @@ namespace gum {
 
       /// @}
 
-      
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-      
+
     private:
 
       // the result of the last SQL query performed
       nanodbc::result __result;
 
+      // the line number within the current query
+      std::size_t __nb_line { std::size_t(0) };
+
       // a vector that will contain the content of the current line of result
       std::vector<std::string,ALLOC<std::string>> __data;
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
-      
+
     };
 
   }  // namespace learning

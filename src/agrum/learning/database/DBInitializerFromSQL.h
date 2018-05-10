@@ -142,7 +142,7 @@ namespace gum {
       // ##########################################################################
       /// @{
 
-      /// default constructor
+      /// default constructor, especially for postgresql databases
       /** This will read the result of query and load it in memory.
        *
        * @param dataSource A declared dataSource in your odbc configuration
@@ -160,6 +160,21 @@ namespace gum {
                             const std::string&    query,
                             long                  timeout = 0L,
                             const allocator_type& alloc = allocator_type () );
+
+      /// default constructor, especially for sqlite databases 
+      /** This will read the result of query and load it in memory.
+       *
+       * @param connection_string a string specifying to nanODBC how to connect
+       * to a SQL database
+       * @param query The SQL query used as a database.
+       * @param timeout Defines a timeout for accessing the SQL database, if 0
+       * then no timeout is set.
+       * @param alloc the allocator used to allocate all the data structures
+       */
+      DBInitializerFromSQL ( const std::string&    connection_string,
+                             const std::string&    query,
+                             long                  timeout = 0L,
+                             const allocator_type& alloc = allocator_type () );
 
       /// copy constructor
       /** the new initializer points to the same SQL query as from, but
@@ -229,14 +244,8 @@ namespace gum {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
      
     private:
-      // the name of the database
-      std::string __data_source;
-
-      // the login to connect to the database
-      std::string __login;
-
-      // the password to connect to the database
-      std::string __password;
+      // the string specifying how to connect to the database
+      std::string __connection_string;
 
       // the current query
       std::string __query;
@@ -252,7 +261,12 @@ namespace gum {
 
       // the parser used for parsing the query results
       NanodbcParser<ALLOC> __parser;
-      
+
+      /// perform a connection from a connection string
+      void __connect(const std::string& connection_string,
+                     long               timeout);
+
+ 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
     };
