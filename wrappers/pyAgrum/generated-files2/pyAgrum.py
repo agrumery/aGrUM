@@ -57,16 +57,16 @@ except ImportError:
     import __builtin__
 
 def _swig_setattr_nondynamic(self, class_type, name, value, static=1):
-    if (name == "thisown"):
+    if name == "thisown":
         return self.this.own(value)
-    if (name == "this"):
+    if name == "this":
         if type(value).__name__ == 'SwigPyObject':
             self.__dict__[name] = value
             return
     method = class_type.__swig_setmethods__.get(name, None)
     if method:
         return method(self, value)
-    if (not static):
+    if not static:
         if _newclass:
             object.__setattr__(self, name, value)
         else:
@@ -80,7 +80,7 @@ def _swig_setattr(self, class_type, name, value):
 
 
 def _swig_getattr(self, class_type, name):
-    if (name == "thisown"):
+    if name == "thisown":
         return self.this.own()
     method = class_type.__swig_getmethods__.get(name, None)
     if method:
@@ -2146,6 +2146,36 @@ class FatalError(GumException):
 FatalError_swigregister = _pyAgrum.FatalError_swigregister
 FatalError_swigregister(FatalError)
 
+class NotImplementedYet(GumException):
+    """Proxy of C++ gum::NotImplementedYet class."""
+
+    __swig_setmethods__ = {}
+    for _s in [GumException]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, NotImplementedYet, name, value)
+    __swig_getmethods__ = {}
+    for _s in [GumException]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, NotImplementedYet, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(self, aMsg, aType) -> NotImplementedYet
+        __init__(self, aMsg) -> NotImplementedYet
+        __init__(self, src) -> NotImplementedYet
+        """
+        this = _pyAgrum.new_NotImplementedYet(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_NotImplementedYet
+    def __del__(self):
+        return None
+NotImplementedYet_swigregister = _pyAgrum.NotImplementedYet_swigregister
+NotImplementedYet_swigregister(NotImplementedYet)
+
 class UndefinedIteratorValue(GumException):
     """Proxy of C++ gum::UndefinedIteratorValue class."""
 
@@ -3376,6 +3406,36 @@ class MissingVariableInDatabase(LearningError):
 MissingVariableInDatabase_swigregister = _pyAgrum.MissingVariableInDatabase_swigregister
 MissingVariableInDatabase_swigregister(MissingVariableInDatabase)
 
+class MissingValueInDatabase(LearningError):
+    """Proxy of C++ gum::MissingValueInDatabase class."""
+
+    __swig_setmethods__ = {}
+    for _s in [LearningError]:
+        __swig_setmethods__.update(getattr(_s, '__swig_setmethods__', {}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, MissingValueInDatabase, name, value)
+    __swig_getmethods__ = {}
+    for _s in [LearningError]:
+        __swig_getmethods__.update(getattr(_s, '__swig_getmethods__', {}))
+    __getattr__ = lambda self, name: _swig_getattr(self, MissingValueInDatabase, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        """
+        __init__(self, aMsg, aType) -> MissingValueInDatabase
+        __init__(self, aMsg) -> MissingValueInDatabase
+        __init__(self, src) -> MissingValueInDatabase
+        """
+        this = _pyAgrum.new_MissingValueInDatabase(*args)
+        try:
+            self.this.append(this)
+        except __builtin__.Exception:
+            self.this = this
+    __swig_destroy__ = _pyAgrum.delete_MissingValueInDatabase
+    def __del__(self):
+        return None
+MissingValueInDatabase_swigregister = _pyAgrum.MissingValueInDatabase_swigregister
+MissingValueInDatabase_swigregister(MissingValueInDatabase)
+
 class UnknownLabelInDatabase(LearningError):
     """Proxy of C++ gum::UnknownLabelInDatabase class."""
 
@@ -3772,6 +3832,11 @@ class Variable(_object):
 
         """
         return _pyAgrum.Variable_description(self)
+
+
+    def varType(self):
+        """varType(self) -> gum::VarType"""
+        return _pyAgrum.Variable_varType(self)
 
 Variable_swigregister = _pyAgrum.Variable_swigregister
 Variable_swigregister(Variable)
@@ -26380,11 +26445,10 @@ class BNLearner_double(_object):
 
     def __init__(self, *args):
         """
+        __init__(self, filename, missing_symbols) -> BNLearner_double
         __init__(self, filename) -> BNLearner_double
         __init__(self, db) -> BNLearner_double
-        __init__(self, filename, modalities, parse_database=False) -> BNLearner_double
-        __init__(self, filename, modalities) -> BNLearner_double
-        __init__(self, filename, src, parse_database=False) -> BNLearner_double
+        __init__(self, filename, src, missing_symbols) -> BNLearner_double
         __init__(self, filename, src) -> BNLearner_double
         __init__(self, arg2) -> BNLearner_double
         __init__(self, arg2) -> BNLearner_double
@@ -27266,12 +27330,12 @@ class BNDatabaseGenerator_double(_object):
         return _pyAgrum.BNDatabaseGenerator_double_toCSV(self, *args)
 
 
-    def toDatabaseVectInRAM(self, useLabels=True):
+    def toDatabaseTable(self, useLabels=True):
         """
-        toDatabaseVectInRAM(self, useLabels=True) -> DatabaseVectInRAM
-        toDatabaseVectInRAM(self) -> DatabaseVectInRAM
+        toDatabaseTable(self, useLabels=True) -> gum::learning::DatabaseTable< >
+        toDatabaseTable(self) -> gum::learning::DatabaseTable< >
         """
-        return _pyAgrum.BNDatabaseGenerator_double_toDatabaseVectInRAM(self, useLabels)
+        return _pyAgrum.BNDatabaseGenerator_double_toDatabaseTable(self, useLabels)
 
 
     def database(self):
