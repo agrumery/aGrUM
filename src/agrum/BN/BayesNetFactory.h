@@ -231,10 +231,13 @@ namespace gum {
      * Given a sequence [var, p_1, p_2, ...,p_n-1, p_n] of parents, modalities
      * are parsed in the given order (if all p_i are binary):
      * \verbatim
-     * [0, 0, ..., 0, 0], [0, 0, ..., 0, 1],
-     * [0, 0, ..., 1, 0], [0, 0, ..., 1, 1],
+     * [0, 0, ..., 0, 0],
+     * [0, 0, ..., 0, 1],
+     * [0, 0, ..., 1, 0],
+     * [0, 0, ..., 1, 1],
      * ...,
-     * [1, 1, ..., 1, 0], [1, 1, ..., 1, 1].
+     * [1, 1, ..., 1, 0],
+     * [1, 1, ..., 1, 1].
      * \endverbatim
      *
      * @param variables the vector giving the order of parents

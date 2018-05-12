@@ -73,9 +73,10 @@ Returns
 List
     the list of the nodes Ids in a topological order
 
-Warnings
---------
-InvalidDirectedCycle raised if this graph contains cycles
+Raises
+------
+gum.InvalidDirectedCycle
+	If this graph contains cycles
 "
 
 %feature("docstring") gum::DAGmodel::moralGraph
@@ -139,9 +140,10 @@ Returns
 int :
 	The variable's node id.
 
-Warnings
---------
-	NotFound raised if name does not match a variable in the graph
+Raises
+------
+gum.NotFound
+	If name does not match a variable in the graph
 "
 
 %feature("docstring") gum::DAGmodel::variableFromName
@@ -156,9 +158,10 @@ Returns
 pyAgrum.DiscreteVariable
 	the variable
 
-Warnings
---------
-IndexError if the graph does not contain the variable
+Raises
+------
+gum.IndexError
+	If the graph does not contain the variable
 "
 
 
@@ -174,9 +177,18 @@ Returns
 int
 	the id of the variable
 
-Warnings
---------
-IndexError raised if the graph does not contain the variable
+Raises
+------
+gum.IndexError
+	If the graph does not contain the variable
+"
+
+%feature("docstring") gum::DAGmodel::nodes
+"
+Returns
+-------
+set
+    the set of ids
 "
 
 %feature("docstring") gum::DAGmodel::variable
@@ -193,9 +205,10 @@ Returns
 pyAgrum.DiscreteVariable
 	the variable
 
-Warnings
---------
-IndexError if the graph does not contain the variable
+Raises
+------
+gum.IndexError
+	If the graph does not contain the variable
 "
 
 %feature("docstring") gum::DAGmodel::variableNodeMap

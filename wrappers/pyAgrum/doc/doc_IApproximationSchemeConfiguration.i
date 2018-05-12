@@ -33,9 +33,10 @@ head :
 tail :
 	a variable's name (str)
 
-Warnings
---------
-InvalidDirectedCycle raised if the added arc creates a directed cycle in the DAG
+Raises
+------
+gum.InvalidDirectedCycle
+	If the added arc creates a directed cycle in the DAG
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::burnIn
@@ -103,9 +104,10 @@ Returns
 tuple
 	the scheme history
 
-Warnings
---------
-OperationNotAllowed	Raised if the scheme did not performed or if verbosity is set to false
+Raises
+------
+gum.OperationNotAllowed
+	If the scheme did not performed or if verbosity is set to false
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::idFromName
@@ -120,9 +122,10 @@ Returns
 int
 	the node id corresponding to a variable name
 
-Warnings
---------
-MissingVariableInDatabase raised if a variable of the BN is not found in the database.
+Raises
+------
+gum.MissingVariableInDatabase
+	If a variable of the BN is not found in the database.
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::learnDAG
@@ -211,9 +214,10 @@ Returns
 int
 	the number of samples between 2 stopping
 
-Warnings
---------
-OutOfLowerBound raised if p<1
+Raises
+------
+gum.OutOfLowerBound
+	If p<1
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setAprioriWeight
@@ -239,9 +243,10 @@ Parameters
 eps : double
 	the epsilon we want to use
 
-Warnings
---------
-OutOfLowerBound if eps<0
+Raises
+------
+gum.OutOfLowerBound
+	If eps<0
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setMaxIndegree
@@ -259,9 +264,10 @@ Parameters
 max : int
 	the maximum number of iteration
 
-Warnings
---------
-OutOfLowerBound raised if max <= 1
+Raises
+------
+gum.OutOfLowerBound
+	If max <= 1
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setMaxTime
@@ -271,9 +277,10 @@ Parameters
 tiemout : double
 	stopping criterion on timeout (in seconds)
 
-Warnings
---------
-OutOfLowerBound raised if timeout<=0.0
+Raises
+------
+gum.OutOfLowerBound
+	If timeout<=0.0
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setMinEpsilonRate
@@ -291,9 +298,10 @@ Parameters
 p : int
 	number of samples between 2 stopping
 
-Warnings
---------
-OutOfLowerBound raised if p<1
+Raises
+------
+gum.OutOfLowerBound
+	If p<1
 "
 
 %feature("docstring") gum::IApproximationSchemeConfiguration::setSliceOrder

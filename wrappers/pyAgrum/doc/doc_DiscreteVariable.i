@@ -77,9 +77,10 @@ Returns
 str
 	the indice-th label
 
-Warnings
---------
-OutOfBound raised if the variable does not contain the label
+Raises
+------
+gum.OutOfBound
+	If the variable does not contain the label
 "
 
 %feature("docstring") gum::DiscreteVariable::labels
@@ -109,9 +110,11 @@ Returns
 -------
 pyAgrum.DiscretizedVariable
 	the discretized variable
-Warnings
--------
-RuntimeError raised if the variable is not a DiscretizedVariable
+
+Raises
+------
+gum.RuntimeError 
+	If the variable is not a DiscretizedVariable
 "
 
 %feature("docstring") gum::DiscreteVariable::toLabelizedVar
@@ -120,9 +123,11 @@ Returns
 -------
 pyAgrum.LabelizedVariable
 	the labelized variable
-Warnings
--------
-RuntimeError raised if the variable is not a LabelizedVariable
+
+Raises
+------
+gum.RuntimeError
+	If the variable is not a LabelizedVariable
 "
 
 %feature("docstring") gum::DiscreteVariable::toRangeVar
@@ -132,9 +137,10 @@ Returns
 pyAgrum.RangeVariable
 	the range variable
 
-Warnings
--------
-RuntimeError raised if the variable is not a RangeVariable
+Raises
+------
+gum.RuntimeError
+	If the variable is not a RangeVariable
 "
 
 %feature("docstring") gum::DiscreteVariable::toStringWithDescription

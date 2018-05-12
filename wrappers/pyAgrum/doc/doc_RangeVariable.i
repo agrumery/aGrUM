@@ -141,7 +141,8 @@ Returns
 str
   the indice-th label
 
-Warnings
---------
-OutOfBound raised if the variable does not contain the label
+Raises
+------
+gum.OutOfBound
+  If the variable does not contain the label
 "

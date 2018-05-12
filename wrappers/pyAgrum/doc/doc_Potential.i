@@ -34,13 +34,12 @@ Returns
 float
   The value of the divergence
 
-Warnings
---------
-  InvalidArgument raised if p is not compatible with the potential (dimension, variables)
-
-Warnings
---------
-  FatalError raised if a zero is found in p or the potential and not in the other.
+Raises
+------
+gum.InvalidArgument
+  If p is not compatible with the potential (dimension, variables)
+gum.FatalError
+  If a zero is found in p or the potential and not in the other. 
 "
 
 %feature("docstring") gum::Potential::abs
@@ -62,9 +61,10 @@ Parameters
 v : pyAgrum.DiscreteVariable
   the var to be added
 
-Warnings
---------
-Error raised if DiscretizedVariable added with no Tick.
+Raises
+------
+gum.Error
+  If DiscretizedVariable added with no Tick.
 "
 
 %feature("docstring") gum::Potential::contains
@@ -85,7 +85,7 @@ bool
 Returns
 -------
 bool
-    Returns true if no variable is in the potential.
+    Returns true if no variable is in the potential. 
 "
 
 %feature("docstring") gum::Potential::entropy
@@ -127,14 +127,15 @@ Returns
 float
   The value of the divergence
 
-Warnings
---------
-FatalError raised if a zero is found in p or this and not in the other.
+Raises
+------
+gum.FatalError
+  If a zero is found in p or this and not in the other. 
 "
 
-%feature("docstring") gum::Potential::fillWith
+%feature("docstring") gum::Potential::fill
 "
-Automatically fills the potential with the values in v.
+Automatically fills the potential with v.
 
 Parameters
 ----------
@@ -151,9 +152,18 @@ Returns
 pyAgrum.Potential
       a reference to the modified potentia
 
-Warnings
+Raises
+------
+gum.SizeError
+  If v size's does not matches the domain size. 
+"
+
+%feature("docstring") gum::Potential::populate
+"
+Raises:
 --------
-    SizeError Raised if v size's does not matches the domain size.
+gum.SizeError 
+  if v size's does not matches the domain size.
 "
 
 %feature("docstring") gum::Potential::get
@@ -206,9 +216,10 @@ Returns
 pyAgrum.Potential
   the projected Potential
 
-Warnings
---------
-InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
+Raises
+------
+gum.InvalidArgument
+  If varnames contains only one variable that does not exist in the Potential
 "
 
 %feature("docstring") gum::Potential::margMinIn
@@ -274,9 +285,10 @@ Returns
 pyAgrum.Potential
   the projected Potential
 
-Warnings
---------
-InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
+Raises
+------
+gum.InvalidArgument
+  If varnames contains only one variable that does not exist in the Potential
 "
 
 %feature("docstring") gum::Potential::margSumIn
@@ -308,9 +320,10 @@ Returns
 pyAgrum.Potential
   the projected Potential
 
-Warnings
---------
-InvalidArgument raised if varnames contains only one variable that does not exist in the Potential
+Raises
+------
+gum.InvalidArgument 
+  If varnames contains only one variable that does not exist in the Potential
 "
 
 %feature("docstring") gum::Potential::max
@@ -328,9 +341,10 @@ Returns
 double
   the maximum of non one elements in the Potential
 
-Warnings
---------
-NotFound raised if all value == 1.0
+Raises
+------
+gum.NotFound
+  If all value == 1.0
 "
 
 %feature("docstring") gum::Potential::min
@@ -348,9 +362,10 @@ Returns
 double
   the min of non zero elements in the Potential
 
-Warnings
---------
-NotFound raised if all value == 0.0
+Raises
+------
+gum.NotFound
+  If all value == 0.0
 "
 
 %feature("docstring") gum::Potential::nbrDim
@@ -358,7 +373,7 @@ NotFound raised if all value == 0.0
 Returns
 -------
 int
-  the number of vars in the multidimensional container.
+  the number of vars in the multidimensional container. 
 "
 
 %feature("docstring") gum::Potential::newFactory
@@ -390,9 +405,10 @@ Returns
 pyAgrum.Potential
   a reference to the normalized Potential
 
-Warnings
---------
-FatalError if some distribution sums to 0
+Raises
+------
+gum.FatalError
+  If some distribution sums to 0
 "
 
 %feature("docstring") gum::Potential::pos
@@ -404,11 +420,12 @@ v : pyAgrum.DiscreteVariable
 
 Returns
 -------
-    Returns the index of a variable.
+    Returns the index of a variable. 
 
-Warnigs
--------
-    NotFound raised if v is not in this multidimensional matrix.
+Raises
+------
+gum.NotFound 
+  If v is not in this multidimensional matrix. 
 "
 
 %feature("docstring") gum::Potential::product
@@ -431,9 +448,10 @@ Returns
 pyAgrum.Potential
   a reference to the modified potential
 
-Warnings
---------
-InvalidArgument raised if the var is not in the potential
+Raises
+------
+gum.InvalidArgument
+  If the var is not in the potential 
 "
 
 %feature("docstring") gum::Potential::remove
@@ -450,7 +468,7 @@ pyAgrum.Potential
 
 Warnings
 --------
-IndexError raised if the var is not in the potential
+IndexError raised if the var is not in the potential 
 "
 
 %feature("docstring") gum::Potential::reorganize
@@ -525,16 +543,17 @@ Returns
 "
 Parameters
 ----------
-i : int
+i : int 
   An index of this multidimensional matrix.
 
 Returns
 -------
-  the varible at the ith index
+  the varible at the ith index 
 
-Warnings
---------
-  NotFound raised if i does not reference a variable in this multidimensional matrix.
+Raises
+------
+gum.NotFound
+  If i does not reference a variable in this multidimensional matrix. 
 "
 
 

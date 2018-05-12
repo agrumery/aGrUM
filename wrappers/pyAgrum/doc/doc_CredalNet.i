@@ -18,7 +18,7 @@ src_max_den
 src_min_num
 	(pyAgrum.BayesNet) the BayesNet which contains lower probabilities.
 src_max_den
-	(pyAgrum.BayesNet) the (optional) BayesNet which contains upper probabilities.
+	(pyAgrum.BayesNet) the (optional) BayesNet which contains upper probabilities. 
 "
 
 %feature("docstring") gum::credal::CredalNet::addArc
@@ -29,20 +29,17 @@ Parameters
 ----------
 tail :
 	the id of the tail node
-head : int
+head : int 
 	the id of the head node
 
-Warnings
---------
-	InvalidDirectedCircle raised if any (directed) cycle is created by this arc
-
-Warnings
---------
-	InvalidNode raised if head or tail does not belong to the graph nodes
-
-Warnings
---------
-	DuplicateElement raised if one of the arc already exists
+Raises
+------
+gum.InvalidDirectedCircle
+	If any (directed) cycle is created by this arc
+gum.InvalidNode
+	If head or tail does not belong to the graph nodes
+gum.DuplicateElement
+	If one of the arc already exists
 "
 
 %feature("docstring") gum::credal::CredalNet::addNodeWithId
@@ -61,9 +58,10 @@ Returns
 int
     The NodeId of the variable in the network
 
-Warnings
---------
-DuplicateLabel raised if a node with the label already exists.
+Raises
+------
+gum.DuplicateLabel
+	If a node with the label already exists.
 "
 
 %feature("docstring") gum::credal::CredalNet::approximatedBinarization
@@ -126,13 +124,13 @@ tbw
 "
 Parameters
 ----------
-id : int
+id : int 
 	The constant reference to the choosen NodeId
 
 Returns
 -------
 pyAgrum.CredalNet
-    the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise.
+    the type of the choosen node in the (up-to-date) CredalNet __current_bn if any, __src_bn otherwise. 
 "
 
 %feature("docstring") gum::credal::CredalNet::current_bn
@@ -140,7 +138,7 @@ pyAgrum.CredalNet
 Returns
 -------
 pyAgrum.BayesNet
-    Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter).
+    Returs a constant reference to the actual BayesNet (used as a DAG, it's CPTs does not matter). 
 "
 
 %feature("docstring") gum::credal::CredalNet::domainSize
@@ -153,7 +151,7 @@ id : int
 Returns
 -------
 int
-    The cardinality of the node
+    The cardinality of the node 
 "
 
 %feature("docstring") gum::credal::CredalNet::epsilonMax
@@ -161,7 +159,7 @@ int
 Returns
 -------
 double
-    a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet.
+    a constant reference to the highest perturbation of the BayesNet provided as input for this CredalNet. 
 "
 
 %feature("docstring") gum::credal::CredalNet::epsilonMean
@@ -169,7 +167,7 @@ double
 Returns
 -------
 double
-    a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet.
+    a constant reference to the average perturbation of the BayesNet provided as input for this CredalNet. 
 "
 
 %feature("docstring") gum::credal::CredalNet::epsilonMin
@@ -177,7 +175,7 @@ double
 Returns
 -------
 double
-    a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet.
+    a constant reference to the lowest perturbation of the BayesNet provided as input for this CredalNet. 
 "
 
 %feature("docstring") gum::credal::CredalNet::fillConstraint
@@ -186,7 +184,7 @@ Set the interval constraints of a credal set of a given node (from an instantiat
 
 Parameters
 ----------
-id : int
+id : int 
 	The id of the node
 entry : int
 	The index of the instantiation excluding the given node (only the parents are used to compute the index of the credal set)
@@ -203,16 +201,16 @@ You need to call intervalToCredal when done filling all constraints.
 
 Warning
 -------
-DOES change the BayesNet (s) associated to this credal net !
+DOES change the BayesNet (s) associated to this credal net ! 
 "
 
 %feature("docstring") gum::credal::CredalNet::fillConstraints
 "
-Set the interval constraints of the credal sets of a given node (all instantiations)
+Set the interval constraints of the credal sets of a given node (all instantiations) 
 
 Parameters
 ----------
-id : int
+id : int 
 	The id of the node
 lower : list
 	The lower value for each probability in correct order
@@ -271,7 +269,7 @@ Parameters
 s : int
 	the IDM parameter.
 keepZeroes : bool
-	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept.
+	used as a flag as whether or not - respectively True or False - we keep zeroes as zeroes. Default is False, i.e. zeroes are not kept. 
 "
 
 %feature("docstring") gum::credal::CredalNet::instantiation
@@ -288,7 +286,7 @@ id : int
 Returns
 -------
 pyAgrum.Instantiation
-    the instantiation
+    the instantiation 
 "
 
 %feature("docstring") gum::credal::CredalNet::intervalToCredal
@@ -307,7 +305,7 @@ Deprecated : use intervalToCredal (lrsWrapper with no input / output files neede
 
 Computes the vertices of each credal set according to their interval definition (uses lrs).
 
-Use this method when using a single BayesNet storing counts of events.
+Use this method when using a single BayesNet storing counts of events. 
 "
 
 %feature("docstring") gum::credal::CredalNet::isSeparatelySpecified
@@ -315,7 +313,7 @@ Use this method when using a single BayesNet storing counts of events.
 Returns
 -------
 bool
-	True if this CredalNet is separately and interval specified, False otherwise.
+	True if this CredalNet is separately and interval specified, False otherwise. 
 "
 
 %feature("docstring") gum::credal::CredalNet::lagrangeNormalization
@@ -324,7 +322,22 @@ Normalize counts of a BayesNet storing counts of each events such that no probab
 
 Use this method when using a single BayesNet storing counts of events. Lagrange normalization. This call is irreversible and modify counts stored by __src_bn.
 
-Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value).
+Doest not performs computations of the parameters but keeps normalized counts of events only. Call idmLearning to compute the probabilities (with any parameter value). 
+"
+
+%feature("docstring") gum::credal::CredalNet::addVariable
+"
+Parameters
+----------
+name : str
+	the name of the new variable
+card: int
+    the domainSize of the new variable
+
+Returns
+-------
+int
+	the id of the new node
 "
 
 %feature("docstring") gum::credal::CredalNet::nodeType
@@ -337,7 +350,7 @@ id : int
 Returns
 -------
 pyAgrum.CredalNet
-	the type of the choosen node in the (up-to-date) CredalNet in __src_bn.
+	the type of the choosen node in the (up-to-date) CredalNet in __src_bn. 
 "
 
 %feature("docstring") gum::credal::CredalNet::saveBNsMinMax
@@ -370,7 +383,7 @@ id : int
 entry : int
 	the index of the instantiation (from 0 to K - 1) excluding the given node (only the parents are used to compute the index of the credal set)
 ins : pyAgrum.Instantiation
-	the Instantiation (only the parents matter to find the credal set index)
+	the Instantiation (only the parents matter to find the credal set index) 
 cpt	: tbw
 	the vertices of every credal set (for each instantiation of the parents)
 
@@ -392,7 +405,7 @@ Parameters
 ----------
 id : int
 	the NodeId of the node
-cpt	: tbw
+cpt	: tbw 
 	the vertices of every credal set (for each instantiation of the parents)
 
 Warning
@@ -405,5 +418,5 @@ DOES not change the BayesNet (s) associated to this credal net !
 Returns
 -------
 pyAgrum.BayesNet
-    Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter).
+    Returns a constant reference to the original BayesNet (used as a DAG, it's CPTs does not matter). 
 "

@@ -75,6 +75,14 @@ List
 	the list of the arcs
 "
 
+%feature("docstring") gum::MarkovBlanket::nodes
+"
+Returns
+-------
+set
+    the set of ids
+"
+
 %feature("docstring") gum::MarkovBlanket::size
 "
 Returns

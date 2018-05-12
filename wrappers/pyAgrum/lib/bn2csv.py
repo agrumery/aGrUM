@@ -97,9 +97,10 @@ class CSVGenerator:
     tuple
       a couple of name of n and list of parents names
 
-    Warnings
-    --------
-    IndexError raised if the node is not in the Bayesian network
+    Raises
+    ------
+    gum.IndexError
+      If the node is not in the Bayesian network
     """
     l = bn.cpt(n).var_names
     node = l.pop()

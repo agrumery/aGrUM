@@ -1,6 +1,7 @@
 %ignore gum::MixedGraph::addArc;
 %ignore gum::MixedGraph::addEdge;
-%ignore gum::MixedGraph::addNodeWithId;
+%ignore gum::MixedGraph::addNode;
+%ignore gum::MixedGraph::addNodes;
 %ignore gum::MixedGraph::addNodeWithId;
 %ignore gum::MixedGraph::empty;
 %ignore gum::MixedGraph::emptyArcs;
@@ -46,9 +47,10 @@ Returns
 List
 	 a path from node1 to node2, using edges and/or arcs (following the direction of the arcs)
 
-Warnings
---------
-NotFound raised if no path can be found between the two nodes
+Raises
+------
+gum.NotFound
+	If no path can be found between the two nodes
 "
 
 %feature("docstring") gum::MixedGraph::mixedUnorientedPath
@@ -65,8 +67,9 @@ Returns
 List
 	 a path from node1 to node2, using edges and/or arcs (not necessarily following the direction of the arcs)
 
-Warnings
---------
-NotFound raised if no path can be found between the two nodes
+Raises
+------
+gum.NotFound
+	If no path can be found between the two nodes
 "
 

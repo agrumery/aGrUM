@@ -24,9 +24,10 @@ def addLabel(self,*args):
     pyAgrum.LabelizedVariable
         the labelized variable
 
-    Warnings
-    --------
-    DuplicateElement raised is raised if the variable already contains the label
+    Raises
+    ------
+    gum.DuplicateElement
+        If the variable already contains the label
     """
     $action(self,*args)
     return self
@@ -45,9 +46,10 @@ def addTick(self,*args):
     pyAgrum.DiscretizedVariable
         the discretized variable
 
-    Warnings
-    --------
-    DefaultInLabel raised if the Tick is already defined
+    Raises
+    ------
+    gum.DefaultInLabel
+        If the Tick is already defined
     """
     $action(self,*args)
     return self

@@ -43,7 +43,7 @@ id : int
 
 
 Returns
-------
+-------
 int
   the nodeId of the other node
 "
@@ -52,7 +52,7 @@ int
 %feature("docstring") gum::Arc::first
 "
 Returns
-------
+-------
 int
   the nodeId of the first node of the arc (the tail)
 "
@@ -61,7 +61,7 @@ int
 %feature("docstring") gum::Arc::second
 "
 Returns
-------
+-------
 int
   the nodeId of the second node of the arc (the head)
 "
