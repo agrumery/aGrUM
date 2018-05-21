@@ -398,25 +398,6 @@ namespace gum {
     unsigned int _right_shift;
   };
 
-  /**
-   * @class HashFuncCastKey hashFunc.h <agrum/core/hashFunc.h>
-   * @brief Generic hash functions for keys castable as unsigned longs whose
-   * size is either smaller than unsigned long, or equal to that of one or two
-   * unsigned longs.
-   * @ingroup hashfunctions_group
-   * @tparam Key The type hashed by this hash function.
-   */
-  template < typename T >
-  struct HashFuncCastKey {
-
-    /// The type used by this class.
-    using type = typename std::conditional<
-      sizeof(T) < sizeof(long),
-      HashFuncSmallCastKey< T >,
-      typename std::conditional< sizeof(T) == 2 * sizeof(long),
-                                 HashFuncLargeCastKey< T >,
-                                 HashFuncMediumCastKey< T > >::type >::type;
-  };
 
   /**
    * @class HashFuncSmallKeyPair hashFunc.h <agrum/core/hashFunc.h>
@@ -508,6 +489,33 @@ namespace gum {
     Func2 __func2;
   };
 
+
+  
+  // ===========================================================================
+  // ===         GENERAL HASH FUNCTIONS CASTING AND CONDITIONAL TYPES        ===
+  // ===========================================================================
+
+  /**
+   * @class HashFuncCastKey hashFunc.h <agrum/core/hashFunc.h>
+   * @brief Generic hash functions for keys castable as unsigned longs whose
+   * size is either smaller than unsigned long, or equal to that of one or two
+   * unsigned longs.
+   * @ingroup hashfunctions_group
+   * @tparam Key The type hashed by this hash function.
+   */
+  template < typename T >
+  struct HashFuncCastKey {
+
+    /// The type used by this class.
+    using type = typename std::conditional<
+      sizeof(T) < sizeof(long),
+      HashFuncSmallCastKey< T >,
+      typename std::conditional< sizeof(T) == 2 * sizeof(long),
+                                 HashFuncLargeCastKey< T >,
+                                 HashFuncMediumCastKey< T > >::type >::type;
+  };
+
+
   /**
    * @class HashFuncCastKeyPair hashFunc.h <agrum/core/hashFunc.h>
    * @brief Generic hash functions for keys castable as unsigned longs whose
@@ -527,6 +535,57 @@ namespace gum {
     /// The expected type of this class.
     using type = HashFuncAllCastKeyPair< T1, T2, Func1, Func2 >;
   };
+
+
+  
+  template <typename T>
+  class dummyHash {};
+  
+  template<typename...>
+  struct HashFuncConditionalType;
+
+  template<typename HASH_TYPE>
+  struct HashFuncConditionalType<HASH_TYPE> {
+    using type = HASH_TYPE;
+  };
+
+  template<typename HASH_TYPE, typename TYPE>
+  struct HashFuncConditionalType<HASH_TYPE, TYPE> {
+    using type =
+      typename std::conditional<std::is_same<HASH_TYPE,TYPE>::value,
+                                dummyHash<HASH_TYPE>,HASH_TYPE>::type;
+  };
+
+  /**
+   * @class HashFuncConditionalType hashFunc.h <agrum/core/hashFunc.h>
+   * @brief This class enables to safely define hash functions for types
+   * that may or may not already has defined hash functions
+   * @ingroup hashfunctions_group
+   *
+   * There are types that are defined differently depending on the architecture
+   * or the compiler you use. This is the case, for instance, of std::size_t
+   * which is defined as an unsigned long by gcc and clang on 64 bits
+   * architectures, but is defined as an unsigned int in 32 bits architectures by
+   * theses compilers, and it is defined neither as an unsigned long nor as
+   * an unsigned int by Visual Studio 15 MVSC on 64 bits architectures. To
+   * enable to define the hash function of std::size_t appropriately in all these
+   * cases, instead of defining directly a HasHunc of <std::size_t>, it is
+   * sufficient to define a HashFunc of
+   * <HashFuncConditionalType<std::size_t,unsigned int,unsigned long>::type>.
+   * The latter will actually define a HasHunc of <std::size_t> if size_t 
+   * corresponds neither to an unsigned int nor to an unsigned long, else it
+   * will not define the HasHunc of <std::size_t> (which would redefine an
+   * already defined HashFunc, hence resulting in a compilation failure). */
+  template<typename HASH_TYPE, typename FIRST_TYPE, typename... OTHER_TYPES>
+  struct HashFuncConditionalType<HASH_TYPE, FIRST_TYPE, OTHER_TYPES...> {
+    using type =
+      typename std::conditional<
+        std::is_same<HASH_TYPE,FIRST_TYPE>::value,
+        dummyHash<HASH_TYPE>,
+        typename HashFuncConditionalType<HASH_TYPE,OTHER_TYPES...>::type>::type;
+  };
+
+
 
   // ===========================================================================
   // ===                      WIDELY USED HASH FUNCTIONS                     ===
@@ -585,19 +644,15 @@ namespace gum {
   template <>
   class HashFunc< unsigned long > : public HashFuncSmallKey< unsigned long > {};
 
-  template <typename T>
-  class dummyHash {};
-  
   /**
    * @headerfile hashFunc.h <agrum/core/hashFunc.h>
    * @brief Hash function for std::size_t.
    * @ingroup hashfunctions_group
    */
   template <>
-  class HashFunc< std::conditional<
-                    std::is_same<std::size_t,unsigned long>::value,
-                    dummyHash<std::size_t>,
-                    std::size_t >::type > :
+  class HashFunc< typename
+                  HashFuncConditionalType<std::size_t,unsigned long,
+                                          unsigned int, long, int>::type> :
     public HashFuncCastKey< std::size_t >::type {};
 
   /**
